@@ -1,0 +1,212 @@
+#include "Core/Debug/Debug.h"
+#include "Airplay/File/FileAirplay_p.h"
+#include "Core/Data/DataBuffer.h"
+#include "Core/Math/Math.h"
+
+EGE_NAMESPACE
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_DEFINE_NEW_OPERATORS(FilePrivate)
+EGE_DEFINE_DELETE_OPERATORS(FilePrivate)
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+FilePrivate::FilePrivate(File* base) : m_base(base), m_file(NULL)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+FilePrivate::~FilePrivate()
+{
+  close();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if object is valid. */
+bool FilePrivate::isValid() const
+{
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Opens the given file with requested mode. */
+EGEResult FilePrivate::open(EGEFile::EMode mode)
+{
+  close();
+
+  // map mode
+  EGEString modeInternal;
+  switch (mode)
+  {
+    case EGEFile::MODE_READ_ONLY:  modeInternal = "rb"; break;
+    case EGEFile::MODE_WRITE_ONLY: modeInternal = "wb"; break;
+    case EGEFile::MODE_APPEND:     modeInternal = "a+"; break;
+
+    default:
+
+      return EGE_ERROR_BAD_PARAM;
+  }
+
+  // open file
+  if (NULL == (m_file = s3eFileOpen(m_base->filePath().c_str(), modeInternal.c_str())))
+  {
+    // error!
+    return EGE_ERROR_IO;
+  }
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Closes file. */
+void FilePrivate::close()
+{
+  if (NULL != m_file)
+  {
+    s3eFileClose(m_file);
+    m_file = NULL;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Reads given amount of data into destination buffer. */
+/// @return Returns number of bytes read.
+s64 FilePrivate::read(DataBuffer* dst, s64 size)
+{
+  EGE_ASSERT(dst && (0 <= size) , "Invalid pointer");
+
+  // store current write offset in data buffer
+  s64 writeOffset = dst->writeOffset();
+
+  if (!isOpen())
+  {
+    // error!
+    return 0;
+  }
+
+  // make sure buffer is big enough
+  if (EGE_SUCCESS != dst->setSize(writeOffset + size))
+  {
+    // error!
+    return 0;
+  }
+
+  // read data into buffer
+  size_t readCount;
+  if ((readCount = s3eFileRead(dst->data(writeOffset), 1, (size_t) size, m_file)) < size)
+  {
+    // check if EOF found
+    if (s3eFileEOF(m_file))
+    {
+      // this is not error, however, we need to reflect real number of bytes read in buffer itself
+      // NOTE: call below should never fail as we r effectively shirnking the data size
+      EGE_ASSERT(EGE_SUCCESS == dst->setSize((s64) readCount), "Shrinking the buffer failed!");
+    }
+    else
+    {
+      // error!
+      return 0;
+    }
+  }
+
+  // manually update write offset in buffer
+  if (writeOffset != dst->setWriteOffset(writeOffset + readCount))
+  {
+    // error!
+    return 0;
+  }
+
+  return (s64) readCount;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Writes given amount of data from destination buffer. */
+/// @return Returns number of bytes written.
+s64 FilePrivate::write(DataBuffer* dst, s64 size)
+{
+  EGE_ASSERT(dst && (0 <= size) , "Invalid pointer");
+
+  if (!isOpen())
+  {
+    // error!
+    return 0;
+  }
+
+  // store current read offset from data buffer
+  s64 readOffset = dst->readOffset();
+
+  // dont allow to read beyond the size boundary of buffer
+  size = Math::Min(size, dst->size() - dst->readOffset());
+
+  return (s64) s3eFileWrite(dst->data(readOffset), 1, (size_t) size, m_file);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets new position within file. Returns -1 if error occured. */
+s64 FilePrivate::seek(s64 offset, EGEFile::ESeekMode mode) 
+{
+  if (!isOpen())
+  {
+    // error!
+    return -1;
+  }
+
+  // map mode
+  s3eFileSeekOrigin modeInternal;
+  switch (mode)
+  {
+    case EGEFile::SEEK_MODE_BEGIN:   modeInternal = S3E_FILESEEK_SET; break;
+    case EGEFile::SEEK_MODE_CURRENT: modeInternal = S3E_FILESEEK_CUR; break;
+    case EGEFile::SEEK_MODE_END:     modeInternal = S3E_FILESEEK_END; break;
+
+    default:
+
+      return -1;
+  }
+
+  // store current position
+  s64 curPos = tell();
+
+  // try to change position
+  if ((-1 == curPos) || (S3E_RESULT_SUCCESS != s3eFileSeek(m_file, (int32) offset, modeInternal)))
+  {
+    // error!
+    return -1;
+  }
+
+  return curPos;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns current position in file. Returns -1 if error occured. */
+s64 FilePrivate::tell()
+{
+  if (!isOpen())
+  {
+    // error!
+    return -1;
+  }
+
+  return s3eFileTell(m_file);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if file is opened. */
+bool FilePrivate::isOpen() const
+{
+  return NULL != m_file;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns file size. Returns -1 if error occured. */
+s64 FilePrivate::size()
+{
+  // store current file position
+  s64 curPos = tell();
+  
+  // try to skip to end of the file
+  if ((-1 != curPos) && (-1 != seek(0, EGEFile::SEEK_MODE_END)))
+  {
+    // store position
+    s64 endPos = tell();
+
+    // return to previous position
+    if (-1 != seek(curPos, EGEFile::SEEK_MODE_BEGIN))
+    {
+      return endPos;
+    }
+  }
+
+  return -1;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

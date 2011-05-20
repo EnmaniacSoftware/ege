@@ -1,0 +1,181 @@
+#include "Core/Application/Application.h"
+#include "EGEMath.h"
+#include "EGEDevice.h"
+#include "GLES/gl.h"
+#include "GLES/egl.h"
+#include "Airplay/Graphics/OpenGL/ES 1.0/RenderWindowOGLAirplay.h"
+#include "s3e.h"
+
+EGE_NAMESPACE
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+RenderWindowOGLAirplay::RenderWindowOGLAirplay(Application* app, const ConfigParams& params) : RenderWindow(app, params), m_eglDisplay(EGL_NO_DISPLAY), 
+                                                                                               m_eglContext(EGL_NO_CONTEXT), m_eglSurface(EGL_NO_SURFACE)
+{
+  create(params);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+RenderWindowOGLAirplay::~RenderWindowOGLAirplay()
+{
+  destroy();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderWindowOGLAirplay::create(const ConfigParams& params)
+{
+  bool error = false;
+
+  // decompose param list
+  ConfigParams::const_iterator iterColorBits = params.find(EGE_RENDER_TARGET_PARAM_COLOR_BITS);
+  ConfigParams::const_iterator iterDepthBits = params.find(EGE_RENDER_WINDOW_PARAM_DEPTH_BITS);
+  ConfigParams::const_iterator iterLandscape = params.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
+
+  // check if required parameters are NOT present
+  if (iterColorBits == params.end() || iterDepthBits == params.end())
+  {
+    // error!
+    return;
+  }
+
+  bool landscape = (iterLandscape != params.end()) ? iterLandscape->second.toBool(&error) : false;
+
+  // set default paramerter values
+  s32 colorBits = iterColorBits->second.toInt(&error);
+  s32 depthBits = iterDepthBits->second.toInt(&error);
+
+  if (error)
+  {
+    // error!
+    return;
+  }
+
+  // get device screen dimensions
+  s32 width  = Device::SurfaceWidth();
+  s32 height = Device::SurfaceHeight();
+
+  // apply dimensions according to landscape requirement
+  if (landscape)
+  {
+    m_height = Math::Min(width, height);
+    m_width  = Math::Max(width, height);
+  }
+  else
+  {
+    m_height = Math::Max(width, height);
+    m_width  = Math::Min(width, height);
+  }
+
+  static const EGLint configAttribs[] =
+  {
+      EGL_RED_SIZE,       colorBits / 3,
+      EGL_GREEN_SIZE,     colorBits / 3,
+      EGL_BLUE_SIZE,      colorBits / 3,
+      EGL_DEPTH_SIZE,     depthBits,
+      EGL_ALPHA_SIZE,     EGL_DONT_CARE,
+      EGL_STENCIL_SIZE,   EGL_DONT_CARE,
+      EGL_SURFACE_TYPE,   EGL_WINDOW_BIT,
+      EGL_NONE
+  };
+
+  EGLBoolean success;
+
+  EGLint numConfigs;
+  EGLint majorVersion;
+  EGLint minorVersion;
+
+  EGLConfig sEglConfig;
+
+  m_eglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+
+  success = eglInitialize(m_eglDisplay, &majorVersion, &minorVersion);
+  if (EGL_FALSE != success)
+  {
+      success = eglGetConfigs(m_eglDisplay, NULL, 0, &numConfigs);
+  }
+
+  if (EGL_FALSE != success)
+  {
+      success = eglChooseConfig(m_eglDisplay, configAttribs, &sEglConfig, 1, &numConfigs);
+  }
+
+  if (EGL_FALSE != success)
+  {
+      m_eglSurface = eglCreateWindowSurface(m_eglDisplay, sEglConfig, s3eGLGetNativeWindow(), NULL);
+      if (m_eglSurface == EGL_NO_SURFACE)
+      {
+          success = EGL_FALSE;
+      }
+  }
+  
+  if (EGL_FALSE != success)
+  {
+      m_eglContext = eglCreateContext(m_eglDisplay, sEglConfig, NULL, NULL);
+      if (m_eglContext == EGL_NO_CONTEXT)
+      {
+          success = EGL_FALSE;
+      }
+  }
+  
+  if (EGL_FALSE != success)
+  {
+      success = eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext);
+  }
+
+  if (EGL_FALSE == success)
+  {
+    destroy();
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Destorys Airplay OpenGL window. */
+void RenderWindowOGLAirplay::destroy()
+{
+  releaseCurrentContext();
+  eglDestroyContext(m_eglDisplay, m_eglContext);
+  eglDestroySurface(m_eglDisplay, m_eglSurface);
+  eglTerminate(m_eglDisplay);
+
+  m_eglDisplay = EGL_NO_DISPLAY;
+  m_eglContext = EGL_NO_CONTEXT;
+  m_eglSurface = EGL_NO_SURFACE;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! RenderWindow override. Makes rendering context calling thread's current rendering context. */
+EGEResult RenderWindowOGLAirplay::makeCurrentContext()
+{
+  return (EGL_FALSE == eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext)) ? EGE_ERROR : EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! RenderWindow override. Removes calling thread's current rendering context. */
+void RenderWindowOGLAirplay::releaseCurrentContext()
+{
+  eglMakeCurrent(m_eglDisplay, NULL, NULL, NULL);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! RenderWindow override. Shows frame buffer. */
+void RenderWindowOGLAirplay::showFrameBuffer()
+{
+  eglSwapBuffers(m_eglDisplay, m_eglSurface);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Returns TRUE if object is valid. */
+bool RenderWindowOGLAirplay::isValid() const
+{
+  if (!RenderWindow::isValid())
+  {
+    // not valid
+    return false;
+  }
+
+  return (EGL_NO_SURFACE != m_eglSurface) && (EGL_NO_CONTEXT != m_eglContext) && (EGL_NO_DISPLAY != m_eglDisplay);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! RenderWindow override. Enables/Disables fullscreen mode. */
+EGEResult RenderWindowOGLAirplay::enableFullScreen(s32 width, s32 height, bool enable)
+{
+  EGE_UNUSED(width);
+  EGE_UNUSED(height);
+  EGE_UNUSED(enable);
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

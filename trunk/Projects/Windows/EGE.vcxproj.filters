@@ -1,0 +1,681 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{4c4a2f98-a97a-48af-a446-6e5028f0eca5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Application">
+      <UniqueIdentifier>{d704e1fa-c528-4f1b-8bda-60c491ab0080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Components">
+      <UniqueIdentifier>{d12c2078-c4de-4927-9438-0f1cc13522c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Components\Physics">
+      <UniqueIdentifier>{8178366c-c228-477d-9591-bd9734228970}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Components\Physics\Box2D">
+      <UniqueIdentifier>{647532df-4074-46b1-bcb5-39c78f24525f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Components\Render">
+      <UniqueIdentifier>{49202581-b9f8-48f3-b952-c66900bd55f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Data">
+      <UniqueIdentifier>{f7c03ef9-2265-42df-95c4-47c1bd3edec3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Debug">
+      <UniqueIdentifier>{a2ae031f-92bb-44f8-9d72-a8b9a3db8722}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Event">
+      <UniqueIdentifier>{4786fa0a-4e3e-4d5f-ad5c-de86d5a71413}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\File">
+      <UniqueIdentifier>{9a8419c0-0a71-4238-a07f-889b78745fef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics">
+      <UniqueIdentifier>{c3781f21-9972-4f15-b5b0-2a4808c25d15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\OpenGL">
+      <UniqueIdentifier>{49d25881-e6d5-4efd-892a-994bab1d1d30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\OpenGL\GL 2.0">
+      <UniqueIdentifier>{2736de3a-5cff-4e6f-ab45-abde106a81a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\Render">
+      <UniqueIdentifier>{a292a486-89b4-4c40-ba69-d653e15dd192}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Math">
+      <UniqueIdentifier>{2c11bf7f-670d-48d8-b934-6731b51d9f74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Memory">
+      <UniqueIdentifier>{9487bf60-9c7f-4cc1-b35c-e5912a6d6444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Physics">
+      <UniqueIdentifier>{fc382b18-e341-4c8c-b65a-30119646e3be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Physics\Box2D">
+      <UniqueIdentifier>{3bed388e-268c-4426-a666-eeef70113c1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Resource">
+      <UniqueIdentifier>{27ef305d-9146-4d4a-9a9b-ac7883fa8eec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Scene">
+      <UniqueIdentifier>{5dc099f1-71da-431f-b2bc-a819745488a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\String">
+      <UniqueIdentifier>{25259695-3d8e-4125-9c0e-1f352dc596d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\String\Stl">
+      <UniqueIdentifier>{49a4fa9e-ed2c-404a-9e7e-6e479528e8df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Timer">
+      <UniqueIdentifier>{ad5cfeb5-a084-4758-9a07-2fd50430209f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\XML">
+      <UniqueIdentifier>{544e98df-3ece-4500-a86c-f5e560734d1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\XML\TinyXML">
+      <UniqueIdentifier>{c9e4b8b7-ffbd-44be-b06f-d790a31e3050}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32">
+      <UniqueIdentifier>{e0a2b4ec-3b04-4a2d-9ff1-239bc82d068f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Application">
+      <UniqueIdentifier>{aee24acd-16d9-4e3f-abe2-980f8aeadf82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Debug">
+      <UniqueIdentifier>{d3710955-51ce-4588-ab3e-752f5f6f90d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Graphics">
+      <UniqueIdentifier>{f3c75e40-ca2e-4280-bd30-6d394880386d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Graphics\OpenGL">
+      <UniqueIdentifier>{c93c548d-9770-4921-9b9d-298943fce613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Graphics\OpenGL\GL 2.0">
+      <UniqueIdentifier>{f33c5f13-9872-4829-98c1-31b48288392d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Memory">
+      <UniqueIdentifier>{4d261eae-d14d-4643-998e-af9f1ed671b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Timer">
+      <UniqueIdentifier>{07d6b3c7-c933-4e30-ad93-e2d000239f48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\File">
+      <UniqueIdentifier>{37b16d40-4fac-4a87-9902-c1c884e2bccd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Device">
+      <UniqueIdentifier>{5232082b-8e65-44fe-8361-051d6d53f025}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Device">
+      <UniqueIdentifier>{25a62b6a-217f-4530-ba1d-0da96d2edbc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Random">
+      <UniqueIdentifier>{8280ece7-066e-4853-9384-ee2673c198da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Random\C">
+      <UniqueIdentifier>{65993860-9874-4227-a8bb-96fcd04291ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Input">
+      <UniqueIdentifier>{3e89d702-36f3-48ce-8b71-24222bda8208}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Input">
+      <UniqueIdentifier>{3275639c-3718-4f0b-9f6f-10ea15417f7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Dir">
+      <UniqueIdentifier>{573caef8-8803-453f-a2da-654ab1620e63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Containers">
+      <UniqueIdentifier>{8af4c0e9-7344-417c-85c3-aa9aeab5db9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Containers\stl">
+      <UniqueIdentifier>{0d0061c3-8e64-48e6-a937-1504b362b30b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Overlay">
+      <UniqueIdentifier>{083fc304-3a3c-4ce0-b212-2f3cb230c477}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
+      <Filter>Core\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.cpp">
+      <Filter>Core\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.cpp">
+      <Filter>Core\Components\Physics\Box2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Components\Render\RenderComponent.cpp">
+      <Filter>Core\Components\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
+      <Filter>Core\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Event\Event.cpp">
+      <Filter>Core\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Event\EventManager.cpp">
+      <Filter>Core\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Camera.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Color.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\IndexBuffer.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Material.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\VertexBuffer.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Viewport.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.cpp">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\Renderer.cpp">
+      <Filter>Core\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderTarget.cpp">
+      <Filter>Core\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderWindow.cpp">
+      <Filter>Core\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Math.cpp">
+      <Filter>Core\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Memory\MemoryManager.cpp">
+      <Filter>Core\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Physics\PhysicsManager.cpp">
+      <Filter>Core\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsManagerBox2D_p.cpp">
+      <Filter>Core\Physics\Box2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceGroup.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceManager.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceMaterial.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceTexture.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Scene\SceneManager.cpp">
+      <Filter>Core\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Scene\SceneNode.cpp">
+      <Filter>Core\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Scene\SceneNodeObject.cpp">
+      <Filter>Core\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\StringUtils.cpp">
+      <Filter>Core\String</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\Stl\String.cpp">
+      <Filter>Core\String\Stl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\Stl\StringList.cpp">
+      <Filter>Core\String\Stl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\ComplexTypes.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\GL 2.0\RenderWindowOGLWin32.cpp">
+      <Filter>Win32\Graphics\OpenGL\GL 2.0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Memory\MemoryWin32.cpp">
+      <Filter>Win32\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJoint.cpp">
+      <Filter>Core\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJointDistance.cpp">
+      <Filter>Core\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointDistanceBox2D_p.cpp">
+      <Filter>Core\Physics\Box2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Debug\Log.cpp">
+      <Filter>Core\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\File\File.cpp">
+      <Filter>Core\File</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Debug\Debug.cpp">
+      <Filter>Core\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp">
+      <Filter>Win32\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Application\AppController.cpp">
+      <Filter>Core\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Application\AppControllerWin32_p.cpp">
+      <Filter>Win32\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Timer\Timer.cpp">
+      <Filter>Core\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Timer\TimerWin32_p.cpp">
+      <Filter>Win32\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Graphics.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.cpp">
+      <Filter>Win32\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Angle.cpp">
+      <Filter>Core\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\AxisAlignedBox.cpp">
+      <Filter>Core\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\File\FileWin32_p.cpp">
+      <Filter>Win32\File</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Application\Application.cpp">
+      <Filter>Core\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceData.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp">
+      <Filter>Core\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp">
+      <Filter>Core\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlDocumentTinyXml_p.cpp">
+      <Filter>Core\XML\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlElementTinyXml_p.cpp">
+      <Filter>Core\XML\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Device\DeviceWin32.cpp">
+      <Filter>Win32\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\MaterialOGL_p.cpp">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.cpp">
+      <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Random\Random.cpp">
+      <Filter>Core\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Random\C\RandomC_p.cpp">
+      <Filter>Core\Random\C</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Input\Pointer.cpp">
+      <Filter>Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Input\PointerWin32_p.cpp">
+      <Filter>Win32\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Input\PointerData.cpp">
+      <Filter>Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Dir\Dir.cpp">
+      <Filter>Core\Dir</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceFont.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Overlay\Overlay.cpp">
+      <Filter>Core\Overlay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Overlay\OverlayManager.cpp">
+      <Filter>Core\Overlay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Overlay\TextOverlay.cpp">
+      <Filter>Core\Overlay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Font.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\Stl\Text.cpp">
+      <Filter>Core\String\Stl</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Sources\Core\Components\Component.h">
+      <Filter>Core\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.h">
+      <Filter>Core\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.h">
+      <Filter>Core\Components\Physics\Box2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Components\Render\RenderComponent.h">
+      <Filter>Core\Components\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h">
+      <Filter>Core\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Debug\Debug.h">
+      <Filter>Core\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Event\Event.h">
+      <Filter>Core\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Event\EventIDs.h">
+      <Filter>Core\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Event\EventListener.h">
+      <Filter>Core\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Event\EventManager.h">
+      <Filter>Core\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Color.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Frustum.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\IndexBuffer.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Material.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\VertexBuffer.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Viewport.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.h">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\glext.h">
+      <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Renderer.h">
+      <Filter>Core\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderTarget.h">
+      <Filter>Core\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderWindow.h">
+      <Filter>Core\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\AxisAlignedBox.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Math.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Matrix4.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Plane.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Quaternion.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Rect.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Vector2.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Vector3.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Vector4.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Memory\Memory.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Memory\MemoryManager.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Memory\Object.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Physics\PhysicsManager.h">
+      <Filter>Core\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsManagerBox2D_p.h">
+      <Filter>Core\Physics\Box2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceGroup.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceManager.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceMaterial.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceTexture.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Scene\SceneManager.h">
+      <Filter>Core\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Scene\SceneNode.h">
+      <Filter>Core\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Scene\SceneNodeObject.h">
+      <Filter>Core\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\String\StringUtils.h">
+      <Filter>Core\String</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\String\Stl\String.h">
+      <Filter>Core\String\Stl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\String\Stl\StringList.h">
+      <Filter>Core\String\Stl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Timer\Time.h">
+      <Filter>Core\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\ComplexTypes.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\ConfigParams.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Flags.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\ListenerContainer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\ObjectUIDs.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Platform.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\GL 2.0\RenderWindowOGLWin32.h">
+      <Filter>Win32\Graphics\OpenGL\GL 2.0</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\TypesWin32.h">
+      <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGE.h" />
+    <ClInclude Include="..\..\Sources\EGEApplication.h" />
+    <ClInclude Include="..\..\Sources\EGEDataBuffer.h" />
+    <ClInclude Include="..\..\Sources\EGEEvent.h" />
+    <ClInclude Include="..\..\Sources\EGEFile.h" />
+    <ClInclude Include="..\..\Sources\EGEGraphics.h" />
+    <ClInclude Include="..\..\Sources\EGEImage.h" />
+    <ClInclude Include="..\..\Sources\EGEMath.h" />
+    <ClInclude Include="..\..\Sources\EGEMemory.h" />
+    <ClInclude Include="..\..\Sources\EGEPhysics.h" />
+    <ClInclude Include="..\..\Sources\EGEResources.h" />
+    <ClInclude Include="..\..\Sources\EGEScene.h" />
+    <ClInclude Include="..\..\Sources\EGEString.h" />
+    <ClInclude Include="..\..\Sources\EGETexture.h" />
+    <ClInclude Include="..\..\Sources\EGETime.h" />
+    <ClInclude Include="..\..\Sources\EGETimer.h" />
+    <ClInclude Include="..\..\Sources\EGETypes.h" />
+    <ClInclude Include="..\..\Sources\EGEXml.h" />
+    <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJoint.h">
+      <Filter>Core\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointDistance.h">
+      <Filter>Core\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointDistanceBox2D_p.h">
+      <Filter>Core\Physics\Box2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Debug\Log.h">
+      <Filter>Core\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\File\File.h">
+      <Filter>Core\File</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Application\AppController.h">
+      <Filter>Core\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\Application\AppControllerWin32_p.h">
+      <Filter>Win32\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Timer\Timer.h">
+      <Filter>Core\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\Timer\TimerWin32_p.h">
+      <Filter>Win32\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Graphics.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.h">
+      <Filter>Win32\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Angle.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\File\FileWin32_p.h">
+      <Filter>Win32\File</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Application\Application.h">
+      <Filter>Core\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceData.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\XML\XmlDocument.h">
+      <Filter>Core\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\XML\XmlElement.h">
+      <Filter>Core\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\XML\TinyXml\XmlDocumentTinyXml_p.h">
+      <Filter>Core\XML\TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\XML\TinyXml\XmlElementTinyXml_p.h">
+      <Filter>Core\XML\TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEDebug.h" />
+    <ClInclude Include="..\..\Sources\Core\Device\Device.h">
+      <Filter>Core\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEDevice.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\MaterialOGL_p.h">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.h">
+      <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGERandom.h" />
+    <ClInclude Include="..\..\Sources\Core\Random\Random.h">
+      <Filter>Core\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Random\C\RandomC_p.h">
+      <Filter>Core\Random\C</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEInput.h" />
+    <ClInclude Include="..\..\Sources\Core\Input\Pointer.h">
+      <Filter>Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Memory\SmartPointer.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\Input\PointerWin32_p.h">
+      <Filter>Win32\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Input\PointerData.h">
+      <Filter>Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Resource.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Dir\Dir.h">
+      <Filter>Core\Dir</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEDir.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Stl\List.h">
+      <Filter>Core\Containers\stl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEList.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceFont.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Overlay\Overlay.h">
+      <Filter>Core\Overlay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Overlay\OverlayManager.h">
+      <Filter>Core\Overlay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Overlay\TextOverlay.h">
+      <Filter>Core\Overlay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEOverlay.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Font.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\String\Stl\Text.h">
+      <Filter>Core\String\Stl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Containers\Stl\Map.h">
+      <Filter>Core\Containers\stl</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Sources\Core\FeatureList.txt">
+      <Filter>Core</Filter>
+    </None>
+    <None Include="..\..\Sources\README.txt" />
+    <None Include="..\..\Sources\Rendering Pipe.txt" />
+    <None Include="..\..\Sources\TODO.txt" />
+  </ItemGroup>
+</Project>

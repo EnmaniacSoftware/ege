@@ -1,0 +1,43 @@
+#include "Core/Graphics/Font.h"
+
+EGE_NAMESPACE
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_DEFINE_NEW_OPERATORS(Font)
+EGE_DEFINE_DELETE_OPERATORS(Font)
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Font::Font(Application* app, s32 height, const std::map<EGEChar, GlyphData>& glyphData) : Object(app), m_height(height)
+{
+  // copy glyphs data
+  for (std::map<EGEChar, GlyphData>::const_iterator it = glyphData.begin(); it != glyphData.end(); ++it)
+  {
+    m_glyphs.insert(std::map<EGEChar, GlyphData>::value_type(it->first, it->second));
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Font::~Font()
+{
+  m_material = NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if material is valid. */
+bool Font::isValid() const
+{
+  return NULL != m_material && m_material->isValid();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets material. */
+void Font::setMaterial(PMaterial material)
+{
+  m_material = material;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns pointer to data for a given glyph. NULL if glyph is not defined. */
+const GlyphData* Font::glyphData(EGEChar c) const
+{
+  std::map<EGEChar, GlyphData>::const_iterator it = m_glyphs.find(c);
+  return (it != m_glyphs.end()) ? &it->second : NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

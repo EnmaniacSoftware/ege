@@ -1,0 +1,14 @@
+Rendering pipe:
+
+- EGEngine::run
+- AppController::run
+- AppController::render
+- forall RenderTargets::render
+- forall Viewports::render
+- Camera::render(viewport)
+- SceneManager::render(camera, viewport)
+- Set Projection and View matrix
+- SceneManager::AddForRendering
+- Renderer::ClearViewport
+- Renderer::flush (real rendering)
+- forall RenderData

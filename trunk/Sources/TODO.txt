@@ -1,0 +1,34 @@
+
+FEATURES:
+
+- Make possible to create multiple SceneManagers thru EGEngine
+- OpenGL highest version detection and fallback mechanism for renderers
+- Extensible resource handling ie. client be able to define custom resource which can be injected into resource manager for handling etc
+
+OPTIMIZATIONS:
+
+- SceneNodeObject:
+  - render components cache or map to quickly add them for rendering
+  
+- Camera
+  - view matrix is calculated each time getViewMatrix is called as there is no information from PhysicsComponent regarding internal value changes
+    This is not a big issue as this method should be called rather infrequently
+
+- Files
+
+  - write and read pointers are now the same, perhaps we can distinquish them
+  - recode interface especially read/write methods so they return number of bytes read/written
+
+- Graphics
+
+  - remove so called renderWindow from class. Make it RenderTarget with name like "PrimaryRenderTarget" etc, so no special interface for windows only, let all go thru XXXRenderTarget API
+
+CODING:
+
+- move out of specific platform implementations subsystems which can be shared among 2+ platforms (OpenGl, TinyXml, File etc)
+- Thread-safe allocation/deallocation of SCENE OBJECTS/OVERLAY OBEJCT and all similar ones. 
+  Note that when PObject is being held on client side and u deallocate all on server side last reference on client side will force deallocation in different thread
+
+REDO:
+
+- Remove EGE from File names

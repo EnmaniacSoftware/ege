@@ -1,0 +1,1 @@
+- fstream::is_open is not CONST why ?

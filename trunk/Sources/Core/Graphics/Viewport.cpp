@@ -1,0 +1,78 @@
+//#include "Core/EGEngine.h"
+#include "Core/Graphics/Viewport.h"
+#include "Core/Graphics/Camera.h"
+
+EGE_NAMESPACE
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_DEFINE_NEW_OPERATORS(Viewport)
+EGE_DEFINE_DELETE_OPERATORS(Viewport)
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Viewport::Viewport(Application* app, const EGEString& name, PCamera camera) : Object(app), m_polygonMode(POLYGON_MODE_SOLID), 
+                                                                              m_clearBufferTypes(BUFFER_TYPE_COLOR), m_triangleCount(0), m_batchCount(0),
+                                                                              m_overlays(true)
+{
+  m_name = name;
+  m_camera = camera;
+
+  // by default set viewport to full area of render target it is associated with
+  setRect(TRectf(0, 0, 1, 1));
+
+  setClearColor(Color::BLUE);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Viewport::~Viewport()
+{
+  m_camera = NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets viewport rectangle within render target. */
+void Viewport::setRect(TRectf rect)
+{
+  m_rect = rect;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Renders viewport from associated camera's point of view. */
+void Viewport::render()
+{
+  m_camera->render(this);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets batch count rendered last frame. */
+void Viewport::setBatchCount(u32 count)
+{
+  m_triangleCount = count;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets triangle count rendered last frame. */
+void Viewport::setTriangleCount(u32 count)
+{
+  m_batchCount = count;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets viewport clear color. Can be NULL color if viewport should not be cleared. */
+void Viewport::setClearColor(const Color& color)
+{
+  m_clearColor = color;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets polygon mode for rendered data. */
+void Viewport::setPolygonMode(PolygonMode mode)
+{
+  m_polygonMode = mode;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets buffer types to clear. */
+void Viewport::setClearBufferTypes(BufferType mask)
+{
+  m_clearBufferTypes = mask;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Enables/Disables overlays. */
+void Viewport::enableOverlays(bool enable)
+{
+  m_overlays = enable;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

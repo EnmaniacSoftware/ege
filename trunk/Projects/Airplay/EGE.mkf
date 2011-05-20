@@ -1,0 +1,356 @@
+#!/usr/bin/env mkb
+
+#platform S3E_LIB
+
+define AIRPLAY_BUILD
+define PNG_NO_SNPRINTF
+define TIXML_USE_STL
+define STDC
+define EGE_RENDERING_OPENGLES_1
+define EGE_PHYSICS_BOX2D
+define EGE_XML_TINYXML
+define EGE_RANDOM_C
+
+includepath ../../Sources
+
+options
+{
+	module_path="$AIRPLAY_ROOT/modules/third_party"
+}
+files
+{
+	(../../Sources)
+	EGE.h
+	EGEApplication.h
+  EGEDataBuffer.h
+  EGEDebug.h
+  EGEDevice.h
+  EGEDir.h
+	EGEEvent.h
+	EGEFile.h
+  EGEGraphics.h
+  EGEImage.h
+  EGEInput.h
+  EGEList.h
+	EGEMath.h
+	EGEMemory.h
+  EGEOverlay.h
+  EGEPhysics.h
+  EGERandom.h
+  EGEResources.h
+	EGEScene.h
+  EGEString.h
+  EGETexture.h
+  EGETime.h
+  EGETimer.h
+	EGETypes.h
+	EGEXml.h
+
+	["Core"]
+	(../../Sources/Core)
+	ComplexTypes.cpp
+	ComplexTypes.h
+	ConfigParams.h
+  Flags.h
+	ListenerContainer.h
+	ObjectUIDs.h
+	Platform.h
+
+	["Core/Application"]
+	(../../Sources/Core/Application)
+  AppController.cpp
+  AppController.h
+  Application.cpp
+  Application.h
+
+	["Core/Components"]
+ 	(../../Sources/Core/Components)
+  Component.cpp
+	Component.h
+
+	["Core/Components/Physics"]
+ 	(../../Sources/Core/Components/Physics)
+	PhysicsComponent.cpp
+	PhysicsComponent.h
+
+	["Core/Components/Physics/Box2D"]
+ 	(../../Sources/Core/Components/Physics/Box2D)
+	PhysicsComponentBox2D_p.cpp
+	PhysicsComponentBox2D_p.h
+
+	["Core/Components/Render"]
+ 	(../../Sources/Core/Components/Render)
+	RenderComponent.cpp
+	RenderComponent.h
+
+	["Core/Containers"]
+ 	(../../Sources/Core/Containers)
+
+	["Core/Containers/Stl"]
+ 	(../../Sources/Core/Containers/Stl)
+  List.h
+
+	["Core/Data"]
+ 	(../../Sources/Core/Data)
+	DataBuffer.cpp
+	DataBuffer.h
+
+	["Core/Debug"]
+ 	(../../Sources/Core/Debug)
+  Debug.cpp
+	Debug.h
+  Log.cpp
+  Log.h
+
+  ["Core/Device"]
+  (../../Sources/Core/Device)
+  Device.h
+
+  ["Core/Dir"]
+  (../../Sources/Core/Dir)
+  Dir.cpp
+  Dir.h
+
+	["Core/Event"]
+ 	(../../Sources/Core/Event)
+	Event.cpp
+	Event.h
+	EventIDs.h
+	EventListener.h
+	EventManager.cpp
+	EventManager.h
+
+	["Core/File"]
+  (../../Sources/Core/File)
+  File.cpp
+  File.h
+
+	["Core/Graphics"]
+  (../../Sources/Core/Graphics)
+	Camera.cpp
+	Camera.h
+	Color.cpp
+	Color.h
+  Font.cpp
+  Font.h
+	Frustum.cpp
+	Frustum.h
+	Graphics.cpp
+	Graphics.h
+	Image.cpp
+	Image.h
+	IndexBuffer.cpp
+	IndexBuffer.h
+  JpegDataSrcFile.cpp
+  JpegDataSrcFile.h
+  Material.cpp
+  Material.h
+	VertexBuffer.cpp
+	VertexBuffer.h
+  Viewport.cpp
+	Viewport.h
+
+	["Core/Graphics/OpenGL"]
+ 	(../../Sources/Core/Graphics/OpenGL)
+  MaterialOGL_p.cpp
+  MaterialOGL_p.h
+	Texture2DOGL.cpp
+	Texture2DOGL.h
+
+	["Core/Graphics/OpenGL/ES 1.0"]
+  ("../../Sources/Core/Graphics/OpenGL/ES 1.0")
+	RendererOGLES1_p.cpp
+	RendererOGLES1_p.h
+
+	["Core/Graphics/Render"]
+  (../../Sources/Core/Graphics/Render)
+	Renderer.cpp
+	Renderer.h
+	RenderTarget.cpp
+	RenderTarget.h
+	RenderWindow.cpp
+	RenderWindow.h
+
+	["Core/Input"]
+  (../../Sources/Core/Input)
+  Pointer.cpp
+  Pointer.h
+  PointerData.cpp
+  PointerData.h
+
+	["Core/Math"]
+  (../../Sources/Core/Math)
+  angle.cpp
+  angle.h
+	AxisAlignedBox.h
+	Math.cpp
+	Math.h
+	Matrix4.h
+	Plane.h
+	Quaternion.h
+	Rect.h
+	Vector2.h
+	Vector3.h
+	Vector4.h
+
+	["Core/Memory"]
+  (../../Sources/Core/Memory)
+	Memory.h
+	MemoryManager.cpp
+	MemoryManager.h
+	Object.h
+	SmartPointer.h
+
+	["Core/Overlay"]
+  (../../Sources/Core/Overlay)
+	Overlay.cpp
+  Overlay.h
+	OverlayManager.cpp
+	OverlayManager.h
+	TextOverlay.cpp
+	TextOverlay.h
+
+	["Core/Physics"]
+  (../../Sources/Core/Physics)
+	PhysicsJoint.cpp
+	PhysicsJoint.h
+	PhysicsJointDistance.cpp
+	PhysicsJointDistance.h
+	PhysicsManager.cpp
+	PhysicsManager.h
+
+	["Core/Physics/Box2D"]
+  (../../Sources/Core/Physics/Box2D)
+	PhysicsJointDistanceBox2D_p.cpp
+	PhysicsJointDistanceBox2D_p.h
+	PhysicsManagerBox2D_p.cpp
+	PhysicsManagerBox2D_p.h
+
+  ["Core/Random"]
+  (../../Sources/Core/Random)
+  Random.cpp
+  Random.h
+
+  ["Core/Random/C"]
+  (../../Sources/Core/Random/C)
+  RandomC_p.cpp
+  RandomC_p.h
+
+	["Core/Resource"]
+  (../../Sources/Core/Resource)
+  Resource.h
+  ResourceData.cpp
+  ResourceData.h
+  ResourceFont.cpp
+  ResourceFont.h
+  ResourceGroup.cpp
+  ResourceGroup.h
+	ResourceManager.cpp
+	ResourceManager.h
+  ResourceMaterial.cpp
+  ResourceMaterial.h
+  ResourceTexture.cpp
+  ResourceTexture.h
+
+	["Core/Scene"]
+  (../../Sources/Core/Scene)
+	SceneManager.cpp
+	SceneManager.h
+	SceneNode.cpp
+	SceneNode.h
+	SceneNodeObject.cpp
+	SceneNodeObject.h
+
+	["Core/String"]
+  (../../Sources/Core/String)
+	StringUtils.cpp
+	StringUtils.h
+
+	["Core/String/Stl"]
+  (../../Sources/Core/String/Stl)
+	String.cpp
+	String.h
+  StringList.cpp
+  StringList.h
+  Text.cpp
+  Text.h
+
+	["Core/Timer"]
+  (../../Sources/Core/Timer)
+	Time.h
+  Timer.cpp
+  Timer.h
+
+	["Core/XML"]
+  (../../Sources/Core/XML)
+	XMLDocument.cpp
+	XMLDocument.h
+	XMLElement.cpp
+	XMLElement.h
+
+	["Core/XML/TinyXml"]
+  (../../Sources/Core/XML/TinyXml)
+	XMLDocumentTinyXml_p.cpp
+	XMLDocumentTinyXml_p.h
+	XMLElementTinyXml_p.cpp
+	XMLElementTinyXml_p.h
+}
+
+files
+{
+	["Airplay"]
+	(../../Sources/Airplay)
+	TypesAirplay.h
+	ISSUES.txt
+
+	["Airplay/Application"]
+	(../../Sources/Airplay/Application)
+	AppControllerAirplay_p.cpp
+	AppControllerAirplay_p.h
+
+	["Airplay/Debug"]
+	(../../Sources/Airplay/Debug)
+	DebugAirplay.cpp
+
+  ["Airplay/Device"]
+  (../../Sources/Airplay/Device)
+  DeviceAirplay.cpp
+
+	["Airplay/File"]
+	(../../Sources/Airplay/File)
+	FileAirplay_p.cpp
+	FileAirplay_p.h
+
+	["Airplay/Graphics"]
+	(../../Sources/Airplay/Graphics)
+	GraphicsAirplay_p.cpp
+	GraphicsAirplay_p.h
+
+	["Airplay/Graphics/OpenGL"]
+	["Airplay/Graphics/OpenGL/ES 1.0"]
+	("../../Sources/Airplay/Graphics/OpenGL/ES 1.0")
+	RenderWindowOGLAirplay.cpp
+	RenderWindowOGLAirplay.h
+
+	["Airplay/Memory"]
+	(../../Sources/Airplay/Memory)
+	MemoryAirplay.cpp
+
+	["Airplay/Input"]
+	(../../Sources/Airplay/Input)
+	PointerAirplay_p.cpp
+	PointerAirplay_p.h
+
+	["Airplay/Timer"]
+	(../../Sources/Airplay/Timer)
+	TimerAirplay_p.cpp
+	TimerAirplay_p.h
+}
+
+subprojects
+{
+	third_party/libpng/libpng
+	third_party/libjpeg/libjpeg
+	third_party/tinyxml/tinyxml
+  box2d
+}

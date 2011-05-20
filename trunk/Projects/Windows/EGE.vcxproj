@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Sources\Core\Application\AppController.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Application\Application.cpp" />
+    <ClCompile Include="..\..\Sources\Core\ComplexTypes.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Components\Component.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Components\Render\RenderComponent.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Debug\Debug.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Debug\Log.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Dir\Dir.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Event\Event.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Event\EventManager.cpp" />
+    <ClCompile Include="..\..\Sources\Core\File\File.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Camera.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Color.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Font.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Graphics.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\IndexBuffer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Material.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\MaterialOGL_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\Renderer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderTarget.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderWindow.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\VertexBuffer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Viewport.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Input\Pointer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Input\PointerData.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Math\Angle.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Math\AxisAlignedBox.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Math\Math.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Memory\MemoryManager.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Overlay\Overlay.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Overlay\OverlayManager.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Overlay\TextOverlay.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointDistanceBox2D_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsManagerBox2D_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJoint.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJointDistance.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Physics\PhysicsManager.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Random\C\RandomC_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Random\Random.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceData.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceFont.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceGroup.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceManager.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceMaterial.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceTexture.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Scene\SceneManager.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Scene\SceneNode.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Scene\SceneNodeObject.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\Stl\String.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\Stl\StringList.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\Stl\Text.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\StringUtils.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Timer\Timer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlDocumentTinyXml_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlElementTinyXml_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp" />
+    <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Application\AppControllerWin32_p.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Device\DeviceWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\File\FileWin32_p.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\GL 2.0\RenderWindowOGLWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Input\PointerWin32_p.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Memory\MemoryWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Timer\TimerWin32_p.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Sources\Core\Application\AppController.h" />
+    <ClInclude Include="..\..\Sources\Core\Application\Application.h" />
+    <ClInclude Include="..\..\Sources\Core\ComplexTypes.h" />
+    <ClInclude Include="..\..\Sources\Core\Components\Component.h" />
+    <ClInclude Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.h" />
+    <ClInclude Include="..\..\Sources\Core\Components\Render\RenderComponent.h" />
+    <ClInclude Include="..\..\Sources\Core\ConfigParams.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Stl\List.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Stl\Map.h" />
+    <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h" />
+    <ClInclude Include="..\..\Sources\Core\Debug\Debug.h" />
+    <ClInclude Include="..\..\Sources\Core\Debug\Log.h" />
+    <ClInclude Include="..\..\Sources\Core\Device\Device.h" />
+    <ClInclude Include="..\..\Sources\Core\Dir\Dir.h" />
+    <ClInclude Include="..\..\Sources\Core\Event\Event.h" />
+    <ClInclude Include="..\..\Sources\Core\Event\EventIDs.h" />
+    <ClInclude Include="..\..\Sources\Core\Event\EventListener.h" />
+    <ClInclude Include="..\..\Sources\Core\Event\EventManager.h" />
+    <ClInclude Include="..\..\Sources\Core\File\File.h" />
+    <ClInclude Include="..\..\Sources\Core\Flags.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Color.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Font.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Frustum.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Graphics.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\IndexBuffer.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Material.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\glext.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\MaterialOGL_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Renderer.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderTarget.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderWindow.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\VertexBuffer.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Viewport.h" />
+    <ClInclude Include="..\..\Sources\Core\Input\Pointer.h" />
+    <ClInclude Include="..\..\Sources\Core\Input\PointerData.h" />
+    <ClInclude Include="..\..\Sources\Core\ListenerContainer.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Angle.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\AxisAlignedBox.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Math.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Matrix4.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Plane.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Quaternion.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Rect.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Vector2.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Vector3.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Vector4.h" />
+    <ClInclude Include="..\..\Sources\Core\Memory\Memory.h" />
+    <ClInclude Include="..\..\Sources\Core\Memory\MemoryManager.h" />
+    <ClInclude Include="..\..\Sources\Core\Memory\Object.h" />
+    <ClInclude Include="..\..\Sources\Core\Memory\SmartPointer.h" />
+    <ClInclude Include="..\..\Sources\Core\ObjectUIDs.h" />
+    <ClInclude Include="..\..\Sources\Core\Overlay\Overlay.h" />
+    <ClInclude Include="..\..\Sources\Core\Overlay\OverlayManager.h" />
+    <ClInclude Include="..\..\Sources\Core\Overlay\TextOverlay.h" />
+    <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointDistanceBox2D_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsManagerBox2D_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJoint.h" />
+    <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointDistance.h" />
+    <ClInclude Include="..\..\Sources\Core\Physics\PhysicsManager.h" />
+    <ClInclude Include="..\..\Sources\Core\Platform.h" />
+    <ClInclude Include="..\..\Sources\Core\Random\C\RandomC_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Random\Random.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Resource.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceData.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceFont.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceGroup.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceManager.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceMaterial.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceTexture.h" />
+    <ClInclude Include="..\..\Sources\Core\Scene\SceneManager.h" />
+    <ClInclude Include="..\..\Sources\Core\Scene\SceneNode.h" />
+    <ClInclude Include="..\..\Sources\Core\Scene\SceneNodeObject.h" />
+    <ClInclude Include="..\..\Sources\Core\String\Stl\String.h" />
+    <ClInclude Include="..\..\Sources\Core\String\Stl\StringList.h" />
+    <ClInclude Include="..\..\Sources\Core\String\Stl\Text.h" />
+    <ClInclude Include="..\..\Sources\Core\String\StringUtils.h" />
+    <ClInclude Include="..\..\Sources\Core\Timer\Time.h" />
+    <ClInclude Include="..\..\Sources\Core\Timer\Timer.h" />
+    <ClInclude Include="..\..\Sources\Core\XML\TinyXml\XmlDocumentTinyXml_p.h" />
+    <ClInclude Include="..\..\Sources\Core\XML\TinyXml\XmlElementTinyXml_p.h" />
+    <ClInclude Include="..\..\Sources\Core\XML\XmlDocument.h" />
+    <ClInclude Include="..\..\Sources\Core\XML\XmlElement.h" />
+    <ClInclude Include="..\..\Sources\EGE.h" />
+    <ClInclude Include="..\..\Sources\EGEApplication.h" />
+    <ClInclude Include="..\..\Sources\EGEDataBuffer.h" />
+    <ClInclude Include="..\..\Sources\EGEDebug.h" />
+    <ClInclude Include="..\..\Sources\EGEDevice.h" />
+    <ClInclude Include="..\..\Sources\EGEDir.h" />
+    <ClInclude Include="..\..\Sources\EGEEvent.h" />
+    <ClInclude Include="..\..\Sources\EGEFile.h" />
+    <ClInclude Include="..\..\Sources\EGEGraphics.h" />
+    <ClInclude Include="..\..\Sources\EGEImage.h" />
+    <ClInclude Include="..\..\Sources\EGEInput.h" />
+    <ClInclude Include="..\..\Sources\EGEList.h" />
+    <ClInclude Include="..\..\Sources\EGEMath.h" />
+    <ClInclude Include="..\..\Sources\EGEMemory.h" />
+    <ClInclude Include="..\..\Sources\EGEOverlay.h" />
+    <ClInclude Include="..\..\Sources\EGEPhysics.h" />
+    <ClInclude Include="..\..\Sources\EGERandom.h" />
+    <ClInclude Include="..\..\Sources\EGEResources.h" />
+    <ClInclude Include="..\..\Sources\EGEScene.h" />
+    <ClInclude Include="..\..\Sources\EGEString.h" />
+    <ClInclude Include="..\..\Sources\EGETexture.h" />
+    <ClInclude Include="..\..\Sources\EGETime.h" />
+    <ClInclude Include="..\..\Sources\EGETimer.h" />
+    <ClInclude Include="..\..\Sources\EGETypes.h" />
+    <ClInclude Include="..\..\Sources\EGEXml.h" />
+    <ClInclude Include="..\..\Sources\Win32\Application\AppControllerWin32_p.h" />
+    <ClInclude Include="..\..\Sources\Win32\File\FileWin32_p.h" />
+    <ClInclude Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.h" />
+    <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\GL 2.0\RenderWindowOGLWin32.h" />
+    <ClInclude Include="..\..\Sources\Win32\Input\PointerWin32_p.h" />
+    <ClInclude Include="..\..\Sources\Win32\Timer\TimerWin32_p.h" />
+    <ClInclude Include="..\..\Sources\Win32\TypesWin32.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Sources\Core\FeatureList.txt" />
+    <None Include="..\..\Sources\README.txt" />
+    <None Include="..\..\Sources\Rendering Pipe.txt" />
+    <None Include="..\..\Sources\TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\External\Box2D 2.1.2\Box2D\Build\Box2D\Box2D.vcxproj">
+      <Project>{90b6c2e4-0188-4552-ad48-15c26ce84838}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="..\..\External\JpegLib\JpegLib.vcxproj">
+      <Project>{9e7ecddf-c76e-4013-83a0-7d67125d7511}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="..\..\External\PNGLib\libpng.vcxproj">
+      <Project>{9558633a-30ad-4309-bc0f-e9a45db9b2b9}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="..\..\External\tinyxml 2.6.1\tinyxmlSTL.vcxproj">
+      <Project>{a3a84737-5017-4577-b8a2-79429a25b8b6}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="..\..\External\Zlib\ZLib.vcxproj">
+      <Project>{0697d285-5c52-44b0-a9f9-11824a857a66}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{640BD281-71D7-4CC6-91DB-8381773CC8F4}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>EGE</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_BOX2D;EGE_FEATURE_DEBUG;EGE_XML_TINYXML;EGE_RANDOM_C;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BrowseInformation>true</BrowseInformation>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_BOX2D;EGE_FEATURE_DEBUG;EGE_XML_TINYXML;EGE_RANDOM_C;TIXML_USE_STL;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

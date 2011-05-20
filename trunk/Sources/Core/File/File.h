@@ -1,0 +1,88 @@
+#ifndef EGE_CORE_FILE_H
+#define EGE_CORE_FILE_H
+
+#include "EGE.h"
+#include "EGEFile.h"
+#include "EGEString.h"
+
+EGE_NAMESPACE_BEGIN
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class DataBuffer;
+
+EGE_DECLARE_SMART_CLASS(File, PFile)
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class File : public Object
+{
+  public:
+
+    File(const EGEString& filePath);
+    virtual ~File();
+
+    EGE_DECLARE_NEW_OPERATORS
+    EGE_DECLARE_DELETE_OPERATORS
+
+  public:
+
+    /* Returns TRUE if object is valid. */
+    bool isValid() const;
+    /* Opens the given file with requested mode. */
+    EGEResult open(EGEFile::EMode mode);
+    /* Closes file. */
+    void close();
+    /* Reads given amount of data into destination buffer. */
+    /// @return Returns number of bytes read.
+    s64 read(DataBuffer* dst, s64 size);
+    /* Writes given amount of data from destination buffer. */
+    /// @return Returns number of bytes written.
+    s64 write(DataBuffer* dst, s64 size);
+    /* Sets new position within file. Returns old position or -1 if error occured. */
+    s64 seek(s64 offset, EGEFile::ESeekMode mode);
+    /* Returns current position in file. Returns -1 if error occured. */
+    s64 tell();
+    /* Returns TRUE if file is opened. */
+    bool isOpen() const;
+    /* Returns file path. */
+    const EGEString& filePath() const;
+    /* Returns file size. Returns -1 if error occured. */
+    s64 size();
+
+    File& operator << (u8 value);
+    File& operator << (s8 value);
+    File& operator << (u16 value);
+    File& operator << (s16 value);
+    File& operator << (u32 value);
+    File& operator << (s32 value);
+    File& operator << (u64 value);
+    File& operator << (s64 value);
+    File& operator << (bool value);
+    File& operator << (float32 value);
+    File& operator << (float64 value);
+    File& operator >> (u8& value);
+    File& operator >> (s8& value);
+    File& operator >> (u16& value);
+    File& operator >> (s16& value);
+    File& operator >> (u32& value);
+    File& operator >> (s32& value);
+    File& operator >> (u64& value);
+    File& operator >> (s64& value);
+    File& operator >> (bool& value);
+    File& operator >> (float32& value);
+    File& operator >> (float64& fValue);
+
+  private:
+
+    EGE_DECLARE_PRIVATE_IMPLEMENTATION(File);
+
+    /*! Full file path. */
+    EGEString m_filePath;
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
+
+#endif // EGE_CORE_FILE_H

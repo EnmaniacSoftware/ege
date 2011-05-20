@@ -1,0 +1,61 @@
+#ifndef EGE_AIRPLAY_FILE_PRIVATE_H
+#define EGE_AIRPLAY_FILE_PRIVATE_H
+
+#include "EGE.h"
+#include "Core/File/File.h"
+#include "s3e.h"
+
+EGE_NAMESPACE_BEGIN
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class DataBuffer;
+
+EGE_DECLARE_SMART_CLASS(File, PFile)
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class FilePrivate
+{
+  public:
+
+    FilePrivate(File* base);
+   ~FilePrivate();
+
+    EGE_DECLARE_NEW_OPERATORS
+    EGE_DECLARE_DELETE_OPERATORS
+
+    /* Returns TRUE if object is valid. */
+    bool isValid() const;
+    /* Opens the given file with requested mode. */
+    EGEResult open(EGEFile::EMode mode);
+    /* Closes file. */
+    void close();
+    /* Reads given amount of data into destination buffer. */
+    /// @return Returns number of bytes read.
+    s64 read(DataBuffer* dst, s64 size);
+    /* Writes given amount of data from destination buffer. */
+    /// @return Returns number of bytes written.
+    s64 write(DataBuffer* dst, s64 size);
+    /* Sets new position within file.  Returns old position or -1 if error occured. */
+    s64 seek(s64 offset, EGEFile::ESeekMode mode);
+    /* Returns current position in file. Returns -1 if error occured. */
+    s64 tell();
+    /* Returns TRUE if file is opened. */
+    bool isOpen() const;
+    /* Returns file size. Returns -1 if error occured. */
+    s64 size();
+
+  private:
+
+    /*! Pointer to base. */
+    File* m_base;
+    /*! File handle. */
+    s3eFile* m_file;
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
+
+#endif // EGE_AIRPLAY_FILE_PRIVATE_H
