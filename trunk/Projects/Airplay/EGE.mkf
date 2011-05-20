@@ -32,6 +32,7 @@ files
   EGEImage.h
   EGEInput.h
   EGEList.h
+  EGEMap.h
 	EGEMath.h
 	EGEMemory.h
   EGEOverlay.h
@@ -89,6 +90,7 @@ files
 	["Core/Containers/Stl"]
  	(../../Sources/Core/Containers/Stl)
   List.h
+  Map.h
 
 	["Core/Data"]
  	(../../Sources/Core/Data)
