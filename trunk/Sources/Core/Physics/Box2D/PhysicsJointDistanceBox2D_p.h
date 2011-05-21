@@ -14,6 +14,9 @@ class PhysicsJointDistance;
 
 class PhysicsJointDistancePrivate
 {
+  /* To access m_joint data. */
+  friend class PhysicsManagerPrivate;
+
   public:
 
     PhysicsJointDistancePrivate(PhysicsJointDistance* parent, b2World* world);

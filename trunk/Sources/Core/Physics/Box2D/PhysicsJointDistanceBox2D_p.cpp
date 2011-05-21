@@ -35,6 +35,8 @@ PhysicsJointDistancePrivate::PhysicsJointDistancePrivate(PhysicsJointDistance* p
 
   // create joint implementation
   m_joint = (b2DistanceJoint*) m_world->CreateJoint(&def);
+
+  m_joint->SetUserData(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsJointDistancePrivate::~PhysicsJointDistancePrivate()
@@ -51,7 +53,7 @@ void PhysicsJointDistancePrivate::setLength(EGE::float32 length)
 {
   if (m_joint)
   {
-    //m_joint->SetLength(length);
+    m_joint->SetLength(length);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
