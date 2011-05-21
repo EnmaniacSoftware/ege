@@ -47,6 +47,8 @@ class PhysicsManagerPrivate : public b2DestructionListener
     *  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
     */
     PhysicsJointDistancePrivate* registerJoint(PhysicsJointDistance* joint);
+    /* Sets gravity. */
+    void setGravity(const TVector4f& gravity);
 
   private:
 

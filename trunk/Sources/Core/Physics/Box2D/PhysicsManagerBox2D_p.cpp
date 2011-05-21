@@ -13,7 +13,7 @@ EGE_DEFINE_DELETE_OPERATORS(PhysicsManagerPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsManagerPrivate::PhysicsManagerPrivate(PhysicsManager* base) : m_d(base)
 {
-  m_world = new b2World(b2Vec2(0, 1), true);
+  m_world = new b2World(b2Vec2(0, 0), true);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsManagerPrivate::~PhysicsManagerPrivate()
@@ -78,6 +78,21 @@ void PhysicsManagerPrivate::SayGoodbye(b2Fixture* fixture)
 /*! b2DestructionListener override. Box2D joint is about to be destroyed. */
 void PhysicsManagerPrivate::SayGoodbye(b2Joint* joint)
 {
+  PhysicsJointDistancePrivate* object = (PhysicsJointDistancePrivate*) joint->GetUserData();
 
+  // clean it here cause it is going to be deallocated
+  object->m_joint = NULL;
+
+  // remove from pool
+  d_func()->m_joints.remove(object->d_func());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets gravity. */
+void PhysicsManagerPrivate::setGravity(const TVector4f& gravity)
+{
+  if (isValid())
+  {
+    world()->SetGravity(b2Vec2(gravity.x, gravity.y));
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

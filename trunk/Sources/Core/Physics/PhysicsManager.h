@@ -3,6 +3,7 @@
 
 #include "EGE.h"
 #include "Core/Timer/Time.h"
+#include "Core/Math/Vector4.h"
 #include "Core/Physics/PhysicsJoint.h"
 #include "EGEList.h"
 
@@ -37,6 +38,8 @@ class PhysicsManager : public Object
     bool isValid() const;
     /* Updates manager. */
     void update(const Time& time);
+    /* Sets gravity. */
+    void setGravity(const TVector4f& gravity);
 
   private:
 

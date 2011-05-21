@@ -93,3 +93,12 @@ PhysicsJointDistancePrivate* PhysicsManager::registerJoint(PhysicsJointDistance*
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets gravity. */
+void PhysicsManager::setGravity(const TVector4f& gravity)
+{
+  if (isValid())
+  {
+    p_func()->setGravity(gravity);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
