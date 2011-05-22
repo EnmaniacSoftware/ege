@@ -20,6 +20,7 @@ static GLenum MapPrimitiveType(RenderComponent::PrimitiveType type)
   switch (type)
   {
     case RenderComponent::PRIMITIVE_TYPE_TRIANGLES: return GL_TRIANGLES;
+    case RenderComponent::PRIMITIVE_TYPE_LINES:     return GL_LINES;
   }
 
   // default
@@ -90,11 +91,15 @@ void RendererPrivate::flush()
       const std::vector<VertexBuffer::SBUFFERSEMANTIC>& vsSemantics = vertexBuffer->semantics();
 
       // TAGE - if indexed geometry count indicies
-      u32 uiValue = vertexBuffer->vertexCount();
+      u32 value = vertexBuffer->vertexCount();
 
       switch (renderData.renderComponent->primitiveType())
       {
-        case RenderComponent::PRIMITIVE_TYPE_TRIANGLES: d_func()->m_triangleCount += uiValue/3; break;
+        case RenderComponent::PRIMITIVE_TYPE_TRIANGLES: d_func()->m_triangleCount += value / 3; break;
+        case RenderComponent::PRIMITIVE_TYPE_LINES: 
+          
+          // nothing 
+          break;
       }
       
       d_func()->m_batchCount++;
@@ -172,6 +177,13 @@ void RendererPrivate::flush()
 
       // unlock vertex buffer
       vertexBuffer->unlock();
+
+      // clean up
+      glDisableClientState(GL_VERTEX_ARRAY);
+      glDisableClientState(GL_NORMAL_ARRAY);
+      glDisableClientState(GL_COLOR_ARRAY);
+      glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+      glColor4f(1, 1, 1, 1);
     }
 
     // remove rendered component and go to next one

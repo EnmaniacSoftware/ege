@@ -36,7 +36,8 @@ class RenderComponent : public IComponent
 
     enum PrimitiveType
     {
-      PRIMITIVE_TYPE_TRIANGLES = 0
+      PRIMITIVE_TYPE_TRIANGLES = 0,
+      PRIMITIVE_TYPE_LINES
     };
 
     /* IComponent override. Returns TRUE if component is valid. */

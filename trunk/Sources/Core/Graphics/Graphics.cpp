@@ -3,6 +3,7 @@
 #include "Core/Graphics/Render/RenderTarget.h"
 #include "Core/Graphics/Render/Renderer.h"
 #include "Core/Graphics/Render/RenderWindow.h"
+#include "Core/Physics/PhysicsManager.h"
 #include "EGEDevice.h"
 
 #ifdef EGE_PLATFORM_WIN32
@@ -76,6 +77,9 @@ void Graphics::render()
     // render target
     target->render();
   }
+
+  // render physics data
+  app()->physicsManager()->render();
 
   // show what has been rendered in render window
   PRenderWindow window = renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
