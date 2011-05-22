@@ -360,6 +360,12 @@
     <ClCompile Include="..\..\Sources\Core\Physics\Box2D\DebugDrawBox2D.cpp">
       <Filter>Core\Physics\Box2D</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJointAttract.cpp">
+      <Filter>Core\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointAttractBox2D_p.cpp">
+      <Filter>Core\Physics\Box2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -673,6 +679,12 @@
       <Filter>Core\Containers\stl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\DebugDrawBox2D.h">
+      <Filter>Core\Physics\Box2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointAttract.h">
+      <Filter>Core\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointAttractBox2D_p.h">
       <Filter>Core\Physics\Box2D</Filter>
     </ClInclude>
   </ItemGroup>

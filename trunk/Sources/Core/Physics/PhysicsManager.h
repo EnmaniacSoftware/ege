@@ -13,6 +13,8 @@ EGE_NAMESPACE_BEGIN
 
 class PhysicsJointDistance;
 class PhysicsJointDistancePrivate;
+class PhysicsJointAttract;
+class PhysicsJointAttractPrivate;
 class PhysicsComponent;
 class PhysicsComponentPrivate;
 
@@ -25,6 +27,7 @@ class PhysicsManager : public Object
     /* For registration. */
     friend class PhysicsComponent;
     friend class PhysicsJointDistance;
+    friend class PhysicsJointAttract;
 
   public:
 
@@ -57,6 +60,12 @@ class PhysicsManager : public Object
     *  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
     */
     PhysicsJointDistancePrivate* registerJoint(PhysicsJointDistance* joint);
+    /* Registers attract joint. This is supposed to be called by PhysicsJointAttract only.
+    *
+    *  @param   joint joint object for which registration is to be performed.
+    *  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
+    */
+    PhysicsJointAttractPrivate* registerJoint(PhysicsJointAttract* joint);
 
   private:
 

@@ -2,6 +2,7 @@
 #include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"
 #include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"
 #include "Core/Physics/Box2D/PhysicsJointDistanceBox2D_p.h"
+#include "Core/Physics/Box2D/PhysicsJointAttractBox2D_p.h"
 #include "Core/Physics/Box2D/DebugDrawBox2D.h"
 
 EGE_NAMESPACE
@@ -117,5 +118,21 @@ void PhysicsManagerPrivate::render()
   {
     m_world->DrawDebugData();
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Registers attract joint. This is supposed to be called by PhysicsJointAttract only.
+*
+*  @param   joint joint object for which registration is to be performed.
+*  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
+*/
+PhysicsJointAttractPrivate* PhysicsManagerPrivate::registerJoint(PhysicsJointAttract* joint)
+{
+  PhysicsJointAttractPrivate* object = ege_new PhysicsJointAttractPrivate(joint, world());
+  if (!object->isValid())
+  {
+    EGE_DELETE(object);
+  }
+
+  return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

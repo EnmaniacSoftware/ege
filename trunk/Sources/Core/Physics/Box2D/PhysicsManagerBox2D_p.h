@@ -4,6 +4,7 @@
 #include "EGE.h"
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Physics/PhysicsJointDistance.h"
+#include "Core/Physics/PhysicsJointAttract.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 #include "Core/Timer/Time.h"
 #include "Box2D/Box2d.h"
@@ -14,6 +15,7 @@ EGE_NAMESPACE_BEGIN
 
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 EGE_DECLARE_SMART_CLASS(PhysicsJointDistance, PPhysicsJointDistance)
+EGE_DECLARE_SMART_CLASS(PhysicsJointAttract, PPhysicsJointAttract)
 
 class PhysicsManager;
 class DebugDraw;
@@ -50,6 +52,12 @@ class PhysicsManagerPrivate : public b2DestructionListener
     *  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
     */
     PhysicsJointDistancePrivate* registerJoint(PhysicsJointDistance* joint);
+    /* Registers attract joint. This is supposed to be called by PhysicsJointAttract only.
+    *
+    *  @param   joint joint object for which registration is to be performed.
+    *  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
+    */
+    PhysicsJointAttractPrivate* registerJoint(PhysicsJointAttract* joint);
     /* Sets gravity. */
     void setGravity(const TVector4f& gravity);
 

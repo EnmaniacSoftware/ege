@@ -21,6 +21,7 @@ class PhysicsComponent : public IComponent
 {
     /* Private joint implementations may need access to private implementation of component. */
     friend class PhysicsJointDistancePrivate;
+    friend class PhysicsJointAttractPrivate;
     /* For access to joint list. */
     friend class PhysicsJoint;
 

@@ -111,3 +111,27 @@ void PhysicsManager::render()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Registers attract joint. This is supposed to be called by PhysicsJointAttract only.
+*
+*  @param   joint joint object for which registration is to be performed.
+*  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
+*/
+PhysicsJointAttractPrivate* PhysicsManager::registerJoint(PhysicsJointAttract* joint)
+{
+  PhysicsJointAttractPrivate* object = NULL;
+
+  if (isValid())
+  {
+    object = p_func()->registerJoint(joint);
+  }
+
+  PPhysicsJoint a = joint;
+
+  if (object)
+  {
+    m_joints.push_back(joint);
+  }
+
+  return object;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
