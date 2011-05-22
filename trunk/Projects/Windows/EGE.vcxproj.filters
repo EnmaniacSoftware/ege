@@ -357,6 +357,9 @@
     <ClCompile Include="..\..\Sources\Core\String\Stl\Text.cpp">
       <Filter>Core\String\Stl</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Physics\Box2D\DebugDrawBox2D.cpp">
+      <Filter>Core\Physics\Box2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -668,6 +671,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\Map.h">
       <Filter>Core\Containers\stl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Physics\Box2D\DebugDrawBox2D.h">
+      <Filter>Core\Physics\Box2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

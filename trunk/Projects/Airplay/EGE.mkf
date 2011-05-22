@@ -223,6 +223,8 @@ files
 
 	["Core/Physics/Box2D"]
   (../../Sources/Core/Physics/Box2D)
+  DebugDrawBox2D.cpp
+  DebugDrawBox2D.h
 	PhysicsJointDistanceBox2D_p.cpp
 	PhysicsJointDistanceBox2D_p.h
 	PhysicsManagerBox2D_p.cpp

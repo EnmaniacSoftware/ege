@@ -16,6 +16,7 @@ EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 EGE_DECLARE_SMART_CLASS(PhysicsJointDistance, PPhysicsJointDistance)
 
 class PhysicsManager;
+class DebugDraw;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -35,6 +36,8 @@ class PhysicsManagerPrivate : public b2DestructionListener
     bool isValid() const;
     /* Updates manager. */
     void update(const Time& time);
+    /* Renders data. */
+    void render();
     /* Registers component. This is supposed to be called by PhysicsComponent only.
     *
     *  @param   component component object for which registration is to be performed.
@@ -63,8 +66,8 @@ class PhysicsManagerPrivate : public b2DestructionListener
 
     /*! Box2D world. */
     b2World* m_world;
-    /*! List of pointers to private implementations of all joints. This shadows PhysicsManager::m_joints list. */
-    EGEList<PhysicsJoint> m_jointPrivates;
+    /*! Debug draw for Box2D entities. */
+    DebugDraw* m_debugDraw;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

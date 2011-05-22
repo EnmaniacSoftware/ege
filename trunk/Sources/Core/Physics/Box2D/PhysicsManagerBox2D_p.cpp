@@ -2,6 +2,7 @@
 #include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"
 #include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"
 #include "Core/Physics/Box2D/PhysicsJointDistanceBox2D_p.h"
+#include "Core/Physics/Box2D/DebugDrawBox2D.h"
 
 EGE_NAMESPACE
 
@@ -14,11 +15,24 @@ EGE_DEFINE_DELETE_OPERATORS(PhysicsManagerPrivate)
 PhysicsManagerPrivate::PhysicsManagerPrivate(PhysicsManager* base) : m_d(base)
 {
   m_world = new b2World(b2Vec2(0, 0), true);
+  if (m_world)
+  {
+    m_debugDraw = ege_new DebugDraw(base->app());
+  
+    if (m_debugDraw)
+    {
+  	  uint32 flags = b2DebugDraw::e_jointBit;
+  	  m_debugDraw->SetFlags(flags);
+    }
+
+    m_world->SetDebugDraw(m_debugDraw);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsManagerPrivate::~PhysicsManagerPrivate()
 {
   EGE_DELETE(m_world);
+  EGE_DELETE(m_debugDraw);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates manager. */
@@ -93,6 +107,15 @@ void PhysicsManagerPrivate::setGravity(const TVector4f& gravity)
   if (isValid())
   {
     world()->SetGravity(b2Vec2(gravity.x, gravity.y));
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Renders data. */
+void PhysicsManagerPrivate::render()
+{
+  if (m_world)
+  {
+    m_world->DrawDebugData();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

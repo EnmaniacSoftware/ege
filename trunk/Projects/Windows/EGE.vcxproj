@@ -51,6 +51,7 @@
     <ClCompile Include="..\..\Sources\Core\Overlay\Overlay.cpp" />
     <ClCompile Include="..\..\Sources\Core\Overlay\OverlayManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Overlay\TextOverlay.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Physics\Box2D\DebugDrawBox2D.cpp" />
     <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointDistanceBox2D_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsManagerBox2D_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJoint.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="..\..\Sources\Core\Overlay\Overlay.h" />
     <ClInclude Include="..\..\Sources\Core\Overlay\OverlayManager.h" />
     <ClInclude Include="..\..\Sources\Core\Overlay\TextOverlay.h" />
+    <ClInclude Include="..\..\Sources\Core\Physics\Box2D\DebugDrawBox2D.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointDistanceBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsManagerBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJoint.h" />

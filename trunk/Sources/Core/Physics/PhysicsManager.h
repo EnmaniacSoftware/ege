@@ -38,6 +38,8 @@ class PhysicsManager : public Object
     bool isValid() const;
     /* Updates manager. */
     void update(const Time& time);
+    /* Renders data. */
+    void render();
     /* Sets gravity. */
     void setGravity(const TVector4f& gravity);
 
