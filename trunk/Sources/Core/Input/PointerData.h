@@ -16,7 +16,7 @@ class PointerData : public Object
 {
   public:
 
-    PointerData(EGEInput::EButton button, EGEInput::EButtonState state, s32 x, s32 y, s32 index);
+    PointerData(EGEInput::EAction action, EGEInput::EButton button, s32 x, s32 y, s32 index);
    ~PointerData();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -24,8 +24,8 @@ class PointerData : public Object
 
     /*! Returns button type. */
     inline EGEInput::EButton button() const { return m_button; }
-    /*! Returns button state. */
-    inline EGEInput::EButtonState state() const { return m_state; }
+    /*! Returns action type. */
+    inline EGEInput::EAction action() const { return m_action; }
     /*! Returns X position. */
     inline s32 x() const { return m_x; }
     /*! Returns Y position. */
@@ -43,8 +43,8 @@ class PointerData : public Object
     s32 m_y;
     /*! Button type. */
     EGEInput::EButton m_button;
-    /*! Button state type. */
-    EGEInput::EButtonState m_state;
+    /*! Action type. */
+    EGEInput::EAction m_action;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

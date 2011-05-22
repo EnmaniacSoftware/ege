@@ -193,32 +193,32 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
     case WM_LBUTTONDOWN:
 
       me->app()->eventManager()->send(EGE_EVENT_UID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(EGEInput::BUTTON_LEFT, EGEInput::BUTTON_STATE_DOWN, LOWORD(lParam), HIWORD(lParam), 0));
+                                      ege_new PointerData(EGEInput::ACTION_BUTTON_DOWN, EGEInput::BUTTON_LEFT, LOWORD(lParam), HIWORD(lParam), 0));
       return 0;
 
     case WM_LBUTTONUP:
 
       me->app()->eventManager()->send(EGE_EVENT_UID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(EGEInput::BUTTON_LEFT, EGEInput::BUTTON_STATE_UP, LOWORD(lParam), HIWORD(lParam), 0));
+                                      ege_new PointerData(EGEInput::ACTION_BUTTON_UP, EGEInput::BUTTON_LEFT, LOWORD(lParam), HIWORD(lParam), 0));
       return 0;
 
     case WM_RBUTTONDOWN:
 
       me->app()->eventManager()->send(EGE_EVENT_UID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(EGEInput::BUTTON_RIGHT, EGEInput::BUTTON_STATE_DOWN, LOWORD(lParam), HIWORD(lParam), 0));
+                                      ege_new PointerData(EGEInput::ACTION_BUTTON_DOWN, EGEInput::BUTTON_RIGHT, LOWORD(lParam), HIWORD(lParam), 0));
       return 0;
 
     case WM_RBUTTONUP:
 
       me->app()->eventManager()->send(EGE_EVENT_UID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(EGEInput::BUTTON_RIGHT, EGEInput::BUTTON_STATE_UP, LOWORD(lParam), HIWORD(lParam), 0));
+                                      ege_new PointerData(EGEInput::ACTION_BUTTON_UP, EGEInput::BUTTON_RIGHT, LOWORD(lParam), HIWORD(lParam), 0));
       return 0;
 
-    //case WM_MOUSEMOVE:
+    case WM_MOUSEMOVE:
 
-    //  me->app()->eventManager()->send(EGE_EVENT_UID_INTERNAL_POINTER_DATA, 
-    //                                  ege_new PointerData(EGEInput::, EGEInput::BUTTON_STATE_UP, LOWORD(lParam), HIWORD(lParam)));
-    //  return 0;
+      me->app()->eventManager()->send(EGE_EVENT_UID_INTERNAL_POINTER_DATA, 
+                                      ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, LOWORD(lParam), HIWORD(lParam), 0));
+      return 0;
 
     case WM_SIZE:
 

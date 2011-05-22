@@ -61,8 +61,8 @@ void PointerPrivate::MultiTouchButtonCB(s3ePointerTouchEvent* event, void* data)
   // report as left button
   EGEInput::EButton button = EGEInput::BUTTON_LEFT;
 
-  // map state
-  EGEInput::EButtonState state = (0 != event->m_Pressed) ? EGEInput::BUTTON_STATE_DOWN : EGEInput::BUTTON_STATE_UP;
+  // map action
+  EGEInput::EAction action = (0 != event->m_Pressed) ? EGEInput::ACTION_BUTTON_DOWN : EGEInput::ACTION_BUTTON_UP;
 
   PTextOverlay overlay = me->m_base->app()->overlayManager()->overlay("pointer");
   if (NULL == overlay)
@@ -77,14 +77,8 @@ void PointerPrivate::MultiTouchButtonCB(s3ePointerTouchEvent* event, void* data)
   s32 x = event->m_x;
   s32 y = event->m_y;
 
- // if (90.0f == me->base()->app()->graphics()->renderer()->orientationRotation().degrees())
-  //{
-  //  x = 480 - event->m_y;
-  //  y = event->m_x;
-  //}
-
   // send event
-  me->base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, ege_new PointerData(button, state, x, y, event->m_TouchID));
+  me->base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, ege_new PointerData(action, button, x, y, event->m_TouchID));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Multitouch callback for motion changes. */
@@ -123,20 +117,14 @@ void PointerPrivate::SingleTouchButtonCB(s3ePointerEvent* event, void* data)
   }
   overlay->setText(EGEText::Format("X: %d Y: %d", event->m_x, event->m_y));
 
-  // map state
-  EGEInput::EButtonState state = (0 != event->m_Pressed) ? EGEInput::BUTTON_STATE_DOWN : EGEInput::BUTTON_STATE_UP;
+  // map action
+  EGEInput::EAction action = (0 != event->m_Pressed) ? EGEInput::ACTION_BUTTON_DOWN : EGEInput::ACTION_BUTTON_UP;
 
   s32 x = event->m_x;
   s32 y = event->m_y;
 
-  //if (90.0f == me->base()->app()->graphics()->renderer()->orientationRotation().degrees())
-  //{
-  //  x = 480 - event->m_y;
-  //  y = event->m_x;
-  //}
-
   // send event
-  me->base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, ege_new PointerData(button, state, x, y, 0));
+  me->base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, ege_new PointerData(action, button, x, y, 0));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Singletouch callback for motion changes. */

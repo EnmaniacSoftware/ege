@@ -9,17 +9,18 @@ namespace EGEInput
 {
     enum EButton
     {
-      BUTTON_LEFT = 0,
+      BUTTON_NONE = 0,
+      BUTTON_LEFT,
       BUTTON_RIGHT,
       BUTTON_WHEEL_UP,
       BUTTON_WHEEL_DOWN
     };
 
-    enum EButtonState
+    enum EAction
     {
-      BUTTON_STATE_DOWN = 0,
-      BUTTON_STATE_UP,
-      BUTTON_STATE_MOVE
+      ACTION_BUTTON_DOWN = 0,
+      ACTION_BUTTON_UP,
+      ACTION_MOVE
     };
 }
 
