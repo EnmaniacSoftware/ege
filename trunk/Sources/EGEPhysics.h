@@ -33,6 +33,7 @@ EGE_NAMESPACE_END
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Physics/PhysicsJoint.h"
 #include "Core/Physics/PhysicsJointDistance.h"
+#include "Core/Physics/PhysicsJointAttract.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

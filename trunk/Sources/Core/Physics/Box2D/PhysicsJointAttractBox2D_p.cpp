@@ -14,21 +14,28 @@ EGE_DEFINE_DELETE_OPERATORS(PhysicsJointAttractPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsJointAttractPrivate::PhysicsJointAttractPrivate(PhysicsJointAttract* parent, b2World* world) : m_d(parent), m_joint(NULL), m_world(world)
 {
-  b2Body* bodyA = d_func()->bodyA()->p_func()->body();
-  b2Body* bodyB = d_func()->bodyB()->p_func()->body();
+  b2Body* body = d_func()->bodyA()->p_func()->body();
 
-  // define joint
-	b2MouseJointDef def;
+  // create ground body
+	b2BodyDef bodyDef;
+	m_groundBody = m_world->CreateBody(&bodyDef);
+  if (m_groundBody)
+  {
+    // define joint
+    b2MouseJointDef def;
 
-	def.maxForce = 1000.0f;
-	def.bodyA = bodyA;
-	def.bodyB = bodyB;
-	def.target = bodyA->GetPosition();
+    def.maxForce = 1000000.0f;
+    def.bodyA = m_groundBody;
+    def.bodyB = body;
+    def.frequencyHz = 1;
+    def.dampingRatio = 1;
+    def.target = body->GetPosition();
 
-  // create joint implementation
-  m_joint = (b2MouseJoint*) m_world->CreateJoint(&def);
+    // create joint implementation
+    m_joint = (b2MouseJoint*) m_world->CreateJoint(&def);
 
-  m_joint->SetUserData(this);
+    m_joint->SetUserData(this);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsJointAttractPrivate::~PhysicsJointAttractPrivate()
@@ -37,6 +44,12 @@ PhysicsJointAttractPrivate::~PhysicsJointAttractPrivate()
   {
     m_world->DestroyJoint(m_joint);
     m_joint = NULL;
+  }
+
+  if (m_groundBody)
+  {
+    m_world->DestroyBody(m_groundBody);
+    m_groundBody = NULL;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

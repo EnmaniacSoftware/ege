@@ -16,8 +16,7 @@ EGE_DEFINE_NEW_OPERATORS(PhysicsJointAttract)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsJointAttract)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsJointAttract::PhysicsJointAttract(Application* app, PPhysicsComponent bodyA, PPhysicsComponent bodyB) 
-: PhysicsJoint(app, bodyA, bodyB, EGE_OBJECT_UID_PHYSICS_JOINT_ATTRACT)
+PhysicsJointAttract::PhysicsJointAttract(Application* app, PPhysicsComponent body) : PhysicsJoint(app, body, NULL, EGE_OBJECT_UID_PHYSICS_JOINT_ATTRACT)
 {
   m_p = app->physicsManager()->registerJoint(this);
 }

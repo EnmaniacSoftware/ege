@@ -38,6 +38,8 @@ class PhysicsJointAttractPrivate
     b2World* m_world;
     /*! Box2D mouse joint object. */
     b2MouseJoint* m_joint;
+    /*! Dummy ground Box2D body. */
+    b2Body* m_groundBody;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

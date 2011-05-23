@@ -16,7 +16,7 @@ class PhysicsJointAttract : public PhysicsJoint
 {
   public:
 
-    PhysicsJointAttract(Application* app, PPhysicsComponent bodyA, PPhysicsComponent bodyB);
+    PhysicsJointAttract(Application* app, PPhysicsComponent body);
     virtual ~PhysicsJointAttract();
 
     EGE_DECLARE_NEW_OPERATORS
