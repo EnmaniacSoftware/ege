@@ -61,13 +61,13 @@ class Application : public IEventListener
 
     /* Application updater. */
     virtual void update(const Time& time);
+    /* IEventListener override. Event reciever. */
+    virtual void onEventRecieved(PEvent event);
 
   private:
 
     /* Returns application controller. */
     PAppController appController() const;
-    /* IEventListener override. Event reciever. */
-    virtual void onEventRecieved(PEvent event);
 
   private:
 
