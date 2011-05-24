@@ -1,5 +1,6 @@
 #include "Core/Application/Application.h"
 #include "Core/Physics/Box2D/DebugDrawBox2D.h"
+#include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"
 #include "EGEGraphics.h"
 
 EGE_NAMESPACE
@@ -10,7 +11,7 @@ EGE_DEFINE_NEW_OPERATORS(DebugDraw)
 EGE_DEFINE_DELETE_OPERATORS(DebugDraw)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DebugDraw::DebugDraw(Application* app) : m_app(app)
+DebugDraw::DebugDraw(Application* app, PhysicsManagerPrivate* managerPrivate) : m_app(app), m_managerPrivate(managerPrivate)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -122,22 +123,24 @@ void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& c
   PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawSegment");
   if (component->isValid())
   {
+    EGE::float32 scale = manager()->simulationToWorldScaleFactor();
+ 
     component->setPrimitiveType(RenderComponent::PRIMITIVE_TYPE_LINES);
     component->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_POSITION_XYZ);
     component->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_COLOR_RGBA);
 
     float32* data = (float32*) component->vertexBuffer()->lock(0, 2);
 
-    *data++ = p1.x;
-    *data++ = p1.y;
+    *data++ = p1.x * scale;
+    *data++ = p1.y * scale;
     *data++ = 1.0f;
     *data++ = color.r;
     *data++ = color.g;
     *data++ = color.b;
     *data++ = 1.0f;
 
-    *data++ = p2.x;
-    *data++ = p2.y;
+    *data++ = p2.x * scale;
+    *data++ = p2.y * scale;
     *data++ = 1.0f;
     *data++ = color.r;
     *data++ = color.g;

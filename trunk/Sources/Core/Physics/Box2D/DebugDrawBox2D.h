@@ -12,7 +12,7 @@ class DebugDraw : public b2DebugDraw
 {
   public:
 
-    DebugDraw(Application* app);
+    DebugDraw(Application* app, PhysicsManagerPrivate* managerPrivate);
    ~DebugDraw();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -35,11 +35,15 @@ class DebugDraw : public b2DebugDraw
 
     /*! Reutns pointer to application. */
     inline Application* app() const { return m_app; }
+    /*! Returns pointer to Box2D physics manager. */
+    inline PhysicsManagerPrivate* manager() const { return m_managerPrivate; }
 
   private:
 
     /*! Pointer to application. */
     Application* m_app;
+    /*! Pointer to Box2D physics manager. */
+    PhysicsManagerPrivate* m_managerPrivate;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
