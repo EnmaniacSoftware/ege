@@ -14,9 +14,6 @@ class PhysicsJointAttract;
 
 class PhysicsJointAttractPrivate
 {
-  /* To access m_joint data. */
-  friend class PhysicsManagerPrivate;
-
   public:
 
     PhysicsJointAttractPrivate(PhysicsJointAttract* parent, PhysicsManagerPrivate* managerPrivate);
