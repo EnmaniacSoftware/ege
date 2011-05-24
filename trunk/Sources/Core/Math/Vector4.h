@@ -19,6 +19,7 @@ class TVector4
     TVector4(T x, T y, T z, T w);
     TVector4(const TVector4& vector);
     TVector4(const TVector3<T>& vector);
+    TVector4(const TVector2<T>& vector);
 
 		inline TVector4 operator*(T scalar) const;
 		inline TVector4 operator/(T scalar) const;
@@ -84,6 +85,11 @@ TVector4<T>::TVector4(const TVector4<T>& vector) : x(vector.x), y(vector.y), z(v
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 TVector4<T>::TVector4(const TVector3<T>& vector) : x(vector.x), y(vector.y), z(vector.z), w(1)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector4<T>::TVector4(const TVector2<T>& vector) : x(vector.x), y(vector.y), z(0), w(1)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

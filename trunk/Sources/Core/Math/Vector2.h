@@ -12,10 +12,11 @@ class TVector2
 {
 	public:
 
-    TVector2() : x(0), y(0){}
-    TVector2(T x, T y) : x(x), y(y){}
-		TVector2(const TVector2& cVector) : x(cVector.x), y(cVector.y){}
-   ~TVector2(){}
+    TVector2();
+    TVector2(T x, T y);
+		TVector2(const TVector2& vector);
+		TVector2(const TVector3<T>& vector);
+		TVector2(const TVector4<T>& vector);
 
 		//CVector2 operator=( const CVector2& cVector );
 		//CVector2 operator+( const CVector2& cVector ) const;
@@ -29,8 +30,11 @@ class TVector2
   //  bool operator==( const CVector2& cVector ) const;
   //  bool operator!=( const CVector2& cVector ) const;
 
+    T distanceTo(const TVector2& vector) const;
+    T squaredDistanceTo(const TVector2& vector) const;
+
   //  // create related methods
-    inline void set(T x, T y) { this->x = x; this->y = y; }
+    inline void set(T x, T y);
  
   //  // magnitude related methods
   //  float getMagnitude( void ) const;                                             // returns length of the vector
@@ -50,15 +54,68 @@ class TVector2
     T x;
 		T y;
 
-    // statics
-    //static const CVector2 ZERO;
-    //static const CVector2 UNIT_X;
-    //static const CVector2 UNIT_Y;
-    //static const CVector2 NEGATIVE_UNIT_X;
-    //static const CVector2 NEGATIVE_UNIT_Y;
-    //static const CVector2 ONE;
+    static const TVector2<T> ZERO;
+    static const TVector2<T> ONE;
+    static const TVector2<T> UNIT_X;
+    static const TVector2<T> UNIT_Y;
 };
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+const TVector2<T> TVector2<T>::ZERO   = TVector2<T>(0, 0);
+
+template <typename T>
+const TVector2<T> TVector2<T>::ONE    = TVector2<T>(1, 1);
+
+template <typename T>
+const TVector2<T> TVector2<T>::UNIT_X = TVector2<T>(1, 0);
+
+template <typename T>
+const TVector2<T> TVector2<T>::UNIT_Y = TVector2<T>(0, 1);
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector2<T>::TVector2() : x(0), y(0)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector2<T>::TVector2(T x, T y) : x(x), y(y)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector2<T>::TVector2(const TVector2<T>& vector) : x(vector.x), y(vector.y)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector2<T>::TVector2(const TVector3<T>& vector) : x(vector.x), y(vector.y)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector2<T>::TVector2(const TVector4<T>& vector) : x(vector.x), y(vector.y)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+void TVector2<T>::set(T x, T y) 
+{ 
+  this->x = x; 
+  this->y = y; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T TVector2<T>::distanceTo(const TVector2& vector) const
+{
+  return Math::Sqrt((x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T TVector2<T>::squaredDistanceTo(const TVector2& vector) const
+{
+  return (x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y);
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
