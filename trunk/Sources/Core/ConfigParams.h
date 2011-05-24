@@ -2,12 +2,13 @@
 #define EGE_CORE_CONFIG_PARAMS_H
 
 #include "EGEString.h"
+#include "EGEMap.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-typedef std::map<EGEString, EGEString> ConfigParams;
+typedef EGEMap<EGEString, EGEString> ConfigParams;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -31,6 +32,11 @@ typedef std::map<EGEString, EGEString> ConfigParams;
 //#define EGE_ENGINE_PARAM_RENDER_SYSTEM      "renderSystem"
 #define EGE_ENGINE_PARAM_UPDATES_PER_SECOND "updatesPerSecond"
 #define EGE_ENGINE_PARAM_LANDSCAPE_MODE     "landscape"
+
+// physics specifc
+
+/*! Real world to physics world scale factor. */
+#define EGE_PHYSICS_PARAM_SCALE_FACTOR "physics:scale-factor"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -2,6 +2,7 @@
 #define EGE_CORE_PHYSICSMANAGER_H
 
 #include "EGE.h"
+#include "Core/ConfigParams.h"
 #include "Core/Timer/Time.h"
 #include "Core/Math/Vector4.h"
 #include "Core/Physics/PhysicsJoint.h"
@@ -31,7 +32,7 @@ class PhysicsManager : public Object
 
   public:
 
-    PhysicsManager(Application* app);
+    PhysicsManager(Application* app, const ConfigParams& params);
     virtual ~PhysicsManager();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -70,9 +71,6 @@ class PhysicsManager : public Object
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(PhysicsManager)
-
-    /*! List of all joints. This list is merly for keeping reference count up. */
-    EGEList<PPhysicsJoint> m_joints;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

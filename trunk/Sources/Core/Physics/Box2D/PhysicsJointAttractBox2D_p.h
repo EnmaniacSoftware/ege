@@ -19,7 +19,7 @@ class PhysicsJointAttractPrivate
 
   public:
 
-    PhysicsJointAttractPrivate(PhysicsJointAttract* parent, b2World* world);
+    PhysicsJointAttractPrivate(PhysicsJointAttract* parent, PhysicsManagerPrivate* managerPrivate);
    ~PhysicsJointAttractPrivate();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -34,12 +34,17 @@ class PhysicsJointAttractPrivate
 
   private:
 
-    /*! Pointer to Box2D world object. */
-    b2World* m_world;
+    /*! Returns pointer to Box2D physics manager. */
+    inline PhysicsManagerPrivate* manager() const { return m_managerPrivate; }
+
+  private:
+
     /*! Box2D mouse joint object. */
     b2MouseJoint* m_joint;
     /*! Dummy ground Box2D body. */
     b2Body* m_groundBody;
+    /*! Pointer to Box2D physics manager. */
+    PhysicsManagerPrivate* m_managerPrivate;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

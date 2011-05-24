@@ -15,12 +15,14 @@ EGE_DEFINE_NEW_OPERATORS(PhysicsComponent)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsComponent)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsComponent::PhysicsComponent(Application* app, const EGEString& name) : IComponent(app, EGE_OBJECT_UID_PHYSICS_COMPONENT, name), 
-                                                                              m_position(TVector4f::ZERO), m_linearVelocity(TVector4f::ZERO), 
-                                                                              m_force(TVector4f::ZERO), m_orientation(TQuaternionf::IDENTITY), m_mass(1.0f)
+PhysicsComponent::PhysicsComponent(Application* app, const EGEString& name, EGEPhysics::EComponentType type) 
+: IComponent(app, EGE_OBJECT_UID_PHYSICS_COMPONENT, name), m_type(type), m_position(TVector4f::ZERO), m_linearVelocity(TVector4f::ZERO), 
+  m_force(TVector4f::ZERO), m_orientation(TQuaternionf::IDENTITY), m_mass(1.0f)
 {
+  m_manager = app->physicsManager();
+
   // create private thru manager
-  m_p = app->physicsManager()->registerComponent(this);
+  m_p = m_manager->registerComponent(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsComponent::~PhysicsComponent()
@@ -128,6 +130,18 @@ void PhysicsComponent::setMass(EGE::float32 mass)
   if (isValid())
   {
     p_func()->setMass(mass);
+  }
+
+  if (EGEPhysics::COMPONENT_STATIC == type())
+  {
+    mass = 0;
+  }
+  else if (EGEPhysics::COMPONENT_DYNAMIC == type())
+  {
+    if (0 == mass)
+    {
+      mass = 1;
+    }
   }
 
   m_mass = mass;

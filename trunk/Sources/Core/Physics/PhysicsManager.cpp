@@ -12,9 +12,9 @@ EGE_DEFINE_NEW_OPERATORS(PhysicsManager)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsManager)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsManager::PhysicsManager(Application* app) : Object(app)
+PhysicsManager::PhysicsManager(Application* app, const ConfigParams& params) : Object(app)
 {
-  m_p = ege_new PhysicsManagerPrivate(this);
+  m_p = ege_new PhysicsManagerPrivate(this, params);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsManager::~PhysicsManager()
@@ -85,11 +85,6 @@ PhysicsJointDistancePrivate* PhysicsManager::registerJoint(PhysicsJointDistance*
     object = p_func()->registerJoint(joint);
   }
 
-  if (object)
-  {
-    m_joints.push_back(joint);
-  }
-
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -123,13 +118,6 @@ PhysicsJointAttractPrivate* PhysicsManager::registerJoint(PhysicsJointAttract* j
   if (isValid())
   {
     object = p_func()->registerJoint(joint);
-  }
-
-  PPhysicsJoint a = joint;
-
-  if (object)
-  {
-    m_joints.push_back(joint);
   }
 
   return object;

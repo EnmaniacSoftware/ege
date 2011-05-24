@@ -6,11 +6,14 @@
 #include "Core/Math/Quaternion.h"
 #include "Core/Math/Vector4.h"
 #include "Core/Physics/PhysicsJoint.h"
+#include "EGEPhysics.h"
 #include "EGEList.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class PhysicsManager;
 
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 EGE_DECLARE_SMART_CLASS(PhysicsJoint, PPhysicsJoint)
@@ -27,7 +30,7 @@ class PhysicsComponent : public IComponent
 
   public:
 
-    PhysicsComponent(Application* app, const EGEString& name);
+    PhysicsComponent(Application* app, const EGEString& name, EGEPhysics::EComponentType type = EGEPhysics::COMPONENT_DYNAMIC);
     virtual ~PhysicsComponent();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -35,6 +38,8 @@ class PhysicsComponent : public IComponent
 
     /* IComponent override. Returns TRUE if component is valid. */
     virtual bool isValid() const override;
+    /*! Returns component type. */
+    inline EGEPhysics::EComponentType type() const { return m_type; }
     /* Sets position vector. */
     void setPosition(const TVector4f& position);
     /* Returns position vector. */
@@ -69,8 +74,15 @@ class PhysicsComponent : public IComponent
 
   private:
 
+    /*! Returns pointer to physics manager. */
+    inline PhysicsManager* manager() const { return m_manager; }
+
+  private:
+
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(PhysicsComponent)
 
+    /*! Type. */
+    EGEPhysics::EComponentType m_type;
     /*! Position vector. */
     TVector4f m_position;
     /*! Linear velocity vector. */
@@ -83,6 +95,8 @@ class PhysicsComponent : public IComponent
     float32 m_mass;
     /*! List of joints attached. */
     EGEList<PhysicsJoint*> m_joints;
+    /*! Pointer to physics manager. */
+    PhysicsManager* m_manager;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

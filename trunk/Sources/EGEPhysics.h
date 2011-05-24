@@ -9,16 +9,10 @@ EGE_NAMESPACE_BEGIN
 
 namespace EGEPhysics
 {
-    enum JointType
+    enum EComponentType
     {
-      JOINT_UNKNOWN = -1,
-      JOINT_DISTANCE,
-    };
-
-    enum ComponentType
-    {
-      COMPONENT_UNKNOWN = -1,
-      COMPONENT_DYNAMIC
+      COMPONENT_DYNAMIC,        // positive mass, non-zero velocity determined by forces, moved by solver
+      COMPONENT_STATIC          // zero mass, zero velocity, may be manually moved
     };
 }
 

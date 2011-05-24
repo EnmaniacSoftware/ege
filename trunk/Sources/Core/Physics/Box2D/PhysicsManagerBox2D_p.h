@@ -26,7 +26,7 @@ class PhysicsManagerPrivate : public b2DestructionListener
 {
   public:
 
-    PhysicsManagerPrivate(PhysicsManager* base);
+    PhysicsManagerPrivate(PhysicsManager* base, const ConfigParams& params);
    ~PhysicsManagerPrivate();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -60,11 +60,15 @@ class PhysicsManagerPrivate : public b2DestructionListener
     PhysicsJointAttractPrivate* registerJoint(PhysicsJointAttract* joint);
     /* Sets gravity. */
     void setGravity(const TVector4f& gravity);
+    /*! Returns Box2D world. */
+    inline b2World* world() const { return m_world; }
+    /*! Returns world to simulation world scale coefficient. */
+    inline float32 worldToSimulationScaleFactor() const { return m_scale; }
+    /*! Returns simulation world to world scale coefficient. */
+    inline float32 simulationToWorldScaleFactor() const { return m_invScale; }
 
   private:
 
-    /*! Returns Box2D world. */
-    inline b2World* world() const { return m_world; }
     /* b2DestructionListener override. Box2D fixture is about to be destroyed. */
   	void SayGoodbye(b2Fixture* fixture) override;
     /* b2DestructionListener override. Box2D joint is about to be destroyed. */
@@ -76,6 +80,10 @@ class PhysicsManagerPrivate : public b2DestructionListener
     b2World* m_world;
     /*! Debug draw for Box2D entities. */
     DebugDraw* m_debugDraw;
+    /*! Extrnal world to simulation world scale coeficient. */
+    float32 m_scale;
+    /*! Simulation world to extrnal world scale coeficient. Inverse of scale factor. */
+    float32 m_invScale;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

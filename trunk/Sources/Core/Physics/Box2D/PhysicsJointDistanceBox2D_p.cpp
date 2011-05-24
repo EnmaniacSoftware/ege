@@ -12,29 +12,21 @@ EGE_DEFINE_NEW_OPERATORS(PhysicsJointDistancePrivate)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsJointDistancePrivate)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsJointDistancePrivate::PhysicsJointDistancePrivate(PhysicsJointDistance* parent, b2World* world) : m_d(parent), m_joint(NULL), m_world(world)
+PhysicsJointDistancePrivate::PhysicsJointDistancePrivate(PhysicsJointDistance* parent, PhysicsManagerPrivate* managerPrivate) : m_d(parent), m_joint(NULL), 
+                                                                                                                                m_managerPrivate(managerPrivate)
 {
-  // define joint
-	b2DistanceJointDef def;
-
-	def.frequencyHz      = 4;
-	def.dampingRatio     = 1;
-	def.collideConnected = true;
-
   b2Body* bodyA = d_func()->bodyA()->p_func()->body();
   b2Body* bodyB = d_func()->bodyB()->p_func()->body();
 
+  // define joint
+	b2DistanceJointDef def;
+	def.frequencyHz      = 4;
+	def.dampingRatio     = 1;
+	def.collideConnected = true;
 	def.Initialize(bodyA, bodyB, bodyA->GetPosition(), bodyB->GetPosition());
-  //def.bodyB = m_droplet[m_nodeDroplets[nodeId][i]], m_droplet[m_nodeDroplets[nodeId][(i + 1) % 6]], m_droplet[m_nodeDroplets[nodeId][i]]->GetPosition(), m_droplet[m_nodeDroplets[nodeId][(i + 1) % 6]]->GetPosition());
-  //def.bodyA = d_func()->bodyA()->p_func()->body();
-  //def.bodyB = d_func()->bodyB()->p_func()->body();
-  //def.localAnchorA = def.bodyA->GetLocalPoint(def.bodyA->GetPosition());
-  //def.localAnchorB = def.bodyB->GetLocalPoint(def.bodyB->GetPosition());
-
-  //def.length = 400;//d_func()->length();
 
   // create joint implementation
-  m_joint = (b2DistanceJoint*) m_world->CreateJoint(&def);
+  m_joint = (b2DistanceJoint*) manager()->world()->CreateJoint(&def);
 
   m_joint->SetUserData(this);
 }
@@ -43,7 +35,7 @@ PhysicsJointDistancePrivate::~PhysicsJointDistancePrivate()
 {
   if (m_joint)
   {
-    m_world->DestroyJoint(m_joint);
+    manager()->world()->DestroyJoint(m_joint);
     m_joint = NULL;
   }
 }
@@ -53,14 +45,23 @@ void PhysicsJointDistancePrivate::setLength(EGE::float32 length)
 {
   if (m_joint)
   {
-    m_joint->SetLength(length);
+    EGE::float32 scale = manager()->worldToSimulationScaleFactor();
+
+    m_joint->SetLength(length * scale);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns natural length. */
 EGE::float32 PhysicsJointDistancePrivate::length() const
 {
-  return (NULL != m_joint) ? m_joint->GetLength() : 0;
+  if (m_joint)
+  {
+    EGE::float32 scale = manager()->simulationToWorldScaleFactor();
+
+    return m_joint->GetLength() * scale;
+  }
+
+  return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */

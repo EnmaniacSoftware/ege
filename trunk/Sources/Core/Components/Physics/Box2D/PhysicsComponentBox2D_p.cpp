@@ -1,5 +1,7 @@
+#include "Core/Application/Application.h"
 #include "EGEPhysics.h"
 #include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"
+#include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"
 
 EGE_NAMESPACE
 
@@ -9,26 +11,38 @@ EGE_DEFINE_NEW_OPERATORS(PhysicsComponentPrivate)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsComponentPrivate)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsComponentPrivate::PhysicsComponentPrivate(PhysicsComponent* parent, b2World* world) : m_body(NULL), m_world(world)
+/*! Maps EGE component type to Box2D. */
+enum b2BodyType mapType(EGEPhysics::EComponentType type)
+{
+  switch (type)
+  {
+    case EGEPhysics::COMPONENT_STATIC: return b2_staticBody;
+  }
+
+  return b2_dynamicBody;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PhysicsComponentPrivate::PhysicsComponentPrivate(PhysicsComponent* parent, PhysicsManagerPrivate* managerPrivate) : m_d(parent), m_body(NULL), 
+                                                                                                                    m_managerPrivate(managerPrivate)
 {
   b2BodyDef def;
 	def.position.x  = 0;
 	def.position.y  = 0;
-  def.type        = b2_dynamicBody;
+  def.type        = mapType(parent->type());
   
-	m_body = m_world->CreateBody(&def);
+	m_body = manager()->world()->CreateBody(&def);
   if (m_body)
   {
 	  b2CircleShape shape;
 	  shape.m_radius = 1;
   
-    m_body->CreateFixture(&shape, 1);
+    m_body->CreateFixture(&shape, 0);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsComponentPrivate::~PhysicsComponentPrivate()
 {
-  m_world->DestroyBody(body());
+  manager()->world()->DestroyBody(body());
   m_body = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -37,7 +51,9 @@ void PhysicsComponentPrivate::setPosition(const TVector4f& position)
 {
   if (isValid())
   {
-    body()->SetTransform(b2Vec2(position.x, position.y), body()->GetAngle());
+    EGE::float32 scale = manager()->worldToSimulationScaleFactor();
+
+    body()->SetTransform(b2Vec2(position.x * scale, position.y * scale), body()->GetAngle());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -48,10 +64,12 @@ TVector4f PhysicsComponentPrivate::position() const
 
   if (isValid())
   {
+    EGE::float32 scale = manager()->simulationToWorldScaleFactor();
+
     const b2Vec2& pos = body()->GetPosition();
 
-    vec.x = pos.x;
-    vec.y = pos.y;
+    vec.x = pos.x * scale;
+    vec.y = pos.y * scale;
     vec.z = 0;
     vec.w = 1;
   }
@@ -89,7 +107,9 @@ void PhysicsComponentPrivate::applyForce(const TVector4f& force, const TVector4f
 {
   if (isValid())
   {
-    body()->ApplyForce(b2Vec2(force.x, force.y), b2Vec2(worldPos.x, worldPos.y));
+    EGE::float32 scale = manager()->worldToSimulationScaleFactor();
+
+    body()->ApplyForce(b2Vec2(force.x * scale, force.y * scale), b2Vec2(worldPos.x * scale, worldPos.y * scale));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -103,7 +123,9 @@ void PhysicsComponentPrivate::applyLinearImpulse(const TVector4f& impulse, const
 {
   if (isValid())
   {
-    body()->ApplyLinearImpulse(b2Vec2(impulse.x, impulse.y), b2Vec2(worldPos.x, worldPos.y));
+    EGE::float32 scale = manager()->worldToSimulationScaleFactor();
+
+    body()->ApplyLinearImpulse(b2Vec2(impulse.x * scale, impulse.y * scale), b2Vec2(worldPos.x * scale, worldPos.y * scale));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -151,7 +173,9 @@ void PhysicsComponentPrivate::setLinearVelocity(const TVector4f& velocity)
 {
   if (isValid())
   {
-    body()->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
+    EGE::float32 scale = manager()->worldToSimulationScaleFactor();
+
+    body()->SetLinearVelocity(b2Vec2(velocity.x * scale, velocity.y * scale));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -162,10 +186,12 @@ TVector4f PhysicsComponentPrivate::linearVelocity() const
 
   if (isValid())
   {
+    EGE::float32 scale = manager()->simulationToWorldScaleFactor();
+
     b2Vec2 velocity = body()->GetLinearVelocity();
 
-    vec.x = velocity.x;
-    vec.y = velocity.y;
+    vec.x = velocity.x * scale;
+    vec.y = velocity.y * scale;
     vec.z = 0;
     vec.w = 1;
   }

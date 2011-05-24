@@ -13,20 +13,29 @@ EGE_DEFINE_NEW_OPERATORS(PhysicsManagerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsManagerPrivate)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsManagerPrivate::PhysicsManagerPrivate(PhysicsManager* base) : m_d(base)
+PhysicsManagerPrivate::PhysicsManagerPrivate(PhysicsManager* base, const ConfigParams& params) : m_d(base), m_scale(1.0f), m_invScale(1.0f)
 {
-  m_world = new b2World(b2Vec2(0, 0), true);
-  if (m_world)
-  {
-    m_debugDraw = ege_new DebugDraw(base->app());
-  
-    if (m_debugDraw)
-    {
-  	  uint32 flags = b2DebugDraw::e_jointBit;
-  	  m_debugDraw->SetFlags(flags);
-    }
+  bool error = false;
 
-    m_world->SetDebugDraw(m_debugDraw);
+  // decompose param list
+  m_scale = params.value(EGE_PHYSICS_PARAM_SCALE_FACTOR, "1").toFloat(&error);
+  if (!error)
+  {
+    m_invScale = 1.0f / m_scale;
+
+    m_world = new b2World(b2Vec2(0, 0), true);
+    if (m_world)
+    {
+      m_debugDraw = ege_new DebugDraw(base->app());
+  
+      if (m_debugDraw)
+      {
+  	    uint32 flags = b2DebugDraw::e_jointBit;
+  	    m_debugDraw->SetFlags(flags);
+      }
+
+      m_world->SetDebugDraw(m_debugDraw);
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -59,7 +68,7 @@ bool PhysicsManagerPrivate::isValid() const
 */
 PhysicsComponentPrivate* PhysicsManagerPrivate::registerComponent(PhysicsComponent* component)
 {
-  PhysicsComponentPrivate* object = ege_new PhysicsComponentPrivate(component, world());
+  PhysicsComponentPrivate* object = ege_new PhysicsComponentPrivate(component, this);
   if (!object->isValid())
   {
     EGE_DELETE(object);
@@ -75,7 +84,7 @@ PhysicsComponentPrivate* PhysicsManagerPrivate::registerComponent(PhysicsCompone
 */
 PhysicsJointDistancePrivate* PhysicsManagerPrivate::registerJoint(PhysicsJointDistance* joint)
 {
-  PhysicsJointDistancePrivate* object = ege_new PhysicsJointDistancePrivate(joint, world());
+  PhysicsJointDistancePrivate* object = ege_new PhysicsJointDistancePrivate(joint, this);
   if (!object->isValid())
   {
     EGE_DELETE(object);
@@ -93,13 +102,15 @@ void PhysicsManagerPrivate::SayGoodbye(b2Fixture* fixture)
 /*! b2DestructionListener override. Box2D joint is about to be destroyed. */
 void PhysicsManagerPrivate::SayGoodbye(b2Joint* joint)
 {
-  PhysicsJointDistancePrivate* object = (PhysicsJointDistancePrivate*) joint->GetUserData();
+  EGE_UNUSED(joint);
 
-  // clean it here cause it is going to be deallocated
-  object->m_joint = NULL;
+  //PhysicsJointDistancePrivate* object = (PhysicsJointDistancePrivate*) joint->GetUserData();
 
-  // remove from pool
-  d_func()->m_joints.remove(object->d_func());
+  //// clean it here cause it is going to be deallocated
+  //object->m_joint = NULL;
+
+  //// remove from pool
+  //d_func()->m_joints.remove(object->d_func());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets gravity. */
@@ -107,7 +118,7 @@ void PhysicsManagerPrivate::setGravity(const TVector4f& gravity)
 {
   if (isValid())
   {
-    world()->SetGravity(b2Vec2(gravity.x, gravity.y));
+    world()->SetGravity(b2Vec2(gravity.x * worldToSimulationScaleFactor(), gravity.y * worldToSimulationScaleFactor()));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -127,7 +138,7 @@ void PhysicsManagerPrivate::render()
 */
 PhysicsJointAttractPrivate* PhysicsManagerPrivate::registerJoint(PhysicsJointAttract* joint)
 {
-  PhysicsJointAttractPrivate* object = ege_new PhysicsJointAttractPrivate(joint, world());
+  PhysicsJointAttractPrivate* object = ege_new PhysicsJointAttractPrivate(joint, this);
   if (!object->isValid())
   {
     EGE_DELETE(object);

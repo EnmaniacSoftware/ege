@@ -2,7 +2,7 @@
 #define EGE_CORE_PHYSICSCOMPONENTBOX2D_H
 
 #include "EGE.h"
-#include "Box2D/Box2d.h"
+#include "Box2D/Box2D.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -16,11 +16,13 @@ class PhysicsComponentPrivate
 {
   public:
 
-    PhysicsComponentPrivate(PhysicsComponent* parent, b2World* world);
+    PhysicsComponentPrivate(PhysicsComponent* parent, PhysicsManagerPrivate* managerPrivate);
    ~PhysicsComponentPrivate();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+    EGE_DECLARE_PUBLIC_IMPLEMENTATION(PhysicsComponent)
 
     /* Returns TRUE if component is valid. */
     bool isValid() const;
@@ -60,10 +62,15 @@ class PhysicsComponentPrivate
 
   private:
 
+    /*! Returns pointer to Box2D physics manager. */
+    inline PhysicsManagerPrivate* manager() const { return m_managerPrivate; }
+
+  private:
+
     /*! Pointer to Box2D body object representation. */
     b2Body* m_body;
-    /*! Pointer to Box2D world object. */
-    b2World* m_world;
+    /*! Pointer to Box2D physics manager. */
+    PhysicsManagerPrivate* m_managerPrivate;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

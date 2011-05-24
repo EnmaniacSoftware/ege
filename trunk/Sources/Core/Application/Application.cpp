@@ -80,7 +80,7 @@ EGEResult Application::initialize(const ConfigParams& params)
   }
 
   // create physics manager
-  m_physicsManager = ege_new PhysicsManager(this);
+  m_physicsManager = ege_new PhysicsManager(this, params);
   if (NULL == m_physicsManager || !m_physicsManager->isValid())
   {
     // error!
