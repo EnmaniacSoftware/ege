@@ -31,13 +31,14 @@ PhysicsComponentPrivate::PhysicsComponentPrivate(PhysicsComponent* parent, Physi
   def.type        = mapType(parent->type());
   
 	m_body = manager()->world()->CreateBody(&def);
-  if (m_body)
-  {
-	  b2CircleShape shape;
-	  shape.m_radius = 1;
-  
-    m_body->CreateFixture(&shape, 0);
-  }
+
+  //if (m_body)
+  //{
+	 // b2CircleShape shape;
+	 // shape.m_radius = 0;
+  //
+  //  m_body->CreateFixture(&shape, 0);
+  //}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsComponentPrivate::~PhysicsComponentPrivate()
