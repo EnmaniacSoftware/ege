@@ -26,7 +26,7 @@ PhysicsManagerPrivate::PhysicsManagerPrivate(PhysicsManager* base, const ConfigP
     m_world = new b2World(b2Vec2(0, 0), true);
     if (m_world)
     {
-      m_debugDraw = ege_new DebugDraw(base->app());
+      m_debugDraw = ege_new DebugDraw(base->app(), this);
   
       if (m_debugDraw)
       {
