@@ -64,15 +64,15 @@ void PointerPrivate::MultiTouchButtonCB(s3ePointerTouchEvent* event, void* data)
   // map action
   EGEInput::EAction action = (0 != event->m_Pressed) ? EGEInput::ACTION_BUTTON_DOWN : EGEInput::ACTION_BUTTON_UP;
 
-  PTextOverlay overlay = me->m_base->app()->overlayManager()->overlay("pointer");
-  if (NULL == overlay)
-  {
-    overlay = me->m_base->app()->overlayManager()->addTextOverlay("pointer");
-    PResourceFont fontResource = me->m_base->app()->resourceManager()->resource("font", "ingame");
-    overlay->setFont(fontResource->font());
-    overlay->physics()->setPosition(TVector4f(0, 0, 0, 0));
-  }
-  overlay->setText(EGEText::Format("X: %d Y: %d T: %d", event->m_x, event->m_y, event->m_TouchID));
+  //PTextOverlay overlay = me->m_base->app()->overlayManager()->overlay("pointer");
+  //if (NULL == overlay)
+  //{
+  //  overlay = me->m_base->app()->overlayManager()->addTextOverlay("pointer");
+  //  PResourceFont fontResource = me->m_base->app()->resourceManager()->resource("font", "ingame");
+  //  overlay->setFont(fontResource->font());
+  //  overlay->physics()->setPosition(TVector4f(0, 0, 0, 0));
+  //}
+  //overlay->setText(EGEText::Format("X: %d Y: %d T: %d", event->m_x, event->m_y, event->m_TouchID));
 
   s32 x = event->m_x;
   s32 y = event->m_y;
@@ -85,6 +85,13 @@ void PointerPrivate::MultiTouchButtonCB(s3ePointerTouchEvent* event, void* data)
 void PointerPrivate::MultiTouchMotionCB(s3ePointerTouchMotionEvent* event, void* data)
 {
   PointerPrivate* me = (PointerPrivate*) data;
+
+  s32 x = event->m_x;
+  s32 y = event->m_y;
+
+  // send event
+  me->base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, 
+                                          ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, event->m_TouchID));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Singletouch callback for button state changes. */
@@ -107,15 +114,15 @@ void PointerPrivate::SingleTouchButtonCB(s3ePointerEvent* event, void* data)
       break;
   }
 
-  PTextOverlay overlay = me->m_base->app()->overlayManager()->overlay("pointer");
-  if (NULL == overlay)
-  {
-    overlay = me->m_base->app()->overlayManager()->addTextOverlay("pointer");
-    PResourceFont fontResource = me->m_base->app()->resourceManager()->resource("font", "ingame");
-    overlay->setFont(fontResource->font());
-    overlay->physics()->setPosition(TVector4f(0, 0, 0, 0));
-  }
-  overlay->setText(EGEText::Format("X: %d Y: %d", event->m_x, event->m_y));
+  //PTextOverlay overlay = me->m_base->app()->overlayManager()->overlay("pointer");
+  //if (NULL == overlay)
+  //{
+  //  overlay = me->m_base->app()->overlayManager()->addTextOverlay("pointer");
+  //  PResourceFont fontResource = me->m_base->app()->resourceManager()->resource("font", "ingame");
+  //  overlay->setFont(fontResource->font());
+  //  overlay->physics()->setPosition(TVector4f(0, 0, 0, 0));
+  //}
+  //overlay->setText(EGEText::Format("X: %d Y: %d", event->m_x, event->m_y));
 
   // map action
   EGEInput::EAction action = (0 != event->m_Pressed) ? EGEInput::ACTION_BUTTON_DOWN : EGEInput::ACTION_BUTTON_UP;
@@ -131,5 +138,12 @@ void PointerPrivate::SingleTouchButtonCB(s3ePointerEvent* event, void* data)
 void PointerPrivate::SingleTouchMotionCB(s3ePointerMotionEvent* event, void* data)
 {
   PointerPrivate* me = (PointerPrivate*) data;
+
+  s32 x = event->m_x;
+  s32 y = event->m_y;
+
+  // send event
+  me->base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, 
+                                          ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, 0));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
