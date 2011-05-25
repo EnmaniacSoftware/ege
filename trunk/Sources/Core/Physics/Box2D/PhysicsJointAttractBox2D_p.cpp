@@ -24,12 +24,12 @@ PhysicsJointAttractPrivate::PhysicsJointAttractPrivate(PhysicsJointAttract* pare
   {
     // define joint
     b2MouseJointDef def;
-
-    def.maxForce = 1000.0f;
+    def.maxForce = 1000.0f * body->GetMass();
     def.bodyA = m_groundBody;
     def.bodyB = body;
-    def.frequencyHz = 24;
-    def.dampingRatio = 1.0f;
+    def.dampingRatio = 0.95f;
+//    def.frequencyHz = 4;
+    //def.dampingRatio = 1.0f;
     def.target = body->GetPosition();
 
     // create joint implementation

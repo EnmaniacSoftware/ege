@@ -50,7 +50,7 @@ void PhysicsManagerPrivate::update(const Time& time)
 {
   if (isValid())
   {
-    m_world->Step(1.0f / 60.0f, 8, 3);
+    m_world->Step(time.seconds(), 8, 3);
     m_world->ClearForces();
   }
 }
