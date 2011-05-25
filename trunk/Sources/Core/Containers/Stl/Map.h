@@ -23,15 +23,15 @@ class EGEMap : public std::map<T, U>
 template <typename T, typename U>
 bool EGEMap<T, U>::contains(const T& key) const
 {
-  return find(key) != end();
+  return this->find(key) != this->end();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns value associated with given key. If key is not found, default value is returned. */
 template <typename T, typename U>
 const U EGEMap<T, U>::value(const T& key, const U& defaultValue) const
 {
-  EGEMap<T, U>::const_iterator it = find(key);
-  return (it != end()) ? it->second : defaultValue;
+  typename EGEMap<T, U>::const_iterator it = this->find(key);
+  return (it != this->end()) ? it->second : defaultValue;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
