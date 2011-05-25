@@ -34,9 +34,12 @@ class AppController : public Object, public IEventListener
     void update();
     /* Renders application. */
     void render();
+    /*! Returns FPS indication. */
+    inline s32 fps() const { return m_fps; }
 
   private:
 
+    /*! Controller states. */
     enum State
     {
       STATE_RUNNING,
@@ -61,6 +64,12 @@ class AppController : public Object, public IEventListener
     Time m_updateInterval;
     /*! Current state. */
     State m_state;
+    /*! Current FPS indication. */
+    s32 m_fps;
+    /*! Number of frames rendering within current count interval. */
+    s32 m_rendersCount;
+    /*! Time at which last FPS count started. */
+    Time m_fpsCountStartTime;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

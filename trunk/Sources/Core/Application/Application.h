@@ -56,6 +56,8 @@ class Application : public IEventListener
     POverlayManager overlayManager() const;
     /*! Returns TRUE if landscape mode is enabled. */
     inline bool isLandscape() const { return m_landscapeMode; }
+    /* Returns current FPS indication. */
+    s32 fps() const;
 
   protected:
 

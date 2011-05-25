@@ -24,7 +24,7 @@ EGE_DEFINE_NEW_OPERATORS(AppController)
 EGE_DEFINE_DELETE_OPERATORS(AppController)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AppController::AppController(Application* app, const ConfigParams& params) : Object(app), m_state(STATE_RUNNING)
+AppController::AppController(Application* app, const ConfigParams& params) : Object(app), m_state(STATE_RUNNING), m_fps(0), m_rendersCount(0)
 {
   // decompose param list
   ConfigParams::const_iterator iterUPS = params.find(EGE_ENGINE_PARAM_UPDATES_PER_SECOND);
@@ -45,6 +45,12 @@ AppController::~AppController()
 /*! Enters main loop. */
 EGEResult AppController::run()
 {
+  // get current time
+  PTimer timer = app()->timer();
+
+  // initialize update timer (to smooth out first update)
+  m_lastUpdateTime.fromMicroseconds(timer->microseconds());
+
   return p_func()->run();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -67,12 +73,6 @@ void AppController::update()
   // get current time
   PTimer timer = app()->timer();
   Time time(timer->microseconds());
-
-  if (0 == m_lastUpdateTime.microseconds())
-  {
-    m_lastUpdateTime.fromMicroseconds(timer->microseconds());
-    return;
-  }
 
   // check if update is to be made
   if (time - m_lastUpdateTime > m_updateInterval)
@@ -100,6 +100,29 @@ void AppController::update()
 /*! Renders application. */
 void AppController::render()
 {
+  // get current time
+  PTimer timer = app()->timer();
+  Time time(timer->microseconds());
+
+  // check if 1 second hasnt passed yet
+  if (time - m_fpsCountStartTime < Time(1.0f))
+  {
+    // new render
+    ++m_rendersCount;
+  }
+  else
+  {
+    // store FPS indication
+    m_fps = m_rendersCount;
+
+    // reset renders count
+    m_rendersCount = 0;
+
+    // reset time stamp
+    m_fpsCountStartTime = time;
+  }
+
+  // do render
   app()->graphics()->render();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
