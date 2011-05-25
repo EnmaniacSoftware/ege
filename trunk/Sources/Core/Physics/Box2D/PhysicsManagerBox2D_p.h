@@ -59,7 +59,7 @@ class PhysicsManagerPrivate : public b2DestructionListener
     */
     PhysicsJointAttractPrivate* registerJoint(PhysicsJointAttract* joint);
     /* Sets gravity. */
-    void setGravity(const TVector4f& gravity);
+    void setGravity(const Vector4f& gravity);
     /*! Returns Box2D world. */
     inline b2World* world() const { return m_world; }
     /*! Returns world to simulation world scale coefficient. */

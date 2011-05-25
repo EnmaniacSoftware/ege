@@ -55,7 +55,7 @@ class SceneNode : public Object //ListenerContainer<ISceneNodeListener>
     /*! Returns local physics component. */
     inline PPhysicsComponent physics() { return m_physics; }
     /*! Returns cached combined world matrix. */
-    inline const TMatrix4f& worldMatrix() const { return m_worldMatrix; }
+    inline const Matrix4f& worldMatrix() const { return m_worldMatrix; }
     
     /* Creates and attaches new object to node. */
     PSceneNodeObject attachNewObject(const EGEString& name);
@@ -118,7 +118,7 @@ class SceneNode : public Object //ListenerContainer<ISceneNodeListener>
     /*! Physics component. */
     PPhysicsComponent m_physics;
     /*! Cached combined world matrix from all self and all parent nodes. */
-    TMatrix4f m_worldMatrix;
+    Matrix4f m_worldMatrix;
 
     //bool m_bChildrenNeedUpdate;                     // TRUE if child nodes needs to be updated
     //bool m_bVisible;                                // TRUE if node is visible

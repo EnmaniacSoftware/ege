@@ -33,7 +33,7 @@ bool PhysicsJointAttract::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets target position to attract to. */
-void PhysicsJointAttract::setTarget(const TVector4f& position)
+void PhysicsJointAttract::setTarget(const Vector4f& position)
 {
   if (isValid())
   {

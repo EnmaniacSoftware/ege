@@ -18,7 +18,7 @@ Viewport::Viewport(Application* app, const EGEString& name, PCamera camera) : Ob
   m_camera = camera;
 
   // by default set viewport to full area of render target it is associated with
-  setRect(TRectf(0, 0, 1, 1));
+  setRect(Rectf(0, 0, 1, 1));
 
   setClearColor(Color::BLUE);
 }
@@ -29,7 +29,7 @@ Viewport::~Viewport()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets viewport rectangle within render target. */
-void Viewport::setRect(TRectf rect)
+void Viewport::setRect(Rectf rect)
 {
   m_rect = rect;
 }

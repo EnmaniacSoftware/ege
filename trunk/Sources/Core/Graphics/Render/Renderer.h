@@ -42,13 +42,13 @@ class Renderer : public Object
     /*! Returns orientation rotation. */
     const Angle& orientationRotation() const { return m_orientationRotation; }
 
-    bool addForRendering(const TMatrix4f& worldMatrix, PRenderComponent& component);
+    bool addForRendering(const Matrix4f& worldMatrix, PRenderComponent& component);
 
     //PRenderComponent addComponent(const EGEString& name = "");
 
 //    void setViewport(PViewport pViewport);
-    void setProjectionMatrix(const TMatrix4f& matrix);
-    void setViewMatrix(const TMatrix4f& matrix);
+    void setProjectionMatrix(const Matrix4f& matrix);
+    void setViewMatrix(const Matrix4f& matrix);
 
     void       resetStats();
     inline u32 batchCount() const { return m_batchCount; }
@@ -75,7 +75,7 @@ class Renderer : public Object
     {
       PRenderComponent renderComponent;
       
-      TMatrix4f worldMatrix;
+      Matrix4f worldMatrix;
     };
 
     /*! Orientation rotation angle. */
@@ -87,8 +87,8 @@ class Renderer : public Object
 
     std::multimap<s32, SRENDERDATA> m_renderData;       // render data map <priority, renderdata>
 
-    TMatrix4f m_projectionMatrix;                    // projection matrix
-    TMatrix4f m_viewMatrix;                          // view matrix (camera matrix)
+    Matrix4f m_projectionMatrix;                    // projection matrix
+    Matrix4f m_viewMatrix;                          // view matrix (camera matrix)
 
    // std::vector<PRenderComponent> m_components;     // components pool
 
@@ -100,9 +100,9 @@ class Renderer : public Object
 
     u32 m_uiBindedTextureIDs[ MAX_TEXTURE_UNITS ];  // currently binded textures ids
 
-    TMatrix4f m_cProjectionMatrix;                   // cached projection matrix
-    TMatrix4f m_cViewMatrix;                         // cached view matrix
-    TMatrix4f m_cModelMatrix;                        // cached model matrix
+    Matrix4f m_cProjectionMatrix;                   // cached projection matrix
+    Matrix4f m_cViewMatrix;                         // cached view matrix
+    Matrix4f m_cModelMatrix;                        // cached model matrix
 
     IRTTManager* m_pcRTTManager;                    // render to texture manager
 

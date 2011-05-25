@@ -35,10 +35,10 @@ void PhysicsManager::update(const Time& time)
   //  PPhysicsComponent& pComponent = *iter;
 
   //  // calculate acceleration vector
-  //  TVector4f cAcceleration = pComponent->force() / pComponent->mass();
+  //  Vector4f cAcceleration = pComponent->force() / pComponent->mass();
 
   //  // reset forces acting on component
-  //  pComponent->setForce(TVector4f::ZERO);
+  //  pComponent->setForce(Vector4f::ZERO);
 
   //  // update velocity
   //  pComponent->setVelocity(pComponent->velocity() + cAcceleration * fTimeInSeconds);
@@ -89,7 +89,7 @@ PhysicsJointDistancePrivate* PhysicsManager::registerJoint(PhysicsJointDistance*
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets gravity. */
-void PhysicsManager::setGravity(const TVector4f& gravity)
+void PhysicsManager::setGravity(const Vector4f& gravity)
 {
   if (isValid())
   {

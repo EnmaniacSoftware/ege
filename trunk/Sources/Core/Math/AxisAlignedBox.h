@@ -14,7 +14,7 @@ class AxisAlignedBox
 
     AxisAlignedBox();
 	  AxisAlignedBox(const AxisAlignedBox& cBox);
-	  AxisAlignedBox(const TVector4f& cMin, const TVector4f& cMax);
+	  AxisAlignedBox(const Vector4f& cMin, const Vector4f& cMax);
 	 ~AxisAlignedBox();
 
     enum Extent
@@ -37,7 +37,7 @@ class AxisAlignedBox
    // inline void setInfinite( void ){ m_eExtent = EXTENT_INFINITE; }                             // makes it infinite 
 	  //inline bool isInfinite( void ) const { return m_eExtent == EXTENT_INFINITE; }               // checkis if infinite AAB
 
-	  void setExtents(const TVector4f& cMin, const TVector4f& cMax);
+	  void setExtents(const Vector4f& cMin, const Vector4f& cMax);
 
 	  //inline const CVector3* getMinimum( void ) const { return &m_cMinimum; } 	                  // gets minimal extents only
 	  //inline void            setMinimum( const CVector3* pcVec )                                  // sets minimal extents only
@@ -147,9 +147,9 @@ class AxisAlignedBox
   private:
 
     /*! Box minimum dimensions. */
-	  TVector4f m_minimum;
+	  Vector4f m_minimum;
     /*! Box max dimensions. */
-	  TVector4f m_maximum;
+	  Vector4f m_maximum;
     /*! Box extent. */
     Extent m_extent;
 };

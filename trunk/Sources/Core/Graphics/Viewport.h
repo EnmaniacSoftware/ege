@@ -42,9 +42,9 @@ class Viewport : public Object
     /*! Returns name. */
     inline const EGEString& name() const { return m_name; }
     /* Sets viewport rectangle within render target. */
-    void setRect(TRectf rect);
+    void setRect(Rectf rect);
     /*! Returns viewport rect within render target. */
-    inline const TRectf& rect() const { return m_rect; }
+    inline const Rectf& rect() const { return m_rect; }
     /*! Returns camera associated with viewport. */
     PCamera camera() const { return m_camera; }
     /* Sets viewport clear color. Can be NULL color if viewport should not be cleared. */
@@ -83,7 +83,7 @@ class Viewport : public Object
     /*! Clear color (can be NONE if no viewport buffer should be cleared). */
     Color m_clearColor;
     /*! Rectangular area within render target viewport occupies (in relative units). */
-    TRectf m_rect;
+    Rectf m_rect;
     /*! Camera associated with view. */
     PCamera m_camera;
     /*! Polygon mode of rendered data in this viewport. */

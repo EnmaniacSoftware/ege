@@ -41,32 +41,32 @@ class PhysicsComponent : public IComponent
     /*! Returns component type. */
     inline EGEPhysics::EComponentType type() const { return m_type; }
     /* Sets position vector. */
-    void setPosition(const TVector4f& position);
+    void setPosition(const Vector4f& position);
     /* Returns position vector. */
-    TVector4f position() const;
+    Vector4f position() const;
     /* Sets linear velocity vector. */
-    void setLinearVelocity(const TVector4f& velocity);
+    void setLinearVelocity(const Vector4f& velocity);
     /* Returns velocity vector. */
-    TVector4f linearVelocity() const;
+    Vector4f linearVelocity() const;
     /* Applies a force vector.
     * 
     *  @param  force    force vector to apply.
     *  @param  worldPos world position where force is to be applied. 
     */
-    void applyForce(const TVector4f& force, const TVector4f& worldPos);
+    void applyForce(const Vector4f& force, const Vector4f& worldPos);
     /* Applies an impulse at the giveb point.
     * 
     *  @param  force    impulse vector to apply.
     *  @param  worldPos world position where impulse is to be applied. 
     *  @note   This immediatly affects linear velocity.
     */
-    void applyLinearImpulse(const TVector4f& impulse, const TVector4f& worldPos);
+    void applyLinearImpulse(const Vector4f& impulse, const Vector4f& worldPos);
     /* Returns force vector. */
-    TVector4f force() const;
+    Vector4f force() const;
     /* Sets orientation quaternion. */
-    void setOrientation(const TQuaternionf& orientation);
+    void setOrientation(const Quaternionf& orientation);
     /*! Returns orientation quaternion. */
-    TQuaternionf orientation() const;
+    Quaternionf orientation() const;
     /* Sets mass. */
     void setMass(float32 mass);
     /* Returns mass. */
@@ -84,13 +84,13 @@ class PhysicsComponent : public IComponent
     /*! Type. */
     EGEPhysics::EComponentType m_type;
     /*! Position vector. */
-    TVector4f m_position;
+    Vector4f m_position;
     /*! Linear velocity vector. */
-    TVector4f m_linearVelocity;
+    Vector4f m_linearVelocity;
     /*! Force vector. */
-    TVector4f m_force;
+    Vector4f m_force;
     /*! Orientation quaternion. */
-    TQuaternionf m_orientation;
+    Quaternionf m_orientation;
     /*! Mass. */
     float32 m_mass;
     /*! List of joints attached. */

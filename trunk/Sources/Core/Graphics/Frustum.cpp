@@ -9,7 +9,7 @@ EGE_DEFINE_NEW_OPERATORS(Frustum)
 EGE_DEFINE_DELETE_OPERATORS(Frustum)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Frustum::Frustum(Application* app, const TMatrix4f& viewMatrix) : Object(app), m_projectionType(Frustum::PERSPECTIVE), m_nearPlaneDistance(1.0f), 
+Frustum::Frustum(Application* app, const Matrix4f& viewMatrix) : Object(app), m_projectionType(Frustum::PERSPECTIVE), m_nearPlaneDistance(1.0f), 
                                                                      m_farPlaneDistance(100.0f), m_aspectRatio(1.33f), m_projectionMatrixNeedsUpdate(true), 
                                                                      m_planesNeedUpdate(true), m_viewMatrix(viewMatrix)
 {
@@ -156,7 +156,7 @@ void Frustum::update()
 //
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if point is within vfrustum. */
-bool Frustum::isVisible(const TVector4f& point)
+bool Frustum::isVisible(const Vector4f& point)
 {
   // make sure all is up to date
   update();
@@ -168,7 +168,7 @@ bool Frustum::isVisible(const TVector4f& point)
     //if (plane == FRUSTUM_PLANE_FAR && mFarDist == 0)
     //    continue;
 
-    if (TPlanef::NEGATIVE_SIDE == m_planes[plane].side(point))
+    if (Planef::NEGATIVE_SIDE == m_planes[plane].side(point))
     {
       // ALL corners on negative side therefore out of view
       //if (culledBy)
@@ -181,7 +181,7 @@ bool Frustum::isVisible(const TVector4f& point)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns projection matrix. */
-const TMatrix4f& Frustum::projectionMatrix()
+const Matrix4f& Frustum::projectionMatrix()
 { 
   calculateProjectionMatrix();
 
@@ -289,8 +289,8 @@ void Frustum::calculateFrustumPlanes()
   // check if update is necessary
   if (m_planesNeedUpdate)
   {
-    TMatrix4f cClipping;
-    TVector4f cNormal;
+    Matrix4f cClipping;
+    Vector4f cNormal;
 
 	  // calculate clipping planes ( P*V )
     cClipping = m_projectionMatrix.multiply(m_viewMatrix);
@@ -361,7 +361,7 @@ void Frustum::invalidateFrustumPlanes()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets orthographic view settings. */
-void Frustum::setOrthoSettings(const TRectf& rect)
+void Frustum::setOrthoSettings(const Rectf& rect)
 {
   // store settings
   if (rect != m_orthoRect)

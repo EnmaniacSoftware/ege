@@ -30,13 +30,13 @@ class Math
     inline static float32 Tan(float32 radians) { return tanf(radians); }
     inline static float32 Ctg(float32 radians) { return 1.0f / Tan(radians); }
 
-    static TMatrix4f& Convert(TMatrix4f& matrix, const TQuaternionf& quaternion);
+    static Matrix4f& Convert(Matrix4f& matrix, const Quaternionf& quaternion);
 
-    static TVector4f& Transform(TVector4f& vector, const TMatrix4f& matrix);
+    static Vector4f& Transform(Vector4f& vector, const Matrix4f& matrix);
 
-    static TMatrix4f& CreateMatrix(TMatrix4f& matrix, const TVector4f& translation, const TVector4f& scale, const TQuaternionf& orientation);
+    static Matrix4f& CreateMatrix(Matrix4f& matrix, const Vector4f& translation, const Vector4f& scale, const Quaternionf& orientation);
 
-    static float32 DotProduct(const TVector4f& vector1, const TVector4f& vector2);
+    static float32 DotProduct(const Vector4f& vector1, const Vector4f& vector2);
 
     //inline static float32 ASin(float32 fRadians);
     //inline static float32 ACos(float32 fRadians);

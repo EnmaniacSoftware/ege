@@ -24,7 +24,7 @@ Math::~Math()
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-TMatrix4f& Math::Convert(TMatrix4f& cMatrix, const TQuaternionf& cQuaternion)
+Matrix4f& Math::Convert(Matrix4f& cMatrix, const Quaternionf& cQuaternion)
 {
   // NOTE: this converts quternion to rotation matrix
 
@@ -57,9 +57,9 @@ TMatrix4f& Math::Convert(TMatrix4f& cMatrix, const TQuaternionf& cQuaternion)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-TVector4f& Math::Transform(TVector4f& cVector, const TMatrix4f& cMatrix)
+Vector4f& Math::Transform(Vector4f& cVector, const Matrix4f& cMatrix)
 {
-  TVector4f cOriginal(cVector);
+  Vector4f cOriginal(cVector);
 
   // NOTE: this pre-multiples vector and matrix
   cVector.x = cMatrix.data[0] * cOriginal.x + cMatrix.data[4] * cOriginal.y + cMatrix.data[8] * cOriginal.z + 
@@ -76,16 +76,16 @@ TVector4f& Math::Transform(TVector4f& cVector, const TMatrix4f& cMatrix)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-TMatrix4f& Math::CreateMatrix(TMatrix4f& cMatrix, const TVector4f& cTranslation, const TVector4f& cScaling, 
-                               const TQuaternionf& cOrientation)
+Matrix4f& Math::CreateMatrix(Matrix4f& cMatrix, const Vector4f& cTranslation, const Vector4f& cScaling, 
+                               const Quaternionf& cOrientation)
 {
   // Ordering:
   //    1. Scale
   //    2. Rotate
   //    3. Translate
 
-  TMatrix4f cRotationMatrix;
-  TMatrix4f cScaleMatrix(cScaling.x, 0, 0, 0, 0, cScaling.y, 0, 0, 0, 0, cScaling.z, 0, 0, 0, 0, cScaling.w);
+  Matrix4f cRotationMatrix;
+  Matrix4f cScaleMatrix(cScaling.x, 0, 0, 0, 0, cScaling.y, 0, 0, 0, 0, cScaling.z, 0, 0, 0, 0, cScaling.w);
 
   // convert quaternion into rotation matrix
   Math::Convert(cRotationMatrix, cOrientation);
@@ -110,7 +110,7 @@ TMatrix4f& Math::CreateMatrix(TMatrix4f& cMatrix, const TVector4f& cTranslation,
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-float32 Math::DotProduct(const TVector4f& cVector1, const TVector4f& cVector2)
+float32 Math::DotProduct(const Vector4f& cVector1, const Vector4f& cVector2)
 {
   return cVector1.x * cVector2.x + cVector1.y * cVector2.y + cVector1.z * cVector2.z;
 }

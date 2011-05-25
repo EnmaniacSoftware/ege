@@ -149,7 +149,7 @@ void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& c
 
     component->vertexBuffer()->unlock();
 
-    app()->graphics()->renderer()->addForRendering(TMatrix4f::IDENTITY, component);
+    app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, component);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

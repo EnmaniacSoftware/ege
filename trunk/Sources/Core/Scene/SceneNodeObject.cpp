@@ -85,7 +85,7 @@ bool SceneNodeObject::addForRendering(Renderer* renderer) const
 {
   bool bResult = true;
 
-  TMatrix4f worldMatrix;
+  Matrix4f worldMatrix;
 
   // add all render components for rendering
   for (std::vector<PComponent>::const_iterator iter = m_components.begin(); iter != m_components.end(); ++iter)
@@ -99,11 +99,11 @@ bool SceneNodeObject::addForRendering(Renderer* renderer) const
       PPhysicsComponent physicsComponent = this->physicsComponent(component->name());
       if (NULL != physicsComponent)
       {
-        Math::CreateMatrix(worldMatrix, physicsComponent->position(), TVector4f::ONE, physicsComponent->orientation());
+        Math::CreateMatrix(worldMatrix, physicsComponent->position(), Vector4f::ONE, physicsComponent->orientation());
       }
       else
       {
-        worldMatrix = TMatrix4f::IDENTITY;
+        worldMatrix = Matrix4f::IDENTITY;
       }
 
       // combine with parent node world matrix

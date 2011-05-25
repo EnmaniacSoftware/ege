@@ -7,7 +7,7 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-AxisAlignedBox::AxisAlignedBox() : m_minimum(TVector4f::ZERO), m_maximum(TVector4f::ZERO), m_extent(EXTENT_NULL)
+AxisAlignedBox::AxisAlignedBox() : m_minimum(Vector4f::ZERO), m_maximum(Vector4f::ZERO), m_extent(EXTENT_NULL)
 {
 }
 
@@ -20,7 +20,7 @@ AxisAlignedBox::AxisAlignedBox(const AxisAlignedBox& cBox)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-AxisAlignedBox::AxisAlignedBox(const TVector4f& cMin, const TVector4f& cMax)
+AxisAlignedBox::AxisAlignedBox(const Vector4f& cMin, const Vector4f& cMax)
 {
   setExtents(cMin, cMax);
 }
@@ -33,7 +33,7 @@ AxisAlignedBox::~AxisAlignedBox()
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-void AxisAlignedBox::setExtents(const TVector4f& min, const TVector4f& max)
+void AxisAlignedBox::setExtents(const Vector4f& min, const Vector4f& max)
 {
   EGE_ASSERT(min.x <= max.x && min.y <= max.y && min.z <= max.z, 
              "The minimum corner of the box must be less than or equal to maximum corner");

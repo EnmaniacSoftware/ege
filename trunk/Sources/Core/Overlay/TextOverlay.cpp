@@ -66,7 +66,7 @@ void TextOverlay::updateRenderData()
   if (data)
   {
     // get initial position
-    TVector4f pos = physics()->position();
+    Vector4f pos = physics()->position();
 
     float32 height  = font()->height() * 1.0f;
     float32 spacing = 0;
@@ -143,6 +143,6 @@ void TextOverlay::render(PViewport viewport, Renderer* renderer)
 {
   PRenderComponent renderComponent = this->renderComponent();
 
-  renderer->addForRendering(TMatrix4f::IDENTITY, renderComponent);
+  renderer->addForRendering(Matrix4f::IDENTITY, renderComponent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

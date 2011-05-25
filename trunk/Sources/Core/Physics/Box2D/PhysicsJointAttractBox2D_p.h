@@ -27,7 +27,7 @@ class PhysicsJointAttractPrivate
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Sets target position to attract to. */
-    void setTarget(const TVector4f& position);
+    void setTarget(const Vector4f& position);
 
   private:
 

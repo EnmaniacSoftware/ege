@@ -24,7 +24,7 @@ class GlyphData
   public:
 
     /*! Coordinates on texture of the glyph. */
-    TRectf m_textureRect;
+    Rectf m_textureRect;
     /*! Screen width (in pixels) of glyph. */
     s32 m_width;
 };

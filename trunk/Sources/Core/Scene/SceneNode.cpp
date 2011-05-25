@@ -222,7 +222,7 @@ void SceneNode::update(const Time& time)
   //}
 
   // update self
-  Math::CreateMatrix(m_worldMatrix, physics()->position(), TVector4f::ONE, physics()->orientation());
+  Math::CreateMatrix(m_worldMatrix, physics()->position(), Vector4f::ONE, physics()->orientation());
 
   if (NULL != m_parent)
   {

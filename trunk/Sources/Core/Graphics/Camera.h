@@ -36,11 +36,11 @@ class Camera : public Frustum
     /*! Returns camera's physics component. */
     inline PPhysicsComponent& physics() { return m_physics; }
     /* Sets look-at vector. */
-    void setLookAt(TVector3f point);
+    void setLookAt(Vector3f point);
     /*! Returns look-at vector. */
-    inline const TVector3f& getLookAt() const { return m_lookAt; }
+    inline const Vector3f& getLookAt() const { return m_lookAt; }
     /* Returns camera's view matrix. */
-    const TMatrix4f& viewMatrix();
+    const Matrix4f& viewMatrix();
     /* Renders associated scene from camera's point of view onto given viewport. */
     void render(PViewport viewport);
 
@@ -52,13 +52,13 @@ class Camera : public Frustum
   protected:
 
     /*! Position the camera is looking at (world coords). */
-    TVector3f m_lookAt;
+    Vector3f m_lookAt;
     /*! Scene manager camera is bound to. */
     PSceneManager m_sceneManager;
     /*! TRUE if view matrix needs to be recalculated. */
     bool m_viewMatrixNeedsUpdate;
     /*! View matrix (model->world). */
-    TMatrix4f m_viewMatrix;
+    Matrix4f m_viewMatrix;
     /*! Local physics component. */
     PPhysicsComponent m_physics;
 

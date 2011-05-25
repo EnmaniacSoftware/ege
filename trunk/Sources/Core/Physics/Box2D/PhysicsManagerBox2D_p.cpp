@@ -114,7 +114,7 @@ void PhysicsManagerPrivate::SayGoodbye(b2Joint* joint)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets gravity. */
-void PhysicsManagerPrivate::setGravity(const TVector4f& gravity)
+void PhysicsManagerPrivate::setGravity(const Vector4f& gravity)
 {
   if (isValid())
   {

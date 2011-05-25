@@ -16,8 +16,8 @@ EGE_DEFINE_DELETE_OPERATORS(PhysicsComponent)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsComponent::PhysicsComponent(Application* app, const EGEString& name, EGEPhysics::EComponentType type) 
-: IComponent(app, EGE_OBJECT_UID_PHYSICS_COMPONENT, name), m_type(type), m_position(TVector4f::ZERO), m_linearVelocity(TVector4f::ZERO), 
-  m_force(TVector4f::ZERO), m_orientation(TQuaternionf::IDENTITY), m_mass(1.0f)
+: IComponent(app, EGE_OBJECT_UID_PHYSICS_COMPONENT, name), m_type(type), m_position(Vector4f::ZERO), m_linearVelocity(Vector4f::ZERO), 
+  m_force(Vector4f::ZERO), m_orientation(Quaternionf::IDENTITY), m_mass(1.0f)
 {
   m_manager = app->physicsManager();
 
@@ -31,7 +31,7 @@ PhysicsComponent::~PhysicsComponent()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets position vector. */
-void PhysicsComponent::setPosition(const TVector4f& position)
+void PhysicsComponent::setPosition(const Vector4f& position)
 {
   EGE_ASSERT(isValid(), "No private");
   if (isValid())
@@ -43,7 +43,7 @@ void PhysicsComponent::setPosition(const TVector4f& position)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns position vector. */
-TVector4f PhysicsComponent::position() const
+Vector4f PhysicsComponent::position() const
 {
   EGE_ASSERT(isValid(), "No private");
   if (isValid())
@@ -55,7 +55,7 @@ TVector4f PhysicsComponent::position() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets orientation quaternion. */
-void PhysicsComponent::setOrientation(const TQuaternionf& orientation)
+void PhysicsComponent::setOrientation(const Quaternionf& orientation)
 {
   EGE_ASSERT(isValid(), "No private");
   if (isValid())
@@ -67,7 +67,7 @@ void PhysicsComponent::setOrientation(const TQuaternionf& orientation)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns orientation quaternion. */
-TQuaternionf PhysicsComponent::orientation() const
+Quaternionf PhysicsComponent::orientation() const
 {
   EGE_ASSERT(isValid(), "No private");
   if (isValid())
@@ -83,7 +83,7 @@ TQuaternionf PhysicsComponent::orientation() const
 *  @param  force    force vector to apply.
 *  @param  worldPos world position where force is to be applied. 
 */
-void PhysicsComponent::applyForce(const TVector4f& force, const TVector4f& worldPos)
+void PhysicsComponent::applyForce(const Vector4f& force, const Vector4f& worldPos)
 {
   EGE_ASSERT(isValid(), "No private");
   if (isValid())
@@ -100,7 +100,7 @@ void PhysicsComponent::applyForce(const TVector4f& force, const TVector4f& world
 *  @param  worldPos world position where impulse is to be applied. 
 *  @note   This immediatly affects linear velocity.
 */
-void PhysicsComponent::applyLinearImpulse(const TVector4f& impulse, const TVector4f& worldPos)
+void PhysicsComponent::applyLinearImpulse(const Vector4f& impulse, const Vector4f& worldPos)
 {
   EGE_ASSERT(isValid(), "No private");
   if (isValid())
@@ -112,7 +112,7 @@ void PhysicsComponent::applyLinearImpulse(const TVector4f& impulse, const TVecto
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns force vector. */
-TVector4f PhysicsComponent::force() const
+Vector4f PhysicsComponent::force() const
 {
   EGE_ASSERT(isValid(), "No private");
   if (isValid())
@@ -160,7 +160,7 @@ EGE::float32 PhysicsComponent::mass() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets linear velocity vector. */
-void PhysicsComponent::setLinearVelocity(const TVector4f& velocity)
+void PhysicsComponent::setLinearVelocity(const Vector4f& velocity)
 {
   EGE_ASSERT(isValid(), "No private");
   if (isValid())
@@ -172,7 +172,7 @@ void PhysicsComponent::setLinearVelocity(const TVector4f& velocity)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns linear velocity vector. */
-TVector4f PhysicsComponent::linearVelocity() const
+Vector4f PhysicsComponent::linearVelocity() const
 {
   EGE_ASSERT(isValid(), "No private");
   if (isValid())

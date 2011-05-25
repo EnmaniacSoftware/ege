@@ -48,7 +48,7 @@ PhysicsComponentPrivate::~PhysicsComponentPrivate()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets position vector. */
-void PhysicsComponentPrivate::setPosition(const TVector4f& position)
+void PhysicsComponentPrivate::setPosition(const Vector4f& position)
 {
   if (isValid())
   {
@@ -59,9 +59,9 @@ void PhysicsComponentPrivate::setPosition(const TVector4f& position)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns position vector. */
-TVector4f PhysicsComponentPrivate::position() const
+Vector4f PhysicsComponentPrivate::position() const
 {
-  TVector4f vec;
+  Vector4f vec;
 
   if (isValid())
   {
@@ -79,7 +79,7 @@ TVector4f PhysicsComponentPrivate::position() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets orientation quaternion. */
-void PhysicsComponentPrivate::setOrientation(const TQuaternionf& orientation)
+void PhysicsComponentPrivate::setOrientation(const Quaternionf& orientation)
 {
   if (isValid())
   {
@@ -88,9 +88,9 @@ void PhysicsComponentPrivate::setOrientation(const TQuaternionf& orientation)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns orientation quaternion. */
-TQuaternionf PhysicsComponentPrivate::orientation() const
+Quaternionf PhysicsComponentPrivate::orientation() const
 {
-  TQuaternionf orient;
+  Quaternionf orient;
 
   if (isValid())
   {
@@ -104,7 +104,7 @@ TQuaternionf PhysicsComponentPrivate::orientation() const
 *  @param  force    force vector to apply.
 *  @param  worldPos world position where force is to be applied. 
 */
-void PhysicsComponentPrivate::applyForce(const TVector4f& force, const TVector4f& worldPos)
+void PhysicsComponentPrivate::applyForce(const Vector4f& force, const Vector4f& worldPos)
 {
   if (isValid())
   {
@@ -120,7 +120,7 @@ void PhysicsComponentPrivate::applyForce(const TVector4f& force, const TVector4f
 *  @param  worldPos world position where impulse is to be applied. 
 *  @note   This immediatly affects linear velocity.
 */
-void PhysicsComponentPrivate::applyLinearImpulse(const TVector4f& impulse, const TVector4f& worldPos)
+void PhysicsComponentPrivate::applyLinearImpulse(const Vector4f& impulse, const Vector4f& worldPos)
 {
   if (isValid())
   {
@@ -131,9 +131,9 @@ void PhysicsComponentPrivate::applyLinearImpulse(const TVector4f& impulse, const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns force vector. */
-TVector4f PhysicsComponentPrivate::force() const
+Vector4f PhysicsComponentPrivate::force() const
 {
-  TVector4f vec;
+  Vector4f vec;
 
   if (isValid())
   {
@@ -170,7 +170,7 @@ EGE::float32 PhysicsComponentPrivate::mass() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets linear velocity vector. */
-void PhysicsComponentPrivate::setLinearVelocity(const TVector4f& velocity)
+void PhysicsComponentPrivate::setLinearVelocity(const Vector4f& velocity)
 {
   if (isValid())
   {
@@ -181,9 +181,9 @@ void PhysicsComponentPrivate::setLinearVelocity(const TVector4f& velocity)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns linear velocity vector. */
-TVector4f PhysicsComponentPrivate::linearVelocity() const
+Vector4f PhysicsComponentPrivate::linearVelocity() const
 { 
-  TVector4f vec;
+  Vector4f vec;
 
   if (isValid())
   {

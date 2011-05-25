@@ -45,7 +45,7 @@ class PhysicsManager : public Object
     /* Renders data. */
     void render();
     /* Sets gravity. */
-    void setGravity(const TVector4f& gravity);
+    void setGravity(const Vector4f& gravity);
 
   private:
 

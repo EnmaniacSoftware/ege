@@ -29,7 +29,7 @@ Camera::~Camera()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets look-at vector. */
-void Camera::setLookAt(TVector3f point)
+void Camera::setLookAt(Vector3f point)
 {
   m_lookAt = point;
 }
@@ -44,7 +44,7 @@ void Camera::render(PViewport viewport)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns camera's view matrix. */
-const TMatrix4f& Camera::viewMatrix()
+const Matrix4f& Camera::viewMatrix()
 {
 	// View matrix is:
 	//
@@ -67,7 +67,7 @@ const TMatrix4f& Camera::viewMatrix()
     Math::Convert(m_viewMatrix, physics()->orientation());
 
     // calculate position (translation)
-    TVector4f position = physics()->position();
+    Vector4f position = physics()->position();
     Math::Transform(position, m_viewMatrix.getTransposed());
 
     // store translation in modelview matrix
@@ -76,7 +76,7 @@ const TMatrix4f& Camera::viewMatrix()
     m_viewMatrix.data[14] = -position.z;
 
     // TAGE testing
-  //  m_viewMatrix = TMatrix4f::IDENTITY;
+  //  m_viewMatrix = Matrix4f::IDENTITY;
 
     m_viewMatrixNeedsUpdate = false;
   }

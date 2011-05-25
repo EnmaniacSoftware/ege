@@ -61,7 +61,7 @@ bool PhysicsJointAttractPrivate::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets target position to attract to. */
-void PhysicsJointAttractPrivate::setTarget(const TVector4f& position)
+void PhysicsJointAttractPrivate::setTarget(const Vector4f& position)
 {
   if (isValid())
   {

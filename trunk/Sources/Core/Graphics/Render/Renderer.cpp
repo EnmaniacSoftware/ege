@@ -73,7 +73,7 @@ void Renderer::setOrientationRotation(const Angle& angle)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-bool Renderer::addForRendering(const TMatrix4f& worldMatrix, PRenderComponent& component)
+bool Renderer::addForRendering(const Matrix4f& worldMatrix, PRenderComponent& component)
 {
   SRENDERDATA data;
   data.worldMatrix     = worldMatrix;
@@ -84,12 +84,12 @@ bool Renderer::addForRendering(const TMatrix4f& worldMatrix, PRenderComponent& c
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Renderer::setProjectionMatrix(const TMatrix4f& matrix)
+void Renderer::setProjectionMatrix(const Matrix4f& matrix)
 {
   m_projectionMatrix = matrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Renderer::setViewMatrix(const TMatrix4f& matrix)
+void Renderer::setViewMatrix(const Matrix4f& matrix)
 {
   m_viewMatrix = matrix;
 }

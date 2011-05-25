@@ -17,7 +17,7 @@ class Frustum : public Object
 {
   public:
 
-    Frustum(Application* app, const TMatrix4f& viewMatrix);
+    Frustum(Application* app, const Matrix4f& viewMatrix);
     virtual ~Frustum();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -63,13 +63,13 @@ class Frustum : public Object
     /* Sets Field-Of-View. */
     void setFOVy(const Angle& angle);
     /* Returns projection matrix. */
-    const TMatrix4f& projectionMatrix();
+    const Matrix4f& projectionMatrix();
     /* Sets orthographic view settings. */
-    void setOrthoSettings(const TRectf& rect);
+    void setOrthoSettings(const Rectf& rect);
 //    bool isVisible( const CAxisAlignedBox& cBox );                                   // returns TRUE if given AABB is visible
 //    bool isVisible( const CSphere& cSphere );                                        // returns TRUE if given sphere is visible
     /* Returns TRUE if point is within vfrustum. */
-    bool isVisible(const TVector4f& point);
+    bool isVisible(const Vector4f& point);
 
     // projection related methods
     //virtual bool project( const CVector3& cPosition, CVector3& cDeviceCoords );      // projects world coordinates into device coordinates, 
@@ -90,15 +90,15 @@ class Frustum : public Object
     /*! Field-Of-View along Y-axis. */
     Angle m_FOVy;
     /*! Frustum planes. */
-    TPlanef m_planes[PLANE_COUNT];
+    Planef m_planes[PLANE_COUNT];
     /*! Projection matrix. */
-    TMatrix4f m_projectionMatrix;
+    Matrix4f m_projectionMatrix;
     /*! TRUE if projection matrix needs to be updated. */
     bool m_projectionMatrixNeedsUpdate;
     /*! TRUE if frustum planes need update. */
     bool m_planesNeedUpdate;
     /*! Orthographic projection settings. */
-    TRectf m_orthoRect;
+    Rectf m_orthoRect;
 
     //bool m_bUpdateView;                     // TRUE if view has to be updated
     //bool m_bUpdateFrustumPlanes;            // TRUE if frustum planes need to be updated
@@ -106,7 +106,7 @@ class Frustum : public Object
   private:
 
     /*! Reference to camera's view matrix. */
-    const TMatrix4f& m_viewMatrix;
+    const Matrix4f& m_viewMatrix;
 
   private:
 
