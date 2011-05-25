@@ -67,7 +67,7 @@ void Renderer::applyMaterial(const PMaterial& material)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets orientation rotation. */
-void Renderer::setOrientationRotation(const TAngle& angle)
+void Renderer::setOrientationRotation(const Angle& angle)
 {
   m_orientationRotation = angle;
 }

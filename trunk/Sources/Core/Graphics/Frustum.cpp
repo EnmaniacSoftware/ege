@@ -57,7 +57,7 @@ void Frustum::setAspectRatio(float32 aspectRatio)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets Field-Of-View. */
-void Frustum::setFOVy(const TAngle& angle)
+void Frustum::setFOVy(const Angle& angle)
 {
   m_FOVy = angle;
 

@@ -4,24 +4,24 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TAngle::TAngle() : m_radians(0)
+Angle::Angle() : m_radians(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TAngle::TAngle(const TAngle& angle) : m_radians(angle.radians())
+Angle::Angle(const Angle& angle) : m_radians(angle.radians())
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TAngle TAngle::FromDegrees(float32 degrees)
+Angle Angle::FromDegrees(float32 degrees)
 {
-  TAngle angle;
+  Angle angle;
   angle.fromDegrees(degrees);
   return angle;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TAngle TAngle::FromRadians(float32 radians)
+Angle Angle::FromRadians(float32 radians)
 {
-  TAngle angle;
+  Angle angle;
   angle.fromRadians(radians);
   return angle;
 }

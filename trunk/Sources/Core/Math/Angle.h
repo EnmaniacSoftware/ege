@@ -10,15 +10,15 @@ EGE_NAMESPACE_BEGIN
 
 //----------------------------------------------------------------------------------------------------------------------
 
-class TAngle
+class Angle
 {
   public:
 
-    TAngle();
-    TAngle(const TAngle& angle);
+    Angle();
+    Angle(const Angle& angle);
 
-    static TAngle FromDegrees(float32 degrees);
-    static TAngle FromRadians(float32 radians);
+    static Angle FromDegrees(float32 degrees);
+    static Angle FromRadians(float32 radians);
 
     inline void fromDegrees(float32 degrees) { m_radians = Math::DegreesToRadians(degrees); }
     inline void fromRadians(float32 radians) { m_radians = radians; }
@@ -26,7 +26,7 @@ class TAngle
     inline float32 radians() const { return m_radians; }
     inline float32 degrees() const { return Math::RadiansToDegrees(m_radians); }
 
-    const TAngle& operator += (const TAngle& other) { m_radians += other.m_radians; return *this; }
+    const Angle& operator += (const Angle& other) { m_radians += other.m_radians; return *this; }
 
   private:
 

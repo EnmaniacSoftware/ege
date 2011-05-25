@@ -38,9 +38,9 @@ class Renderer : public Object
     /* Applies material. */
     void applyMaterial(const PMaterial& material);
     /* Sets orientation rotation. */
-    void setOrientationRotation(const TAngle& angle);
+    void setOrientationRotation(const Angle& angle);
     /*! Returns orientation rotation. */
-    const TAngle& orientationRotation() const { return m_orientationRotation; }
+    const Angle& orientationRotation() const { return m_orientationRotation; }
 
     bool addForRendering(const TMatrix4f& worldMatrix, PRenderComponent& component);
 
@@ -79,7 +79,7 @@ class Renderer : public Object
     };
 
     /*! Orientation rotation angle. */
-    TAngle m_orientationRotation;
+    Angle m_orientationRotation;
 
    // const SceneManager* m_pcSceneManager;          // current scene manager
 

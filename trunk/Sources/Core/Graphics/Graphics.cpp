@@ -41,7 +41,7 @@ Graphics::Graphics(Application* app, const ConfigParams& params) : Object(app)
     // check if main surface in portrait mode
     if (Device::SurfaceWidth() < Device::SurfaceHeight())
     {
-      m_renderer->setOrientationRotation(TAngle::FromDegrees(270));
+      m_renderer->setOrientationRotation(Angle::FromDegrees(270));
     }
   }
   else
@@ -49,7 +49,7 @@ Graphics::Graphics(Application* app, const ConfigParams& params) : Object(app)
     // check if main surface in landscape mode
     if (Device::SurfaceWidth() > Device::SurfaceHeight())
     {
-      m_renderer->setOrientationRotation(TAngle::FromDegrees(-270));
+      m_renderer->setOrientationRotation(Angle::FromDegrees(-270));
     }
   }
 }

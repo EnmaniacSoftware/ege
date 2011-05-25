@@ -59,9 +59,9 @@ class Frustum : public Object
     /* Sets aspect ratio. */
     void setAspectRatio(float32 aspectRatio);
     /*! Returns Field-Of-View along Y-axis. */
-    inline const TAngle& FOVy() const { return m_FOVy; }
+    inline const Angle& FOVy() const { return m_FOVy; }
     /* Sets Field-Of-View. */
-    void setFOVy(const TAngle& angle);
+    void setFOVy(const Angle& angle);
     /* Returns projection matrix. */
     const TMatrix4f& projectionMatrix();
     /* Sets orthographic view settings. */
@@ -88,7 +88,7 @@ class Frustum : public Object
     /*! Aspect ration. */
     float32 m_aspectRatio;
     /*! Field-Of-View along Y-axis. */
-    TAngle m_FOVy;
+    Angle m_FOVy;
     /*! Frustum planes. */
     TPlanef m_planes[PLANE_COUNT];
     /*! Projection matrix. */
