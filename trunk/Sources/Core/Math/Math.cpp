@@ -103,7 +103,7 @@ float32 Math::DotProduct(const Vector4f& vector1, const Vector4f& vector2)
   return vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns angle of given point around origin. */
+/*! Returns angle between positive Y axis and given point around origin. */
 Angle Math::GetAngle(const Vector2f& origin, const Vector2f& point)
 {
   Angle angle;
@@ -114,7 +114,7 @@ Angle Math::GetAngle(const Vector2f& origin, const Vector2f& point)
   }
   else
   {
-    angle.fromRadians(Math::ACos(-(origin.y - point.y) / origin.distanceTo(point)) + Math::DegreesToRadians(180));
+    angle.fromRadians(Math::ACos(-(origin.y - point.y) / origin.distanceTo(point)) + Math::PI);
   }
 
   return angle;

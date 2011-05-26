@@ -20,6 +20,8 @@ class Math
     template <typename T>
     inline static T Max(T a, T b) { return (a > b) ? a : b; }
 
+    inline static float32 Floor(float32 value) { return floorf(value); }
+
     inline static float32 RadiansToDegrees(float32 radians) { return radians * 57.29577951f; }
     inline static float32 DegreesToRadians(float32 degrees) { return degrees * 0.017453292f; }
 
@@ -39,7 +41,7 @@ class Math
     static Matrix4f& CreateMatrix(Matrix4f& matrix, const Vector4f& translation, const Vector4f& scale, const Quaternionf& orientation);
     /* Returns Dot-Product of given vectors. */
     static float32 DotProduct(const Vector4f& vector1, const Vector4f& vector2);
-    /* Returns angle of given point around origin. */
+    /* Returns angle between positive Y axis and given point around origin. */
     static Angle GetAngle(const Vector2f& origin, const Vector2f& point);
 
   public:
