@@ -14,6 +14,8 @@ class EGEList : public std::vector<T>
 
     /* Removes given object from list. */
     void remove(const T object);
+    /* Returns last element. If list is empty, default value is returned. */
+    const T last(const T& defaultValue) const;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,6 +28,13 @@ void EGEList<T>::remove(const T object)
   {
     erase(it);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns last element. If list is empty, default value is returned. */
+template <typename T>
+const T EGEList<T>::last(const T& defaultValue) const
+{
+  return (0 == this->size()) ? defaultValue : this->at(this->size() - 1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
