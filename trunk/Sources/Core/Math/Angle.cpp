@@ -43,6 +43,6 @@ float32 Angle::degrees() const
 /*! Normalizes angle to [0-2PI) degrees interval. */
 void Angle::normalize()
 {
-  m_radians = m_radians - Math::TWO_PI * floorf(m_radians / Math::TWO_PI);
+  m_radians = m_radians - Math::TWO_PI * Math::Floor(m_radians / Math::TWO_PI);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
