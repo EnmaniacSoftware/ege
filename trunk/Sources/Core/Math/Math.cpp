@@ -1,103 +1,92 @@
 #include "EGE.h"
 #include "Core/Math/Matrix4.h"
 #include "Core/Math/Vector4.h"
+#include "Core/Math/Vector2.h"
 #include "Core/Math/Quaternion.h"
 #include "Core/Math/Math.h"
+#include "Core/Math/Angle.h"
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-const float32 Math::DELTA = std::numeric_limits<float32>::epsilon();
-
+const float32 Math::DELTA   = std::numeric_limits<float32>::epsilon();
+const float32 Math::PI      = 3.14159265f;
+const float32 Math::TWO_PI  = 6.28318531f;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 Math::Math()
 {
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 Math::~Math()
 {
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Matrix4f& Math::Convert(Matrix4f& cMatrix, const Quaternionf& cQuaternion)
+/*! Coverts quaternion to matrix representation. */
+Matrix4f& Math::Convert(Matrix4f& matrix, const Quaternionf& quaternion)
 {
-  // NOTE: this converts quternion to rotation matrix
-
   // 1st column
-	cMatrix.data[0] = 1.0f - 2.0f * (cQuaternion.y * cQuaternion.y + cQuaternion.z * cQuaternion.z); 
-	cMatrix.data[1] = 2.0f * (cQuaternion.x * cQuaternion.y - cQuaternion.z * cQuaternion.w);
-	cMatrix.data[2] = 2.0f * (cQuaternion.x * cQuaternion.z + cQuaternion.y * cQuaternion.w);
-	cMatrix.data[3] = 0;
+	matrix.data[0] = 1.0f - 2.0f * (quaternion.y * quaternion.y + quaternion.z * quaternion.z); 
+	matrix.data[1] = 2.0f * (quaternion.x * quaternion.y - quaternion.z * quaternion.w);
+	matrix.data[2] = 2.0f * (quaternion.x * quaternion.z + quaternion.y * quaternion.w);
+	matrix.data[3] = 0;
 
 	// 2nd column
-	cMatrix.data[4] = 2.0f * (cQuaternion.x * cQuaternion.y + cQuaternion.z * cQuaternion.w);  
-	cMatrix.data[5] = 1.0f - 2.0f * (cQuaternion.x * cQuaternion.x + cQuaternion.z * cQuaternion.z); 
-	cMatrix.data[6] = 2.0f * (cQuaternion.z * cQuaternion.y - cQuaternion.x * cQuaternion.w);  
-	cMatrix.data[7] = 0;
+	matrix.data[4] = 2.0f * (quaternion.x * quaternion.y + quaternion.z * quaternion.w);  
+	matrix.data[5] = 1.0f - 2.0f * (quaternion.x * quaternion.x + quaternion.z * quaternion.z); 
+	matrix.data[6] = 2.0f * (quaternion.z * quaternion.y - quaternion.x * quaternion.w);  
+	matrix.data[7] = 0;
 
 	// 3rd column
-	cMatrix.data[8]  = 2.0f * (cQuaternion.x * cQuaternion.z - cQuaternion.y * cQuaternion.w);
-	cMatrix.data[9]  = 2.0f * (cQuaternion.y * cQuaternion.z + cQuaternion.x * cQuaternion.w);
-	cMatrix.data[10] = 1.0f - 2.0f *(cQuaternion.x * cQuaternion.x + cQuaternion.y * cQuaternion.y);  
-	cMatrix.data[11] = 0;
+	matrix.data[8]  = 2.0f * (quaternion.x * quaternion.z - quaternion.y * quaternion.w);
+	matrix.data[9]  = 2.0f * (quaternion.y * quaternion.z + quaternion.x * quaternion.w);
+	matrix.data[10] = 1.0f - 2.0f *(quaternion.x * quaternion.x + quaternion.y * quaternion.y);  
+	matrix.data[11] = 0;
 
 	// 4th column
-	cMatrix.data[12] = 0;
-	cMatrix.data[13] = 0;
-	cMatrix.data[14] = 0;  
-	cMatrix.data[15] = 1;
+	matrix.data[12] = 0;
+	matrix.data[13] = 0;
+	matrix.data[14] = 0;  
+	matrix.data[15] = 1;
 
-  return cMatrix;
+  return matrix;
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Vector4f& Math::Transform(Vector4f& cVector, const Matrix4f& cMatrix)
+/*! Transforms (pre-multiples) vector by matrix. */
+Vector4f Math::Transform(const Vector4f& vector, const Matrix4f& matrix)
 {
-  Vector4f cOriginal(cVector);
+  Vector4f result;
 
-  // NOTE: this pre-multiples vector and matrix
-  cVector.x = cMatrix.data[0] * cOriginal.x + cMatrix.data[4] * cOriginal.y + cMatrix.data[8] * cOriginal.z + 
-              cMatrix.data[12] * cOriginal.w;
-  cVector.y = cMatrix.data[1] * cOriginal.x + cMatrix.data[5] * cOriginal.y + cMatrix.data[9] * cOriginal.z + 
-              cMatrix.data[13] * cOriginal.w;
-  cVector.z = cMatrix.data[2] * cOriginal.x + cMatrix.data[6] * cOriginal.y + cMatrix.data[10] * cOriginal.z + 
-              cMatrix.data[14] * cOriginal.w;
-  cVector.w = cMatrix.data[3] * cOriginal.x + cMatrix.data[7] * cOriginal.y + cMatrix.data[11] * cOriginal.z + 
-              cMatrix.data[15] * cOriginal.w;
+  result.x = matrix.data[0] * vector.x + matrix.data[4] * vector.y + matrix.data[8]  * vector.z + matrix.data[12] * vector.w;
+  result.y = matrix.data[1] * vector.x + matrix.data[5] * vector.y + matrix.data[9]  * vector.z + matrix.data[13] * vector.w;
+  result.z = matrix.data[2] * vector.x + matrix.data[6] * vector.y + matrix.data[10] * vector.z + matrix.data[14] * vector.w;
+  result.w = matrix.data[3] * vector.x + matrix.data[7] * vector.y + matrix.data[11] * vector.z + matrix.data[15] * vector.w;
 
-  return cVector;
+  return result;
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Matrix4f& Math::CreateMatrix(Matrix4f& cMatrix, const Vector4f& cTranslation, const Vector4f& cScaling, 
-                               const Quaternionf& cOrientation)
+/*! Creates matrix from translation, scale vectors and quaternion. */
+Matrix4f& Math::CreateMatrix(Matrix4f& matrix, const Vector4f& translation, const Vector4f& scale, const Quaternionf& orientation)
 {
   // Ordering:
   //    1. Scale
   //    2. Rotate
   //    3. Translate
 
-  Matrix4f cRotationMatrix;
-  Matrix4f cScaleMatrix(cScaling.x, 0, 0, 0, 0, cScaling.y, 0, 0, 0, 0, cScaling.z, 0, 0, 0, 0, cScaling.w);
+  Matrix4f rotationMatrix;
+  Matrix4f scaleMatrix(scale.x, 0, 0, 0, 0, scale.y, 0, 0, 0, 0, scale.z, 0, 0, 0, 0, scale.w);
 
   // convert quaternion into rotation matrix
-  Math::Convert(cRotationMatrix, cOrientation);
+  Math::Convert(rotationMatrix, orientation);
 
   // combine 1. and 2.
-  cMatrix = cRotationMatrix.multiply(cScaleMatrix);
+  matrix = rotationMatrix.multiply(scaleMatrix);
 
   // apply 3.
-  cMatrix(3, 0) = cTranslation.x;
-  cMatrix(3, 1) = cTranslation.y;
-  cMatrix(3, 2) = cTranslation.z;
-  cMatrix(3, 3) = cTranslation.w;
+  matrix(3, 0) = translation.x;
+  matrix(3, 1) = translation.y;
+  matrix(3, 2) = translation.z;
+  matrix(3, 3) = translation.w;
 
   // reset projection term
   //m_fData[ 0 ][ 3 ] = 0; 
@@ -105,14 +94,29 @@ Matrix4f& Math::CreateMatrix(Matrix4f& cMatrix, const Vector4f& cTranslation, co
   //m_fData[ 2 ][ 3 ] = 0; 
   //m_fData[ 3 ][ 3 ] = 1;
 
-  return cMatrix;
+  return matrix;
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-float32 Math::DotProduct(const Vector4f& cVector1, const Vector4f& cVector2)
+/*! Returns Dot-Product of given vectors. */
+float32 Math::DotProduct(const Vector4f& vector1, const Vector4f& vector2)
 {
-  return cVector1.x * cVector2.x + cVector1.y * cVector2.y + cVector1.z * cVector2.z;
+  return vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z;
 }
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns angle of given point around origin. */
+Angle Math::GetAngle(const Vector2f& origin, const Vector2f& point)
+{
+  Angle angle;
+  
+  if (point.x >= origin.x)
+  {
+    angle.fromRadians(Math::ACos((origin.y - point.y) / origin.distanceTo(point)));
+  }
+  else
+  {
+    angle.fromRadians(Math::ACos(-(origin.y - point.y) / origin.distanceTo(point)) + Math::DegreesToRadians(180));
+  }
 
+  return angle;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_MATH_H
 #define EGE_CORE_MATH_H
 
-//#include "EGE.h"
+#include "Core/Math/Angle.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -29,20 +29,24 @@ class Math
     inline static float32 Cos(float32 radians) { return cosf(radians); }
     inline static float32 Tan(float32 radians) { return tanf(radians); }
     inline static float32 Ctg(float32 radians) { return 1.0f / Tan(radians); }
+    inline static float32 ACos(float32 radians) { return acosf(radians); }
 
+    /* Coverts quaternion to matrix representation. */
     static Matrix4f& Convert(Matrix4f& matrix, const Quaternionf& quaternion);
-
-    static Vector4f& Transform(Vector4f& vector, const Matrix4f& matrix);
-
+    /* Transforms (pre-multiples) vector by matrix. */
+    static Vector4f Transform(const Vector4f& vector, const Matrix4f& matrix);
+    /* Creates matrix from translation, scale vectors and quaternion. */
     static Matrix4f& CreateMatrix(Matrix4f& matrix, const Vector4f& translation, const Vector4f& scale, const Quaternionf& orientation);
-
+    /* Returns Dot-Product of given vectors. */
     static float32 DotProduct(const Vector4f& vector1, const Vector4f& vector2);
+    /* Returns angle of given point around origin. */
+    static Angle GetAngle(const Vector2f& origin, const Vector2f& point);
 
-    //inline static float32 ASin(float32 fRadians);
-    //inline static float32 ACos(float32 fRadians);
-    //inline static float32 ATan(float32 fRadians);
+  public:
 
     static const float32 DELTA;
+    static const float32 PI;
+    static const float32 TWO_PI;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

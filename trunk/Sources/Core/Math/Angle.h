@@ -4,7 +4,6 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 #include "EGE.h"
-#include "Core/Math/Math.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -17,16 +16,23 @@ class Angle
     Angle();
     Angle(const Angle& angle);
 
+    const Angle& operator += (const Angle& other) { m_radians += other.m_radians; return *this; }
+
+    /* Returns angle object from degrees. */
     static Angle FromDegrees(float32 degrees);
+    /* Returns angle object from radians. */
     static Angle FromRadians(float32 radians);
 
-    inline void fromDegrees(float32 degrees) { m_radians = Math::DegreesToRadians(degrees); }
+    /* Sets angle from degrees. */
+    void fromDegrees(float32 degrees);
+    /* Returns angle in degrees. */
+    float32 degrees() const;
+    /* Sets angle from radians. */
     inline void fromRadians(float32 radians) { m_radians = radians; }
-
+    /*! Returns angle in radians. */
     inline float32 radians() const { return m_radians; }
-    inline float32 degrees() const { return Math::RadiansToDegrees(m_radians); }
-
-    const Angle& operator += (const Angle& other) { m_radians += other.m_radians; return *this; }
+    /* Normalizes angle to [0-2PI) degrees interval. */
+    void normalize();
 
   private:
 

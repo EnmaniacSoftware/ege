@@ -1,5 +1,5 @@
-//#include "Core/EGEngine.h"
-#include "Core/Math/angle.h"
+#include "Core/Math/Angle.h"
+#include "Core/Math/Math.h"
 
 EGE_NAMESPACE
 
@@ -12,6 +12,7 @@ Angle::Angle(const Angle& angle) : m_radians(angle.radians())
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns angle object from degrees. */
 Angle Angle::FromDegrees(float32 degrees)
 {
   Angle angle;
@@ -19,10 +20,29 @@ Angle Angle::FromDegrees(float32 degrees)
   return angle;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns angle object from radians. */
 Angle Angle::FromRadians(float32 radians)
 {
   Angle angle;
   angle.fromRadians(radians);
   return angle;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets angle from degrees. */
+void Angle::fromDegrees(float32 degrees) 
+{ 
+  m_radians = Math::DegreesToRadians(degrees); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns angle in degrees. */
+float32 Angle::degrees() const 
+{ 
+  return Math::RadiansToDegrees(m_radians); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Normalizes angle to [0-2PI) degrees interval. */
+void Angle::normalize()
+{
+  m_radians = m_radians - Math::TWO_PI * floorf(m_radians / Math::TWO_PI);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
