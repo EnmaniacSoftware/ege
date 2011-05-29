@@ -2,6 +2,7 @@
 #define EGE_CORE_GRAPHICS_H
 
 #include "EGE.h"
+#include "EGEMap.h"
 #include "Core/ConfigParams.h"
 #include "Core/Graphics/Render/Renderer.h"
 
@@ -60,7 +61,7 @@ class Graphics : public Object
     /*! Current rendering context. NULL if none is set. */
     PRenderTarget m_currentRenderingContext;
     /*! Render targets sorted by priority. */
-    std::multimap<s32, PRenderTarget> m_renderTargets; 
+    EGEMultiMap<s32, PRenderTarget> m_renderTargets; 
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

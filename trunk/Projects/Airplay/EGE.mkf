@@ -91,6 +91,7 @@ files
  	(../../Sources/Core/Containers/Stl)
   List.h
   Map.h
+  MultiMap.h
 
 	["Core/Data"]
  	(../../Sources/Core/Data)

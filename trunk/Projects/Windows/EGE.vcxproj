@@ -100,6 +100,7 @@
     <ClInclude Include="..\..\Sources\Core\ConfigParams.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\List.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\Map.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Stl\MultiMap.h" />
     <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Debug.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Log.h" />

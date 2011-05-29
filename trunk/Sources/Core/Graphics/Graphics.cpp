@@ -70,7 +70,7 @@ Graphics::~Graphics()
 void Graphics::render()
 {
   // go thru all elements
-  for (std::multimap<s32, PRenderTarget>::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
+  for (EGEMultiMap<s32, PRenderTarget>::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
   {
     PRenderTarget target = iter->second;
 
@@ -118,13 +118,13 @@ bool Graphics::isValid() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Graphics::registerRenderTarget(PRenderTarget target)
 {
-  m_renderTargets.insert(std::multimap<s32, PRenderTarget>::value_type(target->priority(), target));
+  m_renderTargets.insert(EGEMultiMap<s32, PRenderTarget>::value_type(target->priority(), target));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Graphics::removeRenderTarget(const EGEString& name)
 {
   // go thru all elements
-  for (std::multimap<s32, PRenderTarget>::iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
+  for (EGEMultiMap<s32, PRenderTarget>::iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
   {
     // check if given render target has been found
     if (name == iter->second->name())
@@ -142,7 +142,7 @@ void Graphics::removeRenderTarget(const EGEString& name)
 PRenderTarget Graphics::renderTarget(const EGEString& name) const
 {
   // go thru all elements
-  for (std::multimap<s32, PRenderTarget>::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
+  for (EGEMultiMap<s32, PRenderTarget>::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
   {
     // check if given render target has been found
     if (name == iter->second->name())
@@ -157,7 +157,7 @@ PRenderTarget Graphics::renderTarget(const EGEString& name) const
 void Graphics::unregisterAllRenderTargets()
 {
   // go thru all elements
-  for (std::multimap<s32, PRenderTarget>::iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end();)
+  for (EGEMultiMap<s32, PRenderTarget>::iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end();)
   {
     // deallocate
     iter->second = NULL;

@@ -687,6 +687,9 @@
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointAttractBox2D_p.h">
       <Filter>Core\Physics\Box2D</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Containers\Stl\MultiMap.h">
+      <Filter>Core\Containers\stl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

@@ -1,15 +1,21 @@
-#ifndef EGE_MAP_H
-#define EGE_MAP_H
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#ifndef EGE_CORE_CONTAINER_MULTIMAP_H
+#define EGE_CORE_CONTAINER_MULTIMAP_H
 
 #include "EGE.h"
 
-#if EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
-#include "Core/Containers/Stl/Map.h"
-#include "Core/Containers/Stl/MultiMap.h"
-#endif // EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // EGE_MAP_H
+template <typename T, typename U>
+class EGEMultiMap : public std::multimap<T, U>
+{
+  public:
+
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
+
+#endif // EGE_CORE_CONTAINER_MULTIMAP_H
