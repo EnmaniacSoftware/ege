@@ -27,8 +27,8 @@ class TVector2
 		//void operator+=( const CVector2& cVector );
 		//void operator-=( const CVector2& cVector );
 
-  //  bool operator==( const CVector2& cVector ) const;
-  //  bool operator!=( const CVector2& cVector ) const;
+    inline bool operator==(const TVector2 vector) const;
+    inline bool operator!=(const TVector2 vector) const;
 
     T distanceTo(const TVector2& vector) const;
     T squaredDistanceTo(const TVector2& vector) const;
@@ -115,6 +115,18 @@ template <typename T>
 T TVector2<T>::squaredDistanceTo(const TVector2& vector) const
 {
   return (x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+bool TVector2<T>::operator==(const TVector2 vector) const
+{
+  return x == vector.x && y == vector.y;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+bool TVector2<T>::operator!=(const TVector2 vector) const
+{
+  return !(*this == vector);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

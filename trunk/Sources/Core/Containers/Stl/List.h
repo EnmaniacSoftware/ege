@@ -16,6 +16,10 @@ class EGEList : public std::vector<T>
     void remove(const T object);
     /* Returns last element. If list is empty, default value is returned. */
     const T last(const T& defaultValue) const;
+    /* Returns TRUE if given object is present. */
+    inline bool contains(const T& object) const;
+    /* Copies all data from given list. */
+    void copy(const EGEList& other);
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -35,6 +39,22 @@ template <typename T>
 const T EGEList<T>::last(const T& defaultValue) const
 {
   return (0 == this->size()) ? defaultValue : this->at(this->size() - 1);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if given object is present. */
+template <typename T>
+bool EGEList<T>::contains(const T& object) const
+{
+  typename EGEList<T>::const_iterator it = std::find(this->begin(), this->end(), object);
+  return (it != this->end());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Copies all data from given list. */
+template <typename T>
+void EGEList<T>::copy(const EGEList<T>& other)
+{
+  this->clear();
+  this->insert(this->begin(), other.begin(), other.end());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
