@@ -12,6 +12,9 @@ class EGEList : public std::vector<T>
 {
   public:
 
+    EGEList();
+    EGEList(const T& object);
+
     /* Removes given object from list. */
     void remove(const T object);
     /* Returns last element. If list is empty, default value is returned. */
@@ -20,8 +23,23 @@ class EGEList : public std::vector<T>
     inline bool contains(const T& object) const;
     /* Copies all data from given list. */
     void copy(const EGEList& other);
+    /* Appends given list. */
+    EGEList& operator << (const EGEList& other);
+    /* Appends given element. */
+    EGEList& operator << (const T& value);
 };
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+EGEList<T>::EGEList()
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+EGEList<T>::EGEList(const T& object)
+{
+  push_back(object);
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Removes given object from list. */
 template <typename T>
@@ -55,6 +73,22 @@ void EGEList<T>::copy(const EGEList<T>& other)
 {
   this->clear();
   this->insert(this->begin(), other.begin(), other.end());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Appends given list. */
+template <typename T>
+EGEList<T>& EGEList<T>::operator << (const EGEList<T>& other)
+{
+  this->insert(this->end(), other.begin(), other.end());
+  return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Appends given element. */
+template <typename T>
+EGEList<T>& EGEList<T>::operator << (const T& value)
+{
+  this->push_back(value);
+  return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
