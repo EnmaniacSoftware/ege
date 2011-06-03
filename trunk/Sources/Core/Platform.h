@@ -65,7 +65,7 @@
 
 #ifdef EGE_FEATURE_DEBUG
 
-#define EGE_ASSERT(cond, desc) Debug::Assert(cond, desc)
+#define EGE_ASSERT(cond, desc) Debug::Assert(#cond, desc)
 #define EGE_LOG(text) Debug::LogText(text)
 
 #else

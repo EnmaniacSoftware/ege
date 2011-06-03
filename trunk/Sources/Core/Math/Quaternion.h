@@ -2,6 +2,8 @@
 #define EGE_CORE_QUATERNION_H
 
 #include "EGE.h"
+#include "Core/Math/Vector3.h"
+#include "Core/Math/Angle.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -14,7 +16,7 @@ class TQuaternion
 
     TQuaternion();
     TQuaternion(T x, T y, T z, T w);
-    TQuaternion(const TQuaternion& cQuat);
+    TQuaternion(const TQuaternion& quat);
 //    TQuaternion(const TVector3<T>& cAxis, float fRadians);
 //    CQuaternion( const CMatrix3* pcMatrix );
 //    TQuaternion( const CVector3* pcAxisX, const CVector3* pcAxisY, const CVector3* pcAxisZ );
@@ -34,9 +36,14 @@ class TQuaternion
   //  void operator*=( float fNumber );
 		//void operator/=( float fNumber );
 
-  //  // creation methods
-  //  void create( const CVector3* pcAxis, float fRadians );                                    // creates from rotation along arbitrary axis
-  //  void create( const CMatrix3* pcMatrix );                                                  // creates from rotation matrix
+    /* Creates quaternion from rotation along arbitrary axis. */
+    void create(const TVector3<T>& axis, const Angle& angle);
+    /* Converts into rotation axis and angle. */
+    void convertTo(TVector3<T>& axis, Angle& angle) const;
+    /* Returns quaternion angle representation. */
+    inline Angle angle() const { return Angle::FromRadians(2.0f * Math::ACos(w)); }
+    
+    //  void create( const CMatrix3* pcMatrix );                                                  // creates from rotation matrix
   //  void create( const CVector3* pcAxisX, const CVector3* pcAxisY, const CVector3* pcAxisZ ); // creates from given axes
 
   //  // transformation related methods
@@ -61,7 +68,6 @@ class TQuaternion
 
   //  // conversion methods
   //  void convertTo( CMatrix3* pcMatrix ) const;                                               // converts into rotation matrix
-  //  void convertTo( CVector3* pcAxis, float& fRadians ) const;                                // converts into rotation axis and angle
   //  void convertTo( CVector3* pcAxes ) const;                                                 // converts into rotation axis and angle
 
   //  // manipulation methods
@@ -84,10 +90,10 @@ class TQuaternion
   //                                                                                            // fTime should be in [0..1] interval
 
 
-    T x;    // imaginary axis
-    T y;    // imaginary axis
-    T z;    // imaginary axis
-    T w;    // real axis
+    T x;
+    T y;
+    T z;
+    T w;
 
     static const TQuaternion<T> IDENTITY;
     static const TQuaternion<T> ZERO;
@@ -102,26 +108,76 @@ template <typename T>
 const TQuaternion<T> TQuaternion<T>::ZERO     = TQuaternion<T>(0, 0, 0, 0);
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T>
 TQuaternion<T>::TQuaternion() : x(0), y(0), z(0), w(0)
 {
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T>
 TQuaternion<T>::TQuaternion(T x, T y, T z, T w) : x(x), y(y), z(z), w(w)
 {
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T>
-TQuaternion<T>::TQuaternion(const TQuaternion& cQuat) : x(cQuat.x), y(cQuat.y), z(cQuat.z), w(cQuat.w)
+TQuaternion<T>::TQuaternion(const TQuaternion& quat) : x(quat.x), y(quat.y), z(quat.z), w(quat.w)
 {
 }
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates quaternion from rotation along arbitrary axis. */
+template <typename T>
+void TQuaternion<T>::create(const TVector3<T>& axis, const Angle& angle)
+{
+  // axis is unit length
+  // angle = A
+  // The quaternion representing the rotation is
+  //   q = cos(A / 2) + sin(A / 2) * (x * i + y * j + z * k)
 
+  // get half angle
+  float32 halfAngle = angle.radians() * 0.5f;
+
+  // calculate the sin(halfAngle) once for optimization
+	float32 sin = Math::Sin(halfAngle);
+		
+	// calculate the x, y and z of the quaternion
+	x = axis.x * sin;
+	y = axis.y * sin;
+	z = axis.z * sin;
+	w = Math::Cos(halfAngle);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Converts into rotation axis and angle. */
+template <typename T>
+void TQuaternion<T>::convertTo(TVector3<T>& axis, Angle& angle) const
+{
+  // calculate inverse length of imaginary axes
+  T invLength = 1.0 / (x * x + y * y + z * z);
+
+  // check if length is greater than error thershold
+  if (Math::DELTA < length)
+  {
+    // calculate axes
+    axis.x = x * invLength;
+    axis.y = y * invLength;
+    axis.z = z * invLength;
+
+    angle.fromRadians(2.0f * Math::ACos(w));
+  }
+  else
+  {
+    // length is 0 or errorous
+    axis.x = 0;
+    axis.y = 0;
+    axis.z = 0;
+
+    angle.fromRadians(0);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TQuaternion<T> operator*(const TQuaternion<T>& left, const TQuaternion<T>& right)
+{
+  return ;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

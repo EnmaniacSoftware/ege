@@ -79,7 +79,7 @@ bool Renderer::addForRendering(const Matrix4f& worldMatrix, PRenderComponent& co
   data.worldMatrix     = worldMatrix;
   data.renderComponent = component;
 
-  m_renderData.insert(std::map<s32, SRENDERDATA>::value_type(component->renderPriority(), data));
+  m_renderData.insert(std::map<s32, SRENDERDATA>::value_type(component->priority(), data));
 
   return true;
 }

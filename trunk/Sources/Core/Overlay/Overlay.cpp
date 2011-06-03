@@ -40,7 +40,7 @@ void Overlay::update(const Time& time)
 void Overlay::initialize()
 {
   m_physics = ege_new PhysicsComponent(app(), "overlay_" + name());
-  m_render  = ege_new RenderComponent(app(), "overlay_" + name());
+  m_render  = ege_new RenderComponent(app(), "overlay_" + name(), EGEGraphics::RENDER_PRIORITY_MAIN_OVERLAY);
 
   // add render buffers
   if (!m_render->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_POSITION_XYZ) ||
@@ -50,8 +50,6 @@ void Overlay::initialize()
     m_render  = NULL;
     m_physics = NULL;
   }
-
-  m_render->setRenderPriority(RenderComponent::RENDER_PRIORITY_MAIN_OVERLAY);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Invalidates object forcing it to be updated next time it's possible. */

@@ -26,12 +26,12 @@ PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB = NULL;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps primitive type to OpenGL compilant one. */
-static GLenum MapPrimitiveType(RenderComponent::PrimitiveType type)
+static GLenum MapPrimitiveType(EGEGraphics::ERenderPrimitiveType type)
 {
   switch (type)
   {
-    case RenderComponent::PRIMITIVE_TYPE_TRIANGLES: return GL_TRIANGLES;
-    case RenderComponent::PRIMITIVE_TYPE_LINES:     return GL_LINES;
+    case EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLES: return GL_TRIANGLES;
+    case EGEGraphics::RENDER_PRIMITIVE_TYPE_LINES:     return GL_LINES;
   }
 
   // default
@@ -105,8 +105,8 @@ void RendererPrivate::flush()
 
       switch (renderData.renderComponent->primitiveType())
       {
-        case RenderComponent::PRIMITIVE_TYPE_TRIANGLES: d_func()->m_triangleCount += (value / 3); break;
-        case RenderComponent::PRIMITIVE_TYPE_LINES: 
+        case EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLES: d_func()->m_triangleCount += (value / 3); break;
+        case EGEGraphics::RENDER_PRIMITIVE_TYPE_LINES: 
           
           // nothing 
           break;

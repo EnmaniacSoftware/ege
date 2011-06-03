@@ -83,7 +83,7 @@ void PhysicsComponentPrivate::setOrientation(const Quaternionf& orientation)
 {
   if (isValid())
   {
-    //body()->SetTransform(
+    body()->SetTransform(body()->GetPosition(), orientation.angle().radians());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -94,6 +94,7 @@ Quaternionf PhysicsComponentPrivate::orientation() const
 
   if (isValid())
   {
+    orient.create(Vector3f::UNIT_Z, Angle::FromRadians(body()->GetAngle()));
   }
 
   return orient;

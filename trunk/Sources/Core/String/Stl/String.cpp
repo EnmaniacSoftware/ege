@@ -76,6 +76,16 @@ const char* EGEString::toAscii() const
 /*! Converts to integer. If error is valid, it holds TRUE if error occured during the conversion. */
 s32 EGEString::toInt(bool* error) const
 {
+  if (empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return 0;
+  }
+
   const char* text = c_str();
   char* end;
 
@@ -93,7 +103,15 @@ s32 EGEString::toInt(bool* error) const
 /*! Converts to boolean. If error is valid, it holds TRUE if error occured during the conversion. */
 bool EGEString::toBool(bool* error) const
 {
-  EGE_UNUSED(error);
+  if (empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return false;
+  }
 
   // make lowercase copy
   EGEString copy = *this;
@@ -107,6 +125,16 @@ bool EGEString::toBool(bool* error) const
 /*! Converts to float. If error is valid, it holds TRUE if error occured during the conversion. */
 float32 EGEString::toFloat(bool* error) const
 {
+  if (empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return 0;
+  }
+
   const char* text = c_str();
   char* end;
 

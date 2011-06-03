@@ -2,6 +2,7 @@
 #define EGE_CORE_RENDERCOMPONENT_H
 
 #include "EGE.h"
+#include "EGEGraphics.h"
 #include "Core/Components/Component.h"
 #include "Core/Graphics/IndexBuffer.h"
 #include "Core/Graphics/VertexBuffer.h"
@@ -19,26 +20,12 @@ class RenderComponent : public IComponent
 {
   public:
 
-    RenderComponent(Application* app, const EGEString& name);
+    RenderComponent(Application* app, const EGEString& name, s32 priority = EGEGraphics::RENDER_PRIORITY_MAIN,
+                    EGEGraphics::ERenderPrimitiveType primitive = EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLES);
     virtual ~RenderComponent();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
-
-    enum RenderPriority
-    {
-      RENDER_PRIORITY_BACKGROUND       = 0,
-      RENDER_PRIORITY_MAIN             = 50,
-//      RENDER_PRIORITY_MAIN_PRE_OVERLAY = 95,
-      RENDER_PRIORITY_MAIN_OVERLAY     = 99,
-      RENDER_PRIORITY_MAIN_CURSOR      = 100
-    };
-
-    enum PrimitiveType
-    {
-      PRIMITIVE_TYPE_TRIANGLES = 0,
-      PRIMITIVE_TYPE_LINES
-    };
 
     /* IComponent override. Returns TRUE if component is valid. */
     virtual bool isValid() const override;
@@ -46,14 +33,10 @@ class RenderComponent : public IComponent
     inline PIndexBuffer indexBuffer() const { return m_indexBuffer; }
     /*! Returns vertex buffer. */  
     inline PVertexBuffer vertexBuffer() const { return m_vertexBuffer; }
-    /* Sets render priority. */
-    void setRenderPriority(RenderPriority priority);
     /*! Returns render priority. */
-    inline RenderPriority renderPriority() const { return m_renderPriority; }
-    /* Sets render primitive type. */
-    void setPrimitiveType(PrimitiveType type);
+    inline s32 priority() const { return m_priority; }
     /*! Returns render primitive type. */
-    inline PrimitiveType primitiveType() const { return m_primitiveType; }
+    inline EGEGraphics::ERenderPrimitiveType primitiveType() const { return m_primitiveType; }
     /*! Returns render material. */
     inline PMaterial material() const { return m_material; }
     /* Sets render material. */
@@ -66,9 +49,9 @@ class RenderComponent : public IComponent
     /*! Vertex buffer. */
     PVertexBuffer m_vertexBuffer;
     /*! Render priority. */
-    RenderPriority m_renderPriority;
+    s32 m_priority;
     /*! Render primitive type. */
-    PrimitiveType m_primitiveType;
+    EGEGraphics::ERenderPrimitiveType m_primitiveType;
     /*! Render material. */
     PMaterial m_material;
 };

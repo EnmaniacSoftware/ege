@@ -120,12 +120,12 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, ::float32 radius, const b2
 /*! b2DebugDraw override. */
 void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
-  PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawSegment");
+  PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawSegment", EGEGraphics::RENDER_PRIORITY_MAIN, 
+                                                       EGEGraphics::RENDER_PRIMITIVE_TYPE_LINES);
   if (component->isValid())
   {
     EGE::float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component->setPrimitiveType(RenderComponent::PRIMITIVE_TYPE_LINES);
     component->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_POSITION_XYZ);
     component->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_COLOR_RGBA);
 

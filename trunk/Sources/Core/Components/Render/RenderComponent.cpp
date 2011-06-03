@@ -12,8 +12,8 @@ EGE_DEFINE_NEW_OPERATORS(RenderComponent)
 EGE_DEFINE_DELETE_OPERATORS(RenderComponent)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderComponent::RenderComponent(Application* app, const EGEString& name) : IComponent(app, EGE_OBJECT_UID_RENDER_COMPONENT, name), 
-                                                                            m_renderPriority(RENDER_PRIORITY_MAIN), m_primitiveType(PRIMITIVE_TYPE_TRIANGLES)
+RenderComponent::RenderComponent(Application* app, const EGEString& name, s32 priority, EGEGraphics::ERenderPrimitiveType primitive) 
+: IComponent(app, EGE_OBJECT_UID_RENDER_COMPONENT, name), m_priority(priority), m_primitiveType(primitive)
 {
   m_indexBuffer  = ege_new IndexBuffer(app);
   m_vertexBuffer = ege_new VertexBuffer(app);
@@ -23,18 +23,6 @@ RenderComponent::~RenderComponent()
 {
   m_indexBuffer  = NULL;
   m_vertexBuffer = NULL;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets render priority. */
-void RenderComponent::setRenderPriority(RenderPriority priority)
-{
-  m_renderPriority = priority;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets render primitive type. */
-void RenderComponent::setPrimitiveType(PrimitiveType type)
-{
-  m_primitiveType = type;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets render material. */
