@@ -33,7 +33,7 @@ PhysicsComponent::~PhysicsComponent()
 /*! Sets position vector. */
 void PhysicsComponent::setPosition(const Vector4f& position)
 {
-  EGE_ASSERT(isValid(), "No private");
+  EGE_ASSERT(isValid());
   if (isValid())
   {
     p_func()->setPosition(position);
@@ -45,7 +45,7 @@ void PhysicsComponent::setPosition(const Vector4f& position)
 /*! Returns position vector. */
 Vector4f PhysicsComponent::position() const
 {
-  EGE_ASSERT(isValid(), "No private");
+  EGE_ASSERT(isValid());
   if (isValid())
   {
     return p_func()->position();
@@ -57,7 +57,7 @@ Vector4f PhysicsComponent::position() const
 /*! Sets orientation quaternion. */
 void PhysicsComponent::setOrientation(const Quaternionf& orientation)
 {
-  EGE_ASSERT(isValid(), "No private");
+  EGE_ASSERT(isValid());
   if (isValid())
   {
     p_func()->setOrientation(orientation);
@@ -69,7 +69,7 @@ void PhysicsComponent::setOrientation(const Quaternionf& orientation)
 /*! Returns orientation quaternion. */
 Quaternionf PhysicsComponent::orientation() const
 {
-  EGE_ASSERT(isValid(), "No private");
+  EGE_ASSERT(isValid());
   if (isValid())
   {
     return p_func()->orientation();
@@ -85,7 +85,7 @@ Quaternionf PhysicsComponent::orientation() const
 */
 void PhysicsComponent::applyForce(const Vector4f& force, const Vector4f& worldPos)
 {
-  EGE_ASSERT(isValid(), "No private");
+  EGE_ASSERT(isValid());
   if (isValid())
   {
     p_func()->applyForce(force, worldPos);
@@ -102,7 +102,7 @@ void PhysicsComponent::applyForce(const Vector4f& force, const Vector4f& worldPo
 */
 void PhysicsComponent::applyLinearImpulse(const Vector4f& impulse, const Vector4f& worldPos)
 {
-  EGE_ASSERT(isValid(), "No private");
+  EGE_ASSERT(isValid());
   if (isValid())
   {
     return p_func()->applyLinearImpulse(impulse, worldPos);
@@ -114,7 +114,7 @@ void PhysicsComponent::applyLinearImpulse(const Vector4f& impulse, const Vector4
 /*! Returns force vector. */
 Vector4f PhysicsComponent::force() const
 {
-  EGE_ASSERT(isValid(), "No private");
+  EGE_ASSERT(isValid());
   if (isValid())
   {
     return p_func()->force();
@@ -126,7 +126,7 @@ Vector4f PhysicsComponent::force() const
 /*! Sets mass. */
 void PhysicsComponent::setMass(EGE::float32 mass)
 {
-  EGE_ASSERT(isValid(), "No private");
+  EGE_ASSERT(isValid());
   if (isValid())
   {
     p_func()->setMass(mass);
@@ -150,7 +150,7 @@ void PhysicsComponent::setMass(EGE::float32 mass)
 /*! Returns mass. */
 EGE::float32 PhysicsComponent::mass() const
 {
-  EGE_ASSERT(isValid(), "No private");
+  EGE_ASSERT(isValid());
   if (isValid())
   {
     return p_func()->mass();
@@ -162,7 +162,7 @@ EGE::float32 PhysicsComponent::mass() const
 /*! Sets linear velocity vector. */
 void PhysicsComponent::setLinearVelocity(const Vector4f& velocity)
 {
-  EGE_ASSERT(isValid(), "No private");
+  EGE_ASSERT(isValid());
   if (isValid())
   {
     p_func()->setLinearVelocity(velocity);
@@ -174,7 +174,7 @@ void PhysicsComponent::setLinearVelocity(const Vector4f& velocity)
 /*! Returns linear velocity vector. */
 Vector4f PhysicsComponent::linearVelocity() const
 {
-  EGE_ASSERT(isValid(), "No private");
+  EGE_ASSERT(isValid());
   if (isValid())
   {
     return p_func()->linearVelocity();

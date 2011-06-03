@@ -13,7 +13,7 @@ class Debug
   public:
 
     static void Deinit();
-    static void Assert(bool condition, const char* description);
+    static void Assert(const char* description);
     static void LogText(const EGEString& text);
 
   private:

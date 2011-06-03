@@ -86,7 +86,7 @@ EGEResult DataBuffer::setCapacity(s64 newCapacity)
 /*! Writes given data at provided offset to buffer. Returns number of data written. */
 s64 DataBuffer::write(void* data, s64 size)
 {
-  EGE_ASSERT(0 <= size && data, "Invalid params");
+  EGE_ASSERT(0 <= size && data);
 
   // check if there is NO enough capacity for new data
   if (size + writeOffset() >= capacity())
@@ -115,7 +115,7 @@ s64 DataBuffer::write(void* data, s64 size)
 /*! Reads given amount of data from buffer. Returns number of data read. */
 s64 DataBuffer::read(void* data, s64 size)
 {
-  EGE_ASSERT(0 <= size && data, "Invalid params");
+  EGE_ASSERT(0 <= size && data);
 
   // make sure only valid data is read
   size = Math::Min(this->size(), size);

@@ -42,7 +42,9 @@ class TQuaternion
     void convertTo(TVector3<T>& axis, Angle& angle) const;
     /* Returns quaternion angle representation. */
     inline Angle angle() const { return Angle::FromRadians(2.0f * Math::ACos(w)); }
-    
+    /* Multiplies current quaternion by given one. */
+		TQuaternion multiply(const TQuaternion& quat) const;
+
     //  void create( const CMatrix3* pcMatrix );                                                  // creates from rotation matrix
   //  void create( const CVector3* pcAxisX, const CVector3* pcAxisY, const CVector3* pcAxisZ ); // creates from given axes
 
@@ -153,7 +155,7 @@ void TQuaternion<T>::convertTo(TVector3<T>& axis, Angle& angle) const
   T invLength = 1.0 / (x * x + y * y + z * z);
 
   // check if length is greater than error thershold
-  if (Math::DELTA < length)
+  if (Math::DELTA < invLength)
   {
     // calculate axes
     axis.x = x * invLength;
@@ -173,10 +175,24 @@ void TQuaternion<T>::convertTo(TVector3<T>& axis, Angle& angle) const
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Multiplies current quaternion by given one. */
+template <typename T>
+TQuaternion<T> TQuaternion<T>::multiply(const TQuaternion<T>& quat) const
+{
+  TVector3<T> out;
+  TVector3<T> vec1(x, y, z);
+  TVector3<T> vec2(quat.x, quat.y, quat.z);
+
+  // calculate all coordinates
+  out = vec2 * w + vec1 * quat.w + vec1.crossProduct(vec2); 
+
+  return TQuaternion(out.x, out.y, out.z, w * quat.w - vec1.dotProduct(vec2));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 inline TQuaternion<T> operator*(const TQuaternion<T>& left, const TQuaternion<T>& right)
 {
-  return ;
+  return left.multiply(right);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

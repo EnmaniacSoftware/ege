@@ -2,6 +2,7 @@
 #define EGE_CORE_VECTOR3_H
 
 #include "EGE.h"
+#include "Core/Math/Math.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -14,45 +15,26 @@ class TVector3
 
     TVector3();
     TVector3(T x, T y, T z);
-    TVector3(const TVector3& cVector);
+    TVector3(const TVector3& vector);
 
-		//CVector3 operator=( const CVector3& cVector );
-		//CVector3 operator+( const CVector3& cVector ) const;
-		//CVector3 operator-( const CVector3& cVector ) const;
-		//CVector3 operator*( const CVector3& cVector ) const;
-		//CVector3 operator*( float fNumber ) const;
-		//CVector3 operator/( float fNumber ) const;
-  //  CVector3 operator-( void ) const;
+		inline void operator+=(const TVector3& vector);
+		inline void operator-=(const TVector3& vector);
 
-		inline void operator+=(const TVector3& cVector);
-		inline void operator-=(const TVector3& cVector);
-		//void operator*=( float fNumber );
-		//void operator/=( float fNumber );
-
-  //  bool operator==( const CVector3& cVector ) const;
-  //  bool operator!=( const CVector3& cVector ) const;
-
-   inline void set(T x, T y, T z);
-
-   inline T getLength() const;
-   inline T getLengthSquare() const;
+    /*! Sets vector data. */
+    inline void set(T x, T y, T z) { this->x = x; this->y = y; this->z = z; }
+    /*! Returns vector length. */
+    inline T length() const { return Math::Sqrt(lengthSquared()); }
+    /*! Returns vector sequared length. */
+    inline T lengthSquared() const { return (x * x) + (y * y) + (z * z); }
+    /* Normalizes vector. */
+ 	  void normalize();
+    /*! Returns DOT product between current and given vectors. */
+    inline T dotProduct(const TVector3& vector) const { return x * vector.x + y * vector.y + z * vector.z; }
+    /* Returns CROSS product between current and given vectors. */
+    TVector3 crossProduct(const TVector3& vector) const;
 
   //  // normalization related methods
 		//CVector3 getNormalized( void ) const;                                                     // gets normalized vector
-	 inline void normalize();
-
-  //  // DOT product related methods
-  //  inline float getDotProduct( const CVector3& cVector ) const                               // returns DOT product between vectors
-  //  {
-  //    return x*cVector.x+y*cVector.y+z*cVector.z;
-  //  }
-
-  //  inline float absDotProduct( const CVector3& cVector ) const                               // returns absolute DOT product between vectors
-  //  {
-  //    return Math::FastAbs( x*cVector.x )+
-  //           Math::FastAbs( y*cVector.y )+
-  //           Math::FastAbs( z*cVector.z );
-  //  }
 
   //  // CROSS product related methods
   //  inline CVector3 CVector3::getCrossProduct( const CVector3& cVector ) const                // gets cross product of vectors
@@ -146,35 +128,16 @@ TVector3<T>::TVector3(T x, T y, T z) : x(x), y(y), z(z)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector3<T>::TVector3(const TVector3& cVector) : x(cVector.x), y(cVector.y), z(cVector.z)
+TVector3<T>::TVector3(const TVector3& vector) : x(vector.x), y(vector.y), z(vector.z)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-void TVector3<T>::set(T x, T y, T z)
-{ 
-  this->x = x; 
-  this->y = y; 
-  this->z = z; 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-T TVector3<T>::getLength() const 
-{ 
-  return Math::Sqrt(getLengthSquare()); 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-T TVector3<T>::getLengthSquare() const 
-{ 
-  return (x * x) + (y * y) + (z * z); 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Normalizes vector. */
 template <typename T>
 void TVector3<T>::normalize()
 {
   // get length
-  T length = getLength();
+  T length = this->length();
 
   // check if can be done
   if (Math::DELTA <= length)
@@ -187,19 +150,38 @@ void TVector3<T>::normalize()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TVector3<T>::operator+=(const TVector3<T>& cVector)
+void TVector3<T>::operator+=(const TVector3<T>& vector)
 {
-  x += cVector.x;
-  y += cVector.y;
-  z += cVector.z;
+  x += vector.x;
+  y += vector.y;
+  z += vector.z;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TVector3<T>::operator-=(const TVector3<T>& cVector)
+void TVector3<T>::operator-=(const TVector3<T>& vector)
 {
-  x -= cVector.x;
-  y -= cVector.y;
-  z -= cVector.z;
+  x -= vector.x;
+  y -= vector.y;
+  z -= vector.z;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns CROSS product between current and given vectors. */
+template <typename T>
+TVector3<T> TVector3<T>::crossProduct(const TVector3<T>& vector) const 
+{ 
+  return TVector3<T>((y * vector.z) - (z * vector.y), (z * vector.x) - (x * vector.z), (x * vector.y) - (y * vector.x)); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TVector3<T> operator+(const TVector3<T>& left, const TVector3<T>& right)
+{
+  return TVector3<T>(left.x + right.x, left.y + right.y, left.z + left.z);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TVector3<T> operator*(const TVector3<T>& left, T scalar)
+{
+  return TVector3<T>(left.x * scalar, left.y * scalar, left.z * scalar);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

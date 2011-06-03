@@ -30,7 +30,7 @@ PhysicsJointDistance::~PhysicsJointDistance()
 /*! Sets natural length. */
 void PhysicsJointDistance::setLength(EGE::float32 length)
 {
-  EGE_ASSERT(NULL != p_func(), "No private");
+  EGE_ASSERT(NULL != p_func());
 
   if (isValid())
   {
@@ -41,7 +41,7 @@ void PhysicsJointDistance::setLength(EGE::float32 length)
 /*! Returns natural length. */
 EGE::float32 PhysicsJointDistance::length() const
 {
-  EGE_ASSERT(NULL != p_func(), "No private");
+  EGE_ASSERT(NULL != p_func());
 
   if (isValid())
   {

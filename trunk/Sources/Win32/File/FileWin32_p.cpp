@@ -68,7 +68,7 @@ void FilePrivate::close()
 /// @return Returns number of bytes read.
 s64 FilePrivate::read(DataBuffer* dst, s64 size)
 {
-  EGE_ASSERT(dst && (0 <= size) , "Invalid pointer");
+  EGE_ASSERT(dst && (0 <= size));
 
   // store current write offset in data buffer
   s64 writeOffset = dst->writeOffset();
@@ -95,7 +95,7 @@ s64 FilePrivate::read(DataBuffer* dst, s64 size)
     {
       // this is not error, however, we need to reflect real number of bytes read in buffer itself
       // NOTE: call below should never fail as we r effectively shirnking the data size
-      EGE_ASSERT(EGE_SUCCESS == dst->setSize((s64) readCount), "Shrinking the buffer failed!");
+      EGE_ASSERT(EGE_SUCCESS == dst->setSize((s64) readCount));
     }
     else
     {
@@ -118,7 +118,7 @@ s64 FilePrivate::read(DataBuffer* dst, s64 size)
 /// @return Returns number of bytes written.
 s64 FilePrivate::write(DataBuffer* dst, s64 size)
 {
-  EGE_ASSERT(dst && (0 <= size) , "Invalid pointer");
+  EGE_ASSERT(dst && (0 <= size));
 
   if (!isOpen())
   {

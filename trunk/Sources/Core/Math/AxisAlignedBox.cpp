@@ -35,8 +35,7 @@ AxisAlignedBox::~AxisAlignedBox()
 
 void AxisAlignedBox::setExtents(const Vector4f& min, const Vector4f& max)
 {
-  EGE_ASSERT(min.x <= max.x && min.y <= max.y && min.z <= max.z, 
-             "The minimum corner of the box must be less than or equal to maximum corner");
+  EGE_ASSERT(min.x <= max.x && min.y <= max.y && min.z <= max.z);
 
   m_extent = EXTENT_FINITE;
   m_minimum = min;

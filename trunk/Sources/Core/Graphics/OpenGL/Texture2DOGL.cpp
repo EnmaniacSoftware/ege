@@ -93,7 +93,7 @@ EGEResult Texture2D::create(const EGEString& path)
     
     default:
 
-      EGE_ASSERT(true, "Unknown pixel format!");
+      EGE_ASSERT(false);
   }
 
   // determine texture format

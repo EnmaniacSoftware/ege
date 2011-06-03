@@ -3,6 +3,10 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+inline void ege_noop() {}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 // Available platform defines
 // EGE_PLATFORM_WIN32
 // EGE_PLATFORM_AIRPLAY
@@ -65,13 +69,13 @@
 
 #ifdef EGE_FEATURE_DEBUG
 
-#define EGE_ASSERT(cond, desc) Debug::Assert(#cond, desc)
+#define EGE_ASSERT(cond) ((!(cond)) ? Debug::Assert(#cond) : ege_noop())
 #define EGE_LOG(text) Debug::LogText(text)
 
 #else
 
-#define EGE_ASSERT(cond, desc)
-#define EGE_LOG(text)
+#define EGE_ASSERT(cond) ege_noop()
+#define EGE_LOG(text) ege_noop()
 
 #endif // EGE_FEATURE_DEBUG
 

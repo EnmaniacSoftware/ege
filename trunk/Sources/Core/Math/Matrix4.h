@@ -30,13 +30,14 @@ class TMatrix4
     inline const T&  operator()(u32 column, u32 row) const;
     inline T&        operator()(u32 column, u32 row);
 
+    /* Multiplies current matrix by given one. */
+    TMatrix4<T> multiply(const TMatrix4<T>& matrix) const;
+    /* Returns transposed matrix. */
+    inline TMatrix4<T> transposed() const;
+    /* Returns TRUE if matrix is affine. */
     inline bool isAffine() const;
-
-    inline TMatrix4<T> multiply(const TMatrix4<T>& matrix) const;
-  //  CMatrix4 concatenateAffine( const CMatrix4& cMatrix ) const;                                      // multiplies affine matrices
-
-
-    inline TMatrix4<T> getTransposed() const;
+    
+    //  CMatrix4 concatenateAffine( const CMatrix4& cMatrix ) const;                                      // multiplies affine matrices
 
   //  CMatrix4 getInverse( void ) const;                                                                // gets inversed matrix
 
@@ -138,6 +139,7 @@ T& TMatrix4<T>::operator()(u32 column, u32 row)
   return data[column * 4 + row]; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if matrix is affine. */
 template <typename T>
 bool TMatrix4<T>::isAffine() const
 {
@@ -145,6 +147,7 @@ bool TMatrix4<T>::isAffine() const
   return (0 == data[3]) && (0 == data[7]) && (0 == data[11]) && (1 == data[15]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Multiplies current matrix by given one. */
 template <typename T>
 TMatrix4<T> TMatrix4<T>::multiply(const TMatrix4<T>& matrix) const
 {
@@ -177,6 +180,7 @@ TMatrix4<T> TMatrix4<T>::multiply(const TMatrix4<T>& matrix) const
   return newMatrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns transposed matrix. */
 template <typename T>
 TMatrix4<T> TMatrix4<T>::transposed() const
 {

@@ -1,14 +1,10 @@
-//#include "Core/EGEngine.h"
 #include "Core/Debug/Debug.h"
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Debug::Assert(bool condition, const char* description)
+void Debug::Assert(const char* description)
 {
-  if (!condition)
-  {
-    assert(description);
-  }
+  assert(description);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

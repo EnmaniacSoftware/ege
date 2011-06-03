@@ -67,8 +67,7 @@ const Matrix4f& Camera::viewMatrix()
     Math::Convert(m_viewMatrix, physics()->orientation());
 
     // calculate position (translation)
-    Vector4f position = physics()->position();
-    Math::Transform(position, m_viewMatrix.getTransposed());
+    Vector4f position = Math::Transform(physics()->position(), m_viewMatrix.transposed());
 
     // store translation in modelview matrix
     m_viewMatrix.data[12] = -position.x;
