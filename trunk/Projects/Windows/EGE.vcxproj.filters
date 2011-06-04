@@ -156,12 +156,6 @@
     <ClCompile Include="..\..\Sources\Core\Event\EventManager.cpp">
       <Filter>Core\Event</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\Camera.cpp">
-      <Filter>Core\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\Color.cpp">
-      <Filter>Core\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp">
       <Filter>Core\Graphics</Filter>
     </ClCompile>
@@ -365,6 +359,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointAttractBox2D_p.cpp">
       <Filter>Core\Physics\Box2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Color.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Camera.cpp">
+      <Filter>Core\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

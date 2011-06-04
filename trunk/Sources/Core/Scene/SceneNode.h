@@ -66,6 +66,15 @@ class SceneNode : public Object //ListenerContainer<ISceneNodeListener>
     /* Removes all objects. */
     void removeAllAttachedObjects();
 
+    /* Returns TRUE if node is to visible.
+     * @note  Visibility referes to whether node is going to be processed and rendered. 
+     */
+    inline bool isVisible() const { return m_visible; }
+    /* Sets visibility flag.
+     * @note  Visibility referes to whether node is going to be processed and rendered. 
+     */
+    void setVisible(bool set);
+    
     //typedef hash_map<string, SceneNodeObject*> AttachedObjectsMap;
 
 
@@ -78,10 +87,6 @@ class SceneNode : public Object //ListenerContainer<ISceneNodeListener>
     //AttachedObjectsMap& getAttachedObjects( void );                                   // gets attached objects
     //SceneNodeObject*   detachObject( const string& strName );                        // detaches given object from node
     //void                detachAllObjects( void );                                     // detaches all objects from node
-
-    //// visbility related methods
-    //bool isVisible( void ) const { return m_bVisible; }                               // returns TRUE if node is visible
-    //void setVisible( bool bEnable );                                                  // shows/hides the node (from rendering/processing point of view)
 
     //// position related methods
     //inline const CVector3& getPosition( void ) const { return m_cPosition; }          // gets position
@@ -119,9 +124,10 @@ class SceneNode : public Object //ListenerContainer<ISceneNodeListener>
     PPhysicsComponent m_physics;
     /*! Cached combined world matrix from all self and all parent nodes. */
     Matrix4f m_worldMatrix;
+    /*! Visibility flag. */
+    bool m_visible;
 
     //bool m_bChildrenNeedUpdate;                     // TRUE if child nodes needs to be updated
-    //bool m_bVisible;                                // TRUE if node is visible
     //bool m_bNeedUpdate;                             // TRUE if update is needed
     //bool m_bTransformNeedUpdate;                    // TRUE if cached world transform needs to be updated
 

@@ -17,7 +17,7 @@ EGE_DEFINE_DELETE_OPERATORS(SceneNode)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SceneNode::SceneNode(const EGEString& name, SceneNode* parent, SceneManager* manager) : Object(manager->app()), m_name(name), m_manager(manager), 
-                                                                                        m_parent(parent)
+                                                                                        m_parent(parent), m_visible(true)
 {
   m_physics = ege_new PhysicsComponent(app(), "scenenode");
 }
@@ -248,7 +248,14 @@ void SceneNode::update(const Time& time)
   // reset flags
   //m_bNeedUpdate = false;
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Sets visibility flag.
+ * @note  Visibility referes to whether node is going to be processed and rendered. 
+ */
+void SceneNode::setVisible(bool set)
+{
+  m_visible = set;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //
@@ -445,14 +452,12 @@ void SceneNode::update(const Time& time)
 //
 bool SceneNode::addForRendering(PCamera& pCamera, Renderer* pcRenderer) const
 {  
-
-  //// check if we are NOT visible by camera
-  //if ( m_bVisible == false || pcCamera->isVisible( m_cWorldBS ) == false || 
-  //     pcCamera->isVisible( m_cWorldAABB ) == false )
-  //{
-  //  // done
-  //  return true;
-  //}
+  // check if we are NOT visible by camera
+  if (!isVisible() /*|| pcCamera->isVisible( m_cWorldBS ) == false || pcCamera->isVisible( m_cWorldAABB ) == false */)
+  {
+    // done
+    return true;
+  }
 
   //// ok we are visible, notify about that
   //notifyVisible();

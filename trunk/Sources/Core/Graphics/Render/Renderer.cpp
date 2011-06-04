@@ -114,6 +114,7 @@ void Renderer::setViewMatrix(const Matrix4f& matrix)
 //  return pObject;
 //}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Resets statistics. */
 void Renderer::resetStats()
 {
   m_batchCount    = 0;

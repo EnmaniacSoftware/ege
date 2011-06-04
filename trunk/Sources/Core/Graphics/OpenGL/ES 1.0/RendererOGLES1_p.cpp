@@ -57,7 +57,7 @@ void RendererPrivate::clearViewport(const PViewport& viewport)
   if (uiClearBuffersMask & Viewport::BUFFER_TYPE_COLOR)
   {
     const Color& clearColor = viewport->clearColor();
-    glClearColor(clearColor.m_red, clearColor.m_green, clearColor.m_blue, clearColor.m_alpha);
+    glClearColor(clearColor.red, clearColor.green, clearColor.blue, clearColor.alpha);
 
     bits |= GL_COLOR_BUFFER_BIT;
   }

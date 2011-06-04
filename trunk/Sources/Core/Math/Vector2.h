@@ -50,9 +50,12 @@ class TVector2
 
   //  inline CVector2 getPerpendicular( void ) const { return CVector2( -y, x ); }  // gets perpendicular vector
 
+  public:
 
     T x;
 		T y;
+
+  public:
 
     static const TVector2<T> ZERO;
     static const TVector2<T> ONE;

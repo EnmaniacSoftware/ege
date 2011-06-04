@@ -44,15 +44,18 @@ class Renderer : public Object
 
     bool addForRendering(const Matrix4f& worldMatrix, PRenderComponent& component);
 
+    /* Resets statistics. */
+    void resetStats();
+    /*! Returns number of batches rendered last frame. */
+    inline u32 batchCount() const { return m_batchCount; }
+    /*! Returns numberh of triangles rendered last frame. */
+    inline u32 triangleCount() const { return m_triangleCount; }
+
     //PRenderComponent addComponent(const EGEString& name = "");
 
 //    void setViewport(PViewport pViewport);
     void setProjectionMatrix(const Matrix4f& matrix);
     void setViewMatrix(const Matrix4f& matrix);
-
-    void       resetStats();
-    inline u32 batchCount() const { return m_batchCount; }
-    inline u32 triangleCount() const { return m_triangleCount; }
 
     // scene manager related methods
 //    void setSceneManager( const SceneManager* pcSceneManager );                              // sets scene manager which is in use

@@ -1,4 +1,3 @@
-//#include "Core/EGEngine.h"
 #include "Core/Graphics/Color.h"
 
 EGE_NAMESPACE

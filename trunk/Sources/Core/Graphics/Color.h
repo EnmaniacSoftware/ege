@@ -11,21 +11,21 @@ class Color
 {
   public:
 
-    Color(float red = 1.0f, float green = 1.0f, float blue = 1.0f, float alpha = 1.0f) : m_red(red), m_green(green), m_blue(blue), m_alpha(alpha) {}
+    Color(float32 red = 1.0f, float32 green = 1.0f, float32 blue = 1.0f, float32 alpha = 1.0f) : red(red), green(green), blue(blue), alpha(alpha) {}
 
     inline Color& operator=(const Color& color)
     {
-      m_red   = color.m_red;
-      m_green = color.m_green;
-      m_blue  = color.m_blue;
-      m_alpha = color.m_alpha;
+      red   = color.red;
+      green = color.green;
+      blue  = color.blue;
+      alpha = color.alpha;
       return *this;
     }
     
     inline bool operator==(const Color& color) const
     {
       // check if NOT equal
-      return !(m_red != color.m_red || m_green != color.m_green || m_blue != color.m_blue || m_alpha != color.m_alpha);
+      return !(red != color.red || green != color.green || blue != color.blue || alpha != color.alpha);
     }
 
     inline bool operator!=(const Color& color) const
@@ -33,14 +33,18 @@ class Color
       return !operator==(color);
     }
 
+  public:
+
     /*! Red component value. */
-    float m_red;
+    float32 red;
     /*! Green component value/ */
-    float m_green;
+    float32 green;
     /*! Blue component value. */
-    float m_blue;
+    float32 blue;
     /*! Alpha component value. */
-    float m_alpha;
+    float32 alpha;
+
+  public:
 
     static const Color BLACK;
     static const Color WHITE;
