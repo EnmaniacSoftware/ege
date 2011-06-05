@@ -22,6 +22,9 @@ class EGEString : public std::string
    	EGEString& operator+=(const char* string);
    	EGEString& operator+=(const EGEString& string);
 
+    /* Create new object from formatted text. */
+    static EGEString Format(const char* text, ...);
+    /* Creates new object from given number. */
     static EGEString FromNumber(s32 value);
 
     /* Creates formatted text. */

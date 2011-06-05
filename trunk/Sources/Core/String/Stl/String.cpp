@@ -149,6 +149,7 @@ float32 EGEString::toFloat(bool* error) const
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates new object from given number. */
 EGEString EGEString::FromNumber(s32 value)
 {
   std::stringstream stream;
@@ -169,5 +170,22 @@ void EGEString::format(const char* text, ...)
 	va_end(arg);
 
   *this = buffer;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Create new object from formatted text. */
+EGEString EGEString::Format(const char* text, ...)
+{
+  EGEString out;
+
+  char buffer[256];
+
+	va_list arg;
+	va_start(arg, text);
+	vsprintf(buffer, text, arg);
+	va_end(arg);
+
+  out = buffer;
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
