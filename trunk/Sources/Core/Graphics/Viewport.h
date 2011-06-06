@@ -67,10 +67,10 @@ class Viewport : public Object
     /* Renders viewport from associated camera's point of view. */
     void render();
 
-    /* Sets triangle count rendered last frame. */
-    void setTriangleCount(u32 count);
-    /*! Returns triangle count rendered last frame. */
-    inline u32 triangleCount() const { return m_triangleCount; }
+    /* Sets vertex count rendered last frame. */
+    void setVertexCount(u32 count);
+    /*! Returns vertex count rendered last frame. */
+    inline u32 vertexCount() const { return m_vertexCount; }
     /*! Returns batch count rendered last frame. */
     inline u32 batchCount() const { return m_batchCount; }
     /* Sets batch count rendered last frame. */
@@ -90,8 +90,8 @@ class Viewport : public Object
     PolygonMode m_polygonMode;
     /*! Buffers masks for clearing. */
     BufferType m_clearBufferTypes;
-    /*! Number of triangles rendered last frame. */
-    u32 m_triangleCount;
+    /*! Number of vertices rendered last frame. */
+    u32 m_vertexCount;
     /*! Number of batches rendered last frame. */
     u32 m_batchCount;
     /*! Overlays flag. If TRUE overlays will be rendered for this viewport. */

@@ -5,6 +5,7 @@
 // Vertex data is stored one after another (interleaved)
 
 #include "EGE.h"
+#include "EGEList.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -60,7 +61,7 @@ class VertexBuffer : public Object
     u32 bufferCount(ArrayType type) const;
 
     /* Returns current buffer semantics. */
-    const std::vector<SBUFFERSEMANTIC>& semantics() const;
+    const EGEList<SBUFFERSEMANTIC>& semantics() const;
 
     /* Returns number of allocated vertices. */
     u32 vertexCount() const;
@@ -81,7 +82,7 @@ class VertexBuffer : public Object
     /*! Cached vertex size (in bytes), 0 if not calculated yet. */
     mutable u32 m_vertexSize;
     /*! Buffer semantics. */
-    std::vector<SBUFFERSEMANTIC> m_semantics;
+    EGEList<SBUFFERSEMANTIC> m_semantics;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -10,7 +10,7 @@ EGE_DEFINE_NEW_OPERATORS(RenderTarget)
 EGE_DEFINE_DELETE_OPERATORS(RenderTarget)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderTarget::RenderTarget(Application* app, const ConfigParams& params) : Object(app), m_triangleCount(0), m_batchCount(0)
+RenderTarget::RenderTarget(Application* app, const ConfigParams& params) : Object(app), m_vertexCount(0), m_batchCount(0)
 {
   // decompose param list
   ConfigParams::const_iterator iterName = params.find(EGE_RENDER_TARGET_PARAM_NAME);
@@ -45,7 +45,7 @@ PViewport RenderTarget::addViewport(const EGEString& name, PCamera pCamera)
 /*! Removes viewport with the given name from target. */
 void RenderTarget::removeViewport(const EGEString& name)
 {
-  for (std::vector<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
+  for (EGEList<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
   {
     PViewport viewport = *iter;
 
@@ -62,7 +62,7 @@ void RenderTarget::removeViewport(const EGEString& name)
 /*! Returns viewport with the given name associated with target. */
 PViewport RenderTarget::viewport(const EGEString& name) const
 {
-  for (std::vector<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
+  for (EGEList<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
   {
     PViewport viewport = *iter;
 
@@ -78,7 +78,7 @@ PViewport RenderTarget::viewport(const EGEString& name) const
 /*! Removes all viewport associated with target. */
 void RenderTarget::removeAllViewports()
 {
-  for (std::vector<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end();)
+  for (EGEList<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end();)
   {
     *iter = NULL;
 
@@ -91,10 +91,10 @@ void RenderTarget::render()
 {
   // reset stats
   m_batchCount    = 0;
-  m_triangleCount = 0;
+  m_vertexCount = 0;
 
   // go thru all viewports
-  for (std::vector<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
+  for (EGEList<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
   {
     PViewport viewport = *iter;
 
@@ -102,8 +102,8 @@ void RenderTarget::render()
     viewport->render();
 
     // update stats
-    m_batchCount    += viewport->batchCount();
-    m_triangleCount += viewport->triangleCount();
+    m_batchCount  += viewport->batchCount();
+    m_vertexCount += viewport->vertexCount();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

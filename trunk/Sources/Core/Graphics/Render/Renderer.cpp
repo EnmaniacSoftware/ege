@@ -79,16 +79,18 @@ bool Renderer::addForRendering(const Matrix4f& worldMatrix, PRenderComponent& co
   data.worldMatrix     = worldMatrix;
   data.renderComponent = component;
 
-  m_renderData.insert(std::map<s32, SRENDERDATA>::value_type(component->priority(), data));
+  m_renderData.insert(EGEMap<s32, SRENDERDATA>::value_type(component->priority(), data));
 
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets projection matrix. */
 void Renderer::setProjectionMatrix(const Matrix4f& matrix)
 {
   m_projectionMatrix = matrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets view matrix. */
 void Renderer::setViewMatrix(const Matrix4f& matrix)
 {
   m_viewMatrix = matrix;
@@ -117,8 +119,8 @@ void Renderer::setViewMatrix(const Matrix4f& matrix)
 /*! Resets statistics. */
 void Renderer::resetStats()
 {
-  m_batchCount    = 0;
-  m_triangleCount = 0;
+  m_batchCount  = 0;
+  m_vertexCount = 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

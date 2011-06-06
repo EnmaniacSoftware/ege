@@ -23,6 +23,7 @@ EGE_DEFINE_DELETE_OPERATORS(RendererPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB = NULL;
+PFNGLACTIVETEXTUREARBPROC glActiveTextureARB = NULL;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps primitive type to OpenGL compilant one. */
@@ -84,7 +85,7 @@ void RendererPrivate::flush()
   glMatrixMode(GL_MODELVIEW);
 
   // go thru all render data
-  for (std::multimap<s32, Renderer::SRENDERDATA>::iterator iter = d_func()->m_renderData.begin(); iter != d_func()->m_renderData.end();)
+  for (EGEMultiMap<s32, Renderer::SRENDERDATA>::iterator iter = d_func()->m_renderData.begin(); iter != d_func()->m_renderData.end();)
   {
     Renderer::SRENDERDATA& renderData = iter->second;
 
@@ -95,23 +96,18 @@ void RendererPrivate::flush()
     // apply material
     applyMaterial(material);
 
+    // determine texture count
+    s32 textureCount = material ? material->textureCount() : 0;
+
     // check if there is anything to be rendered
     if (0 != vertexBuffer->vertexCount())
     {
-      const std::vector<VertexBuffer::SBUFFERSEMANTIC>& vsSemantics = vertexBuffer->semantics();
+      const EGEList<VertexBuffer::SBUFFERSEMANTIC>& vsSemantics = vertexBuffer->semantics();
 
       // TAGE - if indexed geometry count indicies
       u32 value = vertexBuffer->vertexCount();
 
-      switch (renderData.renderComponent->primitiveType())
-      {
-        case EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLES: d_func()->m_triangleCount += (value / 3); break;
-        case EGEGraphics::RENDER_PRIMITIVE_TYPE_LINES: 
-          
-          // nothing 
-          break;
-      }
-      
+      d_func()->m_vertexCount += value;
       d_func()->m_batchCount++;
 
       // lock vertex data
@@ -144,14 +140,16 @@ void RendererPrivate::flush()
       
           case VertexBuffer::ARRAY_TYPE_TEXTURE_UV:
 
+            for (s32 i = 0; i < textureCount; ++i)
+            {
               if (glClientActiveTextureARB)
               {
-                glClientActiveTextureARB(GL_TEXTURE0 + iterSemantics->index);
+                glClientActiveTextureARB(GL_TEXTURE0_ARB + i);
               }
 
               glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
               glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
+            }
             // TAGE - we assume that each texture unit uses THE SAME texture coords!
             //for ( s32 i = 0; i < iTexturesEnabled; i++ )
             //{
@@ -224,12 +222,21 @@ void RendererPrivate::detectExtensions()
   const GLubyte* extensions = glGetString(GL_EXTENSIONS);
 
   glClientActiveTextureARB = (PFNGLCLIENTACTIVETEXTUREARBPROC) wglGetProcAddress("glClientActiveTextureARB");
+  glActiveTextureARB = (PFNGLACTIVETEXTUREARBPROC) wglGetProcAddress("glActiveTextureARB");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Applies material. */
 void RendererPrivate::applyMaterial(const PMaterial& material)
 {
-  glDisable(GL_TEXTURE_2D);
+  //for (s32 i = 0; i < 2; i++)
+  //{
+  //  if (glActiveTextureARB)
+  //  {
+  //    glActiveTextureARB(GL_TEXTURE0_ARB + i);
+  //    glDisable(GL_TEXTURE_2D);
+  //  }
+  //}
+
   glBindTexture(GL_TEXTURE_2D, 0);
   glDisable(GL_BLEND);
 
@@ -250,6 +257,11 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
       if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
       {
         Texture2D* tex2d = (Texture2D*) texture;
+
+        if (glActiveTextureARB)
+        {
+          glActiveTextureARB(GL_TEXTURE0_ARB + i);
+        }
 
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, tex2d->id());

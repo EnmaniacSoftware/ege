@@ -27,7 +27,7 @@ bool VertexBuffer::addBuffer(ArrayType type)
   SBUFFERSEMANTIC semantic;
   
   // go thru all semantics
-  for (std::vector<SBUFFERSEMANTIC>::iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
+  for (EGEList<SBUFFERSEMANTIC>::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
   {
     // calculate according to type
     switch (iter->type)
@@ -65,7 +65,7 @@ bool VertexBuffer::addBuffer(ArrayType type)
 u32 VertexBuffer::bufferCount(ArrayType type) const
 {
   u32 count = 0;
-  for (std::vector<SBUFFERSEMANTIC>::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
+  for (EGEList<SBUFFERSEMANTIC>::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
   {
     if (iter->type == type)
     {
@@ -159,7 +159,7 @@ u32 VertexBuffer::vertexSize() const
   if (0 == m_vertexSize)
   {
     // go thru all buffers
-    for (std::vector<SBUFFERSEMANTIC>::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
+    for (EGEList<SBUFFERSEMANTIC>::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
     {
       switch (iter->type)
       {
@@ -178,7 +178,7 @@ u32 VertexBuffer::vertexSize() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns current buffer semantics. */
-const std::vector<VertexBuffer::SBUFFERSEMANTIC>& VertexBuffer::semantics() const
+const EGEList<VertexBuffer::SBUFFERSEMANTIC>& VertexBuffer::semantics() const
 {
   return m_semantics; 
 }

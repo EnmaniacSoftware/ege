@@ -109,7 +109,7 @@ void SceneManager::render(PCamera camera, PViewport viewport)
 
   renderer->flush();
 
-  viewport->setTriangleCount(renderer->triangleCount());
+  viewport->setVertexCount(renderer->vertexCount());
   viewport->setBatchCount(renderer->batchCount());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

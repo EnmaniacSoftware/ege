@@ -48,13 +48,15 @@ class Renderer : public Object
     void resetStats();
     /*! Returns number of batches rendered last frame. */
     inline u32 batchCount() const { return m_batchCount; }
-    /*! Returns numberh of triangles rendered last frame. */
-    inline u32 triangleCount() const { return m_triangleCount; }
+    /*! Returns number of vertices rendered last frame. */
+    inline u32 vertexCount() const { return m_vertexCount; }
 
     //PRenderComponent addComponent(const EGEString& name = "");
 
 //    void setViewport(PViewport pViewport);
+    /* Sets projection matrix. */
     void setProjectionMatrix(const Matrix4f& matrix);
+    /* Sets view matrix. */
     void setViewMatrix(const Matrix4f& matrix);
 
     // scene manager related methods
@@ -81,22 +83,24 @@ class Renderer : public Object
       Matrix4f worldMatrix;
     };
 
-    /*! Orientation rotation angle. */
-    Angle m_orientationRotation;
-
    // const SceneManager* m_pcSceneManager;          // current scene manager
 
   //  PViewport m_pViewport;                          // current viewport for which rendering is done
 
-    std::multimap<s32, SRENDERDATA> m_renderData;       // render data map <priority, renderdata>
-
-    Matrix4f m_projectionMatrix;                    // projection matrix
-    Matrix4f m_viewMatrix;                          // view matrix (camera matrix)
+    /*! Orientation rotation angle. */
+    Angle m_orientationRotation;
+    /*! Render data <priority, renderdata>. */
+    EGEMultiMap<s32, SRENDERDATA> m_renderData;
+    /*! Projection matrix. */
+    Matrix4f m_projectionMatrix;
+    /*! View matrix. */
+    Matrix4f m_viewMatrix;
+    /*! Number of batches rendered. */
+    u32 m_batchCount;
+    /*! Number of vertices rendered. */
+    u32 m_vertexCount;
 
    // std::vector<PRenderComponent> m_components;     // components pool
-
-    u32 m_batchCount;                               // batch count
-    u32 m_triangleCount;                            // triangle count
 
 /*
     RenderTarget* m_pcActiveRenderTarget;          // pointer to currently active render target

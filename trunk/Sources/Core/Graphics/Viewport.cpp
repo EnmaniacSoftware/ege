@@ -11,7 +11,7 @@ EGE_DEFINE_DELETE_OPERATORS(Viewport)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Viewport::Viewport(Application* app, const EGEString& name, PCamera camera) : Object(app), m_polygonMode(POLYGON_MODE_SOLID), 
-                                                                              m_clearBufferTypes(BUFFER_TYPE_COLOR), m_triangleCount(0), m_batchCount(0),
+                                                                              m_clearBufferTypes(BUFFER_TYPE_COLOR), m_vertexCount(0), m_batchCount(0),
                                                                               m_overlays(true)
 {
   m_name = name;
@@ -43,13 +43,13 @@ void Viewport::render()
 /*! Sets batch count rendered last frame. */
 void Viewport::setBatchCount(u32 count)
 {
-  m_triangleCount = count;
+  m_batchCount = count;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets triangle count rendered last frame. */
-void Viewport::setTriangleCount(u32 count)
+/*! Sets vertex count rendered last frame. */
+void Viewport::setVertexCount(u32 count)
 {
-  m_batchCount = count;
+  m_vertexCount = count;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets viewport clear color. Can be NULL color if viewport should not be cleared. */

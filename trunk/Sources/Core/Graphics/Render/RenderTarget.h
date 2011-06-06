@@ -1,8 +1,9 @@
 #ifndef EGE_CORE_RENDERTARGET_H
 #define EGE_CORE_RENDERTARGET_H
 
-#include "EGE.h"
+#include <EGE.h>
 #include "Core/ConfigParams.h"
+#include <EGEList.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -59,9 +60,9 @@ class RenderTarget : public Object
     /*! Targets name. */
     EGEString m_name;
     /*! Pool of all viewports associated with target. */
-    std::vector<PViewport> m_viewports;
-    /*! Number of triangles rendered last frame. */
-    u32 m_triangleCount;
+    EGEList<PViewport> m_viewports;
+    /*! Number of vertices rendered last frame. */
+    u32 m_vertexCount;
     /*! Number of batches rendered last frame. */
     u32 m_batchCount;
 };
