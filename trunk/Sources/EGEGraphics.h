@@ -20,7 +20,8 @@ namespace EGEGraphics
     enum ERenderPrimitiveType
     {
       RENDER_PRIMITIVE_TYPE_TRIANGLES = 0,
-      RENDER_PRIMITIVE_TYPE_LINES
+      RENDER_PRIMITIVE_TYPE_LINES,
+      RENDER_PRIMITIVE_TYPE_STRIPS
     };
 }
 

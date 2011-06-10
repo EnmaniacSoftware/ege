@@ -8,12 +8,12 @@ EGE_DEFINE_NEW_OPERATORS(Overlay)
 EGE_DEFINE_DELETE_OPERATORS(Overlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Overlay::Overlay(Application* app, const EGEString& name) : Object(app, EGE_OBJECT_UID_OVERLAY), m_name(name), m_updateNeeded(false)
+Overlay::Overlay(Application* app, const EGEString& name) : Object(app, EGE_OBJECT_UID_OVERLAY), m_name(name), m_updateNeeded(false), m_visible(true)
 {
   initialize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Overlay::Overlay(Application* app, const EGEString& name, u32 uid) : Object(app, uid), m_name(name), m_updateNeeded(false)
+Overlay::Overlay(Application* app, const EGEString& name, u32 uid) : Object(app, uid), m_name(name), m_updateNeeded(false), m_visible(true)
 {
   initialize();
 }
@@ -65,9 +65,23 @@ void Overlay::validate()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders element. */
-void Overlay::render(PViewport viewport, Renderer* renderer)
+void Overlay::render(const PViewport& viewport, Renderer* renderer)
 {
   EGE_UNUSED(viewport);
   EGE_UNUSED(renderer);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets visibility. */
+void Overlay::setVisibility(bool visible)
+{
+  if (m_visible != visible)
+  {
+    m_visible = visible;
+
+    if (m_visible)
+    {
+      invalidate();
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

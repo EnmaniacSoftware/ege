@@ -33,15 +33,16 @@ class Overlay : public Object
     /* Updates overlay. */
     virtual void update(const Time& time);
     /* Renders element. */
-    virtual void render(PViewport viewport, Renderer* renderer);
+    virtual void render(const PViewport& viewport, Renderer* renderer);
     /*! Returns name. */
     inline const EGEString& name() const { return m_name; }
     /*! Returns physics component. */
     inline PPhysicsComponent physics() const { return m_physics; }
-
-    // visiblility related methods
-    //inline bool isVisible( void ) const { return m_bVisible; }                                                // returns TRUE if overlay is visible
-    //void        show( bool bShow ){ m_bVisible = bShow; }                                                     // shows/hides the overlay
+    /*! Returns TRUE if overlay is visible. */
+    inline bool visible() const { return m_visible; }
+    /* Sets visibility. */
+    void setVisibility(bool visible);
+    /* Returns rectangle containing the overlay. */
 
     //// position and dimensions related methods
     //float getX( void ) const { return m_fX; }                                                                 // gets X relative position [0,1]
@@ -96,12 +97,13 @@ class Overlay : public Object
     PPhysicsComponent m_physics;
     /*! Update flag. */
     bool m_updateNeeded;
+    /*! Visibility flag. */
+    bool m_visible;
 
     //string m_strText;               // text (multipurpose)
 
     //EType m_eType;                  // type
 
-    //bool m_bVisible;                // TRUE if overlay is visible
     //bool m_bNeedDerivedUpdate;      // TRUE if derived data needs to be refreshed
 
     //float m_fX;                     // relative X position within viewport [0,1]

@@ -94,6 +94,7 @@ POverlay OverlayManager::overlay(const EGEString& name) const
 /*! Renders all elements. */
 void OverlayManager::render(PViewport viewport, Renderer* renderer)
 {
+//  renderer->setProjectionMatrix(
   // go thru all overlays
   for (EGEList<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {

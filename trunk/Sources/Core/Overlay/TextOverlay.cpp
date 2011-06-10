@@ -34,14 +34,17 @@ void TextOverlay::update(const Time& time)
   // call base class
   Overlay::update(time);
 
-  // check if update is needed
-  if (isUpdateNeeded())
+  if (visible())
   {
-    // update render data
-    updateRenderData();
+    // check if update is needed
+    if (isUpdateNeeded())
+    {
+      // update render data
+      updateRenderData();
 
-    // validate
-    validate();
+      // validate
+      validate();
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -66,7 +69,7 @@ void TextOverlay::updateRenderData()
   if (data)
   {
     // get initial position
-    Vector4f pos = physics()->position();
+    Vector4f pos = Vector4f::ZERO;
 
     float32 height  = font()->height() * 1.0f;
     float32 spacing = 0;
@@ -139,10 +142,23 @@ void TextOverlay::updateRenderData()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Overlay override. Renders element. */
-void TextOverlay::render(PViewport viewport, Renderer* renderer)
+void TextOverlay::render(const PViewport& viewport, Renderer* renderer)
 {
-  PRenderComponent renderComponent = this->renderComponent();
+  if (visible())
+  {
+    PRenderComponent renderComponent = this->renderComponent();
 
-  renderer->addForRendering(Matrix4f::IDENTITY, renderComponent);
+    Matrix4f worldMatrix;
+    if (NULL != physics())
+    {
+      Math::CreateMatrix(worldMatrix, physics()->position(), Vector4f::ONE, physics()->orientation());
+    }
+    else
+    {
+      worldMatrix = Matrix4f::IDENTITY;
+    }
+
+    renderer->addForRendering(worldMatrix, renderComponent);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

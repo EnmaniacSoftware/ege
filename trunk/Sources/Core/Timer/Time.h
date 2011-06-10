@@ -17,10 +17,10 @@ class Time
     Time(float32 seconds) : m_time((s32)(seconds * 1000000)) {}
    ~Time(){}
 
-    inline Time operator - (const Time& time) const { return Time(m_time - time.m_time); }
     inline bool operator > (const Time& time) const { return m_time > time.m_time; }
     inline bool operator < (const Time& time) const { return m_time < time.m_time; }
     inline Time& operator += (const Time& time) { m_time += time.m_time; return *this; }
+    inline Time& operator -= (const Time& time) { m_time -= time.m_time; return *this; }
 
     inline void fromMicroseconds(s64 microseconds) { m_time = microseconds; }
     inline void fromMiliseconds(s64 miliseconds) { m_time = miliseconds * 1000; }
@@ -29,6 +29,10 @@ class Time
     inline s64 microseconds() const { return m_time; }
     inline s64 miliseconds() const { return m_time / 1000; }
     inline float32 seconds() const { return m_time / 1000000.0f; }
+
+  public:
+
+    static Time FromSeconds(float32 seconds) { Time time(seconds); return time; }
 
   private:
 
@@ -40,6 +44,11 @@ class Time
 inline Time operator+(const Time& left, const Time& right)
 {
   return Time(left.microseconds() + right.microseconds());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline Time operator-(const Time& left, const Time& right)
+{
+  return Time(left.microseconds() - right.microseconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -11,7 +11,7 @@ EGE_DEFINE_DELETE_OPERATORS(Font)
 Font::Font(Application* app, s32 height, const std::map<EGEChar, GlyphData>& glyphData) : Object(app), m_height(height)
 {
   // copy glyphs data
-  for (std::map<EGEChar, GlyphData>::const_iterator it = glyphData.begin(); it != glyphData.end(); ++it)
+  for (EGEMap<EGEChar, GlyphData>::const_iterator it = glyphData.begin(); it != glyphData.end(); ++it)
   {
     m_glyphs.insert(std::map<EGEChar, GlyphData>::value_type(it->first, it->second));
   }
@@ -37,7 +37,23 @@ void Font::setMaterial(PMaterial material)
 /*! Returns pointer to data for a given glyph. NULL if glyph is not defined. */
 const GlyphData* Font::glyphData(EGEChar c) const
 {
-  std::map<EGEChar, GlyphData>::const_iterator it = m_glyphs.find(c);
+  EGEMap<EGEChar, GlyphData>::const_iterator it = m_glyphs.find(c);
   return (it != m_glyphs.end()) ? &it->second : NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns metrics of the given text. */
+Vector2i Font::metrics(const EGEText& text) const
+{
+  Vector2i metrics(0, height());
+  for (EGEText::const_iterator it = text.begin(); it != text.end(); ++it)
+  {
+    const GlyphData* data = glyphData(*it);
+    if (data)
+    {
+      metrics.x += data->m_width;
+    }
+  }
+
+  return metrics;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

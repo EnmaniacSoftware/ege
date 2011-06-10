@@ -30,6 +30,8 @@ class TextOverlay : public Overlay
     const EGEText& text() const { return m_text; }
     /* Sets font. */
     void setFont(PFont font);
+    /*! Returns font. */
+    inline PFont font() const { return m_font; }
 
     // visiblility related methods
     //inline bool isVisible( void ) const { return m_bVisible; }                                                // returns TRUE if overlay is visible
@@ -62,11 +64,9 @@ class TextOverlay : public Overlay
     /* Overlay override. Updates overlay. */
     virtual void update(const Time& time) override;
     /* Overlay override. Renders element. */
-    virtual void render(PViewport viewport, Renderer* renderer) override;
+    virtual void render(const PViewport& viewport, Renderer* renderer) override;
     /* Updates render data. */
     void updateRenderData();
-    /*! Returns font. */
-    inline PFont font() const { return m_font; }
 
   private:
 

@@ -44,11 +44,12 @@ class SceneNodeObject : public Object
     // CRenderable overrides
   //  virtual void queryLights( void );                                                 // queries for lights affecing renderable
 
-    bool addComponent(PComponent component);
-
-    PRenderComponent renderComponent(const EGEString& name) const;
-    
-    PPhysicsComponent physicsComponent(const EGEString& name) const;
+    /* Sets components. */
+    void setComponents(PPhysicsComponent physics, PRenderComponent render);
+    /*! Returns render component. */
+    inline PRenderComponent renderComponent() const { return m_renderComponent; }
+    /*! Returns physics component. */
+    inline PPhysicsComponent physicsComponent() const { return m_physicsComponent; }
 
   protected:
 
@@ -56,8 +57,10 @@ class SceneNodeObject : public Object
     EGEString m_name;
     /*! Pointer to parent node. */
     SceneNode* m_parentNode;
-
-    std::vector<PComponent> m_components;     // components
+    /*! Physics component. */
+    PPhysicsComponent m_physicsComponent;
+    /*! Render component. */
+    PRenderComponent m_renderComponent;
 
     //CAxisAlignedBox m_cLocalAABB;         // local AABB
 
