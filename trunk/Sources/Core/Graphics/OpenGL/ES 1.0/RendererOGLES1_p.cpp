@@ -79,7 +79,7 @@ void RendererPrivate::flush()
   glMultMatrixf(d_func()->m_projectionMatrix.data);
   glMatrixMode(GL_MODELVIEW);
 
-  for (std::map<s32, Renderer::SRENDERDATA>::iterator iter = d_func()->m_renderData.begin(); iter != d_func()->m_renderData.end();)
+  for (EGEMultiMap<s32, Renderer::SRENDERDATA>::iterator iter = d_func()->m_renderData.begin(); iter != d_func()->m_renderData.end();)
   {
     Renderer::SRENDERDATA& renderData = iter->second;
 
@@ -90,30 +90,25 @@ void RendererPrivate::flush()
     // apply material
 		applyMaterial(material);
 
+    // determine texture count
+    s32 textureCount = material ? material->textureCount() : 0;
+
     // check if there is anything to be rendered
     if (0 != vertexBuffer->vertexCount())
     {
-      const std::vector<VertexBuffer::SBUFFERSEMANTIC>& vsSemantics = vertexBuffer->semantics();
+      const EGEList<VertexBuffer::SBUFFERSEMANTIC>& vsSemantics = vertexBuffer->semantics();
 
       // TAGE - if indexed geometry count indicies
       u32 value = vertexBuffer->vertexCount();
 
-      switch (renderData.renderComponent->primitiveType())
-      {
-        case EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLES: d_func()->m_triangleCount += value / 3; break;
-        case EGEGraphics::RENDER_PRIMITIVE_TYPE_LINES: 
-          
-          // nothing 
-          break;
-      }
-      
+      d_func()->m_vertexCount += value;
       d_func()->m_batchCount++;
 
       // lock vertex data
       void* vertexData = vertexBuffer->lock(0, vertexBuffer->vertexCount());
 
       // go thru all buffers
-      for (std::vector<VertexBuffer::SBUFFERSEMANTIC>::const_iterator iterSemantics = vsSemantics.begin(); iterSemantics != vsSemantics.end(); 
+      for (EGEList<VertexBuffer::SBUFFERSEMANTIC>::const_iterator iterSemantics = vsSemantics.begin(); iterSemantics != vsSemantics.end(); 
            ++iterSemantics)
       {
         // set according to buffer type
@@ -139,9 +134,12 @@ void RendererPrivate::flush()
       
           case VertexBuffer::ARRAY_TYPE_TEXTURE_UV:
 
-            glClientActiveTexture(GL_TEXTURE0 + iterSemantics->index);
-            glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
-            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+            for (s32 i = 0; i < textureCount; ++i)
+            {
+              glClientActiveTexture(GL_TEXTURE0 + i);
+              glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
+              glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+            }
             break;
 
           //case VertexBuffer::ARRAY_TYPE_TANGENT:
@@ -227,6 +225,7 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
       {
         Texture2D* tex2d = (Texture2D*) texture;
 
+        glActiveTexture(GL_TEXTURE0 + i);
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, tex2d->id());
       }

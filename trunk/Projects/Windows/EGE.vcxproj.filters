@@ -690,6 +690,7 @@
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\MultiMap.h">
       <Filter>Core\Containers\stl</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEColor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

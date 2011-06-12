@@ -43,6 +43,17 @@ EGEString XmlElement::attribute(const EGEString& name) const
   return EGEString();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if given attribute exists. */
+bool XmlElement::containsAttribute(const EGEString& name) const
+{
+  if (isValid())
+  {
+    return p_func()->containsAttribute(name);
+  }
+
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns first child element. */
 PXmlElement XmlElement::firstChild() const
 {

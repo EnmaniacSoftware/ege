@@ -1,6 +1,6 @@
 #include "Core/Resource/ResourceData.h"
 #include "Core/Resource/ResourceManager.h"
-#include "EGEFile.h"
+#include <EGEFile.h>
 
 EGE_NAMESPACE
 
@@ -10,7 +10,7 @@ EGE_DEFINE_NEW_OPERATORS(ResourceData)
 EGE_DEFINE_DELETE_OPERATORS(ResourceData)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceData::ResourceData(Application* app, ResourceManager* manager) : IResource(app, manager, "data"), m_nullTerminated(false)
+ResourceData::ResourceData(Application* app, ResourceManager* manager) : IResource(app, manager, "data"), m_nulled(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -40,12 +40,13 @@ EGEResult ResourceData::create(const EGEString& path, const PXmlElement& tag)
   EGEResult result = EGE_SUCCESS;
 
   // get data
-  m_name           = tag->attribute("name");
-  m_path           = tag->attribute("path");
-  m_nullTerminated = tag->attribute("nullTerminated").toBool();
+  bool error = false;
+  m_name   = tag->attribute("name");
+  m_path   = tag->attribute("path");
+  m_nulled = tag->attribute("nulled").toBool(&error);
 
   // check if obligatory data is wrong
-  if (m_name.empty() || m_path.empty())
+  if (m_name.empty() || m_path.empty() || error)
   {
     // error!
     return EGE_ERROR_BAD_PARAM;
@@ -92,7 +93,7 @@ EGEResult ResourceData::load()
     file.close();
 
     // check if data should be null terminated
-    if (isNullTerminated())
+    if (isNulled())
     {
       s8 null = 0;
       if (1 != buffer->write(&null, 1))

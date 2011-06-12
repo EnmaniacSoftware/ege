@@ -73,7 +73,7 @@ void Renderer::setOrientationRotation(const Angle& angle)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-bool Renderer::addForRendering(const Matrix4f& worldMatrix, PRenderComponent& component)
+bool Renderer::addForRendering(const Matrix4f& worldMatrix, const PRenderComponent& component)
 {
   SRENDERDATA data;
   data.worldMatrix     = worldMatrix;

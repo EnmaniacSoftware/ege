@@ -2,7 +2,7 @@
 #include "Core/Resource/ResourceTexture.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Graphics/Material.h"
-#include "EGETexture.h"
+#include <EGETexture.h>
 
 EGE_NAMESPACE
 
@@ -48,10 +48,15 @@ EGEResult ResourceMaterial::create(const EGEString& path, const PXmlElement& tag
   EGEResult result = EGE_SUCCESS;
 
   // get data
-  m_name      = tag->attribute("name");
-  m_blend     = tag->attribute("blend").toLower();
-  m_srcBlend  = tag->attribute("srcBlend").toLower();
-  m_dstBlend  = tag->attribute("dstBlend").toLower();
+  m_name            = tag->attribute("name");
+  m_srcBlend        = tag->attribute("src-blend").toLower();
+  m_dstBlend        = tag->attribute("dst-blend").toLower();
+  m_blend           = tag->attribute("blend");
+  m_diffuseColor    = tag->attribute("diffuse-color");
+  m_ambientColor    = tag->attribute("ambient-color");
+  m_specularColor   = tag->attribute("specular-color");
+  m_emissionColor   = tag->attribute("emission-color");
+  m_shinness        = tag->attribute("shinness");
 
   // check if obligatory data is wrong
   if (m_name.empty())
@@ -91,6 +96,8 @@ EGEResult ResourceMaterial::load()
 
   if (!isLoaded())
   {
+    bool error = false;
+
     PMaterial material = ege_new Material(app());
     if (NULL == material)
     {
@@ -99,9 +106,52 @@ EGEResult ResourceMaterial::load()
     }
 
     // set blending parameters
-    material->setSrcBlendFunc(srcBlendFuncName());
-    material->setDstBlendFunc(dstBlendFuncName());
-    material->enableBlending("true" == blendingEnabledName());
+    if (!srcBlendFuncName().empty())
+    {
+      material->setSrcBlendFunc(srcBlendFuncName());
+    }
+
+    if (!dstBlendFuncName().empty())
+    {
+      material->setDstBlendFunc(dstBlendFuncName());
+    }
+
+    if (!blendingEnabledName().empty())
+    {
+      material->enableBlending(blendingEnabledName().toBool(&error));
+    }
+
+    // set colors
+    if (!ambientColorName().empty())
+    {
+      material->setAmbientColor(ambientColorName().toColor(&error));
+    }
+
+    if (!diffuseColorName().empty())
+    {
+      material->setDiffuseColor(diffuseColorName().toColor(&error));
+    }
+
+    if (!specularColorName().empty())
+    {
+      material->setSpecularColor(specularColorName().toColor(&error));
+    }
+
+    if (!emissionColorName().empty())
+    {
+      material->setEmissionColor(emissionColorName().toColor(&error));
+    }
+
+    if (!shinnessName().empty())
+    {
+      material->setShinness(shinnessName().toFloat(&error));
+    }
+
+    // check for errors
+    if (error)
+    {
+      return EGE_ERROR;
+    }
 
     // load textures
     for (EGEStringList::const_iterator it = m_textureNames.begin(); it != m_textureNames.end(); ++it)

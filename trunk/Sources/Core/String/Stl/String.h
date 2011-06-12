@@ -1,7 +1,8 @@
 #ifndef EGE_CORE_STRING_H
 #define EGE_CORE_STRING_H
 
-#include "EGE.h"
+#include <EGE.h>
+#include <EGEColor.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -38,11 +39,13 @@ class EGEString : public std::string
     const char* toAscii() const;
 
     /* Converts to integer. If error is valid, it holds TRUE if error occured during the conversion. */
-    s32  toInt(bool* error = NULL) const;
+    s32 toInt(bool* error = NULL) const;
     /* Converts to boolean. If error is valid, it holds TRUE if error occured during the conversion. */
     bool toBool(bool* error = NULL) const;
     /* Converts to float. If error is valid, it holds TRUE if error occured during the conversion. */
     float32 toFloat(bool* error = NULL) const;
+    /* Converts to color. If error is valid, it holds TRUE if error occured during the conversion. */
+    Color toColor(bool* error = NULL) const;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

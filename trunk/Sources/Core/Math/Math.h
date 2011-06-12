@@ -20,6 +20,9 @@ class Math
     template <typename T>
     inline static T Max(T a, T b) { return (a > b) ? a : b; }
 
+    template <typename T>
+    inline static T Bound(T value, T min, T max) { return (value > max) ? max : ((value < min) ? min : value); }
+
     inline static float32 Floor(float32 value) { return floorf(value); }
 
     inline static float32 RadiansToDegrees(float32 radians) { return radians * 57.29577951f; }

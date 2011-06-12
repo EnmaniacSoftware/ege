@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_COLOR_H
 #define EGE_CORE_COLOR_H
 
-#include "EGE.h"
+#include <EGE.h>
 
 EGE_NAMESPACE_BEGIN
 

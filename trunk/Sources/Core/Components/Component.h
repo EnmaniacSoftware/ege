@@ -4,8 +4,8 @@
 // Components are basically data structures intended to be manipulated from outside. Thus, for performance reasons
 // vtable should be non-present within them
 
-#include "EGE.h"
-#include "EGEString.h"
+#include <EGE.h>
+#include <EGEString.h>
 
 EGE_NAMESPACE_BEGIN
 

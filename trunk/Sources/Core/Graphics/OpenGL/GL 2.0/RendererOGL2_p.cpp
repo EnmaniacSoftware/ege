@@ -114,7 +114,7 @@ void RendererPrivate::flush()
       void* vertexData = vertexBuffer->lock(0, vertexBuffer->vertexCount());
 
       // go thru all buffers
-      for (std::vector<VertexBuffer::SBUFFERSEMANTIC>::const_iterator iterSemantics = vsSemantics.begin(); iterSemantics != vsSemantics.end(); 
+      for (EGEList<VertexBuffer::SBUFFERSEMANTIC>::const_iterator iterSemantics = vsSemantics.begin(); iterSemantics != vsSemantics.end(); 
            ++iterSemantics)
       {
         // set according to buffer type
@@ -236,7 +236,7 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
   //    glDisable(GL_TEXTURE_2D);
   //  }
   //}
-
+  glDisable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, 0);
   glDisable(GL_BLEND);
 

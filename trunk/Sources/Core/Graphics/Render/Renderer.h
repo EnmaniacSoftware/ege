@@ -42,7 +42,7 @@ class Renderer : public Object
     /*! Returns orientation rotation. */
     const Angle& orientationRotation() const { return m_orientationRotation; }
 
-    bool addForRendering(const Matrix4f& worldMatrix, PRenderComponent& component);
+    bool addForRendering(const Matrix4f& worldMatrix, const PRenderComponent& component);
 
     /* Resets statistics. */
     void resetStats();

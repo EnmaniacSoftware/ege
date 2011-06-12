@@ -30,6 +30,8 @@ class XmlElement : public Object
     bool isValid() const;
     /* Returns value of given attribute if present */
     EGEString attribute(const EGEString& name) const;
+    /* Returns TRUE if given attribute exists. */
+    bool containsAttribute(const EGEString& name) const;
     /* Returns first child element. */
     PXmlElement firstChild() const;
     /* Returns next child element. */

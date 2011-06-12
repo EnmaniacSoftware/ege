@@ -189,3 +189,28 @@ EGEString EGEString::Format(const char* text, ...)
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Converts to color. If error is valid, it holds TRUE if error occured during the conversion. */
+Color EGEString::toColor(bool* error) const
+{
+  if (empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return Color::NONE;
+  }
+
+  // make sure alpha is set to opaque in case only RGB is set
+  Color color = Color::BLACK;
+
+  // check if not even RGB was able to be read
+  if (3 > sscanf(toAscii(), "%f %f %f %f", &color.red, &color.green, &color.blue, &color.alpha) && error)
+  {
+    *error = true;
+  }
+
+  return color;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

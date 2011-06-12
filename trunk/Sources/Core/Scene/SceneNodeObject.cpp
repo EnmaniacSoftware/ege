@@ -42,26 +42,23 @@ bool SceneNodeObject::addForRendering(Renderer* renderer) const
 {
   bool result = false;
 
-  if (renderComponent())
+  Matrix4f worldMatrix;
+  if (NULL != physicsComponent())
   {
-    Matrix4f worldMatrix;
-    if (NULL != physicsComponent())
-    {
-      Math::CreateMatrix(worldMatrix, physicsComponent()->position(), Vector4f::ONE, physicsComponent()->orientation());
-    }
-    else
-    {
-      worldMatrix = Matrix4f::IDENTITY;
-    }
+    Math::CreateMatrix(worldMatrix, physicsComponent()->position(), Vector4f::ONE, physicsComponent()->orientation());
+  }
+  else
+  {
+    worldMatrix = Matrix4f::IDENTITY;
+  }
 
-    // combine with parent node world matrix
-    worldMatrix = parentNode()->worldMatrix().multiply(worldMatrix);
+  // combine with parent node world matrix
+  worldMatrix = parentNode()->worldMatrix().multiply(worldMatrix);
 
-    // add render component for rendering
-    if (renderer->addForRendering(worldMatrix, renderComponent()))
-    {
-      result = true;
-    }
+  // add render component for rendering
+  if (renderer->addForRendering(worldMatrix, renderComponent()))
+  {
+    result = true;
   }
 
   return result;

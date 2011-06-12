@@ -1,6 +1,6 @@
 #include "Core/Resource/ResourceTexture.h"
 #include "Core/Resource/ResourceManager.h"
-#include "EGEXml.h"
+#include <EGEXml.h>
 
 #if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
@@ -21,11 +21,11 @@ static EGETexture::Filter mapFilterName(const EGEString& name)
   {
     return EGETexture::TRILINEAR;
   }
-  else if ("mipmap_bilinear" == name)
+  else if ("mipmap-bilinear" == name)
   {
     return EGETexture::MIPMAP_BILINEAR;
   }
-  else if ("mipmap_trilinear" == name)
+  else if ("mipmap-trilinear" == name)
   {
     return EGETexture::MIPMAP_TRILINEAR;
   }
@@ -79,10 +79,10 @@ EGEResult ResourceTexture::create(const EGEString& path, const PXmlElement& tag)
   m_name      = tag->attribute("name");
   m_path      = tag->attribute("path");
   m_type      = tag->attribute("type").toLower();
-  m_minFilter = tag->attribute("minFilter").toLower();
-  m_magFilter = tag->attribute("magFilter").toLower();
-  m_wrapS     = tag->attribute("wrapS").toLower();
-  m_wrapT     = tag->attribute("wrapT").toLower();
+  m_minFilter = tag->attribute("min-filter").toLower();
+  m_magFilter = tag->attribute("mag-filter").toLower();
+  m_wrapS     = tag->attribute("wrap-s").toLower();
+  m_wrapT     = tag->attribute("wrap-t").toLower();
 
   // check if obligatory data is wrong
   if (m_name.empty() || m_path.empty() || m_type.empty())

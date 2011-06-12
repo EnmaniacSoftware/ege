@@ -32,6 +32,12 @@ EGEString XmlElementPrivate::attribute(const EGEString& name) const
   return (isValid() && m_element->Attribute(name.toAscii())) ? m_element->Attribute(name.toAscii()) : NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if given attribute exists. */
+bool XmlElementPrivate::containsAttribute(const EGEString& name) const
+{
+  return isValid() && m_element->Attribute(name.toAscii());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns first child element. */
 XmlElementPrivate* XmlElementPrivate::firstChild() const
 {

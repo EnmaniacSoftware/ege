@@ -52,7 +52,7 @@ class ResourceData : public IResource
     /*! Gets path to texture file. */
     inline const EGEString& path() const { return m_path; } 
     /*! Returns whether data is NULL terminated.*/
-    inline bool isNullTerminated() const { return m_nullTerminated; } 
+    inline bool isNulled() const { return m_nulled; } 
 
   private:
 
@@ -61,7 +61,7 @@ class ResourceData : public IResource
     /*! Full path to data file. */
     EGEString m_path;
     /*! Flag indicating if data should be NULL terminated upon loading. */
-    bool m_nullTerminated;
+    bool m_nulled;
     /*! Data object created from resource. NULL if not created yet. */
     PDataBuffer m_data;
 };

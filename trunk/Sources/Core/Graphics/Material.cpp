@@ -1,5 +1,6 @@
 #include "Core/Graphics/Material.h"
 #include "Core/Data/DataBuffer.h"
+#include "Core/Math/Math.h"
 
 #if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 #include "Core/Graphics/OpenGL/MaterialOGL_p.h"
@@ -13,7 +14,8 @@ EGE_DEFINE_NEW_OPERATORS(Material)
 EGE_DEFINE_DELETE_OPERATORS(Material)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Material::Material(Application* app) : Object(app), m_blendingEnabled(false)
+Material::Material(Application* app) : Object(app), m_blendingEnabled(false), m_diffuseColor(Color::WHITE), m_ambientColor(Color::WHITE), 
+                                       m_specularColor(Color::BLACK), m_shinness(0), m_emissionColor(Color::BLACK)
 {
   m_p = ege_new MaterialPrivate(this);
 }
@@ -71,5 +73,35 @@ void Material::setDstBlendFunc(const EGEString& funcName)
   {
     p_func()->setDstBlendFunc(funcName);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets diffuse color. */
+void Material::setDiffuseColor(const Color& color)
+{
+  m_diffuseColor = color;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets ambient color. */
+void Material::setAmbientColor(const Color& color)
+{
+  m_ambientColor = color;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets specular color. */
+void Material::setSpecularColor(const Color& color)
+{
+  m_specularColor = color;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets shinness. */
+void Material::setShinness(float32 shinness)
+{
+  m_shinness = Math::Bound(shinness, 0.0f, 1.0f);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets emission color. */
+void Material::setEmissionColor(const Color& color)
+{
+  m_emissionColor = color;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

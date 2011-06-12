@@ -71,10 +71,10 @@ EGEResult ResourceFont::create(const EGEString& path, const PXmlElement& tag)
       error = false;
 
       u16 value                   = (u16) child->attribute("value").toInt(&error);
-      glyph.m_textureRect.x       = child->attribute("imageX").toFloat(&error);
-      glyph.m_textureRect.y       = child->attribute("imageY").toFloat(&error);
-      glyph.m_textureRect.width   = child->attribute("imageWidth").toFloat(&error);
-      glyph.m_textureRect.height  = child->attribute("imageHeight").toFloat(&error);
+      glyph.m_textureRect.x       = child->attribute("image-x").toFloat(&error);
+      glyph.m_textureRect.y       = child->attribute("image-y").toFloat(&error);
+      glyph.m_textureRect.width   = child->attribute("image-width").toFloat(&error);
+      glyph.m_textureRect.height  = child->attribute("image-height").toFloat(&error);
       glyph.m_width               = child->attribute("width").toInt(&error);
 
       // check for errors

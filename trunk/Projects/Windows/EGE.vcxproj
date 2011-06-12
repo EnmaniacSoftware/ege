@@ -184,6 +184,7 @@
     <ClInclude Include="..\..\Sources\Core\XML\XmlElement.h" />
     <ClInclude Include="..\..\Sources\EGE.h" />
     <ClInclude Include="..\..\Sources\EGEApplication.h" />
+    <ClInclude Include="..\..\Sources\EGEColor.h" />
     <ClInclude Include="..\..\Sources\EGEDataBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEDebug.h" />
     <ClInclude Include="..\..\Sources\EGEDevice.h" />

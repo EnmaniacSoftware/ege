@@ -47,9 +47,9 @@ class SceneNodeObject : public Object
     /* Sets components. */
     void setComponents(PPhysicsComponent physics, PRenderComponent render);
     /*! Returns render component. */
-    inline PRenderComponent renderComponent() const { return m_renderComponent; }
+    inline const PRenderComponent& renderComponent() const { return m_renderComponent; }
     /*! Returns physics component. */
-    inline PPhysicsComponent physicsComponent() const { return m_physicsComponent; }
+    inline const PPhysicsComponent& physicsComponent() const { return m_physicsComponent; }
 
   protected:
 
