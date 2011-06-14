@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_OBJECT_H
 #define EGE_CORE_OBJECT_H
 
-#include "EGETypes.h"
+#include <EGETypes.h>
 #include "Core/ObjectUIDs.h"
 
 EGE_NAMESPACE_BEGIN

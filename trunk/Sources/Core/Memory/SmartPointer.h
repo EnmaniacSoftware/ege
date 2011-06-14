@@ -1,10 +1,10 @@
-#ifndef EGE_CORE_SMART_POINTER_H
-#define EGE_CORE_SMART_POINTER_H
+#ifndef EGE_CORE_SMARTPOINTER_H
+#define EGE_CORE_SMARTPOINTER_H
 
 // NOTE: this class implements smart pointer by means of reference counter. It is intended to work with Object-dervied
 //       objects only.
 
-#include "EGE.h"
+#include <EGE.h>
 #include "Core/Memory/Object.h"
 
 EGE_NAMESPACE_BEGIN
@@ -138,4 +138,4 @@ T& SmartPointer<T>::objectRef() const
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_SMART_POINTER_H
+#endif // EGE_CORE_SMARTPOINTER_H

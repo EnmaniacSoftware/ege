@@ -366,6 +366,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Camera.cpp">
       <Filter>Core\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Data\Node.cpp">
+      <Filter>Core\Data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -691,6 +694,9 @@
       <Filter>Core\Containers\stl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEColor.h" />
+    <ClInclude Include="..\..\Sources\Core\Data\Node.h">
+      <Filter>Core\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

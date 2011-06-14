@@ -13,15 +13,12 @@ EGE_DEFINE_NEW_OPERATORS(SceneNodeObject)
 EGE_DEFINE_DELETE_OPERATORS(SceneNodeObject)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SceneNodeObject::SceneNodeObject(SceneNode* parentNode, const EGEString& name) : Object(parentNode->app()), m_name(name), m_parentNode(parentNode)
+SceneNodeObject::SceneNodeObject(const EGEString& name, u32 uid) : Object(NULL, uid), m_name(name), m_parentNode(NULL), m_visible(true)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SceneNodeObject::~SceneNodeObject()
 {
-  m_physicsComponent = NULL;
-  m_renderComponent = NULL;
-
   // check if we are attached to some node
   //if ( m_pcNode != NULL )
   //{
@@ -30,38 +27,25 @@ SceneNodeObject::~SceneNodeObject()
   //}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets components. */
-void SceneNodeObject::setComponents(PPhysicsComponent physics, PRenderComponent render)
-{
-  m_physicsComponent = physics;
-  m_renderComponent  = render;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds object render data for rendering with given renderer. */
 bool SceneNodeObject::addForRendering(Renderer* renderer) const
 {
   bool result = false;
 
-  Matrix4f worldMatrix;
-  if (NULL != physicsComponent())
-  {
-    Math::CreateMatrix(worldMatrix, physicsComponent()->position(), Vector4f::ONE, physicsComponent()->orientation());
-  }
-  else
-  {
-    worldMatrix = Matrix4f::IDENTITY;
-  }
-
-  // combine with parent node world matrix
-  worldMatrix = parentNode()->worldMatrix().multiply(worldMatrix);
-
-  // add render component for rendering
-  if (renderer->addForRendering(worldMatrix, renderComponent()))
-  {
-    result = true;
-  }
-
+  
   return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets parent node. */
+void SceneNodeObject::setParentNode(SceneNode* parent)
+{
+  m_parentNode = parent;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Sets visibility flag. */
+void SceneNodeObject::setVisible(bool set)
+{
+  m_visible = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

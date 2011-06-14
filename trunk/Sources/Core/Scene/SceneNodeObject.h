@@ -1,10 +1,9 @@
 #ifndef EGE_CORE_SCENENODEOBJECT_H
 #define EGE_CORE_SCENENODEOBJECT_H
 
-#include "EGE.h"
+#include <EGE.h>
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Scene/SceneNode.h"
-#include "EGEMemory.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -16,9 +15,11 @@ EGE_DECLARE_SMART_CLASS(SceneNodeObject, PSceneNodeObject)
 
 class SceneNodeObject : public Object
 {
+  friend class SceneNode;
+
   public:
 
-    SceneNodeObject(SceneNode* pcParentNode, const EGEString& name);
+    SceneNodeObject(const EGEString& name, u32 uid = EGE_OBJECT_UID_GENERIC);
     virtual ~SceneNodeObject();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -29,7 +30,11 @@ class SceneNodeObject : public Object
     /*! Returns parent node. */
     inline SceneNode* parentNode() const{ return m_parentNode; }
     /* Adds object render data for rendering with given renderer. */
-    bool addForRendering(Renderer* renderer) const;
+    virtual bool addForRendering(Renderer* renderer) const;
+    /*! Returns TRUE if object is visible. */
+    inline bool isVisible() const { return m_visible; }
+    /* Sets visibility flag. */
+    void setVisible(bool set);
 
     // bounding box related methods
    // inline const CAxisAlignedBox& getLocalAABB( void ) const { return m_cLocalAABB; } // gets local AABB
@@ -44,23 +49,15 @@ class SceneNodeObject : public Object
     // CRenderable overrides
   //  virtual void queryLights( void );                                                 // queries for lights affecing renderable
 
-    /* Sets components. */
-    void setComponents(PPhysicsComponent physics, PRenderComponent render);
-    /*! Returns render component. */
-    inline const PRenderComponent& renderComponent() const { return m_renderComponent; }
-    /*! Returns physics component. */
-    inline const PPhysicsComponent& physicsComponent() const { return m_physicsComponent; }
+  private:
+
+    /* Sets parent node. This should be called from SceneNode only. */
+    void setParentNode(SceneNode* parent);
 
   protected:
 
     /*! Name. */
     EGEString m_name;
-    /*! Pointer to parent node. */
-    SceneNode* m_parentNode;
-    /*! Physics component. */
-    PPhysicsComponent m_physicsComponent;
-    /*! Render component. */
-    PRenderComponent m_renderComponent;
 
     //CAxisAlignedBox m_cLocalAABB;         // local AABB
 
@@ -73,6 +70,13 @@ class SceneNodeObject : public Object
     //{
     //  _E3DExport bool operator()( const CLight* pcLight1, const CLight* pcLight2 ) const;
     //};
+
+  private:
+
+    /*! Pointer to parent node. */
+    SceneNode* m_parentNode;
+    /*! Visibility flag. */
+    bool m_visible;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -19,6 +19,7 @@
     <ClCompile Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Render\RenderComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Data\Node.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Debug.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Log.cpp" />
     <ClCompile Include="..\..\Sources\Core\Dir\Dir.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\Map.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\MultiMap.h" />
     <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h" />
+    <ClInclude Include="..\..\Sources\Core\Data\Node.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Debug.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Log.h" />
     <ClInclude Include="..\..\Sources\Core\Device\Device.h" />

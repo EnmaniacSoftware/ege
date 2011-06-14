@@ -1,4 +1,3 @@
-//#include "Core/EGEngine.h"
 #include "Core/Scene/SceneNode.h"
 #include "Core/Scene/SceneManager.h"
 #include "Core/Physics/PhysicsManager.h"
@@ -16,157 +15,40 @@ EGE_DEFINE_NEW_OPERATORS(SceneNode)
 EGE_DEFINE_DELETE_OPERATORS(SceneNode)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SceneNode::SceneNode(const EGEString& name, SceneNode* parent, SceneManager* manager) : Object(manager->app()), m_name(name), m_manager(manager), 
-                                                                                        m_parent(parent), m_visible(true)
+SceneNode::SceneNode(const EGEString& name, SceneNode* parent, SceneManager* manager, EGEPhysics::EComponentType componentType)
+: Object(manager->app()), Node(manager->app(), name, parent, componentType), m_manager(manager)
 {
-  m_physics = ege_new PhysicsComponent(app(), "scenenode");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SceneNode::~SceneNode()
 {
   removeAllAttachedObjects();
-  deleteAllChildNodes();
-
-  m_physics = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool SceneNode::isValid() const
+/*! Attaches new object to node. */
+bool SceneNode::attachObject(PSceneNodeObject object)
 {
-  return NULL != m_physics || !m_physics->isValid();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates child node with a given name and attaches it. */
-SceneNode* SceneNode::createChildNode(const EGEString& name)
-{
-  SceneNode* node;
-
-  // check if there is already node with the given name
-  if (NULL != childNode(name))
-  {
-    // cannot create
-    return NULL;
-  }
-
-  // create node
-  node = ege_new SceneNode(name, this, m_manager);
-  if (NULL != node && node->isValid())
-  {
-    // add into vector
-    m_children.push_back(node);
-  }
-  else
-  {
-    // error!
-    EGE_DELETE(node);
-  }
-
-  return node;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Deletes child node with a given name and detaches it. */
-void SceneNode::deleteChildNode(const EGEString& name)
-{
-  // go thru all child nodes
-  for (std::vector<SceneNode*>::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
-  {
-    SceneNode* node = *iter;
-
-    // check if found
-    if (node->name() == name)
-    {
-      // delete node
-      node = NULL;
-
-      // remove from vector
-      m_children.erase(iter);
-
-      // we are done
-      return;
-    }
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns number of child nodes. */
-u32 SceneNode::childNodeCount() const
-{
-  return static_cast<u32>(m_children.size());
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns child node with a given name. Returns NULL if no such node exists. */
-SceneNode* SceneNode::childNode(const EGEString& name) const
-{
-  // go thru all child nodes
-  for (std::vector<SceneNode*>::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
-  {
-    SceneNode* node = *iter;
-
-    // check if found
-    if (node->name() == name)
-    {
-      // found
-      return node;
-    }
-  }
-
-  // not found
-  return NULL;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns child node with a given index. Returns NULL if no such node exists. */
-SceneNode* SceneNode::childNode(u32 index) const
-{
-  // check if OUT of range
-  if (index >= childNodeCount())
-  {
-    // error!
-    return NULL;
-  }
-
-  return m_children[index];
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Deletes and detaches all child nodes. */
-void SceneNode::deleteAllChildNodes()
-{
-  for (std::vector<SceneNode*>::iterator iter = m_children.begin(); iter != m_children.end();)
-  {
-    SceneNode* node = *iter;
-
-    EGE_DELETE(node);
-
-    iter = m_children.erase(iter);
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates and attaches new object to node. */
-PSceneNodeObject SceneNode::attachNewObject(const EGEString& name)
-{
-  PSceneNodeObject pObject;
-
   // check if object of this name is already present
-  if (NULL != attachedObject(name))
+  if (NULL != attachedObject(object->name()))
   {
     // error!
     return NULL;
   }
 
-  // allocate new object
-  pObject = ege_new SceneNodeObject(this, name);
-  if (NULL != pObject)
-  {
-    // add object into pool
-    m_objects.push_back(pObject);
-  }
+  // add object into pool
+  m_objects.push_back(object);
 
-  return pObject;  
+  // set new parent
+  object->setParentNode(this);
+
+  return true;  
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns attached object with a given name. Returns NULL if no such object exists. */
 PSceneNodeObject SceneNode::attachedObject(const EGEString& name) const
 {
   // go thru all objects
-  for (std::vector<PSceneNodeObject>::const_iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
+  for (EGEList<PSceneNodeObject>::const_iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
   {
     PSceneNodeObject pObject = *iter;
 
@@ -185,11 +67,16 @@ PSceneNodeObject SceneNode::attachedObject(const EGEString& name) const
 void SceneNode::removeObject(const EGEString& name)
 {
   // go thru all objects
-  for (std::vector<PSceneNodeObject>::iterator iter = m_objects.begin(); iter != m_objects.end();)
+  for (EGEList<PSceneNodeObject>::iterator iter = m_objects.begin(); iter != m_objects.end();)
   {
+    SceneNodeObject* object = *iter;
+
     // check if found
-    if ((*iter)->name() == name)
+    if (object->name() == name)
     {
+      // remove parent
+      object->setParentNode(NULL);
+
       *iter = NULL;
 
       // remove from pool
@@ -203,8 +90,13 @@ void SceneNode::removeObject(const EGEString& name)
 void SceneNode::removeAllAttachedObjects()
 {
   // go thru all objects
-  for (std::vector<PSceneNodeObject>::iterator iter = m_objects.begin(); iter != m_objects.end();)
+  for (EGEList<PSceneNodeObject>::iterator iter = m_objects.begin(); iter != m_objects.end();)
   {
+    SceneNodeObject* object = *iter;
+
+    // remove parent
+    object->setParentNode(NULL);
+
     *iter = NULL;
 
     iter = m_objects.erase(iter);
@@ -224,18 +116,19 @@ void SceneNode::update(const Time& time)
   // update self
   Math::CreateMatrix(m_worldMatrix, physics()->position(), Vector4f::ONE, physics()->orientation());
 
-  if (NULL != m_parent)
+  if (NULL != parent())
   {
-    m_worldMatrix = m_parent->m_worldMatrix.multiply(m_worldMatrix);
+    m_worldMatrix = parent()->worldMatrix().multiply(m_worldMatrix);
   }
 
   // check if children needs to be updated
 //  if ( m_bChildrenNeedUpdate == true )
   {
     // go thru all children
-    for (std::vector<SceneNode*>::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+    for (EGEList<Node*>::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
     {
-      (*iter)->update(time);
+      SceneNode* node = (SceneNode*) *iter;
+      node->update(time);
     }
 
     // reset flag
@@ -249,160 +142,18 @@ void SceneNode::update(const Time& time)
   //m_bNeedUpdate = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Sets visibility flag.
- * @note  Visibility referes to whether node is going to be processed and rendered. 
- */
-void SceneNode::setVisible(bool set)
+/*! Node override. Creates child node with a given name. MUST be overriden by subclass. */
+Node* SceneNode::createChildNodeImpl(const EGEString& name, EGEPhysics::EComponentType componentType)
 {
-  m_visible = set;
+  return ege_new SceneNode(name, this, sceneManager(), componentType);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//// Constructors
-//
-//SceneNode::SceneNode( const string& strName, SceneNode* pcParentNode, SceneManager* pcManager ) 
-//: m_bVisible( true ), m_bNeedUpdate( false ), m_pcParentNode( pcParentNode ), m_manager( pcManager ),
-//  m_bTransformNeedUpdate( true ), m_cOrientation( CQuaternion::IDENTITY ), 
-//  m_cDerivedOrientation( CQuaternion::IDENTITY ), m_cPosition( CVector3::ZERO ), m_cDerivedPosition( CVector3::ZERO ),
-//  m_bChildrenNeedUpdate( true ), m_pcWireBoundingBox( NULL ), m_pcWireBoundingSphere( NULL ), 
-//  m_cWorldTransform( CMatrix4::IDENTITY )
-//{
-//  // set data
-//  m_strName = strName;
-//}
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//// Destructors
-//
-//SceneNode::~SceneNode( void )
-//{
-//  DELETE_PTR( m_pcWireBoundingBox );
-//  DELETE_PTR( m_pcWireBoundingSphere );
-//
-//  // notify we are going to die
-//  notifyDestroyed();
-//
-//  // delete all child nodes
-//  deleteAllChildNodes();
-//}
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//// PUBLICS
-//
-//SceneNode* SceneNode::New( const string& strName, SceneNode* pcParentNode, SceneManager* pcManager )
-//{
-//  SceneNode* pcObject;
-//
-//  // allocate object
-//  if ( ( pcObject = new SceneNode( strName, pcParentNode, pcManager ) ) == NULL || 
-//       ( pcObject->m_pcWireBoundingBox = CWireBoundingBox::New() ) == NULL ||
-//       ( pcObject->m_pcWireBoundingSphere = CWireBoundingSphere::New() ) == NULL )
-//  {
-//    // error!
-//    DELETE_PTR( pcObject );
-//    return NULL;
-//  }
-//
-//  // make sure manager will listen for our events
-//  pcObject->addListener( pcManager );
-//
-//  return pcObject;
-//}
-//
-//void SceneNode::setVisible( bool bEnable )
-//{
-//  // set flag
-//  m_bVisible = bEnable;
-//}
-//
-//void SceneNode::attachObject( SceneNodeObject* pcObject )
-//{
-//  // detach old object
-//  detachObject( pcObject->getName() );
-//
-//  // store object
-//  m_mpcObjects[ pcObject->getName() ] = pcObject;
-//
-//  // add object 
-//  addListener( pcObject );
-//
-//  // notify object
-//  pcObject->onSceneNodeAttached( this );
-//
-//  // invalidate
-//  invalidate();
-//}
-//
-//void SceneNode::detachAllObjects( void )
-//{
-//  // go thru all attached object
-//  for ( AttachedObjectsMap::iterator iter = m_mpcObjects.begin(); iter != m_mpcObjects.end(); )
-//  {
-//    // remove from listening pool
-//    removeListener( iter->second );
-//
-//    // notify object
-//    iter->second->onSceneNodeAttached( NULL );
-//
-//    // remove it from map
-//    iter = m_mpcObjects.erase( iter );
-//
-//    // we need update (bounding boxes etc.)
-//    invalidate();
-//  }
-//}
-//
-//SceneNode::AttachedObjectsMap& SceneNode::getAttachedObjects( void )
-//{
-//  return m_mpcObjects;
-//}
-//
-//SceneNodeObject* SceneNode::getAttachedObject( const string& strName ) const
-//{
-//  // try to retirve the object
-//  AttachedObjectsMap::const_iterator iter = m_mpcObjects.find( strName );
-//
-//  // check if not found
-//  if ( iter == m_mpcObjects.end() )
-//  {
-//    // not found
-//    return NULL;
-//  }
-//
-//  return iter->second;
-//}
-//
-//SceneNodeObject* SceneNode::detachObject( const string& strName )
-//{
-//  // try to retirve the object
-//  AttachedObjectsMap::iterator iter = m_mpcObjects.find( strName );
-//
-//  // check if found
-//  if ( iter != m_mpcObjects.end() )
-//  {
-//    SceneNodeObject* pcObject = iter->second;
-//
-//    // remove it from map
-//    m_mpcObjects.erase( iter );
-//
-//    // remove from listening
-//    removeListener( pcObject );
-//
-//    // notify object
-//    pcObject->onSceneNodeAttached( NULL );
-//
-//    // we need update (bounding boxes etc.)
-//    invalidate();
-//
-//    return pcObject;
-//  }
-//
-//  // no object attcached
-//  return NULL;
-//}
-//
+/*! Creates child scene node with a given name and attaches it. */
+SceneNode* SceneNode::createChildSceneNode(const EGEString& name, EGEPhysics::EComponentType componentType)
+{
+  return static_cast<SceneNode*>(createChildNode(name, componentType));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //void SceneNode::setPosition( const CVector3& cPosition )
 //{
 //  // store position
@@ -450,38 +201,41 @@ void SceneNode::setVisible(bool set)
 //}
 //
 //
-bool SceneNode::addForRendering(PCamera& pCamera, Renderer* pcRenderer) const
+bool SceneNode::addForRendering(PCamera& camera, Renderer* renderer) const
 {  
   // check if we are NOT visible by camera
-  if (!isVisible() /*|| pcCamera->isVisible( m_cWorldBS ) == false || pcCamera->isVisible( m_cWorldAABB ) == false */)
-  {
-    // done
-    return true;
-  }
+  //if (!isVisible() /*|| pcCamera->isVisible( m_cWorldBS ) == false || pcCamera->isVisible( m_cWorldAABB ) == false */)
+  //{
+  //  // done
+  //  return true;
+  //}
 
   //// ok we are visible, notify about that
   //notifyVisible();
 
   // check attached objects
-  for (std::vector<PSceneNodeObject>::const_iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
+  for (EGEList<PSceneNodeObject>::const_iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
   {
-    const PSceneNodeObject& pObject = *iter;
+    const PSceneNodeObject& object = *iter;
 
-    // add into renderables (let the node to add itself)
-    if (!pObject->addForRendering(pcRenderer))
+    // add into renderables
+    if (object->isVisible())
     {
-      // error!
-      return false;
+      if (!object->addForRendering(renderer))
+      {
+        // error!
+        return false;
+      }
     }
   }
 
   // go thru all the children
-  for (std::vector<SceneNode*>::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  for (EGEList<Node*>::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
   {
-    SceneNode* pcObject = *iter;
+    const SceneNode* node = (SceneNode*) *iter;
 
     // find visible object within current child node
-    if (!pcObject->addForRendering(pCamera, pcRenderer))
+    if (!node->addForRendering(camera, renderer))
     {
       // error!
       return false;

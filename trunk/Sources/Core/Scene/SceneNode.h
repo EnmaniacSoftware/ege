@@ -5,76 +5,48 @@
 // NOTE: scene object should not be wrapped around smart pointer as it is shared with children and it would prevent 
 //       correct deallocation
 
-#include "EGE.h"
-#include "Core/Graphics/Camera.h"
+#include <EGE.h>
+#include "Core/Data/Node.h"
 #include "Core/Timer/Time.h"
 #include "Core/Math/Matrix4.h"
+#include "Core/Graphics/Camera.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Renderer;
+class SceneManager;
 
 EGE_DECLARE_SMART_CLASS(SceneNodeObject, PSceneNodeObject)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class SceneNode : public Object //ListenerContainer<ISceneNodeListener>
+class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListener>
 {
   public:
 
-    SceneNode(const EGEString& name, SceneNode* pcParent, SceneManager* pcManager);
+    SceneNode(const EGEString& name, SceneNode* parent, SceneManager* manager, EGEPhysics::EComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
     virtual ~SceneNode();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
-    /*! Returns node name. */
-    inline const EGEString& name() const { return m_name; }
-    /*! Returns node's parent. NULL if this is root node. */
-    inline SceneNode* parent() const { return m_parent; }
     /* Updates node. */
     void update(const Time& time);
 
-    /* Creates child node with a given name and attaches it. */
-    SceneNode* createChildNode(const EGEString& name);
-    /* Deletes child node with a given name and detaches it. */
-    void deleteChildNode(const EGEString& name);
-    /* Deletes and detaches all child nodes. */
-    void deleteAllChildNodes();
-    /* Returns number of child nodes. */
-    u32 childNodeCount() const;
-    /* Returns child node with a given name. Returns NULL if no such node exists. */
-    SceneNode* childNode(const EGEString& name) const;
-    /* Returns child node with a given index. Returns NULL if no such node exists. */
-    SceneNode* childNode(u32 index) const;
+    /* Creates child scene node with a given name and attaches it. */
+    SceneNode* createChildSceneNode(const EGEString& name, EGEPhysics::EComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
 
-    /*! Returns local physics component. */
-    inline PPhysicsComponent physics() { return m_physics; }
-    /*! Returns cached combined world matrix. */
-    inline const Matrix4f& worldMatrix() const { return m_worldMatrix; }
-    
-    /* Creates and attaches new object to node. */
-    PSceneNodeObject attachNewObject(const EGEString& name);
+    /* Attaches new object to node. */
+    bool attachObject(PSceneNodeObject object);
     /* Returns attached object with a given name. Returns NULL if no such object exists. */
     PSceneNodeObject attachedObject(const EGEString& name) const;
     /* Removes scene object of a given name. */
     void removeObject(const EGEString& name);
     /* Removes all objects. */
     void removeAllAttachedObjects();
-
-    /* Returns TRUE if node is to visible.
-     * @note  Visibility referes to whether node is going to be processed and rendered. 
-     */
-    inline bool isVisible() const { return m_visible; }
-    /* Sets visibility flag.
-     * @note  Visibility referes to whether node is going to be processed and rendered. 
-     */
-    void setVisible(bool set);
-    
+   
     //typedef hash_map<string, SceneNodeObject*> AttachedObjectsMap;
 
 
@@ -108,24 +80,19 @@ class SceneNode : public Object //ListenerContainer<ISceneNodeListener>
 
     bool addForRendering(PCamera& pCamera, Renderer* pcRenderer) const;                              // finds visible objects from given camera point of view, returns TRUE if successful
 
-  protected:
+  private:
 
-    /*! Name. */
-    EGEString m_name;
+    /* Node override. Creates child node with a given name. MUST be overriden by subclass. */
+    virtual Node* createChildNodeImpl(const EGEString& name, EGEPhysics::EComponentType componentType) override;
+    /*! Returns pointer to scene manager. */
+    inline SceneManager* sceneManager() const { return m_manager; }
+
+  private:
+
     /*! Raw pointer to owning manager. Pointer is RAW to avoid circular references (parent->child->parent). */
     SceneManager* m_manager;
-    /*! Raw pointer to parent node. NULL if this is root node. Pointer is RAW as this object is not intended (TAGE for now ?) to be shared. */
-    SceneNode* m_parent;
     /*! List of node objects attached. */
-    std::vector<PSceneNodeObject> m_objects;
-    /*! List of all child nodes attached. */
-    std::vector<SceneNode*> m_children;
-    /*! Physics component. */
-    PPhysicsComponent m_physics;
-    /*! Cached combined world matrix from all self and all parent nodes. */
-    Matrix4f m_worldMatrix;
-    /*! Visibility flag. */
-    bool m_visible;
+    EGEList<PSceneNodeObject> m_objects;
 
     //bool m_bChildrenNeedUpdate;                     // TRUE if child nodes needs to be updated
     //bool m_bNeedUpdate;                             // TRUE if update is needed

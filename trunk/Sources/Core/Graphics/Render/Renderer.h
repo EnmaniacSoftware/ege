@@ -1,10 +1,10 @@
 #ifndef EGE_CORE_RENDERER_H
 #define EGE_CORE_RENDERER_H
 
-#include "EGE.h"
+#include <EGE.h>
+#include <EGEString.h>
 #include "Core/Math/Matrix4.h"
 #include "Core/Math/Angle.h"
-#include "EGEString.h"
 #include "Core/Components/Render/RenderComponent.h"
 
 EGE_NAMESPACE_BEGIN
