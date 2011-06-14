@@ -8,7 +8,8 @@
 // | m02 m12 m22 m32 |
 // | m03 m13 m23 m33 |
 
-#include "EGE.h"
+#include <EGE.h>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -29,6 +30,8 @@ class TMatrix4
 	  inline TMatrix4& operator-=(const TMatrix4& matrix);
     inline const T&  operator()(u32 column, u32 row) const;
     inline T&        operator()(u32 column, u32 row);
+		inline T*        operator[](u32 column);
+    inline const T*  operator[](u32 column) const;
 
     /* Multiplies current matrix by given one. */
     TMatrix4<T> multiply(const TMatrix4<T>& matrix) const;
@@ -130,13 +133,29 @@ TMatrix4<T>& TMatrix4<T>::operator-=(const TMatrix4<T>& matrix)
 template <typename T>
 const T& TMatrix4<T>::operator()(u32 column, u32 row) const
 {	
+  EGE_ASSERT((4 > column) && (0 <= column) && (4 > row) && (0 <= row));
   return data[column * 4 + row]; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 T& TMatrix4<T>::operator()(u32 column, u32 row)
 {	
+  EGE_ASSERT((4 > column) && (0 <= column) && (4 > row) && (0 <= row));
   return data[column * 4 + row]; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T* TMatrix4<T>::operator[](u32 column)
+{
+  EGE_ASSERT((4 > column) && (0 <= column));
+  return &data[column * 4];
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+const T* TMatrix4<T>::operator[](u32 column) const
+{
+  EGE_ASSERT((4 > column) && (0 <= column));
+  return &data[column * 4];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if matrix is affine. */

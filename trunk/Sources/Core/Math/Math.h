@@ -35,6 +35,7 @@ class Math
     inline static float32 Tan(float32 radians) { return tanf(radians); }
     inline static float32 Ctg(float32 radians) { return 1.0f / Tan(radians); }
     inline static float32 ACos(float32 radians) { return acosf(radians); }
+    inline static float32 Abs(float32 value) { return fabsf(value); }
 
     /* Coverts quaternion to matrix representation. */
     static Matrix4f& Convert(Matrix4f& matrix, const Quaternionf& quaternion);

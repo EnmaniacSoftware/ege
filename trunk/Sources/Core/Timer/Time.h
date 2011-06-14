@@ -51,6 +51,16 @@ inline Time operator-(const Time& left, const Time& right)
   return Time(left.microseconds() - right.microseconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline Time operator/(const Time& left, float32 factor)
+{
+  return Time(left.seconds() / factor);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline Time operator*(const Time& left, float32 factor)
+{
+  return Time(left.seconds() * factor);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 

@@ -98,6 +98,8 @@ files
  	(../../Sources/Core/Data)
 	DataBuffer.cpp
 	DataBuffer.h
+  Node.cpp
+  Node.h
 
 	["Core/Debug"]
  	(../../Sources/Core/Debug)
