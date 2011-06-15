@@ -39,6 +39,11 @@ class TMatrix4
     inline TMatrix4<T> transposed() const;
     /* Returns TRUE if matrix is affine. */
     inline bool isAffine() const;
+    /* Sets scale part of the matrix. */
+    inline void setScale(T x, T y, T z);
+    /* Sets translation part of the matrix. */
+    inline void setTranslation(T x, T y, T z);
+
     
     //  CMatrix4 concatenateAffine( const CMatrix4& cMatrix ) const;                                      // multiplies affine matrices
 
@@ -205,6 +210,24 @@ TMatrix4<T> TMatrix4<T>::transposed() const
 {
   return TMatrix4<T>(data[0], data[4], data[8], data[12], data[1], data[5], data[9], data[13], data[2], data[6], data[10], data[14], data[3], data[7], data[11], 
                      data[15]);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets scale part of the matrix. */
+template <typename T>
+void TMatrix4<T>::setScale(T x, T y, T z)
+{
+  data[0]  = x;
+  data[5]  = y;
+  data[10] = z;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets translation part of the matrix. */
+template <typename T>
+void TMatrix4<T>::setTranslation(T x, T y, T z)
+{
+  data[12] = x;
+  data[13] = y;
+  data[14] = z;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

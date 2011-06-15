@@ -24,8 +24,9 @@ static GLenum MapPrimitiveType(EGEGraphics::ERenderPrimitiveType type)
 {
   switch (type)
   {
-    case EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLES: return GL_TRIANGLES;
-    case EGEGraphics::RENDER_PRIMITIVE_TYPE_LINES:     return GL_LINES;
+    case EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLES:        return GL_TRIANGLES;
+    case EGEGraphics::RENDER_PRIMITIVE_TYPE_LINES:            return GL_LINES;
+    case EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLE_STRIPS:  return GL_TRIANGLE_STRIP;
   }
 
   // default

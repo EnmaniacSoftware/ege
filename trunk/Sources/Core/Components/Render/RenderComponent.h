@@ -4,9 +4,6 @@
 #include <EGE.h>
 #include <EGEGraphics.h>
 #include "Core/Components/Component.h"
-//#include "Core/Graphics/IndexBuffer.h"
-//#include "Core/Graphics/VertexBuffer.h"
-//#include "Core/Graphics/Material.h"
 
 EGE_NAMESPACE_BEGIN
 
