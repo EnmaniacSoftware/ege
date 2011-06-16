@@ -7,8 +7,11 @@
 #include "Core/Event/EventManager.h"
 #include "Core/Event/Event.h"
 #include "Core/Event/EventIDs.h"
-#include "EGEGraphics.h"
-#include "EGETimer.h"
+#include "Core/Overlay/OverlayManager.h"
+#include "Core/Screen/ScreenManager.h"
+
+#include <EGEGraphics.h>
+#include <EGETimer.h>
 
 #ifdef EGE_PLATFORM_WIN32
 #include "Win32/Application/AppControllerWin32_p.h"
@@ -79,6 +82,9 @@ void AppController::update()
   {
     // get time interval
     Time timeInterval = time - m_lastUpdateTime;
+
+    // update screen manager
+    app()->sceneManager()->update(timeInterval);
 
     // update physics
     app()->physicsManager()->update(timeInterval);

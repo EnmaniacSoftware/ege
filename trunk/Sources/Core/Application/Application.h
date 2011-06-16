@@ -1,25 +1,26 @@
 #ifndef EGE_CORE_APPLICATION_H
 #define EGE_CORE_APPLICATION_H
 
-#include "EGE.h"
+#include <EGE.h>
+#include <EGETime.h>
 #include "Core/Event/EventListener.h"
 #include "Core/ConfigParams.h"
-#include "Core/Timer/Time.h"
-#include "Core/Scene/SceneManager.h"
-#include "Core/Overlay/OverlayManager.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+class ScreenManager;
+class Graphics;
+class EventManager;
+class ResourceManager;
+class PhysicsManager;
+class AppController;
+class Pointer;
+class SceneManager;
+class OverlayManager;
+
 EGE_DECLARE_SMART_CLASS(Timer, PTimer)
-EGE_DECLARE_SMART_CLASS(Graphics, PGraphics)
-EGE_DECLARE_SMART_CLASS(EventManager, PEventManager)
-EGE_DECLARE_SMART_CLASS(ResourceManager, PResourceManager)
-EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
-EGE_DECLARE_SMART_CLASS(PhysicsManager, PPhysicsManager)
-EGE_DECLARE_SMART_CLASS(AppController, PAppController)
-EGE_DECLARE_SMART_CLASS(Pointer, PPointer)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -38,22 +39,24 @@ class Application : public IEventListener
     virtual EGEResult initialize(const ConfigParams& params);
     /* Starts engine work. */
     virtual EGEResult run();
-    /* Returns graphics subsystem object. */
-    PGraphics graphics() const;
+    /*! Returns graphics subsystem object. */
+    inline Graphics* graphics() const { return m_graphics; }
     /* Returns main timer. */
     PTimer timer() const;
-    /* Returns event manager. */
-    PEventManager eventManager() const;
-    /* Returns physics manager. */
-    PPhysicsManager physicsManager() const;
-    /* Returns scene manager. */
-    PSceneManager sceneManager() const;
-    /* Returns resource manager. */
-    PResourceManager resourceManager() const;
-    /* Returns pointer input. */
-    PPointer pointer() const;
-    /* Returns overlay manager. */
-    POverlayManager overlayManager() const;
+    /*! Returns event manager. */
+    EventManager* eventManager() const { return m_eventManager; }
+    /*! Returns physics manager. */
+    PhysicsManager* physicsManager() const { return m_physicsManager; }
+    /*! Returns scene manager. */
+    SceneManager* sceneManager() const { return m_sceneManager; }
+    /*! Returns resource manager. */
+    ResourceManager* resourceManager() const { return m_resourceManager; }
+    /*! Returns pointer input. */
+    Pointer* pointer() const { return m_pointer; }
+    /*! Returns overlay manager. */
+    OverlayManager* overlayManager() const { return m_overlayManager; }
+    /*! Returns screen manager. */
+    ScreenManager* screenManager() const { return m_screenManager; }
     /*! Returns TRUE if landscape mode is enabled. */
     inline bool isLandscape() const { return m_landscapeMode; }
     /* Returns current FPS indication. */
@@ -68,30 +71,32 @@ class Application : public IEventListener
 
   private:
 
-    /* Returns application controller. */
-    PAppController appController() const;
+    /*! Returns application controller. */
+    AppController* appController() const { return m_appController; }
 
   private:
 
     /*! Scene manager. */
-    PSceneManager m_sceneManager;
+    SceneManager* m_sceneManager;
     /*! Physics manager. */
-    PPhysicsManager m_physicsManager;
+    PhysicsManager* m_physicsManager;
     /*! Event manager. */
-    PEventManager m_eventManager;
+    EventManager* m_eventManager;
     /*! Graphics subsystem obejct. */
-    PGraphics m_graphics;
+    Graphics* m_graphics;
     /*! Application controller. */
-    PAppController m_appController;
+    AppController* m_appController;
     /*! Main timer object. */
     // TAGE - potrzebny ?
     PTimer m_timer;
     /*! Resource manager. */
-    PResourceManager m_resourceManager;
+    ResourceManager* m_resourceManager;
     /*! Pointer input. */
-    PPointer m_pointer;
+    Pointer* m_pointer;
     /*! Overlay manager. */
-    POverlayManager m_overlayManager;
+    OverlayManager* m_overlayManager;
+    /*! Screen manager. */
+    ScreenManager* m_screenManager;
     /*! Landscape mode flag. */
     bool m_landscapeMode;
 };

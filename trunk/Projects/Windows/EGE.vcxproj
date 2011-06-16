@@ -71,6 +71,8 @@
     <ClCompile Include="..\..\Sources\Core\Scene\SceneManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Scene\SceneNode.cpp" />
     <ClCompile Include="..\..\Sources\Core\Scene\SceneNodeObject.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Screen\Screen.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Screen\ScreenManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\String.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\StringList.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\Text.cpp" />
@@ -80,6 +82,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlElementTinyXml_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
+    <ClCompile Include="..\..\Sources\EGEScreen.h" />
     <ClCompile Include="..\..\Sources\Win32\Application\AppControllerWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Device\DeviceWin32.cpp" />
@@ -174,6 +177,8 @@
     <ClInclude Include="..\..\Sources\Core\Scene\SceneManager.h" />
     <ClInclude Include="..\..\Sources\Core\Scene\SceneNode.h" />
     <ClInclude Include="..\..\Sources\Core\Scene\SceneNodeObject.h" />
+    <ClInclude Include="..\..\Sources\Core\Screen\Screen.h" />
+    <ClInclude Include="..\..\Sources\Core\Screen\ScreenManager.h" />
     <ClInclude Include="..\..\Sources\Core\String\Stl\String.h" />
     <ClInclude Include="..\..\Sources\Core\String\Stl\StringList.h" />
     <ClInclude Include="..\..\Sources\Core\String\Stl\Text.h" />

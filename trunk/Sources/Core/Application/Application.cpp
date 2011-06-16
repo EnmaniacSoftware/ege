@@ -11,6 +11,7 @@
 #include "Core/ComplexTypes.h"
 #include "Core/Event/Event.h"
 #include "Core/Input/Pointer.h"
+#include "Core/Screen/ScreenManager.h"
 #include "EGETimer.h"
 #include "EGEGraphics.h"
 #include "EGEApplication.h"
@@ -18,21 +19,24 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Application::Application() : m_landscapeMode(false)
+Application::Application() : m_sceneManager(NULL), m_physicsManager(NULL), m_eventManager(NULL), m_graphics(NULL), m_appController(NULL), 
+                             m_resourceManager(NULL), m_pointer(NULL), m_overlayManager(NULL), m_screenManager(NULL), m_landscapeMode(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Application::~Application()
 {
-  m_sceneManager    = NULL;
-  m_overlayManager  = NULL;
-  m_graphics        = NULL;
-  m_appController   = NULL;
+  EGE_DELETE(m_sceneManager);
+  EGE_DELETE(m_overlayManager);
+  EGE_DELETE(m_graphics);
+  EGE_DELETE(m_appController);
   m_timer           = NULL;
-  m_physicsManager  = NULL;
-  m_resourceManager = NULL;
-  m_pointer         = NULL;
-  m_eventManager    = NULL;
+  EGE_DELETE(m_physicsManager);
+  EGE_DELETE(m_resourceManager);
+  EGE_DELETE(m_pointer);
+  EGE_DELETE(m_eventManager);
+
+  EGE_DELETE(m_screenManager);
 
   Debug::Deinit();
   MemoryManager::Deinit();
@@ -127,16 +131,18 @@ EGEResult Application::initialize(const ConfigParams& params)
     return EGE_ERROR_NO_MEMORY;
   }
 
+  // create screen manager
+  m_screenManager = ege_new ScreenManager(this);
+  if (NULL == m_screenManager)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
   // register self for event recieval
   m_eventManager->addListener(this);
 
   return eResult;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns graphics subsystem object. */
-PGraphics Application::graphics() const
-{
-  return m_graphics;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Starts engine work. */
@@ -145,40 +151,10 @@ EGEResult Application::run()
   return appController()->run();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns event manager. */
-PEventManager Application::eventManager() const
-{
-  return m_eventManager;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns main timer. */
 PTimer Application::timer() const
 {
   return m_timer;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns scene manager. */
-PSceneManager Application::sceneManager() const
-{
-  return m_sceneManager;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns physics manager. */
-PPhysicsManager Application::physicsManager() const
-{
-  return m_physicsManager;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns resource manager. */
-PResourceManager Application::resourceManager() const
-{
-  return m_resourceManager;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns application controller. */
-PAppController Application::appController() const
-{
-  return m_appController;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IEventListener override. Event reciever. */
@@ -199,18 +175,6 @@ void Application::onEventRecieved(PEvent event)
 /*! Application updater. */
 void Application::update(const Time& time)
 {
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns pointer input. */
-PPointer Application::pointer() const
-{
-  return m_pointer;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns overlay manager. */
-POverlayManager Application::overlayManager() const
-{
-  return m_overlayManager;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns current FPS indication. */

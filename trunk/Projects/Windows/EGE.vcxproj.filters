@@ -133,6 +133,9 @@
     <Filter Include="Core\Overlay">
       <UniqueIdentifier>{083fc304-3a3c-4ce0-b212-2f3cb230c477}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Screen">
+      <UniqueIdentifier>{ac92e170-8df6-47d8-b971-2c1afe4889d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -368,6 +371,13 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Data\Node.cpp">
       <Filter>Core\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Screen\ScreenManager.cpp">
+      <Filter>Core\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\EGEScreen.h" />
+    <ClCompile Include="..\..\Sources\Core\Screen\Screen.cpp">
+      <Filter>Core\Screen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -696,6 +706,12 @@
     <ClInclude Include="..\..\Sources\EGEColor.h" />
     <ClInclude Include="..\..\Sources\Core\Data\Node.h">
       <Filter>Core\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Screen\ScreenManager.h">
+      <Filter>Core\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Screen\Screen.h">
+      <Filter>Core\Screen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

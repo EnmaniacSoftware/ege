@@ -1,10 +1,9 @@
-//#include "Core/EGEngine.h"
 #include "Core/Graphics/Camera.h"
 #include "Core/Scene/SceneManager.h"
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 #include "Core/Graphics/Viewport.h"
-#include "EGEMath.h"
+//#include <EGEMath.h>
 
 EGE_NAMESPACE
 
@@ -14,7 +13,7 @@ EGE_DEFINE_NEW_OPERATORS(Camera)
 EGE_DEFINE_DELETE_OPERATORS(Camera)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Camera::Camera(const EGEString& name, PSceneManager sceneManager) : Frustum(sceneManager->app(), m_viewMatrix), m_sceneManager(sceneManager), m_name(name)
+Camera::Camera(const EGEString& name, SceneManager* sceneManager) : Frustum(sceneManager->app(), m_viewMatrix), m_sceneManager(sceneManager), m_name(name)
 {
   // create new physics component
   m_physics = ege_new PhysicsComponent(sceneManager->app(), "camera");

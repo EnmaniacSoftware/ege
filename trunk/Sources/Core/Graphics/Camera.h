@@ -1,21 +1,23 @@
 #ifndef EGE_CORE_CAMERA_H
 #define EGE_CORE_CAMERA_H
 
-#include "EGE.h"
+#include <EGE.h>
+#include <EGEString.h>
+#include <EGEMath.h>
 #include "Core/Graphics/Frustum.h"
-#include "Core/Math/Matrix4.h"
-#include "Core/Math/Vector3.h"
+//#include "Core/Math/Matrix4.h"
+//#include "Core/Math/Vector3.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
-#include "EGEString.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+class SceneManager;
+
 EGE_DECLARE_SMART_CLASS(Camera, PCamera)
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
-EGE_DECLARE_SMART_CLASS(SceneManager, PSceneManager)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -23,7 +25,7 @@ class Camera : public Frustum
 {
   public:
 
-    Camera(const EGEString& name, PSceneManager sceneManager);
+    Camera(const EGEString& name, SceneManager* sceneManager);
     virtual ~Camera();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -54,7 +56,7 @@ class Camera : public Frustum
     /*! Position the camera is looking at (world coords). */
     Vector3f m_lookAt;
     /*! Scene manager camera is bound to. */
-    PSceneManager m_sceneManager;
+    SceneManager* m_sceneManager;
     /*! TRUE if view matrix needs to be recalculated. */
     bool m_viewMatrixNeedsUpdate;
     /*! View matrix (model->world). */

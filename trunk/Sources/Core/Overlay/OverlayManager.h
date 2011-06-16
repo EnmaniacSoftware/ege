@@ -24,7 +24,7 @@ class OverlayManager : public Object
   public: 
 
     OverlayManager(Application* app);
-    virtual ~OverlayManager();
+   ~OverlayManager();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS

@@ -1,10 +1,14 @@
 #ifndef EGE_CORE_PHYSICS_DEBUG_DRAW_BOX2D_H
 #define EGE_CORE_PHYSICS_DEBUG_DRAW_BOX2D_H
 
-#include "EGE.h"
-#include "Box2D/Box2D.h"
+#include <EGE.h>
+#include <Box2D/Box2D.h>
 
 EGE_NAMESPACE_BEGIN
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class PhysicsManagerPrivate;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
