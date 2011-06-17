@@ -139,9 +139,6 @@ EGEResult Application::initialize(const ConfigParams& params)
     return EGE_ERROR_NO_MEMORY;
   }
 
-  // register self for event recieval
-  m_eventManager->addListener(this);
-
   return eResult;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -156,21 +153,6 @@ PTimer Application::timer() const
 {
   return m_timer;
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IEventListener override. Event reciever. */
-void Application::onEventRecieved(PEvent event)
-{
-  PFloat floatData;
-
-  switch (event->uid())
-  {
-    case EGE_EVENT_UID_CORE_UPDATE:
-
-      floatData = event->data();
-    
-      update(floatData->value());
-      break;
-  }}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Application updater. */
 void Application::update(const Time& time)

@@ -95,8 +95,8 @@ void AppController::update()
     // update overlays
     app()->overlayManager()->update(timeInterval);
 
-    // send event
-    app()->eventManager()->send(EGE_EVENT_UID_CORE_UPDATE, timeInterval.seconds());
+    // update application
+    app()->update(timeInterval);
 
     // store frame current time
     m_lastUpdateTime = time;

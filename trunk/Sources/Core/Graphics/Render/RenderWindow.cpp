@@ -3,7 +3,7 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderWindow::RenderWindow(Application* app, const ConfigParams& params) : RenderTarget(app, params), m_fullScreen(false), m_width(0), m_height(0)
+RenderWindow::RenderWindow(Application* app, const ConfigParams& params) : RenderTarget(app, params), m_fullScreen(false)
 {
   // decompose param list
   ConfigParams::const_iterator iterTitle = params.find(EGE_RENDER_WINDOW_PARAM_TITLE);

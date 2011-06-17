@@ -8,6 +8,8 @@
 #include "Core/Overlay/OverlayManager.h"
 #include <EGEGraphics.h>
 
+#include <EGEScreen.h>
+
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -90,6 +92,8 @@ void SceneManager::render(PCamera camera, PViewport viewport)
     //// queue mouse cursor for rendering
     //queueMouseCursorForRendering();
   }
+
+  app()->screenManager()->render(viewport, renderer);
 
   //// queue skybox for rendering
   //queueSkyForRendering();

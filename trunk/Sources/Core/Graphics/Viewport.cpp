@@ -1,6 +1,6 @@
-//#include "Core/EGEngine.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
+#include "Core/Graphics/Render/RenderTarget.h"
 
 EGE_NAMESPACE
 
@@ -10,9 +10,9 @@ EGE_DEFINE_NEW_OPERATORS(Viewport)
 EGE_DEFINE_DELETE_OPERATORS(Viewport)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Viewport::Viewport(Application* app, const EGEString& name, PCamera camera) : Object(app), m_polygonMode(POLYGON_MODE_SOLID), 
-                                                                              m_clearBufferTypes(BUFFER_TYPE_COLOR), m_vertexCount(0), m_batchCount(0),
-                                                                              m_overlays(true)
+Viewport::Viewport(Application* app, const EGEString& name, PCamera camera, RenderTarget* renderTarget) 
+: Object(app), m_polygonMode(POLYGON_MODE_SOLID), m_clearBufferTypes(BUFFER_TYPE_COLOR), m_vertexCount(0), m_batchCount(0), m_overlays(true), 
+  m_renderTarget(renderTarget)
 {
   m_name = name;
   m_camera = camera;
@@ -74,5 +74,12 @@ void Viewport::setClearBufferTypes(BufferType mask)
 void Viewport::enableOverlays(bool enable)
 {
   m_overlays = enable;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns actual (in pixels) rect within render target. */
+Rectf Viewport::actualRect() const
+{
+  return Rectf(rect().x * renderTarget()->width(), rect().y * renderTarget()->height(), 
+               rect().width * renderTarget()->width(), rect().height * renderTarget()->height());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -41,6 +41,7 @@ files
   EGERandom.h
   EGEResources.h
 	EGEScene.h
+  EGESignal.h
   EGEString.h
   EGETexture.h
   EGETime.h
@@ -272,6 +273,11 @@ files
 	SceneNode.h
 	SceneNodeObject.cpp
 	SceneNodeObject.h
+
+	["Core/Signal"]
+  (../../Sources/Core/Signal)
+  Delegate.h
+  Signal.h
 
 	["Core/String"]
   (../../Sources/Core/String)

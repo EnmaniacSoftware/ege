@@ -3,7 +3,6 @@
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 #include "Core/Graphics/Viewport.h"
-//#include <EGEMath.h>
 
 EGE_NAMESPACE
 

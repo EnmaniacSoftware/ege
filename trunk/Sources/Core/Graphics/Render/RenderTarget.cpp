@@ -10,7 +10,7 @@ EGE_DEFINE_NEW_OPERATORS(RenderTarget)
 EGE_DEFINE_DELETE_OPERATORS(RenderTarget)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderTarget::RenderTarget(Application* app, const ConfigParams& params) : Object(app), m_vertexCount(0), m_batchCount(0)
+RenderTarget::RenderTarget(Application* app, const ConfigParams& params) : Object(app), m_vertexCount(0), m_batchCount(0), m_width(0), m_height(0)
 {
   // decompose param list
   ConfigParams::const_iterator iterName = params.find(EGE_RENDER_TARGET_PARAM_NAME);
@@ -23,7 +23,7 @@ RenderTarget::~RenderTarget()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds new viewport for target associated with given camera. */
-PViewport RenderTarget::addViewport(const EGEString& name, PCamera pCamera)
+PViewport RenderTarget::addViewport(const EGEString& name, PCamera camera)
 {
   // check if such viewport is there already
   if (NULL != viewport(name))
@@ -33,7 +33,7 @@ PViewport RenderTarget::addViewport(const EGEString& name, PCamera pCamera)
   }
 
   // create new viewport
-  PViewport viewport = ege_new Viewport(app(), name, pCamera);
+  PViewport viewport = ege_new Viewport(app(), name, camera, this);
   if (NULL != viewport)
   {
     m_viewports.push_back(viewport);

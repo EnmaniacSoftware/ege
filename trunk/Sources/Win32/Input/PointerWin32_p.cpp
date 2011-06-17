@@ -1,6 +1,7 @@
 #include "Core/Application/Application.h"
 #include "Core/Input/Pointer.h"
 #include "Win32/Input/PointerWin32_p.h"
+#include "Core/ListenerContainer.h"
 
 EGE_NAMESPACE
 

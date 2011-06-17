@@ -9,6 +9,9 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+class Renderer;
+class Viewport;
+
 EGE_DECLARE_SMART_CLASS(Screen, PScreen)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -23,10 +26,12 @@ class ScreenManager : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+    /* Renders all screens. */
+    void render(Viewport* viewport, Renderer* renderer);
     /* Updates manager. */
     void update(const Time& time);
     /* Shows given screen. */
-    void showScreen(PScreen& screen);
+    void showScreen(PScreen screen);
     /* Hides current (top) screen. */
     void hideScreen();
 

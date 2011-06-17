@@ -23,7 +23,7 @@ void OverlayManager::update(const Time& time)
   // update all overlays
   for (EGEList<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
-    POverlay object = *it;
+    Overlay* object = *it;
 
     object->update(time);
   }
@@ -78,7 +78,7 @@ POverlay OverlayManager::overlay(const EGEString& name) const
   // go thru all overlays
   for (EGEList<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
-    POverlay object = *it;
+    Overlay* object = *it;
 
     // check if found
     if (object->name() == name)
@@ -92,13 +92,13 @@ POverlay OverlayManager::overlay(const EGEString& name) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders all elements. */
-void OverlayManager::render(PViewport viewport, Renderer* renderer)
+void OverlayManager::render(Viewport* viewport, Renderer* renderer)
 {
 //  renderer->setProjectionMatrix(
   // go thru all overlays
   for (EGEList<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
-    POverlay object = *it;
+    Overlay* object = *it;
 
     // render
     object->render(viewport, renderer);

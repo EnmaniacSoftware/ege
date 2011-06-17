@@ -1,14 +1,16 @@
 #ifndef EGE_CORE_VIEWPORT_H
 #define EGE_CORE_VIEWPORT_H
 
-#include "EGE.h"
-#include "Core/Graphics/Color.h"
+#include <EGE.h>
+#include <EGEColor.h>
 #include "Core/Graphics/Camera.h"
-#include "EGEMath.h"
+#include <EGEMath.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class RenderTarget;
 
 EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
 
@@ -18,7 +20,7 @@ class Viewport : public Object
 {
   public:
 
-    Viewport(Application* app, const EGEString& name, PCamera camera);
+    Viewport(Application* app, const EGEString& name, PCamera camera, RenderTarget* renderTarget);
     virtual ~Viewport();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -45,6 +47,8 @@ class Viewport : public Object
     void setRect(Rectf rect);
     /*! Returns viewport rect within render target. */
     inline const Rectf& rect() const { return m_rect; }
+    /* Returns actual (in pixels) rect within render target. */
+    Rectf actualRect() const;
     /*! Returns camera associated with viewport. */
     PCamera camera() const { return m_camera; }
     /* Sets viewport clear color. Can be NULL color if viewport should not be cleared. */
@@ -78,6 +82,11 @@ class Viewport : public Object
 
   private:
 
+    /*! Returns pointer to render target associated with viewport. */
+    inline RenderTarget* renderTarget() const { return m_renderTarget; }
+
+  private:
+
     /*! Name. */
     EGEString m_name;
     /*! Clear color (can be NONE if no viewport buffer should be cleared). */
@@ -96,6 +105,8 @@ class Viewport : public Object
     u32 m_batchCount;
     /*! Overlays flag. If TRUE overlays will be rendered for this viewport. */
     bool m_overlays;
+    /*! Raw pointer (no need to keep smart one as each viewport is owned by target) to render target, viewport belongs to. */
+    RenderTarget* m_renderTarget;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

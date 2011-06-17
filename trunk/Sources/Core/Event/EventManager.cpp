@@ -1,4 +1,3 @@
-//#include "Core/EGEngine.h"
 #include "Core/Event/EventManager.h"
 #include "Core/Event/Event.h"
 #include "EGETypes.h"
@@ -62,7 +61,7 @@ EGEResult EventManager::send(u32 uid, s32 data)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sends event with given ID and associates floating value. */
-EGEResult EventManager::send(u32 uid, float data)
+EGEResult EventManager::send(u32 uid, float32 data)
 {
   PEvent event = ege_new Event(app(), uid);
   if (NULL == event)
@@ -107,10 +106,10 @@ EGEResult EventManager::send(u32 uid, PObject data)
 /*! Sends event. */
 void EventManager::notify(PEvent event)
 {
-  const std::vector<IEventListener*>& vpListeners = listeners();
+  const EGEList<IEventListener*>& objects = listeners();
 
   // go thru all listners
-  for (std::vector<IEventListener*>::const_iterator iter = vpListeners.begin(); iter != vpListeners.end(); ++iter)
+  for (EGEList<IEventListener*>::const_iterator iter = objects.begin(); iter != objects.end(); ++iter)
   {
     (*iter)->onEventRecieved(event);
   }

@@ -23,10 +23,6 @@ class RenderWindow : public RenderTarget
     inline const EGEString title() const { return m_title; }
     /*! Shows frame buffer. */
     virtual void showFrameBuffer() = 0;
-    /*! Returns window width (in pixels). This value is affected by landscape mode. */
-    inline s32 width() const { return m_width; }
-    /*! Returns window height (in pixels). This value is affected by landscape mode. */
-    inline s32 height() const { return m_height; }
 
   private:
 
@@ -42,10 +38,6 @@ class RenderWindow : public RenderTarget
 
     /*! TRUE if fullscreen mode is enabled. */
     bool m_fullScreen;
-    /*! Window width (in pixels). This value is affected by landscape mode. */
-    s32 m_width;
-    /*! Window height (in pixels). This value is affected by landscape mode. */
-    s32 m_height;
     /*! Title. */
     EGEString m_title;
 };

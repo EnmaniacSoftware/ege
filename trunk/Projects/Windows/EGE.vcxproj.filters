@@ -136,6 +136,9 @@
     <Filter Include="Core\Screen">
       <UniqueIdentifier>{ac92e170-8df6-47d8-b971-2c1afe4889d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Signal">
+      <UniqueIdentifier>{118de177-6a0f-4dd6-892f-030e764dfa8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -712,6 +715,13 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Screen\Screen.h">
       <Filter>Core\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGESignal.h" />
+    <ClInclude Include="..\..\Sources\Core\Signal\Delegate.h">
+      <Filter>Core\Signal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Signal\Signal.h">
+      <Filter>Core\Signal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,8 @@
 #ifndef EGE_CORE_LISTENERCONTAINER_H
 #define EGE_CORE_LISTENERCONTAINER_H
 
-#include "EGETypes.h"
+#include <EGE.h>
+#include <EGEList.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -24,12 +25,14 @@ class ListenerContainer
     /* Removes all objects from listeners pool. */
     void removeAllListeners();
     /*! Returns pool of listeners. */
-    inline const std::vector<T*>& listeners() const { return m_listeners; }
+    inline const EGEList<T*>& listeners() const { return m_listeners; }
 
   private:
 
     /*! Pool of listeners. */
-    std::vector<T*> m_listeners;
+    EGEList<T*> m_listeners;
+    /*! Pool lock flag. TAGE - If set to TRUE all operations are deferred until pool is unlocked. */
+    //bool m_locked;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -68,7 +71,7 @@ void ListenerContainer<T>::removeListener(const T* object)
     return;
   }
 
-  typename std::vector<T*>::iterator iter = std::find(m_listeners.begin(), m_listeners.end(), object);
+  typename EGEList<T*>::iterator iter = std::find(m_listeners.begin(), m_listeners.end(), object);
   if (iter != m_listeners.end())
   {
     m_listeners.erase(iter);
@@ -86,7 +89,7 @@ void ListenerContainer<T>::removeAllListeners()
 template<typename T>
 bool ListenerContainer<T>::isListening(const T* object) const
 {
-  typename std::vector<T*>::const_iterator iter = std::find(m_listeners.begin(), m_listeners.end(), object);
+  typename EGEList<T*>::const_iterator iter = std::find(m_listeners.begin(), m_listeners.end(), object);
   return (iter != m_listeners.end());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

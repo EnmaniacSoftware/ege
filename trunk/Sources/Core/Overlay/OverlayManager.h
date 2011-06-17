@@ -1,21 +1,18 @@
 #ifndef EGE_CORE_OVERLAYMANAGER_H
 #define EGE_CORE_OVERLAYMANAGER_H
 
-#include "EGE.h"
-#include "EGEString.h"
-#include "EGEList.h"
-#include "Core/Timer/Time.h"
-#include "Core/Overlay/Overlay.h"
-#include "Core/Overlay/TextOverlay.h"
-#include "Core/Graphics/Viewport.h"
+#include <EGE.h>
+#include <EGEString.h>
+#include <EGEList.h>
+#include <EGETime.h>
+#include <EGEOverlay.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Renderer;
-
-EGE_DECLARE_SMART_CLASS(OverlayManager, POverlayManager)
+class Viewport;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -30,7 +27,7 @@ class OverlayManager : public Object
     EGE_DECLARE_DELETE_OPERATORS
 
     /* Renders all elements. */
-    void render(PViewport viewport, Renderer* renderer);
+    void render(Viewport* viewport, Renderer* renderer);
     /* Updates manager. */
     void update(const Time& time);
     /* Adds text overlay of the given name. */

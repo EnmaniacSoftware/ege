@@ -64,7 +64,7 @@ class TextOverlay : public Overlay
     /* Overlay override. Updates overlay. */
     virtual void update(const Time& time) override;
     /* Overlay override. Renders element. */
-    virtual void render(const PViewport& viewport, Renderer* renderer) override;
+    virtual void render(const Viewport* viewport, Renderer* renderer) override;
     /* Updates render data. */
     void updateRenderData();
 

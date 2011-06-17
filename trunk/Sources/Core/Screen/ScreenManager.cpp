@@ -20,10 +20,14 @@ ScreenManager::~ScreenManager()
 /*! Updates manager. */
 void ScreenManager::update(const Time& time)
 {
+  if (!m_screens.empty())
+  {
+    m_screens.back()->update(time);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Shows given screen. */
-void ScreenManager::showScreen(PScreen& screen)
+void ScreenManager::showScreen(PScreen screen)
 {
   // check if some screen is being shown
   if (!m_screens.empty())
@@ -60,4 +64,12 @@ void ScreenManager::hideScreen()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+/*! Renders all screens. */
+void ScreenManager::render(Viewport* viewport, Renderer* renderer)
+{
+  if (!m_screens.empty())
+  {
+    m_screens.back()->render(viewport, renderer);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

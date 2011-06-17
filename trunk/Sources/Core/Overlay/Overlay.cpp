@@ -65,7 +65,7 @@ void Overlay::validate()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders element. */
-void Overlay::render(const PViewport& viewport, Renderer* renderer)
+void Overlay::render(const Viewport* viewport, Renderer* renderer)
 {
   EGE_UNUSED(viewport);
   EGE_UNUSED(renderer);

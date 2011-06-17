@@ -1,8 +1,8 @@
 #ifndef EGE_WIN32_POINTER_PRIVATE_H
 #define EGE_WIN32_POINTER_PRIVATE_H
 
-#include "EGE.h"
-#include "EGEEvent.h"
+#include <EGE.h>
+#include <EGEEvent.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -28,7 +28,7 @@ class PointerPrivate : public IEventListener
   private:
 
     /* IEventListener override. Event reciever. */
-    virtual void onEventRecieved(PEvent event) override;
+    void onEventRecieved(PEvent event) override;
     /*! Returns pointer to base object. */
     inline Pointer* base() const { return m_base; }
 

@@ -1,18 +1,18 @@
 #ifndef EGE_CORE_OVERLAY_H
 #define EGE_CORE_OVERLAY_H
 
-#include "EGE.h"
-#include "EGEString.h"
-#include "Core/Timer/Time.h"
+#include <EGE.h>
+#include <EGEString.h>
+#include <EGETime.h>
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
-#include "Core/Graphics/Viewport.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Renderer;
+class Viewport;
 
 EGE_DECLARE_SMART_CLASS(Overlay, POverlay)
 
@@ -33,7 +33,7 @@ class Overlay : public Object
     /* Updates overlay. */
     virtual void update(const Time& time);
     /* Renders element. */
-    virtual void render(const PViewport& viewport, Renderer* renderer);
+    virtual void render(const Viewport* viewport, Renderer* renderer);
     /*! Returns name. */
     inline const EGEString& name() const { return m_name; }
     /*! Returns physics component. */

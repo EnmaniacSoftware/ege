@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_EVENTMANAGER_H
 #define EGE_CORE_EVENTMANAGER_H
 
-#include "EGE.h"
+#include <EGE.h>
 #include "Core/Event/EventListener.h"
 #include "Core/ListenerContainer.h"
 
@@ -21,7 +21,7 @@ class EventManager : public Object, public ListenerContainer<IEventListener>
   public:
 
     EventManager(Application* app);
-    virtual ~EventManager();
+   ~EventManager();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -31,7 +31,7 @@ class EventManager : public Object, public ListenerContainer<IEventListener>
     /* Sends event with given ID and associates integral value. */
     EGEResult send(u32 uid, s32 data);
     /* Sends event with given ID and associates floating value. */
-    EGEResult send(u32 uid, float data);
+    EGEResult send(u32 uid, float32 data);
     /* Sends event with given ID and associates arbitrary data. */
     EGEResult send(u32 uid, PObject data);
 

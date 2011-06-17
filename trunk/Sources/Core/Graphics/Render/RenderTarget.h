@@ -49,11 +49,22 @@ class RenderTarget : public Object
     PViewport viewport(const EGEString& name) const;
     /* Performs rendering for target. */
     void render();
+    /*! Returns target width (in pixels). */
+    inline s32 width() const { return m_width; }
+    /*! Returns target height (in pixels). */
+    inline s32 height() const { return m_height; }
 
   private:
 
     /* Removes all viewport associated with target. */
     void removeAllViewports();
+
+  protected:
+
+    /*! Width (in pixels). */
+    s32 m_width;
+    /*! Height (in pixels). */
+    s32 m_height;
 
   private:
 

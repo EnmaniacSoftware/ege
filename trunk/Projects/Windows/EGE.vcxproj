@@ -179,6 +179,8 @@
     <ClInclude Include="..\..\Sources\Core\Scene\SceneNodeObject.h" />
     <ClInclude Include="..\..\Sources\Core\Screen\Screen.h" />
     <ClInclude Include="..\..\Sources\Core\Screen\ScreenManager.h" />
+    <ClInclude Include="..\..\Sources\Core\Signal\Delegate.h" />
+    <ClInclude Include="..\..\Sources\Core\Signal\Signal.h" />
     <ClInclude Include="..\..\Sources\Core\String\Stl\String.h" />
     <ClInclude Include="..\..\Sources\Core\String\Stl\StringList.h" />
     <ClInclude Include="..\..\Sources\Core\String\Stl\Text.h" />
@@ -209,6 +211,7 @@
     <ClInclude Include="..\..\Sources\EGERandom.h" />
     <ClInclude Include="..\..\Sources\EGEResources.h" />
     <ClInclude Include="..\..\Sources\EGEScene.h" />
+    <ClInclude Include="..\..\Sources\EGESignal.h" />
     <ClInclude Include="..\..\Sources\EGEString.h" />
     <ClInclude Include="..\..\Sources\EGETexture.h" />
     <ClInclude Include="..\..\Sources\EGETime.h" />

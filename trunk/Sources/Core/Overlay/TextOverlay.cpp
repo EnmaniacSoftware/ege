@@ -142,7 +142,7 @@ void TextOverlay::updateRenderData()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Overlay override. Renders element. */
-void TextOverlay::render(const PViewport& viewport, Renderer* renderer)
+void TextOverlay::render(const Viewport* viewport, Renderer* renderer)
 {
   if (visible())
   {

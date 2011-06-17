@@ -24,7 +24,7 @@ EGE_DECLARE_SMART_CLASS(Timer, PTimer)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Application : public IEventListener
+class Application
 {
   public:
 
@@ -39,6 +39,8 @@ class Application : public IEventListener
     virtual EGEResult initialize(const ConfigParams& params);
     /* Starts engine work. */
     virtual EGEResult run();
+    /* Application updater. */
+    virtual void update(const Time& time);
     /*! Returns graphics subsystem object. */
     inline Graphics* graphics() const { return m_graphics; }
     /* Returns main timer. */
@@ -61,13 +63,6 @@ class Application : public IEventListener
     inline bool isLandscape() const { return m_landscapeMode; }
     /* Returns current FPS indication. */
     s32 fps() const;
-
-  protected:
-
-    /* Application updater. */
-    virtual void update(const Time& time);
-    /* IEventListener override. Event reciever. */
-    virtual void onEventRecieved(PEvent event);
 
   private:
 

@@ -86,7 +86,7 @@ SmartPointer<T>::SmartPointer(const SmartPointer<U>& other)
 template <typename T>
 SmartPointer<T>::~SmartPointer()
 {
-  decrementReference(m_object);
+  decrementReference(static_cast<Object*>(m_object));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
