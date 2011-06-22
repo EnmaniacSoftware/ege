@@ -1,9 +1,10 @@
 #ifndef EGE_CORE_RESOURCEMATERIAL_H
 #define EGE_CORE_RESOURCEMATERIAL_H
 
-#include "EGE.h"
-#include "EGEString.h"
-#include "EGEXml.h"
+#include <EGE.h>
+#include <EGEString.h>
+#include <EGEXml.h>
+#include <EGEMath.h>
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN
@@ -50,6 +51,8 @@ class ResourceMaterial : public IResource
     ResourceMaterial(Application* app, ResourceManager* manager);
     /* Adds texture dependancy. */
     EGEResult addTexture(const PXmlElement& tag);
+    /* Adds texture image dependancy. */
+    EGEResult addTextureImage(const PXmlElement& tag);
     /*! Returns TRUE if material is loaded. */
     inline bool isLoaded() const { return NULL != m_material; }
     /*! Returns source pixel scale function name. */
@@ -71,10 +74,27 @@ class ResourceMaterial : public IResource
     
   private:
 
+    /*! Small class containing information for TextureImage. */
+    class TextureImageData
+    {
+      public:
+
+        TextureImageData(const EGEString& textureName, const Rectf& textureRect) : m_textureName(textureName), m_textureRect(textureRect) {}
+
+      public:
+
+        /*! Texture name. */
+        EGEString m_textureName;
+        /*! Texture rectangle. */
+        Rectf m_textureRect;
+    };
+
+  private:
+
     /*! Name. */
     EGEString m_name;
-    /*! Texture names. */
-    EGEStringList m_textureNames;
+    /*! List of all texture images contributing to material. */
+    EGEList<TextureImageData> m_textureImages;
     /*! Source blend value name. */
     EGEString m_srcBlend;
     /*! Destination blend value name. */

@@ -1,9 +1,14 @@
 #ifndef EGE_CORE_SCREENMANAGER_H
 #define EGE_CORE_SCREENMANAGER_H
 
+/** Class managing the screens. Allows stacking up different screens as well as poping top level screens back. Notifies the screens when their view state
+    changes.
+*/
+
 #include <EGE.h>
 #include <EGETime.h>
 #include <EGEList.h>
+#include <EGEInput.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -34,6 +39,13 @@ class ScreenManager : public Object
     void showScreen(PScreen screen);
     /* Hides current (top) screen. */
     void hideScreen();
+    /* Removes given screen from stack. */
+    void removeScreen(PScreen screen);
+
+  private slots:
+
+    /* Pointer event receiver. */
+    void pointerEvent(PPointerData data);
 
   private:
 

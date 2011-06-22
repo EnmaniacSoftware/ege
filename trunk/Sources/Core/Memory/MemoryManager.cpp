@@ -1,7 +1,5 @@
-#include "EGE.h"
 #include "Core/Memory/MemoryManager.h"
-#include "Core/Debug/Debug.h"
-#include <iostream>
+#include <EGEDebug.h>
 #include <fstream>
 
 EGE_NAMESPACE

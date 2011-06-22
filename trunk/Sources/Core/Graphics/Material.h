@@ -4,6 +4,7 @@
 #include <EGE.h>
 #include <EGEString.h>
 #include <EGEGraphics.h>
+#include <EGEList.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -22,7 +23,7 @@ class Material : public Object
   public:
 
     Material(Application* app);
-    virtual ~Material();
+   ~Material();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -69,7 +70,7 @@ class Material : public Object
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(Material);
 
     /*! Textures assigned to material. */
-    std::vector<PObject> m_textures;
+    EGEList<PObject> m_textures;
     /*! Blending flag. */
     bool m_blendingEnabled;
     /*! Diffuse color reflectance. */

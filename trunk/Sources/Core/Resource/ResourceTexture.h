@@ -1,9 +1,13 @@
 #ifndef EGE_CORE_RESOURCETEXTURE_H
 #define EGE_CORE_RESOURCETEXTURE_H
 
-#include "EGE.h"
-#include "EGEString.h"
-#include "EGEXml.h"
+/** Class defines texture resource (all properties). From its content actual instance of texture is created.
+    Texture resource can define any type of texture i.e. 2D, 3D or CUBE MAP.
+*/
+
+#include <EGE.h>
+#include <EGEString.h>
+#include <EGEXml.h>
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN
@@ -67,11 +71,11 @@ class ResourceTexture : public IResource
 
   private:
 
-    /*! Texture name */
+    /*! Texture name. */
     EGEString m_name;
-    /*! Texture path */
+    /*! Texture path. */
     EGEString m_path;
-    /*! Texture type */
+    /*! Texture type. */
     EGEString m_type;
     /*! Texture minifying function name. */
     EGEString m_minFilter;

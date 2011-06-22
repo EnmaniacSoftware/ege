@@ -1,7 +1,8 @@
 #ifndef EGE_CORE_DEBUG_H
 #define EGE_CORE_DEBUG_H
 
-#include "EGE.h"
+#include <EGE.h>
+#include <EGEString.h>
 #include "Core/Debug/Log.h"
 
 EGE_NAMESPACE_BEGIN

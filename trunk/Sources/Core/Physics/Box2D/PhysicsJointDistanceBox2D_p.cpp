@@ -20,7 +20,7 @@ PhysicsJointDistancePrivate::PhysicsJointDistancePrivate(PhysicsJointDistance* p
 
   // define joint
 	b2DistanceJointDef def;
-	def.frequencyHz      = 10;
+	def.frequencyHz      = 4;
 	def.dampingRatio     = 1;
 	def.collideConnected = true;
 	def.Initialize(bodyA, bodyB, bodyA->GetPosition(), bodyB->GetPosition());
@@ -68,5 +68,51 @@ EGE::float32 PhysicsJointDistancePrivate::length() const
 bool PhysicsJointDistancePrivate::isValid() const
 {
   return NULL != m_joint;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Sets damping ratio.
+*
+*  @param   ration Damping ratio to set. 0 - no damping, 1 - critical damping.
+*/
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void PhysicsJointDistancePrivate::setDampingRatio(EGE::float32 ratio)
+{
+  if (m_joint)
+  {
+    m_joint->SetDampingRatio(ratio);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns current damping ratio. */
+EGE::float32 PhysicsJointDistancePrivate::dampingRatio() const
+{
+  if (m_joint)
+  {
+    return m_joint->GetDampingRatio();
+  }
+
+  return 0;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Sets mass-spring-damper frequency (in Hz). 
+*  @note  This describes the speed of response of the system.
+*/
+void PhysicsJointDistancePrivate::setFrequency(EGE::float32 frequencyHz)
+{
+  if (m_joint)
+  {
+    m_joint->SetFrequency(frequencyHz);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns current mass-spring-damper frequency (in Hz). */
+EGE::float32 PhysicsJointDistancePrivate::frequency() const
+{
+  if (m_joint)
+  {
+    return m_joint->GetFrequency();
+  }
+
+  return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

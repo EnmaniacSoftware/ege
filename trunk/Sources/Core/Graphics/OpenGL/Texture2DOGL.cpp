@@ -1,7 +1,7 @@
 #include "Core/Graphics/Image.h"
-#include "Core/Debug/Debug.h"
 #include "Core/Data/DataBuffer.h"
-#include "EGETexture.h"
+#include <EGETexture.h>
+#include <EGEDebug.h>
 
 #ifdef EGE_PLATFORM_WIN32
 #include <gl/GL.h>
@@ -19,6 +19,22 @@ EGE_NAMESPACE
 
 EGE_DEFINE_NEW_OPERATORS(Texture2D)
 EGE_DEFINE_DELETE_OPERATORS(Texture2D)
+
+        /** Returns the closest power-of-two number greater or equal to value.
+            @note 0 and 1 are powers of two, so 
+                firstPO2From(0)==0 and firstPO2From(1)==1.
+        */
+        //static u32 firstPO2From(u32 n)
+        //{
+        //    --n;            
+        //    n |= n >> 16;
+        //    n |= n >> 8;
+        //    n |= n >> 4;
+        //    n |= n >> 2;
+        //    n |= n >> 1;
+        //    ++n;
+        //    return n;
+        //}
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Texture2D::Texture2D(Application* app, EGETexture::Filter minFilter, EGETexture::Filter magFilter, EGETexture::Wrap wrapS, EGETexture::Wrap wrapT) 

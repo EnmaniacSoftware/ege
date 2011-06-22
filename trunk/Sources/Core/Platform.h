@@ -46,6 +46,10 @@ inline void ege_noop() {}
 
 #define EGE_UNUSED(x) (void) x;
 
+#define signals public
+#define emit
+#define slots
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // OS includes
@@ -64,20 +68,6 @@ inline void ege_noop() {}
 #ifdef __GNUC__
 #define override
 #endif // __GNUC__
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-#ifdef EGE_FEATURE_DEBUG
-
-#define EGE_ASSERT(cond) ((!(cond)) ? Debug::Assert(#cond) : ege_noop())
-#define EGE_LOG(text) Debug::LogText(text)
-
-#else
-
-#define EGE_ASSERT(cond) ege_noop()
-#define EGE_LOG(text) ege_noop()
-
-#endif // EGE_FEATURE_DEBUG
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

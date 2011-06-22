@@ -2,13 +2,15 @@
 #include "Core/Resource/ResourceTexture.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Graphics/Material.h"
+#include "Core/Graphics/TextureImage.h"
 #include <EGETexture.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#define NODE_TEXTURE "texture"
+#define NODE_TEXTURE        "texture"
+#define NODE_TEXTURE_IMAGE  "texture-image"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -73,6 +75,10 @@ EGEResult ResourceMaterial::create(const EGEString& path, const PXmlElement& tag
     if (NODE_TEXTURE == child->name())
     {
       result = addTexture(child);
+    }
+    else if (NODE_TEXTURE_IMAGE == child->name())
+    {
+      result = addTextureImage(child);
     }
 
     // check if failed
@@ -154,9 +160,11 @@ EGEResult ResourceMaterial::load()
     }
 
     // load textures
-    for (EGEStringList::const_iterator it = m_textureNames.begin(); it != m_textureNames.end(); ++it)
+    for (EGEList<TextureImageData>::const_iterator it = m_textureImages.begin(); it != m_textureImages.end(); ++it)
     {
-      PResourceTexture texture = manager()->resource("texture", *it);
+      const TextureImageData& textureImageData = *it;
+
+      PResourceTexture texture = manager()->resource("texture", textureImageData.m_textureName);
       if (texture)
       {
         // load texture
@@ -166,8 +174,15 @@ EGEResult ResourceMaterial::load()
           return result;
         }
 
+        PTextureImage textureImage = ege_new TextureImage(app(), texture->texture(), textureImageData.m_textureRect);
+        if (NULL == textureImage || !textureImage->isValid())
+        {
+          // erro!
+          return EGE_ERROR;
+        }
+
         // add texture to material
-        if (EGE_SUCCESS != (result = material->addTexture(texture->texture())))
+        if (EGE_SUCCESS != (result = material->addTexture(textureImage)))
         {
           // error!
           return result;
@@ -208,8 +223,44 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag)
     return EGE_ERROR_BAD_PARAM;
   }
 
-  // add texture name
-  m_textureNames.push_back(name);
+  // add texture image data
+  m_textureImages.push_back(TextureImageData(name, Rectf(0, 0, 1, 1)));
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds texture image dependancy. */
+EGEResult ResourceMaterial::addTextureImage(const PXmlElement& tag)
+{
+  EGEResult result = EGE_SUCCESS;
+
+  bool error = false;
+
+  // get data
+  EGEString textureName = tag->attribute("texture-name");
+  EGEString textureRect = tag->attribute("texture-rect");
+
+  // check if obligatory data is wrong
+  if (textureName.empty())
+  {
+    // error!
+    return EGE_ERROR_BAD_PARAM;
+  }
+
+  Rectf rect(0, 0, 1, 1);
+  if (!textureRect.empty())
+  {
+    bool error = false;
+    rect = textureRect.toRectf(&error);
+    if (error)
+    {
+      // error!
+      return EGE_ERROR_BAD_PARAM;
+    }
+  }
+
+  // add texture image data
+  m_textureImages.push_back(TextureImageData(textureName, rect));
 
   return result;
 }

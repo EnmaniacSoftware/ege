@@ -39,8 +39,10 @@ files
   EGEOverlay.h
   EGEPhysics.h
   EGERandom.h
+  EGERect.h
   EGEResources.h
 	EGEScene.h
+  EGEScreen.h
   EGESignal.h
   EGEString.h
   EGETexture.h
@@ -152,6 +154,8 @@ files
   JpegDataSrcFile.h
   Material.cpp
   Material.h
+  TextureImage.cpp
+  TextureImage.h
 	VertexBuffer.cpp
 	VertexBuffer.h
   Viewport.cpp
@@ -273,6 +277,13 @@ files
 	SceneNode.h
 	SceneNodeObject.cpp
 	SceneNodeObject.h
+
+	["Core/Screen"]
+  (../../Sources/Core/Screen)
+  Screen.cpp
+  Screen.h
+  ScreenManager.cpp
+  ScreenManager.h
 
 	["Core/Signal"]
   (../../Sources/Core/Signal)

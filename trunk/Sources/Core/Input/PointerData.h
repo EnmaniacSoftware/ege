@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_POINTERDATA_H
 #define EGE_CORE_POINTERDATA_H
 
-#include "EGE.h"
-#include "EGEInput.h"
+#include <EGE.h>
+#include <EGEInput.h>
 
 EGE_NAMESPACE_BEGIN
 

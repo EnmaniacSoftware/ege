@@ -1,7 +1,7 @@
 #include "Core/Application/Application.h"
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
-#include "Core/Debug/Debug.h"
+#include <EGEDebug.h>
 
 #ifdef EGE_PHYSICS_BOX2D
 #include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"

@@ -1,5 +1,7 @@
+#include "Core/Application/Application.h"
 #include "Core/Screen/Screen.h"
 #include "Core/Screen/ScreenManager.h"
+#include <EGESignal.h>
 
 EGE_NAMESPACE
 
@@ -11,6 +13,7 @@ EGE_DEFINE_DELETE_OPERATORS(ScreenManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ScreenManager::ScreenManager(Application* app) : Object(app)
 {
+  ege_connect(app->pointer(), signal, this, ScreenManager::pointerEvent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ScreenManager::~ScreenManager()
@@ -32,8 +35,16 @@ void ScreenManager::showScreen(PScreen screen)
   // check if some screen is being shown
   if (!m_screens.empty())
   {
-    // leave currently shown screen
-    m_screens.back()->leave();
+    // if current screen has no transparency, previous one can leave immediatly
+    if (!screen->hasTransparency())
+    {
+      m_screens.back()->leave();
+    }
+    else
+    {
+      // just cover it
+      m_screens.back()->cover();
+    }
   }
 
   // enter new screen
@@ -46,6 +57,8 @@ void ScreenManager::showScreen(PScreen screen)
 /*! Hides current (top) screen. */
 void ScreenManager::hideScreen()
 {
+  bool wasTransparent = false;
+
   // check if some screen is being shown
   if (!m_screens.empty())
   {
@@ -67,9 +80,46 @@ void ScreenManager::hideScreen()
 /*! Renders all screens. */
 void ScreenManager::render(Viewport* viewport, Renderer* renderer)
 {
+  // go thru all screens from top to bottom
+  for (EGEList<PScreen>::const_reverse_iterator it = m_screens.rbegin(); it != m_screens.rend(); ++it)
+  {
+    Screen* screen = *it;
+    if (!screen->hasTransparency())
+    {
+      // go back from current screen to the begining of iteration and render all screens on the way
+      do
+      {
+        // render current screen
+        screen->render(viewport, renderer);
+
+        // check if we have reached top level screen
+        if (it == m_screens.rbegin())
+        {
+          // done
+          return;
+        }
+
+        // go to screen above
+        --it;
+
+      } while (true);
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes given screen from stack. */
+void ScreenManager::removeScreen(PScreen screen)
+{
+  m_screens.remove(screen);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Pointer event receiver. */
+void ScreenManager::pointerEvent(PPointerData data)
+{
+  // pass into top-level screen only
   if (!m_screens.empty())
   {
-    m_screens.back()->render(viewport, renderer);
+      m_screens.back()->pointerEvent(data);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

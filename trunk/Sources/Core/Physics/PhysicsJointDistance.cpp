@@ -1,7 +1,7 @@
 #include "Core/Application/Application.h"
 #include "Core/Physics/PhysicsManager.h"
-#include "Core/Debug/Debug.h"
 #include "Core/Physics/PhysicsJointDistance.h"
+#include <EGEDebug.h>
 
 #ifdef EGE_PHYSICS_BOX2D
 #include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"
@@ -55,5 +55,51 @@ EGE::float32 PhysicsJointDistance::length() const
 bool PhysicsJointDistance::isValid() const
 {
   return (NULL != m_p) && m_p->isValid();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Sets damping ratio.
+*
+*  @param   ration Damping ratio to set. 0 - no damping, 1 - critical damping.
+*/
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void PhysicsJointDistance::setDampingRatio(EGE::float32 ratio)
+{
+  if (isValid())
+  {
+    p_func()->setDampingRatio(ratio);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns current damping ratio. */
+EGE::float32 PhysicsJointDistance::dampingRatio() const
+{
+  if (isValid())
+  {
+    return p_func()->dampingRatio();
+  }
+
+  return 0;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Sets mass-spring-damper frequency (in Hz). 
+*  @note  This describes the speed of response of the system.
+*/
+void PhysicsJointDistance::setFrequency(EGE::float32 frequencyHz)
+{
+  if (isValid())
+  {
+    p_func()->setFrequency(frequencyHz);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns current mass-spring-damper frequency (in Hz). */
+EGE::float32 PhysicsJointDistance::frequency() const
+{
+  if (isValid())
+  {
+    return p_func()->frequency();
+  }
+
+  return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

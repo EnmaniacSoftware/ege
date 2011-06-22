@@ -382,6 +382,9 @@
     <ClCompile Include="..\..\Sources\Core\Screen\Screen.cpp">
       <Filter>Core\Screen</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\TextureImage.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -723,6 +726,10 @@
     <ClInclude Include="..\..\Sources\Core\Signal\Signal.h">
       <Filter>Core\Signal</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\TextureImage.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGERect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

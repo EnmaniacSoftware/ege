@@ -27,9 +27,6 @@ PhysicsJointAttractPrivate::PhysicsJointAttractPrivate(PhysicsJointAttract* pare
     def.maxForce = 1000.0f * body->GetMass();
     def.bodyA = m_groundBody;
     def.bodyB = body;
-    def.dampingRatio = 0.95f;
-//    def.frequencyHz = 4;
-    //def.dampingRatio = 1.0f;
     def.target = body->GetPosition();
 
     // create joint implementation
@@ -69,5 +66,51 @@ void PhysicsJointAttractPrivate::setTarget(const Vector4f& position)
 
     m_joint->SetTarget(b2Vec2(position.x * scale, position.y * scale));
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Sets damping ratio.
+*
+*  @param   ration Damping ratio to set. 0 - no damping, 1 - critical damping.
+*/
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void PhysicsJointAttractPrivate::setDampingRatio(EGE::float32 ratio)
+{
+  if (m_joint)
+  {
+    m_joint->SetDampingRatio(ratio);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns current damping ratio. */
+EGE::float32 PhysicsJointAttractPrivate::dampingRatio() const
+{
+  if (m_joint)
+  {
+    return m_joint->GetDampingRatio();
+  }
+
+  return 0;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Sets mass-spring-damper frequency (in Hz). 
+*  @note  This describes the speed of response of the system.
+*/
+void PhysicsJointAttractPrivate::setFrequency(EGE::float32 frequencyHz)
+{
+  if (m_joint)
+  {
+    m_joint->SetFrequency(frequencyHz);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns current mass-spring-damper frequency (in Hz). */
+EGE::float32 PhysicsJointAttractPrivate::frequency() const
+{
+  if (m_joint)
+  {
+    return m_joint->GetFrequency();
+  }
+
+  return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

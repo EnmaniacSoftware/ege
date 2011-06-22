@@ -35,7 +35,7 @@ void PointerPrivate::onEventRecieved(PEvent event)
     case EGE_EVENT_UID_INTERNAL_POINTER_DATA:
 
       // propagate as valid event
-      base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, event->data());
+      emit base()->signal(event->data());//app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, event->data());
       break;
   }
 }

@@ -1,10 +1,12 @@
 #ifndef EGE_CORE_RESOURCEMANAGER_H
 #define EGE_CORE_RESOURCEMANAGER_H
 
-#include "EGE.h"
-#include "EGEString.h"
-#include "EGEDataBuffer.h"
-#include "EGEXml.h"
+#include <EGE.h>
+#include <EGEString.h>
+#include <EGEDataBuffer.h>
+#include <EGEXml.h>
+#include <EGEMap.h>
+#include <EGEList.h>
 #include "Core/Graphics/Material.h"
 
 EGE_NAMESPACE_BEGIN
@@ -78,9 +80,9 @@ class ResourceManager : public Object
     /*! Resource root dir */
     EGEString m_rootDir;
     /*! Resource groups defined */
-    std::vector<PResourceGroup> m_groups;
+    EGEList<PResourceGroup> m_groups;
     /*! Registered resources sorted by type name. */
-    std::map<EGEString, egeResourceCreateFunc> m_registeredResources;
+    EGEMap<EGEString, egeResourceCreateFunc> m_registeredResources;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

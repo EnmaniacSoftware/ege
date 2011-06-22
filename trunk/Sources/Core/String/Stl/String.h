@@ -3,6 +3,7 @@
 
 #include <EGE.h>
 #include <EGEColor.h>
+#include <EGERect.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -46,6 +47,8 @@ class EGEString : public std::string
     float32 toFloat(bool* error = NULL) const;
     /* Converts to color. If error is valid, it holds TRUE if error occured during the conversion. */
     Color toColor(bool* error = NULL) const;
+    /* Converts to rectangle of floats. If error is valid, it holds TRUE if error occured during the conversion. */
+    Rectf toRectf(bool* error = NULL) const;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

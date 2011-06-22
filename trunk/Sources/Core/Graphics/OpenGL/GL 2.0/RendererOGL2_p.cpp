@@ -12,6 +12,7 @@
 #include "Core/Graphics/OpenGL/MaterialOGL_p.h"
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Render/RenderWindow.h"
+#include "Core/Graphics/TextureImage.h"
 
 EGE_NAMESPACE
 
@@ -83,7 +84,6 @@ void RendererPrivate::flush()
   glLoadIdentity();
   glRotatef(d_func()->orientationRotation().degrees(), 0, 0, 1);
   glMultMatrixf(d_func()->m_projectionMatrix.data);
-  glMatrixMode(GL_MODELVIEW);
 
   // go thru all render data
   for (EGEMultiMap<s32, Renderer::SRENDERDATA>::iterator iter = d_func()->m_renderData.begin(); iter != d_func()->m_renderData.end();)
@@ -96,6 +96,9 @@ void RendererPrivate::flush()
 
     // apply material
     applyMaterial(material);
+
+    // NOTE: change to modelview after material is applied as it may change current matrix mode
+    glMatrixMode(GL_MODELVIEW);
 
     // determine texture count
     s32 textureCount = material ? material->textureCount() : 0;
@@ -266,6 +269,28 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
 
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, tex2d->id());
+
+        glMatrixMode(GL_TEXTURE);
+        glLoadIdentity();
+      }
+      // check if texture image
+      else if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
+      {
+        TextureImage* texImg = (TextureImage*) texture;
+        Texture2D* tex2d = (Texture2D*) texImg->texture().object();
+
+        if (glActiveTextureARB)
+        {
+          glActiveTextureARB(GL_TEXTURE0_ARB + i);
+        }
+
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, tex2d->id());
+
+        glMatrixMode(GL_TEXTURE);
+        glLoadIdentity();
+        glScalef(texImg->rectangle().width, texImg->rectangle().height, 1.0f);
+        glTranslatef(texImg->rectangle().x, texImg->rectangle().y, 0.0f);
       }
     }
   }

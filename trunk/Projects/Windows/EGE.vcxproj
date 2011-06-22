@@ -41,6 +41,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Renderer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderTarget.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderWindow.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\TextureImage.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\VertexBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Viewport.cpp" />
     <ClCompile Include="..\..\Sources\Core\Input\Pointer.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Renderer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderTarget.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderWindow.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\TextureImage.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexBuffer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Viewport.h" />
     <ClInclude Include="..\..\Sources\Core\Input\Pointer.h" />
@@ -209,6 +211,7 @@
     <ClInclude Include="..\..\Sources\EGEOverlay.h" />
     <ClInclude Include="..\..\Sources\EGEPhysics.h" />
     <ClInclude Include="..\..\Sources\EGERandom.h" />
+    <ClInclude Include="..\..\Sources\EGERect.h" />
     <ClInclude Include="..\..\Sources\EGEResources.h" />
     <ClInclude Include="..\..\Sources\EGEScene.h" />
     <ClInclude Include="..\..\Sources\EGESignal.h" />

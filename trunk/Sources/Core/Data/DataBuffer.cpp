@@ -1,7 +1,6 @@
-//#include "Core/EGEngine.h"
 #include "Core/Data/DataBuffer.h"
 #include "Core/Math/Math.h"
-#include "Core/Debug/Debug.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 

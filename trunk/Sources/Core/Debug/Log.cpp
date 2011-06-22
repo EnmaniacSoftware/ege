@@ -1,14 +1,5 @@
-//#include "Core/EGEngine.h"
 #include "Core/Debug/Log.h"
 #include "Core/Data/DataBuffer.h"
-#include "EGEFile.h"
-
-//
-//#include "CEnmLogger.h"
-//
-//#include <stdio.h>
-//#include <stdarg.h>
-//#include <time.h>
 
 EGE_NAMESPACE
 

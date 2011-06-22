@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_RANDOM_H
 #define EGE_CORE_RANDOM_H
 
-#include "EGE.h"
+#include <EGE.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -17,10 +17,11 @@ class Random : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+    /* Returns randomly generated integer. */
+    s32 operator() ();
+
     /* Returns TRUE if object is valid. */
     bool isValid() const;
-    /* Returns randomly generated integer. */
-    s32 rand();
     /* Sets random seed. */
     void setSeed(u32 seed);
 

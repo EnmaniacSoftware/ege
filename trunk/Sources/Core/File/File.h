@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_FILE_H
 #define EGE_CORE_FILE_H
 
-#include "EGE.h"
-#include "EGEFile.h"
-#include "EGEString.h"
+#include <EGE.h>
+#include <EGEFile.h>
+#include <EGEString.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -20,7 +20,7 @@ class File : public Object
   public:
 
     File(const EGEString& filePath);
-    virtual ~File();
+   ~File();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS

@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_RECT_H
 #define EGE_CORE_RECT_H
 
-#include "EGE.h"
+#include <EGE.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -22,6 +22,8 @@ class TRect
 
     /* Returns TRUE if rectangle is empty (has no dimensions). */
     inline bool isEmpty() const;
+    /* Returns TRUE if rectangle is invalid. */
+    inline bool isInvalid() const;
     /* Returns coordinate of right edge. */
     inline T right() const;
     /* Returns coordinate of left edge. */
@@ -41,8 +43,15 @@ class TRect
     T width;
     /*! Height. */
     T height;
+
+  public:
+
+    static const TRect<T> INVALID;
 };
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+const TRect<T> TRect<T>::INVALID = TRect<T>(0, 0, 0, 0);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 TRect<T>::TRect(T x, T y, T w, T h ) : x(x), y(y), width(w), height(h)
@@ -81,7 +90,7 @@ bool TRect<T>::operator!=(const TRect<T>& rect) const
 template <typename T>
 bool TRect<T>::isEmpty() const
 {
-  return width == 0 && height == 0;
+  return (0 == width) || (0 == height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns coordinate of right edge. */
@@ -110,6 +119,13 @@ template <typename T>
 T TRect<T>::top() const
 {
   return y;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Returns TRUE if rectangle is invalid. */
+template <typename T>
+bool TRect<T>::isInvalid() const
+{
+  return (0 > width) || (0 > height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

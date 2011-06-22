@@ -1,5 +1,5 @@
-#include "EGE.h"
 #include "Core/String/Stl/String.h"
+#include "Core/Math/Rect.h"
 #include <sstream>
 
 EGE_NAMESPACE
@@ -212,5 +212,30 @@ Color EGEString::toColor(bool* error) const
   }
 
   return color;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Converts to rectangle of floats. If error is valid, it holds TRUE if error occured during the conversion. */
+Rectf EGEString::toRectf(bool* error) const
+{
+  if (empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return Rectf::INVALID;
+  }
+
+  // make sure alpha is set to opaque in case only RGB is set
+  Rectf rect;
+
+  // check if not even RGB was able to be read
+  if (4 > sscanf(toAscii(), "%f %f %f %f", &rect.x, &rect.y, &rect.width, &rect.height) && error)
+  {
+    *error = true;
+  }
+
+  return rect;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

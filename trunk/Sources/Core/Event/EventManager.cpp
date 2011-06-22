@@ -5,6 +5,8 @@
 
 EGE_NAMESPACE
 
+  static bool a = false;
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_DEFINE_NEW_OPERATORS(EventManager)
@@ -109,9 +111,11 @@ void EventManager::notify(PEvent event)
   const EGEList<IEventListener*>& objects = listeners();
 
   // go thru all listners
+  lockContainer();
   for (EGEList<IEventListener*>::const_iterator iter = objects.begin(); iter != objects.end(); ++iter)
   {
     (*iter)->onEventRecieved(event);
   }
+  unlockContainer();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

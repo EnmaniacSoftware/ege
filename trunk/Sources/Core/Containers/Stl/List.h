@@ -45,7 +45,7 @@ EGEList<T>::EGEList(const T& object)
 template <typename T>
 void EGEList<T>::remove(const T object)
 {
-  typename EGEList<T>::const_iterator it = std::find(this->begin(), this->end(), object);
+  typename EGEList<T>::iterator it = std::find(this->begin(), this->end(), object);
   if (it != this->end())
   {
     erase(it);

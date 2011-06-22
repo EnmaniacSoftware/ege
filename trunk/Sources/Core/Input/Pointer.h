@@ -1,9 +1,15 @@
 #ifndef EGE_CORE_POINTER_H
 #define EGE_CORE_POINTER_H
 
-#include "EGE.h"
+#include <EGE.h>
+#include <EGESignal.h>
+#include <EGEInput.h>
 
 EGE_NAMESPACE_BEGIN
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_DECLARE_SMART_CLASS(PointerData, PPointerData)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -19,6 +25,10 @@ class Pointer : public Object
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
+
+  signals:
+
+    Signal1<PPointerData> signal; 
 
   private:
 

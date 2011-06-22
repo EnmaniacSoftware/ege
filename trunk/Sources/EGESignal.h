@@ -10,7 +10,7 @@ using namespace Gallant;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#define EGE_CONNECT(object, signal, object2, slot) object->signal.Connect(object2, &slot)
+#define ege_connect(sender, signal, receiver, slot) sender->signal.Connect(receiver, &slot)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

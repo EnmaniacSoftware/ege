@@ -24,7 +24,7 @@ class Texture2D : public Object
 
     Texture2D(Application* app, EGETexture::Filter minFilter = EGETexture::BILINEAR, EGETexture::Filter magFilter = EGETexture::BILINEAR,
               EGETexture::Wrap wrapS = EGETexture::REPEAT, EGETexture::Wrap wrapT = EGETexture::REPEAT);
-    virtual ~Texture2D();
+   ~Texture2D();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS

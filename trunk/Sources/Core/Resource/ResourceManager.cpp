@@ -5,8 +5,8 @@
 #include "Core/Resource/ResourceData.h"
 #include "Core/Resource/ResourceFont.h"
 #include "Core/Graphics/Font.h" 
-#include "EGEXml.h"
-#include "EGEDir.h"
+#include <EGEXml.h>
+#include <EGEDir.h>
 
 EGE_NAMESPACE
 
@@ -47,7 +47,7 @@ EGEResult ResourceManager::registerResource(const EGEString& typeName, egeResour
   EGEResult result = EGE_SUCCESS;
   
   // check if resource with such a name exists already
-  std::map<EGEString, egeResourceCreateFunc>::iterator it = m_registeredResources.find(typeName);
+  EGEMap<EGEString, egeResourceCreateFunc>::iterator it = m_registeredResources.find(typeName);
   if (it != m_registeredResources.end())
   {
     // error!
@@ -64,7 +64,7 @@ EGEResult ResourceManager::registerResource(const EGEString& typeName, egeResour
 bool ResourceManager::isResourceRegistered(const EGEString& typeName) const
 {
   // check if resource with such a name exists already
-  std::map<EGEString, egeResourceCreateFunc>::const_iterator it = m_registeredResources.find(typeName);
+  EGEMap<EGEString, egeResourceCreateFunc>::const_iterator it = m_registeredResources.find(typeName);
   return it != m_registeredResources.end();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -74,7 +74,7 @@ PResource ResourceManager::createResource(const EGEString& name)
   PResource resource;
 
   // check if resource with such a name exists already
-  std::map<EGEString, egeResourceCreateFunc>::iterator it = m_registeredResources.find(name);
+  EGEMap<EGEString, egeResourceCreateFunc>::iterator it = m_registeredResources.find(name);
   if (it != m_registeredResources.end())
   {
     // create resource
@@ -256,7 +256,7 @@ PResourceGroup ResourceManager::group(const EGEString& name) const
   PResourceGroup group;
 
   // go thru all groups
-  for (std::vector<PResourceGroup>::const_iterator it = m_groups.begin(); it != m_groups.end(); ++it)
+  for (EGEList<PResourceGroup>::const_iterator it = m_groups.begin(); it != m_groups.end(); ++it)
   {
     // check if proper group has been found
     if ((*it)->name() == name)
@@ -300,7 +300,7 @@ void ResourceManager::unloadGroup(const EGEString& name)
 PResource ResourceManager::resource(const EGEString& typeName, const EGEString& name) const
 {
   // go thru all groups
-  for (std::vector<PResourceGroup>::const_iterator it = m_groups.begin(); it != m_groups.end(); ++it)
+  for (EGEList<PResourceGroup>::const_iterator it = m_groups.begin(); it != m_groups.end(); ++it)
   {
     PResource resource = (*it)->resource(typeName, name);
     if (resource)

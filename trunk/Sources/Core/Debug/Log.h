@@ -1,8 +1,9 @@
 #ifndef EGE_CORE_LOG_H
 #define EGE_CORE_LOG_H
 
-#include "EGE.h"
-#include "EGEFile.h"
+#include <EGE.h>
+#include <EGEFile.h>
+#include <EGEString.h>
 
 EGE_NAMESPACE_BEGIN
 
