@@ -372,14 +372,12 @@
     <ClCompile Include="..\..\Sources\Core\Screen\ScreenManager.cpp">
       <Filter>Core\Screen</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\EGEScreen.h" />
     <ClCompile Include="..\..\Sources\Core\Screen\Screen.cpp">
       <Filter>Core\Screen</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\TextureImage.cpp">
       <Filter>Core\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceTextureImage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -719,7 +717,6 @@
       <Filter>Core\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGERect.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceTextureImage.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\Tree.h">
       <Filter>Core\Containers\stl</Filter>
     </ClInclude>
@@ -729,6 +726,7 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEDynamicArray.h" />
     <ClInclude Include="..\..\Sources\EGEMap.h" />
+    <ClInclude Include="..\..\Sources\EGEScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">
