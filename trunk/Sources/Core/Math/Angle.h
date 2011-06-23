@@ -16,7 +16,10 @@ class Angle
     Angle();
     Angle(const Angle& angle);
 
-    const Angle& operator += (const Angle& other) { m_radians += other.m_radians; return *this; }
+    inline const Angle& operator += (const Angle& other) { m_radians += other.m_radians; return *this; }
+    inline bool         operator > (const Angle& other) const { return m_radians > other.m_radians; }
+    inline bool         operator < (const Angle& other) const { return m_radians < other.m_radians; }
+    inline Angle        operator - () const { return Angle::FromRadians(-m_radians); }
 
     /* Returns angle object from degrees. */
     static Angle FromDegrees(float32 degrees);
@@ -44,6 +47,11 @@ class Angle
 inline Angle operator+(const Angle& left, const Angle& right)
 {
   return Angle::FromRadians(left.radians() + right.radians());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline Angle operator-(const Angle& left, const Angle& right)
+{
+  return Angle::FromRadians(left.radians() - right.radians());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
