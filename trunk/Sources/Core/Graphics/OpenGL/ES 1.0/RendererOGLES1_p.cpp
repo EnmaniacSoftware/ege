@@ -10,6 +10,7 @@
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/OpenGL/MaterialOGL_p.h"
+#include "Core/Graphics/TextureImage.h"
 
 EGE_NAMESPACE
 
@@ -242,11 +243,7 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
         TextureImage* texImg = (TextureImage*) texture;
         Texture2D* tex2d = (Texture2D*) texImg->texture().object();
 
-        if (glActiveTextureARB)
-        {
-          glActiveTextureARB(GL_TEXTURE0_ARB + i);
-        }
-
+        glActiveTexture(GL_TEXTURE0 + i);
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, tex2d->id());
 

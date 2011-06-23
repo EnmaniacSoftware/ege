@@ -69,6 +69,7 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceMaterial.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceTexture.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceTextureImage.cpp" />
     <ClCompile Include="..\..\Sources\Core\Scene\SceneManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Scene\SceneNode.cpp" />
     <ClCompile Include="..\..\Sources\Core\Scene\SceneNodeObject.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\List.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\Map.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\MultiMap.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Stl\Tree.h" />
     <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h" />
     <ClInclude Include="..\..\Sources\Core\Data\Node.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Debug.h" />
@@ -176,6 +178,7 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceManager.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceMaterial.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceTexture.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceTextureImage.h" />
     <ClInclude Include="..\..\Sources\Core\Scene\SceneManager.h" />
     <ClInclude Include="..\..\Sources\Core\Scene\SceneNode.h" />
     <ClInclude Include="..\..\Sources\Core\Scene\SceneNodeObject.h" />
@@ -219,6 +222,7 @@
     <ClInclude Include="..\..\Sources\EGETexture.h" />
     <ClInclude Include="..\..\Sources\EGETime.h" />
     <ClInclude Include="..\..\Sources\EGETimer.h" />
+    <ClInclude Include="..\..\Sources\EGETree.h" />
     <ClInclude Include="..\..\Sources\EGETypes.h" />
     <ClInclude Include="..\..\Sources\EGEXml.h" />
     <ClInclude Include="..\..\Sources\Win32\Application\AppControllerWin32_p.h" />

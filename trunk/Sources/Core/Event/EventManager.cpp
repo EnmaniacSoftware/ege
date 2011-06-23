@@ -108,14 +108,12 @@ EGEResult EventManager::send(u32 uid, PObject data)
 /*! Sends event. */
 void EventManager::notify(PEvent event)
 {
-  const EGEList<IEventListener*>& objects = listeners();
+  const ListenersContainer& objects = listeners();
 
   // go thru all listners
-  lockContainer();
-  for (EGEList<IEventListener*>::const_iterator iter = objects.begin(); iter != objects.end(); ++iter)
+  for (ListenersContainer::const_iterator iter = objects.begin(); iter != objects.end(); ++iter)
   {
     (*iter)->onEventRecieved(event);
   }
-  unlockContainer();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -28,7 +28,8 @@ class Pointer : public Object
 
   signals:
 
-    Signal1<PPointerData> signal; 
+    /*! Signal emited on any pointer event. */
+    Signal1<PPointerData> eventSignal; 
 
   private:
 

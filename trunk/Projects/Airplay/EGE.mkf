@@ -48,6 +48,7 @@ files
   EGETexture.h
   EGETime.h
   EGETimer.h
+  EGETree.h
 	EGETypes.h
 	EGEXml.h
 
@@ -96,6 +97,7 @@ files
   List.h
   Map.h
   MultiMap.h
+  Tree.h
 
 	["Core/Data"]
  	(../../Sources/Core/Data)

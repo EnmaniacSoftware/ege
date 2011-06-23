@@ -1,11 +1,11 @@
 #include "Core/Application/Application.h"
-#include "EGEInput.h"
 #include "Airplay/Input/PointerAirplay_p.h"
 #include "Core/Graphics/Graphics.h"
+#include <EGEInput.h>
 
-#include "EGEString.h"
-#include "EGEResources.h"
-#include "EGEOverlay.h"
+#include <EGEString.h>
+#include <EGEResources.h>
+#include <EGEOverlay.h>
 
 EGE_NAMESPACE
 
@@ -78,7 +78,8 @@ void PointerPrivate::MultiTouchButtonCB(s3ePointerTouchEvent* event, void* data)
   s32 y = event->m_y;
 
   // send event
-  me->base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, ege_new PointerData(action, button, x, y, event->m_TouchID));
+  emit me->base()->eventSignal(ege_new PointerData(action, button, x, y, event->m_TouchID));
+  //me->base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, ege_new PointerData(action, button, x, y, event->m_TouchID));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Multitouch callback for motion changes. */
@@ -90,8 +91,9 @@ void PointerPrivate::MultiTouchMotionCB(s3ePointerTouchMotionEvent* event, void*
   s32 y = event->m_y;
 
   // send event
-  me->base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, 
-                                          ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, event->m_TouchID));
+  emit me->base()->eventSignal(ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, event->m_TouchID));
+  //me->base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, 
+  //                                        ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, event->m_TouchID));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Singletouch callback for button state changes. */
@@ -131,7 +133,9 @@ void PointerPrivate::SingleTouchButtonCB(s3ePointerEvent* event, void* data)
   s32 y = event->m_y;
 
   // send event
-  me->base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, ege_new PointerData(action, button, x, y, 0));
+  emit me->base()->eventSignal(ege_new PointerData(action, button, x, y, 0));
+
+  //me->base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, ege_new PointerData(action, button, x, y, 0));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Singletouch callback for motion changes. */
@@ -143,7 +147,8 @@ void PointerPrivate::SingleTouchMotionCB(s3ePointerMotionEvent* event, void* dat
   s32 y = event->m_y;
 
   // send event
-  me->base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, 
-                                          ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, 0));
+  emit me->base()->eventSignal(ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, 0));
+  //me->base()->app()->eventManager()->send(EGE_EVENT_UID_CORE_POINTER_DATA, 
+  //                                        ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, 0));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

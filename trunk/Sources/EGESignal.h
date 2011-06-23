@@ -11,6 +11,7 @@ using namespace Gallant;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #define ege_connect(sender, signal, receiver, slot) sender->signal.Connect(receiver, &slot)
+#define ege_disconnect(sender, signal, receiver, slot) sender->signal.Disconnect(receiver, &slot)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

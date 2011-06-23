@@ -385,6 +385,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\TextureImage.cpp">
       <Filter>Core\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceTextureImage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -730,6 +731,11 @@
       <Filter>Core\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGERect.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceTextureImage.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Stl\Tree.h">
+      <Filter>Core\Containers\stl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGETree.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

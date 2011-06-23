@@ -1,7 +1,7 @@
-#include "Core/Debug/Debug.h"
 #include "Airplay/File/FileAirplay_p.h"
 #include "Core/Data/DataBuffer.h"
 #include "Core/Math/Math.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 

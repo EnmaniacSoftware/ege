@@ -5,6 +5,7 @@
 #include <EGEString.h>
 #include <EGEXml.h>
 #include <EGEMath.h>
+#include <EGEList.h>
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN
