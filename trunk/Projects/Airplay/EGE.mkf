@@ -27,6 +27,7 @@ files
   EGEDebug.h
   EGEDevice.h
   EGEDir.h
+  EGEDynamicArray.h
 	EGEEvent.h
 	EGEFile.h
   EGEGraphics.h
@@ -94,6 +95,7 @@ files
 
 	["Core/Containers/Stl"]
  	(../../Sources/Core/Containers/Stl)
+  DynamicArray.h
   List.h
   Map.h
   MultiMap.h
@@ -294,15 +296,11 @@ files
 
 	["Core/String"]
   (../../Sources/Core/String)
-	StringUtils.cpp
-	StringUtils.h
 
 	["Core/String/Stl"]
   (../../Sources/Core/String/Stl)
 	String.cpp
 	String.h
-  StringList.cpp
-  StringList.h
   Text.cpp
   Text.h
 

@@ -4,7 +4,7 @@
 #include <EGE.h>
 #include <EGEString.h>
 #include <EGEGraphics.h>
-#include <EGEList.h>
+#include <EGEDynamicArray.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -70,7 +70,7 @@ class Material : public Object
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(Material);
 
     /*! Textures assigned to material. */
-    EGEList<PObject> m_textures;
+    EGEDynamicArray<PObject> m_textures;
     /*! Blending flag. */
     bool m_blendingEnabled;
     /*! Diffuse color reflectance. */

@@ -1,10 +1,11 @@
 #ifndef EGE_CORE_RESOURCEFONT_H
 #define EGE_CORE_RESOURCEFONT_H
 
-#include "EGE.h"
-#include "EGEXml.h"
-#include "EGEString.h"
-#include "EGEMath.h"
+#include <EGE.h>
+#include <EGEXml.h>
+#include <EGEString.h>
+#include <EGEMath.h>
+#include <EGEMap.h>
 #include "Core/Resource/Resource.h"
 #include "Core/Resource/ResourceMaterial.h"
 
@@ -35,7 +36,7 @@ class ResourceFont : public IResource
 {
   public:
 
-    virtual ~ResourceFont();
+    ~ResourceFont();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -77,7 +78,7 @@ class ResourceFont : public IResource
     /*! Font screen height (in pixels). */
     s32 m_height;
     /*! Map of glyphs sorted by UTF-16 value. */
-    std::map<EGEChar, GlyphData> m_glyphs;
+    EGEMap<EGEChar, GlyphData> m_glyphs;
     /*! Font object. NULL if not created yet. */
     PFont m_font;
 };

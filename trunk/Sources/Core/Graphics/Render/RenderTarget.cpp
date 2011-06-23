@@ -45,7 +45,7 @@ PViewport RenderTarget::addViewport(const EGEString& name, PCamera camera)
 /*! Removes viewport with the given name from target. */
 void RenderTarget::removeViewport(const EGEString& name)
 {
-  for (EGEList<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
+  for (EGEDynamicArray<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
   {
     PViewport viewport = *iter;
 
@@ -62,7 +62,7 @@ void RenderTarget::removeViewport(const EGEString& name)
 /*! Returns viewport with the given name associated with target. */
 PViewport RenderTarget::viewport(const EGEString& name) const
 {
-  for (EGEList<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
+  for (EGEDynamicArray<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
   {
     PViewport viewport = *iter;
 
@@ -78,7 +78,7 @@ PViewport RenderTarget::viewport(const EGEString& name) const
 /*! Removes all viewport associated with target. */
 void RenderTarget::removeAllViewports()
 {
-  for (EGEList<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end();)
+  for (EGEDynamicArray<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end();)
   {
     *iter = NULL;
 
@@ -94,7 +94,7 @@ void RenderTarget::render()
   m_vertexCount = 0;
 
   // go thru all viewports
-  for (EGEList<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
+  for (EGEDynamicArray<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
   {
     PViewport viewport = *iter;
 

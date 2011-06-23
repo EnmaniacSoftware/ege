@@ -1,7 +1,8 @@
 #ifndef EGE_CORE_TEXT_H
 #define EGE_CORE_TEXT_H
 
-#include "EGE.h"
+#include <EGE.h>
+#include <string>
 #include "Core/String/Stl/String.h"
 
 EGE_NAMESPACE_BEGIN

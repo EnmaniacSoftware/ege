@@ -1,12 +1,11 @@
 #ifndef EGE_CORE_PHYSICSMANAGER_H
 #define EGE_CORE_PHYSICSMANAGER_H
 
-#include "EGE.h"
+#include <EGE.h>
+#include <EGETime.h>
 #include "Core/ConfigParams.h"
-#include "Core/Timer/Time.h"
 #include "Core/Math/Vector4.h"
 #include "Core/Physics/PhysicsJoint.h"
-#include "EGEList.h"
 
 EGE_NAMESPACE_BEGIN
 

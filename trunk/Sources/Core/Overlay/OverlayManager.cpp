@@ -21,7 +21,7 @@ OverlayManager::~OverlayManager()
 void OverlayManager::update(const Time& time)
 {
   // update all overlays
-  for (EGEList<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (EGEDynamicArray<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 
@@ -52,7 +52,7 @@ PTextOverlay OverlayManager::addTextOverlay(const EGEString& name)
 void OverlayManager::removeOverlay(const EGEString& name)
 {
   // go thru all overlays
-  for (EGEList<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (EGEDynamicArray<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     POverlay object = *it;
 
@@ -76,7 +76,7 @@ void OverlayManager::removeAllOverlays()
 POverlay OverlayManager::overlay(const EGEString& name) const
 {
   // go thru all overlays
-  for (EGEList<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (EGEDynamicArray<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 
@@ -96,7 +96,7 @@ void OverlayManager::render(Viewport* viewport, Renderer* renderer)
 {
 //  renderer->setProjectionMatrix(
   // go thru all overlays
-  for (EGEList<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (EGEDynamicArray<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 

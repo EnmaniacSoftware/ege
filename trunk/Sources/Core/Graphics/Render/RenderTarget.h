@@ -3,7 +3,7 @@
 
 #include <EGE.h>
 #include "Core/ConfigParams.h"
-#include <EGEList.h>
+#include <EGEDynamicArray.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -71,7 +71,7 @@ class RenderTarget : public Object
     /*! Targets name. */
     EGEString m_name;
     /*! Pool of all viewports associated with target. */
-    EGEList<PViewport> m_viewports;
+    EGEDynamicArray<PViewport> m_viewports;
     /*! Number of vertices rendered last frame. */
     u32 m_vertexCount;
     /*! Number of batches rendered last frame. */

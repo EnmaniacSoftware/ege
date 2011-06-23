@@ -1,22 +1,18 @@
-#ifndef EGE_CORE_CONTAINER_MULTIMAP_H
-#define EGE_CORE_CONTAINER_MULTIMAP_H
+#ifndef EGE_DYNAMIC_ARRAY_H
+#define EGE_DYNAMIC_ARRAY_H
 
-#include <EGE.h>
-#include <map>
+#if EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
+#include "Core/Containers/Stl/DynamicArray.h"
+#endif // EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-template <typename T, typename U>
-class EGEMultiMap : public std::multimap<T, U>
-{
-  public:
-
-};
+typedef EGEDynamicArray<s32> EGEIntArray;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_CONTAINER_MULTIMAP_H
+#endif // EGE_DYNAMIC_ARRAY_H

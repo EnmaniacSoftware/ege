@@ -4,6 +4,7 @@
 #include <EGE.h>
 #include <EGEColor.h>
 #include <EGERect.h>
+#include <string>
 
 EGE_NAMESPACE_BEGIN
 

@@ -11,6 +11,7 @@
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/OpenGL/MaterialOGL_p.h"
 #include "Core/Graphics/TextureImage.h"
+#include <EGEDynamicArray.h>
 
 EGE_NAMESPACE
 
@@ -101,7 +102,7 @@ void RendererPrivate::flush()
     // check if there is anything to be rendered
     if (0 != vertexBuffer->vertexCount())
     {
-      const EGEList<VertexBuffer::SBUFFERSEMANTIC>& vsSemantics = vertexBuffer->semantics();
+      const EGEDynamicArray<VertexBuffer::SBUFFERSEMANTIC>& vsSemantics = vertexBuffer->semantics();
 
       // TAGE - if indexed geometry count indicies
       u32 value = vertexBuffer->vertexCount();
@@ -113,7 +114,7 @@ void RendererPrivate::flush()
       void* vertexData = vertexBuffer->lock(0, vertexBuffer->vertexCount());
 
       // go thru all buffers
-      for (EGEList<VertexBuffer::SBUFFERSEMANTIC>::const_iterator iterSemantics = vsSemantics.begin(); iterSemantics != vsSemantics.end(); 
+      for (EGEDynamicArray<VertexBuffer::SBUFFERSEMANTIC>::const_iterator iterSemantics = vsSemantics.begin(); iterSemantics != vsSemantics.end(); 
            ++iterSemantics)
       {
         // set according to buffer type

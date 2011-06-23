@@ -99,17 +99,17 @@ Node* Node::childNode(const EGEString& name) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns child node with a given index. Returns NULL if no such node exists. */
-Node* Node::childNode(u32 index) const
-{
-  // check if OUT of range
-  if (index >= childNodeCount())
-  {
-    // error!
-    return NULL;
-  }
-
-  return m_children[index];
-}
+//Node* Node::childNode(u32 index) const
+//{
+//  // check if OUT of range
+//  if (index >= childNodeCount())
+//  {
+//    // error!
+//    return NULL;
+//  }
+//
+//  return m_children[index];
+//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Deletes and detaches all child nodes. */
 void Node::deleteAllChildNodes()

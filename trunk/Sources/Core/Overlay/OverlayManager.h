@@ -3,7 +3,7 @@
 
 #include <EGE.h>
 #include <EGEString.h>
-#include <EGEList.h>
+#include <EGEDynamicArray.h>
 #include <EGETime.h>
 #include <EGEOverlay.h>
 
@@ -42,7 +42,7 @@ class OverlayManager : public Object
   private:
 
     /*! Pool of overlays. */
-    EGEList<POverlay> m_overlays;
+    EGEDynamicArray<POverlay> m_overlays;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

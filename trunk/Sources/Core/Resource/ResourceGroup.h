@@ -1,10 +1,11 @@
 #ifndef EGE_CORE_RESOURCEGROUP_H
 #define EGE_CORE_RESOURCEGROUP_H
 
-#include "EGE.h"
-#include "EGEXml.h"
-#include "EGEString.h"
-#include "EGEList.h"
+#include <EGE.h>
+#include <EGEXml.h>
+#include <EGEString.h>
+#include <EGEList.h>
+#include <EGEMap.h>
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN
@@ -22,7 +23,7 @@ class ResourceGroup : public Object
   public:
 
     ResourceGroup(Application* app, ResourceManager* manager, const EGEString& path);
-    virtual ~ResourceGroup();
+   ~ResourceGroup();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -52,7 +53,7 @@ class ResourceGroup : public Object
   private:
 
     /*! Container holding all group resources sorted by type name. */
-    typedef std::multimap<EGEString, PResource> ResourcesMap;
+    typedef EGEMultiMap<EGEString, PResource> ResourcesMap;
 
   private:
 

@@ -31,18 +31,6 @@
     <Filter Include="Core\File">
       <UniqueIdentifier>{9a8419c0-0a71-4238-a07f-889b78745fef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Graphics">
-      <UniqueIdentifier>{c3781f21-9972-4f15-b5b0-2a4808c25d15}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Graphics\OpenGL">
-      <UniqueIdentifier>{49d25881-e6d5-4efd-892a-994bab1d1d30}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Graphics\OpenGL\GL 2.0">
-      <UniqueIdentifier>{2736de3a-5cff-4e6f-ab45-abde106a81a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Graphics\Render">
-      <UniqueIdentifier>{a292a486-89b4-4c40-ba69-d653e15dd192}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Math">
       <UniqueIdentifier>{2c11bf7f-670d-48d8-b934-6731b51d9f74}</UniqueIdentifier>
     </Filter>
@@ -139,6 +127,18 @@
     <Filter Include="Core\Signal">
       <UniqueIdentifier>{118de177-6a0f-4dd6-892f-030e764dfa8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Graphics">
+      <UniqueIdentifier>{c3781f21-9972-4f15-b5b0-2a4808c25d15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\OpenGL">
+      <UniqueIdentifier>{49d25881-e6d5-4efd-892a-994bab1d1d30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\OpenGL\GL 2.0">
+      <UniqueIdentifier>{2736de3a-5cff-4e6f-ab45-abde106a81a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\Render">
+      <UniqueIdentifier>{a292a486-89b4-4c40-ba69-d653e15dd192}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -228,13 +228,7 @@
     <ClCompile Include="..\..\Sources\Core\Scene\SceneNodeObject.cpp">
       <Filter>Core\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\String\StringUtils.cpp">
-      <Filter>Core\String</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\String\Stl\String.cpp">
-      <Filter>Core\String\Stl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\String\Stl\StringList.cpp">
       <Filter>Core\String\Stl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\ComplexTypes.cpp">
@@ -523,13 +517,7 @@
     <ClInclude Include="..\..\Sources\Core\Scene\SceneNodeObject.h">
       <Filter>Core\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\String\StringUtils.h">
-      <Filter>Core\String</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\String\Stl\String.h">
-      <Filter>Core\String\Stl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\String\Stl\StringList.h">
       <Filter>Core\String\Stl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Timer\Time.h">
@@ -736,6 +724,11 @@
       <Filter>Core\Containers\stl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGETree.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Stl\DynamicArray.h">
+      <Filter>Core\Containers\stl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEDynamicArray.h" />
+    <ClInclude Include="..\..\Sources\EGEMap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

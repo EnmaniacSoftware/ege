@@ -23,7 +23,7 @@ class ResourceMaterial : public IResource
 {
   public:
 
-    virtual ~ResourceMaterial();
+   ~ResourceMaterial();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS

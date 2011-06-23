@@ -28,7 +28,7 @@ class ResourceManager : public Object
   public:
 
     ResourceManager(Application* app);
-    virtual ~ResourceManager();
+   ~ResourceManager();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS

@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_RENDERER_PRIVATE_H
 #define EGE_CORE_RENDERER_PRIVATE_H
 
-#include "EGE.h"
+#include <EGE.h>
 #include "Core/Graphics/Render/Renderer.h"
 #include "Core/Components/Render/RenderComponent.h"
 

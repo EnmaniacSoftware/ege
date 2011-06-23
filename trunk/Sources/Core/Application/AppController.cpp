@@ -1,6 +1,5 @@
 #include "Core/Application/AppController.h"
 #include "Core/Application/Application.h"
-#include "Core/String/StringUtils.h"
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Scene/SceneManager.h"
 #include "Core/Graphics/Render/RenderWindow.h"
@@ -31,7 +30,7 @@ AppController::AppController(Application* app, const ConfigParams& params) : Obj
 {
   // decompose param list
   ConfigParams::const_iterator iterUPS = params.find(EGE_ENGINE_PARAM_UPDATES_PER_SECOND);
-  m_updateInterval.fromMiliseconds((iterUPS != params.end()) ? 1000 / StringUtils::ToU32(iterUPS->second) : 0);
+  m_updateInterval.fromMiliseconds((iterUPS != params.end()) ? 1000 / iterUPS->second.toInt() : 0);
 
   // subscribe for event notifications
   if (app->eventManager()->addListener(this))

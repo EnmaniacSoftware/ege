@@ -1,13 +1,13 @@
 #ifndef EGE_CORE_PHYSICSCOMPONENT_H
 #define EGE_CORE_PHYSICSCOMPONENT_H
 
-#include "EGE.h"
+#include <EGE.h>
 #include "Core/Components/Component.h"
 #include "Core/Math/Quaternion.h"
 #include "Core/Math/Vector4.h"
 #include "Core/Physics/PhysicsJoint.h"
-#include "EGEPhysics.h"
-#include "EGEList.h"
+#include <EGEPhysics.h>
+#include <EGEList.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -31,13 +31,13 @@ class PhysicsComponent : public IComponent
   public:
 
     PhysicsComponent(Application* app, const EGEString& name, EGEPhysics::EComponentType type = EGEPhysics::COMPONENT_DYNAMIC);
-    virtual ~PhysicsComponent();
+   ~PhysicsComponent();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
     /* IComponent override. Returns TRUE if component is valid. */
-    virtual bool isValid() const override;
+    bool isValid() const override;
     /*! Returns component type. */
     inline EGEPhysics::EComponentType type() const { return m_type; }
     /* Sets position vector. */

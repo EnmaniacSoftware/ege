@@ -1,7 +1,7 @@
 #ifndef EGE_LIST_H
 #define EGE_LIST_H
 
-#include <EGE.h>
+#include <EGEString.h>
 
 #if EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
 #include "Core/Containers/Stl/List.h"
@@ -12,6 +12,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 typedef EGEList<s32> EGEIntList;
+typedef EGEList<EGEString> EGEStringList;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

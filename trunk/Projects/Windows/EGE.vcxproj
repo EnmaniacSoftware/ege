@@ -76,9 +76,7 @@
     <ClCompile Include="..\..\Sources\Core\Screen\Screen.cpp" />
     <ClCompile Include="..\..\Sources\Core\Screen\ScreenManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\String.cpp" />
-    <ClCompile Include="..\..\Sources\Core\String\Stl\StringList.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\Text.cpp" />
-    <ClCompile Include="..\..\Sources\Core\String\StringUtils.cpp" />
     <ClCompile Include="..\..\Sources\Core\Timer\Timer.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlDocumentTinyXml_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlElementTinyXml_p.cpp" />
@@ -104,6 +102,7 @@
     <ClInclude Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.h" />
     <ClInclude Include="..\..\Sources\Core\Components\Render\RenderComponent.h" />
     <ClInclude Include="..\..\Sources\Core\ConfigParams.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Stl\DynamicArray.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\List.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\Map.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\MultiMap.h" />
@@ -187,9 +186,7 @@
     <ClInclude Include="..\..\Sources\Core\Signal\Delegate.h" />
     <ClInclude Include="..\..\Sources\Core\Signal\Signal.h" />
     <ClInclude Include="..\..\Sources\Core\String\Stl\String.h" />
-    <ClInclude Include="..\..\Sources\Core\String\Stl\StringList.h" />
     <ClInclude Include="..\..\Sources\Core\String\Stl\Text.h" />
-    <ClInclude Include="..\..\Sources\Core\String\StringUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Timer\Time.h" />
     <ClInclude Include="..\..\Sources\Core\Timer\Timer.h" />
     <ClInclude Include="..\..\Sources\Core\XML\TinyXml\XmlDocumentTinyXml_p.h" />
@@ -203,12 +200,14 @@
     <ClInclude Include="..\..\Sources\EGEDebug.h" />
     <ClInclude Include="..\..\Sources\EGEDevice.h" />
     <ClInclude Include="..\..\Sources\EGEDir.h" />
+    <ClInclude Include="..\..\Sources\EGEDynamicArray.h" />
     <ClInclude Include="..\..\Sources\EGEEvent.h" />
     <ClInclude Include="..\..\Sources\EGEFile.h" />
     <ClInclude Include="..\..\Sources\EGEGraphics.h" />
     <ClInclude Include="..\..\Sources\EGEImage.h" />
     <ClInclude Include="..\..\Sources\EGEInput.h" />
     <ClInclude Include="..\..\Sources\EGEList.h" />
+    <ClInclude Include="..\..\Sources\EGEMap.h" />
     <ClInclude Include="..\..\Sources\EGEMath.h" />
     <ClInclude Include="..\..\Sources\EGEMemory.h" />
     <ClInclude Include="..\..\Sources\EGEOverlay.h" />

@@ -6,8 +6,9 @@
 //       correct deallocation
 
 #include <EGE.h>
+#include <EGETime.h>
+#include <EGEList.h>
 #include "Core/Data/Node.h"
-#include "Core/Timer/Time.h"
 #include "Core/Math/Matrix4.h"
 #include "Core/Graphics/Camera.h"
 

@@ -48,8 +48,9 @@ class Node
     u32 childNodeCount() const;
     /* Returns child node with a given name. Returns NULL if no such node exists. */
     Node* childNode(const EGEString& name) const;
+    // TAGE - if needed reimplement for EGEList
     /* Returns child node with a given index. Returns NULL if no such node exists. */
-    Node* childNode(u32 index) const;
+    //Node* childNode(u32 index) const;
 
     /*! Returns local physics component. */
     inline PPhysicsComponent physics() { return m_physics; }
