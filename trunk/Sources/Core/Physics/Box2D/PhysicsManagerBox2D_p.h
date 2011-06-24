@@ -1,13 +1,14 @@
 #ifndef EGE_CORE_PHYSICSMANAGERBOX2D_H
 #define EGE_CORE_PHYSICSMANAGERBOX2D_H
 
-#include "EGE.h"
+#include <EGE.h>
+#include <EGETime.h>
+#include <Box2D/Box2d.h>
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Physics/PhysicsJointDistance.h"
 #include "Core/Physics/PhysicsJointAttract.h"
+#include "Core/Physics/PhysicsJointPulley.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
-#include "Core/Timer/Time.h"
-#include "Box2D/Box2d.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -16,6 +17,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 EGE_DECLARE_SMART_CLASS(PhysicsJointDistance, PPhysicsJointDistance)
 EGE_DECLARE_SMART_CLASS(PhysicsJointAttract, PPhysicsJointAttract)
+EGE_DECLARE_SMART_CLASS(PhysicsJointPulley, PPhysicsJointPulley)
 
 class PhysicsManager;
 class DebugDraw;
@@ -58,6 +60,12 @@ class PhysicsManagerPrivate : public b2DestructionListener
     *  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
     */
     PhysicsJointAttractPrivate* registerJoint(PhysicsJointAttract* joint);
+    /* Registers pulley joint. This is supposed to be called by PhysicsJointPulley only.
+    *
+    *  @param   joint joint object for which registration is to be performed.
+    *  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
+    */
+    PhysicsJointPulleyPrivate* registerJoint(PhysicsJointPulley* joint);
     /* Sets gravity. */
     void setGravity(const Vector4f& gravity);
     /*! Returns Box2D world. */

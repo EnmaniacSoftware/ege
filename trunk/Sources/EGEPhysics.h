@@ -28,6 +28,7 @@ EGE_NAMESPACE_END
 #include "Core/Physics/PhysicsJoint.h"
 #include "Core/Physics/PhysicsJointDistance.h"
 #include "Core/Physics/PhysicsJointAttract.h"
+#include "Core/Physics/PhysicsJointPulley.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

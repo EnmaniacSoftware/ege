@@ -1,6 +1,10 @@
 #ifndef EGE_CORE_PHYSICSCOMPONENT_H
 #define EGE_CORE_PHYSICSCOMPONENT_H
 
+/* PhysicsComponent defines object which exists in space. Can be shapeless or any number of any shapes can be assigned. 
+   PhysicsComponent can be used by physics simulators.
+*/
+
 #include <EGE.h>
 #include "Core/Components/Component.h"
 #include "Core/Math/Quaternion.h"
@@ -8,6 +12,7 @@
 #include "Core/Physics/PhysicsJoint.h"
 #include <EGEPhysics.h>
 #include <EGEList.h>
+#include <EGEDynamicArray.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -22,9 +27,10 @@ EGE_DECLARE_SMART_CLASS(PhysicsJoint, PPhysicsJoint)
 
 class PhysicsComponent : public IComponent
 {
-    /* Private joint implementations may need access to private implementation of component. */
+    /* For access to private implementation. */
     friend class PhysicsJointDistancePrivate;
     friend class PhysicsJointAttractPrivate;
+    friend class PhysicsJointPulleyPrivate;
     /* For access to joint list. */
     friend class PhysicsJoint;
 
@@ -71,6 +77,14 @@ class PhysicsComponent : public IComponent
     void setMass(float32 mass);
     /* Returns mass. */
     float32 mass() const;
+
+    /* Adds circular shape. */
+    bool addCircleShape(float32 radius, float32 density);
+    /* Adds polygonal shape. 
+    *  @param points  vertices of polygon shape.
+    *  @param density shape density. Affects mass.
+    */
+    bool addPolygonShape(const EGEDynamicArray<Vector4f>& points, float32 density);
 
   private:
 

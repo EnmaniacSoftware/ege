@@ -1,5 +1,6 @@
 #include "Core/Application/Application.h"
-#include "EGEPhysics.h"
+#include <EGEPhysics.h>
+#include <EGEDebug.h>
 #include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"
 #include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"
 
@@ -29,16 +30,8 @@ PhysicsComponentPrivate::PhysicsComponentPrivate(PhysicsComponent* parent, Physi
 	def.position.x  = 0;
 	def.position.y  = 0;
   def.type        = mapType(parent->type());
-  
+    
 	m_body = manager()->world()->CreateBody(&def);
-
-  //if (m_body)
-  //{
-	 // b2CircleShape shape;
-	 // shape.m_radius = 0;
-  //
-  //  m_body->CreateFixture(&shape, 0);
-  //}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsComponentPrivate::~PhysicsComponentPrivate()
@@ -205,5 +198,49 @@ Vector4f PhysicsComponentPrivate::linearVelocity() const
 bool PhysicsComponentPrivate::isValid() const
 {
   return NULL != m_body;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds circular shape. */
+bool PhysicsComponentPrivate::addCircleShape(EGE::float32 radius, EGE::float32 density)
+{
+  if (isValid())
+  {
+    EGE::float32 scale = manager()->worldToSimulationScaleFactor();
+
+    b2CircleShape shape;
+	  shape.m_radius = radius * scale;
+  
+    return NULL != m_body->CreateFixture(&shape, density);
+  }
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Adds polygonal shape. 
+*  @param points  vertices of polygon shape.
+*  @param density shape density. Affects mass.
+*/
+bool PhysicsComponentPrivate::addPolygonShape(const EGEDynamicArray<Vector4f>& points, EGE::float32 density)
+{
+  if (isValid())
+  {
+    EGE_ASSERT(b2_maxPolygonVertices >= points.size());
+
+    EGE::float32 scale = manager()->worldToSimulationScaleFactor();
+
+    // copy points into Box2D compilant form
+    b2Vec2 vertices[b2_maxPolygonVertices];
+    for (s32 i = 0; i < (s32) points.size(); ++i)
+    {
+      vertices[i].Set(points[i].x * scale, points[i].y * scale);
+    }
+
+	  b2PolygonShape shape;
+	  shape.Set(vertices, (s32) points.size());
+  
+    return NULL != m_body->CreateFixture(&shape, density);
+  }
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

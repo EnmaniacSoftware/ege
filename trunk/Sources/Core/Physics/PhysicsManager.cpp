@@ -123,3 +123,20 @@ PhysicsJointAttractPrivate* PhysicsManager::registerJoint(PhysicsJointAttract* j
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Registers pulley joint. This is supposed to be called by PhysicsJointPulley only.
+*
+*  @param   joint joint object for which registration is to be performed.
+*  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
+*/
+PhysicsJointPulleyPrivate* PhysicsManager::registerJoint(PhysicsJointPulley* joint)
+{
+  PhysicsJointPulleyPrivate* object = NULL;
+
+  if (isValid())
+  {
+    object = p_func()->registerJoint(joint);
+  }
+
+  return object;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

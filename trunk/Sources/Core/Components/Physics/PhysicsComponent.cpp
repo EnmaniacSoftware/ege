@@ -189,3 +189,30 @@ bool PhysicsComponent::isValid() const
   return (NULL != m_p) && p_func()->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds circular shape. */
+bool PhysicsComponent::addCircleShape(EGE::float32 radius, EGE::float32 density)
+{
+  EGE_ASSERT(isValid());
+  if (isValid())
+  {
+    return p_func()->addCircleShape(radius, density);
+  }
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Adds polygonal shape. 
+*  @param points  vertices of polygon shape.
+*  @param density shape density. Affects mass.
+*/
+bool PhysicsComponent::addPolygonShape(const EGEDynamicArray<Vector4f>& points, EGE::float32 density)
+{
+  EGE_ASSERT(isValid());
+  if (isValid())
+  {
+    return p_func()->addPolygonShape(points, density);
+  }
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

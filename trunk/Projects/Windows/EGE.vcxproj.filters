@@ -378,6 +378,12 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\TextureImage.cpp">
       <Filter>Core\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJointPulley.cpp">
+      <Filter>Core\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.cpp">
+      <Filter>Core\Physics\Box2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -727,6 +733,12 @@
     <ClInclude Include="..\..\Sources\EGEDynamicArray.h" />
     <ClInclude Include="..\..\Sources\EGEMap.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
+    <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointPulley.h">
+      <Filter>Core\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.h">
+      <Filter>Core\Physics\Box2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

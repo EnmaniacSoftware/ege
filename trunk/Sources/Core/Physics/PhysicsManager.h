@@ -15,6 +15,8 @@ class PhysicsJointDistance;
 class PhysicsJointDistancePrivate;
 class PhysicsJointAttract;
 class PhysicsJointAttractPrivate;
+class PhysicsJointPulley;
+class PhysicsJointPulleyPrivate;
 class PhysicsComponent;
 class PhysicsComponentPrivate;
 
@@ -28,6 +30,7 @@ class PhysicsManager : public Object
     friend class PhysicsComponent;
     friend class PhysicsJointDistance;
     friend class PhysicsJointAttract;
+    friend class PhysicsJointPulley;
 
   public:
 
@@ -66,6 +69,12 @@ class PhysicsManager : public Object
     *  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
     */
     PhysicsJointAttractPrivate* registerJoint(PhysicsJointAttract* joint);
+    /* Registers pulley joint. This is supposed to be called by PhysicsJointPulley only.
+    *
+    *  @param   joint joint object for which registration is to be performed.
+    *  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
+    */
+    PhysicsJointPulleyPrivate* registerJoint(PhysicsJointPulley* joint);
 
   private:
 

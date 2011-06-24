@@ -3,6 +3,7 @@
 #include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"
 #include "Core/Physics/Box2D/PhysicsJointDistanceBox2D_p.h"
 #include "Core/Physics/Box2D/PhysicsJointAttractBox2D_p.h"
+#include "Core/Physics/Box2D/PhysicsJointPulleyBox2D_p.h"
 #include "Core/Physics/Box2D/DebugDrawBox2D.h"
 
 EGE_NAMESPACE
@@ -30,7 +31,7 @@ PhysicsManagerPrivate::PhysicsManagerPrivate(PhysicsManager* base, const ConfigP
   
       if (m_debugDraw)
       {
-  	    uint32 flags = b2DebugDraw::e_jointBit;
+  	    uint32 flags = b2DebugDraw::e_jointBit | b2DebugDraw::e_shapeBit;
   	    m_debugDraw->SetFlags(flags);
       }
 
@@ -139,6 +140,22 @@ void PhysicsManagerPrivate::render()
 PhysicsJointAttractPrivate* PhysicsManagerPrivate::registerJoint(PhysicsJointAttract* joint)
 {
   PhysicsJointAttractPrivate* object = ege_new PhysicsJointAttractPrivate(joint, this);
+  if (!object->isValid())
+  {
+    EGE_DELETE(object);
+  }
+
+  return object;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Registers pulley joint. This is supposed to be called by PhysicsJointPulley only.
+*
+*  @param   joint joint object for which registration is to be performed.
+*  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
+*/
+PhysicsJointPulleyPrivate* PhysicsManagerPrivate::registerJoint(PhysicsJointPulley* joint)
+{
+  PhysicsJointPulleyPrivate* object = ege_new PhysicsJointPulleyPrivate(joint, this);
   if (!object->isValid())
   {
     EGE_DELETE(object);

@@ -26,6 +26,7 @@ EGE_NAMESPACE_BEGIN
 #define EGE_OBJECT_UID_PHYSICS_JOINT_DISTANCE 16
 #define EGE_OBJECT_UID_PHYSICS_JOINT_ATTRACT  17
 #define EGE_OBJECT_UID_TEXTURE_IMAGE          18
+#define EGE_OBJECT_UID_PHYSICS_JOINT_PULLEY   19
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
