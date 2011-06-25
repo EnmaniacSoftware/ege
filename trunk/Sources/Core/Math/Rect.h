@@ -32,6 +32,8 @@ class TRect
     inline T top() const;
     /* Returns coordinate of bottom edge. */
     inline T bottom() const;
+    /* Returns TRUE if given point is within rectangle. */
+    inline bool contains(T x, T y) const;
 
   public:
 
@@ -126,6 +128,13 @@ template <typename T>
 bool TRect<T>::isInvalid() const
 {
   return (0 > width) || (0 > height);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if given point is within rectangle. */
+template <typename T>
+bool TRect<T>::contains(T x, T y) const
+{
+  return (x >= left()) && (y >= top()) && (x < right()) && (y < bottom());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
