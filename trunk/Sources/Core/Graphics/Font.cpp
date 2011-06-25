@@ -8,7 +8,7 @@ EGE_DEFINE_NEW_OPERATORS(Font)
 EGE_DEFINE_DELETE_OPERATORS(Font)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Font::Font(Application* app, s32 height, const std::map<EGEChar, GlyphData>& glyphData) : Object(app), m_height(height)
+Font::Font(Application* app, s32 height, const EGEMap<EGEChar, GlyphData>& glyphData) : Object(app), m_height(height)
 {
   // copy glyphs data
   for (EGEMap<EGEChar, GlyphData>::const_iterator it = glyphData.begin(); it != glyphData.end(); ++it)

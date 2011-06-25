@@ -167,8 +167,6 @@ files
 
 	["Core/Graphics/OpenGL"]
  	(../../Sources/Core/Graphics/OpenGL)
-  MaterialOGL_p.cpp
-  MaterialOGL_p.h
 	Texture2DOGL.cpp
 	Texture2DOGL.h
 

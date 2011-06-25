@@ -36,7 +36,6 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Material.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\MaterialOGL_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Renderer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderTarget.cpp" />
@@ -133,7 +132,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Material.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\glext.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\MaterialOGL_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Renderer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderTarget.h" />

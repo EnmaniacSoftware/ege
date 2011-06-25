@@ -11,6 +11,8 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+class GlyphData;
+
 EGE_DECLARE_SMART_CLASS(Font, PFont)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -19,8 +21,8 @@ class Font : public Object
 {
   public:
 
-    Font(Application* app, s32 height, const std::map<EGEChar, GlyphData>& glyphData);
-    virtual ~Font();
+    Font(Application* app, s32 height, const EGEMap<EGEChar, GlyphData>& glyphData);
+   ~Font();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS

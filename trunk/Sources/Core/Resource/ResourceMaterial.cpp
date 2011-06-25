@@ -51,9 +51,8 @@ EGEResult ResourceMaterial::create(const EGEString& path, const PXmlElement& tag
 
   // get data
   m_name            = tag->attribute("name");
-  m_srcBlend        = tag->attribute("src-blend").toLower();
-  m_dstBlend        = tag->attribute("dst-blend").toLower();
-  m_blend           = tag->attribute("blend");
+  m_srcBlend        = mapBlendFactor(tag->attribute("src-blend").toLower(), EGEGraphics::BLEND_FACTOR_ONE);
+  m_dstBlend        = mapBlendFactor(tag->attribute("dst-blend").toLower(), EGEGraphics::BLEND_FACTOR_ZERO);
   m_diffuseColor    = tag->attribute("diffuse-color");
   m_ambientColor    = tag->attribute("ambient-color");
   m_specularColor   = tag->attribute("specular-color");
@@ -61,7 +60,7 @@ EGEResult ResourceMaterial::create(const EGEString& path, const PXmlElement& tag
   m_shinness        = tag->attribute("shinness");
 
   // check if obligatory data is wrong
-  if (m_name.empty())
+  if (m_name.empty() || (EGEGraphics::BLEND_FACTOR_UNKNOWN == m_srcBlend) || (EGEGraphics::BLEND_FACTOR_UNKNOWN == m_dstBlend))
   {
     // error!
     return EGE_ERROR_BAD_PARAM;
@@ -112,20 +111,8 @@ EGEResult ResourceMaterial::load()
     }
 
     // set blending parameters
-    if (!srcBlendFuncName().empty())
-    {
-      material->setSrcBlendFunc(srcBlendFuncName());
-    }
-
-    if (!dstBlendFuncName().empty())
-    {
-      material->setDstBlendFunc(dstBlendFuncName());
-    }
-
-    if (!blendingEnabledName().empty())
-    {
-      material->enableBlending(blendingEnabledName().toBool(&error));
-    }
+    material->setSrcBlendFactor(srcBlendFactor());
+    material->setDstBlendFactor(dstBlendFactor());
 
     // set colors
     if (!ambientColorName().empty())
@@ -263,6 +250,63 @@ EGEResult ResourceMaterial::addTextureImage(const PXmlElement& tag)
   m_textureImages.push_back(TextureImageData(textureName, rect));
 
   return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Maps blend factor's name into value. */
+EGEGraphics::EBlendFactor ResourceMaterial::mapBlendFactor(const EGEString& name, EGEGraphics::EBlendFactor defaultValue) const
+{
+  // check if no data to convert
+  if (name.empty())
+  {
+    // return default value
+    return defaultValue;
+  }
+
+  // map value
+  EGEGraphics::EBlendFactor factor = EGEGraphics::BLEND_FACTOR_UNKNOWN;
+
+  if ("zero" == name)
+  {
+    factor = EGEGraphics::BLEND_FACTOR_ZERO;
+  }
+  else if ("one" == name)
+  {
+    factor = EGEGraphics::BLEND_FACTOR_ONE;
+  }
+  else if ("src-color" == name)
+  {
+    factor = EGEGraphics::BLEND_FACTOR_SRC_COLOR;
+  }
+  else if ("dst-color" == name)
+  {
+    factor = EGEGraphics::BLEND_FACTOR_DST_COLOR;
+  }
+  else if ("one-minus-src-color" == name)
+  {
+    factor = EGEGraphics::BLEND_FACTOR_ONE_MINUS_SRC_COLOR;
+  }
+  else if ("one-minus-dst-color" == name)
+  {
+    factor = EGEGraphics::BLEND_FACTOR_ONE_MINUS_DST_COLOR;
+  }
+  else if ("src-alpha" == name)
+  {
+    factor = EGEGraphics::BLEND_FACTOR_SRC_ALPHA;
+  }
+  else if ("dst-alpha" == name)
+  {
+    factor = EGEGraphics::BLEND_FACTOR_DST_ALPHA;
+  }
+  else if ("one-minus-src-alpha" == name)
+  {
+    factor = EGEGraphics::BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
+  }
+  else if ("one-minus-dst-alpha" == name)
+  {
+    factor = EGEGraphics::BLEND_FACTOR_ONE_MINUS_DST_ALPHA;
+  }
+
+  return factor;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

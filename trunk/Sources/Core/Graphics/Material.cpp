@@ -2,10 +2,6 @@
 #include "Core/Data/DataBuffer.h"
 #include "Core/Math/Math.h"
 
-#if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
-#include "Core/Graphics/OpenGL/MaterialOGL_p.h"
-#endif // EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
-
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -14,15 +10,15 @@ EGE_DEFINE_NEW_OPERATORS(Material)
 EGE_DEFINE_DELETE_OPERATORS(Material)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Material::Material(Application* app) : Object(app), m_blendingEnabled(false), m_diffuseColor(Color::WHITE), m_ambientColor(Color::WHITE), 
-                                       m_specularColor(Color::BLACK), m_shinness(0), m_emissionColor(Color::BLACK)
+Material::Material(Application* app) : Object(app), m_diffuseColor(Color::WHITE), m_ambientColor(Color::WHITE), m_specularColor(Color::BLACK), m_shinness(0), 
+                                       m_emissionColor(Color::BLACK), m_srcBlendFactor(EGEGraphics::BLEND_FACTOR_ONE),
+                                       m_dstBlendFactor(EGEGraphics::BLEND_FACTOR_ZERO)
+
 {
-  m_p = ege_new MaterialPrivate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Material::~Material()
 {
-  EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds new texture. */
@@ -48,31 +44,19 @@ PObject Material::texture(u32 index) const
 /*! Returns TRUE if material is valid. */
 bool Material::isValid() const
 {
-  return NULL != m_p;
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Enables/disables blending. */
-void Material::enableBlending(bool enable)
+/*! Sets source pixel scale factor. */
+void Material::setSrcBlendFactor(EGEGraphics::EBlendFactor factor)
 {
-  m_blendingEnabled = enable;
+  m_srcBlendFactor = factor;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets source pixel scale function. */
-void Material::setSrcBlendFunc(const EGEString& funcName)
+/*! Sets destination pixel scale factor. */
+void Material::setDstBlendFactor(EGEGraphics::EBlendFactor factor)
 {
-  if (isValid())
-  {
-    p_func()->setSrcBlendFunc(funcName);
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets destination pixel scale function. */
-void Material::setDstBlendFunc(const EGEString& funcName)
-{
-  if (isValid())
-  {
-    p_func()->setDstBlendFunc(funcName);
-  }
+  m_dstBlendFactor = factor;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets diffuse color. */

@@ -58,6 +58,11 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
   PRenderComponent component_frame = ege_new RenderComponent(app(), "DebugDraw::DrawSolidPolygon-frame", EGEGraphics::RENDER_PRIORITY_PHYSICS_DEBUG, 
                                                             EGEGraphics::RENDER_PRIMITIVE_TYPE_LINE_LOOP);
 
+  PMaterial material = ege_new Material(NULL);
+  material->setSrcBlendFactor(EGEGraphics::BLEND_FACTOR_SRC_ALPHA);
+  material->setDstBlendFactor(EGEGraphics::BLEND_FACTOR_ONE_MINUS_SRC_ALPHA);
+  component_fill->setMaterial(material);
+  
   if (component_fill->isValid() && component_frame->isValid())
   {
     EGE::float32 scale = manager()->simulationToWorldScaleFactor();
@@ -78,7 +83,7 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
       *data_fill++ = color.r;
       *data_fill++ = color.g;
       *data_fill++ = color.b;
-      *data_fill++ = 1.0f;
+      *data_fill++ = 0.5f;
 
       *data_frame++ = vertices[i].x * scale;
       *data_frame++ = vertices[i].y * scale;
@@ -86,7 +91,7 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
       *data_frame++ = color.r;
       *data_frame++ = color.g;
       *data_frame++ = color.b;
-      *data_frame++ = 1.0f;
+      *data_frame++ = 0.5f;
     }
 
     component_fill->vertexBuffer()->unlock();
@@ -95,25 +100,6 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
     app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, component_fill);
     app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, component_frame);
   }
-
-	//glEnable(GL_BLEND);
-	//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//glColor4f(0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f);
-	//glBegin(GL_TRIANGLE_FAN);
-	//for (int32 i = 0; i < vertexCount; ++i)
-	//{
-	//	glVertex2f(vertices[i].x, vertices[i].y);
-	//}
-	//glEnd();
-	//glDisable(GL_BLEND);
-
-	//glColor4f(color.r, color.g, color.b, 1.0f);
-	//glBegin(GL_LINE_LOOP);
-	//for (int32 i = 0; i < vertexCount; ++i)
-	//{
-	//	glVertex2f(vertices[i].x, vertices[i].y);
-	//}
-	//glEnd();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! b2DebugDraw override. */
@@ -163,6 +149,11 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
   PRenderComponent component_frame = ege_new RenderComponent(app(), "DebugDraw::DrawSolidCircle-frame", EGEGraphics::RENDER_PRIORITY_PHYSICS_DEBUG, 
                                                             EGEGraphics::RENDER_PRIMITIVE_TYPE_LINE_LOOP);
 
+  PMaterial material = ege_new Material(NULL);
+  material->setSrcBlendFactor(EGEGraphics::BLEND_FACTOR_SRC_ALPHA);
+  material->setDstBlendFactor(EGEGraphics::BLEND_FACTOR_ONE_MINUS_SRC_ALPHA);
+  component_fill->setMaterial(material);
+
   if (component_fill->isValid() && component_frame->isValid())
   {
 	  const float32 k_segments = 16.0f;
@@ -189,7 +180,7 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
       *data_fill++ = color.r;
       *data_fill++ = color.g;
       *data_fill++ = color.b;
-      *data_fill++ = 1.0f;
+      *data_fill++ = 0.5f;
 
       *data_frame++ = v.x * scale;
       *data_frame++ = v.y * scale;
@@ -197,7 +188,7 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
       *data_frame++ = color.r;
       *data_frame++ = color.g;
       *data_frame++ = color.b;
-      *data_frame++ = 1.0f;
+      *data_frame++ = 0.5f;
 
 	  	theta += k_increment;
     }
@@ -208,34 +199,6 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
     app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, component_fill);
     app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, component_frame);
   }
-
-
-	//const float32 k_segments = 16.0f;
-	//const float32 k_increment = 2.0f * b2_pi / k_segments;
-	//float32 theta = 0.0f;
-	//glEnable(GL_BLEND);
-	//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//glColor4f(0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f);
-	//glBegin(GL_TRIANGLE_FAN);
-	//for (int32 i = 0; i < k_segments; ++i)
-	//{
-	//	b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
-	//	glVertex2f(v.x, v.y);
-	//	theta += k_increment;
-	//}
-	//glEnd();
-	//glDisable(GL_BLEND);
-
-	//theta = 0.0f;
-	//glColor4f(color.r, color.g, color.b, 1.0f);
-	//glBegin(GL_LINE_LOOP);
-	//for (int32 i = 0; i < k_segments; ++i)
-	//{
-	//	b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
-	//	glVertex2f(v.x, v.y);
-	//	theta += k_increment;
-	//}
-	//glEnd();
 
 	//b2Vec2 p = center + radius * axis;
 	//glBegin(GL_LINES);

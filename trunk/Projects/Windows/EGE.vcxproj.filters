@@ -309,9 +309,6 @@
     <ClCompile Include="..\..\Sources\Win32\Device\DeviceWin32.cpp">
       <Filter>Win32\Device</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\MaterialOGL_p.cpp">
-      <Filter>Core\Graphics\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.cpp">
       <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
     </ClCompile>
@@ -631,9 +628,6 @@
       <Filter>Core\Device</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEDevice.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\MaterialOGL_p.h">
-      <Filter>Core\Graphics\OpenGL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.h">
       <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
     </ClInclude>

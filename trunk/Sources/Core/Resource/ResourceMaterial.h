@@ -6,6 +6,7 @@
 #include <EGEXml.h>
 #include <EGEMath.h>
 #include <EGEList.h>
+#include <EGEGraphics.h>
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN
@@ -56,12 +57,10 @@ class ResourceMaterial : public IResource
     EGEResult addTextureImage(const PXmlElement& tag);
     /*! Returns TRUE if material is loaded. */
     inline bool isLoaded() const { return NULL != m_material; }
-    /*! Returns source pixel scale function name. */
-    inline const EGEString& srcBlendFuncName() const { return m_srcBlend; }
-    /*! Returns destination pixel scale function name. */
-    inline const EGEString& dstBlendFuncName() const { return m_dstBlend; }
-    /*! Returns blending state name. */
-    inline const EGEString& blendingEnabledName() const { return m_blend; }
+    /*! Returns source pixel factor function. */
+    inline EGEGraphics::EBlendFactor srcBlendFactor() const { return m_srcBlend; }
+    /*! Returns destination pixel factor function. */
+    inline EGEGraphics::EBlendFactor dstBlendFactor() const { return m_dstBlend; }
     /*! Returns ambient color name. */
     inline const EGEString& ambientColorName() const { return m_ambientColor; }
     /*! Returns diffuse color name. */
@@ -72,6 +71,8 @@ class ResourceMaterial : public IResource
     inline const EGEString& emissionColorName() const { return m_emissionColor; }
     /*! Returns shinness value name. */
     inline const EGEString& shinnessName() const { return m_shinness; }
+    /* Maps blend factor's name into value. */
+    EGEGraphics::EBlendFactor mapBlendFactor(const EGEString& name, EGEGraphics::EBlendFactor defaultValue) const;
     
   private:
 
@@ -96,12 +97,10 @@ class ResourceMaterial : public IResource
     EGEString m_name;
     /*! List of all texture images contributing to material. */
     EGEList<TextureImageData> m_textureImages;
-    /*! Source blend value name. */
-    EGEString m_srcBlend;
-    /*! Destination blend value name. */
-    EGEString m_dstBlend;
-    /*! Blending enabled value name. */
-    EGEString m_blend;
+    /*! Source blend value. */
+    EGEGraphics::EBlendFactor m_srcBlend;
+    /*! Destination blend value. */
+    EGEGraphics::EBlendFactor m_dstBlend;
     /*! Ambient color name. */
     EGEString m_ambientColor;
     /*! Diffuse color name. */

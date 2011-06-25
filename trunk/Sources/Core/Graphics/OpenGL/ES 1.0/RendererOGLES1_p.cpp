@@ -1,7 +1,6 @@
-#include "Core/Application/Application.h"
+#include "Core/Graphics/OpenGL/ES 1.0/RendererOGLES1_p.h"
 #include "GLES/gl.h"
 #include "GLES/egl.h"
-#include "Core/Graphics/OpenGL/ES 1.0/RendererOGLES1_p.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
@@ -9,7 +8,6 @@
 #include "Core/Graphics/VertexBuffer.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
-#include "Core/Graphics/OpenGL/MaterialOGL_p.h"
 #include "Core/Graphics/TextureImage.h"
 #include <EGEDynamicArray.h>
 
@@ -35,6 +33,27 @@ static GLenum MapPrimitiveType(EGEGraphics::ERenderPrimitiveType type)
 
   // default
   return GL_TRIANGLES;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Maps blend factors to OpenGL compilant values. */
+static GLenum MapBlendFactor(EGEGraphics::EBlendFactor factor)
+{
+  switch (factor)
+  {
+    case EGEGraphics::BLEND_FACTOR_ZERO:                return GL_ZERO;
+    case EGEGraphics::BLEND_FACTOR_ONE:                 return GL_ONE;
+    case EGEGraphics::BLEND_FACTOR_SRC_COLOR:           return GL_SRC_COLOR;
+    case EGEGraphics::BLEND_FACTOR_DST_COLOR:           return GL_DST_COLOR;
+    case EGEGraphics::BLEND_FACTOR_ONE_MINUS_SRC_COLOR: return GL_ONE_MINUS_SRC_COLOR;
+    case EGEGraphics::BLEND_FACTOR_ONE_MINUS_DST_COLOR: return GL_ONE_MINUS_DST_COLOR;
+    case EGEGraphics::BLEND_FACTOR_SRC_ALPHA:           return GL_SRC_ALPHA;
+    case EGEGraphics::BLEND_FACTOR_DST_ALPHA:           return GL_DST_ALPHA;
+    case EGEGraphics::BLEND_FACTOR_ONE_MINUS_SRC_ALPHA: return GL_ONE_MINUS_SRC_ALPHA;
+    case EGEGraphics::BLEND_FACTOR_ONE_MINUS_DST_ALPHA: return GL_ONE_MINUS_DST_ALPHA;
+  }
+
+  // default
+  return GL_ONE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RendererPrivate::RendererPrivate(Renderer* base) : m_d(base)
@@ -217,10 +236,10 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
 
   if (material)
   {
-    if (material->isBlendingEnabled())
+    if ((EGEGraphics::BLEND_FACTOR_ONE != material->srcBlendFactor()) || (EGEGraphics::BLEND_FACTOR_ZERO != material->dstBlendFactor()))
     {
       glEnable(GL_BLEND);
-      glBlendFunc(material->p_func()->srcBlendFunc(), material->p_func()->dstBlendFunc());
+      glBlendFunc(MapBlendFactor(material->srcBlendFactor()), MapBlendFactor(material->dstBlendFactor()));
     }
 
     // go thru all textures
