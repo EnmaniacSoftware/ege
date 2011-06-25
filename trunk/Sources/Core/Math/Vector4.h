@@ -21,11 +21,6 @@ class TVector4
     TVector4(const TVector3<T>& vector);
     TVector4(const TVector2<T>& vector);
 
-		inline TVector4 operator*(T scalar) const;
-		inline TVector4 operator/(T scalar) const;
-		inline TVector4 operator+(const TVector4& vector) const;
-		inline TVector4 operator-(const TVector4& vector) const;
-
 		inline void operator+=(const TVector4& vector);
 		inline void operator-=(const TVector4& vector);
 
@@ -108,7 +103,7 @@ void TVector4<T>::operator+=(const TVector4<T>& vector)
   x += vector.x;
   y += vector.y;
   z += vector.z;
-//  w += cVector.w;
+  w += vector.w;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
@@ -117,33 +112,7 @@ void TVector4<T>::operator-=(const TVector4<T>& vector)
   x -= vector.x;
   y -= vector.y;
   z -= vector.z;
-//  w -= cVector.w;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector4<T> TVector4<T>::operator*(T scalar) const
-{
-  return TVector4(x * scalar, y * scalar, z * scalar, w * scalar);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector4<T> TVector4<T>::operator/(T scalar) const
-{
-  scalar = 1.0f / scalar;
-
-  return TVector4(x * scalar, y * scalar, z * scalar, w * scalar);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector4<T> TVector4<T>::operator+(const TVector4<T>& vector) const
-{
-  return TVector4(x + vector.x, y + vector.y, z + vector.z);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector4<T> TVector4<T>::operator-(const TVector4<T>& vector) const
-{
-  return TVector4(x - vector.x, y - vector.y, z - vector.z);
+  w -= vector.w;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
@@ -187,6 +156,32 @@ void TVector4<T>::normalize()
 	  z /= curLength;
     w = 1;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector4<T> operator*(const TVector4<T>& left, T scalar)
+{
+  return TVector4<T>(left.x * scalar, left.y * scalar, left.z * scalar, left.w * scalar);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector4<T> operator/(const TVector4<T>& left, T scalar)
+{
+  scalar = 1.0f / scalar;
+
+  return TVector4<T>(left.x * scalar, left.y * scalar, left.z * scalar, left.w * scalar);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector4<T> operator+(const TVector4<T>& left, const TVector4<T>& right)
+{
+  return TVector4<T>(left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector4<T> operator-(const TVector4<T>& left, const TVector4<T>& right)
+{
+  return TVector4<T>(left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
