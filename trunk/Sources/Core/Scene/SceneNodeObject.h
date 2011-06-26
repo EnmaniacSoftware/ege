@@ -30,7 +30,7 @@ class SceneNodeObject : public Object
     /*! Returns parent node. */
     inline SceneNode* parentNode() const{ return m_parentNode; }
     /* Adds object render data for rendering with given renderer. */
-    virtual bool addForRendering(Renderer* renderer) const;
+    virtual bool addForRendering(Renderer* renderer);
     /*! Returns TRUE if object is visible. */
     inline bool isVisible() const { return m_visible; }
     /* Sets visibility flag. */

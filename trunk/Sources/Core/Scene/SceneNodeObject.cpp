@@ -28,7 +28,7 @@ SceneNodeObject::~SceneNodeObject()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds object render data for rendering with given renderer. */
-bool SceneNodeObject::addForRendering(Renderer* renderer) const
+bool SceneNodeObject::addForRendering(Renderer* renderer)
 {
   bool result = false;
 
