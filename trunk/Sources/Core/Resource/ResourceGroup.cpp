@@ -15,7 +15,7 @@ ResourceGroup::ResourceGroup(Application* app, ResourceManager* manager, const E
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceGroup::~ResourceGroup()
 {
-  unload();
+  destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Initializes group from XML. */
@@ -103,14 +103,10 @@ void ResourceGroup::unload()
   if (isLoaded())
   {
     // go thru all resources
-    for (ResourcesMap::iterator iter = m_resources.begin(); iter != m_resources.end();)
+    for (ResourcesMap::const_iterator it = m_resources.begin(); it != m_resources.end(); ++it)
     {
       // unload it
-      // TAGE - deallocation of resources needs to be done via destroy function so the thread which creates also deallocates
-      iter->second = NULL;
-
-      // remove from pool
-      m_resources.erase(iter++);
+      it->second->unload();
     }
 
     // reset flag
@@ -157,5 +153,22 @@ EGEList<PResource> ResourceGroup::resources(const EGEString& typeName) const
   }
 
   return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Destroys group. */
+void ResourceGroup::destroy()
+{
+  // unload first
+  unload();
+
+  // go thru all resources
+  for (ResourcesMap::iterator it = m_resources.begin(); it != m_resources.end();)
+  {
+    // destroy it
+    it->second = NULL;
+
+    // remove from pool
+    it = m_resources.erase(it);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -49,6 +49,8 @@ class ResourceGroup : public Object
     inline bool isLoaded() const { return m_loaded; }
     /*! Gets owning manager */
     inline ResourceManager* manager() const { return m_manager; }
+    /* Destroys group. */
+    void destroy();
 
   private:
 

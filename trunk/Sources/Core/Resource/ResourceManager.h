@@ -52,7 +52,7 @@ class ResourceManager : public Object
     /* Returns resource of a given type and name. */
     PResource resource(const EGEString& typeName, const EGEString& name) const;
     /* Registeres custom resource type. */
-    EGEResult registerResource(const EGEString& typeName, egeResourceCreateFunc func);
+    EGEResult registerResource(const EGEString& typeName, egeResourceCreateFunc createFunc);
     /* Returns TRUE if given resource type is registered. */
     bool isResourceRegistered(const EGEString& typeName) const;
     /* Creates instance of resource of the type given by name. */
@@ -74,6 +74,18 @@ class ResourceManager : public Object
     *   \param  tag       group element to process. 
     */
     EGEResult addGroup(const EGEString& filePath, const PXmlElement& tag);
+    /* Removes all groups. */
+    void removeGroups();
+
+  private:
+
+    /*! Class containing registration information for resource. */
+    class ResourceRegistryEntry
+    {
+      public:
+
+        egeResourceCreateFunc m_createFunc;
+    };
 
   private:
 
@@ -82,7 +94,7 @@ class ResourceManager : public Object
     /*! Resource groups defined */
     EGEList<PResourceGroup> m_groups;
     /*! Registered resources sorted by type name. */
-    EGEMap<EGEString, egeResourceCreateFunc> m_registeredResources;
+    EGEMap<EGEString, ResourceRegistryEntry> m_registeredResources;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -42,12 +42,12 @@ bool ResourceManager::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Registeres custom resource type. */
-EGEResult ResourceManager::registerResource(const EGEString& typeName, egeResourceCreateFunc func)
+EGEResult ResourceManager::registerResource(const EGEString& typeName, egeResourceCreateFunc createFunc)
 {
   EGEResult result = EGE_SUCCESS;
   
   // check if resource with such a name exists already
-  EGEMap<EGEString, egeResourceCreateFunc>::iterator it = m_registeredResources.find(typeName);
+  EGEMap<EGEString, ResourceRegistryEntry>::iterator it = m_registeredResources.find(typeName);
   if (it != m_registeredResources.end())
   {
     // error!
@@ -55,7 +55,10 @@ EGEResult ResourceManager::registerResource(const EGEString& typeName, egeResour
   }
 
   // register
-  m_registeredResources.insert(EGEMap<EGEString, egeResourceCreateFunc>::value_type(typeName, func));
+  ResourceRegistryEntry entry;
+  entry.m_createFunc  = createFunc;
+
+  m_registeredResources.insert(EGEMap<EGEString, ResourceRegistryEntry>::value_type(typeName, entry));
 
   return EGE_SUCCESS;
 }
@@ -64,7 +67,7 @@ EGEResult ResourceManager::registerResource(const EGEString& typeName, egeResour
 bool ResourceManager::isResourceRegistered(const EGEString& typeName) const
 {
   // check if resource with such a name exists already
-  EGEMap<EGEString, egeResourceCreateFunc>::const_iterator it = m_registeredResources.find(typeName);
+  EGEMap<EGEString, ResourceRegistryEntry>::const_iterator it = m_registeredResources.find(typeName);
   return it != m_registeredResources.end();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -74,11 +77,11 @@ PResource ResourceManager::createResource(const EGEString& name)
   PResource resource;
 
   // check if resource with such a name exists already
-  EGEMap<EGEString, egeResourceCreateFunc>::iterator it = m_registeredResources.find(name);
+  EGEMap<EGEString, ResourceRegistryEntry>::iterator it = m_registeredResources.find(name);
   if (it != m_registeredResources.end())
   {
     // create resource
-    resource = it->second(app(), this);
+    resource = it->second.m_createFunc(app(), this);
   }
 
   return resource;
@@ -313,4 +316,3 @@ PResource ResourceManager::resource(const EGEString& typeName, const EGEString& 
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-

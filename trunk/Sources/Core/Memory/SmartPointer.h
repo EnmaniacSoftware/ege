@@ -39,6 +39,9 @@ class SmartPointer
 
     inline operator T*() const { return m_object; }
 
+    /*! Returns TRUE if smart pointer points to any object. */
+    inline bool isValid() const { return NULL != m_object; }
+
     T* m_object;
 
   private:

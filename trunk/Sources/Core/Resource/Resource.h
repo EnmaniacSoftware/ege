@@ -1,8 +1,9 @@
 #ifndef EGE_CORE_RESOURCE_H
 #define EGE_CORE_RESOURCE_H
 
-#include "EGE.h"
-#include "EGEXml.h"
+#include <EGE.h>
+#include <EGEXml.h>
+#include "Core/Memory/Object.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -21,9 +22,9 @@ class IResource : public Object
 {
   public:
 
-    IResource(Application* app, ResourceManager* manager, const EGEString& typeName) : Object(app, EGE_OBJECT_UID_RESOURCE), 
-                                                                                       m_manager(manager), m_typeName(typeName) {}
-   ~IResource() {}
+    IResource(Application* app, ResourceManager* manager, const EGEString& typeName, egeObjectDeleteFunc deleteFunc = NULL) 
+    : Object(app, EGE_OBJECT_UID_RESOURCE, deleteFunc), m_manager(manager), m_typeName(typeName) {}
+    virtual ~IResource() {}
 
     /* Initializes resource from XML. 
     * 

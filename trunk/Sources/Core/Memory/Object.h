@@ -12,11 +12,16 @@ class Application;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+typedef void (*egeObjectDeleteFunc)(void* data);
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 class Object
 {
   public:
 
-    Object(Application* app, u32 uid = EGE_OBJECT_UID_GENERIC) : m_app(app), m_references(0), m_uid(uid) {}
+    Object(Application* app, u32 uid = EGE_OBJECT_UID_GENERIC, egeObjectDeleteFunc deleteFunc = NULL) 
+    : m_app(app), m_references(0), m_uid(uid), m_deleteFunc(deleteFunc) {}
     virtual ~Object() {}
     
     /*! Returns object Unique Identifier. */
@@ -24,7 +29,7 @@ class Object
     /*! Increases reference count for the object */
     inline void addReference() { ++m_references; }
     /*! Decreses reference count for the object. If no more references are present deallocates object. */
-    inline void release() { if (--m_references == 0) { delete this; } }
+    inline void release() { if (--m_references == 0) { if (m_deleteFunc) m_deleteFunc(this); else delete this; } }
     /*! Returns pointer to engine. */
     inline Application* app() const { return m_app; }
 
@@ -36,6 +41,8 @@ class Object
     u32 m_references;
     /*! Object UID. */
     u32 m_uid;
+    /*! Delete function pointer. If NULL standard delete operator will be used for object deletion. */
+    egeObjectDeleteFunc m_deleteFunc;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
