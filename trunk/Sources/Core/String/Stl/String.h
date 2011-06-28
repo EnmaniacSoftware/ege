@@ -4,6 +4,7 @@
 #include <EGE.h>
 #include <EGEColor.h>
 #include <EGERect.h>
+#include <EGEVector.h>
 #include <string>
 
 EGE_NAMESPACE_BEGIN
@@ -50,6 +51,8 @@ class EGEString : public std::string
     Color toColor(bool* error = NULL) const;
     /* Converts to rectangle of floats. If error is valid, it holds TRUE if error occured during the conversion. */
     Rectf toRectf(bool* error = NULL) const;
+    /* Converts to 2D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
+    Vector2f toVector2f(bool* error = NULL) const;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

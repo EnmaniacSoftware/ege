@@ -223,6 +223,7 @@
     <ClInclude Include="..\..\Sources\EGETimer.h" />
     <ClInclude Include="..\..\Sources\EGETree.h" />
     <ClInclude Include="..\..\Sources\EGETypes.h" />
+    <ClInclude Include="..\..\Sources\EGEVector.h" />
     <ClInclude Include="..\..\Sources\EGEXml.h" />
     <ClInclude Include="..\..\Sources\Win32\Application\AppControllerWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\File\FileWin32_p.h" />

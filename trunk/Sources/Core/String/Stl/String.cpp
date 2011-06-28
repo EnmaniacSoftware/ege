@@ -1,5 +1,4 @@
 #include "Core/String/Stl/String.h"
-#include "Core/Math/Rect.h"
 #include <sstream>
 
 EGE_NAMESPACE
@@ -227,15 +226,34 @@ Rectf EGEString::toRectf(bool* error) const
     return Rectf::INVALID;
   }
 
-  // make sure alpha is set to opaque in case only RGB is set
   Rectf rect;
-
-  // check if not even RGB was able to be read
   if (4 > sscanf(toAscii(), "%f %f %f %f", &rect.x, &rect.y, &rect.width, &rect.height) && error)
   {
     *error = true;
   }
 
   return rect;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Converts to 2D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
+Vector2f EGEString::toVector2f(bool* error) const
+{
+  if (empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return Vector2f::ZERO;
+  }
+
+  Vector2f vec;
+  if (2 > sscanf(toAscii(), "%f %f", &vec.x, &vec.y) && error)
+  {
+    *error = true;
+  }
+
+  return vec;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

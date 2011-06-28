@@ -51,6 +51,7 @@ files
   EGETimer.h
   EGETree.h
 	EGETypes.h
+  EGEVector.h
 	EGEXml.h
 
 	["Core"]

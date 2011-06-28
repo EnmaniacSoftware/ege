@@ -733,6 +733,7 @@
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.h">
       <Filter>Core\Physics\Box2D</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEVector.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">
