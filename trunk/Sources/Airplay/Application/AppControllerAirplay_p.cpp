@@ -33,7 +33,7 @@ EGEResult AppControllerPrivate::run()
     d_func()->render();
 
     // give some time for OS
-    s3eDeviceYield((int32) d_func()->m_updateInterval.miliseconds());
+    s3eDeviceYield(0);//(int32) d_func()->m_updateInterval.miliseconds());
   }
 
   return EGE_SUCCESS;
