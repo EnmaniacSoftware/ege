@@ -1,7 +1,8 @@
 #ifndef EGE_CORE_VECTOR2_H
 #define EGE_CORE_VECTOR2_H
 
-#include "EGE.h"
+#include <EGE.h>
+#include <EGEMath.h>
 
 EGE_NAMESPACE_BEGIN
 
