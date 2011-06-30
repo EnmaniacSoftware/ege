@@ -17,7 +17,8 @@ enum b2BodyType mapType(EGEPhysics::EComponentType type)
 {
   switch (type)
   {
-    case EGEPhysics::COMPONENT_STATIC: return b2_staticBody;
+    case EGEPhysics::COMPONENT_STATIC:    return b2_staticBody;
+    case EGEPhysics::COMPONENT_KINEMATIC: return b2_kinematicBody;
   }
 
   return b2_dynamicBody;
@@ -209,7 +210,7 @@ bool PhysicsComponentPrivate::addCircleShape(EGE::float32 radius, EGE::float32 d
 
     b2CircleShape shape;
 	  shape.m_radius = radius * scale;
-  
+
     return NULL != m_body->CreateFixture(&shape, density);
   }
 

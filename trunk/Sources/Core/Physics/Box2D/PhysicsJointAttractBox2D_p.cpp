@@ -24,7 +24,7 @@ PhysicsJointAttractPrivate::PhysicsJointAttractPrivate(PhysicsJointAttract* pare
   {
     // define joint
     b2MouseJointDef def;
-    def.maxForce = 1000.0f * body->GetMass();
+    def.maxForce = 10000.0f;// * body->GetMass();
     def.bodyA = m_groundBody;
     def.bodyB = body;
     def.target = body->GetPosition();

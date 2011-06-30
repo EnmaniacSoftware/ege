@@ -12,7 +12,8 @@ namespace EGEPhysics
     enum EComponentType
     {
       COMPONENT_DYNAMIC,        // positive mass, non-zero velocity determined by forces, moved by solver
-      COMPONENT_STATIC          // zero mass, zero velocity, may be manually moved
+      COMPONENT_STATIC,         // zero mass, zero velocity, may be manually moved
+      COMPONENT_KINEMATIC       // zero mass, non-zero velocity set by user, moved by solver
     };
 }
 

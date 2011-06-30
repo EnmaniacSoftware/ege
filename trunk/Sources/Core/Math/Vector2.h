@@ -1,6 +1,10 @@
 #ifndef EGE_CORE_VECTOR2_H
 #define EGE_CORE_VECTOR2_H
 
+/**
+  This class represents 2D vector.
+*/
+
 #include <EGE.h>
 #include <EGEMath.h>
 
@@ -16,40 +20,28 @@ class TVector2
     TVector2();
     TVector2(T x, T y);
 		TVector2(const TVector2& vector);
-		TVector2(const TVector3<T>& vector);
 		TVector2(const TVector4<T>& vector);
+		TVector2(const TVector3<T>& vector);
 
-		//CVector2 operator=( const CVector2& cVector );
-		//CVector2 operator+( const CVector2& cVector ) const;
-		//CVector2 operator-( const CVector2& cVector ) const;
-		//CVector2 operator*( float fNumber ) const;
-		//CVector2 operator/( float fNumber ) const;
+    inline void operator*=(T scalar);
+    inline bool operator==(const TVector2& vector) const;
+    inline bool operator!=(const TVector2& vector) const;
 
-		//void operator+=( const CVector2& cVector );
-		//void operator-=( const CVector2& cVector );
-
-    inline bool operator==(const TVector2 vector) const;
-    inline bool operator!=(const TVector2 vector) const;
-
-    T distanceTo(const TVector2& vector) const;
-    T squaredDistanceTo(const TVector2& vector) const;
-
-  //  // create related methods
+    /* Sets vector components. */
     inline void set(T x, T y);
- 
-  //  // magnitude related methods
-  //  float getMagnitude( void ) const;                                             // returns length of the vector
-  //  float getSquaredMagnitude( void ) const;                                      // returns squared length of the vector
 
-  //  // normalization related methods
-  //  CVector2 getNormalized( void );                                               // returns normalized vector
-  //  void     normalize( void );                                                   // normalizes the vector
+    /* Returns vector length. */
+    inline T length() const;
+    /* Returns vector sequared length. */
+    inline T lengthSquared() const;
+    
+    /* Normalizes vector. */
+ 	  inline void normalize();
 
-  //  // helper methods
-  //  inline float getMax( void ) const { return _MAX( x, y ); }                    // gets max value of its components
-  //  inline float getMin( void ) const { return _MIN( x, y ); }                    // gets min value of its components
-
-  //  inline CVector2 getPerpendicular( void ) const { return CVector2( -y, x ); }  // gets perpendicular vector
+    /* Returns distance between this and given points. */
+    inline T distanceTo(const TVector2& vector) const;
+    /* Returns squared distance between this and given points. */
+    inline T distanceSquaredTo(const TVector2& vector) const;
 
   public:
 
@@ -102,6 +94,7 @@ TVector2<T>::TVector2(const TVector4<T>& vector) : x(vector.x), y(vector.y)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets vector components. */
 template <typename T>
 void TVector2<T>::set(T x, T y) 
 { 
@@ -109,28 +102,69 @@ void TVector2<T>::set(T x, T y)
   this->y = y; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns vector length. */
+template <typename T>
+T TVector2<T>::length() const
+{
+  return Math::Sqrt((x * x) + (y * y)); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns vector sequared length. */
+template <typename T>
+T TVector2<T>::lengthSquared() const
+{
+  return (x * x) + (y * y);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Normalizes vector. */
+template <typename T>
+void TVector2<T>::normalize()
+{
+  T length = this->length();
+
+  // check if can be done
+  if (Math::DELTA <= length)
+  {
+    // get inverse of length
+    T invLength = static_cast<T>(1.0) / length;
+
+    // normalize
+	  x *= invLength;
+	  y *= invLength;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns distance between this and given points. */
 template <typename T>
 T TVector2<T>::distanceTo(const TVector2& vector) const
 {
   return Math::Sqrt((x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns squared distance between this and given points. */
 template <typename T>
-T TVector2<T>::squaredDistanceTo(const TVector2& vector) const
+T TVector2<T>::distanceSquaredTo(const TVector2& vector) const
 {
   return (x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TVector2<T>::operator==(const TVector2 vector) const
+bool TVector2<T>::operator==(const TVector2& vector) const
 {
-  return x == vector.x && y == vector.y;
+  return (x == vector.x) && (y == vector.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TVector2<T>::operator!=(const TVector2 vector) const
+bool TVector2<T>::operator!=(const TVector2& vector) const
 {
-  return !(*this == vector);
+  return (x != vector.x) || (y != vector.y);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+void TVector2<T>::operator*=(T scalar)
+{
+  x *= scalar;
+  y *= scalar;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
