@@ -6,7 +6,7 @@
 */
 
 #include <EGE.h>
-#include <EGEMath.h>
+#include "Core/Math/Math.h"
 
 EGE_NAMESPACE_BEGIN
 
