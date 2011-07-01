@@ -1,14 +1,17 @@
 #ifndef EGE_CORE_MATRIX4_H
 #define EGE_CORE_MATRIX4_H
 
-// Matrix (col, row) is of the following form: (column major)
-//
-// | m00 m10 m20 m30 |
-// | m01 m11 m21 m31 |
-// | m02 m12 m22 m32 |
-// | m03 m13 m23 m33 |
+/** Class representing 4x4 matrix, in column major form (col, row).
+ *
+ * | m00 m10 m20 m30 |
+ * | m01 m11 m21 m31 |
+ * | m02 m12 m22 m32 |
+ * | m03 m13 m23 m33 |
+ */
 
-#include <EGE.h>
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include <EGETypes.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
@@ -24,8 +27,6 @@ class TMatrix4
 		TMatrix4(T m00, T m01, T m02, T m03, T m10, T m11, T m12, T m13, T m20, T m21, T m22, T m23, T m30, T m31, T m32, T m33);
 		TMatrix4(const TMatrix4& matrix);
 
-    inline TMatrix4  operator+(const TMatrix4& matrix) const;
-    inline TMatrix4  operator-(const TMatrix4& matrix) const;
 		inline TMatrix4& operator+=(const TMatrix4& matrix);
 	  inline TMatrix4& operator-=(const TMatrix4& matrix);
     inline const T&  operator()(u32 column, u32 row) const;
@@ -51,23 +52,21 @@ class TMatrix4
 
   //  void set3x3Matrix( const CMatrix3* pcMatrix );                                                    // sets upper-left 3x3 sub-matrix
 
-  //  void setTranslation( const CVector3* pcTranslation );                                             // sets translation vector within matrix
-
+  public:
 
     T data[16];
+
+  public:
 
     static const TMatrix4<T> IDENTITY;
     static const TMatrix4<T> ZERO;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T>
 const TMatrix4<T> TMatrix4<T>::IDENTITY = TMatrix4<T>(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-
 template <typename T>
 const TMatrix4<T> TMatrix4<T>::ZERO     = TMatrix4<T>(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 TMatrix4<T>::TMatrix4()
@@ -99,18 +98,6 @@ template <typename T>
 TMatrix4<T>::TMatrix4(const TMatrix4<T>& matrix)
 {
   *this = matrix;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TMatrix4<T> TMatrix4<T>::operator+(const TMatrix4<T>& matrix) const
-{
-  return *this += matrix;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TMatrix4<T> TMatrix4<T>::operator-(const TMatrix4<T>& matrix) const
-{
-  return *this -= matrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
@@ -228,6 +215,24 @@ void TMatrix4<T>::setTranslation(T x, T y, T z)
   data[12] = x;
   data[13] = y;
   data[14] = z;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TMatrix4<T> operator + (const TMatrix4<T>& left, const TMatrix4<T>& right)
+{
+  TMatrix4<T> out(left);
+  out += right;
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TMatrix4<T> operator - (const TMatrix4<T>& left, const TMatrix4<T>& right)
+{
+  TMatrix4<T> out(left);
+  out -= right;
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

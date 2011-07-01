@@ -1,7 +1,9 @@
 #ifndef EGE_CORE_AXISALIGNEDBOX_H
 #define EGE_CORE_AXISALIGNEDBOX_H
 
-#include <EGE.h>
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include <EGETypes.h>
 #include "Core/Math/Vector4.h"
 
 EGE_NAMESPACE_BEGIN

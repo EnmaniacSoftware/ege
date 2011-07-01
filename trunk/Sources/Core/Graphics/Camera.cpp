@@ -27,7 +27,7 @@ Camera::~Camera()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets look-at vector. */
-void Camera::setLookAt(Vector3f point)
+void Camera::setLookAt(const Vector3f& point)
 {
   m_lookAt = point;
 }
@@ -62,10 +62,11 @@ const Matrix4f& Camera::viewMatrix()
 //  if (m_bViewMatrixNeedsUpdate)
   {
     // convert orientation into rotation matrix
-    Math::Convert(m_viewMatrix, physics()->orientation());
+    Math::Convert(&m_viewMatrix, &physics()->orientation());
 
     // calculate position (translation)
-    Vector4f position = Math::Transform(physics()->position(), m_viewMatrix.transposed());
+    Vector4f position = physics()->position();
+    Math::Transform(&position, &m_viewMatrix.transposed());
 
     // store translation in modelview matrix
     m_viewMatrix.data[12] = -position.x;

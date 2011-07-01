@@ -1,10 +1,12 @@
 #ifndef EGE_CORE_SMARTPOINTER_H
 #define EGE_CORE_SMARTPOINTER_H
 
-// NOTE: this class implements smart pointer by means of reference counter. It is intended to work with Object-dervied
-//       objects only.
+/** Class implements smart pointer by means of reference counter. It is intended to work with Object-dervied objects only.
+ */
 
-#include <EGE.h>
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include "Core/Platform.h"
 #include "Core/Memory/Object.h"
 
 EGE_NAMESPACE_BEGIN

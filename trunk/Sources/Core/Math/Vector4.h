@@ -5,7 +5,9 @@
   This class represents 3D vector in homogenous space
 */
 
-#include <EGE.h>
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include <EGETypes.h>
 #include "Core/Math/Math.h"
 
 EGE_NAMESPACE_BEGIN
@@ -18,10 +20,10 @@ class TVector4
 	public:
 
     TVector4();
-    TVector4(T x, T y, T z, T w);
+    TVector4(T x, T y, T z, T w = 1);
     TVector4(const TVector4& vector);
-    TVector4(const TVector2<T>& vector);
-    TVector4(const TVector3<T>& vector);
+
+		inline TVector4 operator=(const TVector4& vector);
 
 		inline void operator+=(const TVector4& vector);
 		inline void operator-=(const TVector4& vector);
@@ -36,13 +38,16 @@ class TVector4
     /* Returns vector sequared length. */
     inline T lengthSquared() const;
  
+    /* Normalizes the vector. */
+    inline void normalize();
+
+    /* Returns dot product between current and given vectors. */
+    inline T dotProduct(const TVector4& vector) const;
+
     /* Returns distance between this and given points. */
     inline T distanceTo(const TVector4& vector) const;
     /* Returns squared distance between this and given points. */
     inline T distanceSquaredTo(const TVector4& vector) const;
-
-    /* Normalizes the vector. */
-    inline void normalize();
 
   public:
 
@@ -88,13 +93,14 @@ TVector4<T>::TVector4(const TVector4<T>& vector) : x(vector.x), y(vector.y), z(v
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector4<T>::TVector4(const TVector3<T>& vector) : x(vector.x), y(vector.y), z(vector.z), w(1)
+TVector4<T> TVector4<T>::operator=(const TVector4<T>& vector)
 {
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector4<T>::TVector4(const TVector2<T>& vector) : x(vector.x), y(vector.y), z(0), w(1)
-{
+  this->x = vector.x;
+  this->y = vector.y;
+  this->z = vector.z;
+  this->w = vector.w;
+
+  return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
@@ -171,6 +177,13 @@ void TVector4<T>::normalize()
 	  z *= invLength;
     w = 1;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns dot product between current and given vectors. */
+template <typename T>
+T TVector4<T>::dotProduct(const TVector4& vector) const 
+{ 
+  return (x * vector.x) + (y * vector.y) + (z * vector.z) + (w * vector.w); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns distance between this and given points. */

@@ -1,9 +1,23 @@
 #ifndef EGE_CORE_MATH_H
 #define EGE_CORE_MATH_H
 
-#include "Core/Math/Angle.h"
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include <EGETypes.h>
 
 EGE_NAMESPACE_BEGIN
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+template <typename T> class TMatrix4;
+typedef TMatrix4<float32> Matrix4f;
+template <typename T> class TVector2;
+typedef TVector2<float32> Vector2f;
+template <typename T> class TVector4;
+typedef TVector4<float32> Vector4f;
+template <typename T> class TQuaternion;
+typedef TQuaternion<float32> Quaternionf;
+class Angle;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -37,16 +51,14 @@ class Math
     inline static float32 ACos(float32 radians) { return acosf(radians); }
     inline static float32 Abs(float32 value) { return fabsf(value); }
 
-    /* Coverts quaternion to matrix representation. */
-    static Matrix4f& Convert(Matrix4f& matrix, const Quaternionf& quaternion);
+    /* Converts quaternion to matrix representation. */
+    static void Convert(Matrix4f* matrix, const Quaternionf* quaternion);
     /* Transforms (pre-multiples) vector by matrix. */
-    static Vector4f Transform(const Vector4f& vector, const Matrix4f& matrix);
+    static void Transform(Vector4f* vector, const Matrix4f* matrix);
     /* Creates matrix from translation, scale vectors and quaternion. */
-    static Matrix4f& CreateMatrix(Matrix4f& matrix, const Vector4f& translation, const Vector4f& scale, const Quaternionf& orientation);
-    /* Returns Dot-Product of given vectors. */
-    static float32 DotProduct(const Vector4f& vector1, const Vector4f& vector2);
+    static void CreateMatrix(Matrix4f* matrix, const Vector4f* translation, const Vector4f* scale, const Quaternionf* orientation);
     /* Returns angle between positive Y axis and given point around origin. */
-    static Angle GetAngle(const Vector2f& origin, const Vector2f& point);
+    static void GetAngle(Angle* angle, const Vector2f* origin, const Vector2f* point);
 
   public:
 

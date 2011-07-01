@@ -1,10 +1,6 @@
 #ifndef EGE_AIRPLAY_TYPES_H
 #define EGE_AIRPLAY_TYPES_H
 
-#include "Core/Platform.h"
-
-//EGE_NAMESPACE_BEGIN
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 typedef signed long         s32;            // i
@@ -21,7 +17,5 @@ typedef float               float32;
 typedef double              float64;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-//EGE_NAMESPACE_END
 
 #endif // EGE_AIRPLAY_TYPES_H

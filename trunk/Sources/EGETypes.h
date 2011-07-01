@@ -1,32 +1,11 @@
 #ifndef EGE_TYPES_H
 #define EGE_TYPES_H
 
-#include <EGE.h>
-
-EGE_NAMESPACE_BEGIN
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-template <typename T>
-class TRect;
+#include "Core/Platform.h"
 
-template <typename T>
-class TVector2;
-
-template <typename T>
-class TVector3;
-
-template <typename T>
-class TVector4;
-
-template <typename T>
-class TQuaternion;
-
-template <typename T>
-class TMatrix4;
-
-template <typename T>
-class TPlane;
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -55,18 +34,6 @@ enum EGEResult
 typedef wchar_t EGEChar;
 
 #define EGETEXT(txt) L##txt
-
-typedef TRect<s32>            Recti;
-typedef TRect<float32>        Rectf;
-typedef TVector2<s32>         Vector2i;
-typedef TVector2<float32>     Vector2f;
-typedef TVector3<s32>         Vector3i;
-typedef TVector3<float32>     Vector3f;
-typedef TVector4<s32>         Vector4i;
-typedef TVector4<float32>     Vector4f;
-typedef TQuaternion<float32>  Quaternionf;
-typedef TMatrix4<float32>     Matrix4f;
-typedef TPlane<float32>       Planef;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

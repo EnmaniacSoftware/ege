@@ -1,7 +1,9 @@
 #ifndef EGE_CORE_FLAGS_H
 #define EGE_CORE_FLAGS_H
 
-#include "EGETypes.h"
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include <EGETypes.h>
 
 EGE_NAMESPACE_BEGIN
 

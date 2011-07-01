@@ -1,5 +1,7 @@
 #include "Core/String/Stl/String.h"
 #include <sstream>
+#include <algorithm>
+#include <cctype>
 
 EGE_NAMESPACE
 

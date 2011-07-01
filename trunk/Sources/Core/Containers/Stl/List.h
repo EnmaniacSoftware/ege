@@ -1,7 +1,9 @@
 #ifndef EGE_CORE_LIST_H
 #define EGE_CORE_LIST_H
 
-#include <EGE.h>
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include "Core/Platform.h"
 #include <list>
 
 EGE_NAMESPACE_BEGIN

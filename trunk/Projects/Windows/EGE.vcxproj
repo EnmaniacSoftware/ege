@@ -84,6 +84,10 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointPulley.h" />
+    <ClInclude Include="..\..\Sources\EGEAngle.h" />
+    <ClInclude Include="..\..\Sources\EGEMatrix.h" />
+    <ClInclude Include="..\..\Sources\EGEPlane.h" />
+    <ClInclude Include="..\..\Sources\EGEQuaternion.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
     <ClCompile Include="..\..\Sources\Win32\Application\AppControllerWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />

@@ -1,11 +1,15 @@
 #ifndef EGE_CORE_DEBUG_H
 #define EGE_CORE_DEBUG_H
 
-#include <EGE.h>
-#include <EGEString.h>
-#include "Core/Debug/Log.h"
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include "Core/Platform.h"
 
 EGE_NAMESPACE_BEGIN
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Log;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +19,7 @@ class Debug
 
     static void Deinit();
     static void Assert(const char* description);
-    static void LogText(const EGEString& text);
+    static void LogText(const char* text);
 
   private:
 

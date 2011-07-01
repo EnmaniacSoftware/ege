@@ -1,7 +1,8 @@
 #ifndef EGE_CORE_LISTENERCONTAINER_H
 #define EGE_CORE_LISTENERCONTAINER_H
 
-#include <EGE.h>
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 #include <EGETree.h>
 //#include <EGEDebug.h>
 

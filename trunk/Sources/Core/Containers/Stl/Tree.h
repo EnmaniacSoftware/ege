@@ -1,7 +1,9 @@
 #ifndef EGE_CORE_CONTAINER_TREE_H
 #define EGE_CORE_CONTAINER_TREE_H
 
-#include <EGE.h>
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include "Core/Platform.h"
 #include <set>
 
 EGE_NAMESPACE_BEGIN

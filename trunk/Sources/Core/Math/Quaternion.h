@@ -1,7 +1,13 @@
 #ifndef EGE_CORE_QUATERNION_H
 #define EGE_CORE_QUATERNION_H
 
-#include "EGE.h"
+/** Class representing quaternion.
+*/
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include <EGETypes.h>
+#include "Core/Math/Math.h"
 #include "Core/Math/Vector3.h"
 #include "Core/Math/Angle.h"
 
@@ -41,7 +47,7 @@ class TQuaternion
     /* Converts into rotation axis and angle. */
     void convertTo(TVector3<T>& axis, Angle& angle) const;
     /* Returns quaternion angle representation. */
-    inline Angle angle() const { return Angle::FromRadians(2.0f * Math::ACos(w)); }
+    inline Angle angle() const;
     /* Multiplies current quaternion by given one. */
 		TQuaternion multiply(const TQuaternion& quat) const;
 
@@ -91,24 +97,24 @@ class TQuaternion
   //  CQuaternion performLerp( const CQuaternion& cDestination, float fTime );                  // performs LERP between quaternions
   //                                                                                            // fTime should be in [0..1] interval
 
+  public:
 
     T x;
     T y;
     T z;
     T w;
 
+  public:
+
     static const TQuaternion<T> IDENTITY;
     static const TQuaternion<T> ZERO;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T>
 const TQuaternion<T> TQuaternion<T>::IDENTITY = TQuaternion<T>(0, 0, 0, 1);
-
 template <typename T>
 const TQuaternion<T> TQuaternion<T>::ZERO     = TQuaternion<T>(0, 0, 0, 0);
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 TQuaternion<T>::TQuaternion() : x(0), y(0), z(0), w(0)
@@ -189,8 +195,15 @@ TQuaternion<T> TQuaternion<T>::multiply(const TQuaternion<T>& quat) const
   return TQuaternion(out.x, out.y, out.z, w * quat.w - vec1.dotProduct(vec2));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns quaternion angle representation. */
 template <typename T>
-inline TQuaternion<T> operator*(const TQuaternion<T>& left, const TQuaternion<T>& right)
+Angle TQuaternion<T>::angle() const 
+{ 
+  return Angle::FromRadians(2.0f * Math::ACos(w)); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TQuaternion<T> operator * (const TQuaternion<T>& left, const TQuaternion<T>& right)
 {
   return left.multiply(right);
 }

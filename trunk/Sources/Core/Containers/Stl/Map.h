@@ -1,7 +1,9 @@
 #ifndef EGE_CORE_CONTAINER_MAP_H
 #define EGE_CORE_CONTAINER_MAP_H
 
-#include <EGE.h>
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include "Core/Platform.h"
 #include <map>
 
 EGE_NAMESPACE_BEGIN

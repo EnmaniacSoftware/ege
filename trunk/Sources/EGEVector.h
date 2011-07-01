@@ -6,8 +6,22 @@
 #include "Core/Math/Vector2.h"
 #include "Core/Math/Vector3.h"
 #include "Core/Math/Vector4.h"
-#include <EGETypes.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_BEGIN
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+typedef TVector2<s32>     Vector2i;
+typedef TVector2<float32> Vector2f;
+typedef TVector3<s32>     Vector3i;
+typedef TVector3<float32> Vector3f;
+typedef TVector4<s32>     Vector4i;
+typedef TVector4<float32> Vector4f;
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
 
 #endif // EGE_VECTOR_H

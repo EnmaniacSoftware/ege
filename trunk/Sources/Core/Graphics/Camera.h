@@ -1,12 +1,12 @@
 #ifndef EGE_CORE_CAMERA_H
 #define EGE_CORE_CAMERA_H
 
-#include <EGE.h>
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//#include <EGE.h>
 #include <EGEString.h>
-#include <EGEMath.h>
+#include <EGEVector.h>
 #include "Core/Graphics/Frustum.h"
-//#include "Core/Math/Matrix4.h"
-//#include "Core/Math/Vector3.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 
 EGE_NAMESPACE_BEGIN
@@ -38,7 +38,7 @@ class Camera : public Frustum
     /*! Returns camera's physics component. */
     inline PPhysicsComponent& physics() { return m_physics; }
     /* Sets look-at vector. */
-    void setLookAt(Vector3f point);
+    void setLookAt(const Vector3f& point);
     /*! Returns look-at vector. */
     inline const Vector3f& getLookAt() const { return m_lookAt; }
     /* Returns camera's view matrix. */

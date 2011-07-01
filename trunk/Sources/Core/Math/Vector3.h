@@ -5,8 +5,10 @@
   This class represents 3D vector.
 */
 
-#include <EGE.h>
-#include <EGEMath.h>
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include <EGETypes.h>
+#include "Core/Math/Math.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -20,8 +22,6 @@ class TVector3
     TVector3();
     TVector3(T x, T y, T z);
     TVector3(const TVector3& vector);
-		TVector3(const TVector2<T>& vector);
-		TVector3(const TVector4<T>& vector);
 
 		inline void operator+=(const TVector3& vector);
 		inline void operator-=(const TVector3& vector);
@@ -39,14 +39,14 @@ class TVector3
     /* Normalizes vector. */
  	  inline void normalize();
     
-    /*! Returns dot product between current and given vectors. */
+    /* Returns dot product between current and given vectors. */
     inline T dotProduct(const TVector3& vector) const;
     /* Returns cross product between current and given vectors. */
-    TVector3 crossProduct(const TVector3& vector) const;
+    inline TVector3 crossProduct(const TVector3& vector) const;
 
-    /*! Returns distance between this and given points. */
+    /* Returns distance between this and given points. */
     inline T distanceTo(const TVector3& vector) const;
-    /*! Returns squared distance between this and given points. */
+    /* Returns squared distance between this and given points. */
     inline T distanceSquaredTo(const TVector3& vector) const;
 
   //  // normalization related methods
@@ -141,16 +141,6 @@ TVector3<T>::TVector3(T x, T y, T z) : x(x), y(y), z(z)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 TVector3<T>::TVector3(const TVector3& vector) : x(vector.x), y(vector.y), z(vector.z)
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector3<T>::TVector3(const TVector2<T>& vector) : x(vector.x), y(vector.y), z(0)
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector3<T>::TVector3(const TVector4<T>& vector) : x(vector.x), y(vector.y), z(vector.z)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

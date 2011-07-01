@@ -1,11 +1,17 @@
 #ifndef EGE_LIST_H
 #define EGE_LIST_H
 
-#include <EGEString.h>
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include "Core/Platform.h"
 
 #if EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
 #include "Core/Containers/Stl/List.h"
 #endif // EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
+
+#include <EGEString.h>
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_BEGIN
 

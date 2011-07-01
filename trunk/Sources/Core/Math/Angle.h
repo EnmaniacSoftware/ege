@@ -3,7 +3,7 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#include "EGE.h"
+#include <EGETypes.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -21,10 +21,14 @@ class Angle
     inline bool         operator < (const Angle& other) const { return m_radians < other.m_radians; }
     inline Angle        operator - () const { return Angle::FromRadians(-m_radians); }
 
+  public:
+
     /* Returns angle object from degrees. */
     static Angle FromDegrees(float32 degrees);
     /* Returns angle object from radians. */
     static Angle FromRadians(float32 radians);
+
+  public:
 
     /* Sets angle from degrees. */
     void fromDegrees(float32 degrees);

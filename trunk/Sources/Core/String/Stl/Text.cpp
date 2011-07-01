@@ -1,6 +1,7 @@
-#include "EGE.h"
 #include "Core/String/Stl/Text.h"
 #include <sstream>
+#include <algorithm>
+#include <cctype>
 
 EGE_NAMESPACE
 

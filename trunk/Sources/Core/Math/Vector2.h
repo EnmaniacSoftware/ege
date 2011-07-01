@@ -5,8 +5,10 @@
   This class represents 2D vector.
 */
 
-#include <EGE.h>
-#include <EGEMath.h>
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include <EGETypes.h>
+#include "Core/Math/Math.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -20,8 +22,6 @@ class TVector2
     TVector2();
     TVector2(T x, T y);
 		TVector2(const TVector2& vector);
-		TVector2(const TVector4<T>& vector);
-		TVector2(const TVector3<T>& vector);
 
     inline void operator*=(T scalar);
     inline bool operator==(const TVector2& vector) const;
@@ -59,13 +59,10 @@ class TVector2
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 const TVector2<T> TVector2<T>::ZERO   = TVector2<T>(0, 0);
-
 template <typename T>
 const TVector2<T> TVector2<T>::ONE    = TVector2<T>(1, 1);
-
 template <typename T>
 const TVector2<T> TVector2<T>::UNIT_X = TVector2<T>(1, 0);
-
 template <typename T>
 const TVector2<T> TVector2<T>::UNIT_Y = TVector2<T>(0, 1);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -81,16 +78,6 @@ TVector2<T>::TVector2(T x, T y) : x(x), y(y)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 TVector2<T>::TVector2(const TVector2<T>& vector) : x(vector.x), y(vector.y)
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector2<T>::TVector2(const TVector3<T>& vector) : x(vector.x), y(vector.y)
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector2<T>::TVector2(const TVector4<T>& vector) : x(vector.x), y(vector.y)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

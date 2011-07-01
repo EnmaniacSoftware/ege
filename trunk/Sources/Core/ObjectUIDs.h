@@ -1,7 +1,9 @@
 #ifndef EGE_CORE_OBJECT_IDS_H
 #define EGE_CORE_OBJECT_IDS_H
 
-#include "EGE.h"
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include "Core/Platform.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -1,8 +1,11 @@
 #ifndef EGE_CORE_CONTAINER_DYNAMICARRAY_H
 #define EGE_CORE_CONTAINER_DYNAMICARRAY_H
 
-#include <EGE.h>
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include "Core/Platform.h"
 #include <vector>
+#include <algorithm>
 
 EGE_NAMESPACE_BEGIN
 

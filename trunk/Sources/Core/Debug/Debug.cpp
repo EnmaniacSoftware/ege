@@ -1,4 +1,5 @@
 #include "Core/Debug/Debug.h"
+#include "Core/Debug/Log.h"
 
 EGE_NAMESPACE
 
@@ -16,7 +17,7 @@ void Debug::Deinit()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Debug::LogText(const EGEString& text)
+void Debug::LogText(const char* text)
 {
   if (NULL == Debug::m_log)
   {

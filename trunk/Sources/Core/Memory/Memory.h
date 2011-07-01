@@ -1,7 +1,9 @@
 #ifndef EGE_CORE_MEMORY_H
 #define EGE_CORE_MEMORY_H
 
-#include "EGE.h"
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include <EGETypes.h>
 #include "Core/Memory/Object.h"
 #include "Core/Memory/SmartPointer.h"
 #include "Core/Memory/MemoryManager.h"

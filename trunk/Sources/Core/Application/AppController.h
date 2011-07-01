@@ -1,6 +1,8 @@
 #ifndef EGE_CORE_APPCONTROLLER_H
 #define EGE_CORE_APPCONTROLLER_H
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 #include <EGE.h>
 #include <EGETime.h>
 #include "Core/Event/EventListener.h"

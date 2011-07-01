@@ -1,8 +1,9 @@
 #include "Core/Application/Application.h"
-#include <EGEPhysics.h>
-#include <EGEDebug.h>
 #include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"
 #include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"
+#include <EGEPhysics.h>
+#include <Box2D/Box2D.h>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 

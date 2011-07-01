@@ -734,6 +734,10 @@
       <Filter>Core\Physics\Box2D</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEVector.h" />
+    <ClInclude Include="..\..\Sources\EGEAngle.h" />
+    <ClInclude Include="..\..\Sources\EGEMatrix.h" />
+    <ClInclude Include="..\..\Sources\EGEQuaternion.h" />
+    <ClInclude Include="..\..\Sources\EGEPlane.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

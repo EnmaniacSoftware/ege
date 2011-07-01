@@ -1,13 +1,16 @@
 #ifndef EGE_CORE_FRUSTUM_H
 #define EGE_CORE_FRUSTUM_H
 
-// This class is intended to be a part of Camera class rather then stand alone instance
+/** This class is intended to be a part of Camera class rather then stand alone instance.
+ */
 
-#include "EGE.h"
-#include "Core/Math/Matrix4.h"
-#include "Core/Math/Plane.h"
-#include "Core/Math/angle.h"
-#include "Core/Math/Rect.h"
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include <EGE.h>
+#include <EGEMatrix.h>
+#include <EGERect.h>
+#include <EGEPlane.h>
+#include "Core/Math/Angle.h"
 
 EGE_NAMESPACE_BEGIN
 

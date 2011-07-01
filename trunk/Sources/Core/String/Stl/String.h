@@ -1,10 +1,12 @@
 #ifndef EGE_CORE_STRING_H
 #define EGE_CORE_STRING_H
 
-#include <EGE.h>
-#include <EGEColor.h>
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include <EGETypes.h>
+#include "Core/Graphics/Color.h"
+#include "Core/Math/Vector2.h"
 #include <EGERect.h>
-#include <EGEVector.h>
 #include <string>
 
 EGE_NAMESPACE_BEGIN
@@ -26,10 +28,14 @@ class EGEString : public std::string
    	EGEString& operator+=(const char* string);
    	EGEString& operator+=(const EGEString& string);
 
+  public:
+
     /* Create new object from formatted text. */
     static EGEString Format(const char* text, ...);
     /* Creates new object from given number. */
     static EGEString FromNumber(s32 value);
+
+  public:
 
     /* Creates formatted text. */
     void format(const char* text, ...);
@@ -56,7 +62,7 @@ class EGEString : public std::string
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline EGEString operator+(const EGEString& left, const char* right)
+inline EGEString operator + (const EGEString& left, const char* right)
 {
   EGEString string;
   string += left;
@@ -65,7 +71,7 @@ inline EGEString operator+(const EGEString& left, const char* right)
   return string;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline EGEString operator+(EGEString& left, const EGEString& right)
+inline EGEString operator + (EGEString& left, const EGEString& right)
 {
   EGEString string;
   string += left;
