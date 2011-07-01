@@ -151,7 +151,10 @@ void TextOverlay::render(const Viewport* viewport, Renderer* renderer)
     Matrix4f worldMatrix;
     if (NULL != physics())
     {
-      Math::CreateMatrix(&worldMatrix, &physics()->position(), &Vector4f::ONE, &physics()->orientation());
+      Quaternionf orientation = physics()->orientation();
+      Vector4f position = physics()->position();
+
+      Math::CreateMatrix(&worldMatrix, &position, &Vector4f::ONE, &orientation);
     }
     else
     {

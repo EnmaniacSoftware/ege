@@ -1,4 +1,3 @@
-//#include "Core/EGEngine.h"
 #include "Core/Memory/MemoryManager.h"
 
 EGE_NAMESPACE

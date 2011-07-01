@@ -21,6 +21,7 @@ files
 {
 	(../../Sources)
 	EGE.h
+  EGEAngle.h
 	EGEApplication.h
   EGEColor.h
   EGEDataBuffer.h
@@ -36,9 +37,12 @@ files
   EGEList.h
   EGEMap.h
 	EGEMath.h
+  EGEMatrix.h
 	EGEMemory.h
   EGEOverlay.h
   EGEPhysics.h
+  EGEPlane.h
+  EGEQuaternion.h
   EGERandom.h
   EGERect.h
   EGEResources.h

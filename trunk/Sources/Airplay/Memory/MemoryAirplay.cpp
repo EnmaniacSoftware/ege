@@ -1,4 +1,6 @@
 #include "Core/Memory/MemoryManager.h"
+#include <malloc.h>
+#include <string.h>
 
 EGE_NAMESPACE
 

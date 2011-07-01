@@ -61,12 +61,15 @@ const Matrix4f& Camera::viewMatrix()
   // TAGE - optimization issue
 //  if (m_bViewMatrixNeedsUpdate)
   {
+
     // convert orientation into rotation matrix
-    Math::Convert(&m_viewMatrix, &physics()->orientation());
+    Quaternionf orientation = physics()->orientation();
+    Math::Convert(&m_viewMatrix, &orientation);
 
     // calculate position (translation)
     Vector4f position = physics()->position();
-    Math::Transform(&position, &m_viewMatrix.transposed());
+    Matrix4f transposed = m_viewMatrix.transposed();
+    Math::Transform(&position, &transposed);
 
     // store translation in modelview matrix
     m_viewMatrix.data[12] = -position.x;

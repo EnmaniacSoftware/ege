@@ -114,7 +114,9 @@ void SceneNode::update(const Time& time)
   //}
 
   // update self
-  Math::CreateMatrix(&m_worldMatrix, &physics()->position(), &Vector4f::ONE, &physics()->orientation());
+  Quaternionf orientation = physics()->orientation();
+  Vector4f position = physics()->position();
+  Math::CreateMatrix(&m_worldMatrix, &position, &Vector4f::ONE, &orientation);
 
   if (NULL != parent())
   {
