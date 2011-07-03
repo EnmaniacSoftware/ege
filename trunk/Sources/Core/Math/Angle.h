@@ -40,6 +40,8 @@ class Angle
     inline float32 radians() const { return m_radians; }
     /* Normalizes angle to [0-2PI) degrees interval. */
     void normalize();
+    /* Returns normalized angle in [0-2PI) degrees interval. */
+    Angle normalized() const;
 
   private:
 

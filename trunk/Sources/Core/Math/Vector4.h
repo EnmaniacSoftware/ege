@@ -166,7 +166,7 @@ void TVector4<T>::normalize()
   T length = this->length();
 
   // check if can be done
-  if (Math::DELTA <= length)
+  if (Math::EPSILON <= length)
   {
     // get inverse of length
     T invLength = static_cast<T>(1.0) / length;

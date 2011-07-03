@@ -87,7 +87,7 @@ class TVector3
 
   //  inline bool isZeroLength( void ) const                                                    // returns TRUE if vector is zero in length
   //  { 
-  //    return getSquaredMagnitude() < Math::Pow2( Math::DELTA ); 
+  //    return getSquaredMagnitude() < Math::Pow2( Math::EPSILON ); 
   //  }
 
   //  inline float getMax( void ) const { return _MAX( _MAX( x, y ), z ); }                     // gets max value of its components
@@ -202,7 +202,7 @@ void TVector3<T>::normalize()
   T length = this->length();
 
   // check if can be done
-  if (Math::DELTA <= length)
+  if (Math::EPSILON <= length)
   {
     // get inverse of length
     T invLength = static_cast<T>(1.0) / length;

@@ -23,79 +23,30 @@ class TQuaternion
     TQuaternion();
     TQuaternion(T x, T y, T z, T w);
     TQuaternion(const TQuaternion& quat);
-//    TQuaternion(const TVector3<T>& cAxis, float fRadians);
-//    CQuaternion( const CMatrix3* pcMatrix );
-//    TQuaternion( const CVector3* pcAxisX, const CVector3* pcAxisY, const CVector3* pcAxisZ );
 
-		//CQuaternion operator+( const CQuaternion& cQuaternion ) const;
-		//CQuaternion operator-( const CQuaternion& cQuaternion ) const;
-		//CQuaternion operator/( const CQuaternion& cQuaternion ) const;
-
-  //  CQuaternion operator*( float fNumber ) const;
-		//CQuaternion operator/( float fNumber ) const;
-
-		//void operator+=( const CQuaternion& cQuaternion );
-		//void operator-=( const CQuaternion& cQuaternion );
-		//void operator*=( const CQuaternion& cQuaternion );
-		//void operator/=( const CQuaternion& cQuaternion );
-
-  //  void operator*=( float fNumber );
-		//void operator/=( float fNumber );
+    TQuaternion operator-() const;
 
     /* Creates quaternion from rotation along arbitrary axis. */
     void create(const TVector3<T>& axis, const Angle& angle);
+
     /* Converts into rotation axis and angle. */
     void convertTo(TVector3<T>& axis, Angle& angle) const;
+
+    /* Returns length. */
+    inline T length() const;
+    /* Returns sequared length. */
+    inline T lengthSquared() const;
+
+    /* Normalizes quaternion. */
+    inline void normalize();
+
     /* Returns quaternion angle representation. */
     inline Angle angle() const;
+
     /* Multiplies current quaternion by given one. */
 		TQuaternion multiply(const TQuaternion& quat) const;
-
-    //  void create( const CMatrix3* pcMatrix );                                                  // creates from rotation matrix
-  //  void create( const CVector3* pcAxisX, const CVector3* pcAxisY, const CVector3* pcAxisZ ); // creates from given axes
-
-  //  // transformation related methods
-  //  CVector3 transform( const CVector3* pcVector ) const;                                     // multiplies vector by quaternion
-
-  //  // concatenate related methods
-		//inline CQuaternion concatenate( const CQuaternion& cQuaternion ) const                    // multiplies quaternions
-  //  {
-  //    CVector3 cvOut;
-  //    CVector3 cvVec1( x, y, z );
-  //    CVector3 cvVec2( cQuaternion.x, cQuaternion.y, cQuaternion.z );
-
-  //    // calculate all coordinates
-  //    cvOut = cvVec2*w+cvVec1*cQuaternion.w+cvVec1.getCrossProduct( cvVec2 ); 
-
-  //    return CQuaternion( cvOut.x, cvOut.y, cvOut.z, 
-  //                        w*cQuaternion.w-cvVec1.getDotProduct( cvVec2 ) );
-  //  }
-
-  //  // DOT product related methods
-  //  float getDotProduct( const CQuaternion& cQuaternion ) const;                              // returns DOT product between quaternions
-
-  //  // conversion methods
-  //  void convertTo( CMatrix3* pcMatrix ) const;                                               // converts into rotation matrix
-  //  void convertTo( CVector3* pcAxes ) const;                                                 // converts into rotation axis and angle
-
-  //  // manipulation methods
-  //  float getMagnitude( void ) const;                                                         // gets magnitude
-  //  float getSquaredMagnitude( void ) const;                                                  // gets squared magnitude
-
-  //  // normalization related methods
-  //  void        normalize( void );                                                            // normalizes itself
-  //  CQuaternion getNormalized( void );                                                        // gets normalized quaternion
-
-  //  // inversion related methods
-  //  void        inverse( void );                                                              // inverses quaternion (conjugates)
-  //  CQuaternion getInverse( void )  const;                                                    // gets inverted quaternion (conjugated)
-
-  //  // helper methods
-  //  CQuaternion performSlerp( const CQuaternion& cDestination, float fTime );                 // performs SLERP between quaternions
-  //                                                                                            // fTime should be in [0..1] interval
-
-  //  CQuaternion performLerp( const CQuaternion& cDestination, float fTime );                  // performs LERP between quaternions
-  //                                                                                            // fTime should be in [0..1] interval
+    /* Returns dot product between this and given quaternion. */
+    inline T dotProduct(const TQuaternion& quat) const;
 
   public:
 
@@ -131,6 +82,12 @@ TQuaternion<T>::TQuaternion(const TQuaternion& quat) : x(quat.x), y(quat.y), z(q
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TQuaternion<T> TQuaternion<T>::operator-() const
+{
+  return TQuaternion(-x, -y, -z, -w);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates quaternion from rotation along arbitrary axis. */
 template <typename T>
 void TQuaternion<T>::create(const TVector3<T>& axis, const Angle& angle)
@@ -161,7 +118,7 @@ void TQuaternion<T>::convertTo(TVector3<T>& axis, Angle& angle) const
   T invLength = 1.0 / (x * x + y * y + z * z);
 
   // check if length is greater than error thershold
-  if (Math::DELTA < invLength)
+  if (Math::EPSILON < invLength)
   {
     // calculate axes
     axis.x = x * invLength;
@@ -202,10 +159,57 @@ Angle TQuaternion<T>::angle() const
   return Angle::FromRadians(2.0f * Math::ACos(w)); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns dot product between this and given quaternion. */
+template <typename T>
+T TQuaternion<T>::dotProduct(const TQuaternion<T>& quat) const
+{
+  return (x * quat.x) + (y * quat.y) + (z * quat.z) + (w * quat.w);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Normalizes quaternion. */
+template <typename T>
+void TQuaternion<T>::normalize()
+{
+  T factor = 1.0f / length();
+  *this = *this * factor;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns length. */
+template <typename T>
+T TQuaternion<T>::length() const
+{
+  return Math::Sqrt((x * x) + (y * y) + (z * z) + (w * w));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns sequared length. */
+template <typename T>
+T TQuaternion<T>::lengthSquared() const
+{
+  return (x * x) + (y * y) + (z * z) + (w * w);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 inline TQuaternion<T> operator * (const TQuaternion<T>& left, const TQuaternion<T>& right)
 {
   return left.multiply(right);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TQuaternion<T> operator * (T scalar, const TQuaternion<T>& right)
+{
+  return TQuaternion<T>(right.x * scalar, right.y * scalar, right.z * scalar, right.w * scalar);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TQuaternion<T> operator * (const TQuaternion<T>& left, T scalar)
+{
+  return TQuaternion<T>(left.x * scalar, left.y * scalar, left.z * scalar, left.w * scalar);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TQuaternion<T> operator + (const TQuaternion<T>& left, const TQuaternion<T>& right)
+{
+  return TQuaternion<T>(left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

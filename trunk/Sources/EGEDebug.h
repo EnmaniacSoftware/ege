@@ -11,11 +11,13 @@
 
 #define EGE_ASSERT(cond) ((!(cond)) ? Debug::Assert(#cond) : ege_noop())
 #define EGE_LOG(text) Debug::LogText(text)
+#define EGE_PRINT(text) Debug::Print(text)
 
 #else
 
 #define EGE_ASSERT(cond) ege_noop()
 #define EGE_LOG(text) ege_noop()
+#define EGE_PRINT(text) ege_noop()
 
 #endif // EGE_FEATURE_DEBUG
 

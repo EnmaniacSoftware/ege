@@ -46,3 +46,11 @@ void Angle::normalize()
   m_radians = m_radians - Math::TWO_PI * Math::Floor(m_radians / Math::TWO_PI);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns normalized angle in [0-2PI) degrees interval. */
+Angle Angle::normalized() const
+{
+  Angle angle = *this;
+  angle.normalize();
+  return angle;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

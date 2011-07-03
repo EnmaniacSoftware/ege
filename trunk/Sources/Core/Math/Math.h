@@ -49,6 +49,7 @@ class Math
     inline static float32 Tan(float32 radians) { return tanf(radians); }
     inline static float32 Ctg(float32 radians) { return 1.0f / Tan(radians); }
     inline static float32 ACos(float32 radians) { return acosf(radians); }
+    inline static float32 ATan2(float32 y, float32 x) { return atan2f(y, x); }
     inline static float32 Abs(float32 value) { return fabsf(value); }
 
     /* Converts quaternion to matrix representation. */
@@ -60,10 +61,22 @@ class Math
     /* Returns angle between positive Y axis and given point around origin. */
     static void GetAngle(Angle* angle, const Vector2f* origin, const Vector2f* point);
 
+    /*  Performs spherical linear interpolation between given quaternions. 
+     *  @param  out           Resulting quaternion.
+     *  @param  from          First (start) quaternion.
+     *  @param  to            Second (end) quaternion.
+     *  @param  time          Scalar in range [0..1] describing relative distance between quaternion for which interpolation is to be calculated.
+     *  @param  shortestPath  TRUE if shortest path (if possible) is to be used for interpolation.
+     */
+    static void Slerp(Quaternionf* out, Quaternionf* from, Quaternionf* to, float32 time, bool shortestPath = false);
+
   public:
 
-    static const float32 DELTA;
+    /*! Inaccuracy cut-off value. */
+    static const float32 EPSILON;
+    /*! PI number. */
     static const float32 PI;
+    /*! Two times PI number. */
     static const float32 TWO_PI;
 };
 

@@ -20,6 +20,7 @@ class Debug
     static void Deinit();
     static void Assert(const char* description);
     static void LogText(const char* text);
+    static void Print(const char* text);
 
   private:
 
