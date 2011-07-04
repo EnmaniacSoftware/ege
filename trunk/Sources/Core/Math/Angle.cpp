@@ -40,10 +40,14 @@ float32 Angle::degrees() const
   return Math::RadiansToDegrees(m_radians); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Normalizes angle to [0-2PI) degrees interval. */
-void Angle::normalize()
+/* Normalizes angle to 2PI interval around center. 
+ * @param center  Center point around around which angle is spread. If 0 result interval after normalization will be [-PI..+PI].
+ * @note  For normalization resulting in [0..2PI] interval use PI as center point.
+ * @note  Due to numerical inaccuracies intervals are closed on both sides rather than only at one.
+ */
+void Angle::normalize(float32 center)
 {
-  m_radians = m_radians - Math::TWO_PI * Math::Floor(m_radians / Math::TWO_PI);
+  m_radians = m_radians - Math::TWO_PI * Math::Floor((m_radians + Math::PI - center) / Math::TWO_PI);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns normalized angle in [0-2PI) degrees interval. */

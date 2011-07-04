@@ -17,6 +17,8 @@ template <typename T> class TVector4;
 typedef TVector4<float32> Vector4f;
 template <typename T> class TQuaternion;
 typedef TQuaternion<float32> Quaternionf;
+template <typename T> class TComplex;
+typedef TComplex<float32> Complexf;
 class Angle;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -58,7 +60,7 @@ class Math
     static void Transform(Vector4f* vector, const Matrix4f* matrix);
     /* Creates matrix from translation, scale vectors and quaternion. */
     static void CreateMatrix(Matrix4f* matrix, const Vector4f* translation, const Vector4f* scale, const Quaternionf* orientation);
-    /* Returns angle between positive Y axis and given point around origin. */
+    /* Returns angle between positive X axis and given point around origin. */
     static void GetAngle(Angle* angle, const Vector2f* origin, const Vector2f* point);
 
     /*  Performs spherical linear interpolation between given quaternions. 
@@ -69,6 +71,14 @@ class Math
      *  @param  shortestPath  TRUE if shortest path (if possible) is to be used for interpolation.
      */
     static void Slerp(Quaternionf* out, Quaternionf* from, Quaternionf* to, float32 time, bool shortestPath = false);
+
+    /*  Performs spherical linear interpolation between given complex numbers. 
+     *  @param  out           Resulting complex number.
+     *  @param  from          First (start) complex number.
+     *  @param  to            Second (end) complex number.
+     *  @param  time          Scalar in range [0..1] describing relative distance between numbers for which interpolation is to be calculated.
+     */
+    static void Slerp(Complexf* out, Complexf* from, Complexf* to, float32 time);
 
   public:
 

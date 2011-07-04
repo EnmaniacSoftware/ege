@@ -738,6 +738,10 @@
     <ClInclude Include="..\..\Sources\EGEMatrix.h" />
     <ClInclude Include="..\..\Sources\EGEQuaternion.h" />
     <ClInclude Include="..\..\Sources\EGEPlane.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Complex.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEComplex.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

@@ -24,6 +24,7 @@ files
   EGEAngle.h
 	EGEApplication.h
   EGEColor.h
+  EGEComplex.h
   EGEDataBuffer.h
   EGEDebug.h
   EGEDevice.h
@@ -198,9 +199,10 @@ files
 
 	["Core/Math"]
   (../../Sources/Core/Math)
-  angle.cpp
-  angle.h
+  Angle.cpp
+  Angle.h
 	AxisAlignedBox.h
+  Complex.h
 	Math.cpp
 	Math.h
 	Matrix4.h

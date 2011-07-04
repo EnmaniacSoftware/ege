@@ -17,6 +17,7 @@ class Angle
     Angle(const Angle& angle);
 
     inline const Angle& operator += (const Angle& other) { m_radians += other.m_radians; return *this; }
+    inline const Angle& operator -= (const Angle& other) { m_radians -= other.m_radians; return *this; }
     inline bool         operator > (const Angle& other) const { return m_radians > other.m_radians; }
     inline bool         operator < (const Angle& other) const { return m_radians < other.m_radians; }
     inline Angle        operator - () const { return Angle::FromRadians(-m_radians); }
@@ -38,8 +39,12 @@ class Angle
     inline void fromRadians(float32 radians) { m_radians = radians; }
     /*! Returns angle in radians. */
     inline float32 radians() const { return m_radians; }
-    /* Normalizes angle to [0-2PI) degrees interval. */
-    void normalize();
+    /* Normalizes angle to 2PI interval around center. 
+     * @param center  Center point around around which angle is spread. If 0 result interval after normalization will be [-PI..+PI].
+     * @note  For normalization resulting in [0..2PI] interval use PI as center point.
+     * @note  Due to numerical inaccuracies intervals are closed on both sides rather than only at one.
+     */
+    void normalize(float32 center = 0.0f);
     /* Returns normalized angle in [0-2PI) degrees interval. */
     Angle normalized() const;
 

@@ -3,6 +3,7 @@
 #include <EGEVector.h>
 #include <EGEQuaternion.h>
 #include <EGEAngle.h>
+#include <EGEComplex.h>
 #include <limits>
 #include <EGEDebug.h>
 
@@ -94,21 +95,27 @@ void Math::CreateMatrix(Matrix4f* matrix, const Vector4f* translation, const Vec
   matrix->setTranslation(translation->x, translation->y, translation->z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns angle between positive Y axis and given point around origin. */
+/*! Returns angle between positive X axis and given point around origin. */
 void Math::GetAngle(Angle* angle, const Vector2f* origin, const Vector2f* point)
 {
   EGE_ASSERT(angle);
   EGE_ASSERT(origin);
   EGE_ASSERT(point);
+  EGE_ASSERT(!(origin->x == point->x && origin->y == point->y));
 
-  if (point->x >= origin->x)
-  {
-    angle->fromRadians(Math::ACos((origin->y - point->y) / origin->distanceTo(*point)));
-  }
-  else
-  {
-    angle->fromRadians(Math::ACos(-(origin->y - point->y) / origin->distanceTo(*point)) + Math::PI);
-  }
+  // NOTE: arguments are in (Y, X) order.
+  //       we assume X axis grows from LEFT to RIGHT
+  //       we assume T axis grows from BOTTOM to TOP
+  angle->fromRadians(Math::ATan2(origin->y - point->y, point->x - origin->x));
+
+  //if (point->x >= origin->x)
+  //{
+  //  angle->fromRadians(Math::ACos((origin->y - point->y) / origin->distanceTo(*point)));
+  //}
+  //else
+  //{
+  //  angle->fromRadians(Math::ACos(-(origin->y - point->y) / origin->distanceTo(*point)) + Math::PI);
+  //}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*  Performs spherical linear interpolation between given quaternions. 
@@ -176,5 +183,59 @@ void Math::Slerp(Quaternionf* out, Quaternionf* from, Quaternionf* to, float32 t
     // taking the complement requires renormalisation
     out->normalize();
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*  Performs spherical linear interpolation between given complex numbers. 
+  *  @param  out           Resulting complex number.
+  *  @param  from          First (start) complex number.
+  *  @param  to            Second (end) complex number.
+  *  @param  time          Scalar in range [0..1] describing relative distance between numbers for which interpolation is to be calculated.
+  */
+void Math::Slerp(Complexf* out, Complexf* from, Complexf* to, float32 time)
+{
+  Complexf tmp;
+
+  float32 fSinOmega;
+  float32 fCosOmega;
+  float32 fOmega;
+  float32 fScale0;
+  float32 fScale1;
+
+  // calculate cosine omega (dot product of 2 quaternions)
+  fCosOmega = from->dotProduct(*to);
+
+  // adjust the signs
+ // if ( fCosOmega < 0 )
+  {
+    tmp = *to;
+  }
+ // else
+  {
+ //   cTemp.m_fReal = cDestination.m_fReal;
+ //   cTemp.m_fImaginary = cDestination.m_fImaginary;
+  }
+
+  // calculate coefficients
+  if ( 1.0f-fCosOmega > ( float ) 1e-6 )
+  {
+    // standard case
+    fOmega    = Math::ACos( fCosOmega );
+    fSinOmega = Math::Sin( fOmega );
+
+    fScale0 = Math::Sin( ( 1.0f-time )*fOmega )/fSinOmega;
+    fScale1 = Math::Sin( time*fOmega )/fSinOmega;
+  }
+  else
+  {
+    // source and destination quaternions are very close so we perform linear interpolation
+    fScale0 = 1.0f-time;
+    fScale1 = time;
+  }
+
+	// calculate final values
+	out->x = fScale0*from->x+fScale1*tmp.x;
+	out->y = fScale0*from->y+fScale1*tmp.y;
+
+  out->normalize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
