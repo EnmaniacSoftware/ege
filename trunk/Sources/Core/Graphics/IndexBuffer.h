@@ -17,7 +17,7 @@ class IndexBuffer : public Object
   public:
 
     IndexBuffer(Application* app);
-    virtual ~IndexBuffer();
+   ~IndexBuffer();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -30,6 +30,8 @@ class IndexBuffer : public Object
       SIZE_32BIT
     };
 
+    /* Returns TRUE if object is valid. */
+    bool isValid() const;
     /* Creates buffer for requested number of indicies of given size. */
     bool create(Size size, u32 count);
     /* Destroys buffer. */

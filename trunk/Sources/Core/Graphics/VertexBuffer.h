@@ -21,7 +21,7 @@ class VertexBuffer : public Object
   public:
 
     VertexBuffer(Application* app);
-    virtual ~VertexBuffer();
+   ~VertexBuffer();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -46,6 +46,8 @@ class VertexBuffer : public Object
       u32 index;
     };
 
+    /* Returns TRUE if object is valid. */
+    bool isValid() const;
     /* Creates buffer for requested number of vertices. */
     bool create(u32 count);
     /* Destroys buffer. */

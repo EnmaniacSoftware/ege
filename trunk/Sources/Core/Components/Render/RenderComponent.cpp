@@ -34,6 +34,6 @@ void RenderComponent::setMaterial(const PMaterial& material)
 /*! IComponent override. Returns TRUE if component is valid. */
 bool RenderComponent::isValid() const
 {
-  return (NULL != m_indexBuffer) && (NULL != m_vertexBuffer);
+  return (NULL != m_indexBuffer) && m_indexBuffer->isValid() && (NULL != m_vertexBuffer) && m_vertexBuffer->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

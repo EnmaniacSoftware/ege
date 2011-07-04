@@ -79,7 +79,7 @@ TComplex<T>& TComplex<T>::operator*=(const TComplex& other)
   T newX = x * other.x + y * other.y;
   T newY = y * other.x + x * other.y;
 
-  x = newX
+  x = newX;
   y = newY;
 
   return *this;

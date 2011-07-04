@@ -11,11 +11,18 @@ EGE_DEFINE_DELETE_OPERATORS(VertexBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 VertexBuffer::VertexBuffer(Application* app) : Object(app), m_locked(false), m_vertexSize(0)
 {
+  m_buffer = ege_new DataBuffer();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 VertexBuffer::~VertexBuffer()
 {
   destroy();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if object is valid. */
+bool VertexBuffer::isValid() const
+{
+  return NULL != m_buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds given array type to overall semantics. */
@@ -115,7 +122,7 @@ void VertexBuffer::destroy()
 void* VertexBuffer::lock(u32 offset, u32 count)
 {
   // check if NOT locked yet and any data to lock
-  if (!m_locked && (0 < count))
+  if (!m_locked && (0 <= count))
   {
     // check if NOT enough space in buffer
     if (offset + count > vertexCount())
@@ -136,7 +143,7 @@ void* VertexBuffer::lock(u32 offset, u32 count)
 
     return reinterpret_cast<u8*>(m_buffer->data()) + offset * vertexSize();
   }
-
+  
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -231,18 +238,6 @@ const EGEDynamicArray<VertexBuffer::SBUFFERSEMANTIC>& VertexBuffer::semantics() 
 /*! Reallocates internal buffer to accomodate given number of indicies. */
 bool VertexBuffer::reallocateBuffer(u32 count)
 {
-  // check if not allocated yet
-  if (NULL == m_buffer)
-  {
-    // allocate buffer
-    m_buffer = ege_new DataBuffer();
-    if (NULL == m_buffer)
-    {
-      // error!
-      return false;
-    }
-  }
-
   // allocate buffer for requested indicies
   if (EGE_SUCCESS != m_buffer->setSize(vertexSize() * count))
   {

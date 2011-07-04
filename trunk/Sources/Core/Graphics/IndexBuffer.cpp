@@ -11,11 +11,18 @@ EGE_DEFINE_DELETE_OPERATORS(IndexBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 IndexBuffer::IndexBuffer(Application* app) : Object(app), m_size(SIZE_UNKNOWN), m_locked(false)
 {
+  m_buffer = ege_new DataBuffer();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 IndexBuffer::~IndexBuffer()
 {
   destroy();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if object is valid. */
+bool IndexBuffer::isValid() const
+{
+  return NULL != m_buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates buffer for requested number of indicies of given size. */
@@ -103,18 +110,6 @@ u8 IndexBuffer::indexSize() const
 /*! Reallocates internal buffer to accomodate given number of indicies. */
 bool IndexBuffer::reallocateBuffer(u32 count)
 {
-  // check if not allocated yet
-  if (NULL == m_buffer)
-  {
-    // allocate buffer
-    m_buffer = ege_new DataBuffer();
-    if (NULL == m_buffer)
-    {
-      // error!
-      return false;
-    }
-  }
-
   // allocate buffer for requested indicies
   if (EGE_SUCCESS != m_buffer->setSize(indexSize() * count))
   {

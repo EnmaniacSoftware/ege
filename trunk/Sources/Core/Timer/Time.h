@@ -28,6 +28,7 @@ class Time
     inline bool operator <= (const Time& time) const { return m_time <= time.m_time; }
     inline bool operator == (const Time& time) { return m_time == time.m_time; }
     inline bool operator != (const Time& time) { return m_time != time.m_time; }
+    inline Time& operator = (float32 seconds) { m_time = static_cast<s64>(seconds * 1000000); return *this; }
 
     inline Time& operator += (const Time& time) { m_time += time.m_time; return *this; }
     inline Time& operator -= (const Time& time) { m_time -= time.m_time; return *this; }
