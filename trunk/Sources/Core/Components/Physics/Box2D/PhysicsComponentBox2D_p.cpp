@@ -203,7 +203,7 @@ bool PhysicsComponentPrivate::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds circular shape. */
-bool PhysicsComponentPrivate::addCircleShape(EGE::float32 radius, EGE::float32 density)
+bool PhysicsComponentPrivate::addCircleShape(EGE::float32 radius, EGE::float32 density, EGEPhysics::CollisionData colissionData)
 {
   if (isValid())
   {
@@ -212,7 +212,18 @@ bool PhysicsComponentPrivate::addCircleShape(EGE::float32 radius, EGE::float32 d
     b2CircleShape shape;
 	  shape.m_radius = radius * scale;
 
-    return NULL != m_body->CreateFixture(&shape, density);
+    b2Filter filter;
+		filter.groupIndex   = colissionData.policy;
+		filter.categoryBits = colissionData.group;
+		filter.maskBits     = colissionData.collideGroup;
+
+    b2Fixture* fixture = m_body->CreateFixture(&shape, density);
+    if (fixture)
+    { 
+      fixture->SetFilterData(filter);
+    }
+
+    return NULL != fixture;
   }
 
   return true;
@@ -222,7 +233,7 @@ bool PhysicsComponentPrivate::addCircleShape(EGE::float32 radius, EGE::float32 d
 *  @param points  vertices of polygon shape.
 *  @param density shape density. Affects mass.
 */
-bool PhysicsComponentPrivate::addPolygonShape(const EGEDynamicArray<Vector4f>& points, EGE::float32 density)
+bool PhysicsComponentPrivate::addPolygonShape(const EGEDynamicArray<Vector4f>& points, EGE::float32 density, EGEPhysics::CollisionData colissionData)
 {
   if (isValid())
   {
@@ -240,7 +251,18 @@ bool PhysicsComponentPrivate::addPolygonShape(const EGEDynamicArray<Vector4f>& p
 	  b2PolygonShape shape;
 	  shape.Set(vertices, (s32) points.size());
   
-    return NULL != m_body->CreateFixture(&shape, density);
+    b2Filter filter;
+		filter.groupIndex   = colissionData.policy;
+		filter.categoryBits = colissionData.group;
+		filter.maskBits     = colissionData.collideGroup;
+
+    b2Fixture* fixture = m_body->CreateFixture(&shape, density);
+    if (fixture)
+    { 
+      fixture->SetFilterData(filter);
+    }
+
+    return NULL != fixture;
   }
 
   return true;

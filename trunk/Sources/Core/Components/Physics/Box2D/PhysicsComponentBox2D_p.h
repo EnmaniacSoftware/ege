@@ -6,6 +6,7 @@
 #include "Core/Platform.h"
 #include <EGEVector.h>
 #include <EGEDynamicArray.h>
+#include <EGEPhysics.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -71,12 +72,12 @@ class PhysicsComponentPrivate
     inline b2Body* body() const { return m_body; }
 
     /* Adds circular shape. */
-    bool addCircleShape(float32 radius, float32 density);
+    bool addCircleShape(float32 radius, float32 density, EGEPhysics::CollisionData colissionData);
     /* Adds polygonal shape. 
     *  @param points  vertices of polygon shape.
     *  @param density shape density. Affects mass.
     */
-    bool addPolygonShape(const EGEDynamicArray<Vector4f>& points, float32 density);
+    bool addPolygonShape(const EGEDynamicArray<Vector4f>& points, float32 density, EGEPhysics::CollisionData colissionData);
 
   private:
 

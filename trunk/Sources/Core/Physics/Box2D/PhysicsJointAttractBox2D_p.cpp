@@ -28,11 +28,12 @@ PhysicsJointAttractPrivate::PhysicsJointAttractPrivate(PhysicsJointAttract* pare
     def.bodyA = m_groundBody;
     def.bodyB = body;
     def.target = body->GetPosition();
-
+    def.collideConnected = false;
+   
     // create joint implementation
     m_joint = (b2MouseJoint*) manager()->world()->CreateJoint(&def);
 
-    m_joint->SetUserData(this);
+    //m_joint->SetUserData(this);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

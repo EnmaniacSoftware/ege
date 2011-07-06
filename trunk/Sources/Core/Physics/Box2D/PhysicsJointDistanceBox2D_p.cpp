@@ -22,7 +22,7 @@ PhysicsJointDistancePrivate::PhysicsJointDistancePrivate(PhysicsJointDistance* p
 	b2DistanceJointDef def;
 	def.frequencyHz      = 4;
 	def.dampingRatio     = 1;
-	def.collideConnected = true;
+	def.collideConnected = false;
 	def.Initialize(bodyA, bodyB, bodyA->GetPosition(), bodyB->GetPosition());
 
   // create joint implementation

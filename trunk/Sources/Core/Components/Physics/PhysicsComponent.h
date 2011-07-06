@@ -79,12 +79,12 @@ class PhysicsComponent : public IComponent
     float32 mass() const;
 
     /* Adds circular shape. */
-    bool addCircleShape(float32 radius, float32 density);
+    bool addCircleShape(float32 radius, float32 density, EGEPhysics::CollisionData colissionData = EGEPhysics::CollisionData());
     /* Adds polygonal shape. 
     *  @param points  vertices of polygon shape.
     *  @param density shape density. Affects mass.
     */
-    bool addPolygonShape(const EGEDynamicArray<Vector4f>& points, float32 density);
+    bool addPolygonShape(const EGEDynamicArray<Vector4f>& points, float32 density, EGEPhysics::CollisionData colissionData = EGEPhysics::CollisionData());
 
   private:
 

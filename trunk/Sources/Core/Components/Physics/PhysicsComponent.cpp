@@ -190,12 +190,12 @@ bool PhysicsComponent::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds circular shape. */
-bool PhysicsComponent::addCircleShape(EGE::float32 radius, EGE::float32 density)
+bool PhysicsComponent::addCircleShape(EGE::float32 radius, EGE::float32 density, EGEPhysics::CollisionData colissionData)
 {
   EGE_ASSERT(isValid());
   if (isValid())
   {
-    return p_func()->addCircleShape(radius, density);
+    return p_func()->addCircleShape(radius, density, colissionData);
   }
 
   return true;
@@ -205,12 +205,12 @@ bool PhysicsComponent::addCircleShape(EGE::float32 radius, EGE::float32 density)
 *  @param points  vertices of polygon shape.
 *  @param density shape density. Affects mass.
 */
-bool PhysicsComponent::addPolygonShape(const EGEDynamicArray<Vector4f>& points, EGE::float32 density)
+bool PhysicsComponent::addPolygonShape(const EGEDynamicArray<Vector4f>& points, EGE::float32 density, EGEPhysics::CollisionData colissionData)
 {
   EGE_ASSERT(isValid());
   if (isValid())
   {
-    return p_func()->addPolygonShape(points, density);
+    return p_func()->addPolygonShape(points, density, colissionData);
   }
 
   return true;
