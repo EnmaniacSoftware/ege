@@ -186,13 +186,17 @@ void Math::Slerp(Quaternionf* out, Quaternionf* from, Quaternionf* to, float32 t
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*  Performs spherical linear interpolation between given complex numbers. 
-  *  @param  out           Resulting complex number.
-  *  @param  from          First (start) complex number.
-  *  @param  to            Second (end) complex number.
-  *  @param  time          Scalar in range [0..1] describing relative distance between numbers for which interpolation is to be calculated.
+  *  @param  out  Resulting complex number.
+  *  @param  from First (start) complex number.
+  *  @param  to   Second (end) complex number.
+  *  @param  time Scalar in range [0..1] describing relative distance between numbers for which interpolation is to be calculated.
   */
 void Math::Slerp(Complexf* out, Complexf* from, Complexf* to, float32 time)
 {
+  EGE_ASSERT(out);
+  EGE_ASSERT(from);
+  EGE_ASSERT(to);
+
   Complexf tmp;
 
   float32 fSinOmega;
@@ -237,5 +241,128 @@ void Math::Slerp(Complexf* out, Complexf* from, Complexf* to, float32 time)
 	out->y = fScale0*from->y+fScale1*tmp.y;
 
   out->normalize();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*  Performs linear interpolation between given vectors. 
+ *  @param  out   Resulting vector.
+ *  @param  from  First (start) vector.
+ *  @param  to    Second (end) vector.
+ *  @param  time  Scalar in range [0..1] describing relative distance between vectors for which interpolation is to be calculated.
+ */
+void Math::Lerp(Vector2f* out, Vector2f* from, Vector2f* to, float32 time)
+{
+  EGE_ASSERT(out);
+  EGE_ASSERT(from);
+  EGE_ASSERT(to);
+
+  *out = (1.0f - time) * (*from) + time * (*to);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*  Calculates point on the segment lying closest to given point.
+ *  @param  out         Calculated point on the segment lying closest to given point.
+ *  @param  linePointA  First point defining line segment.
+ *  @param  linePointB  Second point defining line segment.
+ *  @param  point       Point for which minimum distance between it and line is to be found.
+ *  @note Resulting point always lies on the line segment defined by linePointA and linePointB.
+ */
+void Math::ClosestSegmentPoint(Vector3f* out, const Vector3f* linePointA, const Vector3f* linePointB, const Vector3f* point)
+{
+  EGE_ASSERT(out);
+  EGE_ASSERT(linePointA);
+  EGE_ASSERT(linePointB);
+  EGE_ASSERT(point);
+
+  Vector3f lineDir = (*linePointB) - (*linePointA);
+
+  float32 lineLength = lineDir.length();
+
+  lineDir.normalize();
+
+  Vector3f dist = (*point) - (*linePointA);
+
+  float32 t = lineDir.dotProduct(dist);
+
+  if (0 > t)
+  {
+    *out = *linePointA;
+  }
+  else if (t >= lineLength)
+  {
+    *out = *linePointB;
+  }
+  else
+  {
+    *out = *linePointA + lineDir * t;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Math::ClosestSegmentPoint(Vector2f* out, const Vector2f* linePointA, const Vector2f* linePointB, const Vector2f* point)
+{
+  EGE_ASSERT(out);
+  EGE_ASSERT(linePointA);
+  EGE_ASSERT(linePointB);
+  EGE_ASSERT(point);
+
+  Vector2f lineDir = (*linePointB) - (*linePointA);
+
+  float32 lineLength = lineDir.length();
+
+  lineDir.normalize();
+
+  Vector2f dist = (*point) - (*linePointA);
+
+  float32 t = lineDir.dotProduct(dist);
+
+  if (0 > t)
+  {
+    *out = *linePointA;
+  }
+  else if (t >= lineLength)
+  {
+    *out = *linePointB;
+  }
+  else
+  {
+    *out = *linePointA + lineDir * t;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*  Calculates point on intersection of two lines.
+ *  @param  out           Calculated point of intersection.
+ *  @param  line1PointA   First point defining line 1.
+ *  @param  line1PointB   Second point defining line 1.
+ *  @param  line2PointA   First point defining line 2.
+ *  @param  line2PointB   Second point defining line 2.
+ *  @note   If return value is FALSE, out value is undefined.
+ *  @return Returns TRUE if point of intersection was found. Otherwise FALSE.
+ */
+bool Math::LineLineIntersectPoint(Vector2f* out, const Vector2f* line1PointA, const Vector2f* line1PointB, const Vector2f* line2PointA, 
+                                  const Vector2f* line2PointB)
+{
+  EGE_ASSERT(out);
+  EGE_ASSERT(line1PointA);
+  EGE_ASSERT(line1PointB);
+  EGE_ASSERT(line2PointA);
+  EGE_ASSERT(line2PointB);
+
+  float32 a1 = line1PointB->y - line1PointA->y;
+  float32 b1 = line1PointB->x - line1PointA->x;
+  float32 a2 = line2PointB->y - line2PointA->y;
+  float32 b2 = line2PointB->x - line2PointA->x;
+
+  float32 det = a1 * b2 - a2 * b1;
+  if (Math::EPSILON > Math::Abs(det))
+  {
+    // lines are parallel
+    return false;
+  }
+
+  float c1 = a1 * line1PointA->x + b1 * line1PointA->y;
+  float c2 = a2 * line2PointA->x + b2 * line2PointA->y;
+
+  out->x = (b2 * c1 - b1 * c2) / det;
+  out->y = (a1 * c2 - a2 * c1) / det;
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

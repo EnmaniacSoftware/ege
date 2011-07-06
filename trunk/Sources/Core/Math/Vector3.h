@@ -243,13 +243,19 @@ T TVector3<T>::distanceSquaredTo(const TVector3& vector) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TVector3<T> operator+(const TVector3<T>& left, const TVector3<T>& right)
+inline TVector3<T> operator + (const TVector3<T>& left, const TVector3<T>& right)
 {
-  return TVector3<T>(left.x + right.x, left.y + right.y, left.z + left.z);
+  return TVector3<T>(left.x + right.x, left.y + right.y, left.z + right.z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TVector3<T> operator*(const TVector3<T>& left, T scalar)
+inline TVector3<T> operator - (const TVector3<T>& left, const TVector3<T>& right)
+{
+  return TVector3<T>(left.x - right.x, left.y - right.y, left.z - right.z);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TVector3<T> operator * (const TVector3<T>& left, T scalar)
 {
   return TVector3<T>(left.x * scalar, left.y * scalar, left.z * scalar);
 }

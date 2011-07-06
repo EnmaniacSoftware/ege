@@ -38,6 +38,9 @@ class TVector2
     /* Normalizes vector. */
  	  inline void normalize();
 
+    /* Returns dot product between current and given vectors. */
+    inline T dotProduct(const TVector2& vector) const;
+
     /* Returns distance between this and given points. */
     inline T distanceTo(const TVector2& vector) const;
     /* Returns squared distance between this and given points. */
@@ -121,6 +124,13 @@ void TVector2<T>::normalize()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns dot product between current and given vectors. */
+template <typename T>
+T TVector2<T>::dotProduct(const TVector2& vector) const 
+{ 
+  return (x * vector.x) + (y * vector.y); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns distance between this and given points. */
 template <typename T>
 T TVector2<T>::distanceTo(const TVector2& vector) const
@@ -136,22 +146,46 @@ T TVector2<T>::distanceSquaredTo(const TVector2& vector) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TVector2<T>::operator==(const TVector2& vector) const
+bool TVector2<T>::operator == (const TVector2& vector) const
 {
   return (x == vector.x) && (y == vector.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TVector2<T>::operator!=(const TVector2& vector) const
+bool TVector2<T>::operator != (const TVector2& vector) const
 {
   return (x != vector.x) || (y != vector.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TVector2<T>::operator*=(T scalar)
+void TVector2<T>::operator *= (T scalar)
 {
   x *= scalar;
   y *= scalar;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TVector2<T> operator * (T scalar, const TVector2<T>& right)
+{
+  return TVector2<T>(right.x * scalar, right.y * scalar);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TVector2<T> operator * (const TVector2<T>& left, T scalar)
+{
+  return TVector2<T>(left.x * scalar, left.y * scalar);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TVector2<T> operator + (const TVector2<T>& left, const TVector2<T>& right)
+{
+  return TVector2<T>(left.x + right.x, left.y + right.y);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TVector2<T> operator - (const TVector2<T>& left, const TVector2<T>& right)
+{
+  return TVector2<T>(left.x - right.x, left.y - right.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

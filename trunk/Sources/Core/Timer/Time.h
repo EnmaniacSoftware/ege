@@ -20,7 +20,7 @@ class Time
     Time() : m_time(0) {}
     Time(s64 microseconds) : m_time(microseconds) {}
     Time(const Time& time) : m_time(time.m_time) {}
-    Time(float32 seconds) : m_time(static_cast<s64>(seconds * 1000000)) {}
+    Time(float32 seconds) : m_time(static_cast<s64>(seconds * 1000000LL)) {}
 
     inline bool operator > (const Time& time) const { return m_time > time.m_time; }
     inline bool operator >= (const Time& time) const { return m_time >= time.m_time; }
@@ -28,7 +28,7 @@ class Time
     inline bool operator <= (const Time& time) const { return m_time <= time.m_time; }
     inline bool operator == (const Time& time) { return m_time == time.m_time; }
     inline bool operator != (const Time& time) { return m_time != time.m_time; }
-    inline Time& operator = (float32 seconds) { m_time = static_cast<s64>(seconds * 1000000); return *this; }
+    inline Time& operator = (float32 seconds) { m_time = static_cast<s64>(seconds * 1000000LL); return *this; }
 
     inline Time& operator += (const Time& time) { m_time += time.m_time; return *this; }
     inline Time& operator -= (const Time& time) { m_time -= time.m_time; return *this; }
@@ -38,7 +38,7 @@ class Time
     /*! Sets time from given miliseconds. */
     inline void fromMiliseconds(s64 miliseconds) { m_time = miliseconds * 1000LL; }
     /*! Sets time from given seconds. */
-    inline void fromSeconds(float32 seconds) { m_time = static_cast<s64>(seconds) * 1000000LL; }
+    inline void fromSeconds(float32 seconds) { m_time = static_cast<s64>(seconds * 1000000LL); }
 
     /*! Returns time duration in microseconds. */
     inline s64 microseconds() const { return m_time; }
