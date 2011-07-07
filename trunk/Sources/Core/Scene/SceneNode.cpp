@@ -116,7 +116,9 @@ void SceneNode::update(const Time& time)
   // update self
   Quaternionf orientation = physics()->orientation();
   Vector4f position = physics()->position();
-  Math::CreateMatrix(&m_worldMatrix, &position, &Vector4f::ONE, &orientation);
+  Vector4f scale = physics()->scale();
+  
+  Math::CreateMatrix(&m_worldMatrix, &position, &scale, &orientation);
 
   if (NULL != parent())
   {

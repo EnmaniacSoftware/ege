@@ -33,6 +33,8 @@ class RenderComponent : public IComponent
     inline PIndexBuffer indexBuffer() const { return m_indexBuffer; }
     /*! Returns vertex buffer. */  
     inline PVertexBuffer vertexBuffer() const { return m_vertexBuffer; }
+    /* Sets render priority. */
+    void setPriority(s32 priority);
     /*! Returns render priority. */
     inline s32 priority() const { return m_priority; }
     /*! Returns render primitive type. */

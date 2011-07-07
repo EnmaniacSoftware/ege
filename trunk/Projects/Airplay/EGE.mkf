@@ -223,6 +223,8 @@ files
 
 	["Core/Overlay"]
   (../../Sources/Core/Overlay)
+  ImageOverlay.cpp
+  ImageOverlay.h
 	Overlay.cpp
   Overlay.h
 	OverlayManager.cpp

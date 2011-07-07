@@ -31,12 +31,12 @@ Application::~Application()
   EGE_DELETE(m_graphics);
   EGE_DELETE(m_appController);
   m_timer           = NULL;
-  EGE_DELETE(m_physicsManager);
   EGE_DELETE(m_resourceManager);
 
   EGE_DELETE(m_screenManager);
   EGE_DELETE(m_pointer);
   EGE_DELETE(m_eventManager);
+  EGE_DELETE(m_physicsManager);
 
   Debug::Deinit();
   MemoryManager::Deinit();

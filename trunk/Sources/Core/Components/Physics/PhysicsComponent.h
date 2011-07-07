@@ -77,6 +77,10 @@ class PhysicsComponent : public IComponent
     void setMass(float32 mass);
     /* Returns mass. */
     float32 mass() const;
+    /* Sets scale vector. */
+    void setScale(const Vector4f& scale);
+    /* Returns scale vector. */
+    Vector4f scale() const;
 
     /* Adds circular shape. */
     bool addCircleShape(float32 radius, float32 density, EGEPhysics::CollisionData colissionData = EGEPhysics::CollisionData());
@@ -107,6 +111,8 @@ class PhysicsComponent : public IComponent
     Quaternionf m_orientation;
     /*! Mass. */
     float32 m_mass;
+    /*! Scale vector. */
+    Vector4f m_scale;
     /*! List of joints attached. */
     EGEList<PhysicsJoint*> m_joints;
     /*! Pointer to physics manager. */

@@ -248,6 +248,10 @@ EGEResult ResourceManager::addGroup(const EGEString& filePath, const PXmlElement
       // add into pool
       m_groups.push_back(newGroup);
     }
+    else
+    {
+      EGE_PRINT(EGEString::Format("Group %s already exists.", newGroup->name().toAscii()).toAscii());
+    }
   }
 
   return result;

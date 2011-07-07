@@ -37,3 +37,9 @@ bool RenderComponent::isValid() const
   return (NULL != m_indexBuffer) && m_indexBuffer->isValid() && (NULL != m_vertexBuffer) && m_vertexBuffer->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets render priority. */
+void RenderComponent::setPriority(s32 priority)
+{
+  m_priority = priority;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

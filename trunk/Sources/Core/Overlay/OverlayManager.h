@@ -3,7 +3,7 @@
 
 #include <EGE.h>
 #include <EGEString.h>
-#include <EGEDynamicArray.h>
+#include <EGEList.h>
 #include <EGETime.h>
 #include <EGEOverlay.h>
 
@@ -32,6 +32,8 @@ class OverlayManager : public Object
     void update(const Time& time);
     /* Adds text overlay of the given name. */
     PTextOverlay addTextOverlay(const EGEString& name);
+    /* Adds image overlay of the given name. */
+    PImageOverlay addImageOverlay(const EGEString& name);
     /* Removes overlay of the given name. */
     void removeOverlay(const EGEString& name);
     /* Removes all overlays. */
@@ -42,7 +44,7 @@ class OverlayManager : public Object
   private:
 
     /*! Pool of overlays. */
-    EGEDynamicArray<POverlay> m_overlays;
+    EGEList<POverlay> m_overlays;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

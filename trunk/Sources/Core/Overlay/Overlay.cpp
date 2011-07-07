@@ -8,14 +8,16 @@ EGE_DEFINE_NEW_OPERATORS(Overlay)
 EGE_DEFINE_DELETE_OPERATORS(Overlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Overlay::Overlay(Application* app, const EGEString& name) : Object(app, EGE_OBJECT_UID_OVERLAY), m_name(name), m_updateNeeded(false), m_visible(true)
+Overlay::Overlay(Application* app, const EGEString& name, EGEGraphics::ERenderPrimitiveType renderType) : Object(app, EGE_OBJECT_UID_OVERLAY), m_name(name), 
+                                                                                                          m_updateNeeded(false), m_visible(true)
 {
-  initialize();
+  initialize(renderType);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Overlay::Overlay(Application* app, const EGEString& name, u32 uid) : Object(app, uid), m_name(name), m_updateNeeded(false), m_visible(true)
+Overlay::Overlay(Application* app, const EGEString& name, EGEGraphics::ERenderPrimitiveType renderType, u32 uid) : Object(app, uid), m_name(name), 
+                                                                                                                   m_updateNeeded(false), m_visible(true)
 {
-  initialize();
+  initialize(renderType);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Overlay::~Overlay()
@@ -37,14 +39,15 @@ void Overlay::update(const Time& time)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Initializes object. */
-void Overlay::initialize()
+void Overlay::initialize(EGEGraphics::ERenderPrimitiveType renderType)
 {
   m_physics = ege_new PhysicsComponent(app(), "overlay_" + name());
-  m_render  = ege_new RenderComponent(app(), "overlay_" + name(), EGEGraphics::RENDER_PRIORITY_MAIN_OVERLAY);
+  m_render  = ege_new RenderComponent(app(), "overlay_" + name(), EGEGraphics::RENDER_PRIORITY_MAIN_OVERLAY, renderType);
 
   // add render buffers
   if (!m_render->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_POSITION_XYZ) ||
-      !m_render->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_TEXTURE_UV))
+      !m_render->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_TEXTURE_UV) ||
+      !m_render->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_COLOR_RGBA))
   {
     // error!
     m_render  = NULL;

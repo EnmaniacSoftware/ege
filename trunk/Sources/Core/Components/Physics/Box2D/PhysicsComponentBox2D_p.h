@@ -68,6 +68,11 @@ class PhysicsComponentPrivate
     void setMass(float32 mass);
     /* Returns mass. */
     float32 mass() const;
+    /* Sets scale vector. */
+    void setScale(const Vector4f& scale);
+    /* Returns scale vector. */
+    Vector4f scale() const;
+
     /*! Returns Box2D representation. */
     inline b2Body* body() const { return m_body; }
 

@@ -49,6 +49,7 @@
     <ClCompile Include="..\..\Sources\Core\Math\AxisAlignedBox.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Math.cpp" />
     <ClCompile Include="..\..\Sources\Core\Memory\MemoryManager.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Overlay\ImageOverlay.cpp" />
     <ClCompile Include="..\..\Sources\Core\Overlay\Overlay.cpp" />
     <ClCompile Include="..\..\Sources\Core\Overlay\OverlayManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Overlay\TextOverlay.cpp" />
@@ -83,6 +84,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
     <ClInclude Include="..\..\Sources\Core\Math\Complex.h" />
+    <ClInclude Include="..\..\Sources\Core\Overlay\ImageOverlay.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointPulley.h" />
     <ClInclude Include="..\..\Sources\EGEAngle.h" />

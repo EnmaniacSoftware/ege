@@ -34,14 +34,14 @@ class Screen : public Object
     virtual void update(const Time& time);
     /* Pointer event. */
     virtual void pointerEvent(PPointerData data);
-    /*! Renders object. */
-    virtual void render(const Viewport* viewport, Renderer* renderer) = 0;
+    /* Renders object. */
+    virtual void render(const Viewport* viewport, Renderer* renderer);
     /*! Screen is about to be shown either from complete hideout or uncovery. */
     virtual void enter() = 0;
     /*! Screen is about to be hidden. */
     virtual void leave() = 0;
-    /*! Screen is about to be partially covered by another one. */
-    virtual void cover() = 0;
+    /* Screen is about to be partially covered by another one. */
+    virtual void cover();
     /*! Returns TRUE if screen has transparent regions. */
     virtual bool hasTransparency() const = 0;
 

@@ -21,7 +21,7 @@ OverlayManager::~OverlayManager()
 void OverlayManager::update(const Time& time)
 {
   // update all overlays
-  for (EGEDynamicArray<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (EGEList<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 
@@ -48,11 +48,30 @@ PTextOverlay OverlayManager::addTextOverlay(const EGEString& name)
   return textOverlay;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds image overlay of the given name. */
+PImageOverlay OverlayManager::addImageOverlay(const EGEString& name)
+{
+  // check if overlay with given name exists
+  if (overlay(name))
+  {
+    // error!
+    return NULL;
+  }
+
+  PImageOverlay imageOverlay = ege_new ImageOverlay(app(), name);
+  if (imageOverlay)
+  {
+    m_overlays.push_back(imageOverlay);
+  }
+
+  return imageOverlay;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Removes overlay of the given name. */
 void OverlayManager::removeOverlay(const EGEString& name)
 {
   // go thru all overlays
-  for (EGEDynamicArray<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (EGEList<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     POverlay object = *it;
 
@@ -76,7 +95,7 @@ void OverlayManager::removeAllOverlays()
 POverlay OverlayManager::overlay(const EGEString& name) const
 {
   // go thru all overlays
-  for (EGEDynamicArray<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (EGEList<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 
@@ -96,7 +115,7 @@ void OverlayManager::render(Viewport* viewport, Renderer* renderer)
 {
 //  renderer->setProjectionMatrix(
   // go thru all overlays
-  for (EGEDynamicArray<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (EGEList<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 

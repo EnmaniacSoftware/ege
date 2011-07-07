@@ -25,10 +25,12 @@ EGE_NAMESPACE_BEGIN
 #define EGE_OBJECT_UID_POINTER_DATA           13
 #define EGE_OBJECT_UID_RESOURCE               14
 #define EGE_OBJECT_UID_OVERLAY                15
-#define EGE_OBJECT_UID_PHYSICS_JOINT_DISTANCE 16
-#define EGE_OBJECT_UID_PHYSICS_JOINT_ATTRACT  17
-#define EGE_OBJECT_UID_TEXTURE_IMAGE          18
-#define EGE_OBJECT_UID_PHYSICS_JOINT_PULLEY   19
+#define EGE_OBJECT_UID_OVERLAY_TEXT           16
+#define EGE_OBJECT_UID_OVERLAY_IMAGE          17
+#define EGE_OBJECT_UID_PHYSICS_JOINT_DISTANCE 18
+#define EGE_OBJECT_UID_PHYSICS_JOINT_ATTRACT  19
+#define EGE_OBJECT_UID_TEXTURE_IMAGE          20
+#define EGE_OBJECT_UID_PHYSICS_JOINT_PULLEY   21
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

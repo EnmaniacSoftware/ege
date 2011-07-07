@@ -1,7 +1,6 @@
 #ifndef EGE_CORE_OVERLAY_H
 #define EGE_CORE_OVERLAY_H
 
-#include <EGE.h>
 #include <EGEString.h>
 #include <EGETime.h>
 #include "Core/Components/Render/RenderComponent.h"
@@ -22,7 +21,7 @@ class Overlay : public Object
 {
   public: 
 
-    Overlay(Application* app, const EGEString& name);
+    Overlay(Application* app, const EGEString& name, EGEGraphics::ERenderPrimitiveType renderType);
     virtual ~Overlay();
     
     EGE_DECLARE_NEW_OPERATORS
@@ -42,6 +41,9 @@ class Overlay : public Object
     inline bool visible() const { return m_visible; }
     /* Sets visibility. */
     void setVisibility(bool visible);
+    /*! Returns render component. */
+    inline PRenderComponent renderComponent() const { return m_render; }
+
     /* Returns rectangle containing the overlay. */
 
     //// position and dimensions related methods
@@ -72,20 +74,18 @@ class Overlay : public Object
 
   protected:
 
-    Overlay(Application* app, const EGEString& name, u32 uid);
+    Overlay(Application* app, const EGEString& name, EGEGraphics::ERenderPrimitiveType renderType, u32 uid);
     /* Invalidates object forcing it to be updated next time it's possible. */
     void invalidate();
     /* Validates object. */
     void validate();
     /*! Returns TRUE if update is needed. */
     inline bool isUpdateNeeded() const { return m_updateNeeded; }
-    /*! Returns render component. */
-    inline PRenderComponent renderComponent() const { return m_render; }
 
   private:
 
     /* Initializes object. */
-    void initialize();
+    void initialize(EGEGraphics::ERenderPrimitiveType renderType);
 
   private:
 

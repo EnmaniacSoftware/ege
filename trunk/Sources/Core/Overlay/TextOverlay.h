@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_TEXTOVERLAY_H
 #define EGE_CORE_TEXTOVERLAY_H
 
-#include "EGE.h"
-#include "Core/Timer/Time.h"
+#include <EGETime.h>
+#include <EGEString.h>
 #include "Core/Overlay/Overlay.h"
 #include "Core/Graphics/Font.h"
 
@@ -19,7 +19,7 @@ class TextOverlay : public Overlay
   public: 
 
     TextOverlay(Application* app, const EGEString& name);
-    virtual ~TextOverlay();
+   ~TextOverlay();
     
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -62,13 +62,13 @@ class TextOverlay : public Overlay
   private:
 
     /* Overlay override. Updates overlay. */
-    virtual void update(const Time& time) override;
+    void update(const Time& time) override;
     /* Overlay override. Renders element. */
-    virtual void render(const Viewport* viewport, Renderer* renderer) override;
+    void render(const Viewport* viewport, Renderer* renderer) override;
     /* Updates render data. */
     void updateRenderData();
 
-  private:
+private:
 
     /*! Overlay text. */
     EGEText m_text;

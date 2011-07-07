@@ -9,7 +9,8 @@ EGE_DEFINE_NEW_OPERATORS(TextOverlay)
 EGE_DEFINE_DELETE_OPERATORS(TextOverlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextOverlay::TextOverlay(Application* app, const EGEString& name) : Overlay(app, name, EGE_OBJECT_UID_OVERLAY)
+TextOverlay::TextOverlay(Application* app, const EGEString& name) : Overlay(app, name, EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLES, 
+                                                                            EGE_OBJECT_UID_OVERLAY_TEXT)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -61,6 +62,8 @@ void TextOverlay::setFont(PFont font)
 /*! Updates render data. */
 void TextOverlay::updateRenderData()
 {
+  Color color = Color::WHITE;
+
   // set material
   renderComponent()->setMaterial(m_font->material());
 
@@ -83,55 +86,79 @@ void TextOverlay::updateRenderData()
       {
         float32 width = glyphData->m_width * 1.0f;
 
-        /* glyph quad looks like follows
-            (0,3)  (5)
-             *------*
-             |\     |
-             | \Tri2|
-             |  \   |
-             |   \  |
-             |    \ |
-             |Tri1 \|
-             |      \
-             *------*
-            (1)   (2,4)
-        */
+        // Glyph quad looks like follows:
+        //
+        //   (0,3)  (5)
+        //    *------*
+        //    |\     |
+        //    | \Tri2|
+        //    |  \   |
+        //    |   \  |
+        //    |    \ |
+        //    |Tri1 \|
+        //    |      \
+        //    *------*
+        //   (1)   (2,4)
 
         *data++ = pos.x;
         *data++ = pos.y;
         *data++ = 0;
         *data++ = glyphData->m_textureRect.x;
         *data++ = glyphData->m_textureRect.y;
+        *data++ = color.red;
+        *data++ = color.green;
+        *data++ = color.blue;
+        *data++ = color.alpha;
 
         *data++ = pos.x;
         *data++ = pos.y + height;
         *data++ = 0;
         *data++ = glyphData->m_textureRect.x;
         *data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
+        *data++ = color.red;
+        *data++ = color.green;
+        *data++ = color.blue;
+        *data++ = color.alpha;
 
         *data++ = pos.x + width;
         *data++ = pos.y + height;
         *data++ = 0;
         *data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
         *data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
+        *data++ = color.red;
+        *data++ = color.green;
+        *data++ = color.blue;
+        *data++ = color.alpha;
 
         *data++ = pos.x;
         *data++ = pos.y;
         *data++ = 0;
         *data++ = glyphData->m_textureRect.x;
         *data++ = glyphData->m_textureRect.y;
+        *data++ = color.red;
+        *data++ = color.green;
+        *data++ = color.blue;
+        *data++ = color.alpha;
 
         *data++ = pos.x + width;
         *data++ = pos.y + height;
         *data++ = 0;
         *data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
         *data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
+        *data++ = color.red;
+        *data++ = color.green;
+        *data++ = color.blue;
+        *data++ = color.alpha;
 
         *data++ = pos.x + width;
         *data++ = pos.y;
         *data++ = 0;
         *data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
         *data++ = glyphData->m_textureRect.y;
+        *data++ = color.red;
+        *data++ = color.green;
+        *data++ = color.blue;
+        *data++ = color.alpha;
 
         pos.x += width + spacing;
       }
@@ -153,8 +180,9 @@ void TextOverlay::render(const Viewport* viewport, Renderer* renderer)
     {
       Quaternionf orientation = physics()->orientation();
       Vector4f position = physics()->position();
+      Vector4f scale = physics()->scale();
 
-      Math::CreateMatrix(&worldMatrix, &position, &Vector4f::ONE, &orientation);
+      Math::CreateMatrix(&worldMatrix, &position, &scale, &orientation);
     }
     else
     {

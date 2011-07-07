@@ -268,3 +268,18 @@ bool PhysicsComponentPrivate::addPolygonShape(const EGEDynamicArray<Vector4f>& p
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets scale vector. */
+void PhysicsComponentPrivate::setScale(const Vector4f& scale)
+{
+  EGE_UNUSED(scale);
+
+  // unsupported
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns scale vector. */
+Vector4f PhysicsComponentPrivate::scale() const
+{
+  // unsupported, return base value
+  return d_func()->m_scale;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

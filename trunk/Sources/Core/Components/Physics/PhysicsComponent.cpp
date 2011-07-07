@@ -17,7 +17,7 @@ EGE_DEFINE_DELETE_OPERATORS(PhysicsComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsComponent::PhysicsComponent(Application* app, const EGEString& name, EGEPhysics::EComponentType type) 
 : IComponent(app, EGE_OBJECT_UID_PHYSICS_COMPONENT, name), m_type(type), m_position(Vector4f::ZERO), m_linearVelocity(Vector4f::ZERO), 
-  m_force(Vector4f::ZERO), m_orientation(Quaternionf::IDENTITY), m_mass(1.0f)
+  m_force(Vector4f::ZERO), m_orientation(Quaternionf::IDENTITY), m_mass(1.0f), m_scale(Vector4f::ONE)
 {
   m_manager = app->physicsManager();
 
@@ -214,5 +214,29 @@ bool PhysicsComponent::addPolygonShape(const EGEDynamicArray<Vector4f>& points, 
   }
 
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets scale vector. */
+void PhysicsComponent::setScale(const Vector4f& scale)
+{
+  EGE_ASSERT(isValid());
+  if (isValid())
+  {
+    p_func()->setScale(scale);
+  }
+
+  m_scale = scale;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns scale vector. */
+Vector4f PhysicsComponent::scale() const
+{
+  EGE_ASSERT(isValid());
+  if (isValid())
+  {
+    return p_func()->scale();
+  }
+
+  return m_scale;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
