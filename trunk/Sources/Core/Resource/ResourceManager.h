@@ -49,8 +49,8 @@ class ResourceManager : public Object
     PResourceGroup group(const EGEString& name) const;
     /* Composes full path to given resource */
     EGEString makeFullPath(const EGEString& localPath) const;
-    /* Returns resource of a given type and name. */
-    PResource resource(const EGEString& typeName, const EGEString& name) const;
+    /* Returns resource of a given type and name. Optionally, from given group only. */
+    PResource resource(const EGEString& typeName, const EGEString& name, const EGEString& groupName = "") const;
     /* Registeres custom resource type. */
     EGEResult registerResource(const EGEString& typeName, egeResourceCreateFunc createFunc);
     /* Returns TRUE if given resource type is registered. */

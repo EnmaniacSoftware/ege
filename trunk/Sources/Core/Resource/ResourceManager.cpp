@@ -303,17 +303,29 @@ void ResourceManager::unloadGroup(const EGEString& name)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns resource of a given type and name. */
-PResource ResourceManager::resource(const EGEString& typeName, const EGEString& name) const
+/*! Returns resource of a given type and name. Optionally, from given group only. */
+PResource ResourceManager::resource(const EGEString& typeName, const EGEString& name, const EGEString& groupName) const
 {
-  // go thru all groups
-  for (EGEList<PResourceGroup>::const_iterator it = m_groups.begin(); it != m_groups.end(); ++it)
+  // check if search is to be done exactly in the given group
+  if (!groupName.empty())
   {
-    PResource resource = (*it)->resource(typeName, name);
-    if (resource)
+    PResourceGroup groupRes = group(groupName);
+    if (groupRes)
     {
-      // found
-      return resource;
+      return groupRes->resource(typeName, name);
+    }
+  }
+  else
+  {
+    // go thru all groups
+    for (EGEList<PResourceGroup>::const_iterator it = m_groups.begin(); it != m_groups.end(); ++it)
+    {
+      PResource resource = (*it)->resource(typeName, name);
+      if (resource)
+      {
+        // found
+        return resource;
+      }
     }
   }
 
