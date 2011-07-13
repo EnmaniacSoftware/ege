@@ -1,15 +1,13 @@
 #ifndef EGE_CORE_DEBUG_H
 #define EGE_CORE_DEBUG_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-#include "Core/Platform.h"
+#include <EGEString.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Log;
+class Logger;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -19,13 +17,13 @@ class Debug
 
     static void Deinit();
     static void Assert(const char* description);
-    static void LogText(const char* text);
-    static void Print(const char* text);
+    static void Log(const EGEString& text);
+    static void Print(const EGEString& text);
 
   private:
 
     /*! Main log. */
-    static Log* m_log;
+    static Logger* m_log;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

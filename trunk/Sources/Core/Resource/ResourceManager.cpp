@@ -250,7 +250,7 @@ EGEResult ResourceManager::addGroup(const EGEString& filePath, const PXmlElement
     }
     else
     {
-      EGE_PRINT(EGEString::Format("Group %s already exists.", newGroup->name().toAscii()).toAscii());
+      EGE_PRINT(EGEString::Format("Group %s already exists.", newGroup->name().toAscii()));
     }
   }
 

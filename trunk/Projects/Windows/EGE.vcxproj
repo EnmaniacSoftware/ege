@@ -21,7 +21,7 @@
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Node.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Debug.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Debug\Log.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Debug\Logger.cpp" />
     <ClCompile Include="..\..\Sources\Core\Dir\Dir.cpp" />
     <ClCompile Include="..\..\Sources\Core\Event\Event.cpp" />
     <ClCompile Include="..\..\Sources\Core\Event\EventManager.cpp" />
@@ -83,6 +83,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlElementTinyXml_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
+    <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Complex.h" />
     <ClInclude Include="..\..\Sources\Core\Overlay\ImageOverlay.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.h" />
@@ -120,7 +121,6 @@
     <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h" />
     <ClInclude Include="..\..\Sources\Core\Data\Node.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Debug.h" />
-    <ClInclude Include="..\..\Sources\Core\Debug\Log.h" />
     <ClInclude Include="..\..\Sources\Core\Device\Device.h" />
     <ClInclude Include="..\..\Sources\Core\Dir\Dir.h" />
     <ClInclude Include="..\..\Sources\Core\Event\Event.h" />
@@ -334,6 +334,11 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -353,6 +358,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

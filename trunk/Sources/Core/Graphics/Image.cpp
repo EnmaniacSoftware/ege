@@ -47,8 +47,20 @@ Image::Image(Application* app) : Object(app, EGE_OBJECT_UID_IMAGE), m_format(EGE
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Image::Image(Application* app, s32 width, s32 height, EGEImage::Format format) : Object(app, EGE_OBJECT_UID_IMAGE)
+{
+  // allocate empty image
+  allocateData(width, height, format);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Image::~Image()
 {
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if object is valid. */
+bool Image::isValid() const
+{
+  return (0 < m_width) && (0 < m_height) && (EGEImage::NONE != m_format) && (NULL != m_data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Determines file stream type. */
@@ -361,7 +373,7 @@ EGEResult Image::loadJpg(File& file, EGEImage::Format format)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Allocated internal data buffer to be able to hold image of a given size and format. */
-EGEResult Image::allocateData(u32 width, u32 height, EGEImage::Format format)
+EGEResult Image::allocateData(s32 width, s32 height, EGEImage::Format format)
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -408,5 +420,51 @@ EGEResult Image::allocateData(u32 width, u32 height, EGEImage::Format format)
   m_height = height;
 
   return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Saves image into a given file. */
+EGEResult Image::save(const EGEString& fileName)
+{
+  EGEResult result = EGE_SUCCESS;
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Makes copy of current image in a givem format. */
+Image* Image::copy(EGEImage::Format format) const
+{
+  Image* image = ege_new Image(app(), width(), height(), format);
+  if (NULL != image && image->isValid())
+  {
+    typedef void (*PFNSCANLINEBLT)(void* dst, const void* src, s32 length);
+    PFNSCANLINEBLT func = NULL;
+
+    switch (this->format())
+    {
+      case EGEImage::RGBA_8888:
+
+        if (EGEImage::RGBA_8888 == image->format())
+        {
+          func = Image::ScanLineBltRGBA8888ToRGBA8888;
+          break;
+        }
+    }
+
+    if (NULL != func)
+    {
+      // go thru all scanlines
+      for (s32 y = 0; y < height(); ++y)
+      {
+        //func();
+      }
+    }
+  }
+
+  return image;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Performs scan line bit blit from RGBA8888 format onto RGBA8888 format. */
+void Image::ScanLineBltRGBA8888ToRGBA8888(void* dst, const void* src, s32 length)
+{
+  EGE_MEMCPY(dst, src, length);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

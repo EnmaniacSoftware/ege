@@ -1,9 +1,10 @@
 #ifndef EGE_CORE_IMAGE_H
 #define EGE_CORE_IMAGE_H
 
-#include <EGE.h>
 #include <EGEFile.h>
 #include <EGEImage.h>
+#include <EGEString.h>
+#include <EGEDataBuffer.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -19,24 +20,31 @@ class Image : public Object
   public:
 
     Image(Application* app);
+    Image(Application* app, s32 width, s32 height, EGEImage::Format format);
    ~Image();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+    /* Returns TRUE if object is valid. */
+    bool isValid() const;
     /* Loads image converting it's format to requested one. */
     EGEResult load(const EGEString& fileName, EGEImage::Format format = EGEImage::NONE);
+    /* Saves image into a given file. */
+    EGEResult save(const EGEString& fileName);
     /*! Gets image width (in pixels) */
-    inline u32 width() const { return m_width; }
+    inline s32 width() const { return m_width; }
     /*! Gets image height (in pixels) */
-    inline u32 height() const { return m_height; }
+    inline s32 height() const { return m_height; }
     /*! Gets image format */
     inline EGEImage::Format format() const { return m_format; }
     /*! Gets image pixel data buffer */
     inline PDataBuffer data() const { return m_data; }
     /*! Returns TRUE if image contains alpha channel. */
     inline bool hasAlpha() const { return EGEImage::RGBA_8888 == m_format; }
-
+    /* Makes copy of current image in a givem format. */
+    Image* copy(EGEImage::Format format) const;
+    
   protected:
 
     enum StreamType
@@ -56,7 +64,12 @@ class Image : public Object
     /* Loads JPG file and converts it into requested format. */
     EGEResult loadJpg(File& file, EGEImage::Format format);
     /* Allocated internal data buffer to be able to hold image of a given size and format. */
-    EGEResult allocateData(u32 width, u32 height, EGEImage::Format format);
+    EGEResult allocateData(s32 width, s32 height, EGEImage::Format format);
+
+  private:
+
+    /* Performs scan line bit blit from RGBA8888 format onto RGBA8888 format. */
+    static void ScanLineBltRGBA8888ToRGBA8888(void* dst, const void* src, s32 length);
 
   private:
 
@@ -67,9 +80,9 @@ class Image : public Object
     /*! Row length (in bytes) */
     u32 m_rowLength;
     /*! Image width (in pixels) */
-    u32 m_width;
+    s32 m_width;
     /*! Image height (in pixels) */
-    u32 m_height;
+    s32 m_height;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -10,7 +10,7 @@
 #ifdef EGE_FEATURE_DEBUG
 
 #define EGE_ASSERT(cond) ((!(cond)) ? Debug::Assert(#cond) : ege_noop())
-#define EGE_LOG(text) Debug::LogText(text)
+#define EGE_LOG(text) Debug::Log(text)
 #define EGE_PRINT(text) Debug::Print(text)
 
 #else

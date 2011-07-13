@@ -178,7 +178,7 @@ EGEResult ResourceMaterial::load()
       else
       {
         // texture not found
-        EGE_PRINT(EGEString::Format("Texture not found: %s", textureImageData.m_textureName.toAscii()).toAscii());
+        EGE_PRINT(EGEString::Format("Texture not found: %s", textureImageData.m_textureName.toAscii()));
         return EGE_ERROR;
       }
     }

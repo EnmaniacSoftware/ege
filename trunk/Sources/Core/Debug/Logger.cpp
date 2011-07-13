@@ -1,34 +1,39 @@
-#include "Core/Debug/Log.h"
+#include "Core/Debug/Logger.h"
 #include "Core/Data/DataBuffer.h"
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Log::Log(const EGEString& filePath, bool timeStampEnabled) : m_file(filePath), m_timeStampEnabled(timeStampEnabled)
+
+EGE_DEFINE_NEW_OPERATORS(Logger)
+EGE_DEFINE_DELETE_OPERATORS(Logger)
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger::Logger(const EGEString& filePath, bool timeStampEnabled) : m_file(filePath), m_timeStampEnabled(timeStampEnabled)
 {
   //m_file = NULL;//ege_new File(filePath);
 
   //// open file for writting
-  //if ( this->createLogFile( pszFilePath ) == true )
+  //if ( this->createLoggerFile( pszFilePath ) == true )
   //{
-  //  // initiate log entries
-  //  this->write( "LOGGER INITIALIZED!\n\n" );
+  //  // initiate Logger entries
+  //  this->write( "LoggerGER INITIALIZED!\n\n" );
   //}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Log::~Log()
+Logger::~Logger()
 {
   m_file.close();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
-bool Log::isValid() const
+bool Logger::isValid() const
 {
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Opens log. */
-EGEResult Log::open()
+/*! Opens Logger. */
+EGEResult Logger::open()
 {
   if (isValid())
   {
@@ -38,8 +43,8 @@ EGEResult Log::open()
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Closes log. */
-void Log::close()
+/*! Closes Logger. */
+void Logger::close()
 {
   if (isValid())
   {
@@ -48,25 +53,7 @@ void Log::close()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Writes text. */
-EGEResult Log::write(const EGEString& text)
-{
-  s64 written = 0;
-
-  if (isValid())
-  {
-    if (EGE_SUCCESS == open())
-    {
-      DataBuffer buf((void*) text.toAscii(), text.length());
-      written = m_file.write(&buf, buf.size());
-      close();
-    }
-  }
-
-  return (written >= (s64) text.length()) ? EGE_SUCCESS : EGE_ERROR;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Writes text with EOL. */
-EGEResult Log::writeln(const EGEString& text)
+EGEResult Logger::write(const EGEString& text)
 {
   s64 written = 0;
 
@@ -77,6 +64,7 @@ EGEResult Log::writeln(const EGEString& text)
       DataBuffer buf((void*) text.toAscii(), text.length() + 1);
       *reinterpret_cast<s8*>(buf.data(text.length())) = 0xA;
       written = m_file.write(&buf, buf.size());
+      
       close();
     }
   }
@@ -88,13 +76,13 @@ EGEResult Log::writeln(const EGEString& text)
 /////////////////////////////////////////////////////////////
 // PUBLICS
 
-//bool CEnmLogger::createLogFile( char* pszFilePath )
+//bool CEnmLoggerger::createLoggerFile( char* pszFilePath )
 //{
 //  // close opened file if any
-//  this->closeLogFile();
+//  this->closeLoggerFile();
 //
 //  // open new file
-//  if ( ( this->pLogFile = fopen( pszFilePath, "wt" ) ) == NULL )
+//  if ( ( this->pLoggerFile = fopen( pszFilePath, "wt" ) ) == NULL )
 //  {
 //    // error!
 //    return false;
@@ -103,21 +91,21 @@ EGEResult Log::writeln(const EGEString& text)
 //  return true;
 //}
 //
-//void CEnmLogger::closeLogFile( void )
+//void CEnmLoggerger::closeLoggerFile( void )
 //{
-//  // close log file if any
-//  if ( this->pLogFile != NULL )
+//  // close Logger file if any
+//  if ( this->pLoggerFile != NULL )
 //  {
 //    // write close message
-//    this->write( "CLOSING LOGGER." );
+//    this->write( "CLOSING LoggerGER." );
 //
 //    // close file
-//    fclose( this->pLogFile );
-//    this->pLogFile = NULL;
+//    fclose( this->pLoggerFile );
+//    this->pLoggerFile = NULL;
 //  }
 //}
 //
-//bool CEnmLogger::write( char* pszText, ... )
+//bool CEnmLoggerger::write( char* pszText, ... )
 //{
 //	va_list argumentPtr;
 //
@@ -129,46 +117,46 @@ EGEResult Log::writeln(const EGEString& text)
 //  }
 //
 //  // check if timestamps enabled
-//  if ( this->bTimeStampsEnabled == true && this->isLogFileOpened() == true )
+//  if ( this->bTimeStampsEnabled == true && this->isLoggerFileOpened() == true )
 //  {
 //    // get time as strinng   
 //    _strtime( this->szBuffer );
 //    strcat( this->szBuffer, " " );
 //
 //    // write time into file
-//    fprintf( this->pLogFile, this->szBuffer );
+//    fprintf( this->pLoggerFile, this->szBuffer );
 //  }
 //
 //	va_start( argumentPtr, pszText );
 //	vsprintf( this->szBuffer, pszText, argumentPtr );
 //	va_end( argumentPtr );	
 //
-//  // check if log opened
-//  if ( this->isLogFileOpened() == true )
+//  // check if Logger opened
+//  if ( this->isLoggerFileOpened() == true )
 //  {
 //    // write message into file
-//    fprintf( this->pLogFile, this->szBuffer );
+//    fprintf( this->pLoggerFile, this->szBuffer );
 //  }
 //
 //  return true;
 //}
 //
-//void CEnmLogger::newLine( void )
+//void CEnmLoggerger::newLine( void )
 //{
 //  // check if file opened
-//  if ( this->isLogFileOpened() == true )
+//  if ( this->isLoggerFileOpened() == true )
 //  {
 //    // write new line into file
-//    fprintf( this->pLogFile, "\n" );
+//    fprintf( this->pLoggerFile, "\n" );
 //  }
 //}
 //
-//bool CEnmLogger::isLogFileOpened( void )
+//bool CEnmLoggerger::isLoggerFileOpened( void )
 //{
-//  return ( this->pLogFile != NULL ) ? true : false;
+//  return ( this->pLoggerFile != NULL ) ? true : false;
 //}
 //
-//void CEnmLogger::enableTimeStamps( bool bEnable )
+//void CEnmLoggerger::enableTimeStamps( bool bEnable )
 //{
 //  this->bTimeStampsEnabled = bEnable;
 //}

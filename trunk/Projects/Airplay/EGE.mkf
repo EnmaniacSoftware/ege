@@ -118,8 +118,8 @@ files
  	(../../Sources/Core/Debug)
   Debug.cpp
 	Debug.h
-  Log.cpp
-  Log.h
+  Logger.cpp
+  Logger.h
 
   ["Core/Device"]
   (../../Sources/Core/Device)

@@ -249,9 +249,6 @@
     <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointDistanceBox2D_p.cpp">
       <Filter>Core\Physics\Box2D</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Debug\Log.cpp">
-      <Filter>Core\Debug</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\File\File.cpp">
       <Filter>Core\File</Filter>
     </ClCompile>
@@ -383,6 +380,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Overlay\ImageOverlay.cpp">
       <Filter>Core\Overlay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Debug\Logger.cpp">
+      <Filter>Core\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -578,9 +578,6 @@
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointDistanceBox2D_p.h">
       <Filter>Core\Physics\Box2D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Debug\Log.h">
-      <Filter>Core\Debug</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\File\File.h">
       <Filter>Core\File</Filter>
     </ClInclude>
@@ -747,6 +744,9 @@
     <ClInclude Include="..\..\Sources\EGEComplex.h" />
     <ClInclude Include="..\..\Sources\Core\Overlay\ImageOverlay.h">
       <Filter>Core\Overlay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Debug\Logger.h">
+      <Filter>Core\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

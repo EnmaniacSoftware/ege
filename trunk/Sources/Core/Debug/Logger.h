@@ -1,7 +1,5 @@
-#ifndef EGE_CORE_LOG_H
-#define EGE_CORE_LOG_H
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#ifndef EGE_CORE_LOGGER_H
+#define EGE_CORE_LOGGER_H
 
 #include <EGEFile.h>
 #include <EGEString.h>
@@ -10,20 +8,20 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Log
+class Logger
 {
   public:
 
-    Log(const EGEString& filePath, bool timeStampEnabled = true);
-   ~Log();
+    Logger(const EGEString& filePath, bool timeStampEnabled = true);
+   ~Logger();
+
+    EGE_DECLARE_NEW_OPERATORS
+    EGE_DECLARE_DELETE_OPERATORS
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
-
     /* Writes text. */
     EGEResult write(const EGEString& text);
-    /* Writes text with EOL. */
-    EGEResult writeln(const EGEString& text);
 
     //void enableTimeStamps( bool bEnable );
 
@@ -46,4 +44,4 @@ class Log
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_LOG_H
+#endif // EGE_CORE_LOGGER_H
