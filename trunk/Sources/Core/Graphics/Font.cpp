@@ -13,7 +13,7 @@ Font::Font(Application* app, s32 height, const EGEMap<EGEChar, GlyphData>& glyph
   // copy glyphs data
   for (EGEMap<EGEChar, GlyphData>::const_iterator it = glyphData.begin(); it != glyphData.end(); ++it)
   {
-    m_glyphs.insert(std::map<EGEChar, GlyphData>::value_type(it->first, it->second));
+    m_glyphs.insert(it->first, it->second);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

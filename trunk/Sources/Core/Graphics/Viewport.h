@@ -35,6 +35,7 @@ class Viewport : public Object
 
     enum BufferTypeFlags
     {
+      BUFFER_TYPE_NONE  = 0x00,
       BUFFER_TYPE_COLOR = 0x01,
       BUFFER_TYPE_DEPTH = 0x02
     };

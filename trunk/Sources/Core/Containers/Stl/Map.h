@@ -18,7 +18,9 @@ class EGEMap : public std::map<T, U>
     /* Returns TRUE if given key is present. */
     inline bool contains(const T& key) const;
     /* Returns value associated with given key. If key is not found, default value is returned. */
-    inline const U value(const T& key, const U& defaultValue) const;
+    inline U value(const T& key, const U& defaultValue) const;
+    /* Inserts value with given key to map. */
+    inline void insert(const T& key, const U& value);
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -31,10 +33,17 @@ bool EGEMap<T, U>::contains(const T& key) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns value associated with given key. If key is not found, default value is returned. */
 template <typename T, typename U>
-const U EGEMap<T, U>::value(const T& key, const U& defaultValue) const
+U EGEMap<T, U>::value(const T& key, const U& defaultValue) const
 {
   typename EGEMap<T, U>::const_iterator it = this->find(key);
   return (it != this->end()) ? it->second : defaultValue;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Inserts value with given key to map. */
+template <typename T, typename U>
+void EGEMap<T, U>::insert(const T& key, const U& value)
+{
+  std::map<T, U>::insert(std::pair<T, U>(key, value));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -85,7 +85,7 @@ EGEResult ResourceFont::create(const EGEString& path, const PXmlElement& tag)
       }
 
       // add to pool
-      m_glyphs.insert(std::map<u16, GlyphData>::value_type(value, glyph));
+      m_glyphs.insert(value, glyph);
     }
 
     // go to next element

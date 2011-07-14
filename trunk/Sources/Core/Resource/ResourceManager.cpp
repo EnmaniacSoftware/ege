@@ -58,7 +58,7 @@ EGEResult ResourceManager::registerResource(const EGEString& typeName, egeResour
   ResourceRegistryEntry entry;
   entry.m_createFunc  = createFunc;
 
-  m_registeredResources.insert(EGEMap<EGEString, ResourceRegistryEntry>::value_type(typeName, entry));
+  m_registeredResources.insert(typeName, entry);
 
   return EGE_SUCCESS;
 }
