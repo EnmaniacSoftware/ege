@@ -9,7 +9,7 @@ EGE_DEFINE_NEW_OPERATORS(ResourceGroup)
 EGE_DEFINE_DELETE_OPERATORS(ResourceGroup)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceGroup::ResourceGroup(Application* app, ResourceManager* manager, const EGEString& path) : Object(app), m_manager(manager), m_loaded(false), m_path(path)
+ResourceGroup::ResourceGroup(Application* app, ResourceManager* manager, const String& path) : Object(app), m_manager(manager), m_loaded(false), m_path(path)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -115,7 +115,7 @@ void ResourceGroup::unload()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns resource of a given type and name. */
-PResource ResourceGroup::resource(const EGEString& typeName, const EGEString& name) const
+PResource ResourceGroup::resource(const String& typeName, const String& name) const
 {
   PResource resource;
   
@@ -138,9 +138,9 @@ PResource ResourceGroup::resource(const EGEString& typeName, const EGEString& na
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns list of all resources of the given type. */
-EGEList<PResource> ResourceGroup::resources(const EGEString& typeName) const
+List<PResource> ResourceGroup::resources(const String& typeName) const
 {
-  EGEList<PResource> list;
+  List<PResource> list;
 
   // get all resources of a given type
   std::pair<ResourcesMap::const_iterator, ResourcesMap::const_iterator> range = m_resources.equal_range(typeName);

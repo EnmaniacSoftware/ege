@@ -15,7 +15,7 @@ EGE_DEFINE_DELETE_OPERATORS(ResourceTexture)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps literal filter function name into numeric value. */
-static EGETexture::Filter mapFilterName(const EGEString& name)
+static EGETexture::Filter mapFilterName(const String& name)
 {
   if ("trilinear" == name)
   {
@@ -35,7 +35,7 @@ static EGETexture::Filter mapFilterName(const EGEString& name)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps literal wrap mode name into numeric value. */
-static EGETexture::Wrap mapWrapName(const EGEString& name)
+static EGETexture::Wrap mapWrapName(const String& name)
 {
   if ("clamp" == name)
   {
@@ -61,7 +61,7 @@ PResource ResourceTexture::Create(Application* app, ResourceManager* manager)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
-const EGEString& ResourceTexture::name() const
+const String& ResourceTexture::name() const
 {
   return m_name;
 }
@@ -71,7 +71,7 @@ const EGEString& ResourceTexture::name() const
 *  \param  path  full path to resource definition file.
 *  \param  tag   xml element with resource definition. 
 */
-EGEResult ResourceTexture::create(const EGEString& path, const PXmlElement& tag)
+EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
 

@@ -6,52 +6,52 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEText::EGEText() : std::wstring()
+Text::Text() : std::wstring()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEText::EGEText(const EGEText& text) : std::wstring(text)
+Text::Text(const Text& text) : std::wstring(text)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEText::EGEText(const char* string) : std::wstring()
+Text::Text(const char* string) : std::wstring()
 {
-  EGEString temp = string;
+  String temp = string;
   resize(temp.length());
   std::copy(temp.begin(), temp.end(), begin());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEText::EGEText(const EGEString& string) : std::wstring(string.length(), L' ')
+Text::Text(const String& string) : std::wstring(string.length(), L' ')
 {
   std::copy(string.begin(), string.end(), begin());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEText::~EGEText()
+Text::~Text()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts self to lower-case. */
-EGEText& EGEText::toLower()
+Text& Text::toLower()
 {
   std::transform(begin(), end(), begin(), std::tolower);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts self to upper-case. */
-EGEText& EGEText::toUpper()
+Text& Text::toUpper()
 {
   std::transform(begin(), end(), begin(), std::toupper);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEText& EGEText::operator=(const EGEText& string)
+Text& Text::operator=(const Text& string)
 {
   (*(std::wstring*) this) = (*(std::wstring*) &string);
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEText& EGEText::operator+=(const EGEText& string)
+Text& Text::operator+=(const Text& string)
 {
   (*(std::wstring*) this) += (*(std::wstring*) &string);
 
@@ -59,7 +59,7 @@ EGEText& EGEText::operator+=(const EGEText& string)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates formatted text. */
-void EGEText::format(const char* text, ...)
+void Text::format(const char* text, ...)
 {
   char buffer[256];
 
@@ -72,9 +72,9 @@ void EGEText::format(const char* text, ...)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Create new object from formatted text. */
-EGEText EGEText::Format(const char* text, ...)
+Text Text::Format(const char* text, ...)
 {
-  EGEText out;
+  Text out;
 
   char buffer[256];
 

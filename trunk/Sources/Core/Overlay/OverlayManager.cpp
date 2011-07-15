@@ -21,7 +21,7 @@ OverlayManager::~OverlayManager()
 void OverlayManager::update(const Time& time)
 {
   // update all overlays
-  for (EGEList<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (List<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 
@@ -30,7 +30,7 @@ void OverlayManager::update(const Time& time)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Adds text overlay of the given name. */
-PTextOverlay OverlayManager::addTextOverlay(const EGEString& name)
+PTextOverlay OverlayManager::addTextOverlay(const String& name)
 {
   // check if overlay with given name exists
   if (overlay(name))
@@ -49,7 +49,7 @@ PTextOverlay OverlayManager::addTextOverlay(const EGEString& name)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds image overlay of the given name. */
-PImageOverlay OverlayManager::addImageOverlay(const EGEString& name)
+PImageOverlay OverlayManager::addImageOverlay(const String& name)
 {
   // check if overlay with given name exists
   if (overlay(name))
@@ -68,10 +68,10 @@ PImageOverlay OverlayManager::addImageOverlay(const EGEString& name)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Removes overlay of the given name. */
-void OverlayManager::removeOverlay(const EGEString& name)
+void OverlayManager::removeOverlay(const String& name)
 {
   // go thru all overlays
-  for (EGEList<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (List<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     POverlay object = *it;
 
@@ -92,10 +92,10 @@ void OverlayManager::removeAllOverlays()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Returns overlay of the given name. */
-POverlay OverlayManager::overlay(const EGEString& name) const
+POverlay OverlayManager::overlay(const String& name) const
 {
   // go thru all overlays
-  for (EGEList<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (List<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 
@@ -115,7 +115,7 @@ void OverlayManager::render(Viewport* viewport, Renderer* renderer)
 {
 //  renderer->setProjectionMatrix(
   // go thru all overlays
-  for (EGEList<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (List<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 

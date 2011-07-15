@@ -1,25 +1,27 @@
-#ifndef EGE_CORE_DIR_H
-#define EGE_CORE_DIR_H
+#ifndef EGE_CORE_HASH_H
+#define EGE_CORE_HASH_H
 
-#include <EGE.h>
+/** This class calculates 32-bit hash values from given input data. */
+
+#include <EGETypes.h>
 #include <EGEString.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Dir
+class Hash
 {
   public:
 
-    /* Returns given path with converted sperators. */
-    static String FromNativeSeparators(const String& path);
-    /* Decomposes full path into seperate path and file name. */
-    static void DecomposePath(const String& fullPath, String& path, String& fileName);
+    /* Calculates hash from string. */
+    static u32 FromString(const String& string);
+    /* Calculates hash data. */
+    static u32 FromData(const u8* data, s32 size);
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_DIR_H
+#endif // EGE_CORE_HASH_H

@@ -8,7 +8,7 @@ void Debug::Assert(const char* description)
   assert(false && description);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Debug::Print(const EGEString& text)
+void Debug::Print(const String& text)
 {
   OutputDebugStringA(text.toAscii());
   OutputDebugStringA("\n");

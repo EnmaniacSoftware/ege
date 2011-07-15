@@ -4,7 +4,7 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IComponent::IComponent(Application* app, u32 uid, const EGEString& name) : Object(app, uid)
+IComponent::IComponent(Application* app, u32 uid, const String& name) : Object(app, uid)
 {
   m_name = name;
 }

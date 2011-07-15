@@ -21,7 +21,7 @@ class Overlay : public Object
 {
   public: 
 
-    Overlay(Application* app, const EGEString& name, EGEGraphics::ERenderPrimitiveType renderType);
+    Overlay(Application* app, const String& name, EGEGraphics::ERenderPrimitiveType renderType);
     virtual ~Overlay();
     
     EGE_DECLARE_NEW_OPERATORS
@@ -34,13 +34,13 @@ class Overlay : public Object
     /* Renders element. */
     virtual void render(const Viewport* viewport, Renderer* renderer);
     /*! Returns name. */
-    inline const EGEString& name() const { return m_name; }
+    inline const String& name() const { return m_name; }
     /*! Returns physics component. */
     inline PPhysicsComponent physics() const { return m_physics; }
     /*! Returns TRUE if overlay is visible. */
     inline bool visible() const { return m_visible; }
     /* Sets visibility. */
-    void setVisibility(bool visible);
+    void setVisible(bool set);
     /*! Returns render component. */
     inline PRenderComponent renderComponent() const { return m_render; }
 
@@ -74,7 +74,7 @@ class Overlay : public Object
 
   protected:
 
-    Overlay(Application* app, const EGEString& name, EGEGraphics::ERenderPrimitiveType renderType, u32 uid);
+    Overlay(Application* app, const String& name, EGEGraphics::ERenderPrimitiveType renderType, u32 uid);
     /* Invalidates object forcing it to be updated next time it's possible. */
     void invalidate();
     /* Validates object. */
@@ -90,7 +90,7 @@ class Overlay : public Object
   private:
 
     /*! Name. */
-    EGEString m_name;
+    String m_name;
     /*! Render component. */
     PRenderComponent m_render;
     /*! Physics component. */

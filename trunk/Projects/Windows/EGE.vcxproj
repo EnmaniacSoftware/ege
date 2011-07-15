@@ -18,6 +18,7 @@
     <ClCompile Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Render\RenderComponent.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Crypto\Hash.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Node.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Debug.cpp" />
@@ -83,6 +84,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlElementTinyXml_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
+    <ClInclude Include="..\..\Sources\Core\Crypto\Hash.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Complex.h" />
     <ClInclude Include="..\..\Sources\Core\Overlay\ImageOverlay.h" />
@@ -90,6 +92,7 @@
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointPulley.h" />
     <ClInclude Include="..\..\Sources\EGEAngle.h" />
     <ClInclude Include="..\..\Sources\EGEComplex.h" />
+    <ClInclude Include="..\..\Sources\EGEHash.h" />
     <ClInclude Include="..\..\Sources\EGEMatrix.h" />
     <ClInclude Include="..\..\Sources\EGEPlane.h" />
     <ClInclude Include="..\..\Sources\EGEQuaternion.h" />
@@ -232,6 +235,7 @@
     <ClInclude Include="..\..\Sources\EGETree.h" />
     <ClInclude Include="..\..\Sources\EGETypes.h" />
     <ClInclude Include="..\..\Sources\EGEVector.h" />
+    <ClInclude Include="..\..\Sources\EGEVertexBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEXml.h" />
     <ClInclude Include="..\..\Sources\Win32\Application\AppControllerWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\File\FileWin32_p.h" />

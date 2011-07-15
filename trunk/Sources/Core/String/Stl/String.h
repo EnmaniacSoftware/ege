@@ -1,39 +1,37 @@
 #ifndef EGE_CORE_STRING_H
 #define EGE_CORE_STRING_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include <EGETypes.h>
-#include "Core/Graphics/Color.h"
-#include "Core/Math/Vector2.h"
 #include <EGERect.h>
 #include <string>
+#include "Core/Graphics/Color.h"
+#include "Core/Math/Vector2.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class EGEString : public std::string
+class String : public std::string
 {
   public:
     
-    EGEString();
-    EGEString(const EGEString& string);
-    EGEString(const std::string& string);
-    EGEString(const char* string);
-   ~EGEString();
+    String();
+    String(const String& string);
+    String(const std::string& string);
+    String(const char* string);
+   ~String();
 
-   	EGEString& operator=(const char* string);
-   	EGEString& operator=(const EGEString& string);
-   	EGEString& operator+=(const char* string);
-   	EGEString& operator+=(const EGEString& string);
+   	String& operator=(const char* string);
+   	String& operator=(const String& string);
+   	String& operator+=(const char* string);
+   	String& operator+=(const String& string);
 
   public:
 
     /* Create new object from formatted text. */
-    static EGEString Format(const char* text, ...);
+    static String Format(const char* text, ...);
     /* Creates new object from given number. */
-    static EGEString FromNumber(s32 value);
+    static String FromNumber(s32 value);
 
   public:
 
@@ -41,9 +39,9 @@ class EGEString : public std::string
     void format(const char* text, ...);
 
     /* Converts self to lower-case. */
-    EGEString& toLower();
+    String& toLower();
     /* Converts self to upper-case. */
-    EGEString& toUpper();
+    String& toUpper();
     /* Returns ASCII string. */
     const char* toAscii() const;
 
@@ -62,18 +60,18 @@ class EGEString : public std::string
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline EGEString operator + (const EGEString& left, const char* right)
+inline String operator + (const String& left, const char* right)
 {
-  EGEString string;
+  String string;
   string += left;
   string += right;
 
   return string;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline EGEString operator + (EGEString& left, const EGEString& right)
+inline String operator + (String& left, const String& right)
 {
-  EGEString string;
+  String string;
   string += left;
   string += right;
 

@@ -21,7 +21,7 @@ XmlDocumentPrivate::~XmlDocumentPrivate()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Loads document from given file. */
-EGEResult XmlDocumentPrivate::load(const EGEString& fileName)
+EGEResult XmlDocumentPrivate::load(const String& fileName)
 {
   // load file
   if (!m_xml.LoadFile(fileName.toAscii()))
@@ -48,7 +48,7 @@ EGEResult XmlDocumentPrivate::load(const PDataBuffer& buffer)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns first child with the given name. */
-PXmlElement XmlDocumentPrivate::firstChild(const EGEString& name)
+PXmlElement XmlDocumentPrivate::firstChild(const String& name)
 {
   PXmlElement element;
 

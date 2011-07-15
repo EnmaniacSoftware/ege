@@ -25,7 +25,7 @@ class Camera : public Frustum
 {
   public:
 
-    Camera(const EGEString& name, SceneManager* sceneManager);
+    Camera(const String& name, SceneManager* sceneManager);
     virtual ~Camera();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -34,7 +34,7 @@ class Camera : public Frustum
     /* Returns TRUE if object is valid(). */
     bool isValid() const;
     /*! Returns camera's name. */
-    inline const EGEString& name() const { return m_name; }
+    inline const String& name() const { return m_name; }
     /*! Returns camera's physics component. */
     inline PPhysicsComponent& physics() { return m_physics; }
     /* Sets look-at vector. */
@@ -67,7 +67,7 @@ class Camera : public Frustum
   private:
 
     /*! Name. */
-    EGEString m_name;
+    String m_name;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

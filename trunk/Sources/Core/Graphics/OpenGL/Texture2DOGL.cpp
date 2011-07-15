@@ -46,7 +46,7 @@ Texture2D::~Texture2D()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Texture2D::create(const EGEString& path)
+EGEResult Texture2D::create(const String& path)
 {
   EGEResult result = EGE_SUCCESS;
 

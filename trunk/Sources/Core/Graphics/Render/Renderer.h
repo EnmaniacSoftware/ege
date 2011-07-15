@@ -51,7 +51,7 @@ class Renderer : public Object
     /*! Returns number of vertices rendered last frame. */
     inline u32 vertexCount() const { return m_vertexCount; }
 
-    //PRenderComponent addComponent(const EGEString& name = "");
+    //PRenderComponent addComponent(const String& name = "");
 
 //    void setViewport(PViewport pViewport);
     /* Sets projection matrix. */
@@ -90,7 +90,7 @@ class Renderer : public Object
     /*! Orientation rotation angle. */
     Angle m_orientationRotation;
     /*! Render data <priority, renderdata>. */
-    EGEMultiMap<s32, SRENDERDATA> m_renderData;
+    MultiMap<s32, SRENDERDATA> m_renderData;
     /*! Projection matrix. */
     Matrix4f m_projectionMatrix;
     /*! View matrix. */

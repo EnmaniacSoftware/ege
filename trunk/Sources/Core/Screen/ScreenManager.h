@@ -50,7 +50,7 @@ class ScreenManager : public Object
   private:
 
     /*! List of screens. Sorted from the bottom one to top one (currently visible). */
-    EGEList<PScreen> m_screens;
+    List<PScreen> m_screens;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

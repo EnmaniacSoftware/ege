@@ -1,0 +1,30 @@
+#include "Core/Crypto/Hash.h"
+
+EGE_NAMESPACE
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Calculates hash from string. */
+u32 Hash::FromString(const String& string)
+{
+  return Hash::FromData(reinterpret_cast<const u8*>(string.toAscii()), string.length());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Calculates hash data.
+*  @note  This function is based on Peter J. Weinberger's hash function (from the Dragon Book). The constant 24 in the original function was replaced with 
+*         23 to produce fewer collisions on input such as "a", "aa", "aaa", "aaaa", ...
+*/
+u32 Hash::FromData(const u8* data, s32 size)
+{
+  u32 h = 0;
+  u32 g;
+
+  while (size--) 
+  {
+    h = (h << 4) + *data++;
+    g = h & 0xf0000000;
+    h ^= g >> 23;
+    h &= ~g;
+  }
+  return h;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

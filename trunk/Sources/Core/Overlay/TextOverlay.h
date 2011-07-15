@@ -18,16 +18,16 @@ class TextOverlay : public Overlay
 {
   public: 
 
-    TextOverlay(Application* app, const EGEString& name);
+    TextOverlay(Application* app, const String& name);
    ~TextOverlay();
     
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
     /* Sets text. */
-    void setText(const EGEText& text);
+    void setText(const Text& text);
     /*! Returns text. */
-    const EGEText& text() const { return m_text; }
+    const Text& text() const { return m_text; }
     /* Sets font. */
     void setFont(PFont font);
     /*! Returns font. */
@@ -71,7 +71,7 @@ class TextOverlay : public Overlay
 private:
 
     /*! Overlay text. */
-    EGEText m_text;
+    Text m_text;
     /*! Font. */
     PFont m_font;
 };

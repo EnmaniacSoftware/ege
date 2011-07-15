@@ -29,15 +29,15 @@ class XmlElement : public Object
     /* Returns TRUE if element is valid object */
     bool isValid() const;
     /* Returns value of given attribute if present */
-    EGEString attribute(const EGEString& name) const;
+    String attribute(const String& name) const;
     /* Returns TRUE if given attribute exists. */
-    bool containsAttribute(const EGEString& name) const;
+    bool containsAttribute(const String& name) const;
     /* Returns first child element. */
     PXmlElement firstChild() const;
     /* Returns next child element. */
     PXmlElement nextChild() const;
     /* Returns element name. */
-    EGEString name() const;
+    String name() const;
 
   private:
 

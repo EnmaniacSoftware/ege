@@ -36,44 +36,44 @@ class ResourceManager : public Object
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Sets root directory for resources */
-    void setRootDirectory(const EGEString& rootDir);
+    void setRootDirectory(const String& rootDir);
     /* Adds resources from given file to repository. */
-    EGEResult addResources(EGEString fileName);
+    EGEResult addResources(String fileName);
     /* Adds resources from given buffer. */
    // EGEResult addResources(const PDataBuffer& buffer);
     /* Loads group with given name. */
-    EGEResult loadGroup(const EGEString& name);
+    EGEResult loadGroup(const String& name);
     /* Unloads group with given name. */
-    void unloadGroup(const EGEString& name);
+    void unloadGroup(const String& name);
     /* Gets group of the given name. */
-    PResourceGroup group(const EGEString& name) const;
+    PResourceGroup group(const String& name) const;
     /* Composes full path to given resource */
-    EGEString makeFullPath(const EGEString& localPath) const;
+    String makeFullPath(const String& localPath) const;
     /* Returns resource of a given type and name. Optionally, from given group only. */
-    PResource resource(const EGEString& typeName, const EGEString& name, const EGEString& groupName = "") const;
+    PResource resource(const String& typeName, const String& name, const String& groupName = "") const;
     /* Registeres custom resource type. */
-    EGEResult registerResource(const EGEString& typeName, egeResourceCreateFunc createFunc);
+    EGEResult registerResource(const String& typeName, egeResourceCreateFunc createFunc);
     /* Returns TRUE if given resource type is registered. */
-    bool isResourceRegistered(const EGEString& typeName) const;
+    bool isResourceRegistered(const String& typeName) const;
     /* Creates instance of resource of the type given by name. */
-    PResource createResource(const EGEString& typeName);
+    PResource createResource(const String& typeName);
 
   private:
     
     /*! Gets resource root directory */
-    inline const EGEString& rootDirectory() const { return m_rootDir; }
+    inline const String& rootDirectory() const { return m_rootDir; }
     /** Processes the RESOURCES tag.
     *  
     *   \param  filePath  relative (with respect to resource root directory) path to resouce file.
     *   \param  tag       resource element to process. 
     */
-    EGEResult processResourcesTag(const EGEString& filePath, const PXmlElement& tag);
+    EGEResult processResourcesTag(const String& filePath, const PXmlElement& tag);
     /** Add new group from XML data.
     *  
     *   \param  filePath  relative (with respect to resource root directory) path to resouce file containing the group definition.
     *   \param  tag       group element to process. 
     */
-    EGEResult addGroup(const EGEString& filePath, const PXmlElement& tag);
+    EGEResult addGroup(const String& filePath, const PXmlElement& tag);
     /* Removes all groups. */
     void removeGroups();
 
@@ -90,11 +90,11 @@ class ResourceManager : public Object
   private:
 
     /*! Resource root dir */
-    EGEString m_rootDir;
+    String m_rootDir;
     /*! Resource groups defined */
-    EGEList<PResourceGroup> m_groups;
+    List<PResourceGroup> m_groups;
     /*! Registered resources sorted by type name. */
-    EGEMap<EGEString, ResourceRegistryEntry> m_registeredResources;
+    Map<String, ResourceRegistryEntry> m_registeredResources;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

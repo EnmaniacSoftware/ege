@@ -1,11 +1,14 @@
 #ifndef EGE_CORE_VERTEXBUFFER_H
 #define EGE_CORE_VERTEXBUFFER_H
 
-// VertexBuffer is used to define single vertex lookup and to keep certain amount of such vertices in memory
-// Vertex data is stored one after another (interleaved)
+/** 
+*   VertexBuffer is used to define single vertex lookup and to keep certain amount of such vertices in memory
+*   Vertex data is stored one after another (interleaved)
+*/
 
-#include "EGE.h"
-#include "EGEDynamicArray.h"
+#include <EGE.h>
+#include <EGEVertexBuffer.h>
+#include <EGEDynamicArray.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -26,26 +29,6 @@ class VertexBuffer : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    enum ArrayType
-    {
-      ARRAY_TYPE_NONE          = 0,
-      ARRAY_TYPE_POSITION_XYZ  = 1,
-      ARRAY_TYPE_NORMAL        = 2,
-      ARRAY_TYPE_TEXTURE_UV    = 4,
-      ARRAY_TYPE_COLOR_RGBA    = 8,
-      ARRAY_TYPE_TANGENT       = 16
-    };
-
-    struct SBUFFERSEMANTIC
-    {
-      /*! Array type. */
-      ArrayType type;
-      /*! Offset to array start (in bytes). */
-      u32 offset;
-      /*! Index of array within the same array type. Only valid for some of the array types like texture coords. */
-      u32 index;
-    };
-
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Creates buffer for requested number of vertices. */
@@ -58,12 +41,12 @@ class VertexBuffer : public Object
     void unlock();
 
     /* Adds given array type to overall semantics. */
-    bool addBuffer(ArrayType type);
+    bool addArray(EGEVertexBuffer::ArrayType type);
     /* Returns number of arrays of given type in semantics. */
-    u32 bufferCount(ArrayType type) const;
+    u32 arrayCount(EGEVertexBuffer::ArrayType type) const;
 
-    /* Returns current buffer semantics. */
-    const EGEDynamicArray<SBUFFERSEMANTIC>& semantics() const;
+    /* Returns current array semantics. */
+    const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& semantics() const;
 
     /* Returns number of allocated vertices. */
     u32 vertexCount() const;
@@ -84,7 +67,7 @@ class VertexBuffer : public Object
     /*! Cached vertex size (in bytes), 0 if not calculated yet. */
     mutable u32 m_vertexSize;
     /*! Buffer semantics. */
-    EGEDynamicArray<SBUFFERSEMANTIC> m_semantics;
+    DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC> m_semantics;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

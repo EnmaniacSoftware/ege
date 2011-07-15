@@ -22,7 +22,7 @@ class ResourceGroup : public Object
 {
   public:
 
-    ResourceGroup(Application* app, ResourceManager* manager, const EGEString& path);
+    ResourceGroup(Application* app, ResourceManager* manager, const String& path);
    ~ResourceGroup();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -35,13 +35,13 @@ class ResourceGroup : public Object
     /* Unloads the group resources. */
     void unload();
     /*! Returns group name. */
-    inline const EGEString& name() const { return m_name; }
+    inline const String& name() const { return m_name; }
     /* Returns resource of a given type and name. */
-    PResource resource(const EGEString& typeName, const EGEString& name) const;
+    PResource resource(const String& typeName, const String& name) const;
     /* Returns list of all resources of the given type. */
-    EGEList<PResource> resources(const EGEString& typeName) const;
+    List<PResource> resources(const String& typeName) const;
     /*! Returns path to location of group file. */
-    inline const EGEString& path() const { return m_path; }
+    inline const String& path() const { return m_path; }
 
   private:
 
@@ -55,20 +55,20 @@ class ResourceGroup : public Object
   private:
 
     /*! Container holding all group resources sorted by type name. */
-    typedef EGEMultiMap<EGEString, PResource> ResourcesMap;
+    typedef MultiMap<String, PResource> ResourcesMap;
 
   private:
 
     /*! Pointer to owning manager. */
     ResourceManager* m_manager;
     /*! Group name. */
-    EGEString m_name;
+    String m_name;
     /*! Resources map. */
     ResourcesMap m_resources;
     /*! Is group loaded. */
     bool m_loaded;
     /*! Relative (with respect to root resource directory) path to group definition. */
-    EGEString m_path;
+    String m_path;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

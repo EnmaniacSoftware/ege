@@ -16,7 +16,7 @@ EGE_DEFINE_NEW_OPERATORS(File)
 EGE_DEFINE_DELETE_OPERATORS(File)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-File::File(const EGEString& filePath) : Object(NULL), m_p(NULL), m_filePath(filePath)
+File::File(const String& filePath) : Object(NULL), m_p(NULL), m_filePath(filePath)
 {
   m_p = ege_new FilePrivate(this);
 }
@@ -33,7 +33,7 @@ bool File::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns file path. */
-const EGEString& File::filePath() const
+const String& File::filePath() const
 {
   return m_filePath;
 }

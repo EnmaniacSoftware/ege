@@ -34,13 +34,13 @@ class ResourceTexture : public IResource
     static PResource Create(Application* app, ResourceManager* manager);
 
     /* IResource override. Returns name of resource. */
-    const EGEString& name() const override;
+    const String& name() const override;
     /* Initializes resource from XML. 
     * 
     *  \param  path  full path to resource definition file.
     *  \param  tag   xml element with resource definition. 
     */
-    EGEResult create(const EGEString& path, const PXmlElement& tag) override;
+    EGEResult create(const String& path, const PXmlElement& tag) override;
     /* IResource override. Loads resource. */
     EGEResult load() override;
     /* IResource override. Unloads resource. */
@@ -55,36 +55,36 @@ class ResourceTexture : public IResource
     /* Creates 2D texture. */
     EGEResult create2D();
     /*! Gets texture type. */
-    inline const EGEString& type() const { return m_type; }
+    inline const String& type() const { return m_type; }
     /* Returns TRUE if texture is loaded. */
     inline bool isLoaded() const { return NULL != m_texture; }
     /*! Gets minifying function name. */
-    inline const EGEString& minFilter() const { return m_minFilter; }
+    inline const String& minFilter() const { return m_minFilter; }
     /*! Gets magnification function name. */
-    inline const EGEString& magFilter() const { return m_magFilter; }
+    inline const String& magFilter() const { return m_magFilter; }
     /*! Gets wrap S coordinate mode name. */
-    inline const EGEString& wrapS() const { return m_wrapS; }
+    inline const String& wrapS() const { return m_wrapS; }
     /*! Gets wrap T coordinate mode name. */
-    inline const EGEString& wrapT() const { return m_wrapT; }
+    inline const String& wrapT() const { return m_wrapT; }
     /*! Gets path to texture file */
-    inline const EGEString& path() const { return m_path; } 
+    inline const String& path() const { return m_path; } 
 
   private:
 
     /*! Texture name. */
-    EGEString m_name;
+    String m_name;
     /*! Texture path. */
-    EGEString m_path;
+    String m_path;
     /*! Texture type. */
-    EGEString m_type;
+    String m_type;
     /*! Texture minifying function name. */
-    EGEString m_minFilter;
+    String m_minFilter;
     /*! Texture magnification function name. */
-    EGEString m_magFilter;
+    String m_magFilter;
     /*! Texture wrap S coordinate mode name. */
-    EGEString m_wrapS;
+    String m_wrapS;
     /*! Texture wrap T coordinate mode name. */
-    EGEString m_wrapT;
+    String m_wrapT;
     /*! Texture object created from resource. NULL if not created yet. */
     PObject m_texture;
 };

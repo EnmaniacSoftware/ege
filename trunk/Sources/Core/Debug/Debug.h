@@ -17,8 +17,8 @@ class Debug
 
     static void Deinit();
     static void Assert(const char* description);
-    static void Log(const EGEString& text);
-    static void Print(const EGEString& text);
+    static void Log(const String& text);
+    static void Print(const String& text);
 
   private:
 

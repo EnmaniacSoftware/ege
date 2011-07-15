@@ -15,7 +15,7 @@ EGE_DEFINE_NEW_OPERATORS(PhysicsComponent)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsComponent)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsComponent::PhysicsComponent(Application* app, const EGEString& name, EGEPhysics::EComponentType type) 
+PhysicsComponent::PhysicsComponent(Application* app, const String& name, EGEPhysics::EComponentType type) 
 : IComponent(app, EGE_OBJECT_UID_PHYSICS_COMPONENT, name), m_type(type), m_position(Vector4f::ZERO), m_linearVelocity(Vector4f::ZERO), 
   m_force(Vector4f::ZERO), m_orientation(Quaternionf::IDENTITY), m_mass(1.0f), m_scale(Vector4f::ONE)
 {
@@ -205,7 +205,7 @@ bool PhysicsComponent::addCircleShape(EGE::float32 radius, EGE::float32 density,
 *  @param points  vertices of polygon shape.
 *  @param density shape density. Affects mass.
 */
-bool PhysicsComponent::addPolygonShape(const EGEDynamicArray<Vector4f>& points, EGE::float32 density, EGEPhysics::CollisionData colissionData)
+bool PhysicsComponent::addPolygonShape(const DynamicArray<Vector4f>& points, EGE::float32 density, EGEPhysics::CollisionData colissionData)
 {
   EGE_ASSERT(isValid());
   if (isValid())

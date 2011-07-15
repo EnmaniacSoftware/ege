@@ -26,7 +26,7 @@ PResource ResourceFont::Create(Application* app, ResourceManager* manager)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
-const EGEString& ResourceFont::name() const
+const String& ResourceFont::name() const
 {
   return m_name;
 }
@@ -42,7 +42,7 @@ bool ResourceFont::isLoaded() const
 *  \param  path  full path to resource definition file.
 *  \param  tag   xml element with resource definition. 
 */
-EGEResult ResourceFont::create(const EGEString& path, const PXmlElement& tag)
+EGEResult ResourceFont::create(const String& path, const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
 

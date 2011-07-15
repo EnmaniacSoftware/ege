@@ -1,6 +1,6 @@
 #include "Core/Application/Application.h"
 #include "EGEEvent.h"
-#include "EGEString.h"
+#include "String.h"
 #include "EGEEvent.h"
 #include "EGEInput.h"
 #include "EGEMath.h"

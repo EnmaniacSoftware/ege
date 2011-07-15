@@ -70,7 +70,7 @@ Graphics::~Graphics()
 void Graphics::render()
 {
   // go thru all elements
-  for (EGEMultiMap<s32, PRenderTarget>::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
+  for (MultiMap<s32, PRenderTarget>::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
   {
     PRenderTarget target = iter->second;
 
@@ -87,7 +87,7 @@ void Graphics::render()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets current rendering context. */
-EGEResult Graphics::setCurrentRenderingContext(PRenderTarget pRenderTarget)
+EGEResult Graphics::setCurrentRenderingContext(PRenderTarget target)
 {
   EGEResult eResult = EGE_SUCCESS;
 
@@ -99,7 +99,7 @@ EGEResult Graphics::setCurrentRenderingContext(PRenderTarget pRenderTarget)
   }
 
   // set new rendering context
-  m_currentRenderingContext = pRenderTarget;
+  m_currentRenderingContext = target;
 
   // make it current if valid
   if (m_currentRenderingContext)
@@ -118,13 +118,13 @@ bool Graphics::isValid() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Graphics::registerRenderTarget(PRenderTarget target)
 {
-  m_renderTargets.insert(EGEMultiMap<s32, PRenderTarget>::value_type(target->priority(), target));
+  m_renderTargets.insert(MultiMap<s32, PRenderTarget>::value_type(target->priority(), target));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Graphics::removeRenderTarget(const EGEString& name)
+void Graphics::removeRenderTarget(const String& name)
 {
   // go thru all elements
-  for (EGEMultiMap<s32, PRenderTarget>::iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
+  for (MultiMap<s32, PRenderTarget>::iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
   {
     // check if given render target has been found
     if (name == iter->second->name())
@@ -139,10 +139,10 @@ void Graphics::removeRenderTarget(const EGEString& name)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PRenderTarget Graphics::renderTarget(const EGEString& name) const
+PRenderTarget Graphics::renderTarget(const String& name) const
 {
   // go thru all elements
-  for (EGEMultiMap<s32, PRenderTarget>::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
+  for (MultiMap<s32, PRenderTarget>::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
   {
     // check if given render target has been found
     if (name == iter->second->name())
@@ -157,7 +157,7 @@ PRenderTarget Graphics::renderTarget(const EGEString& name) const
 void Graphics::unregisterAllRenderTargets()
 {
   // go thru all elements
-  for (EGEMultiMap<s32, PRenderTarget>::iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end();)
+  for (MultiMap<s32, PRenderTarget>::iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end();)
   {
     // deallocate
     iter->second = NULL;

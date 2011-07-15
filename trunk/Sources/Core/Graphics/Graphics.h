@@ -1,8 +1,7 @@
 #ifndef EGE_CORE_GRAPHICS_H
 #define EGE_CORE_GRAPHICS_H
 
-#include "EGE.h"
-#include "EGEMap.h"
+#include <EGEMap.h>
 #include "Core/ConfigParams.h"
 #include "Core/Graphics/Render/Renderer.h"
 
@@ -32,7 +31,7 @@ class Graphics : public Object
     /* Renders all registered targets. */
     void render();
     /* Sets current rendering context. */
-    EGEResult setCurrentRenderingContext(PRenderTarget pRenderTarget);
+    EGEResult setCurrentRenderingContext(PRenderTarget target);
     /*! Returns renderer. */
     inline PRenderer renderer() const { return m_renderer; }
     /*! Returns main render window. */
@@ -40,9 +39,9 @@ class Graphics : public Object
     /*! Registers render target for use. */
     void registerRenderTarget(PRenderTarget target);
     /*! Returns render target with the given name from registered pool. */
-    PRenderTarget renderTarget(const EGEString& name) const;
+    PRenderTarget renderTarget(const String& name) const;
     /*! Removes render target with the given name from registered pool. */
-    void removeRenderTarget(const EGEString& name);
+    void removeRenderTarget(const String& name);
 //    const RenderTargetPriorityMap& getRenderTargetMap() const;
 
   private:
@@ -61,7 +60,7 @@ class Graphics : public Object
     /*! Current rendering context. NULL if none is set. */
     PRenderTarget m_currentRenderingContext;
     /*! Render targets sorted by priority. */
-    EGEMultiMap<s32, PRenderTarget> m_renderTargets; 
+    MultiMap<s32, PRenderTarget> m_renderTargets; 
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

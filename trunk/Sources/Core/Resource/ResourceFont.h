@@ -45,13 +45,13 @@ class ResourceFont : public IResource
     static PResource Create(Application* app, ResourceManager* manager);
 
     /* IResource override. Returns name of resource. */
-    const EGEString& name() const override;
+    const String& name() const override;
     /* Initializes resource from XML. 
     * 
     *  \param  path  full path to resource definition file.
     *  \param  tag   xml element with resource definition. 
     */
-    EGEResult create(const EGEString& path, const PXmlElement& tag) override;
+    EGEResult create(const String& path, const PXmlElement& tag) override;
     /* IResource override. Loads resource. */
     EGEResult load() override;
     /* IResource override. Unloads resource. */
@@ -65,20 +65,20 @@ class ResourceFont : public IResource
     /* Returns TRUE if resource is loaded. */
     bool isLoaded() const;
     /*! Returns material name. */
-    inline const EGEString& materialName() const { return m_materialName; } 
+    inline const String& materialName() const { return m_materialName; } 
     /*! Returns height of the font (in pixels) */
     inline s32 height() const { return m_height; }
 
   private:
 
     /*! Name. */
-    EGEString m_name;
+    String m_name;
     /*! Material name. */
-    EGEString m_materialName;
+    String m_materialName;
     /*! Font screen height (in pixels). */
     s32 m_height;
     /*! Map of glyphs sorted by UTF-16 value. */
-    EGEMap<EGEChar, GlyphData> m_glyphs;
+    Map<Char, GlyphData> m_glyphs;
     /*! Font object. NULL if not created yet. */
     PFont m_font;
 };

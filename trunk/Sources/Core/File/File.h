@@ -19,7 +19,7 @@ class File : public Object
 {
   public:
 
-    File(const EGEString& filePath);
+    File(const String& filePath);
    ~File();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -46,7 +46,7 @@ class File : public Object
     /* Returns TRUE if file is opened. */
     bool isOpen() const;
     /* Returns file path. */
-    const EGEString& filePath() const;
+    const String& filePath() const;
     /* Returns file size. Returns -1 if error occured. */
     s64 size();
 
@@ -78,7 +78,7 @@ class File : public Object
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(File);
 
     /*! Full file path. */
-    EGEString m_filePath;
+    String m_filePath;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,8 +1,6 @@
 #ifndef EGE_CORE_CONTAINER_MAP_H
 #define EGE_CORE_CONTAINER_MAP_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include "Core/Platform.h"
 #include <map>
 
@@ -11,7 +9,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <typename T, typename U>
-class EGEMap : public std::map<T, U>
+class Map : public std::map<T, U>
 {
   public:
 
@@ -26,22 +24,22 @@ class EGEMap : public std::map<T, U>
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given key is present. */
 template <typename T, typename U>
-bool EGEMap<T, U>::contains(const T& key) const
+bool Map<T, U>::contains(const T& key) const
 {
   return this->find(key) != this->end();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns value associated with given key. If key is not found, default value is returned. */
 template <typename T, typename U>
-U EGEMap<T, U>::value(const T& key, const U& defaultValue) const
+U Map<T, U>::value(const T& key, const U& defaultValue) const
 {
-  typename EGEMap<T, U>::const_iterator it = this->find(key);
+  typename Map<T, U>::const_iterator it = this->find(key);
   return (it != this->end()) ? it->second : defaultValue;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Inserts value with given key to map. */
 template <typename T, typename U>
-void EGEMap<T, U>::insert(const T& key, const U& value)
+void Map<T, U>::insert(const T& key, const U& value)
 {
   std::map<T, U>::insert(std::pair<T, U>(key, value));
 }

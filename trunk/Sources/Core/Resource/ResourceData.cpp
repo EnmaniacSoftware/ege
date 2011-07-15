@@ -25,7 +25,7 @@ PResource ResourceData::Create(Application* app, ResourceManager* manager)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
-const EGEString& ResourceData::name() const
+const String& ResourceData::name() const
 {
   return m_name;
 }
@@ -35,7 +35,7 @@ const EGEString& ResourceData::name() const
 *  \param  path  full path to resource definition file.
 *  \param  tag   xml element with resource definition. 
 */
-EGEResult ResourceData::create(const EGEString& path, const PXmlElement& tag)
+EGEResult ResourceData::create(const String& path, const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
 

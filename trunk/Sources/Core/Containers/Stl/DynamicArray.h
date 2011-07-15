@@ -1,8 +1,6 @@
 #ifndef EGE_CORE_CONTAINER_DYNAMICARRAY_H
 #define EGE_CORE_CONTAINER_DYNAMICARRAY_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include "Core/Platform.h"
 #include <vector>
 #include <algorithm>
@@ -12,12 +10,12 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <typename T>
-class EGEDynamicArray : public std::vector<T>
+class DynamicArray : public std::vector<T>
 {
   public:
 
-    EGEDynamicArray();
-    EGEDynamicArray(const T& object);
+    DynamicArray();
+    DynamicArray(const T& object);
 
     /* Removes given object from list. */
     void remove(const T object);
@@ -26,30 +24,30 @@ class EGEDynamicArray : public std::vector<T>
     /* Returns TRUE if given object is present. */
     inline bool contains(const T object) const;
     /* Copies all data from given list. */
-    void copy(const EGEDynamicArray& other);
+    void copy(const DynamicArray& other);
     /* Appends given list. */
-    EGEDynamicArray& operator << (const EGEDynamicArray& other);
+    DynamicArray& operator << (const DynamicArray& other);
     /* Appends given element. */
-    EGEDynamicArray& operator << (const T& value);
+    DynamicArray& operator << (const T& value);
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-EGEDynamicArray<T>::EGEDynamicArray()
+DynamicArray<T>::DynamicArray()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-EGEDynamicArray<T>::EGEDynamicArray(const T& object)
+DynamicArray<T>::DynamicArray(const T& object)
 {
   push_back(object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Removes given object from list. */
 template <typename T>
-void EGEDynamicArray<T>::remove(const T object)
+void DynamicArray<T>::remove(const T object)
 {
-  typename EGEDynamicArray<T>::iterator it = std::find(this->begin(), this->end(), object);
+  typename DynamicArray<T>::iterator it = std::find(this->begin(), this->end(), object);
   if (it != this->end())
   {
     erase(it);
@@ -58,22 +56,22 @@ void EGEDynamicArray<T>::remove(const T object)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns last element. If list is empty, default value is returned. */
 template <typename T>
-const T EGEDynamicArray<T>::last(const T& defaultValue) const
+const T DynamicArray<T>::last(const T& defaultValue) const
 {
   return (0 == this->size()) ? defaultValue : this->at(this->size() - 1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given object is present. */
 template <typename T>
-bool EGEDynamicArray<T>::contains(const T object) const
+bool DynamicArray<T>::contains(const T object) const
 {
-  typename EGEDynamicArray<T>::const_iterator it = std::find(this->begin(), this->end(), object);
+  typename DynamicArray<T>::const_iterator it = std::find(this->begin(), this->end(), object);
   return (it != this->end());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Copies all data from given list. */
 template <typename T>
-void EGEDynamicArray<T>::copy(const EGEDynamicArray<T>& other)
+void DynamicArray<T>::copy(const DynamicArray<T>& other)
 {
   this->clear();
   this->insert(this->begin(), other.begin(), other.end());
@@ -81,7 +79,7 @@ void EGEDynamicArray<T>::copy(const EGEDynamicArray<T>& other)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Appends given list. */
 template <typename T>
-EGEDynamicArray<T>& EGEDynamicArray<T>::operator << (const EGEDynamicArray<T>& other)
+DynamicArray<T>& DynamicArray<T>::operator << (const DynamicArray<T>& other)
 {
   this->insert(this->end(), other.begin(), other.end());
   return *this;
@@ -89,7 +87,7 @@ EGEDynamicArray<T>& EGEDynamicArray<T>::operator << (const EGEDynamicArray<T>& o
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Appends given element. */
 template <typename T>
-EGEDynamicArray<T>& EGEDynamicArray<T>::operator << (const T& value)
+DynamicArray<T>& DynamicArray<T>::operator << (const T& value)
 {
   this->push_back(value);
   return *this;

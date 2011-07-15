@@ -30,7 +30,7 @@ class Texture2D : public Object
     EGE_DECLARE_DELETE_OPERATORS
 
     /* Creates texture from given file. */
-    EGEResult create(const EGEString& path);
+    EGEResult create(const String& path);
     /* Sets minifying function filter. */
     void setMinFilter(EGETexture::Filter filter);
     /* Sets magnification function filter. */

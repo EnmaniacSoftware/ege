@@ -4,9 +4,9 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns given path with converted sperators. */
-EGEString Dir::FromNativeSeparators(const EGEString& path)
+String Dir::FromNativeSeparators(const String& path)
 {
-  EGEString result = path;
+  String result = path;
 
   size_t pos = 0;
   while (std::string::npos != (pos = result.find("\\", pos)))
@@ -18,7 +18,7 @@ EGEString Dir::FromNativeSeparators(const EGEString& path)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Decomposes full path into seperate path and file name. */
-void Dir::DecomposePath(const EGEString& fullPath, EGEString& path, EGEString& fileName)
+void Dir::DecomposePath(const String& fullPath, String& path, String& fileName)
 {
   path.clear();
 

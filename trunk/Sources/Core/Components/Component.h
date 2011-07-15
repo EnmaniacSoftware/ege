@@ -19,18 +19,18 @@ class IComponent : public Object
 {
   public:
 
-    IComponent(Application* app, u32 uid, const EGEString& name = "");
+    IComponent(Application* app, u32 uid, const String& name = "");
     virtual ~IComponent();
 
     /*! Returns TRUE if component is valid. */
     virtual bool isValid() const = 0;
     /*! Gets component name. */
-    inline const EGEString& name() const { return m_name; }
+    inline const String& name() const { return m_name; }
 
   private:
 
     /*! Component name. */
-    EGEString m_name;
+    String m_name;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

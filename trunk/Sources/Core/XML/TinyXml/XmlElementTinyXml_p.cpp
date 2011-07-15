@@ -27,13 +27,13 @@ bool XmlElementPrivate::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns value of given attribute if present */
-EGEString XmlElementPrivate::attribute(const EGEString& name) const
+String XmlElementPrivate::attribute(const String& name) const
 {
   return (isValid() && m_element->Attribute(name.toAscii())) ? m_element->Attribute(name.toAscii()) : NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given attribute exists. */
-bool XmlElementPrivate::containsAttribute(const EGEString& name) const
+bool XmlElementPrivate::containsAttribute(const String& name) const
 {
   return isValid() && m_element->Attribute(name.toAscii());
 }
@@ -51,7 +51,7 @@ XmlElementPrivate* XmlElementPrivate::nextChild() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns element name. */
-EGEString XmlElementPrivate::name() const
+String XmlElementPrivate::name() const
 {
   return isValid() ? m_element->Value() : NULL;
 }

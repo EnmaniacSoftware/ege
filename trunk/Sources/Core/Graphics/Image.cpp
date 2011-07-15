@@ -114,7 +114,7 @@ Image::StreamType Image::determineStreamType(File& file) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Loads image converting it's format to requested one. */
-EGEResult Image::load(const EGEString& fileName, EGEImage::Format format)
+EGEResult Image::load(const String& fileName, EGEImage::Format format)
 {
   EGEResult result;
 
@@ -423,7 +423,7 @@ EGEResult Image::allocateData(s32 width, s32 height, EGEImage::Format format)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Saves image into a given file. */
-EGEResult Image::save(const EGEString& fileName)
+EGEResult Image::save(const String& fileName)
 {
   EGEResult result = EGE_SUCCESS;
   return result;

@@ -26,24 +26,24 @@ bool VertexBuffer::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds given array type to overall semantics. */
-bool VertexBuffer::addBuffer(ArrayType type)
+bool VertexBuffer::addArray(EGEVertexBuffer::ArrayType type)
 {
   u32 offset = 0;
   u32 index = 0;
 
-  SBUFFERSEMANTIC semantic;
+  EGEVertexBuffer::SARRAYSEMANTIC semantic;
   
   // go thru all semantics
-  for (EGEDynamicArray<SBUFFERSEMANTIC>::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
+  for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
   {
     // calculate according to type
     switch (iter->type)
     {
-      case VertexBuffer::ARRAY_TYPE_POSITION_XYZ:  offset += 3; break;
-      case VertexBuffer::ARRAY_TYPE_COLOR_RGBA:    offset += 4; break;
-      case VertexBuffer::ARRAY_TYPE_NORMAL:        offset += 3; break;
-      case VertexBuffer::ARRAY_TYPE_TEXTURE_UV:    offset += 2; break;
-      case VertexBuffer::ARRAY_TYPE_TANGENT:       offset += 3; break;
+      case EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ:  offset += 3; break;
+      case EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA:    offset += 4; break;
+      case EGEVertexBuffer::ARRAY_TYPE_NORMAL:        offset += 3; break;
+      case EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV:    offset += 2; break;
+      case EGEVertexBuffer::ARRAY_TYPE_TANGENT:       offset += 3; break;
     }
 
     // check if the same array type is already in
@@ -69,10 +69,10 @@ bool VertexBuffer::addBuffer(ArrayType type)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns number of arrays of given type in semantics. */
-u32 VertexBuffer::bufferCount(ArrayType type) const
+u32 VertexBuffer::arrayCount(EGEVertexBuffer::ArrayType type) const
 {
   u32 count = 0;
-  for (EGEDynamicArray<SBUFFERSEMANTIC>::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
+  for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
   {
     if (iter->type == type)
     {
@@ -166,15 +166,15 @@ u32 VertexBuffer::vertexSize() const
   if (0 == m_vertexSize)
   {
     // go thru all buffers
-    for (EGEDynamicArray<SBUFFERSEMANTIC>::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
+    for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
     {
       switch (iter->type)
       {
-        case VertexBuffer::ARRAY_TYPE_POSITION_XYZ:  m_vertexSize += 3; break;
-        case VertexBuffer::ARRAY_TYPE_COLOR_RGBA:    m_vertexSize += 4; break;
-        case VertexBuffer::ARRAY_TYPE_NORMAL:        m_vertexSize += 3; break;
-        case VertexBuffer::ARRAY_TYPE_TEXTURE_UV:    m_vertexSize += 2; break;
-        case VertexBuffer::ARRAY_TYPE_TANGENT:       m_vertexSize += 3; break;
+        case EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ:  m_vertexSize += 3; break;
+        case EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA:    m_vertexSize += 4; break;
+        case EGEVertexBuffer::ARRAY_TYPE_NORMAL:        m_vertexSize += 3; break;
+        case EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV:    m_vertexSize += 2; break;
+        case EGEVertexBuffer::ARRAY_TYPE_TANGENT:       m_vertexSize += 3; break;
       }
     }
 
@@ -185,7 +185,7 @@ u32 VertexBuffer::vertexSize() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns current buffer semantics. */
-const EGEDynamicArray<VertexBuffer::SBUFFERSEMANTIC>& VertexBuffer::semantics() const
+const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& VertexBuffer::semantics() const
 {
   return m_semantics; 
 }

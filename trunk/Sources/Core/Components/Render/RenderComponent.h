@@ -20,15 +20,15 @@ class RenderComponent : public IComponent
 {
   public:
 
-    RenderComponent(Application* app, const EGEString& name, s32 priority = EGEGraphics::RENDER_PRIORITY_MAIN,
+    RenderComponent(Application* app, const String& name, s32 priority = EGEGraphics::RENDER_PRIORITY_MAIN,
                     EGEGraphics::ERenderPrimitiveType primitive = EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLES);
-    virtual ~RenderComponent();
+   ~RenderComponent();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
     /* IComponent override. Returns TRUE if component is valid. */
-    virtual bool isValid() const override;
+    bool isValid() const override;
     /*! Returns index buffer. */
     inline PIndexBuffer indexBuffer() const { return m_indexBuffer; }
     /*! Returns vertex buffer. */  
@@ -43,6 +43,17 @@ class RenderComponent : public IComponent
     inline PMaterial material() const { return m_material; }
     /* Sets render material. */
     void setMaterial(const PMaterial& material);
+    /* Returns hash. */
+    u32 hash() const;
+
+  private:
+
+    /* Invalidates hash value. */
+    void invalidateHash();
+    /*! Returns TRUE if hash value needs to be recalulated. */
+    inline bool isHashInvalid() const { return 0 == hash(); }
+    /* Calculates hash. */
+    void calculateHash() const;
 
   private:
 
@@ -56,6 +67,8 @@ class RenderComponent : public IComponent
     EGEGraphics::ERenderPrimitiveType m_primitiveType;
     /*! Render material. */
     PMaterial m_material;
+    /*! Hash value. */
+    mutable u32 m_hash;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

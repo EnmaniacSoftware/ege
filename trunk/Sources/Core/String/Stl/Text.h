@@ -1,8 +1,6 @@
 #ifndef EGE_CORE_TEXT_H
 #define EGE_CORE_TEXT_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include <EGETypes.h>
 #include <string>
 #include "Core/String/Stl/String.h"
@@ -11,34 +9,34 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class EGEText : public std::wstring
+class Text : public std::wstring
 {
   public:
     
-    EGEText();
-    EGEText(const EGEText& text);
-    EGEText(const char* string);
-    EGEText(const EGEString& string);
-   ~EGEText();
+    Text();
+    Text(const Text& text);
+    Text(const char* string);
+    Text(const String& string);
+   ~Text();
 
-   	EGEText& operator=(const EGEText& string);
-   	EGEText& operator+=(const EGEText& string);
+   	Text& operator=(const Text& string);
+   	Text& operator+=(const Text& string);
 
     /* Create new object from formatted text. */
-    static EGEText Format(const char* text, ...);
+    static Text Format(const char* text, ...);
 
     /* Creates formatted text. */
     void format(const char* text, ...);
     /* Converts self to lower-case. */
-    EGEText& toLower();
+    Text& toLower();
     /* Converts self to upper-case. */
-    EGEText& toUpper();
+    Text& toUpper();
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline EGEText operator+(EGEText& left, const EGEText& right)
+inline Text operator+(Text& left, const Text& right)
 {
-  EGEText string;
+  Text string;
   string += left;
   string += right;
 

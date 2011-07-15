@@ -23,7 +23,7 @@ RenderTarget::~RenderTarget()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds new viewport for target associated with given camera. */
-PViewport RenderTarget::addViewport(const EGEString& name, PCamera camera)
+PViewport RenderTarget::addViewport(const String& name, PCamera camera)
 {
   // check if such viewport is there already
   if (NULL != viewport(name))
@@ -43,9 +43,9 @@ PViewport RenderTarget::addViewport(const EGEString& name, PCamera camera)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Removes viewport with the given name from target. */
-void RenderTarget::removeViewport(const EGEString& name)
+void RenderTarget::removeViewport(const String& name)
 {
-  for (EGEDynamicArray<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
+  for (DynamicArray<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
   {
     PViewport viewport = *iter;
 
@@ -60,9 +60,9 @@ void RenderTarget::removeViewport(const EGEString& name)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns viewport with the given name associated with target. */
-PViewport RenderTarget::viewport(const EGEString& name) const
+PViewport RenderTarget::viewport(const String& name) const
 {
-  for (EGEDynamicArray<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
+  for (DynamicArray<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
   {
     PViewport viewport = *iter;
 
@@ -78,7 +78,7 @@ PViewport RenderTarget::viewport(const EGEString& name) const
 /*! Removes all viewport associated with target. */
 void RenderTarget::removeAllViewports()
 {
-  for (EGEDynamicArray<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end();)
+  for (DynamicArray<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end();)
   {
     *iter = NULL;
 
@@ -94,7 +94,7 @@ void RenderTarget::render()
   m_vertexCount = 0;
 
   // go thru all viewports
-  for (EGEDynamicArray<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
+  for (DynamicArray<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
   {
     PViewport viewport = *iter;
 

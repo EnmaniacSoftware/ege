@@ -33,18 +33,18 @@ bool XmlElement::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns value of given attribute if present */
-EGEString XmlElement::attribute(const EGEString& name) const
+String XmlElement::attribute(const String& name) const
 {
   if (isValid())
   {
     return p_func()->attribute(name);
   }
 
-  return EGEString();
+  return String();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given attribute exists. */
-bool XmlElement::containsAttribute(const EGEString& name) const
+bool XmlElement::containsAttribute(const String& name) const
 {
   if (isValid())
   {
@@ -67,13 +67,13 @@ PXmlElement XmlElement::nextChild() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns element name. */
-EGEString XmlElement::name() const
+String XmlElement::name() const
 {
   if (isValid())
   {
     return p_func()->name();
   }
 
-  return EGEString();
+  return String();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

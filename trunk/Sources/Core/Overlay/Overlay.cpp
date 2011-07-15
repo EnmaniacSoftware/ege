@@ -8,13 +8,13 @@ EGE_DEFINE_NEW_OPERATORS(Overlay)
 EGE_DEFINE_DELETE_OPERATORS(Overlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Overlay::Overlay(Application* app, const EGEString& name, EGEGraphics::ERenderPrimitiveType renderType) : Object(app, EGE_OBJECT_UID_OVERLAY), m_name(name), 
+Overlay::Overlay(Application* app, const String& name, EGEGraphics::ERenderPrimitiveType renderType) : Object(app, EGE_OBJECT_UID_OVERLAY), m_name(name), 
                                                                                                           m_updateNeeded(false), m_visible(true)
 {
   initialize(renderType);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Overlay::Overlay(Application* app, const EGEString& name, EGEGraphics::ERenderPrimitiveType renderType, u32 uid) : Object(app, uid), m_name(name), 
+Overlay::Overlay(Application* app, const String& name, EGEGraphics::ERenderPrimitiveType renderType, u32 uid) : Object(app, uid), m_name(name), 
                                                                                                                    m_updateNeeded(false), m_visible(true)
 {
   initialize(renderType);
@@ -45,9 +45,9 @@ void Overlay::initialize(EGEGraphics::ERenderPrimitiveType renderType)
   m_render  = ege_new RenderComponent(app(), "overlay_" + name(), EGEGraphics::RENDER_PRIORITY_MAIN_OVERLAY, renderType);
 
   // add render buffers
-  if (!m_render->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_POSITION_XYZ) ||
-      !m_render->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_TEXTURE_UV) ||
-      !m_render->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_COLOR_RGBA))
+  if (!m_render->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ) ||
+      !m_render->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV) ||
+      !m_render->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA))
   {
     // error!
     m_render  = NULL;
@@ -75,11 +75,11 @@ void Overlay::render(const Viewport* viewport, Renderer* renderer)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets visibility. */
-void Overlay::setVisibility(bool visible)
+void Overlay::setVisible(bool set)
 {
-  if (m_visible != visible)
+  if (m_visible != set)
   {
-    m_visible = visible;
+    m_visible = set;
 
     if (m_visible)
     {

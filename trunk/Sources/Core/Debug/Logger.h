@@ -12,7 +12,7 @@ class Logger
 {
   public:
 
-    Logger(const EGEString& filePath, bool timeStampEnabled = true);
+    Logger(const String& filePath, bool timeStampEnabled = true);
    ~Logger();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -21,7 +21,7 @@ class Logger
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Writes text. */
-    EGEResult write(const EGEString& text);
+    EGEResult write(const String& text);
 
     //void enableTimeStamps( bool bEnable );
 

@@ -30,25 +30,25 @@ class Node
 {
   public:
 
-    Node(Application* app, const EGEString& name, Node* parent, EGEPhysics::EComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
+    Node(Application* app, const String& name, Node* parent, EGEPhysics::EComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
     virtual ~Node();
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /*! Returns node name. */
-    inline const EGEString& name() const { return m_name; }
+    inline const String& name() const { return m_name; }
     /*! Returns node's parent. NULL if this is root node. */
     inline Node* parent() const { return m_parent; }
 
     /* Deletes child node with a given name and detaches it. */
-    void deleteChildNode(const EGEString& name);
+    void deleteChildNode(const String& name);
     /* Deletes and detaches all child nodes. */
     void deleteAllChildNodes();
     /* Returns number of child nodes. */
     u32 childNodeCount() const;
     /* Returns child node with a given name. Returns NULL if no such node exists. */
-    Node* childNode(const EGEString& name) const;
-    // TAGE - if needed reimplement for EGEList
+    Node* childNode(const String& name) const;
+    // TAGE - if needed reimplement for List
     /* Returns child node with a given index. Returns NULL if no such node exists. */
     //Node* childNode(u32 index) const;
 
@@ -60,18 +60,18 @@ class Node
   protected:
 
     /* Creates child node with a given name and attaches it. */
-    Node* createChildNode(const EGEString& name, EGEPhysics::EComponentType componentType);
+    Node* createChildNode(const String& name, EGEPhysics::EComponentType componentType);
     /*! Creates child node with a given name. MUST be overriden by subclass. */
-    virtual Node* createChildNodeImpl(const EGEString& name, EGEPhysics::EComponentType componentType) = 0;
+    virtual Node* createChildNodeImpl(const String& name, EGEPhysics::EComponentType componentType) = 0;
 
   protected:
 
     /*! Name. */
-    EGEString m_name;
+    String m_name;
     /*! Raw pointer to parent node. NULL if this is root node. Pointer is RAW as this object is not intended (TAGE for now ?) to be shared. */
     Node* m_parent;
     /*! List of all child nodes attached. */
-    EGEList<Node*> m_children;
+    List<Node*> m_children;
     /*! Physics component. */
     PPhysicsComponent m_physics;
     /*! Cached combined world matrix from all self and all parent nodes. */

@@ -33,6 +33,7 @@ files
 	EGEEvent.h
 	EGEFile.h
   EGEGraphics.h
+  EGEHash.h
   EGEImage.h
   EGEInput.h
   EGEList.h
@@ -57,6 +58,7 @@ files
   EGETree.h
 	EGETypes.h
   EGEVector.h
+  EGEVertexBuffer.h
 	EGEXml.h
 
 	["Core"]
@@ -106,6 +108,11 @@ files
   Map.h
   MultiMap.h
   Tree.h
+
+	["Core/Crypto"]
+ 	(../../Sources/Core/Crypto)
+  Hash.cpp
+  Hash.h
 
 	["Core/Data"]
  	(../../Sources/Core/Data)

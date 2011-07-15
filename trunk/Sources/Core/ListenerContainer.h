@@ -1,10 +1,7 @@
 #ifndef EGE_CORE_LISTENERCONTAINER_H
 #define EGE_CORE_LISTENERCONTAINER_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include <EGETree.h>
-//#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -15,8 +12,8 @@ class ListenerContainer
 {
   protected:
 
-    typedef EGETree<T*> ListenersContainer;
-    //typedef typename EGETree<T*> ListenersContainerIterator;
+    typedef Tree<T*> ListenersContainer;
+    //typedef typename Tree<T*> ListenersContainerIterator;
    
   public:
 
@@ -76,7 +73,7 @@ void ListenerContainer<T>::removeListener(const T* object)
     return;
   }
 
-  typename EGETree<T*>::const_iterator iter = m_listeners.find(const_cast<T*>(object));
+  typename Tree<T*>::const_iterator iter = m_listeners.find(const_cast<T*>(object));
   if (iter != m_listeners.end())
   {
     m_listeners.erase(iter);
@@ -94,7 +91,7 @@ void ListenerContainer<T>::removeAllListeners()
 template<typename T>
 bool ListenerContainer<T>::isListening(const T* object) const
 {
-  typename EGETree<T*>::const_iterator iter = m_listeners.find(const_cast<T*>(object));
+  typename Tree<T*>::const_iterator iter = m_listeners.find(const_cast<T*>(object));
   return (iter != m_listeners.end());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

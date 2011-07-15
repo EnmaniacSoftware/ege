@@ -40,13 +40,13 @@ class RenderTarget : public Object
     /*! Releases itself from being current rendering context. */
     virtual void releaseCurrentContext() = 0;
     /*! Returns target name. */
-    inline const EGEString& name() const { return m_name; } 
+    inline const String& name() const { return m_name; } 
     /* Adds new viewport for target associated with given camera. */
-    PViewport addViewport(const EGEString& name, PCamera pCamera);
+    PViewport addViewport(const String& name, PCamera pCamera);
     /* Removes viewport with the given name from target. */
-    void removeViewport(const EGEString& name);
+    void removeViewport(const String& name);
     /* Returns viewport with the given name associated with target. */
-    PViewport viewport(const EGEString& name) const;
+    PViewport viewport(const String& name) const;
     /* Performs rendering for target. */
     void render();
     /*! Returns target width (in pixels). */
@@ -69,9 +69,9 @@ class RenderTarget : public Object
   private:
 
     /*! Targets name. */
-    EGEString m_name;
+    String m_name;
     /*! Pool of all viewports associated with target. */
-    EGEDynamicArray<PViewport> m_viewports;
+    DynamicArray<PViewport> m_viewports;
     /*! Number of vertices rendered last frame. */
     u32 m_vertexCount;
     /*! Number of batches rendered last frame. */

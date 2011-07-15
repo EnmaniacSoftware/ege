@@ -11,7 +11,7 @@ EGE_DEFINE_NEW_OPERATORS(ImageOverlay)
 EGE_DEFINE_DELETE_OPERATORS(ImageOverlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImageOverlay::ImageOverlay(Application* app, const EGEString& name) : Overlay(app, name, EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLE_STRIPS, 
+ImageOverlay::ImageOverlay(Application* app, const String& name) : Overlay(app, name, EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLE_STRIPS, 
                                                                               EGE_OBJECT_UID_OVERLAY_IMAGE)
 {
 }
@@ -120,7 +120,7 @@ void ImageOverlay::render(const Viewport* viewport, Renderer* renderer)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets material. */
-void ImageOverlay::setMaterialName(const EGEString& name)
+void ImageOverlay::setMaterialName(const String& name)
 {
   if (name != m_materialName)
   {

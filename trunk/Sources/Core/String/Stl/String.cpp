@@ -6,62 +6,62 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEString::EGEString() : std::string()
+String::String() : std::string()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEString::EGEString(const EGEString& string) : std::string(string)
+String::String(const String& string) : std::string(string)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEString::EGEString(const std::string& string) : std::string(string)
+String::String(const std::string& string) : std::string(string)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEString::EGEString(const char* string) : std::string(string ? string : "")
+String::String(const char* string) : std::string(string ? string : "")
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEString::~EGEString()
+String::~String()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts self to lower-case. */
-EGEString& EGEString::toLower()
+String& String::toLower()
 {
   std::transform(begin(), end(), begin(), std::tolower);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts self to upper-case. */
-EGEString& EGEString::toUpper()
+String& String::toUpper()
 {
   std::transform(begin(), end(), begin(), std::toupper);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEString& EGEString::operator=(const char* string)
+String& String::operator=(const char* string)
 {
   (*(std::string*) this) = string;
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEString& EGEString::operator=(const EGEString& string)
+String& String::operator=(const String& string)
 {
   (*(std::string*) this) = (*(std::string*) &string);
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEString& EGEString::operator+=(const char* string)
+String& String::operator+=(const char* string)
 {
   (*(std::string*) this) += string;
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEString& EGEString::operator+=(const EGEString& string)
+String& String::operator+=(const String& string)
 {
   (*(std::string*) this) += (*(std::string*) &string);
 
@@ -69,13 +69,13 @@ EGEString& EGEString::operator+=(const EGEString& string)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns ASCII string. */
-const char* EGEString::toAscii() const
+const char* String::toAscii() const
 {
   return c_str();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts to integer. If error is valid, it holds TRUE if error occured during the conversion. */
-s32 EGEString::toInt(bool* error) const
+s32 String::toInt(bool* error) const
 {
   if (empty())
   {
@@ -102,7 +102,7 @@ s32 EGEString::toInt(bool* error) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts to boolean. If error is valid, it holds TRUE if error occured during the conversion. */
-bool EGEString::toBool(bool* error) const
+bool String::toBool(bool* error) const
 {
   if (empty())
   {
@@ -115,7 +115,7 @@ bool EGEString::toBool(bool* error) const
   }
 
   // make lowercase copy
-  EGEString copy = *this;
+  String copy = *this;
   copy.toLower();
 
   bool value = (copy == "true");
@@ -124,7 +124,7 @@ bool EGEString::toBool(bool* error) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts to float. If error is valid, it holds TRUE if error occured during the conversion. */
-float32 EGEString::toFloat(bool* error) const
+float32 String::toFloat(bool* error) const
 {
   if (empty())
   {
@@ -151,7 +151,7 @@ float32 EGEString::toFloat(bool* error) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates new object from given number. */
-EGEString EGEString::FromNumber(s32 value)
+String String::FromNumber(s32 value)
 {
   std::stringstream stream;
 
@@ -161,7 +161,7 @@ EGEString EGEString::FromNumber(s32 value)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates formatted text. */
-void EGEString::format(const char* text, ...)
+void String::format(const char* text, ...)
 {
   char buffer[256];
 
@@ -174,9 +174,9 @@ void EGEString::format(const char* text, ...)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Create new object from formatted text. */
-EGEString EGEString::Format(const char* text, ...)
+String String::Format(const char* text, ...)
 {
-  EGEString out;
+  String out;
 
   char buffer[256];
 
@@ -191,7 +191,7 @@ EGEString EGEString::Format(const char* text, ...)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts to color. If error is valid, it holds TRUE if error occured during the conversion. */
-Color EGEString::toColor(bool* error) const
+Color String::toColor(bool* error) const
 {
   if (empty())
   {
@@ -216,7 +216,7 @@ Color EGEString::toColor(bool* error) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts to rectangle of floats. If error is valid, it holds TRUE if error occured during the conversion. */
-Rectf EGEString::toRectf(bool* error) const
+Rectf String::toRectf(bool* error) const
 {
   if (empty())
   {
@@ -238,7 +238,7 @@ Rectf EGEString::toRectf(bool* error) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts to 2D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
-Vector2f EGEString::toVector2f(bool* error) const
+Vector2f String::toVector2f(bool* error) const
 {
   if (empty())
   {

@@ -9,7 +9,7 @@ EGE_DEFINE_NEW_OPERATORS(TextOverlay)
 EGE_DEFINE_DELETE_OPERATORS(TextOverlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextOverlay::TextOverlay(Application* app, const EGEString& name) : Overlay(app, name, EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLES, 
+TextOverlay::TextOverlay(Application* app, const String& name) : Overlay(app, name, EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLES, 
                                                                             EGE_OBJECT_UID_OVERLAY_TEXT)
 {
 }
@@ -20,7 +20,7 @@ TextOverlay::~TextOverlay()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets text. */
-void TextOverlay::setText(const EGEText& text)
+void TextOverlay::setText(const Text& text)
 {
   if (m_text != text)
   {
@@ -78,7 +78,7 @@ void TextOverlay::updateRenderData()
     float32 spacing = 0;
 
     // go thru all characters
-    for (EGEText::const_iterator it = text().begin(); it != text().end(); ++it)
+    for (Text::const_iterator it = text().begin(); it != text().end(); ++it)
     {
       // get current glyph texture coords
       const GlyphData* glyphData = font()->glyphData(*it);

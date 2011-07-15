@@ -27,7 +27,7 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
 {
   public:
 
-    SceneNode(const EGEString& name, SceneNode* parent, SceneManager* manager, EGEPhysics::EComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
+    SceneNode(const String& name, SceneNode* parent, SceneManager* manager, EGEPhysics::EComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
     virtual ~SceneNode();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -37,14 +37,14 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
     void update(const Time& time);
 
     /* Creates child scene node with a given name and attaches it. */
-    SceneNode* createChildSceneNode(const EGEString& name, EGEPhysics::EComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
+    SceneNode* createChildSceneNode(const String& name, EGEPhysics::EComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
 
     /* Attaches new object to node. */
     bool attachObject(PSceneNodeObject object);
     /* Returns attached object with a given name. Returns NULL if no such object exists. */
-    PSceneNodeObject attachedObject(const EGEString& name) const;
+    PSceneNodeObject attachedObject(const String& name) const;
     /* Removes scene object of a given name. */
-    void removeObject(const EGEString& name);
+    void removeObject(const String& name);
     /* Removes all objects. */
     void removeAllAttachedObjects();
    
@@ -84,7 +84,7 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
   private:
 
     /* Node override. Creates child node with a given name. MUST be overriden by subclass. */
-    virtual Node* createChildNodeImpl(const EGEString& name, EGEPhysics::EComponentType componentType) override;
+    virtual Node* createChildNodeImpl(const String& name, EGEPhysics::EComponentType componentType) override;
     /*! Returns pointer to scene manager. */
     inline SceneManager* sceneManager() const { return m_manager; }
 
@@ -93,7 +93,7 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
     /*! Raw pointer to owning manager. Pointer is RAW to avoid circular references (parent->child->parent). */
     SceneManager* m_manager;
     /*! List of node objects attached. */
-    EGEList<PSceneNodeObject> m_objects;
+    List<PSceneNodeObject> m_objects;
 
     //bool m_bChildrenNeedUpdate;                     // TRUE if child nodes needs to be updated
     //bool m_bNeedUpdate;                             // TRUE if update is needed

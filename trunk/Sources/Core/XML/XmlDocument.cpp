@@ -31,7 +31,7 @@ bool XmlDocument::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Loads document from given file. */
-EGEResult XmlDocument::load(const EGEString& fileName)
+EGEResult XmlDocument::load(const String& fileName)
 {
   if (isValid())
   {
@@ -53,7 +53,7 @@ EGEResult XmlDocument::load(const PDataBuffer& buffer)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns first child with the given name. */
-PXmlElement XmlDocument::firstChild(const EGEString& name)
+PXmlElement XmlDocument::firstChild(const String& name)
 {
   if (isValid())
   {

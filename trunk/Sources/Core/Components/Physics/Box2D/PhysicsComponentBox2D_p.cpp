@@ -233,7 +233,7 @@ bool PhysicsComponentPrivate::addCircleShape(EGE::float32 radius, EGE::float32 d
 *  @param points  vertices of polygon shape.
 *  @param density shape density. Affects mass.
 */
-bool PhysicsComponentPrivate::addPolygonShape(const EGEDynamicArray<Vector4f>& points, EGE::float32 density, EGEPhysics::CollisionData colissionData)
+bool PhysicsComponentPrivate::addPolygonShape(const DynamicArray<Vector4f>& points, EGE::float32 density, EGEPhysics::CollisionData colissionData)
 {
   if (isValid())
   {

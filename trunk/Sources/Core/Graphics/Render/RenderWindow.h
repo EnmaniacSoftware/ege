@@ -20,7 +20,7 @@ class RenderWindow : public RenderTarget
     virtual ~RenderWindow();
 
     /*! Returns window title. */
-    inline const EGEString title() const { return m_title; }
+    inline const String title() const { return m_title; }
     /*! Shows frame buffer. */
     virtual void showFrameBuffer() = 0;
 
@@ -39,7 +39,7 @@ class RenderWindow : public RenderTarget
     /*! TRUE if fullscreen mode is enabled. */
     bool m_fullScreen;
     /*! Title. */
-    EGEString m_title;
+    String m_title;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

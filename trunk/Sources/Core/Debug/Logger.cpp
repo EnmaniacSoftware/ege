@@ -9,7 +9,7 @@ EGE_DEFINE_NEW_OPERATORS(Logger)
 EGE_DEFINE_DELETE_OPERATORS(Logger)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Logger::Logger(const EGEString& filePath, bool timeStampEnabled) : m_file(filePath), m_timeStampEnabled(timeStampEnabled)
+Logger::Logger(const String& filePath, bool timeStampEnabled) : m_file(filePath), m_timeStampEnabled(timeStampEnabled)
 {
   //m_file = NULL;//ege_new File(filePath);
 
@@ -53,7 +53,7 @@ void Logger::close()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Writes text. */
-EGEResult Logger::write(const EGEString& text)
+EGEResult Logger::write(const String& text)
 {
   s64 written = 0;
 

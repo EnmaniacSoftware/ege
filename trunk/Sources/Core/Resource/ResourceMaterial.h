@@ -33,13 +33,13 @@ class ResourceMaterial : public IResource
     static PResource Create(Application* app, ResourceManager* manager);
 
     /* IResource override. Returns name of resource. */
-    const EGEString& name() const override;
+    const String& name() const override;
     /* Initializes resource from XML. 
     * 
     *  \param  path  full path to resource definition file.
     *  \param  tag   xml element with resource definition. 
     */
-    EGEResult create(const EGEString& path, const PXmlElement& tag) override;
+    EGEResult create(const String& path, const PXmlElement& tag) override;
     /* IResource override. Loads resource. */
     EGEResult load() override;
     /* IResource override. Unloads resource. */
@@ -62,17 +62,17 @@ class ResourceMaterial : public IResource
     /*! Returns destination pixel factor function. */
     inline EGEGraphics::EBlendFactor dstBlendFactor() const { return m_dstBlend; }
     /*! Returns ambient color name. */
-    inline const EGEString& ambientColorName() const { return m_ambientColor; }
+    inline const String& ambientColorName() const { return m_ambientColor; }
     /*! Returns diffuse color name. */
-    inline const EGEString& diffuseColorName() const { return m_diffuseColor; }
+    inline const String& diffuseColorName() const { return m_diffuseColor; }
     /*! Returns specular color name. */
-    inline const EGEString& specularColorName() const { return m_specularColor; }
+    inline const String& specularColorName() const { return m_specularColor; }
     /*! Returns emission color name. */
-    inline const EGEString& emissionColorName() const { return m_emissionColor; }
+    inline const String& emissionColorName() const { return m_emissionColor; }
     /*! Returns shinness value name. */
-    inline const EGEString& shinnessName() const { return m_shinness; }
+    inline const String& shinnessName() const { return m_shinness; }
     /* Maps blend factor's name into value. */
-    EGEGraphics::EBlendFactor mapBlendFactor(const EGEString& name, EGEGraphics::EBlendFactor defaultValue) const;
+    EGEGraphics::EBlendFactor mapBlendFactor(const String& name, EGEGraphics::EBlendFactor defaultValue) const;
     
   private:
 
@@ -81,12 +81,12 @@ class ResourceMaterial : public IResource
     {
       public:
 
-        TextureImageData(const EGEString& textureName, const Rectf& textureRect) : m_textureName(textureName), m_textureRect(textureRect) {}
+        TextureImageData(const String& textureName, const Rectf& textureRect) : m_textureName(textureName), m_textureRect(textureRect) {}
 
       public:
 
         /*! Texture name. */
-        EGEString m_textureName;
+        String m_textureName;
         /*! Texture rectangle. */
         Rectf m_textureRect;
     };
@@ -94,23 +94,23 @@ class ResourceMaterial : public IResource
   private:
 
     /*! Name. */
-    EGEString m_name;
+    String m_name;
     /*! List of all texture images contributing to material. */
-    EGEList<TextureImageData> m_textureImages;
+    List<TextureImageData> m_textureImages;
     /*! Source blend value. */
     EGEGraphics::EBlendFactor m_srcBlend;
     /*! Destination blend value. */
     EGEGraphics::EBlendFactor m_dstBlend;
     /*! Ambient color name. */
-    EGEString m_ambientColor;
+    String m_ambientColor;
     /*! Diffuse color name. */
-    EGEString m_diffuseColor;
+    String m_diffuseColor;
     /*! Specular color name. */
-    EGEString m_specularColor;
+    String m_specularColor;
     /*! Emission color name. */
-    EGEString m_emissionColor;
+    String m_emissionColor;
     /*! Shinness value name. */
-    EGEString m_shinness;
+    String m_shinness;
 
     /*! Material object created from resource. NULL if not created yet. */
     PMaterial m_material;

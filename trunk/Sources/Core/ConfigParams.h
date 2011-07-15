@@ -1,14 +1,14 @@
 #ifndef EGE_CORE_CONFIG_PARAMS_H
 #define EGE_CORE_CONFIG_PARAMS_H
 
-#include "EGEString.h"
-#include "EGEMap.h"
+#include <EGEString.h>
+#include <EGEMap.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-typedef EGEMap<EGEString, EGEString> ConfigParams;
+typedef Map<String, String> ConfigParams;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

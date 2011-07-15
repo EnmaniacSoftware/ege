@@ -28,8 +28,8 @@ void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2C
   {
     EGE::float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_POSITION_XYZ);
-    component->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_COLOR_RGBA);
+    component->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ);
+    component->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA);
 
     float32* data = (float32*) component->vertexBuffer()->lock(0, vertexCount);
 
@@ -67,10 +67,10 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
   {
     EGE::float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component_fill->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_POSITION_XYZ);
-    component_fill->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_COLOR_RGBA);
-    component_frame->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_POSITION_XYZ);
-    component_frame->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_COLOR_RGBA);
+    component_fill->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ);
+    component_fill->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA);
+    component_frame->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ);
+    component_frame->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA);
     
     float32* data_fill  = (float32*) component_fill->vertexBuffer()->lock(0, vertexCount);
     float32* data_frame = (float32*) component_frame->vertexBuffer()->lock(0, vertexCount);
@@ -115,8 +115,8 @@ void DebugDraw::DrawCircle(const b2Vec2& center, EGE::float32 radius, const b2Co
 
     EGE::float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_POSITION_XYZ);
-    component->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_COLOR_RGBA);
+    component->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ);
+    component->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA);
 
     float32* data = (float32*) component->vertexBuffer()->lock(0, (u32) k_segments);
 
@@ -162,10 +162,10 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
 
     EGE::float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component_fill->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_POSITION_XYZ);
-    component_fill->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_COLOR_RGBA);
-    component_frame->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_POSITION_XYZ);
-    component_frame->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_COLOR_RGBA);
+    component_fill->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ);
+    component_fill->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA);
+    component_frame->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ);
+    component_frame->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA);
     
     float32* data_fill  = (float32*) component_fill->vertexBuffer()->lock(0, (u32) k_segments);
     float32* data_frame = (float32*) component_frame->vertexBuffer()->lock(0, (u32) k_segments);
@@ -216,8 +216,8 @@ void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& c
   {
     EGE::float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_POSITION_XYZ);
-    component->vertexBuffer()->addBuffer(VertexBuffer::ARRAY_TYPE_COLOR_RGBA);
+    component->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ);
+    component->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA);
 
     float32* data = (float32*) component->vertexBuffer()->lock(0, 2);
 

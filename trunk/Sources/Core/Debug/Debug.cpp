@@ -17,7 +17,7 @@ void Debug::Deinit()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Debug::Log(const EGEString& text)
+void Debug::Log(const String& text)
 {
   if (NULL == Debug::m_log)
   {

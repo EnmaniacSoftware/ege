@@ -4,7 +4,7 @@
 #include "EGE.h"
 #include "Core/Data/DataBuffer.h"
 #include "EGEXml.h"
-#include "EGEString.h"
+#include "String.h"
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN
@@ -30,13 +30,13 @@ class ResourceData : public IResource
     static PResource Create(Application* app, ResourceManager* manager);
 
     /* IResource override. Returns name of resource. */
-    const EGEString& name() const override;
+    const String& name() const override;
     /* Initializes resource from XML. 
     * 
     *  \param  path  full path to resource definition file.
     *  \param  tag   xml element with resource definition. 
     */
-    EGEResult create(const EGEString& path, const PXmlElement& tag) override;
+    EGEResult create(const String& path, const PXmlElement& tag) override;
     /* IResource override. Loads resource. */
     EGEResult load() override;
     /* IResource override. Unloads resource. */
@@ -50,16 +50,16 @@ class ResourceData : public IResource
     /*! Returns TRUE if material is loaded. */
     inline bool isLoaded() const { return NULL != m_data; }
     /*! Gets path to texture file. */
-    inline const EGEString& path() const { return m_path; } 
+    inline const String& path() const { return m_path; } 
     /*! Returns whether data is NULL terminated.*/
     inline bool isNulled() const { return m_nulled; } 
 
   private:
 
     /*! Name. */
-    EGEString m_name;
+    String m_name;
     /*! Full path to data file. */
-    EGEString m_path;
+    String m_path;
     /*! Flag indicating if data should be NULL terminated upon loading. */
     bool m_nulled;
     /*! Data object created from resource. NULL if not created yet. */

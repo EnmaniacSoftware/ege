@@ -18,14 +18,14 @@ class ImageOverlay : public Overlay
 {
   public: 
 
-    ImageOverlay(Application* app, const EGEString& name);
+    ImageOverlay(Application* app, const String& name);
    ~ImageOverlay();
     
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
   
     /* Sets material. */
-    void setMaterialName(const EGEString& name);
+    void setMaterialName(const String& name);
 
   private:
 
@@ -36,12 +36,12 @@ class ImageOverlay : public Overlay
     /* Updates render data. */
     void updateRenderData();
     /*! Returns material name. */
-    inline const EGEString& materialName() const { return m_materialName; }
+    inline const String& materialName() const { return m_materialName; }
 
   private:
 
     /*! Material name. */
-    EGEString m_materialName;
+    String m_materialName;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

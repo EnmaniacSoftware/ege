@@ -22,7 +22,7 @@ class IResource : public Object
 {
   public:
 
-    IResource(Application* app, ResourceManager* manager, const EGEString& typeName, egeObjectDeleteFunc deleteFunc = NULL) 
+    IResource(Application* app, ResourceManager* manager, const String& typeName, egeObjectDeleteFunc deleteFunc = NULL) 
     : Object(app, EGE_OBJECT_UID_RESOURCE, deleteFunc), m_manager(manager), m_typeName(typeName) {}
     virtual ~IResource() {}
 
@@ -31,15 +31,15 @@ class IResource : public Object
     *  \param  path  full path to resource definition file.
     *  \param  tag   xml element with resource definition. 
     */
-    virtual EGEResult create(const EGEString& path, const PXmlElement& tag) = 0;
+    virtual EGEResult create(const String& path, const PXmlElement& tag) = 0;
     /*! Loads resource. */
     virtual EGEResult load() = 0;
     /* Unloads resource. */
     virtual void unload() = 0;
     /* Returns name of resource. */
-    virtual const EGEString& name() const = 0;
+    virtual const String& name() const = 0;
     /*! Returns resource type name. */
-    inline const EGEString& typeName() const { return m_typeName; }
+    inline const String& typeName() const { return m_typeName; }
 
   protected:
 
@@ -51,7 +51,7 @@ class IResource : public Object
     /*! Pointer to owning manager */
     ResourceManager* m_manager;
     /*! Type name. */
-    EGEString m_typeName;
+    String m_typeName;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

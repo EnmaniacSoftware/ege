@@ -3,7 +3,7 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Node::Node(Application* app, const EGEString& name, Node* parent, EGEPhysics::EComponentType componentType) : m_name(name), m_parent(parent)
+Node::Node(Application* app, const String& name, Node* parent, EGEPhysics::EComponentType componentType) : m_name(name), m_parent(parent)
 {
   m_physics = ege_new PhysicsComponent(app, "node-physics-" + name, componentType);
 }
@@ -22,7 +22,7 @@ bool Node::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates child node with a given name and attaches it. */
-Node* Node::createChildNode(const EGEString& name, EGEPhysics::EComponentType componentType)
+Node* Node::createChildNode(const String& name, EGEPhysics::EComponentType componentType)
 {
   Node* node;
 
@@ -50,10 +50,10 @@ Node* Node::createChildNode(const EGEString& name, EGEPhysics::EComponentType co
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Deletes child node with a given name and detaches it. */
-void Node::deleteChildNode(const EGEString& name)
+void Node::deleteChildNode(const String& name)
 {
   // go thru all child nodes
-  for (EGEList<Node*>::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  for (List<Node*>::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
   {
     Node* node = *iter;
 
@@ -79,10 +79,10 @@ u32 Node::childNodeCount() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns child node with a given name. Returns NULL if no such node exists. */
-Node* Node::childNode(const EGEString& name) const
+Node* Node::childNode(const String& name) const
 {
   // go thru all child nodes
-  for (EGEList<Node*>::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  for (List<Node*>::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
   {
     Node* node = *iter;
 
@@ -114,7 +114,7 @@ Node* Node::childNode(const EGEString& name) const
 /*! Deletes and detaches all child nodes. */
 void Node::deleteAllChildNodes()
 {
-  for (EGEList<Node*>::iterator iter = m_children.begin(); iter != m_children.end();)
+  for (List<Node*>::iterator iter = m_children.begin(); iter != m_children.end();)
   {
     Node* node = *iter;
 

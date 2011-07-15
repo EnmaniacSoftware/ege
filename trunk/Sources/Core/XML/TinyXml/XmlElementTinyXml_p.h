@@ -8,8 +8,8 @@
 *
 */
 
-#include "EGE.h"
-#include "EGEString.h"
+#include <EGE.h>
+#include <EGEString.h>
 #include <tinyxml.h>
 
 EGE_NAMESPACE_BEGIN
@@ -35,15 +35,15 @@ class XmlElementPrivate
     /* Returns TRUE if element is valid object */
     bool isValid() const;
     /* Returns value of given attribute if present */
-    EGEString attribute(const EGEString& name) const;
+    String attribute(const String& name) const;
     /* Returns TRUE if given attribute exists. */
-    bool containsAttribute(const EGEString& name) const;
+    bool containsAttribute(const String& name) const;
     /* Returns first child element. */
     XmlElementPrivate* firstChild() const;
     /* Returns next child element. */
     XmlElementPrivate* nextChild() const;
     /* Returns element name. */
-    EGEString name() const;
+    String name() const;
     /* Sets internal TinyXML element pointer. */
     void setElement(TiXmlElement* element);
 

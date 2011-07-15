@@ -8,7 +8,7 @@
 */
 
 #include "EGE.h"
-#include "EGEString.h"
+#include "String.h"
 #include <tinyxml.h>
 
 EGE_NAMESPACE_BEGIN
@@ -32,11 +32,11 @@ class XmlDocumentPrivate
     EGE_DECLARE_DELETE_OPERATORS
 
     /* Loads document from given file. */
-    EGEResult load(const EGEString& fileName);
+    EGEResult load(const String& fileName);
     /* Loads document from given buffer. */
     EGEResult load(const PDataBuffer& buffer);
     /* Returns first child with the given name. */
-    PXmlElement firstChild(const EGEString& name);
+    PXmlElement firstChild(const String& name);
 
   private:
 

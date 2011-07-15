@@ -21,7 +21,7 @@ class Font : public Object
 {
   public:
 
-    Font(Application* app, s32 height, const EGEMap<EGEChar, GlyphData>& glyphData);
+    Font(Application* app, s32 height, const Map<Char, GlyphData>& glyphData);
    ~Font();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -36,16 +36,16 @@ class Font : public Object
     /*! Returns font height (in pixels). */
     inline s32 height() const { return m_height; }
     /* Returns pointer to data for a given glyph. NULL if glyph is not defined. */
-    const GlyphData* glyphData(EGEChar c) const;
+    const GlyphData* glyphData(Char c) const;
     /* Returns metrics of the given text. */
-    Vector2i metrics(const EGEText& text) const;
+    Vector2i metrics(const Text& text) const;
 
   private:
 
     /*! Font material. */
     PMaterial m_material;
     /*! Map of glyphs sorted by UTF-16 value. */
-    EGEMap<EGEChar, GlyphData> m_glyphs;
+    Map<Char, GlyphData> m_glyphs;
     /*! Font screen height. */
     s32 m_height;
 };

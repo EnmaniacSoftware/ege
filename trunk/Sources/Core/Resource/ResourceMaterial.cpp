@@ -33,7 +33,7 @@ PResource ResourceMaterial::Create(Application* app, ResourceManager* manager)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
-const EGEString& ResourceMaterial::name() const
+const String& ResourceMaterial::name() const
 {
   return m_name;
 }
@@ -43,7 +43,7 @@ const EGEString& ResourceMaterial::name() const
 *  \param  path  full path to resource definition file.
 *  \param  tag   xml element with resource definition. 
 */
-EGEResult ResourceMaterial::create(const EGEString& path, const PXmlElement& tag)
+EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
 {
   EGE_UNUSED(path);
 
@@ -147,7 +147,7 @@ EGEResult ResourceMaterial::load()
     }
 
     // load textures
-    for (EGEList<TextureImageData>::const_iterator it = m_textureImages.begin(); it != m_textureImages.end(); ++it)
+    for (List<TextureImageData>::const_iterator it = m_textureImages.begin(); it != m_textureImages.end(); ++it)
     {
       const TextureImageData& textureImageData = *it;
 
@@ -178,7 +178,7 @@ EGEResult ResourceMaterial::load()
       else
       {
         // texture not found
-        EGE_PRINT(EGEString::Format("Texture not found: %s", textureImageData.m_textureName.toAscii()));
+        EGE_PRINT(String::Format("Texture not found: %s", textureImageData.m_textureName.toAscii()));
         return EGE_ERROR;
       }
     }
@@ -202,7 +202,7 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag)
   EGEResult result = EGE_SUCCESS;
 
   // get data
-  EGEString name = tag->attribute("name");
+  String name = tag->attribute("name");
 
   // check if obligatory data is wrong
   if (name.empty())
@@ -225,8 +225,8 @@ EGEResult ResourceMaterial::addTextureImage(const PXmlElement& tag)
   bool error = false;
 
   // get data
-  EGEString textureName = tag->attribute("texture-name");
-  EGEString textureRect = tag->attribute("texture-rect");
+  String textureName = tag->attribute("texture-name");
+  String textureRect = tag->attribute("texture-rect");
 
   // check if obligatory data is wrong
   if (textureName.empty())
@@ -254,7 +254,7 @@ EGEResult ResourceMaterial::addTextureImage(const PXmlElement& tag)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps blend factor's name into value. */
-EGEGraphics::EBlendFactor ResourceMaterial::mapBlendFactor(const EGEString& name, EGEGraphics::EBlendFactor defaultValue) const
+EGEGraphics::EBlendFactor ResourceMaterial::mapBlendFactor(const String& name, EGEGraphics::EBlendFactor defaultValue) const
 {
   // check if no data to convert
   if (name.empty())

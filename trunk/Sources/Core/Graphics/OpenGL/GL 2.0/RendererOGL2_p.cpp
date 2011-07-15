@@ -107,7 +107,7 @@ void RendererPrivate::flush()
   glMultMatrixf(d_func()->m_projectionMatrix.data);
 
   // go thru all render data
-  for (EGEMultiMap<s32, Renderer::SRENDERDATA>::iterator iter = d_func()->m_renderData.begin(); iter != d_func()->m_renderData.end();)
+  for (MultiMap<s32, Renderer::SRENDERDATA>::iterator iter = d_func()->m_renderData.begin(); iter != d_func()->m_renderData.end();)
   {
     Renderer::SRENDERDATA& renderData = iter->second;
 
@@ -127,7 +127,7 @@ void RendererPrivate::flush()
     // check if there is anything to be rendered
     if (0 != vertexBuffer->vertexCount())
     {
-      const EGEDynamicArray<VertexBuffer::SBUFFERSEMANTIC>& vsSemantics = vertexBuffer->semantics();
+      const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& vsSemantics = vertexBuffer->semantics();
 
       // TAGE - if indexed geometry count indicies
       u32 value = vertexBuffer->vertexCount();
@@ -139,31 +139,31 @@ void RendererPrivate::flush()
       void* vertexData = vertexBuffer->lock(0, vertexBuffer->vertexCount());
 
       // go thru all buffers
-      for (EGEDynamicArray<VertexBuffer::SBUFFERSEMANTIC>::const_iterator iterSemantics = vsSemantics.begin(); iterSemantics != vsSemantics.end(); 
+      for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator iterSemantics = vsSemantics.begin(); iterSemantics != vsSemantics.end(); 
            ++iterSemantics)
       {
         // set according to buffer type
         switch (iterSemantics->type)
         {
-          case VertexBuffer::ARRAY_TYPE_POSITION_XYZ:
+          case EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ:
 
             glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
             glEnableClientState(GL_VERTEX_ARRAY);
             break;
 
-          case VertexBuffer::ARRAY_TYPE_NORMAL:
+          case EGEVertexBuffer::ARRAY_TYPE_NORMAL:
 
             glNormalPointer(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
             glEnableClientState(GL_NORMAL_ARRAY);
             break;
 
-          case VertexBuffer::ARRAY_TYPE_COLOR_RGBA:
+          case EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA:
 
             glColorPointer(4, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
             glEnableClientState(GL_COLOR_ARRAY);
             break;
       
-          case VertexBuffer::ARRAY_TYPE_TEXTURE_UV:
+          case EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV:
 
             for (s32 i = 0; i < textureCount; ++i)
             {
@@ -185,7 +185,7 @@ void RendererPrivate::flush()
   //          }
             break;
 
-          //case VertexBuffer::ARRAY_TYPE_TANGENT:
+          //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
 
           //  // TANGENT is binded to GL_TEXTURE6
           //  glClientActiveTexture( GL_TEXTURE6 );

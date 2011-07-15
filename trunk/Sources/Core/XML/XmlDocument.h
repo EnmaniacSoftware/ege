@@ -29,11 +29,11 @@ class XmlDocument : public Object
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Loads document from given file. */
-    EGEResult load(const EGEString& fileName);
+    EGEResult load(const String& fileName);
     /* Loads document from given buffer. */
     EGEResult load(const PDataBuffer& buffer);
     /* Returns first child with the given name. */
-    PXmlElement firstChild(const EGEString& name);
+    PXmlElement firstChild(const String& name);
 
   private:
 

@@ -13,7 +13,7 @@ EGE_DEFINE_NEW_OPERATORS(SceneNodeObject)
 EGE_DEFINE_DELETE_OPERATORS(SceneNodeObject)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SceneNodeObject::SceneNodeObject(const EGEString& name, u32 uid) : Object(NULL, uid), m_name(name), m_parentNode(NULL), m_visible(true)
+SceneNodeObject::SceneNodeObject(const String& name, u32 uid) : Object(NULL, uid), m_name(name), m_parentNode(NULL), m_visible(true)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

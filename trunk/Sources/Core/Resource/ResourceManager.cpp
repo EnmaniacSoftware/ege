@@ -42,12 +42,12 @@ bool ResourceManager::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Registeres custom resource type. */
-EGEResult ResourceManager::registerResource(const EGEString& typeName, egeResourceCreateFunc createFunc)
+EGEResult ResourceManager::registerResource(const String& typeName, egeResourceCreateFunc createFunc)
 {
   EGEResult result = EGE_SUCCESS;
   
   // check if resource with such a name exists already
-  EGEMap<EGEString, ResourceRegistryEntry>::iterator it = m_registeredResources.find(typeName);
+  Map<String, ResourceRegistryEntry>::iterator it = m_registeredResources.find(typeName);
   if (it != m_registeredResources.end())
   {
     // error!
@@ -64,20 +64,20 @@ EGEResult ResourceManager::registerResource(const EGEString& typeName, egeResour
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given resource type is registered. */
-bool ResourceManager::isResourceRegistered(const EGEString& typeName) const
+bool ResourceManager::isResourceRegistered(const String& typeName) const
 {
   // check if resource with such a name exists already
-  EGEMap<EGEString, ResourceRegistryEntry>::const_iterator it = m_registeredResources.find(typeName);
+  Map<String, ResourceRegistryEntry>::const_iterator it = m_registeredResources.find(typeName);
   return it != m_registeredResources.end();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource of the type given by name. */
-PResource ResourceManager::createResource(const EGEString& name)
+PResource ResourceManager::createResource(const String& name)
 {
   PResource resource;
 
   // check if resource with such a name exists already
-  EGEMap<EGEString, ResourceRegistryEntry>::iterator it = m_registeredResources.find(name);
+  Map<String, ResourceRegistryEntry>::iterator it = m_registeredResources.find(name);
   if (it != m_registeredResources.end())
   {
     // create resource
@@ -88,7 +88,7 @@ PResource ResourceManager::createResource(const EGEString& name)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds resources from given file to repository. */
-EGEResult ResourceManager::addResources(EGEString fileName)
+EGEResult ResourceManager::addResources(String fileName)
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -111,8 +111,8 @@ EGEResult ResourceManager::addResources(EGEString fileName)
   }
 
   // process RESOURCES tag
-  EGEString path;
-  EGEString file;
+  String path;
+  String file;
   Dir::DecomposePath(fileName, path, file);
   result = processResourcesTag(path, resourcesNode);
 
@@ -146,13 +146,13 @@ EGEResult ResourceManager::addResources(EGEString fileName)
 //}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets root directory for resources */
-void ResourceManager::setRootDirectory(const EGEString& rootDir)
+void ResourceManager::setRootDirectory(const String& rootDir)
 {
   m_rootDir = rootDir;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Composes full path to given resource */
-EGEString ResourceManager::makeFullPath(const EGEString& localPath) const
+String ResourceManager::makeFullPath(const String& localPath) const
 {
   if (!m_rootDir.empty())
   {
@@ -172,7 +172,7 @@ EGEString ResourceManager::makeFullPath(const EGEString& localPath) const
 *   \param  filePath  relative (with respect to resource root directory) path to resouce file.
 *   \param  tag       resource element to process. 
 */
-EGEResult ResourceManager::processResourcesTag(const EGEString& filePath, const PXmlElement& tag)
+EGEResult ResourceManager::processResourcesTag(const String& filePath, const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -181,7 +181,7 @@ EGEResult ResourceManager::processResourcesTag(const EGEString& filePath, const 
   while (child->isValid())
   {
     // get child name
-    const EGEString childName = child->name();
+    const String childName = child->name();
 
     // process GROUP tag
     if (NODE_GROUP == childName)
@@ -191,7 +191,7 @@ EGEResult ResourceManager::processResourcesTag(const EGEString& filePath, const 
     // process INCLUDE tag
     else if (NODE_INCLUDE == childName)
     {
-      EGEString path = child->attribute("path");
+      String path = child->attribute("path");
 
       // check if obligatory data is wrong
       if (path.empty())
@@ -226,7 +226,7 @@ EGEResult ResourceManager::processResourcesTag(const EGEString& filePath, const 
 *   \param  filePath  relative (with respect to resource root directory) path to resouce file containing the group definition.
 *   \param  tag       group element to process. 
 */
-EGEResult ResourceManager::addGroup(const EGEString& filePath, const PXmlElement& tag)
+EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -250,7 +250,7 @@ EGEResult ResourceManager::addGroup(const EGEString& filePath, const PXmlElement
     }
     else
     {
-      EGE_PRINT(EGEString::Format("Group %s already exists.", newGroup->name().toAscii()));
+      EGE_PRINT(String::Format("Group %s already exists.", newGroup->name().toAscii()));
     }
   }
 
@@ -258,12 +258,12 @@ EGEResult ResourceManager::addGroup(const EGEString& filePath, const PXmlElement
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Gets group of the given name. */
-PResourceGroup ResourceManager::group(const EGEString& name) const
+PResourceGroup ResourceManager::group(const String& name) const
 {
   PResourceGroup group;
 
   // go thru all groups
-  for (EGEList<PResourceGroup>::const_iterator it = m_groups.begin(); it != m_groups.end(); ++it)
+  for (List<PResourceGroup>::const_iterator it = m_groups.begin(); it != m_groups.end(); ++it)
   {
     // check if proper group has been found
     if ((*it)->name() == name)
@@ -278,7 +278,7 @@ PResourceGroup ResourceManager::group(const EGEString& name) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Loads group with given name. */
-EGEResult ResourceManager::loadGroup(const EGEString& name)
+EGEResult ResourceManager::loadGroup(const String& name)
 {
   // get group of given name
   PResourceGroup theGroup = group(name);
@@ -292,7 +292,7 @@ EGEResult ResourceManager::loadGroup(const EGEString& name)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Unloads group with given name. */
-void ResourceManager::unloadGroup(const EGEString& name)
+void ResourceManager::unloadGroup(const String& name)
 {
   // get group of given name
   PResourceGroup theGroup = group(name);
@@ -304,7 +304,7 @@ void ResourceManager::unloadGroup(const EGEString& name)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns resource of a given type and name. Optionally, from given group only. */
-PResource ResourceManager::resource(const EGEString& typeName, const EGEString& name, const EGEString& groupName) const
+PResource ResourceManager::resource(const String& typeName, const String& name, const String& groupName) const
 {
   // check if search is to be done exactly in the given group
   if (!groupName.empty())
@@ -318,7 +318,7 @@ PResource ResourceManager::resource(const EGEString& typeName, const EGEString& 
   else
   {
     // go thru all groups
-    for (EGEList<PResourceGroup>::const_iterator it = m_groups.begin(); it != m_groups.end(); ++it)
+    for (List<PResourceGroup>::const_iterator it = m_groups.begin(); it != m_groups.end(); ++it)
     {
       PResource resource = (*it)->resource(typeName, name);
       if (resource)

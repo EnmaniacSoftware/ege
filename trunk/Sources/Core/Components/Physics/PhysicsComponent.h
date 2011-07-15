@@ -36,7 +36,7 @@ class PhysicsComponent : public IComponent
 
   public:
 
-    PhysicsComponent(Application* app, const EGEString& name, EGEPhysics::EComponentType type = EGEPhysics::COMPONENT_DYNAMIC);
+    PhysicsComponent(Application* app, const String& name, EGEPhysics::EComponentType type = EGEPhysics::COMPONENT_DYNAMIC);
    ~PhysicsComponent();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -88,7 +88,7 @@ class PhysicsComponent : public IComponent
     *  @param points  vertices of polygon shape.
     *  @param density shape density. Affects mass.
     */
-    bool addPolygonShape(const EGEDynamicArray<Vector4f>& points, float32 density, EGEPhysics::CollisionData colissionData = EGEPhysics::CollisionData());
+    bool addPolygonShape(const DynamicArray<Vector4f>& points, float32 density, EGEPhysics::CollisionData colissionData = EGEPhysics::CollisionData());
 
   private:
 
@@ -114,7 +114,7 @@ class PhysicsComponent : public IComponent
     /*! Scale vector. */
     Vector4f m_scale;
     /*! List of joints attached. */
-    EGEList<PhysicsJoint*> m_joints;
+    List<PhysicsJoint*> m_joints;
     /*! Pointer to physics manager. */
     PhysicsManager* m_manager;
 };

@@ -79,7 +79,7 @@ bool Renderer::addForRendering(const Matrix4f& worldMatrix, const PRenderCompone
   data.worldMatrix     = worldMatrix;
   data.renderComponent = component;
 
-  m_renderData.insert(EGEMap<s32, SRENDERDATA>::value_type(component->priority(), data));
+  m_renderData.insert(Map<s32, SRENDERDATA>::value_type(component->priority(), data));
 
   return true;
 }
@@ -96,7 +96,7 @@ void Renderer::setViewMatrix(const Matrix4f& matrix)
   m_viewMatrix = matrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//PRenderComponent Renderer::addComponent(const EGEString& name)
+//PRenderComponent Renderer::addComponent(const String& name)
 //{
 //  PRenderComponent pObject = ege_new RenderComponent(app(), name);
 //  if (pObject)

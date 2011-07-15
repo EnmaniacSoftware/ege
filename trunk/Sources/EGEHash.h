@@ -1,22 +1,10 @@
-#ifndef EGE_CORE_CONTAINER_MULTIMAP_H
-#define EGE_CORE_CONTAINER_MULTIMAP_H
-
-#include "Core/Platform.h"
-#include <map>
-
-EGE_NAMESPACE_BEGIN
+#ifndef EGE_HASH_H
+#define EGE_HASH_H
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-template <typename T, typename U>
-class MultiMap : public std::multimap<T, U>
-{
-  public:
-
-};
+#include "Core/Crypto/Hash.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_NAMESPACE_END
-
-#endif // EGE_CORE_CONTAINER_MULTIMAP_H
+#endif // EGE_HASH_H

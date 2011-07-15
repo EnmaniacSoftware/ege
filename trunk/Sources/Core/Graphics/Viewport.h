@@ -20,8 +20,8 @@ class Viewport : public Object
 {
   public:
 
-    Viewport(Application* app, const EGEString& name, PCamera camera, RenderTarget* renderTarget);
-    virtual ~Viewport();
+    Viewport(Application* app, const String& name, PCamera camera, RenderTarget* renderTarget);
+   ~Viewport();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -40,10 +40,10 @@ class Viewport : public Object
       BUFFER_TYPE_DEPTH = 0x02
     };
 
-	  EGE_DECLARE_FLAGS(BufferType, BufferTypeFlags);
+	  EGE_DECLARE_FLAGS(BufferType, BufferTypeFlags)
 
     /*! Returns name. */
-    inline const EGEString& name() const { return m_name; }
+    inline const String& name() const { return m_name; }
     /* Sets viewport rectangle within render target. */
     void setRect(Rectf rect);
     /*! Returns viewport rect within render target. */
@@ -89,7 +89,7 @@ class Viewport : public Object
   private:
 
     /*! Name. */
-    EGEString m_name;
+    String m_name;
     /*! Clear color (can be NONE if no viewport buffer should be cleared). */
     Color m_clearColor;
     /*! Rectangular area within render target viewport occupies (in relative units). */

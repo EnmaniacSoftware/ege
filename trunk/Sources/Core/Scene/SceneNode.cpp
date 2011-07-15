@@ -15,7 +15,7 @@ EGE_DEFINE_NEW_OPERATORS(SceneNode)
 EGE_DEFINE_DELETE_OPERATORS(SceneNode)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SceneNode::SceneNode(const EGEString& name, SceneNode* parent, SceneManager* manager, EGEPhysics::EComponentType componentType)
+SceneNode::SceneNode(const String& name, SceneNode* parent, SceneManager* manager, EGEPhysics::EComponentType componentType)
 : Object(manager->app()), Node(manager->app(), name, parent, componentType), m_manager(manager)
 {
 }
@@ -45,10 +45,10 @@ bool SceneNode::attachObject(PSceneNodeObject object)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns attached object with a given name. Returns NULL if no such object exists. */
-PSceneNodeObject SceneNode::attachedObject(const EGEString& name) const
+PSceneNodeObject SceneNode::attachedObject(const String& name) const
 {
   // go thru all objects
-  for (EGEList<PSceneNodeObject>::const_iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
+  for (List<PSceneNodeObject>::const_iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
   {
     PSceneNodeObject pObject = *iter;
 
@@ -64,10 +64,10 @@ PSceneNodeObject SceneNode::attachedObject(const EGEString& name) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Removes scene object of a given name. */
-void SceneNode::removeObject(const EGEString& name)
+void SceneNode::removeObject(const String& name)
 {
   // go thru all objects
-  for (EGEList<PSceneNodeObject>::iterator iter = m_objects.begin(); iter != m_objects.end();)
+  for (List<PSceneNodeObject>::iterator iter = m_objects.begin(); iter != m_objects.end();)
   {
     SceneNodeObject* object = *iter;
 
@@ -90,7 +90,7 @@ void SceneNode::removeObject(const EGEString& name)
 void SceneNode::removeAllAttachedObjects()
 {
   // go thru all objects
-  for (EGEList<PSceneNodeObject>::iterator iter = m_objects.begin(); iter != m_objects.end();)
+  for (List<PSceneNodeObject>::iterator iter = m_objects.begin(); iter != m_objects.end();)
   {
     SceneNodeObject* object = *iter;
 
@@ -129,7 +129,7 @@ void SceneNode::update(const Time& time)
 //  if ( m_bChildrenNeedUpdate == true )
   {
     // go thru all children
-    for (EGEList<Node*>::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+    for (List<Node*>::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
     {
       SceneNode* node = (SceneNode*) *iter;
       node->update(time);
@@ -147,13 +147,13 @@ void SceneNode::update(const Time& time)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Node override. Creates child node with a given name. MUST be overriden by subclass. */
-Node* SceneNode::createChildNodeImpl(const EGEString& name, EGEPhysics::EComponentType componentType)
+Node* SceneNode::createChildNodeImpl(const String& name, EGEPhysics::EComponentType componentType)
 {
   return ege_new SceneNode(name, this, sceneManager(), componentType);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates child scene node with a given name and attaches it. */
-SceneNode* SceneNode::createChildSceneNode(const EGEString& name, EGEPhysics::EComponentType componentType)
+SceneNode* SceneNode::createChildSceneNode(const String& name, EGEPhysics::EComponentType componentType)
 {
   return static_cast<SceneNode*>(createChildNode(name, componentType));
 }
@@ -218,7 +218,7 @@ bool SceneNode::addForRendering(PCamera& camera, Renderer* renderer) const
   //notifyVisible();
 
   // check attached objects
-  for (EGEList<PSceneNodeObject>::const_iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
+  for (List<PSceneNodeObject>::const_iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
   {
     const PSceneNodeObject& object = *iter;
 
@@ -234,7 +234,7 @@ bool SceneNode::addForRendering(PCamera& camera, Renderer* renderer) const
   }
 
   // go thru all the children
-  for (EGEList<Node*>::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  for (List<Node*>::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
   {
     const SceneNode* node = (SceneNode*) *iter;
 

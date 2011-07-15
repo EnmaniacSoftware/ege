@@ -82,7 +82,7 @@ class PhysicsComponentPrivate
     *  @param points  vertices of polygon shape.
     *  @param density shape density. Affects mass.
     */
-    bool addPolygonShape(const EGEDynamicArray<Vector4f>& points, float32 density, EGEPhysics::CollisionData colissionData);
+    bool addPolygonShape(const DynamicArray<Vector4f>& points, float32 density, EGEPhysics::CollisionData colissionData);
 
   private:
 

@@ -68,7 +68,7 @@ class Material : public Object
   private:
 
     /*! Textures assigned to material. */
-    EGEDynamicArray<PObject> m_textures;
+    DynamicArray<PObject> m_textures;
     /*! Diffuse color reflectance. */
     Color m_diffuseColor;
     /*! Ambient color reflectance. */

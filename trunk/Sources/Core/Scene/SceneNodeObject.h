@@ -19,14 +19,14 @@ class SceneNodeObject : public Object
 
   public:
 
-    SceneNodeObject(const EGEString& name, u32 uid = EGE_OBJECT_UID_GENERIC);
+    SceneNodeObject(const String& name, u32 uid = EGE_OBJECT_UID_GENERIC);
     virtual ~SceneNodeObject();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
     /*! Returns object name. */
-    inline const EGEString& name() const { return m_name; }
+    inline const String& name() const { return m_name; }
     /*! Returns parent node. */
     inline SceneNode* parentNode() const{ return m_parentNode; }
     /* Adds object render data for rendering with given renderer. */
@@ -34,7 +34,7 @@ class SceneNodeObject : public Object
     /*! Returns TRUE if object is visible. */
     inline bool isVisible() const { return m_visible; }
     /* Sets visibility flag. */
-    void setVisible(bool set);
+    virtual void setVisible(bool set);
 
     // bounding box related methods
    // inline const CAxisAlignedBox& getLocalAABB( void ) const { return m_cLocalAABB; } // gets local AABB
@@ -57,7 +57,7 @@ class SceneNodeObject : public Object
   protected:
 
     /*! Name. */
-    EGEString m_name;
+    String m_name;
 
     //CAxisAlignedBox m_cLocalAABB;         // local AABB
 
