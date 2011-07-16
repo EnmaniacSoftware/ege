@@ -118,7 +118,7 @@ bool Graphics::isValid() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Graphics::registerRenderTarget(PRenderTarget target)
 {
-  m_renderTargets.insert(MultiMap<s32, PRenderTarget>::value_type(target->priority(), target));
+  m_renderTargets.insert(target->priority(), target);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Graphics::removeRenderTarget(const String& name)

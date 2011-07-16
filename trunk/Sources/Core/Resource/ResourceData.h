@@ -1,11 +1,15 @@
 #ifndef EGE_CORE_RESOURCEDATA_H
 #define EGE_CORE_RESOURCEDATA_H
 
-#include "EGE.h"
+/** Data resource definition class. This object (resource) contains definition of location to particular data buffer (file).
+ *   Upon loading it contains data buffer filled with data in the given location.
+ */
+
+#include <EGE.h>
 #include "Core/Data/DataBuffer.h"
-#include "EGEXml.h"
-#include "String.h"
 #include "Core/Resource/Resource.h"
+#include <EGEXml.h>
+#include <EGEString.h>
 
 EGE_NAMESPACE_BEGIN
 

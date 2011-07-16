@@ -1,6 +1,10 @@
 #ifndef EGE_CORE_RESOURCEMATERIAL_H
 #define EGE_CORE_RESOURCEMATERIAL_H
 
+/** Material resource definition class. This object (resource) contains definition of render material.
+ *   Upon loading it contains material object to be used in rendering.
+ */
+
 #include <EGE.h>
 #include <EGEString.h>
 #include <EGEXml.h>
@@ -8,6 +12,7 @@
 #include <EGEList.h>
 #include <EGEGraphics.h>
 #include "Core/Resource/Resource.h"
+#include "Core/Graphics/Material.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -16,7 +21,6 @@ EGE_NAMESPACE_BEGIN
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
-EGE_DECLARE_SMART_CLASS(Material, PMaterial)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -24,7 +28,7 @@ class ResourceMaterial : public IResource
 {
   public:
 
-   ~ResourceMaterial();
+    virtual ~ResourceMaterial();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS

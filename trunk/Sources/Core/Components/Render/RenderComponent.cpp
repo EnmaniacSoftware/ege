@@ -14,7 +14,7 @@ EGE_DEFINE_DELETE_OPERATORS(RenderComponent)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderComponent::RenderComponent(Application* app, const String& name, s32 priority, EGEGraphics::ERenderPrimitiveType primitive) 
-: IComponent(app, EGE_OBJECT_UID_RENDER_COMPONENT, name), m_priority(priority), m_primitiveType(primitive), m_hash(0)
+: IComponent(app, EGE_OBJECT_UID_RENDER_COMPONENT, name), m_priority(priority), m_primitiveType(primitive), m_hash(0), m_hashInvalid(true)
 {
   m_indexBuffer  = ege_new IndexBuffer(app);
   m_vertexBuffer = ege_new VertexBuffer(app);
@@ -52,50 +52,63 @@ void RenderComponent::setPriority(s32 priority)
 /*! Invalidates hash value. */
 void RenderComponent::invalidateHash()
 {
-  m_hash = 0;
+  m_hashInvalid = true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Validates hash value. */
+void RenderComponent::validateHash()
+{
+  m_hashInvalid = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns hash. */
-u32 RenderComponent::hash() const
+u32 RenderComponent::hash()
 {
   if (isHashInvalid())
   {
     calculateHash();
+    validateHash();
   }
 
   return m_hash;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Calculates hash. */
-void RenderComponent::calculateHash() const
+void RenderComponent::calculateHash()
 {
   u32 hash = 0;
 
   // determine hash component from semantics
   // NOTE: generated value is from range [0 - 100000) - first 16 bits
   // NOTE: max occurences of a particular array is 9
-  const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& semantics = vertexBuffer()->semantics();
-  for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator it = semantics.begin(); it != semantics.end(); ++it)
-  {
-    switch (it->type)
-    {
-      case EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ:  hash += 1; break;
-      case EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA:    hash += 10; break;
-      case EGEVertexBuffer::ARRAY_TYPE_NORMAL:        hash += 100; break;
-      case EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV:    hash += 1000; break;
-      case EGEVertexBuffer::ARRAY_TYPE_TANGENT:       hash += 10000; break;
-    }
-  }
+  //const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& semantics = vertexBuffer()->semantics();
+  //for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator it = semantics.begin(); it != semantics.end(); ++it)
+  //{
+  //  switch (it->type)
+  //  {
+  //    case EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ:  hash += 1; break;
+  //    case EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA:    hash += 10; break;
+  //    case EGEVertexBuffer::ARRAY_TYPE_NORMAL:        hash += 100; break;
+  //    case EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV:    hash += 1000; break;
+  //    case EGEVertexBuffer::ARRAY_TYPE_TANGENT:       hash += 10000; break;
+  //  }
+  //}
 
-  // determine hash component from index buffer - bit no 17
-  if (indexBuffer())
-  {
-    hash |= (1 << 17);
-  }
+  //// determine hash component from index buffer - bit no 17
+  //if (indexBuffer())
+  //{
+  //  hash |= (1 << 17);
+  //}
 
   // determine hash component from textures
-  
+  if (material())
+  {
+    PObject texture1 = material()->texture(0);
+    PObject texture2 = material()->texture(1);
 
+    hash = (reinterpret_cast<u32>(texture2.m_object) << 16) | (reinterpret_cast<u32>(texture1.m_object) & 0x0000ffff);
+  }
+  
   // store new hash
   m_hash = hash;
 }

@@ -39,6 +39,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Renderer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderQueue.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderTarget.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderWindow.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Texture2D.cpp" />
@@ -87,6 +88,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Hash.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Complex.h" />
     <ClInclude Include="..\..\Sources\Core\Overlay\ImageOverlay.h" />

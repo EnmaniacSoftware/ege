@@ -49,7 +49,7 @@ EGEResult ResourceGroup::create(const PXmlElement& tag)
       }
 
       // add into pool
-      m_resources.insert(ResourcesMap::value_type(resource->typeName(), resource));
+      m_resources.insert(resource->typeName(), resource);
     }
 
     // go to next child

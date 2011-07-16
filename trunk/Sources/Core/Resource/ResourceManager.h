@@ -1,13 +1,14 @@
 #ifndef EGE_CORE_RESOURCEMANAGER_H
 #define EGE_CORE_RESOURCEMANAGER_H
 
+/** Resource manager class. This object is a root to entire resource management.
+ */
+
 #include <EGE.h>
 #include <EGEString.h>
-#include <EGEDataBuffer.h>
 #include <EGEXml.h>
 #include <EGEMap.h>
 #include <EGEList.h>
-#include "Core/Graphics/Material.h"
 
 EGE_NAMESPACE_BEGIN
 

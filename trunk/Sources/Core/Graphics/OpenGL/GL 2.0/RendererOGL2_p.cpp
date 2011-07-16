@@ -11,6 +11,7 @@
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Graphics/TextureImage.h"
+#include "Core/Graphics/Render/RenderQueue.h"
 
 EGE_NAMESPACE
 
@@ -106,138 +107,144 @@ void RendererPrivate::flush()
   glRotatef(d_func()->orientationRotation().degrees(), 0, 0, 1);
   glMultMatrixf(d_func()->m_projectionMatrix.data);
 
-  // go thru all render data
-  for (MultiMap<s32, Renderer::SRENDERDATA>::iterator iter = d_func()->m_renderData.begin(); iter != d_func()->m_renderData.end();)
+  // go thru all render queues
+  for (Map<s32, PRenderQueue>::const_iterator itQueue = d_func()->m_renderQueues.begin(); itQueue != d_func()->m_renderQueues.end(); ++itQueue)
   {
-    Renderer::SRENDERDATA& renderData = iter->second;
-
-    PVertexBuffer& vertexBuffer = renderData.renderComponent->vertexBuffer();
-    PIndexBuffer& indexBuffer   = renderData.renderComponent->indexBuffer();
-    PMaterial& material         = renderData.renderComponent->material();
-
-    // apply material
-    applyMaterial(material);
-
-    // NOTE: change to modelview after material is applied as it may change current matrix mode
-    glMatrixMode(GL_MODELVIEW);
-
-    // determine texture count
-    s32 textureCount = material ? material->textureCount() : 0;
-
-    // check if there is anything to be rendered
-    if (0 != vertexBuffer->vertexCount())
+    RenderQueue* queue = itQueue->second;
+    
+    // go thru all render data within current queue
+    const MultiMap<u32, RenderQueue::SRENDERDATA>& renderData = queue->renderData();
+    for (MultiMap<u32, RenderQueue::SRENDERDATA>::const_iterator it = renderData.begin(); it != renderData.end(); ++it)
     {
-      const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& vsSemantics = vertexBuffer->semantics();
+      const RenderQueue::SRENDERDATA& data = it->second;
 
-      // TAGE - if indexed geometry count indicies
-      u32 value = vertexBuffer->vertexCount();
+      PVertexBuffer& vertexBuffer = data.component->vertexBuffer();
+      PIndexBuffer& indexBuffer   = data.component->indexBuffer();
+      PMaterial& material         = data.component->material();
 
-      d_func()->m_vertexCount += value;
-      d_func()->m_batchCount++;
+      // apply material
+      applyMaterial(material);
 
-      // lock vertex data
-      void* vertexData = vertexBuffer->lock(0, vertexBuffer->vertexCount());
+      // NOTE: change to modelview after material is applied as it may change current matrix mode
+      glMatrixMode(GL_MODELVIEW);
 
-      // go thru all buffers
-      for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator iterSemantics = vsSemantics.begin(); iterSemantics != vsSemantics.end(); 
-           ++iterSemantics)
+      // determine texture count
+      s32 textureCount = material ? material->textureCount() : 0;
+
+      // check if there is anything to be rendered
+      if (0 != vertexBuffer->vertexCount())
       {
-        // set according to buffer type
-        switch (iterSemantics->type)
+        const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& semantics = vertexBuffer->semantics();
+
+        // TAGE - if indexed geometry count indicies
+        u32 value = vertexBuffer->vertexCount();
+
+        d_func()->m_vertexCount += value;
+        d_func()->m_batchCount++;
+
+        // lock vertex data
+        void* vertexData = vertexBuffer->lock(0, vertexBuffer->vertexCount());
+
+        // go thru all buffers
+        for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
         {
-          case EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ:
+          // set according to buffer type
+          switch (itSemantic->type)
+          {
+            case EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ:
 
-            glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
-            glEnableClientState(GL_VERTEX_ARRAY);
-            break;
+              glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+              glEnableClientState(GL_VERTEX_ARRAY);
+              break;
 
-          case EGEVertexBuffer::ARRAY_TYPE_NORMAL:
+            case EGEVertexBuffer::ARRAY_TYPE_NORMAL:
 
-            glNormalPointer(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
-            glEnableClientState(GL_NORMAL_ARRAY);
-            break;
+              glNormalPointer(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+              glEnableClientState(GL_NORMAL_ARRAY);
+              break;
 
-          case EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA:
+            case EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA:
 
-            glColorPointer(4, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
-            glEnableClientState(GL_COLOR_ARRAY);
-            break;
+              glColorPointer(4, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+              glEnableClientState(GL_COLOR_ARRAY);
+              break;
       
-          case EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV:
+            case EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV:
 
-            for (s32 i = 0; i < textureCount; ++i)
-            {
-              if (glClientActiveTextureARB)
+              for (s32 i = 0; i < textureCount; ++i)
               {
-                glClientActiveTextureARB(GL_TEXTURE0_ARB + i);
+                if (glClientActiveTextureARB)
+                {
+                  glClientActiveTextureARB(GL_TEXTURE0_ARB + i);
+                }
+
+                glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                glEnableClientState(GL_TEXTURE_COORD_ARRAY);
               }
+              // TAGE - we assume that each texture unit uses THE SAME texture coords!
+              //for ( s32 i = 0; i < iTexturesEnabled; i++ )
+              //{
+                //glEnable(GL_TEXTURE_2D);
+                //glBindTexture(GL_TEXTURE_2D, 2);
+                //glClientActiveTexture(GL_TEXTURE0 + 0);
+  //              glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
+    //          }
+              break;
 
-              glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
-              glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-            }
-            // TAGE - we assume that each texture unit uses THE SAME texture coords!
-            //for ( s32 i = 0; i < iTexturesEnabled; i++ )
-            //{
-              //glEnable(GL_TEXTURE_2D);
-              //glBindTexture(GL_TEXTURE_2D, 2);
-              //glClientActiveTexture(GL_TEXTURE0 + 0);
-//              glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
-  //          }
-            break;
+            //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
 
-          //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
-
-          //  // TANGENT is binded to GL_TEXTURE6
-          //  glClientActiveTexture( GL_TEXTURE6 );
-          //  glTexCoordPointer( 3, GL_FLOAT, cRenderOp.getVertexBuffer()->getVertexSize(), 
-          //                     static_cast<char*>( vertexData )+iter->uiOffset );
-          //  glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-          //  break;
+            //  // TANGENT is binded to GL_TEXTURE6
+            //  glClientActiveTexture( GL_TEXTURE6 );
+            //  glTexCoordPointer( 3, GL_FLOAT, cRenderOp.getVertexBuffer()->getVertexSize(), 
+            //                     static_cast<char*>( vertexData )+iter->uiOffset );
+            //  glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+            //  break;
+          }
         }
+
+        // TAGE - might be necessary
+	      //if (multitexturing)
+	      //glClientActiveTextureARB(GL_TEXTURE0);
+
+        // check if INDICIES are to be used
+        //if ( cRenderOp.isIndexBufferInUse() == true )
+        //{
+        //  // lock INDEX buffer
+        //  void* pIndexData = cRenderOp.getIndexBuffer()->lock( 0, cRenderOp.getIndexBuffer()->getIndexCountInUse() );
+
+        //  // render only if there is anything to render
+        //  if ( cRenderOp.getIndexBuffer()->getIndexCountInUse() != 0 )
+        //  {
+        //    glDrawElements( cRenderOp.getType(), cRenderOp.getIndexBuffer()->getIndexCountInUse(), 
+        //                    cRenderOp.getIndexBuffer()->getIndexSizeType(), pIndexData );
+        //  }
+
+        //  // unlock INDEX buffer
+        //  cRenderOp.getIndexBuffer()->unlock();
+        //}
+        //else
+        {
+          // set model-view matrix
+          glLoadMatrixf(d_func()->m_viewMatrix.multiply(data.worldMatrix).data);
+
+          // render only if there is anything to render
+          glDrawArrays(MapPrimitiveType(data.component->primitiveType()), 0, vertexBuffer->vertexCount());
+        }
+
+        // unlock vertex buffer
+        vertexBuffer->unlock();
+
+        // clean up
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_NORMAL_ARRAY);
+        glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glColor4f(1, 1, 1, 1);
       }
-
-      // TAGE - might be necessary
-	    //if (multitexturing)
-	    //glClientActiveTextureARB(GL_TEXTURE0);
-
-      // check if INDICIES are to be used
-      //if ( cRenderOp.isIndexBufferInUse() == true )
-      //{
-      //  // lock INDEX buffer
-      //  void* pIndexData = cRenderOp.getIndexBuffer()->lock( 0, cRenderOp.getIndexBuffer()->getIndexCountInUse() );
-
-      //  // render only if there is anything to render
-      //  if ( cRenderOp.getIndexBuffer()->getIndexCountInUse() != 0 )
-      //  {
-      //    glDrawElements( cRenderOp.getType(), cRenderOp.getIndexBuffer()->getIndexCountInUse(), 
-      //                    cRenderOp.getIndexBuffer()->getIndexSizeType(), pIndexData );
-      //  }
-
-      //  // unlock INDEX buffer
-      //  cRenderOp.getIndexBuffer()->unlock();
-      //}
-      //else
-      {
-        // set model-view matrix
-        glLoadMatrixf(d_func()->m_viewMatrix.multiply(renderData.worldMatrix).data);
-
-        // render only if there is anything to render
-        glDrawArrays(MapPrimitiveType(renderData.renderComponent->primitiveType()), 0, vertexBuffer->vertexCount());
-      }
-
-      // unlock vertex buffer
-      vertexBuffer->unlock();
-
-      // clean up
-      glDisableClientState(GL_VERTEX_ARRAY);
-      glDisableClientState(GL_NORMAL_ARRAY);
-      glDisableClientState(GL_COLOR_ARRAY);
-      glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-      glColor4f(1, 1, 1, 1);
     }
 
-    // remove rendered component and go to next one
-    iter = d_func()->m_renderData.erase(iter);
+    // clear render queue
+    queue->clear();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

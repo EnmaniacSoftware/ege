@@ -6,6 +6,7 @@
 #include "Core/Graphics/IndexBuffer.h"
 #include "Core/Graphics/VertexBuffer.h"
 #include "Core/Graphics/Material.h"
+#include "Core/Graphics/Render/RenderQueue.h"
 
 #if EGE_RENDERING_OPENGL_2
 #include "Core/Graphics/OpenGL/GL 2.0/RendererOGL2_p.h"
@@ -72,16 +73,26 @@ void Renderer::setOrientationRotation(const Angle& angle)
   m_orientationRotation = angle;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+/*! Adds given data for rendering. */
 bool Renderer::addForRendering(const Matrix4f& worldMatrix, const PRenderComponent& component)
 {
-  SRENDERDATA data;
-  data.worldMatrix     = worldMatrix;
-  data.renderComponent = component;
+  // check if no queue with such priority exists yet
+  if (!m_renderQueues.contains(component->priority()))
+  {
+    // create new queue
+    PRenderQueue queue = ege_new RenderQueue(app());
+    if (NULL == queue)
+    {
+      // error!
+      return false;
+    }
 
-  m_renderData.insert(Map<s32, SRENDERDATA>::value_type(component->priority(), data));
+    // add it into queues
+    m_renderQueues.insert(component->priority(), queue);
+  }
 
-  return true;
+  // add data into queue
+  return m_renderQueues[component->priority()]->addForRendering(worldMatrix, component);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets projection matrix. */

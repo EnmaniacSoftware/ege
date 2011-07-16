@@ -1,13 +1,16 @@
 #ifndef EGE_CORE_RESOURCEFONT_H
 #define EGE_CORE_RESOURCEFONT_H
 
+/** Font resource definition class. This object (resource) contains definition of bitmap based font.
+ *   Upon loading it contains font object to be used in font rendering.
+ */
+
 #include <EGE.h>
 #include <EGEXml.h>
 #include <EGEString.h>
 #include <EGEMath.h>
 #include <EGEMap.h>
 #include "Core/Resource/Resource.h"
-#include "Core/Resource/ResourceMaterial.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -36,7 +39,7 @@ class ResourceFont : public IResource
 {
   public:
 
-    ~ResourceFont();
+    virtual ~ResourceFont();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS

@@ -44,16 +44,18 @@ class RenderComponent : public IComponent
     /* Sets render material. */
     void setMaterial(const PMaterial& material);
     /* Returns hash. */
-    u32 hash() const;
+    u32 hash();
 
   private:
 
     /* Invalidates hash value. */
     void invalidateHash();
+    /* Validates hash value. */
+    void validateHash();
     /*! Returns TRUE if hash value needs to be recalulated. */
-    inline bool isHashInvalid() const { return 0 == hash(); }
+    inline bool isHashInvalid() const { return m_hashInvalid; }
     /* Calculates hash. */
-    void calculateHash() const;
+    void calculateHash();
 
   private:
 
@@ -68,7 +70,9 @@ class RenderComponent : public IComponent
     /*! Render material. */
     PMaterial m_material;
     /*! Hash value. */
-    mutable u32 m_hash;
+    u32 m_hash;
+    /*! Hash valuidity flag. */
+    bool m_hashInvalid;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

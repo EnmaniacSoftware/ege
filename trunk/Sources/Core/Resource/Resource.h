@@ -1,6 +1,11 @@
 #ifndef EGE_CORE_RESOURCE_H
 #define EGE_CORE_RESOURCE_H
 
+/** Abstract resource definition class. This object is a base for all resource objects which can be registered in EGE Framework. Registered resources are 
+    created while found in resource groups. When found framework will call proper object methods ie. to let the resource parse itself from group data, load,
+    unload etc.
+ */
+
 #include <EGE.h>
 #include <EGEXml.h>
 #include "Core/Memory/Object.h"

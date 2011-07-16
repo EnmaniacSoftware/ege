@@ -2,6 +2,7 @@
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Overlay/ImageOverlay.h"
 #include "Core/Graphics/Render/Renderer.h"
+#include "Core/Resource/ResourceMaterial.h"
 
 EGE_NAMESPACE
 
@@ -12,7 +13,7 @@ EGE_DEFINE_DELETE_OPERATORS(ImageOverlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ImageOverlay::ImageOverlay(Application* app, const String& name) : Overlay(app, name, EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLE_STRIPS, 
-                                                                              EGE_OBJECT_UID_OVERLAY_IMAGE)
+                                                                           EGE_OBJECT_UID_OVERLAY_IMAGE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

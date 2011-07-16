@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_RESOURCETEXTURE_H
 #define EGE_CORE_RESOURCETEXTURE_H
 
-/** Class defines texture resource (all properties). From its content actual instance of texture is created.
-    Texture resource can define any type of texture i.e. 2D, 3D or CUBE MAP.
-*/
+/** Texture resource definition class. This object (resource) contains definition of texture object.
+ *  Texture resource can define any type of texture i.e. 2D, 3D or CUBE MAP. Upon loading it contains texture object to be used in rendering.
+ */
 
 #include <EGE.h>
 #include <EGEString.h>
@@ -25,7 +25,7 @@ class ResourceTexture : public IResource
 {
   public:
 
-   ~ResourceTexture();
+    virtual ~ResourceTexture();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS

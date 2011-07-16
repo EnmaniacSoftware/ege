@@ -194,6 +194,8 @@ files
   (../../Sources/Core/Graphics/Render)
 	Renderer.cpp
 	Renderer.h
+  RenderQueue.cpp
+  RenderQueue.h
 	RenderTarget.cpp
 	RenderTarget.h
 	RenderWindow.cpp

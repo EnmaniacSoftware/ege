@@ -120,7 +120,7 @@ EGEResult ResourceTexture::create2D()
   EGEResult result = EGE_SUCCESS;
 
   PTexture2D texture = ege_new Texture2D(app());
-  if (NULL == texture)
+  if ((NULL == texture) || !texture->isValid())
   {
     // error!
     return EGE_ERROR_NO_MEMORY;

@@ -16,6 +16,7 @@ class SceneNode;
 EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
 EGE_DECLARE_SMART_CLASS(Material, PMaterial)
+EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -41,7 +42,7 @@ class Renderer : public Object
     void setOrientationRotation(const Angle& angle);
     /*! Returns orientation rotation. */
     const Angle& orientationRotation() const { return m_orientationRotation; }
-
+    /* Adds given data for rendering. */
     bool addForRendering(const Matrix4f& worldMatrix, const PRenderComponent& component);
 
     /* Resets statistics. */
@@ -59,7 +60,7 @@ class Renderer : public Object
     /* Sets view matrix. */
     void setViewMatrix(const Matrix4f& matrix);
 
-    // scene manager related methods
+    // scene manager related method
 //    void setSceneManager( const SceneManager* pcSceneManager );                              // sets scene manager which is in use
 
     // render related methods
@@ -76,21 +77,12 @@ class Renderer : public Object
 
   protected:
 
-    struct SRENDERDATA
-    {
-      PRenderComponent renderComponent;
-      
-      Matrix4f worldMatrix;
-    };
-
    // const SceneManager* m_pcSceneManager;          // current scene manager
 
   //  PViewport m_pViewport;                          // current viewport for which rendering is done
 
     /*! Orientation rotation angle. */
     Angle m_orientationRotation;
-    /*! Render data <priority, renderdata>. */
-    MultiMap<s32, SRENDERDATA> m_renderData;
     /*! Projection matrix. */
     Matrix4f m_projectionMatrix;
     /*! View matrix. */
@@ -99,6 +91,9 @@ class Renderer : public Object
     u32 m_batchCount;
     /*! Number of vertices rendered. */
     u32 m_vertexCount;
+    /*! Map of rendering queues sorted by render priority. */
+    Map<s32, PRenderQueue> m_renderQueues;
+
 
    // std::vector<PRenderComponent> m_components;     // components pool
 

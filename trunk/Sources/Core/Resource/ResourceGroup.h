@@ -1,6 +1,10 @@
 #ifndef EGE_CORE_RESOURCEGROUP_H
 #define EGE_CORE_RESOURCEGROUP_H
 
+/** Resource group definition class. This is special object containing delaration of other more specialized resources. Any action on this object is propagated
+    to all contained resources ie. when group is loaded, all contained resources are loaded as well.
+ */
+
 #include <EGE.h>
 #include <EGEXml.h>
 #include <EGEString.h>
