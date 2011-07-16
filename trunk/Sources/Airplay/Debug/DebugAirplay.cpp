@@ -9,7 +9,7 @@ void Debug::Assert(const char* description)
   assert(description);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Debug::Print(const EGEString& text)
+void Debug::Print(const String& text)
 {
   printf("%s\n", text.toAscii());
 }

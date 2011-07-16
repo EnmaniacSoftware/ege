@@ -32,7 +32,7 @@ EGEResult FilePrivate::open(EGEFile::EMode mode)
   close();
 
   // map mode
-  EGEString modeInternal;
+  String modeInternal;
   switch (mode)
   {
     case EGEFile::MODE_READ_ONLY:  modeInternal = "rb"; break;
