@@ -62,10 +62,10 @@ class ResourceTexture : public IResource
     inline const String& minFilter() const { return m_minFilter; }
     /*! Gets magnification function name. */
     inline const String& magFilter() const { return m_magFilter; }
-    /*! Gets wrap S coordinate mode name. */
-    inline const String& wrapS() const { return m_wrapS; }
-    /*! Gets wrap T coordinate mode name. */
-    inline const String& wrapT() const { return m_wrapT; }
+    /*! Gets texture addressing mode name for S coordinate. */
+    inline const String& adressingModeS() const { return m_addressingModeS; }
+    /*! Gets texture addressing mode name for T coordinate. */
+    inline const String& adressingModeT() const { return m_addressingModeT; }
     /*! Gets path to texture file */
     inline const String& path() const { return m_path; } 
 
@@ -81,10 +81,10 @@ class ResourceTexture : public IResource
     String m_minFilter;
     /*! Texture magnification function name. */
     String m_magFilter;
-    /*! Texture wrap S coordinate mode name. */
-    String m_wrapS;
-    /*! Texture wrap T coordinate mode name. */
-    String m_wrapT;
+    /*! Texture addressing mode name for S coordinate. */
+    String m_addressingModeS;
+    /*! Texture addressing mode name for T coordinate. */
+    String m_addressingModeT;
     /*! Texture object created from resource. NULL if not created yet. */
     PObject m_texture;
 };

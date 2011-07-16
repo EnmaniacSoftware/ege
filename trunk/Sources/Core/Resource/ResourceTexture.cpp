@@ -34,15 +34,15 @@ static EGETexture::Filter mapFilterName(const String& name)
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Maps literal wrap mode name into numeric value. */
-static EGETexture::Wrap mapWrapName(const String& name)
+/*! Maps literal texture addressing mode name into numeric value. */
+static EGETexture::AddressingMode mapTextureAddressingName(const String& name)
 {
   if ("clamp" == name)
   {
-    return EGETexture::CLAMP;
+    return EGETexture::AM_CLAMP;
   }
 
-  return EGETexture::REPEAT;
+  return EGETexture::AM_REPEAT;
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -76,13 +76,13 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   EGEResult result = EGE_SUCCESS;
 
   // get data
-  m_name      = tag->attribute("name");
-  m_path      = tag->attribute("path");
-  m_type      = tag->attribute("type").toLower();
-  m_minFilter = tag->attribute("min-filter").toLower();
-  m_magFilter = tag->attribute("mag-filter").toLower();
-  m_wrapS     = tag->attribute("wrap-s").toLower();
-  m_wrapT     = tag->attribute("wrap-t").toLower();
+  m_name            = tag->attribute("name");
+  m_path            = tag->attribute("path");
+  m_type            = tag->attribute("type").toLower();
+  m_minFilter       = tag->attribute("min-filter").toLower();
+  m_magFilter       = tag->attribute("mag-filter").toLower();
+  m_addressingModeS = tag->attribute("mode-s").toLower();
+  m_addressingModeT = tag->attribute("mode-t").toLower();
 
   // check if obligatory data is wrong
   if (m_name.empty() || m_path.empty() || m_type.empty())
@@ -129,8 +129,8 @@ EGEResult ResourceTexture::create2D()
   // sets parameters
   texture->setMinFilter(mapFilterName(minFilter()));
   texture->setMagFilter(mapFilterName(magFilter()));
-  texture->setWrapS(mapWrapName(wrapS()));
-  texture->setWrapT(mapWrapName(wrapT()));
+  texture->setTextureAddressingModeS(mapTextureAddressingName(adressingModeS()));
+  texture->setTextureAddressingModeT(mapTextureAddressingName(adressingModeT()));
 
   // create it
   result = texture->create(path());

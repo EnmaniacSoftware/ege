@@ -289,7 +289,7 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
         }
 
         glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, tex2d->id());
+        glBindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
 
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
@@ -306,7 +306,7 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
         }
 
         glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, tex2d->id());
+        glBindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
 
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();

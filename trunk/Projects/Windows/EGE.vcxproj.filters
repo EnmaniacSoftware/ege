@@ -390,6 +390,9 @@
     <ClCompile Include="..\..\Sources\Core\Crypto\Hash.cpp">
       <Filter>Core\Crypto</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Texture2D.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -758,6 +761,9 @@
     <ClInclude Include="..\..\Sources\EGEHash.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Hash.h">
       <Filter>Core\Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h">
+      <Filter>Core\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
