@@ -2,6 +2,9 @@
 #define EGE_CORE_RENDERER_PRIVATE_H
 
 #include <EGE.h>
+#include <EGEMap.h>
+#include <EGEDynamicArray.h>
+#include "GLES/gl.h"
 #include "Core/Graphics/Render/Renderer.h"
 #include "Core/Components/Render/RenderComponent.h"
 
@@ -36,8 +39,23 @@ class RendererPrivate
 
   private:
 
-	  /* Detects and initializes extensions. */
-	  void detectExtensions();
+    /* Detects rendering capabilities. */
+    void detectCapabilities();
+    /* Activates given texture unit. */
+    bool activateTextureUnit(u32 unit);
+    /* Checks if given extension is supported. */
+    bool isExtensionSupported(const char* extension) const;
+    /* Binds texture to target. */
+    bool bindTexture(GLenum target, GLuint textureId);
+
+  private:
+
+    /*! Texture unit currently active. */
+    u32 m_activeTextureUnit;
+    /*! Map of currently bound textures to targets. */
+    Map<GLenum, GLuint> m_boundTextures;
+    /*! Pool of all currently active texture units. */
+    DynamicArray<u32> m_activeTextureUnits;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

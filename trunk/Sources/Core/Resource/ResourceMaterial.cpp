@@ -9,8 +9,7 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#define NODE_TEXTURE        "texture"
-#define NODE_TEXTURE_IMAGE  "texture-image"
+#define NODE_TEXTURE "texture"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -74,10 +73,6 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
     if (NODE_TEXTURE == child->name())
     {
       result = addTexture(child);
-    }
-    else if (NODE_TEXTURE_IMAGE == child->name())
-    {
-      result = addTextureImage(child);
     }
 
     // check if failed
@@ -203,6 +198,7 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag)
 
   // get data
   String name = tag->attribute("name");
+  String rect = tag->attribute("rect");
 
   // check if obligatory data is wrong
   if (name.empty())
@@ -211,35 +207,11 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag)
     return EGE_ERROR_BAD_PARAM;
   }
 
-  // add texture image data
-  m_textureImages.push_back(TextureImageData(name, Rectf(0, 0, 1, 1)));
-
-  return result;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds texture image dependancy. */
-EGEResult ResourceMaterial::addTextureImage(const PXmlElement& tag)
-{
-  EGEResult result = EGE_SUCCESS;
-
-  bool error = false;
-
-  // get data
-  String textureName = tag->attribute("texture-name");
-  String textureRect = tag->attribute("texture-rect");
-
-  // check if obligatory data is wrong
-  if (textureName.empty())
-  {
-    // error!
-    return EGE_ERROR_BAD_PARAM;
-  }
-
-  Rectf rect(0, 0, 1, 1);
-  if (!textureRect.empty())
+  Rectf rectangle(0, 0, 1, 1);
+  if (!rect.empty())
   {
     bool error = false;
-    rect = textureRect.toRectf(&error);
+    rectangle = rect.toRectf(&error);
     if (error)
     {
       // error!
@@ -248,7 +220,7 @@ EGEResult ResourceMaterial::addTextureImage(const PXmlElement& tag)
   }
 
   // add texture image data
-  m_textureImages.push_back(TextureImageData(textureName, rect));
+  m_textureImages.push_back(TextureImageData(name, rectangle));
 
   return result;
 }

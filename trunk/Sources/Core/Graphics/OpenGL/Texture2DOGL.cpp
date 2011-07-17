@@ -185,10 +185,10 @@ GLint Texture2DPrivate::mapAddressingMode(EGETexture::AddressingMode mode) const
 {
   switch (mode)
   {
-#ifdef EGE_PLATFORM_WIN32
+#ifndef EGE_RENDERING_OPENGLES_1
     case EGETexture::AM_CLAMP:  return GL_CLAMP;
 #else
-    case EGETexture::CLAMP:  return GL_CLAMP_TO_EDGE;
+    case EGETexture::AM_CLAMP:  return GL_CLAMP_TO_EDGE;
 #endif
     case EGETexture::AM_REPEAT: return GL_REPEAT;
   }

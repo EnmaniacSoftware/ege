@@ -1,6 +1,4 @@
 #include "Core/Graphics/OpenGL/ES 1.0/RendererOGLES1_p.h"
-#include "GLES/gl.h"
-#include "GLES/egl.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
@@ -9,7 +7,9 @@
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/TextureImage.h"
-#include <EGEDynamicArray.h>
+#include "Core/Graphics/Render/RenderQueue.h"
+#include <EGEDevice.h>
+//#include "GLES/egl.h"
 
 EGE_NAMESPACE
 
@@ -56,9 +56,9 @@ static GLenum MapBlendFactor(EGEGraphics::EBlendFactor factor)
   return GL_ONE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RendererPrivate::RendererPrivate(Renderer* base) : m_d(base)
+RendererPrivate::RendererPrivate(Renderer* base) : m_d(base), m_activeTextureUnit(0xffffffff)
 {
-  detectExtensions();
+  detectCapabilities();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RendererPrivate::~RendererPrivate()
@@ -102,140 +102,161 @@ void RendererPrivate::flush()
   glRotatef(d_func()->orientationRotation().degrees(), 0, 0, 1);
   glMultMatrixf(d_func()->m_projectionMatrix.data);
 
-  // go thru all render data
-  for (MultiMap<s32, Renderer::SRENDERDATA>::iterator iter = d_func()->m_renderData.begin(); iter != d_func()->m_renderData.end();)
+  // go thru all render queues
+  for (Map<s32, PRenderQueue>::const_iterator itQueue = d_func()->m_renderQueues.begin(); itQueue != d_func()->m_renderQueues.end(); ++itQueue)
   {
-    Renderer::SRENDERDATA& renderData = iter->second;
-
-    PVertexBuffer vertexBuffer = renderData.renderComponent->vertexBuffer();
-    PIndexBuffer indexBuffer   = renderData.renderComponent->indexBuffer();
-    PMaterial material         = renderData.renderComponent->material();
-
-    // apply material
-		applyMaterial(material);
-
-    // NOTE: change to modelview after material is applied as it may change current matrix mode
-    glMatrixMode(GL_MODELVIEW);
-
-    // determine texture count
-    s32 textureCount = material ? material->textureCount() : 0;
-
-    // check if there is anything to be rendered
-    if (0 != vertexBuffer->vertexCount())
+    RenderQueue* queue = itQueue->second;
+    
+    // go thru all render data within current queue
+    const MultiMap<u32, RenderQueue::SRENDERDATA>& renderData = queue->renderData();
+    for (MultiMap<u32, RenderQueue::SRENDERDATA>::const_iterator it = renderData.begin(); it != renderData.end(); ++it)
     {
-      const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& vsSemantics = vertexBuffer->semantics();
+      const RenderQueue::SRENDERDATA& data = it->second;
 
-      // TAGE - if indexed geometry count indicies
-      u32 value = vertexBuffer->vertexCount();
+      PVertexBuffer vertexBuffer = data.component->vertexBuffer();
+      PIndexBuffer indexBuffer   = data.component->indexBuffer();
+      PMaterial material         = data.component->material();
 
-      d_func()->m_vertexCount += value;
-      d_func()->m_batchCount++;
+      // apply material
+      applyMaterial(material);
 
-      // lock vertex data
-      void* vertexData = vertexBuffer->lock(0, vertexBuffer->vertexCount());
+      // NOTE: change to modelview after material is applied as it may change current matrix mode
+      glMatrixMode(GL_MODELVIEW);
 
-      // go thru all buffers
-      for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator iterSemantics = vsSemantics.begin(); iterSemantics != vsSemantics.end(); 
-           ++iterSemantics)
+      // determine texture count
+      s32 textureCount = material ? material->textureCount() : 0;
+
+      // check if there is anything to be rendered
+      if (0 != vertexBuffer->vertexCount())
       {
-        // set according to buffer type
-        switch (iterSemantics->type)
+        const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& semantics = vertexBuffer->semantics();
+
+        // TAGE - if indexed geometry count indicies
+        u32 value = vertexBuffer->vertexCount();
+
+        d_func()->m_vertexCount += value;
+        d_func()->m_batchCount++;
+
+        // lock vertex data
+        void* vertexData = vertexBuffer->lock(0, vertexBuffer->vertexCount());
+
+        // go thru all buffers
+        for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
         {
-          case EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ:
+          // set according to buffer type
+          switch (itSemantic->type)
+          {
+            case EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ:
 
-            glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
-            glEnableClientState(GL_VERTEX_ARRAY);
-            break;
+              glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+              glEnableClientState(GL_VERTEX_ARRAY);
+              break;
 
-          case EGEVertexBuffer::ARRAY_TYPE_NORMAL:
+            case EGEVertexBuffer::ARRAY_TYPE_NORMAL:
 
-            glNormalPointer(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
-            glEnableClientState(GL_NORMAL_ARRAY);
-            break;
+              glNormalPointer(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+              glEnableClientState(GL_NORMAL_ARRAY);
+              break;
 
-          case EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA:
+            case EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA:
 
-            glColorPointer(4, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
-            glEnableClientState(GL_COLOR_ARRAY);
-            break;
+              glColorPointer(4, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+              glEnableClientState(GL_COLOR_ARRAY);
+              break;
       
-          case EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV:
+            case EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV:
 
-            for (s32 i = 0; i < textureCount; ++i)
-            {
-              glClientActiveTexture(GL_TEXTURE0 + i);
-              glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
-              glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-            }
-            break;
+              for (s32 i = 0; i < textureCount; ++i)
+              {
+                glClientActiveTexture(GL_TEXTURE0 + i);
 
-          //case VertexBuffer::ARRAY_TYPE_TANGENT:
+                glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+              }
+              // TAGE - we assume that each texture unit uses THE SAME texture coords!
+              //for ( s32 i = 0; i < iTexturesEnabled; i++ )
+              //{
+                //glEnable(GL_TEXTURE_2D);
+                //glBindTexture(GL_TEXTURE_2D, 2);
+                //glClientActiveTexture(GL_TEXTURE0 + 0);
+  //              glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
+    //          }
+              break;
 
-          //  // TANGENT is binded to GL_TEXTURE6
-          //  glClientActiveTexture( GL_TEXTURE6 );
-          //  glTexCoordPointer( 3, GL_FLOAT, cRenderOp.getVertexBuffer()->getVertexSize(), 
-          //                     static_cast<char*>( vertexData )+iter->uiOffset );
-          //  glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-          //  break;
+            //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
+
+            //  // TANGENT is binded to GL_TEXTURE6
+            //  glClientActiveTexture( GL_TEXTURE6 );
+            //  glTexCoordPointer( 3, GL_FLOAT, cRenderOp.getVertexBuffer()->getVertexSize(), 
+            //                     static_cast<char*>( vertexData )+iter->uiOffset );
+            //  glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+            //  break;
+          }
         }
+
+        // TAGE - might be necessary
+	      //if (multitexturing)
+	      //glClientActiveTextureARB(GL_TEXTURE0);
+
+        // check if INDICIES are to be used
+        //if ( cRenderOp.isIndexBufferInUse() == true )
+        //{
+        //  // lock INDEX buffer
+        //  void* pIndexData = cRenderOp.getIndexBuffer()->lock( 0, cRenderOp.getIndexBuffer()->getIndexCountInUse() );
+
+        //  // render only if there is anything to render
+        //  if ( cRenderOp.getIndexBuffer()->getIndexCountInUse() != 0 )
+        //  {
+        //    glDrawElements( cRenderOp.getType(), cRenderOp.getIndexBuffer()->getIndexCountInUse(), 
+        //                    cRenderOp.getIndexBuffer()->getIndexSizeType(), pIndexData );
+        //  }
+
+        //  // unlock INDEX buffer
+        //  cRenderOp.getIndexBuffer()->unlock();
+        //}
+        //else
+        {
+          // set model-view matrix
+          glLoadMatrixf(d_func()->m_viewMatrix.multiply(data.worldMatrix).data);
+
+          // render only if there is anything to render
+          glDrawArrays(MapPrimitiveType(data.component->primitiveType()), 0, vertexBuffer->vertexCount());
+        }
+
+        // unlock vertex buffer
+        vertexBuffer->unlock();
+
+        // clean up
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_NORMAL_ARRAY);
+        glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glColor4f(1, 1, 1, 1);
       }
 
-      // check if INDICIES are to be used
-      //if ( cRenderOp.isIndexBufferInUse() == true )
-      //{
-      //  // lock INDEX buffer
-      //  void* pIndexData = cRenderOp.getIndexBuffer()->lock( 0, cRenderOp.getIndexBuffer()->getIndexCountInUse() );
-
-      //  // render only if there is anything to render
-      //  if ( cRenderOp.getIndexBuffer()->getIndexCountInUse() != 0 )
-      //  {
-      //    glDrawElements( cRenderOp.getType(), cRenderOp.getIndexBuffer()->getIndexCountInUse(), 
-      //                    cRenderOp.getIndexBuffer()->getIndexSizeType(), pIndexData );
-      //  }
-
-      //  // unlock INDEX buffer
-      //  cRenderOp.getIndexBuffer()->unlock();
-      //}
-      //else
+      // disable all actived texture units
+      for (DynamicArray<u32>::const_iterator itTextureUnit = m_activeTextureUnits.begin(); itTextureUnit != m_activeTextureUnits.end(); ++itTextureUnit)
       {
-        // set model-view matrix
-        glLoadMatrixf(d_func()->m_viewMatrix.multiply(renderData.worldMatrix).data);
-
-        // render only if there is anything to render
-        glDrawArrays(MapPrimitiveType(renderData.renderComponent->primitiveType()), 0, vertexBuffer->vertexCount());
+        activateTextureUnit(*itTextureUnit);
+        glDisable(GL_TEXTURE_2D);
       }
-
-      // unlock vertex buffer
-      vertexBuffer->unlock();
-
-      // clean up
-      glDisableClientState(GL_VERTEX_ARRAY);
-      glDisableClientState(GL_NORMAL_ARRAY);
-      glDisableClientState(GL_COLOR_ARRAY);
-      glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-      glColor4f(1, 1, 1, 1);
+      m_activeTextureUnits.clear();
     }
 
-    // remove rendered component and go to next one
-    d_func()->m_renderData.erase(iter++);
+    // clear render queue
+    queue->clear();
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Detects and initializes extensions. */
-void RendererPrivate::detectExtensions()
-{
-  const GLubyte* extensions = glGetString(GL_EXTENSIONS);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Applies material. */
 void RendererPrivate::applyMaterial(const PMaterial& material)
 {
-  glDisable(GL_TEXTURE_2D);
-  glBindTexture(GL_TEXTURE_2D, 0);
+  // disable blending by default
   glDisable(GL_BLEND);
 
   if (material)
   {
+    // enable blending if necessary
     if ((EGEGraphics::BLEND_FACTOR_ONE != material->srcBlendFactor()) || (EGEGraphics::BLEND_FACTOR_ZERO != material->dstBlendFactor()))
     {
       glEnable(GL_BLEND);
@@ -247,27 +268,28 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
     {
       Object* texture = material->texture(i).object();
 
+#if 0
       // check if 2D texture
       if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
       {
         Texture2D* tex2d = (Texture2D*) texture;
 
-        glActiveTexture(GL_TEXTURE0 + i);
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, tex2d->id());
+        activateTextureUnit(i);
+        bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
 
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
       }
       // check if texture image
-      else if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
+      else 
+#endif
+      if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
       {
         TextureImage* texImg = (TextureImage*) texture;
         Texture2D* tex2d = (Texture2D*) texImg->texture().object();
 
-        glActiveTexture(GL_TEXTURE0 + i);
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, tex2d->id());
+        activateTextureUnit(i);
+        bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
 
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
@@ -276,5 +298,123 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
       }
     }
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Activates given texture unit. */
+bool RendererPrivate::activateTextureUnit(u32 unit)
+{
+  if (m_activeTextureUnit != unit)
+  {
+    // check if unit available
+    if (unit < Device::GetTextureUnitsCount())
+    {
+      // check if multitexture available
+      glActiveTexture(GL_TEXTURE0 + unit);
+      m_activeTextureUnit = unit;
+
+      // add to active texture units pool
+      m_activeTextureUnits.push_back(unit);
+
+      return GL_NO_ERROR == glGetError();
+    }
+    else
+    {
+      // out of range
+      return false;
+    }
+  }
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Binds texture to target. */
+bool RendererPrivate::bindTexture(GLenum target, GLuint textureId)
+{
+  // enable target
+  glEnable(target);
+  if (GL_NO_ERROR != glGetError())
+  {
+    // error!
+    return false;
+  }
+
+  if (m_boundTextures[target] != textureId)
+  {
+    // bind new texture to target
+    glBindTexture(target, textureId);
+    m_boundTextures[target] = textureId;
+
+    return GL_NO_ERROR == glGetError();
+  }
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Detects rendering capabilities. */
+void RendererPrivate::detectCapabilities()
+{
+  // there is at least 1 texture unit available
+  Device::SetTextureUnitsCount(1);
+
+  // check if multitexturing is supported
+  if (isExtensionSupported("GL_ARB_multitexture"))
+  {
+    // get number of texture units
+		GLint units;
+		glGetIntegerv(GL_MAX_TEXTURE_UNITS, &units);
+    Device::SetTextureUnitsCount(static_cast<u32>(units));
+  }
+
+  // detect maximal texture size
+  GLint size;
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &size);
+  Device::SetTextureMaxSize(static_cast<u32>(size));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Checks if given extension is supported. */
+bool RendererPrivate::isExtensionSupported(const char* extension) const
+{
+  const GLubyte* extensions = NULL;
+  const GLubyte* start;
+
+  GLubyte* where;
+  GLubyte* terminator;
+
+  // extension names should not have spaces
+  where = (GLubyte*) strchr(extension, ' ');
+  if (where || '\0' == *extension)
+  {
+    return false;
+  }
+
+  // get extensions string
+  extensions = glGetString(GL_EXTENSIONS);
+
+  // it takes a bit of care to be fool-proof about parsing the OpenGL extensions string. Don't be fooled by sub-strings, etc.
+  start = extensions;
+  for (;;) 
+  {
+    where = (GLubyte*) strstr((const char *) start, extension);
+    if (!where)
+    {
+      break;
+    }
+
+    terminator = where + strlen(extension);
+
+    if (where == start || *(where - 1) == ' ')
+    {
+      if (*terminator == ' ' || *terminator == '\0')
+      {
+        // found
+        return true;
+      }
+    }
+
+    start = terminator;
+  }
+
+  // not found
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,6 +1,4 @@
 #include "Core/Graphics/OpenGL/GL 2.0/RendererOGL2_p.h"
-#include <gl/gl.h>
-#include "glext.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
@@ -8,10 +6,10 @@
 #include "Core/Graphics/VertexBuffer.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
-#include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Graphics/TextureImage.h"
 #include "Core/Graphics/Render/RenderQueue.h"
+#include <EGEDevice.h>
 
 EGE_NAMESPACE
 
@@ -22,8 +20,8 @@ EGE_DEFINE_DELETE_OPERATORS(RendererPrivate)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB = NULL;
-PFNGLACTIVETEXTUREARBPROC glActiveTextureARB = NULL;
+PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTexture = NULL;
+PFNGLACTIVETEXTUREARBPROC glActiveTexture = NULL;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps primitive type to OpenGL compilant one. */
@@ -63,9 +61,9 @@ static GLenum MapBlendFactor(EGEGraphics::EBlendFactor factor)
   return GL_ONE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RendererPrivate::RendererPrivate(Renderer* base) : m_d(base)
+RendererPrivate::RendererPrivate(Renderer* base) : m_d(base), m_activeTextureUnit(0xffffffff)
 {
-  detectExtensions();
+  detectCapabilities();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RendererPrivate::~RendererPrivate()
@@ -173,9 +171,9 @@ void RendererPrivate::flush()
 
               for (s32 i = 0; i < textureCount; ++i)
               {
-                if (glClientActiveTextureARB)
+                if (glClientActiveTexture)
                 {
-                  glClientActiveTextureARB(GL_TEXTURE0_ARB + i);
+                  glClientActiveTexture(GL_TEXTURE0_ARB + i);
                 }
 
                 glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
@@ -241,6 +239,14 @@ void RendererPrivate::flush()
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
         glColor4f(1, 1, 1, 1);
       }
+
+      // disable all actived texture units
+      for (DynamicArray<u32>::const_iterator itTextureUnit = m_activeTextureUnits.begin(); itTextureUnit != m_activeTextureUnits.end(); ++itTextureUnit)
+      {
+        activateTextureUnit(*itTextureUnit);
+        glDisable(GL_TEXTURE_2D);
+      }
+      m_activeTextureUnits.clear();
     }
 
     // clear render queue
@@ -248,32 +254,15 @@ void RendererPrivate::flush()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Detects and initializes extensions. */
-void RendererPrivate::detectExtensions()
-{
-  const GLubyte* extensions = glGetString(GL_EXTENSIONS);
-
-  glClientActiveTextureARB = (PFNGLCLIENTACTIVETEXTUREARBPROC) wglGetProcAddress("glClientActiveTextureARB");
-  glActiveTextureARB = (PFNGLACTIVETEXTUREARBPROC) wglGetProcAddress("glActiveTextureARB");
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Applies material. */
 void RendererPrivate::applyMaterial(const PMaterial& material)
 {
-  //for (s32 i = 0; i < 2; i++)
-  //{
-  //  if (glActiveTextureARB)
-  //  {
-  //    glActiveTextureARB(GL_TEXTURE0_ARB + i);
-  //    glDisable(GL_TEXTURE_2D);
-  //  }
-  //}
-  glDisable(GL_TEXTURE_2D);
-  glBindTexture(GL_TEXTURE_2D, 0);
+  // disable blending by default
   glDisable(GL_BLEND);
 
   if (material)
   {
+    // enable blending if necessary
     if ((EGEGraphics::BLEND_FACTOR_ONE != material->srcBlendFactor()) || (EGEGraphics::BLEND_FACTOR_ZERO != material->dstBlendFactor()))
     {
       glEnable(GL_BLEND);
@@ -285,35 +274,28 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
     {
       Object* texture = material->texture(i).object();
 
+#if 0
       // check if 2D texture
       if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
       {
         Texture2D* tex2d = (Texture2D*) texture;
 
-        if (glActiveTextureARB)
-        {
-          glActiveTextureARB(GL_TEXTURE0_ARB + i);
-        }
-
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
+        activateTextureUnit(i);
+        bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
 
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
       }
       // check if texture image
-      else if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
+      else 
+#endif
+      if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
       {
         TextureImage* texImg = (TextureImage*) texture;
         Texture2D* tex2d = (Texture2D*) texImg->texture().object();
 
-        if (glActiveTextureARB)
-        {
-          glActiveTextureARB(GL_TEXTURE0_ARB + i);
-        }
-
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
+        activateTextureUnit(i);
+        bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
 
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
@@ -322,5 +304,140 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
       }
     }
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Activates given texture unit. */
+bool RendererPrivate::activateTextureUnit(u32 unit)
+{
+  if (m_activeTextureUnit != unit)
+  {
+    // check if unit available
+    if (unit < Device::GetTextureUnitsCount())
+    {
+      // check if multitexture available
+      if (glActiveTexture)
+      {
+        glActiveTexture(GL_TEXTURE0 + unit);
+        m_activeTextureUnit = unit;
+
+        // add to active texture units pool
+        m_activeTextureUnits.push_back(unit);
+
+        return GL_NO_ERROR == glGetError();
+      }
+      else if (0 == unit)
+      {
+        // unit 0 is the only valid option if no multitexturing is present. Thus, no special activation is required
+        m_activeTextureUnit = unit;
+        return true;
+      }
+      else
+      {
+        // out of range
+        return false;
+      }
+    }
+    else
+    {
+      // out of range
+      return false;
+    }
+  }
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Binds texture to target. */
+bool RendererPrivate::bindTexture(GLenum target, GLuint textureId)
+{
+  // enable target
+  glEnable(target);
+  if (GL_NO_ERROR != glGetError())
+  {
+    // error!
+    return false;
+  }
+
+  if (m_boundTextures[target] != textureId)
+  {
+    // bind new texture to target
+    glBindTexture(target, textureId);
+    m_boundTextures[target] = textureId;
+
+    return GL_NO_ERROR == glGetError();
+  }
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Detects rendering capabilities. */
+void RendererPrivate::detectCapabilities()
+{
+  // there is at least 1 texture unit available
+  Device::SetTextureUnitsCount(1);
+
+  // check if multitexturing is supported
+  if (isExtensionSupported("GL_ARB_multitexture"))
+  {
+    glClientActiveTexture = (PFNGLCLIENTACTIVETEXTUREARBPROC) wglGetProcAddress("glClientActiveTextureARB");
+    glActiveTexture       = (PFNGLACTIVETEXTUREARBPROC) wglGetProcAddress("glActiveTextureARB");
+
+    // get number of texture units
+		GLint units;
+		glGetIntegerv(GL_MAX_TEXTURE_UNITS, &units);
+    Device::SetTextureUnitsCount(static_cast<u32>(units));
+  }
+
+  // detect maximal texture size
+  GLint size;
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &size);
+  Device::SetTextureMaxSize(static_cast<u32>(size));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Checks if given extension is supported. */
+bool RendererPrivate::isExtensionSupported(const char* extension) const
+{
+  const GLubyte* extensions = NULL;
+  const GLubyte* start;
+
+  GLubyte* where;
+  GLubyte* terminator;
+
+  // extension names should not have spaces
+  where = (GLubyte*) strchr(extension, ' ');
+  if (where || '\0' == *extension)
+  {
+    return false;
+  }
+
+  // get extensions string
+  extensions = glGetString(GL_EXTENSIONS);
+
+  // it takes a bit of care to be fool-proof about parsing the OpenGL extensions string. Don't be fooled by sub-strings, etc.
+  start = extensions;
+  for (;;) 
+  {
+    where = (GLubyte*) strstr((const char *) start, extension);
+    if (!where)
+    {
+      break;
+    }
+
+    terminator = where + strlen(extension);
+
+    if (where == start || *(where - 1) == ' ')
+    {
+      if (*terminator == ' ' || *terminator == '\0')
+      {
+        // found
+        return true;
+      }
+    }
+
+    start = terminator;
+  }
+
+  // not found
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

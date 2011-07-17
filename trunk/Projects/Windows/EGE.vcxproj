@@ -23,6 +23,7 @@
     <ClCompile Include="..\..\Sources\Core\Data\Node.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Debug.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Logger.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Device\Device.cpp" />
     <ClCompile Include="..\..\Sources\Core\Dir\Dir.cpp" />
     <ClCompile Include="..\..\Sources\Core\Event\Event.cpp" />
     <ClCompile Include="..\..\Sources\Core\Event\EventManager.cpp" />

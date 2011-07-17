@@ -396,6 +396,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderQueue.cpp">
       <Filter>Core\Graphics\Render</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Device\Device.cpp">
+      <Filter>Core\Device</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">

@@ -130,6 +130,7 @@ files
 
   ["Core/Device"]
   (../../Sources/Core/Device)
+  Device.cpp
   Device.h
 
   ["Core/Dir"]

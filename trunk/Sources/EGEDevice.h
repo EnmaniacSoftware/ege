@@ -7,6 +7,7 @@ EGE_NAMESPACE_BEGIN
 
 namespace EGEDevice
 {
+    /*! Operating systems available. */
     enum EOS
     {
       OS_UNKOWN = 0,
@@ -14,6 +15,7 @@ namespace EGEDevice
       OS_WINDOWS
     };
 
+    /*! Devices available. */
     enum EDevice
     {
       DEVICE_GENERIC = 0,
@@ -26,6 +28,12 @@ namespace EGEDevice
       DEVICE_IPOD_TOUCH_2,
       DEVICE_IPOD_TOUCH_3,
       DEVICE_IPOD_TOUCH_4
+    };
+
+    /*! Rendering capability flags. */
+    enum ERenderCapability
+    {
+      RENDER_CAPS_COUNT = 1
     };
 }
 

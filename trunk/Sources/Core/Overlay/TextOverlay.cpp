@@ -96,7 +96,7 @@ void TextOverlay::updateRenderData()
         //    |   \  |
         //    |    \ |
         //    |Tri1 \|
-        //    |      \
+        //    |      |
         //    *------*
         //   (1)   (2,4)
 

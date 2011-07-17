@@ -107,26 +107,6 @@ void Renderer::setViewMatrix(const Matrix4f& matrix)
   m_viewMatrix = matrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//PRenderComponent Renderer::addComponent(const String& name)
-//{
-//  PRenderComponent pObject = ege_new RenderComponent(app(), name);
-//  if (pObject)
-//  {
-//    // initialize object
-//    if (EGE_SUCCESS == pObject->initialize())
-//    {
-//      // add into pool
-//      m_components.push_back(pObject);
-//    }
-//    else
-//    {
-//      pObject = NULL;
-//    }
-//  }
-//
-//  return pObject;
-//}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Resets statistics. */
 void Renderer::resetStats()
 {

@@ -4,7 +4,7 @@
 #include "Core/Graphics/Render/Renderer.h"
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Physics/PhysicsManager.h"
-#include "EGEDevice.h"
+#include <EGEDevice.h>
 
 #ifdef EGE_PLATFORM_WIN32
 #include "Win32/Graphics/GraphicsWin32_p.h"
@@ -89,7 +89,7 @@ void Graphics::render()
 /*! Sets current rendering context. */
 EGEResult Graphics::setCurrentRenderingContext(PRenderTarget target)
 {
-  EGEResult eResult = EGE_SUCCESS;
+  EGEResult result = EGE_SUCCESS;
 
   // check if there is any rendering context in use atm
   if (m_currentRenderingContext)
@@ -104,10 +104,10 @@ EGEResult Graphics::setCurrentRenderingContext(PRenderTarget target)
   // make it current if valid
   if (m_currentRenderingContext)
   {
-    eResult = m_currentRenderingContext->makeCurrentContext();
+    result = m_currentRenderingContext->makeCurrentContext();
   }
 
-  return eResult;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
