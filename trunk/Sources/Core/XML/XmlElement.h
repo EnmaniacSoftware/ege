@@ -20,7 +20,7 @@ class XmlElement : public Object
 
   public:
 
-    XmlElement();
+    XmlElement(const String& name);
    ~XmlElement();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -30,6 +30,10 @@ class XmlElement : public Object
     bool isValid() const;
     /* Returns value of given attribute if present */
     String attribute(const String& name) const;
+    /* Sets attribute with a given value. 
+     * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+     */
+    void setAttribute(const String& name, const String& value);
     /* Returns TRUE if given attribute exists. */
     bool containsAttribute(const String& name) const;
     /* Returns first child element. */
@@ -41,6 +45,8 @@ class XmlElement : public Object
 
   private:
 
+    /* Only intended to be used by XmlDocumentPrivate. */
+    XmlElement();
     XmlElement(XmlElementPrivate* p);
 
   private:

@@ -37,6 +37,10 @@ class XmlDocumentPrivate
     EGEResult load(const PDataBuffer& buffer);
     /* Returns first child with the given name. */
     PXmlElement firstChild(const String& name);
+    /* Saves document to a given file. */
+    EGEResult save(const String& fileName);
+    /* Saves document to a given buffer. */
+    EGEResult save(const PDataBuffer& buffer);
 
   private:
 

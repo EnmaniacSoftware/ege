@@ -1,4 +1,5 @@
 #include "Core/XML/TinyXml/XmlElementTinyXml_p.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
@@ -8,16 +9,24 @@ EGE_DEFINE_NEW_OPERATORS(XmlElementPrivate)
 EGE_DEFINE_DELETE_OPERATORS(XmlElementPrivate)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElementPrivate::XmlElementPrivate(XmlElement* base) : m_base(base), m_element(NULL)
+XmlElementPrivate::XmlElementPrivate(XmlElement* base) : m_base(base)
 {
+  m_element = new TiXmlElement("");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElementPrivate::XmlElementPrivate(TiXmlElement* element, XmlElement* base) : m_base(base), m_element(element)
+XmlElementPrivate::XmlElementPrivate(XmlElement* base, const String& name) : m_base(base)
 {
+  m_element = new TiXmlElement(name);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+XmlElementPrivate::XmlElementPrivate(const TiXmlElement& element, XmlElement* base) : m_base(base)
+{
+  m_element = new TiXmlElement(element);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 XmlElementPrivate::~XmlElementPrivate()
 {
+  EGE_DELETE(m_element);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if element is valid object */
@@ -38,16 +47,43 @@ bool XmlElementPrivate::containsAttribute(const String& name) const
   return isValid() && m_element->Attribute(name.toAscii());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Sets attribute with a given value. 
+ * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+ */
+void XmlElementPrivate::setAttribute(const String& name, const String& value)
+{
+  if (isValid())
+  {
+    m_element->SetAttribute(name, value);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns first child element. */
 XmlElementPrivate* XmlElementPrivate::firstChild() const
 {
-  return ege_new XmlElementPrivate(isValid() ? m_element->FirstChildElement() : NULL, m_base);
+  XmlElementPrivate* priv = NULL;
+  
+  const TiXmlElement* elem = m_element->FirstChildElement();
+  if (elem)
+  {
+    priv = ege_new XmlElementPrivate(*elem, m_base);
+  }
+
+  return priv;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns next child element after given element. */
 XmlElementPrivate* XmlElementPrivate::nextChild() const
 {
-  return ege_new XmlElementPrivate(isValid() ? m_element->NextSiblingElement() : NULL, m_base);
+  XmlElementPrivate* priv = NULL;
+
+  const TiXmlElement* elem = m_element->NextSiblingElement();
+  if (elem)
+  {
+    priv = ege_new XmlElementPrivate(*elem, m_base);
+  }
+
+  return priv;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns element name. */
@@ -56,9 +92,14 @@ String XmlElementPrivate::name() const
   return isValid() ? m_element->Value() : NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets internal TinyXML element pointer. */
-void XmlElementPrivate::setElement(TiXmlElement* element)
+/*! Pointer to TinyXML element object. */
+void XmlElementPrivate::setElement(const TiXmlElement* element)
 {
-  m_element = element;
+  EGE_ASSERT(isValid());
+
+  if (isValid() && element)
+  {
+    *m_element = *element;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

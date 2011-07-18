@@ -4,12 +4,11 @@
 #include <EGE.h>
 #include <EGEFile.h>
 #include <EGEString.h>
+#include <EGEDataBuffer.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class DataBuffer;
 
 EGE_DECLARE_SMART_CLASS(File, PFile)
 
@@ -35,10 +34,10 @@ class File : public Object
     void close();
     /* Reads given amount of data into destination buffer. */
     /// @return Returns number of bytes read.
-    s64 read(DataBuffer* dst, s64 size);
+    s64 read(const PDataBuffer& dst, s64 size);
     /* Writes given amount of data from destination buffer. */
     /// @return Returns number of bytes written.
-    s64 write(DataBuffer* dst, s64 size);
+    s64 write(const PDataBuffer& src, s64 size = -1);
     /* Sets new position within file. Returns old position or -1 if error occured. */
     s64 seek(s64 offset, EGEFile::ESeekMode mode);
     /* Returns current position in file. Returns -1 if error occured. */

@@ -17,6 +17,11 @@ XmlElement::XmlElement() : Object(NULL)
   m_p = ege_new XmlElementPrivate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+XmlElement::XmlElement(const String& name) : Object(NULL)
+{
+  m_p = ege_new XmlElementPrivate(this, name);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 XmlElement::XmlElement(XmlElementPrivate* p) : Object(NULL), m_p(p)
 {
 }
@@ -29,7 +34,7 @@ XmlElement::~XmlElement()
 /*! Returns TRUE if element is valid object */
 bool XmlElement::isValid() const
 {
-  return NULL != m_p && m_p->isValid();
+  return (NULL != m_p) && m_p->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns value of given attribute if present */
@@ -52,6 +57,17 @@ bool XmlElement::containsAttribute(const String& name) const
   }
 
   return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Sets attribute with a given value. 
+ * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+ */
+void XmlElement::setAttribute(const String& name, const String& value)
+{
+  if (isValid())
+  {
+    p_func()->setAttribute(name, value);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns first child element. */

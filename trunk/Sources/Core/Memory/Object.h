@@ -31,7 +31,7 @@ class Object
     /*! Increases reference count for the object */
     inline void addReference() { ++m_references; }
     /*! Decreses reference count for the object. If no more references are present deallocates object. */
-    inline void release() { if (--m_references == 0) { if (m_deleteFunc) m_deleteFunc(this); else delete this; } }
+    inline void release() { if (0 < m_references) { if (--m_references == 0) { if (m_deleteFunc) m_deleteFunc(this); else delete this; } } }
     /*! Returns pointer to engine. */
     inline Application* app() const { return m_app; }
 

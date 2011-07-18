@@ -66,7 +66,7 @@ void FilePrivate::close()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Reads given amount of data into destination buffer. */
 /// @return Returns number of bytes read.
-s64 FilePrivate::read(DataBuffer* dst, s64 size)
+s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
 {
   EGE_ASSERT(dst && (0 <= size));
 
@@ -116,9 +116,16 @@ s64 FilePrivate::read(DataBuffer* dst, s64 size)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Writes given amount of data from destination buffer. */
 /// @return Returns number of bytes written.
-s64 FilePrivate::write(DataBuffer* dst, s64 size)
+s64 FilePrivate::write(const PDataBuffer& src, s64 size)
 {
-  EGE_ASSERT(dst && (0 <= size));
+  EGE_ASSERT(src);
+
+  if (-1 == size)
+  {
+    size = src->size();
+  }
+
+  EGE_ASSERT(0 <= size);
 
   if (!isOpen())
   {
@@ -127,12 +134,12 @@ s64 FilePrivate::write(DataBuffer* dst, s64 size)
   }
 
   // store current read offset from data buffer
-  s64 readOffset = dst->readOffset();
+  s64 readOffset = src->readOffset();
 
   // dont allow to read beyond the size boundary of buffer
-  size = Math::Min(size, dst->size() - dst->readOffset());
+  size = Math::Min(size, src->size() - src->readOffset());
 
-  return (s64) fwrite(dst->data(readOffset), 1, (size_t) size, m_file);
+  return (s64) fwrite(src->data(readOffset), 1, (size_t) size, m_file);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets new position within file. Returns old position or -1 if error occured. */

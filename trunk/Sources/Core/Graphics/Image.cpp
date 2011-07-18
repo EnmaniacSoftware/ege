@@ -36,7 +36,7 @@ static void PngReadDataFunc(png_structp png_ptr, png_bytep outBytes, png_size_t 
 
    DataBuffer buffer((void*) outBytes, (s64) byteCountToRead);
    
-   if (EGE_SUCCESS != file.read(&buffer, buffer.size()))
+   if (EGE_SUCCESS != file.read(buffer, buffer.size()))
    {
      // error!
      return;

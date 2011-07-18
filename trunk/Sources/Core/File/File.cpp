@@ -60,7 +60,7 @@ void File::close()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Reads given amount of data into destination buffer. */
 /// @return Returns number of bytes read.
-s64 File::read(DataBuffer* dst, s64 size)
+s64 File::read(const PDataBuffer& dst, s64 size)
 {
   if (isValid())
   {
@@ -94,11 +94,11 @@ s64 File::tell()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Writes given amount of data from destination buffer. */
 /// @return Returns number of bytes written.
-s64 File::write(DataBuffer* dst, s64 size)
+s64 File::write(const PDataBuffer& src, s64 size)
 {
   if (isValid())
   {
-    return p_func()->write(dst, size);
+    return p_func()->write(src, size);
   }
 
   return 0;
@@ -109,7 +109,7 @@ EGE::File& File::operator << (u8 value)
   if (isValid())
   {
     DataBuffer buf(&value, sizeof (value));
-    p_func()->write(&buf, sizeof (value));
+    p_func()->write(buf, sizeof (value));
   }
 
   return *this;
@@ -120,7 +120,7 @@ EGE::File& File::operator << (s8 value)
   if (isValid())
   {
     DataBuffer buf(&value, sizeof (value));
-    p_func()->write(&buf, sizeof (value));
+    p_func()->write(buf, sizeof (value));
   }
 
   return *this;
@@ -133,7 +133,7 @@ EGE::File& File::operator << (u16 value)
     u8 data[2] = { value & 0x00ff, (value & 0xff00) >> 8 };
 
     DataBuffer buf(&data, sizeof (data));
-    p_func()->write(&buf, sizeof (value));
+    p_func()->write(buf, sizeof (value));
   }
 
   return *this;
@@ -146,7 +146,7 @@ EGE::File& File::operator << (s16 value)
     u8 data[2] = { value & 0x00ff, (value & 0xff00) >> 8 };
 
     DataBuffer buf(&data, sizeof (data));
-    p_func()->write(&buf, sizeof (value));
+    p_func()->write(buf, sizeof (value));
   }
 
   return *this;
@@ -159,7 +159,7 @@ EGE::File& File::operator << (u32 value)
     u8 data[4] = { (u8)(value & 0x000000ff), (u8)((value & 0x0000ff00) >> 8), (u8)((value & 0x00ff0000) >> 16), (u8)((value & 0xff000000) >> 24) };
 
     DataBuffer buf(&data, sizeof (data));
-    p_func()->write(&buf, sizeof (value));
+    p_func()->write(buf, sizeof (value));
   }
 
   return *this;
@@ -172,7 +172,7 @@ EGE::File& File::operator << (s32 value)
     u8 data[4] = { (u8)(value & 0x000000ff), (u8)((value & 0x0000ff00) >> 8), (u8)((value & 0x00ff0000) >> 16), (u8)((value & 0xff000000) >> 24) };
 
     DataBuffer buf(&data, sizeof (data));
-    p_func()->write(&buf, sizeof (value));
+    p_func()->write(buf, sizeof (value));
   }
 
   return *this;
@@ -188,7 +188,7 @@ EGE::File& File::operator << (u64 value)
                    (u8)((value & 0x00ff000000000000LL) >> 48), (u8)((value & 0xff00000000000000LL) >> 56) };
 
     DataBuffer buf(&data, sizeof (data));
-    p_func()->write(&buf, sizeof (value));
+    p_func()->write(buf, sizeof (value));
   }
 
   return *this;
@@ -204,7 +204,7 @@ EGE::File& File::operator << (s64 value)
                    (u8)((value & 0x00ff000000000000LL) >> 48), (u8)((value & 0xff00000000000000LL) >> 56) };
 
     DataBuffer buf(&data, sizeof (data));
-    p_func()->write(&buf, sizeof (value));
+    p_func()->write(buf, sizeof (value));
   }
 
   return *this;
@@ -220,7 +220,7 @@ EGE::File& File::operator << (float32 value)
   if (isValid())
   {
     DataBuffer buf(&value, sizeof (value));
-    p_func()->write(&buf, sizeof (value));
+    p_func()->write(buf, sizeof (value));
   }
 
   return *this;
@@ -231,7 +231,7 @@ EGE::File& File::operator << (float64 value)
   if (isValid())
   {
     DataBuffer buf(&value, sizeof (value));
-    p_func()->write(&buf, sizeof (value));
+    p_func()->write(buf, sizeof (value));
   }
 
   return *this;
@@ -242,7 +242,7 @@ EGE::File& File::operator >> (u8& value)
   if (isValid())
   {
     DataBuffer buf;
-    p_func()->read(&buf, sizeof (value));
+    p_func()->read(buf, sizeof (value));
     buf >> value;
   }
 
@@ -254,7 +254,7 @@ EGE::File& File::operator >> (s8& value)
   if (isValid())
   {
     DataBuffer buf;
-    p_func()->read(&buf, sizeof (value));
+    p_func()->read(buf, sizeof (value));
     buf >> value;
   }
 
@@ -266,7 +266,7 @@ EGE::File& File::operator >> (u16& value)
   if (isValid())
   {
     DataBuffer buf;
-    p_func()->read(&buf, sizeof (value));
+    p_func()->read(buf, sizeof (value));
     buf >> value;
   }
 
@@ -278,7 +278,7 @@ EGE::File& File::operator >> (s16& value)
   if (isValid())
   {
     DataBuffer buf;
-    p_func()->read(&buf, sizeof (value));
+    p_func()->read(buf, sizeof (value));
     buf >> value;
   }
 
@@ -290,7 +290,7 @@ EGE::File& File::operator >> (u32& value)
   if (isValid())
   {
     DataBuffer buf;
-    p_func()->read(&buf, sizeof (value));
+    p_func()->read(buf, sizeof (value));
     buf >> value;
   }
 
@@ -302,7 +302,7 @@ EGE::File& File::operator >> (s32& value)
   if (isValid())
   {
     DataBuffer buf;
-    p_func()->read(&buf, sizeof (value));
+    p_func()->read(buf, sizeof (value));
     buf >> value;
   }
 
@@ -314,7 +314,7 @@ EGE::File& File::operator >> (u64& value)
   if (isValid())
   {
     DataBuffer buf;
-    p_func()->read(&buf, sizeof (value));
+    p_func()->read(buf, sizeof (value));
     buf >> value;
   }
 
@@ -326,7 +326,7 @@ EGE::File& File::operator >> (s64& value)
   if (isValid())
   {
     DataBuffer buf;
-    p_func()->read(&buf, sizeof (value));
+    p_func()->read(buf, sizeof (value));
     buf >> value;
   }
 
@@ -347,7 +347,7 @@ EGE::File& File::operator >> (float32& value)
   if (isValid())
   {
     DataBuffer buf;
-    p_func()->read(&buf, sizeof (value));
+    p_func()->read(buf, sizeof (value));
     buf >> value;
   }
 
@@ -359,7 +359,7 @@ EGE::File& File::operator >> (float64& value)
   if (isValid())
   {
     DataBuffer buf;
-    p_func()->read(&buf, sizeof (value));
+    p_func()->read(buf, sizeof (value));
     buf >> value;
   }
 

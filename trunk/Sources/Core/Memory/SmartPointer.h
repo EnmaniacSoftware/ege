@@ -23,6 +23,8 @@ class SmartPointer
   public:
 
     SmartPointer(T* object = NULL);
+    /* Constructor for wrapping stack allocated objects into their P-class representation. This conversion does not allow wrapped object to be deallocated. */
+    SmartPointer(T& object);
     SmartPointer(const SmartPointer<T>& other);
     template <typename U>
     SmartPointer(const SmartPointer<U>& other);
@@ -70,7 +72,21 @@ template <typename T>
 SmartPointer<T>::SmartPointer(T* object)
 {
   m_object = object;
+
+  // NOTE: This constructor is used while wrapping non P-class object into its P-class version. Cause usually we want to wrap objects allocated on stack which
+  //       later we dont want to deallocate, we dont touch the ref counter so it does not gets deallocated.
+  // NOTE: In case later it will trun out this is also called for some other scenario, this needs to be given another thought so the case above is fulfield as
+  //       well.
   incrementReference(object);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Constructor for wrapping stack allocated objects into their P-class representation. This conversion does not allow wrapped object to be deallocated. */
+template <typename T>
+SmartPointer<T>::SmartPointer(T& object)
+{
+  m_object = &object;
+
+  // NOTE: do not increment ref counter
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

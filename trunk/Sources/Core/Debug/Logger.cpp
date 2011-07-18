@@ -63,7 +63,7 @@ EGEResult Logger::write(const String& text)
     {
       DataBuffer buf((void*) text.toAscii(), text.length() + 1);
       *reinterpret_cast<s8*>(buf.data(text.length())) = 0xA;
-      written = m_file.write(&buf, buf.size());
+      written = m_file.write(buf, buf.size());
       
       close();
     }

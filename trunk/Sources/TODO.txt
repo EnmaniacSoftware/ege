@@ -5,6 +5,8 @@ FEATURES:
 - OpenGL highest version detection and fallback mechanism for renderers
 - RenderQueue:
   - seperate solid and transparent objects (based on material?) and depth-sort transparent ones
+- VertexBuffer:
+  - add some method/way to instruct of creation of common vertex types in 1 call ie. one call to build vertex semantics for V3T2C4 or V3T2
 
 OPTIMIZATIONS:
 

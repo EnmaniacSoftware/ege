@@ -27,6 +27,7 @@ class XmlElementPrivate
   public:
 
     XmlElementPrivate(XmlElement* base);
+    XmlElementPrivate(XmlElement* base, const String& name);
    ~XmlElementPrivate();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -36,6 +37,10 @@ class XmlElementPrivate
     bool isValid() const;
     /* Returns value of given attribute if present */
     String attribute(const String& name) const;
+    /* Sets attribute with a given value. 
+     * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+     */
+    void setAttribute(const String& name, const String& value);
     /* Returns TRUE if given attribute exists. */
     bool containsAttribute(const String& name) const;
     /* Returns first child element. */
@@ -45,17 +50,17 @@ class XmlElementPrivate
     /* Returns element name. */
     String name() const;
     /* Sets internal TinyXML element pointer. */
-    void setElement(TiXmlElement* element);
+    void setElement(const TiXmlElement* element);
 
   private:  
 
-    XmlElementPrivate(TiXmlElement* element, XmlElement* base);
+    XmlElementPrivate(const TiXmlElement& element, XmlElement* base);
 
   private:
 
     /*! Pointer to base object. */
     XmlElement* m_base;
-    /*! Internal reference TinyXML element object */
+    /*! Pointer to TinyXML element object. */
     TiXmlElement* m_element;
 };
 

@@ -63,3 +63,25 @@ PXmlElement XmlDocument::firstChild(const String& name)
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Saves document to a given file. */
+EGEResult XmlDocument::save(const String& fileName)
+{
+  if (isValid())
+  {
+    return p_func()->save(fileName);
+  }
+
+  return EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Saves document to a given buffer. */
+EGEResult XmlDocument::save(const PDataBuffer& buffer)
+{
+  if (isValid())
+  {
+    return p_func()->save(buffer);
+  }
+
+  return EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
