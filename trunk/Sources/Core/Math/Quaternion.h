@@ -142,14 +142,8 @@ void TQuaternion<T>::convertTo(TVector3<T>& axis, Angle& angle) const
 template <typename T>
 TQuaternion<T> TQuaternion<T>::multiply(const TQuaternion<T>& quat) const
 {
-  TVector3<T> out;
-  TVector3<T> vec1(x, y, z);
-  TVector3<T> vec2(quat.x, quat.y, quat.z);
-
-  // calculate all coordinates
-  out = vec2 * w + vec1 * quat.w + vec1.crossProduct(vec2); 
-
-  return TQuaternion(out.x, out.y, out.z, w * quat.w - vec1.dotProduct(vec2));
+  return TQuaternion(w * quat.x + x * quat.w + y * quat.z - z * quat.y, w * quat.y + y * quat.w + z * quat.x - x * quat.z,
+                     w * quat.z + z * quat.w + x * quat.y - y * quat.x, w * quat.w - x * quat.x - y * quat.y - z * quat.z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns quaternion angle representation. */

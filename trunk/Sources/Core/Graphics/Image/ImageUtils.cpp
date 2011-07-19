@@ -76,7 +76,7 @@ void ImageUtils::FastCopy(PImage& dst, const Vector2i& dstPoint, const PImage& s
   //dstRect = Recti(0, 0, dst->width(), dst->height()).
 
   PFNSCANLINEBLTFUNC scanline = NULL;
-  for (s32 i = 0; i < sizeof (ScanLines) / sizeof (ScanLines[0]); ++i)
+  for (u32 i = 0; i < sizeof (ScanLines) / sizeof (ScanLines[0]); ++i)
   {
     // check if proper entry found
     if ((ScanLines[i].dstFormat == dst->format()) && (ScanLines[i].srcFormat == src->format()))

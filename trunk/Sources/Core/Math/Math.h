@@ -52,9 +52,9 @@ class Math
     inline static float32 Cos(float32 radians) { return cosf(radians); }
     inline static float32 Tan(float32 radians) { return tanf(radians); }
     inline static float32 Ctg(float32 radians) { return 1.0f / Tan(radians); }
-    inline static float32 ACos(float32 radians) { return acosf(radians); }
     inline static float32 ATan2(float32 y, float32 x) { return atan2f(y, x); }
     inline static float32 Abs(float32 value) { return fabsf(value); }
+    static float32 ACos(float32 radians);
 
     /* Converts quaternion to matrix representation. */
     static void Convert(Matrix4f* matrix, const Quaternionf* quaternion);

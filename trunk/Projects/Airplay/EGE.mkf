@@ -164,8 +164,6 @@ files
 	Frustum.h
 	Graphics.cpp
 	Graphics.h
-	Image.cpp
-	Image.h
 	IndexBuffer.cpp
 	IndexBuffer.h
   JpegDataSrcFile.cpp

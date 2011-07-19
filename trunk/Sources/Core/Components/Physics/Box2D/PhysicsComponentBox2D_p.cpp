@@ -89,7 +89,9 @@ Quaternionf PhysicsComponentPrivate::orientation() const
 
   if (isValid())
   {
-    orient.create(Vector3f::UNIT_Z, Angle::FromRadians(body()->GetAngle()));
+    // NOTE: we take base orientation Z value into account here as each rotation in 3D space can be represented by 2 opposit quaternions and we want to pick up
+    //       right one
+    orient.create((0 <= d_func()->m_orientation.z) ? Vector3f::UNIT_Z : Vector3f::NEGATIVE_UNIT_Z, Angle::FromRadians(body()->GetAngle()));
   }
 
   return orient;
