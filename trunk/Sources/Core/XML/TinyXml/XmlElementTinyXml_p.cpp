@@ -9,24 +9,26 @@ EGE_DEFINE_NEW_OPERATORS(XmlElementPrivate)
 EGE_DEFINE_DELETE_OPERATORS(XmlElementPrivate)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElementPrivate::XmlElementPrivate(XmlElement* base) : m_base(base)
+XmlElementPrivate::XmlElementPrivate(XmlElement* base) : m_base(base), m_element(NULL), m_deallocElement(false)
 {
-  m_element = new TiXmlElement("");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElementPrivate::XmlElementPrivate(XmlElement* base, const String& name) : m_base(base)
+XmlElementPrivate::XmlElementPrivate(XmlElement* base, const String& name) : m_base(base), m_deallocElement(true)
 {
   m_element = new TiXmlElement(name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElementPrivate::XmlElementPrivate(const TiXmlElement& element, XmlElement* base) : m_base(base)
+XmlElementPrivate::XmlElementPrivate(TiXmlElement* element, XmlElement* base) : m_base(base), m_deallocElement(false)
 {
-  m_element = new TiXmlElement(element);
+  m_element = element;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 XmlElementPrivate::~XmlElementPrivate()
 {
-  EGE_DELETE(m_element);
+  if (m_deallocElement)
+  {
+    EGE_DELETE(m_element);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if element is valid object */
@@ -63,10 +65,11 @@ XmlElementPrivate* XmlElementPrivate::firstChild() const
 {
   XmlElementPrivate* priv = NULL;
   
-  const TiXmlElement* elem = m_element->FirstChildElement();
+  TiXmlElement* elem = m_element->FirstChildElement();
+
   if (elem)
   {
-    priv = ege_new XmlElementPrivate(*elem, m_base);
+    priv = ege_new XmlElementPrivate(elem, m_base);
   }
 
   return priv;
@@ -77,10 +80,10 @@ XmlElementPrivate* XmlElementPrivate::nextChild() const
 {
   XmlElementPrivate* priv = NULL;
 
-  const TiXmlElement* elem = m_element->NextSiblingElement();
+  TiXmlElement* elem = m_element->NextSiblingElement();
   if (elem)
   {
-    priv = ege_new XmlElementPrivate(*elem, m_base);
+    priv = ege_new XmlElementPrivate(elem, m_base);
   }
 
   return priv;
@@ -93,13 +96,19 @@ String XmlElementPrivate::name() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pointer to TinyXML element object. */
-void XmlElementPrivate::setElement(const TiXmlElement* element)
+void XmlElementPrivate::setElement(TiXmlElement* element)
+{
+  m_element = element;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Appends new child element. */
+void XmlElementPrivate::appendChildElement(const XmlElementPrivate* element)
 {
   EGE_ASSERT(isValid());
-
-  if (isValid() && element)
+  if (m_element && element)
   {
-    *m_element = *element;
+    // NOTE: taking over ownership
+    m_element->LinkEndChild(element->element(true));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

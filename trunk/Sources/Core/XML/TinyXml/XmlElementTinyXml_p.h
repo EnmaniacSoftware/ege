@@ -49,12 +49,17 @@ class XmlElementPrivate
     XmlElementPrivate* nextChild() const;
     /* Returns element name. */
     String name() const;
+    /* Appends new child element. */
+    void appendChildElement(const XmlElementPrivate* element);
     /* Sets internal TinyXML element pointer. */
-    void setElement(const TiXmlElement* element);
+    void setElement(TiXmlElement* element);
+    /*! Returns pointer to TinyXML element object. */
+    inline TiXmlElement* element(bool releaseOwnership) const { if (releaseOwnership) { m_deallocElement = false; } return m_element; }
+
 
   private:  
 
-    XmlElementPrivate(const TiXmlElement& element, XmlElement* base);
+    XmlElementPrivate(TiXmlElement* element, XmlElement* base);
 
   private:
 
@@ -62,6 +67,8 @@ class XmlElementPrivate
     XmlElement* m_base;
     /*! Pointer to TinyXML element object. */
     TiXmlElement* m_element;
+    /*! TiXmlElement deallocation flag. If TRUE m_element was allocated by framework and needs to be deallocated. */
+    mutable bool m_deallocElement;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

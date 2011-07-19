@@ -32,12 +32,15 @@ class XmlDocument : public Object
     EGEResult load(const String& fileName);
     /* Loads document from a given buffer. */
     EGEResult load(const PDataBuffer& buffer);
-    /* Returns first child with the given name. */
-    PXmlElement firstChild(const String& name);
     /* Saves document to a given file. */
     EGEResult save(const String& fileName);
     /* Saves document to a given buffer. */
     EGEResult save(const PDataBuffer& buffer);
+
+    /* Returns first child with the given name. */
+    PXmlElement firstChild(const String& name);
+    /* Appends new element to document. */
+    void appendElement(const PXmlElement& element);
 
   private:
 

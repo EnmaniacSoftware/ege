@@ -42,6 +42,8 @@ class XmlElement : public Object
     PXmlElement nextChild() const;
     /* Returns element name. */
     String name() const;
+    /* Appends new child element. */
+    void appendChildElement(const PXmlElement& element);
 
   private:
 

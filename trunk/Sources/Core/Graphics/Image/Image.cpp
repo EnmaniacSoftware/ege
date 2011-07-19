@@ -1,5 +1,4 @@
-//#include "Core/EGEngine.h"
-#include "Core/Graphics/Image.h"
+#include "Core/Graphics/Image/Image.h"
 #include "Core/Data/DataBuffer.h"
 extern "C"
 {
@@ -36,7 +35,27 @@ static void PngReadDataFunc(png_structp png_ptr, png_bytep outBytes, png_size_t 
 
    DataBuffer buffer((void*) outBytes, (s64) byteCountToRead);
    
-   if (EGE_SUCCESS != file.read(buffer, buffer.size()))
+   if (buffer.size() != file.read(buffer, buffer.size()))
+   {
+     // error!
+     return;
+   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function used to write PNG data into file. */
+static void PngWriteDataFunc(png_structp png_ptr, png_bytep data, png_size_t length)
+{
+   if (NULL == png_ptr->io_ptr)
+   {
+     // error!
+     return;
+   }
+
+   File& file = *(File*) png_ptr->io_ptr;
+
+   DataBuffer buffer((void*) data, (s64) length);
+   
+   if (buffer.size() != file.write(buffer, buffer.size()))
    {
      // error!
      return;
@@ -385,18 +404,16 @@ EGEResult Image::allocateData(s32 width, s32 height, EGEImage::Format format)
     return EGE_ERROR_NO_MEMORY;
   }
 
-  // calculate row length
-  m_rowLength = width;
-  switch (format)
+  // get pixel size
+  u32 pixelSize = ImageUtils::PixelSize(format);
+  if (0 == pixelSize)
   {
-    case EGEImage::RGBA_8888: m_rowLength *= 4; break;
-    case EGEImage::RGB_888:   m_rowLength *= 3; break;
-
-    default:
-
-      // error!
-      return EGE_ERROR_NOT_SUPPORTED;
+    // error!
+    return EGE_ERROR_NOT_SUPPORTED;
   }
+
+  // calculate row length
+  m_rowLength = width * pixelSize;
 
   // align row length to 4 bytes
   if (m_rowLength & 0x3)
@@ -426,45 +443,124 @@ EGEResult Image::allocateData(s32 width, s32 height, EGEImage::Format format)
 EGEResult Image::save(const String& fileName)
 {
   EGEResult result = EGE_SUCCESS;
+
+  File file(fileName);
+  if (EGE_SUCCESS != (result = file.open(EGEFile::MODE_WRITE_ONLY)))
+  {
+    // error!
+    return result;
+  }
+
+  // determine file stream type
+  // TAGE - implement
+  StreamType type = STREAM_TYPE_PNG;
+  switch (type)
+  {
+    case STREAM_TYPE_PNG: result = savePng(file, EGEImage::RGBA_8888); break;
+    //case STREAM_TYPE_JPG: result = loadJpg(file, format); break;
+
+    default:
+
+      return EGE_ERROR_NOT_SUPPORTED;
+  }
+
+  // close file
+  file.close();
+
   return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Saves PNG file and converts it into requested format. */
+EGEResult Image::savePng(File& file, EGEImage::Format format)
+{
+	png_structp pngWriteStruct;
+	png_infop   pngInfoStruct;
+	png_bytepp  rowPointers;
+
+	// allocate memory for read structure
+	if (NULL == (pngWriteStruct = png_create_write_struct(PNG_LIBPNG_VER_STRING, (png_voidp) NULL, NULL, NULL))) 
+	{
+    // error!
+		return EGE_ERROR_NO_MEMORY;
+	}
+
+	// allocate memory for info structure
+  if (NULL == (pngInfoStruct = png_create_info_struct(pngWriteStruct)))
+	{
+    // error!
+    png_destroy_read_struct(&pngWriteStruct, (png_infopp) NULL, png_infopp_NULL);
+		return EGE_ERROR_NO_MEMORY;
+  }
+
+  // set custom stream read function
+  png_set_write_fn(pngWriteStruct, &file, PngWriteDataFunc, NULL);
+
+  // setup error handling
+  if (setjmp(png_jmpbuf(pngWriteStruct)))
+  {
+    // error!
+    png_destroy_read_struct(&pngWriteStruct, &pngInfoStruct, png_infopp_NULL);
+    return EGE_ERROR_IO;
+  }
+
+  // set attributes
+  png_set_IHDR(pngWriteStruct, pngInfoStruct, width(), height(), 8, (EGEImage::RGBA_8888 == format) ? PNG_COLOR_TYPE_RGB_ALPHA : PNG_COLOR_TYPE_RGB,
+               PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+
+  // allocate memory for row pointers
+  rowPointers = (png_byte**) png_malloc(pngWriteStruct, height() * sizeof (png_byte*));
+
+  // assign row pointers
+  for (s32 y = 0; y < height(); ++y)
+  {
+    rowPointers[y] = (png_byte*) data()->data(y * m_rowLength);
+  }
+
+  // supply row pointer to library
+  png_set_rows(pngWriteStruct, pngInfoStruct, rowPointers);
+
+  // write png
+  png_write_png(pngWriteStruct, pngInfoStruct, PNG_TRANSFORM_IDENTITY, NULL);
+
+  // clean up
+  png_free(pngWriteStruct, rowPointers);
+
+	// deallocate all png data 
+	png_destroy_write_struct(&pngWriteStruct, &pngInfoStruct);
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Makes copy of current image in a givem format. */
 Image* Image::copy(EGEImage::Format format) const
 {
   Image* image = ege_new Image(app(), width(), height(), format);
-  if (NULL != image && image->isValid())
-  {
-    typedef void (*PFNSCANLINEBLT)(void* dst, const void* src, s32 length);
-    PFNSCANLINEBLT func = NULL;
+  //if (NULL != image && image->isValid())
+  //{
+  //  typedef void (*PFNSCANLINEBLT)(void* dst, const void* src, s32 length);
+  //  PFNSCANLINEBLT func = NULL;
 
-    switch (this->format())
-    {
-      case EGEImage::RGBA_8888:
+  //  switch (this->format())
+  //  {
+  //    case EGEImage::RGBA_8888:
 
-        if (EGEImage::RGBA_8888 == image->format())
-        {
-          func = Image::ScanLineBltRGBA8888ToRGBA8888;
-          break;
-        }
-    }
+  //      if (EGEImage::RGBA_8888 == image->format())
+  //      {
+  //        func = Image::ScanLineBltRGBA8888ToRGBA8888;
+  //        break;
+  //      }
+  //  }
 
-    if (NULL != func)
-    {
-      // go thru all scanlines
-      for (s32 y = 0; y < height(); ++y)
-      {
-        //func();
-      }
-    }
-  }
+  //  if (NULL != func)
+  //  {
+  //    // go thru all scanlines
+  //    for (s32 y = 0; y < height(); ++y)
+  //    {
+  //      //func();
+  //    }
+  //  }
+  //}
 
   return image;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Performs scan line bit blit from RGBA8888 format onto RGBA8888 format. */
-void Image::ScanLineBltRGBA8888ToRGBA8888(void* dst, const void* src, s32 length)
-{
-  EGE_MEMCPY(dst, src, length);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

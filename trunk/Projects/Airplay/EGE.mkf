@@ -181,6 +181,13 @@ files
   Viewport.cpp
 	Viewport.h
 
+	["Core/Graphics/Image"]
+ 	(../../Sources/Core/Graphics/Image)
+	Image.cpp
+	Image.h
+	ImageUtils.cpp
+	ImageUtils.h
+
 	["Core/Graphics/OpenGL"]
  	(../../Sources/Core/Graphics/OpenGL)
 	Texture2DOGL.cpp

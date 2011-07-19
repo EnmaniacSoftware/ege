@@ -33,7 +33,8 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Font.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Graphics.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Graphics\Image.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image\Image.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageUtils.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\IndexBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Material.cpp" />
@@ -89,6 +90,8 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Hash.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image\Image.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Complex.h" />
@@ -142,7 +145,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Font.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Frustum.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Graphics.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\Image.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\IndexBuffer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Material.h" />

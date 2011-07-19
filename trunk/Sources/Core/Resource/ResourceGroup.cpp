@@ -37,6 +37,8 @@ EGEResult ResourceGroup::create(const PXmlElement& tag)
   PXmlElement child = tag->firstChild();
   while (child->isValid())
   {
+    String nam = child->name();
+
     // create resource instance
     PResource resource = manager()->createResource(child->name());
     if (resource)

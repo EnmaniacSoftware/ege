@@ -17,6 +17,8 @@ EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 
 class Image : public Object
 {
+  friend class ImageUtils;
+
   public:
 
     Image(Application* app);
@@ -63,13 +65,10 @@ class Image : public Object
     EGEResult loadPng(File& file, EGEImage::Format format);
     /* Loads JPG file and converts it into requested format. */
     EGEResult loadJpg(File& file, EGEImage::Format format);
+    /* Saves PNG file and converts it into requested format. */
+    EGEResult savePng(File& file, EGEImage::Format format);
     /* Allocated internal data buffer to be able to hold image of a given size and format. */
     EGEResult allocateData(s32 width, s32 height, EGEImage::Format format);
-
-  private:
-
-    /* Performs scan line bit blit from RGBA8888 format onto RGBA8888 format. */
-    static void ScanLineBltRGBA8888ToRGBA8888(void* dst, const void* src, s32 length);
 
   private:
 

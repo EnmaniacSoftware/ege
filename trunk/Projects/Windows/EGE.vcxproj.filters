@@ -142,6 +142,9 @@
     <Filter Include="Core\Crypto">
       <UniqueIdentifier>{3abc6d54-baea-4a5a-a348-0d4e4f8df1b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Graphics\Image">
+      <UniqueIdentifier>{a355a3fe-25e5-4524-a444-3ab121584f80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -166,9 +169,6 @@
       <Filter>Core\Event</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp">
-      <Filter>Core\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\Image.cpp">
       <Filter>Core\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\IndexBuffer.cpp">
@@ -399,6 +399,12 @@
     <ClCompile Include="..\..\Sources\Core\Device\Device.cpp">
       <Filter>Core\Device</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image\Image.cpp">
+      <Filter>Core\Graphics\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageUtils.cpp">
+      <Filter>Core\Graphics\Image</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -438,9 +444,6 @@
       <Filter>Core\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Frustum.h">
-      <Filter>Core\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\Image.h">
       <Filter>Core\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\IndexBuffer.h">
@@ -773,6 +776,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h">
       <Filter>Core\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image\Image.h">
+      <Filter>Core\Graphics\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h">
+      <Filter>Core\Graphics\Image</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

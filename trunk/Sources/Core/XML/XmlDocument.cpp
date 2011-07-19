@@ -85,3 +85,12 @@ EGEResult XmlDocument::save(const PDataBuffer& buffer)
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Appends new element to document. */
+void XmlDocument::appendElement(const PXmlElement& element)
+{
+  if (isValid())
+  {
+    p_func()->appendElement(element);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

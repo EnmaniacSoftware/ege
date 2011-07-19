@@ -1,4 +1,4 @@
-#include "Core/Graphics/Image.h"
+#include "Core/Graphics/Image/Image.h"
 
 #ifdef EGE_PLATFORM_WIN32
 #include <gl/GL.h>

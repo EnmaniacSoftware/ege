@@ -57,6 +57,7 @@ PXmlElement XmlDocumentPrivate::firstChild(const String& name)
   if (node)
   {
     TiXmlElement* elem = node->ToElement();
+
     if (elem)
     {
       element = ege_new XmlElement();
@@ -101,6 +102,10 @@ EGEResult XmlDocumentPrivate::save(const String& fileName)
 /*! Saves document to a given buffer. */
 EGEResult XmlDocumentPrivate::save(const PDataBuffer& buffer)
 {
+  // add declaration to the front
+  TiXmlDeclaration decl("1.0", "", "no");
+  m_xml.InsertBeforeChild(m_xml.FirstChild(), decl);
+
   TiXmlPrinter printer;
 
   // setup feel and look
@@ -121,5 +126,12 @@ EGEResult XmlDocumentPrivate::save(const PDataBuffer& buffer)
   }
 
   return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Appends new element to document. */
+void XmlDocumentPrivate::appendElement(const PXmlElement& element)
+{
+  // NOTE: TiXmlDocument takes ownership of element
+  m_xml.LinkEndChild(element->p_func()->element(true));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
