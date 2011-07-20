@@ -53,8 +53,6 @@ class RendererPrivate
 
     /*! Texture unit currently active. */
     u32 m_activeTextureUnit;
-    /*! Map of currently bound textures to targets. */
-    Map<GLenum, GLuint> m_boundTextures;
     /*! Pool of all currently active texture units. */
     DynamicArray<u32> m_activeTextureUnits;
 };

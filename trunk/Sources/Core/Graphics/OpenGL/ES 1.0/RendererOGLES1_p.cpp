@@ -333,7 +333,7 @@ bool RendererPrivate::activateTextureUnit(u32 unit)
 /*! Binds texture to target. */
 bool RendererPrivate::bindTexture(GLenum target, GLuint textureId)
 {
-  // enable target
+  // enable target first
   glEnable(target);
   if (GL_NO_ERROR != glGetError())
   {
@@ -341,12 +341,26 @@ bool RendererPrivate::bindTexture(GLenum target, GLuint textureId)
     return false;
   }
 
+  // map texture target into texture binding query value
+  GLenum textureBinding;
+  switch (target)
+  {
+    case GL_TEXTURE_2D: textureBinding = GL_TEXTURE_BINDING_2D; break;
+
+    default:
+
+      EGE_ASSERT("Incorrect texture binding!");
+  }
+
+  // query texture Id bound to given target
+  GLint boundTextureId;
+	glGetIntegerv(textureBinding, &boundTextureId);
+
   // check if different texture bound currently
-  if (m_boundTextures[target] != textureId)
+  if (boundTextureId != textureId)
   {
     // bind new texture to target
     glBindTexture(target, textureId);
-    m_boundTextures[target] = textureId;
 
     return GL_NO_ERROR == glGetError();
   }

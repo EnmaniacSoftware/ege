@@ -227,6 +227,11 @@ void RendererPrivate::flush()
         // disable all actived texture units
         for (DynamicArray<u32>::const_iterator itTextureUnit = m_activeTextureUnits.begin(); itTextureUnit != m_activeTextureUnits.end(); ++itTextureUnit)
         {
+          if (*itTextureUnit != 0)
+          {
+            int a = 1;
+          }
+
           // disable texturing on server side
           activateTextureUnit(*itTextureUnit);
           glDisable(GL_TEXTURE_2D);
@@ -357,12 +362,28 @@ bool RendererPrivate::bindTexture(GLenum target, GLuint textureId)
     return false;
   }
 
+  // map texture target into texture binding query value
+  GLenum textureBinding;
+  switch (target)
+  {
+    case GL_TEXTURE_1D: textureBinding = GL_TEXTURE_BINDING_1D; break;
+    case GL_TEXTURE_2D: textureBinding = GL_TEXTURE_BINDING_2D; break;
+    case GL_TEXTURE_3D: textureBinding = GL_TEXTURE_BINDING_3D; break;
+
+    default:
+
+      EGE_ASSERT("Incorrect texture binding!");
+  }
+
+  // query texture Id bound to given target
+  GLint boundTextureId;
+	glGetIntegerv(textureBinding, &boundTextureId);
+
   // check if different texture bound currently
-  if (m_boundTextures[target] != textureId)
+  if (boundTextureId != textureId)
   {
     // bind new texture to target
     glBindTexture(target, textureId);
-    m_boundTextures[target] = textureId;
 
     return GL_NO_ERROR == glGetError();
   }
