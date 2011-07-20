@@ -109,7 +109,7 @@ void RendererPrivate::flush()
   for (Map<s32, PRenderQueue>::const_iterator itQueue = d_func()->m_renderQueues.begin(); itQueue != d_func()->m_renderQueues.end(); ++itQueue)
   {
     RenderQueue* queue = itQueue->second;
-    
+
     // go thru all render data within current queue
     const MultiMap<u32, RenderQueue::SRENDERDATA>& renderData = queue->renderData();
     for (MultiMap<u32, RenderQueue::SRENDERDATA>::const_iterator it = renderData.begin(); it != renderData.end(); ++it)
@@ -173,20 +173,12 @@ void RendererPrivate::flush()
               {
                 if (glClientActiveTexture)
                 {
-                  glClientActiveTexture(GL_TEXTURE0_ARB + i);
+                  glClientActiveTexture(GL_TEXTURE0 + i);
                 }
 
                 glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
                 glEnableClientState(GL_TEXTURE_COORD_ARRAY);
               }
-              // TAGE - we assume that each texture unit uses THE SAME texture coords!
-              //for ( s32 i = 0; i < iTexturesEnabled; i++ )
-              //{
-                //glEnable(GL_TEXTURE_2D);
-                //glBindTexture(GL_TEXTURE_2D, 2);
-                //glClientActiveTexture(GL_TEXTURE0 + 0);
-  //              glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
-    //          }
               break;
 
             //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
@@ -202,7 +194,7 @@ void RendererPrivate::flush()
 
         // TAGE - might be necessary
 	      //if (multitexturing)
-	      //glClientActiveTextureARB(GL_TEXTURE0);
+	      //  glClientActiveTexture(GL_TEXTURE0);
 
         // check if INDICIES are to be used
         //if ( cRenderOp.isIndexBufferInUse() == true )
@@ -232,21 +224,31 @@ void RendererPrivate::flush()
         // unlock vertex buffer
         vertexBuffer->unlock();
 
+        // disable all actived texture units
+        for (DynamicArray<u32>::const_iterator itTextureUnit = m_activeTextureUnits.begin(); itTextureUnit != m_activeTextureUnits.end(); ++itTextureUnit)
+        {
+          // disable texturing on server side
+          activateTextureUnit(*itTextureUnit);
+          glDisable(GL_TEXTURE_2D);
+
+          // disable texturing data on client side
+          if (glClientActiveTexture)
+          {
+            glClientActiveTexture(GL_TEXTURE0 + *itTextureUnit);
+          }
+          glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        }
+        m_activeTextureUnits.clear();
+
         // clean up
         glDisableClientState(GL_VERTEX_ARRAY);
         glDisableClientState(GL_NORMAL_ARRAY);
         glDisableClientState(GL_COLOR_ARRAY);
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisable(GL_BLEND);
+        glMatrixMode(GL_TEXTURE);
+        glLoadIdentity();
         glColor4f(1, 1, 1, 1);
       }
-
-      // disable all actived texture units
-      for (DynamicArray<u32>::const_iterator itTextureUnit = m_activeTextureUnits.begin(); itTextureUnit != m_activeTextureUnits.end(); ++itTextureUnit)
-      {
-        activateTextureUnit(*itTextureUnit);
-        glDisable(GL_TEXTURE_2D);
-      }
-      m_activeTextureUnits.clear();
     }
 
     // clear render queue
@@ -257,9 +259,6 @@ void RendererPrivate::flush()
 /*! Applies material. */
 void RendererPrivate::applyMaterial(const PMaterial& material)
 {
-  // disable blending by default
-  glDisable(GL_BLEND);
-
   if (material)
   {
     // enable blending if necessary
@@ -309,19 +308,25 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
 /*! Activates given texture unit. */
 bool RendererPrivate::activateTextureUnit(u32 unit)
 {
-  if (m_activeTextureUnit != unit)
+  // check if unit available
+  if (unit < Device::GetTextureUnitsCount())
   {
-    // check if unit available
-    if (unit < Device::GetTextureUnitsCount())
+    // add to active texture units pool if not present there yet
+    // NOTE: we add it here and not on GL call cause if we are about to activate same texture unit as current one we dont want GL code to be executed
+    //       Though, we want to know it was requested to be activated for further use
+    if (!m_activeTextureUnits.contains(unit))
+    {
+      m_activeTextureUnits.push_back(unit);
+    }
+
+    // check if currently selected other texture unit
+    if (m_activeTextureUnit != unit)
     {
       // check if multitexture available
       if (glActiveTexture)
       {
         glActiveTexture(GL_TEXTURE0 + unit);
         m_activeTextureUnit = unit;
-
-        // add to active texture units pool
-        m_activeTextureUnits.push_back(unit);
 
         return GL_NO_ERROR == glGetError();
       }
@@ -331,26 +336,20 @@ bool RendererPrivate::activateTextureUnit(u32 unit)
         m_activeTextureUnit = unit;
         return true;
       }
-      else
-      {
-        // out of range
-        return false;
-      }
     }
-    else
-    {
-      // out of range
-      return false;
-    }
+
+    // same as current one
+    return true;
   }
 
-  return true;
+  // out of range
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Binds texture to target. */
 bool RendererPrivate::bindTexture(GLenum target, GLuint textureId)
 {
-  // enable target
+  // enable target first
   glEnable(target);
   if (GL_NO_ERROR != glGetError())
   {
@@ -358,6 +357,7 @@ bool RendererPrivate::bindTexture(GLenum target, GLuint textureId)
     return false;
   }
 
+  // check if different texture bound currently
   if (m_boundTextures[target] != textureId)
   {
     // bind new texture to target

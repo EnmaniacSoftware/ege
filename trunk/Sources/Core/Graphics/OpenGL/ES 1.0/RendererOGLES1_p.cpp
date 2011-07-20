@@ -9,7 +9,6 @@
 #include "Core/Graphics/TextureImage.h"
 #include "Core/Graphics/Render/RenderQueue.h"
 #include <EGEDevice.h>
-//#include "GLES/egl.h"
 
 EGE_NAMESPACE
 
@@ -173,14 +172,6 @@ void RendererPrivate::flush()
                 glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
                 glEnableClientState(GL_TEXTURE_COORD_ARRAY);
               }
-              // TAGE - we assume that each texture unit uses THE SAME texture coords!
-              //for ( s32 i = 0; i < iTexturesEnabled; i++ )
-              //{
-                //glEnable(GL_TEXTURE_2D);
-                //glBindTexture(GL_TEXTURE_2D, 2);
-                //glClientActiveTexture(GL_TEXTURE0 + 0);
-  //              glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + iterSemantics->offset);
-    //          }
               break;
 
             //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
@@ -226,21 +217,28 @@ void RendererPrivate::flush()
         // unlock vertex buffer
         vertexBuffer->unlock();
 
+        // disable all actived texture units
+        for (DynamicArray<u32>::const_iterator itTextureUnit = m_activeTextureUnits.begin(); itTextureUnit != m_activeTextureUnits.end(); ++itTextureUnit)
+        {
+          // disable texturing on server side
+          activateTextureUnit(*itTextureUnit);
+          glDisable(GL_TEXTURE_2D);
+
+          // disable texturing data on client side
+          glClientActiveTexture(GL_TEXTURE0 + *itTextureUnit);
+          glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        }
+        m_activeTextureUnits.clear();
+
         // clean up
         glDisableClientState(GL_VERTEX_ARRAY);
         glDisableClientState(GL_NORMAL_ARRAY);
         glDisableClientState(GL_COLOR_ARRAY);
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisable(GL_BLEND);
+        glMatrixMode(GL_TEXTURE);
+        glLoadIdentity();
         glColor4f(1, 1, 1, 1);
       }
-
-      // disable all actived texture units
-      for (DynamicArray<u32>::const_iterator itTextureUnit = m_activeTextureUnits.begin(); itTextureUnit != m_activeTextureUnits.end(); ++itTextureUnit)
-      {
-        activateTextureUnit(*itTextureUnit);
-        glDisable(GL_TEXTURE_2D);
-      }
-      m_activeTextureUnits.clear();
     }
 
     // clear render queue
@@ -303,28 +301,33 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
 /*! Activates given texture unit. */
 bool RendererPrivate::activateTextureUnit(u32 unit)
 {
-  if (m_activeTextureUnit != unit)
+  // check if unit available
+  if (unit < Device::GetTextureUnitsCount())
   {
-    // check if unit available
-    if (unit < Device::GetTextureUnitsCount())
+    // add to active texture units pool if not present there yet
+    // NOTE: we add it here and not on GL call cause if we are about to activate same texture unit as current one we dont want GL code to be executed
+    //       Though, we want to know it was requested to be activated for further use
+    if (!m_activeTextureUnits.contains(unit))
+    {
+      m_activeTextureUnits.push_back(unit);
+    }
+
+    // check if currently selected other texture unit
+    if (m_activeTextureUnit != unit)
     {
       // check if multitexture available
       glActiveTexture(GL_TEXTURE0 + unit);
       m_activeTextureUnit = unit;
 
-      // add to active texture units pool
-      m_activeTextureUnits.push_back(unit);
-
       return GL_NO_ERROR == glGetError();
     }
-    else
-    {
-      // out of range
-      return false;
-    }
+
+    // same as current one
+    return true;
   }
 
-  return true;
+  // out of range
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Binds texture to target. */
@@ -338,6 +341,7 @@ bool RendererPrivate::bindTexture(GLenum target, GLuint textureId)
     return false;
   }
 
+  // check if different texture bound currently
   if (m_boundTextures[target] != textureId)
   {
     // bind new texture to target
