@@ -83,7 +83,7 @@ void AppController::update()
     Time timeInterval = time - m_lastUpdateTime;
 
     // update screen manager
-    app()->sceneManager()->update(timeInterval);
+    app()->screenManager()->update(timeInterval);
 
     // update physics
     app()->physicsManager()->update(timeInterval);
