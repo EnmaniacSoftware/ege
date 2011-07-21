@@ -227,11 +227,6 @@ void RendererPrivate::flush()
         // disable all actived texture units
         for (DynamicArray<u32>::const_iterator itTextureUnit = m_activeTextureUnits.begin(); itTextureUnit != m_activeTextureUnits.end(); ++itTextureUnit)
         {
-          if (*itTextureUnit != 0)
-          {
-            int a = 1;
-          }
-
           // disable texturing on server side
           activateTextureUnit(*itTextureUnit);
           glDisable(GL_TEXTURE_2D);
@@ -314,7 +309,7 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
 bool RendererPrivate::activateTextureUnit(u32 unit)
 {
   // check if unit available
-  if (unit < Device::GetTextureUnitsCount())
+  if (unit < Device::TextureUnitsCount())
   {
     // add to active texture units pool if not present there yet
     // NOTE: we add it here and not on GL call cause if we are about to activate same texture unit as current one we dont want GL code to be executed
@@ -380,7 +375,7 @@ bool RendererPrivate::bindTexture(GLenum target, GLuint textureId)
 	glGetIntegerv(textureBinding, &boundTextureId);
 
   // check if different texture bound currently
-  if (boundTextureId != textureId)
+  if (static_cast<GLuint>(boundTextureId) != textureId)
   {
     // bind new texture to target
     glBindTexture(target, textureId);
@@ -394,25 +389,22 @@ bool RendererPrivate::bindTexture(GLenum target, GLuint textureId)
 /*! Detects rendering capabilities. */
 void RendererPrivate::detectCapabilities()
 {
-  // there is at least 1 texture unit available
-  Device::SetTextureUnitsCount(1);
+	GLint value;
+
+  // get number of texture units
+	glGetIntegerv(GL_MAX_TEXTURE_UNITS, &value);
+  Device::SetTextureUnitsCount(static_cast<u32>(value));
+
+  // detect maximal texture size
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &value);
+  Device::SetTextureMaxSize(static_cast<u32>(value));
 
   // check if multitexturing is supported
   if (isExtensionSupported("GL_ARB_multitexture"))
   {
     glClientActiveTexture = (PFNGLCLIENTACTIVETEXTUREARBPROC) wglGetProcAddress("glClientActiveTextureARB");
     glActiveTexture       = (PFNGLACTIVETEXTUREARBPROC) wglGetProcAddress("glActiveTextureARB");
-
-    // get number of texture units
-		GLint units;
-		glGetIntegerv(GL_MAX_TEXTURE_UNITS, &units);
-    Device::SetTextureUnitsCount(static_cast<u32>(units));
   }
-
-  // detect maximal texture size
-  GLint size;
-	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &size);
-  Device::SetTextureMaxSize(static_cast<u32>(size));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Checks if given extension is supported. */

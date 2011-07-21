@@ -1,10 +1,10 @@
 #include "Core/Application/Application.h"
-#include "EGEEvent.h"
-#include "String.h"
-#include "EGEEvent.h"
-#include "EGEInput.h"
-#include "EGEMath.h"
 #include "Win32/Graphics/OpenGL/GL 2.0/RenderWindowOGLWin32.h"
+#include <EGEEvent.h>
+#include <EGEEvent.h>
+#include <EGEInput.h>
+#include <EGEMath.h>
+#include <EGEDevice.h>
 
 EGE_NAMESPACE
 
@@ -331,9 +331,15 @@ EGEResult RenderWindowOGLWin32::setupPixelFormat(const ConfigParams& params)
     return EGE_ERROR; 
   }
 
-  // store values
-//  m_uiColorDepth   = uiColorDepth;
-//  m_uiZBufferDepth = uiZBufferBits;
+  // obtain a detailed description of that pixel format  
+  if (0 != DescribePixelFormat(m_hDC, pixelFormat, sizeof(PIXELFORMATDESCRIPTOR), &sPFD))
+  {
+    // supply surface data for for device info
+    Device::SetSurfaceRedChannelBitsCount(static_cast<u32>(sPFD.cRedBits));
+    Device::SetSurfaceGreenChannelBitsCount(static_cast<u32>(sPFD.cGreenBits));
+    Device::SetSurfaceBlueChannelBitsCount(static_cast<u32>(sPFD.cBlueBits));
+    Device::SetSurfaceAlphaChannelBitsCount(static_cast<u32>(sPFD.cAlphaBits));
+  }
 
   return EGE_SUCCESS;
 }

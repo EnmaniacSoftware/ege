@@ -1,10 +1,10 @@
 #include "Core/Application/Application.h"
-#include "EGEMath.h"
-#include "EGEDevice.h"
-#include "GLES/gl.h"
-#include "GLES/egl.h"
 #include "Airplay/Graphics/OpenGL/ES 1.0/RenderWindowOGLAirplay.h"
 #include "s3e.h"
+#include <EGEMath.h>
+#include <EGEDevice.h>
+#include <GLES/gl.h>
+#include <GLES/egl.h>
 
 EGE_NAMESPACE
 
@@ -118,6 +118,31 @@ void RenderWindowOGLAirplay::create(const ConfigParams& params)
   if (EGL_FALSE != success)
   {
       success = eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext);
+  }
+
+  // obtain a detailed description of surface pixel format
+  if (EGL_FALSE != success)
+  {
+    // supply surface data for for device info
+
+    EGLint value;
+
+    if (EGL_TRUE == eglGetConfigAttrib(m_eglDisplay, sEglConfig, EGL_RED_SIZE, &value))
+    {
+      Device::SetSurfaceRedChannelBitsCount(static_cast<u32>(value));
+    }
+    if (EGL_TRUE == eglGetConfigAttrib(m_eglDisplay, sEglConfig, EGL_GREEN_SIZE, &value))
+    {
+      Device::SetSurfaceGreenChannelBitsCount(static_cast<u32>(value));
+    }
+    if (EGL_TRUE == eglGetConfigAttrib(m_eglDisplay, sEglConfig, EGL_BLUE_SIZE, &value))
+    {
+      Device::SetSurfaceBlueChannelBitsCount(static_cast<u32>(value));
+    }
+    if (EGL_TRUE == eglGetConfigAttrib(m_eglDisplay, sEglConfig, EGL_ALPHA_SIZE, &value))
+    {
+      Device::SetSurfaceAlphaChannelBitsCount(static_cast<u32>(value));
+    }
   }
 
   if (EGL_FALSE == success)

@@ -20,22 +20,40 @@ class Device
     static EGEDevice::EOS GetOS();
     /* Returns current device ID. */
     static EGEDevice::EDevice GetDevice();
+
     /* Returns physical surface width. */
     static s32 SurfaceWidth();
     /* Returns physical surface height. */
     static s32 SurfaceHeight();
+    /* Sets surface red channel bits count. */
+    static void SetSurfaceRedChannelBitsCount(u32 count);
+    /* Returns surface red channel bits count. */
+    static u32 SurfaceRedChannelBitsCount();
+    /* Sets surface green channel bits count. */
+    static void SetSurfaceGreenChannelBitsCount(u32 count);
+    /* Returns surface green channel bits count. */
+    static u32 SurfaceGreenChannelBitsCount();
+    /* Sets surface blue channel bits count. */
+    static void SetSurfaceBlueChannelBitsCount(u32 count);
+    /* Returns surface blue channel bits count. */
+    static u32 SurfaceBlueChannelBitsCount();
+    /* Sets surface alpha channel bits count. */
+    static void SetSurfaceAlphaChannelBitsCount(u32 count);
+    /* Returns surface alpha channel bits count. */
+    static u32 SurfaceAlphaChannelBitsCount();
+
     /* Returns TRUE if given render capability is present. */
     static bool HasRenderCapability(EGEDevice::ERenderCapability cap);
     /* Sets/Unsets given render capability. */
     static void SetRenderCapability(EGEDevice::ERenderCapability cap, bool set);
     /* Sets number of available texture units.*/
     static void SetTextureUnitsCount(u32 count);
-    /* Gets number of available texture units. */
-    static u32 GetTextureUnitsCount();
+    /* Returns number of available texture units. */
+    static u32 TextureUnitsCount();
     /* Sets maximal texture size (in texels).*/
     static void SetTextureMaxSize(u32 size);
-    /* Gets maximal texture size (in texels). */
-    static u32 GetTextureMaxSize();
+    /* Returns maximal texture size (in texels). */
+    static u32 TextureMaxSize();
 
   private:
 
@@ -45,6 +63,14 @@ class Device
     static u32 m_textureUnitsCount;
     /*! Maximum texture size (in texels). */
     static u32 m_textureMaxSize;
+    /*! Surface red channel bits count. */
+    static u32 m_surfaceRedChannelBitsCount;
+    /*! Surface green channel bits count. */
+    static u32 m_surfaceGreenChannelBitsCount;
+    /*! Surface blue channel bits count. */
+    static u32 m_surfaceBlueChannelBitsCount;
+    /*! Surface alpha channel bits count. */
+    static u32 m_surfaceAlphaChannelBitsCount;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
