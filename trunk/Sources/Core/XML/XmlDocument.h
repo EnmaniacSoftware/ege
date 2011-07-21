@@ -42,6 +42,9 @@ class XmlDocument : public Object
     /* Appends new element to document. */
     void appendElement(const PXmlElement& element);
 
+    /* Returns root element. */
+    PXmlElement rootElement();
+
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(XmlDocument);

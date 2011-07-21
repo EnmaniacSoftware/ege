@@ -135,3 +135,21 @@ void XmlDocumentPrivate::appendElement(const PXmlElement& element)
   m_xml.LinkEndChild(element->p_func()->element(true));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns root element. */
+PXmlElement XmlDocumentPrivate::rootElement()
+{
+  PXmlElement element;
+
+  TiXmlElement* elem = m_xml.RootElement();
+  if (elem)
+  {
+    element = ege_new XmlElement();
+    if (element)
+    {
+      element->p_func()->setElement(elem);
+    }
+  }
+
+  return element;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
