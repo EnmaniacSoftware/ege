@@ -23,7 +23,7 @@ class ImageUtils
      * @param src     Source image from which copy data will be taken
      * @param srcRect Region in source image which is to be copied
      *
-     * @note  srcRect can be INVALID if entire source image is to be copied
+     * @note  srcRect can be NULL if entire source image is to be copied
      * @note  If srcRect and dstRect sizes are not equal stretching is applied
      */
     static void Copy(PImage& dst, const Recti& dstRect, const PImage& src, Recti srcRect = Recti::INVALID);
@@ -33,7 +33,7 @@ class ImageUtils
      * @param src       Source image from which copy data will be taken
      * @param srcRect   Region in source image which is to be copied.
      *
-     * @note  srcRect can be INVALID if entire source image is to be copied
+     * @note  srcRect can be NULL if entire source image is to be copied
      */
     static void FastCopy(PImage& dst, const Vector2i& dstPoint, const PImage& src, Recti srcRect = Recti::INVALID);
 

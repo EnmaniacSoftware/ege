@@ -259,3 +259,29 @@ Vector2f String::toVector2f(bool* error) const
   return vec;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if current string ends with given one. */
+bool String::endsWith(const String& string) const
+{
+  // check if current string can contain the one to test
+  if (size() >= string.size())
+  {
+    // check if last characters are the same
+    return 0 == compare(size() - string.size(), string.size(), string);
+  }
+
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if current string starts with given one. */
+bool String::startsWith(const String& string) const
+{
+  // check if current string can contain the one to test
+  if (size() >= string.size())
+  {
+    // check if first characters are the same
+    return 0 == compare(0, string.size(), string);
+  }
+
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -44,8 +44,6 @@ class Image : public Object
     inline PDataBuffer data() const { return m_data; }
     /*! Returns TRUE if image contains alpha channel. */
     inline bool hasAlpha() const { return EGEImage::RGBA_8888 == m_format; }
-    /* Makes copy of current image in a givem format. */
-    Image* copy(EGEImage::Format format) const;
     
   protected:
 
@@ -67,6 +65,8 @@ class Image : public Object
     EGEResult loadJpg(File& file, EGEImage::Format format);
     /* Saves PNG file and converts it into requested format. */
     EGEResult savePng(File& file, EGEImage::Format format);
+    /* Saves JPG file and converts it into requested format. */
+    EGEResult saveJpg(File& file, EGEImage::Format format);
     /* Allocated internal data buffer to be able to hold image of a given size and format. */
     EGEResult allocateData(s32 width, s32 height, EGEImage::Format format);
 

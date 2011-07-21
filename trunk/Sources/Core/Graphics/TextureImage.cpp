@@ -19,6 +19,6 @@ TextureImage::~TextureImage()
 /*! Returns TRUE if object is valid. */
 bool TextureImage::isValid() const
 {
-  return (NULL != m_texture) && !m_rect.isEmpty() && !m_rect.isInvalid();
+  return (NULL != m_texture) && !m_rect.isEmpty() && !m_rect.isNull();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

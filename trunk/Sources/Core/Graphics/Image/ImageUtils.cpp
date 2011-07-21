@@ -39,13 +39,13 @@ u32 ImageUtils::PixelSize(EGEImage::Format format)
  * @param src     Source image from which copy data will be taken
  * @param srcRect Region in source image which is to be copied
  *
- * @note  srcRect can be INVALID if entire source image is to be copied
+ * @note  srcRect can be NULL if entire source image is to be copied
  * @note  If srcRect and dstRect sizes are not equal stretching is applied
  */
 void ImageUtils::Copy(PImage& dst, const Recti& dstRect, const PImage& src, Recti srcRect)
 {
   // check if entire source should be copied
-  if (srcRect.isInvalid())
+  if (srcRect.isNull())
   {
     srcRect = Recti(0, 0, src->width(), src->height());
   }
@@ -61,20 +61,27 @@ void ImageUtils::Copy(PImage& dst, const Recti& dstRect, const PImage& src, Rect
  * @param src       Source image from which copy data will be taken
  * @param srcRect   Region in source image which is to be copied.
  *
- * @note  srcRect can be INVALID if entire source image is to be copied
+ * @note  srcRect can be NULL if entire source image is to be copied
  */
 void ImageUtils::FastCopy(PImage& dst, const Vector2i& dstPoint, const PImage& src, Recti srcRect)
 {
   // check if entire source should be copied
-  if (srcRect.isInvalid())
+  if (srcRect.isNull())
   {
     srcRect = Recti(0, 0, src->width(), src->height());
   }
 
-  // TAGE - clipping to be done
+  // ideally destination rectagle starts at destination point and is of source rect dimensions
   Recti dstRect(dstPoint.x, dstPoint.y, srcRect.width, srcRect.height);
-  //dstRect = Recti(0, 0, dst->width(), dst->height()).
 
+  // clip source and destination rectangles to corresponding image surface dimensions
+  Recti dstImgRect(0, 0, dst->width(), dst->height());
+  Recti srcImgRect(0, 0, src->width(), src->height());
+
+  srcRect = srcImgRect.intersect(srcRect);
+  dstRect = dstImgRect.intersect(dstRect);
+
+  // find correct scanline blitter
   PFNSCANLINEBLTFUNC scanline = NULL;
   for (u32 i = 0; i < sizeof (ScanLines) / sizeof (ScanLines[0]); ++i)
   {
@@ -87,15 +94,20 @@ void ImageUtils::FastCopy(PImage& dst, const Vector2i& dstPoint, const PImage& s
     }
   }
 
+  // check if blitter found
   if (scanline)
   {
+    // get first line beginings in destination and source buffers
     void* dstLine = reinterpret_cast<u8*>(dst->data()->data()) + dstRect.y * dst->m_rowLength + dstRect.x * PixelSize(dst->format());
     void* srcLine = reinterpret_cast<u8*>(src->data()->data()) + srcRect.y * src->m_rowLength + srcRect.x * PixelSize(src->format());
 
+    // blit line by line
     for (s32 y = 0; y < srcRect.height; ++y)
     {
+      // do blit
       scanline(dstLine, srcLine, dstRect.width);
 
+      // move to next line
       dstLine = reinterpret_cast<u8*>(dstLine) + dst->m_rowLength;
       srcLine = reinterpret_cast<u8*>(srcLine) + src->m_rowLength;
     }

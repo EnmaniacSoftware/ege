@@ -1,8 +1,6 @@
 #ifndef EGE_CORE_RECT_H
 #define EGE_CORE_RECT_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include <EGETypes.h>
 
 EGE_NAMESPACE_BEGIN
@@ -24,8 +22,8 @@ class TRect
 
     /* Returns TRUE if rectangle is empty (has no dimensions). */
     inline bool isEmpty() const;
-    /* Returns TRUE if rectangle is invalid. */
-    inline bool isInvalid() const;
+    /* Returns TRUE if rectangle is invalid (negative dimenions). */
+    inline bool isNull() const;
     /* Returns coordinate of right edge. */
     inline T right() const;
     /* Returns coordinate of left edge. */
@@ -36,6 +34,10 @@ class TRect
     inline T bottom() const;
     /* Returns TRUE if given point is within rectangle. */
     inline bool contains(T x, T y) const;
+    /* Calculates intersection rectangle between current and given rectangle. */
+    inline TRect<T> intersect(const TRect<T>& rect) const;
+    /* Calculates union rectangle between current and given rectangle. */
+    inline TRect<T> unite(const TRect<T>& rect) const;
 
   public:
 
@@ -125,9 +127,9 @@ T TRect<T>::top() const
   return y;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Returns TRUE if rectangle is invalid. */
+/*! Returns TRUE if rectangle is invalid (negative dimensions). */
 template <typename T>
-bool TRect<T>::isInvalid() const
+bool TRect<T>::isNull() const
 {
   return (0 > width) || (0 > height);
 }
@@ -137,6 +139,34 @@ template <typename T>
 bool TRect<T>::contains(T x, T y) const
 {
   return (x >= left()) && (y >= top()) && (x < right()) && (y < bottom());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Calculates intersection rectangle between current and given rectangle. */
+template <typename T>
+TRect<T> TRect<T>::intersect(const TRect<T>& rect) const
+{
+  TRect<T> out;
+
+  out.x       = (x > rect.x) ? x : rect.x;
+  out.y       = (y > rect.y) ? y : rect.y;
+  out.width   = (right() < rect.right()) ? (right() - out.x) : (rect.right() - out.x);
+  out.height  = (bottom() < rect.bottom()) ? (bottom() - out.y) : (rect.bottom() - out.y);
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Calculates union rectangle between current and given rectangle. */
+template <typename T>
+TRect<T> TRect<T>::unite(const TRect<T>& rect) const
+{
+  TRect<T> out;
+
+  out.x       = (x < rect.x) ? x : rect.x;
+  out.y       = (y < rect.y) ? y : rect.y;
+  out.width   = (right() > rect.right()) ? (right() - out.x) : (rect.right() - out.x);
+  out.height  = (bottom() > rect.bottom()) ? (bottom() - out.y) : (rect.bottom() - out.y);
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

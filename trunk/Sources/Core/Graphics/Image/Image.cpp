@@ -13,6 +13,7 @@ extern "C"
 }
 
 #include "Core/Graphics/JpegDataSrcFile.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
@@ -452,12 +453,18 @@ EGEResult Image::save(const String& fileName)
   }
 
   // determine file stream type
-  // TAGE - implement
   StreamType type = STREAM_TYPE_PNG;
+  if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg"))
+  {
+    type = STREAM_TYPE_JPG;
+  }
+
+  // save according to stream
+  // TAGE - allow specyfing format ? or use current one ? what current means ? currently only set on loading so we need to be able to predefine it
   switch (type)
   {
     case STREAM_TYPE_PNG: result = savePng(file, EGEImage::RGBA_8888); break;
-    //case STREAM_TYPE_JPG: result = loadJpg(file, format); break;
+    case STREAM_TYPE_JPG: result = saveJpg(file, EGEImage::RGBA_8888); break;
 
     default:
 
@@ -503,9 +510,33 @@ EGEResult Image::savePng(File& file, EGEImage::Format format)
     return EGE_ERROR_IO;
   }
 
+  // determine parameters according to requested format
+  s32 bitDepth = 0;
+  s32 colorType = 0;
+  switch (format)
+  {
+    case EGEImage::RGBA_8888:
+
+      colorType = PNG_COLOR_TYPE_RGB_ALPHA;
+      bitDepth = 8;
+      break;
+
+    case EGEImage::RGB_888:
+
+      colorType = PNG_COLOR_TYPE_RGB;
+      bitDepth = 8;
+      break;
+
+    default:
+
+      // error!
+      EGE_ASSERT("Format not supported!");
+      png_destroy_read_struct(&pngWriteStruct, &pngInfoStruct, png_infopp_NULL);
+      return EGE_ERROR_IO;
+  }
+
   // set attributes
-  png_set_IHDR(pngWriteStruct, pngInfoStruct, width(), height(), 8, (EGEImage::RGBA_8888 == format) ? PNG_COLOR_TYPE_RGB_ALPHA : PNG_COLOR_TYPE_RGB,
-               PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+  png_set_IHDR(pngWriteStruct, pngInfoStruct, width(), height(), bitDepth, colorType, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 
   // allocate memory for row pointers
   rowPointers = (png_byte**) png_malloc(pngWriteStruct, height() * sizeof (png_byte*));
@@ -531,36 +562,14 @@ EGEResult Image::savePng(File& file, EGEImage::Format format)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Makes copy of current image in a givem format. */
-Image* Image::copy(EGEImage::Format format) const
+/*! Saves JPG file and converts it into requested format. */
+EGEResult Image::saveJpg(File& file, EGEImage::Format format)
 {
-  Image* image = ege_new Image(app(), width(), height(), format);
-  //if (NULL != image && image->isValid())
-  //{
-  //  typedef void (*PFNSCANLINEBLT)(void* dst, const void* src, s32 length);
-  //  PFNSCANLINEBLT func = NULL;
+  EGE_UNUSED(file);
+  EGE_UNUSED(format);
 
-  //  switch (this->format())
-  //  {
-  //    case EGEImage::RGBA_8888:
+  EGE_ASSERT("Implement");
 
-  //      if (EGEImage::RGBA_8888 == image->format())
-  //      {
-  //        func = Image::ScanLineBltRGBA8888ToRGBA8888;
-  //        break;
-  //      }
-  //  }
-
-  //  if (NULL != func)
-  //  {
-  //    // go thru all scanlines
-  //    for (s32 y = 0; y < height(); ++y)
-  //    {
-  //      //func();
-  //    }
-  //  }
-  //}
-
-  return image;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

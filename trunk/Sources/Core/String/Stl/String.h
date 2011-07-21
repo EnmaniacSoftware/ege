@@ -44,6 +44,10 @@ class String : public std::string
     String& toUpper();
     /* Returns ASCII string. */
     const char* toAscii() const;
+    /* Returns TRUE if current string ends with given one. */
+    bool endsWith(const String& string) const;
+    /* Returns TRUE if current string starts with given one. */
+    bool startsWith(const String& string) const;
 
     /* Converts to integer. If error is valid, it holds TRUE if error occured during the conversion. */
     s32 toInt(bool* error = NULL) const;

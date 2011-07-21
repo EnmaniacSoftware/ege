@@ -76,6 +76,8 @@ void Renderer::setOrientationRotation(const Angle& angle)
 /*! Adds given data for rendering. */
 bool Renderer::addForRendering(const Matrix4f& worldMatrix, const PRenderComponent& component)
 {
+  EGE_ASSERT(component);
+
   // check if no queue with such priority exists yet
   if (!m_renderQueues.contains(component->priority()))
   {
