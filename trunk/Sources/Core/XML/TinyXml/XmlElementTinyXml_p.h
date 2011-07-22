@@ -35,8 +35,8 @@ class XmlElementPrivate
 
     /* Returns TRUE if element is valid object */
     bool isValid() const;
-    /* Returns value of given attribute if present */
-    String attribute(const String& name) const;
+    /* Returns value of given attribute if present. Otherwise, returns default value. */
+    String attribute(const String& name, const String& defValue) const;
     /* Sets attribute with a given value. 
      * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
      */

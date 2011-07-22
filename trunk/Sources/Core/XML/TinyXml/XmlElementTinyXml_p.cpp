@@ -37,10 +37,10 @@ bool XmlElementPrivate::isValid() const
   return (NULL != m_element); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns value of given attribute if present */
-String XmlElementPrivate::attribute(const String& name) const
+/*! Returns value of given attribute if present. Otherwise, returns default value. */
+String XmlElementPrivate::attribute(const String& name, const String& defValue) const
 {
-  return (isValid() && m_element->Attribute(name.toAscii())) ? m_element->Attribute(name.toAscii()) : NULL;
+  return (isValid() && m_element->Attribute(name.toAscii())) ? m_element->Attribute(name.toAscii()) : defValue;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given attribute exists. */

@@ -85,14 +85,16 @@ class ResourceMaterial : public IResource
     {
       public:
 
-        TextureImageData(const String& textureName, const Rectf& textureRect) : m_textureName(textureName), m_textureRect(textureRect) {}
+        TextureImageData(const String& name, const String& rect, const String& envMode) : m_name(name), m_rect(rect), m_envMode(envMode) {}
 
       public:
 
         /*! Texture name. */
-        String m_textureName;
+        String m_name;
         /*! Texture rectangle. */
-        Rectf m_textureRect;
+        String m_rect;
+        /*! Texture environment mode name. */
+        String m_envMode;
     };
 
   private:

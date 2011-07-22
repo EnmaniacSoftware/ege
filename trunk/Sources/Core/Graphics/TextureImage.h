@@ -6,6 +6,7 @@
 
 #include <EGE.h>
 #include <EGERect.h>
+#include <EGETexture.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -33,12 +34,19 @@ class TextureImage : public Object
     /*! Returns rectangle (in texture coords) object refers to. */
     inline const Rectf& rectangle() const { return m_rect; }
 
+    /* Sets environment mode. */
+    void setEnvironmentMode(EGETexture::EnvironmentMode mode);
+    /*! Returns environment mode. */
+    inline EGETexture::EnvironmentMode environmentMode() const { return m_envMode; }
+
   private:
 
     /*! Texture assigned. */
     PObject m_texture;
     /*! Rectangular are of the texture this object refers to (in texture coords). */
     Rectf m_rect;
+    /*! Environment mode. */
+    EGETexture::EnvironmentMode m_envMode;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -12,6 +12,37 @@ EGE_NAMESPACE
 #define NODE_TEXTURE "texture"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function mapping texture environment mode name into value. */
+EGETexture::EnvironmentMode MapTextureEnvironmentMode(const String& name, EGETexture::EnvironmentMode defaultValue)
+{
+  if ("replace" == name)
+  {
+    return EGETexture::EM_REPLACE;
+  }
+  else if ("modulate" == name)
+  {
+    return EGETexture::EM_MODULATE;
+  }
+  else if ("decal" == name)
+  {
+    return EGETexture::EM_DECAL;
+  }
+  else if ("blend" == name)
+  {
+    return EGETexture::EM_BLEND;
+  }
+  else if ("add" == name)
+  {
+    return EGETexture::EM_ADD;
+  }
+  else if ("combine" == name)
+  {
+    return EGETexture::EM_COMBINE;
+  }
+
+  return defaultValue;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_DEFINE_NEW_OPERATORS(ResourceMaterial)
 EGE_DEFINE_DELETE_OPERATORS(ResourceMaterial)
@@ -146,7 +177,7 @@ EGEResult ResourceMaterial::load()
     {
       const TextureImageData& textureImageData = *it;
 
-      PResourceTexture texture = manager()->resource("texture", textureImageData.m_textureName);
+      PResourceTexture texture = manager()->resource("texture", textureImageData.m_name);
       if (texture)
       {
         // load texture
@@ -156,12 +187,16 @@ EGEResult ResourceMaterial::load()
           return result;
         }
 
-        PTextureImage textureImage = ege_new TextureImage(app(), texture->texture(), textureImageData.m_textureRect);
+        // NOTE: assumption textureImageData data are valid
+        PTextureImage textureImage = ege_new TextureImage(app(), texture->texture(), textureImageData.m_rect.toRectf());
         if (NULL == textureImage || !textureImage->isValid())
         {
           // erro!
           return EGE_ERROR;
         }
+
+        // set texture data
+        textureImage->setEnvironmentMode(MapTextureEnvironmentMode(textureImageData.m_envMode, EGETexture::EM_MODULATE));
 
         // add texture to material
         if (EGE_SUCCESS != (result = material->addTexture(textureImage)))
@@ -173,7 +208,7 @@ EGEResult ResourceMaterial::load()
       else
       {
         // texture not found
-        EGE_PRINT(String::Format("Texture not found: %s", textureImageData.m_textureName.toAscii()));
+        EGE_PRINT(String::Format("Texture not found: %s", textureImageData.m_name.toAscii()));
         return EGE_ERROR;
       }
     }
@@ -197,8 +232,9 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag)
   EGEResult result = EGE_SUCCESS;
 
   // get data
-  String name = tag->attribute("name");
-  String rect = tag->attribute("rect");
+  String name     = tag->attribute("name");
+  String rect     = tag->attribute("rect", "0 0 1 1");
+  String envMode  = tag->attribute("env-mode", "modulate");
 
   // check if obligatory data is wrong
   if (name.empty())
@@ -207,20 +243,8 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag)
     return EGE_ERROR_BAD_PARAM;
   }
 
-  Rectf rectangle(0, 0, 1, 1);
-  if (!rect.empty())
-  {
-    bool error = false;
-    rectangle = rect.toRectf(&error);
-    if (error)
-    {
-      // error!
-      return EGE_ERROR_BAD_PARAM;
-    }
-  }
-
-  // add texture image data
-  m_textureImages.push_back(TextureImageData(name, rectangle));
+  // add into pool
+  m_textureImages.push_back(TextureImageData(name, rect, envMode));
 
   return result;
 }

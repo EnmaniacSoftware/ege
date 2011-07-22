@@ -37,15 +37,15 @@ bool XmlElement::isValid() const
   return (NULL != m_p) && m_p->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns value of given attribute if present */
-String XmlElement::attribute(const String& name) const
+/*! Returns value of given attribute if present. Otherwise, returns default value. */
+String XmlElement::attribute(const String& name, const String& defValue) const
 {
   if (isValid())
   {
-    return p_func()->attribute(name);
+    return p_func()->attribute(name, defValue);
   }
 
-  return String();
+  return defValue;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given attribute exists. */

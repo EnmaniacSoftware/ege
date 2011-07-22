@@ -55,6 +55,23 @@ static GLenum MapBlendFactor(EGEGraphics::EBlendFactor factor)
   return GL_ONE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Maps texture environment to OpenGL compilant one. */
+static GLint MapPrimitiveType(EGETexture::EnvironmentMode mode)
+{
+  switch (mode)
+  {
+    case EGETexture::EM_ADD:      return GL_ADD;
+    case EGETexture::EM_BLEND:    return GL_BLEND;
+    case EGETexture::EM_COMBINE:  return GL_COMBINE;
+    case EGETexture::EM_DECAL:    return GL_DECAL;
+    case EGETexture::EM_MODULATE: return GL_MODULATE;
+    case EGETexture::EM_REPLACE:  return GL_REPLACE;
+  }
+
+  // default
+  return GL_MODULATE;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RendererPrivate::RendererPrivate(Renderer* base) : m_d(base), m_activeTextureUnit(0xffffffff)
 {
   detectCapabilities();
@@ -288,6 +305,8 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
 
         activateTextureUnit(i);
         bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
+
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MapPrimitiveType(texImg->environmentMode()));
 
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
