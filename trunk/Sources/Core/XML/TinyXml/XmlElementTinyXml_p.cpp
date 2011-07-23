@@ -44,7 +44,7 @@ String XmlElementPrivate::attribute(const String& name, const String& defValue) 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given attribute exists. */
-bool XmlElementPrivate::containsAttribute(const String& name) const
+bool XmlElementPrivate::hasAttribute(const String& name) const
 {
   return isValid() && m_element->Attribute(name.toAscii());
 }
@@ -60,12 +60,12 @@ void XmlElementPrivate::setAttribute(const String& name, const String& value)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns first child element. */
-XmlElementPrivate* XmlElementPrivate::firstChild() const
+/*! Returns first child element. If any name is given returned will be first element with given name. */
+XmlElementPrivate* XmlElementPrivate::firstChild(const String& name) const
 {
   XmlElementPrivate* priv = NULL;
   
-  TiXmlElement* elem = m_element->FirstChildElement();
+  TiXmlElement* elem = name.empty() ? m_element->FirstChildElement() : m_element->FirstChildElement(name);
 
   if (elem)
   {
@@ -75,12 +75,12 @@ XmlElementPrivate* XmlElementPrivate::firstChild() const
   return priv;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns next child element after given element. */
-XmlElementPrivate* XmlElementPrivate::nextChild() const
+/*! Returns next child element after given element. If any name is given returned will be next element with given name. */
+XmlElementPrivate* XmlElementPrivate::nextChild(const String& name) const
 {
   XmlElementPrivate* priv = NULL;
 
-  TiXmlElement* elem = m_element->NextSiblingElement();
+  TiXmlElement* elem = name.empty() ? m_element->NextSiblingElement() : m_element->NextSiblingElement(name);
   if (elem)
   {
     priv = ege_new XmlElementPrivate(elem, m_base);

@@ -42,11 +42,11 @@ class XmlElementPrivate
      */
     void setAttribute(const String& name, const String& value);
     /* Returns TRUE if given attribute exists. */
-    bool containsAttribute(const String& name) const;
-    /* Returns first child element. */
-    XmlElementPrivate* firstChild() const;
-    /* Returns next child element. */
-    XmlElementPrivate* nextChild() const;
+    bool hasAttribute(const String& name) const;
+    /* Returns first child element. If any name is given returned will be first element with given name. */
+    XmlElementPrivate* firstChild(const String& name) const;
+    /* Returns next child element. If any name is given returned will be next element with given name. */
+    XmlElementPrivate* nextChild(const String& name) const;
     /* Returns element name. */
     String name() const;
     /* Appends new child element. */

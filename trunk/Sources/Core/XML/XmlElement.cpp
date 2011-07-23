@@ -49,11 +49,11 @@ String XmlElement::attribute(const String& name, const String& defValue) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given attribute exists. */
-bool XmlElement::containsAttribute(const String& name) const
+bool XmlElement::hasAttribute(const String& name) const
 {
   if (isValid())
   {
-    return p_func()->containsAttribute(name);
+    return p_func()->hasAttribute(name);
   }
 
   return false;
@@ -70,16 +70,16 @@ void XmlElement::setAttribute(const String& name, const String& value)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns first child element. */
-PXmlElement XmlElement::firstChild() const
+/*! Returns first child element. If any name is given returned will be first element with given name. */
+PXmlElement XmlElement::firstChild(const String& name) const
 {
-  return ege_new XmlElement(isValid() ? p_func()->firstChild() : NULL);
+  return ege_new XmlElement(isValid() ? p_func()->firstChild(name) : NULL);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns next child element after given element. */
-PXmlElement XmlElement::nextChild() const
+/*! Returns next child element after given element. If any name is given returned will be next element with given name. */
+PXmlElement XmlElement::nextChild(const String& name) const
 {
-  return ege_new XmlElement(isValid() ? p_func()->nextChild() : NULL);
+  return ege_new XmlElement(isValid() ? p_func()->nextChild(name) : NULL);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns element name. */
