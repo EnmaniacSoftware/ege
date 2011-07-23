@@ -3,7 +3,7 @@
 
 #include <EGERect.h>
 #include <EGEImage.h>
-#include "ImageEntry.h"
+#include "AtlasGroupEntry.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ class AtlasNode
 
       m_rect = EGE::Recti::INVALID;
 
-      m_imageEntry = NULL;
+      m_entry = NULL;
     }
 
    ~AtlasNode()
@@ -28,7 +28,7 @@ class AtlasNode
     }
 
     /*! Inserts given image into atlas. Returns node, image was inserted into. NULL if no suitable node found. */
-    AtlasNode* insert(const ImageEntry* entry)
+    AtlasNode* insert(const AtlasGroupEntry* entry)
     {
       // check if children are present already
       if (m_child[0] && m_child[1])
@@ -46,7 +46,7 @@ class AtlasNode
       }
 
       // check if any image entry already assigned
-      if (NULL != m_imageEntry)
+      if (NULL != m_entry)
       {
         // cannot insert
         return NULL;
@@ -102,8 +102,8 @@ class AtlasNode
     AtlasNode* m_child[2];
     /*! Rectangular area occupied by node. (in global coords) */
     EGE::Recti m_rect;
-    /*! Currently assigned image entry. */
-    ImageEntry* m_imageEntry;
+    /*! Currently assigned group entry. */
+    AtlasGroupEntry* m_entry;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

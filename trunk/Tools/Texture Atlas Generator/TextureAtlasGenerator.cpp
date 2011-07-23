@@ -1,12 +1,13 @@
 #include "TextureAtlasGenerator.h"
-#include <EGEFile.h>
+#include "AtlasGroupEntry.h"
 #include <iostream>
+#include <algorithm>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 20
+#define VERSION_MINOR 30
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping image format name into framework enum. */
 static EGEImage::Format MapImageFormat(const String& formatName)
@@ -16,19 +17,19 @@ static EGEImage::Format MapImageFormat(const String& formatName)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function for sorting object from greatest area to smallest. */
-static bool SortGreaterArea(ImageEntry* left, ImageEntry* right)
+static bool SortGreaterArea(AtlasGroupEntry* left, AtlasGroupEntry* right)
 {
   return left->image()->width() * left->image()->height() > right->image()->width() * right->image()->height();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function for sorting object from greatest width to smallest. */
-static bool SortGreaterWidth(ImageEntry* left, ImageEntry* right)
+static bool SortGreaterWidth(AtlasGroupEntry* left, AtlasGroupEntry* right)
 {
   return left->image()->width() > right->image()->width();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function for sorting object from greatest height to smallest. */
-static bool SortGreaterHeight(ImageEntry* left, ImageEntry* right)
+static bool SortGreaterHeight(AtlasGroupEntry* left, AtlasGroupEntry* right)
 {
   return left->image()->height() > right->image()->height();
 }
@@ -67,17 +68,26 @@ TextureAtlasGenerator::TextureAtlasGenerator(int argc, char** argv) : m_outputFo
         m_inputDataFilePath = val;
         ++i;
       }
-    }    
+    }
+    // check if OUTPUTXML switch
+    else if ("-outputxml" == opt)
+    {
+      if (!val.empty())
+      {
+        m_outputDataFilePath = val;
+        ++i;
+      }
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextureAtlasGenerator::~TextureAtlasGenerator()
 {
-  // go thru all elements
-  for (MultiMap<String, ImageEntry*>::iterator it = m_imageEntries.begin(); it != m_imageEntries.end();)
+  // go thru all groups
+  for (List<AtlasGroup*>::iterator it = m_groups.begin(); it != m_groups.end();)
   {
-    EGE_DELETE(it->second);
-    m_imageEntries.erase(it++);
+    EGE_DELETE(*it);
+    m_groups.erase(it++);
   }
 
   m_atlasData = NULL;
@@ -86,7 +96,7 @@ TextureAtlasGenerator::~TextureAtlasGenerator()
 /*! Returns TRUE if object is valid. */
 bool TextureAtlasGenerator::isValid() const
 {
-  return (EGEImage::NONE != m_outputFormat) && (0 < m_outputSize) && !m_inputDataFilePath.empty();
+  return (EGEImage::NONE != m_outputFormat) && (0 < m_outputSize) && !m_inputDataFilePath.empty() && !m_outputDataFilePath.empty();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Prints syntax. */
@@ -95,15 +105,20 @@ void TextureAtlasGenerator::printSyntax() const
   printHeader();
 
   std::cout << "Usage syntax:" << std::endl;
-  std::cout << "tatlasgen.exe -format [rgba] -size [integer] -input [filename]" << std::endl;
+  std::cout << "tatlasgen.exe -format [rgba] -size [integer] -input [filepath] -outputxml [filepath]" << std::endl;
+  std::cout << std::endl;
+  std::cout << "-format     pixel format of output image(s). Valid values: rgba" << std::endl;
+  std::cout << "-size       size in pixels of the output image(s)" << std::endl;
+  std::cout << "-input      path to XML input file containing" << std::endl;
+  std::cout << "-outputxml  path to generated XML file" << std::endl;
+  std::cout << std::endl;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Prints application info header. */
 void TextureAtlasGenerator::printHeader() const
 {
-  std::cout << "Texture Atlas Generator" << std::endl;
-  std::cout << "version " << VERSION_MAJOR << "." << VERSION_MINOR << std::endl;
-  std::cout << "Albert Banaszkiewicz, Flint Strike Ent., 2011" << std::endl;
+  std::cout << "Texture Atlas Generator, version " << VERSION_MAJOR << "." << VERSION_MINOR << std::endl;
+  std::cout << "Albert Banaszkiewicz, Little Bee Studios Ltd., 2011" << std::endl;
   std::cout << std::endl;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -133,27 +148,44 @@ bool TextureAtlasGenerator::process()
     return false;
   }
 
-  // go thru all children
-  PXmlElement child = root->firstChild();
-  while (child && child->isValid())
+  // go thru all atlas groups
+  PXmlElement groupElement = root->firstChild("atlas-group");
+  while (groupElement && groupElement->isValid() && groupElement->hasAttribute("name") && groupElement->hasAttribute("image-path"))
   {
-    // check if IMAGE child
-    if ("image" == child->name())
+    AtlasGroup* group = new AtlasGroup(groupElement->attribute("name"), groupElement->attribute("image-path"), outputSize(), outputFormat());
+    if (!group || !group->isValid())
     {
-      ImageEntry* entry = new ImageEntry(child->attribute("path"), child->attribute("group"));
+      // error!
+      EGE_DELETE(group);
+      std::cout << "ERROR: Could not create atlas group: " << groupElement->attribute("name") << std::endl;
+      return false;
+    }
+    
+    // add into pool
+    m_groups.push_back(group);
+
+    // go thru all IMAGE entries in current group
+    PXmlElement imageElement = groupElement->firstChild("image");
+    while (imageElement && imageElement->isValid())
+    {
+      AtlasGroupEntry* entry = new AtlasGroupEntry(imageElement->attribute("name"), imageElement->attribute("path"));
       if ((NULL == entry) || !entry->isValid())
       {
         // error!
-        std::cout << "ERROR: memory allocation failed!" << std::endl;
+        std::cout << "ERROR: Invalid image! Name: " << imageElement->attribute("name").toAscii() << " Path: " << imageElement->attribute("path").toAscii() << " Group: " 
+                  << groupElement->attribute("name").toAscii() << std::endl;
         return false;
       }
 
-      // add to pool
-      m_imageEntries.insert(entry->group(), entry);
+      // add to group
+      group->addEntry(entry);
+
+      // go to next child
+      imageElement = imageElement->nextChild("image");
     }
 
     // go to next child
-    child = child->nextChild();
+    groupElement = groupElement->nextChild("atlas-group");
   }
 
   std::cout << "DONE!" << std::endl << std::endl;
@@ -178,12 +210,11 @@ bool TextureAtlasGenerator::generateAll()
   XmlElement rootElement("resources");
   m_atlasData->appendElement(rootElement);
 
-  // process till entries exists
-  while (!m_imageEntries.empty())
+  // process all groups one by one
+  for (List<AtlasGroup*>::iterator it = m_groups.begin(); it != m_groups.end();)
   {
-    // get first element group and do processing for it
-    String group = m_imageEntries.begin()->first;
-    std::cout << "PROCESSING GROUP " << group << std::endl;
+    AtlasGroup* group = *it;
+    std::cout << "PROCESSING GROUP " << group->name() << std::endl;
 
     // reset sort mode
     m_sortMethod = SM_NONE;
@@ -198,26 +229,16 @@ bool TextureAtlasGenerator::generateAll()
       std::cout << "SUCCESS" << std::endl << std::endl;
     }
 
-    // remove all entries associated with current group
-    for (MultiMap<String, ImageEntry*>::const_iterator it = m_imageEntries.begin(); it != m_imageEntries.end(); )
-    {
-      if (it->first == group)
-      {
-        m_imageEntries.erase(it++);
-      }
-      else
-      {
-        ++it;
-      }
-    }
+    // remove group
+    m_groups.erase(it++);
   }
 
   // save XML data
-  return EGE_SUCCESS == m_atlasData->save("ouput.xml");
+  return EGE_SUCCESS == m_atlasData->save(outputDataFilePath());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Generates atlas for given group. */
-bool TextureAtlasGenerator::generate(const String& group)
+bool TextureAtlasGenerator::generate(AtlasGroup* group)
 {
   // select next sort methods
   switch (sortMethod())
@@ -233,15 +254,11 @@ bool TextureAtlasGenerator::generate(const String& group)
   }
 
   // get sorted entries for current group
-  DynamicArray<ImageEntry*> pool = sortedEntries(group);
-
-  // create atlas texture for group
-  PImage atlasImage = ege_new Image(NULL, outputSize(), outputSize(), EGEImage::RGBA_8888);
-  if (NULL == atlasImage)
+  switch (sortMethod())
   {
-    // error!
-    std::cout << "ERROR: Could not create atlas image!" << std::endl;
-    return false;
+    case SM_GREATER_AREA:   group->entries().sort(SortGreaterArea); break;
+    case SM_GREATER_WIDTH:  group->entries().sort(SortGreaterWidth); break;
+    case SM_GREATER_HEIGHT: group->entries().sort(SortGreaterHeight); break;
   }
 
   // create atlas tree root node
@@ -258,12 +275,12 @@ bool TextureAtlasGenerator::generate(const String& group)
   
   // create group element
   XmlElement groupElement("group");
-  groupElement.setAttribute("name", String::Format("atlas-%s", group.toAscii()));
+  groupElement.setAttribute("name", String::Format("atlas-%s", group->name().toAscii()));
 
   // go thru all elements belonging to current group
-  for (DynamicArray<ImageEntry*>::const_iterator it = pool.begin(); it != pool.end(); ++it)
+  for (List<AtlasGroupEntry*>::const_iterator it = group->entries().begin(); it != group->entries().end(); ++it)
   {
-    ImageEntry* entry = *it;
+    AtlasGroupEntry* entry = *it;
 
     // try to find node
     AtlasNode* node = root->insert(entry);
@@ -277,21 +294,22 @@ bool TextureAtlasGenerator::generate(const String& group)
       return generate(group);
     }
 
-    // store image for which place was found
-    node->m_imageEntry = entry;    
+    // store group entry for which place was found
+    node->m_entry = entry;    
 
     // create XML corresponding node 
     XmlElement element("image");
-    element.setAttribute("path", node->m_imageEntry->path());
+    element.setAttribute("name", entry->name());
+    element.setAttribute("path", entry->path());
     element.setAttribute("pixel-rect", String::Format("%d %d %d %d", node->m_rect.x, node->m_rect.y, node->m_rect.width, node->m_rect.height));
-    element.setAttribute("rect", String::Format("%f %f %f %f", node->m_rect.x * 1.0f / atlasImage->width(), node->m_rect.y * 1.0f / atlasImage->height() , 
-                                                node->m_rect.width * 1.0f / atlasImage->width(), node->m_rect.height * 1.0f / atlasImage->height()));
+    element.setAttribute("rect", String::Format("%f %f %f %f", node->m_rect.x * 1.0f / group->atlasImage()->width(), node->m_rect.y * 1.0f / group->atlasImage()->height() , 
+                                                node->m_rect.width * 1.0f / group->atlasImage()->width(), node->m_rect.height * 1.0f / group->atlasImage()->height()));
 
     // add to group element
     groupElement.appendChildElement(element);
 
     // copy data onto atlas image
-    ImageUtils::FastCopy(atlasImage, Vector2i(node->m_rect.x, node->m_rect.y), node->m_imageEntry->image());
+    ImageUtils::FastCopy(group->atlasImage(), Vector2i(node->m_rect.x, node->m_rect.y), node->m_entry->image());
   }
 
   // clean up
@@ -309,7 +327,7 @@ bool TextureAtlasGenerator::generate(const String& group)
   rootElement->appendChildElement(groupElement);
 
   // save atlas image
-  if (EGE_SUCCESS != atlasImage->save(String::Format("atlas_%s.png", group.toAscii())))
+  if (EGE_SUCCESS != group->atlasImage()->save(group->imagePath()))
   {
     // error!
     std::cout << "ERROR: Could not save atlas image!" << std::endl;
@@ -317,36 +335,5 @@ bool TextureAtlasGenerator::generate(const String& group)
   }
 
   return true;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns sorted array of image array pointers belonging to given group. */
-DynamicArray<ImageEntry*> TextureAtlasGenerator::sortedEntries(const String& group) const
-{
-  DynamicArray<ImageEntry*> pool;
-
-  // add all elements belonging to given group into array
-  for (MultiMap<String, ImageEntry*>::const_iterator it = m_imageEntries.begin(); it != m_imageEntries.end(); ++it)
-  {
-    if (it->first == group)
-    {
-      pool.push_back(it->second);
-    }
-  }
-
-  // sort according to current method
-  switch (sortMethod())
-  {
-    case SM_GREATER_AREA:   std::sort(pool.begin(), pool.end(), SortGreaterArea); break;
-    case SM_GREATER_WIDTH:  std::sort(pool.begin(), pool.end(), SortGreaterWidth); break;
-    case SM_GREATER_HEIGHT: std::sort(pool.begin(), pool.end(), SortGreaterHeight); break;
-  }
-
-  //for (DynamicArray<ImageEntry*>::iterator it = pool.begin(); it != pool.end(); ++it)
-  //{
-  //  ImageEntry* entry = *it;
-  //  std::cout << entry->image()->width() << " " << entry->image()->height() << " " << entry->image()->width() * entry->image()->height() << std::endl;
-  //}
-
-  return pool;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

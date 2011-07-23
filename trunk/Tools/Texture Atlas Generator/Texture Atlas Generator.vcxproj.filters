@@ -21,15 +21,24 @@
     <ClCompile Include="TextureAtlasGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AtlasGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AtlasGroupEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TextureAtlasGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ImageEntry.h">
+    <ClInclude Include="AtlasNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AtlasNode.h">
+    <ClInclude Include="AtlasGroup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AtlasGroupEntry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

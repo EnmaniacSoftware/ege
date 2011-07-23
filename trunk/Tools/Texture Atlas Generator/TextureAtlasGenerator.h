@@ -2,11 +2,11 @@
 #define TEXTURE_ATLAS_GENERATOR_H
 
 #include <EGEImage.h>
-#include <EGEMap.h>
-#include <EGEDynamicArray.h>
 #include <EGEXml.h>
-#include "ImageEntry.h"
+#include <EGEList.h>
+
 #include "AtlasNode.h"
+#include "AtlasGroup.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -44,15 +44,15 @@ class TextureAtlasGenerator
     inline EGE::s32 outputSize() const { return m_outputSize; }
     /*! Returns input data file path. */
     inline const EGE::String& inputDataFilePath() const { return m_inputDataFilePath; }
+    /*! Returns output data file path. */
+    inline const EGE::String& outputDataFilePath() const { return m_outputDataFilePath; }
     /* Generates atlases. */
     bool generateAll();
     /* Generates atlas for given group. */
-    bool generate(const EGE::String& group);
+    bool generate(AtlasGroup* group);
     /*! Returns current sorting method being used. */
     inline ESortMethod sortMethod() const { return m_sortMethod; }
-    /* Returns sorted array of image array pointers belonging to given group. */
-    EGE::DynamicArray<ImageEntry*> sortedEntries(const EGE::String& group) const;
-
+    
 	private:
 
     /*! Output image format. */
@@ -61,12 +61,14 @@ class TextureAtlasGenerator
     EGE::s32 m_outputSize;
     /*! Input data file path. */
     EGE::String m_inputDataFilePath;
-    /*! Map of all image entries sorted by group Id. */
-    EGE::MultiMap<EGE::String, ImageEntry*> m_imageEntries;
+    /*! Output data file path. */
+    EGE::String m_outputDataFilePath;
     /*! Current sorting method. */
     ESortMethod m_sortMethod;
     /*! XML document with atlas generated data. */
     EGE::PXmlDocument m_atlasData;
+    /*! Atlas groups. */
+    EGE::List<AtlasGroup*> m_groups;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

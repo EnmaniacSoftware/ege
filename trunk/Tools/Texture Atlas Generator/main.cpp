@@ -19,10 +19,12 @@ int main(int argc, char** argv)
   if (!generator.process())
   {
     // error!
+    std::cout << "Failure!" << std::endl;
     system("pause");
     return 2;
   }
 
+  std::cout << "Success!" << std::endl;
   system("pause");
   return 0;
 }
