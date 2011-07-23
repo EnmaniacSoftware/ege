@@ -257,8 +257,8 @@ EGEResult Image::loadPng(File& file, EGEImage::Format format)
 	// copy data into newly created buffer
 	for (u32 row = 0; row < pngInfoStruct->height; row++)
   {
-    void* dst = m_data->data(row * m_rowLength);
-    void* src = rowPointers[row];
+    u8* dst = reinterpret_cast<u8*>(m_data->data(row * m_rowLength));
+    u8* src = rowPointers[row];
 
     // copy row
     switch (format)
@@ -270,6 +270,18 @@ EGEResult Image::loadPng(File& file, EGEImage::Format format)
           case 4:
 
             EGE_MEMCPY(dst, src, pngInfoStruct->rowbytes);
+            break;
+
+          case 3:
+
+            // convert from RGB
+            for (u32 x = 0; x < pngInfoStruct->width; ++x)
+            {
+              *dst++ = *src++;
+              *dst++ = *src++;
+              *dst++ = *src++;
+              *dst++ = 255;
+            }
             break;
 
           default:
@@ -288,6 +300,17 @@ EGEResult Image::loadPng(File& file, EGEImage::Format format)
 
             EGE_MEMCPY(dst, src, pngInfoStruct->rowbytes);
             break;
+
+          case 4:
+
+            // convert from RGBA
+            for (u32 x = 0; x < pngInfoStruct->width; ++x)
+            {
+              *dst++ = *src++;
+              *dst++ = *src++;
+              *dst++ = *src++;
+              *src++;
+            }
 
           default:
 
