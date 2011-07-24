@@ -32,7 +32,6 @@ static EGETexture::Filter mapFilterName(const String& name)
 
   return EGETexture::BILINEAR;
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps literal texture addressing mode name into numeric value. */
 static EGETexture::AddressingMode mapTextureAddressingName(const String& name)
@@ -44,7 +43,6 @@ static EGETexture::AddressingMode mapTextureAddressingName(const String& name)
 
   return EGETexture::AM_REPEAT;
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceTexture::ResourceTexture(Application* app, ResourceManager* manager) : IResource(app, manager, "texture")
 {
@@ -92,7 +90,11 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   }
 
   // compose absolute path
-  m_path = path + "/" + m_path;
+  // TAGE - perhaps some more sophisiticated approach would be needed like checking each '/' section of path and cutting till differes etc
+  if (!m_path.startsWith(path))
+  {
+    m_path = path + "/" + m_path;
+  }
 
   return result;
 }

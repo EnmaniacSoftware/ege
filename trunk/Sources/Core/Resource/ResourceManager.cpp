@@ -4,6 +4,7 @@
 #include "Core/Resource/ResourceMaterial.h"
 #include "Core/Resource/ResourceData.h"
 #include "Core/Resource/ResourceFont.h"
+#include "Core/Resource/ResourceTextureImage.h"
 #include "Core/Graphics/Font.h" 
 #include <EGEXml.h>
 #include <EGEDir.h>
@@ -26,6 +27,7 @@ ResourceManager::ResourceManager(Application* app) : Object(app)
 {
   // register build-in resource types
   registerResource("texture", ResourceTexture::Create);
+  registerResource("texture-image", ResourceTextureImage::Create);
   registerResource("material", ResourceMaterial::Create);
   registerResource("data", ResourceData::Create);
   registerResource("font", ResourceFont::Create);

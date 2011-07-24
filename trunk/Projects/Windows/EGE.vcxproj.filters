@@ -405,6 +405,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageUtils.cpp">
       <Filter>Core\Graphics\Image</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceTextureImage.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -782,6 +785,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h">
       <Filter>Core\Graphics\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceTextureImage.h">
+      <Filter>Core\Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

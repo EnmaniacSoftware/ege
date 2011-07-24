@@ -7,7 +7,7 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 30
+#define VERSION_MINOR 40
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping image format name into framework enum. */
 static EGEImage::Format MapImageFormat(const String& formatName)
@@ -117,6 +117,7 @@ void TextureAtlasGenerator::printSyntax() const
 /*! Prints application info header. */
 void TextureAtlasGenerator::printHeader() const
 {
+  std::cout << std::endl;
   std::cout << "Texture Atlas Generator, version " << VERSION_MAJOR << "." << VERSION_MINOR << std::endl;
   std::cout << "Albert Banaszkiewicz, Little Bee Studios Ltd., 2011" << std::endl;
   std::cout << std::endl;
@@ -222,7 +223,7 @@ bool TextureAtlasGenerator::generateAll()
     // generate atlas for current group
     if (!generate(group))
     {
-      std::cout << "ERROR: Could not generate atlas for group: " << group << ". Skipping!" << std::endl << std::endl;
+      std::cout << "ERROR: Could not generate atlas for group: " << group->name() << ". Skipping!" << std::endl << std::endl;
     }
     else
     {
@@ -277,6 +278,13 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
   XmlElement groupElement("group");
   groupElement.setAttribute("name", String::Format("atlas-%s", group->name().toAscii()));
 
+  // add atlas texture declaration for current group
+  XmlElement textureElement("texture");
+  textureElement.setAttribute("type", "2d");
+  textureElement.setAttribute("name", String::Format("atlas-%s", group->name().toAscii()));
+  textureElement.setAttribute("path", group->imagePath());
+  groupElement.appendChildElement(textureElement);
+
   // go thru all elements belonging to current group
   for (List<AtlasGroupEntry*>::const_iterator it = group->entries().begin(); it != group->entries().end(); ++it)
   {
@@ -298,10 +306,12 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
     node->m_entry = entry;    
 
     // create XML corresponding node 
-    XmlElement element("image");
+    XmlElement element("texture-image");
     element.setAttribute("name", entry->name());
-    element.setAttribute("path", entry->path());
+    element.setAttribute("texture", String::Format("atlas-%s", group->name().toAscii()));
+#ifdef _DEBUG
     element.setAttribute("pixel-rect", String::Format("%d %d %d %d", node->m_rect.x, node->m_rect.y, node->m_rect.width, node->m_rect.height));
+#endif _DEBUG
     element.setAttribute("rect", String::Format("%f %f %f %f", node->m_rect.x * 1.0f / group->atlasImage()->width(), node->m_rect.y * 1.0f / group->atlasImage()->height() , 
                                                 node->m_rect.width * 1.0f / group->atlasImage()->width(), node->m_rect.height * 1.0f / group->atlasImage()->height()));
 

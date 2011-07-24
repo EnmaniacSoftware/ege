@@ -1,6 +1,7 @@
 #include "Core/Resource/ResourceMaterial.h"
 #include "Core/Resource/ResourceTexture.h"
 #include "Core/Resource/ResourceManager.h"
+#include "Core/Resource/ResourceTextureImage.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/TextureImage.h"
 #include <EGETexture.h>
@@ -83,11 +84,11 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
   m_name            = tag->attribute("name");
   m_srcBlend        = mapBlendFactor(tag->attribute("src-blend").toLower(), EGEGraphics::BLEND_FACTOR_ONE);
   m_dstBlend        = mapBlendFactor(tag->attribute("dst-blend").toLower(), EGEGraphics::BLEND_FACTOR_ZERO);
-  m_diffuseColor    = tag->attribute("diffuse-color");
-  m_ambientColor    = tag->attribute("ambient-color");
-  m_specularColor   = tag->attribute("specular-color");
-  m_emissionColor   = tag->attribute("emission-color");
-  m_shinness        = tag->attribute("shinness");
+  m_diffuseColor    = tag->attribute("diffuse-color", "1 1 1 1");
+  m_ambientColor    = tag->attribute("ambient-color", "1 1 1 1");
+  m_specularColor   = tag->attribute("specular-color", "0 0 0 1");
+  m_emissionColor   = tag->attribute("emission-color", "0 0 0 1");
+  m_shinness        = tag->attribute("shinness", "0");
 
   // check if obligatory data is wrong
   if (m_name.empty() || (EGEGraphics::BLEND_FACTOR_UNKNOWN == m_srcBlend) || (EGEGraphics::BLEND_FACTOR_UNKNOWN == m_dstBlend))
@@ -141,30 +142,11 @@ EGEResult ResourceMaterial::load()
     material->setDstBlendFactor(dstBlendFactor());
 
     // set colors
-    if (!ambientColorName().empty())
-    {
-      material->setAmbientColor(ambientColorName().toColor(&error));
-    }
-
-    if (!diffuseColorName().empty())
-    {
-      material->setDiffuseColor(diffuseColorName().toColor(&error));
-    }
-
-    if (!specularColorName().empty())
-    {
-      material->setSpecularColor(specularColorName().toColor(&error));
-    }
-
-    if (!emissionColorName().empty())
-    {
-      material->setEmissionColor(emissionColorName().toColor(&error));
-    }
-
-    if (!shinnessName().empty())
-    {
-      material->setShinness(shinnessName().toFloat(&error));
-    }
+    material->setAmbientColor(ambientColorName().toColor(&error));
+    material->setDiffuseColor(diffuseColorName().toColor(&error));
+    material->setSpecularColor(specularColorName().toColor(&error));
+    material->setEmissionColor(emissionColorName().toColor(&error));
+    material->setShinness(shinnessName().toFloat(&error));
 
     // check for errors
     if (error)
@@ -177,39 +159,81 @@ EGEResult ResourceMaterial::load()
     {
       const TextureImageData& textureImageData = *it;
 
-      PResourceTexture texture = manager()->resource("texture", textureImageData.m_name);
-      if (texture)
+      PObject texture;
+
+      // material referred texture space in use
+      Rectf texRect(0, 0, 1, 1);
+      
+      // NOTE: Material can refer to Texture or TextureImage (ie. from atlas)
+
+      // try to find TextureImage of a given name
+      PResourceTextureImage textureImageRes = manager()->resource("texture-image", textureImageData.m_name);
+      if (textureImageRes)
       {
-        // load texture
-        if (EGE_SUCCESS != (result = texture->load()))
+        // load texture image
+        if (EGE_SUCCESS != (result = textureImageRes->load()))
         {
           // error!
           return result;
         }
 
-        // NOTE: assumption textureImageData data are valid
-        PTextureImage textureImage = ege_new TextureImage(app(), texture->texture(), textureImageData.m_rect.toRectf());
-        if (NULL == textureImage || !textureImage->isValid())
-        {
-          // erro!
-          return EGE_ERROR;
-        }
+        // retrieve referred texture
+        texture = textureImageRes->textureImage()->texture();
 
-        // set texture data
-        textureImage->setEnvironmentMode(MapTextureEnvironmentMode(textureImageData.m_envMode, EGETexture::EM_MODULATE));
-
-        // add texture to material
-        if (EGE_SUCCESS != (result = material->addTexture(textureImage)))
-        {
-          // error!
-          return result;
-        }
+        // set new texture space in use
+        texRect = textureImageRes->textureImage()->rectangle();
       }
       else
       {
+        // try to find Texture of a given name
+        PResourceTexture textureRes = manager()->resource("texture", textureImageData.m_name);
+        if (textureRes)
+        {
+          // load texture
+          if (EGE_SUCCESS != (result = textureRes->load()))
+          {
+            // error!
+            return result;
+          }
+        }
+
+        // retrieve referred texture
+        texture = textureRes->texture();
+      }
+      
+      // check if not found
+      if (NULL == texture)
+      {
         // texture not found
-        EGE_PRINT(String::Format("Texture not found: %s", textureImageData.m_name.toAscii()));
+        EGE_PRINT(String::Format("Material texture not found: %s", textureImageData.m_name.toAscii()));
         return EGE_ERROR;
+      }
+
+      // NOTE: assumption textureImageData data are valid
+      Rectf materialTextureRect = textureImageData.m_rect.toRectf();
+
+      // calculate final referred rectangle
+      Rectf finalRect;
+      finalRect.x       = texRect.x + texRect.width * materialTextureRect.x;
+      finalRect.y       = texRect.y + texRect.height * materialTextureRect.y;
+      finalRect.width   = texRect.width * materialTextureRect.width;
+      finalRect.height  = texRect.height * materialTextureRect.height;
+
+      PTextureImage textureImage = ege_new TextureImage(app(), texture, finalRect);
+      if (NULL == textureImage || !textureImage->isValid())
+      {
+        // erro!
+        return EGE_ERROR;
+      }
+
+      // set texture data
+      textureImage->setEnvironmentMode(MapTextureEnvironmentMode(textureImageData.m_envMode, EGETexture::EM_MODULATE));
+
+      // add texture to material
+      if (EGE_SUCCESS != (result = material->addTexture(textureImage)))
+      {
+        // error!
+        return result;
       }
     }
 
