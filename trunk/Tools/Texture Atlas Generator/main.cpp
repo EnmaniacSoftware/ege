@@ -11,7 +11,6 @@ int main(int argc, char** argv)
   {
     // show syntax
     generator.printSyntax();
-    system("pause");
     return 1;
   }
 
@@ -20,12 +19,10 @@ int main(int argc, char** argv)
   {
     // error!
     std::cout << "Failure!" << std::endl;
-    system("pause");
     return 2;
   }
 
   std::cout << "Success!" << std::endl;
-  system("pause");
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
