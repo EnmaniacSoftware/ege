@@ -7,7 +7,7 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 40
+#define VERSION_MINOR 50
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping image format name into framework enum. */
 static EGEImage::Format MapImageFormat(const String& formatName)
@@ -151,9 +151,11 @@ bool TextureAtlasGenerator::process()
 
   // go thru all atlas groups
   PXmlElement groupElement = root->firstChild("atlas-group");
-  while (groupElement && groupElement->isValid() && groupElement->hasAttribute("name") && groupElement->hasAttribute("image-path"))
+  while (groupElement && groupElement->isValid() && groupElement->hasAttribute("name") && groupElement->hasAttribute("path") && 
+         groupElement->hasAttribute("image"))
   {
-    AtlasGroup* group = new AtlasGroup(groupElement->attribute("name"), groupElement->attribute("image-path"), outputSize(), outputFormat());
+    AtlasGroup* group = new AtlasGroup(groupElement->attribute("name"), groupElement->attribute("path"), groupElement->attribute("image"), 
+                                       outputSize(), outputFormat());
     if (!group || !group->isValid())
     {
       // error!
@@ -282,7 +284,7 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
   XmlElement textureElement("texture");
   textureElement.setAttribute("type", "2d");
   textureElement.setAttribute("name", String::Format("atlas-%s", group->name().toAscii()));
-  textureElement.setAttribute("path", group->imagePath());
+  textureElement.setAttribute("path", group->image());
   groupElement.appendChildElement(textureElement);
 
   // go thru all elements belonging to current group
@@ -337,7 +339,7 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
   rootElement->appendChildElement(groupElement);
 
   // save atlas image
-  if (EGE_SUCCESS != group->atlasImage()->save(group->imagePath()))
+  if (EGE_SUCCESS != group->atlasImage()->save(group->path() + "/" + group->image()))
   {
     // error!
     std::cout << "ERROR: Could not save atlas image!" << std::endl;

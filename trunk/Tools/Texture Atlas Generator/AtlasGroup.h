@@ -15,15 +15,17 @@ class AtlasGroup
 {
   public:
 
-    AtlasGroup(const EGE::String& name, const EGE::String& imagePath, EGE::s32 atlasImageSize, EGE::EGEImage::Format atlasImageFormat);
+    AtlasGroup(const EGE::String& name, const EGE::String& path, const EGE::String& image, EGE::s32 atlasImageSize, EGE::EGEImage::Format atlasImageFormat);
    ~AtlasGroup();
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /*! Returns image object. */
     inline EGE::PImage atlasImage() const { return m_atlasImage; }
+    /*! Returns group path to root directory. */
+    inline const EGE::String& path() const { return m_path; }
     /*! Returns image path. */
-    inline const EGE::String& imagePath() const { return m_imagePath; }
+    inline const EGE::String& image() const { return m_image; }
     /*! Returns image name. */
     inline const EGE::String& name() const { return m_name; }
     /* Adds entry to pool. */
@@ -33,8 +35,10 @@ class AtlasGroup
 
   private:
 
-    /*! Path to image. */
-    EGE::String m_imagePath;
+    /*! Path to theme root dir. */
+    EGE::String m_path;
+    /*! Image path (relative to theme root). */
+    EGE::String m_image;
     /*! Image name. */
     EGE::String m_name;
     /*! List of group entries. */

@@ -4,8 +4,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AtlasGroup::AtlasGroup(const String& name, const String& imagePath, s32 atlasImageSize, EGEImage::Format atlasImageFormat) : m_name(name), 
-                                                                                                                             m_imagePath(imagePath)
+AtlasGroup::AtlasGroup(const String& name, const String& path, const String& image, s32 atlasImageSize, EGEImage::Format atlasImageFormat) 
+: m_name(name), m_path(path), m_image(image)
 {
   m_atlasImage = ege_new EGE::Image(NULL, atlasImageSize, atlasImageSize, atlasImageFormat);
 }
@@ -25,7 +25,7 @@ AtlasGroup::~AtlasGroup()
 /*! Returns TRUE if object is valid. */
 bool AtlasGroup::isValid() const 
 { 
-  return (NULL != m_atlasImage) && (EGE::EGEImage::NONE != m_atlasImage->format()) && !m_imagePath.empty() && !m_name.empty(); 
+  return (NULL != m_atlasImage) && (EGE::EGEImage::NONE != m_atlasImage->format()) && !m_path.empty() && !m_name.empty() && !m_image.empty(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds entry to pool. */

@@ -296,6 +296,8 @@ files
   ResourceMaterial.h
   ResourceTexture.cpp
   ResourceTexture.h
+  ResourceTextureImage.cpp
+  ResourceTextureImage.h
 
 	["Core/Scene"]
   (../../Sources/Core/Scene)
