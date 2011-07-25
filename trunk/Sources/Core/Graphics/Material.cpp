@@ -10,7 +10,7 @@ EGE_DEFINE_NEW_OPERATORS(Material)
 EGE_DEFINE_DELETE_OPERATORS(Material)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Material::Material(Application* app) : Object(app), m_diffuseColor(Color::WHITE), m_ambientColor(Color::WHITE), m_specularColor(Color::BLACK), m_shinness(0), 
+Material::Material(Application* app) : Object(app), m_diffuseColor(Color::WHITE), m_ambientColor(Color::WHITE), m_specularColor(Color::BLACK), m_shininess(0), 
                                        m_emissionColor(Color::BLACK), m_srcBlendFactor(EGEGraphics::BLEND_FACTOR_ONE),
                                        m_dstBlendFactor(EGEGraphics::BLEND_FACTOR_ZERO)
 
@@ -77,10 +77,10 @@ void Material::setSpecularColor(const Color& color)
   m_specularColor = color;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets shinness. */
-void Material::setShinness(float32 shinness)
+/*! Sets shininess. */
+void Material::setShininess(float32 shininess)
 {
-  m_shinness = Math::Bound(shinness, 0.0f, 1.0f);
+  m_shininess = Math::Bound(shininess, 0.0f, 1.0f);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets emission color. */

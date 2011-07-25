@@ -74,7 +74,7 @@ class ResourceMaterial : public IResource
     /*! Returns emission color name. */
     inline const String& emissionColorName() const { return m_emissionColor; }
     /*! Returns shinness value name. */
-    inline const String& shinnessName() const { return m_shinness; }
+    inline const String& shininessName() const { return m_shininess; }
     /* Maps blend factor's name into value. */
     EGEGraphics::EBlendFactor mapBlendFactor(const String& name, EGEGraphics::EBlendFactor defaultValue) const;
     
@@ -115,8 +115,8 @@ class ResourceMaterial : public IResource
     String m_specularColor;
     /*! Emission color name. */
     String m_emissionColor;
-    /*! Shinness value name. */
-    String m_shinness;
+    /*! Shininess value name. */
+    String m_shininess;
 
     /*! Material object created from resource. NULL if not created yet. */
     PMaterial m_material;

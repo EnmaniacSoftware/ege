@@ -88,7 +88,7 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
   m_ambientColor    = tag->attribute("ambient-color", "1 1 1 1");
   m_specularColor   = tag->attribute("specular-color", "0 0 0 1");
   m_emissionColor   = tag->attribute("emission-color", "0 0 0 1");
-  m_shinness        = tag->attribute("shinness", "0");
+  m_shininess       = tag->attribute("shininess", "0");
 
   // check if obligatory data is wrong
   if (m_name.empty() || (EGEGraphics::BLEND_FACTOR_UNKNOWN == m_srcBlend) || (EGEGraphics::BLEND_FACTOR_UNKNOWN == m_dstBlend))
@@ -146,7 +146,7 @@ EGEResult ResourceMaterial::load()
     material->setDiffuseColor(diffuseColorName().toColor(&error));
     material->setSpecularColor(specularColorName().toColor(&error));
     material->setEmissionColor(emissionColorName().toColor(&error));
-    material->setShinness(shinnessName().toFloat(&error));
+    material->setShininess(shininessName().toFloat(&error));
 
     // check for errors
     if (error)

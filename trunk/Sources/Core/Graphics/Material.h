@@ -56,10 +56,10 @@ class Material : public Object
     void setSpecularColor(const Color& color);
     /*! Returns specular color. */
     const Color& specularColor() const { return m_specularColor; }
-    /* Sets shinness. */
-    void setShinness(float32 shinness);
-    /*! Returns shinness. */
-    float32 shinness() const { return m_shinness; }
+    /* Sets shininess. */
+    void setShininess(float32 shininess);
+    /*! Returns shininess. */
+    float32 shininess() const { return m_shininess; }
     /* Sets emission color. */
     void setEmissionColor(const Color& color);
     /*! Returns emission color. */
@@ -75,8 +75,8 @@ class Material : public Object
     Color m_ambientColor;
     /*! Specular color reflectance. */
     Color m_specularColor;
-    /*! Shinness [0-1] range. */
-    float32 m_shinness;
+    /*! Shininess [0-1] range. */
+    float32 m_shininess;
     /*! Emission (self-illumination) color. */
     Color m_emissionColor;
     /*! Source blend factor. */
