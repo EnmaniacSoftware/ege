@@ -60,8 +60,6 @@ EGEResult Texture2DPrivate::create(const String& path)
   glGenTextures(1, &m_id);
 	glBindTexture(GL_TEXTURE_2D, m_id);
 
-  //glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapFilter(d_func()->m_minFilter));
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapFilter(d_func()->m_magFilter));
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mapAddressingMode(d_func()->m_addressingModeS));

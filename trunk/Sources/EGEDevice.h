@@ -33,7 +33,8 @@ namespace EGEDevice
     /*! Rendering capability flags. */
     enum ERenderCapability
     {
-      RENDER_CAPS_COUNT = 1
+      RENDER_CAPS_APPLE_LIMITED_NPOT_TEXTURE = 0,           /*< Limited non-power of two 2D texture extension for iOS */
+      RENDER_CAPS_COUNT
     };
 }
 

@@ -399,6 +399,11 @@ void RendererPrivate::detectCapabilities()
   // detect maximal texture size
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &value);
   Device::SetTextureMaxSize(static_cast<u32>(value));
+
+  if (isExtensionSupported("GL_APPLE_texture_2D_limited_npot"))
+  {
+    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_APPLE_LIMITED_NPOT_TEXTURE, true);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Checks if given extension is supported. */
