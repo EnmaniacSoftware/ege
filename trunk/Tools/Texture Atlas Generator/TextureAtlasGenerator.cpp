@@ -7,12 +7,17 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 50
+#define VERSION_MINOR 55
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping image format name into framework enum. */
 static EGEImage::Format MapImageFormat(const String& formatName)
 {
-  // rgba
+  if ("rgb" == formatName)
+  {
+    return EGEImage::RGB_888;
+  }
+
+  // default
   return EGEImage::RGBA_8888;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -105,9 +110,9 @@ void TextureAtlasGenerator::printSyntax() const
   printHeader();
 
   std::cout << "Usage syntax:" << std::endl;
-  std::cout << "tatlasgen.exe -format [rgba] -size [integer] -input [filepath] -outputxml [filepath]" << std::endl;
+  std::cout << "tatlasgen.exe -format [rgba|rgb] -size [integer] -input [filepath] -outputxml [filepath]" << std::endl;
   std::cout << std::endl;
-  std::cout << "-format     pixel format of output image(s). Valid values: rgba" << std::endl;
+  std::cout << "-format     pixel format of output image(s). Valid values: rgba, rgb" << std::endl;
   std::cout << "-size       size in pixels of the output image(s)" << std::endl;
   std::cout << "-input      path to XML input file containing" << std::endl;
   std::cout << "-outputxml  path to generated XML file" << std::endl;

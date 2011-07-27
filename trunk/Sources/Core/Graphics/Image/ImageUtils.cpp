@@ -17,7 +17,8 @@ struct ScanLineEntry
   PFNSCANLINEBLTFUNC scanline;
 };
 
-static struct ScanLineEntry ScanLines[] = { {EGEImage::RGBA_8888, EGEImage::RGBA_8888, ImageUtils::ScanLineBltRGBA8888ToRGBA8888}
+static struct ScanLineEntry ScanLines[] = { {EGEImage::RGBA_8888, EGEImage::RGBA_8888, ImageUtils::ScanLineBltRGBA8888ToRGBA8888},
+                                            {EGEImage::RGB_888, EGEImage::RGBA_8888, ImageUtils::ScanLineBltRGBA8888ToRGB888}
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -118,5 +119,23 @@ void ImageUtils::FastCopy(PImage& dst, const Vector2i& dstPoint, const PImage& s
 void ImageUtils::ScanLineBltRGBA8888ToRGBA8888(void* dst, const void* src, s32 length)
 {
   EGE_MEMCPY(dst, src, length * 4);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Performs scan line bit blit from RGBA8888 format onto RGB888 format. */
+void ImageUtils::ScanLineBltRGBA8888ToRGB888(void* dst, const void* src, s32 length)
+{
+  u8* dest = reinterpret_cast<u8*>(dst);
+  const u8* sorc = reinterpret_cast<const u8*>(src);
+
+  while (0 != length)
+  {
+    *dest++ = *sorc++;
+    *dest++ = *sorc++;
+    *dest++ = *sorc++;
+
+    ++sorc;
+
+    --length;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

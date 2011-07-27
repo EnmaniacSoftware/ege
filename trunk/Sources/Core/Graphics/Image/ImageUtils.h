@@ -44,6 +44,8 @@ class ImageUtils
 
     /* Performs scan line bit blit from RGBA8888 format onto RGBA8888 format. */
     static void ScanLineBltRGBA8888ToRGBA8888(void* dst, const void* src, s32 length);
+    /* Performs scan line bit blit from RGBA8888 format onto RGB888 format. */
+    static void ScanLineBltRGBA8888ToRGB888(void* dst, const void* src, s32 length);
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
