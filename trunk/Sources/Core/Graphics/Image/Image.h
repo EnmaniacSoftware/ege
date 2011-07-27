@@ -32,8 +32,8 @@ class Image : public Object
     bool isValid() const;
     /* Loads image converting it's format to requested one. */
     EGEResult load(const String& fileName, EGEImage::Format format = EGEImage::NONE);
-    /* Saves image into a given file. */
-    EGEResult save(const String& fileName);
+    /* Saves image into a given file with specified format. */
+    EGEResult save(const String& fileName, EGEImage::Format format = EGEImage::NONE);
     /*! Gets image width (in pixels) */
     inline s32 width() const { return m_width; }
     /*! Gets image height (in pixels) */

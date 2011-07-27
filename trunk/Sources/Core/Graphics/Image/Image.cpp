@@ -170,7 +170,6 @@ EGEResult Image::loadPng(File& file, EGEImage::Format format)
 
 	png_structp pngReadStruct;
 	png_infop   pngInfoStruct;
-	png_bytepp  rowPointers;
 
 	// allocate memory for read structure
 	if (NULL == (pngReadStruct = png_create_read_struct(PNG_LIBPNG_VER_STRING, (png_voidp) NULL, NULL, NULL))) 
@@ -198,11 +197,8 @@ EGEResult Image::loadPng(File& file, EGEImage::Format format)
     return EGE_ERROR_IO;
   }
 
-	// read whole image
-	png_read_png(pngReadStruct, pngInfoStruct, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND, NULL);
-
-	// get pointers to all rows
-	rowPointers = png_get_rows(pngReadStruct, pngInfoStruct);
+  // read chunk data
+  png_read_info(pngReadStruct, pngInfoStruct);
 
   // determine pixel format
   if (EGEImage::NONE == format)
@@ -210,14 +206,47 @@ EGEResult Image::loadPng(File& file, EGEImage::Format format)
     // match it with image pixel format
     switch (pngInfoStruct->channels)
     {
-      case 3: format = EGEImage::RGB_888; break;
-      case 4: format = EGEImage::RGBA_8888; break;
+      case 3: 
+        
+        // check if any transparent color is present
+        if (0 < pngInfoStruct->num_trans)
+        {
+          // we want expand it to RGBA then
+          format = EGEImage::RGBA_8888;
+        }
+        else
+        {
+          // ok it is safe to keep RGB here
+          format = EGEImage::RGB_888;
+        }
+        break;
+        
+      case 4: 
+        
+        format = EGEImage::RGBA_8888; 
+        break;
 
       default:
 
         // error!
         png_destroy_read_struct(&pngReadStruct, &pngInfoStruct, png_infopp_NULL);
         return EGE_ERROR_NOT_SUPPORTED;
+    }
+  }
+  else
+  {
+    // check if any fillers needs to be added to match required format
+    if (EGEImage::RGBA_8888 == format && (3 == pngInfoStruct->channels) && (0 == pngInfoStruct->num_trans))
+    {
+      // add opacity alpha channel to form RGBA from RGB
+      png_set_filler(pngReadStruct, 0xff, PNG_FILLER_AFTER);
+    }
+
+    // TAGE - needs to verify that png_set_strip_alpha does correct job
+    // check if alpha channel should not be taken into account
+    if (EGEImage::RGB_888 == format && ((4 == pngInfoStruct->channels) || (0 < pngInfoStruct->num_trans)))
+    {
+      png_set_strip_alpha(pngReadStruct);
     }
   }
 
@@ -229,112 +258,21 @@ EGEResult Image::loadPng(File& file, EGEImage::Format format)
     return result;
   }
 
-  // check if palette is present
-  //if (NULL == pngInfoStruct->palette)
-  //{
-    // allocate memory for palette
-    //if ( ( psImageData->psPalette = new SPALETTEENTRY[ pngInfoStruct->num_palette ] ) == NULL )
-    //{
-    //  // error!
-    //  png_destroy_read_struct( &pngReadStruct, &pngInfoStruct, png_infopp_NULL );
-    //  fclose( pfFile );
-		  //return false;
-    //}
+  // expand color data
+  png_set_expand(pngReadStruct);
 
-    //// store number of palette entries
-    //psImageData->uPaletteEntriesNo = pngInfoStruct->num_palette;
-
-    //// copy palette
-    //for ( u32 i = 0; i < psImageData->uPaletteEntriesNo; i++ )
-    //{
-    //  psImageData->psPalette[ i ].byRed   = pngInfoStruct->palette[ i ].red;
-    //  psImageData->psPalette[ i ].byGreen = pngInfoStruct->palette[ i ].green;
-    //  psImageData->psPalette[ i ].byBlue  = pngInfoStruct->palette[ i ].blue;
-    //  psImageData->psPalette[ i ].byAlpha = 255;
-    //}
- // }
-
-	// copy data into newly created buffer
-	for (u32 row = 0; row < pngInfoStruct->height; row++)
+  // decompress row by row
+  u8* row = reinterpret_cast<u8*>(data()->data(0));
+  for (u32 y = 0; y < pngInfoStruct->height; ++y)
   {
-    u8* dst = reinterpret_cast<u8*>(m_data->data(row * m_rowLength));
-    u8* src = rowPointers[row];
+    // read row
+    png_read_row(pngReadStruct, row, NULL);
 
-    // copy row
-    switch (format)
-    {
-      case EGEImage::RGBA_8888:
-
-        switch (pngInfoStruct->channels)
-        {
-          case 4:
-
-            EGE_MEMCPY(dst, src, pngInfoStruct->rowbytes);
-            break;
-
-          case 3:
-
-            // convert from RGB
-            for (u32 x = 0; x < pngInfoStruct->width; ++x)
-            {
-              *dst++ = *src++;
-              *dst++ = *src++;
-              *dst++ = *src++;
-              *dst++ = 255;
-            }
-            break;
-
-          default:
-
-            // format not supported
-            result = EGE_ERROR_NOT_SUPPORTED;
-            break;
-        }
-        break;
-
-      case EGEImage::RGB_888:
-
-        switch (pngInfoStruct->channels)
-        {
-          case 3:
-
-            EGE_MEMCPY(dst, src, pngInfoStruct->rowbytes);
-            break;
-
-          case 4:
-
-            // convert from RGBA
-            for (u32 x = 0; x < pngInfoStruct->width; ++x)
-            {
-              *dst++ = *src++;
-              *dst++ = *src++;
-              *dst++ = *src++;
-              *src++;
-            }
-
-          default:
-
-            // format not supported
-            result = EGE_ERROR_NOT_SUPPORTED;
-            break;
-        }
-        break;
-        
-      default:
-
-        // format not supported
-        result = EGE_ERROR_NOT_SUPPORTED;
-        break;
-    }
-
-    // check if error occured
-    if (EGE_SUCCESS != result)
-    {
-      // error!
-      png_destroy_read_struct(&pngReadStruct, &pngInfoStruct, png_infopp_NULL);
-      return result;
-    }
+    row += m_rowLength;
   }
+
+  // finialize reading
+  png_read_end(pngReadStruct, pngInfoStruct);
 
 	// deallocate all png data 
 	png_destroy_read_struct(&pngReadStruct, &pngInfoStruct, png_infopp_NULL);
@@ -463,8 +401,8 @@ EGEResult Image::allocateData(s32 width, s32 height, EGEImage::Format format)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Saves image into a given file. */
-EGEResult Image::save(const String& fileName)
+/*! Saves image into a given file with specified format. */
+EGEResult Image::save(const String& fileName, EGEImage::Format format)
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -482,12 +420,17 @@ EGEResult Image::save(const String& fileName)
     type = STREAM_TYPE_JPG;
   }
 
+  // determine pixel format
+  if (EGEImage::NONE == format)
+  {
+    format = this->format();
+  }
+
   // save according to stream
-  // TAGE - allow specyfing format ? or use current one ? what current means ? currently only set on loading so we need to be able to predefine it
   switch (type)
   {
-    case STREAM_TYPE_PNG: result = savePng(file, EGEImage::RGBA_8888); break;
-    case STREAM_TYPE_JPG: result = saveJpg(file, EGEImage::RGBA_8888); break;
+    case STREAM_TYPE_PNG: result = savePng(file, format); break;
+    case STREAM_TYPE_JPG: result = saveJpg(file, format); break;
 
     default:
 
