@@ -7,7 +7,7 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 55
+#define VERSION_MINOR 60
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping image format name into framework enum. */
 static EGEImage::Format MapImageFormat(const String& formatName)
@@ -39,7 +39,7 @@ static bool SortGreaterHeight(AtlasGroupEntry* left, AtlasGroupEntry* right)
   return left->image()->height() > right->image()->height();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureAtlasGenerator::TextureAtlasGenerator(int argc, char** argv) : m_outputFormat(EGEImage::NONE), m_outputSize(0), m_sortMethod(SM_NONE)
+TextureAtlasGenerator::TextureAtlasGenerator(int argc, char** argv) : m_outputFormat(EGEImage::NONE), m_sortMethod(SM_NONE)
 {
   // go thru all parameters
   for (s32 i = 0; i < argc;)
@@ -56,15 +56,6 @@ TextureAtlasGenerator::TextureAtlasGenerator(int argc, char** argv) : m_outputFo
         ++i;
       }
     }
-    // check if SIZE switch
-    else if ("-size" == opt)
-    {
-      if (!val.empty())
-      {
-        m_outputSize = val.toInt();
-        ++i;
-      }
-    }
     // check if INPUT switch
     else if ("-input" == opt)
     {
@@ -74,12 +65,12 @@ TextureAtlasGenerator::TextureAtlasGenerator(int argc, char** argv) : m_outputFo
         ++i;
       }
     }
-    // check if OUTPUTXML switch
-    else if ("-outputxml" == opt)
+    // check if OUTPUT switch
+    else if ("-output" == opt)
     {
       if (!val.empty())
       {
-        m_outputDataFilePath = val;
+        m_outputXmlPath = val;
         ++i;
       }
     }
@@ -101,7 +92,7 @@ TextureAtlasGenerator::~TextureAtlasGenerator()
 /*! Returns TRUE if object is valid. */
 bool TextureAtlasGenerator::isValid() const
 {
-  return (EGEImage::NONE != m_outputFormat) && (0 < m_outputSize) && !m_inputDataFilePath.empty() && !m_outputDataFilePath.empty();
+  return (EGEImage::NONE != m_outputFormat) && !m_inputDataFilePath.empty() && !m_outputXmlPath.empty();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Prints syntax. */
@@ -110,12 +101,11 @@ void TextureAtlasGenerator::printSyntax() const
   printHeader();
 
   std::cout << "Usage syntax:" << std::endl;
-  std::cout << "tatlasgen.exe -format [rgba|rgb] -size [integer] -input [filepath] -outputxml [filepath]" << std::endl;
+  std::cout << "tatlasgen.exe -format [rgba|rgb] -input [filepath] -output [filepath]" << std::endl;
   std::cout << std::endl;
   std::cout << "-format     pixel format of output image(s). Valid values: rgba, rgb" << std::endl;
-  std::cout << "-size       size in pixels of the output image(s)" << std::endl;
   std::cout << "-input      path to XML input file containing" << std::endl;
-  std::cout << "-outputxml  path to generated XML file" << std::endl;
+  std::cout << "-output     output XML file path" << std::endl;
   std::cout << std::endl;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -156,11 +146,11 @@ bool TextureAtlasGenerator::process()
 
   // go thru all atlas groups
   PXmlElement groupElement = root->firstChild("atlas-group");
-  while (groupElement && groupElement->isValid() && groupElement->hasAttribute("name") && groupElement->hasAttribute("path") && 
-         groupElement->hasAttribute("image"))
+  while (groupElement && groupElement->isValid() && groupElement->hasAttribute("name") && groupElement->hasAttribute("size") && 
+         groupElement->hasAttribute("root") && groupElement->hasAttribute("image"))
   {
-    AtlasGroup* group = new AtlasGroup(groupElement->attribute("name"), groupElement->attribute("path"), groupElement->attribute("image"), 
-                                       outputSize(), outputFormat());
+    AtlasGroup* group = new AtlasGroup(groupElement->attribute("name"), groupElement->attribute("root"), groupElement->attribute("image"), 
+                                       groupElement->attribute("size").toInt(), outputFormat());
     if (!group || !group->isValid())
     {
       // error!
@@ -242,7 +232,7 @@ bool TextureAtlasGenerator::generateAll()
   }
 
   // save XML data
-  return EGE_SUCCESS == m_atlasData->save(outputDataFilePath());
+  return EGE_SUCCESS == m_atlasData->save(outputXmlPath());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Generates atlas for given group. */
@@ -279,7 +269,7 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
   }
 
   // set root node to max size
-  root->m_rect = Recti(0, 0, outputSize(), outputSize());
+  root->m_rect = Recti(0, 0, group->imageSize(), group->imageSize());
   
   // create group element
   XmlElement groupElement("group");
@@ -289,7 +279,7 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
   XmlElement textureElement("texture");
   textureElement.setAttribute("type", "2d");
   textureElement.setAttribute("name", String::Format("atlas-%s", group->name().toAscii()));
-  textureElement.setAttribute("path", group->image());
+  textureElement.setAttribute("path", group->imageName());
   groupElement.appendChildElement(textureElement);
 
   // go thru all elements belonging to current group
@@ -319,14 +309,14 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
 #ifdef _DEBUG
     element.setAttribute("pixel-rect", String::Format("%d %d %d %d", node->m_rect.x, node->m_rect.y, node->m_rect.width, node->m_rect.height));
 #endif _DEBUG
-    element.setAttribute("rect", String::Format("%f %f %f %f", node->m_rect.x * 1.0f / group->atlasImage()->width(), node->m_rect.y * 1.0f / group->atlasImage()->height() , 
-                                                node->m_rect.width * 1.0f / group->atlasImage()->width(), node->m_rect.height * 1.0f / group->atlasImage()->height()));
+    element.setAttribute("rect", String::Format("%f %f %f %f", node->m_rect.x * 1.0f / group->imageSize(), node->m_rect.y * 1.0f / group->imageSize(), 
+                                                node->m_rect.width * 1.0f / group->imageSize(), node->m_rect.height * 1.0f / group->imageSize()));
 
     // add to group element
     groupElement.appendChildElement(element);
 
     // copy data onto atlas image
-    ImageUtils::FastCopy(group->atlasImage(), Vector2i(node->m_rect.x, node->m_rect.y), node->m_entry->image());
+    ImageUtils::FastCopy(group->image(), Vector2i(node->m_rect.x, node->m_rect.y), node->m_entry->image());
   }
 
   // clean up
@@ -344,7 +334,7 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
   rootElement->appendChildElement(groupElement);
 
   // save atlas image
-  if (EGE_SUCCESS != group->atlasImage()->save(group->path() + "/" + group->image()))
+  if (EGE_SUCCESS != group->image()->save(group->root() + "/" + group->imageName()))
   {
     // error!
     std::cout << "ERROR: Could not save atlas image!" << std::endl;

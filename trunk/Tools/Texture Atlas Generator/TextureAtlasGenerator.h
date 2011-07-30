@@ -40,12 +40,10 @@ class TextureAtlasGenerator
     void printHeader() const;
     /*! Returns output image format. */
     inline EGE::EGEImage::Format outputFormat() const { return m_outputFormat; }
-    /*! Returns output image size (in pixels). */
-    inline EGE::s32 outputSize() const { return m_outputSize; }
     /*! Returns input data file path. */
     inline const EGE::String& inputDataFilePath() const { return m_inputDataFilePath; }
-    /*! Returns output data file path. */
-    inline const EGE::String& outputDataFilePath() const { return m_outputDataFilePath; }
+    /*! Returns output XML file path. */
+    inline const EGE::String& outputXmlPath() const { return m_outputXmlPath; }
     /* Generates atlases. */
     bool generateAll();
     /* Generates atlas for given group. */
@@ -57,12 +55,10 @@ class TextureAtlasGenerator
 
     /*! Output image format. */
     EGE::EGEImage::Format m_outputFormat;
-    /*! Output texture size (in pixels). Same for width and height. */
-    EGE::s32 m_outputSize;
     /*! Input data file path. */
     EGE::String m_inputDataFilePath;
-    /*! Output data file path. */
-    EGE::String m_outputDataFilePath;
+    /*! Output XML data file path. */
+    EGE::String m_outputXmlPath;
     /*! Current sorting method. */
     ESortMethod m_sortMethod;
     /*! XML document with atlas generated data. */
