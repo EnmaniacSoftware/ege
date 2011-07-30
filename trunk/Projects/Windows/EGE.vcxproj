@@ -361,7 +361,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_BOX2D;EGE_FEATURE_DEBUG;EGE_XML_TINYXML;EGE_RANDOM_C;TIXML_USE_STL;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_BOX2D;EGE_XML_TINYXML;EGE_RANDOM_C;TIXML_USE_STL;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib</AdditionalIncludeDirectories>
     </ClCompile>

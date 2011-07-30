@@ -243,7 +243,7 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
   result = newGroup->create(tag);
   if (EGE_SUCCESS == result)
   {
-    // check if such group DOES NOT exists
+    // check if such group DOES NOT   exists
     // NOTE: we quitely omit group duplicates so it is valid to ie. INCLUDE the same group multiple times
     if (NULL == group(newGroup->name()))
     {
@@ -252,7 +252,7 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
     }
     else
     {
-      EGE_PRINT(String::Format("Group %s already exists.", newGroup->name().toAscii()));
+      EGE_PRINT("Group %s already exists.", newGroup->name().toAscii());
     }
   }
 
@@ -286,10 +286,13 @@ EGEResult ResourceManager::loadGroup(const String& name)
   PResourceGroup theGroup = group(name);
   if (NULL != theGroup)
   {
+    EGE_PRINT("ResourceManager::loadGroup: %s", name.toAscii());
+
     // load it
     return theGroup->load();
   }
 
+  EGE_PRINT("ResourceManager::loadGroup: %s not found!", name.toAscii());
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -300,8 +303,14 @@ void ResourceManager::unloadGroup(const String& name)
   PResourceGroup theGroup = group(name);
   if (NULL != theGroup)
   {
+    EGE_PRINT("ResourceManager::unloadGroup: %s", name.toAscii());
+
     // unload it
     theGroup->unload();
+  }
+  else
+  {
+    EGE_PRINT("ResourceManager::unloadGroup: %s not found!", name.toAscii());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

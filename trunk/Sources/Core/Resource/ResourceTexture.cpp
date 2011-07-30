@@ -1,6 +1,7 @@
 #include "Core/Resource/ResourceTexture.h"
 #include "Core/Resource/ResourceManager.h"
 #include <EGEXml.h>
+#include <EGEDebug.h>
 
 #if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
@@ -90,11 +91,7 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   }
 
   // compose absolute path
-  // TAGE - perhaps some more sophisiticated approach would be needed like checking each '/' section of path and cutting till differes etc
-  if (!m_path.startsWith(path))
-  {
-    m_path = path + "/" + m_path;
-  }
+  m_path = path + "/" + m_path;
 
   return result;
 }
@@ -109,6 +106,7 @@ EGEResult ResourceTexture::load()
     // create according to type
     if ("2d" == type())
     {
+      EGE_PRINT("ResourceTexture::load - %s, 2D", name().toAscii());
       result = create2D();
     }
   }
@@ -146,6 +144,8 @@ EGEResult ResourceTexture::create2D()
 /*! IResource override. Unloads resource. */
 void ResourceTexture::unload() 
 { 
+  EGE_PRINT("ResourceTexture::unload - %s", name().toAscii());
+
   m_texture = NULL; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

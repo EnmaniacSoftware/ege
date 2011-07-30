@@ -205,7 +205,7 @@ EGEResult ResourceMaterial::load()
       if (NULL == texture)
       {
         // texture not found
-        EGE_PRINT(String::Format("Material texture not found: %s", textureImageData.m_name.toAscii()));
+        EGE_PRINT("Material texture not found: %s", textureImageData.m_name.toAscii());
         return EGE_ERROR;
       }
 
