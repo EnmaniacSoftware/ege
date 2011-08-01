@@ -408,6 +408,9 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceTextureImage.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\CubicSpline.cpp">
+      <Filter>Core\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -789,6 +792,10 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceTextureImage.h">
       <Filter>Core\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\CubicSpline.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGESpline.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

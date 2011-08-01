@@ -3,7 +3,7 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#include "Core/Platform.h"
+#include <EGETypes.h>
 
 #if EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
 #include "Core/Containers/Stl/DynamicArray.h"

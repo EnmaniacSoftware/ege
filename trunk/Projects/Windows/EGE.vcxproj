@@ -52,6 +52,7 @@
     <ClCompile Include="..\..\Sources\Core\Input\PointerData.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Angle.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\AxisAlignedBox.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Math\CubicSpline.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Math.cpp" />
     <ClCompile Include="..\..\Sources\Core\Memory\MemoryManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Overlay\ImageOverlay.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Complex.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\CubicSpline.h" />
     <ClInclude Include="..\..\Sources\Core\Overlay\ImageOverlay.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointPulley.h" />
@@ -237,6 +239,7 @@
     <ClInclude Include="..\..\Sources\EGEResources.h" />
     <ClInclude Include="..\..\Sources\EGEScene.h" />
     <ClInclude Include="..\..\Sources\EGESignal.h" />
+    <ClInclude Include="..\..\Sources\EGESpline.h" />
     <ClInclude Include="..\..\Sources\EGEString.h" />
     <ClInclude Include="..\..\Sources\EGETexture.h" />
     <ClInclude Include="..\..\Sources\EGETime.h" />
