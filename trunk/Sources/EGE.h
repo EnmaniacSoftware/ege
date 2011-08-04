@@ -9,7 +9,6 @@
 
 #include "Core/Platform.h"
 #include "Core/ObjectUIDs.h"
-#include "Core/Flags.h"
 
 #include "EGEMemory.h"
 #include "EGETypes.h"

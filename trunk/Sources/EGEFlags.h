@@ -1,10 +1,12 @@
-#ifndef EGE_SPLINE_H
-#define EGE_SPLINE_H
+#ifndef EGE_FLAGS_H
+#define EGE_FLAGS_H
+
+#include "Core/Flags.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#include "Core/Math/Splines/CubicSpline.h"
+#define EGE_DECLARE_FLAGS(Flags, Enum) typedef EGE::EGEFlags<Enum> Flags;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // EGE_SPLINE_H
+#endif // EGE_ANGLE_H

@@ -3,7 +3,8 @@
 
 #include <EGE.h>
 #include <EGEString.h>
-#include "Core/Math/Matrix4.h"
+#include <EGEMatrix.h>
+//#include "Core/Math/Matrix4.h"
 #include "Core/Math/Angle.h"
 #include "Core/Components/Render/RenderComponent.h"
 

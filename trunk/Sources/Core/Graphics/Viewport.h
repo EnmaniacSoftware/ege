@@ -5,6 +5,7 @@
 #include <EGEColor.h>
 #include "Core/Graphics/Camera.h"
 #include <EGEMath.h>
+#include <EGEFlags.h>
 
 EGE_NAMESPACE_BEGIN
 

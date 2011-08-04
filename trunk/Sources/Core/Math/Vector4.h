@@ -207,6 +207,12 @@ TVector4<T> operator*(const TVector4<T>& left, T scalar)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
+TVector4<T> operator*(T scalar, const TVector4<T>& right)
+{
+  return TVector4<T>(right.x * scalar, right.y * scalar, right.z * scalar, right.w * scalar);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
 TVector4<T> operator/(const TVector4<T>& left, T scalar)
 {
   scalar = 1.0f / scalar;

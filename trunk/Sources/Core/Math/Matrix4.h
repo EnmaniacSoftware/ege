@@ -25,6 +25,7 @@ class TMatrix4
 
     TMatrix4();
 		TMatrix4(T m00, T m01, T m02, T m03, T m10, T m11, T m12, T m13, T m20, T m21, T m22, T m23, T m30, T m31, T m32, T m33);
+		TMatrix4(const T column0[4], const T column1[4], const T column2[4], const T column3[4]);
 		TMatrix4(const TMatrix4& matrix);
 
 		inline TMatrix4& operator+=(const TMatrix4& matrix);
@@ -92,6 +93,27 @@ TMatrix4<T>::TMatrix4(T m00, T m01, T m02, T m03, T m10, T m11, T m12, T m13, T 
   data[13] = m31;
   data[14] = m32;
   data[15] = m33;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TMatrix4<T>::TMatrix4(const T column0[4], const T column1[4], const T column2[4], const T column3[4])
+{
+  data[0]  = column0[0];
+  data[1]  = column0[1];
+  data[2]  = column0[2];
+  data[3]  = column0[3];
+  data[4]  = column1[0];
+  data[5]  = column1[1];
+  data[6]  = column1[2];
+  data[7]  = column1[3];
+  data[8]  = column2[0];
+  data[9]  = column2[1];
+  data[10] = column2[2];
+  data[11] = column2[3];
+  data[12] = column3[0];
+  data[13] = column3[1];
+  data[14] = column3[2];
+  data[15] = column3[3];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

@@ -118,9 +118,6 @@
     <Filter Include="Core\Containers\stl">
       <UniqueIdentifier>{0d0061c3-8e64-48e6-a937-1504b362b30b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Overlay">
-      <UniqueIdentifier>{083fc304-3a3c-4ce0-b212-2f3cb230c477}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Screen">
       <UniqueIdentifier>{ac92e170-8df6-47d8-b971-2c1afe4889d4}</UniqueIdentifier>
     </Filter>
@@ -144,6 +141,12 @@
     </Filter>
     <Filter Include="Core\Graphics\Image">
       <UniqueIdentifier>{a355a3fe-25e5-4524-a444-3ab121584f80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Math\Splines">
+      <UniqueIdentifier>{6322fdc3-2ac2-4128-9da5-a6289c59ce42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Overlay">
+      <UniqueIdentifier>{083fc304-3a3c-4ce0-b212-2f3cb230c477}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -408,8 +411,11 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceTextureImage.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\CubicSpline.cpp">
-      <Filter>Core\Math</Filter>
+    <ClCompile Include="..\..\Sources\Core\Math\Splines\CubicSpline.cpp">
+      <Filter>Core\Math\Splines</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Splines\CurveSegment.cpp">
+      <Filter>Core\Math\Splines</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -792,10 +798,14 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceTextureImage.h">
       <Filter>Core\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\CubicSpline.h">
-      <Filter>Core\Math</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGESpline.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Splines\CubicSpline.h">
+      <Filter>Core\Math\Splines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Splines\CurveSegment.h">
+      <Filter>Core\Math\Splines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEFlags.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

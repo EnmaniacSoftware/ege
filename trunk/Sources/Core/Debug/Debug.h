@@ -8,6 +8,8 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Logger;
+class CubicSpline;
+class RenderComponent;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -19,6 +21,9 @@ class Debug
     static void Assert(const char* description);
     static void Log(const String& text);
     static void Print(const String& text);
+
+    /* Creates renderable for given object. */
+    static RenderComponent* renderable(const CubicSpline* spline);
 
   private:
 

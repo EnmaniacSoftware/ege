@@ -32,6 +32,7 @@ files
   EGEDynamicArray.h
 	EGEEvent.h
 	EGEFile.h
+	EGEFlags.h
   EGEGraphics.h
   EGEHash.h
   EGEImage.h
@@ -51,6 +52,7 @@ files
 	EGEScene.h
   EGEScreen.h
   EGESignal.h
+  EGESpline.h
   EGEString.h
   EGETexture.h
   EGETime.h
@@ -229,6 +231,13 @@ files
 	Vector2.h
 	Vector3.h
 	Vector4.h
+
+	["Core/Math/Splines"]
+  (../../Sources/Core/Math/Splines)
+  CubicSpline.cpp
+  CubicSpline.h
+  CurveSegment.cpp
+  CurveSegment.h
 
 	["Core/Memory"]
   (../../Sources/Core/Memory)
