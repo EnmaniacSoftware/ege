@@ -53,6 +53,21 @@ void PhysicsManagerPrivate::update(const Time& time)
   {
     m_world->Step(time.seconds(), 8, 3);
     m_world->ClearForces();
+
+    // go thru all bodies and emit tranformation changes
+    // NOTE: this is due no way we can detect only the bodies which has been really changed in Box2D :-/
+    b2Body* node = m_world->GetBodyList();
+    while (node)
+    {
+      b2Body* b = node;
+      node = node->GetNext();
+
+      PhysicsComponentPrivate* component = (PhysicsComponentPrivate*) b->GetUserData();
+      if (component)
+      {
+        emit component->d_func()->transformationChanged();
+      }
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

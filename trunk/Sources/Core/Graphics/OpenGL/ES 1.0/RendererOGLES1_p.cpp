@@ -9,6 +9,8 @@
 #include "Core/Graphics/TextureImage.h"
 #include "Core/Graphics/Render/RenderQueue.h"
 #include <EGEDevice.h>
+#include "GLES/glext.h"
+#include "GLES/egl.h"
 
 EGE_NAMESPACE
 
@@ -16,6 +18,14 @@ EGE_NAMESPACE
 
 EGE_DEFINE_NEW_OPERATORS(RendererPrivate)
 EGE_DEFINE_DELETE_OPERATORS(RendererPrivate)
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// frame buffer object
+PFNGLBINDFRAMEBUFFEROESPROC glBindFramebuffer = NULL;
+PFNGLDELETEFRAMEBUFFERSOESPROC glDeleteFramebuffers = NULL;
+PFNGLGENFRAMEBUFFERSOESPROC glGenFramebuffers = NULL;
+PFNGLCHECKFRAMEBUFFERSTATUSOESPROC glCheckFramebufferStatus = NULL;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps primitive type to OpenGL compilant one. */
@@ -403,6 +413,23 @@ void RendererPrivate::detectCapabilities()
   if (isExtensionSupported("GL_APPLE_texture_2D_limited_npot"))
   {
     Device::SetRenderCapability(EGEDevice::RENDER_CAPS_APPLE_LIMITED_NPOT_TEXTURE, true);
+  }
+
+  // multitexturing is supported by default
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE, true);
+
+  // check if frame buffer object is supported
+  if (isExtensionSupported("GL_OES_framebuffer_object"))
+  {
+    glBindFramebuffer         = (PFNGLBINDFRAMEBUFFEROESPROC) eglGetProcAddress("glBindFramebufferOES");
+    glDeleteFramebuffers      = (PFNGLDELETEFRAMEBUFFERSOESPROC) eglGetProcAddress("glDeleteFramebuffersOES");
+    glGenFramebuffers         = (PFNGLGENFRAMEBUFFERSOESPROC) eglGetProcAddress("glGenFramebuffersOES");
+    glCheckFramebufferStatus  = (PFNGLCHECKFRAMEBUFFERSTATUSOESPROC) eglGetProcAddress("glCheckFramebufferStatusOES");
+
+    if (glBindFramebuffer && glDeleteFramebuffers && glGenFramebuffers && glCheckFramebufferStatus)
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

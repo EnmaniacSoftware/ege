@@ -6,6 +6,10 @@ EGE_NAMESPACE
 Node::Node(Application* app, const String& name, Node* parent, EGEPhysics::EComponentType componentType) : m_name(name), m_parent(parent)
 {
   m_physics = ege_new PhysicsComponent(app, "node-physics-" + name, componentType);
+  if (m_physics)
+  {
+    ege_connect(m_physics, transformationChanged, this, Node::transformationChanged);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Node::~Node()
@@ -122,5 +126,35 @@ void Node::deleteAllChildNodes()
 
     iter = m_children.erase(iter);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns cached combined world matrix. */
+const Matrix4f& Node::worldMatrix() const 
+{ 
+  if (m_worldMatrixInvalid)
+  {
+    Quaternionf orientation = physics()->orientation();
+    Vector4f position = physics()->position();
+    Vector4f scale = physics()->scale();
+  
+    Math::CreateMatrix(&m_worldMatrix, &position, &scale, &orientation);
+
+    if (NULL != parent())
+    {
+      m_worldMatrix = parent()->worldMatrix().multiply(m_worldMatrix);
+    }
+
+    // validate
+    m_worldMatrixInvalid = false;
+  }
+
+  return m_worldMatrix; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Called when one of transformation values has beeen changed. */
+void Node::transformationChanged()
+{
+  // invalidate world matrix
+  m_worldMatrixInvalid = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

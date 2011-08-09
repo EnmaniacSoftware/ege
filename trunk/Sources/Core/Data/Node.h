@@ -48,14 +48,11 @@ class Node
     u32 childNodeCount() const;
     /* Returns child node with a given name. Returns NULL if no such node exists. */
     Node* childNode(const String& name) const;
-    // TAGE - if needed reimplement for List
-    /* Returns child node with a given index. Returns NULL if no such node exists. */
-    //Node* childNode(u32 index) const;
 
     /*! Returns local physics component. */
-    inline PPhysicsComponent physics() { return m_physics; }
+    inline PPhysicsComponent physics() const { return m_physics; }
     /*! Returns cached combined world matrix. */
-    inline const Matrix4f& worldMatrix() const { return m_worldMatrix; }
+    const Matrix4f& worldMatrix() const;
 
   protected:
 
@@ -75,9 +72,19 @@ class Node
     /*! Physics component. */
     PPhysicsComponent m_physics;
     /*! Cached combined world matrix from all self and all parent nodes. */
-    Matrix4f m_worldMatrix;
+    mutable Matrix4f m_worldMatrix;
     /*! Visibility flag. */
     bool m_visible;
+
+  private slots:
+
+    /* Called when one of transformation values has beeen changed. */
+    void transformationChanged();
+
+  private:
+
+    /*! Flag indicating if world matrix is invalid. */
+    mutable bool m_worldMatrixInvalid;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

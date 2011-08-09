@@ -19,6 +19,7 @@ class Angle
     inline bool         operator > (const Angle& other) const { return m_radians > other.m_radians; }
     inline bool         operator < (const Angle& other) const { return m_radians < other.m_radians; }
     inline Angle        operator - () const { return Angle::FromRadians(-m_radians); }
+    inline void         operator = (float32 radians) { m_radians = radians; }
 
   public:
 

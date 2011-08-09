@@ -40,6 +40,8 @@ void PhysicsComponent::setPosition(const Vector4f& position)
   }
   
   m_position = position;
+
+  emit transformationChanged();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns position vector. */
@@ -64,6 +66,8 @@ void PhysicsComponent::setOrientation(const Quaternionf& orientation)
   }
 
   m_orientation = orientation;
+
+  emit transformationChanged();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns orientation quaternion. */
@@ -226,6 +230,8 @@ void PhysicsComponent::setScale(const Vector4f& scale)
   }
 
   m_scale = scale;
+
+  emit transformationChanged();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns scale vector. */

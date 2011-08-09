@@ -113,17 +113,17 @@ void SceneNode::update(const Time& time)
   //  return;
   //}
 
-  // update self
-  Quaternionf orientation = physics()->orientation();
-  Vector4f position = physics()->position();
-  Vector4f scale = physics()->scale();
-  
-  Math::CreateMatrix(&m_worldMatrix, &position, &scale, &orientation);
+  //// update self
+  //Quaternionf orientation = physics()->orientation();
+  //Vector4f position = physics()->position();
+  //Vector4f scale = physics()->scale();
+  //
+  //Math::CreateMatrix(&m_worldMatrix, &position, &scale, &orientation);
 
-  if (NULL != parent())
-  {
-    m_worldMatrix = parent()->worldMatrix().multiply(m_worldMatrix);
-  }
+  //if (NULL != parent())
+  //{
+  //  m_worldMatrix = parent()->worldMatrix().multiply(m_worldMatrix);
+  //}
 
   // check if children needs to be updated
 //  if ( m_bChildrenNeedUpdate == true )

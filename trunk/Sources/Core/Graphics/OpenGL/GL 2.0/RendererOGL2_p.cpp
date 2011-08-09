@@ -20,8 +20,15 @@ EGE_DEFINE_DELETE_OPERATORS(RendererPrivate)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+// multitexturing
 PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTexture = NULL;
 PFNGLACTIVETEXTUREARBPROC glActiveTexture = NULL;
+
+// frame buffer object
+PFNGLBINDFRAMEBUFFEREXTPROC glBindFramebuffer = NULL;
+PFNGLDELETEFRAMEBUFFERSEXTPROC glDeleteFramebuffers = NULL;
+PFNGLGENFRAMEBUFFERSEXTPROC glGenFramebuffers = NULL;
+PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC glCheckFramebufferStatus = NULL;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps primitive type to OpenGL compilant one. */
@@ -249,7 +256,7 @@ void RendererPrivate::flush()
           glDisable(GL_TEXTURE_2D);
 
           // disable texturing data on client side
-          if (glClientActiveTexture)
+          if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
           {
             glClientActiveTexture(GL_TEXTURE0 + *itTextureUnit);
           }
@@ -342,7 +349,7 @@ bool RendererPrivate::activateTextureUnit(u32 unit)
     if (m_activeTextureUnit != unit)
     {
       // check if multitexture available
-      if (glActiveTexture)
+      if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
       {
         glActiveTexture(GL_TEXTURE0 + unit);
         m_activeTextureUnit = unit;
@@ -423,6 +430,25 @@ void RendererPrivate::detectCapabilities()
   {
     glClientActiveTexture = (PFNGLCLIENTACTIVETEXTUREARBPROC) wglGetProcAddress("glClientActiveTextureARB");
     glActiveTexture       = (PFNGLACTIVETEXTUREARBPROC) wglGetProcAddress("glActiveTextureARB");
+
+    if (glClientActiveTexture && glActiveTexture)
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE, true);
+    }
+  }
+
+  // check if frame buffer object is supported
+  if (isExtensionSupported("GL_EXT_framebuffer_object"))
+  {
+    glBindFramebuffer         = (PFNGLBINDFRAMEBUFFEREXTPROC) wglGetProcAddress("glBindFramebufferEXT");
+    glDeleteFramebuffers      = (PFNGLDELETEFRAMEBUFFERSEXTPROC) wglGetProcAddress("glDeleteFramebuffersEXT");
+    glGenFramebuffers         = (PFNGLGENFRAMEBUFFERSEXTPROC) wglGetProcAddress("glGenFramebuffersEXT");
+    glCheckFramebufferStatus  = (PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC) wglGetProcAddress("glCheckFramebufferStatusEXT");
+
+    if (glBindFramebuffer && glDeleteFramebuffers && glGenFramebuffers && glCheckFramebufferStatus)
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

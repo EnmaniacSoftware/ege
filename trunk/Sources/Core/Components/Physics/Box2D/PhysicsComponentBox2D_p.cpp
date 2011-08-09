@@ -34,6 +34,8 @@ PhysicsComponentPrivate::PhysicsComponentPrivate(PhysicsComponent* parent, Physi
   def.type        = mapType(parent->type());
     
 	m_body = manager()->world()->CreateBody(&def);
+
+  m_body->SetUserData(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsComponentPrivate::~PhysicsComponentPrivate()
