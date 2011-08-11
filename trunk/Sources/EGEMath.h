@@ -1,7 +1,23 @@
 #ifndef EGE_MATH_H
 #define EGE_MATH_H
 
+#include "Core/Platform.h"
+
+EGE_NAMESPACE_BEGIN
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+namespace EGEMath
+{
+  /*! PI number. */
+  static const float32 PI = 3.14159265f;
+  /*! Two times PI number. */
+  static const float32 TWO_PI = 6.28318531f;
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
 
 #include "Core/Math/Math.h"
 

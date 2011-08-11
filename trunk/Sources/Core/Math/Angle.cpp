@@ -47,7 +47,7 @@ float32 Angle::degrees() const
  */
 void Angle::normalize(float32 center)
 {
-  m_radians = m_radians - Math::TWO_PI * Math::Floor((m_radians + Math::PI - center) / Math::TWO_PI);
+  m_radians = m_radians - EGEMath::TWO_PI * Math::Floor((m_radians + EGEMath::PI - center) / EGEMath::TWO_PI);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns normalized angle in [0-2PI) degrees interval. */
@@ -56,5 +56,58 @@ Angle Angle::normalized() const
   Angle angle = *this;
   angle.normalize();
   return angle;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns angle distance from current angle to given one. */
+Angle Angle::distanceTo(const Angle& angle, EGEAngle::Direction direction)
+{
+  Angle out;
+
+  // normalize to [0-2PI) intervals
+  Angle angle1 = normalized();
+  Angle angle2 = angle.normalized();
+
+  // process according to direction
+  // NOTE: for SHORTEST we just do a lucky guess and post process later
+  switch (direction)
+  {
+    case EGEAngle::DIRECTION_SHORTEST:
+    case EGEAngle::DIRECTION_CLOCKWISE:
+      
+      if (angle1.radians() >= angle2.radians())
+      {
+        out.m_radians = angle1.radians() - angle2.radians();
+      }
+      else
+      {
+        out.m_radians = EGEMath::TWO_PI - (angle2.radians() - angle1.radians());
+      }
+      break;
+
+    case EGEAngle::DIRECTION_COUNTERCLOCKWISE:
+      
+      if (angle1.radians() >= angle2.radians())
+      {
+        out.m_radians = EGEMath::TWO_PI - (angle1.radians() - angle2.radians());
+      }
+      else
+      {
+        out.m_radians = angle2.radians() - angle1.radians();
+      }
+      break;
+  }
+
+  // in case of shortest angle distance...
+  if (EGEAngle::DIRECTION_SHORTEST == direction)
+  {
+    // ...check if this is not shortest...
+    if (out.m_radians > EGEMath::PI)
+    {
+      // ...correct it
+      out.m_radians = EGEMath::TWO_PI - out.m_radians;
+    }
+  }
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

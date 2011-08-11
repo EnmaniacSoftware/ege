@@ -11,8 +11,6 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const float32 Math::EPSILON = std::numeric_limits<float32>::epsilon();
-const float32 Math::PI      = 3.14159265f;
-const float32 Math::TWO_PI  = 6.28318531f;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Math::Math()
 {
@@ -114,7 +112,7 @@ void Math::GetAngle(Angle* angle, const Vector2f* origin, const Vector2f* point)
   //}
   //else
   //{
-  //  angle->fromRadians(Math::ACos(-(origin->y - point->y) / origin->distanceTo(*point)) + Math::PI);
+  //  angle->fromRadians(Math::ACos(-(origin->y - point->y) / origin->distanceTo(*point)) + EGEMath::PI);
   //}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -388,6 +386,6 @@ float32 Math::ACos(float32 radians)
     return (1.0f > radians) ? acos(radians) : 0;
   }
 
-  return Math::PI; 
+  return EGEMath::PI; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

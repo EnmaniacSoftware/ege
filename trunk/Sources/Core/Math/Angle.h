@@ -2,6 +2,8 @@
 #define EGE_CORE_ANGLE_H
 
 #include <EGETypes.h>
+#include <EGEAngle.h>
+#include <EGEMath.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -18,6 +20,8 @@ class Angle
     inline const Angle& operator -= (const Angle& other) { m_radians -= other.m_radians; return *this; }
     inline bool         operator > (const Angle& other) const { return m_radians > other.m_radians; }
     inline bool         operator < (const Angle& other) const { return m_radians < other.m_radians; }
+    inline bool         operator > (float32 radians) const { return m_radians > radians; }
+    inline bool         operator < (float32 radians) const { return m_radians < radians; }
     inline Angle        operator - () const { return Angle::FromRadians(-m_radians); }
     inline void         operator = (float32 radians) { m_radians = radians; }
 
@@ -43,9 +47,11 @@ class Angle
      * @note  For normalization resulting in [0..2PI] interval use PI as center point.
      * @note  Due to numerical inaccuracies intervals are closed on both sides rather than only at one.
      */
-    void normalize(float32 center = 0.0f);
+    void normalize(float32 center = EGEMath::PI);
     /* Returns normalized angle in [0-2PI) degrees interval. */
     Angle normalized() const;
+    /* Returns angle distance from current angle to given one. */
+    Angle distanceTo(const Angle& angle, EGEAngle::Direction direction);
 
   private:
 
@@ -54,14 +60,24 @@ class Angle
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline Angle operator+(const Angle& left, const Angle& right)
+inline Angle operator + (const Angle& left, const Angle& right)
 {
   return Angle::FromRadians(left.radians() + right.radians());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline Angle operator-(const Angle& left, const Angle& right)
+inline Angle operator - (const Angle& left, const Angle& right)
 {
   return Angle::FromRadians(left.radians() - right.radians());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline bool operator > (float32 radians, const Angle& angle)
+{
+  return radians > angle.radians();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline bool operator < (float32 radians, const Angle& angle)
+{
+  return radians < angle.radians();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

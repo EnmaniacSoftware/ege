@@ -122,10 +122,6 @@ class Math
 
     /*! Inaccuracy cut-off value. */
     static const float32 EPSILON;
-    /*! PI number. */
-    static const float32 PI;
-    /*! Two times PI number. */
-    static const float32 TWO_PI;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
