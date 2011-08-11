@@ -4,7 +4,6 @@
 #include <EGE.h>
 #include <EGEString.h>
 #include <EGEMatrix.h>
-//#include "Core/Math/Matrix4.h"
 #include "Core/Math/Angle.h"
 #include "Core/Components/Render/RenderComponent.h"
 
@@ -18,6 +17,7 @@ EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
 EGE_DECLARE_SMART_CLASS(Material, PMaterial)
 EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
+EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -35,6 +35,8 @@ class Renderer : public Object
     bool isValid() const;
     /* Sends all geometry through the geometry pipeline to hardware. */
     void flush();
+    /* Sets given viewport. */
+    void setViewport(const PViewport& viewport);
     /* Clears given viewport. */
     void clearViewport(const PViewport& viewport);
     /* Applies material. */
@@ -99,7 +101,6 @@ class Renderer : public Object
    // std::vector<PRenderComponent> m_components;     // components pool
 
 /*
-    RenderTarget* m_pcActiveRenderTarget;          // pointer to currently active render target
 
     u32 m_uiBindedTextureIDs[ MAX_TEXTURE_UNITS ];  // currently binded textures ids
 
@@ -129,6 +130,9 @@ class Renderer : public Object
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(Renderer);
+
+    /*! Currently active render target. */
+    PRenderTarget m_renderTarget;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

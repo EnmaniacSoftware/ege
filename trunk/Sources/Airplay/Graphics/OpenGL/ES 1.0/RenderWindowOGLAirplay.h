@@ -1,9 +1,9 @@
 #ifndef EGE_AIRPLAY_RENDERWINDOWOGL_H
 #define EGE_AIRPLAY_RENDERWINDOWOGL_H
 
-#include "EGE.h"
+#include <EGE.h>
+#include <GLES/egl.h>
 #include "Core/Graphics/Render/RenderWindow.h"
-#include "GLES/egl.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -23,13 +23,15 @@ class RenderWindowOGLAirplay : public RenderWindow
     /* Destorys Airplay OpenGL window. */
     void destroy();
     /* Returns TRUE if object is valid. */
-    virtual bool isValid() const override;
+    bool isValid() const override;
     /* RenderWindow override. Makes rendering context calling thread's current rendering context. */
-    virtual EGEResult makeCurrentContext() override;
+    EGEResult makeCurrentContext() override;
     /* RenderWindow override. Removes calling thread's current rendering context. */
-    virtual void releaseCurrentContext() override;
+    void releaseCurrentContext() override;
     /* RenderWindow override. Enables/Disables fullscreen mode. */
-    virtual EGEResult enableFullScreen(s32 width, s32 height, bool enable) override;
+    EGEResult enableFullScreen(s32 width, s32 height, bool enable) override;
+    /* RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
+		bool requiresTextureFlipping() const override;
     /* RenderWindow override. Shows frame buffer. */
     virtual void showFrameBuffer() override;
 

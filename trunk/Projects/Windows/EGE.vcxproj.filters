@@ -417,6 +417,15 @@
     <ClCompile Include="..\..\Sources\Core\Math\Splines\CurveSegment.cpp">
       <Filter>Core\Math\Splines</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.cpp">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.cpp">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.cpp">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -806,6 +815,16 @@
       <Filter>Core\Math\Splines</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEFlags.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.h">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.h">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.h">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEOpenGL.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

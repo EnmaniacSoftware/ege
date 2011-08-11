@@ -72,6 +72,8 @@ class Viewport : public Object
 
     /* Renders viewport from associated camera's point of view. */
     void render();
+    /*! Returns pointer to render target associated with viewport. */
+    inline RenderTarget* renderTarget() const { return m_renderTarget; }
 
     /* Sets vertex count rendered last frame. */
     void setVertexCount(u32 count);
@@ -81,11 +83,6 @@ class Viewport : public Object
     inline u32 batchCount() const { return m_batchCount; }
     /* Sets batch count rendered last frame. */
     void setBatchCount(u32 count);
-
-  private:
-
-    /*! Returns pointer to render target associated with viewport. */
-    inline RenderTarget* renderTarget() const { return m_renderTarget; }
 
   private:
 

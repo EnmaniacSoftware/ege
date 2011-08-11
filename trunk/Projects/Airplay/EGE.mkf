@@ -42,6 +42,7 @@ files
 	EGEMath.h
   EGEMatrix.h
 	EGEMemory.h
+  EGEOpenGL.h
   EGEOverlay.h
   EGEPhysics.h
   EGEPlane.h
@@ -190,7 +191,13 @@ files
 
 	["Core/Graphics/OpenGL"]
  	(../../Sources/Core/Graphics/OpenGL)
-	Texture2DOGL.cpp
+	ExtensionsOGLES.cpp
+  ExtensionsOGLES.h
+  RenderTextureCopyOGL.cpp
+  RenderTextureCopyOGL.h
+  RenderTextureFBOOGL.cpp
+  RenderTextureFBOOGL.h
+  Texture2DOGL.cpp
 	Texture2DOGL.h
 
 	["Core/Graphics/OpenGL/ES 1.0"]

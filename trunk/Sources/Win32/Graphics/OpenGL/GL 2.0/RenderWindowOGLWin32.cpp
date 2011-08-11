@@ -29,23 +29,11 @@ void RenderWindowOGLWin32::create(const ConfigParams& params)
   bool error = false;
 
   // decompose param list
-  ConfigParams::const_iterator iterWidth       = params.find(EGE_RENDER_WINDOW_PARAM_WIDTH);
-  ConfigParams::const_iterator iterHeight      = params.find(EGE_RENDER_WINDOW_PARAM_HEIGHT);
   ConfigParams::const_iterator iterFullscreen  = params.find(EGE_RENDER_WINDOW_PARAM_FULLSCREEN);
   ConfigParams::const_iterator iterLandscape   = params.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
 
-  // check if required parameters are NOT present
-  if (iterWidth == params.end() || iterHeight == params.end())
-  {
-    // error!
-    return;
-  }
-
   bool landscape  = (iterLandscape != params.end()) ? iterLandscape->second.toBool(&error) : false;
   bool fullscreen = (iterFullscreen != params.end()) ? iterFullscreen->second.toBool(&error) : false;
-
-  s32 width  = iterWidth->second.toInt(&error);
-  s32 height = iterHeight->second.toInt(&error);
 
   if (error)
   {
@@ -54,6 +42,9 @@ void RenderWindowOGLWin32::create(const ConfigParams& params)
   }
 
   // apply dimensions according to landscape requirement
+  s32 width  = m_width;
+  s32 height = m_height;
+
   if (landscape)
   {
     m_height = Math::Min(width, height);
@@ -407,5 +398,11 @@ bool RenderWindowOGLWin32::isValid() const
   }
 
   return (NULL != m_hWnd) && (NULL != m_hDC) && (NULL != m_hRC);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
+bool RenderWindowOGLWin32::requiresTextureFlipping() const
+{
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

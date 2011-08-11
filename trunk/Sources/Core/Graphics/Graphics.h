@@ -2,6 +2,7 @@
 #define EGE_CORE_GRAPHICS_H
 
 #include <EGEMap.h>
+#include <EGESignal.h>
 #include "Core/ConfigParams.h"
 #include "Core/Graphics/Render/Renderer.h"
 
@@ -25,6 +26,15 @@ class Graphics : public Object
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  signals:
+
+    /*! Signal emitted just before target is rendered. */
+    Signal1<PRenderTarget> preRender;
+    /*! Signal emitted just after target has been rendered. */
+    Signal1<PRenderTarget> postRender;
+
+  public:
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;

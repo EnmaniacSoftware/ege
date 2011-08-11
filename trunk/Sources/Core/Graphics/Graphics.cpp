@@ -74,8 +74,12 @@ void Graphics::render()
   {
     PRenderTarget target = iter->second;
 
+    emit preRender(target);
+
     // render target
     target->render();
+
+    emit postRender(target);
   }
 
   // render physics data

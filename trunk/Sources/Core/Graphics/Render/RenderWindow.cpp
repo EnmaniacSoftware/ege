@@ -20,3 +20,15 @@ RenderTarget::Priority RenderWindow::priority() const
   return PRIORITY_RENDER_WINDOW;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! RenderTarget override. Binds render target. */
+void RenderWindow::bind()
+{
+  // do nothing, main window does not need to be bound
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! RenderTarget override. Unbinds render target. */
+void RenderWindow::unbind()
+{
+  // do nothing, main window does not need to be unbound
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

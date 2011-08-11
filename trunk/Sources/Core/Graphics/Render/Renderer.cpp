@@ -58,6 +58,15 @@ void Renderer::clearViewport(const PViewport& viewport)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets given viewport. */
+void Renderer::setViewport(const PViewport& viewport)
+{
+  if (isValid())
+  {
+    p_func()->setViewport(viewport);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Applies material. */
 void Renderer::applyMaterial(const PMaterial& material)
 {
@@ -101,6 +110,15 @@ bool Renderer::addForRendering(const Matrix4f& worldMatrix, const PRenderCompone
 void Renderer::setProjectionMatrix(const Matrix4f& matrix)
 {
   m_projectionMatrix = matrix;
+
+  if (m_renderTarget->requiresTextureFlipping())
+  {
+    // invert transfrormed Y
+    m_projectionMatrix.data[1]  = -m_projectionMatrix.data[1];
+    m_projectionMatrix.data[5]  = -m_projectionMatrix.data[5];
+    m_projectionMatrix.data[9]  = -m_projectionMatrix.data[9];
+    m_projectionMatrix.data[13] = -m_projectionMatrix.data[13];
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets view matrix. */
@@ -366,12 +384,6 @@ void Renderer::resetStats()
 //    glScissor( iX, iY, iWidth, iHeight );
 //  }
 //}
-//
-//Viewport* CRenderSystem::getViewport( void ) const
-//{
-//  return m_pcActiveViewport;
-//}
-//
 //void CRenderSystem::clearViewport( void )
 //{
 //  assert( m_pcActiveViewport != NULL );

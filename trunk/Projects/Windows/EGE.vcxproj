@@ -38,7 +38,10 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\IndexBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Material.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Renderer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderQueue.cpp" />
@@ -95,6 +98,9 @@
     <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\Image.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Complex.h" />
@@ -109,6 +115,7 @@
     <ClInclude Include="..\..\Sources\EGEFlags.h" />
     <ClInclude Include="..\..\Sources\EGEHash.h" />
     <ClInclude Include="..\..\Sources\EGEMatrix.h" />
+    <ClInclude Include="..\..\Sources\EGEOpenGL.h" />
     <ClInclude Include="..\..\Sources\EGEPlane.h" />
     <ClInclude Include="..\..\Sources\EGEQuaternion.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />

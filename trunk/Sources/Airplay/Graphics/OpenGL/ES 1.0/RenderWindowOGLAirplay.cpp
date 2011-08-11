@@ -204,3 +204,9 @@ EGEResult RenderWindowOGLAirplay::enableFullScreen(s32 width, s32 height, bool e
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
+bool RenderWindowOGLAirplay::requiresTextureFlipping() const
+{
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 #ifndef EGE_WIN32_RENDERWINDOWOGL_H
 #define EGE_WIN32_RENDERWINDOWOGL_H
 
-#include "EGE.h"
+#include <EGE.h>
 #include "Core/Graphics/Render/RenderWindow.h"
 
 EGE_NAMESPACE_BEGIN
@@ -22,17 +22,22 @@ class RenderWindowOGLWin32 : public RenderWindow
     /* Destorys Windows OS OpenGL window. */
     void destroy();
     /* Returns TRUE if object is valid. */
-    virtual bool isValid() const override;
+    bool isValid() const override;
     /* RenderWindow override. Makes rendering context calling thread's current rendering context. */
-    virtual EGEResult makeCurrentContext() override;
+    EGEResult makeCurrentContext() override;
     /* RenderWindow override. Removes calling thread's current rendering context. */
-    virtual void releaseCurrentContext() override;
+    void releaseCurrentContext() override;
     /* RenderWindow override. Enables/Disables fullscreen mode. */
     virtual EGEResult enableFullScreen(s32 width, s32 height, bool enable) override;
+    /* RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
+		bool requiresTextureFlipping() const override;
     /* RenderWindow override. Shows frame buffer. */
-    virtual void showFrameBuffer() override;
+    void showFrameBuffer() override;
     /* Selects best pixel format for given parameters. */
     EGEResult setupPixelFormat(const ConfigParams& params);
+
+  private:
+
     /* Window procedure. */
     static LRESULT CALLBACK WinProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 

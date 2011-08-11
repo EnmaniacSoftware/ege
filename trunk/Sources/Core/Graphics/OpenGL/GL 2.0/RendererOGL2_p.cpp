@@ -1,4 +1,5 @@
 #include "Core/Graphics/OpenGL/GL 2.0/RendererOGL2_p.h"
+#include "Core/Graphics/OpenGL/ExtensionsOGL.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
@@ -17,18 +18,6 @@ EGE_NAMESPACE
 
 EGE_DEFINE_NEW_OPERATORS(RendererPrivate)
 EGE_DEFINE_DELETE_OPERATORS(RendererPrivate)
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-// multitexturing
-PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTexture = NULL;
-PFNGLACTIVETEXTUREARBPROC glActiveTexture = NULL;
-
-// frame buffer object
-PFNGLBINDFRAMEBUFFEREXTPROC glBindFramebuffer = NULL;
-PFNGLDELETEFRAMEBUFFERSEXTPROC glDeleteFramebuffers = NULL;
-PFNGLGENFRAMEBUFFERSEXTPROC glGenFramebuffers = NULL;
-PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC glCheckFramebufferStatus = NULL;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps primitive type to OpenGL compilant one. */
@@ -119,6 +108,43 @@ void RendererPrivate::clearViewport(const PViewport& viewport)
   }
 
   glClear(bits);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets given viewport. */
+void RendererPrivate::setViewport(const PViewport& viewport)
+{
+  // set render target
+  RenderTarget* target = viewport->renderTarget();
+  setRenderTarget(target);
+
+  // set viewport area
+  Rectf actualRect = viewport->actualRect();
+
+  if (!target->requiresTextureFlipping())
+  {
+      // convert "upper-left" corner to "lower-left"
+      actualRect.y = target->height() - actualRect.height - actualRect.y;
+  }
+
+  glViewport((GLint) actualRect.x, (GLint) actualRect.y, (GLsizei) actualRect.width, (GLsizei)actualRect.height);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets render target. */
+void RendererPrivate::setRenderTarget(const PRenderTarget& renderTarget)
+{
+  // unbind current render target
+  if (d_func()->m_renderTarget)
+  {
+    d_func()->m_renderTarget->unbind();
+  }
+
+  d_func()->m_renderTarget = renderTarget;
+
+  // switch context
+  //EGE_ASSERT(EGE_SUCCESS == renderTarget->makeCurrentContext());
+
+  // bind new target
+  d_func()->m_renderTarget->bind();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sends all geometry through the geometry pipeline to hardware. */
@@ -292,12 +318,13 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
       glBlendFunc(MapBlendFactor(material->srcBlendFactor()), MapBlendFactor(material->dstBlendFactor()));
     }
 
+//    glColor3f(material->diffuseColor().red, material->diffuseColor().green, material->diffuseColor().blue);
+
     // go thru all textures
     for (u32 i = 0; i < material->textureCount(); ++i)
     {
       Object* texture = material->texture(i).object();
 
-#if 0
       // check if 2D texture
       if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
       {
@@ -306,13 +333,13 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
         activateTextureUnit(i);
         bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
 
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
       }
       // check if texture image
-      else 
-#endif
-      if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
+      else if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
       {
         TextureImage* texImg = (TextureImage*) texture;
         Texture2D* tex2d = (Texture2D*) texImg->texture().object();
@@ -444,8 +471,9 @@ void RendererPrivate::detectCapabilities()
     glDeleteFramebuffers      = (PFNGLDELETEFRAMEBUFFERSEXTPROC) wglGetProcAddress("glDeleteFramebuffersEXT");
     glGenFramebuffers         = (PFNGLGENFRAMEBUFFERSEXTPROC) wglGetProcAddress("glGenFramebuffersEXT");
     glCheckFramebufferStatus  = (PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC) wglGetProcAddress("glCheckFramebufferStatusEXT");
+    glFramebufferTexture2D    = (PFNGLFRAMEBUFFERTEXTURE2DEXTPROC) wglGetProcAddress("glFramebufferTexture2DEXT");
 
-    if (glBindFramebuffer && glDeleteFramebuffers && glGenFramebuffers && glCheckFramebufferStatus)
+    if (glBindFramebuffer && glDeleteFramebuffers && glGenFramebuffers && glCheckFramebufferStatus && glFramebufferTexture2D)
     {
       Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
     }

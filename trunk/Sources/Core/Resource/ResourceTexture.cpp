@@ -119,7 +119,7 @@ EGEResult ResourceTexture::create2D()
 {
   EGEResult result = EGE_SUCCESS;
 
-  PTexture2D texture = ege_new Texture2D(app());
+  PTexture2D texture = ege_new Texture2D(app(), name());
   if ((NULL == texture) || !texture->isValid())
   {
     // error!

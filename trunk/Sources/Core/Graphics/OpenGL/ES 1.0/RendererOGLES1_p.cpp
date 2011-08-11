@@ -1,4 +1,5 @@
 #include "Core/Graphics/OpenGL/ES 1.0/RendererOGLES1_p.h"
+#include "Core/Graphics/OpenGL/ExtensionsOGLES.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
@@ -9,8 +10,6 @@
 #include "Core/Graphics/TextureImage.h"
 #include "Core/Graphics/Render/RenderQueue.h"
 #include <EGEDevice.h>
-#include "GLES/glext.h"
-#include "GLES/egl.h"
 
 EGE_NAMESPACE
 
@@ -18,14 +17,6 @@ EGE_NAMESPACE
 
 EGE_DEFINE_NEW_OPERATORS(RendererPrivate)
 EGE_DEFINE_DELETE_OPERATORS(RendererPrivate)
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-// frame buffer object
-PFNGLBINDFRAMEBUFFEROESPROC glBindFramebuffer = NULL;
-PFNGLDELETEFRAMEBUFFERSOESPROC glDeleteFramebuffers = NULL;
-PFNGLGENFRAMEBUFFERSOESPROC glGenFramebuffers = NULL;
-PFNGLCHECKFRAMEBUFFERSTATUSOESPROC glCheckFramebufferStatus = NULL;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps primitive type to OpenGL compilant one. */
@@ -118,6 +109,43 @@ void RendererPrivate::clearViewport(const PViewport& viewport)
   }
 
   glClear(bits);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets given viewport. */
+void RendererPrivate::setViewport(const PViewport& viewport)
+{
+  // set render target
+  RenderTarget* target = viewport->renderTarget();
+  setRenderTarget(target);
+
+  // set viewport area
+  Rectf actualRect = viewport->actualRect();
+
+  if (!target->requiresTextureFlipping())
+  {
+      // convert "upper-left" corner to "lower-left"
+      actualRect.y = target->height() - actualRect.height - actualRect.y;
+  }
+
+  glViewport((GLint) actualRect.x, (GLint) actualRect.y, (GLsizei) actualRect.width, (GLsizei)actualRect.height);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets render target. */
+void RendererPrivate::setRenderTarget(const PRenderTarget& renderTarget)
+{
+  // unbind current render target
+  if (d_func()->m_renderTarget)
+  {
+    d_func()->m_renderTarget->unbind();
+  }
+
+  d_func()->m_renderTarget = renderTarget;
+
+  // switch context
+  EGE_ASSERT(EGE_SUCCESS == renderTarget->makeCurrentContext());
+
+  // bind new target
+  d_func()->m_renderTarget->bind();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sends all geometry through the geometry pipeline to hardware. */
@@ -293,7 +321,6 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
     {
       Object* texture = material->texture(i).object();
 
-#if 0
       // check if 2D texture
       if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
       {
@@ -302,13 +329,13 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
         activateTextureUnit(i);
         bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
 
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
       }
       // check if texture image
-      else 
-#endif
-      if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
+      else if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
       {
         TextureImage* texImg = (TextureImage*) texture;
         Texture2D* tex2d = (Texture2D*) texImg->texture().object();
@@ -425,8 +452,9 @@ void RendererPrivate::detectCapabilities()
     glDeleteFramebuffers      = (PFNGLDELETEFRAMEBUFFERSOESPROC) eglGetProcAddress("glDeleteFramebuffersOES");
     glGenFramebuffers         = (PFNGLGENFRAMEBUFFERSOESPROC) eglGetProcAddress("glGenFramebuffersOES");
     glCheckFramebufferStatus  = (PFNGLCHECKFRAMEBUFFERSTATUSOESPROC) eglGetProcAddress("glCheckFramebufferStatusOES");
+    glFramebufferTexture2D    = (PFNGLFRAMEBUFFERTEXTURE2DOESPROC) eglGetProcAddress("glFramebufferTexture2DOES");
 
-    if (glBindFramebuffer && glDeleteFramebuffers && glGenFramebuffers && glCheckFramebufferStatus)
+    if (glBindFramebuffer && glDeleteFramebuffers && glGenFramebuffers && glCheckFramebufferStatus && glFramebufferTexture2D)
     {
       Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
     }

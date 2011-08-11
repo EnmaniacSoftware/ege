@@ -13,13 +13,24 @@ EGE_DEFINE_DELETE_OPERATORS(RenderTarget)
 RenderTarget::RenderTarget(Application* app, const ConfigParams& params) : Object(app), m_vertexCount(0), m_batchCount(0), m_width(0), m_height(0)
 {
   // decompose param list
-  ConfigParams::const_iterator iterName = params.find(EGE_RENDER_TARGET_PARAM_NAME);
-  m_name = (iterName != params.end()) ? iterName->second : "";
+  ConfigParams::const_iterator iterName   = params.find(EGE_RENDER_TARGET_PARAM_NAME);
+  ConfigParams::const_iterator iterWidth  = params.find(EGE_RENDER_TARGET_PARAM_WIDTH);
+  ConfigParams::const_iterator iterHeight = params.find(EGE_RENDER_TARGET_PARAM_HEIGHT);
+
+  m_name   = (iterName != params.end()) ? iterName->second : "";
+  m_width  = (iterWidth != params.end()) ? iterWidth->second.toInt() : 0;
+  m_height = (iterHeight != params.end()) ? iterHeight->second.toInt() : 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderTarget::~RenderTarget()
 {
   removeAllViewports();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Returns TRUE if object is valid. */
+bool RenderTarget::isValid() const
+{
+  return !m_name.empty() && (0 < m_width) && (0 < m_height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds new viewport for target associated with given camera. */
@@ -105,11 +116,5 @@ void RenderTarget::render()
     m_batchCount  += viewport->batchCount();
     m_vertexCount += viewport->vertexCount();
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Returns TRUE if object is valid. */
-bool RenderTarget::isValid() const
-{
-  return !m_name.empty();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -3,12 +3,7 @@
 
 #include <EGE.h>
 #include <EGETexture.h>
-
-#ifdef EGE_PLATFORM_WIN32
-#include <gl/GL.h>
-#else
-#include "GLES/gl.h"
-#endif
+#include <EGEOpenGL.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -26,8 +21,12 @@ class Texture2DPrivate
 
     /* Creates texture from given file. */
     EGEResult create(const String& path);
+    /* Creates texture empty from current data. */
+    EGEResult create();
     /*! Returns texture ID. */
     inline GLuint id() const { return m_id; }
+    /* Creates associated render target. */
+    EGEResult createRenderTarget();
 
   private:
 
@@ -42,6 +41,8 @@ class Texture2DPrivate
 
     /*! Texture ID. */
     GLuint m_id;
+    /*! Texture internal format. */
+    GLenum m_internalFormat;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

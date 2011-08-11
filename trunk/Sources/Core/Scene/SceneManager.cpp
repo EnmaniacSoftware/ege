@@ -62,7 +62,7 @@ void SceneManager::render(PCamera camera, PViewport viewport)
 {
   Renderer* renderer = app()->graphics()->renderer();
 
-  // setup render system
+  renderer->setViewport(viewport);
   renderer->setProjectionMatrix(camera->projectionMatrix());
   renderer->setViewMatrix(camera->viewMatrix());
 
@@ -101,15 +101,12 @@ void SceneManager::render(PCamera camera, PViewport viewport)
   //// queue camera lens flares for rendering
   //queueLensFlaresForRendering();
 
-  //// clear viewport
-  //if ( pcViewport->getClearEveryFrame() == true )
-  //{
+  // clear viewport
   renderer->clearViewport(viewport);
-  //}
 
   //// update auto uniform data source
   //m_pcAutoUniformDataSource->setCamera( pcCamera );
-
+  
   renderer->resetStats();
 
   renderer->flush();

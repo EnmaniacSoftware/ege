@@ -33,16 +33,24 @@ class RenderTarget : public Object
 
     /* Returns TRUE if object is valid. */
     virtual bool isValid() const;
+
     /*! Returns target priority. */
     virtual Priority priority() const = 0;
     /*! Makes itself current rendering context. */
     virtual EGEResult makeCurrentContext() = 0;
     /*! Releases itself from being current rendering context. */
     virtual void releaseCurrentContext() = 0;
+    /* Binds render target. */
+    virtual void bind() = 0;
+    /* Unbinds render target. */
+    virtual void unbind() = 0;
+    /* Returns TRUE if texture flipping is required for this render target. */
+		virtual bool requiresTextureFlipping() const = 0;
+
     /*! Returns target name. */
     inline const String& name() const { return m_name; } 
     /* Adds new viewport for target associated with given camera. */
-    PViewport addViewport(const String& name, PCamera pCamera);
+    PViewport addViewport(const String& name, PCamera camera);
     /* Removes viewport with the given name from target. */
     void removeViewport(const String& name);
     /* Returns viewport with the given name associated with target. */

@@ -30,6 +30,8 @@ class RendererPrivate
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
+    /* Sets given viewport. */
+    void setViewport(const PViewport& viewport);
     /* Clears given viewport. */
     void clearViewport(const PViewport& viewport);
     /* Sends all geometry through the geometry pipeline to hardware. */
@@ -47,6 +49,8 @@ class RendererPrivate
     bool isExtensionSupported(const char* extension) const;
     /* Binds texture to target. */
     bool bindTexture(GLenum target, GLuint textureId);
+    /* Sets render target. */
+    void setRenderTarget(const PRenderTarget& renderTarget);
 
   private:
 

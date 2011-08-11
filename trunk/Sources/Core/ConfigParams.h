@@ -20,13 +20,13 @@ typedef Map<String, String> ConfigParams;
 // render target specific
 #define EGE_RENDER_TARGET_PARAM_COLOR_BITS "colorBits"
 #define EGE_RENDER_TARGET_PARAM_NAME       "name"
+#define EGE_RENDER_TARGET_PARAM_WIDTH      "width"
+#define EGE_RENDER_TARGET_PARAM_HEIGHT     "height"
 
 // render window specific
 #define EGE_RENDER_WINDOW_PARAM_DEPTH_BITS      "depthBits"
 #define EGE_RENDER_WINDOW_PARAM_FULLSCREEN      "fullscreen"
 #define EGE_RENDER_WINDOW_PARAM_TITLE           "title"
-#define EGE_RENDER_WINDOW_PARAM_WIDTH           "width"
-#define EGE_RENDER_WINDOW_PARAM_HEIGHT          "height"
 
 // engine specific
 //#define EGE_ENGINE_PARAM_RENDER_SYSTEM      "renderSystem"

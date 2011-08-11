@@ -1,12 +1,9 @@
+#include <EGEOpenGL.h>
 #include "Core/Graphics/Image/Image.h"
-
-#ifdef EGE_PLATFORM_WIN32
-#include <gl/GL.h>
-#else
-#include "GLES/gl.h"
-#endif
-
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
+#include "Core/Graphics/OpenGL/RenderTextureCopyOGL.h"
+#include "Core/Graphics/OpenGL/RenderTextureFBOOGL.h"
+#include <EGEDevice.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE
@@ -33,7 +30,7 @@ EGE_DEFINE_DELETE_OPERATORS(Texture2DPrivate)
         //}
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Texture2DPrivate::Texture2DPrivate(Texture2D* base) : m_d(base), m_id(0)
+Texture2DPrivate::Texture2DPrivate(Texture2D* base) : m_d(base), m_id(0), m_internalFormat(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -41,6 +38,7 @@ Texture2DPrivate::~Texture2DPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates texture from given file. */
 EGEResult Texture2DPrivate::create(const String& path)
 {
   EGEResult result = EGE_SUCCESS;
@@ -53,6 +51,27 @@ EGEResult Texture2DPrivate::create(const String& path)
     return result;
   }
 
+  // set texture data
+  d_func()->m_width  = image.width();
+  d_func()->m_height = image.height();
+  d_func()->m_format = image.format();
+
+  // create empty texture
+  if (EGE_SUCCESS != (result = create()))
+  {
+    // error!
+    return result;
+  }
+
+  // copy pixel data
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d_func()->width(), d_func()->height(), m_internalFormat, GL_UNSIGNED_BYTE, image.data()->data());
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates texture empty from current data. */
+EGEResult Texture2DPrivate::create()
+{
   // setup 4 byte alignment
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
@@ -72,8 +91,8 @@ EGEResult Texture2DPrivate::create(const String& path)
 
   // get input image and texture format
   GLint internalFormat = 0;
-  GLint imageFormat = 0;
-  switch (image.format())
+  GLenum imageFormat = 0;
+  switch (d_func()->format())
   {
     case EGEImage::RGBA_8888: imageFormat = GL_RGBA; internalFormat = GL_RGBA; break;
     case EGEImage::RGB_888:   imageFormat = GL_RGB; internalFormat = GL_RGB; break;
@@ -102,7 +121,8 @@ EGEResult Texture2DPrivate::create(const String& path)
     
     default:
 
-      EGE_ASSERT(false);
+      EGE_ASSERT("Invalid format");
+      return EGE_ERROR_NOT_SUPPORTED;
   }
 
   // determine texture format
@@ -151,7 +171,10 @@ EGEResult Texture2DPrivate::create(const String& path)
 
   // create texture
   // NOTE: for compatibility with OpenGLES 'internalFormat' MUST be the same as 'imageFormat'
-  glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, image.width(), image.height(), 0, imageFormat, GL_UNSIGNED_BYTE, image.data()->data());
+  glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, d_func()->width(), d_func()->height(), 0, imageFormat, GL_UNSIGNED_BYTE, NULL);
+ 
+  // store internal format
+  m_internalFormat = internalFormat;
 
   // check for error
   GLenum error;
@@ -161,7 +184,7 @@ EGEResult Texture2DPrivate::create(const String& path)
     return EGE_ERROR;
   }
 
-  return result;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps filter to OpenGL equivalent. */
@@ -192,5 +215,33 @@ GLint Texture2DPrivate::mapAddressingMode(EGETexture::AddressingMode mode) const
   }
 
   return GL_REPEAT;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates associated render target. */
+EGEResult Texture2DPrivate::createRenderTarget()
+{
+  ConfigParams params;
+  params[EGE_RENDER_TARGET_PARAM_NAME]    = d_func()->name();
+  params[EGE_RENDER_TARGET_PARAM_WIDTH]   = String::FromNumber(d_func()->width());
+  params[EGE_RENDER_TARGET_PARAM_HEIGHT]  = String::FromNumber(d_func()->height());
+
+  // check if Frame Buffer Object is supported
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_FBO))
+  {
+    d_func()->m_target = ege_new RenderTextureFBOOGL(d_func()->app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, id());
+  }
+  else
+  {
+    d_func()->m_target = ege_new RenderTextureCopyOGL(d_func()->app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, id());
+  }
+
+  // check if could not be allocated
+  if (NULL == d_func()->m_target)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
