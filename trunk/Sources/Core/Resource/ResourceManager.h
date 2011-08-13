@@ -77,6 +77,8 @@ class ResourceManager : public Object
     EGEResult addGroup(const String& filePath, const PXmlElement& tag);
     /* Removes all groups. */
     void removeGroups();
+    /* Creates default resources. */
+    void createDefaultResources();
 
   private:
 

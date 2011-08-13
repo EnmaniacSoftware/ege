@@ -39,15 +39,27 @@ class DataBuffer : public Object
     s64 write(void* data, s64 size);
     /* Reads given amount of data from buffer. Returns number of data read. */
     s64 read(void* data, s64 size);
+    /* Reads given amount of data into destination buffer.
+     * @note   Destination buffer write offset will be updated accordingly.
+     * @return Returns number of bytes read.
+     */
+    s64 read(PDataBuffer& dst, s64 size);
+    /* Writes given amount of data from destination buffer.
+     * @note   Source buffer read offset will be updated accordingly.
+     * @return Returns number of bytes written.
+     */
+    s64 write(const PDataBuffer& src, s64 size = -1);
     /* Clears buffer. If FULL flag is set deallocates internal buffers as well. */
     void clear(bool full = false);
-    /* Sets write offset. Does nothing if offset out of range [0, capacity]. */
-    /// @return Returns old write offset.
+    /* Sets write offset. Does nothing if offset out of range [0, capacity].
+     * @return Returns old write offset.
+     */
     s64 setWriteOffset(s64 offset);
     /*! Returns write offset. */
     inline s64 writeOffset() const { return m_writeOffset; }
-    /* Sets read offset. Does nothing if offset out of range [0, size]. */
-    /// @return Returns old read offset.
+    /* Sets read offset. Does nothing if offset out of range [0, size].
+     * @return Returns old read offset.
+     */
     s64 setReadOffset(s64 offset);
     /*! Returns read offset. */
     inline s64 readOffset() const { return m_readOffset; }

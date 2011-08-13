@@ -426,6 +426,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.cpp">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Debug\Console.cpp">
+      <Filter>Core\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -825,6 +828,12 @@
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEOpenGL.h" />
+    <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h">
+      <Filter>Core\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Debug\Console.h">
+      <Filter>Core\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

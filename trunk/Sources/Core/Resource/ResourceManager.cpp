@@ -1,3 +1,4 @@
+#include <EGEResources.h>
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceGroup.h"
 #include "Core/Resource/ResourceTexture.h"
@@ -31,6 +32,8 @@ ResourceManager::ResourceManager(Application* app) : Object(app)
   registerResource("material", ResourceMaterial::Create);
   registerResource("data", ResourceData::Create);
   registerResource("font", ResourceFont::Create);
+
+  createDefaultResources();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::~ResourceManager()
@@ -40,7 +43,8 @@ ResourceManager::~ResourceManager()
 /*! Returns TRUE if object is valid. */
 bool ResourceManager::isValid() const
 {
-  return isResourceRegistered("texture") && isResourceRegistered("material") && isResourceRegistered("data") && isResourceRegistered("font");
+  return isResourceRegistered("texture-image") && isResourceRegistered("texture") && isResourceRegistered("material") && isResourceRegistered("data") && 
+         isResourceRegistered("font") && group(DEFAULT_GROUP_NAME);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Registeres custom resource type. */
@@ -341,5 +345,19 @@ PResource ResourceManager::resource(const String& typeName, const String& name, 
   }
 
   return NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates default resources. */
+void ResourceManager::createDefaultResources()
+{
+  // create and add default resource group
+  PResourceGroup group = ege_new ResourceGroup(app(), this, "", DEFAULT_GROUP_NAME);
+  m_groups.push_back(group);
+
+  // create debug font texture
+  PTexture2D texture = ege_new Texture2D(app(), "debug-font");
+  
+  PResourceTexture rextureResource = ResourceTexture::Create(app(), this, texture);
+  group->addResource(rextureResource);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

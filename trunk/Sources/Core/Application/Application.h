@@ -19,6 +19,7 @@ class AppController;
 class Pointer;
 class SceneManager;
 class OverlayManager;
+class Debug;
 
 EGE_DECLARE_SMART_CLASS(Timer, PTimer)
 
@@ -59,6 +60,8 @@ class Application
     OverlayManager* overlayManager() const { return m_overlayManager; }
     /*! Returns screen manager. */
     ScreenManager* screenManager() const { return m_screenManager; }
+    /*! Returns debug object. */
+    Debug* debug() const { return m_debug; }
     /*! Returns TRUE if landscape mode is enabled. */
     inline bool isLandscape() const { return m_landscapeMode; }
     /* Returns current FPS indication. */
@@ -92,6 +95,8 @@ class Application
     OverlayManager* m_overlayManager;
     /*! Screen manager. */
     ScreenManager* m_screenManager;
+    /*! Debug object. */
+    Debug* m_debug;
     /*! Landscape mode flag. */
     bool m_landscapeMode;
 };

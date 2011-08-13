@@ -53,10 +53,25 @@ ResourceTexture::~ResourceTexture()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Creates instance of resource. This method is a registration method for manager. */
+/*! Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceTexture::Create(Application* app, ResourceManager* manager)
 {
   return ege_new ResourceTexture(app, manager);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates instance of resource embedding given texture object. This is helper method for manual texture adding. */
+PResource ResourceTexture::Create(Application* app, ResourceManager* manager, PObject texture)
+{
+  // create empty texture resource
+  PResourceTexture textureResource = Create(app, manager);
+  if (textureResource)
+  {
+    textureResource->m_texture = texture;
+
+    textureResource->m_manual = true;
+  }
+
+  return textureResource;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */

@@ -26,7 +26,7 @@ class ResourceGroup : public Object
 {
   public:
 
-    ResourceGroup(Application* app, ResourceManager* manager, const String& path);
+    ResourceGroup(Application* app, ResourceManager* manager, const String& path, const String& name = "");
    ~ResourceGroup();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -44,6 +44,8 @@ class ResourceGroup : public Object
     PResource resource(const String& typeName, const String& name) const;
     /* Returns list of all resources of the given type. */
     List<PResource> resources(const String& typeName) const;
+    /* Adds given resource to group. */
+    EGEResult addResource(const PResource& resource);
     /*! Returns path to location of group file. */
     inline const String& path() const { return m_path; }
 

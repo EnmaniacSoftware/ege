@@ -24,7 +24,7 @@ EGE_DEFINE_DELETE_OPERATORS(Image)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function used to read data from media to PNG allocated memory. */
-static void PngReadDataFunc(png_structp png_ptr, png_bytep outBytes, png_size_t byteCountToRead)
+static void PngReadDataFromFileFunc(png_structp png_ptr, png_bytep outBytes, png_size_t byteCountToRead)
 {
    if (NULL == png_ptr->io_ptr)
    {
@@ -32,11 +32,34 @@ static void PngReadDataFunc(png_structp png_ptr, png_bytep outBytes, png_size_t 
      return;
    }
 
-   File& file = *(File*) png_ptr->io_ptr;
+   // retrieve file data is read from
+   File& source = *(File*) png_ptr->io_ptr;
 
+   // wrap PNG library supplied storage for convinience
    DataBuffer buffer((void*) outBytes, (s64) byteCountToRead);
    
-   if (buffer.size() != file.read(buffer, buffer.size()))
+   // read data from file into buffer
+   if (buffer.size() != source.read(buffer, buffer.size()))
+   {
+     // error!
+     return;
+   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function used to read data from buffer to PNG allocated memory. */
+static void PngReadDataFromBufferFunc(png_structp png_ptr, png_bytep outBytes, png_size_t byteCountToRead)
+{
+   if (NULL == png_ptr->io_ptr)
+   {
+     // error!
+     return;
+   }
+
+   // retrieve buffer data is read from
+   DataBuffer& source = *(DataBuffer*) png_ptr->io_ptr;
+ 
+   // read requested data into wrapped buffer
+   if (byteCountToRead != source.read(outBytes, byteCountToRead))
    {
      // error!
      return;
@@ -133,7 +156,45 @@ Image::StreamType Image::determineStreamType(File& file) const
   return type;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads image converting it's format to requested one. */
+/*! Determines file stream type. */
+Image::StreamType Image::determineStreamType(PDataBuffer& data) const
+{
+  StreamType type = STREAM_TYPE_UNKNOWN;
+
+  u32 id;
+
+  // check if JPEG
+  data->setReadOffset(0);
+  *data >> id;
+
+  // check if ID is correct
+	id <<= 8;
+	if (0xffd8ff00 == id)
+  {
+    // found
+		type = STREAM_TYPE_JPG;
+  }
+
+  // check if PNG
+  if (STREAM_TYPE_UNKNOWN == type)
+  {
+    data->setReadOffset(0);
+
+    // check header
+    if (0 == png_sig_cmp(reinterpret_cast<u8*>(data->data()), 0, 8))
+    {
+      // found
+      type = STREAM_TYPE_PNG;
+    }
+  }
+
+  // rewind
+  data->setReadOffset(0);
+
+  return type;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Loads image from file converting it's format to requested one. */
 EGEResult Image::load(const String& fileName, EGEImage::Format format)
 {
   EGEResult result;
@@ -149,8 +210,8 @@ EGEResult Image::load(const String& fileName, EGEImage::Format format)
   StreamType type = determineStreamType(file);
   switch (type)
   {
-    case STREAM_TYPE_PNG: result = loadPng(file, format); break;
-    case STREAM_TYPE_JPG: result = loadJpg(file, format); break;
+    case STREAM_TYPE_PNG: result = decompressPng(file, format); break;
+    case STREAM_TYPE_JPG: result = decompressJpg(file, format); break;
 
     default:
 
@@ -163,8 +224,28 @@ EGEResult Image::load(const String& fileName, EGEImage::Format format)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads PNG file and converts it into requested format. */
-EGEResult Image::loadPng(File& file, EGEImage::Format format)
+/*! Creates image from buffer converting it's format to requested one. */
+EGEResult Image::create(PDataBuffer& buffer, EGEImage::Format format)
+{
+  EGEResult result;
+
+  // determine file stream type
+  StreamType type = determineStreamType(buffer);
+  switch (type)
+  {
+    case STREAM_TYPE_PNG: result = decompressPng(buffer, format); break;
+    case STREAM_TYPE_JPG: result = decompressJpg(buffer, format); break;
+
+    default:
+
+      return EGE_ERROR_NOT_SUPPORTED;
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Decompresses PNG data from file and converts it into requested format. */
+EGEResult Image::decompressPng(PObject source, EGEImage::Format format)
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -187,7 +268,19 @@ EGEResult Image::loadPng(File& file, EGEImage::Format format)
   }
 
   // set customg stream read function
-  png_set_read_fn(pngReadStruct, &file, PngReadDataFunc);
+  if (EGE_OBJECT_UID_FILE == source->uid())
+  {
+    png_set_read_fn(pngReadStruct, source, PngReadDataFromFileFunc);
+  }
+  else if (EGE_OBJECT_UID_DATA_BUFFER == source->uid())
+  {
+    png_set_read_fn(pngReadStruct, source, PngReadDataFromBufferFunc);
+  }
+  else
+  {
+    EGE_ASSERT("Unsupported source type.");
+    return EGE_ERROR_NOT_SUPPORTED;
+  }
 
   // setup error handling
   if (setjmp(png_jmpbuf(pngReadStruct)))
@@ -280,8 +373,8 @@ EGEResult Image::loadPng(File& file, EGEImage::Format format)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads JPG file and converts it into requested format. */
-EGEResult Image::loadJpg(File& file, EGEImage::Format format)
+/*! Decompresses JPG data from given source and converts it into requested format. */
+EGEResult Image::decompressJpg(PObject source, EGEImage::Format format)
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -295,7 +388,7 @@ EGEResult Image::loadJpg(File& file, EGEImage::Format format)
 	jpeg_create_decompress(&cinfo);
 	
 	// specify the data source
-	if (EGE_SUCCESS != (result = jpeg_egefile_src(&cinfo, &file)))
+	if (EGE_SUCCESS != (result = jpeg_ege_src(&cinfo, source)))
   {
     // error!
     return result;

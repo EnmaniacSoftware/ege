@@ -44,6 +44,8 @@ class Texture2D : public Object
     inline const String& name() const { return m_name; }
     /* Creates texture from given file. */
     EGEResult create(const String& path);
+    /* Creates texture from given buffer. */
+    EGEResult create(PDataBuffer& buffer);
     /* Sets minifying function filter. */
     void setMinFilter(EGETexture::Filter filter);
     /* Sets magnification function filter. */

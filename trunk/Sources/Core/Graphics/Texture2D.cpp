@@ -85,6 +85,17 @@ EGEResult Texture2D::create(const String& path)
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates texture from given buffer. */
+EGEResult Texture2D::create(PDataBuffer& buffer)
+{
+  if (isValid())
+  {
+    return p_func()->create(buffer);
+  }
+
+  return EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets minifying function filter. */
 void Texture2D::setMinFilter(EGETexture::Filter filter)
 {

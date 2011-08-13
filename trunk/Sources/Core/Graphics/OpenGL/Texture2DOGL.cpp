@@ -69,6 +69,37 @@ EGEResult Texture2DPrivate::create(const String& path)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates texture from given buffer. */
+EGEResult Texture2DPrivate::create(PDataBuffer& buffer)
+{
+  EGEResult result = EGE_SUCCESS;
+
+  // load image
+  Image image(d_func()->app());
+  if (EGE_SUCCESS != (result = image.create(buffer)))
+  {
+    // error!
+    return result;
+  }
+
+  // set texture data
+  d_func()->m_width  = image.width();
+  d_func()->m_height = image.height();
+  d_func()->m_format = image.format();
+
+  // create empty texture
+  if (EGE_SUCCESS != (result = create()))
+  {
+    // error!
+    return result;
+  }
+
+  // copy pixel data
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d_func()->width(), d_func()->height(), m_internalFormat, GL_UNSIGNED_BYTE, image.data()->data());
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates texture empty from current data. */
 EGEResult Texture2DPrivate::create()
 {

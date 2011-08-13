@@ -1,29 +1,18 @@
-#ifndef EGE_RESOURCES_H
-#define EGE_RESOURCES_H
+#include "Core/Debug/Console.h"
 
-#include "Core/Platform.h"
-
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#define DEFAULT_GROUP_NAME "default-group"
+EGE_DEFINE_NEW_OPERATORS(Console)
+EGE_DEFINE_DELETE_OPERATORS(Console)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END
-
+Console::Console(Application* app) : Object(app)
+{
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-#include "Core/Resource/Resource.h"
-#include "Core/Resource/ResourceData.h"
-#include "Core/Resource/ResourceMaterial.h"
-#include "Core/Resource/ResourceTexture.h"
-#include "Core/Resource/ResourceTextureImage.h"
-#include "Core/Resource/ResourceFont.h"
-#include "Core/Resource/ResourceGroup.h"
-#include "Core/Resource/ResourceManager.h"
-
+Console::~Console()
+{
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-#endif // EGE_RESOURCES_H

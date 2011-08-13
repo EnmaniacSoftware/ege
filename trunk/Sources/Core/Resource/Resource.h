@@ -28,7 +28,7 @@ class IResource : public Object
   public:
 
     IResource(Application* app, ResourceManager* manager, const String& typeName, egeObjectDeleteFunc deleteFunc = NULL) 
-    : Object(app, EGE_OBJECT_UID_RESOURCE, deleteFunc), m_manager(manager), m_typeName(typeName) {}
+    : Object(app, EGE_OBJECT_UID_RESOURCE, deleteFunc), m_manager(manager), m_typeName(typeName), m_manual(false) {}
     virtual ~IResource() {}
 
     /* Initializes resource from XML. 
@@ -45,11 +45,18 @@ class IResource : public Object
     virtual const String& name() const = 0;
     /*! Returns resource type name. */
     inline const String& typeName() const { return m_typeName; }
+    /*! Returns TRUE if resource is manual. */
+    inline bool isManual() const { return m_manual; }
 
   protected:
 
     /*! Gets owning manager. */
     inline ResourceManager* manager() const { return m_manager; }
+
+  protected:
+
+    /*! Manual flag. Manual resources wont be automatically handled by framework (ie. loaded/unloaded). */
+    bool m_manual;
 
   private:
 

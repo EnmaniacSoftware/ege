@@ -12,6 +12,7 @@ EGE_NAMESPACE_BEGIN
 
 EGE_DECLARE_SMART_CLASS(Image, PImage)
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
+EGE_DECLARE_SMART_CLASS(Object, PObject)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -30,8 +31,10 @@ class Image : public Object
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
-    /* Loads image converting it's format to requested one. */
+    /* Loads image from file converting it's format to requested one. */
     EGEResult load(const String& fileName, EGEImage::Format format = EGEImage::NONE);
+    /* Creates image from buffer converting it's format to requested one. */
+    EGEResult create(PDataBuffer& buffer, EGEImage::Format format = EGEImage::NONE);
     /* Saves image into a given file with specified format. */
     EGEResult save(const String& fileName, EGEImage::Format format = EGEImage::NONE);
     /*! Gets image width (in pixels) */
@@ -56,13 +59,15 @@ class Image : public Object
 
     /* Determines file stream type. */
     StreamType determineStreamType(File& file) const;
+    /* Determines file stream type. */
+    StreamType determineStreamType(PDataBuffer& data) const;
 
   private:
 
-    /* Loads PNG file and converts it into requested format. */
-    EGEResult loadPng(File& file, EGEImage::Format format);
-    /* Loads JPG file and converts it into requested format. */
-    EGEResult loadJpg(File& file, EGEImage::Format format);
+    /* Decompresses PNG data from given source and converts it into requested format. */
+    EGEResult decompressPng(PObject source, EGEImage::Format format);
+    /* Decompresses JPG data from given source and converts it into requested format. */
+    EGEResult decompressJpg(PObject source, EGEImage::Format format);
     /* Saves PNG file and converts it into requested format. */
     EGEResult savePng(File& file, EGEImage::Format format);
     /* Saves JPG file and converts it into requested format. */

@@ -9,7 +9,8 @@ EGE_DEFINE_NEW_OPERATORS(ResourceGroup)
 EGE_DEFINE_DELETE_OPERATORS(ResourceGroup)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceGroup::ResourceGroup(Application* app, ResourceManager* manager, const String& path) : Object(app), m_manager(manager), m_loaded(false), m_path(path)
+ResourceGroup::ResourceGroup(Application* app, ResourceManager* manager, const String& path, const String& name) 
+: Object(app), m_manager(manager), m_name(name), m_loaded(false), m_path(path)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -51,7 +52,11 @@ EGEResult ResourceGroup::create(const PXmlElement& tag)
       }
 
       // add into pool
-      m_resources.insert(resource->typeName(), resource);
+      if (EGE_SUCCESS != (result = addResource(resource)))
+      {
+        // error!
+        break;
+      }
     }
 
     // go to next child
@@ -74,11 +79,15 @@ EGEResult ResourceGroup::load()
     {
       PResource resource = it->second;
 
-      // load resource
-      if (EGE_SUCCESS != (result = resource->load()))
+      // check if non-manual
+      if (!resource->isManual())
       {
-        // error!
-        break;
+        // load resource
+        if (EGE_SUCCESS != (result = resource->load()))
+        {
+          // error!
+          break;
+        }
       }
     }
 
@@ -107,8 +116,14 @@ void ResourceGroup::unload()
     // go thru all resources
     for (ResourcesMap::const_iterator it = m_resources.begin(); it != m_resources.end(); ++it)
     {
-      // unload it
-      it->second->unload();
+      PResource resource = it->second;
+
+      // check if non-manual
+      if (!resource->isManual())
+      {
+        // unload it
+        resource->unload();
+      }
     }
 
     // reset flag
@@ -172,5 +187,13 @@ void ResourceGroup::destroy()
     // remove from pool
     m_resources.erase(it++);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds given resource to group. */
+EGEResult ResourceGroup::addResource(const PResource& resource)
+{
+  m_resources.insert(resource->typeName(), resource);
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

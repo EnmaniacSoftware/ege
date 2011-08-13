@@ -117,7 +117,7 @@ s64 DataBuffer::read(void* data, s64 size)
   EGE_ASSERT(0 <= size && data);
 
   // make sure only valid data is read
-  size = Math::Min(this->size(), size);
+  size = Math::Min(this->size() - readOffset(), size);
 
   // copy new data
   MemoryManager::MemCpy(data, this->data(readOffset()), static_cast<size_t>(size));
@@ -361,5 +361,60 @@ DataBuffer& DataBuffer::operator >> (float64& value)
 {
   read(&value, sizeof (value));
   return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Reads given amount of data into destination buffer.
+ * @note   Destination buffer write offset will be updated accordingly.
+ * @return Returns number of bytes read.
+ */
+s64 DataBuffer::read(PDataBuffer& dst, s64 size)
+{
+  EGE_ASSERT(0 <= size);
+
+  // make sure only valid data is read
+  size = Math::Min(this->size() - readOffset(), size);
+
+  // copy new data
+  // NOTE: dst buffer write offset will be updated automatically
+  dst->write(data(readOffset()), size);
+
+  // update read offset
+  m_readOffset += size;
+
+  return size;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Writes given amount of data from destination buffer.
+ * @note   Source buffer read offset will be updated accordingly.
+ * @return Returns number of bytes written.
+ */
+s64 DataBuffer::write(const PDataBuffer& src, s64 size)
+{
+  EGE_ASSERT(0 <= size);
+
+  // check if there is NO enough capacity for new data
+  if (size + writeOffset() >= capacity())
+  {
+    // more space is required
+    if (EGE_SUCCESS != setCapacity(size + writeOffset() + 1))
+    {
+      // error!
+      return 0;
+    }
+  }
+
+  // copy new data
+  // NOTE: src buffer read offset will be updated automatically
+  src->read(data(writeOffset()), size);
+  //MemoryManager::MemCpy(static_cast<u8*>(m_data) + writeOffset(), src->data(src->readOffset()), static_cast<size_t>(size));
+
+  // set new size
+  // NOTE: taking MAX of what was before and after as we may want to overwrite data in the middle of buffer only
+  m_size = Math::Max(m_size, size + writeOffset());
+
+  // update write offset
+  m_writeOffset += size;
+
+  return size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

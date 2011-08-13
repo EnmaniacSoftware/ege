@@ -1,12 +1,28 @@
-#ifndef EGE_CORE_JPEGDATASRCFILE_H
-#define EGE_CORE_JPEGDATASRCFILE_H
+#ifndef EGE_CORE_CONSOLE_H
+#define EGE_CORE_CONSOLE_H
 
 #include <EGE.h>
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE::EGEResult jpeg_ege_src(j_decompress_ptr cinfo, EGE::Object* file);
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // EGE_CORE_JPEGDATASRCFILE_H
+class Console : public Object
+{
+  public:
+
+    Console(Application* app);
+    virtual ~Console();
+
+    EGE_DECLARE_NEW_OPERATORS
+    EGE_DECLARE_DELETE_OPERATORS
+
+  private:
+
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
+
+#endif // EGE_CORE_CONSOLE_H

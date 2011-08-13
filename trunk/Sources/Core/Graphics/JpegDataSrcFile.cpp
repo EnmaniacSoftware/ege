@@ -17,7 +17,7 @@ typedef struct
 {
   struct jpeg_source_mgr pub;	/* public fields */
 
-  EGE::File* file;
+  EGE::Object* source;
   JOCTET* buffer;		/* start of buffer */
   boolean start_of_file;	/* have we gotten any data yet? */
 } my_source_mgr;
@@ -80,13 +80,37 @@ METHODDEF(boolean) fill_input_buffer(j_decompress_ptr cinfo)
 {
   my_src_ptr src = (my_src_ptr) cinfo->src;
 
+  EGE::s64 bytesRead;
+
+  // wrap raw JPG library storage around DataBuffer for convinience
   EGE::DataBuffer buffer(src->buffer, INPUT_BUF_SIZE);
-  if (0 == src->file->read(&buffer, INPUT_BUF_SIZE))
+
+  // read data from source
+  switch (src->source->uid())
   {
-    if (src->start_of_file)	/* Treat empty input file as fatal error */
+    case EGE_OBJECT_UID_FILE:
+
+      bytesRead = ((EGE::File*) src->source)->read(&buffer, INPUT_BUF_SIZE);
+      break;
+
+    case EGE_OBJECT_UID_DATA_BUFFER:
+
+      bytesRead = ((EGE::DataBuffer*) src->source)->read(&buffer, INPUT_BUF_SIZE);
+      break;
+  }
+
+  // check if not entire block was read
+  if (INPUT_BUF_SIZE != bytesRead)
+  {
+    // treat empty input file as fatal error
+    if (src->start_of_file)
+    {
       ERREXIT(cinfo, JERR_INPUT_EMPTY);
+    }
+
     WARNMS(cinfo, JWRN_JPEG_EOF);
-    /* Insert a fake EOI marker */
+
+    // Insert a fake EOI marker
     buffer.setSize(2);
     *reinterpret_cast<JOCTET*>(buffer.data(0)) = (JOCTET) 0xFF;
     *reinterpret_cast<JOCTET*>(buffer.data(1)) = (JOCTET) JPEG_EOI;
@@ -174,7 +198,7 @@ METHODDEF(void) term_source(j_decompress_ptr cinfo)
  * for closing it after finishing decompression.
  */
 
-GLOBAL(EGE::EGEResult) jpeg_egefile_src(j_decompress_ptr cinfo, EGE::File* file)
+GLOBAL(EGE::EGEResult) jpeg_ege_src(j_decompress_ptr cinfo, EGE::Object* source)
 {
   my_src_ptr src;
 
@@ -205,9 +229,10 @@ GLOBAL(EGE::EGEResult) jpeg_egefile_src(j_decompress_ptr cinfo, EGE::File* file)
   src->pub.resync_to_restart  = jpeg_resync_to_restart; /* use default method */
   src->pub.term_source        = term_source;
 
-  src->file                = file;
+  src->source              = source;
   src->pub.bytes_in_buffer = 0; /* forces fill_input_buffer on first read */
   src->pub.next_input_byte = NULL; /* until buffer loaded */
 
   return result;
 }
+

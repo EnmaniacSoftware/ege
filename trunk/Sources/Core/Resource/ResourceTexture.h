@@ -32,6 +32,8 @@ class ResourceTexture : public IResource
 
     /* Creates instance of resource. This method is a registration method for manager. */
     static PResource Create(Application* app, ResourceManager* manager);
+    /* Creates instance of resource embedding given texture object. This is helper method for manual texture adding. */
+    static PResource Create(Application* app, ResourceManager* manager, PObject texture);
 
     /* IResource override. Returns name of resource. */
     const String& name() const override;

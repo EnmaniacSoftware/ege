@@ -12,6 +12,7 @@
 #include "Core/Event/Event.h"
 #include "Core/Input/Pointer.h"
 #include "Core/Screen/ScreenManager.h"
+#include "Core/Debug/Debug.h"
 #include "EGETimer.h"
 #include "EGEGraphics.h"
 #include "EGEApplication.h"
@@ -20,7 +21,7 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Application::Application() : m_sceneManager(NULL), m_physicsManager(NULL), m_eventManager(NULL), m_graphics(NULL), m_appController(NULL), 
-                             m_resourceManager(NULL), m_pointer(NULL), m_overlayManager(NULL), m_screenManager(NULL), m_landscapeMode(false)
+                             m_resourceManager(NULL), m_pointer(NULL), m_overlayManager(NULL), m_screenManager(NULL), m_debug(NULL), m_landscapeMode(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -58,7 +59,15 @@ EGEResult Application::initialize(const ConfigParams& params)
   {
     m_landscapeMode = iterLandscape->second.toBool();
   }
- 
+  
+  // create debug object
+  m_debug = ege_new Debug(this);
+  if (NULL == m_debug)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
   // create event manager
   m_eventManager = ege_new EventManager(this);
   if (NULL == m_eventManager)

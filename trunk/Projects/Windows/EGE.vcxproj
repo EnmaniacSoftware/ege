@@ -21,6 +21,7 @@
     <ClCompile Include="..\..\Sources\Core\Crypto\Hash.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Node.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Debug\Console.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Debug.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Logger.cpp" />
     <ClCompile Include="..\..\Sources\Core\Device\Device.cpp" />
@@ -95,6 +96,8 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Hash.h" />
+    <ClInclude Include="..\..\Sources\Core\Debug\Console.h" />
+    <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\Image.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h" />
