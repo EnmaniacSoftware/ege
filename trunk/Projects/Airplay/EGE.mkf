@@ -126,8 +126,11 @@ files
 
 	["Core/Debug"]
  	(../../Sources/Core/Debug)
+  Console.cpp
+  Console.h
   Debug.cpp
 	Debug.h
+  DebugFont.h
   Logger.cpp
   Logger.h
 
