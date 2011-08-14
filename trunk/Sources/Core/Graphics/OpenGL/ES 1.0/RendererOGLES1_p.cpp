@@ -1,3 +1,4 @@
+#include <EGEApplication.h>
 #include "Core/Graphics/OpenGL/ES 1.0/RendererOGLES1_p.h"
 #include "Core/Graphics/OpenGL/ExtensionsOGLES.h"
 #include "Core/Components/Render/RenderComponent.h"
@@ -124,10 +125,20 @@ void RendererPrivate::setViewport(const PViewport& viewport)
   if (!target->requiresTextureFlipping())
   {
       // convert "upper-left" corner to "lower-left"
-      actualRect.y = target->height() - actualRect.height - actualRect.y;
+    actualRect.y = target->height() - actualRect.height - actualRect.y;
   }
 
-  glViewport((GLint) actualRect.x, (GLint) actualRect.y, (GLsizei) actualRect.width, (GLsizei)actualRect.height);
+  // check if landscape mode in portrait device or vice versa
+  if ((d_func()->app()->isLandscape() && Device::SurfaceWidth() < Device::SurfaceHeight()) ||
+      (!d_func()->app()->isLandscape() && Device::SurfaceWidth() > Device::SurfaceHeight()))
+  {
+    // swap width and height
+    float32 tmp = actualRect.width;
+    actualRect.width  = actualRect.height;
+    actualRect.height = tmp;
+  }
+
+  glViewport((GLint) actualRect.x, (GLint) actualRect.y, (GLsizei) actualRect.width, (GLsizei) actualRect.height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets render target. */
