@@ -60,18 +60,18 @@ PResource ResourceTexture::Create(Application* app, ResourceManager* manager)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource embedding given texture object. This is helper method for manual texture adding. */
-PResource ResourceTexture::Create(Application* app, ResourceManager* manager, PObject texture)
+PResource ResourceTexture::Create(Application* app, ResourceManager* manager, const String& name, PObject texture)
 {
-  // create empty texture resource
-  PResourceTexture textureResource = Create(app, manager);
-  if (textureResource)
+  // create empty resource
+  PResourceTexture resource = Create(app, manager);
+  if (resource)
   {
-    textureResource->m_texture = texture;
-
-    textureResource->m_manual = true;
+    resource->m_name    = name;
+    resource->m_texture = texture;
+    resource->m_manual  = true;
   }
 
-  return textureResource;
+  return resource;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */

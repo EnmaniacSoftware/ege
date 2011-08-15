@@ -25,6 +25,21 @@ PResource ResourceFont::Create(Application* app, ResourceManager* manager)
   return ege_new ResourceFont(app, manager);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates instance of resource embedding given font object. This is helper method for manual font adding. */
+PResource ResourceFont::Create(Application* app, ResourceManager* manager, const String& name, PFont font)
+{
+  // create empty resource
+  PResourceFont resource = Create(app, manager);
+  if (resource)
+  {
+    resource->m_name    = name;
+    resource->m_font    = font;
+    resource->m_manual  = true;
+  }
+
+  return resource;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
 const String& ResourceFont::name() const
 {

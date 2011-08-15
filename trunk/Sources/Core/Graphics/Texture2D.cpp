@@ -86,7 +86,7 @@ EGEResult Texture2D::create(const String& path)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates texture from given buffer. */
-EGEResult Texture2D::create(PDataBuffer& buffer)
+EGEResult Texture2D::create(const PDataBuffer& buffer)
 {
   if (isValid())
   {

@@ -45,7 +45,7 @@ class Texture2D : public Object
     /* Creates texture from given file. */
     EGEResult create(const String& path);
     /* Creates texture from given buffer. */
-    EGEResult create(PDataBuffer& buffer);
+    EGEResult create(const PDataBuffer& buffer);
     /* Sets minifying function filter. */
     void setMinFilter(EGETexture::Filter filter);
     /* Sets magnification function filter. */

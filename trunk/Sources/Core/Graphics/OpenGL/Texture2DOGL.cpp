@@ -70,7 +70,7 @@ EGEResult Texture2DPrivate::create(const String& path)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates texture from given buffer. */
-EGEResult Texture2DPrivate::create(PDataBuffer& buffer)
+EGEResult Texture2DPrivate::create(const PDataBuffer& buffer)
 {
   EGEResult result = EGE_SUCCESS;
 

@@ -45,14 +45,19 @@ class SmartPointer
 
     /*! Returns TRUE if smart pointer points to any object. */
     inline bool isValid() const { return NULL != m_object; }
+    /*! Returns TRUE if object is deallocable. */
+    inline bool isDeallocable() const { return m_deallocable; }
 
+  public:
+
+    /*! Object wrapped around smart pointer. */
     T* m_object;
 
   private:
 
     inline void incrementReference(Object* object)
     {
-      if (object)
+      if (object && m_deallocable)
       {
         object->addReference();
       }
@@ -60,47 +65,42 @@ class SmartPointer
 
     inline void decrementReference(Object* object)
     {
-      if (object)
+      if (object && m_deallocable)
       {
         object->release();
       }
     }
+
+  private:
+
+    /*! TRUE if object should be deallocated. */
+    bool m_deallocable;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-SmartPointer<T>::SmartPointer(T* object)
+SmartPointer<T>::SmartPointer(T* object) : m_object(object), m_deallocable(true)
 {
-  m_object = object;
-
-  // NOTE: This constructor is used while wrapping non P-class object into its P-class version. Cause usually we want to wrap objects allocated on stack which
-  //       later we dont want to deallocate, we dont touch the ref counter so it does not gets deallocated.
-  // NOTE: In case later it will trun out this is also called for some other scenario, this needs to be given another thought so the case above is fulfield as
-  //       well.
   incrementReference(object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Constructor for wrapping stack allocated objects into their P-class representation. This conversion does not allow wrapped object to be deallocated. */
 template <typename T>
-SmartPointer<T>::SmartPointer(T& object)
+SmartPointer<T>::SmartPointer(T& object) : m_object(&object), m_deallocable(false)
 {
-  m_object = &object;
-
   // NOTE: do not increment ref counter
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-SmartPointer<T>::SmartPointer(const SmartPointer<T>& other)
+SmartPointer<T>::SmartPointer(const SmartPointer<T>& other) : m_object(other.object()), m_deallocable(other.m_deallocable)
 {
-  m_object = other.object();
   incrementReference(m_object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 template <typename U>
-SmartPointer<T>::SmartPointer(const SmartPointer<U>& other)
+SmartPointer<T>::SmartPointer(const SmartPointer<U>& other) : m_object(static_cast<T*>(other.object())), m_deallocable(other.isDeallocable())
 {
-  m_object = static_cast<T*>(other.object());
   incrementReference(m_object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -111,35 +111,39 @@ SmartPointer<T>::~SmartPointer()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-T& SmartPointer<T>::operator=(T* object)
+T& SmartPointer<T>::operator = (T* object)
 {
+  // NOTE: use it for heap allocated objects only
   decrementReference(m_object);
   m_object = object;
+  m_deallocable = true;
   incrementReference(m_object);
   return *m_object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-T& SmartPointer<T>::operator=(const SmartPointer<T>& other)
+T& SmartPointer<T>::operator = (const SmartPointer<T>& other)
 {
   decrementReference(m_object);
   m_object = other.object();
+  m_deallocable = other.m_deallocable;
   incrementReference(m_object);
   return *m_object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 template <typename U>
-T& SmartPointer<T>::operator=(const SmartPointer<U>& other)
+T& SmartPointer<T>::operator = (const SmartPointer<U>& other)
 {
   decrementReference(m_object);
   m_object = (T*)(other.object());
+  m_deallocable = other.isDeallocable();
   incrementReference(m_object);
   return *m_object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-T* SmartPointer<T>::operator->() const
+T* SmartPointer<T>::operator -> () const
 {
   return m_object;
 }

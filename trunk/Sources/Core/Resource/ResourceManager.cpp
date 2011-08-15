@@ -6,7 +6,8 @@
 #include "Core/Resource/ResourceData.h"
 #include "Core/Resource/ResourceFont.h"
 #include "Core/Resource/ResourceTextureImage.h"
-#include "Core/Graphics/Font.h" 
+#include "Core/Graphics/Font.h"
+#include "Core/Debug/DebugFont.h"
 #include <EGEXml.h>
 #include <EGEDir.h>
 
@@ -356,8 +357,56 @@ void ResourceManager::createDefaultResources()
 
   // create debug font texture
   PTexture2D texture = ege_new Texture2D(app(), "debug-font");
-  
-  PResourceTexture rextureResource = ResourceTexture::Create(app(), this, texture);
-  group->addResource(rextureResource);
+  if (texture)
+  {
+    // create texture resource and manually assign texture to it
+    PResourceTexture textureResource = ResourceTexture::Create(app(), this, texture->name(), texture);
+    if (textureResource)
+    {
+      group->addResource(textureResource);
+    }
+
+    // wrap texture data into buffer and create texture from it
+    DataBuffer textureData(DebugFontData, DEBUG_FONT_LEN);
+    if (EGE_SUCCESS == texture->create(textureData))
+    {
+      // create font material and assign texture to it
+      PMaterial material = ege_new Material(app());
+      if (material)
+      {
+        material->addTexture(texture);
+        material->setSrcBlendFactor(EGEGraphics::BLEND_FACTOR_ONE);
+        material->setDstBlendFactor(EGEGraphics::BLEND_FACTOR_ONE);
+
+        // setup glyphs data (all 256)
+        Map<Char, GlyphData> glyphs;
+        const float32 cellSize = 1.0f / 16.0f;
+        for (s32 i = 0; i < 256; i++)
+        {
+          GlyphData data;
+
+          data.m_textureRect = Rectf((i % 16) * cellSize, (i / 16) * cellSize, cellSize, cellSize);
+          data.m_width       = 16;
+
+          glyphs.insert((Char) i, data);
+        }
+
+        // create font from glyphs
+        PFont font = ege_new Font(app(), 16, glyphs);
+        if (font)
+        {
+          // assign font material
+          font->setMaterial(material);
+
+          // create font resource and manually assign font to it
+          PResourceFont fontResource = ResourceFont::Create(app(), this, texture->name(), font);
+          if (fontResource)
+          {
+            group->addResource(fontResource);
+          }
+        }
+      }
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

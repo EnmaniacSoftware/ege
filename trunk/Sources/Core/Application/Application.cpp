@@ -84,6 +84,15 @@ EGEResult Application::initialize(const ConfigParams& params)
     return EGE_ERROR_NO_MEMORY;
   }
 
+  // create graphics
+  // NOTE: must be before ResourceManager
+  m_graphics = ege_new Graphics(this, params);
+  if (NULL == m_graphics || !m_graphics->isValid())
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
   // create resource manager
   m_resourceManager = ege_new ResourceManager(this);
   if (NULL == m_resourceManager || !m_resourceManager->isValid())
@@ -111,14 +120,6 @@ EGEResult Application::initialize(const ConfigParams& params)
   // create overlay manager
   m_overlayManager = ege_new OverlayManager(this);
   if (NULL == m_overlayManager)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  // create graphics
-  m_graphics = ege_new Graphics(this, params);
-  if (NULL == m_graphics || !m_graphics->isValid())
   {
     // error!
     return EGE_ERROR_NO_MEMORY;

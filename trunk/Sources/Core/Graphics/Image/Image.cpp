@@ -157,7 +157,7 @@ Image::StreamType Image::determineStreamType(File& file) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Determines file stream type. */
-Image::StreamType Image::determineStreamType(PDataBuffer& data) const
+Image::StreamType Image::determineStreamType(const PDataBuffer& data) const
 {
   StreamType type = STREAM_TYPE_UNKNOWN;
 
@@ -225,7 +225,7 @@ EGEResult Image::load(const String& fileName, EGEImage::Format format)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates image from buffer converting it's format to requested one. */
-EGEResult Image::create(PDataBuffer& buffer, EGEImage::Format format)
+EGEResult Image::create(const PDataBuffer& buffer, EGEImage::Format format)
 {
   EGEResult result;
 

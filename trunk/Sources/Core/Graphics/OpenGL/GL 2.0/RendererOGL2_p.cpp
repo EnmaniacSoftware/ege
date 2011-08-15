@@ -320,6 +320,9 @@ void RendererPrivate::flush()
 /*! Applies material. */
 void RendererPrivate::applyMaterial(const PMaterial& material)
 {
+  // disable blending by default
+  glDisable(GL_BLEND);
+
   if (material)
   {
     // enable blending if necessary

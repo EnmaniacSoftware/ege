@@ -24,7 +24,7 @@ class Texture2DPrivate
     /* Creates texture empty from current data. */
     EGEResult create();
     /* Creates texture from given buffer. */
-    EGEResult create(PDataBuffer& buffer);
+    EGEResult create(const PDataBuffer& buffer);
     /*! Returns texture ID. */
     inline GLuint id() const { return m_id; }
     /* Creates associated render target. */

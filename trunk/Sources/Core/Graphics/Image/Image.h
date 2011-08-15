@@ -34,7 +34,7 @@ class Image : public Object
     /* Loads image from file converting it's format to requested one. */
     EGEResult load(const String& fileName, EGEImage::Format format = EGEImage::NONE);
     /* Creates image from buffer converting it's format to requested one. */
-    EGEResult create(PDataBuffer& buffer, EGEImage::Format format = EGEImage::NONE);
+    EGEResult create(const PDataBuffer& buffer, EGEImage::Format format = EGEImage::NONE);
     /* Saves image into a given file with specified format. */
     EGEResult save(const String& fileName, EGEImage::Format format = EGEImage::NONE);
     /*! Gets image width (in pixels) */
@@ -60,7 +60,7 @@ class Image : public Object
     /* Determines file stream type. */
     StreamType determineStreamType(File& file) const;
     /* Determines file stream type. */
-    StreamType determineStreamType(PDataBuffer& data) const;
+    StreamType determineStreamType(const PDataBuffer& data) const;
 
   private:
 
