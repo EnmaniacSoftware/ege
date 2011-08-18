@@ -52,9 +52,9 @@ class ResourceMaterial : public IResource
     void unload() override;
 
     /* Creates instance of material object defined by resource. */
-    PMaterial createInstance() const;
+    PMaterial createInstance();
     /* Set given instance of material object to what is defined by resource. */
-    EGEResult setInstance(PMaterial& instance) const;
+    EGEResult setInstance(PMaterial& instance);
 
   private:
 

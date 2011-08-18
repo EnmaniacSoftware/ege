@@ -15,8 +15,8 @@ EGE_DEFINE_NEW_OPERATORS(ResourceTexture)
 EGE_DEFINE_DELETE_OPERATORS(ResourceTexture)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Maps literal filter function name into numeric value. */
-static EGETexture::Filter mapFilterName(const String& name)
+/*! Local function mapping literal filter function name into numeric value. */
+static EGETexture::Filter MapFilterName(const String& name, EGETexture::Filter defaultValue)
 {
   if ("trilinear" == name)
   {
@@ -31,18 +31,22 @@ static EGETexture::Filter mapFilterName(const String& name)
     return EGETexture::MIPMAP_TRILINEAR;
   }
 
-  return EGETexture::BILINEAR;
+  return defaultValue;//EGETexture::BILINEAR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Maps literal texture addressing mode name into numeric value. */
-static EGETexture::AddressingMode mapTextureAddressingName(const String& name)
+/*! Local function mapping literal texture addressing mode name into numeric value. */
+static EGETexture::AddressingMode MapTextureAddressingName(const String& name, EGETexture::AddressingMode defaultValue)
 {
   if ("clamp" == name)
   {
     return EGETexture::AM_CLAMP;
   }
+  else if ("repeat" == name)
+  {
+    return EGETexture::AM_REPEAT;
+  }
 
-  return EGETexture::AM_REPEAT;
+  return defaultValue; //EGETexture::AM_REPEAT;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceTexture::ResourceTexture(Application* app, ResourceManager* manager) : IResource(app, manager, "texture")
@@ -93,10 +97,10 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   m_name            = tag->attribute("name");
   m_path            = tag->attribute("path");
   m_type            = tag->attribute("type").toLower();
-  m_minFilter       = tag->attribute("min-filter").toLower();
-  m_magFilter       = tag->attribute("mag-filter").toLower();
-  m_addressingModeS = tag->attribute("mode-s").toLower();
-  m_addressingModeT = tag->attribute("mode-t").toLower();
+  m_minFilter       = MapFilterName(tag->attribute("min-filter").toLower(), EGETexture::BILINEAR);
+  m_magFilter       = MapFilterName(tag->attribute("mag-filter").toLower(), EGETexture::BILINEAR);
+  m_addressingModeS = MapTextureAddressingName(tag->attribute("mode-s").toLower(), EGETexture::AM_REPEAT);
+  m_addressingModeT = MapTextureAddressingName(tag->attribute("mode-t").toLower(), EGETexture::AM_REPEAT);
 
   // check if obligatory data is wrong
   if (m_name.empty() || m_path.empty() || m_type.empty())
@@ -142,10 +146,10 @@ EGEResult ResourceTexture::create2D()
   }
 
   // sets parameters
-  texture->setMinFilter(mapFilterName(minFilter()));
-  texture->setMagFilter(mapFilterName(magFilter()));
-  texture->setTextureAddressingModeS(mapTextureAddressingName(adressingModeS()));
-  texture->setTextureAddressingModeT(mapTextureAddressingName(adressingModeT()));
+  texture->setMinFilter(minFilter());
+  texture->setMagFilter(magFilter());
+  texture->setTextureAddressingModeS(adressingModeS());
+  texture->setTextureAddressingModeT(adressingModeT());
 
   // create it
   result = texture->create(path());

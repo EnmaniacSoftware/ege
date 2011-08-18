@@ -9,7 +9,6 @@
 #include <EGEString.h>
 #include <EGEXml.h>
 #include "Core/Resource/Resource.h"
-#include "Core/Graphics/TextureImage.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -8,6 +8,7 @@
 #include <EGE.h>
 #include <EGEString.h>
 #include <EGEXml.h>
+#include <EGETexture.h>
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN
@@ -60,14 +61,14 @@ class ResourceTexture : public IResource
     inline const String& type() const { return m_type; }
     /* Returns TRUE if texture is loaded. */
     inline bool isLoaded() const { return NULL != m_texture; }
-    /*! Gets minifying function name. */
-    inline const String& minFilter() const { return m_minFilter; }
-    /*! Gets magnification function name. */
-    inline const String& magFilter() const { return m_magFilter; }
-    /*! Gets texture addressing mode name for S coordinate. */
-    inline const String& adressingModeS() const { return m_addressingModeS; }
-    /*! Gets texture addressing mode name for T coordinate. */
-    inline const String& adressingModeT() const { return m_addressingModeT; }
+    /*! Gets minifying function. */
+    inline EGETexture::Filter minFilter() const { return m_minFilter; }
+    /*! Gets magnification function. */
+    inline EGETexture::Filter magFilter() const { return m_magFilter; }
+    /*! Gets texture addressing mode for S coordinate. */
+    inline EGETexture::AddressingMode adressingModeS() const { return m_addressingModeS; }
+    /*! Gets texture addressing mode for T coordinate. */
+    inline EGETexture::AddressingMode adressingModeT() const { return m_addressingModeT; }
     /*! Gets path to texture file */
     inline const String& path() const { return m_path; } 
 
@@ -79,14 +80,14 @@ class ResourceTexture : public IResource
     String m_path;
     /*! Texture type. */
     String m_type;
-    /*! Texture minifying function name. */
-    String m_minFilter;
-    /*! Texture magnification function name. */
-    String m_magFilter;
-    /*! Texture addressing mode name for S coordinate. */
-    String m_addressingModeS;
-    /*! Texture addressing mode name for T coordinate. */
-    String m_addressingModeT;
+    /*! Texture minifying function. */
+    EGETexture::Filter m_minFilter;
+    /*! Texture magnification function. */
+    EGETexture::Filter m_magFilter;
+    /*! Texture addressing mode for S coordinate. */
+    EGETexture::AddressingMode m_addressingModeS;
+    /*! Texture addressing mode for T coordinate. */
+    EGETexture::AddressingMode m_addressingModeT;
     /*! Texture object created from resource. NULL if not created yet. */
     PObject m_texture;
 };

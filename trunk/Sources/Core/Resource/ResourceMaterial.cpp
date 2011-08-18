@@ -303,7 +303,7 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of material object defined by resource. */
-PMaterial ResourceMaterial::createInstance() const
+PMaterial ResourceMaterial::createInstance()
 {
 	PMaterial object = ege_new Material(app());
   if (object)
@@ -319,7 +319,7 @@ PMaterial ResourceMaterial::createInstance() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Set given instance of material object to what is defined by resource. */
-EGEResult ResourceMaterial::setInstance(PMaterial& instance) const
+EGEResult ResourceMaterial::setInstance(PMaterial& instance)
 {
   // sanity check
   if (NULL == instance || !isLoaded())
