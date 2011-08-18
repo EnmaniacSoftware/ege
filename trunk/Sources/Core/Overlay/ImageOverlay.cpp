@@ -15,10 +15,18 @@ EGE_DEFINE_DELETE_OPERATORS(ImageOverlay)
 ImageOverlay::ImageOverlay(Application* app, const String& name) : Overlay(app, name, EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLE_STRIPS, 
                                                                            EGE_OBJECT_UID_OVERLAY_IMAGE)
 {
+  m_material = ege_new Material(app);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ImageOverlay::~ImageOverlay()
 {
+  m_material = NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Overlay override. Returns TRUE if object is valid. */
+bool ImageOverlay::isValid() const
+{
+  return Overlay::isValid() && (NULL != m_material);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Overlay override. Updates overlay. */
@@ -45,10 +53,11 @@ void ImageOverlay::update(const Time& time)
 void ImageOverlay::updateRenderData()
 {
   PResourceMaterial resource = app()->resourceManager()->resource("material", materialName());
+  resource->setInstance(m_material);
 
   Color m_color = Color::WHITE;
 
-  renderComponent()->setMaterial(resource ? resource->material() : NULL);
+  renderComponent()->setMaterial(m_material);
 
   float32* data = (float32*) renderComponent()->vertexBuffer()->lock(0, 4);
 

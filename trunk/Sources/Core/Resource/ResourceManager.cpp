@@ -6,6 +6,8 @@
 #include "Core/Resource/ResourceData.h"
 #include "Core/Resource/ResourceFont.h"
 #include "Core/Resource/ResourceTextureImage.h"
+#include "Core/Resource/ResourceSpritesheet.h"
+#include "Core/Resource/ResourceSprite.h"
 #include "Core/Graphics/Font.h"
 #include "Core/Debug/DebugFont.h"
 #include <EGEXml.h>
@@ -33,6 +35,8 @@ ResourceManager::ResourceManager(Application* app) : Object(app)
   registerResource("material", ResourceMaterial::Create);
   registerResource("data", ResourceData::Create);
   registerResource("font", ResourceFont::Create);
+  registerResource("spritesheet", ResourceSpritesheet::Create);
+  registerResource("sprite", ResourceSprite::Create);
 
   createDefaultResources();
 }
@@ -45,7 +49,7 @@ ResourceManager::~ResourceManager()
 bool ResourceManager::isValid() const
 {
   return isResourceRegistered("texture-image") && isResourceRegistered("texture") && isResourceRegistered("material") && isResourceRegistered("data") && 
-         isResourceRegistered("font") && group(DEFAULT_GROUP_NAME);
+         isResourceRegistered("font") && isResourceRegistered("spritesheet") && isResourceRegistered("sprite") && group(DEFAULT_GROUP_NAME);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Registeres custom resource type. */

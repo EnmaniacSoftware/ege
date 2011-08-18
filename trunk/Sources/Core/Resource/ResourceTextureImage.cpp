@@ -3,6 +3,7 @@
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Graphics/TextureImage.h"
 #include <EGEXml.h>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
@@ -41,13 +42,15 @@ EGEResult ResourceTextureImage::create(const String& path, const PXmlElement& ta
 {
   EGEResult result = EGE_SUCCESS;
 
+  bool error = false;
+
   // get data
   m_name        = tag->attribute("name");
   m_textureName = tag->attribute("texture");
-  m_rect        = tag->attribute("rect", "0 0 0 0");
+  m_rect        = tag->attribute("rect", "0 0 0 0").toRectf(&error);
 
   // check if obligatory data is wrong
-  if (m_name.empty() || m_textureName.empty())
+  if (error || m_name.empty() || m_textureName.empty())
   {
     // error!
     return EGE_ERROR_BAD_PARAM;
@@ -64,23 +67,22 @@ EGEResult ResourceTextureImage::load()
   if (!isLoaded())
   {
     // load texture
-    PResourceTexture texture = manager()->resource("texture", textureName());
-    if (texture)
+    PResourceTexture textureResource = manager()->resource("texture", m_textureName);
+    if (textureResource)
     {
       // load texture
-      if (EGE_SUCCESS != (result = texture->load()))
+      if (EGE_SUCCESS != (result = textureResource->load()))
       {
         // error!
         return result;
       }
 
-      // create texture image object
-      m_textureImage = ege_new TextureImage(app(), texture->texture(), rect().toRectf());
-      if (NULL == m_textureImage || !m_textureImage->isValid())
-      {
-        // error!
-        return EGE_ERROR;
-      }
+      // store texture object
+      m_texture = textureResource->texture();
+    }
+    else
+    {
+      EGE_WARNING("ResourceTextureImage::load - Could not find texture resource - %s", m_textureName.toAscii());
     }
   }
 
@@ -90,6 +92,55 @@ EGEResult ResourceTextureImage::load()
 /*! IResource override. Unloads resource. */
 void ResourceTextureImage::unload() 
 { 
-  m_textureImage = NULL; 
+  m_texture = NULL; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns instance of texture image object defined by resource. 
+ * @note  Loads resource if it is not loaded yet.
+ */
+PTextureImage ResourceTextureImage::createInstance()
+{
+	PTextureImage object = ege_new TextureImage(app());
+  if (object)
+  {
+    // set new data
+    if (EGE_SUCCESS != setInstance(object))
+    {
+      object = NULL;
+    }
+  }
+
+  return object;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Set given instance of texture image object to what is defined by resource. 
+ * @note  Loads resource if it is not loaded yet.
+ */
+EGEResult ResourceTextureImage::setInstance(const PTextureImage& instance)
+{
+  // sanity check
+  if (NULL == instance)
+  {
+    // error!
+    return EGE_ERROR;
+  }
+
+  // check if not loaded yet
+  if (!isLoaded())
+  {
+    // load
+    EGEResult result;
+    if (EGE_SUCCESS != (result = load()))
+    {
+      // error!
+      return result;
+    }
+  }
+
+  // fill in data
+  instance->setTexture(m_texture);
+  instance->setRect(m_rect);
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

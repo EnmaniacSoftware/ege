@@ -29,6 +29,37 @@ EGEResult Material::addTexture(PObject texture)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets new texture at given index. Can only succeed when setting texture within range. */
+EGEResult Material::setTexture(u32 index, PObject texture)
+{
+  // check if index out of range
+  if (index >= static_cast<u32>(m_textures.size()))
+  {
+    // error!
+    return EGE_ERROR;
+  }
+
+  // set new texture
+  m_textures[index] = texture;
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Remove texture at given index. 
+ *  @param index Index of texture to be removed.
+ *  @note  if index is -1 all textures are removed.
+ */
+void Material::removeTexture(s32 index)
+{
+  if (0 > index)
+  {
+    m_textures.clear();
+  }
+  else if (index < static_cast<s32>(m_textures.size()))
+  {
+    m_textures.removeAt(index);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns number of textures used. */
 u32 Material::textureCount() const
 {

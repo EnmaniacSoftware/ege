@@ -84,6 +84,7 @@ class ResourceFont : public IResource
     s32 m_height;
     /*! Map of glyphs sorted by UTF-16 value. */
     Map<Char, GlyphData> m_glyphs;
+
     /*! Font object. NULL if not created yet. */
     PFont m_font;
 };

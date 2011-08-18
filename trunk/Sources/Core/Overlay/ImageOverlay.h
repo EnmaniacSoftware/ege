@@ -26,6 +26,8 @@ class ImageOverlay : public Overlay
   
     /* Sets material. */
     void setMaterialName(const String& name);
+    /* Overlay override. Returns TRUE if object is valid. */
+    bool isValid() const override;
 
   private:
 
@@ -42,6 +44,8 @@ class ImageOverlay : public Overlay
 
     /*! Material name. */
     String m_materialName;
+    /*! Local material. */
+    PMaterial m_material;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

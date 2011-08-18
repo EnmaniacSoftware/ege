@@ -21,7 +21,9 @@ class TextureImage : public Object
 {
   public:
 
+    TextureImage(Application* app);
     TextureImage(Application* app, PObject texture, const Rectf& rect);
+    TextureImage(Application* app, const PTextureImage& texture, const Rectf& rect);
    ~TextureImage();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -29,10 +31,18 @@ class TextureImage : public Object
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
+
+    /* Sets texture which obejct refers to. */
+    void setTexture(const PObject& texture);
     /*! Returns texture object refers to. */
     inline PObject texture() const { return m_texture; }
-    /*! Returns rectangle (in texture coords) object refers to. */
-    inline const Rectf& rectangle() const { return m_rect; }
+
+    /* Sets rectangle within texture this object refers to. 
+     * @param rect  Rectangle within texture (in normalized local space).
+     */
+    void setRect(const Rectf& rect);
+    /*! Returns rectangle (in normalized local space) object refers to. */
+    inline const Rectf& rect() const { return m_rect; }
 
     /* Sets environment mode. */
     void setEnvironmentMode(EGETexture::EnvironmentMode mode);
@@ -43,7 +53,7 @@ class TextureImage : public Object
 
     /*! Texture assigned. */
     PObject m_texture;
-    /*! Rectangular are of the texture this object refers to (in texture coords). */
+    /*! Rectangular are of the texture this object refers to (in normalized local space). */
     Rectf m_rect;
     /*! Environment mode. */
     EGETexture::EnvironmentMode m_envMode;

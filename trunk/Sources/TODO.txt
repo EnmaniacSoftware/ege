@@ -7,7 +7,10 @@ FEATURES:
   - seperate solid and transparent objects (based on material?) and depth-sort transparent ones
 - VertexBuffer:
   - add some method/way to instruct of creation of common vertex types in 1 call ie. one call to build vertex semantics for V3T2C4 or V3T2
-- Manual resources. The way to create resources in runtime ie. render textures, which can be used even in resource definitions
+
+* Resources
+  - Manual resources. The way to create resources in runtime ie. render textures, which can be used even in resource definitions
+  - Physical textures should be defined by 'texture' resources. All references should be done to 'texture-image' resources.
 
 OPTIMIZATIONS:
 

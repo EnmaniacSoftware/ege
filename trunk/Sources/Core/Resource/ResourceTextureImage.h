@@ -48,18 +48,20 @@ class ResourceTextureImage : public IResource
     /* IResource override. Unloads resource. */
     void unload() override;
 
-    /*! Returns instance of texture image object defined by resource. */
-    inline PTextureImage textureImage() const { return m_textureImage; }
-    /*! Returns referred texture name. */
-    inline const String& textureName() const { return m_textureName; }
+    /* Creates instance of texture image object defined by resource. 
+     * @note  Loads resource if it is not loaded yet.
+     */
+    PTextureImage createInstance();
+    /* Set given instance of texture image object to what is defined by resource. 
+     * @note  Loads resource if it is not loaded yet.
+     */
+    EGEResult setInstance(const PTextureImage& instance);
 
   private:
 
     ResourceTextureImage(Application* app, ResourceManager* manager);
     /* Returns TRUE if texture image is loaded. */
-    inline bool isLoaded() const { return NULL != m_textureImage; }
-    /*! Returns rectangular area referred by this object. */
-    inline const String& rect() const { return m_rect; }
+    inline bool isLoaded() const { return NULL != m_texture; }
 
   private:
 
@@ -68,9 +70,9 @@ class ResourceTextureImage : public IResource
     /*! Name of refered texture. */
     String m_textureName;
     /*! Rectangle area refered by this object. */
-    String m_rect;
-    /*! Texture image object created from resource. NULL if not created yet. */
-    PTextureImage m_textureImage;
+    Rectf m_rect;
+	  /*! Texture object. NULL if not loaded yet. */
+	  PObject m_texture;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

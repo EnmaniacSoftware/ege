@@ -148,6 +148,9 @@
     <Filter Include="Core\Overlay">
       <UniqueIdentifier>{083fc304-3a3c-4ce0-b212-2f3cb230c477}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Sprite">
+      <UniqueIdentifier>{8fdbfb76-c421-40d4-b8ed-f8fe7e0b2e2b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -428,6 +431,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Debug\Console.cpp">
       <Filter>Core\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceSpritesheet.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Sprite\Sprite.cpp">
+      <Filter>Core\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceSprite.cpp">
+      <Filter>Core\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -833,6 +845,16 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Debug\Console.h">
       <Filter>Core\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpritesheet.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Sprite\Sprite.h">
+      <Filter>Core\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGESprite.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceSprite.h">
+      <Filter>Core\Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

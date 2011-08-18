@@ -30,10 +30,17 @@ class Material : public Object
 
     /* Adds new texture. */
     EGEResult addTexture(PObject texture);
+    /* Sets new texture at given index. Can only succeed when setting texture within range. */
+    EGEResult setTexture(u32 index, PObject texture);
     /* Returns number of textures used. */
     u32 textureCount() const;
     /* Retrives texture at given index. */
     PObject texture(u32 index) const;
+    /* Remove texture at given index. 
+     * @param index Index of texture to be removed.
+     * @note  if negative index is passed all textures are removed.
+     */
+    void removeTexture(s32 index);
     
     /* Sets source pixel blend factor. */
     void setSrcBlendFactor(EGEGraphics::EBlendFactor factor);

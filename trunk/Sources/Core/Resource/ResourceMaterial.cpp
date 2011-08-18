@@ -44,237 +44,8 @@ EGETexture::EnvironmentMode MapTextureEnvironmentMode(const String& name, EGETex
   return defaultValue;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_DEFINE_NEW_OPERATORS(ResourceMaterial)
-EGE_DEFINE_DELETE_OPERATORS(ResourceMaterial)
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceMaterial::ResourceMaterial(Application* app, ResourceManager* manager) : IResource(app, manager, "material")
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceMaterial::~ResourceMaterial()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceMaterial::Create(Application* app, ResourceManager* manager)
-{
-  return ege_new ResourceMaterial(app, manager);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
-const String& ResourceMaterial::name() const
-{
-  return m_name;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
-EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
-{
-  EGE_UNUSED(path);
-
-  EGEResult result = EGE_SUCCESS;
-
-  // get data
-  m_name            = tag->attribute("name");
-  m_srcBlend        = mapBlendFactor(tag->attribute("src-blend").toLower(), EGEGraphics::BLEND_FACTOR_ONE);
-  m_dstBlend        = mapBlendFactor(tag->attribute("dst-blend").toLower(), EGEGraphics::BLEND_FACTOR_ZERO);
-  m_diffuseColor    = tag->attribute("diffuse-color", "1 1 1 1");
-  m_ambientColor    = tag->attribute("ambient-color", "1 1 1 1");
-  m_specularColor   = tag->attribute("specular-color", "0 0 0 1");
-  m_emissionColor   = tag->attribute("emission-color", "0 0 0 1");
-  m_shininess       = tag->attribute("shininess", "0");
-
-  // check if obligatory data is wrong
-  if (m_name.empty() || (EGEGraphics::BLEND_FACTOR_UNKNOWN == m_srcBlend) || (EGEGraphics::BLEND_FACTOR_UNKNOWN == m_dstBlend))
-  {
-    // error!
-    return EGE_ERROR_BAD_PARAM;
-  }
-
-  // go thru all sub node
-  PXmlElement child = tag->firstChild();
-  while (child->isValid())
-  {
-    // check child
-    if (NODE_TEXTURE == child->name())
-    {
-      result = addTexture(child);
-    }
-
-    // check if failed
-    if (EGE_SUCCESS != result)
-    {
-      // error, done!
-      break;
-    }
-
-    // go to next child
-    child = child->nextChild();
-  }
-
-  return result;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
-EGEResult ResourceMaterial::load()
-{
-  EGEResult result = EGE_SUCCESS;
-
-  if (!isLoaded())
-  {
-    bool error = false;
-
-    PMaterial material = ege_new Material(app());
-    if (NULL == material)
-    {
-      // error!
-      return EGE_ERROR_NO_MEMORY;
-    }
-
-    // set blending parameters
-    material->setSrcBlendFactor(srcBlendFactor());
-    material->setDstBlendFactor(dstBlendFactor());
-
-    // set colors
-    material->setAmbientColor(ambientColorName().toColor(&error));
-    material->setDiffuseColor(diffuseColorName().toColor(&error));
-    material->setSpecularColor(specularColorName().toColor(&error));
-    material->setEmissionColor(emissionColorName().toColor(&error));
-    material->setShininess(shininessName().toFloat(&error));
-
-    // check for errors
-    if (error)
-    {
-      return EGE_ERROR;
-    }
-
-    // load textures
-    for (List<TextureImageData>::const_iterator it = m_textureImages.begin(); it != m_textureImages.end(); ++it)
-    {
-      const TextureImageData& textureImageData = *it;
-
-      PObject texture;
-
-      // material referred texture space in use
-      Rectf texRect(0, 0, 1, 1);
-      
-      // NOTE: Material can refer to Texture or TextureImage (ie. from atlas)
-
-      // try to find TextureImage of a given name
-      PResourceTextureImage textureImageRes = manager()->resource("texture-image", textureImageData.m_name);
-      if (textureImageRes)
-      {
-        // load texture image
-        if (EGE_SUCCESS != (result = textureImageRes->load()))
-        {
-          // error!
-          return result;
-        }
-
-        // retrieve referred texture
-        texture = textureImageRes->textureImage()->texture();
-
-        // set new texture space in use
-        texRect = textureImageRes->textureImage()->rectangle();
-      }
-      else
-      {
-        // try to find Texture of a given name
-        PResourceTexture textureRes = manager()->resource("texture", textureImageData.m_name);
-        if (textureRes)
-        {
-          // load texture
-          if (EGE_SUCCESS != (result = textureRes->load()))
-          {
-            // error!
-            return result;
-          }
-        }
-
-        // retrieve referred texture
-        texture = textureRes->texture();
-      }
-      
-      // check if not found
-      if (NULL == texture)
-      {
-        // texture not found
-        EGE_PRINT("Material texture not found: %s", textureImageData.m_name.toAscii());
-        return EGE_ERROR;
-      }
-
-      // NOTE: assumption textureImageData data are valid
-      Rectf materialTextureRect = textureImageData.m_rect.toRectf();
-
-      // calculate final referred rectangle
-      Rectf finalRect;
-      finalRect.x       = texRect.x + texRect.width * materialTextureRect.x;
-      finalRect.y       = texRect.y + texRect.height * materialTextureRect.y;
-      finalRect.width   = texRect.width * materialTextureRect.width;
-      finalRect.height  = texRect.height * materialTextureRect.height;
-
-      PTextureImage textureImage = ege_new TextureImage(app(), texture, finalRect);
-      if (NULL == textureImage || !textureImage->isValid())
-      {
-        // erro!
-        return EGE_ERROR;
-      }
-
-      // set texture data
-      textureImage->setEnvironmentMode(MapTextureEnvironmentMode(textureImageData.m_envMode, EGETexture::EM_MODULATE));
-
-      // add texture to material
-      if (EGE_SUCCESS != (result = material->addTexture(textureImage)))
-      {
-        // error!
-        return result;
-      }
-    }
-
-    // success
-    m_material = material;
-  }
-
-  return result;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
-void ResourceMaterial::unload()
-{
-  m_material = NULL;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds texture dependancy. */
-EGEResult ResourceMaterial::addTexture(const PXmlElement& tag)
-{
-  EGEResult result = EGE_SUCCESS;
-
-  // get data
-  String name     = tag->attribute("name");
-  String rect     = tag->attribute("rect", "0 0 1 1");
-  String envMode  = tag->attribute("env-mode", "modulate");
-
-  // check if obligatory data is wrong
-  if (name.empty())
-  {
-    // error!
-    return EGE_ERROR_BAD_PARAM;
-  }
-
-  // add into pool
-  m_textureImages.push_back(TextureImageData(name, rect, envMode));
-
-  return result;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Maps blend factor's name into value. */
-EGEGraphics::EBlendFactor ResourceMaterial::mapBlendFactor(const String& name, EGEGraphics::EBlendFactor defaultValue) const
+/*! Local function mapping blend factor's name into value. */
+EGEGraphics::EBlendFactor MapBlendFactor(const String& name, EGEGraphics::EBlendFactor defaultValue)
 {
   // check if no data to convert
   if (name.empty())
@@ -331,3 +102,253 @@ EGEGraphics::EBlendFactor ResourceMaterial::mapBlendFactor(const String& name, E
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+EGE_DEFINE_NEW_OPERATORS(ResourceMaterial)
+EGE_DEFINE_DELETE_OPERATORS(ResourceMaterial)
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceMaterial::ResourceMaterial(Application* app, ResourceManager* manager) : IResource(app, manager, "material")
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceMaterial::~ResourceMaterial()
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates instance of resource. This method is a registration method for manager. */
+PResource ResourceMaterial::Create(Application* app, ResourceManager* manager)
+{
+  return ege_new ResourceMaterial(app, manager);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! IResource override. Returns name of resource. */
+const String& ResourceMaterial::name() const
+{
+  return m_name;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Initializes resource from XML. 
+* 
+*  \param  path  full path to resource definition file.
+*  \param  tag   xml element with resource definition. 
+*/
+EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
+{
+  EGE_UNUSED(path);
+
+  EGEResult result = EGE_SUCCESS;
+
+  bool error = false;
+
+  // get data
+  m_name            = tag->attribute("name");
+  m_srcBlend        = MapBlendFactor(tag->attribute("src-blend").toLower(), EGEGraphics::BLEND_FACTOR_ONE);
+  m_dstBlend        = MapBlendFactor(tag->attribute("dst-blend").toLower(), EGEGraphics::BLEND_FACTOR_ZERO);
+  m_diffuseColor    = tag->attribute("diffuse-color", "1 1 1 1").toColor(&error);
+  m_ambientColor    = tag->attribute("ambient-color", "1 1 1 1").toColor(&error);
+  m_specularColor   = tag->attribute("specular-color", "0 0 0 1").toColor(&error);
+  m_emissionColor   = tag->attribute("emission-color", "0 0 0 1").toColor(&error);
+  m_shininess       = tag->attribute("shininess", "0").toFloat(&error);
+
+  // check if obligatory data is wrong
+  if (error || m_name.empty())
+  {
+    // error!
+    return EGE_ERROR_BAD_PARAM;
+  }
+
+  // go thru all sub node
+  PXmlElement child = tag->firstChild();
+  while (child->isValid())
+  {
+    // check child
+    if (NODE_TEXTURE == child->name())
+    {
+      result = addTexture(child);
+    }
+
+    // check if failed
+    if (EGE_SUCCESS != result)
+    {
+      // error, done!
+      break;
+    }
+
+    // go to next child
+    child = child->nextChild();
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! IResource override. Loads resource. */
+EGEResult ResourceMaterial::load()
+{
+  EGEResult result = EGE_SUCCESS;
+
+  if (!isLoaded())
+  {
+    // load textures
+    for (List<TextureImageData>::const_iterator it = m_textureImageData.begin(); it != m_textureImageData.end(); ++it)
+    {
+      const TextureImageData& textureImageData = *it;
+
+      PObject texture;
+
+      // material referred texture space in use
+      Rectf texRect(0, 0, 1, 1);
+      
+      // NOTE: Material can refer to Texture or TextureImage (ie. from atlas)
+
+      // try to find TextureImage of a given name
+      PResourceTextureImage textureImageRes = manager()->resource("texture-image", textureImageData.m_name);
+      if (textureImageRes)
+      {
+        // load texture image
+        if (EGE_SUCCESS != (result = textureImageRes->load()))
+        {
+          // error!
+          return result;
+        }
+
+        // retrieve referred texture
+        TextureImage textureImage(app());
+        if (EGE_SUCCESS != (result = textureImageRes->setInstance(textureImage)))
+        {
+          // error!
+          return result;
+        }
+
+        // store referred texture
+        texture = textureImage.texture();
+
+        // set new texture space in use
+        texRect = textureImage.rect();
+      }
+      else
+      {
+        // try to find Texture of a given name
+        PResourceTexture textureRes = manager()->resource("texture", textureImageData.m_name);
+        if (textureRes)
+        {
+          // load texture
+          if (EGE_SUCCESS != (result = textureRes->load()))
+          {
+            // error!
+            return result;
+          }
+        }
+
+        // retrieve referred texture
+        texture = textureRes->texture();
+      }
+      
+      // check if not found
+      if (NULL == texture)
+      {
+        // texture not found
+        EGE_PRINT("Material texture not found: %s", textureImageData.m_name.toAscii());
+        return EGE_ERROR;
+      }
+
+      // calculate final referred rectangle
+      Rectf finalRect = texRect.combine(textureImageData.m_rect);
+
+      PTextureImage textureImage = ege_new TextureImage(app(), texture, finalRect);
+      if (NULL == textureImage || !textureImage->isValid())
+      {
+        // erro!
+        return EGE_ERROR;
+      }
+
+      // set texture data
+      textureImage->setEnvironmentMode(textureImageData.m_envMode);
+
+      // add to pool
+      m_textureImages.push_back(textureImage);
+    }
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! IResource override. Unloads resource. */
+void ResourceMaterial::unload()
+{
+  m_textureImages.clear();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds texture dependancy. */
+EGEResult ResourceMaterial::addTexture(const PXmlElement& tag)
+{
+  EGEResult result = EGE_SUCCESS;
+
+  bool error = false;
+
+  // get data
+  String name                          = tag->attribute("name");
+  Rectf rect                           = tag->attribute("rect", "0 0 1 1").toRectf(&error);
+  EGETexture::EnvironmentMode envMode  = MapTextureEnvironmentMode(tag->attribute("env-mode", "modulate"), EGETexture::EM_MODULATE);
+
+  // check if obligatory data is wrong
+  if (error || name.empty())
+  {
+    // error!
+    return EGE_ERROR_BAD_PARAM;
+  }
+
+  // add into pool
+  m_textureImageData.push_back(TextureImageData(name, rect, envMode));
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates instance of material object defined by resource. */
+PMaterial ResourceMaterial::createInstance() const
+{
+	PMaterial object = ege_new Material(app());
+  if (object)
+  {
+    // set new data
+    if (EGE_SUCCESS != setInstance(object))
+    {
+      object = NULL;
+    }
+  }
+
+  return object;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Set given instance of material object to what is defined by resource. */
+EGEResult ResourceMaterial::setInstance(PMaterial& instance) const
+{
+  // sanity check
+  if (NULL == instance || !isLoaded())
+  {
+    return EGE_ERROR;
+  }
+
+  // fill in data
+  instance->setSrcBlendFactor(srcBlendFactor());
+  instance->setDstBlendFactor(dstBlendFactor());
+
+  instance->setAmbientColor(ambientColor());
+  instance->setDiffuseColor(diffuseColor());
+  instance->setSpecularColor(specularColor());
+  instance->setEmissionColor(emissionColor());
+
+  instance->setShininess(shininess());
+
+  instance->removeTexture(-1);
+  for (List<PTextureImage>::const_iterator it = m_textureImages.begin(); it != m_textureImages.end(); ++it)
+  {
+    EGEResult result;
+    if (EGE_SUCCESS != (result = instance->addTexture(*it)))
+    {
+      // error!
+      return result;
+    }
+  }
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

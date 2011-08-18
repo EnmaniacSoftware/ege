@@ -125,17 +125,27 @@ EGEResult ResourceFont::load()
     }
 
     // get material
-    PResourceMaterial material = manager()->resource("material", materialName());
-    if (material)
+    PResourceMaterial materialResource = manager()->resource("material", materialName());
+    if (materialResource)
     {
       // load material
-      if (EGE_SUCCESS != (result = material->load()))
+      if (EGE_SUCCESS != (result = materialResource->load()))
       {
         // error!
         return result;
       }
 
-      font->setMaterial(material->material());
+      PMaterial material = materialResource->createInstance();
+      if (NULL == material)
+      {
+        // error!
+        return EGE_ERROR;
+      }
+
+      // set font material
+      font->setMaterial(material);
+
+      // store font
       m_font = font;
     }
     else

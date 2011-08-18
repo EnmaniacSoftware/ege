@@ -11,6 +11,7 @@
 #include <EGEMath.h>
 #include <EGEList.h>
 #include <EGEGraphics.h>
+#include <EGETexture.h>
 #include "Core/Resource/Resource.h"
 #include "Core/Graphics/Material.h"
 
@@ -21,6 +22,7 @@ EGE_NAMESPACE_BEGIN
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
+EGE_DECLARE_SMART_CLASS(TextureImage, PTextureImage)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -49,34 +51,32 @@ class ResourceMaterial : public IResource
     /* IResource override. Unloads resource. */
     void unload() override;
 
-    /*! Gets instance of material object defined by resource. */
-    inline PMaterial material() const { return m_material; }
+    /* Creates instance of material object defined by resource. */
+    PMaterial createInstance() const;
+    /* Set given instance of material object to what is defined by resource. */
+    EGEResult setInstance(PMaterial& instance) const;
 
   private:
 
     ResourceMaterial(Application* app, ResourceManager* manager);
     /* Adds texture dependancy. */
     EGEResult addTexture(const PXmlElement& tag);
-    /* Adds texture image dependancy. */
-    EGEResult addTextureImage(const PXmlElement& tag);
     /*! Returns TRUE if material is loaded. */
-    inline bool isLoaded() const { return NULL != m_material; }
+    inline bool isLoaded() const { return !m_textureImages.empty(); }
     /*! Returns source pixel factor function. */
     inline EGEGraphics::EBlendFactor srcBlendFactor() const { return m_srcBlend; }
     /*! Returns destination pixel factor function. */
     inline EGEGraphics::EBlendFactor dstBlendFactor() const { return m_dstBlend; }
-    /*! Returns ambient color name. */
-    inline const String& ambientColorName() const { return m_ambientColor; }
-    /*! Returns diffuse color name. */
-    inline const String& diffuseColorName() const { return m_diffuseColor; }
-    /*! Returns specular color name. */
-    inline const String& specularColorName() const { return m_specularColor; }
-    /*! Returns emission color name. */
-    inline const String& emissionColorName() const { return m_emissionColor; }
-    /*! Returns shinness value name. */
-    inline const String& shininessName() const { return m_shininess; }
-    /* Maps blend factor's name into value. */
-    EGEGraphics::EBlendFactor mapBlendFactor(const String& name, EGEGraphics::EBlendFactor defaultValue) const;
+    /*! Returns ambient color. */
+    inline const Color& ambientColor() const { return m_ambientColor; }
+    /*! Returns diffuse color. */
+    inline const Color& diffuseColor() const { return m_diffuseColor; }
+    /*! Returns specular color. */
+    inline const Color& specularColor() const { return m_specularColor; }
+    /*! Returns emission color. */
+    inline const Color& emissionColor() const { return m_emissionColor; }
+    /*! Returns shinness value. */
+    inline float32 shininess() const { return m_shininess; }
     
   private:
 
@@ -85,16 +85,16 @@ class ResourceMaterial : public IResource
     {
       public:
 
-        TextureImageData(const String& name, const String& rect, const String& envMode) : m_name(name), m_rect(rect), m_envMode(envMode) {}
+        TextureImageData(const String& name, const Rectf& rect, EGETexture::EnvironmentMode envMode) : m_name(name), m_rect(rect), m_envMode(envMode) {}
 
       public:
 
         /*! Texture name. */
         String m_name;
-        /*! Texture rectangle. */
-        String m_rect;
-        /*! Texture environment mode name. */
-        String m_envMode;
+        /*! Texture rectangle (in normalized local coords). */
+        Rectf m_rect;
+        /*! Texture environment mode. */
+        EGETexture::EnvironmentMode m_envMode;
     };
 
   private:
@@ -102,24 +102,23 @@ class ResourceMaterial : public IResource
     /*! Name. */
     String m_name;
     /*! List of all texture images contributing to material. */
-    List<TextureImageData> m_textureImages;
+    List<TextureImageData> m_textureImageData;
     /*! Source blend value. */
     EGEGraphics::EBlendFactor m_srcBlend;
     /*! Destination blend value. */
     EGEGraphics::EBlendFactor m_dstBlend;
-    /*! Ambient color name. */
-    String m_ambientColor;
-    /*! Diffuse color name. */
-    String m_diffuseColor;
-    /*! Specular color name. */
-    String m_specularColor;
-    /*! Emission color name. */
-    String m_emissionColor;
-    /*! Shininess value name. */
-    String m_shininess;
-
-    /*! Material object created from resource. NULL if not created yet. */
-    PMaterial m_material;
+    /*! Ambient color. */
+    Color m_ambientColor;
+    /*! Diffuse color. */
+    Color m_diffuseColor;
+    /*! Specular color. */
+    Color m_specularColor;
+    /*! Emission color. */
+    Color m_emissionColor;
+    /*! Shininess value. */
+    float32 m_shininess;
+    /*! List of all texture image objects referred by material. Empty if material is not loaded yet. */
+    List<PTextureImage> m_textureImages;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
