@@ -19,6 +19,8 @@ class DynamicArray : public std::vector<T>
 
     /* Removes given object from list. */
     void remove(const T object);
+    /* Removes object at given index. */
+    void removeAt(s32 index);
     /* Returns last element. If list is empty, default value is returned. */
     const T last(const T& defaultValue) const;
     /* Returns TRUE if given object is present. */
@@ -50,6 +52,17 @@ void DynamicArray<T>::remove(const T object)
   typename DynamicArray<T>::iterator it = std::find(this->begin(), this->end(), object);
   if (it != this->end())
   {
+    erase(it);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes object at given index. */
+template <typename T>
+void DynamicArray<T>::removeAt(s32 index)
+{
+  if (index < static_cast<s32>(this->size()))
+  {
+    typename DynamicArray<T>::iterator it = this->begin() + index;
     erase(it);
   }
 }

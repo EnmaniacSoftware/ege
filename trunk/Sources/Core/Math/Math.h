@@ -40,6 +40,7 @@ class Math
     inline static T Bound(T value, T min, T max) { return (value > max) ? max : ((value < min) ? min : value); }
 
     inline static float32 Floor(float32 value) { return floorf(value); }
+    inline static float32 Ceil(float32 value) { return ceilf(value); }
 
     inline static float32 RadiansToDegrees(float32 radians) { return radians * 57.29577951f; }
     inline static float32 DegreesToRadians(float32 degrees) { return degrees * 0.017453292f; }

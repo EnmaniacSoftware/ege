@@ -38,6 +38,11 @@ class TRect
     inline TRect<T> intersect(const TRect<T>& rect) const;
     /* Calculates union rectangle between current and given rectangle. */
     inline TRect<T> unite(const TRect<T>& rect) const;
+    /* Calculates combined rectangle between current and given rectangle.
+     * @param  rect  Rectangle to combine self with.
+     * @note Combined rectangle is the a new rectangle in local space of current one. This is useful to calculate part of current rectangle defined by other.
+     */
+    inline TRect<T> combine(const TRect<T>& rect) const;
 
   public:
 
@@ -165,6 +170,23 @@ TRect<T> TRect<T>::unite(const TRect<T>& rect) const
   out.y       = (y < rect.y) ? y : rect.y;
   out.width   = (right() > rect.right()) ? (right() - out.x) : (rect.right() - out.x);
   out.height  = (bottom() > rect.bottom()) ? (bottom() - out.y) : (rect.bottom() - out.y);
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Calculates combined rectangle between current and given rectangle. 
+ *  @param  rect  Rectangle to combine self with.
+ *  @note Combined rectangle is the a new rectangle in local space of current one. This is useful to calculate part of current rectangle defined by other.
+ */
+template <typename T>
+TRect<T> TRect<T>::combine(const TRect<T>& rect) const
+{
+  TRect<T> out;
+
+  out.x       = x + width * rect.x;
+  out.y       = y + height * rect.y;
+  out.width   = width * rect.width;
+  out.height  = height * rect.height;
 
   return out;
 }
