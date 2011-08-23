@@ -32,6 +32,8 @@ class Material : public Object
     EGEResult addTexture(PObject texture);
     /* Sets new texture at given index. Can only succeed when setting texture within range. */
     EGEResult setTexture(u32 index, PObject texture);
+    /* Sets new texture at the place of the one with given name. If no such texture exists it is added. */
+    EGEResult setTexture(const String& name, PObject texture);
     /* Returns number of textures used. */
     u32 textureCount() const;
     /* Retrives texture at given index. */

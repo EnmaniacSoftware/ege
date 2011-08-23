@@ -85,7 +85,8 @@ class ResourceMaterial : public IResource
     {
       public:
 
-        TextureImageData(const String& name, const Rectf& rect, EGETexture::EnvironmentMode envMode) : m_name(name), m_rect(rect), m_envMode(envMode) {}
+        TextureImageData(const String& name, const Rectf& rect, EGETexture::EnvironmentMode envMode, bool manual) : m_name(name), m_rect(rect), 
+                                                                                                                    m_envMode(envMode), m_manual(manual) {}
 
       public:
 
@@ -95,6 +96,8 @@ class ResourceMaterial : public IResource
         Rectf m_rect;
         /*! Texture environment mode. */
         EGETexture::EnvironmentMode m_envMode;
+        /*! Manual flag. */
+        bool m_manual;
     };
 
   private:

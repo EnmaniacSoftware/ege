@@ -1,4 +1,5 @@
 #include "Core/Graphics/TextureImage.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
@@ -8,23 +9,31 @@ EGE_DEFINE_NEW_OPERATORS(TextureImage)
 EGE_DEFINE_DELETE_OPERATORS(TextureImage)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureImage::TextureImage(Application* app) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE), m_envMode(EGETexture::EM_MODULATE)
+TextureImage::TextureImage(Application* app, const String& name) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE), m_name(name), m_envMode(EGETexture::EM_MODULATE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextureImage::TextureImage(Application* app, PObject texture, const Rectf& rect) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE), m_texture(texture), m_rect(rect),
                                                                                    m_envMode(EGETexture::EM_MODULATE)
 {
+  // inherit name from texture
+  if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
+  {
+    PTexture2D tex2D = texture;
+    m_name = tex2D->name();
+  }
+  else
+  {
+    EGE_ASSERT("Implement!");
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextureImage::TextureImage(Application* app, const PTextureImage& texture, const Rectf& rect) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE), 
-                                                                                                m_texture(texture->m_texture), m_envMode(texture->m_envMode)
+                                                                                                m_name(texture->name()), m_texture(texture->m_texture), 
+                                                                                                m_envMode(texture->m_envMode)
 {
   // NOTE: rect is in local space of this object, combine these for final local space coords
-  m_rect.x      = texture->m_rect.x + rect.x * texture->m_rect.width;
-  m_rect.y      = texture->m_rect.y + rect.y * texture->m_rect.height;
-  m_rect.width  = texture->m_rect.width * rect.width;
-  m_rect.height = texture->m_rect.height * rect.height;
+  m_rect = texture->m_rect.combine(rect);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextureImage::~TextureImage()

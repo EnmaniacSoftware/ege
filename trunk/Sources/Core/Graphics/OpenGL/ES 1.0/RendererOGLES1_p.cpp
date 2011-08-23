@@ -358,8 +358,8 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
 
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
-        glTranslatef(texImg->rectangle().x, texImg->rectangle().y, 0.0f);
-        glScalef(texImg->rectangle().width, texImg->rectangle().height, 1.0f);
+        glTranslatef(texImg->rect().x, texImg->rect().y, 0.0f);
+        glScalef(texImg->rect().width, texImg->rect().height, 1.0f);
       }
     }
   }

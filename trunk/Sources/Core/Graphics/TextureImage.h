@@ -21,7 +21,7 @@ class TextureImage : public Object
 {
   public:
 
-    TextureImage(Application* app);
+    TextureImage(Application* app, const String& name);
     TextureImage(Application* app, PObject texture, const Rectf& rect);
     TextureImage(Application* app, const PTextureImage& texture, const Rectf& rect);
    ~TextureImage();
@@ -31,6 +31,9 @@ class TextureImage : public Object
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
+
+    /*! Return name. */
+    inline const String& name() const { return m_name; }
 
     /* Sets texture which obejct refers to. */
     void setTexture(const PObject& texture);
@@ -51,6 +54,8 @@ class TextureImage : public Object
 
   private:
 
+    /*! Name. */
+    String m_name;
     /*! Texture assigned. */
     PObject m_texture;
     /*! Rectangular are of the texture this object refers to (in normalized local space). */

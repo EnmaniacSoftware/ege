@@ -1,5 +1,6 @@
 #include "Core/Graphics/Material.h"
 #include "Core/Data/DataBuffer.h"
+#include "Core/Graphics/TextureImage.h"
 #include "Core/Math/Math.h"
 
 EGE_NAMESPACE
@@ -42,6 +43,35 @@ EGEResult Material::setTexture(u32 index, PObject texture)
   // set new texture
   m_textures[index] = texture;
   return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets new texture at the place of the one with given name. If no such texture exists it is added. */
+EGEResult Material::setTexture(const String& name, PObject texture)
+{
+  // find texture with given name
+  for (DynamicArray<PObject>::iterator it = m_textures.begin(); it != m_textures.end(); ++it)
+  {
+    bool found = false;
+  
+    if (EGE_OBJECT_UID_TEXTURE_IMAGE == (*it)->uid())
+    {
+      PTextureImage texImg = *it;
+      if (texImg->name() == name)
+      {
+        found = true;
+      }
+    }
+
+    // check if found
+    if (found)
+    {
+      *it = texture;
+      return EGE_SUCCESS;
+    }
+  }
+
+  // not found, append
+  return addTexture(texture);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Remove texture at given index. 

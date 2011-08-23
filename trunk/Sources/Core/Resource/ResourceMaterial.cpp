@@ -192,6 +192,15 @@ EGEResult ResourceMaterial::load()
     {
       const TextureImageData& textureImageData = *it;
 
+      // check if manual texture
+      if (textureImageData.m_manual)
+      {
+        // add placeholder only
+        PTextureImage manual = ege_new TextureImage(app(), textureImageData.m_name);
+        m_textureImages.push_back(manual);
+        continue;
+      }
+
       PObject texture;
 
       // material referred texture space in use
@@ -211,7 +220,7 @@ EGEResult ResourceMaterial::load()
         }
 
         // retrieve referred texture
-        TextureImage textureImage(app());
+        TextureImage textureImage(app(), "");
         if (EGE_SUCCESS != (result = textureImageRes->setInstance(textureImage)))
         {
           // error!
@@ -236,17 +245,17 @@ EGEResult ResourceMaterial::load()
             // error!
             return result;
           }
-        }
 
-        // retrieve referred texture
-        texture = textureRes->texture();
+          // retrieve referred texture
+          texture = textureRes->texture();
+        }
       }
       
       // check if not found
       if (NULL == texture)
       {
         // texture not found
-        EGE_PRINT("Material texture not found: %s", textureImageData.m_name.toAscii());
+        EGE_WARNING("Material texture not found: %s", textureImageData.m_name.toAscii());
         return EGE_ERROR;
       }
 
@@ -288,6 +297,7 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag)
   String name                          = tag->attribute("name");
   Rectf rect                           = tag->attribute("rect", "0 0 1 1").toRectf(&error);
   EGETexture::EnvironmentMode envMode  = MapTextureEnvironmentMode(tag->attribute("env-mode", "modulate"), EGETexture::EM_MODULATE);
+  bool manual                          = tag->attribute("manual", "false").toBool(&error);
 
   // check if obligatory data is wrong
   if (error || name.empty())
@@ -297,7 +307,7 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag)
   }
 
   // add into pool
-  m_textureImageData.push_back(TextureImageData(name, rect, envMode));
+  m_textureImageData.push_back(TextureImageData(name, rect, envMode, manual));
 
   return result;
 }

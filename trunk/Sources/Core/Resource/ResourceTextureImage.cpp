@@ -100,7 +100,7 @@ void ResourceTextureImage::unload()
  */
 PTextureImage ResourceTextureImage::createInstance()
 {
-	PTextureImage object = ege_new TextureImage(app());
+	PTextureImage object = ege_new TextureImage(app(), name());
   if (object)
   {
     // set new data
@@ -140,7 +140,7 @@ EGEResult ResourceTextureImage::setInstance(const PTextureImage& instance)
   // fill in data
   instance->setTexture(m_texture);
   instance->setRect(m_rect);
-
+  
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

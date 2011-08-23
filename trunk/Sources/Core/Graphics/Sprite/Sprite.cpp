@@ -31,7 +31,7 @@ void Sprite::update(const Time& time)
     if (0 >= m_frameTimeLeft.microseconds())
     {
       // go to next frame
-      if (++m_frameIndex == m_frameData.size())
+      if (++m_frameIndex == static_cast<s32>(m_frameData.size()))
       {
         // we reach end of cycle, repeat
         m_frameIndex = 0;

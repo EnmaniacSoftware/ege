@@ -54,6 +54,7 @@ files
   EGEScreen.h
   EGESignal.h
   EGESpline.h
+  EGESprite.h
   EGEString.h
   EGETexture.h
   EGETime.h
@@ -219,6 +220,11 @@ files
 	RenderWindow.cpp
 	RenderWindow.h
 
+	["Core/Graphics/Sprite"]
+ 	(../../Sources/Core/Graphics/Sprite)
+	Sprite.cpp
+	Sprite.h
+
 	["Core/Input"]
   (../../Sources/Core/Input)
   Pointer.cpp
@@ -313,6 +319,10 @@ files
 	ResourceManager.h
   ResourceMaterial.cpp
   ResourceMaterial.h
+  ResourceSprite.cpp
+  ResourceSprite.h
+  ResourceSpritesheet.cpp
+  ResourceSpritesheet.h
   ResourceTexture.cpp
   ResourceTexture.h
   ResourceTextureImage.cpp
