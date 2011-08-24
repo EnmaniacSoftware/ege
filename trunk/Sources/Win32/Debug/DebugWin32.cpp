@@ -3,9 +3,9 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Debug::Assert(const char* description)
+void Debug::Assert(const char* description, const char* fileName, s32 lineNumber)
 {
-  assert(false && description);
+  _CrtDbgReport(_CRT_ASSERT, fileName, lineNumber, NULL, description);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Debug::Print(const String& text)

@@ -32,7 +32,7 @@ class Debug : public Object
   public:
 
     static void Deinit();
-    static void Assert(const char* description);
+    static void Assert(const char* description, const char* fileName, s32 lineNumber);
     static void Log(const String& text);
     static void Print(const String& text);
 
