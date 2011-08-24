@@ -4,7 +4,7 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Debug::Assert(const char* description)
+void Debug::Assert(const char* description, const char* fileName, s32 lineNumber)
 {
   assert(description);
 }

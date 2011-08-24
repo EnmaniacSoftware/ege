@@ -129,7 +129,9 @@
     <ClInclude Include="..\..\Sources\EGEQuaternion.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
     <ClCompile Include="..\..\Sources\Win32\Application\AppControllerWin32_p.cpp" />
-    <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Device\DeviceWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\File\FileWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.cpp" />
