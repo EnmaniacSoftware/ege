@@ -4,10 +4,11 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AtlasGroup::AtlasGroup(const String& name, const String& root, const String& imageName, s32 imageSize, EGEImage::Format imageFormat) 
-: m_name(name), m_root(root), m_imageName(imageName), m_imageSize(imageSize)
+AtlasGroup::AtlasGroup(const String& name, const String& root, const String& textureImageName, const String& textureFiltersName, s32 textureImageSize, 
+                       EGEImage::Format imageFormat) 
+: m_name(name), m_root(root), m_textureImageName(textureImageName), m_textureFiltersName(textureFiltersName), m_textureImageSize(textureImageSize)
 {
-  m_image = ege_new EGE::Image(NULL, imageSize, imageSize, imageFormat);
+  m_image = ege_new EGE::Image(NULL, textureImageSize, textureImageSize, imageFormat);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AtlasGroup::~AtlasGroup()
@@ -25,7 +26,8 @@ AtlasGroup::~AtlasGroup()
 /*! Returns TRUE if object is valid. */
 bool AtlasGroup::isValid() const 
 { 
-  return (NULL != m_image) && (EGE::EGEImage::NONE != m_image->format()) && !m_root.empty() && !m_name.empty() && !m_imageName.empty(); 
+  return (NULL != m_image) && (EGE::EGEImage::NONE != m_image->format()) && !m_root.empty() && !m_name.empty() && !m_textureImageName.empty() && 
+         !m_textureFiltersName.empty(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds entry to pool. */

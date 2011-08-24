@@ -7,7 +7,7 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 60
+#define VERSION_MINOR 65
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping image format name into framework enum. */
 static EGEImage::Format MapImageFormat(const String& formatName)
@@ -146,11 +146,11 @@ bool TextureAtlasGenerator::process()
 
   // go thru all atlas groups
   PXmlElement groupElement = root->firstChild("atlas-group");
-  while (groupElement && groupElement->isValid() && groupElement->hasAttribute("name") && groupElement->hasAttribute("size") && 
-         groupElement->hasAttribute("root") && groupElement->hasAttribute("image"))
+  while (groupElement && groupElement->isValid() && groupElement->hasAttribute("name") && groupElement->hasAttribute("texture-size") && 
+         groupElement->hasAttribute("root") && groupElement->hasAttribute("texture-image"))
   {
-    AtlasGroup* group = new AtlasGroup(groupElement->attribute("name"), groupElement->attribute("root"), groupElement->attribute("image"), 
-                                       groupElement->attribute("size").toInt(), outputFormat());
+    AtlasGroup* group = new AtlasGroup(groupElement->attribute("name"), groupElement->attribute("root"), groupElement->attribute("texture-image"), 
+                                       groupElement->attribute("texture-filters", "bilinear"), groupElement->attribute("texture-size").toInt(), outputFormat());
     if (!group || !group->isValid())
     {
       // error!
@@ -269,7 +269,7 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
   }
 
   // set root node to max size
-  root->m_rect = Recti(0, 0, group->imageSize(), group->imageSize());
+  root->m_rect = Recti(0, 0, group->textureImageSize(), group->textureImageSize());
   
   // create group element
   XmlElement groupElement("group");
@@ -279,7 +279,9 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
   XmlElement textureElement("texture");
   textureElement.setAttribute("type", "2d");
   textureElement.setAttribute("name", String::Format("atlas-%s", group->name().toAscii()));
-  textureElement.setAttribute("path", group->imageName());
+  textureElement.setAttribute("path", group->textureImageName());
+  textureElement.setAttribute("mag-filter", group->textureFiltersName());
+  textureElement.setAttribute("min-filter", group->textureFiltersName());
   groupElement.appendChildElement(textureElement);
 
   // go thru all elements belonging to current group
@@ -309,8 +311,8 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
 #ifdef _DEBUG
     element.setAttribute("pixel-rect", String::Format("%d %d %d %d", node->m_rect.x, node->m_rect.y, node->m_rect.width, node->m_rect.height));
 #endif _DEBUG
-    element.setAttribute("rect", String::Format("%f %f %f %f", node->m_rect.x * 1.0f / group->imageSize(), node->m_rect.y * 1.0f / group->imageSize(), 
-                                                node->m_rect.width * 1.0f / group->imageSize(), node->m_rect.height * 1.0f / group->imageSize()));
+    element.setAttribute("rect", String::Format("%f %f %f %f", node->m_rect.x * 1.0f / group->textureImageSize(), node->m_rect.y * 1.0f / group->textureImageSize(), 
+                                                node->m_rect.width * 1.0f / group->textureImageSize(), node->m_rect.height * 1.0f / group->textureImageSize()));
 
     // add to group element
     groupElement.appendChildElement(element);
@@ -334,7 +336,7 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
   rootElement->appendChildElement(groupElement);
 
   // save atlas image
-  if (EGE_SUCCESS != group->image()->save(group->root() + "/" + group->imageName()))
+  if (EGE_SUCCESS != group->image()->save(group->root() + "/" + group->textureImageName()))
   {
     // error!
     std::cout << "ERROR: Could not save atlas image!" << std::endl;

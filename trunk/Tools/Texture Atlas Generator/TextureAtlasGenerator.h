@@ -26,7 +26,8 @@ class TextureAtlasGenerator
 
   private:
 
-    enum ESortMethod
+    /*! Available sorting methods. */ 
+    enum SortMethod
     {
       SM_NONE,
       SM_GREATER_AREA,
@@ -49,7 +50,7 @@ class TextureAtlasGenerator
     /* Generates atlas for given group. */
     bool generate(AtlasGroup* group);
     /*! Returns current sorting method being used. */
-    inline ESortMethod sortMethod() const { return m_sortMethod; }
+    inline SortMethod sortMethod() const { return m_sortMethod; }
     
 	private:
 
@@ -60,7 +61,7 @@ class TextureAtlasGenerator
     /*! Output XML data file path. */
     EGE::String m_outputXmlPath;
     /*! Current sorting method. */
-    ESortMethod m_sortMethod;
+    SortMethod m_sortMethod;
     /*! XML document with atlas generated data. */
     EGE::PXmlDocument m_atlasData;
     /*! Atlas groups. */
