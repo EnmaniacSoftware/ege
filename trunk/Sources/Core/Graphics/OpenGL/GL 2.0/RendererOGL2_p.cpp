@@ -434,7 +434,7 @@ bool RendererPrivate::bindTexture(GLenum target, GLuint textureId)
 
     default:
 
-      EGE_ASSERT("Incorrect texture binding!");
+      EGE_ASSERT(false && "Incorrect texture binding!");
   }
 
   // query texture Id bound to given target

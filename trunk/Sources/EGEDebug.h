@@ -1,6 +1,7 @@
 #ifndef EGE_DEBUG_H
 #define EGE_DEBUG_H
 
+#include "Core/Platform.h"
 #include "Core/Debug/Debug.h"
 #include "Core/Debug/Console.h"
 

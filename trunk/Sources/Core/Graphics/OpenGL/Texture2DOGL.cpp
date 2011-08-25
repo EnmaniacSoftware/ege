@@ -152,7 +152,7 @@ EGEResult Texture2DPrivate::create()
     
     default:
 
-      EGE_ASSERT("Invalid format");
+      EGE_ASSERT(false && "Invalid format");
       return EGE_ERROR_NOT_SUPPORTED;
   }
 

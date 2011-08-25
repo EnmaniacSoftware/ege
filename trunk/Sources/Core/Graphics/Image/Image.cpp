@@ -278,7 +278,7 @@ EGEResult Image::decompressPng(PObject source, EGEImage::Format format)
   }
   else
   {
-    EGE_ASSERT("Unsupported source type.");
+    EGE_ASSERT(false && "Unsupported source type.");
     return EGE_ERROR_NOT_SUPPORTED;
   }
 
@@ -589,7 +589,7 @@ EGEResult Image::savePng(File& file, EGEImage::Format format)
     default:
 
       // error!
-      EGE_ASSERT("Format not supported!");
+      EGE_ASSERT(false && "Format not supported!");
       png_destroy_read_struct(&pngWriteStruct, &pngInfoStruct, png_infopp_NULL);
       return EGE_ERROR_IO;
   }
@@ -627,7 +627,7 @@ EGEResult Image::saveJpg(File& file, EGEImage::Format format)
   EGE_UNUSED(file);
   EGE_UNUSED(format);
 
-  EGE_ASSERT("Implement");
+  EGE_ASSERT(false && "Implement");
 
   return EGE_SUCCESS;
 }

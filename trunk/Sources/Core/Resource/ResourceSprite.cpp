@@ -201,7 +201,7 @@ void ResourceSprite::calculateFrameData()
     }
     else
     {
-      EGE_ASSERT("Not implemented mode");
+      EGE_ASSERT(false && "Not implemented mode");
     }
 
     // validate

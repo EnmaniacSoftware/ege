@@ -24,7 +24,7 @@ TextureImage::TextureImage(Application* app, PObject texture, const Rectf& rect)
   }
   else
   {
-    EGE_ASSERT("Implement!");
+    EGE_ASSERT(false && "Implement!");
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

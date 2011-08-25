@@ -6,6 +6,7 @@ EGE_NAMESPACE
 void Debug::Assert(const char* description, const char* fileName, s32 lineNumber)
 {
   _CrtDbgReport(_CRT_ASSERT, fileName, lineNumber, NULL, description);
+  _CrtDbgBreak();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Debug::Print(const String& text)
