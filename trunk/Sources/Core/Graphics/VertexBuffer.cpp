@@ -1,5 +1,7 @@
 #include "Core/Graphics/VertexBuffer.h"
 #include "Core/Data/DataBuffer.h"
+#include <EGEList.h>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
@@ -34,16 +36,16 @@ bool VertexBuffer::addArray(EGEVertexBuffer::ArrayType type)
   EGEVertexBuffer::SARRAYSEMANTIC semantic;
   
   // go thru all semantics
-  for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
+  for (SemanticsList::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
   {
     // calculate according to type
     switch (iter->type)
     {
-      case EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ:  offset += 3; break;
-      case EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA:    offset += 4; break;
-      case EGEVertexBuffer::ARRAY_TYPE_NORMAL:        offset += 3; break;
-      case EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV:    offset += 2; break;
-      case EGEVertexBuffer::ARRAY_TYPE_TANGENT:       offset += 3; break;
+      case EGEVertexBuffer::AT_POSITION_XYZ:  offset += 3; break;
+      case EGEVertexBuffer::AT_COLOR_RGBA:    offset += 4; break;
+      case EGEVertexBuffer::AT_NORMAL:        offset += 3; break;
+      case EGEVertexBuffer::AT_TEXTURE_UV:    offset += 2; break;
+      case EGEVertexBuffer::AT_TANGENT:       offset += 3; break;
     }
 
     // check if the same array type is already in
@@ -72,7 +74,7 @@ bool VertexBuffer::addArray(EGEVertexBuffer::ArrayType type)
 u32 VertexBuffer::arrayCount(EGEVertexBuffer::ArrayType type) const
 {
   u32 count = 0;
-  for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
+  for (SemanticsList::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
   {
     if (iter->type == type)
     {
@@ -111,11 +113,7 @@ void VertexBuffer::destroy()
 {
   m_buffer = NULL;
 
-  m_locked = false;
-
-  m_vertexSize = 0;
-
-  m_semantics.clear();
+  clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Locks buffer given part of the buffer for read/write operations. */
@@ -166,15 +164,15 @@ u32 VertexBuffer::vertexSize() const
   if (0 == m_vertexSize)
   {
     // go thru all buffers
-    for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
+    for (SemanticsList::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
     {
       switch (iter->type)
       {
-        case EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ:  m_vertexSize += 3; break;
-        case EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA:    m_vertexSize += 4; break;
-        case EGEVertexBuffer::ARRAY_TYPE_NORMAL:        m_vertexSize += 3; break;
-        case EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV:    m_vertexSize += 2; break;
-        case EGEVertexBuffer::ARRAY_TYPE_TANGENT:       m_vertexSize += 3; break;
+        case EGEVertexBuffer::AT_POSITION_XYZ:  m_vertexSize += 3; break;
+        case EGEVertexBuffer::AT_COLOR_RGBA:    m_vertexSize += 4; break;
+        case EGEVertexBuffer::AT_NORMAL:        m_vertexSize += 3; break;
+        case EGEVertexBuffer::AT_TEXTURE_UV:    m_vertexSize += 2; break;
+        case EGEVertexBuffer::AT_TANGENT:       m_vertexSize += 3; break;
       }
     }
 
@@ -185,7 +183,7 @@ u32 VertexBuffer::vertexSize() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns current buffer semantics. */
-const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& VertexBuffer::semantics() const
+const VertexBuffer::SemanticsList& VertexBuffer::semantics() const
 {
   return m_semantics; 
 }
@@ -246,5 +244,63 @@ bool VertexBuffer::reallocateBuffer(u32 count)
   }
 
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets semantics to given type. */
+bool VertexBuffer::setSemantics(EGEVertexBuffer::SemanticType type)
+{
+  // clear any previous semantics
+  clear();
+
+  // process according to type
+  List<EGEVertexBuffer::ArrayType> arrayList;
+  switch (type)
+  {
+    case EGEVertexBuffer::ST_V3_T2:
+
+      arrayList.push_back(EGEVertexBuffer::AT_POSITION_XYZ);
+      arrayList.push_back(EGEVertexBuffer::AT_TEXTURE_UV);
+      break;
+
+    case EGEVertexBuffer::ST_V3_T2_C4:
+
+      arrayList.push_back(EGEVertexBuffer::AT_POSITION_XYZ);
+      arrayList.push_back(EGEVertexBuffer::AT_TEXTURE_UV);
+      arrayList.push_back(EGEVertexBuffer::AT_COLOR_RGBA);
+      break;
+
+    case EGEVertexBuffer::ST_V3_C4:
+
+      arrayList.push_back(EGEVertexBuffer::AT_POSITION_XYZ);
+      arrayList.push_back(EGEVertexBuffer::AT_COLOR_RGBA);
+      break;
+
+    default:
+
+      EGE_ASSERT(false && "Implement?");
+  }
+
+  // add all array types in order
+  for (List<EGEVertexBuffer::ArrayType>::const_iterator it = arrayList.begin(); it != arrayList.end(); ++it)
+  {
+    // add current array type
+    if (!addArray(*it))
+    {
+      // error!
+      return false;
+    }
+  }
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Clears vertex data. */
+void VertexBuffer::clear()
+{
+  m_locked = false;
+
+  m_vertexSize = 0;
+
+  m_semantics.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

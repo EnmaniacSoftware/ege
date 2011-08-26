@@ -13,7 +13,7 @@ EGE_DEFINE_NEW_OPERATORS(RenderComponent)
 EGE_DEFINE_DELETE_OPERATORS(RenderComponent)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderComponent::RenderComponent(Application* app, const String& name, s32 priority, EGEGraphics::ERenderPrimitiveType primitive) 
+RenderComponent::RenderComponent(Application* app, const String& name, s32 priority, EGEGraphics::RenderPrimitiveType primitive) 
 : IComponent(app, EGE_OBJECT_UID_RENDER_COMPONENT, name), m_priority(priority), m_primitiveType(primitive), m_hash(0), m_hashInvalid(true)
 {
   m_indexBuffer  = ege_new IndexBuffer(app);

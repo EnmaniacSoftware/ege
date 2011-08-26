@@ -44,6 +44,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\RenderObjectFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Renderer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderQueue.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderTarget.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\RenderObjectFactory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Sprite\Sprite.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
@@ -119,6 +121,7 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSprite.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpritesheet.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceTextureImage.h" />
+    <ClInclude Include="..\..\Sources\EGEAlignment.h" />
     <ClInclude Include="..\..\Sources\EGEAngle.h" />
     <ClInclude Include="..\..\Sources\EGEComplex.h" />
     <ClInclude Include="..\..\Sources\EGEFlags.h" />

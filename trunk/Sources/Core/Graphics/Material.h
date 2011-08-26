@@ -45,13 +45,13 @@ class Material : public Object
     void removeTexture(s32 index);
     
     /* Sets source pixel blend factor. */
-    void setSrcBlendFactor(EGEGraphics::EBlendFactor factor);
+    void setSrcBlendFactor(EGEGraphics::BlendFactor factor);
     /*! Returns source pixel blend factor. */
-    inline EGEGraphics::EBlendFactor srcBlendFactor() const { return m_srcBlendFactor; }
+    inline EGEGraphics::BlendFactor srcBlendFactor() const { return m_srcBlendFactor; }
     /* Sets destination pixel blend factor. */
-    void setDstBlendFactor(EGEGraphics::EBlendFactor factor);
+    void setDstBlendFactor(EGEGraphics::BlendFactor factor);
     /*! Returns destination pixel blend factor. */
-    inline EGEGraphics::EBlendFactor dstBlendFactor() const { return m_dstBlendFactor; }
+    inline EGEGraphics::BlendFactor dstBlendFactor() const { return m_dstBlendFactor; }
 
     /* Sets diffuse color. */
     void setDiffuseColor(const Color& color);
@@ -89,9 +89,9 @@ class Material : public Object
     /*! Emission (self-illumination) color. */
     Color m_emissionColor;
     /*! Source blend factor. */
-    EGEGraphics::EBlendFactor m_srcBlendFactor;
+    EGEGraphics::BlendFactor m_srcBlendFactor;
     /*! Destination blend factor. */
-    EGEGraphics::EBlendFactor m_dstBlendFactor;
+    EGEGraphics::BlendFactor m_dstBlendFactor;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

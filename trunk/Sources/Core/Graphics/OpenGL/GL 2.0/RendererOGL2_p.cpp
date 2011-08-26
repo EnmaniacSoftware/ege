@@ -22,15 +22,15 @@ EGE_DEFINE_DELETE_OPERATORS(RendererPrivate)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps primitive type to OpenGL compilant one. */
-static GLenum MapPrimitiveType(EGEGraphics::ERenderPrimitiveType type)
+static GLenum MapPrimitiveType(EGEGraphics::RenderPrimitiveType type)
 {
   switch (type)
   {
-    case EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLES:        return GL_TRIANGLES;
-    case EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLE_STRIPS:  return GL_TRIANGLE_STRIP;
-    case EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLE_FAN:     return GL_TRIANGLE_FAN;
-    case EGEGraphics::RENDER_PRIMITIVE_TYPE_LINES:            return GL_LINES;
-    case EGEGraphics::RENDER_PRIMITIVE_TYPE_LINE_LOOP:        return GL_LINE_LOOP;
+    case EGEGraphics::RPT_TRIANGLES:        return GL_TRIANGLES;
+    case EGEGraphics::RPT_TRIANGLE_STRIPS:  return GL_TRIANGLE_STRIP;
+    case EGEGraphics::RPT_TRIANGLE_FAN:     return GL_TRIANGLE_FAN;
+    case EGEGraphics::RPT_LINES:            return GL_LINES;
+    case EGEGraphics::RPT_LINE_LOOP:        return GL_LINE_LOOP;
   }
 
   // default
@@ -38,20 +38,20 @@ static GLenum MapPrimitiveType(EGEGraphics::ERenderPrimitiveType type)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps blend factors to OpenGL compilant values. */
-static GLenum MapBlendFactor(EGEGraphics::EBlendFactor factor)
+static GLenum MapBlendFactor(EGEGraphics::BlendFactor factor)
 {
   switch (factor)
   {
-    case EGEGraphics::BLEND_FACTOR_ZERO:                return GL_ZERO;
-    case EGEGraphics::BLEND_FACTOR_ONE:                 return GL_ONE;
-    case EGEGraphics::BLEND_FACTOR_SRC_COLOR:           return GL_SRC_COLOR;
-    case EGEGraphics::BLEND_FACTOR_DST_COLOR:           return GL_DST_COLOR;
-    case EGEGraphics::BLEND_FACTOR_ONE_MINUS_SRC_COLOR: return GL_ONE_MINUS_SRC_COLOR;
-    case EGEGraphics::BLEND_FACTOR_ONE_MINUS_DST_COLOR: return GL_ONE_MINUS_DST_COLOR;
-    case EGEGraphics::BLEND_FACTOR_SRC_ALPHA:           return GL_SRC_ALPHA;
-    case EGEGraphics::BLEND_FACTOR_DST_ALPHA:           return GL_DST_ALPHA;
-    case EGEGraphics::BLEND_FACTOR_ONE_MINUS_SRC_ALPHA: return GL_ONE_MINUS_SRC_ALPHA;
-    case EGEGraphics::BLEND_FACTOR_ONE_MINUS_DST_ALPHA: return GL_ONE_MINUS_DST_ALPHA;
+    case EGEGraphics::BF_ZERO:                return GL_ZERO;
+    case EGEGraphics::BF_ONE:                 return GL_ONE;
+    case EGEGraphics::BF_SRC_COLOR:           return GL_SRC_COLOR;
+    case EGEGraphics::BF_DST_COLOR:           return GL_DST_COLOR;
+    case EGEGraphics::BF_ONE_MINUS_SRC_COLOR: return GL_ONE_MINUS_SRC_COLOR;
+    case EGEGraphics::BF_ONE_MINUS_DST_COLOR: return GL_ONE_MINUS_DST_COLOR;
+    case EGEGraphics::BF_SRC_ALPHA:           return GL_SRC_ALPHA;
+    case EGEGraphics::BF_DST_ALPHA:           return GL_DST_ALPHA;
+    case EGEGraphics::BF_ONE_MINUS_SRC_ALPHA: return GL_ONE_MINUS_SRC_ALPHA;
+    case EGEGraphics::BF_ONE_MINUS_DST_ALPHA: return GL_ONE_MINUS_DST_ALPHA;
   }
 
   // default
@@ -193,7 +193,7 @@ void RendererPrivate::flush()
       // check if there is anything to be rendered
       if (0 != vertexBuffer->vertexCount())
       {
-        const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& semantics = vertexBuffer->semantics();
+        const VertexBuffer::SemanticsList& semantics = vertexBuffer->semantics();
 
         // TAGE - if indexed geometry count indicies
         u32 value = vertexBuffer->vertexCount();
@@ -205,30 +205,30 @@ void RendererPrivate::flush()
         void* vertexData = vertexBuffer->lock(0, vertexBuffer->vertexCount());
 
         // go thru all buffers
-        for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
+        for (VertexBuffer::SemanticsList::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
         {
           // set according to buffer type
           switch (itSemantic->type)
           {
-            case EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ:
+            case EGEVertexBuffer::AT_POSITION_XYZ:
 
               glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
               glEnableClientState(GL_VERTEX_ARRAY);
               break;
 
-            case EGEVertexBuffer::ARRAY_TYPE_NORMAL:
+            case EGEVertexBuffer::AT_NORMAL:
 
               glNormalPointer(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
               glEnableClientState(GL_NORMAL_ARRAY);
               break;
 
-            case EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA:
+            case EGEVertexBuffer::AT_COLOR_RGBA:
 
               glColorPointer(4, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
               glEnableClientState(GL_COLOR_ARRAY);
               break;
       
-            case EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV:
+            case EGEVertexBuffer::AT_TEXTURE_UV:
 
               for (s32 i = 0; i < textureCount; ++i)
               {
@@ -308,7 +308,6 @@ void RendererPrivate::flush()
         glDisable(GL_BLEND);
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
-        glColor4f(1, 1, 1, 1);
       }
     }
 
@@ -326,13 +325,15 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
   if (material)
   {
     // enable blending if necessary
-    if ((EGEGraphics::BLEND_FACTOR_ONE != material->srcBlendFactor()) || (EGEGraphics::BLEND_FACTOR_ZERO != material->dstBlendFactor()))
+    if ((EGEGraphics::BF_ONE != material->srcBlendFactor()) || (EGEGraphics::BF_ZERO != material->dstBlendFactor()))
     {
       glEnable(GL_BLEND);
       glBlendFunc(MapBlendFactor(material->srcBlendFactor()), MapBlendFactor(material->dstBlendFactor()));
     }
 
-//    glColor3f(material->diffuseColor().red, material->diffuseColor().green, material->diffuseColor().blue);
+    // set vertex color
+    // NOTE: this will be overriden if color array is activated
+    glColor4f(material->diffuseColor().red, material->diffuseColor().green, material->diffuseColor().blue, material->diffuseColor().alpha);
 
     // go thru all textures
     for (u32 i = 0; i < material->textureCount(); ++i)

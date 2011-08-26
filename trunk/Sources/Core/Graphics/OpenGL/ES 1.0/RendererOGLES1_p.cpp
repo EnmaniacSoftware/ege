@@ -194,7 +194,7 @@ void RendererPrivate::flush()
       // check if there is anything to be rendered
       if (0 != vertexBuffer->vertexCount())
       {
-        const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& semantics = vertexBuffer->semantics();
+        const VertexBuffer::SemanticsList& semantics = vertexBuffer->semantics();
 
         // TAGE - if indexed geometry count indicies
         u32 value = vertexBuffer->vertexCount();
@@ -206,30 +206,30 @@ void RendererPrivate::flush()
         void* vertexData = vertexBuffer->lock(0, vertexBuffer->vertexCount());
 
         // go thru all buffers
-        for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
+        for (VertexBuffer::SemanticsList::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
         {
           // set according to buffer type
           switch (itSemantic->type)
           {
-            case EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ:
+            case EGEVertexBuffer::AT_POSITION_XYZ:
 
               glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
               glEnableClientState(GL_VERTEX_ARRAY);
               break;
 
-            case EGEVertexBuffer::ARRAY_TYPE_NORMAL:
+            case EGEVertexBuffer::AT_NORMAL:
 
               glNormalPointer(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
               glEnableClientState(GL_NORMAL_ARRAY);
               break;
 
-            case EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA:
+            case EGEVertexBuffer::AT_COLOR_RGBA:
 
               glColorPointer(4, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
               glEnableClientState(GL_COLOR_ARRAY);
               break;
       
-            case EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV:
+            case EGEVertexBuffer::AT_TEXTURE_UV:
 
               for (s32 i = 0; i < textureCount; ++i)
               {
@@ -303,7 +303,6 @@ void RendererPrivate::flush()
         glDisable(GL_BLEND);
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
-        glColor4f(1, 1, 1, 1);
       }
     }
 
@@ -326,6 +325,10 @@ void RendererPrivate::applyMaterial(const PMaterial& material)
       glEnable(GL_BLEND);
       glBlendFunc(MapBlendFactor(material->srcBlendFactor()), MapBlendFactor(material->dstBlendFactor()));
     }
+
+    // set vertex color
+    // NOTE: this will be overriden if color array is activated
+    glColor4f(material->diffuseColor().red, material->diffuseColor().green, material->diffuseColor().blue, material->diffuseColor().alpha);
 
     // go thru all textures
     for (u32 i = 0; i < material->textureCount(); ++i)

@@ -23,10 +23,11 @@ class TVector3
     TVector3(T x, T y, T z);
     TVector3(const TVector3& vector);
 
-		inline void operator+=(const TVector3& vector);
-		inline void operator-=(const TVector3& vector);
-    inline bool operator==(const TVector3& vector) const;
-    inline bool operator!=(const TVector3& vector) const;
+		inline void       operator+=(const TVector3& vector);
+		inline void       operator-=(const TVector3& vector);
+    inline bool       operator==(const TVector3& vector) const;
+    inline bool       operator!=(const TVector3& vector) const;
+    inline TVector3&  operator*=(const T scalar);
 
     /* Sets vector data. */
     inline void set(T x, T y, T z);
@@ -170,6 +171,16 @@ template <typename T>
 bool TVector3<T>::operator!=(const TVector3& vector) const
 {
   return (x != vector.x) || (y != vector.y) || (z != vector.z);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector3<T>& TVector3<T>::operator*=(const T scalar)
+{
+  x *= scalar;
+  y *= scalar;
+  z *= scalar;
+
+  return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets vector components. */

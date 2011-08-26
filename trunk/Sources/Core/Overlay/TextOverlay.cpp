@@ -9,7 +9,7 @@ EGE_DEFINE_NEW_OPERATORS(TextOverlay)
 EGE_DEFINE_DELETE_OPERATORS(TextOverlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextOverlay::TextOverlay(Application* app, const String& name) : Overlay(app, name, EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLES, EGE_OBJECT_UID_OVERLAY_TEXT)
+TextOverlay::TextOverlay(Application* app, const String& name) : Overlay(app, name, EGEGraphics::RPT_TRIANGLES, EGE_OBJECT_UID_OVERLAY_TEXT)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

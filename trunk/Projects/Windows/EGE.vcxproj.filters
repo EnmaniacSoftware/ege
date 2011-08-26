@@ -441,6 +441,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Sprite\Sprite.cpp">
       <Filter>Core\Graphics\Sprite</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\RenderObjectFactory.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -855,6 +858,10 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Sprite\Sprite.h">
       <Filter>Core\Graphics\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEAlignment.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\RenderObjectFactory.h">
+      <Filter>Core\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

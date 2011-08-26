@@ -52,12 +52,11 @@ RenderComponent* Debug::renderable(const CubicSpline* spline)
 {
   s32 vertexCount = 25;
 
-  RenderComponent* component = ege_new RenderComponent(NULL, "debug-renderable-cubic-spline", EGEGraphics::RENDER_PRIORITY_MAIN, 
-                                                       EGEGraphics::RENDER_PRIMITIVE_TYPE_LINES);
+  RenderComponent* component = ege_new RenderComponent(NULL, "debug-renderable-cubic-spline", EGEGraphics::RP_MAIN, 
+                                                       EGEGraphics::RPT_LINES);
   if (component && component->isValid())
   {
-    if (component->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ) &&
-        component->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA))
+    if (component->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4))
     {
       float32* data = (float32*) component->vertexBuffer()->lock(0, vertexCount * 2 + 2 * 2);
 

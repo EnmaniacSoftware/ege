@@ -621,7 +621,7 @@ void Renderer::resetStats()
 //  }
 //}
 //
-//void CRenderSystem::setBlending( CRenderable::EBlendFactor eSrc, CRenderable::EBlendFactor eDst ) const
+//void CRenderSystem::setBlending( CRenderable::BlendFactor eSrc, CRenderable::BlendFactor eDst ) const
 //{
 //  // check if blending can be disabled
 //  if ( eSrc == CRenderable::BLEND_ONE && eDst == CRenderable::BLEND_ZERO )

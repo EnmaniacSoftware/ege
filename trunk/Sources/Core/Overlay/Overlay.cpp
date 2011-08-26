@@ -8,13 +8,13 @@ EGE_DEFINE_NEW_OPERATORS(Overlay)
 EGE_DEFINE_DELETE_OPERATORS(Overlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Overlay::Overlay(Application* app, const String& name, EGEGraphics::ERenderPrimitiveType renderType) : Object(app, EGE_OBJECT_UID_OVERLAY), m_name(name), 
+Overlay::Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType) : Object(app, EGE_OBJECT_UID_OVERLAY), m_name(name), 
                                                                                                           m_updateNeeded(false), m_visible(true)
 {
   initialize(renderType);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Overlay::Overlay(Application* app, const String& name, EGEGraphics::ERenderPrimitiveType renderType, u32 uid) : Object(app, uid), m_name(name), 
+Overlay::Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, u32 uid) : Object(app, uid), m_name(name), 
                                                                                                                    m_updateNeeded(false), m_visible(true)
 {
   initialize(renderType);
@@ -39,15 +39,13 @@ void Overlay::update(const Time& time)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Initializes object. */
-void Overlay::initialize(EGEGraphics::ERenderPrimitiveType renderType)
+void Overlay::initialize(EGEGraphics::RenderPrimitiveType renderType)
 {
   m_physics = ege_new PhysicsComponent(app(), "overlay_" + name());
-  m_render  = ege_new RenderComponent(app(), "overlay_" + name(), EGEGraphics::RENDER_PRIORITY_MAIN_OVERLAY, renderType);
+  m_render  = ege_new RenderComponent(app(), "overlay_" + name(), EGEGraphics::RP_MAIN_OVERLAY, renderType);
 
   // add render buffers
-  if (!m_render->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ) ||
-      !m_render->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV) ||
-      !m_render->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA))
+  if (!m_render->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_T2_C4))
   {
     // error!
     m_render  = NULL;

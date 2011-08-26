@@ -12,13 +12,13 @@ u32 Device::m_surfaceBlueChannelBitsCount = 0;
 u32 Device::m_surfaceAlphaChannelBitsCount = 0;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given render capability is present. */
-bool Device::HasRenderCapability(EGEDevice::ERenderCapability cap)
+bool Device::HasRenderCapability(EGEDevice::RenderCapability cap)
 {
   return m_renderCapabilities[cap];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets/Unsets given render capability. */
-void Device::SetRenderCapability(EGEDevice::ERenderCapability cap, bool set)
+void Device::SetRenderCapability(EGEDevice::RenderCapability cap, bool set)
 {
   m_renderCapabilities[cap] = set;
 }

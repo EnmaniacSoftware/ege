@@ -8,7 +8,7 @@ EGE_NAMESPACE_BEGIN
 namespace EGEDevice
 {
     /*! Operating systems available. */
-    enum EOS
+    enum OS
     {
       OS_UNKOWN = 0,
       OS_IPHONE,
@@ -16,7 +16,7 @@ namespace EGEDevice
     };
 
     /*! Devices available. */
-    enum EDevice
+    enum Device
     {
       DEVICE_GENERIC = 0,
       DEVICE_EMULATOR,
@@ -31,7 +31,7 @@ namespace EGEDevice
     };
 
     /*! Rendering capability flags. */
-    enum ERenderCapability
+    enum RenderCapability
     {
       RENDER_CAPS_APPLE_LIMITED_NPOT_TEXTURE = 0,           /*!< Limited non-power of two 2D texture extension for iOS. */
       RENDER_CAPS_MULTITEXTURE,                             /*!< Multitexturing supported. */

@@ -1,29 +1,39 @@
-#include "Core/Device/Device.h"
+#ifndef EGE_ALIGNMENT_H
+#define EGE_ALIGNMENT_H
 
-EGE_NAMESPACE
+#include "Core/Platform.h"
+#include <EGEFlags.h>
+
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current Operating System ID. */
-EGEDevice::OS Device::GetOS()
+
+namespace EGEAlignment
 {
-  return EGEDevice::OS_WINDOWS;
+  /*! Available alignment values. */
+  enum AlignmentFlags
+  {
+    ALIGN_LEFT    = 0x01,
+    ALIGN_RIGHT   = 0x02,
+    ALIGN_HCENTER = 0x04,
+
+    ALIGN_TOP     = 0x08,
+    ALIGN_BOTTOM  = 0x10,
+    ALIGN_VCENTER = 0x20,
+
+    ALIGN_CENTER   = ALIGN_HCENTER | ALIGN_VCENTER,
+    ALIGN_TOP_LEFT = ALIGN_TOP | ALIGN_LEFT
+  };
 }
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current device ID. */
-EGEDevice::Device Device::GetDevice()
-{
-  return EGEDevice::DEVICE_GENERIC;
-}
+
+EGE_DECLARE_FLAGS(Alignment, EGEAlignment::AlignmentFlags)
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns physical surface width. */
-s32 Device::SurfaceWidth()
-{
-  return -1;
-}
+
+EGE_NAMESPACE_END
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns physical surface height. */
-s32 Device::SurfaceHeight()
-{
- return -1;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#endif // EGE_ALIGNMENT_H

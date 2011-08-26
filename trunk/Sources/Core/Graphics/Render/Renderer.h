@@ -122,7 +122,7 @@ class Renderer : public Object
     void applyPassSettings( CRenderPass* pcPass );                                            // applies given pass parameters
 
     // blending related methods
-    void setBlending( CRenderable::EBlendFactor eSrc, CRenderable::EBlendFactor eDst ) const; // sets blending mode
+    void setBlending( CRenderable::BlendFactor eSrc, CRenderable::BlendFactor eDst ) const; // sets blending mode
 
     // scissor box related methods
     void setScissor( const CRect& cRect ) const;                                              // sets scissor box      */              

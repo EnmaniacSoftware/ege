@@ -4,8 +4,6 @@
 /** Class representing quaternion.
 */
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include <EGETypes.h>
 #include "Core/Math/Math.h"
 #include "Core/Math/Vector3.h"
@@ -24,7 +22,8 @@ class TQuaternion
     TQuaternion(T x, T y, T z, T w);
     TQuaternion(const TQuaternion& quat);
 
-    TQuaternion operator-() const;
+    TQuaternion operator - () const;
+    TVector3<T> operator * (const TVector3<T>& vector) const;
 
     /* Creates quaternion from rotation along arbitrary axis. */
     void create(const TVector3<T>& axis, const Angle& angle);
@@ -47,6 +46,9 @@ class TQuaternion
 		TQuaternion multiply(const TQuaternion& quat) const;
     /* Returns dot product between this and given quaternion. */
     inline T dotProduct(const TQuaternion& quat) const;
+
+    /* Returns quaternion representing conjugate of this one. */ 
+    inline TQuaternion conjugated() const;
 
   public:
 
@@ -83,9 +85,25 @@ TQuaternion<T>::TQuaternion(const TQuaternion& quat) : x(quat.x), y(quat.y), z(q
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TQuaternion<T> TQuaternion<T>::operator-() const
+TQuaternion<T> TQuaternion<T>::operator - () const
 {
   return TQuaternion(-x, -y, -z, -w);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector3<T> TQuaternion<T>::operator * (const TVector3<T>& vector) const
+{
+  // nVidia SDK implementation
+  TVector3<T> uv;
+  TVector3<T> uuv;
+  TVector3<T> qvec(x, y, z);
+
+  uv  = qvec.crossProduct(vector);
+  uuv = qvec.crossProduct(uv);
+  uv *= (2.0f * w);
+  uuv *= 2.0f;
+
+  return vector + uv + uuv;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates quaternion from rotation along arbitrary axis. */
@@ -115,7 +133,7 @@ template <typename T>
 void TQuaternion<T>::convertTo(TVector3<T>& axis, Angle& angle) const
 {
   // calculate inverse length of imaginary axes
-  T invLength = 1.0 / (x * x + y * y + z * z);
+  T invLength = 1.0f / (x * x + y * y + z * z);
 
   // check if length is greater than error thershold
   if (Math::EPSILON < invLength)
@@ -180,6 +198,14 @@ template <typename T>
 T TQuaternion<T>::lengthSquared() const
 {
   return (x * x) + (y * y) + (z * z) + (w * w);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns quaternion representing conjugate of this one. */
+template <typename T>
+TQuaternion<T> TQuaternion<T>::conjugated() const
+{
+  // NOTE: must be normalized
+  return TQuaternion<T>(-x, -y, -z, w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

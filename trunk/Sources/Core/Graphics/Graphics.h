@@ -44,15 +44,12 @@ class Graphics : public Object
     EGEResult setCurrentRenderingContext(PRenderTarget target);
     /*! Returns renderer. */
     inline PRenderer renderer() const { return m_renderer; }
-    /*! Returns main render window. */
-//    inline PRenderWindow renderWindow() const { return m_renderWindow; }
-    /*! Registers render target for use. */
+    /* Registers render target for use. */
     void registerRenderTarget(PRenderTarget target);
-    /*! Returns render target with the given name from registered pool. */
+    /* Returns render target with the given name from registered pool. */
     PRenderTarget renderTarget(const String& name) const;
-    /*! Removes render target with the given name from registered pool. */
+    /* Removes render target with the given name from registered pool. */
     void removeRenderTarget(const String& name);
-//    const RenderTargetPriorityMap& getRenderTargetMap() const;
 
   private:
 
@@ -65,8 +62,6 @@ class Graphics : public Object
 
     /*! Renderer. */
     PRenderer m_renderer;
-    /*! Main render window. */
-    //PRenderWindow m_renderWindow;
     /*! Current rendering context. NULL if none is set. */
     PRenderTarget m_currentRenderingContext;
     /*! Render targets sorted by priority. */

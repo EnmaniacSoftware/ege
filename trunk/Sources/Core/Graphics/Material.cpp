@@ -12,8 +12,7 @@ EGE_DEFINE_DELETE_OPERATORS(Material)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Material::Material(Application* app) : Object(app), m_diffuseColor(Color::WHITE), m_ambientColor(Color::WHITE), m_specularColor(Color::BLACK), m_shininess(0), 
-                                       m_emissionColor(Color::BLACK), m_srcBlendFactor(EGEGraphics::BLEND_FACTOR_ONE),
-                                       m_dstBlendFactor(EGEGraphics::BLEND_FACTOR_ZERO)
+                                       m_emissionColor(Color::BLACK), m_srcBlendFactor(EGEGraphics::BF_ONE), m_dstBlendFactor(EGEGraphics::BF_ZERO)
 
 {
 }
@@ -109,13 +108,13 @@ bool Material::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets source pixel scale factor. */
-void Material::setSrcBlendFactor(EGEGraphics::EBlendFactor factor)
+void Material::setSrcBlendFactor(EGEGraphics::BlendFactor factor)
 {
   m_srcBlendFactor = factor;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets destination pixel scale factor. */
-void Material::setDstBlendFactor(EGEGraphics::EBlendFactor factor)
+void Material::setDstBlendFactor(EGEGraphics::BlendFactor factor)
 {
   m_dstBlendFactor = factor;
 }

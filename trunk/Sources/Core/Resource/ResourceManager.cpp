@@ -379,8 +379,8 @@ void ResourceManager::createDefaultResources()
       if (material)
       {
         material->addTexture(texture);
-        material->setSrcBlendFactor(EGEGraphics::BLEND_FACTOR_ONE);
-        material->setDstBlendFactor(EGEGraphics::BLEND_FACTOR_ONE);
+        material->setSrcBlendFactor(EGEGraphics::BF_ONE);
+        material->setDstBlendFactor(EGEGraphics::BF_ONE);
 
         // setup glyphs data (all 256)
         Map<Char, GlyphData> glyphs;

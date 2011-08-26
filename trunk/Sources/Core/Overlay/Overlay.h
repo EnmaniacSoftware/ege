@@ -21,7 +21,7 @@ class Overlay : public Object
 {
   public: 
 
-    Overlay(Application* app, const String& name, EGEGraphics::ERenderPrimitiveType renderType);
+    Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType);
     virtual ~Overlay();
     
     EGE_DECLARE_NEW_OPERATORS
@@ -74,7 +74,7 @@ class Overlay : public Object
 
   protected:
 
-    Overlay(Application* app, const String& name, EGEGraphics::ERenderPrimitiveType renderType, u32 uid);
+    Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, u32 uid);
     /* Invalidates object forcing it to be updated next time it's possible. */
     void invalidate();
     /* Validates object. */
@@ -85,7 +85,7 @@ class Overlay : public Object
   private:
 
     /* Initializes object. */
-    void initialize(EGEGraphics::ERenderPrimitiveType renderType);
+    void initialize(EGEGraphics::RenderPrimitiveType renderType);
 
   private:
 

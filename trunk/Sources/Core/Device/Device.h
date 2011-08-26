@@ -17,9 +17,9 @@ class Device
   public:
 
     /* Returns current Operating System ID. */
-    static EGEDevice::EOS GetOS();
+    static EGEDevice::OS GetOS();
     /* Returns current device ID. */
-    static EGEDevice::EDevice GetDevice();
+    static EGEDevice::Device GetDevice();
 
     /* Returns physical surface width. */
     static s32 SurfaceWidth();
@@ -43,9 +43,9 @@ class Device
     static u32 SurfaceAlphaChannelBitsCount();
 
     /* Returns TRUE if given render capability is present. */
-    static bool HasRenderCapability(EGEDevice::ERenderCapability cap);
+    static bool HasRenderCapability(EGEDevice::RenderCapability cap);
     /* Sets/Unsets given render capability. */
-    static void SetRenderCapability(EGEDevice::ERenderCapability cap, bool set);
+    static void SetRenderCapability(EGEDevice::RenderCapability cap, bool set);
     /* Sets number of available texture units.*/
     static void SetTextureUnitsCount(u32 count);
     /* Returns number of available texture units. */

@@ -22,14 +22,13 @@ DebugDraw::~DebugDraw()
 /*! b2DebugDraw override. */
 void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-  PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawPolygon", EGEGraphics::RENDER_PRIORITY_PHYSICS_DEBUG, 
-                                                       EGEGraphics::RENDER_PRIMITIVE_TYPE_LINE_LOOP);
+  PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawPolygon", EGEGraphics::RP_PHYSICS_DEBUG, 
+                                                       EGEGraphics::RPT_LINE_LOOP);
   if (component->isValid())
   {
     EGE::float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ);
-    component->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA);
+    component->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
 
     float32* data = (float32*) component->vertexBuffer()->lock(0, vertexCount);
 
@@ -53,24 +52,22 @@ void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2C
 /*! b2DebugDraw override. */
 void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-  PRenderComponent component_fill = ege_new RenderComponent(app(), "DebugDraw::DrawSolidPolygon-fill", EGEGraphics::RENDER_PRIORITY_PHYSICS_DEBUG, 
-                                                            EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLE_FAN);
-  PRenderComponent component_frame = ege_new RenderComponent(app(), "DebugDraw::DrawSolidPolygon-frame", EGEGraphics::RENDER_PRIORITY_PHYSICS_DEBUG, 
-                                                            EGEGraphics::RENDER_PRIMITIVE_TYPE_LINE_LOOP);
+  PRenderComponent component_fill = ege_new RenderComponent(app(), "DebugDraw::DrawSolidPolygon-fill", EGEGraphics::RP_PHYSICS_DEBUG, 
+                                                            EGEGraphics::RPT_TRIANGLE_FAN);
+  PRenderComponent component_frame = ege_new RenderComponent(app(), "DebugDraw::DrawSolidPolygon-frame", EGEGraphics::RP_PHYSICS_DEBUG, 
+                                                            EGEGraphics::RPT_LINE_LOOP);
 
   PMaterial material = ege_new Material(NULL);
-  material->setSrcBlendFactor(EGEGraphics::BLEND_FACTOR_SRC_ALPHA);
-  material->setDstBlendFactor(EGEGraphics::BLEND_FACTOR_ONE_MINUS_SRC_ALPHA);
+  material->setSrcBlendFactor(EGEGraphics::BF_SRC_ALPHA);
+  material->setDstBlendFactor(EGEGraphics::BF_ONE_MINUS_SRC_ALPHA);
   component_fill->setMaterial(material);
   
   if (component_fill->isValid() && component_frame->isValid())
   {
     EGE::float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component_fill->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ);
-    component_fill->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA);
-    component_frame->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ);
-    component_frame->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA);
+    component_fill->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
+    component_frame->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
     
     float32* data_fill  = (float32*) component_fill->vertexBuffer()->lock(0, vertexCount);
     float32* data_frame = (float32*) component_frame->vertexBuffer()->lock(0, vertexCount);
@@ -105,8 +102,8 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
 /*! b2DebugDraw override. */
 void DebugDraw::DrawCircle(const b2Vec2& center, EGE::float32 radius, const b2Color& color)
 {
-  PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawCircle", EGEGraphics::RENDER_PRIORITY_PHYSICS_DEBUG, 
-                                                       EGEGraphics::RENDER_PRIMITIVE_TYPE_LINE_LOOP);
+  PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawCircle", EGEGraphics::RP_PHYSICS_DEBUG, 
+                                                       EGEGraphics::RPT_LINE_LOOP);
   if (component->isValid())
   {
 	  const float32 k_segments = 16.0f;
@@ -115,8 +112,7 @@ void DebugDraw::DrawCircle(const b2Vec2& center, EGE::float32 radius, const b2Co
 
     EGE::float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ);
-    component->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA);
+    component->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
 
     float32* data = (float32*) component->vertexBuffer()->lock(0, (u32) k_segments);
 
@@ -144,14 +140,14 @@ void DebugDraw::DrawCircle(const b2Vec2& center, EGE::float32 radius, const b2Co
 /*! b2DebugDraw override. */
 void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const b2Vec2& axis, const b2Color& color)
 {
-  PRenderComponent component_fill = ege_new RenderComponent(app(), "DebugDraw::DrawSolidCircle-fill", EGEGraphics::RENDER_PRIORITY_PHYSICS_DEBUG, 
-                                                            EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLE_FAN);
-  PRenderComponent component_frame = ege_new RenderComponent(app(), "DebugDraw::DrawSolidCircle-frame", EGEGraphics::RENDER_PRIORITY_PHYSICS_DEBUG, 
-                                                            EGEGraphics::RENDER_PRIMITIVE_TYPE_LINE_LOOP);
+  PRenderComponent component_fill = ege_new RenderComponent(app(), "DebugDraw::DrawSolidCircle-fill", EGEGraphics::RP_PHYSICS_DEBUG, 
+                                                            EGEGraphics::RPT_TRIANGLE_FAN);
+  PRenderComponent component_frame = ege_new RenderComponent(app(), "DebugDraw::DrawSolidCircle-frame", EGEGraphics::RP_PHYSICS_DEBUG, 
+                                                            EGEGraphics::RPT_LINE_LOOP);
 
   PMaterial material = ege_new Material(NULL);
-  material->setSrcBlendFactor(EGEGraphics::BLEND_FACTOR_SRC_ALPHA);
-  material->setDstBlendFactor(EGEGraphics::BLEND_FACTOR_ONE_MINUS_SRC_ALPHA);
+  material->setSrcBlendFactor(EGEGraphics::BF_SRC_ALPHA);
+  material->setDstBlendFactor(EGEGraphics::BF_ONE_MINUS_SRC_ALPHA);
   component_fill->setMaterial(material);
 
   if (component_fill->isValid() && component_frame->isValid())
@@ -162,10 +158,8 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
 
     EGE::float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component_fill->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ);
-    component_fill->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA);
-    component_frame->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ);
-    component_frame->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA);
+    component_fill->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
+    component_frame->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
     
     float32* data_fill  = (float32*) component_fill->vertexBuffer()->lock(0, (u32) k_segments);
     float32* data_frame = (float32*) component_frame->vertexBuffer()->lock(0, (u32) k_segments);
@@ -210,14 +204,13 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
 /*! b2DebugDraw override. */
 void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
-  PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawSegment", EGEGraphics::RENDER_PRIORITY_PHYSICS_DEBUG, 
-                                                       EGEGraphics::RENDER_PRIMITIVE_TYPE_LINES);
+  PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawSegment", EGEGraphics::RP_PHYSICS_DEBUG, 
+                                                       EGEGraphics::RPT_LINES);
   if (component->isValid())
   {
     EGE::float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ);
-    component->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA);
+    component->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
 
     float32* data = (float32*) component->vertexBuffer()->lock(0, 2);
 

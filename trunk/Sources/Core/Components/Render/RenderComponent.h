@@ -20,12 +20,14 @@ class RenderComponent : public IComponent
 {
   public:
 
-    RenderComponent(Application* app, const String& name, s32 priority = EGEGraphics::RENDER_PRIORITY_MAIN,
-                    EGEGraphics::ERenderPrimitiveType primitive = EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLES);
+    RenderComponent(Application* app, const String& name, s32 priority = EGEGraphics::RP_MAIN, 
+                    EGEGraphics::RenderPrimitiveType primitive = EGEGraphics::RPT_TRIANGLES);
    ~RenderComponent();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /* IComponent override. Returns TRUE if component is valid. */
     bool isValid() const override;
@@ -38,7 +40,7 @@ class RenderComponent : public IComponent
     /*! Returns render priority. */
     inline s32 priority() const { return m_priority; }
     /*! Returns render primitive type. */
-    inline EGEGraphics::ERenderPrimitiveType primitiveType() const { return m_primitiveType; }
+    inline EGEGraphics::RenderPrimitiveType primitiveType() const { return m_primitiveType; }
     /*! Returns render material. */
     inline PMaterial material() const { return m_material; }
     /* Sets render material. */
@@ -66,7 +68,7 @@ class RenderComponent : public IComponent
     /*! Render priority. */
     s32 m_priority;
     /*! Render primitive type. */
-    EGEGraphics::ERenderPrimitiveType m_primitiveType;
+    EGEGraphics::RenderPrimitiveType m_primitiveType;
     /*! Render material. */
     PMaterial m_material;
     /*! Hash value. */

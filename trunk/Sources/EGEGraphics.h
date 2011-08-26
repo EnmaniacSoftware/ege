@@ -8,23 +8,23 @@ EGE_NAMESPACE_BEGIN
 namespace EGEGraphics
 {
     /*! Common predefined render priorites. */
-    enum ERenderPriority
+    enum RenderPriority
     {
-      RENDER_PRIORITY_BACKGROUND       = 0,
-      RENDER_PRIORITY_MAIN             = 50,
-      RENDER_PRIORITY_PHYSICS_DEBUG    = 95,
-      RENDER_PRIORITY_MAIN_OVERLAY     = 100,
-      RENDER_PRIORITY_MAIN_CURSOR      = 200
+      RP_BACKGROUND       = 0,
+      RP_MAIN             = 50,
+      RP_PHYSICS_DEBUG    = 95,
+      RP_MAIN_OVERLAY     = 100,
+      RP_MAIN_CURSOR      = 200
     };
 
     /*! Render primitive types. */
-    enum ERenderPrimitiveType
+    enum RenderPrimitiveType
     {
-      RENDER_PRIMITIVE_TYPE_TRIANGLES = 0,
-      RENDER_PRIMITIVE_TYPE_TRIANGLE_STRIPS,
-      RENDER_PRIMITIVE_TYPE_TRIANGLE_FAN,
-      RENDER_PRIMITIVE_TYPE_LINES,
-      RENDER_PRIMITIVE_TYPE_LINE_LOOP
+      RPT_TRIANGLES = 0,
+      RPT_TRIANGLE_STRIPS,
+      RPT_TRIANGLE_FAN,
+      RPT_LINES,
+      RPT_LINE_LOOP
     };
 
     /** Blend factors.
@@ -44,19 +44,19 @@ namespace EGEGraphics
      * GL_ZERO, GL_ONE, GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA,
      * GL_DST_COLOR, GL_ONE_MINUS_DST_COLOR
      */
-    enum EBlendFactor
+    enum BlendFactor
     {
-      BLEND_FACTOR_UNKNOWN,
-      BLEND_FACTOR_ZERO,
-      BLEND_FACTOR_ONE,
-      BLEND_FACTOR_SRC_COLOR,
-      BLEND_FACTOR_DST_COLOR,
-      BLEND_FACTOR_ONE_MINUS_SRC_COLOR,
-      BLEND_FACTOR_ONE_MINUS_DST_COLOR,
-      BLEND_FACTOR_SRC_ALPHA,
-      BLEND_FACTOR_DST_ALPHA,
-      BLEND_FACTOR_ONE_MINUS_SRC_ALPHA,
-      BLEND_FACTOR_ONE_MINUS_DST_ALPHA
+      BF_UNKNOWN,
+      BF_ZERO,
+      BF_ONE,
+      BF_SRC_COLOR,
+      BF_DST_COLOR,
+      BF_ONE_MINUS_SRC_COLOR,
+      BF_ONE_MINUS_DST_COLOR,
+      BF_SRC_ALPHA,
+      BF_DST_ALPHA,
+      BF_ONE_MINUS_SRC_ALPHA,
+      BF_ONE_MINUS_DST_ALPHA
     };
 }
 
@@ -76,6 +76,7 @@ EGE_NAMESPACE_END
 #include "Core/Graphics/Render/RenderTarget.h"
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Graphics/Render/Renderer.h"
+#include "Core/Graphics/RenderObjectFactory.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -12,7 +12,7 @@ EGE_DEFINE_NEW_OPERATORS(ImageOverlay)
 EGE_DEFINE_DELETE_OPERATORS(ImageOverlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImageOverlay::ImageOverlay(Application* app, const String& name) : Overlay(app, name, EGEGraphics::RENDER_PRIMITIVE_TYPE_TRIANGLE_STRIPS, 
+ImageOverlay::ImageOverlay(Application* app, const String& name) : Overlay(app, name, EGEGraphics::RPT_TRIANGLE_STRIPS, 
                                                                            EGE_OBJECT_UID_OVERLAY_IMAGE)
 {
   m_material = ege_new Material(app);
@@ -53,7 +53,10 @@ void ImageOverlay::update(const Time& time)
 void ImageOverlay::updateRenderData()
 {
   PResourceMaterial resource = app()->resourceManager()->resource("material", materialName());
-  resource->setInstance(m_material);
+  if (resource)
+  {
+    resource->setInstance(m_material);
+  }
 
   Color m_color = Color::WHITE;
 

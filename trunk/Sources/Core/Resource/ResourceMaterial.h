@@ -64,9 +64,9 @@ class ResourceMaterial : public IResource
     /*! Returns TRUE if material is loaded. */
     inline bool isLoaded() const { return !m_textureImages.empty(); }
     /*! Returns source pixel factor function. */
-    inline EGEGraphics::EBlendFactor srcBlendFactor() const { return m_srcBlend; }
+    inline EGEGraphics::BlendFactor srcBlendFactor() const { return m_srcBlend; }
     /*! Returns destination pixel factor function. */
-    inline EGEGraphics::EBlendFactor dstBlendFactor() const { return m_dstBlend; }
+    inline EGEGraphics::BlendFactor dstBlendFactor() const { return m_dstBlend; }
     /*! Returns ambient color. */
     inline const Color& ambientColor() const { return m_ambientColor; }
     /*! Returns diffuse color. */
@@ -107,9 +107,9 @@ class ResourceMaterial : public IResource
     /*! List of all texture images contributing to material. */
     List<TextureImageData> m_textureImageData;
     /*! Source blend value. */
-    EGEGraphics::EBlendFactor m_srcBlend;
+    EGEGraphics::BlendFactor m_srcBlend;
     /*! Destination blend value. */
-    EGEGraphics::EBlendFactor m_dstBlend;
+    EGEGraphics::BlendFactor m_dstBlend;
     /*! Ambient color. */
     Color m_ambientColor;
     /*! Diffuse color. */
