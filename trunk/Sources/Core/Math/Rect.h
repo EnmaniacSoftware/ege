@@ -1,7 +1,13 @@
 #ifndef EGE_CORE_RECT_H
 #define EGE_CORE_RECT_H
 
+/** Rectangle object. Rectangle is defined by two sets of numbers: x-y coordinate of top-left corner and width-height.
+ *  Rectangle is EMPTY if width and/or height equals 0.
+ *  Rectangle is INVALID (NULL) if width and/or height is negative.
+ */
+
 #include <EGETypes.h>
+#include <EGEVector.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -34,7 +40,9 @@ class TRect
     inline T bottom() const;
     /* Returns TRUE if given point is within rectangle. */
     inline bool contains(T x, T y) const;
-    /* Calculates intersection rectangle between current and given rectangle. */
+    /* Returns TRUE if given point is within rectangle. */
+    inline bool contains(const TVector2<T>& point) const;
+    /* Calculates intersection rectangle between current and given rectangle. If there is no intersection resulting rectangle is nulled. */
     inline TRect<T> intersect(const TRect<T>& rect) const;
     /* Calculates union rectangle between current and given rectangle. */
     inline TRect<T> unite(const TRect<T>& rect) const;
@@ -108,14 +116,14 @@ bool TRect<T>::isEmpty() const
 template <typename T>
 T TRect<T>::right() const
 {
-  return x + width;
+  return x + width - 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns coordinate of bottom edge. */
 template <typename T>
 T TRect<T>::bottom() const
 {
-  return y + height;
+  return y + height - 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns coordinate of left edge. */
@@ -146,7 +154,14 @@ bool TRect<T>::contains(T x, T y) const
   return (x >= left()) && (y >= top()) && (x < right()) && (y < bottom());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Calculates intersection rectangle between current and given rectangle. */
+/*! Returns TRUE if given point is within rectangle. */
+template <typename T>
+bool TRect<T>::contains(const TVector2<T>& point) const
+{
+  return contains(point.x, point.y);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Calculates intersection rectangle between current and given rectangle. If there is no intersection resulting rectangle is nulled. */
 template <typename T>
 TRect<T> TRect<T>::intersect(const TRect<T>& rect) const
 {

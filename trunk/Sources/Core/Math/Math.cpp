@@ -149,6 +149,8 @@ void Math::Slerp(Quaternionf* out, Quaternionf* from, Quaternionf* to, float32 t
   if ((0.0f > cosOmega) && shortestPath)
   {
     cosOmega = -cosOmega;
+
+    // NOTE: q and -q rotates from the same start point and to the same end point but thru opposite direction
     tmp = -(*to);
   }
   else
@@ -389,3 +391,15 @@ float32 Math::ACos(float32 radians)
   return EGEMath::PI; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Transforms rectangle by quaternion. */
+//void Math::Transform(Rectf* rect, const Quaternionf* quaternion)
+//{
+//  EGE_ASSERT(rect);
+//  EGE_ASSERT(quaternion);
+//
+//  // store offset needed to move rectangle center back into origin of local space
+//  Vector2f offset(rect->x + rect->width / 2.0f, rect->y + rect->height / 2.0f);
+//
+//  //rect->x
+//}
+////--------------------------------------------------------------------------------------------------------------------------------------------------------------

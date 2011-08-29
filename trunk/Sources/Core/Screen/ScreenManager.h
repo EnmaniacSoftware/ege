@@ -35,12 +35,14 @@ class ScreenManager : public Object
     void render(Viewport* viewport, Renderer* renderer);
     /* Updates manager. */
     void update(const Time& time);
-    /* Shows given screen. */
-    void showScreen(PScreen screen);
+    /* Shows given screen adding it on top of the rest ones. */
+    void show(PScreen screen);
     /* Hides current (top) screen. */
-    void hideScreen();
+    void hide();
     /* Removes given screen from stack. */
-    void removeScreen(PScreen screen);
+    void remove(PScreen screen);
+    /* Inserts screen before given one. */
+    void insertBefore(PScreen screen, PScreen beforeScreen);
 
   private slots:
 
@@ -49,8 +51,12 @@ class ScreenManager : public Object
 
   private:
 
+    typedef List<PScreen> ScreenList;
+
+  private:
+
     /*! List of screens. Sorted from the bottom one to top one (currently visible). */
-    List<PScreen> m_screens;
+    ScreenList m_screens;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

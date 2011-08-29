@@ -1,8 +1,13 @@
 #ifndef EGE_CORE_QUATERNION_H
 #define EGE_CORE_QUATERNION_H
 
-/** Class representing quaternion.
-*/
+/** Class representing quaternion. Quaternion is defined as following: q = xi + yj + zk + w.
+ *  While using unit quaternions for rotations in 3D space the following holds:
+ *  if           q =   xi + yj + zk + w rotates from A to B
+ *  then       - q = - xi - yj - zk - w rotates from A to B (different path)
+ *  then   conj(q) = - xi - yj - zk + w rotates from B to A
+ *  then - conj(q) = + xi + yj + zk - w rotates from B to A (different path)
+ */
 
 #include <EGETypes.h>
 #include "Core/Math/Math.h"
@@ -49,6 +54,8 @@ class TQuaternion
 
     /* Returns quaternion representing conjugate of this one. */ 
     inline TQuaternion conjugated() const;
+    /* Conjugates (inverses) self. */ 
+    inline void conjugate();
 
   public:
 
@@ -206,6 +213,17 @@ TQuaternion<T> TQuaternion<T>::conjugated() const
 {
   // NOTE: must be normalized
   return TQuaternion<T>(-x, -y, -z, w);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Conjugates self. */ 
+template <typename T>
+void TQuaternion<T>::conjugate()
+{
+  x = -x;
+  y = -y;
+  z = -z;
+
+  // NOTE: w stays the same
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

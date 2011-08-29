@@ -50,6 +50,11 @@ class TVector3
     /* Returns squared distance between this and given points. */
     inline T distanceSquaredTo(const TVector3& vector) const;
 
+    inline TVector2<T> xy() const
+    {
+      return TVector2<T>(x, y);
+    }
+
   //  // normalization related methods
 		//CVector3 getNormalized( void ) const;                                                     // gets normalized vector
 

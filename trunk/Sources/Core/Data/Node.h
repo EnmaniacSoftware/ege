@@ -54,6 +54,11 @@ class Node
     /*! Returns cached combined world matrix. */
     const Matrix4f& worldMatrix() const;
 
+    /*! Returns TRUE if object is visible. */
+    inline bool isVisible() const { return m_visible; }
+    /* Sets visibility flag. */
+    void setVisible(bool set);
+
   protected:
 
     /* Creates child node with a given name and attaches it. */

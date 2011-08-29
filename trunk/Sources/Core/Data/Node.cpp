@@ -3,7 +3,7 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Node::Node(Application* app, const String& name, Node* parent, EGEPhysics::EComponentType componentType) : m_name(name), m_parent(parent)
+Node::Node(Application* app, const String& name, Node* parent, EGEPhysics::EComponentType componentType) : m_name(name), m_parent(parent), m_visible(true)
 {
   m_physics = ege_new PhysicsComponent(app, "node-physics-" + name, componentType);
   if (m_physics)
@@ -156,5 +156,14 @@ void Node::transformationChanged()
 {
   // invalidate world matrix
   m_worldMatrixInvalid = true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets visibility flag. */
+void Node::setVisible(bool set)
+{
+  if (isVisible() != set)
+  {
+    m_visible = set;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

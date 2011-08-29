@@ -8,16 +8,16 @@ EGE_DEFINE_NEW_OPERATORS(Overlay)
 EGE_DEFINE_DELETE_OPERATORS(Overlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Overlay::Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType) : Object(app, EGE_OBJECT_UID_OVERLAY), m_name(name), 
-                                                                                                          m_updateNeeded(false), m_visible(true)
+Overlay::Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, Alignment align) 
+: Object(app, EGE_OBJECT_UID_OVERLAY), m_name(name), m_updateNeeded(false), m_visible(true)
 {
-  initialize(renderType);
+  initialize(renderType, align);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Overlay::Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, u32 uid) : Object(app, uid), m_name(name), 
-                                                                                                                   m_updateNeeded(false), m_visible(true)
+Overlay::Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, Alignment align, u32 uid) 
+: Object(app, uid), m_name(name), m_updateNeeded(false), m_visible(true)
 {
-  initialize(renderType);
+  initialize(renderType, align);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Overlay::~Overlay()
@@ -39,18 +39,11 @@ void Overlay::update(const Time& time)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Initializes object. */
-void Overlay::initialize(EGEGraphics::RenderPrimitiveType renderType)
+void Overlay::initialize(EGEGraphics::RenderPrimitiveType renderType, Alignment align)
 {
   m_physics = ege_new PhysicsComponent(app(), "overlay_" + name());
-  m_render  = ege_new RenderComponent(app(), "overlay_" + name(), EGEGraphics::RP_MAIN_OVERLAY, renderType);
-
-  // add render buffers
-  if (!m_render->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_T2_C4))
-  {
-    // error!
-    m_render  = NULL;
-    m_physics = NULL;
-  }
+  m_render  = RenderObjectFactory::CreateQuadXY(app(), "overlay_" + name(), Vector4f::ZERO, Vector2f::ONE, align, EGEVertexBuffer::ST_V3_T2_C4, 
+                                                EGEGraphics::RP_MAIN_OVERLAY, renderType);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Invalidates object forcing it to be updated next time it's possible. */

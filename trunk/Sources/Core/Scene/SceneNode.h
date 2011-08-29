@@ -48,6 +48,7 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
     /* Removes all objects. */
     void removeAllAttachedObjects();
    
+
     //typedef hash_map<string, SceneNodeObject*> AttachedObjectsMap;
 
 

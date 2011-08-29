@@ -19,6 +19,8 @@ template <typename T> class TQuaternion;
 typedef TQuaternion<float32> Quaternionf;
 template <typename T> class TComplex;
 typedef TComplex<float32> Complexf;
+//template <typename T> class TRect;
+//typedef TRect<float32> Rectf;
 class Angle;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -59,6 +61,8 @@ class Math
     static void Convert(Matrix4f* matrix, const Quaternionf* quaternion);
     /* Transforms (pre-multiples) vector by matrix. */
     static void Transform(Vector4f* vector, const Matrix4f* matrix);
+    /* Transforms rectangle by quaternion. */
+//    static void Transform(Rectf* rect, const Quaternionf* quaternion);
     /* Creates matrix from translation, scale vectors and quaternion. */
     static void CreateMatrix(Matrix4f* matrix, const Vector4f* translation, const Vector4f* scale, const Quaternionf* orientation);
     /* Returns angle between positive X axis and given point around origin. */

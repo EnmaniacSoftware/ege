@@ -3,6 +3,7 @@
 
 #include <EGEString.h>
 #include <EGETime.h>
+#include <EGEAlignment.h>
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 
@@ -21,7 +22,7 @@ class Overlay : public Object
 {
   public: 
 
-    Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType);
+    Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, Alignment align);
     virtual ~Overlay();
     
     EGE_DECLARE_NEW_OPERATORS
@@ -74,7 +75,7 @@ class Overlay : public Object
 
   protected:
 
-    Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, u32 uid);
+    Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, Alignment align, u32 uid);
     /* Invalidates object forcing it to be updated next time it's possible. */
     void invalidate();
     /* Validates object. */
@@ -85,7 +86,7 @@ class Overlay : public Object
   private:
 
     /* Initializes object. */
-    void initialize(EGEGraphics::RenderPrimitiveType renderType);
+    void initialize(EGEGraphics::RenderPrimitiveType renderType, Alignment align);
 
   private:
 

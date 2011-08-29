@@ -18,7 +18,7 @@ class ImageOverlay : public Overlay
 {
   public: 
 
-    ImageOverlay(Application* app, const String& name);
+    ImageOverlay(Application* app, const String& name, Alignment align = EGEAlignment::ALIGN_TOP_LEFT);
    ~ImageOverlay();
     
     EGE_DECLARE_NEW_OPERATORS

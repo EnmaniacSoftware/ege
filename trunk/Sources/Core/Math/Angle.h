@@ -15,6 +15,7 @@ class Angle
 
     Angle();
     Angle(const Angle& angle);
+    Angle(float32 radians);
 
     inline const Angle& operator += (const Angle& other) { m_radians += other.m_radians; return *this; }
     inline const Angle& operator -= (const Angle& other) { m_radians -= other.m_radians; return *this; }

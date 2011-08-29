@@ -44,8 +44,15 @@ class Screen : public Object
     virtual void cover();
     /*! Returns TRUE if screen has transparent regions. */
     virtual bool hasTransparency() const = 0;
+    /* Enables/disables screen. */
+    void setEnable(bool enable);
+    /*! Returns TRUE if screen is enabled. */
+    inline bool isEnabled() const { return !m_disabled; }
 
   private:
+
+    /*! Disabled flag. */
+    bool m_disabled;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -12,8 +12,8 @@ EGE_DEFINE_NEW_OPERATORS(ImageOverlay)
 EGE_DEFINE_DELETE_OPERATORS(ImageOverlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImageOverlay::ImageOverlay(Application* app, const String& name) : Overlay(app, name, EGEGraphics::RPT_TRIANGLE_STRIPS, 
-                                                                           EGE_OBJECT_UID_OVERLAY_IMAGE)
+ImageOverlay::ImageOverlay(Application* app, const String& name, Alignment align) : Overlay(app, name, EGEGraphics::RPT_TRIANGLE_STRIPS, align, 
+                                                                                            EGE_OBJECT_UID_OVERLAY_IMAGE)
 {
   m_material = ege_new Material(app);
 }
@@ -64,41 +64,45 @@ void ImageOverlay::updateRenderData()
 
   float32* data = (float32*) renderComponent()->vertexBuffer()->lock(0, 4);
 
-  *data++ = 0;
-  *data++ = 1;
-  *data++ = 0;
-  *data++ = 0;
-  *data++ = 1;
+  data += 5;
+  //*data++ = 0;
+  //*data++ = 1;
+  //*data++ = 0;
+  //*data++ = 0;
+  //*data++ = 1;
   *data++ = m_color.red;
   *data++ = m_color.green;
   *data++ = m_color.blue;
   *data++ = m_color.alpha;
 
-  *data++ = 1;
-  *data++ = 1;
-  *data++ = 0;
-  *data++ = 1;
-  *data++ = 1;
+  data += 5;
+  //*data++ = 1;
+  //*data++ = 1;
+  //*data++ = 0;
+  //*data++ = 1;
+  //*data++ = 1;
   *data++ = m_color.red;
   *data++ = m_color.green;
   *data++ = m_color.blue;
   *data++ = m_color.alpha;
 
-  *data++ = 0;
-  *data++ = 0;
-  *data++ = 0;
-  *data++ = 0;
-  *data++ = 0;
+  data += 5;
+  //*data++ = 0;
+  //*data++ = 0;
+  //*data++ = 0;
+  //*data++ = 0;
+  //*data++ = 0;
   *data++ = m_color.red;
   *data++ = m_color.green;
   *data++ = m_color.blue;
   *data++ = m_color.alpha;
 
-  *data++ = 1;
-  *data++ = 0;
-  *data++ = 0;
-  *data++ = 1;
-  *data++ = 0;
+  data += 5;
+  //*data++ = 1;
+  //*data++ = 0;
+  //*data++ = 0;
+  //*data++ = 1;
+  //*data++ = 0;
   *data++ = m_color.red;
   *data++ = m_color.green;
   *data++ = m_color.blue;

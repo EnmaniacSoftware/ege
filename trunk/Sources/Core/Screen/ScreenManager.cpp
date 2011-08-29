@@ -26,12 +26,22 @@ void ScreenManager::update(const Time& time)
 {
   if (!m_screens.empty())
   {
-    m_screens.back()->update(time);
+    // go thru all screens from top to bottom and update first enabled one
+    // NOTE: no const_reverse_iterator due to GCC incompatibility of operator== and operator!=
+    for (List<PScreen>::reverse_iterator it = m_screens.rbegin(); it != m_screens.rend(); ++it)
+    {
+      PScreen& screen = *it;      
+      if (screen->isEnabled())
+      {
+        screen->update(time);
+        return;
+      }
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Shows given screen. */
-void ScreenManager::showScreen(PScreen screen)
+/*! Shows given screen adding it on top of the rest ones. */
+void ScreenManager::show(PScreen screen)
 {
   // check if some screen is being shown
   if (!m_screens.empty())
@@ -56,7 +66,7 @@ void ScreenManager::showScreen(PScreen screen)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Hides current (top) screen. */
-void ScreenManager::hideScreen()
+void ScreenManager::hide()
 {
   bool wasTransparent = false;
 
@@ -78,6 +88,22 @@ void ScreenManager::hideScreen()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Inserts screen before given one. */
+void ScreenManager::insertBefore(PScreen screen, PScreen beforeScreen)
+{
+  // go thru all screens
+  for (ScreenList::const_iterator it = m_screens.begin(); it != m_screens.end(); ++it)
+  {
+    // check if found screen before which new one is to be insterted
+    if (*it == beforeScreen)
+    {
+      // insert
+      m_screens.insert(it, screen);
+      return;
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders all screens. */
 void ScreenManager::render(Viewport* viewport, Renderer* renderer)
 {
@@ -85,8 +111,8 @@ void ScreenManager::render(Viewport* viewport, Renderer* renderer)
   // NOTE: no const_reverse_iterator due to GCC incompatibility of operator== and operator!=
   for (List<PScreen>::reverse_iterator it = m_screens.rbegin(); it != m_screens.rend(); ++it)
   {
-    Screen* screen = *it;
-    if (!screen->hasTransparency())
+    PScreen& screen = *it;
+    if (!screen->hasTransparency() && screen->isEnabled())
     {
       // go back from current screen to the begining of iteration and render all screens on the way
       do
@@ -102,7 +128,7 @@ void ScreenManager::render(Viewport* viewport, Renderer* renderer)
         }
 
         // go to screen above
-        --it;
+        screen = *--it;
 
       } while (true);
     }
@@ -110,7 +136,7 @@ void ScreenManager::render(Viewport* viewport, Renderer* renderer)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Removes given screen from stack. */
-void ScreenManager::removeScreen(PScreen screen)
+void ScreenManager::remove(PScreen screen)
 {
   m_screens.remove(screen);
 }
@@ -121,7 +147,17 @@ void ScreenManager::pointerEvent(PPointerData data)
   // pass into top-level screen only
   if (!m_screens.empty())
   {
-      m_screens.back()->pointerEvent(data);
+    // go thru all screens from top to bottom and propagate to first enabled one
+    // NOTE: no const_reverse_iterator due to GCC incompatibility of operator== and operator!=
+    for (List<PScreen>::reverse_iterator it = m_screens.rbegin(); it != m_screens.rend(); ++it)
+    {
+      PScreen& screen = *it;      
+      if (screen->isEnabled())
+      {
+        screen->pointerEvent(data);
+        return;
+      }
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
