@@ -88,22 +88,6 @@ void ScreenManager::hide()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Inserts screen before given one. */
-void ScreenManager::insertBefore(PScreen screen, PScreen beforeScreen)
-{
-  // go thru all screens
-  for (ScreenList::const_iterator it = m_screens.begin(); it != m_screens.end(); ++it)
-  {
-    // check if found screen before which new one is to be insterted
-    if (*it == beforeScreen)
-    {
-      // insert
-      m_screens.insert(it, screen);
-      return;
-    }
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders all screens. */
 void ScreenManager::render(Viewport* viewport, Renderer* renderer)
 {
@@ -111,14 +95,18 @@ void ScreenManager::render(Viewport* viewport, Renderer* renderer)
   // NOTE: no const_reverse_iterator due to GCC incompatibility of operator== and operator!=
   for (List<PScreen>::reverse_iterator it = m_screens.rbegin(); it != m_screens.rend(); ++it)
   {
-    PScreen& screen = *it;
+    // NOTE: do not use references so we dont overwrite entries below while walking up the stack
+    Screen* screen = *it;
     if (!screen->hasTransparency() && screen->isEnabled())
     {
       // go back from current screen to the begining of iteration and render all screens on the way
       do
       {
         // render current screen
-        screen->render(viewport, renderer);
+        if (screen->isEnabled())
+        {
+          screen->render(viewport, renderer);
+        }
 
         // check if we have reached top level screen
         if (it == m_screens.rbegin())

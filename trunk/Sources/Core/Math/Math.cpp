@@ -391,15 +391,3 @@ float32 Math::ACos(float32 radians)
   return EGEMath::PI; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Transforms rectangle by quaternion. */
-//void Math::Transform(Rectf* rect, const Quaternionf* quaternion)
-//{
-//  EGE_ASSERT(rect);
-//  EGE_ASSERT(quaternion);
-//
-//  // store offset needed to move rectangle center back into origin of local space
-//  Vector2f offset(rect->x + rect->width / 2.0f, rect->y + rect->height / 2.0f);
-//
-//  //rect->x
-//}
-////--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -41,8 +41,6 @@ class ScreenManager : public Object
     void hide();
     /* Removes given screen from stack. */
     void remove(PScreen screen);
-    /* Inserts screen before given one. */
-    void insertBefore(PScreen screen, PScreen beforeScreen);
 
   private slots:
 
