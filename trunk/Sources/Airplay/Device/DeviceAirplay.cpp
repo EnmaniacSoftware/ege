@@ -5,7 +5,7 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns current Operating System ID. */
-EGEDevice::EOS Device::GetOS()
+EGEDevice::OS Device::GetOS()
 {
   int32 osId = s3eDeviceGetInt(S3E_DEVICE_OS);
   switch (osId)
@@ -18,12 +18,12 @@ EGEDevice::EOS Device::GetOS()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns current device ID. */
-EGEDevice::EDevice Device::GetDevice()
+EGEDevice::Device Device::GetDevice()
 {
   int32 deviceId = s3eDeviceGetInt(S3E_DEVICE_ID);
 
   // get OS ID
-  EGEDevice::EOS osId = Device::GetOS();
+  EGEDevice::OS osId = Device::GetOS();
   switch (osId)
   {
     // for iOS

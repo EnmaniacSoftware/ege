@@ -15,7 +15,7 @@ EGE_DEFINE_NEW_OPERATORS(PhysicsComponent)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsComponent)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsComponent::PhysicsComponent(Application* app, const String& name, EGEPhysics::EComponentType type) 
+PhysicsComponent::PhysicsComponent(Application* app, const String& name, EGEPhysics::ComponentType type) 
 : IComponent(app, EGE_OBJECT_UID_PHYSICS_COMPONENT, name), m_type(type), m_position(Vector4f::ZERO), m_linearVelocity(Vector4f::ZERO), 
   m_force(Vector4f::ZERO), m_orientation(Quaternionf::IDENTITY), m_mass(1.0f), m_scale(Vector4f::ONE)
 {

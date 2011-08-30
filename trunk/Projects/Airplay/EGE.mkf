@@ -177,6 +177,8 @@ files
   JpegDataSrcFile.h
   Material.cpp
   Material.h
+  RenderObjectFactory.cpp
+  RenderObjectFactory.h
   Texture2D.cpp
   Texture2D.h
   TextureImage.cpp
@@ -367,17 +369,17 @@ files
 
 	["Core/XML"]
   (../../Sources/Core/XML)
-	XMLDocument.cpp
-	XMLDocument.h
-	XMLElement.cpp
-	XMLElement.h
+	XmlDocument.cpp
+	XmlDocument.h
+	XmlElement.cpp
+	XmlElement.h
 
 	["Core/XML/TinyXml"]
   (../../Sources/Core/XML/TinyXml)
-	XMLDocumentTinyXml_p.cpp
-	XMLDocumentTinyXml_p.h
-	XMLElementTinyXml_p.cpp
-	XMLElementTinyXml_p.h
+	XmlDocumentTinyXml_p.cpp
+	XmlDocumentTinyXml_p.h
+	XmlElementTinyXml_p.cpp
+	XmlElementTinyXml_p.h
 }
 
 files

@@ -9,13 +9,15 @@ EGE_NAMESPACE_BEGIN
 
 namespace EGEPhysics
 {
-    enum EComponentType
+    /*! Available physics component types. */
+    enum ComponentType
     {
-      COMPONENT_DYNAMIC,        // positive mass, non-zero velocity determined by forces, moved by solver
-      COMPONENT_STATIC,         // zero mass, zero velocity, may be manually moved
-      COMPONENT_KINEMATIC       // zero mass, non-zero velocity set by user, moved by solver
+      COMPONENT_DYNAMIC,        /*!< positive mass, non-zero velocity determined by forces, moved by solver. */
+      COMPONENT_STATIC,         /*!< zero mass, zero velocity, may be manually moved. */
+      COMPONENT_KINEMATIC       /*!< zero mass, non-zero velocity set by user, moved by solver. */
     };
 
+    /*! Collidion data structure. */
     struct CollisionData
     {
       CollisionData() : group(0), collideGroup(0), policy(-1) {}

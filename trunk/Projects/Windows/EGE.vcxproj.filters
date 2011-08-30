@@ -444,6 +444,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\RenderObjectFactory.cpp">
       <Filter>Core\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Timer\TimeLine.cpp">
+      <Filter>Core\Timer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -863,6 +866,10 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\RenderObjectFactory.h">
       <Filter>Core\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Timer\TimeLine.h">
+      <Filter>Core\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGETimeline.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

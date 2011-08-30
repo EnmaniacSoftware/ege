@@ -39,7 +39,10 @@ class VertexBuffer : public Object
     bool isValid() const;
     /* Creates buffer for requested number of vertices. */
     bool create(u32 count);
-    /* Locks buffer given part of the buffer for read/write operations. */
+    /* Locks buffer's given part of the buffer for read/write operations. 
+     * @param offset  0-based vertex offset from which locking should be done. 
+     * @param count   Number of vertices to lock.
+     */
     void* lock(u32 offset, u32 count);
     /* Unlocks buffer. */
     void unlock();

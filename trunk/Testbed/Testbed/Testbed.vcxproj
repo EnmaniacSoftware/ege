@@ -49,7 +49,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_FEATURE_DEBUG;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Sources</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -80,12 +80,14 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="RenderToTextureTest.cpp" />
+    <ClCompile Include="TimelineTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="RenderToTextureTest.h" />
     <ClInclude Include="Test.h" />
+    <ClInclude Include="TimelineTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Projects\Windows\EGE.vcxproj">

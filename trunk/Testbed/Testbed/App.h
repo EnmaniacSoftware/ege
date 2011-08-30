@@ -4,7 +4,7 @@
 #include <EGEApplication.h>
 #include <EGEString.h>
 #include <EGEList.h>
-#include "RenderToTextureTest.h"
+#include "Test.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

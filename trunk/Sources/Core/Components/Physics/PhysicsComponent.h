@@ -37,7 +37,7 @@ class PhysicsComponent : public IComponent
 
   public:
 
-    PhysicsComponent(Application* app, const String& name, EGEPhysics::EComponentType type = EGEPhysics::COMPONENT_DYNAMIC);
+    PhysicsComponent(Application* app, const String& name, EGEPhysics::ComponentType type = EGEPhysics::COMPONENT_DYNAMIC);
    ~PhysicsComponent();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -51,7 +51,7 @@ class PhysicsComponent : public IComponent
     /* IComponent override. Returns TRUE if component is valid. */
     bool isValid() const override;
     /*! Returns component type. */
-    inline EGEPhysics::EComponentType type() const { return m_type; }
+    inline EGEPhysics::ComponentType type() const { return m_type; }
     /* Sets position vector. */
     void setPosition(const Vector4f& position);
     /* Returns position vector. */
@@ -106,7 +106,7 @@ class PhysicsComponent : public IComponent
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(PhysicsComponent)
 
     /*! Type. */
-    EGEPhysics::EComponentType m_type;
+    EGEPhysics::ComponentType m_type;
     /*! Position vector. */
     Vector4f m_position;
     /*! Linear velocity vector. */

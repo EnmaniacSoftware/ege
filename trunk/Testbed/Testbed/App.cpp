@@ -1,11 +1,13 @@
 #include "App.h"
-#include "EGEScene.h"
-#include "EGEResources.h"
-#include "EGEGraphics.h"
+#include <EGEScene.h>
+#include <EGEResources.h>
+#include <EGEGraphics.h>
+#include <EGEInput.h>
+#include <EGEEvent.h>
+#include <EGEOverlay.h>
 #include "Core/Components/Render/RenderComponent.h"
-#include "EGEInput.h"
-#include "EGEEvent.h"
-#include "EGEOverlay.h"
+#include "RenderToTextureTest.h"
+#include "TimeLineTest.h"
 
 #include <gl/gl.h>
 #include <gl/glu.h>
@@ -51,6 +53,7 @@ bool App::start()
 
   // create tests
   m_tests.push_back(new RenderToTextureTest(this));
+  m_tests.push_back(new TimeLineTest(this));
 
   // select test to run
   selectTest();
@@ -67,7 +70,7 @@ bool App::start()
 bool App::selectTest()
 {
   // select test to run
-  m_activeTest = *m_tests.begin();
+  m_activeTest = m_tests.back();
 
   return m_activeTest->createScene();
 }

@@ -116,7 +116,10 @@ void VertexBuffer::destroy()
   clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Locks buffer given part of the buffer for read/write operations. */
+/*! Locks buffer's given part of the buffer for read/write operations. 
+ *  @param offset  0-based vertex offset from which locking should be done. 
+ *  @param count   Number of vertices to lock.
+ */
 void* VertexBuffer::lock(u32 offset, u32 count)
 {
   // check if NOT locked yet and any data to lock

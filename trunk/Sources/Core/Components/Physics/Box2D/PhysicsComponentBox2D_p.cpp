@@ -14,7 +14,7 @@ EGE_DEFINE_DELETE_OPERATORS(PhysicsComponentPrivate)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps EGE component type to Box2D. */
-enum b2BodyType mapType(EGEPhysics::EComponentType type)
+enum b2BodyType mapType(EGEPhysics::ComponentType type)
 {
   switch (type)
   {

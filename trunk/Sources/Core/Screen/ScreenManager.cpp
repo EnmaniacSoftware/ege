@@ -28,7 +28,7 @@ void ScreenManager::update(const Time& time)
   {
     // go thru all screens from top to bottom and update first enabled one
     // NOTE: no const_reverse_iterator due to GCC incompatibility of operator== and operator!=
-    for (List<PScreen>::reverse_iterator it = m_screens.rbegin(); it != m_screens.rend(); ++it)
+    for (ScreenList::reverse_iterator it = m_screens.rbegin(); it != m_screens.rend(); ++it)
     {
       PScreen& screen = *it;      
       if (screen->isEnabled())
@@ -93,7 +93,7 @@ void ScreenManager::render(Viewport* viewport, Renderer* renderer)
 {
   // go thru all screens from top to bottom
   // NOTE: no const_reverse_iterator due to GCC incompatibility of operator== and operator!=
-  for (List<PScreen>::reverse_iterator it = m_screens.rbegin(); it != m_screens.rend(); ++it)
+  for (ScreenList::reverse_iterator it = m_screens.rbegin(); it != m_screens.rend(); ++it)
   {
     // NOTE: do not use references so we dont overwrite entries below while walking up the stack
     Screen* screen = *it;
@@ -137,7 +137,7 @@ void ScreenManager::pointerEvent(PPointerData data)
   {
     // go thru all screens from top to bottom and propagate to first enabled one
     // NOTE: no const_reverse_iterator due to GCC incompatibility of operator== and operator!=
-    for (List<PScreen>::reverse_iterator it = m_screens.rbegin(); it != m_screens.rend(); ++it)
+    for (ScreenList::reverse_iterator it = m_screens.rbegin(); it != m_screens.rend(); ++it)
     {
       PScreen& screen = *it;      
       if (screen->isEnabled())
@@ -147,5 +147,23 @@ void ScreenManager::pointerEvent(PPointerData data)
       }
     }
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns first screen with given name. */
+PScreen ScreenManager::screen(const String& name) const
+{
+  // go thru all screens
+  for (ScreenList::const_iterator it = m_screens.begin(); it != m_screens.end(); ++it)
+  {
+    // check if found
+    if ((*it)->name() == name)
+    {
+      // found
+      return *it;
+    }
+  }
+
+  // not found
+  return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

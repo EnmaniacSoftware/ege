@@ -41,6 +41,8 @@ class ScreenManager : public Object
     void hide();
     /* Removes given screen from stack. */
     void remove(PScreen screen);
+    /* Returns first screen with given name. */
+    PScreen screen(const String& name) const;
 
   private slots:
 

@@ -30,7 +30,7 @@ class Node
 {
   public:
 
-    Node(Application* app, const String& name, Node* parent, EGEPhysics::EComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
+    Node(Application* app, const String& name, Node* parent, EGEPhysics::ComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
     virtual ~Node();
 
     /* Returns TRUE if object is valid. */
@@ -62,9 +62,9 @@ class Node
   protected:
 
     /* Creates child node with a given name and attaches it. */
-    Node* createChildNode(const String& name, EGEPhysics::EComponentType componentType);
+    Node* createChildNode(const String& name, EGEPhysics::ComponentType componentType);
     /*! Creates child node with a given name. MUST be overriden by subclass. */
-    virtual Node* createChildNodeImpl(const String& name, EGEPhysics::EComponentType componentType) = 0;
+    virtual Node* createChildNodeImpl(const String& name, EGEPhysics::ComponentType componentType) = 0;
 
   protected:
 

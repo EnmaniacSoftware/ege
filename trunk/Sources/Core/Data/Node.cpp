@@ -3,7 +3,7 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Node::Node(Application* app, const String& name, Node* parent, EGEPhysics::EComponentType componentType) : m_name(name), m_parent(parent), m_visible(true)
+Node::Node(Application* app, const String& name, Node* parent, EGEPhysics::ComponentType componentType) : m_name(name), m_parent(parent), m_visible(true)
 {
   m_physics = ege_new PhysicsComponent(app, "node-physics-" + name, componentType);
   if (m_physics)
@@ -26,7 +26,7 @@ bool Node::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates child node with a given name and attaches it. */
-Node* Node::createChildNode(const String& name, EGEPhysics::EComponentType componentType)
+Node* Node::createChildNode(const String& name, EGEPhysics::ComponentType componentType)
 {
   Node* node;
 

@@ -15,7 +15,7 @@ EGE_DEFINE_NEW_OPERATORS(SceneNode)
 EGE_DEFINE_DELETE_OPERATORS(SceneNode)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SceneNode::SceneNode(const String& name, SceneNode* parent, SceneManager* manager, EGEPhysics::EComponentType componentType)
+SceneNode::SceneNode(const String& name, SceneNode* parent, SceneManager* manager, EGEPhysics::ComponentType componentType)
 : Object(manager->app()), Node(manager->app(), name, parent, componentType), m_manager(manager)
 {
 }
@@ -147,13 +147,13 @@ void SceneNode::update(const Time& time)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Node override. Creates child node with a given name. MUST be overriden by subclass. */
-Node* SceneNode::createChildNodeImpl(const String& name, EGEPhysics::EComponentType componentType)
+Node* SceneNode::createChildNodeImpl(const String& name, EGEPhysics::ComponentType componentType)
 {
   return ege_new SceneNode(name, this, sceneManager(), componentType);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates child scene node with a given name and attaches it. */
-SceneNode* SceneNode::createChildSceneNode(const String& name, EGEPhysics::EComponentType componentType)
+SceneNode* SceneNode::createChildSceneNode(const String& name, EGEPhysics::ComponentType componentType)
 {
   return static_cast<SceneNode*>(createChildNode(name, componentType));
 }

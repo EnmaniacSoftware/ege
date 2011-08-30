@@ -2,6 +2,7 @@
 #define EGE_CORE_TIMER_H
 
 #include <EGE.h>
+#include <EGESignal.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -20,6 +21,13 @@ class Timer : public Object
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  signals:
+
+    /*! Signal called when timer expires. */
+    Signal0<> timeout;
+
+  public:
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;

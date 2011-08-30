@@ -6,7 +6,7 @@ includepath
 files
 {
   ("../../External/Box2D 2.1.2/Box2d/Box2d")
-  Box2d.h
+  Box2D.h
 
 	["Collision"]
 	("../../External/Box2D 2.1.2/Box2d/Box2d/Collision")

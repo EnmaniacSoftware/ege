@@ -27,7 +27,7 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
 {
   public:
 
-    SceneNode(const String& name, SceneNode* parent, SceneManager* manager, EGEPhysics::EComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
+    SceneNode(const String& name, SceneNode* parent, SceneManager* manager, EGEPhysics::ComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
     virtual ~SceneNode();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -37,7 +37,7 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
     void update(const Time& time);
 
     /* Creates child scene node with a given name and attaches it. */
-    SceneNode* createChildSceneNode(const String& name, EGEPhysics::EComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
+    SceneNode* createChildSceneNode(const String& name, EGEPhysics::ComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
 
     /* Attaches new object to node. */
     bool attachObject(PSceneNodeObject object);
@@ -85,7 +85,7 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
   private:
 
     /* Node override. Creates child node with a given name. MUST be overriden by subclass. */
-    virtual Node* createChildNodeImpl(const String& name, EGEPhysics::EComponentType componentType) override;
+    virtual Node* createChildNodeImpl(const String& name, EGEPhysics::ComponentType componentType) override;
     /*! Returns pointer to scene manager. */
     inline SceneManager* sceneManager() const { return m_manager; }
 

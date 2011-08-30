@@ -8,6 +8,7 @@
 #include <EGE.h>
 #include <EGETime.h>
 #include <EGEInput.h>
+#include <EGEString.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -24,7 +25,7 @@ class Screen : public Object
 {
   public:
 
-    Screen(Application* app);
+    Screen(Application* app, const String& name = "");
     virtual ~Screen();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -48,9 +49,13 @@ class Screen : public Object
     void setEnable(bool enable);
     /*! Returns TRUE if screen is enabled. */
     inline bool isEnabled() const { return !m_disabled; }
+    /*! Returns name. */
+    const String& name() const { return m_name; }
 
   private:
 
+    /*! Name. */
+    String m_name;
     /*! Disabled flag. */
     bool m_disabled;
 };

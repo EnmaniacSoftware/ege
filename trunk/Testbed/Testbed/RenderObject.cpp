@@ -19,11 +19,11 @@ RenderObject* RenderObject::CreateBase(Application* app, const String& name, boo
   RenderObject* object = ege_new RenderObject(app, name);
   if (object)
   {
-    object->m_renderData = ege_new RenderComponent(app, name, EGEGraphics::RENDER_PRIORITY_MAIN);
+    object->m_renderData = ege_new RenderComponent(app, name, EGEGraphics::RP_MAIN);
     if (object->m_renderData)
     {
       // add render buffers
-      if (!object->m_renderData->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ))
+      if (!object->m_renderData->vertexBuffer()->addArray(EGEVertexBuffer::AT_POSITION_XYZ))
       {
         // error!
         EGE_DELETE(object);
@@ -32,7 +32,7 @@ RenderObject* RenderObject::CreateBase(Application* app, const String& name, boo
     
       if (uv)
       {
-        if (!object->m_renderData->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV))
+        if (!object->m_renderData->vertexBuffer()->addArray(EGEVertexBuffer::AT_TEXTURE_UV))
         {
           // error!
           EGE_DELETE(object);
@@ -42,7 +42,7 @@ RenderObject* RenderObject::CreateBase(Application* app, const String& name, boo
 
       if (color)
       {
-        if (!object->m_renderData->vertexBuffer()->addArray(EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA))
+        if (!object->m_renderData->vertexBuffer()->addArray(EGEVertexBuffer::AT_COLOR_RGBA))
         {
           // error!
           EGE_DELETE(object);

@@ -6,7 +6,7 @@
 
 extern "C"
 {
-#include "jinclude.h"
+//#include "jinclude.h"
 #include "jpeglib.h"
 #include "jerror.h"
 }
@@ -215,11 +215,11 @@ GLOBAL(EGE::EGEResult) jpeg_ege_src(j_decompress_ptr cinfo, EGE::Object* source)
   if (cinfo->src == NULL)
   {
     // allocate custom manager object
-    cinfo->src = (struct jpeg_source_mgr*)(*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT, SIZEOF(my_source_mgr));
+    cinfo->src = (struct jpeg_source_mgr*)(*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT, sizeof(my_source_mgr));
 
     // allocate internal buffer
     src = (my_src_ptr) cinfo->src;
-    src->buffer = (JOCTET *)(*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT, INPUT_BUF_SIZE * SIZEOF(JOCTET));
+    src->buffer = (JOCTET *)(*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT, INPUT_BUF_SIZE * sizeof(JOCTET));
   }
 
   src = (my_src_ptr) cinfo->src;

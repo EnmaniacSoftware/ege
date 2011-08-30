@@ -8,7 +8,7 @@ EGE_DEFINE_NEW_OPERATORS(Screen)
 EGE_DEFINE_DELETE_OPERATORS(Screen)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Screen::Screen(Application* app) : Object(app), m_disabled(false)
+Screen::Screen(Application* app, const String& name) : Object(app), m_name(name), m_disabled(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
