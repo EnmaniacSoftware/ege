@@ -259,18 +259,14 @@ void Math::Lerp(Vector2f* out, Vector2f* from, Vector2f* to, float32 time)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*  Performs linear interpolation between given scalars. 
- *  @param  out  Resulting scalar.
  *  @param  from First (start) scalar.
  *  @param  to   Second (end) scalar.
  *  @param  time Scalar in range [0..1] describing relative distance between input scalar for which interpolation is to be calculated.
+ *  @return Resulting scalar.
  */
-void Math::Lerp(float32* out, float32* from, float32* to, float32 time)
+float32 Math::Lerp(float32 from, float32 to, float32 time)
 {
-  EGE_ASSERT(out);
-  EGE_ASSERT(from);
-  EGE_ASSERT(to);
-
-  *out = (1.0f - time) * (*from) + time * (*to);
+  return (1.0f - time) * from + time * to;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*  Calculates point on the segment lying closest to given point.

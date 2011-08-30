@@ -55,7 +55,8 @@ bool TimeLineTest::createScene()
   m_timeLine->setStartFrame(0);
   m_timeLine->setEndFrame(10);
   m_timeLine->setDuration(Time::FromSeconds(10.0f));
-  
+  m_timeLine->setLoopCount(0);
+
   ege_connect(m_timeLine, frameChanged, this, TimeLineTest::frameChanged);
   ege_connect(m_timeLine, finished, this, TimeLineTest::finished);
 

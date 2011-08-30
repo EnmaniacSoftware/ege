@@ -13,10 +13,13 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="RenderToTexture">
+    <Filter Include="Tests">
+      <UniqueIdentifier>{ae73f28f-1719-467e-bbca-09401ef06215}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\RenderToTexture">
       <UniqueIdentifier>{89173f26-e306-46f6-a829-c47e54e6a3cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Timeline">
+    <Filter Include="Tests\Timeline">
       <UniqueIdentifier>{5ab0b2b4-70d4-42fa-8d0b-9c01cb986829}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -31,10 +34,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderToTextureTest.cpp">
-      <Filter>RenderToTexture</Filter>
+      <Filter>Tests\RenderToTexture</Filter>
     </ClCompile>
     <ClCompile Include="TimelineTest.cpp">
-      <Filter>Timeline</Filter>
+      <Filter>Tests\Timeline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -44,14 +47,14 @@
     <ClInclude Include="RenderObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Test.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RenderToTextureTest.h">
-      <Filter>RenderToTexture</Filter>
+      <Filter>Tests\RenderToTexture</Filter>
     </ClInclude>
     <ClInclude Include="TimelineTest.h">
-      <Filter>Timeline</Filter>
+      <Filter>Tests\Timeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Test.h">
+      <Filter>Tests</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

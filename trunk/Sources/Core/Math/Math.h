@@ -90,12 +90,12 @@ class Math
     static void Lerp(Vector2f* out, Vector2f* from, Vector2f* to, float32 time);
 
     /*  Performs linear interpolation between given scalars. 
-     *  @param  out  Resulting scalar.
      *  @param  from First (start) scalar.
      *  @param  to   Second (end) scalar.
      *  @param  time Scalar in range [0..1] describing relative distance between input scalar for which interpolation is to be calculated.
+     *  @return Resulting scalar.
      */
-    static void Lerp(float32* out, float32* from, float32* to, float32 time);
+    static float32 Lerp(float32 from, float32 to, float32 time);
 
     /*  Calculates point on the segment lying closest to given point.
      *  @param  out         Calculated point on the segment lying closest to given point.
