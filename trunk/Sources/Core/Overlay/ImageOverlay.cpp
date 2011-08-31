@@ -12,10 +12,12 @@ EGE_DEFINE_NEW_OPERATORS(ImageOverlay)
 EGE_DEFINE_DELETE_OPERATORS(ImageOverlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImageOverlay::ImageOverlay(Application* app, const String& name, Alignment align) : Overlay(app, name, EGEGraphics::RPT_TRIANGLE_STRIPS, align, 
-                                                                                            EGE_OBJECT_UID_OVERLAY_IMAGE)
+ImageOverlay::ImageOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) 
+: Overlay(app, name, EGEGraphics::RPT_TRIANGLE_STRIPS, EGE_OBJECT_UID_OVERLAY_IMAGE, deleteFunc), m_alignmentOffset(Vector4f::ZERO)
 {
   m_material = ege_new Material(app);
+
+  ege_connect(physics(), transformationChanged, this, ImageOverlay::transformationChanged);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ImageOverlay::~ImageOverlay()
@@ -60,9 +62,9 @@ void ImageOverlay::updateRenderData()
 
   Color m_color = Color::WHITE;
 
-  renderComponent()->setMaterial(m_material);
+  renderData()->setMaterial(m_material);
 
-  float32* data = (float32*) renderComponent()->vertexBuffer()->lock(0, 4);
+  float32* data = (float32*) renderData()->vertexBuffer()->lock(0, 4);
 
   data += 5;
   //*data++ = 0;
@@ -108,7 +110,7 @@ void ImageOverlay::updateRenderData()
   *data++ = m_color.blue;
   *data++ = m_color.alpha;
 
-  renderComponent()->vertexBuffer()->unlock();
+  renderData()->vertexBuffer()->unlock();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Overlay override. Renders element. */
@@ -116,13 +118,13 @@ void ImageOverlay::render(const Viewport* viewport, Renderer* renderer)
 {
   if (visible())
   {
-    PRenderComponent renderComponent = this->renderComponent();
+    PRenderComponent renderComponent = this->renderData();
 
     Matrix4f worldMatrix;
     if (NULL != physics())
     {
       Quaternionf orientation = physics()->orientation();
-      Vector4f position = physics()->position();
+      Vector4f position = physics()->position() - m_alignmentOffset;
       Vector4f scale = physics()->scale();
 
       Math::CreateMatrix(&worldMatrix, &position, &scale, &orientation);
@@ -144,5 +146,29 @@ void ImageOverlay::setMaterialName(const String& name)
     m_materialName = name;
     invalidate();
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Overlay override. Sets alignment. */
+void ImageOverlay::setAlignment(Alignment align)
+{
+  if (align != alignment())
+  {
+    // force alignment update
+    transformationChanged();
+
+    // call base class
+    Overlay::setAlignment(align);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when physics data has been updated. */
+void ImageOverlay::transformationChanged()
+{
+  // update alignment offset
+  Vector2f size(physics()->scale().x, physics()->scale().y);
+
+  m_alignmentOffset.x = 0;
+  m_alignmentOffset.y = 0;
+  Math::AlignXY(&m_alignmentOffset, &size, EGEAlignment::ALIGN_TOP_LEFT, alignment());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

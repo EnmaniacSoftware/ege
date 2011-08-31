@@ -32,7 +32,9 @@ PhysicsComponentPrivate::PhysicsComponentPrivate(PhysicsComponent* parent, Physi
 	def.position.x  = 0;
 	def.position.y  = 0;
   def.type        = mapType(parent->type());
-    
+  def.allowSleep  = d_func()->m_allowSleep;
+  def.awake       = d_func()->m_awake;
+
 	m_body = manager()->world()->CreateBody(&def);
 
   m_body->SetUserData(this);
@@ -285,5 +287,34 @@ Vector4f PhysicsComponentPrivate::scale() const
 {
   // unsupported, return base value
   return d_func()->m_scale;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if component is 'awaken'. Awaken components are the ones processed by solver. */
+bool PhysicsComponentPrivate::isAwake() const
+{
+  if (isValid())
+  {
+    return body()->IsAwake();
+  }
+
+  return d_func()->m_awake;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets 'awake' state. */
+void PhysicsComponentPrivate::setAwake(bool set)
+{
+  if (isValid())
+  {
+    body()->SetAwake(set);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets whether object is allowed to sleep. */
+void PhysicsComponentPrivate::setAllowSleep(bool set)
+{
+  if (isValid())
+  {
+    body()->SetSleepingAllowed(set);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -22,7 +22,7 @@ class Overlay : public Object
 {
   public: 
 
-    Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, Alignment align);
+    Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, egeObjectDeleteFunc deleteFunc = NULL);
     virtual ~Overlay();
     
     EGE_DECLARE_NEW_OPERATORS
@@ -34,6 +34,8 @@ class Overlay : public Object
     virtual void update(const Time& time);
     /* Renders element. */
     virtual void render(const Viewport* viewport, Renderer* renderer);
+    /* Sets alignment. */
+    virtual void setAlignment(Alignment align);
     /*! Returns name. */
     inline const String& name() const { return m_name; }
     /*! Returns physics component. */
@@ -43,7 +45,9 @@ class Overlay : public Object
     /* Sets visibility. */
     void setVisible(bool set);
     /*! Returns render component. */
-    inline PRenderComponent renderComponent() const { return m_render; }
+    inline PRenderComponent renderData() const { return m_renderData; }
+    /*! Returns current alignment. */
+    const Alignment& alignment() const { return m_alignment; }
 
     /* Returns rectangle containing the overlay. */
 
@@ -75,7 +79,7 @@ class Overlay : public Object
 
   protected:
 
-    Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, Alignment align, u32 uid);
+    Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
     /* Invalidates object forcing it to be updated next time it's possible. */
     void invalidate();
     /* Validates object. */
@@ -86,20 +90,22 @@ class Overlay : public Object
   private:
 
     /* Initializes object. */
-    void initialize(EGEGraphics::RenderPrimitiveType renderType, Alignment align);
+    void initialize(EGEGraphics::RenderPrimitiveType renderType);
 
   private:
 
     /*! Name. */
     String m_name;
     /*! Render component. */
-    PRenderComponent m_render;
+    PRenderComponent m_renderData;
     /*! Physics component. */
     PPhysicsComponent m_physics;
     /*! Update flag. */
     bool m_updateNeeded;
     /*! Visibility flag. */
     bool m_visible;
+    /*! Alignment. */
+    Alignment m_alignment;
 
     //string m_strText;               // text (multipurpose)
 

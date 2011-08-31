@@ -2,7 +2,7 @@
 #define EGE_CORE_VECTOR4_H
 
 /**
-  This class represents 3D vector in homogenous space
+  This class represents 3D vector in homogenous space.
 */
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

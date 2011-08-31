@@ -49,11 +49,8 @@ class TVector3
     inline T distanceTo(const TVector3& vector) const;
     /* Returns squared distance between this and given points. */
     inline T distanceSquaredTo(const TVector3& vector) const;
-
-    inline TVector2<T> xy() const
-    {
-      return TVector2<T>(x, y);
-    }
+    /* Returns 2D vector consisting of X and Y values of current one. */
+    inline TVector2<T> xy() const;
 
   //  // normalization related methods
 		//CVector3 getNormalized( void ) const;                                                     // gets normalized vector
@@ -256,6 +253,13 @@ template <typename T>
 T TVector3<T>::distanceSquaredTo(const TVector3& vector) const
 {
   return (x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y) + (z - vector.z) * (z - vector.z);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns 2D vector consisting of X and Y values of current one. */
+template <typename T>
+TVector2<T> TVector3<T>::xy() const
+{
+  return TVector2<T>(x, y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

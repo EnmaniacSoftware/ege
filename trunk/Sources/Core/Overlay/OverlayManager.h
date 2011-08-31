@@ -30,21 +30,28 @@ class OverlayManager : public Object
     void render(Viewport* viewport, Renderer* renderer);
     /* Updates manager. */
     void update(const Time& time);
-    /* Adds text overlay of the given name. */
-    PTextOverlay addTextOverlay(const String& name);
-    /* Adds image overlay of the given name. */
-    PImageOverlay addImageOverlay(const String& name);
+    /* Adds overlay. 
+     * @param overlay Overlay to be added.
+     * @return  EGE_SUCCESS if operation succeeds. EGE_ERROR_ALREADY_EXISTS if overlay with such name already exists. Otherwise, EGE_ERROR.
+     */
+    EGEResult add(const POverlay& overlay);
     /* Removes overlay of the given name. */
-    void removeOverlay(const String& name);
+    void remove(const String& name);
+    /* Removes givem overlay. */
+    void remove(const POverlay& overlay);
     /* Removes all overlays. */
-    void removeAllOverlays();
+    void removeAll();
     /* Returns overlay of the given name. */
     POverlay overlay(const String& name) const;
 
   private:
 
+    typedef List<POverlay> OverlayList;
+
+  private:
+
     /*! Pool of overlays. */
-    List<POverlay> m_overlays;
+    OverlayList m_overlays;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -87,6 +87,12 @@ class PhysicsComponent : public IComponent
     void setScale(const Vector4f& scale);
     /* Returns scale vector. */
     Vector4f scale() const;
+    /* Returns TRUE if component is 'awaken'. Awaken components are the ones processed by solver. */
+    bool isAwake() const;
+    /* Sets 'awake' state. */
+    void setAwake(bool set);
+    /* Sets whether object is allowed to sleep. */
+    void setAllowSleep(bool set);
 
     /* Adds circular shape. */
     bool addCircleShape(float32 radius, float32 density, EGEPhysics::CollisionData colissionData = EGEPhysics::CollisionData());
@@ -119,6 +125,10 @@ class PhysicsComponent : public IComponent
     float32 m_mass;
     /*! Scale vector. */
     Vector4f m_scale;
+    /*! Awake flag. */
+    bool m_awake;
+    /*! Sleep allowness flag. If set component can be marked 'sleep' by solver if no processing for it is to be done to save CPU. */
+    bool m_allowSleep;
     /*! List of joints attached. */
     List<PhysicsJoint*> m_joints;
     /*! Pointer to physics manager. */

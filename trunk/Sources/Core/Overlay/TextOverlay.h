@@ -18,8 +18,8 @@ class TextOverlay : public Overlay
 {
   public: 
 
-    TextOverlay(Application* app, const String& name);
-   ~TextOverlay();
+    TextOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
+    virtual ~TextOverlay();
     
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -32,6 +32,8 @@ class TextOverlay : public Overlay
     void setFont(PFont font);
     /*! Returns font. */
     inline PFont font() const { return m_font; }
+    /* Overlay override. Sets alignment. */
+    virtual void setAlignment(Alignment align) override;
 
     // visiblility related methods
     //inline bool isVisible( void ) const { return m_bVisible; }                                                // returns TRUE if overlay is visible
@@ -68,12 +70,21 @@ class TextOverlay : public Overlay
     /* Updates render data. */
     void updateRenderData();
 
-private:
+  private slots:
+
+    /* Slot called when physics data has been updated. */
+    void transformationChanged();
+
+  private:
 
     /*! Overlay text. */
     Text m_text;
     /*! Font. */
     PFont m_font;
+    /*! Aligment position offset. */
+    Vector4f m_alignmentOffset;
+    /*! Cached text size. */
+    Vector2f m_textSize;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

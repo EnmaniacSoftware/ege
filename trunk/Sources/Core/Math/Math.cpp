@@ -387,3 +387,71 @@ float32 Math::ACos(float32 radians)
   return EGEMath::PI; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Aligns point. 
+ *  @param point            Point to align. This point is realigned.
+ *  @param size             Area within each point is aligned.
+ *  @param currentAlignment Current point alignment within given area.
+ *  @param newAlignment     New point alignment within given area.
+ */
+void Math::Align(Vector2f* point, Vector2f* size, Alignment currentAlignment, Alignment newAlignment)
+{
+  EGE_ASSERT(point);
+  EGE_ASSERT(size);
+
+  // align back to TOP-LEFT
+  if (currentAlignment & EGEAlignment::ALIGN_RIGHT)
+  {
+    point->x -= size->x;
+  }
+  else if (currentAlignment & EGEAlignment::ALIGN_HCENTER)
+  {
+    point->x -= size->x * 0.5f;
+  }
+
+  if (currentAlignment & EGEAlignment::ALIGN_BOTTOM)
+  {
+    point->y -= size->y;
+  }
+  else if (currentAlignment & EGEAlignment::ALIGN_VCENTER)
+  {
+    point->y -= size->y * 0.5f;
+  }
+
+  // do new alignment
+  if (newAlignment & EGEAlignment::ALIGN_RIGHT)
+  {
+    point->x += size->x;
+  }
+  else if (newAlignment & EGEAlignment::ALIGN_HCENTER)
+  {
+    point->x += size->x * 0.5f;
+  }
+
+  if (newAlignment & EGEAlignment::ALIGN_BOTTOM)
+  {
+    point->y += size->y;
+  }
+  else if (newAlignment & EGEAlignment::ALIGN_VCENTER)
+  {
+    point->y += size->y * 0.5f;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Aligns point along XY plane. 
+ *  @param point            Point to align. This point is realigned.
+ *  @param size             Area within each point is aligned.
+ *  @param currentAlignment Current point alignment within given area.
+ *  @param newAlignment     New point alignment within given area.
+ */
+void Math::AlignXY(Vector4f* point, Vector2f* size, Alignment currentAlignment, Alignment newAlignment)
+{
+  EGE_ASSERT(point);
+  EGE_ASSERT(size);
+
+  Vector2f newPoint(point->x, point->y);
+  Math::Align(&newPoint, size, currentAlignment, newAlignment);
+
+  point->x = newPoint.x;
+  point->y = newPoint.y;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -17,7 +17,7 @@ EGE_DEFINE_DELETE_OPERATORS(PhysicsComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsComponent::PhysicsComponent(Application* app, const String& name, EGEPhysics::ComponentType type) 
 : IComponent(app, EGE_OBJECT_UID_PHYSICS_COMPONENT, name), m_type(type), m_position(Vector4f::ZERO), m_linearVelocity(Vector4f::ZERO), 
-  m_force(Vector4f::ZERO), m_orientation(Quaternionf::IDENTITY), m_mass(1.0f), m_scale(Vector4f::ONE)
+  m_force(Vector4f::ZERO), m_orientation(Quaternionf::IDENTITY), m_mass(1.0f), m_scale(Vector4f::ONE), m_awake(true), m_allowSleep(true)
 {
   m_manager = app->physicsManager();
 
@@ -244,5 +244,41 @@ Vector4f PhysicsComponent::scale() const
   }
 
   return m_scale;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if component is 'awaken'. Awaken components are the ones processed by solver. */
+bool PhysicsComponent::isAwake() const
+{
+  EGE_ASSERT(isValid());
+  if (isValid())
+  {
+    return p_func()->isAwake();
+  }
+
+  return m_awake;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets 'awake' state. */
+void PhysicsComponent::setAwake(bool set)
+{
+  EGE_ASSERT(isValid());
+  if (isValid())
+  {
+    p_func()->setAwake(set);
+  }
+
+  m_awake = set;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets whether object is allowed to sleep. */
+void PhysicsComponent::setAllowSleep(bool set)
+{
+  EGE_ASSERT(isValid());
+  if (isValid())
+  {
+    p_func()->setAllowSleep(set);
+  }
+
+  m_allowSleep = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

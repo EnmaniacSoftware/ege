@@ -8,28 +8,28 @@ EGE_DEFINE_NEW_OPERATORS(Overlay)
 EGE_DEFINE_DELETE_OPERATORS(Overlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Overlay::Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, Alignment align) 
-: Object(app, EGE_OBJECT_UID_OVERLAY), m_name(name), m_updateNeeded(false), m_visible(true)
+Overlay::Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, egeObjectDeleteFunc deleteFunc) 
+: Object(app, EGE_OBJECT_UID_OVERLAY, deleteFunc), m_name(name), m_updateNeeded(false), m_visible(true)
 {
-  initialize(renderType, align);
+  initialize(renderType);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Overlay::Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, Alignment align, u32 uid) 
-: Object(app, uid), m_name(name), m_updateNeeded(false), m_visible(true)
+Overlay::Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, u32 uid, egeObjectDeleteFunc deleteFunc) 
+: Object(app, uid, deleteFunc), m_name(name), m_updateNeeded(false), m_visible(true)
 {
-  initialize(renderType, align);
+  initialize(renderType);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Overlay::~Overlay()
 {
-  m_physics = NULL;
-  m_render  = NULL;
+  m_physics     = NULL;
+  m_renderData  = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
 bool Overlay::isValid() const
 {
-  return (NULL != m_physics) && (NULL != m_render);
+  return (NULL != m_physics) && (NULL != m_renderData);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates overlay. */
@@ -39,11 +39,11 @@ void Overlay::update(const Time& time)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Initializes object. */
-void Overlay::initialize(EGEGraphics::RenderPrimitiveType renderType, Alignment align)
+void Overlay::initialize(EGEGraphics::RenderPrimitiveType renderType)
 {
-  m_physics = ege_new PhysicsComponent(app(), "overlay_" + name());
-  m_render  = RenderObjectFactory::CreateQuadXY(app(), "overlay_" + name(), Vector4f::ZERO, Vector2f::ONE, align, EGEVertexBuffer::ST_V3_T2_C4, 
-                                                EGEGraphics::RP_MAIN_OVERLAY, renderType);
+  m_physics     = ege_new PhysicsComponent(app(), "overlay_" + name());
+  m_renderData  = RenderObjectFactory::CreateQuadXY(app(), "overlay_" + name(), Vector4f::ZERO, Vector2f::ONE, EGEAlignment::ALIGN_TOP_LEFT, 
+                                                    EGEVertexBuffer::ST_V3_T2_C4, EGEGraphics::RP_MAIN_OVERLAY, renderType);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Invalidates object forcing it to be updated next time it's possible. */
@@ -76,6 +76,16 @@ void Overlay::setVisible(bool set)
     {
       invalidate();
     }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets alignment. */
+void Overlay::setAlignment(Alignment align)
+{
+  if (m_alignment != align)
+  {
+    m_alignment = align;
+    invalidate();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

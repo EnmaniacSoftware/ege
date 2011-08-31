@@ -14,14 +14,14 @@ OverlayManager::OverlayManager(Application* app) : Object(app)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 OverlayManager::~OverlayManager()
 {
-  removeAllOverlays();
+  removeAll();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates manager. */
 void OverlayManager::update(const Time& time)
 {
   // update all overlays
-  for (List<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (OverlayList::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 
@@ -30,48 +30,26 @@ void OverlayManager::update(const Time& time)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Adds text overlay of the given name. */
-PTextOverlay OverlayManager::addTextOverlay(const String& name)
+EGEResult OverlayManager::add(const POverlay& overlay)
 {
   // check if overlay with given name exists
-  if (overlay(name))
+  if (this->overlay(overlay->name()))
   {
     // error!
-    return NULL;
+    return EGE_ERROR_ALREADY_EXISTS;
   }
 
-  PTextOverlay textOverlay = ege_new TextOverlay(app(), name);
-  if (textOverlay)
-  {
-    m_overlays.push_back(textOverlay);
-  }
+  // add to pool
+  m_overlays.push_back(overlay);
 
-  return textOverlay;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds image overlay of the given name. */
-PImageOverlay OverlayManager::addImageOverlay(const String& name)
-{
-  // check if overlay with given name exists
-  if (overlay(name))
-  {
-    // error!
-    return NULL;
-  }
-
-  PImageOverlay imageOverlay = ege_new ImageOverlay(app(), name);
-  if (imageOverlay)
-  {
-    m_overlays.push_back(imageOverlay);
-  }
-
-  return imageOverlay;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Removes overlay of the given name. */
-void OverlayManager::removeOverlay(const String& name)
+void OverlayManager::remove(const String& name)
 {
   // go thru all overlays
-  for (List<POverlay>::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (OverlayList::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     POverlay object = *it;
 
@@ -85,8 +63,14 @@ void OverlayManager::removeOverlay(const String& name)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes givem overlay. */
+void OverlayManager::remove(const POverlay& overlay)
+{
+  m_overlays.remove(overlay);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Removes all overlays. */
-void OverlayManager::removeAllOverlays()
+void OverlayManager::removeAll()
 {
   m_overlays.clear();
 }
@@ -95,7 +79,7 @@ void OverlayManager::removeAllOverlays()
 POverlay OverlayManager::overlay(const String& name) const
 {
   // go thru all overlays
-  for (List<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (OverlayList::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 
@@ -113,9 +97,8 @@ POverlay OverlayManager::overlay(const String& name) const
 /*! Renders all elements. */
 void OverlayManager::render(Viewport* viewport, Renderer* renderer)
 {
-//  renderer->setProjectionMatrix(
   // go thru all overlays
-  for (List<POverlay>::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (OverlayList::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 

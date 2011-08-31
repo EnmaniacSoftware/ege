@@ -2,6 +2,7 @@
 #define EGE_CORE_MATH_H
 
 #include <EGETypes.h>
+#include <EGEAlignment.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -118,6 +119,21 @@ class Math
      */
     static bool LineLineIntersectPoint(Vector2f* out, const Vector2f* line1PointA, const Vector2f* line1PointB, 
                                        const Vector2f* line2PointA, const Vector2f* line2PointB);
+
+    /* Aligns point. 
+     * @param point            Point to align. This point is realigned.
+     * @param size             Area within each point is aligned.
+     * @param currentAlignment Current point alignment within given area.
+     * @param newAlignment     New point alignment within given area.
+     */
+    static void Align(Vector2f* point, Vector2f* size, Alignment currentAlignment, Alignment newAlignment);
+    /* Aligns point along XY plane. 
+     * @param point            Point to align. This point is realigned.
+     * @param size             Area within each point is aligned.
+     * @param currentAlignment Current point alignment within given area.
+     * @param newAlignment     New point alignment within given area.
+     */
+    static void AlignXY(Vector4f* point, Vector2f* size, Alignment currentAlignment, Alignment newAlignment);
 
   public:
 

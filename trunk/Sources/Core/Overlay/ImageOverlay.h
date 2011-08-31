@@ -18,8 +18,8 @@ class ImageOverlay : public Overlay
 {
   public: 
 
-    ImageOverlay(Application* app, const String& name, Alignment align = EGEAlignment::ALIGN_TOP_LEFT);
-   ~ImageOverlay();
+    ImageOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
+    virtual ~ImageOverlay();
     
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -28,6 +28,8 @@ class ImageOverlay : public Overlay
     void setMaterialName(const String& name);
     /* Overlay override. Returns TRUE if object is valid. */
     bool isValid() const override;
+    /* Overlay override. Sets alignment. */
+    virtual void setAlignment(Alignment align) override;
 
   private:
 
@@ -40,12 +42,19 @@ class ImageOverlay : public Overlay
     /*! Returns material name. */
     inline const String& materialName() const { return m_materialName; }
 
+  private slots:
+
+    /* Slot called when physics data has been updated. */
+    void transformationChanged();
+
   private:
 
     /*! Material name. */
     String m_materialName;
     /*! Local material. */
     PMaterial m_material;
+    /*! Aligment position offset. */
+    Vector4f m_alignmentOffset;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -72,6 +72,12 @@ class PhysicsComponentPrivate
     void setScale(const Vector4f& scale);
     /* Returns scale vector. */
     Vector4f scale() const;
+    /* Returns TRUE if component is 'awaken'. Awaken components are the ones processed by solver. */
+    bool isAwake() const;
+    /* Sets 'awake' state. */
+    void setAwake(bool set);
+    /* Sets whether object is allowed to sleep. */
+    void setAllowSleep(bool set);
 
     /*! Returns Box2D representation. */
     inline b2Body* body() const { return m_body; }
