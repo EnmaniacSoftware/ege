@@ -61,6 +61,8 @@ class String : public std::string
     Rectf toRectf(bool* error = NULL) const;
     /* Converts to 2D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
     Vector2f toVector2f(bool* error = NULL) const;
+    /* Converts to 4D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
+    Vector4f toVector4f(bool* error = NULL) const;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

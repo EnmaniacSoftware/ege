@@ -8,6 +8,7 @@
 #include "Core/Resource/ResourceTextureImage.h"
 #include "Core/Resource/ResourceSpritesheet.h"
 #include "Core/Resource/ResourceSprite.h"
+#include "Core/Resource/ResourceCurve.h"
 #include "Core/Graphics/Font.h"
 #include "Core/Debug/DebugFont.h"
 #include <EGEXml.h>
@@ -27,16 +28,33 @@ EGE_DEFINE_DELETE_OPERATORS(ResourceManager)
 #define NODE_INCLUDE   "include"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+struct BuiltInResource
+{
+  const char* name;
+  egeResourceCreateFunc pfCreateFunc;
+};
+
+static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, ResourceTexture::Create},
+                                                    { RESOURCE_NAME_TEXTURE_IMAGE, ResourceTextureImage::Create},
+                                                    { RESOURCE_NAME_MATERIAL, ResourceMaterial::Create },
+                                                    { RESOURCE_NAME_FONT, ResourceFont::Create },
+                                                    { RESOURCE_NAME_DATA, ResourceData::Create },
+                                                    { RESOURCE_NAME_SPRITE_SHEET, ResourceSpritesheet::Create },
+                                                    { RESOURCE_NAME_SPRITE, ResourceSprite::Create },
+                                                    { RESOURCE_NAME_CURVE, ResourceCurve::Create }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::ResourceManager(Application* app) : Object(app)
 {
   // register build-in resource types
-  registerResource("texture", ResourceTexture::Create);
-  registerResource("texture-image", ResourceTextureImage::Create);
-  registerResource("material", ResourceMaterial::Create);
-  registerResource("data", ResourceData::Create);
-  registerResource("font", ResourceFont::Create);
-  registerResource("spritesheet", ResourceSpritesheet::Create);
-  registerResource("sprite", ResourceSprite::Create);
+  for (s32 i = 0; i < sizeof (l_resourcesToRegister) / sizeof (BuiltInResource); ++i)
+  {
+    const BuiltInResource& resource = l_resourcesToRegister[i];
+
+    registerResource(resource.name, resource.pfCreateFunc);
+  }
 
   createDefaultResources();
 }
@@ -48,8 +66,19 @@ ResourceManager::~ResourceManager()
 /*! Returns TRUE if object is valid. */
 bool ResourceManager::isValid() const
 {
-  return isResourceRegistered("texture-image") && isResourceRegistered("texture") && isResourceRegistered("material") && isResourceRegistered("data") && 
-         isResourceRegistered("font") && isResourceRegistered("spritesheet") && isResourceRegistered("sprite") && group(DEFAULT_GROUP_NAME);
+  // check if built-in resources are registered correctly
+  for (s32 i = 0; i < sizeof (l_resourcesToRegister) / sizeof (BuiltInResource); ++i)
+  {
+    const BuiltInResource& resource = l_resourcesToRegister[i];
+
+    if (!isResourceRegistered(resource.name))
+    {
+      // error!
+      return false;
+    }
+  }
+
+  return NULL != group(DEFAULT_GROUP_NAME);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Registeres custom resource type. */

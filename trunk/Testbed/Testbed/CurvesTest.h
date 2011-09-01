@@ -1,19 +1,19 @@
-#ifndef TEST_TIMELINE_H
-#define TEST_TIMELINE_H
+#ifndef TEST_CURVES_H
+#define TEST_CURVES_H
 
 #include "Test.h"
 #include "RenderObject.h"
-#include <EGETimeline.h>
 #include <EGEGraphics.h>
+#include <EGESpline.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TimeLineTest : public Test
+class CurvesTest : public Test
 {
   public:
 
-    TimeLineTest(App* app);
-    virtual ~TimeLineTest();
+    CurvesTest(App* app);
+    virtual ~CurvesTest();
 
     /* Test override. Returns test name. */
     EGE::String name() const override;
@@ -24,17 +24,17 @@ class TimeLineTest : public Test
 
   private slots:
 
-    /* Slot called when time line frame has been changed. */
-    void frameChanged(EGE::s32 frame);
-    /* Slot called when time line finishes. */
-    void finished();
+    /* Slot called before target is rendered. */
+    void preRender(EGE::PRenderTarget target);
 
   private:
 
-    /*! Time line. */
-    EGE::PTimeLine m_timeLine;
+    /*! Scene object. */
+    RenderObject* m_sceneObject;
+    /*! Spline objects. */
+    EGE::CubicSpline m_splines[4];
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // TEST_TIMELINE_H
+#endif // TEST_CURVES_H

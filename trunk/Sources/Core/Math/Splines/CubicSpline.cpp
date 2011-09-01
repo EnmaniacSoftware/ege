@@ -23,7 +23,7 @@ static Matrix4f BSplineMatrix(-1.0f / 6.0f,  0.5f, -0.5f, 1.0f / 6.0f,      // c
                               -0.5f,         0.5f,  0.5f, 1.0f / 6.0f,      // column 2
                                1.0f / 6.0f,  0.0f,  0.0f, 0.0f);            // column 3
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CubicSpline::CubicSpline(Type type) : m_type(TYPE_NONE), m_length(0)
+CubicSpline::CubicSpline(EGESpline::Type type) : m_type(EGESpline::TYPE_NONE), m_length(0)
 {
   setType(type);
 }
@@ -32,15 +32,29 @@ CubicSpline::~CubicSpline()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+CubicSpline& CubicSpline::operator = (const CubicSpline& other)
+{
+  // clean up
+  m_segments.clear();
+
+  // copy
+  m_segments.copy(other.m_segments);
+  m_type   = other.m_type;
+  m_matrix = other.m_matrix;
+  m_length = other.m_length;
+
+  return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
 bool CubicSpline::isValid() const
 {
   switch (type())
   {
-    case TYPE_BEZIER:
-    case TYPE_HERMITE:
-    case TYPE_CARDINAL:
-    case TYPE_BSPLINE:
+    case EGESpline::TYPE_BEZIER:
+    case EGESpline::TYPE_HERMITE:
+    case EGESpline::TYPE_CARDINAL:
+    case EGESpline::TYPE_BSPLINE:
 
       return !m_segments.empty() && m_segments[0].isValid();
   }
@@ -49,7 +63,7 @@ bool CubicSpline::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets spline type. */
-void CubicSpline::setType(Type type)
+void CubicSpline::setType(EGESpline::Type type)
 {
   if (m_type != type)
   {
@@ -57,10 +71,10 @@ void CubicSpline::setType(Type type)
 
     switch (type)
     {
-      case TYPE_BEZIER:   m_matrix = BezierMatrix; break;
-      case TYPE_HERMITE:  m_matrix = HermiteMatrix; break;
-      case TYPE_CARDINAL: m_matrix = CatMullRomMatrix; break;
-      case TYPE_BSPLINE:  m_matrix = BSplineMatrix; break;
+      case EGESpline::TYPE_BEZIER:   m_matrix = BezierMatrix; break;
+      case EGESpline::TYPE_HERMITE:  m_matrix = HermiteMatrix; break;
+      case EGESpline::TYPE_CARDINAL: m_matrix = CatMullRomMatrix; break;
+      case EGESpline::TYPE_BSPLINE:  m_matrix = BSplineMatrix; break;
     }
 
     // TAGE - update length etc
@@ -155,25 +169,8 @@ void CubicSpline::value(Vector4f& pos, float32 t) const
   // convert into [0-length] space
   t *= length();
 
-  // go thru all segments
-  for (DynamicArray<CurveSegment>::const_iterator it = m_segments.begin(); it != m_segments.end(); ++it) 
-  {
-    const CurveSegment& currentSegment = *it;
-
-    // check if wrong segment
-    if (t > currentSegment.length())
-    {
-      // go to next
-      t -= currentSegment.length();
-    }
-    else
-    {
-      // found
-      segment = &currentSegment;
-      break;
-    }
-  }
-
+  // get segment
+  segment = this->segment(t);
   EGE_ASSERT(NULL != segment);
 
   // convert into segment [0-1] interval
@@ -252,5 +249,55 @@ void CubicSpline::segmentPointChanged(CurveSegment& segment)
 
   // apply new value
   m_length += segment.length();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns segment of the spline at given position
+ *  @param t Parametrized distance on a spline at which calculations are done. Typicially in [0-1] interval.
+ *  @note    Parameter t is clamped to [0-1] interval.
+ *  @return  Pointer to curve segment at given position. NULL if error occured.
+ */
+const CurveSegment* CubicSpline::segment(float32 t) const
+{
+  const CurveSegment* segment = NULL;
+
+  // check if invalid
+  if (!isValid())
+  {
+    // do nothing
+    return NULL;
+  }
+
+  // make sure value is valid
+  t = Math::Bound(t, 0.0f, 1.0f);
+
+  // convert into [0-length] space
+  t *= length();
+
+  // go thru all segments
+  for (SegmentArray::const_iterator it = m_segments.begin(); it != m_segments.end(); ++it) 
+  {
+    const CurveSegment& currentSegment = *it;
+
+    // check if wrong segment
+    if (t > currentSegment.length())
+    {
+      // go to next
+      t -= currentSegment.length();
+    }
+    else
+    {
+      // found
+      segment = &currentSegment;
+      break;
+    }
+  }
+
+  // NOTE: its possible due to accuracy that t can be > 0 if initially it was t = 1. In that case, it is supposed to point to last segment
+  if (0 < t && (NULL == segment))
+  {
+    segment = &m_segments.back();
+  }
+
+  return segment;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

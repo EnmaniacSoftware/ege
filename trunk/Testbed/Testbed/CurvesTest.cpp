@@ -1,27 +1,32 @@
 #include "App.h"
-#include "TimeLineTest.h"
+#include "CurvesTest.h"
 #include <EGESignal.h>
-#include <EGEDebug.h>
+#include <EGEResources.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TimeLineTest::TimeLineTest(App* app) : Test(app)
+
+#define ORTHO
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+CurvesTest::CurvesTest(App* app) : Test(app)
 {
+  ege_connect(app->graphics(), preRender, this, CurvesTest::preRender);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TimeLineTest::~TimeLineTest()
+CurvesTest::~CurvesTest()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Returns test name. */
-String TimeLineTest::name() const
+String CurvesTest::name() const
 {
-  return "Timeline";
+  return "Curves";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Initializes test. */
-bool TimeLineTest::initialize()
+bool CurvesTest::initialize()
 {
   // get window render target (created thru config options)
   PRenderWindow window = app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
@@ -51,35 +56,43 @@ bool TimeLineTest::initialize()
   viewport->setClearBufferTypes(Viewport::BUFFER_TYPE_COLOR);
   viewport->setClearColor(Color::BLUE);
 
-  m_timeLine = ege_new TimeLine(app());
-  m_timeLine->setStartFrame(0);
-  m_timeLine->setEndFrame(10);
-  m_timeLine->setDuration(Time::FromSeconds(10.0f));
-  m_timeLine->setLoopCount(0);
+  // load resources
+  if (EGE_SUCCESS != app()->resourceManager()->loadGroup("curves-test"))
+  {
+    // error!
+    return false;
+  }
 
-  ege_connect(m_timeLine, frameChanged, this, TimeLineTest::frameChanged);
-  ege_connect(m_timeLine, finished, this, TimeLineTest::finished);
+  // create splines from resources
+  PResourceCurve curveResource = app()->resourceManager()->resource(RESOURCE_NAME_CURVE, "bezier-1");
+  if (curveResource)
+  {
+    curveResource->setInstance(m_splines[0]);
+  }
 
-  m_timeLine->start();
+  // create splines manually
+  m_splines[1].setType(EGESpline::TYPE_BEZIER);
+  m_splines[1].addPoint(Vector4f(200, 300, 0), Vector4f(300, 300, 0));
+  m_splines[1].addPoint(Vector4f(200, 400, 0), Vector4f(300, 400, 0));
+  m_splines[2].setType(EGESpline::TYPE_BEZIER);
+  m_splines[2].addPoint(Vector4f(300, 100, 0), Vector4f(350, 100, 0));
+  m_splines[2].addPoint(Vector4f(400, 100, 0), Vector4f(350, 100, 0));
 
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Updates test. */
-void TimeLineTest::update(const Time& time)
+void CurvesTest::update(const Time& time)
 {
-  m_timeLine->update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when time line frame has been changed. */
-void TimeLineTest::frameChanged(s32 frame)
+/*! Slot called before target is rendered. */
+void CurvesTest::preRender(PRenderTarget target)
 {
-  EGE_PRINT("Frame changed to: %d", frame);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when time line finishes. */
-void TimeLineTest::finished()
-{
-  EGE_PRINT("Done!");
+  EGE_UNUSED(target);
+
+  app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, Debug::Renderable(&m_splines[0]));
+  app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, Debug::Renderable(&m_splines[1]));
+  app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, Debug::Renderable(&m_splines[2]));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

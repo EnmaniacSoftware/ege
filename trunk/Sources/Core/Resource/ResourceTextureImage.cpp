@@ -4,6 +4,7 @@
 #include "Core/Graphics/TextureImage.h"
 #include <EGEXml.h>
 #include <EGEDebug.h>
+#include <EGEResources.h>
 
 EGE_NAMESPACE
 
@@ -13,7 +14,7 @@ EGE_DEFINE_NEW_OPERATORS(ResourceTextureImage)
 EGE_DEFINE_DELETE_OPERATORS(ResourceTextureImage)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceTextureImage::ResourceTextureImage(Application* app, ResourceManager* manager) : IResource(app, manager, "texture-image")
+ResourceTextureImage::ResourceTextureImage(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_TEXTURE_IMAGE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -53,6 +54,7 @@ EGEResult ResourceTextureImage::create(const String& path, const PXmlElement& ta
   if (error || m_name.empty() || m_textureName.empty())
   {
     // error!
+    EGE_PRINT("ResourceTextureImage::create - failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 

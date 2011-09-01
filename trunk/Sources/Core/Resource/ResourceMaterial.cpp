@@ -5,6 +5,7 @@
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/TextureImage.h"
 #include <EGETexture.h>
+#include <EGEResources.h>
 
 EGE_NAMESPACE
 
@@ -106,7 +107,7 @@ EGE_DEFINE_NEW_OPERATORS(ResourceMaterial)
 EGE_DEFINE_DELETE_OPERATORS(ResourceMaterial)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceMaterial::ResourceMaterial(Application* app, ResourceManager* manager) : IResource(app, manager, "material")
+ResourceMaterial::ResourceMaterial(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_MATERIAL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -153,6 +154,7 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
   if (error || m_name.empty())
   {
     // error!
+    EGE_PRINT("ResourceMaterial::create - failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -188,7 +190,7 @@ EGEResult ResourceMaterial::load()
   if (!isLoaded())
   {
     // load textures
-    for (List<TextureImageData>::const_iterator it = m_textureImageData.begin(); it != m_textureImageData.end(); ++it)
+    for (TextureImageDataList::const_iterator it = m_textureImageData.begin(); it != m_textureImageData.end(); ++it)
     {
       const TextureImageData& textureImageData = *it;
 
@@ -303,6 +305,7 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag)
   if (error || name.empty())
   {
     // error!
+    EGE_PRINT("ResourceMaterial::addTexture - failed for name: %s", this->name().toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -313,7 +316,7 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of material object defined by resource. */
-PMaterial ResourceMaterial::createInstance()
+PMaterial ResourceMaterial::createInstance() const
 {
 	PMaterial object = ege_new Material(app());
   if (object)
@@ -329,7 +332,7 @@ PMaterial ResourceMaterial::createInstance()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Set given instance of material object to what is defined by resource. */
-EGEResult ResourceMaterial::setInstance(PMaterial& instance)
+EGEResult ResourceMaterial::setInstance(const PMaterial& instance) const
 {
   // sanity check
   if (NULL == instance || !isLoaded())
@@ -349,7 +352,7 @@ EGEResult ResourceMaterial::setInstance(PMaterial& instance)
   instance->setShininess(shininess());
 
   instance->removeTexture(-1);
-  for (List<PTextureImage>::const_iterator it = m_textureImages.begin(); it != m_textureImages.end(); ++it)
+  for (TextureImageList::const_iterator it = m_textureImages.begin(); it != m_textureImages.end(); ++it)
   {
     EGEResult result;
     if (EGE_SUCCESS != (result = instance->addTexture(*it)))

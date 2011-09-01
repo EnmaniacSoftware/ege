@@ -48,7 +48,7 @@ void Debug::Log(const String& text)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates renderable for given object. */
-RenderComponent* Debug::renderable(const CubicSpline* spline)
+RenderComponent* Debug::Renderable(const CubicSpline* spline)
 {
   s32 vertexCount = 25;
 
@@ -95,7 +95,7 @@ RenderComponent* Debug::renderable(const CubicSpline* spline)
       //*data++ = 0.0f;
       //*data++ = 1.0f;
 
-      //pos = spline->controlPoint(1);
+      //pos = spline->segment(0)->beginTangent();
 
       //*data++ = pos.x;
       //*data++ = pos.y;
@@ -114,7 +114,7 @@ RenderComponent* Debug::renderable(const CubicSpline* spline)
       //*data++ = 0.0f;
       //*data++ = 1.0f;
 
-      //pos = spline->controlPoint(2);
+      //pos = spline->segment((2);
 
       //*data++ = pos.x;
       //*data++ = pos.y;

@@ -8,6 +8,7 @@
 #include "Core/Components/Render/RenderComponent.h"
 #include "RenderToTextureTest.h"
 #include "TimeLineTest.h"
+#include "CurvesTest.h"
 
 #include <gl/gl.h>
 #include <gl/glu.h>
@@ -51,9 +52,18 @@ bool App::start()
     return false;
   }
 
+  // initialize resource manager
+  resourceManager()->setRootDirectory("resources");
+  if (EGE_SUCCESS != resourceManager()->addResources("resources.xml"))
+  {
+    // error!
+    return false;
+  }
+
   // create tests
   m_tests.push_back(new RenderToTextureTest(this));
   m_tests.push_back(new TimeLineTest(this));
+  m_tests.push_back(new CurvesTest(this));
 
   // select test to run
   selectTest();
@@ -72,7 +82,7 @@ bool App::selectTest()
   // select test to run
   m_activeTest = m_tests.back();
 
-  return m_activeTest->createScene();
+  return m_activeTest->initialize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void App::update(const Time& time)

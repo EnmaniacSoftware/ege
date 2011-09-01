@@ -15,6 +15,7 @@ EGE_NAMESPACE_BEGIN
 #define RESOURCE_NAME_DATA          "data"
 #define RESOURCE_NAME_SPRITE_SHEET  "spritesheet"
 #define RESOURCE_NAME_SPRITE        "sprite"
+#define RESOURCE_NAME_CURVE         "curve"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -29,6 +30,7 @@ EGE_NAMESPACE_END
 #include "Core/Resource/ResourceTextureImage.h"
 #include "Core/Resource/ResourceSpritesheet.h"
 #include "Core/Resource/ResourceSprite.h"
+#include "Core/Resource/ResourceCurve.h"
 #include "Core/Resource/ResourceFont.h"
 #include "Core/Resource/ResourceGroup.h"
 #include "Core/Resource/ResourceManager.h"

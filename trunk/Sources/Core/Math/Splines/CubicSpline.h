@@ -17,9 +17,9 @@
  */
 
 #include <EGEDynamicArray.h>
-#include <EGEList.h>
 #include <EGEVector.h>
 #include <EGEMatrix.h>
+#include <EGESpline.h>
 #include "Core/Math/Splines/CurveSegment.h"
 
 EGE_NAMESPACE_BEGIN
@@ -30,27 +30,21 @@ class CubicSpline
 {
   public:
 
-    /*! Type of spline. */
-    enum Type
-    {
-      TYPE_NONE,
-      TYPE_BEZIER,
-      TYPE_HERMITE,
-      TYPE_CARDINAL,
-      TYPE_BSPLINE
-    };
+    CubicSpline(EGESpline::Type = EGESpline::TYPE_CARDINAL);
+   ~CubicSpline();
 
   public:
 
-    CubicSpline(Type type = TYPE_CARDINAL);
-   ~CubicSpline();
+    CubicSpline& operator = (const CubicSpline& other);
+
+  public:
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /*! Returns spline type. */
-    inline Type type() const { return m_type; }
+    inline EGESpline::Type type() const { return m_type; }
     /* Sets spline type. */
-    void setType(Type type);
+    void setType(EGESpline::Type type);
     /* Adds point to spline.
      * @param point   Point to be added.
      * @param tangent Tangent vector for added point.
@@ -62,6 +56,13 @@ class CubicSpline
      * @param t   Parametrized distance on a spline at which calculations are done. Typicially in [0-1] interval.
      */
     void value(Vector4f& pos, float32 t) const;
+    /* Returns segment of the spline at given position
+     * @param t Parametrized distance on a spline at which calculations are done. Typicially in [0-1] interval.
+     * @note    Parameter t is clamped to [0-1] interval.
+     * @return  Curve segment at given position.
+     */
+    const CurveSegment* segment(float32 t) const;
+
     /*! Returns spline length. */
     inline float32 length() const { return m_length; }
 
@@ -77,10 +78,14 @@ class CubicSpline
 
   private:
 
+    typedef DynamicArray<CurveSegment> SegmentArray;
+
+  private:
+
     /*! Spline type. */
-    Type m_type;
+    EGESpline::Type m_type;
     /*! List of all spline segments. */
-    DynamicArray<CurveSegment> m_segments;
+    SegmentArray m_segments;
     /*! Matrix of basis functions for currently selected spline type. */
     Matrix4f m_matrix;
     /*! Spline length. */

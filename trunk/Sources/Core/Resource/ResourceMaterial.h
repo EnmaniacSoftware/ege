@@ -52,9 +52,9 @@ class ResourceMaterial : public IResource
     void unload() override;
 
     /* Creates instance of material object defined by resource. */
-    PMaterial createInstance();
+    PMaterial createInstance() const;
     /* Set given instance of material object to what is defined by resource. */
-    EGEResult setInstance(PMaterial& instance);
+    EGEResult setInstance(const PMaterial& instance) const;
 
   private:
 
@@ -102,10 +102,15 @@ class ResourceMaterial : public IResource
 
   private:
 
+    typedef List<PTextureImage> TextureImageList;
+    typedef List<TextureImageData> TextureImageDataList;
+
+  private:
+
     /*! Name. */
     String m_name;
     /*! List of all texture images contributing to material. */
-    List<TextureImageData> m_textureImageData;
+    TextureImageDataList m_textureImageData;
     /*! Source blend value. */
     EGEGraphics::BlendFactor m_srcBlend;
     /*! Destination blend value. */
@@ -121,7 +126,7 @@ class ResourceMaterial : public IResource
     /*! Shininess value. */
     float32 m_shininess;
     /*! List of all texture image objects referred by material. Empty if material is not loaded yet. */
-    List<PTextureImage> m_textureImages;
+    TextureImageList m_textureImages;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

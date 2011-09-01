@@ -4,6 +4,7 @@
 #include "Core/Resource/ResourceTextureImage.h"
 #include <EGEXml.h>
 #include <EGEDebug.h>
+#include <EGEResources.h>
 
 EGE_NAMESPACE
 
@@ -13,7 +14,7 @@ EGE_DEFINE_NEW_OPERATORS(ResourceSprite)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSprite)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSprite::ResourceSprite(Application* app, ResourceManager* manager) : IResource(app, manager, "sprite"), m_frameDataInvalid(false)
+ResourceSprite::ResourceSprite(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_SPRITE), m_frameDataInvalid(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -57,6 +58,7 @@ EGEResult ResourceSprite::create(const String& path, const PXmlElement& tag)
   if (error || m_name.empty() || m_sheetName.empty() || (m_pingPong && m_repeat) || (0 >= m_frameCount) || (0 > m_beginFrame))
   {
     // error!
+    EGE_PRINT("ResourceSprite::create - failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -161,7 +163,7 @@ void ResourceSprite::calculateFrameData()
     m_sheet->textureImage()->setInstance(textureImage);
 
     // create new data for each frame
-    DynamicArray<EGESprite::FrameData> allFramesData;
+    FameDataArray allFramesData;
     for (s32 i = 0; i < m_frameCount; ++i)
     {
       EGESprite::FrameData data;

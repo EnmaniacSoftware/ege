@@ -1,6 +1,7 @@
 #include "Core/Resource/ResourceData.h"
 #include "Core/Resource/ResourceManager.h"
 #include <EGEFile.h>
+#include <EGEResources.h>
 
 EGE_NAMESPACE
 
@@ -10,7 +11,7 @@ EGE_DEFINE_NEW_OPERATORS(ResourceData)
 EGE_DEFINE_DELETE_OPERATORS(ResourceData)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceData::ResourceData(Application* app, ResourceManager* manager) : IResource(app, manager, "data"), m_nulled(false)
+ResourceData::ResourceData(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_DATA), m_nulled(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -49,6 +50,7 @@ EGEResult ResourceData::create(const String& path, const PXmlElement& tag)
   if (m_name.empty() || m_path.empty() || error)
   {
     // error!
+    EGE_PRINT("ResourceData::create - failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 

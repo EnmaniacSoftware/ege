@@ -1,5 +1,6 @@
 #include "Core/Resource/ResourceGroup.h"
 #include "Core/Resource/ResourceManager.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
@@ -31,6 +32,7 @@ EGEResult ResourceGroup::create(const PXmlElement& tag)
   if (m_name.empty())
   {
     // error!
+    EGE_PRINT("ResourceGroup::create - failed for name: %s", m_name);
     return EGE_ERROR_BAD_PARAM;
   }
 

@@ -78,6 +78,7 @@
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Random\C\RandomC_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Random\Random.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceCurve.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceData.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceFont.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceGroup.cpp" />
@@ -119,6 +120,7 @@
     <ClInclude Include="..\..\Sources\Core\Overlay\ImageOverlay.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointPulley.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceCurve.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSprite.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpritesheet.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceTextureImage.h" />

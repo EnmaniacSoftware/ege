@@ -19,8 +19,8 @@ class Test
 
     /*! Returns test name. */
     virtual EGE::String name() const = 0;
-    /*! Creates scene. */
-    virtual bool createScene() = 0;
+    /*! Initializes test. */
+    virtual bool initialize() = 0;
     /*! Updates test. */
     virtual void update(const EGE::Time& time) = 0;
 

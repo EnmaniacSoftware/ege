@@ -37,7 +37,7 @@ class Debug : public Object
     static void Print(const String& text);
 
     /* Creates renderable for given object. */
-    static RenderComponent* renderable(const CubicSpline* spline);
+    static RenderComponent* Renderable(const CubicSpline* spline);
 
   private:
 

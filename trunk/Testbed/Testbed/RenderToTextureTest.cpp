@@ -26,8 +26,8 @@ String RenderToTextureTest::name() const
   return "Render To Texture";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Test override. Creates scene. */
-bool RenderToTextureTest::createScene()
+/*! Test override. Initializes test. */
+bool RenderToTextureTest::initialize()
 {
   // get window render target (created thru config options)
   PRenderWindow window = app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);

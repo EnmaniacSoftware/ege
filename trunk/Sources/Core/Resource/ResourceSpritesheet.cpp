@@ -3,6 +3,7 @@
 #include "Core/Resource/ResourceTextureImage.h"
 #include <EGEXml.h>
 #include <EGEDebug.h>
+#include <EGEResources.h>
 
 EGE_NAMESPACE
 
@@ -12,7 +13,7 @@ EGE_DEFINE_NEW_OPERATORS(ResourceSpritesheet)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSpritesheet)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSpritesheet::ResourceSpritesheet(Application* app, ResourceManager* manager) : IResource(app, manager, "spritesheet")
+ResourceSpritesheet::ResourceSpritesheet(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_SPRITE_SHEET)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -55,6 +56,7 @@ EGEResult ResourceSpritesheet::create(const String& path, const PXmlElement& tag
   if (error || m_name.empty() || m_textureName.empty())
   {
     // error!
+    EGE_PRINT("ResourceSpritesheet::create - failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 

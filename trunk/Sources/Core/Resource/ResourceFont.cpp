@@ -2,6 +2,7 @@
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceMaterial.h"
 #include "Core/Graphics/Font.h"
+#include <EGEResources.h>
 
 EGE_NAMESPACE
 
@@ -11,7 +12,7 @@ EGE_DEFINE_NEW_OPERATORS(ResourceFont)
 EGE_DEFINE_DELETE_OPERATORS(ResourceFont)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceFont::ResourceFont(Application* app, ResourceManager* manager) : IResource(app, manager, "font")
+ResourceFont::ResourceFont(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_FONT)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -72,6 +73,7 @@ EGEResult ResourceFont::create(const String& path, const PXmlElement& tag)
   if (m_name.empty() || m_materialName.empty() || error)
   {
     // error!
+    EGE_PRINT("ResourceFont::create - failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 

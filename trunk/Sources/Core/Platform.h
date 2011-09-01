@@ -50,9 +50,6 @@ inline void ege_noop() {}
 #define emit
 #define slots
 
-/*! This operator cast P-Object to given raw pointer type. No safe checks are done. */
-#define ege_cast(type, pobj) reinterpret_cast<type>(pobj.object())
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // OS includes

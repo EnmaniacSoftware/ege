@@ -82,6 +82,10 @@ class ResourceSprite : public IResource
 
   private:
 
+    typedef DynamicArray<EGESprite::FrameData> FameDataArray;
+
+  private:
+
     /*! Name. */
     String m_name;
     /*! Sprite sheet name. */
@@ -99,7 +103,7 @@ class ResourceSprite : public IResource
     /*! Cached frame data validity flag. */
     bool m_frameDataInvalid;
     /*! Cached frame data. */
-    DynamicArray<EGESprite::FrameData> m_frameData;
+    FameDataArray m_frameData;
     /*! Loaded sheet. If NULL resource has not been loaded yet. */
     PResourceSpritesheet m_sheet;
 };

@@ -2,6 +2,7 @@
 #include "Core/Resource/ResourceManager.h"
 #include <EGEXml.h>
 #include <EGEDebug.h>
+#include <EGEResources.h>
 
 #if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
@@ -49,7 +50,7 @@ static EGETexture::AddressingMode MapTextureAddressingName(const String& name, E
   return defaultValue; //EGETexture::AM_REPEAT;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceTexture::ResourceTexture(Application* app, ResourceManager* manager) : IResource(app, manager, "texture")
+ResourceTexture::ResourceTexture(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_TEXTURE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -106,6 +107,7 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   if (m_name.empty() || m_path.empty() || m_type.empty())
   {
     // error!
+    EGE_PRINT("ResourceTexture::create - failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 
