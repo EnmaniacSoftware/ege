@@ -43,7 +43,7 @@ class DataBuffer : public Object
      * @note   Destination buffer write offset will be updated accordingly.
      * @return Returns number of bytes read.
      */
-    s64 read(PDataBuffer& dst, s64 size);
+    s64 read(const PDataBuffer& dst, s64 size);
     /* Writes given amount of data from destination buffer.
      * @note   Source buffer read offset will be updated accordingly.
      * @return Returns number of bytes written.

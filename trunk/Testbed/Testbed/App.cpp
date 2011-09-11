@@ -6,9 +6,10 @@
 #include <EGEEvent.h>
 #include <EGEOverlay.h>
 #include "Core/Components/Render/RenderComponent.h"
-#include "RenderToTextureTest.h"
-#include "TimeLineTest.h"
-#include "CurvesTest.h"
+#include "RenderToTexture/RenderToTextureTest.h"
+#include "Timeline/TimeLineTest.h"
+#include "Curves/CurvesTest.h"
+#include "Ripples/RipplesTest.h"
 
 #include <gl/gl.h>
 #include <gl/glu.h>
@@ -64,6 +65,8 @@ bool App::start()
   m_tests.push_back(new RenderToTextureTest(this));
   m_tests.push_back(new TimeLineTest(this));
   m_tests.push_back(new CurvesTest(this));
+  m_tests.push_back(new CurvesTest(this));
+  m_tests.push_back(new RipplesTest(this));
 
   // select test to run
   selectTest();

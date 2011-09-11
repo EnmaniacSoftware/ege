@@ -1,7 +1,7 @@
 #ifndef EGE_WIN32_FILE_PRIVATE_H
 #define EGE_WIN32_FILE_PRIVATE_H
 
-#include "EGE.h"
+#include <EGE.h>
 #include "Core/File/File.h"
 
 EGE_NAMESPACE_BEGIN

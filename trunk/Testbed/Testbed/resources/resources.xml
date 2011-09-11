@@ -1,0 +1,25 @@
+<?xml version="1.0"  standalone='no'?>
+
+<resources>
+
+  <!-- Ripples test resources -->
+  <group name='ripples-test'>
+
+    <texture type="2d" name="background" path="images/background.jpg" mag-filter="trilinear" min-filter="trilinear" />
+    <material name='background' >
+      <texture name='background' />
+    </material>
+
+  </group>
+
+  <!-- Curves test resources -->
+  <group name='curves-test'>
+
+    <curve name='bezier-1' type='bezier'>
+      <point pos='100 100 0' tangent='300 100 0' />
+      <point pos='200 200 0' tangent='0 200 0' />
+    </curve>
+    
+  </group>
+ 
+</resources>

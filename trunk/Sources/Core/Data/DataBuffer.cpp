@@ -367,7 +367,7 @@ DataBuffer& DataBuffer::operator >> (float64& value)
  * @note   Destination buffer write offset will be updated accordingly.
  * @return Returns number of bytes read.
  */
-s64 DataBuffer::read(PDataBuffer& dst, s64 size)
+s64 DataBuffer::read(const PDataBuffer& dst, s64 size)
 {
   EGE_ASSERT(0 <= size);
 

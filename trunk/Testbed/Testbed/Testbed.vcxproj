@@ -50,7 +50,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>EGE_FEATURE_DEBUG;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Sources</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Sources;.\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -77,19 +77,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="CurvesTest.cpp" />
+    <ClCompile Include="Curves\CurvesTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderObject.cpp" />
-    <ClCompile Include="RenderToTextureTest.cpp" />
-    <ClCompile Include="TimelineTest.cpp" />
+    <ClCompile Include="RenderToTexture\RenderToTextureTest.cpp" />
+    <ClCompile Include="Ripples\RippleEffect.cpp" />
+    <ClCompile Include="Ripples\RipplesTest.cpp" />
+    <ClCompile Include="Timeline\TimeLineTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
-    <ClInclude Include="CurvesTest.h" />
+    <ClInclude Include="Curves\CurvesTest.h" />
     <ClInclude Include="RenderObject.h" />
-    <ClInclude Include="RenderToTextureTest.h" />
+    <ClInclude Include="RenderToTexture\RenderToTextureTest.h" />
+    <ClInclude Include="Ripples\RippleEffect.h" />
+    <ClInclude Include="Ripples\RipplesTest.h" />
     <ClInclude Include="Test.h" />
-    <ClInclude Include="TimelineTest.h" />
+    <ClInclude Include="Timeline\TimeLineTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Projects\Windows\EGE.vcxproj">

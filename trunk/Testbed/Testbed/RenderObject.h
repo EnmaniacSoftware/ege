@@ -18,7 +18,8 @@ class RenderObject : public EGE::SceneNodeObject
     /* Creates instance representing the triangle. */
     static RenderObject* CreateTriangle(EGE::Application* app, const EGE::String& name, EGE::s32 size, bool color, bool uv);
     /* Creates instance representing the triangle. */
-    static RenderObject* CreateRectangle(EGE::Application* app, const EGE::String& name, EGE::s32 width, EGE::s32 height, bool color, bool uv);
+    static RenderObject* CreateRectangle(EGE::Application* app, const EGE::String& name, EGE::s32 width, EGE::s32 height, bool color, bool uv, 
+                                         const EGE::Vector2i& segments = EGE::Vector2i::ONE);
 
   public:
 

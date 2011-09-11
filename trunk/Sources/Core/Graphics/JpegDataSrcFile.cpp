@@ -90,17 +90,17 @@ METHODDEF(boolean) fill_input_buffer(j_decompress_ptr cinfo)
   {
     case EGE_OBJECT_UID_FILE:
 
-      bytesRead = ((EGE::File*) src->source)->read(&buffer, INPUT_BUF_SIZE);
+      bytesRead = ege_cast<EGE::File*>(src->source)->read(buffer, INPUT_BUF_SIZE);
       break;
 
     case EGE_OBJECT_UID_DATA_BUFFER:
 
-      bytesRead = ((EGE::DataBuffer*) src->source)->read(&buffer, INPUT_BUF_SIZE);
+      bytesRead = ege_cast<EGE::DataBuffer*>(src->source)->read(buffer, INPUT_BUF_SIZE);
       break;
   }
 
-  // check if not entire block was read
-  if (INPUT_BUF_SIZE != bytesRead)
+  // check if nothing was read at all
+  if (0 >= bytesRead)
   {
     // treat empty input file as fatal error
     if (src->start_of_file)
@@ -115,18 +115,6 @@ METHODDEF(boolean) fill_input_buffer(j_decompress_ptr cinfo)
     *reinterpret_cast<JOCTET*>(buffer.data(0)) = (JOCTET) 0xFF;
     *reinterpret_cast<JOCTET*>(buffer.data(1)) = (JOCTET) JPEG_EOI;
   }
-
-  //nbytes = JFREAD(src->infile, src->buffer, INPUT_BUF_SIZE);
-
-  //if (nbytes <= 0) {
-  //  if (src->start_of_file)	/* Treat empty input file as fatal error */
-  //    ERREXIT(cinfo, JERR_INPUT_EMPTY);
-  //  WARNMS(cinfo, JWRN_JPEG_EOF);
-  //  /* Insert a fake EOI marker */
-  //  src->buffer[0] = (JOCTET) 0xFF;
-  //  src->buffer[1] = (JOCTET) JPEG_EOI;
-  //  nbytes = 2;
-  //}
 
   src->pub.next_input_byte = reinterpret_cast<JOCTET*>(buffer.data());
   src->pub.bytes_in_buffer = (size_t) buffer.size();

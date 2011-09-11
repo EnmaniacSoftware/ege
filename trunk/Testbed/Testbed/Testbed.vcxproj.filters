@@ -16,14 +16,17 @@
     <Filter Include="Tests">
       <UniqueIdentifier>{ae73f28f-1719-467e-bbca-09401ef06215}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tests\RenderToTexture">
-      <UniqueIdentifier>{89173f26-e306-46f6-a829-c47e54e6a3cc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tests\Timeline">
       <UniqueIdentifier>{5ab0b2b4-70d4-42fa-8d0b-9c01cb986829}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tests\Curves">
       <UniqueIdentifier>{05bc572b-75eb-4f4c-a2aa-97ea8ed98b25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Ripples">
+      <UniqueIdentifier>{4fd323d0-eaac-4e2a-bdcd-11e5ba109afe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Render To Texture">
+      <UniqueIdentifier>{89173f26-e306-46f6-a829-c47e54e6a3cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -36,14 +39,20 @@
     <ClCompile Include="RenderObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderToTextureTest.cpp">
-      <Filter>Tests\RenderToTexture</Filter>
+    <ClCompile Include="Ripples\RipplesTest.cpp">
+      <Filter>Tests\Ripples</Filter>
     </ClCompile>
-    <ClCompile Include="TimelineTest.cpp">
+    <ClCompile Include="Curves\CurvesTest.cpp">
+      <Filter>Tests\Curves</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderToTexture\RenderToTextureTest.cpp">
+      <Filter>Tests\Render To Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Timeline\TimeLineTest.cpp">
       <Filter>Tests\Timeline</Filter>
     </ClCompile>
-    <ClCompile Include="CurvesTest.cpp">
-      <Filter>Tests\Curves</Filter>
+    <ClCompile Include="Ripples\RippleEffect.cpp">
+      <Filter>Tests\Ripples</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -53,17 +62,23 @@
     <ClInclude Include="RenderObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderToTextureTest.h">
-      <Filter>Tests\RenderToTexture</Filter>
-    </ClInclude>
-    <ClInclude Include="TimelineTest.h">
-      <Filter>Tests\Timeline</Filter>
-    </ClInclude>
     <ClInclude Include="Test.h">
       <Filter>Tests</Filter>
     </ClInclude>
-    <ClInclude Include="CurvesTest.h">
+    <ClInclude Include="Ripples\RipplesTest.h">
+      <Filter>Tests\Ripples</Filter>
+    </ClInclude>
+    <ClInclude Include="Curves\CurvesTest.h">
       <Filter>Tests\Curves</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderToTexture\RenderToTextureTest.h">
+      <Filter>Tests\Render To Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Timeline\TimeLineTest.h">
+      <Filter>Tests\Timeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Ripples\RippleEffect.h">
+      <Filter>Tests\Ripples</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -127,139 +127,163 @@ RenderObject* RenderObject::CreateTriangle(Application* app, const String& name,
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance representing the triangle. */
-RenderObject* RenderObject::CreateRectangle(Application* app, const String& name, s32 width, s32 height, bool color, bool uv)
+RenderObject* RenderObject::CreateRectangle(Application* app, const String& name, s32 width, s32 height, bool color, bool uv, const EGE::Vector2i& segments)
 {
   RenderObject* object = CreateBase(app, name, color, uv);
   if (object)
   {
-    float* data = (float*) object->m_renderData->vertexBuffer()->lock(0, 6);
-
-    // Glyph quad looks like follows:
-    //
-    //   (0,3)  (5)
-    //    *------*
-    //    |\     |
-    //    | \Tri2|
-    //    |  \   |
-    //    |   \  |
-    //    |    \ |
-    //    |Tri1 \|
-    //    |      |
-    //    *------*
-    //   (1)   (2,4)
-
-    // 0
-    *data++ = - 0.5f * width;
-    *data++ = - 0.5f * height;
-    *data++ = 0.0f;
-
-    if (uv)
-    {
-      *data++ = 0.0f;
-      *data++ = 0.0f;
-    }
-
-    if (color)
-    {
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-    }
-
-    // 1
-    *data++ = - 0.5f * width;
-    *data++ = + 0.5f * height;
-    *data++ = 0.0f;
-
-    if (uv)
-    {
-      *data++ = 0.0f;
-      *data++ = 1.0f;
-    }
-
-    if (color)
-    {
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-    }
-
-    // 2
-    *data++ = + 0.5f * width;
-    *data++ = + 0.5f * height;
-    *data++ = 0.0f;
-
-    if (uv)
-    {
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-    }
-
-    if (color)
-    {
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-    }
-
-    // 3
-    *data++ = - 0.5f * width;
-    *data++ = - 0.5f * height;
-    *data++ = 0.0f;
-
-    if (uv)
-    {
-      *data++ = 0.0f;
-      *data++ = 0.0f;
-    }
-
-    if (color)
-    {
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-    }
-
-    // 4
-    *data++ = + 0.5f * width;
-    *data++ = + 0.5f * height;
-    *data++ = 0.0f;
-
-    if (uv)
-    {
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-    }
-
-    if (color)
-    {
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-    }
+    float* data = (float*) object->m_renderData->vertexBuffer()->lock(0, 6 * (segments.x + segments.y));
     
-    // 5
-    *data++ = + 0.5f * width;
-    *data++ = - 0.5f * height;
-    *data++ = 0.0f;
+    Vector2f vertexPos(- 0.5f * width, - 0.5f * height);
+    Vector2f vertexPosIncrement(width / static_cast<float32>(segments.x), height / static_cast<float32>(segments.y));
 
-    if (uv)
-    {
-      *data++ = 1.0f;
-      *data++ = 0.0f;
-    }
+    Vector2f uvPos(0, 0);
+    Vector2f uvPosIncrement(1.0f / segments.x, 1.0f / segments.y);
 
-    if (color)
+    for (s32 y = 0; y < segments.y; ++y)
     {
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
+      // reset data in U direction
+      vertexPos.x = - 0.5f * width;
+      uvPos.x = 0.0f;
+
+      for (s32 x = 0; x < segments.x; ++x)
+      {
+        // Glyph quad looks like follows:
+        //
+        //   (0,3)  (5)
+        //    *------*
+        //    |\     |
+        //    | \Tri2|
+        //    |  \   |
+        //    |   \  |
+        //    |    \ |
+        //    |Tri1 \|
+        //    |      |
+        //    *------*
+        //   (1)   (2,4)
+
+        // 0
+        *data++ = vertexPos.x;
+        *data++ = vertexPos.y;
+        *data++ = 0.0f;
+
+        if (uv)
+        {
+          *data++ = uvPos.x;
+          *data++ = uvPos.y;
+        }
+
+        if (color)
+        {
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+        }
+
+        // 1
+        *data++ = vertexPos.x;
+        *data++ = vertexPos.y + vertexPosIncrement.y;
+        *data++ = 0.0f;
+
+        if (uv)
+        {
+          *data++ = uvPos.x;
+          *data++ = uvPos.y + uvPosIncrement.y;
+        }
+
+        if (color)
+        {
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+        }
+
+        // 2
+        *data++ = vertexPos.x + vertexPosIncrement.x;
+        *data++ = vertexPos.y + vertexPosIncrement.y;
+        *data++ = 0.0f;
+
+        if (uv)
+        {
+          *data++ = uvPos.x + uvPosIncrement.x;
+          *data++ = uvPos.y + uvPosIncrement.y;
+        }
+
+        if (color)
+        {
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+        }
+
+        // 3
+        *data++ = vertexPos.x;
+        *data++ = vertexPos.y;
+        *data++ = 0.0f;
+
+        if (uv)
+        {
+          *data++ = uvPos.x;
+          *data++ = uvPos.y;
+        }
+
+        if (color)
+        {
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+        }
+
+        // 4
+        *data++ = vertexPos.x + vertexPosIncrement.x;
+        *data++ = vertexPos.y + vertexPosIncrement.y;
+        *data++ = 0.0f;
+
+        if (uv)
+        {
+          *data++ = uvPos.x + uvPosIncrement.x;
+          *data++ = uvPos.y + uvPosIncrement.y;
+        }
+
+        if (color)
+        {
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+        }
+    
+        // 5
+        *data++ = vertexPos.x + vertexPosIncrement.x;
+        *data++ = vertexPos.y;
+        *data++ = 0.0f;
+
+        if (uv)
+        {
+          *data++ = uvPos.x + uvPosIncrement.x;
+          *data++ = uvPos.y;
+        }
+
+        if (color)
+        {
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+        }
+
+        // update data in U direction
+        vertexPos.x += vertexPosIncrement.x;
+        uvPos.x += uvPosIncrement.x;
+      }
+
+      // update data in V direction
+      vertexPos.y += vertexPosIncrement.y;
+      uvPos.y += uvPosIncrement.y;
     }
 
     object->m_renderData->vertexBuffer()->unlock();
