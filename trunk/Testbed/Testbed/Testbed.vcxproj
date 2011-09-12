@@ -81,8 +81,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="RenderToTexture\RenderToTextureTest.cpp" />
+    <ClCompile Include="Ripples\ripple.c" />
     <ClCompile Include="Ripples\RippleEffect.cpp" />
     <ClCompile Include="Ripples\RipplesTest.cpp" />
+    <ClCompile Include="Ripples\ripple_table.c" />
     <ClCompile Include="Timeline\TimeLineTest.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +92,8 @@
     <ClInclude Include="Curves\CurvesTest.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="RenderToTexture\RenderToTextureTest.h" />
+    <ClInclude Include="Ripples\defs.h" />
+    <ClInclude Include="Ripples\ripple.h" />
     <ClInclude Include="Ripples\RippleEffect.h" />
     <ClInclude Include="Ripples\RipplesTest.h" />
     <ClInclude Include="Test.h" />

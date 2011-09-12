@@ -54,6 +54,12 @@
     <ClCompile Include="Ripples\RippleEffect.cpp">
       <Filter>Tests\Ripples</Filter>
     </ClCompile>
+    <ClCompile Include="Ripples\ripple.c">
+      <Filter>Tests\Ripples</Filter>
+    </ClCompile>
+    <ClCompile Include="Ripples\ripple_table.c">
+      <Filter>Tests\Ripples</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -78,6 +84,12 @@
       <Filter>Tests\Timeline</Filter>
     </ClInclude>
     <ClInclude Include="Ripples\RippleEffect.h">
+      <Filter>Tests\Ripples</Filter>
+    </ClInclude>
+    <ClInclude Include="Ripples\defs.h">
+      <Filter>Tests\Ripples</Filter>
+    </ClInclude>
+    <ClInclude Include="Ripples\ripple.h">
       <Filter>Tests\Ripples</Filter>
     </ClInclude>
   </ItemGroup>

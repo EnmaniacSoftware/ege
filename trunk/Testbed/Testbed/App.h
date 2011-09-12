@@ -4,6 +4,7 @@
 #include <EGEApplication.h>
 #include <EGEString.h>
 #include <EGEList.h>
+#include <EGESignal.h>
 #include "Test.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -24,6 +25,11 @@ class App : public EGE::Application
 
     /* Application override. Application updater. */
     void update(const EGE::Time& time) override;
+
+  private slots:
+
+    /* Pointer event receiver. */
+    void pointerEvent(EGE::PPointerData data);
 
 	private:
 

@@ -71,6 +71,8 @@ bool App::start()
   // select test to run
   selectTest();
 
+  ege_connect(pointer(), eventSignal, this, App::pointerEvent);
+
   if (EGE_SUCCESS != run())
   {
     return false;
@@ -96,88 +98,12 @@ void App::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*bool App::createScene()
+/*! Pointer event receiver. */
+void App::pointerEvent(PPointerData data)
 {
-#ifdef EGE_PLATFORM_WIN32
-  resourceManager()->setRootDirectory("../Airplay/data/resources");
-#else
-  resourceManager()->setRootDirectory("resources");
-#endif // EGE_PLATFORM_WIN32
-
-  if (EGE_SUCCESS != resourceManager()->addResources("resources.xml"))
+  if (m_activeTest)
   {
-    return false;
+    m_activeTest->pointerEvent(data);
   }
-
-  resourceManager()->loadGroup("fonts");
-
-  PTextOverlay overlay = overlayManager()->addTextOverlay("debug");
-  PResourceFont fontResource = resourceManager()->resource("font", "ingame");
-  overlay->setFont(fontResource->font());
-
-  overlay->setText(Text::Format(""));
-  overlay->physics()->setPosition(Vector4f(0, 20, 0, 0));
-
-    // get window render target (created thru config options)
-  PRenderWindow window = graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
-
-  // create new camera
-  PCamera camera = ege_new Camera("myCamera", sceneManager());
-
-#ifdef ORTHO
-  // setup orthographic projection
-  camera->setProjectionType(EGE::Frustum::ORTHOGRAPHIC);
-  camera->setOrthoSettings(Rectf(0, 0, window->width() * 1.0f, window->height() * 1.0f));
-  camera->setNearPlaneDistance(-1);
-  camera->setFarPlaneDistance(1);
-#endif
-
-  // create new viewport for render window
-  PViewport viewport = window->addViewport("mainview", camera);
-  if (NULL == viewport)
-  {
-    // error!
-    return false;
-  }
-
-  viewport->setClearBufferTypes(Viewport::BUFFER_TYPE_COLOR);
-  viewport->setClearColor(Color::BLUE);
-
-  m_obj[0] = addObject("first", Color::RED);
-  m_obj[1] = addObject("second", Color::GREEN);
-
-  m_spline[0].setType(CubicSpline::TYPE_BEZIER);
-  m_spline[0].addPoint(Vector4f(100, 100, 0), Vector4f(150, 100, 0));
-  m_spline[0].addPoint(Vector4f(300, 100, 0), Vector4f(250, 100, 0));
-  m_spline[0].addPoint(Vector4f(300, 200, 0), Vector4f(300, 150, 0)).setBeginTangent(Vector4f(300, 150, 0));
-
-  float32 length = m_spline[0].length();
-
-  //m_spline[1].setType(CubicSpline::TYPE_HERMITE);
-  //m_spline[1].addControlPoint(Vector4f(100, 400, 0), Vector4f(150, 350, 0));
-  //m_spline[1].addControlPoint(Vector4f(500, 350, 0), Vector4f(550, 400, 0));
-
-  //m_spline[1].addControlPoint(3.0f * (Vector4f(150, 350, 0) - Vector4f(100, 400, 0)));
-  //m_spline[1].addControlPoint(3.0f * (Vector4f(500, 350, 0) - Vector4f(550, 400, 0)));
-
-  //m_spline[2].setType(CubicSpline::TYPE_CARDINAL);
-  //m_spline[2].addControlPoint(Vector4f(100, 400, 0), Vector4f(150, 350, 0));
-  //m_spline[2].addControlPoint(Vector4f(500, 350, 0), Vector4f(550, 400, 0));
-
-  //m_spline[3].setType(CubicSpline::TYPE_BSPLINE);
-  //m_spline[3].addControlPoint(Vector4f(100, 400, 0), Vector4f(150, 350, 0));
-  //m_spline[3].addControlPoint(Vector4f(500, 350, 0), Vector4f(550, 400, 0));
-
-  return true;
-}*/
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//RenderObject* App::addObject(const String& name, const Color& color)
-//{
-//  RenderObject* obj = ege_new RenderObject(this, name);
-//  obj->setColor(color);
-//
-//  sceneManager()->rootNode()->createChildSceneNode(name)->attachObject(obj);
-//
-//  return obj;
-//}
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

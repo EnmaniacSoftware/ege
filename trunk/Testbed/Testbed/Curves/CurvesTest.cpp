@@ -96,3 +96,9 @@ void CurvesTest::preRender(PRenderTarget target)
   app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, Debug::Renderable(&m_splines[2]));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Test override. Pointer event receiver. */
+void CurvesTest::pointerEvent(PPointerData data)
+{
+  EGE_UNUSED(data);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

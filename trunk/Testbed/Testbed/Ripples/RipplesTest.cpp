@@ -10,7 +10,7 @@ EGE_NAMESPACE
 #define ORTHO
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RipplesTest::RipplesTest(App* app) : Test(app)
+RipplesTest::RipplesTest(App* app) : Test(app), m_rippleEffect(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -62,9 +62,16 @@ bool RipplesTest::initialize()
     return false;
   }
 
+  // initialize effect
+  m_rippleEffect = ege_new RippleEffect(app());
+  if ((NULL == m_rippleEffect) || !m_rippleEffect->initialize(window->width(), window->height(), camera))
+  {
+    // error!
+    return false;
+  }
+
   m_sceneObject = RenderObject::CreateRectangle(app(), "SceneObject", window->width(), window->height(), false, true);
-  m_sceneObjectRenderTexture = RenderObject::CreateRectangle(app(), "RenderTexture", window->width() - 100, window->height() - 100, false, true);
-  if (NULL == m_sceneObject || NULL == m_sceneObjectRenderTexture)
+  if (NULL == m_sceneObject)
   {
     // error!
     return false;
@@ -74,45 +81,23 @@ bool RipplesTest::initialize()
   node->attachObject(m_sceneObject);
   node->physics()->setPosition(Vector4f(window->width() / 2.0f, window->height() / 2.0f, 0));
 
-  node = app()->sceneManager()->rootNode()->createChildSceneNode(m_sceneObjectRenderTexture->name());
-  node->attachObject(m_sceneObjectRenderTexture);
-  node->physics()->setPosition(Vector4f(window->width() / 2.0f, window->height() / 2.0f, 0));
+  node = app()->sceneManager()->rootNode()->createChildSceneNode(m_rippleEffect->name());
+  node->attachObject(m_rippleEffect);
 
   // assign material to scene object
   PResourceMaterial materialResource = app()->resourceManager()->resource(RESOURCE_NAME_MATERIAL, "background");
   m_sceneObject->renderData()->setMaterial(materialResource->createInstance());
-
-  // create render texture
-  m_texture = Texture2D::CreateRenderTexture(app(), "rttTex", window->width(), window->height(), EGEImage::RGB_888);
-  
-  // create material with render texture for render texture object
-  PMaterial material = ege_new Material(app());
-  material->setDiffuseColor(Color::GREEN);
-  material->addTexture(m_texture);
-  m_sceneObjectRenderTexture->renderData()->setMaterial(material);
-
-  // setup render texture
-  PRenderTarget renderTarget = m_texture->renderTarget();
-  if (renderTarget)
-  {
-    // add viewport
-    viewport = renderTarget->addViewport("main", camera);
-    viewport->setClearBufferTypes(Viewport::BUFFER_TYPE_COLOR);
-    viewport->setClearColor(Color::RED);
-
-    // NOTE: viewport color for render texture is used while rendering the scene for its purpose, so if normal scene has BLUE color, it wont appear in
-    //       RTT as that viewport wont be clearing buffer but rather viewport of RTT.
-  }
-
+ 
   ege_connect(app()->graphics(), preRender, this, RipplesTest::preRender);
   ege_connect(app()->graphics(), postRender, this, RipplesTest::postRender);
 
-  return m_rippleEffect.initialize();
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Updates test. */
 void RipplesTest::update(const Time& time)
 {
+  m_rippleEffect->update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called before target is rendered. */
@@ -122,7 +107,7 @@ void RipplesTest::preRender(PRenderTarget target)
   if (RenderTarget::PRIORITY_RENDER_TEXTURE == target->priority())
   {
     // hide render texture quad
-    m_sceneObjectRenderTexture->setVisible(false);
+    m_rippleEffect->setVisible(false);
 
     // show scene object
     m_sceneObject->setVisible(true);
@@ -136,10 +121,16 @@ void RipplesTest::postRender(PRenderTarget target)
   if (RenderTarget::PRIORITY_RENDER_TEXTURE == target->priority())
   {
     // show render texture quad
-    m_sceneObjectRenderTexture->setVisible(true);
+    m_rippleEffect->setVisible(true);
 
     // hide scene object
     m_sceneObject->setVisible(false);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Test override. Pointer event receiver. */
+void RipplesTest::pointerEvent(PPointerData data)
+{
+  m_rippleEffect->pointerEvent(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

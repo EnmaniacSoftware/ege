@@ -90,9 +90,8 @@ void IndexBuffer::unlock()
 /*! Returns number of allocated indicies. */
 u32 IndexBuffer::indexCount() const
 {
-  return (m_buffer) ? static_cast<u32>(m_buffer->size() / indexSize()) : 0;
+  return (m_buffer && (0 < indexSize())) ? static_cast<u32>(m_buffer->size() / indexSize()) : 0;
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns index size (in bytes). */
 u8 IndexBuffer::indexSize() const

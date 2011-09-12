@@ -4,8 +4,6 @@
 #include "Test.h"
 #include "RenderObject.h"
 #include "RippleEffect.h"
-#include <EGEGraphics.h>
-#include <EGETexture.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -23,6 +21,11 @@ class RipplesTest : public Test
     /* Test override. Updates test. */
     void update(const EGE::Time& time) override;
 
+  private:
+
+    /* Test override. Pointer event receiver. */
+    void pointerEvent(EGE::PPointerData data) override;
+
   private slots:
 
     /* Slot called before target is rendered. */
@@ -34,12 +37,8 @@ class RipplesTest : public Test
 
     /*! Scene object. */
     RenderObject* m_sceneObject;
-    /*! Scene object mapped with render texture. */
-    RenderObject* m_sceneObjectRenderTexture;
-    /*! Render texture. */
-    EGE::PTexture2D m_texture;
     /*! Ripple effect object. */
-    RippleEffect m_rippleEffect;
+    RippleEffect* m_rippleEffect;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -3,6 +3,7 @@
 
 #include <EGEString.h>
 #include <EGETime.h>
+#include <EGEInput.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -23,6 +24,8 @@ class Test
     virtual bool initialize() = 0;
     /*! Updates test. */
     virtual void update(const EGE::Time& time) = 0;
+    /*! Pointer event receiver. */
+    virtual void pointerEvent(EGE::PPointerData data) = 0;
 
   protected:
 

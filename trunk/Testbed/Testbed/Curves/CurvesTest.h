@@ -22,6 +22,11 @@ class CurvesTest : public Test
     /* Test override. Updates test. */
     void update(const EGE::Time& time) override;
 
+  private:
+
+    /* Test override. Pointer event receiver. */
+    void pointerEvent(EGE::PPointerData data) override;
+
   private slots:
 
     /* Slot called before target is rendered. */

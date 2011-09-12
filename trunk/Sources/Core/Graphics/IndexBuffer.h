@@ -22,6 +22,7 @@ class IndexBuffer : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+    /*! Available index sizes. */
     enum Size
     {
       SIZE_UNKNOWN = -1,
@@ -44,6 +45,8 @@ class IndexBuffer : public Object
     u32 indexCount() const;
     /* Returns index size (in bytes). */
     u8 indexSize() const;
+    /*! Returns size type. */
+    inline Size size() const { return m_size; }
  
   private:
 
