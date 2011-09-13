@@ -42,7 +42,7 @@ class TVector2
     inline T dotProduct(const TVector2& vector) const;
 
     /* Returns distance between this and given points. */
-    inline T distanceTo(const TVector2& vector) const;
+    inline float32 distanceTo(const TVector2& vector) const;
     /* Returns squared distance between this and given points. */
     inline T distanceSquaredTo(const TVector2& vector) const;
 
@@ -133,7 +133,7 @@ T TVector2<T>::dotProduct(const TVector2& vector) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns distance between this and given points. */
 template <typename T>
-T TVector2<T>::distanceTo(const TVector2& vector) const
+float32 TVector2<T>::distanceTo(const TVector2& vector) const
 {
   return Math::Sqrt((x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y));
 }

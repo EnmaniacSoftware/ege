@@ -3,8 +3,6 @@ extern "C"
 {
 extern RIPPLE_VECTOR ripple_vector[GRID_SIZE_X][GRID_SIZE_Y];
 extern RIPPLE_AMP ripple_amp[RIPPLE_LENGTH];
-
-//#include "ripple.h"
 }
 #include <EGEMath.h>
 #include <EGEDebug.h>
@@ -12,7 +10,7 @@ extern RIPPLE_AMP ripple_amp[RIPPLE_LENGTH];
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RippleEffect::RippleEffect(Application* app) : SceneNodeObject("ripple-effect"), m_app(app), m_state(STATE_IDLE)
+RippleEffect::RippleEffect(Application* app) : SceneNodeObject("ripple-effect"), m_app(app), m_state(STATE_IDLE), m_speed(500)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -24,7 +22,8 @@ RippleEffect::~RippleEffect()
 /*! Initializes object. */
 bool RippleEffect::initialize(s32 width, s32 height, PCamera camera)
 {
-  m_maxRipple = static_cast<s32>(Math::Sqrt(width * width + height * height));
+  m_width  = width;
+  m_height = height;
   
   // create render texture
   m_texture = Texture2D::CreateRenderTexture(m_app, "RippleEffect::rttTex", width, height, EGEImage::RGB_888);
@@ -75,13 +74,12 @@ bool RippleEffect::initialize(s32 width, s32 height, PCamera camera)
   material->addTexture(m_texture);
   m_renderData->setMaterial(material);
 
-
-  for (s32 i = 0; i < RIPPLE_COUNT; i++)
+  // initialize ripple data
+  for (s32 i = 0; i < RIPPLE_COUNT; ++i)
   {
-    t[i] = m_maxRipple + RIPPLE_LENGTH;
-    cx[i] = 0;
-    cy[i] = 0;
-    max[i] = 0;
+    m_times[i]    = static_cast<s32>(Math::Sqrt(width * width + height * height)) + RIPPLE_LENGTH;
+    m_maxTimes[i] = 0;
+    m_centers[i].set(0, 0);
   }
 
   // setup render data
@@ -90,15 +88,17 @@ bool RippleEffect::initialize(s32 width, s32 height, PCamera camera)
   {
     for (s32 j = 0; j < GRID_SIZE_Y; j++)
     {
-      *data++ = i/(GRID_SIZE_X - 1.0f)*width;
-      *data++ = j/(GRID_SIZE_Y - 1.0f)*height;
+      // position (constant all the time)
+      *data++ = i / (GRID_SIZE_X - 1.0f) * width;
+      *data++ = j / (GRID_SIZE_Y - 1.0f) * height;
       *data++ = 0.0f;
 
-      dt[i][j][0] = i/(GRID_SIZE_X - 1.0f);
-      dt[i][j][1] = j/(GRID_SIZE_Y - 1.0f);
+      // default texture coords
+      m_defaultTextureCoords[i][j].set(i / (GRID_SIZE_X - 1.0f), j / (GRID_SIZE_Y - 1.0f));
 
-      *data++ = dt[i][j][0];
-      *data++ = dt[i][j][1];
+      // current texture coords
+      *data++ = m_defaultTextureCoords[i][j].x;
+      *data++ = m_defaultTextureCoords[i][j].y;
     }
   }
   m_renderData->vertexBuffer()->unlock();
@@ -115,33 +115,35 @@ bool RippleEffect::addForRendering(Renderer* renderer)
 /*! Updates effect. */
 void RippleEffect::update(const Time& time)
 {
-  s32 x, y;
-  s32 mi, mj;
-  s32 r;
-  float32 sx, sy;
-  float32 amp;
-
   float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, GRID_SIZE_X * GRID_SIZE_Y));
 
+  // advance animation time
   for (s32 i = 0; i < RIPPLE_COUNT; i++)
   {
-    t[i] += RIPPLE_STEP;
+    m_times[i] += static_cast<s32>(time.seconds() * m_speed);
   }
 
+  // recalculate grid corner texture coords
   for (s32 i = 0; i < GRID_SIZE_X; i++)
   {
     for (s32 j = 0; j < GRID_SIZE_Y; j++)
     {
+      // skip position
       data += 3;
 
-      *data = dt[i][j][0];
-      *(data + 1) = dt[i][j][1];
+      // reset texture coords to default value
+      *data       = m_defaultTextureCoords[i][j].x;
+      *(data + 1) = m_defaultTextureCoords[i][j].y;
 
-      for (s32 k = 0; k < RIPPLE_COUNT; k++)
+      // blend all ripples together
+      for (s32 k = 0; k < RIPPLE_COUNT; ++k)
 	    {
+        float32 sx;
+        float32 sy;
+
 		    // difference between current grid cell and center cell of ripple
-		    x = i - cx[k];
-		    y = j - cy[k];
+		    s32 x = i - m_centers[k].x;
+		    s32 y = j - m_centers[k].y;
 
 		    if (x < 0)
 		    {
@@ -163,10 +165,10 @@ void RippleEffect::update(const Time& time)
 		      sy = 1.0f;
         }
 
-		    mi = x;
-		    mj = y;
+		    s32 mi = x;
+		    s32 mj = y;
 		
-		    r = t[k] - ripple_vector[mi][mj].r;
+		    s32 r = m_times[k] - ripple_vector[mi][mj].r;
 		
 		    if (r < 0)
         {
@@ -178,17 +180,19 @@ void RippleEffect::update(const Time& time)
 		      r = RIPPLE_LENGTH - 1;
         }
 
-		    amp = 1.0f - 1.0f*t[k]/RIPPLE_LENGTH;
+		    float32 amp = 1.0f - 1.0f * m_times[k] / RIPPLE_LENGTH;
 		    amp *= amp;
-		    if (amp < 0.0f)
+		    if (0.0f > amp)
         {
 		      amp = 0.0f;
         }
-
-		    *data       += ripple_vector[mi][mj].dx[0]*sx*ripple_amp[r].amplitude*amp;
-		    *(data + 1) += ripple_vector[mi][mj].dx[1]*sy*ripple_amp[r].amplitude*amp;
+        
+        // add contribution of current ripple to texture coords
+		    *data       += ripple_vector[mi][mj].dx[0] * sx * ripple_amp[r].amplitude * amp;
+		    *(data + 1) += ripple_vector[mi][mj].dx[1] * sy * ripple_amp[r].amplitude * amp;
       }
 
+      // go over texture coords
       data += 2;
     }
   }
@@ -196,54 +200,72 @@ void RippleEffect::update(const Time& time)
   m_renderData->vertexBuffer()->unlock();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-	Calculate the distance between two points.
-*/
-
-float ripple_distance(int gx, int gy, int cx, int cy)
+/*!	Computes the distance of the given window coordinate to the nearest window corner (in pixels). */
+s32 RippleEffect::rippleMaxDistance(const Vector2i& pos) const
 {
-  return sqrtf(1.0f*(gx - cx)*(gx - cx) + 1.0f*(gy - cy)*(gy - cy));
+  float32 d;
+  float32 temp_d;
+
+  Vector2i corner(0, 0);
+
+  // get distance to TOP-LEFT corner
+  d = pos.distanceTo(corner);
+
+  // get distance to TOP-RIGHT corner
+  corner.set(GRID_SIZE_X, 0);
+  temp_d = pos.distanceTo(corner);
+  if (temp_d > d)
+  {
+    // new greater distance found
+    d = temp_d;
+  }
+
+  // get distance to BOTTOM-RIGHT corner
+  corner.set(GRID_SIZE_X, GRID_SIZE_Y);
+  temp_d = pos.distanceTo(corner);
+  if (temp_d > d)
+  {
+    // new greater distance found
+    d = temp_d;
+  }
+
+  // get distance to BOTTOM-LEFT cornet
+  corner.set(0, GRID_SIZE_Y);
+  temp_d = pos.distanceTo(corner);
+  if (temp_d > d)
+  {
+    // new greater distance found
+    d = temp_d;
+  }
+
+  return static_cast<s32>((d / GRID_SIZE_X) * m_width + RIPPLE_LENGTH / 6);
 }
-
-/*
-	Compute the distance of the given window coordinate
-	to the nearest window corner, in pixels.
-*/
-
-int ripple_max_distance(int gx, int gy)
-{
-  float d;
-  float temp_d;
-
-  d = ripple_distance(gx, gy, 0, 0);
-  temp_d = ripple_distance(gx, gy, GRID_SIZE_X, 0);
-  if (temp_d > d)
-    d = temp_d;
-  temp_d = ripple_distance(gx, gy, GRID_SIZE_X, GRID_SIZE_Y);
-  if (temp_d > d)
-    d = temp_d;
-  temp_d = ripple_distance(gx, gy, 0, GRID_SIZE_Y);
-  if (temp_d > d)
-    d = temp_d;
-
-  return (d/GRID_SIZE_X)*400/*win_size_x*/ + RIPPLE_LENGTH/6;
-}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pointer event receiver. */
 void RippleEffect::pointerEvent(PPointerData data)
 {
   if (EGEInput::ACTION_BUTTON_UP == data->action())
   {
     s32 index = 0;
-    while (t[index] < max[index] && index < RIPPLE_COUNT)
-      index++;
-    
-    if (index < RIPPLE_COUNT)
+    while (m_times[index] < m_maxTimes[index] && (RIPPLE_COUNT > index))
     {
-      cx[index] = 1.0f*data->x()/400*GRID_SIZE_X;
-      cy[index] = 1.0f*data->y()/400*GRID_SIZE_Y;
-      t[index] = 4*RIPPLE_STEP;
-      max[index] = ripple_max_distance(cx[index], cy[index]);
+      index++;
+    }
+
+    // check if empty spot found
+    if (RIPPLE_COUNT > index)
+    {
+      m_centers[index].set(data->x() * GRID_SIZE_X / m_width, data->y() * GRID_SIZE_Y / m_height);
+      m_times[index]    = 4 * RIPPLE_STEP;
+      m_maxTimes[index] = rippleMaxDistance(m_centers[index]);
     }
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets speed. */
+void RippleEffect::setSpeed(s32 speed)
+{
+  EGE_ASSERT(0 < speed);
+  m_speed = speed;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
