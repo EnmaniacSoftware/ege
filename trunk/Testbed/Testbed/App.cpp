@@ -40,8 +40,8 @@ bool App::start()
   // setup params for render window
   paramList[EGE_RENDER_TARGET_PARAM_COLOR_BITS]   = "24";
   paramList[EGE_RENDER_TARGET_PARAM_NAME]         = EGE_PRIMARY_RENDER_TARGET_NAME;
-  paramList[EGE_RENDER_TARGET_PARAM_WIDTH]        = "800";
-  paramList[EGE_RENDER_TARGET_PARAM_HEIGHT]       = "600";
+  paramList[EGE_RENDER_TARGET_PARAM_WIDTH]        = "400";
+  paramList[EGE_RENDER_TARGET_PARAM_HEIGHT]       = "400";
   paramList[EGE_RENDER_WINDOW_PARAM_FULLSCREEN]   = "false";
   paramList[EGE_RENDER_WINDOW_PARAM_DEPTH_BITS]   = "24";
   paramList[EGE_RENDER_WINDOW_PARAM_TITLE]        = "EGE Framework testbed";

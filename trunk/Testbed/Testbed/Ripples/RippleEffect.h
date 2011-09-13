@@ -9,12 +9,40 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+#define RIPPLE_COUNT 1
+#define GRID_SIZE_X  32
+#define GRID_SIZE_Y  32
+#define RIPPLE_LENGTH     2048
+#define RIPPLE_CYCLES     18
+#define RIPPLE_AMPLITUDE  0.125
+#define RIPPLE_STEP	  7
+
+typedef struct {	/* precomputed displacement vector table */
+  float dx[2];
+  int r;		/* distance from origin, in pixels */
+} RIPPLE_VECTOR;
+
+typedef struct {	/* precomputed ripple amplitude table */
+  float amplitude;
+} RIPPLE_AMP;
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 class RippleEffect : public EGE::SceneNodeObject
 {
   public:
 
     RippleEffect(EGE::Application* app);
     virtual ~RippleEffect();
+
+  public:
+
+    /*! Available states. */
+    enum State
+    {
+      STATE_IDLE,
+      STATE_BUSY
+    };
 
     /* Initializes object. */
     bool initialize(EGE::s32 width, EGE::s32 height, EGE::PCamera camera);
@@ -38,10 +66,17 @@ class RippleEffect : public EGE::SceneNodeObject
     EGE::PRenderComponent m_renderData;
     /*! Render texture. */
     EGE::PTexture2D m_texture;
+    /*! Current state. */
+    State m_state;
 
-
+    EGE::s32 cx[RIPPLE_COUNT];						// grid X location of ripple center
+    EGE::s32 cy[RIPPLE_COUNT];						// grid Y location of ripple center
+    EGE::s32 t[RIPPLE_COUNT];							// anim time for ripplets
+    EGE::s32 max[RIPPLE_COUNT];						// max anim time (if time is less that this, anim will be considered still working)
+    EGE::float32 dt[GRID_SIZE_X][GRID_SIZE_Y][2];
 
     EGE::s32 m_maxRipple;
+
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
