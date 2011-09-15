@@ -169,8 +169,8 @@ TRect<T> TRect<T>::intersect(const TRect<T>& rect) const
 
   out.x       = (x > rect.x) ? x : rect.x;
   out.y       = (y > rect.y) ? y : rect.y;
-  out.width   = (right() < rect.right()) ? (right() - out.x) : (rect.right() - out.x);
-  out.height  = (bottom() < rect.bottom()) ? (bottom() - out.y) : (rect.bottom() - out.y);
+  out.width   = ((right() < rect.right()) ? (right() - out.x) : (rect.right() - out.x)) + 1;
+  out.height  = ((bottom() < rect.bottom()) ? (bottom() - out.y) : (rect.bottom() - out.y)) + 1;
 
   return out;
 }
@@ -183,8 +183,8 @@ TRect<T> TRect<T>::unite(const TRect<T>& rect) const
 
   out.x       = (x < rect.x) ? x : rect.x;
   out.y       = (y < rect.y) ? y : rect.y;
-  out.width   = (right() > rect.right()) ? (right() - out.x) : (rect.right() - out.x);
-  out.height  = (bottom() > rect.bottom()) ? (bottom() - out.y) : (rect.bottom() - out.y);
+  out.width   = ((right() > rect.right()) ? (right() - out.x) : (rect.right() - out.x)) + 1;
+  out.height  = ((bottom() > rect.bottom()) ? (bottom() - out.y) : (rect.bottom() - out.y)) + 1;
 
   return out;
 }
