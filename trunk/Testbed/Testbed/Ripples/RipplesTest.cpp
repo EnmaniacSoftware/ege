@@ -64,7 +64,7 @@ bool RipplesTest::initialize()
 
   // initialize effect
   m_rippleEffect = ege_new RippleEffect(app());
-  if ((NULL == m_rippleEffect) || !m_rippleEffect->initialize(window->width(), window->height(), camera))
+  if ((NULL == m_rippleEffect) || !m_rippleEffect->initialize(window->width(), window->height(), Vector2i(32, 32), camera))
   {
     // error!
     return false;

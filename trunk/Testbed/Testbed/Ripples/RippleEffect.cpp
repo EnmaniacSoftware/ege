@@ -1,14 +1,14 @@
 #include "RippleEffect.h"
-extern "C"
-{
-extern RIPPLE_VECTOR ripple_vector[GRID_SIZE_X][GRID_SIZE_Y];
-extern RIPPLE_AMP ripple_amp[RIPPLE_LENGTH];
-}
 #include <EGEMath.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define RIPPLE_AMPLITUDE  0.125f
+#define RIPPLE_LENGTH     2048
+#define RIPPLE_CYCLES     18
+#define RIPPLE_STEP	      7
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RippleEffect::RippleEffect(Application* app) : SceneNodeObject("ripple-effect"), m_app(app), m_state(STATE_IDLE), m_speed(500)
 {
@@ -20,11 +20,15 @@ RippleEffect::~RippleEffect()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Initializes object. */
-bool RippleEffect::initialize(s32 width, s32 height, PCamera camera)
+bool RippleEffect::initialize(s32 width, s32 height, const Vector2i& gridSize, PCamera camera)
 {
   m_width  = width;
   m_height = height;
+
+  m_gridSize = gridSize;
   
+  m_defaultTextureCoords.resize(m_gridSize.x * m_gridSize.y);
+
   // create render texture
   m_texture = Texture2D::CreateRenderTexture(m_app, "RippleEffect::rttTex", width, height, EGEImage::RGB_888);
 
@@ -46,24 +50,24 @@ bool RippleEffect::initialize(s32 width, s32 height, PCamera camera)
   // create render data
   m_renderData = ege_new RenderComponent(m_app, name(), EGEGraphics::RP_MAIN);
   if ((NULL == m_renderData) || !m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_T2) ||
-      !m_renderData->indexBuffer()->create(IndexBuffer::SIZE_16BIT, 6 * GRID_SIZE_X * GRID_SIZE_Y))
+      !m_renderData->indexBuffer()->create(IndexBuffer::SIZE_16BIT, 6 * (m_gridSize.x - 1) * (m_gridSize.y - 1)))
   {
     // error!
     return false;
   }
 
   // setup index data
-  u16* indexData = reinterpret_cast<u16*>(m_renderData->indexBuffer()->lock(0, 6 * (GRID_SIZE_X - 1) * (GRID_SIZE_Y - 1)));
-  for (u16 i = 0; i < GRID_SIZE_X - 1; ++i)
+  u16* indexData = reinterpret_cast<u16*>(m_renderData->indexBuffer()->lock(0, 6 * (m_gridSize.x - 1) * (m_gridSize.y - 1)));
+  for (s32 i = 0; i < m_gridSize.x - 1; ++i)
   {
-    for (s16 j = 0; j < GRID_SIZE_Y - 1; ++j)
+    for (s32 j = 0; j < m_gridSize.y - 1; ++j)
     {
-      *indexData++ = i * GRID_SIZE_X + j;
-      *indexData++ = i * GRID_SIZE_X + j + 1;
-      *indexData++ = i * GRID_SIZE_X + j + 1 + GRID_SIZE_Y;
-      *indexData++ = i * GRID_SIZE_X + j;
-      *indexData++ = i * GRID_SIZE_X + j + 1 + GRID_SIZE_Y;
-      *indexData++ = i * GRID_SIZE_X + j + GRID_SIZE_Y;
+      *indexData++ = static_cast<u16>(i * m_gridSize.y + j);
+      *indexData++ = static_cast<u16>(i * m_gridSize.y + j + 1);
+      *indexData++ = static_cast<u16>(i * m_gridSize.y + j + 1 + m_gridSize.y);
+      *indexData++ = static_cast<u16>(i * m_gridSize.y + j);
+      *indexData++ = static_cast<u16>(i * m_gridSize.y + j + 1 + m_gridSize.y);
+      *indexData++ = static_cast<u16>(i * m_gridSize.y + j + m_gridSize.y);
     }
   }
   m_renderData->indexBuffer()->unlock();
@@ -83,25 +87,27 @@ bool RippleEffect::initialize(s32 width, s32 height, PCamera camera)
   }
 
   // setup render data
-  float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, GRID_SIZE_X * GRID_SIZE_Y));
-  for (s32 i = 0; i < GRID_SIZE_X; i++)
+  float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_gridSize.x * m_gridSize.y));
+  for (s32 i = 0; i < m_gridSize.x; i++)
   {
-    for (s32 j = 0; j < GRID_SIZE_Y; j++)
+    for (s32 j = 0; j < m_gridSize.y; j++)
     {
       // position (constant all the time)
-      *data++ = i / (GRID_SIZE_X - 1.0f) * width;
-      *data++ = j / (GRID_SIZE_Y - 1.0f) * height;
+      *data++ = i / (m_gridSize.x - 1.0f) * width;
+      *data++ = j / (m_gridSize.y - 1.0f) * height;
       *data++ = 0.0f;
 
       // default texture coords
-      m_defaultTextureCoords[i][j].set(i / (GRID_SIZE_X - 1.0f), j / (GRID_SIZE_Y - 1.0f));
+      m_defaultTextureCoords[i * m_gridSize.y + j].set(i / (m_gridSize.x - 1.0f), j / (m_gridSize.y - 1.0f));
 
       // current texture coords
-      *data++ = m_defaultTextureCoords[i][j].x;
-      *data++ = m_defaultTextureCoords[i][j].y;
+      *data++ = m_defaultTextureCoords[i * m_gridSize.y + j].x;
+      *data++ = m_defaultTextureCoords[i * m_gridSize.y + j].y;
     }
   }
   m_renderData->vertexBuffer()->unlock();
+
+  precalculate();
 
   return true;
 }
@@ -115,25 +121,44 @@ bool RippleEffect::addForRendering(Renderer* renderer)
 /*! Updates effect. */
 void RippleEffect::update(const Time& time)
 {
-  float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, GRID_SIZE_X * GRID_SIZE_Y));
+  if (STATE_IDLE == m_state)
+  {
+    // do nothing
+    return;
+  }
+
+  float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_gridSize.x * m_gridSize.y));
 
   // advance animation time
+  bool busy = false;
   for (s32 i = 0; i < RIPPLE_COUNT; i++)
   {
     m_times[i] += static_cast<s32>(time.seconds() * m_speed);
+
+    if (m_times[i] < m_maxTimes[i])
+    {
+      busy = true;
+    }
+  }
+
+  // check if all done
+  if (!busy)
+  {
+    // change state
+    //m_state = STATE_IDLE;
   }
 
   // recalculate grid corner texture coords
-  for (s32 i = 0; i < GRID_SIZE_X; i++)
+  for (s32 i = 0; i < m_gridSize.x; i++)
   {
-    for (s32 j = 0; j < GRID_SIZE_Y; j++)
+    for (s32 j = 0; j < m_gridSize.y; j++)
     {
       // skip position
       data += 3;
 
       // reset texture coords to default value
-      *data       = m_defaultTextureCoords[i][j].x;
-      *(data + 1) = m_defaultTextureCoords[i][j].y;
+      *data       = m_defaultTextureCoords[i * m_gridSize.y + j].x;
+      *(data + 1) = m_defaultTextureCoords[i * m_gridSize.y + j].y;
 
       // blend all ripples together
       for (s32 k = 0; k < RIPPLE_COUNT; ++k)
@@ -168,7 +193,7 @@ void RippleEffect::update(const Time& time)
 		    s32 mi = x;
 		    s32 mj = y;
 		
-		    s32 r = m_times[k] - ripple_vector[mi][mj].r;
+		    s32 r = m_times[k] - m_vector[mi * m_gridSize.y + mj].r;
 		
 		    if (r < 0)
         {
@@ -188,8 +213,8 @@ void RippleEffect::update(const Time& time)
         }
         
         // add contribution of current ripple to texture coords
-		    *data       += ripple_vector[mi][mj].dx[0] * sx * ripple_amp[r].amplitude * amp;
-		    *(data + 1) += ripple_vector[mi][mj].dx[1] * sy * ripple_amp[r].amplitude * amp;
+		    *data       += m_vector[mi * m_gridSize.y + mj].dx[0] * sx * m_amplitudes[r] * amp;
+		    *(data + 1) += m_vector[mi * m_gridSize.y + mj].dx[1] * sy * m_amplitudes[r] * amp;
       }
 
       // go over texture coords
@@ -212,7 +237,7 @@ s32 RippleEffect::rippleMaxDistance(const Vector2i& pos) const
   d = pos.distanceTo(corner);
 
   // get distance to TOP-RIGHT corner
-  corner.set(GRID_SIZE_X, 0);
+  corner.set(m_gridSize.x, 0);
   temp_d = pos.distanceTo(corner);
   if (temp_d > d)
   {
@@ -221,7 +246,7 @@ s32 RippleEffect::rippleMaxDistance(const Vector2i& pos) const
   }
 
   // get distance to BOTTOM-RIGHT corner
-  corner.set(GRID_SIZE_X, GRID_SIZE_Y);
+  corner.set(m_gridSize.x, m_gridSize.y);
   temp_d = pos.distanceTo(corner);
   if (temp_d > d)
   {
@@ -230,7 +255,7 @@ s32 RippleEffect::rippleMaxDistance(const Vector2i& pos) const
   }
 
   // get distance to BOTTOM-LEFT cornet
-  corner.set(0, GRID_SIZE_Y);
+  corner.set(0, m_gridSize.y);
   temp_d = pos.distanceTo(corner);
   if (temp_d > d)
   {
@@ -238,7 +263,7 @@ s32 RippleEffect::rippleMaxDistance(const Vector2i& pos) const
     d = temp_d;
   }
 
-  return static_cast<s32>((d / GRID_SIZE_X) * m_width + RIPPLE_LENGTH / 6);
+  return static_cast<s32>((d / m_gridSize.x) * m_width + RIPPLE_LENGTH / 6);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pointer event receiver. */
@@ -255,9 +280,12 @@ void RippleEffect::pointerEvent(PPointerData data)
     // check if empty spot found
     if (RIPPLE_COUNT > index)
     {
-      m_centers[index].set(data->x() * GRID_SIZE_X / m_width, data->y() * GRID_SIZE_Y / m_height);
+      m_centers[index].set(data->x() * m_gridSize.x / m_width, data->y() * m_gridSize.y / m_height);
       m_times[index]    = 4 * RIPPLE_STEP;
       m_maxTimes[index] = rippleMaxDistance(m_centers[index]);
+
+      // set state
+      m_state = STATE_BUSY;
     }
   }
 }
@@ -267,5 +295,52 @@ void RippleEffect::setSpeed(s32 speed)
 {
   EGE_ASSERT(0 < speed);
   m_speed = speed;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Precalculates data. */
+void RippleEffect::precalculate()
+{
+  m_vector.resize(m_gridSize.x * m_gridSize.y);
+  m_amplitudes.resize(RIPPLE_LENGTH);
+
+  // precalculate displacement vectors
+  for (s32 i = 0; i < m_gridSize.x; i++)
+  {
+    for (s32 j = 0; j < m_gridSize.y; j++)
+    {
+      float32 x = (float32) i / (m_gridSize.x - 1);
+      float32 y = (float32) j / (m_gridSize.y - 1);
+
+      float32 l = Math::Sqrt(x * x + y * y);
+      if (0.0f == l)
+      {
+	      x = 0.0f;
+	      y = 0.0f;
+      }
+      else
+      {
+	      x /= l;
+	      y /= l;
+      }
+
+      m_vector[i * m_gridSize.y + j].dx[0] = x;
+      m_vector[i * m_gridSize.y + j].dx[1] = y;
+      m_vector[i * m_gridSize.y + j].r = static_cast<s32>(l * m_width * 2);
+    }
+  }
+
+  // precalculate amplitudes
+  for (s32 i = 0; i < RIPPLE_LENGTH; i++)
+  {
+    float32 t = 1.0f - i / (RIPPLE_LENGTH - 1.0f);
+    float32 a = (-Math::Cos(t * 2.0f * EGEMath::PI * RIPPLE_CYCLES) * 0.5f + 0.5f) * RIPPLE_AMPLITUDE * t * t * t * t * t * t * t;
+
+    if (0 == i)
+    {
+      a = 0.0f;
+    }
+
+    m_amplitudes[i] = a;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

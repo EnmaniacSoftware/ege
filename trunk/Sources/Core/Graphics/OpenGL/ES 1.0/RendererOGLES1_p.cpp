@@ -74,6 +74,20 @@ static GLint MapPrimitiveType(EGETexture::EnvironmentMode mode)
   return GL_MODULATE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Maps incides size to OpenGL compilant value. */
+static GLenum MapIndexSize(IndexBuffer::Size size)
+{
+  switch (size)
+  {
+    case IndexBuffer::SIZE_8BIT:   return GL_UNSIGNED_BYTE;
+    case IndexBuffer::SIZE_16BIT:  return GL_UNSIGNED_SHORT;
+    case IndexBuffer::SIZE_32BIT:  return GL_UNSIGNED_INT;
+  }
+
+  // default
+  return GL_UNSIGNED_INT;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RendererPrivate::RendererPrivate(Renderer* base) : m_d(base), m_activeTextureUnit(0xffffffff)
 {
   detectCapabilities();
@@ -196,8 +210,7 @@ void RendererPrivate::flush()
       {
         const VertexBuffer::SemanticsList& semantics = vertexBuffer->semantics();
 
-        // TAGE - if indexed geometry count indicies
-        u32 value = vertexBuffer->vertexCount();
+        u32 value = (0 < indexBuffer->indexCount()) ? indexBuffer->indexCount() : vertexBuffer->vertexCount();
 
         d_func()->m_vertexCount += value;
         d_func()->m_batchCount++;
@@ -255,27 +268,23 @@ void RendererPrivate::flush()
 	      //if (multitexturing)
 	      //glClientActiveTextureARB(GL_TEXTURE0);
 
+        // set model-view matrix
+        glLoadMatrixf(d_func()->m_viewMatrix.multiply(data.worldMatrix).data);
+
         // check if INDICIES are to be used
-        //if ( cRenderOp.isIndexBufferInUse() == true )
-        //{
-        //  // lock INDEX buffer
-        //  void* pIndexData = cRenderOp.getIndexBuffer()->lock( 0, cRenderOp.getIndexBuffer()->getIndexCountInUse() );
-
-        //  // render only if there is anything to render
-        //  if ( cRenderOp.getIndexBuffer()->getIndexCountInUse() != 0 )
-        //  {
-        //    glDrawElements( cRenderOp.getType(), cRenderOp.getIndexBuffer()->getIndexCountInUse(), 
-        //                    cRenderOp.getIndexBuffer()->getIndexSizeType(), pIndexData );
-        //  }
-
-        //  // unlock INDEX buffer
-        //  cRenderOp.getIndexBuffer()->unlock();
-        //}
-        //else
+        if (0 < indexBuffer->indexCount())
         {
-          // set model-view matrix
-          glLoadMatrixf(d_func()->m_viewMatrix.multiply(data.worldMatrix).data);
+          // lock INDEX buffer
+          void* indexData = indexBuffer->lock(0, indexBuffer->indexCount());
 
+          // render only if there is anything to render
+          glDrawElements(MapPrimitiveType(data.component->primitiveType()), indexBuffer->indexCount(), MapIndexSize(indexBuffer->size()), indexData);
+
+          // unlock INDEX buffer
+          indexBuffer->unlock();
+        }
+        else
+        {
           // render only if there is anything to render
           glDrawArrays(MapPrimitiveType(data.component->primitiveType()), 0, vertexBuffer->vertexCount());
         }

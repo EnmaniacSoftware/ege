@@ -6,25 +6,11 @@
 #include <EGEGraphics.h>
 #include <EGETime.h>
 #include <EGEInput.h>
+#include <EGEDynamicArray.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #define RIPPLE_COUNT 3
-#define GRID_SIZE_X  32
-#define GRID_SIZE_Y  32
-#define RIPPLE_LENGTH     2048
-#define RIPPLE_CYCLES     18
-#define RIPPLE_AMPLITUDE  0.125
-#define RIPPLE_STEP	  7
-
-typedef struct {	/* precomputed displacement vector table */
-  float dx[2];
-  int r;		/* distance from origin, in pixels */
-} RIPPLE_VECTOR;
-
-typedef struct {	/* precomputed ripple amplitude table */
-  float amplitude;
-} RIPPLE_AMP;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -45,7 +31,7 @@ class RippleEffect : public EGE::SceneNodeObject
     };
 
     /* Initializes object. */
-    bool initialize(EGE::s32 width, EGE::s32 height, EGE::PCamera camera);
+    bool initialize(EGE::s32 width, EGE::s32 height, const EGE::Vector2i& gridSize, EGE::PCamera camera);
     /*! Returns render texture. */
     EGE::PTexture2D texture() const { return m_texture; }
     /* Updates effect. */
@@ -61,6 +47,17 @@ class RippleEffect : public EGE::SceneNodeObject
     bool addForRendering(EGE::Renderer* renderer) override;
     /* Computes the distance of the given window coordinate to the nearest window corner (in pixels). */
     EGE::s32 rippleMaxDistance(const EGE::Vector2i& pos) const;
+    /* Precalculates data. */
+    void precalculate();
+
+  private:
+
+    /*! Precomputed displacement vector table entry. */
+    struct RIPPLEENTRY
+    {
+      EGE::float32 dx[2];
+      EGE::s32 r;		          /*!< Distance from origin (in pixels). */
+    };
 
   private:
 
@@ -78,6 +75,8 @@ class RippleEffect : public EGE::SceneNodeObject
     EGE::s32 m_width;
     /*! Effect area height (in pixels). */
     EGE::s32 m_height;
+    /*! Grid size. */
+    EGE::Vector2i m_gridSize;
     /*! Grid locations of ripple centers. */
     EGE::Vector2i m_centers[RIPPLE_COUNT];
     /*! Ripple animation times. */
@@ -85,7 +84,11 @@ class RippleEffect : public EGE::SceneNodeObject
     /*! Max ripple animation times. */
     EGE::s32 m_maxTimes[RIPPLE_COUNT];
     /*! Default texture coords for each grid corner. */
-    EGE::Vector2f m_defaultTextureCoords[GRID_SIZE_X][GRID_SIZE_Y];
+    EGE::DynamicArray<EGE::Vector2f> m_defaultTextureCoords;
+    /*! Array of precomputed displacement values. */
+    EGE::DynamicArray<RIPPLEENTRY> m_vector;
+    /*! Array of precomputed amplitudes values. */
+    EGE::DynamicArray<EGE::float32> m_amplitudes;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
