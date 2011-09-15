@@ -3,6 +3,7 @@
 
 #include <EGEString.h>
 #include <EGEImage.h>
+#include <EGEVector.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -10,7 +11,7 @@ class AtlasGroupEntry
 {
   public:
 
-    AtlasGroupEntry(const EGE::String& name, const EGE::String& path);
+    AtlasGroupEntry(const EGE::String& name, const EGE::String& path, const EGE::Vector4i& spacing);
    ~AtlasGroupEntry();
 
     /* Returns TRUE if object is valid. */
@@ -21,6 +22,8 @@ class AtlasGroupEntry
     inline const EGE::String& path() const { return m_path; }
     /*! Returns image name. */
     inline const EGE::String& name() const { return m_name; }
+    /*! Returns spacing. */
+    inline const EGE::Vector4i& spacing() const { return m_spacing; }
 
   private:
 
@@ -28,6 +31,8 @@ class AtlasGroupEntry
     EGE::String m_name;
     /*! Path to image. */
     EGE::String m_path;
+    /*! Spacing (left, top, right, bottom). */
+    EGE::Vector4i m_spacing;
     /*! Image. */
     EGE::PImage m_image;
 };

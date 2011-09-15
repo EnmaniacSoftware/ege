@@ -7,7 +7,7 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 65
+#define VERSION_MINOR 7
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping image format name into framework enum. */
 static EGEImage::Format MapImageFormat(const String& formatName)
@@ -166,7 +166,7 @@ bool TextureAtlasGenerator::process()
     PXmlElement imageElement = groupElement->firstChild("image");
     while (imageElement && imageElement->isValid())
     {
-      AtlasGroupEntry* entry = new AtlasGroupEntry(imageElement->attribute("name"), imageElement->attribute("path"));
+      AtlasGroupEntry* entry = new AtlasGroupEntry(imageElement->attribute("name"), imageElement->attribute("path"), imageElement->attribute("spacing").toVector4i());
       if ((NULL == entry) || !entry->isValid())
       {
         // error!
@@ -308,17 +308,25 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
     XmlElement element("texture-image");
     element.setAttribute("name", entry->name());
     element.setAttribute("texture", String::Format("atlas-%s", group->name().toAscii()));
+    
+    // calculate real (without spacing) rect occupied by element
+    Recti rect(node->m_rect.x + node->m_entry->spacing().x, node->m_rect.y + node->m_entry->spacing().y, 
+               node->m_rect.width - node->m_entry->spacing().x - node->m_entry->spacing().z, 
+               node->m_rect.height - node->m_entry->spacing().y - node->m_entry->spacing().w);
+
 #ifdef _DEBUG
-    element.setAttribute("pixel-rect", String::Format("%d %d %d %d", node->m_rect.x, node->m_rect.y, node->m_rect.width, node->m_rect.height));
+    element.setAttribute("pixel-rect", String::Format("%d %d %d %d", rect.x, rect.y, rect.width, rect.height));
 #endif _DEBUG
-    element.setAttribute("rect", String::Format("%f %f %f %f", node->m_rect.x * 1.0f / group->textureImageSize(), node->m_rect.y * 1.0f / group->textureImageSize(), 
-                                                node->m_rect.width * 1.0f / group->textureImageSize(), node->m_rect.height * 1.0f / group->textureImageSize()));
+    element.setAttribute("rect", String::Format("%f %f %f %f", rect.x * 1.0f / group->textureImageSize(), 
+                                                               rect.y * 1.0f / group->textureImageSize(), 
+                                                               rect.width * 1.0f / group->textureImageSize(), 
+                                                               rect.height * 1.0f / group->textureImageSize()));
 
     // add to group element
     groupElement.appendChildElement(element);
 
     // copy data onto atlas image
-    ImageUtils::FastCopy(group->image(), Vector2i(node->m_rect.x, node->m_rect.y), node->m_entry->image());
+    ImageUtils::FastCopy(group->image(), Vector2i(rect.x, rect.y), node->m_entry->image());
   }
 
   // clean up

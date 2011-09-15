@@ -3,7 +3,7 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AtlasGroupEntry::AtlasGroupEntry(const String& name, const String& path) : m_name(name), m_path(path)
+AtlasGroupEntry::AtlasGroupEntry(const String& name, const String& path, const Vector4i& spacing) : m_name(name), m_path(path), m_spacing(spacing)
 {
   m_image = ege_new EGE::Image(NULL);
   if (m_image)

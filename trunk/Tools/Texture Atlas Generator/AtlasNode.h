@@ -53,14 +53,20 @@ class AtlasNode
       }
 
       // check if image is too big
-      if (entry->image()->width() > m_rect.width || entry->image()->height() > m_rect.height)
+      // NOTE: spacing: x - left, y - top, z - right, w - bottom
+      EGE::Vector4i spacing = entry->spacing();
+
+      EGE::s32 width = entry->image()->width() + spacing.x + spacing.z;
+      EGE::s32 height = entry->image()->height() + spacing.y + spacing.w;
+
+      if ((width > m_rect.width) || (height > m_rect.height))
       {
         // cannot insert
         return NULL;
       }
 
       // check if image can fits perfectly
-      if (entry->image()->width() == m_rect.width && entry->image()->height() == m_rect.height)
+      if ((width == m_rect.width) && (height == m_rect.height))
       {
         // found
         return this;
@@ -76,20 +82,20 @@ class AtlasNode
       }
 
       // decide way to split
-      EGE::s32 dw = m_rect.width - entry->image()->width();
-      EGE::s32 dh = m_rect.height - entry->image()->height();
+      EGE::s32 dw = m_rect.width - width;
+      EGE::s32 dh = m_rect.height - height;
 
       if (dw > dh)
       {
         // divide into left and right sections
-        m_child[0]->m_rect = EGE::Recti(m_rect.x, m_rect.y, entry->image()->width(), m_rect.height);
-        m_child[1]->m_rect = EGE::Recti(m_rect.x + entry->image()->width(), m_rect.y, m_rect.width - entry->image()->width(), m_rect.height);
+        m_child[0]->m_rect = EGE::Recti(m_rect.x, m_rect.y, width, m_rect.height);
+        m_child[1]->m_rect = EGE::Recti(m_rect.x + width, m_rect.y, m_rect.width - width, m_rect.height);
       }
       else
       {
         // divide into top and bottom sections
-        m_child[0]->m_rect = EGE::Recti(m_rect.x, m_rect.y, m_rect.width, entry->image()->height());
-        m_child[1]->m_rect = EGE::Recti(m_rect.x, m_rect.y + entry->image()->height(), m_rect.width, m_rect.height - entry->image()->height());
+        m_child[0]->m_rect = EGE::Recti(m_rect.x, m_rect.y, m_rect.width, height);
+        m_child[1]->m_rect = EGE::Recti(m_rect.x, m_rect.y + height, m_rect.width, m_rect.height - height);
       }
 
       // insert into first child
