@@ -259,6 +259,28 @@ Vector2f String::toVector2f(bool* error) const
   return vec;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Converts to 3D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
+Vector3f String::toVector3f(bool* error) const
+{
+  if (empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return Vector3f::ZERO;
+  }
+
+  Vector3f vec(0, 0, 0);
+  if (3 > sscanf(toAscii(), "%f %f %f", &vec.x, &vec.y, &vec.z) && error)
+  {
+    *error = true;
+  }
+
+  return vec;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts to 4D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
 Vector4f String::toVector4f(bool* error) const
 {
@@ -272,9 +294,30 @@ Vector4f String::toVector4f(bool* error) const
     return Vector4f::ZERO;
   }
 
-  // NOTE: at least 3 coords are required
-  Vector4f vec(0, 0, 0, 1);
-  if (3 > sscanf(toAscii(), "%f %f %f %f", &vec.x, &vec.y, &vec.z, &vec.w) && error)
+  Vector4f vec(0, 0, 0, 0);
+  if (4 > sscanf(toAscii(), "%f %f %f %f", &vec.x, &vec.y, &vec.z, &vec.w) && error)
+  {
+    *error = true;
+  }
+
+  return vec;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Converts to 4D vector of signed integers. If error is valid, it holds TRUE if error occured during the conversion. */
+Vector4i String::toVector4i(bool* error) const
+{
+  if (empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return Vector4i::ZERO;
+  }
+
+  Vector4i vec(0, 0, 0, 0);
+  if (4 > sscanf(toAscii(), "%d %d %d %d", &vec.x, &vec.y, &vec.z, &vec.w) && error)
   {
     *error = true;
   }

@@ -3,9 +3,9 @@
 
 #include <EGETypes.h>
 #include <EGERect.h>
+#include <EGEVector.h>
 #include <string>
 #include "Core/Graphics/Color.h"
-#include "Core/Math/Vector2.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -61,8 +61,12 @@ class String : public std::string
     Rectf toRectf(bool* error = NULL) const;
     /* Converts to 2D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
     Vector2f toVector2f(bool* error = NULL) const;
+    /* Converts to 3D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
+    Vector3f toVector3f(bool* error = NULL) const;
     /* Converts to 4D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
     Vector4f toVector4f(bool* error = NULL) const;
+    /* Converts to 4D vector of signed integers. If error is valid, it holds TRUE if error occured during the conversion. */
+    Vector4i toVector4i(bool* error = NULL) const;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -93,8 +93,8 @@ EGEResult ResourceCurve::create(const String& path, const PXmlElement& tag)
     {
       PointData point;
 
-      point.position  = child->attribute("pos", "0 0 0 1").toVector4f(&error);
-      point.tangent   = child->attribute("tangent", "0 0 0 1").toVector4f(&error);
+      point.position  = child->attribute("pos", "0 0 0").toVector3f(&error);
+      point.tangent   = child->attribute("tangent", "0 0 0").toVector3f(&error);
 
       if (error)
       {
@@ -147,7 +147,7 @@ CubicSpline ResourceCurve::createInstance() const
   {
     const PointData& point = *it;
 
-    spline.addPoint(point.position, point.tangent);
+    spline.addPoint(Vector4f(point.position.x, point.position.y, point.position.z), Vector4f(point.tangent.x, point.tangent.y, point.tangent.z));
   }
 
   return spline;

@@ -58,8 +58,8 @@ class ResourceCurve : public IResource
     /*! Point data info structure. */
     struct PointData
     {
-      Vector4f position;        /*!< Position. */
-      Vector4f tangent;         /*!< Tangent. */
+      Vector3f position;        /*!< Position. */
+      Vector3f tangent;         /*!< Tangent. */
     };
 
   private:

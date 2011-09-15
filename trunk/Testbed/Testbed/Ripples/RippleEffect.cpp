@@ -74,7 +74,7 @@ bool RippleEffect::initialize(s32 width, s32 height, const Vector2i& gridSize, P
 
   // create material with render texture for render texture object
   PMaterial material = ege_new Material(app());
-  material->setDiffuseColor(Color::GREEN);
+  //material->setDiffuseColor(Color::GREEN);
   material->addTexture(m_texture);
   m_renderData->setMaterial(material);
 
@@ -177,7 +177,7 @@ void RippleEffect::update(const Time& time)
 		    }
 		    else
         {
-		      sx = 1.0;
+		      sx = 1.0f;
         }
 
 		    if (y < 0)
@@ -308,8 +308,8 @@ void RippleEffect::precalculate()
   {
     for (s32 j = 0; j < m_gridSize.y; j++)
     {
-      float32 x = (float32) i / (m_gridSize.x - 1);
-      float32 y = (float32) j / (m_gridSize.y - 1);
+      float32 x = i / (m_gridSize.x - 1.0f) * m_width / m_height;
+      float32 y = j / (m_gridSize.y - 1.0f);
 
       float32 l = Math::Sqrt(x * x + y * y);
       if (0.0f == l)
@@ -333,7 +333,7 @@ void RippleEffect::precalculate()
   for (s32 i = 0; i < RIPPLE_LENGTH; i++)
   {
     float32 t = 1.0f - i / (RIPPLE_LENGTH - 1.0f);
-    float32 a = (-Math::Cos(t * 2.0f * EGEMath::PI * RIPPLE_CYCLES) * 0.5f + 0.5f) * RIPPLE_AMPLITUDE * t * t * t * t * t * t * t;
+    float32 a = (-Math::Cos(t * 2.0f * EGEMath::PI * RIPPLE_CYCLES) * 0.5f + 0.5f) * RIPPLE_AMPLITUDE * t * t * t * t * t * t * t * t;
 
     if (0 == i)
     {

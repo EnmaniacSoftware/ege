@@ -63,11 +63,12 @@ class TVector4
     static const TVector4<T> UNIT_X;
     static const TVector4<T> UNIT_Y;
     static const TVector4<T> UNIT_Z;
+    static const TVector4<T> UNIT_W;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-const TVector4<T> TVector4<T>::ZERO   = TVector4<T>(0, 0, 0, 1);
+const TVector4<T> TVector4<T>::ZERO   = TVector4<T>(0, 0, 0, 0);
 template <typename T>
 const TVector4<T> TVector4<T>::ONE    = TVector4<T>(1, 1, 1, 1);
 template <typename T>
@@ -76,6 +77,8 @@ template <typename T>
 const TVector4<T> TVector4<T>::UNIT_Y = TVector4<T>(0, 1, 0, 1);
 template <typename T>
 const TVector4<T> TVector4<T>::UNIT_Z = TVector4<T>(0, 0, 1, 1);
+template <typename T>
+const TVector4<T> TVector4<T>::UNIT_W = TVector4<T>(0, 0, 0, 1);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 TVector4<T>::TVector4() : x(0), y(0), z(0), w(1)
