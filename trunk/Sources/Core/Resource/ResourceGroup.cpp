@@ -32,7 +32,7 @@ EGEResult ResourceGroup::create(const PXmlElement& tag)
   if (m_name.empty())
   {
     // error!
-    EGE_PRINT("ResourceGroup::create - failed for name: %s", m_name);
+    EGE_PRINT("ResourceGroup::create - failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 

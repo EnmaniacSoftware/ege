@@ -49,7 +49,7 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
 ResourceManager::ResourceManager(Application* app) : Object(app)
 {
   // register build-in resource types
-  for (s32 i = 0; i < sizeof (l_resourcesToRegister) / sizeof (BuiltInResource); ++i)
+  for (u32 i = 0; i < sizeof (l_resourcesToRegister) / sizeof (BuiltInResource); ++i)
   {
     const BuiltInResource& resource = l_resourcesToRegister[i];
 
@@ -67,7 +67,7 @@ ResourceManager::~ResourceManager()
 bool ResourceManager::isValid() const
 {
   // check if built-in resources are registered correctly
-  for (s32 i = 0; i < sizeof (l_resourcesToRegister) / sizeof (BuiltInResource); ++i)
+  for (u32 i = 0; i < sizeof (l_resourcesToRegister) / sizeof (BuiltInResource); ++i)
   {
     const BuiltInResource& resource = l_resourcesToRegister[i];
 

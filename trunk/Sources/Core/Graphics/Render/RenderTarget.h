@@ -25,6 +25,7 @@ class RenderTarget : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+    /*! Available priorities. */
     enum Priority
     {
       PRIORITY_RENDER_TEXTURE = 0,
@@ -61,6 +62,10 @@ class RenderTarget : public Object
     inline s32 width() const { return m_width; }
     /*! Returns target height (in pixels). */
     inline s32 height() const { return m_height; }
+    /*! Returns TRUE if target is enabled. */
+    inline bool isEnabled() const { return m_enabled; }
+    /* Enables/disables render target. */
+    void setEnable(bool enable);
 
   private:
 
@@ -84,6 +89,8 @@ class RenderTarget : public Object
     u32 m_vertexCount;
     /*! Number of batches rendered last frame. */
     u32 m_batchCount;
+    /*! Enable flag. */
+    bool m_enabled;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

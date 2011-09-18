@@ -23,9 +23,10 @@ class TVector2
     TVector2(T x, T y);
 		TVector2(const TVector2& vector);
 
-    inline void operator*=(T scalar);
-    inline bool operator==(const TVector2& vector) const;
-    inline bool operator!=(const TVector2& vector) const;
+    inline void operator *= (T scalar);
+    inline bool operator == (const TVector2& vector) const;
+    inline bool operator != (const TVector2& vector) const;
+    inline TVector2& operator += (const TVector2& vector);
 
     /* Sets vector components. */
     inline void set(T x, T y);
@@ -162,6 +163,15 @@ void TVector2<T>::operator *= (T scalar)
 {
   x *= scalar;
   y *= scalar;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector2<T>& TVector2<T>::operator += (const TVector2& vector)
+{
+  x += vector.x;
+  y += vector.y;
+
+  return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

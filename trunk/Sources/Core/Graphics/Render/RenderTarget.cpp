@@ -10,7 +10,8 @@ EGE_DEFINE_NEW_OPERATORS(RenderTarget)
 EGE_DEFINE_DELETE_OPERATORS(RenderTarget)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderTarget::RenderTarget(Application* app, const ConfigParams& params) : Object(app), m_vertexCount(0), m_batchCount(0), m_width(0), m_height(0)
+RenderTarget::RenderTarget(Application* app, const ConfigParams& params) : Object(app), m_vertexCount(0), m_batchCount(0), m_width(0), m_height(0), 
+                                                                           m_enabled(true)
 {
   // decompose param list
   ConfigParams::const_iterator iterName   = params.find(EGE_RENDER_TARGET_PARAM_NAME);
@@ -116,5 +117,11 @@ void RenderTarget::render()
     m_batchCount  += viewport->batchCount();
     m_vertexCount += viewport->vertexCount();
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Enables/disables render target. */
+void RenderTarget::setEnable(bool enable)
+{
+  m_enabled = enable;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

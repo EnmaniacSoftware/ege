@@ -311,6 +311,8 @@ files
 	["Core/Resource"]
   (../../Sources/Core/Resource)
   Resource.h
+  ResourceCurve.cpp
+  ResourceCurve.h
   ResourceData.cpp
   ResourceData.h
   ResourceFont.cpp

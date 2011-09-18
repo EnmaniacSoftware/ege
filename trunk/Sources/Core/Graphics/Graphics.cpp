@@ -74,12 +74,16 @@ void Graphics::render()
   {
     PRenderTarget target = iter->second;
 
-    emit preRender(target);
+    // check if enabled
+    if (target->isEnabled())
+    {
+      emit preRender(target);
 
-    // render target
-    target->render();
+      // render target
+      target->render();
 
-    emit postRender(target);
+      emit postRender(target);
+    }
   }
 
   // render physics data

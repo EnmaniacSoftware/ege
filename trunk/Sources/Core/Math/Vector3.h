@@ -49,6 +49,7 @@ class TVector3
     inline T distanceTo(const TVector3& vector) const;
     /* Returns squared distance between this and given points. */
     inline T distanceSquaredTo(const TVector3& vector) const;
+
     /* Returns 2D vector consisting of X and Y values of current one. */
     inline TVector2<T> xy() const;
 

@@ -151,7 +151,7 @@ void RendererPrivate::setViewport(const PViewport& viewport)
     actualRect.height = tmp;
   }
 
-  glViewport((GLint) actualRect.x, (GLint) actualRect.y, (GLsizei) actualRect.width, (GLsizei)actualRect.height);
+  glViewport((GLint) actualRect.x, (GLint) actualRect.y, (GLsizei) actualRect.width, (GLsizei) actualRect.height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets render target. */
