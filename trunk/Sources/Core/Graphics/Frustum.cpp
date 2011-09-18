@@ -253,8 +253,8 @@ void Frustum::calculateProjectionMatrix()
       // Ty = -(top + bottom) / (top - bottom)
       // Tz = -(far + near) / (far - near)
      
-      float32 invWidth    = 1.0f / (m_orthoRect.right() - m_orthoRect.left());
-      float32 invHeight   = 1.0f / (m_orthoRect.top() - m_orthoRect.bottom());
+      float32 invWidth    = 1.0f / ((m_orthoRect.right() + 1) - m_orthoRect.left());
+      float32 invHeight   = 1.0f / (m_orthoRect.top() - (m_orthoRect.bottom() + 1));
       float32 invDistance = 1.0f / (farPlaneDistance() - nearPlaneDistance());
 
       m_projectionMatrix.data[0]  = 2.0f * invWidth;
@@ -269,8 +269,8 @@ void Frustum::calculateProjectionMatrix()
       m_projectionMatrix.data[9]  = 0;
       m_projectionMatrix.data[10] = - 2.0f * invDistance;
       m_projectionMatrix.data[11] = 0;
-      m_projectionMatrix.data[12] = - (m_orthoRect.right() + m_orthoRect.left()) * invWidth;
-      m_projectionMatrix.data[13] = - (m_orthoRect.top() + m_orthoRect.bottom()) * invHeight;
+      m_projectionMatrix.data[12] = - ((m_orthoRect.right() + 1) + m_orthoRect.left()) * invWidth;
+      m_projectionMatrix.data[13] = - (m_orthoRect.top() + (m_orthoRect.bottom() + 1)) * invHeight;
       m_projectionMatrix.data[14] = - (farPlaneDistance() + nearPlaneDistance()) * invDistance;
       m_projectionMatrix.data[15] = 1;
     }
