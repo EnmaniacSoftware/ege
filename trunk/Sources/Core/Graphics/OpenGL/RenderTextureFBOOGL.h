@@ -50,6 +50,8 @@ class RenderTextureFBOOGL : public RenderTarget
     GLenum m_textureTarget;
     /*! Texture face type data should be rendered to. */
     GLenum m_faceTarget;
+    /*! Default frame buffer object id. */
+    GLint m_defaultFBOId;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

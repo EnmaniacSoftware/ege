@@ -27,6 +27,10 @@ PTexture2D Texture2D::CreateRenderTexture(Application* app, const String& name, 
     texture->m_height = height;
     texture->m_format = format;
 
+    // TAGE - for the time being set to CLAMP so we non-power of 2 render textures can be created for iOS
+    texture->setTextureAddressingModeS(EGETexture::AM_CLAMP);
+    texture->setTextureAddressingModeT(EGETexture::AM_CLAMP);
+
     if (EGE_SUCCESS != texture->p_func()->create())
     {
       // error!

@@ -1,6 +1,7 @@
 #include "Core/Graphics/OpenGL/RenderTextureFBOOGL.h"
 #include <EGEOpenGL.h>
 #include <EGETexture.h>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
@@ -8,19 +9,29 @@ EGE_NAMESPACE
 RenderTextureFBOOGL::RenderTextureFBOOGL(Application* app, const ConfigParams& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId) 
 : RenderTarget(app, params), m_textureId(textureId), m_textureTarget(textureTarget), m_faceTarget(faceTarget)
 {
+  // get defult FBO id
+  glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &m_defaultFBOId);
+
+  // generate new FBO
   glGenFramebuffers(1, &m_frameBufferObjectId);
 
   if (0 < m_frameBufferObjectId)
   {
-    // TAGE - 
     // bind FBO
     glBindFramebuffer(GL_FRAMEBUFFER_EXT, m_frameBufferObjectId);
     
     // attach texture
     glFramebufferTexture2D(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, textureTarget, textureId, 0);
 
+    // check status
+    GLuint state = glCheckFramebufferStatus(GL_FRAMEBUFFER_EXT);
+    if (GL_FRAMEBUFFER_COMPLETE_EXT != state)
+    {
+      EGE_WARNING("RenderTextureFBOOGL::RenderTextureFBOOGL Failed with error %d!", state);
+    }
+
     // unbind for the time being
-    glBindFramebuffer(GL_FRAMEBUFFER_EXT, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER_EXT, m_defaultFBOId);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -63,7 +74,7 @@ void RenderTextureFBOOGL::bind()
 void RenderTextureFBOOGL::unbind()
 {
   // bind default
-  glBindFramebuffer(GL_FRAMEBUFFER_EXT, 0);
+  glBindFramebuffer(GL_FRAMEBUFFER_EXT, m_defaultFBOId);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
