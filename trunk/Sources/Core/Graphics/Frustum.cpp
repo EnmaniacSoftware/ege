@@ -10,8 +10,8 @@ EGE_DEFINE_DELETE_OPERATORS(Frustum)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Frustum::Frustum(Application* app, const Matrix4f& viewMatrix) : Object(app), m_projectionType(Frustum::PERSPECTIVE), m_nearPlaneDistance(1.0f), 
-                                                                     m_farPlaneDistance(100.0f), m_aspectRatio(1.33f), m_projectionMatrixNeedsUpdate(true), 
-                                                                     m_planesNeedUpdate(true), m_viewMatrix(viewMatrix)
+                                                                 m_farPlaneDistance(100.0f), m_aspectRatio(1.33f), m_projectionMatrixNeedsUpdate(true), 
+                                                                 m_planesNeedUpdate(true), m_viewMatrix(viewMatrix)
 {
   m_FOVy.fromDegrees(45.0f);
 }
