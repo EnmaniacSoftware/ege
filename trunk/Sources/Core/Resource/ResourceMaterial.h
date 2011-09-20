@@ -62,7 +62,7 @@ class ResourceMaterial : public IResource
     /* Adds texture dependancy. */
     EGEResult addTexture(const PXmlElement& tag);
     /*! Returns TRUE if material is loaded. */
-    inline bool isLoaded() const { return !m_textureImages.empty(); }
+    inline bool isLoaded() const { return m_loaded; }
     /*! Returns source pixel factor function. */
     inline EGEGraphics::BlendFactor srcBlendFactor() const { return m_srcBlend; }
     /*! Returns destination pixel factor function. */
@@ -127,6 +127,8 @@ class ResourceMaterial : public IResource
     float32 m_shininess;
     /*! List of all texture image objects referred by material. Empty if material is not loaded yet. */
     TextureImageList m_textureImages;
+    /*! Load flag. */
+    bool m_loaded;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

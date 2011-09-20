@@ -107,7 +107,7 @@ EGE_DEFINE_NEW_OPERATORS(ResourceMaterial)
 EGE_DEFINE_DELETE_OPERATORS(ResourceMaterial)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceMaterial::ResourceMaterial(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_MATERIAL)
+ResourceMaterial::ResourceMaterial(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_MATERIAL), m_loaded(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -277,6 +277,9 @@ EGEResult ResourceMaterial::load()
       // add to pool
       m_textureImages.push_back(textureImage);
     }
+
+    // set loaded
+    m_loaded = true;
   }
 
   return result;
@@ -286,6 +289,8 @@ EGEResult ResourceMaterial::load()
 void ResourceMaterial::unload()
 {
   m_textureImages.clear();
+
+  m_loaded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds texture dependancy. */

@@ -26,9 +26,12 @@ void ScreenManager::update(const Time& time)
 {
   if (!m_screens.empty())
   {
+    ScreenList localCopy;
+    localCopy.copy(m_screens);
+
     // go thru all screens from top to bottom and update first enabled one
     // NOTE: no const_reverse_iterator due to GCC incompatibility of operator== and operator!=
-    for (ScreenList::reverse_iterator it = m_screens.rbegin(); it != m_screens.rend(); ++it)
+    for (ScreenList::reverse_iterator it = localCopy.rbegin(); it != localCopy.rend(); ++it)
     {
       PScreen& screen = *it;      
       if (screen->isEnabled())

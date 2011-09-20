@@ -25,7 +25,8 @@ namespace EGEVertexBuffer
   {
     ST_V3_T2_C4 = 0,
     ST_V3_T2,
-    ST_V3_C4
+    ST_V3_C4,
+    ST_V3
   };
 
   /*! Data structure describing single array semantic. */

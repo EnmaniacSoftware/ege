@@ -259,6 +259,11 @@ bool VertexBuffer::setSemantics(EGEVertexBuffer::SemanticType type)
   List<EGEVertexBuffer::ArrayType> arrayList;
   switch (type)
   {
+    case EGEVertexBuffer::ST_V3:
+
+      arrayList.push_back(EGEVertexBuffer::AT_POSITION_XYZ);
+      break;
+
     case EGEVertexBuffer::ST_V3_T2:
 
       arrayList.push_back(EGEVertexBuffer::AT_POSITION_XYZ);
