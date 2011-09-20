@@ -14,8 +14,10 @@ extern PFNGLGENFRAMEBUFFERSOESPROC glGenFramebuffers;
 extern PFNGLCHECKFRAMEBUFFERSTATUSOESPROC glCheckFramebufferStatus;
 extern PFNGLFRAMEBUFFERTEXTURE2DOESPROC glFramebufferTexture2D;
 
-#define GL_FRAMEBUFFER_EXT       GL_FRAMEBUFFER_OES
-#define GL_COLOR_ATTACHMENT0_EXT GL_COLOR_ATTACHMENT0_OES
+#define GL_FRAMEBUFFER_EXT          GL_FRAMEBUFFER_OES
+#define GL_COLOR_ATTACHMENT0_EXT    GL_COLOR_ATTACHMENT0_OES
+#define GL_FRAMEBUFFER_BINDING_EXT  GL_FRAMEBUFFER_BINDING_OES
+#define GL_FRAMEBUFFER_COMPLETE_EXT GL_FRAMEBUFFER_COMPLETE_OES
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

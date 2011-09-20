@@ -284,6 +284,8 @@ files
 	PhysicsJointAttract.h
 	PhysicsJointDistance.cpp
 	PhysicsJointDistance.h
+	PhysicsJointPulley.cpp
+	PhysicsJointPulley.h
 	PhysicsManager.cpp
 	PhysicsManager.h
 
@@ -295,6 +297,8 @@ files
 	PhysicsJointAttractBox2D_p.h
 	PhysicsJointDistanceBox2D_p.cpp
 	PhysicsJointDistanceBox2D_p.h
+	PhysicsJointPulleyBox2D_p.cpp
+	PhysicsJointPulleyBox2D_p.h
 	PhysicsManagerBox2D_p.cpp
 	PhysicsManagerBox2D_p.h
 
