@@ -8,12 +8,10 @@
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/Render/RenderQueue.h"
 
-#if EGE_RENDERING_OPENGL_2
-#include "Core/Graphics/OpenGL/GL 2.0/RendererOGL2_p.h"
-#endif // EGE_RENDERING_OPENGL_2
-
 #if EGE_RENDERING_OPENGLES_1
 #include "Core/Graphics/OpenGL/ES 1.0/RendererOGLES1_p.h"
+#elif EGE_RENDERING_OPENGL_2
+#include "Core/Graphics/OpenGL/GL 2.0/RendererOGL2_p.h"
 #endif // EGE_RENDERING_OPENGLES_1
 
 EGE_NAMESPACE
@@ -74,12 +72,6 @@ void Renderer::applyMaterial(const PMaterial& material)
   {
     p_func()->applyMaterial(material);
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets orientation rotation. */
-void Renderer::setOrientationRotation(const Angle& angle)
-{
-  m_orientationRotation = angle;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds given data for rendering. */

@@ -56,6 +56,10 @@ void RenderWindowOGLWin32::create(const ConfigParams& params)
     m_width  = Math::Min(width, height);
   }
 
+  // there are no fixed restriction for window render target in Windows
+  m_physicalWidth  = m_width;
+  m_physicalHeight = m_height;
+
   // setup wndclass
 	sWndclass.style         = CS_HREDRAW | CS_VREDRAW;	
   sWndclass.cbWndExtra    = 4;

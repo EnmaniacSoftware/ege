@@ -76,8 +76,15 @@ void Viewport::enableOverlays(bool enable)
   m_overlays = enable;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns actual (in pixels) rect within render target. */
-Rectf Viewport::actualRect() const
+/*! Returns physical (in pixels) rect within render target. */
+Rectf Viewport::physicalRect() const
+{
+  return Rectf(rect().x * renderTarget()->physicalWidth(), rect().y * renderTarget()->physicalHeight(), 
+               rect().width * renderTarget()->physicalWidth(), rect().height * renderTarget()->physicalHeight());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns logical (in pixels) rect within render target. */
+Rectf Viewport::logicalRect() const
 {
   return Rectf(rect().x * renderTarget()->width(), rect().y * renderTarget()->height(), 
                rect().width * renderTarget()->width(), rect().height * renderTarget()->height());

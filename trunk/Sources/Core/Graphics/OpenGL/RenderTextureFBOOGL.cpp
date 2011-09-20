@@ -33,6 +33,14 @@ RenderTextureFBOOGL::RenderTextureFBOOGL(Application* app, const ConfigParams& p
     // unbind for the time being
     glBindFramebuffer(GL_FRAMEBUFFER_EXT, m_defaultFBOId);
   }
+
+  // decompose param list
+  ConfigParams::const_iterator iterWidth  = params.find(EGE_RENDER_TARGET_PARAM_WIDTH);
+  ConfigParams::const_iterator iterHeight = params.find(EGE_RENDER_TARGET_PARAM_HEIGHT);
+
+  // set physical size to logical one
+  m_physicalWidth  = (iterWidth != params.end()) ? iterWidth->second.toInt() : 0;
+  m_physicalHeight = (iterHeight != params.end()) ? iterHeight->second.toInt() : 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderTextureFBOOGL::~RenderTextureFBOOGL()

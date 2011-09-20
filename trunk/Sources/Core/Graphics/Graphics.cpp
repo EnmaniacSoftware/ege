@@ -32,26 +32,6 @@ Graphics::Graphics(Application* app, const ConfigParams& params) : Object(app)
 
   // create renderer
   m_renderer = ege_new Renderer(app);
-
-  // determine orientation rotation
-
-  // check if landscape mode is requested
-  if (app->isLandscape())
-  {
-    // check if main surface in portrait mode
-    if (Device::SurfaceWidth() < Device::SurfaceHeight())
-    {
-      m_renderer->setOrientationRotation(Angle::FromDegrees(270));
-    }
-  }
-  else
-  {
-    // check if main surface in landscape mode
-    if (Device::SurfaceWidth() > Device::SurfaceHeight())
-    {
-      m_renderer->setOrientationRotation(Angle::FromDegrees(-270));
-    }
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Graphics::~Graphics()

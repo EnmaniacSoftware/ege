@@ -10,7 +10,8 @@ EGE_DEFINE_NEW_OPERATORS(RenderTarget)
 EGE_DEFINE_DELETE_OPERATORS(RenderTarget)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderTarget::RenderTarget(Application* app, const ConfigParams& params) : Object(app), m_vertexCount(0), m_batchCount(0), m_width(0), m_height(0), 
+RenderTarget::RenderTarget(Application* app, const ConfigParams& params) : Object(app), m_vertexCount(0), m_batchCount(0), m_physicalWidth(0), 
+                                                                           m_physicalHeight(0), m_width(0), m_height(0), m_orientationRotation(0.0f),
                                                                            m_enabled(true)
 {
   // decompose param list

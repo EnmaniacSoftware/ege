@@ -49,8 +49,10 @@ class Viewport : public Object
     void setRect(Rectf rect);
     /*! Returns viewport rect within render target. */
     inline const Rectf& rect() const { return m_rect; }
-    /* Returns actual (in pixels) rect within render target. */
-    Rectf actualRect() const;
+    /* Returns physical (in pixels) rect within render target. */
+    Rectf physicalRect() const;
+    /* Returns logical (in pixels) rect within render target. */
+    Rectf logicalRect() const;
     /*! Returns camera associated with viewport. */
     PCamera camera() const { return m_camera; }
     /* Sets viewport clear color. Can be NULL color if viewport should not be cleared. */

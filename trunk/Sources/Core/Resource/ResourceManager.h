@@ -92,10 +92,14 @@ class ResourceManager : public Object
 
   private:
 
+    typedef List<PResourceGroup> GroupList;
+
+  private:
+
     /*! Resource root dir */
     String m_rootDir;
     /*! Resource groups defined */
-    List<PResourceGroup> m_groups;
+    GroupList m_groups;
     /*! Registered resources sorted by type name. */
     Map<String, ResourceRegistryEntry> m_registeredResources;
 };

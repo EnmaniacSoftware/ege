@@ -2,8 +2,9 @@
 #define EGE_CORE_RENDERTARGET_H
 
 #include <EGE.h>
-#include "Core/ConfigParams.h"
 #include <EGEDynamicArray.h>
+#include <EGEAngle.h>
+#include "Core/ConfigParams.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -58,14 +59,20 @@ class RenderTarget : public Object
     PViewport viewport(const String& name) const;
     /* Performs rendering for target. */
     void render();
-    /*! Returns target width (in pixels). */
+    /*! Returns target logical width (in pixels). */
     inline s32 width() const { return m_width; }
-    /*! Returns target height (in pixels). */
+    /*! Returns target logical height (in pixels). */
     inline s32 height() const { return m_height; }
+    /*! Returns target physical width (in pixels). */
+    inline s32 physicalWidth() const { return m_physicalWidth; }
+    /*! Returns target physical height (in pixels). */
+    inline s32 physicalHeight() const { return m_physicalHeight; }
     /*! Returns TRUE if target is enabled. */
     inline bool isEnabled() const { return m_enabled; }
     /* Enables/disables render target. */
     void setEnable(bool enable);
+    /*! Returns orientation rotation. */
+    const Angle& orientationRotation() const { return m_orientationRotation; }
 
   private:
 
@@ -74,10 +81,21 @@ class RenderTarget : public Object
 
   protected:
 
-    /*! Width (in pixels). */
+    /* It is possible to request size which is internally represented by another. For instance landscape mode 960x640 on portrait device 640x960.
+     * In that case logical size is going to be 960x640, however, real surface size will still be 640x960 but properly rotated.
+     * Such scenario often may occur while working with primary surfaces as they most of the time are fixed in size and orientation.
+     */
+
+    /*! Physical width (in pixels). Physical width corresponds to real device width. */
+    s32 m_physicalWidth;
+    /*! Physical height (in pixels). Physical width corresponds to real device height. */
+    s32 m_physicalHeight;
+    /*! Logical width (in pixels). Logical width corresponds to requested width. */
     s32 m_width;
-    /*! Height (in pixels). */
+    /*! Logical height (in pixels). Logical height corresponds to requested height. */
     s32 m_height;
+    /*! Orientation rotation angle. */
+    Angle m_orientationRotation;
 
   private:
 

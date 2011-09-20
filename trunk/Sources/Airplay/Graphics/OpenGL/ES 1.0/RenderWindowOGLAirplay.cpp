@@ -20,6 +20,7 @@ RenderWindowOGLAirplay::~RenderWindowOGLAirplay()
   destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates Airplay OpenGL window. */
 void RenderWindowOGLAirplay::create(const ConfigParams& params)
 {
   bool error = false;
@@ -49,31 +50,43 @@ void RenderWindowOGLAirplay::create(const ConfigParams& params)
   }
 
   // get device screen dimensions
-  s32 width  = Device::SurfaceWidth();
-  s32 height = Device::SurfaceHeight();
+  m_physicalWidth  = Device::SurfaceWidth();
+  m_physicalHeight = Device::SurfaceHeight();
 
   // apply dimensions according to landscape requirement
   if (landscape)
   {
-    m_height = Math::Min(width, height);
-    m_width  = Math::Max(width, height);
+    m_height = Math::Min(m_physicalWidth, m_physicalHeight);
+    m_width  = Math::Max(m_physicalWidth, m_physicalHeight);
+
+    // check if rotation from portrait to landscape is needed for render target
+    if (m_physicalWidth != m_width)
+    {
+      m_orientationRotation.fromDegrees(270);
+    }
   }
   else
   {
-    m_height = Math::Max(width, height);
-    m_width  = Math::Min(width, height);
+    m_height = Math::Max(m_physicalWidth, m_physicalHeight);
+    m_width  = Math::Min(m_physicalWidth, m_physicalHeight);
+
+    // check if rotation from landscape to portrait is needed for render target
+    if (m_physicalWidth != m_width)
+    {
+      m_orientationRotation.fromDegrees(-270);
+    }
   }
 
   static const EGLint configAttribs[] =
   {
-      EGL_RED_SIZE,       colorBits / 3,
-      EGL_GREEN_SIZE,     colorBits / 3,
-      EGL_BLUE_SIZE,      colorBits / 3,
-      EGL_DEPTH_SIZE,     depthBits,
-      EGL_ALPHA_SIZE,     EGL_DONT_CARE,
-      EGL_STENCIL_SIZE,   EGL_DONT_CARE,
-      EGL_SURFACE_TYPE,   EGL_WINDOW_BIT,
-      EGL_NONE
+    EGL_RED_SIZE,       colorBits / 3,
+    EGL_GREEN_SIZE,     colorBits / 3,
+    EGL_BLUE_SIZE,      colorBits / 3,
+    EGL_DEPTH_SIZE,     depthBits,
+    EGL_ALPHA_SIZE,     EGL_DONT_CARE,
+    EGL_STENCIL_SIZE,   EGL_DONT_CARE,
+    EGL_SURFACE_TYPE,   EGL_WINDOW_BIT,
+    EGL_NONE
   };
 
   EGLBoolean success;
@@ -89,35 +102,35 @@ void RenderWindowOGLAirplay::create(const ConfigParams& params)
   success = eglInitialize(m_eglDisplay, &majorVersion, &minorVersion);
   if (EGL_FALSE != success)
   {
-      success = eglGetConfigs(m_eglDisplay, NULL, 0, &numConfigs);
+    success = eglGetConfigs(m_eglDisplay, NULL, 0, &numConfigs);
   }
 
   if (EGL_FALSE != success)
   {
-      success = eglChooseConfig(m_eglDisplay, configAttribs, &sEglConfig, 1, &numConfigs);
+    success = eglChooseConfig(m_eglDisplay, configAttribs, &sEglConfig, 1, &numConfigs);
   }
 
   if (EGL_FALSE != success)
   {
-      m_eglSurface = eglCreateWindowSurface(m_eglDisplay, sEglConfig, s3eGLGetNativeWindow(), NULL);
-      if (m_eglSurface == EGL_NO_SURFACE)
-      {
-          success = EGL_FALSE;
-      }
+    m_eglSurface = eglCreateWindowSurface(m_eglDisplay, sEglConfig, s3eGLGetNativeWindow(), NULL);
+    if (m_eglSurface == EGL_NO_SURFACE)
+    {
+      success = EGL_FALSE;
+    }
   }
   
   if (EGL_FALSE != success)
   {
-      m_eglContext = eglCreateContext(m_eglDisplay, sEglConfig, NULL, NULL);
-      if (m_eglContext == EGL_NO_CONTEXT)
-      {
-          success = EGL_FALSE;
-      }
+    m_eglContext = eglCreateContext(m_eglDisplay, sEglConfig, NULL, NULL);
+    if (m_eglContext == EGL_NO_CONTEXT)
+    {
+      success = EGL_FALSE;
+    }
   }
   
   if (EGL_FALSE != success)
   {
-      success = eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext);
+    success = eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext);
   }
 
   // obtain a detailed description of surface pixel format

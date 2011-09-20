@@ -4,7 +4,6 @@
 #include <EGE.h>
 #include <EGEString.h>
 #include <EGEMatrix.h>
-#include "Core/Math/Angle.h"
 #include "Core/Components/Render/RenderComponent.h"
 
 EGE_NAMESPACE_BEGIN
@@ -41,10 +40,6 @@ class Renderer : public Object
     void clearViewport(const PViewport& viewport);
     /* Applies material. */
     void applyMaterial(const PMaterial& material);
-    /* Sets orientation rotation. */
-    void setOrientationRotation(const Angle& angle);
-    /*! Returns orientation rotation. */
-    const Angle& orientationRotation() const { return m_orientationRotation; }
     /* Adds given data for rendering. */
     bool addForRendering(const Matrix4f& worldMatrix, const PRenderComponent& component);
 
@@ -84,8 +79,6 @@ class Renderer : public Object
 
   //  PViewport m_pViewport;                          // current viewport for which rendering is done
 
-    /*! Orientation rotation angle. */
-    Angle m_orientationRotation;
     /*! Projection matrix. */
     Matrix4f m_projectionMatrix;
     /*! View matrix. */

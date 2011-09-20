@@ -133,24 +133,15 @@ void RendererPrivate::setViewport(const PViewport& viewport)
   setRenderTarget(target);
 
   // set viewport area
-  Rectf actualRect = viewport->actualRect();
+  Rectf actualRect = viewport->physicalRect();
 
   if (!target->requiresTextureFlipping())
   {
     // convert "upper-left" corner to "lower-left"
-    actualRect.y = target->height() - actualRect.height - actualRect.y;
+    actualRect.y = target->physicalHeight() - actualRect.height - actualRect.y;
   }
 
-  // check if landscape mode on portrait device or vice versa
-  if ((d_func()->app()->isLandscape() && Device::SurfaceWidth() < Device::SurfaceHeight()) ||
-      (!d_func()->app()->isLandscape() && Device::SurfaceWidth() > Device::SurfaceHeight()))
-  {
-    // swap width and height
-    float32 tmp = actualRect.width;
-    actualRect.width  = actualRect.height;
-    actualRect.height = tmp;
-  }
-
+  // set viewport to physical region occupied by render target
   glViewport((GLint) actualRect.x, (GLint) actualRect.y, (GLsizei) actualRect.width, (GLsizei) actualRect.height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -177,7 +168,7 @@ void RendererPrivate::flush()
 {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glRotatef(d_func()->orientationRotation().degrees(), 0, 0, 1);
+  glRotatef(d_func()->m_renderTarget->orientationRotation().degrees(), 0, 0, 1);
   glMultMatrixf(d_func()->m_projectionMatrix.data);
 
   // go thru all render queues
