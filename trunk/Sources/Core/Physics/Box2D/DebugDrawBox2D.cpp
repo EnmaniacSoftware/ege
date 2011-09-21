@@ -58,8 +58,9 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
                                                             EGEGraphics::RPT_LINE_LOOP);
 
   PMaterial material = ege_new Material(NULL);
-  material->setSrcBlendFactor(EGEGraphics::BF_SRC_ALPHA);
-  material->setDstBlendFactor(EGEGraphics::BF_ONE_MINUS_SRC_ALPHA);
+  RenderPass* pass = material->addPass(NULL);
+  pass->setSrcBlendFactor(EGEGraphics::BF_SRC_ALPHA);
+  pass->setDstBlendFactor(EGEGraphics::BF_ONE_MINUS_SRC_ALPHA);
   component_fill->setMaterial(material);
   
   if (component_fill->isValid() && component_frame->isValid())
@@ -146,8 +147,9 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
                                                             EGEGraphics::RPT_LINE_LOOP);
 
   PMaterial material = ege_new Material(NULL);
-  material->setSrcBlendFactor(EGEGraphics::BF_SRC_ALPHA);
-  material->setDstBlendFactor(EGEGraphics::BF_ONE_MINUS_SRC_ALPHA);
+  RenderPass* pass = material->addPass(NULL);
+  pass->setSrcBlendFactor(EGEGraphics::BF_SRC_ALPHA);
+  pass->setDstBlendFactor(EGEGraphics::BF_ONE_MINUS_SRC_ALPHA);
   component_fill->setMaterial(material);
 
   if (component_fill->isValid() && component_frame->isValid())

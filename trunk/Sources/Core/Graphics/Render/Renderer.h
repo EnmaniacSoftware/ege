@@ -38,8 +38,8 @@ class Renderer : public Object
     void setViewport(const PViewport& viewport);
     /* Clears given viewport. */
     void clearViewport(const PViewport& viewport);
-    /* Applies material. */
-    void applyMaterial(const PMaterial& material);
+    /* Applies material for given pass. */
+    void applyMaterial(const PMaterial& material, u32 passIndex);
     /* Adds given data for rendering. */
     bool addForRendering(const Matrix4f& worldMatrix, const PRenderComponent& component);
 

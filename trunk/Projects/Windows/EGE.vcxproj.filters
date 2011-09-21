@@ -450,6 +450,9 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceCurve.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderPass.cpp">
+      <Filter>Core\Graphics\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -875,6 +878,9 @@
     <ClInclude Include="..\..\Sources\EGETimeline.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceCurve.h">
       <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderPass.h">
+      <Filter>Core\Graphics\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

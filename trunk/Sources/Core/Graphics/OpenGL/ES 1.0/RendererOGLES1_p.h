@@ -36,8 +36,8 @@ class RendererPrivate
     void clearViewport(const PViewport& viewport);
     /* Sends all geometry through the geometry pipeline to hardware. */
     void flush();
-    /* Applies material. */
-    void applyMaterial(const PMaterial& material);
+    /* Applies material for given pass. */
+    void applyMaterial(const PMaterial& material, u32 passIndex);
 
   private:
 

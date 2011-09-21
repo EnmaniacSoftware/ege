@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_RESOURCEMATERIAL_H
 #define EGE_CORE_RESOURCEMATERIAL_H
 
-/** Material resource definition class. This object (resource) contains definition of render material.
- *   Upon loading it contains material object to be used in rendering.
+/**  Material resource definition class. This object (resource) contains definition of render material.
+ *   Upon loading it contains material object to be used in rendering. Materials consist of one or more render passes.
  */
 
 #include <EGE.h>
@@ -28,6 +28,51 @@ EGE_DECLARE_SMART_CLASS(TextureImage, PTextureImage)
 
 class ResourceMaterial : public IResource
 {
+  private:
+
+    typedef List<PTextureImage> TextureImageList;
+
+  private:
+
+    /*! Small class containing information for TextureImage. */
+    class TextureImageData
+    {
+      public:
+
+        TextureImageData(const String& name, const Rectf& rect, EGETexture::EnvironmentMode envMode, bool manual) : m_name(name), m_rect(rect), 
+                                                                                                                    m_envMode(envMode), m_manual(manual) {}
+
+      public:
+
+        String m_name;                                /*!< Texture name. */
+        Rectf m_rect;                                 /*!< Texture rectangle (in normalized local coords). */
+        EGETexture::EnvironmentMode m_envMode;        /*!< Texture environment mode. */
+        bool m_manual;                                /*!< Manual flag. */
+    };
+        
+    typedef List<TextureImageData> TextureImageDataList;
+
+    /*! Small class containing information about render passes. */
+    class PassData
+    {
+      public:
+
+        PassData() : m_srcBlend(EGEGraphics::BF_ONE), m_dstBlend(EGEGraphics::BF_ZERO), m_ambientColor(Color::WHITE), m_diffuseColor(Color::WHITE), 
+                     m_specularColor(Color::BLACK), m_emissionColor(Color::BLACK), m_shininess(0) {}
+
+      public:
+
+        EGEGraphics::BlendFactor m_srcBlend;            /*!< Source blend value. */
+        EGEGraphics::BlendFactor m_dstBlend;            /*!< Destination blend value. */
+        Color m_ambientColor;                           /*!< Ambient color. */
+        Color m_diffuseColor;                           /*!< Diffuse color. */
+        Color m_specularColor;                          /*!< Specular color. */
+        Color m_emissionColor;                          /*!< Emission color. */
+        float32 m_shininess;                            /*!< Shininess value. */
+        TextureImageList m_textureImages;               /*!< List of all loaded texture image objects used by pass. */
+        TextureImageDataList m_textureImageData;        /*!< List of definitions of all texture images contributing to pass. */
+    };
+
   public:
 
     virtual ~ResourceMaterial();
@@ -56,77 +101,43 @@ class ResourceMaterial : public IResource
     /* Set given instance of material object to what is defined by resource. */
     EGEResult setInstance(const PMaterial& instance) const;
 
+    /* Returns source pixel factor function for a given pass. */
+    EGEGraphics::BlendFactor srcBlendFactor(u32 pass) const;
+    /* Returns destination pixel factor function for a given pass. */
+    EGEGraphics::BlendFactor dstBlendFactor(u32 pass) const;
+    /* Returns ambient color for a given pass. */
+    const Color& ambientColor(u32 pass) const;
+    /* Returns diffuse color for a given pass. */
+    const Color& diffuseColor(u32 pass) const;
+    /* Returns specular color for a given pass. */
+    const Color& specularColor(u32 pass) const;
+    /* Returns emission color for a given pass. */
+    const Color& emissionColor(u32 pass) const;
+    /* Returns shinness value for a given pass. */
+    float32 shininess(u32 pass) const;
+    /*! Returns number of passes. */
+    inline const u32 passCount() const { return static_cast<u32>(m_passes.size()); }
+
   private:
 
     ResourceMaterial(Application* app, ResourceManager* manager);
-    /* Adds texture dependancy. */
-    EGEResult addTexture(const PXmlElement& tag);
+    /* Adds texture dependancy to given pass. */
+    EGEResult addTexture(const PXmlElement& tag, PassData& pass);
+    /* Adds pass. */
+    EGEResult addPass(const PXmlElement& tag);
     /*! Returns TRUE if material is loaded. */
     inline bool isLoaded() const { return m_loaded; }
-    /*! Returns source pixel factor function. */
-    inline EGEGraphics::BlendFactor srcBlendFactor() const { return m_srcBlend; }
-    /*! Returns destination pixel factor function. */
-    inline EGEGraphics::BlendFactor dstBlendFactor() const { return m_dstBlend; }
-    /*! Returns ambient color. */
-    inline const Color& ambientColor() const { return m_ambientColor; }
-    /*! Returns diffuse color. */
-    inline const Color& diffuseColor() const { return m_diffuseColor; }
-    /*! Returns specular color. */
-    inline const Color& specularColor() const { return m_specularColor; }
-    /*! Returns emission color. */
-    inline const Color& emissionColor() const { return m_emissionColor; }
-    /*! Returns shinness value. */
-    inline float32 shininess() const { return m_shininess; }
-    
-  private:
-
-    /*! Small class containing information for TextureImage. */
-    class TextureImageData
-    {
-      public:
-
-        TextureImageData(const String& name, const Rectf& rect, EGETexture::EnvironmentMode envMode, bool manual) : m_name(name), m_rect(rect), 
-                                                                                                                    m_envMode(envMode), m_manual(manual) {}
-
-      public:
-
-        /*! Texture name. */
-        String m_name;
-        /*! Texture rectangle (in normalized local coords). */
-        Rectf m_rect;
-        /*! Texture environment mode. */
-        EGETexture::EnvironmentMode m_envMode;
-        /*! Manual flag. */
-        bool m_manual;
-    };
 
   private:
 
-    typedef List<PTextureImage> TextureImageList;
-    typedef List<TextureImageData> TextureImageDataList;
+    typedef DynamicArray<PassData> PassDataArray;
 
   private:
 
     /*! Name. */
     String m_name;
-    /*! List of all texture images contributing to material. */
-    TextureImageDataList m_textureImageData;
-    /*! Source blend value. */
-    EGEGraphics::BlendFactor m_srcBlend;
-    /*! Destination blend value. */
-    EGEGraphics::BlendFactor m_dstBlend;
-    /*! Ambient color. */
-    Color m_ambientColor;
-    /*! Diffuse color. */
-    Color m_diffuseColor;
-    /*! Specular color. */
-    Color m_specularColor;
-    /*! Emission color. */
-    Color m_emissionColor;
-    /*! Shininess value. */
-    float32 m_shininess;
-    /*! List of all texture image objects referred by material. Empty if material is not loaded yet. */
-    TextureImageList m_textureImages;
+    /*! List of all passes. */
+    PassDataArray m_passes;
     /*! Load flag. */
     bool m_loaded;
 };

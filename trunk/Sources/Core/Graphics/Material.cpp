@@ -11,94 +11,46 @@ EGE_DEFINE_NEW_OPERATORS(Material)
 EGE_DEFINE_DELETE_OPERATORS(Material)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Material::Material(Application* app) : Object(app), m_diffuseColor(Color::WHITE), m_ambientColor(Color::WHITE), m_specularColor(Color::BLACK), m_shininess(0), 
-                                       m_emissionColor(Color::BLACK), m_srcBlendFactor(EGEGraphics::BF_ONE), m_dstBlendFactor(EGEGraphics::BF_ZERO)
-
+Material::Material(Application* app) : Object(app)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Material::~Material()
 {
+  clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds new texture. */
-EGEResult Material::addTexture(PObject texture)
+/*! Returns pass at given index. */
+PRenderPass Material::pass(u32 index) const
 {
-  m_textures.push_back(texture);
-
-  return EGE_SUCCESS;
+  return (index < passCount()) ? m_passes[index] : NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets new texture at given index. Can only succeed when setting texture within range. */
-EGEResult Material::setTexture(u32 index, PObject texture)
-{
-  // check if index out of range
-  if (index >= static_cast<u32>(m_textures.size()))
-  {
-    // error!
-    return EGE_ERROR;
-  }
-
-  // set new texture
-  m_textures[index] = texture;
-  return EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets new texture at the place of the one with given name. If no such texture exists it is added. */
-EGEResult Material::setTexture(const String& name, PObject texture)
-{
-  // find texture with given name
-  for (DynamicArray<PObject>::iterator it = m_textures.begin(); it != m_textures.end(); ++it)
-  {
-    bool found = false;
-  
-    if (EGE_OBJECT_UID_TEXTURE_IMAGE == (*it)->uid())
-    {
-      PTextureImage texImg = *it;
-      if (texImg->name() == name)
-      {
-        found = true;
-      }
-    }
-
-    // check if found
-    if (found)
-    {
-      *it = texture;
-      return EGE_SUCCESS;
-    }
-  }
-
-  // not found, append
-  return addTexture(texture);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Remove texture at given index. 
- *  @param index Index of texture to be removed.
- *  @note  if index is -1 all textures are removed.
+/*! Adds render pass to material. 
+ *  @param pass RenderPass obejct to be added.
+ *  @note If NULL object passed in, new render pass object will be created and added.
+ *  @return Return added object. NULL if error occured.
  */
-void Material::removeTexture(s32 index)
+PRenderPass Material::addPass(const PRenderPass& pass)
 {
-  if (0 > index)
+  RenderPass* renderPass = pass;
+
+  // check if existing one should be added
+  if (renderPass)
   {
-    m_textures.clear();
+    m_passes.push_back(renderPass);
   }
-  else if (index < static_cast<s32>(m_textures.size()))
+  else
   {
-    m_textures.removeAt(index);
+    // create new
+    renderPass = ege_new RenderPass(app());
+    if (renderPass)
+    {
+      m_passes.push_back(renderPass);
+    }
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns number of textures used. */
-u32 Material::textureCount() const
-{
-  return (u32) m_textures.size();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Retrives texture at given index. */
-PObject Material::texture(u32 index) const
-{
-  return (index < textureCount()) ? m_textures[index] : NULL;
+
+  return renderPass;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if material is valid. */
@@ -107,45 +59,86 @@ bool Material::isValid() const
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets source pixel scale factor. */
+/*! Sets source pixel scale factor for all passes. */
 void Material::setSrcBlendFactor(EGEGraphics::BlendFactor factor)
 {
-  m_srcBlendFactor = factor;
+  for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+  {
+    PRenderPass& pass = *it;
+
+    pass->setSrcBlendFactor(factor);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets destination pixel scale factor. */
+/*! Sets destination pixel scale factor for all passes. */
 void Material::setDstBlendFactor(EGEGraphics::BlendFactor factor)
 {
-  m_dstBlendFactor = factor;
+  for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+  {
+    PRenderPass& pass = *it;
+
+    pass->setDstBlendFactor(factor);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets diffuse color. */
+/*! Sets diffuse color for all passes. */
 void Material::setDiffuseColor(const Color& color)
 {
-  m_diffuseColor = color;
+  for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+  {
+    PRenderPass& pass = *it;
+
+    pass->setDiffuseColor(color);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets ambient color. */
+/*! Sets ambient color for all passes. */
 void Material::setAmbientColor(const Color& color)
 {
-  m_ambientColor = color;
+  for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+  {
+    PRenderPass& pass = *it;
+
+    pass->setAmbientColor(color);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets specular color. */
+/*! Sets specular color for all passes. */
 void Material::setSpecularColor(const Color& color)
 {
-  m_specularColor = color;
+  for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+  {
+    PRenderPass& pass = *it;
+
+    pass->setSpecularColor(color);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets shininess. */
+/*! Sets shininess for all passes. */
 void Material::setShininess(float32 shininess)
 {
-  m_shininess = Math::Bound(shininess, 0.0f, 1.0f);
+  for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+  {
+    PRenderPass& pass = *it;
+
+    pass->setShininess(shininess);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets emission color. */
+/*! Sets emission color for all passes. */
 void Material::setEmissionColor(const Color& color)
 {
-  m_emissionColor = color;
+  for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+  {
+    PRenderPass& pass = *it;
+
+    pass->setEmissionColor(color);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Clears material. */
+void Material::clear()
+{
+  m_passes.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

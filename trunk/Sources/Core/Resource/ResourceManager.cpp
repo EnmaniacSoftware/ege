@@ -408,35 +408,40 @@ void ResourceManager::createDefaultResources()
       PMaterial material = ege_new Material(app());
       if (material)
       {
-        material->addTexture(texture);
-        material->setSrcBlendFactor(EGEGraphics::BF_ONE);
-        material->setDstBlendFactor(EGEGraphics::BF_ONE);
-
-        // setup glyphs data (all 256)
-        Map<Char, GlyphData> glyphs;
-        const float32 cellSize = 1.0f / 16.0f;
-        for (s32 i = 0; i < 256; i++)
+        // add empty render pass
+        RenderPass* renderPass = material->addPass(NULL);
+        if (renderPass)
         {
-          GlyphData data;
+          renderPass->addTexture(texture);
+          renderPass->setSrcBlendFactor(EGEGraphics::BF_ONE);
+          renderPass->setDstBlendFactor(EGEGraphics::BF_ONE);
 
-          data.m_textureRect = Rectf((i % 16) * cellSize, (i / 16) * cellSize, cellSize, cellSize);
-          data.m_width       = 16;
-
-          glyphs.insert((Char) i, data);
-        }
-
-        // create font from glyphs
-        PFont font = ege_new Font(app(), 16, glyphs);
-        if (font)
-        {
-          // assign font material
-          font->setMaterial(material);
-
-          // create font resource and manually assign font to it
-          PResourceFont fontResource = ResourceFont::Create(app(), this, texture->name(), font);
-          if (fontResource)
+          // setup glyphs data (all 256)
+          Map<Char, GlyphData> glyphs;
+          const float32 cellSize = 1.0f / 16.0f;
+          for (s32 i = 0; i < 256; i++)
           {
-            group->addResource(fontResource);
+            GlyphData data;
+
+            data.m_textureRect = Rectf((i % 16) * cellSize, (i / 16) * cellSize, cellSize, cellSize);
+            data.m_width       = 16;
+
+            glyphs.insert((Char) i, data);
+          }
+
+          // create font from glyphs
+          PFont font = ege_new Font(app(), 16, glyphs);
+          if (font)
+          {
+            // assign font material
+            font->setMaterial(material);
+
+            // create font resource and manually assign font to it
+            PResourceFont fontResource = ResourceFont::Create(app(), this, texture->name(), font);
+            if (fontResource)
+            {
+              group->addResource(fontResource);
+            }
           }
         }
       }

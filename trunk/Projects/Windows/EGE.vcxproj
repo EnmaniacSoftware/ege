@@ -46,6 +46,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\RenderObjectFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Renderer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderPass.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderQueue.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderTarget.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderWindow.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\RenderObjectFactory.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderPass.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Sprite\Sprite.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />

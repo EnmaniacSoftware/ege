@@ -103,10 +103,22 @@ void RenderComponent::calculateHash()
   // determine hash component from textures
   if (material())
   {
-    PObject texture1 = material()->texture(0);
-    PObject texture2 = material()->texture(1);
+    /* Hash format is 32-bit, divided as follows (high to low bits)
+        bits   purpose
+        4     Pass index (i.e. max 16 passes!)
+        14     Hashed texture name from unit 0
+        14     Hashed texture name from unit 1
 
-    hash = (reinterpret_cast<u32>(texture2.m_object) << 16) | (reinterpret_cast<u32>(texture1.m_object) & 0x0000ffff);
+        Note that at the moment we don't sort on the 3rd texture unit plus
+        on the assumption that these are less frequently used; sorting on
+        the first 2 gives us the most benefit for now.
+    */
+
+    PObject texture1;// = material()->texture(0);
+    PObject texture2;// = material()->texture(1);
+
+    hash = (material()->passCount() << 28) | ((reinterpret_cast<u32>(texture2.m_object) & 0x00003fff) << 14) | 
+           (reinterpret_cast<u32>(texture1.m_object) & 0x00003fff);
   }
   
   // store new hash

@@ -36,8 +36,9 @@ namespace EGEDevice
   enum RenderCapability
   {
     RENDER_CAPS_APPLE_LIMITED_NPOT_TEXTURE = 0,           /*!< Limited non-power of two 2D texture extension for iOS. */
-    RENDER_CAPS_MULTITEXTURE,                             /*!< Multitexturing supported. */
-    RENDER_CAPS_FBO,                                      /*!< Frame buffer object supported. */
+    RENDER_CAPS_MULTITEXTURE,                             /*!< Multitexturing supported (GL_ARB_multitexture). */
+    RENDER_CAPS_FBO,                                      /*!< Frame buffer object supported (GL_EXT_framebuffer_object). */
+    RENDER_CAPS_COMBINE_TEXTURE_ENV,                      /*!< Combine texture environment mode supported (GL_ARB_texture_env_combine). */
     RENDER_CAPS_COUNT
   };
 }

@@ -3,8 +3,8 @@
 
 #include <EGE.h>
 #include <EGEString.h>
-#include <EGEGraphics.h>
 #include <EGEDynamicArray.h>
+#include "Core/Graphics/Render/RenderPass.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -12,6 +12,7 @@ EGE_NAMESPACE_BEGIN
 
 EGE_DECLARE_SMART_CLASS(Material, PMaterial)
 EGE_DECLARE_SMART_CLASS(Object, PObject)
+EGE_DECLARE_SMART_CLASS(RenderPass, PRenderPass)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -28,70 +29,44 @@ class Material : public Object
     /* Returns TRUE if material is valid. */
     bool isValid() const;
 
-    /* Adds new texture. */
-    EGEResult addTexture(PObject texture);
-    /* Sets new texture at given index. Can only succeed when setting texture within range. */
-    EGEResult setTexture(u32 index, PObject texture);
-    /* Sets new texture at the place of the one with given name. If no such texture exists it is added. */
-    EGEResult setTexture(const String& name, PObject texture);
-    /* Returns number of textures used. */
-    u32 textureCount() const;
-    /* Retrives texture at given index. */
-    PObject texture(u32 index) const;
-    /* Remove texture at given index. 
-     * @param index Index of texture to be removed.
-     * @note  if negative index is passed all textures are removed.
+    /*! Returns number of passes. */
+    inline u32 passCount() const { return static_cast<u32>(m_passes.size()); }
+    /* Returns pass at given index. */
+    PRenderPass pass(u32 index) const;
+    /*  Adds render pass to material. 
+     *  @param pass RenderPass obejct to be added.
+     *  @note If NULL object passed in, new render pass object will be created and added.
+     *  @return Return added object. NULL if error occured.
      */
-    void removeTexture(s32 index);
-    
-    /* Sets source pixel blend factor. */
-    void setSrcBlendFactor(EGEGraphics::BlendFactor factor);
-    /*! Returns source pixel blend factor. */
-    inline EGEGraphics::BlendFactor srcBlendFactor() const { return m_srcBlendFactor; }
-    /* Sets destination pixel blend factor. */
-    void setDstBlendFactor(EGEGraphics::BlendFactor factor);
-    /*! Returns destination pixel blend factor. */
-    inline EGEGraphics::BlendFactor dstBlendFactor() const { return m_dstBlendFactor; }
+    PRenderPass addPass(const PRenderPass& pass);
 
-    /* Sets diffuse color. */
+    /* Sets source pixel blend factor for all passes. */
+    void setSrcBlendFactor(EGEGraphics::BlendFactor factor);
+    /* Sets destination pixel blend factor for all passes. */
+    void setDstBlendFactor(EGEGraphics::BlendFactor factor);
+
+    /* Sets diffuse color for all passes. */
     void setDiffuseColor(const Color& color);
-    /*! Returns diffuse color. */
-    const Color& diffuseColor() const { return m_diffuseColor; }
-    /* Sets ambient color. */
+    /* Sets ambient color for all passes. */
     void setAmbientColor(const Color& color);
-    /*! Returns ambient color. */
-    const Color& ambientColor() const { return m_ambientColor; }
-    /* Sets specular color. */
+    /* Sets specular color for all passes. */
     void setSpecularColor(const Color& color);
-    /*! Returns specular color. */
-    const Color& specularColor() const { return m_specularColor; }
-    /* Sets shininess. */
+    /* Sets shininess for all passes. */
     void setShininess(float32 shininess);
-    /*! Returns shininess. */
-    float32 shininess() const { return m_shininess; }
-    /* Sets emission color. */
+    /* Sets emission color for all passes. */
     void setEmissionColor(const Color& color);
-    /*! Returns emission color. */
-    const Color& emissionColor() const { return m_emissionColor; }
+
+    /* Clears material. */
+    void clear();
 
   private:
 
-    /*! Textures assigned to material. */
-    DynamicArray<PObject> m_textures;
-    /*! Diffuse color reflectance. */
-    Color m_diffuseColor;
-    /*! Ambient color reflectance. */
-    Color m_ambientColor;
-    /*! Specular color reflectance. */
-    Color m_specularColor;
-    /*! Shininess [0-1] range. */
-    float32 m_shininess;
-    /*! Emission (self-illumination) color. */
-    Color m_emissionColor;
-    /*! Source blend factor. */
-    EGEGraphics::BlendFactor m_srcBlendFactor;
-    /*! Destination blend factor. */
-    EGEGraphics::BlendFactor m_dstBlendFactor;
+    typedef DynamicArray<PRenderPass> PassArray;
+
+  private:
+
+    /*! Render passes. */
+    PassArray m_passes;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
