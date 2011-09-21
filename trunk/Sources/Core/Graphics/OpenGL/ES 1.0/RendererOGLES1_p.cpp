@@ -485,6 +485,9 @@ void RendererPrivate::detectCapabilities()
       Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
     }
   }
+
+  // Combine texture environment mode is supported by default
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_COMBINE_TEXTURE_ENV, true);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Checks if given extension is supported. */

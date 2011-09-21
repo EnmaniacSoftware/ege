@@ -215,6 +215,8 @@ files
   (../../Sources/Core/Graphics/Render)
 	Renderer.cpp
 	Renderer.h
+  RenderPass.cpp
+  RenderPass.h
   RenderQueue.cpp
   RenderQueue.h
 	RenderTarget.cpp
