@@ -194,19 +194,20 @@ void RendererPrivate::flush()
       {
         const RenderPass* renderPass = material ? material->pass(pass) : NULL;
 
-        // apply material for current pass
-        applyMaterial(material, pass);
-
-        // NOTE: change to modelview after material is applied as it may change current matrix mode
-        glMatrixMode(GL_MODELVIEW);
-
-        // determine texture count
-        s32 textureCount = renderPass ? renderPass->textureCount() : 0;
-
         // check if there is anything to be rendered
+        // TAGE - is it overhead setting up whole geometry for each pass ? or should it be done only once ? what with texturing ?
         if (0 != vertexBuffer->vertexCount())
         {
           const VertexBuffer::SemanticsList& semantics = vertexBuffer->semantics();
+
+          // apply material for current pass
+          applyMaterial(material, renderPass);
+
+          // NOTE: change to modelview after material is applied as it may change current matrix mode
+          glMatrixMode(GL_MODELVIEW);
+
+          // determine texture count
+          s32 textureCount = renderPass ? renderPass->textureCount() : 0;
 
           u32 value = (0 < indexBuffer->indexCount()) ? indexBuffer->indexCount() : vertexBuffer->vertexCount();
 
@@ -320,61 +321,57 @@ void RendererPrivate::flush()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Applies material for given pass. */
-void RendererPrivate::applyMaterial(const PMaterial& material, u32 passIndex)
+void RendererPrivate::applyMaterial(const PMaterial& material, const RenderPass* pass)
 {
   // disable blending by default
   glDisable(GL_BLEND);
 
-  if (material)
+  if (NULL != pass)
   {
-    PRenderPass renderPass = material->pass(passIndex);
-    if (NULL != renderPass)
+    // enable blending if necessary
+    if ((EGEGraphics::BF_ONE != pass->srcBlendFactor()) || (EGEGraphics::BF_ZERO != pass->dstBlendFactor()))
     {
-      // enable blending if necessary
-      if ((EGEGraphics::BF_ONE != renderPass->srcBlendFactor()) || (EGEGraphics::BF_ZERO != renderPass->dstBlendFactor()))
+      glEnable(GL_BLEND);
+      glBlendFunc(MapBlendFactor(pass->srcBlendFactor()), MapBlendFactor(pass->dstBlendFactor()));
+    }
+
+    // set vertex color
+    // NOTE: this will be overriden if color array is activated
+    glColor4f(pass->diffuseColor().red, pass->diffuseColor().green, pass->diffuseColor().blue, pass->diffuseColor().alpha);
+
+    // go thru all textures
+    for (u32 i = 0; i < pass->textureCount(); ++i)
+    {
+      Object* texture = pass->texture(i).object();
+
+      // check if 2D texture
+      if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
       {
-        glEnable(GL_BLEND);
-        glBlendFunc(MapBlendFactor(renderPass->srcBlendFactor()), MapBlendFactor(renderPass->dstBlendFactor()));
+        Texture2D* tex2d = (Texture2D*) texture;
+
+        activateTextureUnit(i);
+        bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
+
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+        glMatrixMode(GL_TEXTURE);
+        glLoadIdentity();
       }
-
-      // set vertex color
-      // NOTE: this will be overriden if color array is activated
-      glColor4f(renderPass->diffuseColor().red, renderPass->diffuseColor().green, renderPass->diffuseColor().blue, renderPass->diffuseColor().alpha);
-
-      // go thru all textures
-      for (u32 i = 0; i < renderPass->textureCount(); ++i)
+      // check if texture image
+      else if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
       {
-        Object* texture = renderPass->texture(i).object();
+        TextureImage* texImg = (TextureImage*) texture;
+        Texture2D* tex2d = (Texture2D*) texImg->texture().object();
 
-        // check if 2D texture
-        if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
-        {
-          Texture2D* tex2d = (Texture2D*) texture;
+        activateTextureUnit(i);
+        bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
 
-          activateTextureUnit(i);
-          bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MapPrimitiveType(texImg->environmentMode()));
 
-          glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-          glMatrixMode(GL_TEXTURE);
-          glLoadIdentity();
-        }
-        // check if texture image
-        else if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
-        {
-          TextureImage* texImg = (TextureImage*) texture;
-          Texture2D* tex2d = (Texture2D*) texImg->texture().object();
-
-          activateTextureUnit(i);
-          bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
-
-          glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MapPrimitiveType(texImg->environmentMode()));
-
-          glMatrixMode(GL_TEXTURE);
-          glLoadIdentity();
-          glTranslatef(texImg->rect().x, texImg->rect().y, 0.0f);
-          glScalef(texImg->rect().width, texImg->rect().height, 1.0f);
-        }
+        glMatrixMode(GL_TEXTURE);
+        glLoadIdentity();
+        glTranslatef(texImg->rect().x, texImg->rect().y, 0.0f);
+        glScalef(texImg->rect().width, texImg->rect().height, 1.0f);
       }
     }
   }

@@ -37,7 +37,7 @@ class RendererPrivate
     /* Sends all geometry through the geometry pipeline to hardware. */
     void flush();
     /* Applies material for given pass. */
-    void applyMaterial(const PMaterial& material, u32 passIndex);
+    void applyMaterial(const PMaterial& material, const RenderPass* pass);
 
   private:
 

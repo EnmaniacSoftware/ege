@@ -30,7 +30,10 @@ AppController::AppController(Application* app, const ConfigParams& params) : Obj
 {
   // decompose param list
   ConfigParams::const_iterator iterUPS = params.find(EGE_ENGINE_PARAM_UPDATES_PER_SECOND);
+  ConfigParams::const_iterator iterFPS = params.find(EGE_ENGINE_PARAM_RENDERS_PER_SECOND);
+
   m_updateInterval.fromMiliseconds((iterUPS != params.end()) ? 1000 / iterUPS->second.toInt() : 0);
+  m_renderInterval.fromMiliseconds((iterFPS != params.end()) ? 1000 / iterFPS->second.toInt() : 0);
 
   // subscribe for event notifications
   if (app->eventManager()->addListener(this))

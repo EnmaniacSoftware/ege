@@ -32,6 +32,7 @@ typedef Map<String, String> ConfigParams;
 //#define EGE_ENGINE_PARAM_RENDER_SYSTEM      "renderSystem"
 #define EGE_ENGINE_PARAM_UPDATES_PER_SECOND "updates-per-second"
 #define EGE_ENGINE_PARAM_LANDSCAPE_MODE     "landscape"
+#define EGE_ENGINE_PARAM_RENDERS_PER_SECOND "renders-per-second"
 
 // physics specifc
 

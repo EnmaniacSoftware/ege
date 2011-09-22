@@ -1,6 +1,7 @@
 #include "Core/Application/AppController.h"
 #include "Airplay/Application/AppControllerAirplay_p.h"
 #include "s3e.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
@@ -23,6 +24,7 @@ EGEResult AppControllerPrivate::run()
 {
   Time startTime;
   Time endTime;
+  Time yieldTime;
 
   // app loop
   while (!s3eDeviceCheckQuitRequest() && AppController::STATE_QUIT != d_func()->state())
@@ -43,8 +45,9 @@ EGEResult AppControllerPrivate::run()
     endTime.fromMicroseconds(d_func()->timer()->microseconds());
 
     // give some time for OS
-    // TAGE - limit to 30fps
-    s3eDeviceYield(Math::Max(0, 1000.0f / 30.0f - (endTime - startTime).miliseconds());
+    yieldTime = d_func()->m_renderInterval - (endTime - startTime);
+    EGE_PRINT("%d", yieldTime.miliseconds());
+    s3eDeviceYield(Math::Max((s32) 0, static_cast<s32>(yieldTime.miliseconds())));
   }
 
   return EGE_SUCCESS;

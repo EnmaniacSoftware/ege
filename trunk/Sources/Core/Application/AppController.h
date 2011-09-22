@@ -67,6 +67,8 @@ class AppController : public Object, public IEventListener
     Time m_lastUpdateTime;
     /*! Time interval between updates. */
     Time m_updateInterval;
+    /*! Time interval between renders. */
+    Time m_renderInterval;
     /*! Currently accumulated update duration. */
     Time m_updateAccumulator;
     /*! Current state. */

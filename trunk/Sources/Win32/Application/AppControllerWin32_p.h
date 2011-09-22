@@ -20,13 +20,10 @@ class AppControllerPrivate
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+    EGE_DECLARE_PUBLIC_IMPLEMENTATION(AppController)
+
     /* Enters main loop. */
     EGEResult run();
-
-  private:
-
-    /*! Pointer to base class. */
-    AppController* m_base;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
