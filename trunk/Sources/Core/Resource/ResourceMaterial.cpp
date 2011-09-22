@@ -200,44 +200,53 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
     child = child->nextChild();
   }
 
-  // apply override modifier to all passes
-  for (PassDataArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+  // check if no single pass has been defined
+  if (m_passes.empty())
   {
-    PassData& pass = *it;
-
-    if (tag->hasAttribute("src-blend"))
+    // add default one
+    m_passes.push_back(defaultPass);
+  }
+  else
+  {
+    // apply override modifier to all passes
+    for (PassDataArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
-      pass.m_srcBlend = defaultPass.m_srcBlend;
-    }
+      PassData& pass = *it;
 
-    if (tag->hasAttribute("dst-blend"))
-    {
-      pass.m_dstBlend = defaultPass.m_dstBlend;
-    }
+      if (tag->hasAttribute("src-blend"))
+      {
+        pass.m_srcBlend = defaultPass.m_srcBlend;
+      }
 
-    if (tag->hasAttribute("diffuse-color"))
-    {
-      pass.m_diffuseColor = defaultPass.m_diffuseColor;
-    }
+      if (tag->hasAttribute("dst-blend"))
+      {
+        pass.m_dstBlend = defaultPass.m_dstBlend;
+      }
 
-    if (tag->hasAttribute("ambient-color"))
-    {
-      pass.m_ambientColor = defaultPass.m_ambientColor;
-    }
+      if (tag->hasAttribute("diffuse-color"))
+      {
+        pass.m_diffuseColor = defaultPass.m_diffuseColor;
+      }
 
-    if (tag->hasAttribute("specular-color"))
-    {
-      pass.m_specularColor = defaultPass.m_specularColor;
-    }
+      if (tag->hasAttribute("ambient-color"))
+      {
+        pass.m_ambientColor = defaultPass.m_ambientColor;
+      }
 
-    if (tag->hasAttribute("emission-color"))
-    {
-      pass.m_emissionColor = defaultPass.m_emissionColor;
-    }
+      if (tag->hasAttribute("specular-color"))
+      {
+        pass.m_specularColor = defaultPass.m_specularColor;
+      }
 
-    if (tag->hasAttribute("shininess"))
-    {
-      pass.m_shininess = defaultPass.m_shininess;
+      if (tag->hasAttribute("emission-color"))
+      {
+        pass.m_emissionColor = defaultPass.m_emissionColor;
+      }
+
+      if (tag->hasAttribute("shininess"))
+      {
+        pass.m_shininess = defaultPass.m_shininess;
+      }
     }
   }
 

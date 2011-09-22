@@ -21,8 +21,6 @@ class SceneManager;
 class OverlayManager;
 class Debug;
 
-EGE_DECLARE_SMART_CLASS(Timer, PTimer)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Application
@@ -44,8 +42,6 @@ class Application
     virtual void update(const Time& time);
     /*! Returns graphics subsystem object. */
     inline Graphics* graphics() const { return m_graphics; }
-    /* Returns main timer. */
-    PTimer timer() const;
     /*! Returns event manager. */
     EventManager* eventManager() const { return m_eventManager; }
     /*! Returns physics manager. */
@@ -84,9 +80,6 @@ class Application
     Graphics* m_graphics;
     /*! Application controller. */
     AppController* m_appController;
-    /*! Main timer object. */
-    // TAGE - potrzebny ?
-    PTimer m_timer;
     /*! Resource manager. */
     ResourceManager* m_resourceManager;
     /*! Pointer input. */

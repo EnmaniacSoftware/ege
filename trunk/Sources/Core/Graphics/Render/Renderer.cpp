@@ -66,11 +66,11 @@ void Renderer::setViewport(const PViewport& viewport)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Applies material for given pass. */
-void Renderer::applyMaterial(const PMaterial& material, u32 passIndex)
+void Renderer::applyMaterial(const PMaterial& material, const RenderPass* pass)
 {
   if (isValid())
   {
-    p_func()->applyMaterial(material, passIndex);
+    p_func()->applyMaterial(material, pass);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

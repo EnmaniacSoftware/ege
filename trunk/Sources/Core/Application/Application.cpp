@@ -30,7 +30,6 @@ Application::~Application()
   EGE_DELETE(m_sceneManager);
   EGE_DELETE(m_graphics);
   EGE_DELETE(m_appController);
-  m_timer           = NULL;
   EGE_DELETE(m_resourceManager);
 
   EGE_DELETE(m_screenManager);
@@ -71,14 +70,6 @@ EGEResult Application::initialize(const ConfigParams& params)
   // create event manager
   m_eventManager = ege_new EventManager(this);
   if (NULL == m_eventManager)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  // create timer
-  m_timer = ege_new Timer(this);
-  if (NULL == m_timer || !m_timer->isValid())
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
@@ -156,12 +147,6 @@ EGEResult Application::initialize(const ConfigParams& params)
 EGEResult Application::run()
 {
   return appController()->run();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns main timer. */
-PTimer Application::timer() const
-{
-  return m_timer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Application updater. */

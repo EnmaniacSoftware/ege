@@ -11,6 +11,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class SceneNode;
+class RenderPass;
 
 EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
@@ -39,7 +40,7 @@ class Renderer : public Object
     /* Clears given viewport. */
     void clearViewport(const PViewport& viewport);
     /* Applies material for given pass. */
-    void applyMaterial(const PMaterial& material, u32 passIndex);
+    void applyMaterial(const PMaterial& material, const RenderPass* pass);
     /* Adds given data for rendering. */
     bool addForRendering(const Matrix4f& worldMatrix, const PRenderComponent& component);
 

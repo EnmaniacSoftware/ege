@@ -92,6 +92,8 @@ static GLenum MapIndexSize(IndexBuffer::Size size)
 RendererPrivate::RendererPrivate(Renderer* base) : m_d(base), m_activeTextureUnit(0xffffffff)
 {
   detectCapabilities();
+
+  //glEnable(GL_CULL_FACE);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RendererPrivate::~RendererPrivate()
@@ -193,20 +195,20 @@ void RendererPrivate::flush()
       {
         const RenderPass* renderPass = material ? material->pass(pass) : NULL;
 
-        // apply material for current pass
-        applyMaterial(material, pass);
-
-        // NOTE: change to modelview after material is applied as it may change current matrix mode
-        glMatrixMode(GL_MODELVIEW);
-
-        // determine texture count
-        s32 textureCount = renderPass ? renderPass->textureCount() : 0;
-
         // check if there is anything to be rendered
         // TAGE - is it overhead setting up whole geometry for each pass ? or should it be done only once ? what with texturing ?
         if (0 != vertexBuffer->vertexCount())
         {
           const VertexBuffer::SemanticsList& semantics = vertexBuffer->semantics();
+
+          // apply material for current pass
+          applyMaterial(material, renderPass);
+        
+          // NOTE: change to modelview after material is applied as it may change current matrix mode
+          glMatrixMode(GL_MODELVIEW);
+
+          // determine texture count
+          s32 textureCount = renderPass ? renderPass->textureCount() : 0;
 
           u32 value = (0 < indexBuffer->indexCount()) ? indexBuffer->indexCount() : vertexBuffer->vertexCount();
 
@@ -305,6 +307,7 @@ void RendererPrivate::flush()
             {
               glClientActiveTexture(GL_TEXTURE0 + *itTextureUnit);
             }
+
             glDisableClientState(GL_TEXTURE_COORD_ARRAY);
           }
           m_activeTextureUnits.clear();
@@ -326,95 +329,91 @@ void RendererPrivate::flush()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Applies material for given pass. */
-void RendererPrivate::applyMaterial(const PMaterial& material, u32 passIndex)
+void RendererPrivate::applyMaterial(const PMaterial& material, const RenderPass* pass)
 {
   // disable blending by default
   glDisable(GL_BLEND);
 
-  if (material)
+  if (NULL != pass)
   {
-    PRenderPass renderPass = material->pass(passIndex);
-    if (NULL != renderPass)
+    // enable blending if necessary
+    if ((EGEGraphics::BF_ONE != pass->srcBlendFactor()) || (EGEGraphics::BF_ZERO != pass->dstBlendFactor()))
     {
-      // enable blending if necessary
-      if ((EGEGraphics::BF_ONE != renderPass->srcBlendFactor()) || (EGEGraphics::BF_ZERO != renderPass->dstBlendFactor()))
+      glEnable(GL_BLEND);
+      glBlendFunc(MapBlendFactor(pass->srcBlendFactor()), MapBlendFactor(pass->dstBlendFactor()));
+    }
+
+    // set vertex color
+    // NOTE: this will be overriden if color array is activated
+    glColor4f(pass->diffuseColor().red, pass->diffuseColor().green, pass->diffuseColor().blue, pass->diffuseColor().alpha);
+
+    // go thru all textures
+    for (u32 i = 0; i < pass->textureCount(); ++i)
+    {
+      Object* texture = pass->texture(i).object();
+
+      // check if 2D texture
+      if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
       {
-        glEnable(GL_BLEND);
-        glBlendFunc(MapBlendFactor(renderPass->srcBlendFactor()), MapBlendFactor(renderPass->dstBlendFactor()));
+        Texture2D* tex2d = (Texture2D*) texture;
+
+        activateTextureUnit(i);
+        bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
+
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+        glMatrixMode(GL_TEXTURE);
+        glLoadIdentity();
       }
-
-      // set vertex color
-      // NOTE: this will be overriden if color array is activated
-      glColor4f(renderPass->diffuseColor().red, renderPass->diffuseColor().green, renderPass->diffuseColor().blue, renderPass->diffuseColor().alpha);
-
-      // go thru all textures
-      for (u32 i = 0; i < renderPass->textureCount(); ++i)
+      // check if texture image
+      else if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
       {
-        Object* texture = renderPass->texture(i).object();
+        TextureImage* texImg = (TextureImage*) texture;
+        Texture2D* tex2d = (Texture2D*) texImg->texture().object();
 
-        // check if 2D texture
-        if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
-        {
-          Texture2D* tex2d = (Texture2D*) texture;
+        activateTextureUnit(i);
+        bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
 
-          activateTextureUnit(i);
-          bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
+        //if (texImg->environmentMode() == EGETexture::EM_DECAL)
+        //{
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_MODULATE);   //Interpolate RGB with RGB
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_PREVIOUS);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_TEXTURE);
+        //     //GL_CONSTANT refers to the call we make with glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor)
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_RGB, GL_CONSTANT);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_RGB, GL_CONSTANT );
+        //     //------------------------
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_INTERPOLATE);   //Interpolate ALPHA with ALPHA
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_PREVIOUS);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_TEXTURE);
+        //     //GL_CONSTANT refers to the call we make with glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor)
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_ALPHA, GL_CONSTANT);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, GL_SRC_ALPHA);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_ALPHA, GL_SRC_ALPHA);
 
-          glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        //     static float a = 0.0f;
+        //     a += 0.01f;
+        //     if (a > 1)
+        //     {
+        //       a = 0;
+        //     }
 
-          glMatrixMode(GL_TEXTURE);
-          glLoadIdentity();
-        }
-        // check if texture image
-        else if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
-        {
-          TextureImage* texImg = (TextureImage*) texture;
-          Texture2D* tex2d = (Texture2D*) texImg->texture().object();
+        //    float mycolor[4];
+        //     mycolor[0]=mycolor[1]=mycolor[2]=0.0;    //RGB doesn't matter since we are not using it
+        //     mycolor[3]=0.5;                         //Set the blend factor with this
+        //     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor);
+        //}
+        //else
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MapPrimitiveType(texImg->environmentMode()));
 
-          activateTextureUnit(i);
-          bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
-
-          //if (texImg->environmentMode() == EGETexture::EM_DECAL)
-          //{
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_MODULATE);   //Interpolate RGB with RGB
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_PREVIOUS);
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_TEXTURE);
-          //     //GL_CONSTANT refers to the call we make with glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor)
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_RGB, GL_CONSTANT);
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_RGB, GL_CONSTANT );
-          //     //------------------------
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_INTERPOLATE);   //Interpolate ALPHA with ALPHA
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_PREVIOUS);
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_TEXTURE);
-          //     //GL_CONSTANT refers to the call we make with glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor)
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_ALPHA, GL_CONSTANT);
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, GL_SRC_ALPHA);
-          //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_ALPHA, GL_SRC_ALPHA);
-
-          //     static float a = 0.0f;
-          //     a += 0.01f;
-          //     if (a > 1)
-          //     {
-          //       a = 0;
-          //     }
-
-          //    float mycolor[4];
-          //     mycolor[0]=mycolor[1]=mycolor[2]=0.0;    //RGB doesn't matter since we are not using it
-          //     mycolor[3]=0.5;                         //Set the blend factor with this
-          //     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor);
-          //}
-          //else
-          glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MapPrimitiveType(texImg->environmentMode()));
-
-          glMatrixMode(GL_TEXTURE);
-          glLoadIdentity();
-          glTranslatef(texImg->rect().x, texImg->rect().y, 0.0f);
-          glScalef(texImg->rect().width, texImg->rect().height, 1.0f);
-        }
+        glMatrixMode(GL_TEXTURE);
+        glLoadIdentity();
+        glTranslatef(texImg->rect().x, texImg->rect().y, 0.0f);
+        glScalef(texImg->rect().width, texImg->rect().height, 1.0f);
       }
     }
   }
@@ -545,6 +544,23 @@ void RendererPrivate::detectCapabilities()
   if (isExtensionSupported("GL_ARB_texture_env_combine"))
   {
     Device::SetRenderCapability(EGEDevice::RENDER_CAPS_COMBINE_TEXTURE_ENV, true);
+  }
+
+  // check if vertex buffer object is supported
+  if (isExtensionSupported("GL_ARB_vertex_buffer_object"))
+  {
+    glGenBuffers    = (PFNGLGENBUFFERSPROC) wglGetProcAddress("glGenBuffersARB");
+    glBindBuffer    = (PFNGLBINDBUFFERPROC) wglGetProcAddress("glBindBufferARB");
+    glBufferData    = (PFNGLBUFFERDATAPROC) wglGetProcAddress("glBufferDataARB");
+    glBufferSubData = (PFNGLBUFFERSUBDATAPROC) wglGetProcAddress("glBufferSubDataARB");
+    glDeleteBuffers = (PFNGLDELETEBUFFERSPROC) wglGetProcAddress("glDeleteBuffersARB");
+    glMapBuffer     = (PFNGLMAPBUFFERPROC) wglGetProcAddress("glMapBufferARB");
+    glUnmapBuffer   = (PFNGLUNMAPBUFFERPROC) wglGetProcAddress("glUnmapBufferARB");
+
+    if (glGenBuffers && glBindBuffer && glBufferData && glBufferSubData && glDeleteBuffers && glMapBuffer && glUnmapBuffer)
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VBO, true);
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

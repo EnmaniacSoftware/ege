@@ -21,8 +21,15 @@ AppControllerPrivate::~AppControllerPrivate()
 /*! Enters main loop. */
 EGEResult AppControllerPrivate::run()
 {
+  Time startTime;
+  Time endTime;
+
+  // app loop
   while (!s3eDeviceCheckQuitRequest() && AppController::STATE_QUIT != d_func()->state())
   {
+    // store this loop start time
+    startTime.fromMicroseconds(d_func()->timer()->microseconds());
+
     // update pointer
     s3ePointerUpdate();
 
@@ -32,8 +39,12 @@ EGEResult AppControllerPrivate::run()
     // render
     d_func()->render();
 
+    // stat this loop end time
+    endTime.fromMicroseconds(d_func()->timer()->microseconds());
+
     // give some time for OS
-    s3eDeviceYield(0);//(int32) d_func()->m_updateInterval.miliseconds());
+    // TAGE - limit to 30fps
+    s3eDeviceYield(Math::Max(0, 1000.0f / 30.0f - (endTime - startTime).miliseconds());
   }
 
   return EGE_SUCCESS;

@@ -5,6 +5,7 @@
 
 #include <EGE.h>
 #include <EGETime.h>
+#include <EGETimer.h>
 #include "Core/Event/EventListener.h"
 #include "Core/ConfigParams.h"
 
@@ -38,6 +39,8 @@ class AppController : public Object, public IEventListener
     void render();
     /*! Returns FPS indication. */
     inline s32 fps() const { return m_fps; }
+    /*! Returns controller timer. */
+    inline const PTimer& timer() const { return m_timer; }
 
   private:
 
@@ -64,6 +67,8 @@ class AppController : public Object, public IEventListener
     Time m_lastUpdateTime;
     /*! Time interval between updates. */
     Time m_updateInterval;
+    /*! Currently accumulated update duration. */
+    Time m_updateAccumulator;
     /*! Current state. */
     State m_state;
     /*! Current FPS indication. */
@@ -72,6 +77,8 @@ class AppController : public Object, public IEventListener
     s32 m_rendersCount;
     /*! Time at which last FPS count started. */
     Time m_fpsCountStartTime;
+    /*! Timer. */
+    PTimer m_timer;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

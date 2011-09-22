@@ -18,6 +18,15 @@ extern PFNGLBINDFRAMEBUFFEREXTPROC glBindFramebuffer;
 extern PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC glCheckFramebufferStatus;
 extern PFNGLFRAMEBUFFERTEXTURE2DEXTPROC glFramebufferTexture2D;
 
+// vertex buffer object
+extern PFNGLGENBUFFERSPROC glGenBuffers;
+extern PFNGLBINDBUFFERPROC glBindBuffer;
+extern PFNGLBUFFERDATAPROC glBufferData;
+extern PFNGLBUFFERSUBDATAPROC glBufferSubData;
+extern PFNGLDELETEBUFFERSPROC glDeleteBuffers;
+extern PFNGLMAPBUFFERPROC glMapBuffer;
+extern PFNGLUNMAPBUFFERPROC glUnmapBuffer;
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_CORE_EXTENSIONSOGL_H

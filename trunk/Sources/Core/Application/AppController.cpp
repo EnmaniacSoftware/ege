@@ -37,6 +37,9 @@ AppController::AppController(Application* app, const ConfigParams& params) : Obj
   {
     m_p = ege_new AppControllerPrivate(this);
   }
+
+  // create timer
+  m_timer = ege_new Timer(app);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AppController::~AppController()
@@ -47,11 +50,8 @@ AppController::~AppController()
 /*! Enters main loop. */
 EGEResult AppController::run()
 {
-  // get current time
-  PTimer timer = app()->timer();
-
   // initialize update timer (to smooth out first update)
-  m_lastUpdateTime.fromMicroseconds(timer->microseconds());
+  m_lastUpdateTime.fromMicroseconds(m_timer->microseconds());
 
   return p_func()->run();
 }
@@ -73,41 +73,39 @@ void AppController::onEventRecieved(PEvent pEvent)
 void AppController::update()
 {
   // get current time
-  PTimer timer = app()->timer();
-  Time time(timer->microseconds());
+  Time time(m_timer->microseconds());
 
-  // check if update is to be made
-  if (time - m_lastUpdateTime > m_updateInterval)
+  // calculate time passed
+  Time timeInterval = time - m_lastUpdateTime;
+
+  // store frame current time
+  m_lastUpdateTime = time;
+
+  // update accumulator for updates
+  m_updateAccumulator += timeInterval;
+
+  // update as much as requested
+  while (m_updateAccumulator > m_updateInterval)
   {
-    // get time interval
-    Time timeInterval = time - m_lastUpdateTime;
+    m_updateAccumulator -= m_updateInterval;
 
-    // update screen manager
-    app()->screenManager()->update(timeInterval);
-
-    // update physics
-    app()->physicsManager()->update(timeInterval);
-
-    // update scene
-    app()->sceneManager()->update(timeInterval);
-
-    // update overlays
-    app()->overlayManager()->update(timeInterval);
-
-    // update application
-    app()->update(timeInterval);
-
-    // store frame current time
-    m_lastUpdateTime = time;
+    // update physics etc
+    app()->screenManager()->update(m_updateInterval);
+    app()->physicsManager()->update(m_updateInterval);
+    app()->sceneManager()->update(m_updateInterval);
+    app()->overlayManager()->update(m_updateInterval);
+    app()->update(m_updateInterval);
   }
+
+  // interpolate physics by remaining value
+  // ..
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders application. */
 void AppController::render()
 {
   // get current time
-  PTimer timer = app()->timer();
-  Time time(timer->microseconds());
+  Time time(m_timer->microseconds());
 
   // check if 1 second hasnt passed yet
   if (time - m_fpsCountStartTime < Time(1.0f))
@@ -134,6 +132,6 @@ void AppController::render()
 /*! Returns TRUE if object is valid. */
 bool AppController::isValid() const
 {
-  return NULL != m_p;
+  return (NULL != m_p) && (NULL != m_timer) && m_timer->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
