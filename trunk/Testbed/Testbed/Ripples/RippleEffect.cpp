@@ -75,7 +75,14 @@ bool RippleEffect::initialize(s32 width, s32 height, const Vector2i& gridSize, P
   // create material with render texture for render texture object
   PMaterial material = ege_new Material(app());
   //material->setDiffuseColor(Color::GREEN);
-  material->addTexture(m_texture);
+  RenderPass* pass = material->addPass(NULL);
+  if (NULL == pass)
+  {
+    // error!
+    return false;
+  }
+
+  pass->addTexture(m_texture);
   m_renderData->setMaterial(material);
 
   // initialize ripple data

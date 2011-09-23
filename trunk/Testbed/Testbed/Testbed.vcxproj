@@ -78,6 +78,8 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Curves\CurvesTest.cpp" />
+    <ClCompile Include="Lightning\LightningEffect.cpp" />
+    <ClCompile Include="Lightning\LightningTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="RenderToTexture\RenderToTextureTest.cpp" />
@@ -88,6 +90,8 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Curves\CurvesTest.h" />
+    <ClInclude Include="Lightning\LightningEffect.h" />
+    <ClInclude Include="Lightning\LightningTest.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="RenderToTexture\RenderToTextureTest.h" />
     <ClInclude Include="Ripples\RippleEffect.h" />

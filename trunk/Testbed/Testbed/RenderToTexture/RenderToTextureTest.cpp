@@ -78,8 +78,15 @@ bool RenderToTextureTest::initialize()
   
   // create material with render texture for render texture object
   PMaterial material = ege_new Material(app());
+  RenderPass* pass = material->addPass(NULL);
+  if (NULL == pass)
+  {
+    // error!
+    return false;
+  }
+
   material->setDiffuseColor(Color::GREEN);
-  material->addTexture(m_texture);
+  pass->addTexture(m_texture);
   m_sceneObjectRenderTexture->renderData()->setMaterial(material);
 
   // setup render texture
