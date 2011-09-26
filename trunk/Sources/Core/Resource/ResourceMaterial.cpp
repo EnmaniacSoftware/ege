@@ -172,16 +172,8 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
       // textures without pass add to default one
       result = addTexture(child, defaultPass);
       
-      // check if default pass hasnt been used yet
-      if (!defaultPassInUse)
-      {
-        // add pass now
-        // NOTE: first use determines the position in pass array
-        m_passes.push_back(defaultPass);
-
-        // mark default pass was used
-        defaultPassInUse = true;
-      }
+      // mark to indicate default pass is in use
+      defaultPassInUse = true;
     }
     else if (NODE_PASS == child->name())
     {
@@ -201,52 +193,50 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
   }
 
   // check if no single pass has been defined
-  if (m_passes.empty())
+  if (m_passes.empty() || defaultPassInUse)
   {
-    // add default one
-    m_passes.push_back(defaultPass);
+    // add default one to the front
+    m_passes.insert(m_passes.begin(), defaultPass);
   }
-  else
+
+  // apply override modifier to all passes
+  for (PassDataArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
   {
-    // apply override modifier to all passes
-    for (PassDataArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+    PassData& pass = *it;
+
+    if (tag->hasAttribute("src-blend"))
     {
-      PassData& pass = *it;
+      pass.m_srcBlend = defaultPass.m_srcBlend;
+    }
 
-      if (tag->hasAttribute("src-blend"))
-      {
-        pass.m_srcBlend = defaultPass.m_srcBlend;
-      }
+    if (tag->hasAttribute("dst-blend"))
+    {
+      pass.m_dstBlend = defaultPass.m_dstBlend;
+    }
 
-      if (tag->hasAttribute("dst-blend"))
-      {
-        pass.m_dstBlend = defaultPass.m_dstBlend;
-      }
+    if (tag->hasAttribute("diffuse-color"))
+    {
+      pass.m_diffuseColor = defaultPass.m_diffuseColor;
+    }
 
-      if (tag->hasAttribute("diffuse-color"))
-      {
-        pass.m_diffuseColor = defaultPass.m_diffuseColor;
-      }
+    if (tag->hasAttribute("ambient-color"))
+    {
+      pass.m_ambientColor = defaultPass.m_ambientColor;
+    }
 
-      if (tag->hasAttribute("ambient-color"))
-      {
-        pass.m_ambientColor = defaultPass.m_ambientColor;
-      }
+    if (tag->hasAttribute("specular-color"))
+    {
+      pass.m_specularColor = defaultPass.m_specularColor;
+    }
 
-      if (tag->hasAttribute("specular-color"))
-      {
-        pass.m_specularColor = defaultPass.m_specularColor;
-      }
+    if (tag->hasAttribute("emission-color"))
+    {
+      pass.m_emissionColor = defaultPass.m_emissionColor;
+    }
 
-      if (tag->hasAttribute("emission-color"))
-      {
-        pass.m_emissionColor = defaultPass.m_emissionColor;
-      }
-
-      if (tag->hasAttribute("shininess"))
-      {
-        pass.m_shininess = defaultPass.m_shininess;
-      }
+    if (tag->hasAttribute("shininess"))
+    {
+      pass.m_shininess = defaultPass.m_shininess;
     }
   }
 

@@ -188,6 +188,11 @@ void RendererPrivate::flush()
       PIndexBuffer& indexBuffer   = data.component->indexBuffer();
       PMaterial& material         = data.component->material();
 
+      //if (data.component->name() == "level-meter-classic")
+      //{
+      //  int a = 1;
+      //}
+
       // go thru all passes
       // NOTE: if there is no material, we consider it 1 pass
       u32 passes = material ? material->passCount() : 1;
