@@ -10,6 +10,7 @@
 #include <EGEDynamicArray.h>
 #include <EGETime.h>
 #include <EGEColor.h>
+#include <EGEVector.h>
 
 EGE_NAMESPACE_BEGIN
 

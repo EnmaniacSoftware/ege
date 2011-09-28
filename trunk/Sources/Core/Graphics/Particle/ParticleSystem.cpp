@@ -93,41 +93,41 @@ void ParticleSystem::setParticleMaxCount(s32 count)
   m_particleMaxCount = count;
 
   // create new array
-  DynamicArray<ParticleData*> newArray;
+  ParticleDataArray newArray;
   newArray.reserve(count);
 
   // create particle data structs
-  for (s32 i = 0; i < count; ++i)
-  {
-    // allocate particle data
-    ParticleData* particle = (ParticleData*) EGE_MALLOC(sizeof(ParticleData));
-    if (NULL == particle)
-    {
-      // error!
-      for (s32 j = 0; j < i - 1; ++j)
-      {
-        EGE_FREE(newArray[i]);
-      }
+  //for (s32 i = 0; i < count; ++i)
+  //{
+  //  // allocate particle data
+  //  ParticleData* particle = (ParticleData*) EGE_MALLOC(sizeof(ParticleData));
+  //  if (NULL == particle)
+  //  {
+  //    // error!
+  //    for (s32 j = 0; j < i - 1; ++j)
+  //    {
+  //      EGE_FREE(newArray[i]);
+  //    }
 
-      return;
-    }
+  //    return;
+  //  }
 
-    // check if there is old particle which should be copied over
-    if (i < static_cast<s32>(m_particles.size()))
-    {
-      // copy old particle data
-      EGE_MEMCPY(particle, m_particles[i], sizeof(ParticleData));
-    }
+  //  // check if there is old particle which should be copied over
+  //  if (i < static_cast<s32>(m_particles.size()))
+  //  {
+  //    // copy old particle data
+  //    EGE_MEMCPY(particle, &m_particles[i], sizeof(ParticleData));
+  //  }
 
-    // add to pool
-    newArray.push_back(particle);
-  }
+  //  // add to pool
+  //  newArray.push_back(particle);
+  //}
 
-  // deallocate current particle data array
-  deallocatesParticleDataArray();
+  //// deallocate current particle data array
+  //deallocatesParticleDataArray();
 
-  // store new array
-  m_particles.copy(newArray);
+  //// store new array
+  //m_particles.copy(newArray);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets particle start size. */
@@ -201,7 +201,7 @@ void ParticleSystem::deallocatesParticleDataArray()
   // deallocate old pool
   for (ParticleDataArray::iterator it = m_particles.begin(); it != m_particles.end(); ++it)
   {
-    EGE_FREE(*it);
+//    EGE_FREE(*it);
   }
   m_particles.clear();
 }
