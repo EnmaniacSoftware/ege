@@ -62,8 +62,8 @@ bool ParticleTest::initialize()
     return false;
   }
 
-  // create particle system
-  m_system = ege_new ParticleSystem(app());
+  // create particle emitter
+  m_emitter = ege_new ParticleEmitter(app());
 
   return true;
 }
@@ -71,5 +71,6 @@ bool ParticleTest::initialize()
 /*! Test override. Updates test. */
 void ParticleTest::update(const Time& time)
 {
+  m_emitter->update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
