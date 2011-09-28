@@ -25,7 +25,7 @@ class Test
     /*! Updates test. */
     virtual void update(const EGE::Time& time) = 0;
     /*! Pointer event receiver. */
-    virtual void pointerEvent(EGE::PPointerData data) = 0;
+    virtual void pointerEvent(EGE::PPointerData data) {}
 
   protected:
 

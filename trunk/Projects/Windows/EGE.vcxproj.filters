@@ -151,6 +151,9 @@
     <Filter Include="Core\Graphics\Sprite">
       <UniqueIdentifier>{db4c0789-ac83-427c-a272-2cf0d25b3806}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Graphics\Particle">
+      <UniqueIdentifier>{4b87de33-b883-48cb-9822-856766c15071}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -452,6 +455,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderPass.cpp">
       <Filter>Core\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleSystem.cpp">
+      <Filter>Core\Graphics\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -882,6 +888,10 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderPass.h">
       <Filter>Core\Graphics\Render</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleSystem.h">
+      <Filter>Core\Graphics\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

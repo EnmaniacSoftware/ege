@@ -11,6 +11,7 @@
 #include "Curves/CurvesTest.h"
 #include "Ripples/RipplesTest.h"
 #include "Lightning/LightningTest.h"
+#include "Particles/ParticleTest.h"
 
 #include <gl/gl.h>
 #include <gl/glu.h>
@@ -68,6 +69,11 @@ bool App::start()
     PTextOverlay overlay = ege_new TextOverlay(this, "fps");
     overlay->setFont(fontResource->font());
     overlayManager()->add(overlay);
+    overlay->physics()->setPosition(Vector4f(0, 20, 0));
+
+    overlay = ege_new TextOverlay(this, "info");
+    overlay->setFont(fontResource->font());
+    overlayManager()->add(overlay);
   }
 
   // create tests
@@ -77,6 +83,7 @@ bool App::start()
   m_tests.push_back(new CurvesTest(this));
   m_tests.push_back(new RipplesTest(this));
   m_tests.push_back(new LightningTest(this));
+  m_tests.push_back(new ParticleTest(this));
 
   // select test to run
   selectTest();
@@ -106,6 +113,12 @@ void App::update(const Time& time)
   if (overlay)
   {
     overlay->setText(Text::Format("FPS:%d", fps()));
+  }
+
+  overlay = overlayManager()->overlay("info");
+  if (overlay && m_activeTest)
+  {
+    overlay->setText(Text::Format("%s", m_activeTest->name().toAscii()));
   }
 
   if (m_activeTest)

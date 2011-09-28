@@ -31,6 +31,9 @@
     <Filter Include="Tests\Lightning">
       <UniqueIdentifier>{f3f48e74-89a3-4fb3-a36f-7f4fe82fb61c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Particles">
+      <UniqueIdentifier>{9082668e-7f5f-4f2d-8c7a-7d9a18f34bf1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -63,6 +66,9 @@
     <ClCompile Include="Lightning\LightningTest.cpp">
       <Filter>Tests\Lightning</Filter>
     </ClCompile>
+    <ClCompile Include="Particles\ParticleTest.cpp">
+      <Filter>Tests\Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -94,6 +100,9 @@
     </ClInclude>
     <ClInclude Include="Lightning\LightningTest.h">
       <Filter>Tests\Lightning</Filter>
+    </ClInclude>
+    <ClInclude Include="Particles\ParticleTest.h">
+      <Filter>Tests\Particles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -21,5 +21,15 @@
     </curve>
     
   </group>
- 
+
+  <!-- Particle test resources -->
+  <group name='particle-test'>
+
+    <texture type="2d" name="particle" path="images/particle.png" mag-filter="trilinear" min-filter="trilinear" />
+    <material name='particle' >
+      <texture name='particle' />
+    </material>
+
+  </group>
+
 </resources>
