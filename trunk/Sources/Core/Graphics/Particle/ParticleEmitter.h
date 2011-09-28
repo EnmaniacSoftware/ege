@@ -1,8 +1,8 @@
-#ifndef EGE_CORE_PARTICLESYSTEM_H
-#define EGE_CORE_PARTICLESYSTEM_H
+#ifndef EGE_CORE_PARTICLEEMITTER_H
+#define EGE_CORE_PARTICLEEMITTER_H
 
 /** 
-*   Particle system is an object responsible for creation and managing the particles according to predefined data.
+*   Particle emitter is an object responsible for creation and managing the particles according to predefined data.
 */
 
 #include <EGE.h>
@@ -16,16 +16,16 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_DECLARE_SMART_CLASS(ParticleSystem, PParticleSystem)
+EGE_DECLARE_SMART_CLASS(ParticleEmitter, PParticleEmitter)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class ParticleSystem : public Object
+class ParticleEmitter : public Object
 {
   public:
 
-    ParticleSystem(Application* app);
-   ~ParticleSystem();
+    ParticleEmitter(Application* app);
+   ~ParticleEmitter();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -132,4 +132,4 @@ class ParticleSystem : public Object
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_PARTICLESYSTEM_H
+#endif // EGE_CORE_PARTICLEEMITTER_H

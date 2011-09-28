@@ -456,7 +456,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderPass.cpp">
       <Filter>Core\Graphics\Render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleSystem.cpp">
+    <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitter.cpp">
       <Filter>Core\Graphics\Particle</Filter>
     </ClCompile>
   </ItemGroup>
@@ -888,10 +888,10 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderPass.h">
       <Filter>Core\Graphics\Render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleSystem.h">
+    <ClInclude Include="..\..\Sources\EGEParticle.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitter.h">
       <Filter>Core\Graphics\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\EGEParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">
