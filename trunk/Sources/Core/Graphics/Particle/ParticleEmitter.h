@@ -55,6 +55,8 @@ class ParticleEmitter : public SceneNodeObject
     void setEmissionAngle(const Angle& angle);
     /* Sets emission angle variance. */
     void setEmissionAngleVariance(const Angle& variance);
+    /* Sets emitter direction. */
+    void setEmissionDirection(const Vector3f& direction);
     /* Sets particle start size. */
     void setParticleStartSize(const Vector2f& size);
     /* Sets particle start size variance. */
@@ -150,6 +152,8 @@ class ParticleEmitter : public SceneNodeObject
     Angle m_emissionAngle;
     /*! Particle emission angle variance. */
     Angle m_emissionAngleVariance;
+    /*! Emission direction. */
+    Vector3f m_emissionDirection;
     /*! Particles start position variance. */
     Vector3f m_particleStartPositionVariance;
     /*! Particles start size. */

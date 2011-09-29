@@ -53,6 +53,12 @@ class TVector3
     /* Returns 2D vector consisting of X and Y values of current one. */
     inline TVector2<T> xy() const;
 
+    //TVector3 randomDeviant(const float& fAngle,                                           // gets vector randomly deviant from itself
+    //                           const CVector3& cUp = CVector3::ZERO ) const;
+
+    /* Returns vector perpendicular to current one. */
+    inline TVector3 perpendicular() const;
+
   //  // normalization related methods
 		//CVector3 getNormalized( void ) const;                                                     // gets normalized vector
 
@@ -67,11 +73,6 @@ class TVector3
   //  // helper methods
   //  CQuaternion getRotationTo( const CVector3& cDest,                                         // gets shortest rotation to given vector
   //                             const CVector3& cFallbackAxis = CVector3::ZERO ) const;
-
-  //  CVector3 getRandomDeviant( const float& fAngle,                                           // gets vector randomly deviant from itself
-  //                             const CVector3& cUp = CVector3::ZERO ) const;
-
-  //  CVector3 getPerpendicular( void ) const;                                                  // gets perpendicular vector to itself
 
   //  float getAngleBetween( const CVector3& cVector ) const;                                   // returns angle (in radians) between vectors
 
@@ -254,6 +255,24 @@ template <typename T>
 T TVector3<T>::distanceSquaredTo(const TVector3& vector) const
 {
   return (x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y) + (z - vector.z) * (z - vector.z);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns vector perpendicular to current one. */
+template <typename T>
+TVector3<T> TVector3<T>::perpendicular() const
+{
+  TVector3 perp = crossProduct(TVector3::UNIT_X);
+
+  // check length
+  if (Math::EPSILON_SQUARED > perp.lengthSquared())
+  {
+    // this vector is the Y axis multiplied by a scalar, so we have to use another axis
+    perp = crossProduct(TVector3::UNIT_Y);
+  }
+
+  // normalize
+  perp.normalize();
+  return perp;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns 2D vector consisting of X and Y values of current one. */

@@ -10,7 +10,9 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const float32 Math::EPSILON = std::numeric_limits<float32>::epsilon();
+const float32 Math::EPSILON         = std::numeric_limits<float32>::epsilon();
+const float32 Math::EPSILON_SQUARED = std::numeric_limits<float32>::epsilon() * std::numeric_limits<float32>::epsilon();
+Random Math::m_random;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Math::Math()
 {
@@ -103,7 +105,7 @@ void Math::GetAngle(Angle* angle, const Vector2f* origin, const Vector2f* point)
 
   // NOTE: arguments are in (Y, X) order.
   //       we assume X axis grows from LEFT to RIGHT
-  //       we assume T axis grows from BOTTOM to TOP
+  //       we assume Y axis grows from BOTTOM to TOP
   angle->fromRadians(Math::ATan2(origin->y - point->y, point->x - origin->x));
 
   //if (point->x >= origin->x)
@@ -453,5 +455,48 @@ void Math::AlignXY(Vector4f* point, Vector2f* size, Alignment currentAlignment, 
 
   point->x = newPoint.x;
   point->y = newPoint.y;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Calculates unit direction vector from given angle. This is relative to positive X axis. */
+void Math::GetDirection(Vector2f* vector, const Angle* angle)
+{
+  EGE_ASSERT(vector);
+  EGE_ASSERT(angle);
+
+  vector->x = Math::Cos(angle->radians());
+  vector->y = Math::Sin(angle->radians());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Generates a new random vector which deviates from given vector by a given angle in a random direction.
+ *  @param  angle   The angle at which to deviate.
+ *  @param  vector  Vector from which deviation should be generated.
+ *  @param  up      Any vector perpendicular to this one. If not given the function will derive one. 
+ *  @returns  A random vector which deviates from this vector by angle. This vector will not be normalized.
+ */
+Vector3f Math::RandomDeviant(const Angle* angle, const Vector3f* vector, const Vector3f* up)
+{
+  EGE_ASSERT(angle);
+  EGE_ASSERT(vector);
+
+  Vector3f newUp;
+
+  if (NULL == up)
+  {
+    // Generate an up vector
+    newUp = vector->perpendicular();
+  }
+  else
+  {
+    newUp = *up;
+  }
+
+  // rotate up vector by random amount around this
+  Quaternionf q;
+  q.create(*vector, Angle(EGEMath::TWO_PI * m_random(0.0f, 1.0f)));
+  newUp = q * newUp;
+
+  // finally rotate this by given angle around randomised up
+  q.create(newUp, *angle);
+  return q * (*vector);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -20,6 +20,7 @@ ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNo
                                                                          m_emitCount(0.0f),
                                                                          m_emissionAngle(EGEMath::TWO_PI),
                                                                          m_emissionAngleVariance(0),
+                                                                         m_emissionDirection(Vector3f::UNIT_X),
                                                                          m_particleStartPositionVariance(Vector3f::ZERO), 
                                                                          m_particleStartSize(Vector2f(10, 10)), 
                                                                          m_particleStartSizeVariance(Vector2f(0, 0)), 
@@ -194,6 +195,12 @@ void ParticleEmitter::setMode(EGEParticle::EmitterMode mode)
   m_mode = mode;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets emitter direction. */
+void ParticleEmitter::setEmissionDirection(const Vector3f& direction)
+{
+  m_emissionDirection = direction;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Initializes particle at given index. */
 void ParticleEmitter::initializeParticle(s32 index)
 {
@@ -206,10 +213,41 @@ void ParticleEmitter::initializeParticle(s32 index)
   // calculate start position
 	particleData.position = parentNode()->physics()->position().xyz() + m_particleStartPositionVariance * m_random(-1.0f, 1.0f);
 
-	// Init the direction of the particle.  The newAngle is calculated using the angle passed in and the
-	// angle variance.
-//	float newAngle = (GLfloat)DEGREES_TO_RADIANS(angle + angleVariance * RANDOM_MINUS_1_TO_1());
+	// calculate direction
+	Angle angle = m_emissionAngle + m_emissionAngleVariance.radians() * m_random(-1.0f, 1.0f);
 	
+// the function Random() returns a float in the range [0,1]
+  //float2 RandomDirection2D()
+  //{  
+  //  float azimuth = Random() * 2 * pi;  
+  //  return float2(cos(azimuth), sin(azimuth);
+  //}
+  //
+  //float3 RandomDirection3D()
+  //{  
+  //  float z = (2*Random()) - 1; // z is in the range [-1,1]  
+  //  float2 planar = RandomDirection2D() * sqrt(1-z*z);  
+  //  return float3(planar.x, planar.y, z);
+  //}
+
+  // initialize mode specific data
+  if (EGEParticle::EM_GRAVITY == m_mode)
+  {
+    Vector3f dir = Math::RandomDeviant(&angle, &m_emissionDirection);
+    dir.normalize();
+
+    particleData.mode.GravityMode.dirX = dir.x;
+    particleData.mode.GravityMode.dirY = dir.y;
+    particleData.mode.GravityMode.dirZ = dir.z;
+  }
+  else if (EGEParticle::EM_RADIAL == m_mode)
+  {
+  }
+  else
+  {
+      EGE_ASSERT(false && "Implement");
+  }
+
 	// Create a new Vector2f using the newAngle
 //	Vector2f vector = Vector2fMake(cosf(newAngle), sinf(newAngle));
 	

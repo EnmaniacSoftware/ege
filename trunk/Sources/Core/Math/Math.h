@@ -3,6 +3,7 @@
 
 #include <EGETypes.h>
 #include <EGEAlignment.h>
+#include <EGERandom.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -63,8 +64,10 @@ class Math
     static void Transform(Vector4f* vector, const Matrix4f* matrix);
     /* Creates matrix from translation, scale vectors and quaternion. */
     static void CreateMatrix(Matrix4f* matrix, const Vector4f* translation, const Vector4f* scale, const Quaternionf* orientation);
-    /* Returns angle between positive X axis and given point around origin. */
+    /* Calculates angle between positive X axis and given point around origin. */
     static void GetAngle(Angle* angle, const Vector2f* origin, const Vector2f* point);
+    /* Calculates unit direction vector from given angle. This is relative to positive X axis. */
+    static void GetDirection(Vector2f* vector, const Angle* angle);
 
     /*  Performs spherical linear interpolation between given quaternions. 
      *  @param  out           Resulting quaternion.
@@ -135,11 +138,25 @@ class Math
      * @param newAlignment     New point alignment within given area.
      */
     static void AlignXY(Vector4f* point, Vector2f* size, Alignment currentAlignment, Alignment newAlignment);
-
+    /*  Generates a new random vector which deviates from given vector by a given angle in a random direction.
+     *  @param  angle   The angle at which to deviate.
+     *  @param  vector  Vector from which deviation should be generated.
+     *  @param  up      Any vector perpendicular to this one. If not given the function will derive one. 
+     *  @returns  A random vector which deviates from this vector by angle. This vector will not be normalized.
+     */
+    static Vector3f RandomDeviant(const Angle* angle, const Vector3f* vector, const Vector3f* up = NULL);
+    
   public:
 
     /*! Inaccuracy cut-off value. */
     static const float32 EPSILON;
+    /*! Squared inaccuracy cut-off value. */
+    static const float32 EPSILON_SQUARED;
+
+  private:
+
+    /*! Random generator. */
+    static Random m_random;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
