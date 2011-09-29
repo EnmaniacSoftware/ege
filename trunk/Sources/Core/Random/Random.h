@@ -19,6 +19,8 @@ class Random : public Object
 
     /* Returns randomly generated integer. */
     s32 operator() ();
+    /* Returns randomly generated floating number from given interval. */
+    float32 operator() (float32 min, float32 max);
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;

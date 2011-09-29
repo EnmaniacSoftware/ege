@@ -9,6 +9,12 @@ EGE_NAMESPACE_BEGIN
 
 namespace EGEParticle
 {
+  /*! Available emitter modes. */
+  enum EmitterMode
+  {
+    EM_GRAVITY,
+    EM_RADIAL
+  };
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

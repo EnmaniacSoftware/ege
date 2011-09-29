@@ -23,12 +23,11 @@ class TVector4
     TVector4(T x, T y, T z, T w = 1);
     TVector4(const TVector4& vector);
 
-		inline TVector4 operator=(const TVector4& vector);
-
-		inline void operator+=(const TVector4& vector);
-		inline void operator-=(const TVector4& vector);
-    inline bool operator==(const TVector4& vector) const;
-    inline bool operator!=(const TVector4& vector) const;
+		inline TVector4 operator = (const TVector4& vector);
+		inline void     operator += (const TVector4& vector);
+		inline void     operator -= (const TVector4& vector);
+    inline bool     operator == (const TVector4& vector) const;
+    inline bool     operator != (const TVector4& vector) const;
 
     /* Sets vector components. */
     inline void set(T x, T y, T z, T w);
@@ -51,6 +50,8 @@ class TVector4
 
     /* Returns 2D vector consisting of X and Y values of current one. */
     inline TVector2<T> xy() const;
+    /* Returns 3D vector consisting of X, Y and Z values of current one. */
+    inline TVector3<T> xyz() const;
 
   public:
 
@@ -99,7 +100,7 @@ TVector4<T>::TVector4(const TVector4<T>& vector) : x(vector.x), y(vector.y), z(v
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector4<T> TVector4<T>::operator=(const TVector4<T>& vector)
+TVector4<T> TVector4<T>::operator = (const TVector4<T>& vector)
 {
   this->x = vector.x;
   this->y = vector.y;
@@ -110,7 +111,7 @@ TVector4<T> TVector4<T>::operator=(const TVector4<T>& vector)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TVector4<T>::operator+=(const TVector4<T>& vector)
+void TVector4<T>::operator += (const TVector4<T>& vector)
 {
   x += vector.x;
   y += vector.y;
@@ -119,7 +120,7 @@ void TVector4<T>::operator+=(const TVector4<T>& vector)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TVector4<T>::operator-=(const TVector4<T>& vector)
+void TVector4<T>::operator -= (const TVector4<T>& vector)
 {
   x -= vector.x;
   y -= vector.y;
@@ -128,13 +129,13 @@ void TVector4<T>::operator-=(const TVector4<T>& vector)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TVector4<T>::operator==(const TVector4& vector) const
+bool TVector4<T>::operator == (const TVector4& vector) const
 {
   return (x == vector.x) && (y == vector.y) && (z == vector.z) && (w == vector.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TVector4<T>::operator!=(const TVector4& vector) const
+bool TVector4<T>::operator != (const TVector4& vector) const
 {
   return (x != vector.x) || (y != vector.y) || (z != vector.z) || (w != vector.w);
 }
@@ -213,20 +214,27 @@ TVector2<T> TVector4<T>::xy() const
   return TVector2<T>(x, y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns 3D vector consisting of X, Y and Z values of current one. */
 template <typename T>
-TVector4<T> operator*(const TVector4<T>& left, T scalar)
+TVector3<T> TVector4<T>::xyz() const
+{
+  return TVector3<T>(x, y, z);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector4<T> operator * (const TVector4<T>& left, T scalar)
 {
   return TVector4<T>(left.x * scalar, left.y * scalar, left.z * scalar, left.w * scalar);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector4<T> operator*(T scalar, const TVector4<T>& right)
+TVector4<T> operator * (T scalar, const TVector4<T>& right)
 {
   return TVector4<T>(right.x * scalar, right.y * scalar, right.z * scalar, right.w * scalar);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector4<T> operator/(const TVector4<T>& left, T scalar)
+TVector4<T> operator / (const TVector4<T>& left, T scalar)
 {
   scalar = 1.0f / scalar;
 
@@ -234,13 +242,13 @@ TVector4<T> operator/(const TVector4<T>& left, T scalar)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector4<T> operator+(const TVector4<T>& left, const TVector4<T>& right)
+TVector4<T> operator + (const TVector4<T>& left, const TVector4<T>& right)
 {
   return TVector4<T>(left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector4<T> operator-(const TVector4<T>& left, const TVector4<T>& right)
+TVector4<T> operator - (const TVector4<T>& left, const TVector4<T>& right)
 {
   return TVector4<T>(left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w);
 }

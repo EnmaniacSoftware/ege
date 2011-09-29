@@ -63,7 +63,7 @@ bool ParticleTest::initialize()
   }
 
   // create particle emitter
-  m_emitter = ege_new ParticleEmitter(app());
+  m_emitter = ege_new ParticleEmitter(app(), "ParticleEmitter1");
 
   return true;
 }

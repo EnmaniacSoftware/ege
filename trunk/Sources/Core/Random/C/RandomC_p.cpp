@@ -31,3 +31,13 @@ s32 RandomPrivate::rand()
   return ::rand();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns randomly generated floating value from given interval. */
+float32 RandomPrivate::rand(float32 min, float32 max)
+{
+  // generate value from [0-1]
+  float32 value = static_cast<float32>(rand()) / RAND_MAX;
+
+  // map it to [min, max]
+  return min + value * (max - min);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
