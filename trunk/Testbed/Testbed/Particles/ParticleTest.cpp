@@ -64,6 +64,8 @@ bool ParticleTest::initialize()
 
   // create particle emitter
   m_emitter = ege_new ParticleEmitter(app(), "ParticleEmitter1");
+  app()->sceneManager()->rootNode()->attachObject(m_emitter);
+  m_emitter->start();
 
   return true;
 }
@@ -72,5 +74,7 @@ bool ParticleTest::initialize()
 void ParticleTest::update(const Time& time)
 {
   m_emitter->update(time);
+
+  EGE_PRINT("%d", m_emitter->activeParticlesCount());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

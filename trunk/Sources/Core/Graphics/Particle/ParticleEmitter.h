@@ -43,8 +43,6 @@ class ParticleEmitter : public SceneNodeObject
     void start();
     /* Updates object. */
     void update(const Time& time);
-    /* Sets mode. */
-    void setMode(EGEParticle::EmitterMode mode);
     /* Sets system life span. */
     void setLifeSpan(const Time& time);
     /* Sets maximum number of particles. */
@@ -77,6 +75,12 @@ class ParticleEmitter : public SceneNodeObject
     void setParticleEndColor(const Color& color);
     /* Sets particle end color variance. */
     void setParticleEndColorVariance(const Color& variance);
+    /* Sets particle speed. */
+    void setParticleSpeed(float32 speed);
+    /* Sets particle speed variance. */
+    void setParticleSpeedVariance(float32 variance);
+    /*! Returns number of active particles. */
+    inline s32 activeParticlesCount() const { return m_activeParticlesCount; }
 
   private:
 
@@ -84,6 +88,10 @@ class ParticleEmitter : public SceneNodeObject
     inline bool isFull() const { return m_activeParticlesCount == m_particleMaxCount; }
     /* Initializes particle at given index. */
     void initializeParticle(s32 index);
+    /* Allocates particles data. */
+    bool allocateParticlesData();
+    /* SceneNodeObject override. Adds object render data for rendering with given renderer. */
+    bool addForRendering(Renderer* renderer) override;
 
   private:
 
@@ -100,30 +108,7 @@ class ParticleEmitter : public SceneNodeObject
 
       Time timeLeft;                /*!< Time left to die. */
 
-	    union 
-      {
-		    // Mode A: gravity, direction, radial accel, tangential accel
-		    struct 
-        {
-			    float32 dirX;
-			    float32 dirY;
-			    float32 dirZ;
-			    float32	radialAccel;
-			    float32	tangentialAccel;
-		    
-        } GravityMode;
-	
-		    // Mode B: radius mode
-		    struct 
-        {
-			    float32 angle;
-			    float32	degreesPerSecond;
-			    float32	adius;
-			    float32	deltaRadius;
-
-        } RadialMode;
-
-	    } mode;
+      Vector3f direction;           /*!< Direction vector including speed. */
     };
 
   private:
@@ -132,8 +117,6 @@ class ParticleEmitter : public SceneNodeObject
 
   private:
 
-    /*! Emitter mode. */
-    EGEParticle::EmitterMode m_mode;
     /*! Active flag. */
     bool m_active;
     /*! Life span. */
@@ -176,10 +159,16 @@ class ParticleEmitter : public SceneNodeObject
     Color m_particleEndColor;
     /*! Particle end color variance. */
     Color m_particleEndColorVariance;
+    /*! Particle speed. */
+    float32 m_particleSpeed;
+    /*! Particle speed variance. */
+    float32 m_particleSpeedVariance;
     /*! Array of particles. */
     ParticleDataArray m_particles;
     /*! Random generator. */
     Random m_random;
+    /*! Render data. */
+    EGE::PRenderComponent m_renderData;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

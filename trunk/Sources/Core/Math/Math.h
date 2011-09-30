@@ -164,3 +164,18 @@ class Math
 EGE_NAMESPACE_END
 
 #endif // EGE_CORE_MATH_H
+
+
+  // the function Random() returns a float in the range [0,1]
+  //float2 RandomDirection2D()
+  //{  
+  //  float azimuth = Random() * 2 * pi;  
+  //  return float2(cos(azimuth), sin(azimuth);
+  //}
+  //
+  //float3 RandomDirection3D()
+  //{  
+  //  float z = (2*Random()) - 1; // z is in the range [-1,1]  
+  //  float2 planar = RandomDirection2D() * sqrt(1-z*z);  
+  //  return float3(planar.x, planar.y, z);
+  //}

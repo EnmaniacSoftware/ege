@@ -10,7 +10,6 @@ EGE_DEFINE_DELETE_OPERATORS(ParticleEmitter)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNodeObject(name),
-                                                                         m_mode(EGEParticle::EM_GRAVITY),
                                                                          m_active(false), 
                                                                          m_lifeSpan(10.0f), 
                                                                          m_lifeDuration(0.0f), 
@@ -31,8 +30,16 @@ ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNo
                                                                          m_particleStartColor(Color::BLACK), 
                                                                          m_particleStartColorVariance(Color::NONE), 
                                                                          m_particleEndColor(Color::WHITE), 
-                                                                         m_particleEndColorVariance(Color::NONE)
+                                                                         m_particleEndColorVariance(Color::NONE),
+                                                                         m_particleSpeed(1.0f),
+                                                                         m_particleSpeedVariance(0.0f)
 {
+  // create render data
+  m_renderData = ege_new RenderComponent(app, name, EGEGraphics::RP_MAIN);
+  if (m_renderData)
+  {
+    m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_T2_C4);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ParticleEmitter::~ParticleEmitter()
@@ -42,7 +49,7 @@ ParticleEmitter::~ParticleEmitter()
 /*! Returns TRUE if object is valid. */
 bool ParticleEmitter::isValid() const
 {
-  return true;
+  return (NULL != m_renderData) && m_renderData->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Starts system. 
@@ -55,6 +62,8 @@ void ParticleEmitter::start()
   m_activeParticlesCount = 0;
   m_emitCount = 0.0f;
 
+  allocateParticlesData();
+
   // make active
   m_active = true;
 }
@@ -62,6 +71,9 @@ void ParticleEmitter::start()
 /*! Updates object. */
 void ParticleEmitter::update(const Time& time)
 {
+  // store time passed in seconds for optimization purposes
+  float32 timeInSeconds = time.seconds();
+
   // process new particles only when active
   if (m_active)
   {
@@ -75,7 +87,7 @@ void ParticleEmitter::update(const Time& time)
     }
 
     // update particles to emit counter
-    m_emitCount += m_emissionRate * time.seconds();
+    m_emitCount += m_emissionRate * timeInSeconds;
 
     // add as much as we can
     while (!isFull() && (1.0f <= m_emitCount))
@@ -85,6 +97,54 @@ void ParticleEmitter::update(const Time& time)
 
       // decrement particle count for emission
       m_emitCount -= 1.0f;
+    }
+  }
+
+  float32* data = static_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_activeParticlesCount * 6));
+
+  s32 i = 0;
+  while (i < m_activeParticlesCount)
+  {
+    ParticleData& particleData = m_particles[i];
+
+    // update time
+    particleData.timeLeft -= time;
+
+    // check if particle is still alive
+    if (0 < particleData.timeLeft.microseconds())
+    {
+      // upate size
+      particleData.size += particleData.sizeDelta * timeInSeconds;
+
+      // update color
+      particleData.color.red    += particleData.colorDelta.red * timeInSeconds;
+      particleData.color.green  += particleData.colorDelta.green * timeInSeconds;
+      particleData.color.blue   += particleData.colorDelta.blue * timeInSeconds;
+      particleData.color.alpha  += particleData.colorDelta.alpha * timeInSeconds;
+
+      // update position
+      particleData.position += particleData.direction * timeInSeconds;
+
+      // go to next particle
+      ++i;
+    }
+    else
+    {
+      // check if this is not last active particle
+			if (i != m_activeParticlesCount - 1)
+      {
+        // move last active particle onto this one
+				m_particles[i] = m_particles[m_activeParticlesCount - 1];
+      }
+
+      // decrease number of active particles
+			--m_activeParticlesCount;
+			
+			//if ( particleCount == 0 && autoRemoveOnFinish_ ) {
+			//	[self unscheduleUpdate];
+			//	[parent_ removeChild:self cleanup:YES];
+			//	return;
+			//}
     }
   }
 }
@@ -107,14 +167,8 @@ void ParticleEmitter::setParticleMaxCount(s32 count)
 {
   EGE_ASSERT(0 <= count);
 
-  // resize array
-  m_particles.resize(count);
-
   // store new size
   m_particleMaxCount = count;
-
-  // properly adjust active particles count
-  m_activeParticlesCount = Math::Min(m_activeParticlesCount, count);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets particle start size. */
@@ -189,10 +243,16 @@ void ParticleEmitter::setEmissionAngleVariance(const Angle& variance)
   m_emissionAngleVariance = variance;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets mode. */
-void ParticleEmitter::setMode(EGEParticle::EmitterMode mode)
+/*! Sets particle speed. */
+void ParticleEmitter::setParticleSpeed(float32 speed)
 {
-  m_mode = mode;
+  m_particleSpeed = speed;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets particle speed variance. */
+void ParticleEmitter::setParticleSpeedVariance(float32 variance)
+{
+  m_particleSpeedVariance = variance;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets emitter direction. */
@@ -215,48 +275,11 @@ void ParticleEmitter::initializeParticle(s32 index)
 
 	// calculate direction
 	Angle angle = m_emissionAngle + m_emissionAngleVariance.radians() * m_random(-1.0f, 1.0f);
-	
-// the function Random() returns a float in the range [0,1]
-  //float2 RandomDirection2D()
-  //{  
-  //  float azimuth = Random() * 2 * pi;  
-  //  return float2(cos(azimuth), sin(azimuth);
-  //}
-  //
-  //float3 RandomDirection3D()
-  //{  
-  //  float z = (2*Random()) - 1; // z is in the range [-1,1]  
-  //  float2 planar = RandomDirection2D() * sqrt(1-z*z);  
-  //  return float3(planar.x, planar.y, z);
-  //}
+  particleData.direction = Math::RandomDeviant(&angle, &m_emissionDirection);
+  particleData.direction.normalize();
 
-  // initialize mode specific data
-  if (EGEParticle::EM_GRAVITY == m_mode)
-  {
-    Vector3f dir = Math::RandomDeviant(&angle, &m_emissionDirection);
-    dir.normalize();
-
-    particleData.mode.GravityMode.dirX = dir.x;
-    particleData.mode.GravityMode.dirY = dir.y;
-    particleData.mode.GravityMode.dirZ = dir.z;
-  }
-  else if (EGEParticle::EM_RADIAL == m_mode)
-  {
-  }
-  else
-  {
-      EGE_ASSERT(false && "Implement");
-  }
-
-	// Create a new Vector2f using the newAngle
-//	Vector2f vector = Vector2fMake(cosf(newAngle), sinf(newAngle));
-	
-	// Calculate the vectorSpeed using the speed and speedVariance which has been passed in
-//	float vectorSpeed = speed + speedVariance * RANDOM_MINUS_1_TO_1();
-	
-	// The particles direction vector is calculated by taking the vector calculated above and
-	// multiplying that by the speed
-	//particle->direction = Vector2fMultiply(vector, vectorSpeed);
+  // apply speed
+  particleData.direction *= m_particleSpeed + m_particleSpeedVariance * m_random(-1.0f, 1.0f);
 
 	// calculate the particles life span using the life span and variance passed in
 	particleData.timeLeft = m_particleLifeSpan + m_particleLifeSpanVariance * m_random(-1.0f, 1.0f);
@@ -293,5 +316,105 @@ void ParticleEmitter::initializeParticle(s32 index)
   particleData.colorDelta.green = (endColor.green - particleData.color.green) * inverseLifeTimeSeconds;
   particleData.colorDelta.blue  = (endColor.blue - particleData.color.blue) * inverseLifeTimeSeconds;
   particleData.colorDelta.alpha = (endColor.alpha - particleData.color.alpha) * inverseLifeTimeSeconds;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Allocates particles data. */
+bool ParticleEmitter::allocateParticlesData()
+{
+  // resize array
+  m_particles.resize(m_particleMaxCount);
+
+  // properly adjust active particles count
+  m_activeParticlesCount = Math::Min(m_activeParticlesCount, m_particleMaxCount);
+
+  // update render data
+  if (!m_renderData->vertexBuffer()->create(m_particleMaxCount * 6))
+  {
+    // error!
+    return false;
+  }
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! SceneNodeObject override. Adds object render data for rendering with given renderer. */
+bool ParticleEmitter::addForRendering(Renderer* renderer)
+{
+      // Quad looks like follows:
+      //
+      //   (0,3)  (5)
+      //    *------*
+      //    |\     |
+      //    | \Tri2|
+      //    |  \   |
+      //    |   \  |
+      //    |    \ |
+      //    |Tri1 \|
+      //    |      |
+      //    *------*
+      //   (1)   (2,4)
+
+      //*data++ = pos.x;
+      //*data++ = pos.y;
+      //*data++ = 0;
+      //*data++ = glyphData->m_textureRect.x;
+      //*data++ = glyphData->m_textureRect.y;
+      //*data++ = color.red;
+      //*data++ = color.green;
+      //*data++ = color.blue;
+      //*data++ = color.alpha;
+
+      //*data++ = pos.x;
+      //*data++ = pos.y + height;
+      //*data++ = 0;
+      //*data++ = glyphData->m_textureRect.x;
+      //*data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
+      //*data++ = color.red;
+      //*data++ = color.green;
+      //*data++ = color.blue;
+      //*data++ = color.alpha;
+
+      //*data++ = pos.x + width;
+      //*data++ = pos.y + height;
+      //*data++ = 0;
+      //*data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
+      //*data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
+      //*data++ = color.red;
+      //*data++ = color.green;
+      //*data++ = color.blue;
+      //*data++ = color.alpha;
+
+      //*data++ = pos.x;
+      //*data++ = pos.y;
+      //*data++ = 0;
+      //*data++ = glyphData->m_textureRect.x;
+      //*data++ = glyphData->m_textureRect.y;
+      //*data++ = color.red;
+      //*data++ = color.green;
+      //*data++ = color.blue;
+      //*data++ = color.alpha;
+
+      //*data++ = pos.x + width;
+      //*data++ = pos.y + height;
+      //*data++ = 0;
+      //*data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
+      //*data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
+      //*data++ = color.red;
+      //*data++ = color.green;
+      //*data++ = color.blue;
+      //*data++ = color.alpha;
+
+      //*data++ = pos.x + width;
+      //*data++ = pos.y;
+      //*data++ = 0;
+      //*data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
+      //*data++ = glyphData->m_textureRect.y;
+      //*data++ = color.red;
+      //*data++ = color.green;
+      //*data++ = color.blue;
+      //*data++ = color.alpha;
+
+  Matrix4f matrix = Matrix4f::IDENTITY;
+  return renderer->addForRendering(matrix, m_renderData);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
