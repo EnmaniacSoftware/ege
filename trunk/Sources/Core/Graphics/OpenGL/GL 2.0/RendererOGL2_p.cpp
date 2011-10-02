@@ -31,6 +31,7 @@ static GLenum MapPrimitiveType(EGEGraphics::RenderPrimitiveType type)
     case EGEGraphics::RPT_TRIANGLE_FAN:     return GL_TRIANGLE_FAN;
     case EGEGraphics::RPT_LINES:            return GL_LINES;
     case EGEGraphics::RPT_LINE_LOOP:        return GL_LINE_LOOP;
+    case EGEGraphics::RPT_POINTS:           return GL_POINTS;
   }
 
   // default
@@ -145,6 +146,9 @@ void RendererPrivate::setViewport(const PViewport& viewport)
 
   // set viewport to physical region occupied by render target
   glViewport((GLint) actualRect.x, (GLint) actualRect.y, (GLsizei) actualRect.width, (GLsizei) actualRect.height);
+
+  // set scissor
+  glScissor((GLint) actualRect.x, (GLint) actualRect.y, (GLsizei) actualRect.width, (GLsizei) actualRect.height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets render target. */
@@ -188,6 +192,30 @@ void RendererPrivate::flush()
       PIndexBuffer& indexBuffer   = data.component->indexBuffer();
       PMaterial& material         = data.component->material();
 
+      // apply scissor test
+      if (data.component->clipRect().isNull())
+      {
+        glDisable(GL_SCISSOR_TEST);
+      }
+      else
+      {
+        glEnable(GL_SCISSOR_TEST);
+
+        Rectf clipRect = data.component->clipRect();
+
+        // check if conversion from "upper-left" corner to "lower-left" for current orientation is necessary
+        if (!d_func()->m_renderTarget->requiresTextureFlipping())
+        {
+          // convert "upper-left" corner to "lower-left"
+          clipRect.y = d_func()->m_renderTarget->height() - clipRect.height - clipRect.y;
+        }
+
+        // apply opposite rotation to rectangle to convert it into native (non-transformed) coordinate
+        clipRect = d_func()->applyRotation(clipRect, -d_func()->m_renderTarget->orientationRotation());
+
+        glScissor(static_cast<GLint>(clipRect.x), static_cast<GLint>(clipRect.y), static_cast<GLsizei>(clipRect.width), static_cast<GLsizei>(clipRect.height));
+      }
+
       //if (data.component->name() == "level-meter-classic")
       //{
       //  int a = 1;
@@ -221,7 +249,15 @@ void RendererPrivate::flush()
           d_func()->m_batchCount++;
 
           // lock vertex data
+          s32 ik = vertexBuffer->vertexCount();
           void* vertexData = vertexBuffer->lock(0, vertexBuffer->vertexCount());
+
+          if (itQueue->first == 150)
+          {
+              glEnable( GL_POINT_SPRITE_ARB );
+
+              glPointSize(12.0f);
+          }
 
           // go thru all buffers
           for (VertexBuffer::SemanticsList::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
@@ -324,6 +360,11 @@ void RendererPrivate::flush()
           glDisable(GL_BLEND);
           glMatrixMode(GL_TEXTURE);
           glLoadIdentity();
+
+          if (itQueue->first == 150)
+          {
+              glDisable( GL_POINT_SPRITE_ARB );
+          }
         }
       }
     }
@@ -565,6 +606,18 @@ void RendererPrivate::detectCapabilities()
     if (glGenBuffers && glBindBuffer && glBufferData && glBufferSubData && glDeleteBuffers && glMapBuffer && glUnmapBuffer)
     {
       Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VBO, true);
+    }
+  }
+
+  // check if point sprites are supported
+  if (isExtensionSupported("GL_ARB_point_parameters") && isExtensionSupported("GL_ARB_point_sprite"))
+  {
+    glPointParameterf  = (PFNGLPOINTPARAMETERFARBPROC) wglGetProcAddress("glPointParameterfARB");
+    glPointParameterfv = (PFNGLPOINTPARAMETERFVARBPROC) wglGetProcAddress("glPointParameterfvARB");
+
+    if (glPointParameterf && glPointParameterfv)
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE, true);
     }
   }
 }

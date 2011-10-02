@@ -28,7 +28,7 @@ DataBuffer::~DataBuffer()
 /*! Gets pointer to data at given byte offset. */
 void* DataBuffer::data(s64 offset) const
 {
-    return (offset < size()) ? (static_cast<u8*>(m_data) + offset) : NULL;
+  return (offset < size()) ? (static_cast<u8*>(m_data) + offset) : NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Clears buffer. If FULL flag is set deallocates internal buffers as well. */

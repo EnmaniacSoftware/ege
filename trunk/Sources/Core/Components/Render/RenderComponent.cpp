@@ -14,7 +14,12 @@ EGE_DEFINE_DELETE_OPERATORS(RenderComponent)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderComponent::RenderComponent(Application* app, const String& name, s32 priority, EGEGraphics::RenderPrimitiveType primitive) 
-: IComponent(app, EGE_OBJECT_UID_RENDER_COMPONENT, name), m_priority(priority), m_primitiveType(primitive), m_hash(0), m_hashInvalid(true)
+: IComponent(app, EGE_OBJECT_UID_RENDER_COMPONENT, name), 
+  m_priority(priority), 
+  m_primitiveType(primitive), 
+  m_hash(0), 
+  m_hashInvalid(true), 
+  m_clipRect(Rectf::INVALID)
 {
   m_indexBuffer  = ege_new IndexBuffer(app);
   m_vertexBuffer = ege_new VertexBuffer(app);
@@ -123,5 +128,11 @@ void RenderComponent::calculateHash()
   
   // store new hash
   m_hash = hash;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets clipping rectangle. */
+void RenderComponent::setClipRect(const Rectf& rect)
+{
+  m_clipRect = rect;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

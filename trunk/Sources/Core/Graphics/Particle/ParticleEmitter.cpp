@@ -1,7 +1,11 @@
 #include "Core/Graphics/Particle/ParticleEmitter.h"
+#include <EGEGraphics.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE
+
+  // TAGE
+  static bool pointSprite = true;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -35,10 +39,17 @@ ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNo
                                                                          m_particleSpeedVariance(0.0f)
 {
   // create render data
-  m_renderData = ege_new RenderComponent(app, name, EGEGraphics::RP_MAIN);
+  m_renderData = ege_new RenderComponent(app, name, EGEGraphics::RP_MAIN + 100, pointSprite ? EGEGraphics::RPT_POINTS : EGEGraphics::RPT_TRIANGLES);
   if (m_renderData)
   {
-    m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_T2_C4);
+    if (pointSprite)
+    {
+      m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
+    }
+    else
+    {
+      m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_T2_C4);
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -100,7 +111,7 @@ void ParticleEmitter::update(const Time& time)
     }
   }
 
-  float32* data = static_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_activeParticlesCount * 6));
+  //float32* data = static_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_activeParticlesCount * ((pointSprite) ? 1 : 6)));
 
   s32 i = 0;
   while (i < m_activeParticlesCount)
@@ -328,7 +339,7 @@ bool ParticleEmitter::allocateParticlesData()
   m_activeParticlesCount = Math::Min(m_activeParticlesCount, m_particleMaxCount);
 
   // update render data
-  if (!m_renderData->vertexBuffer()->create(m_particleMaxCount * 6))
+  if (!m_renderData->vertexBuffer()->create(m_particleMaxCount * ((pointSprite) ? 1 : 6)))
   {
     // error!
     return false;
@@ -340,6 +351,39 @@ bool ParticleEmitter::allocateParticlesData()
 /*! SceneNodeObject override. Adds object render data for rendering with given renderer. */
 bool ParticleEmitter::addForRendering(Renderer* renderer)
 {
+  // update vertex data
+  float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_activeParticlesCount * ((pointSprite) ? 1 : 6)));
+  if (data)
+  {
+    // go thru all active particles
+    if (pointSprite)
+    {
+      for (s32 i = 0; i < m_activeParticlesCount; ++i)
+      {
+        const ParticleData& particleData = m_particles[i];
+
+        if (i == 0)
+        EGE_PRINT("%f %f %f -- %f %f %f %f", particleData.position.x, particleData.position.y, particleData.position.z, particleData.color.red, particleData.color.green, particleData.color.blue, particleData.color.alpha);
+
+        *data++ = particleData.position.x;
+        *data++ = particleData.position.y;
+        *data++ = particleData.position.z;
+        *data++ = particleData.color.red;
+        *data++ = particleData.color.green;
+        *data++ = particleData.color.blue;
+        *data++ = particleData.color.alpha;
+      }
+    }
+    else
+    {
+      for (s32 i = 0; i < m_activeParticlesCount; ++i)
+      {
+      }
+    }
+  }
+
+  m_renderData->vertexBuffer()->unlock();
+
       // Quad looks like follows:
       //
       //   (0,3)  (5)
@@ -414,7 +458,12 @@ bool ParticleEmitter::addForRendering(Renderer* renderer)
       //*data++ = color.blue;
       //*data++ = color.alpha;
 
-  Matrix4f matrix = Matrix4f::IDENTITY;
-  return renderer->addForRendering(matrix, m_renderData);
+  if (0 < m_activeParticlesCount)
+  {
+    Matrix4f matrix = Matrix4f::IDENTITY;
+    return renderer->addForRendering(matrix, m_renderData);
+  }
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

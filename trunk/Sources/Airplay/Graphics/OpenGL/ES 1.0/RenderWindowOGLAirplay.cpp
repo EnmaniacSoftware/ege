@@ -62,7 +62,7 @@ void RenderWindowOGLAirplay::create(const ConfigParams& params)
     // check if rotation from portrait to landscape is needed for render target
     if (m_physicalWidth != m_width)
     {
-      m_orientationRotation.fromDegrees(270);
+      m_orientationRotation.fromDegrees(-90);
     }
   }
   else
@@ -73,7 +73,7 @@ void RenderWindowOGLAirplay::create(const ConfigParams& params)
     // check if rotation from landscape to portrait is needed for render target
     if (m_physicalWidth != m_width)
     {
-      m_orientationRotation.fromDegrees(-270);
+      m_orientationRotation.fromDegrees(90);
     }
   }
 

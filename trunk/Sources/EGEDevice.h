@@ -40,6 +40,7 @@ namespace EGEDevice
     RENDER_CAPS_FBO,                                      /*!< Frame buffer object supported (GL_EXT_framebuffer_object). */
     RENDER_CAPS_VBO,                                      /*!< Vertex buffer object supported (GL_ARB_vertex_buffer_object). */
     RENDER_CAPS_COMBINE_TEXTURE_ENV,                      /*!< Combine texture environment mode supported (GL_ARB_texture_env_combine). */
+    RENDER_CAPS_POINT_SPRITE,                             /*!< Point sprite supported (GL_ARB_point_sprite && GL_ARB_point_parameters). */
     RENDER_CAPS_COUNT
   };
 }

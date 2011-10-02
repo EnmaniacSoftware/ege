@@ -123,6 +123,11 @@ class Renderer : public Object
 
   private:
 
+    /* Updates rectangle coordinates by given angle. */
+    Rectf applyRotation(const Rectf& rect, const Angle& angle) const;
+
+  private:
+
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(Renderer);
 
     /*! Currently active render target. */

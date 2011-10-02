@@ -64,7 +64,13 @@ bool ParticleTest::initialize()
 
   // create particle emitter
   m_emitter = ege_new ParticleEmitter(app(), "ParticleEmitter1");
+  m_emitter->setParticleSpeed(50.0f);
+  m_emitter->setParticleSpeedVariance(10.0f);
+  m_emitter->setEmissionDirection(Vector3f(1.0f, 0.0f, 0.0f));
+  m_emitter->setEmissionAngle(Angle::FromDegrees(90.0f));
+
   app()->sceneManager()->rootNode()->attachObject(m_emitter);
+  app()->sceneManager()->rootNode()->physics()->setPosition(Vector4f(200, 200, 0));
   m_emitter->start();
 
   return true;

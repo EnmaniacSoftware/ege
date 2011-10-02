@@ -126,6 +126,30 @@ void Renderer::resetStats()
   m_vertexCount = 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Updates rectangle coordinates by given angle. */
+Rectf Renderer::applyRotation(const Rectf& rect, const Angle& angle) const
+{
+  Rectf out;
+
+  if (EGEMath::PI == angle.radians() * 2.0f)
+  {
+    out.x       = rect.y;
+    out.y       = m_renderTarget->width() - rect.width - rect.x;
+    out.width   = rect.height;
+    out.height  = rect.width;
+  }
+  else if (-EGEMath::PI == angle.radians() * 2.0f)
+  {
+    EGE_ASSERT("Implement!");
+  }
+  else
+  {
+    out = rect;
+  }
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -27,6 +27,10 @@ extern PFNGLDELETEBUFFERSPROC glDeleteBuffers;
 extern PFNGLMAPBUFFERPROC glMapBuffer;
 extern PFNGLUNMAPBUFFERPROC glUnmapBuffer;
 
+// point sprites
+extern PFNGLPOINTPARAMETERFARBPROC  glPointParameterf;
+extern PFNGLPOINTPARAMETERFVARBPROC glPointParameterfv;
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_CORE_EXTENSIONSOGL_H

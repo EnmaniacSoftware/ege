@@ -47,6 +47,10 @@ class RenderComponent : public IComponent
     void setMaterial(const PMaterial& material);
     /* Returns hash. */
     u32 hash();
+    /* Sets clipping rectangle. */
+    void setClipRect(const Rectf& rect);
+    /*! Returns clipping rectangle. */
+    inline const Rectf& clipRect() const { return m_clipRect; }
 
   private:
 
@@ -75,6 +79,8 @@ class RenderComponent : public IComponent
     u32 m_hash;
     /*! Hash valuidity flag. */
     bool m_hashInvalid;
+    /*! Viewport clipping rectangle (in window coordinates). If INVALID entire viewport will be covered. */
+    Rectf m_clipRect;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

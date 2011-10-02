@@ -3,6 +3,7 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 // multitexturing
 PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTexture = NULL;
 PFNGLACTIVETEXTUREARBPROC glActiveTexture = NULL;
@@ -22,4 +23,9 @@ PFNGLBUFFERSUBDATAPROC glBufferSubData = NULL;
 PFNGLDELETEBUFFERSPROC glDeleteBuffers = NULL;
 PFNGLMAPBUFFERPROC glMapBuffer = NULL;
 PFNGLUNMAPBUFFERPROC glUnmapBuffer = NULL;
+
+// point sprites
+PFNGLPOINTPARAMETERFARBPROC glPointParameterf = NULL;
+PFNGLPOINTPARAMETERFVARBPROC glPointParameterfv = NULL;
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

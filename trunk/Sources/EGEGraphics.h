@@ -24,7 +24,15 @@ namespace EGEGraphics
       RPT_TRIANGLE_STRIPS,
       RPT_TRIANGLE_FAN,
       RPT_LINES,
-      RPT_LINE_LOOP
+      RPT_LINE_LOOP,
+      RPT_POINTS
+    };
+
+    /*! Render type. */
+    enum RenderType
+    {
+      RT_NORMAL,
+      RT_POINT_SPRITE
     };
 
     /** Blend factors.
@@ -58,6 +66,14 @@ namespace EGEGraphics
       BF_ONE_MINUS_SRC_ALPHA,
       BF_ONE_MINUS_DST_ALPHA
     };
+
+    /** Screen orientation. */
+    //enum ScreenOrientation
+    //{
+    //  SO_NORMAL,
+    //  SO_ROT_90,
+    //  SO_ROT_270
+    //};
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

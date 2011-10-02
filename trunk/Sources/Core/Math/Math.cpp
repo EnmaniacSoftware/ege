@@ -383,7 +383,7 @@ float32 Math::ACos(float32 radians)
 {
   if (-1.0f < radians)
   {
-    return (1.0f > radians) ? acos(radians) : 0;
+    return (1.0f > radians) ? acosf(radians) : 0;
   }
 
   return EGEMath::PI; 
