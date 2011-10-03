@@ -19,7 +19,8 @@ RenderComponent::RenderComponent(Application* app, const String& name, s32 prior
   m_primitiveType(primitive), 
   m_hash(0), 
   m_hashInvalid(true), 
-  m_clipRect(Rectf::INVALID)
+  m_clipRect(Rectf::INVALID),
+  m_pointSize(1.0f)
 {
   m_indexBuffer  = ege_new IndexBuffer(app);
   m_vertexBuffer = ege_new VertexBuffer(app);
@@ -134,5 +135,12 @@ void RenderComponent::calculateHash()
 void RenderComponent::setClipRect(const Rectf& rect)
 {
   m_clipRect = rect;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets point size. */
+void RenderComponent::setPointSize(float32 size)
+{
+  EGE_ASSERT(0 <= size);
+  m_pointSize = size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

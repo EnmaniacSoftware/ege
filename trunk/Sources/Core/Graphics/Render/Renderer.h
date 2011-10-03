@@ -58,6 +58,8 @@ class Renderer : public Object
     void setProjectionMatrix(const Matrix4f& matrix);
     /* Sets view matrix. */
     void setViewMatrix(const Matrix4f& matrix);
+    /*! Returns view matrix. */
+    inline const Matrix4f& viewMatrix() const { return m_viewMatrix; }
 
     // scene manager related method
 //    void setSceneManager( const SceneManager* pcSceneManager );                              // sets scene manager which is in use

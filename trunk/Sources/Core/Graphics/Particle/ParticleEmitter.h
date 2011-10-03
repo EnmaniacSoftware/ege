@@ -43,7 +43,7 @@ class ParticleEmitter : public SceneNodeObject
     void start();
     /* Updates object. */
     void update(const Time& time);
-    /* Sets system life span. */
+    /* Sets system life span. Negative time causes emitter to live infinitely. */
     void setLifeSpan(const Time& time);
     /* Sets maximum number of particles. */
     void setParticleMaxCount(s32 count);
@@ -55,6 +55,8 @@ class ParticleEmitter : public SceneNodeObject
     void setEmissionAngleVariance(const Angle& variance);
     /* Sets emitter direction. */
     void setEmissionDirection(const Vector3f& direction);
+    /* Sets emitter direction mask. */
+    void setEmissionDirectionMask(const Vector3f& directionMask);
     /* Sets particle start size. */
     void setParticleStartSize(const Vector2f& size);
     /* Sets particle start size variance. */
@@ -81,6 +83,8 @@ class ParticleEmitter : public SceneNodeObject
     void setParticleSpeedVariance(float32 variance);
     /*! Returns number of active particles. */
     inline s32 activeParticlesCount() const { return m_activeParticlesCount; }
+    /* Sets material. */
+    void setMaterial(const PMaterial& material);
 
   private:
 
@@ -137,6 +141,8 @@ class ParticleEmitter : public SceneNodeObject
     Angle m_emissionAngleVariance;
     /*! Emission direction. */
     Vector3f m_emissionDirection;
+    /*! Emission direction mask. Mask allows to restrict direction of emission if required. */
+    Vector3f m_emissionDirectionMask;
     /*! Particles start position variance. */
     Vector3f m_particleStartPositionVariance;
     /*! Particles start size. */
@@ -168,7 +174,7 @@ class ParticleEmitter : public SceneNodeObject
     /*! Random generator. */
     Random m_random;
     /*! Render data. */
-    EGE::PRenderComponent m_renderData;
+    PRenderComponent m_renderData;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

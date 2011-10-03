@@ -23,11 +23,12 @@ class TVector3
     TVector3(T x, T y, T z);
     TVector3(const TVector3& vector);
 
-		inline void       operator+=(const TVector3& vector);
-		inline void       operator-=(const TVector3& vector);
-    inline bool       operator==(const TVector3& vector) const;
-    inline bool       operator!=(const TVector3& vector) const;
-    inline TVector3&  operator*=(const T scalar);
+		inline void       operator += (const TVector3& vector);
+		inline void       operator -= (const TVector3& vector);
+    inline bool       operator == (const TVector3& vector) const;
+    inline bool       operator != (const TVector3& vector) const;
+    inline TVector3&  operator *= (const T scalar);
+    inline TVector3   operator - () const;
 
     /* Sets vector data. */
     inline void set(T x, T y, T z);
@@ -150,7 +151,7 @@ TVector3<T>::TVector3(const TVector3& vector) : x(vector.x), y(vector.y), z(vect
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TVector3<T>::operator+=(const TVector3<T>& vector)
+void TVector3<T>::operator += (const TVector3<T>& vector)
 {
   x += vector.x;
   y += vector.y;
@@ -158,7 +159,7 @@ void TVector3<T>::operator+=(const TVector3<T>& vector)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TVector3<T>::operator-=(const TVector3<T>& vector)
+void TVector3<T>::operator -= (const TVector3<T>& vector)
 {
   x -= vector.x;
   y -= vector.y;
@@ -166,25 +167,31 @@ void TVector3<T>::operator-=(const TVector3<T>& vector)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TVector3<T>::operator==(const TVector3& vector) const
+bool TVector3<T>::operator == (const TVector3& vector) const
 {
   return (x == vector.x) && (y == vector.y) && (z == vector.z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TVector3<T>::operator!=(const TVector3& vector) const
+bool TVector3<T>::operator != (const TVector3& vector) const
 {
   return (x != vector.x) || (y != vector.y) || (z != vector.z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector3<T>& TVector3<T>::operator*=(const T scalar)
+TVector3<T>& TVector3<T>::operator *= (const T scalar)
 {
   x *= scalar;
   y *= scalar;
   z *= scalar;
 
   return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector3<T> TVector3<T>::operator - () const
+{
+  return TVector3<T>(-x, -y, -z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets vector components. */
@@ -298,6 +305,12 @@ template <typename T>
 inline TVector3<T> operator * (const TVector3<T>& left, T scalar)
 {
   return TVector3<T>(left.x * scalar, left.y * scalar, left.z * scalar);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TVector3<T> operator * (const TVector3<T>& left, const TVector3<T>& right)
+{
+  return TVector3<T>(left.x * right.x, left.y * right.y, left.z * right.z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

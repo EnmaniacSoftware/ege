@@ -12,12 +12,13 @@ namespace EGEVertexBuffer
   /*! Vertex array types. */
   enum ArrayType
   {
-    AT_NONE          = 0,
-    AT_POSITION_XYZ  = 1,
-    AT_NORMAL        = 2,
-    AT_TEXTURE_UV    = 4,
-    AT_COLOR_RGBA    = 8,
-    AT_TANGENT       = 16
+    AT_NONE               = 0,
+    AT_POSITION_XYZ       = 1,
+    AT_NORMAL             = 2,
+    AT_TEXTURE_UV         = 4,
+    AT_COLOR_RGBA         = 8,
+    AT_TANGENT            = 16,
+    AT_POINT_SPRITE_SIZE  = 32
   };
 
   /*! Predefined semantic types. */

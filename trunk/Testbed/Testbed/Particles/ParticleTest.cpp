@@ -64,10 +64,18 @@ bool ParticleTest::initialize()
 
   // create particle emitter
   m_emitter = ege_new ParticleEmitter(app(), "ParticleEmitter1");
+  m_emitter->setParticleMaxCount(1500);
   m_emitter->setParticleSpeed(50.0f);
   m_emitter->setParticleSpeedVariance(10.0f);
   m_emitter->setEmissionDirection(Vector3f(1.0f, 0.0f, 0.0f));
-  m_emitter->setEmissionAngle(Angle::FromDegrees(90.0f));
+  m_emitter->setEmissionDirectionMask(Vector3f(1.0f, 1.0f, 0.0f));
+  m_emitter->setEmissionAngle(Angle::FromDegrees(10.0f));
+  m_emitter->setParticleStartSize(Vector2f(10, 10));
+  m_emitter->setParticleEndSize(Vector2f(10, 10));
+  m_emitter->setEmissionRate(250);
+
+  PResourceMaterial resource = app()->resourceManager()->resource(RESOURCE_NAME_MATERIAL, "particle");
+  m_emitter->setMaterial(resource->createInstance());
 
   app()->sceneManager()->rootNode()->attachObject(m_emitter);
   app()->sceneManager()->rootNode()->physics()->setPosition(Vector4f(200, 200, 0));

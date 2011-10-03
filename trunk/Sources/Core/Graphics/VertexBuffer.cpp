@@ -41,11 +41,12 @@ bool VertexBuffer::addArray(EGEVertexBuffer::ArrayType type)
     // calculate according to type
     switch (iter->type)
     {
-      case EGEVertexBuffer::AT_POSITION_XYZ:  offset += 3; break;
-      case EGEVertexBuffer::AT_COLOR_RGBA:    offset += 4; break;
-      case EGEVertexBuffer::AT_NORMAL:        offset += 3; break;
-      case EGEVertexBuffer::AT_TEXTURE_UV:    offset += 2; break;
-      case EGEVertexBuffer::AT_TANGENT:       offset += 3; break;
+      case EGEVertexBuffer::AT_POSITION_XYZ:       offset += 3; break;
+      case EGEVertexBuffer::AT_COLOR_RGBA:         offset += 4; break;
+      case EGEVertexBuffer::AT_NORMAL:             offset += 3; break;
+      case EGEVertexBuffer::AT_TEXTURE_UV:         offset += 2; break;
+      case EGEVertexBuffer::AT_TANGENT:            offset += 3; break;
+      case EGEVertexBuffer::AT_POINT_SPRITE_SIZE:  offset += 1; break;
     }
 
     // check if the same array type is already in
@@ -171,11 +172,12 @@ u32 VertexBuffer::vertexSize() const
     {
       switch (iter->type)
       {
-        case EGEVertexBuffer::AT_POSITION_XYZ:  m_vertexSize += 3; break;
-        case EGEVertexBuffer::AT_COLOR_RGBA:    m_vertexSize += 4; break;
-        case EGEVertexBuffer::AT_NORMAL:        m_vertexSize += 3; break;
-        case EGEVertexBuffer::AT_TEXTURE_UV:    m_vertexSize += 2; break;
-        case EGEVertexBuffer::AT_TANGENT:       m_vertexSize += 3; break;
+        case EGEVertexBuffer::AT_POSITION_XYZ:       m_vertexSize += 3; break;
+        case EGEVertexBuffer::AT_COLOR_RGBA:          m_vertexSize += 4; break;
+        case EGEVertexBuffer::AT_NORMAL:              m_vertexSize += 3; break;
+        case EGEVertexBuffer::AT_TEXTURE_UV:          m_vertexSize += 2; break;
+        case EGEVertexBuffer::AT_TANGENT:             m_vertexSize += 3; break;
+        case EGEVertexBuffer::AT_POINT_SPRITE_SIZE:   m_vertexSize += 1; break;
       }
     }
 

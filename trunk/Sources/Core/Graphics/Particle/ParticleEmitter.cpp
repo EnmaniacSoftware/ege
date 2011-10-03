@@ -15,7 +15,7 @@ EGE_DEFINE_DELETE_OPERATORS(ParticleEmitter)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNodeObject(name),
                                                                          m_active(false), 
-                                                                         m_lifeSpan(10.0f), 
+                                                                         m_lifeSpan(-1.0f), 
                                                                          m_lifeDuration(0.0f), 
                                                                          m_particleMaxCount(100), 
                                                                          m_activeParticlesCount(0), 
@@ -24,6 +24,7 @@ ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNo
                                                                          m_emissionAngle(EGEMath::TWO_PI),
                                                                          m_emissionAngleVariance(0),
                                                                          m_emissionDirection(Vector3f::UNIT_X),
+                                                                         m_emissionDirectionMask(Vector3f::ONE),
                                                                          m_particleStartPositionVariance(Vector3f::ZERO), 
                                                                          m_particleStartSize(Vector2f(10, 10)), 
                                                                          m_particleStartSizeVariance(Vector2f(0, 0)), 
@@ -39,16 +40,29 @@ ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNo
                                                                          m_particleSpeedVariance(0.0f)
 {
   // create render data
-  m_renderData = ege_new RenderComponent(app, name, EGEGraphics::RP_MAIN + 100, pointSprite ? EGEGraphics::RPT_POINTS : EGEGraphics::RPT_TRIANGLES);
+  m_renderData = ege_new RenderComponent(app, name, EGEGraphics::RP_MAIN, pointSprite ? EGEGraphics::RPT_POINTS : EGEGraphics::RPT_TRIANGLES);
   if (m_renderData)
   {
     if (pointSprite)
     {
-      m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
+      // Point sprites have:
+      // - position
+      // - color
+      // - size (optionally, 1 float)
+      if (!m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4) || 
+          !m_renderData->vertexBuffer()->addArray(EGEVertexBuffer::AT_POINT_SPRITE_SIZE))
+      {
+        // error!
+        m_renderData = NULL;
+      }
     }
     else
     {
-      m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_T2_C4);
+      if (!m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_T2_C4))
+      {
+        // error!
+        m_renderData = NULL;
+      }
     }
   }
 }
@@ -88,13 +102,17 @@ void ParticleEmitter::update(const Time& time)
   // process new particles only when active
   if (m_active)
   {
-    // update life time
-    m_lifeDuration += time;
-    if (m_lifeDuration >= m_lifeSpan)
+    // check if finite life span is set
+    if (0 <= m_lifeSpan.microseconds())
     {
-      // life came to an end
-      m_active = false;
-      return;
+      // update life time
+      m_lifeDuration += time;
+      if (m_lifeDuration >= m_lifeSpan)
+      {
+        // life came to an end
+        m_active = false;
+        return;
+      }
     }
 
     // update particles to emit counter
@@ -110,8 +128,6 @@ void ParticleEmitter::update(const Time& time)
       m_emitCount -= 1.0f;
     }
   }
-
-  //float32* data = static_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_activeParticlesCount * ((pointSprite) ? 1 : 6)));
 
   s32 i = 0;
   while (i < m_activeParticlesCount)
@@ -150,12 +166,6 @@ void ParticleEmitter::update(const Time& time)
 
       // decrease number of active particles
 			--m_activeParticlesCount;
-			
-			//if ( particleCount == 0 && autoRemoveOnFinish_ ) {
-			//	[self unscheduleUpdate];
-			//	[parent_ removeChild:self cleanup:YES];
-			//	return;
-			//}
     }
   }
 }
@@ -272,6 +282,12 @@ void ParticleEmitter::setEmissionDirection(const Vector3f& direction)
   m_emissionDirection = direction;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets emitter direction mask. */
+void ParticleEmitter::setEmissionDirectionMask(const Vector3f& directionMask)
+{
+  m_emissionDirectionMask = directionMask;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Initializes particle at given index. */
 void ParticleEmitter::initializeParticle(s32 index)
 {
@@ -287,6 +303,9 @@ void ParticleEmitter::initializeParticle(s32 index)
 	// calculate direction
 	Angle angle = m_emissionAngle + m_emissionAngleVariance.radians() * m_random(-1.0f, 1.0f);
   particleData.direction = Math::RandomDeviant(&angle, &m_emissionDirection);
+  particleData.direction.x *= m_emissionDirectionMask.x;
+  particleData.direction.y *= m_emissionDirectionMask.y;
+  particleData.direction.z *= m_emissionDirectionMask.z;
   particleData.direction.normalize();
 
   // apply speed
@@ -358,13 +377,21 @@ bool ParticleEmitter::addForRendering(Renderer* renderer)
     // go thru all active particles
     if (pointSprite)
     {
+      // calculate point size
+      // NOTE: It is not always possible to define size per particle. That is why, we calculate the size here for entire batch. Additionally, we store size
+      //       per sprite (based on current data) so renderer with proper capabilities can utilize it. Anyways, point sprites can only be square'ish.
+      float32 size = Math::Max(m_particleStartSize.x + m_particleStartSizeVariance.x, m_particleStartSize.y + m_particleStartSizeVariance.y);
+      size = Math::Max(size, m_particleEndSize.x + m_particleEndSizeVariance.x);
+      size = Math::Max(size, m_particleEndSize.y + m_particleEndSizeVariance.y);
+
+      // set point size
+      m_renderData->setPointSize(size);
+
       for (s32 i = 0; i < m_activeParticlesCount; ++i)
       {
         const ParticleData& particleData = m_particles[i];
 
-        if (i == 0)
-        EGE_PRINT("%f %f %f -- %f %f %f %f", particleData.position.x, particleData.position.y, particleData.position.z, particleData.color.red, particleData.color.green, particleData.color.blue, particleData.color.alpha);
-
+        // NOTE: point sprites position determines sprite center point
         *data++ = particleData.position.x;
         *data++ = particleData.position.y;
         *data++ = particleData.position.z;
@@ -372,91 +399,106 @@ bool ParticleEmitter::addForRendering(Renderer* renderer)
         *data++ = particleData.color.green;
         *data++ = particleData.color.blue;
         *data++ = particleData.color.alpha;
+        *data++ = Math::Max(particleData.size.x, particleData.size.y);
+
+        // NOTE: Point sprites auto texture coords generator, generates them in non-OpenGL mode, ie like DX - 0 is at top 1 is at bottom
       }
     }
     else
     {
+      const Matrix4f& viewMatrix = renderer->viewMatrix();
+
+      Vector3f right(viewMatrix.data[0], viewMatrix.data[4], viewMatrix.data[8]);
+      Vector3f up(viewMatrix.data[1], viewMatrix.data[5], viewMatrix.data[9]);
+
       for (s32 i = 0; i < m_activeParticlesCount; ++i)
       {
+        const ParticleData& particleData = m_particles[i];
+
+        // Quad looks like follows:
+        //
+        //   (0,3)  (5)
+        //    *------*
+        //    |\     |
+        //    | \Tri2|
+        //    |  \   |
+        //    |   \  |
+        //    |    \ |
+        //    |Tri1 \|
+        //    |      |
+        //    *------*
+        //   (1)   (2,4)
+
+        Vector3f halfSize(particleData.size.x * 0.5f, particleData.size.y * 0.5f, 0);
+        Vector3f point0 = particleData.position + ((-right - up) * halfSize);
+        Vector3f point1 = particleData.position + (( right - up) * halfSize);
+        Vector3f point2 = particleData.position + (( right + up) * halfSize);
+        Vector3f point5 = particleData.position + ((-right + up) * halfSize);
+
+        *data++ = point0.x;
+        *data++ = point0.y;
+        *data++ = point0.z;
+        *data++ = 0;
+        *data++ = 1;
+        *data++ = particleData.color.red;
+        *data++ = particleData.color.green;
+        *data++ = particleData.color.blue;
+        *data++ = particleData.color.alpha;
+
+        *data++ = point1.x;
+        *data++ = point1.y;
+        *data++ = point1.z;
+        *data++ = 0;
+        *data++ = 0;
+        *data++ = particleData.color.red;
+        *data++ = particleData.color.green;
+        *data++ = particleData.color.blue;
+        *data++ = particleData.color.alpha;
+
+        *data++ = point2.x;
+        *data++ = point2.y;
+        *data++ = point2.z;
+        *data++ = 1;
+        *data++ = 0;
+        *data++ = particleData.color.red;
+        *data++ = particleData.color.green;
+        *data++ = particleData.color.blue;
+        *data++ = particleData.color.alpha;
+
+        *data++ = point0.x;
+        *data++ = point0.y;
+        *data++ = point0.z;
+        *data++ = 0;
+        *data++ = 1;
+        *data++ = particleData.color.red;
+        *data++ = particleData.color.green;
+        *data++ = particleData.color.blue;
+        *data++ = particleData.color.alpha;
+
+        *data++ = point2.x;
+        *data++ = point2.y;
+        *data++ = point2.z;
+        *data++ = 1;
+        *data++ = 0;
+        *data++ = particleData.color.red;
+        *data++ = particleData.color.green;
+        *data++ = particleData.color.blue;
+        *data++ = particleData.color.alpha;
+
+        *data++ = point5.x;
+        *data++ = point5.y;
+        *data++ = point5.z;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = particleData.color.red;
+        *data++ = particleData.color.green;
+        *data++ = particleData.color.blue;
+        *data++ = particleData.color.alpha;
       }
     }
   }
 
   m_renderData->vertexBuffer()->unlock();
-
-      // Quad looks like follows:
-      //
-      //   (0,3)  (5)
-      //    *------*
-      //    |\     |
-      //    | \Tri2|
-      //    |  \   |
-      //    |   \  |
-      //    |    \ |
-      //    |Tri1 \|
-      //    |      |
-      //    *------*
-      //   (1)   (2,4)
-
-      //*data++ = pos.x;
-      //*data++ = pos.y;
-      //*data++ = 0;
-      //*data++ = glyphData->m_textureRect.x;
-      //*data++ = glyphData->m_textureRect.y;
-      //*data++ = color.red;
-      //*data++ = color.green;
-      //*data++ = color.blue;
-      //*data++ = color.alpha;
-
-      //*data++ = pos.x;
-      //*data++ = pos.y + height;
-      //*data++ = 0;
-      //*data++ = glyphData->m_textureRect.x;
-      //*data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
-      //*data++ = color.red;
-      //*data++ = color.green;
-      //*data++ = color.blue;
-      //*data++ = color.alpha;
-
-      //*data++ = pos.x + width;
-      //*data++ = pos.y + height;
-      //*data++ = 0;
-      //*data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
-      //*data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
-      //*data++ = color.red;
-      //*data++ = color.green;
-      //*data++ = color.blue;
-      //*data++ = color.alpha;
-
-      //*data++ = pos.x;
-      //*data++ = pos.y;
-      //*data++ = 0;
-      //*data++ = glyphData->m_textureRect.x;
-      //*data++ = glyphData->m_textureRect.y;
-      //*data++ = color.red;
-      //*data++ = color.green;
-      //*data++ = color.blue;
-      //*data++ = color.alpha;
-
-      //*data++ = pos.x + width;
-      //*data++ = pos.y + height;
-      //*data++ = 0;
-      //*data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
-      //*data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
-      //*data++ = color.red;
-      //*data++ = color.green;
-      //*data++ = color.blue;
-      //*data++ = color.alpha;
-
-      //*data++ = pos.x + width;
-      //*data++ = pos.y;
-      //*data++ = 0;
-      //*data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
-      //*data++ = glyphData->m_textureRect.y;
-      //*data++ = color.red;
-      //*data++ = color.green;
-      //*data++ = color.blue;
-      //*data++ = color.alpha;
 
   if (0 < m_activeParticlesCount)
   {
@@ -465,5 +507,11 @@ bool ParticleEmitter::addForRendering(Renderer* renderer)
   }
 
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets material. */
+void ParticleEmitter::setMaterial(const PMaterial& material)
+{
+  m_renderData->setMaterial(material);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

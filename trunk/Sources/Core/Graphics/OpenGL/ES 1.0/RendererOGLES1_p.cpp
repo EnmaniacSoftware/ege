@@ -191,29 +191,8 @@ void RendererPrivate::flush()
       PIndexBuffer indexBuffer   = data.component->indexBuffer();
       PMaterial material         = data.component->material();
 
-      // apply scissor test
-      if (data.component->clipRect().isNull())
-      {
-        glDisable(GL_SCISSOR_TEST);
-      }
-      else
-      {
-        glEnable(GL_SCISSOR_TEST);
-
-        Rectf clipRect = data.component->clipRect();
-
-        // check if conversion from "upper-left" corner to "lower-left" for current orientation is necessary
-        if (!d_func()->m_renderTarget->requiresTextureFlipping())
-        {
-          // convert "upper-left" corner to "lower-left"
-          clipRect.y = d_func()->m_renderTarget->height() - clipRect.height - clipRect.y;
-        }
-
-        // apply opposite rotation to rectangle to convert it into native (non-transformed) coordinate
-        clipRect = d_func()->applyRotation(clipRect, -d_func()->m_renderTarget->orientationRotation());
-
-        glScissor(static_cast<GLint>(clipRect.x), static_cast<GLint>(clipRect.y), static_cast<GLsizei>(clipRect.width), static_cast<GLsizei>(clipRect.height));
-      }
+      // apply general params
+      applyGeneralParams(data.component);
 
       // go thru all passes
       // NOTE: if there is no material, we consider it 1 pass
@@ -228,8 +207,8 @@ void RendererPrivate::flush()
         {
           const VertexBuffer::SemanticsList& semantics = vertexBuffer->semantics();
 
-          // apply material for current pass
-          applyMaterial(material, renderPass);
+          // apply pass related params
+          applyPassParams(data.component, material, renderPass);
 
           // NOTE: change to modelview after material is applied as it may change current matrix mode
           glMatrixMode(GL_MODELVIEW);
@@ -278,6 +257,12 @@ void RendererPrivate::flush()
                   glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
                   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
                 }
+                break;
+
+              case EGEVertexBuffer::AT_POINT_SPRITE_SIZE:
+
+                glPointSizePointerOES(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                glEnableClientState(GL_POINT_SIZE_ARRAY_ARB);                
                 break;
 
               //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
@@ -329,6 +314,12 @@ void RendererPrivate::flush()
             // disable texturing data on client side
             glClientActiveTexture(GL_TEXTURE0 + *itTextureUnit);
             glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+            // disable point sprites
+            if (EGEGraphics::RPT_POINTS == data.component->primitiveType())
+            {
+              glDisable(GL_POINT_SPRITE_ARB);
+            }
           }
           m_activeTextureUnits.clear();
 
@@ -336,6 +327,7 @@ void RendererPrivate::flush()
           glDisableClientState(GL_VERTEX_ARRAY);
           glDisableClientState(GL_NORMAL_ARRAY);
           glDisableClientState(GL_COLOR_ARRAY);
+          glDisableClientState(GL_POINT_SIZE_ARRAY_ARB);                
           glDisable(GL_BLEND);
           glMatrixMode(GL_TEXTURE);
           glLoadIdentity();
@@ -348,8 +340,8 @@ void RendererPrivate::flush()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Applies material for given pass. */
-void RendererPrivate::applyMaterial(const PMaterial& material, const RenderPass* pass)
+/*! Applies parameters for given pass. */
+void RendererPrivate::applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass* pass)
 {
   // disable blending by default
   glDisable(GL_BLEND);
@@ -400,6 +392,18 @@ void RendererPrivate::applyMaterial(const PMaterial& material, const RenderPass*
         glLoadIdentity();
         glTranslatef(texImg->rect().x, texImg->rect().y, 0.0f);
         glScalef(texImg->rect().width, texImg->rect().height, 1.0f);
+      }
+
+      // check if points are be rendered
+      if (EGEGraphics::RPT_POINTS == component->primitiveType())
+      {
+        // check if point sprites are supported
+        if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
+        {
+          glEnable(GL_POINT_SPRITE_ARB);
+
+          glTexEnvf(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE);
+        }
       }
     }
   }
@@ -516,6 +520,9 @@ void RendererPrivate::detectCapabilities()
 
   // Point sprite is supported by defult
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE, true);
+
+  // Point sprite size array is supported by default
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE_SIZE, true);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Checks if given extension is supported. */
@@ -563,5 +570,42 @@ bool RendererPrivate::isExtensionSupported(const char* extension) const
 
   // not found
   return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Applies general parameters. 
+ *  @note General parameters are the ones that require only one setup before component is rendered. 
+ */
+void RendererPrivate::applyGeneralParams(const PRenderComponent& component)
+{
+  // apply scissor test
+  if (component->clipRect().isNull())
+  {
+    glDisable(GL_SCISSOR_TEST);
+  }
+  else
+  {
+    glEnable(GL_SCISSOR_TEST);
+
+    Rectf clipRect = component->clipRect();
+
+    // check if conversion from "upper-left" corner to "lower-left" for current orientation is necessary
+    if (!d_func()->m_renderTarget->requiresTextureFlipping())
+    {
+      // convert "upper-left" corner to "lower-left"
+      clipRect.y = d_func()->m_renderTarget->height() - clipRect.height - clipRect.y;
+    }
+
+    // apply opposite rotation to rectangle to convert it into native (non-transformed) coordinate
+    clipRect = d_func()->applyRotation(clipRect, -d_func()->m_renderTarget->orientationRotation());
+
+    glScissor(static_cast<GLint>(clipRect.x), static_cast<GLint>(clipRect.y), static_cast<GLsizei>(clipRect.width), static_cast<GLsizei>(clipRect.height));
+  }
+
+  // check if points are be rendered
+  if (EGEGraphics::RPT_POINTS == component->primitiveType())
+  {
+    // set point size
+    glPointSize(component->pointSize());
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

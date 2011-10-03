@@ -23,9 +23,9 @@ class TVector2
     TVector2(T x, T y);
 		TVector2(const TVector2& vector);
 
-    inline void operator *= (T scalar);
-    inline bool operator == (const TVector2& vector) const;
-    inline bool operator != (const TVector2& vector) const;
+    inline void operator      *= (T scalar);
+    inline bool operator      == (const TVector2& vector) const;
+    inline bool operator      != (const TVector2& vector) const;
     inline TVector2& operator += (const TVector2& vector);
 
     /* Sets vector components. */
@@ -196,6 +196,12 @@ template <typename T>
 inline TVector2<T> operator - (const TVector2<T>& left, const TVector2<T>& right)
 {
   return TVector2<T>(left.x - right.x, left.y - right.y);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TVector2<T> operator * (const TVector2<T>& left, const TVector2<T>& right)
+{
+  return TVector2<T>(left.x * right.x, left.y * right.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

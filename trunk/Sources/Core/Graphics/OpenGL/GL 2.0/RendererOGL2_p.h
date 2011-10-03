@@ -36,8 +36,6 @@ class RendererPrivate
     void clearViewport(const PViewport& viewport);
     /* Sends all geometry through the geometry pipeline to hardware. */
     void flush();
-    /* Applies material for given pass. */
-    void applyMaterial(const PMaterial& material, const RenderPass* pass);
 
   private:
 
@@ -51,6 +49,12 @@ class RendererPrivate
     bool bindTexture(GLenum target, GLuint textureId);
     /* Sets render target. */
     void setRenderTarget(const PRenderTarget& renderTarget);
+    /* Applies general parameters. 
+     *  @note General parameters are the ones that require only one setup before component is rendered. 
+     */
+    void applyGeneralParams(const PRenderComponent& component);
+    /* Applies parameters for given pass. */
+    void applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass* pass);
 
   private:
 

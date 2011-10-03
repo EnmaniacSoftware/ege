@@ -19,6 +19,11 @@ extern PFNGLFRAMEBUFFERTEXTURE2DOESPROC glFramebufferTexture2D;
 #define GL_FRAMEBUFFER_BINDING_EXT  GL_FRAMEBUFFER_BINDING_OES
 #define GL_FRAMEBUFFER_COMPLETE_EXT GL_FRAMEBUFFER_COMPLETE_OES
 
+// point sprites
+#define GL_POINT_SPRITE_ARB     GL_POINT_SPRITE_OES
+#define GL_COORD_REPLACE_ARB    GL_COORD_REPLACE_OES
+#define GL_POINT_SIZE_ARRAY_ARB GL_POINT_SIZE_ARRAY_OES
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_CORE_EXTENSIONSOGLES_H

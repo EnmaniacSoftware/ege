@@ -65,15 +65,6 @@ void Renderer::setViewport(const PViewport& viewport)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Applies material for given pass. */
-void Renderer::applyMaterial(const PMaterial& material, const RenderPass* pass)
-{
-  if (isValid())
-  {
-    p_func()->applyMaterial(material, pass);
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds given data for rendering. */
 bool Renderer::addForRendering(const Matrix4f& worldMatrix, const PRenderComponent& component)
 {

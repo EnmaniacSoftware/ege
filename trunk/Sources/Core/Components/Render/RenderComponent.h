@@ -51,6 +51,10 @@ class RenderComponent : public IComponent
     void setClipRect(const Rectf& rect);
     /*! Returns clipping rectangle. */
     inline const Rectf& clipRect() const { return m_clipRect; }
+    /* Sets point size. */
+    void setPointSize(float32 size);
+    /*! Returns point size. */
+    inline float32 pointSize() const { return m_pointSize; }
 
   private:
 
@@ -81,6 +85,8 @@ class RenderComponent : public IComponent
     bool m_hashInvalid;
     /*! Viewport clipping rectangle (in window coordinates). If INVALID entire viewport will be covered. */
     Rectf m_clipRect;
+    /*! Point size. */
+    float32 m_pointSize;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
