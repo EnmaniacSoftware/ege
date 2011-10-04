@@ -80,7 +80,7 @@ METHODDEF(boolean) fill_input_buffer(j_decompress_ptr cinfo)
 {
   my_src_ptr src = (my_src_ptr) cinfo->src;
 
-  EGE::s64 bytesRead;
+  EGE::s64 bytesRead = 0;
 
   // wrap raw JPG library storage around DataBuffer for convinience
   EGE::DataBuffer buffer(src->buffer, INPUT_BUF_SIZE);

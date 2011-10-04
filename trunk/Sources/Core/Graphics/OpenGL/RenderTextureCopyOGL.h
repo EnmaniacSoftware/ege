@@ -13,7 +13,7 @@ class RenderTextureCopyOGL : public RenderTarget
 {
   public:
 
-    RenderTextureCopyOGL(Application* app, const ConfigParams& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId);
+    RenderTextureCopyOGL(Application* app, const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId);
     virtual ~RenderTextureCopyOGL();
 
   private:

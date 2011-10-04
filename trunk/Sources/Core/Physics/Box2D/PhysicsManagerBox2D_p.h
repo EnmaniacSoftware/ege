@@ -28,7 +28,7 @@ class PhysicsManagerPrivate : public b2DestructionListener
 {
   public:
 
-    PhysicsManagerPrivate(PhysicsManager* base, const ConfigParams& params);
+    PhysicsManagerPrivate(PhysicsManager* base, const Dictionary& params);
    ~PhysicsManagerPrivate();
 
     EGE_DECLARE_NEW_OPERATORS

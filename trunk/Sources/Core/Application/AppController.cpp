@@ -26,11 +26,11 @@ EGE_DEFINE_NEW_OPERATORS(AppController)
 EGE_DEFINE_DELETE_OPERATORS(AppController)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AppController::AppController(Application* app, const ConfigParams& params) : Object(app), m_state(STATE_RUNNING), m_fps(0), m_rendersCount(0)
+AppController::AppController(Application* app, const Dictionary& params) : Object(app), m_state(STATE_RUNNING), m_fps(0), m_rendersCount(0)
 {
   // decompose param list
-  ConfigParams::const_iterator iterUPS = params.find(EGE_ENGINE_PARAM_UPDATES_PER_SECOND);
-  ConfigParams::const_iterator iterFPS = params.find(EGE_ENGINE_PARAM_RENDERS_PER_SECOND);
+  Dictionary::const_iterator iterUPS = params.find(EGE_ENGINE_PARAM_UPDATES_PER_SECOND);
+  Dictionary::const_iterator iterFPS = params.find(EGE_ENGINE_PARAM_RENDERS_PER_SECOND);
 
   m_updateInterval.fromMiliseconds((iterUPS != params.end()) ? 1000 / iterUPS->second.toInt() : 0);
   m_renderInterval.fromMiliseconds((iterFPS != params.end()) ? 1000 / iterFPS->second.toInt() : 0);

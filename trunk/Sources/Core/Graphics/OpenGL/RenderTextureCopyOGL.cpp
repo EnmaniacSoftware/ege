@@ -4,12 +4,12 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderTextureCopyOGL::RenderTextureCopyOGL(Application* app, const ConfigParams& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId) 
+RenderTextureCopyOGL::RenderTextureCopyOGL(Application* app, const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId) 
 : RenderTarget(app, params), m_textureId(textureId), m_textureTarget(textureTarget), m_faceTarget(faceTarget)
 {
   // decompose param list
-  ConfigParams::const_iterator iterWidth  = params.find(EGE_RENDER_TARGET_PARAM_WIDTH);
-  ConfigParams::const_iterator iterHeight = params.find(EGE_RENDER_TARGET_PARAM_HEIGHT);
+  Dictionary::const_iterator iterWidth  = params.find(EGE_RENDER_TARGET_PARAM_WIDTH);
+  Dictionary::const_iterator iterHeight = params.find(EGE_RENDER_TARGET_PARAM_HEIGHT);
 
   // set physical size to logical one
   m_physicalWidth  = (iterWidth != params.end()) ? iterWidth->second.toInt() : 0;

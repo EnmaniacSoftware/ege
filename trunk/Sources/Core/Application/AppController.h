@@ -1,13 +1,11 @@
 #ifndef EGE_CORE_APPCONTROLLER_H
 #define EGE_CORE_APPCONTROLLER_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include <EGE.h>
 #include <EGETime.h>
 #include <EGETimer.h>
 #include "Core/Event/EventListener.h"
-#include "Core/ConfigParams.h"
+#include <EGEDictionary.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -21,7 +19,7 @@ class AppController : public Object, public IEventListener
 {
   public:
 
-    AppController(Application* app, const ConfigParams& params);
+    AppController(Application* app, const Dictionary& params);
     virtual ~AppController();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -30,7 +28,7 @@ class AppController : public Object, public IEventListener
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Initializes controller with given parameters. */
-    EGEResult initialize(const ConfigParams& mParams);
+    EGEResult initialize(const Dictionary& mParams);
     /* Enters main loop. */
     EGEResult run();
     /* Updates application. */

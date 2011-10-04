@@ -12,7 +12,7 @@ EGE_DEFINE_NEW_OPERATORS(PhysicsManager)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsManager)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsManager::PhysicsManager(Application* app, const ConfigParams& params) : Object(app)
+PhysicsManager::PhysicsManager(Application* app, const Dictionary& params) : Object(app)
 {
   m_p = ege_new PhysicsManagerPrivate(this, params);
 }

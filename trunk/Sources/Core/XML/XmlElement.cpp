@@ -1,4 +1,5 @@
 #include "Core/Xml/XmlElement.h"
+#include "Core/Xml/XmlAttribute.h"
 
 #if EGE_XML_TINYXML
 #include "Core/XML/TinyXml/XMLElementTinyXML_p.h"
@@ -100,5 +101,16 @@ void XmlElement::appendChildElement(const PXmlElement& element)
   {
     p_func()->appendChildElement(element->p_func());
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns first attribute. */
+PXmlAttribute XmlElement::firstAttribute() const
+{
+  if (isValid())
+  {
+    return p_func()->firstAttribute();
+  }
+
+  return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

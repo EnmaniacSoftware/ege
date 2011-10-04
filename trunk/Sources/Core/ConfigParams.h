@@ -1,14 +1,9 @@
-#ifndef EGE_CORE_CONFIG_PARAMS_H
-#define EGE_CORE_CONFIG_PARAMS_H
+#ifndef EGE_CORE_CONFIGPARAMS_H
+#define EGE_CORE_CONFIGPARAMS_H
 
-#include <EGEString.h>
-#include <EGEMap.h>
+#include "Core/Platform.h"
 
 EGE_NAMESPACE_BEGIN
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-typedef Map<String, String> ConfigParams;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -43,4 +38,4 @@ typedef Map<String, String> ConfigParams;
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_CONFIG_PARAMS_H
+#endif // EGE_CORE_CONFIGPARAMS_H

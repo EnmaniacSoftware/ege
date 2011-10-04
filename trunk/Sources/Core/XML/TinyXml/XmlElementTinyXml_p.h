@@ -18,6 +18,8 @@ EGE_NAMESPACE_BEGIN
 
 class XmlElement;
 
+EGE_DECLARE_SMART_CLASS(XmlAttribute, PXmlAttribute)
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class XmlElementPrivate
@@ -35,6 +37,7 @@ class XmlElementPrivate
 
     /* Returns TRUE if element is valid object */
     bool isValid() const;
+
     /* Returns value of given attribute if present. Otherwise, returns default value. */
     String attribute(const String& name, const String& defValue) const;
     /* Sets attribute with a given value. 
@@ -43,14 +46,19 @@ class XmlElementPrivate
     void setAttribute(const String& name, const String& value);
     /* Returns TRUE if given attribute exists. */
     bool hasAttribute(const String& name) const;
+    /* Returns first attribute. */
+    PXmlAttribute firstAttribute() const;
+
     /* Returns first child element. If any name is given returned will be first element with given name. */
     XmlElementPrivate* firstChild(const String& name) const;
     /* Returns next child element. If any name is given returned will be next element with given name. */
     XmlElementPrivate* nextChild(const String& name) const;
-    /* Returns element name. */
-    String name() const;
     /* Appends new child element. */
     void appendChildElement(const XmlElementPrivate* element);
+
+    /* Returns element name. */
+    String name() const;
+
     /* Sets internal TinyXML element pointer. */
     void setElement(TiXmlElement* element);
     /*! Returns pointer to TinyXML element object. */

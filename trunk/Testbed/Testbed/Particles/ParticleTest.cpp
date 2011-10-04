@@ -63,7 +63,7 @@ bool ParticleTest::initialize()
   }
 
   // create particle emitter
-  m_emitter = ege_new ParticleEmitter(app(), "ParticleEmitter1");
+  m_emitter = ege_new ParticleEmitterPoint(app(), "ParticleEmitter1");
   m_emitter->setParticleMaxCount(1500);
   m_emitter->setParticleSpeed(50.0f);
   m_emitter->setParticleSpeedVariance(10.0f);
@@ -87,8 +87,11 @@ bool ParticleTest::initialize()
 /*! Test override. Updates test. */
 void ParticleTest::update(const Time& time)
 {
-  m_emitter->update(time);
+  if (m_emitter)
+  {
+    m_emitter->update(time);
 
-  EGE_PRINT("%d", m_emitter->activeParticlesCount());
+    EGE_PRINT("%d", m_emitter->activeParticlesCount());
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

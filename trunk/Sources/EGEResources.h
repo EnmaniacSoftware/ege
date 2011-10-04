@@ -7,15 +7,17 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#define DEFAULT_GROUP_NAME          "default-group"
-#define RESOURCE_NAME_TEXTURE       "texture"
-#define RESOURCE_NAME_TEXTURE_IMAGE "texture-image"
-#define RESOURCE_NAME_MATERIAL      "material"
-#define RESOURCE_NAME_FONT          "font"
-#define RESOURCE_NAME_DATA          "data"
-#define RESOURCE_NAME_SPRITE_SHEET  "spritesheet"
-#define RESOURCE_NAME_SPRITE        "sprite"
-#define RESOURCE_NAME_CURVE         "curve"
+#define DEFAULT_GROUP_NAME              "default-group"
+
+#define RESOURCE_NAME_TEXTURE           "texture"
+#define RESOURCE_NAME_TEXTURE_IMAGE     "texture-image"
+#define RESOURCE_NAME_MATERIAL          "material"
+#define RESOURCE_NAME_FONT              "font"
+#define RESOURCE_NAME_DATA              "data"
+#define RESOURCE_NAME_SPRITE_SHEET      "spritesheet"
+#define RESOURCE_NAME_SPRITE            "sprite"
+#define RESOURCE_NAME_CURVE             "curve"
+#define RESOURCE_NAME_PARTICLE_EMITTER  "particle-emitter"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -32,6 +34,7 @@ EGE_NAMESPACE_END
 #include "Core/Resource/ResourceSprite.h"
 #include "Core/Resource/ResourceCurve.h"
 #include "Core/Resource/ResourceFont.h"
+#include "Core/Resource/ResourceParticleEmitter.h"
 #include "Core/Resource/ResourceGroup.h"
 #include "Core/Resource/ResourceManager.h"
 

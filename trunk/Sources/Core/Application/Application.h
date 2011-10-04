@@ -4,7 +4,7 @@
 #include <EGE.h>
 #include <EGETime.h>
 #include "Core/Event/EventListener.h"
-#include "Core/ConfigParams.h"
+#include <EGEDictionary.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -35,7 +35,7 @@ class Application
     *   \param  params    list of parameters to initialize engine with
     *   \param  listener  listener object which is to be notified with engine events. 
     */
-    virtual EGEResult initialize(const ConfigParams& params);
+    virtual EGEResult initialize(const Dictionary& params);
     /* Starts engine work. */
     virtual EGEResult run();
     /* Application updater. */

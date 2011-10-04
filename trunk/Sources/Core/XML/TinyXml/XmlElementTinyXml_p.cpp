@@ -1,4 +1,6 @@
 #include "Core/XML/TinyXml/XmlElementTinyXml_p.h"
+#include "Core/XML/XmlAttribute.h"
+#include "Core/XML/TinyXml/XmlAttributeTinyXml_p.h"
 #include <EGEDebug.h>
 
 EGE_NAMESPACE
@@ -110,5 +112,28 @@ void XmlElementPrivate::appendChildElement(const XmlElementPrivate* element)
     // NOTE: taking over ownership
     m_element->LinkEndChild(element->element(true));
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns first attribute. */
+PXmlAttribute XmlElementPrivate::firstAttribute() const
+{
+  EGE_ASSERT(isValid());
+
+  PXmlAttribute attribute;
+
+  if (m_element)
+  {
+    TiXmlAttribute* attrib = m_element->FirstAttribute();
+    if (attrib)
+    {
+      attribute = ege_new XmlAttribute();
+      if (attribute)
+      {
+        attribute->p_func()->setAttribute(attrib);
+      }
+    }
+  }
+
+  return attribute;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

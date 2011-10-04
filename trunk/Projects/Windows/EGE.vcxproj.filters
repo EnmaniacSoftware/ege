@@ -459,6 +459,18 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitter.cpp">
       <Filter>Core\Graphics\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\XML\XmlAttribute.cpp">
+      <Filter>Core\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlAttributeTinyXml_p.cpp">
+      <Filter>Core\XML\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterPoint.cpp">
+      <Filter>Core\Graphics\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -890,6 +902,19 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEParticle.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitter.h">
+      <Filter>Core\Graphics\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEDictionary.h" />
+    <ClInclude Include="..\..\Sources\Core\XML\XmlAttribute.h">
+      <Filter>Core\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\XML\TinyXml\XmlAttributeTinyXml_p.h">
+      <Filter>Core\XML\TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterPoint.h">
       <Filter>Core\Graphics\Particle</Filter>
     </ClInclude>
   </ItemGroup>

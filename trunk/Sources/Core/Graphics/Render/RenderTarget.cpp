@@ -10,14 +10,14 @@ EGE_DEFINE_NEW_OPERATORS(RenderTarget)
 EGE_DEFINE_DELETE_OPERATORS(RenderTarget)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderTarget::RenderTarget(Application* app, const ConfigParams& params) : Object(app), m_vertexCount(0), m_batchCount(0), m_physicalWidth(0), 
+RenderTarget::RenderTarget(Application* app, const Dictionary& params) : Object(app), m_vertexCount(0), m_batchCount(0), m_physicalWidth(0), 
                                                                            m_physicalHeight(0), m_width(0), m_height(0), m_orientationRotation(0.0f),
                                                                            m_enabled(true)
 {
   // decompose param list
-  ConfigParams::const_iterator iterName   = params.find(EGE_RENDER_TARGET_PARAM_NAME);
-  ConfigParams::const_iterator iterWidth  = params.find(EGE_RENDER_TARGET_PARAM_WIDTH);
-  ConfigParams::const_iterator iterHeight = params.find(EGE_RENDER_TARGET_PARAM_HEIGHT);
+  Dictionary::const_iterator iterName   = params.find(EGE_RENDER_TARGET_PARAM_NAME);
+  Dictionary::const_iterator iterWidth  = params.find(EGE_RENDER_TARGET_PARAM_WIDTH);
+  Dictionary::const_iterator iterHeight = params.find(EGE_RENDER_TARGET_PARAM_HEIGHT);
 
   m_name   = (iterName != params.end()) ? iterName->second : "";
   m_width  = (iterWidth != params.end()) ? iterWidth->second.toInt() : 0;

@@ -13,7 +13,7 @@ class RenderTextureFBOOGL : public RenderTarget
 {
   public:
 
-    RenderTextureFBOOGL(Application* app, const ConfigParams& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId);
+    RenderTextureFBOOGL(Application* app, const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId);
     virtual ~RenderTextureFBOOGL();
 
   private:

@@ -13,9 +13,9 @@
 #include "Core/Input/Pointer.h"
 #include "Core/Screen/ScreenManager.h"
 #include "Core/Debug/Debug.h"
-#include "EGETimer.h"
-#include "EGEGraphics.h"
-#include "EGEApplication.h"
+#include <EGETimer.h>
+#include <EGEGraphics.h>
+#include <EGEApplication.h>
 
 EGE_NAMESPACE
 
@@ -38,7 +38,8 @@ Application::~Application()
   EGE_DELETE(m_eventManager);
   EGE_DELETE(m_physicsManager);
 
-  Debug::Deinit();
+  EGE_DELETE(m_debug);
+
   MemoryManager::Deinit();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -47,13 +48,13 @@ Application::~Application()
 *   \param  params    list of parameters to initialize engine with
 *   \param  listener  listener object which is to be notified with engine events. 
 */
-EGEResult Application::initialize(const ConfigParams& params)
+EGEResult Application::initialize(const Dictionary& params)
 {
   EGEResult eResult = EGE_SUCCESS;
 
   // check landscape mode
   m_landscapeMode = false;
-  ConfigParams::const_iterator iterLandscape = params.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
+  Dictionary::const_iterator iterLandscape = params.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
   if (iterLandscape != params.end())
   {
     m_landscapeMode = iterLandscape->second.toBool();

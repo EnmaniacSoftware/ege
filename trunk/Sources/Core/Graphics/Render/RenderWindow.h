@@ -16,7 +16,7 @@ class RenderWindow : public RenderTarget
 {
   public:
 
-    RenderWindow(Application* app, const ConfigParams& params);
+    RenderWindow(Application* app, const Dictionary& params);
     virtual ~RenderWindow();
 
     /*! Returns window title. */

@@ -3,20 +3,14 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//#include <algorithm>
-//#include <limits>
-//#include <cctype>
-
 #include "Core/Platform.h"
 #include "Core/ObjectUIDs.h"
 
-#include "EGEMemory.h"
-#include "EGETypes.h"
+#include <EGEMemory.h>
+#include <EGETypes.h>
 
-//#include "Core/ComplexTypes.h"
-
-//#include "Core/ConfigParams.h"
 #include "Core/ListenerContainer.h"
+#include "Core/ConfigParams.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

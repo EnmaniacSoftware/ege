@@ -12,13 +12,13 @@ class RenderWindowOGLWin32 : public RenderWindow
 {
   public:
 
-    RenderWindowOGLWin32(Application* app, const ConfigParams& params);
+    RenderWindowOGLWin32(Application* app, const Dictionary& params);
     virtual ~RenderWindowOGLWin32();
 
   private:
 
     /* Creates Windows OS OpenGL window. */
-    void create(const ConfigParams& params);
+    void create(const Dictionary& params);
     /* Destorys Windows OS OpenGL window. */
     void destroy();
     /* Returns TRUE if object is valid. */
@@ -34,7 +34,7 @@ class RenderWindowOGLWin32 : public RenderWindow
     /* RenderWindow override. Shows frame buffer. */
     void showFrameBuffer() override;
     /* Selects best pixel format for given parameters. */
-    EGEResult setupPixelFormat(const ConfigParams& params);
+    EGEResult setupPixelFormat(const Dictionary& params);
 
   private:
 

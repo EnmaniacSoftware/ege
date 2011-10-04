@@ -3,7 +3,7 @@
 
 #include <EGE.h>
 #include <EGETime.h>
-#include "Core/ConfigParams.h"
+#include <EGEDictionary.h>
 #include "Core/Math/Vector4.h"
 #include "Core/Physics/PhysicsJoint.h"
 
@@ -34,7 +34,7 @@ class PhysicsManager : public Object
 
   public:
 
-    PhysicsManager(Application* app, const ConfigParams& params);
+    PhysicsManager(Application* app, const Dictionary& params);
     virtual ~PhysicsManager();
 
     EGE_DECLARE_NEW_OPERATORS

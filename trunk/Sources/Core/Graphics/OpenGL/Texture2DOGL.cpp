@@ -251,7 +251,7 @@ GLint Texture2DPrivate::mapAddressingMode(EGETexture::AddressingMode mode) const
 /*! Creates associated render target. */
 EGEResult Texture2DPrivate::createRenderTarget()
 {
-  ConfigParams params;
+  Dictionary params;
   params[EGE_RENDER_TARGET_PARAM_NAME]    = d_func()->name();
   params[EGE_RENDER_TARGET_PARAM_WIDTH]   = String::FromNumber(d_func()->width());
   params[EGE_RENDER_TARGET_PARAM_HEIGHT]  = String::FromNumber(d_func()->height());

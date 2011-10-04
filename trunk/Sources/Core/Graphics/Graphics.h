@@ -3,7 +3,7 @@
 
 #include <EGEMap.h>
 #include <EGESignal.h>
-#include "Core/ConfigParams.h"
+#include <EGEDictionary.h>
 #include "Core/Graphics/Render/Renderer.h"
 
 EGE_NAMESPACE_BEGIN
@@ -21,7 +21,7 @@ class Graphics : public Object
 {
   public:
 
-    Graphics(Application* app, const ConfigParams& params);
+    Graphics(Application* app, const Dictionary& params);
     virtual ~Graphics();
 
     EGE_DECLARE_NEW_OPERATORS

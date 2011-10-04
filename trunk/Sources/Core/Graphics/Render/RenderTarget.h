@@ -4,7 +4,7 @@
 #include <EGE.h>
 #include <EGEDynamicArray.h>
 #include <EGEAngle.h>
-#include "Core/ConfigParams.h"
+#include <EGEDictionary.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -20,7 +20,7 @@ class RenderTarget : public Object
 {
   public:
 
-    RenderTarget(Application* app, const ConfigParams& params);
+    RenderTarget(Application* app, const Dictionary& params);
     virtual ~RenderTarget();
 
     EGE_DECLARE_NEW_OPERATORS

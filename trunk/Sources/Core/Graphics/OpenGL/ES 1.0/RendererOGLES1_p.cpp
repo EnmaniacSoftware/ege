@@ -327,7 +327,7 @@ void RendererPrivate::flush()
           glDisableClientState(GL_VERTEX_ARRAY);
           glDisableClientState(GL_NORMAL_ARRAY);
           glDisableClientState(GL_COLOR_ARRAY);
-          glDisableClientState(GL_POINT_SIZE_ARRAY_ARB);                
+          //glDisableClientState(GL_POINT_SIZE_ARRAY_ARB);                
           glDisable(GL_BLEND);
           glMatrixMode(GL_TEXTURE);
           glLoadIdentity();

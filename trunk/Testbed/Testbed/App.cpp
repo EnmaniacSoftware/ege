@@ -37,7 +37,7 @@ App::~App()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool App::start()
 {
-  ConfigParams paramList;
+  Dictionary paramList;
 
   // setup params for render window
   paramList[EGE_RENDER_TARGET_PARAM_COLOR_BITS]   = "24";

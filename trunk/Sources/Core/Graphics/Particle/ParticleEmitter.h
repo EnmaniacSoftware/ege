@@ -2,7 +2,8 @@
 #define EGE_CORE_PARTICLEEMITTER_H
 
 /** 
-*   Particle emitter is an object responsible for creation and managing the particles according to predefined data.
+*   This is base object for specialization of different particle emitters. Particle emitter is an object responsible for creation and managing the particles 
+*   according to predefined data.
 */
 
 #include <EGE.h>
@@ -13,7 +14,6 @@
 #include <EGEVector.h>
 #include <EGEScene.h>
 #include <EGERandom.h>
-#include <EGEParticle.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -49,14 +49,6 @@ class ParticleEmitter : public SceneNodeObject
     void setParticleMaxCount(s32 count);
     /* Sets emission rate. */
     void setEmissionRate(s32 rate);
-    /* Sets emission angle. */
-    void setEmissionAngle(const Angle& angle);
-    /* Sets emission angle variance. */
-    void setEmissionAngleVariance(const Angle& variance);
-    /* Sets emitter direction. */
-    void setEmissionDirection(const Vector3f& direction);
-    /* Sets emitter direction mask. */
-    void setEmissionDirectionMask(const Vector3f& directionMask);
     /* Sets particle start size. */
     void setParticleStartSize(const Vector2f& size);
     /* Sets particle start size variance. */
@@ -77,10 +69,6 @@ class ParticleEmitter : public SceneNodeObject
     void setParticleEndColor(const Color& color);
     /* Sets particle end color variance. */
     void setParticleEndColorVariance(const Color& variance);
-    /* Sets particle speed. */
-    void setParticleSpeed(float32 speed);
-    /* Sets particle speed variance. */
-    void setParticleSpeedVariance(float32 variance);
     /*! Returns number of active particles. */
     inline s32 activeParticlesCount() const { return m_activeParticlesCount; }
     /* Sets material. */
@@ -90,14 +78,14 @@ class ParticleEmitter : public SceneNodeObject
 
     /*! Returns TRUE if there is no available space for new particle. */
     inline bool isFull() const { return m_activeParticlesCount == m_particleMaxCount; }
-    /* Initializes particle at given index. */
-    void initializeParticle(s32 index);
     /* Allocates particles data. */
     bool allocateParticlesData();
     /* SceneNodeObject override. Adds object render data for rendering with given renderer. */
     bool addForRendering(Renderer* renderer) override;
+    /*! Initializes particle at given index. */
+    virtual void initializeParticle(s32 index) = 0;
 
-  private:
+  protected:
 
     /*! Particle data structure. */
     struct ParticleData
@@ -115,11 +103,11 @@ class ParticleEmitter : public SceneNodeObject
       Vector3f direction;           /*!< Direction vector including speed. */
     };
 
-  private:
+  protected:
 
     typedef DynamicArray<ParticleData> ParticleDataArray;
 
-  private:
+  protected:
 
     /*! Active flag. */
     bool m_active;
@@ -135,16 +123,6 @@ class ParticleEmitter : public SceneNodeObject
     s32 m_emissionRate;
     /*! Number of particles to emit. This can be fractional if it is still to early to emit next particle. */
     float32 m_emitCount;
-    /*! Particle emission angle. */
-    Angle m_emissionAngle;
-    /*! Particle emission angle variance. */
-    Angle m_emissionAngleVariance;
-    /*! Emission direction. */
-    Vector3f m_emissionDirection;
-    /*! Emission direction mask. Mask allows to restrict direction of emission if required. */
-    Vector3f m_emissionDirectionMask;
-    /*! Particles start position variance. */
-    Vector3f m_particleStartPositionVariance;
     /*! Particles start size. */
     Vector2f m_particleStartSize;
     /*! Particles start size variance. */
@@ -165,16 +143,12 @@ class ParticleEmitter : public SceneNodeObject
     Color m_particleEndColor;
     /*! Particle end color variance. */
     Color m_particleEndColorVariance;
-    /*! Particle speed. */
-    float32 m_particleSpeed;
-    /*! Particle speed variance. */
-    float32 m_particleSpeedVariance;
+    /*! Render data. */
+    PRenderComponent m_renderData;
     /*! Array of particles. */
     ParticleDataArray m_particles;
     /*! Random generator. */
     Random m_random;
-    /*! Render data. */
-    PRenderComponent m_renderData;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

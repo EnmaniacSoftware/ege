@@ -23,7 +23,7 @@ class ParticleTest : public Test
 
   private:
 
-    EGE::PParticleEmitter m_emitter;
+    EGE::PParticleEmitterPoint m_emitter;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

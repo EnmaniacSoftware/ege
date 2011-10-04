@@ -46,7 +46,7 @@ EGEResult AppControllerPrivate::run()
 
     // give some time for OS
     yieldTime = d_func()->m_renderInterval - (endTime - startTime);
-    EGE_PRINT("%d", yieldTime.miliseconds());
+    //EGE_PRINT("%d", yieldTime.miliseconds());
     s3eDeviceYield(Math::Max((s32) 0, static_cast<s32>(yieldTime.miliseconds())));
   }
 

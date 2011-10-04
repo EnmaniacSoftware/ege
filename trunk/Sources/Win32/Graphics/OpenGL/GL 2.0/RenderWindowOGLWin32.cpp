@@ -1,7 +1,6 @@
 #include "Core/Application/Application.h"
 #include "Win32/Graphics/OpenGL/GL 2.0/RenderWindowOGLWin32.h"
 #include <EGEEvent.h>
-#include <EGEEvent.h>
 #include <EGEInput.h>
 #include <EGEMath.h>
 #include <EGEDevice.h>
@@ -9,7 +8,7 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderWindowOGLWin32::RenderWindowOGLWin32(Application* app, const ConfigParams& params) : RenderWindow(app, params), m_hWnd(NULL), m_hDC(NULL), m_hRC(NULL)
+RenderWindowOGLWin32::RenderWindowOGLWin32(Application* app, const Dictionary& params) : RenderWindow(app, params), m_hWnd(NULL), m_hDC(NULL), m_hRC(NULL)
 {
   create(params);
 }
@@ -20,7 +19,7 @@ RenderWindowOGLWin32::~RenderWindowOGLWin32()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates Windows OS OpenGL window. */
-void RenderWindowOGLWin32::create(const ConfigParams& params)
+void RenderWindowOGLWin32::create(const Dictionary& params)
 {
   WNDCLASS sWndclass = { 0 };
 
@@ -29,8 +28,8 @@ void RenderWindowOGLWin32::create(const ConfigParams& params)
   bool error = false;
 
   // decompose param list
-  ConfigParams::const_iterator iterFullscreen  = params.find(EGE_RENDER_WINDOW_PARAM_FULLSCREEN);
-  ConfigParams::const_iterator iterLandscape   = params.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
+  Dictionary::const_iterator iterFullscreen  = params.find(EGE_RENDER_WINDOW_PARAM_FULLSCREEN);
+  Dictionary::const_iterator iterLandscape   = params.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
 
   bool landscape  = (iterLandscape != params.end()) ? iterLandscape->second.toBool(&error) : false;
   bool fullscreen = (iterFullscreen != params.end()) ? iterFullscreen->second.toBool(&error) : false;
@@ -255,7 +254,7 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Selects best pixel format for given parameters. */
-EGEResult RenderWindowOGLWin32::setupPixelFormat(const ConfigParams& params)
+EGEResult RenderWindowOGLWin32::setupPixelFormat(const Dictionary& params)
 {
   PIXELFORMATDESCRIPTOR sPFD; 
 
@@ -264,8 +263,8 @@ EGEResult RenderWindowOGLWin32::setupPixelFormat(const ConfigParams& params)
   bool error = false;
 
   // decompose param list
-  ConfigParams::const_iterator iterColorBits = params.find(EGE_RENDER_TARGET_PARAM_COLOR_BITS);
-  ConfigParams::const_iterator iterDepthBits = params.find(EGE_RENDER_WINDOW_PARAM_DEPTH_BITS);
+  Dictionary::const_iterator iterColorBits = params.find(EGE_RENDER_TARGET_PARAM_COLOR_BITS);
+  Dictionary::const_iterator iterDepthBits = params.find(EGE_RENDER_WINDOW_PARAM_DEPTH_BITS);
 
   // check if required parameters are NOT present
   if (iterColorBits == params.end())

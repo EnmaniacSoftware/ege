@@ -3,7 +3,7 @@
 
 #include "EGE.h"
 #include "Core/Event/EventListener.h"
-#include "Core/ConfigParams.h"
+#include <EGEDictionary.h>
 #include "EGETime.h"
 
 EGE_NAMESPACE_BEGIN

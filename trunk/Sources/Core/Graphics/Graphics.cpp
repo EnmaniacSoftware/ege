@@ -20,7 +20,7 @@ EGE_DEFINE_NEW_OPERATORS(Graphics)
 EGE_DEFINE_DELETE_OPERATORS(Graphics)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Graphics::Graphics(Application* app, const ConfigParams& params) : Object(app)
+Graphics::Graphics(Application* app, const Dictionary& params) : Object(app)
 {
   m_p = ege_new GraphicsPrivate(this, params);
 
