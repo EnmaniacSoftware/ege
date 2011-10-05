@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_PARTICLEEMITTERFACTORY_H
-#define EGE_CORE_PARTICLEEMITTERFACTORY_H
+#ifndef EGE_CORE_PARTICLEFACTORY_H
+#define EGE_CORE_PARTICLEFACTORY_H
 
 /** 
 *   Factory (utility) class creating particle emitters and affectors. It is possible to register custom particle emitters/affectors so they can be created 
@@ -18,12 +18,12 @@ typedef PParticleAffector (*egeParticleAffectorCreateFunc)(Application* app, con
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class ParticleEmitterFactory : public Object
+class ParticleFactory : public Object
 {
   public:
 
-    ParticleEmitterFactory(Application* app);
-   ~ParticleEmitterFactory();
+    ParticleFactory(Application* app);
+   ~ParticleFactory();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -80,4 +80,4 @@ class ParticleEmitterFactory : public Object
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_PARTICLEEMITTERFACTORY_H
+#endif // EGE_CORE_PARTICLEFACTORY_H

@@ -47,8 +47,8 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleAffector.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleAffectorForce.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitter.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterPoint.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\RenderObjectFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Renderer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderPass.cpp" />
@@ -122,8 +122,8 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleAffector.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleAffectorForce.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitter.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterFactory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterPoint.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleFactory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\RenderObjectFactory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderPass.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h" />

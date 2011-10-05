@@ -4,7 +4,7 @@
 #include "Core/Graphics/Render/Renderer.h"
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Physics/PhysicsManager.h"
-#include "Core/Graphics/Particle/ParticleEmitterFactory.h"
+#include "Core/Graphics/Particle/ParticleFactory.h"
 #include <EGEDevice.h>
 
 #ifdef EGE_PLATFORM_WIN32
@@ -21,21 +21,23 @@ EGE_DEFINE_NEW_OPERATORS(Graphics)
 EGE_DEFINE_DELETE_OPERATORS(Graphics)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Graphics::Graphics(Application* app, const Dictionary& params) : Object(app)
+Graphics::Graphics(Application* app, const Dictionary& params) : Object(app), m_particleFactory(NULL)
 {
   m_p = ege_new GraphicsPrivate(this, params);
+  if (m_p)
+  {
+    // find primary render surface
+    PRenderWindow window = renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
 
-  // find primary render surface
-  PRenderWindow window = renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
+    // make primary render target currently selected
+    setCurrentRenderingContext(window);
 
-  // make primary render target currently selected
-  setCurrentRenderingContext(window);
+    // create renderer
+    m_renderer = ege_new Renderer(app);
 
-  // create renderer
-  m_renderer = ege_new Renderer(app);
-
-  // create particle emitter factory
-  m_particleEmitterFactory = ege_new ParticleEmitterFactory(app);
+    // create particle factory
+    m_particleFactory = ege_new ParticleFactory(app);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Graphics::~Graphics()
@@ -47,7 +49,7 @@ Graphics::~Graphics()
 
   m_renderer = NULL;
 
-  EGE_DELETE(m_particleEmitterFactory);
+  EGE_DELETE(m_particleFactory);
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -106,7 +108,7 @@ EGEResult Graphics::setCurrentRenderingContext(PRenderTarget target)
 /*! Returns TRUE if object is valid. */
 bool Graphics::isValid() const
 {
-  return (NULL != m_p) && (NULL != m_renderer) && (NULL != m_particleEmitterFactory);
+  return (NULL != m_p) && (NULL != m_renderer) && (NULL != m_particleFactory);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Graphics::registerRenderTarget(PRenderTarget target)

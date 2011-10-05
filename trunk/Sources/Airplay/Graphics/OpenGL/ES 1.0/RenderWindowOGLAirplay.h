@@ -13,13 +13,13 @@ class RenderWindowOGLAirplay : public RenderWindow
 {
   public:
 
-    RenderWindowOGLAirplay(Application* app, const ConfigParams& params);
+    RenderWindowOGLAirplay(Application* app, const Dictionary& params);
     virtual ~RenderWindowOGLAirplay();
 
   private:
 
     /* Creates Airplay OpenGL window. */
-    void create(const ConfigParams& params);
+    void create(const Dictionary& params);
     /* Destorys Airplay OpenGL window. */
     void destroy();
     /* Returns TRUE if object is valid. */

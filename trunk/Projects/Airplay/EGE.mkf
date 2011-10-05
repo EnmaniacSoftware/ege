@@ -209,12 +209,16 @@ files
 
 	["Core/Graphics/Particle"]
   ("../../Sources/Core/Graphics/Particle")
+	ParticleAffector.cpp
+	ParticleAffector.h
+	ParticleAffectorForce.cpp
+	ParticleAffectorForce.h
 	ParticleEmitter.cpp
 	ParticleEmitter.h
-	ParticleEmitterFactory.cpp
-	ParticleEmitterFactory.h
 	ParticleEmitterPoint.cpp
 	ParticleEmitterPoint.h
+	ParticleFactory.cpp
+	ParticleFactory.h
 
 	["Core/Graphics/OpenGL/ES 1.0"]
   ("../../Sources/Core/Graphics/OpenGL/ES 1.0")

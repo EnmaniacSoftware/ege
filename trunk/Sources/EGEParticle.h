@@ -21,7 +21,7 @@ EGE_NAMESPACE_END
 #include "Core/Graphics/Particle/ParticleEmitterPoint.h"
 #include "Core/Graphics/Particle/ParticleAffector.h"
 #include "Core/Graphics/Particle/ParticleAffectorForce.h"
-#include "Core/Graphics/Particle//ParticleEmitterFactory.h"
+#include "Core/Graphics/Particle//ParticleFactory.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

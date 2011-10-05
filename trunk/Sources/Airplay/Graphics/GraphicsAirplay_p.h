@@ -1,7 +1,7 @@
 #ifndef EGE_AIRPLAY_GRAPHICS_PRIVATE_H
 #define EGE_AIRPLAY_GRAPHICS_PRIVATE_H
 
-#include "EGE.h"
+#include <EGE.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -18,7 +18,7 @@ class GraphicsPrivate
 {
   public:
 
-    GraphicsPrivate(Graphics* base, const ConfigParams& params);
+    GraphicsPrivate(Graphics* base, const Dictionary& params);
    ~GraphicsPrivate();
 
     EGE_DECLARE_NEW_OPERATORS

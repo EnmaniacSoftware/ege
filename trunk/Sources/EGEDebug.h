@@ -11,8 +11,8 @@
 
 #define EGE_ASSERT(cond) ((!(cond)) ? Debug::Assert(#cond, __FILE__, __LINE__) : ege_noop())
 #define EGE_LOG(text) Debug::Log(text)
-#define EGE_PRINT(text, ...) Debug::Print(String::Format(#text, __VA_ARGS__))
-#define EGE_WARNING(text, ...) Debug::Print(String::Format("WARNING: "#text, __VA_ARGS__))
+#define EGE_PRINT(text, ...) Debug::Print(String::Format(#text, ##__VA_ARGS__))
+#define EGE_WARNING(text, ...) Debug::Print(String::Format("WARNING: "#text, ##__VA_ARGS__))
 
 #else
 

@@ -112,14 +112,14 @@ void ResourceParticleEmitter::unload()
 PParticleEmitter ResourceParticleEmitter::createInstance()
 {
   // create instance of particle emitter of a correct type and with given name
-  PParticleEmitter object = app()->graphics()->particleEmitterFactory()->createEmitter(m_parameters["type"], m_name);
+  PParticleEmitter object = app()->graphics()->particleFactory()->createEmitter(m_parameters["type"], m_name);
   if (object)
   {
     // initialize with dictionary
     if (!object->initialize(m_parameters))
     {
       // error!
-      EGE_PRINT("ResourceParticleEmitter::createInstance - Could not initialize!");
+      EGE_PRINT("ResourceParticleEmitter::createInstance - Could not initialize!", 0);
       object = NULL;
     }
   }

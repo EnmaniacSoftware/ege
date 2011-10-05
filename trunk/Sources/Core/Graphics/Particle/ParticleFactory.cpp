@@ -1,12 +1,12 @@
-#include "Core/Graphics/Particle/ParticleEmitterFactory.h"
+#include "Core/Graphics/Particle/ParticleFactory.h"
 #include <EGEDebug.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_DEFINE_NEW_OPERATORS(ParticleEmitterFactory)
-EGE_DEFINE_DELETE_OPERATORS(ParticleEmitterFactory)
+EGE_DEFINE_NEW_OPERATORS(ParticleFactory)
+EGE_DEFINE_DELETE_OPERATORS(ParticleFactory)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct BuiltInEmitter
@@ -27,7 +27,7 @@ struct BuiltInAffector
 static BuiltInAffector l_affectorsToRegister[] = {  { "force", ParticleAffectorForce::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ParticleEmitterFactory::ParticleEmitterFactory(Application* app) : Object(app)
+ParticleFactory::ParticleFactory(Application* app) : Object(app)
 {
   // register build-in emitter types
   for (u32 i = 0; i < sizeof (l_emittersToRegister) / sizeof (BuiltInEmitter); ++i)
@@ -46,12 +46,12 @@ ParticleEmitterFactory::ParticleEmitterFactory(Application* app) : Object(app)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ParticleEmitterFactory::~ParticleEmitterFactory()
+ParticleFactory::~ParticleFactory()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
-bool ParticleEmitterFactory::isValid() const
+bool ParticleFactory::isValid() const
 {
   // check if built-in emitters are registered correctly
   for (u32 i = 0; i < sizeof (l_emittersToRegister) / sizeof (BuiltInEmitter); ++i)
@@ -81,7 +81,7 @@ bool ParticleEmitterFactory::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Registeres custom resource type. */
-EGEResult ParticleEmitterFactory::registerEmitter(const String& typeName, egeParticleEmitterCreateFunc createFunc)
+EGEResult ParticleFactory::registerEmitter(const String& typeName, egeParticleEmitterCreateFunc createFunc)
 {
   EGEResult result = EGE_SUCCESS;
   
@@ -102,7 +102,7 @@ EGEResult ParticleEmitterFactory::registerEmitter(const String& typeName, egePar
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of particle emitter of the type given by name. */
-PParticleEmitter ParticleEmitterFactory::createEmitter(const String& typeName, const String& name) const
+PParticleEmitter ParticleFactory::createEmitter(const String& typeName, const String& name) const
 {
   PParticleEmitter emitter;
 
@@ -118,13 +118,13 @@ PParticleEmitter ParticleEmitterFactory::createEmitter(const String& typeName, c
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given emitter type is registered. */
-bool ParticleEmitterFactory::isEmitterRegistered(const String& typeName) const
+bool ParticleFactory::isEmitterRegistered(const String& typeName) const
 {
   return m_registeredEmitters.contains(typeName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Registeres custom particle affector type. */
-EGEResult ParticleEmitterFactory::registerAffector(const String& typeName, egeParticleAffectorCreateFunc createFunc)
+EGEResult ParticleFactory::registerAffector(const String& typeName, egeParticleAffectorCreateFunc createFunc)
 {
   EGEResult result = EGE_SUCCESS;
   
@@ -145,7 +145,7 @@ EGEResult ParticleEmitterFactory::registerAffector(const String& typeName, egePa
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of particle affector of the type given by name. */
-PParticleAffector ParticleEmitterFactory::createAffector(const String& typeName, const String& name) const
+PParticleAffector ParticleFactory::createAffector(const String& typeName, const String& name) const
 {
   PParticleAffector affector;
 
@@ -161,7 +161,7 @@ PParticleAffector ParticleEmitterFactory::createAffector(const String& typeName,
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given affector type is registered. */
-bool ParticleEmitterFactory::isAffectorRegistered(const String& typeName) const
+bool ParticleFactory::isAffectorRegistered(const String& typeName) const
 {
   return m_registeredAffectors.contains(typeName);
 }

@@ -9,8 +9,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderWindowOGLAirplay::RenderWindowOGLAirplay(Application* app, const ConfigParams& params) : RenderWindow(app, params), m_eglDisplay(EGL_NO_DISPLAY), 
-                                                                                               m_eglContext(EGL_NO_CONTEXT), m_eglSurface(EGL_NO_SURFACE)
+RenderWindowOGLAirplay::RenderWindowOGLAirplay(Application* app, const Dictionary& params) : RenderWindow(app, params), m_eglDisplay(EGL_NO_DISPLAY), 
+                                                                                             m_eglContext(EGL_NO_CONTEXT), m_eglSurface(EGL_NO_SURFACE)
 {
   create(params);
 }
@@ -21,14 +21,14 @@ RenderWindowOGLAirplay::~RenderWindowOGLAirplay()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates Airplay OpenGL window. */
-void RenderWindowOGLAirplay::create(const ConfigParams& params)
+void RenderWindowOGLAirplay::create(const Dictionary& params)
 {
   bool error = false;
 
   // decompose param list
-  ConfigParams::const_iterator iterColorBits = params.find(EGE_RENDER_TARGET_PARAM_COLOR_BITS);
-  ConfigParams::const_iterator iterDepthBits = params.find(EGE_RENDER_WINDOW_PARAM_DEPTH_BITS);
-  ConfigParams::const_iterator iterLandscape = params.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
+  Dictionary::const_iterator iterColorBits = params.find(EGE_RENDER_TARGET_PARAM_COLOR_BITS);
+  Dictionary::const_iterator iterDepthBits = params.find(EGE_RENDER_WINDOW_PARAM_DEPTH_BITS);
+  Dictionary::const_iterator iterLandscape = params.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
 
   // check if required parameters are NOT present
   if (iterColorBits == params.end() || iterDepthBits == params.end())
