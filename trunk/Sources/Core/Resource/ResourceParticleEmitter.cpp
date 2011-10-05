@@ -119,7 +119,7 @@ PParticleEmitter ResourceParticleEmitter::createInstance()
     if (!object->initialize(m_parameters))
     {
       // error!
-      EGE_PRINT("ResourceParticleEmitter::createInstance - Could not initialize!", 0);
+      EGE_PRINT("ResourceParticleEmitter::createInstance - Could not initialize!");
       object = NULL;
     }
   }
