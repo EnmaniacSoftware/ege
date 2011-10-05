@@ -9,11 +9,13 @@
 #include <EGE.h>
 #include <EGEVertexBuffer.h>
 #include <EGEDynamicArray.h>
+#include <EGEList.h>
 #include <EGETime.h>
 #include <EGEColor.h>
 #include <EGEVector.h>
 #include <EGEScene.h>
 #include <EGERandom.h>
+#include "Core/Graphics/Particle/ParticleAffector.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -37,6 +39,8 @@ class ParticleEmitter : public SceneNodeObject
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
+    /* Initializes emitter from dictionary. */
+    virtual bool initialize(const Dictionary& params);
     /*  Starts system. 
      *  @note This resets all data. 
      */
@@ -106,6 +110,7 @@ class ParticleEmitter : public SceneNodeObject
   protected:
 
     typedef DynamicArray<ParticleData> ParticleDataArray;
+    typedef List<PParticleAffector> ParticleAffectorList;
 
   protected:
 
@@ -149,6 +154,8 @@ class ParticleEmitter : public SceneNodeObject
     ParticleDataArray m_particles;
     /*! Random generator. */
     Random m_random;
+    /*! List of affectors. */
+    ParticleAffectorList m_affectors;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

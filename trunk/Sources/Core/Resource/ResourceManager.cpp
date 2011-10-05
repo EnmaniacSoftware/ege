@@ -29,7 +29,6 @@ EGE_DEFINE_DELETE_OPERATORS(ResourceManager)
 #define NODE_INCLUDE   "include"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 struct BuiltInResource
 {
   const char* name;
@@ -46,7 +45,6 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
                                                     { RESOURCE_NAME_CURVE, ResourceCurve::Create },
                                                     { RESOURCE_NAME_PARTICLE_EMITTER, ResourceParticleEmitter::Create }
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::ResourceManager(Application* app) : Object(app)
 {

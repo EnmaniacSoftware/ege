@@ -9,6 +9,7 @@
 #include <EGEXml.h>
 #include <EGETime.h>
 #include <EGEDictionary.h>
+#include <EGEParticle.h>
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN
@@ -47,10 +48,8 @@ class ResourceParticleEmitter : public IResource
     /* IResource override. Unloads resource. */
     void unload() override;
 
-    /* Creates instance of sprite object defined by resource. */
-    //PSprite createInstance();
-    /* Set given instance of sprite object to what is defined by resource. */
-    //EGEResult setInstance(const PSprite& instance);
+    /* Creates instance of particle emitter object defined by resource. */
+    PParticleEmitter createInstance();
 
   private:
 

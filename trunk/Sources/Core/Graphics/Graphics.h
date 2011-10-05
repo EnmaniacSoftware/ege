@@ -10,6 +10,8 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+class ParticleEmitterFactory;
+
 EGE_DECLARE_SMART_CLASS(Graphics, PGraphics)
 EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 EGE_DECLARE_SMART_CLASS(RenderWindow, PRenderWindow)
@@ -50,6 +52,8 @@ class Graphics : public Object
     PRenderTarget renderTarget(const String& name) const;
     /* Removes render target with the given name from registered pool. */
     void removeRenderTarget(const String& name);
+    /*! Returns pointer to particle emitter factory. */
+    inline ParticleEmitterFactory* particleEmitterFactory() const { return m_particleEmitterFactory; }
 
   private:
 
@@ -66,6 +70,8 @@ class Graphics : public Object
     PRenderTarget m_currentRenderingContext;
     /*! Render targets sorted by priority. */
     MultiMap<s32, PRenderTarget> m_renderTargets; 
+    /*! Particle emitter factory. */
+    ParticleEmitterFactory* m_particleEmitterFactory;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

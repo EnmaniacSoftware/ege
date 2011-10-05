@@ -28,8 +28,13 @@ class ParticleEmitterPoint : public ParticleEmitter
 
   public:
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
+    /* Creates instance of emitter. This method is a registration method for factory. */
+    static PParticleEmitter Create(Application* app, const String& name);
+
+  public:
+
+    /* ParticleEmitter override. Initializes emitter from dictionary. */
+    bool initialize(const Dictionary& params) override;
     /* Sets emission angle. */
     void setEmissionAngle(const Angle& angle);
     /* Sets emission angle variance. */

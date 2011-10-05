@@ -18,10 +18,10 @@ EGE_NAMESPACE_END
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #include "Core/Graphics/Particle/ParticleEmitter.h"
-#include "Core/Graphics/Particle//ParticleEmitterFactory.h"
-
-// TAGE
 #include "Core/Graphics/Particle/ParticleEmitterPoint.h"
+#include "Core/Graphics/Particle/ParticleAffector.h"
+#include "Core/Graphics/Particle/ParticleAffectorForce.h"
+#include "Core/Graphics/Particle//ParticleEmitterFactory.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

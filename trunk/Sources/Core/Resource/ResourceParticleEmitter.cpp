@@ -1,5 +1,7 @@
 #include "Core/Resource/ResourceParticleEmitter.h"
 #include "Core/Resource/ResourceManager.h"
+#include <EGEApplication.h>
+#include <EGEGraphics.h>
 #include <EGEXml.h>
 #include <EGEDebug.h>
 #include <EGEResources.h>
@@ -12,7 +14,7 @@ EGE_DEFINE_NEW_OPERATORS(ResourceParticleEmitter)
 EGE_DEFINE_DELETE_OPERATORS(ResourceParticleEmitter)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceParticleEmitter::ResourceParticleEmitter(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_SPRITE)
+ResourceParticleEmitter::ResourceParticleEmitter(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_PARTICLE_EMITTER)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -60,6 +62,9 @@ EGEResult ResourceParticleEmitter::create(const String& path, const PXmlElement&
     return EGE_ERROR_BAD_PARAM;
   }
 
+  // store name separately for further use
+  m_name = m_parameters["name"];
+
   // compose absolute path
  // m_path = path + "/" + m_path;
 
@@ -103,39 +108,22 @@ void ResourceParticleEmitter::unload()
   m_materialResource = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of sprite object defined by resource. */
-//PSprite ResourceParticleEmitter::createInstance()
-//{
-//	PSprite object = ege_new Sprite(app());
-//  if (object)
-//  {
-//    // set new data
-//    if (EGE_SUCCESS != setInstance(object))
-//    {
-//      object = NULL;
-//    }
-//  }
-//
-//  return object;
-//}
-////--------------------------------------------------------------------------------------------------------------------------------------------------------------
-///* Set given instance of sprite object to what is defined by resource. */
-//EGEResult ResourceParticleEmitter::setInstance(const PSprite& instance)
-//{
-//  // sanity check
-//  if (NULL == instance || !isLoaded())
-//  {
-//    return EGE_ERROR;
-//  }
-//
-//  // generate frame data
-//  calculateFrameData();
-//  
-//  // setup data
-//  instance->setDuration(m_duration);
-//  instance->setFrameData(m_frameData);
-//  instance->setTexture(m_sheet->textureImage()->createInstance());
-//
-//  return EGE_SUCCESS;
-//}
+/*! Creates instance of particle emitter object defined by resource. */
+PParticleEmitter ResourceParticleEmitter::createInstance()
+{
+  // create instance of particle emitter of a correct type and with given name
+  PParticleEmitter object = app()->graphics()->particleEmitterFactory()->createEmitter(m_parameters["type"], m_name);
+  if (object)
+  {
+    // initialize with dictionary
+    if (!object->initialize(m_parameters))
+    {
+      // error!
+      EGE_PRINT("ResourceParticleEmitter::createInstance - Could not initialize!");
+      object = NULL;
+    }
+  }
+
+  return object;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

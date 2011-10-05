@@ -4,6 +4,7 @@
 #include "Core/Graphics/Render/Renderer.h"
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Physics/PhysicsManager.h"
+#include "Core/Graphics/Particle/ParticleEmitterFactory.h"
 #include <EGEDevice.h>
 
 #ifdef EGE_PLATFORM_WIN32
@@ -32,6 +33,9 @@ Graphics::Graphics(Application* app, const Dictionary& params) : Object(app)
 
   // create renderer
   m_renderer = ege_new Renderer(app);
+
+  // create particle emitter factory
+  m_particleEmitterFactory = ege_new ParticleEmitterFactory(app);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Graphics::~Graphics()
@@ -43,6 +47,7 @@ Graphics::~Graphics()
 
   m_renderer = NULL;
 
+  EGE_DELETE(m_particleEmitterFactory);
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -101,7 +106,7 @@ EGEResult Graphics::setCurrentRenderingContext(PRenderTarget target)
 /*! Returns TRUE if object is valid. */
 bool Graphics::isValid() const
 {
-  return (NULL != m_p) && (NULL != m_renderer);
+  return (NULL != m_p) && (NULL != m_renderer) && (NULL != m_particleEmitterFactory);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Graphics::registerRenderTarget(PRenderTarget target)

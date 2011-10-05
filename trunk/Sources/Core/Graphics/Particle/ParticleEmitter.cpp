@@ -15,23 +15,14 @@ EGE_DEFINE_DELETE_OPERATORS(ParticleEmitter)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNodeObject(name),
                                                                          m_active(false), 
-                                                                         m_lifeSpan(-1.0f), 
                                                                          m_lifeDuration(0.0f), 
-                                                                         m_particleMaxCount(100), 
                                                                          m_activeParticlesCount(0), 
-                                                                         m_emissionRate(15), 
-                                                                         m_emitCount(0.0f),
-                                                                         m_particleStartSize(Vector2f(10, 10)), 
-                                                                         m_particleStartSizeVariance(Vector2f(0, 0)), 
-                                                                         m_particleEndSize(Vector2f(0, 0)), 
-                                                                         m_particleEndSizeVariance(Vector2f(0, 0)), 
-                                                                         m_particleLifeSpan(5.0f), 
-                                                                         m_particleLifeSpanVariance(0.0f), 
-                                                                         m_particleStartColor(Color::BLACK), 
-                                                                         m_particleStartColorVariance(Color::NONE), 
-                                                                         m_particleEndColor(Color::WHITE), 
-                                                                         m_particleEndColorVariance(Color::NONE)
+                                                                         m_emitCount(0.0f)
 {
+  // initialize to default values
+  Dictionary params;
+  initialize(params);
+
   // create render data
   m_renderData = ege_new RenderComponent(app, name, EGEGraphics::RP_MAIN, pointSprite ? EGEGraphics::RPT_POINTS : EGEGraphics::RPT_TRIANGLES);
   if (m_renderData)
@@ -68,6 +59,29 @@ ParticleEmitter::~ParticleEmitter()
 bool ParticleEmitter::isValid() const
 {
   return (NULL != m_renderData) && m_renderData->isValid();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Initializes emitter from dictionary. */
+bool ParticleEmitter::initialize(const Dictionary& params)
+{
+  bool error = false;
+
+  // decompose params
+  m_lifeSpan                    = params.value("life-span", "-1.0").toFloat(&error);
+  m_particleMaxCount            = params.value("max-particle-count", "100").toInt(&error);
+  m_emissionRate                = params.value("emission-rate", "15").toInt(&error);
+  m_particleStartSize           = params.value("particle-start-size", "10 10").toVector2f(&error);
+  m_particleStartSizeVariance   = params.value("particle-start-size-variance", "0 0").toVector2f(&error);
+  m_particleEndSize             = params.value("particle-end-size", "0 0").toVector2f(&error);
+  m_particleEndSizeVariance     = params.value("particle-end-size-variance", "0 0").toVector2f(&error);
+  m_particleLifeSpan            = params.value("particle-life-span", "5").toFloat(&error);
+  m_particleLifeSpanVariance    = params.value("particle-life-span-variance", "0").toFloat(&error);
+  m_particleStartColor          = params.value("particle-start-color", "0 0 0 1").toColor(&error);
+  m_particleStartColorVariance  = params.value("particle-start-color-variance", "0 0 0 0").toColor(&error);
+  m_particleEndColor            = params.value("particle-end-color", "1 1 1 1").toColor(&error);
+  m_particleEndColorVariance    = params.value("particle-end-color-variance", "0 0 0 0").toColor(&error);
+
+  return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Starts system. 

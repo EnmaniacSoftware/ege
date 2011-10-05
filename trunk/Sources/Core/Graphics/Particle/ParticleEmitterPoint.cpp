@@ -13,14 +13,7 @@ EGE_DEFINE_NEW_OPERATORS(ParticleEmitterPoint)
 EGE_DEFINE_DELETE_OPERATORS(ParticleEmitterPoint)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ParticleEmitterPoint::ParticleEmitterPoint(Application* app, const String& name) : ParticleEmitter(app, name),
-                                                                                   m_emissionAngle(EGEMath::TWO_PI),
-                                                                                   m_emissionAngleVariance(0),
-                                                                                   m_emissionDirection(Vector3f::UNIT_X),
-                                                                                   m_emissionDirectionMask(Vector3f::ONE),
-                                                                                   m_particleStartPositionVariance(Vector3f::ZERO), 
-                                                                                   m_particleSpeed(1.0f),
-                                                                                   m_particleSpeedVariance(0.0f)
+ParticleEmitterPoint::ParticleEmitterPoint(Application* app, const String& name) : ParticleEmitter(app, name)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,10 +21,28 @@ ParticleEmitterPoint::~ParticleEmitterPoint()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool ParticleEmitterPoint::isValid() const
+/*! Creates instance of emitter. This method is a registration method for factory. */
+PParticleEmitter ParticleEmitterPoint::Create(Application* app, const String& name)
 {
-  return (NULL != m_renderData) && m_renderData->isValid();
+  return ege_new ParticleEmitterPoint(app, name);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! ParticleEmitter override. Initializes emitter from dictionary. */
+bool ParticleEmitterPoint::initialize(const Dictionary& params)
+{
+  // initialize base
+  bool error = !ParticleEmitter::initialize(params);
+
+  // decompose params
+  m_emissionAngle                 = Angle::FromDegrees(params.value("emission-angle", "360").toFloat(&error));
+  m_emissionAngleVariance         = Angle::FromDegrees(params.value("emission-angle-variance", "0").toFloat(&error));
+  m_emissionDirection             = params.value("emission-direction", "1 0 0").toVector3f(&error);
+  m_emissionDirectionMask         = params.value("emission-direction-mask", "1 1 1").toVector3f(&error);
+  m_particleStartPositionVariance = params.value("particle-start-position-variance", "0 0 0").toVector3f(&error);
+  m_particleSpeed                 = params.value("particle-speed", "1.0").toFloat(&error);
+  m_particleSpeedVariance         = params.value("particle-speed-variance", "0").toFloat(&error);
+
+  return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets emission angle. */
@@ -84,6 +95,7 @@ void ParticleEmitterPoint::initializeParticle(s32 index)
 
 	// calculate direction
 	Angle angle = m_emissionAngle + m_emissionAngleVariance.radians() * m_random(-1.0f, 1.0f);
+  angle *= 0.5f;
   particleData.direction = Math::RandomDeviant(&angle, &m_emissionDirection);
   particleData.direction.x *= m_emissionDirectionMask.x;
   particleData.direction.y *= m_emissionDirectionMask.y;

@@ -62,24 +62,33 @@ bool ParticleTest::initialize()
     return false;
   }
 
-  // create particle emitter
-  m_emitter = ege_new ParticleEmitterPoint(app(), "ParticleEmitter1");
-  m_emitter->setParticleMaxCount(1500);
-  m_emitter->setParticleSpeed(50.0f);
-  m_emitter->setParticleSpeedVariance(10.0f);
-  m_emitter->setEmissionDirection(Vector3f(1.0f, 0.0f, 0.0f));
-  m_emitter->setEmissionDirectionMask(Vector3f(1.0f, 1.0f, 0.0f));
-  m_emitter->setEmissionAngle(Angle::FromDegrees(10.0f));
-  m_emitter->setParticleStartSize(Vector2f(10, 10));
-  m_emitter->setParticleEndSize(Vector2f(10, 10));
-  m_emitter->setEmissionRate(250);
-
+  // get particle material resource
   PResourceMaterial resource = app()->resourceManager()->resource(RESOURCE_NAME_MATERIAL, "particle");
-  m_emitter->setMaterial(resource->createInstance());
 
-  app()->sceneManager()->rootNode()->attachObject(m_emitter);
-  app()->sceneManager()->rootNode()->physics()->setPosition(Vector4f(200, 200, 0));
+  // create particle from resource
+  PResourceParticleEmitter emitterResource = app()->resourceManager()->resource(RESOURCE_NAME_PARTICLE_EMITTER, "point-emitter-example");
+  m_emitter = emitterResource->createInstance();
+  m_emitter->setMaterial(resource->createInstance());
   m_emitter->start();
+
+  // create particle emitter from scratch
+  m_emitter2 = ege_new ParticleEmitterPoint(app(), "ala");
+  m_emitter2->setParticleMaxCount(1500);
+  m_emitter2->setParticleSpeed(50.0f);
+  m_emitter2->setParticleSpeedVariance(10.0f);
+  m_emitter2->setEmissionDirection(Vector3f(1.0f, 0.0f, 0.0f));
+  m_emitter2->setEmissionDirectionMask(Vector3f(1.0f, 1.0f, 0.0f));
+  m_emitter2->setEmissionAngle(Angle::FromDegrees(45.0f));
+  m_emitter2->setParticleStartSize(Vector2f(10, 10));
+  m_emitter2->setParticleEndSize(Vector2f(10, 10));
+  m_emitter2->setEmissionRate(250);
+  m_emitter2->setMaterial(resource->createInstance());
+  m_emitter2->start();
+
+  app()->sceneManager()->rootNode()->createChildSceneNode("emitter-1")->attachObject(m_emitter);
+  app()->sceneManager()->rootNode()->childNode("emitter-1")->physics()->setPosition(Vector4f(200, 200, 0));
+  app()->sceneManager()->rootNode()->attachObject(m_emitter2);
+  app()->sceneManager()->rootNode()->physics()->setPosition(Vector4f(200, 400, 0));
 
   return true;
 }
@@ -90,8 +99,13 @@ void ParticleTest::update(const Time& time)
   if (m_emitter)
   {
     m_emitter->update(time);
-
     EGE_PRINT("%d", m_emitter->activeParticlesCount());
+  }
+
+  if (m_emitter2)
+  {
+    m_emitter2->update(time);
+    EGE_PRINT("%d", m_emitter2->activeParticlesCount());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

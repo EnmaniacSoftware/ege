@@ -471,6 +471,15 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterPoint.cpp">
       <Filter>Core\Graphics\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterFactory.cpp">
+      <Filter>Core\Graphics\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleAffector.cpp">
+      <Filter>Core\Graphics\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleAffectorForce.cpp">
+      <Filter>Core\Graphics\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -915,6 +924,15 @@
       <Filter>Core\XML\TinyXML</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterPoint.h">
+      <Filter>Core\Graphics\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterFactory.h">
+      <Filter>Core\Graphics\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleAffector.h">
+      <Filter>Core\Graphics\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleAffectorForce.h">
       <Filter>Core\Graphics\Particle</Filter>
     </ClInclude>
   </ItemGroup>

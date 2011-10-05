@@ -19,6 +19,7 @@ class Angle
 
     inline const Angle& operator += (const Angle& other) { m_radians += other.m_radians; return *this; }
     inline const Angle& operator -= (const Angle& other) { m_radians -= other.m_radians; return *this; }
+    inline const Angle& operator *= (float32 scalar) { m_radians *= scalar; return *this; }
     inline bool         operator > (const Angle& other) const { return m_radians > other.m_radians; }
     inline bool         operator < (const Angle& other) const { return m_radians < other.m_radians; }
     inline bool         operator > (float32 radians) const { return m_radians > radians; }
