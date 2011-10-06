@@ -5,7 +5,7 @@
 EGE_NAMESPACE
 
   // TAGE
-  static bool pointSprite = true;
+  static bool pointSprite = false;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -139,7 +139,7 @@ void ParticleEmitter::update(const Time& time)
   s32 i = 0;
   while (i < m_activeParticlesCount)
   {
-    ParticleData& particleData = m_particles[i];
+    EGEParticle::ParticleData& particleData = m_particles[i];
 
     // update time
     particleData.timeLeft -= time;
@@ -156,8 +156,11 @@ void ParticleEmitter::update(const Time& time)
       particleData.color.blue   += particleData.colorDelta.blue * timeInSeconds;
       particleData.color.alpha  += particleData.colorDelta.alpha * timeInSeconds;
 
+      // update velocity
+      particleData.velocity += particleData.acceleration * timeInSeconds;
+
       // update position
-      particleData.position += particleData.direction * timeInSeconds;
+      particleData.position += particleData.velocity * timeInSeconds;
 
       // go to next particle
       ++i;
@@ -175,6 +178,9 @@ void ParticleEmitter::update(const Time& time)
 			--m_activeParticlesCount;
     }
   }
+
+  // apply affectors
+  applyAffectors(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets system life span. */
@@ -300,7 +306,7 @@ bool ParticleEmitter::addForRendering(Renderer* renderer)
 
       for (s32 i = 0; i < m_activeParticlesCount; ++i)
       {
-        const ParticleData& particleData = m_particles[i];
+        const EGEParticle::ParticleData& particleData = m_particles[i];
 
         // NOTE: point sprites position determines sprite center point
         *data++ = particleData.position.x;
@@ -324,7 +330,7 @@ bool ParticleEmitter::addForRendering(Renderer* renderer)
 
       for (s32 i = 0; i < m_activeParticlesCount; ++i)
       {
-        const ParticleData& particleData = m_particles[i];
+        const EGEParticle::ParticleData& particleData = m_particles[i];
 
         // Quad looks like follows:
         //
@@ -424,5 +430,29 @@ bool ParticleEmitter::addForRendering(Renderer* renderer)
 void ParticleEmitter::setMaterial(const PMaterial& material)
 {
   m_renderData->setMaterial(material);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Applies affectors. */
+void ParticleEmitter::applyAffectors(const Time& time)
+{
+  // go thru all affectors
+  for (ParticleAffectorList::iterator it = m_affectors.begin(); it != m_affectors.end(); ++it)
+  {
+    PParticleAffector& affector = *it;
+
+    affector->apply(time, m_particles, m_activeParticlesCount);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds affector. */
+void ParticleEmitter::addAffector(PParticleAffector& affector)
+{
+  m_affectors.push_back(affector);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes given affector. */
+void ParticleEmitter::removeAffector(PParticleAffector& affector)
+{
+  m_affectors.remove(affector);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

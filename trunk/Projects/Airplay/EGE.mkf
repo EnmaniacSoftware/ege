@@ -343,6 +343,8 @@ files
 	ResourceManager.h
   ResourceMaterial.cpp
   ResourceMaterial.h
+  ResourceParticleAffector.cpp
+  ResourceParticleAffector.h
   ResourceParticleEmitter.cpp
   ResourceParticleEmitter.h
   ResourceSprite.cpp

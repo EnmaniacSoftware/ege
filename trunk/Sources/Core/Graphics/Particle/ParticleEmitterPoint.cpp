@@ -1,11 +1,7 @@
 #include "Core/Graphics/Particle/ParticleEmitterPoint.h"
-#include <EGEGraphics.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE
-
-  // TAGE
-  static bool pointSprite = true;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -38,6 +34,8 @@ bool ParticleEmitterPoint::initialize(const Dictionary& params)
   m_emissionAngleVariance         = Angle::FromDegrees(params.value("emission-angle-variance", "0").toFloat(&error));
   m_emissionDirection             = params.value("emission-direction", "1 0 0").toVector3f(&error);
   m_emissionDirectionMask         = params.value("emission-direction-mask", "1 1 1").toVector3f(&error);
+  m_emissionAcceleration          = params.value("emission-acceleration", "0 0 0").toVector3f(&error);
+  m_emissionAccelerationVariance  = params.value("emission-acceleration-variance", "0 0 0").toVector3f(&error);
   m_particleStartPositionVariance = params.value("particle-start-position-variance", "0 0 0").toVector3f(&error);
   m_particleSpeed                 = params.value("particle-speed", "1.0").toFloat(&error);
   m_particleSpeedVariance         = params.value("particle-speed-variance", "0").toFloat(&error);
@@ -81,12 +79,30 @@ void ParticleEmitterPoint::setEmissionDirectionMask(const Vector3f& directionMas
   m_emissionDirectionMask = directionMask;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets emission acceleration. */
+void ParticleEmitterPoint::setParticleAcceleration(const Vector3f& acceleration)
+{
+  m_emissionAcceleration = acceleration;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets emission acceleration variance. */
+void ParticleEmitterPoint::setParticleAccelerationVariance(const Vector3f& variance)
+{
+  m_emissionAccelerationVariance = variance;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets particle start position variance. */
+void ParticleEmitterPoint::setParticleStartPositionVariance(const Vector3f& variance)
+{
+  m_particleStartPositionVariance = variance;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Initializes particle at given index. */
 void ParticleEmitterPoint::initializeParticle(s32 index)
 {
   EGE_ASSERT((0 <= index) && (index < static_cast<s32>(m_particles.size())));
 
-  ParticleData& particleData = m_particles[index];
+  EGEParticle::ParticleData& particleData = m_particles[index];
 
   float32 inverseLifeTimeSeconds = 1.0f;
 
@@ -96,14 +112,17 @@ void ParticleEmitterPoint::initializeParticle(s32 index)
 	// calculate direction
 	Angle angle = m_emissionAngle + m_emissionAngleVariance.radians() * m_random(-1.0f, 1.0f);
   angle *= 0.5f;
-  particleData.direction = Math::RandomDeviant(&angle, &m_emissionDirection);
-  particleData.direction.x *= m_emissionDirectionMask.x;
-  particleData.direction.y *= m_emissionDirectionMask.y;
-  particleData.direction.z *= m_emissionDirectionMask.z;
-  particleData.direction.normalize();
+  particleData.velocity = Math::RandomDeviant(&angle, &m_emissionDirection);
+  particleData.velocity.x *= m_emissionDirectionMask.x;
+  particleData.velocity.y *= m_emissionDirectionMask.y;
+  particleData.velocity.z *= m_emissionDirectionMask.z;
+  particleData.velocity.normalize();
 
   // apply speed
-  particleData.direction *= m_particleSpeed + m_particleSpeedVariance * m_random(-1.0f, 1.0f);
+  particleData.velocity *= m_particleSpeed + m_particleSpeedVariance * m_random(-1.0f, 1.0f);
+
+  // calculate acceleration
+  particleData.acceleration = m_emissionAcceleration + m_emissionAccelerationVariance * m_random(-1.0f, 1.0f);
 
 	// calculate the particles life span using the life span and variance passed in
 	particleData.timeLeft = m_particleLifeSpan + m_particleLifeSpanVariance * m_random(-1.0f, 1.0f);

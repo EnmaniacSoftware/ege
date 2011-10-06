@@ -1,4 +1,6 @@
 #include "Core/Graphics/Particle/ParticleFactory.h"
+#include "Core/Graphics/Particle/ParticleEmitterPoint.h"
+#include "Core/Graphics/Particle/ParticleAffectorForce.h"
 #include <EGEDebug.h>
 
 EGE_NAMESPACE

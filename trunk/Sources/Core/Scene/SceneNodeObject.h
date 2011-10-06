@@ -35,6 +35,8 @@ class SceneNodeObject : public Object
     inline bool isVisible() const { return m_visible; }
     /* Sets visibility flag. */
     virtual void setVisible(bool set);
+    /*! Returns TRUE if object is attached. */
+    inline bool isAttached() const { return (NULL != m_parentNode); }
 
     // bounding box related methods
    // inline const CAxisAlignedBox& getLocalAABB( void ) const { return m_cLocalAABB; } // gets local AABB

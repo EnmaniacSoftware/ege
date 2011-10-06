@@ -35,6 +35,7 @@ class ParticleEmitterPoint : public ParticleEmitter
 
     /* ParticleEmitter override. Initializes emitter from dictionary. */
     bool initialize(const Dictionary& params) override;
+
     /* Sets emission angle. */
     void setEmissionAngle(const Angle& angle);
     /* Sets emission angle variance. */
@@ -43,10 +44,17 @@ class ParticleEmitterPoint : public ParticleEmitter
     void setEmissionDirection(const Vector3f& direction);
     /* Sets emitter direction mask. */
     void setEmissionDirectionMask(const Vector3f& directionMask);
+
     /* Sets particle speed. */
     void setParticleSpeed(float32 speed);
     /* Sets particle speed variance. */
     void setParticleSpeedVariance(float32 variance);
+    /* Sets particle start position variance. */
+    void setParticleStartPositionVariance(const Vector3f& variance);
+    /* Sets emission acceleration. */
+    void setParticleAcceleration(const Vector3f& acceleration);
+    /* Sets emission acceleration variance. */
+    void setParticleAccelerationVariance(const Vector3f& variance);
 
   private:
 
@@ -69,6 +77,10 @@ class ParticleEmitterPoint : public ParticleEmitter
     float32 m_particleSpeed;
     /*! Particle speed variance. */
     float32 m_particleSpeedVariance;
+    /*! Emission acceleration vector. */
+    Vector3f m_emissionAcceleration;
+    /*! Emission acceleration vector variance. */
+    Vector3f m_emissionAccelerationVariance;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

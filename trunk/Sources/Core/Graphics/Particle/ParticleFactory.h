@@ -13,6 +13,11 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+EGE_DECLARE_SMART_CLASS(ParticleEmitter, PParticleEmitter)
+EGE_DECLARE_SMART_CLASS(ParticleAffector, PParticleAffector)
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 typedef PParticleEmitter  (*egeParticleEmitterCreateFunc)(Application* app, const String& name);
 typedef PParticleAffector (*egeParticleAffectorCreateFunc)(Application* app, const String& name);
 

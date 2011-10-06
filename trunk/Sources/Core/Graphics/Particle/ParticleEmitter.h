@@ -15,13 +15,14 @@
 #include <EGEVector.h>
 #include <EGEScene.h>
 #include <EGERandom.h>
-#include "Core/Graphics/Particle/ParticleAffector.h"
+#include <EGEParticle.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_DECLARE_SMART_CLASS(ParticleEmitter, PParticleEmitter)
+EGE_DECLARE_SMART_CLASS(ParticleAffector, PParticleAffector)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -47,12 +48,16 @@ class ParticleEmitter : public SceneNodeObject
     void start();
     /* Updates object. */
     void update(const Time& time);
+
     /* Sets system life span. Negative time causes emitter to live infinitely. */
     void setLifeSpan(const Time& time);
     /* Sets maximum number of particles. */
     void setParticleMaxCount(s32 count);
     /* Sets emission rate. */
     void setEmissionRate(s32 rate);
+    /*! Returns number of active particles. */
+    inline s32 activeParticlesCount() const { return m_activeParticlesCount; }
+
     /* Sets particle start size. */
     void setParticleStartSize(const Vector2f& size);
     /* Sets particle start size variance. */
@@ -73,10 +78,14 @@ class ParticleEmitter : public SceneNodeObject
     void setParticleEndColor(const Color& color);
     /* Sets particle end color variance. */
     void setParticleEndColorVariance(const Color& variance);
-    /*! Returns number of active particles. */
-    inline s32 activeParticlesCount() const { return m_activeParticlesCount; }
+   
     /* Sets material. */
     void setMaterial(const PMaterial& material);
+
+    /* Adds affector. */
+    void addAffector(PParticleAffector& affector);
+    /* Removes given affector. */
+    void removeAffector(PParticleAffector& affector);
 
   private:
 
@@ -86,30 +95,13 @@ class ParticleEmitter : public SceneNodeObject
     bool allocateParticlesData();
     /* SceneNodeObject override. Adds object render data for rendering with given renderer. */
     bool addForRendering(Renderer* renderer) override;
+    /* Applies affectors. */
+    void applyAffectors(const Time& time);
     /*! Initializes particle at given index. */
     virtual void initializeParticle(s32 index) = 0;
 
   protected:
 
-    /*! Particle data structure. */
-    struct ParticleData
-    {
-      Vector3f position;            /*!< Current position. */ 
-
-      Color color;                  /*!< Current color. */
-      Color colorDelta;             /*!< Color delta. */
-
-      Vector2f size;                /*!< Current size. */
-      Vector2f sizeDelta;           /*!< Size delta. */
-
-      Time timeLeft;                /*!< Time left to die. */
-
-      Vector3f direction;           /*!< Direction vector including speed. */
-    };
-
-  protected:
-
-    typedef DynamicArray<ParticleData> ParticleDataArray;
     typedef List<PParticleAffector> ParticleAffectorList;
 
   protected:

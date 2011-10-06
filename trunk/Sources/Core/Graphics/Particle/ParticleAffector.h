@@ -10,6 +10,7 @@
 #include <EGETime.h>
 #include <EGEString.h>
 #include <EGEDictionary.h>
+#include <EGEParticle.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -33,6 +34,12 @@ class ParticleAffector : public Object
 
     /* Initializes affector from dictionary. */
     virtual bool initialize(const Dictionary& params);
+    /*! Applies logic to given particles. 
+     *  @param  time        Time increment for which calculations should be performed.
+     *  @param  particles   Array of particles to apply data to.
+     *  @param  count       Number of particles, counted from the first entry in array, for which calculations are to be done.
+     */
+    virtual void apply(const Time& time, ParticleDataArray& particles, u32 count) = 0;
     
   protected:
 

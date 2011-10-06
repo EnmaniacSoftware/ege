@@ -6,7 +6,7 @@
 */
 
 #include <EGE.h>
-#include "Core/Graphics/Particle/ParticleAffector.h"
+#include <EGEParticle.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -35,6 +35,17 @@ class ParticleAffectorForce : public ParticleAffector
 
     /* ParticleAffector override. Initializes affector from dictionary. */
     bool initialize(const Dictionary& params) override;
+    /*  ParticleAffector override. Applies logic to given particles. 
+     *  @param  time        Time increment for which calculations should be performed.
+     *  @param  particles   Array of particles to apply data to.
+     *  @param  count       Number of particles, counted from the first entry in array, for which calculations are to be done.
+     */
+    void apply(const Time& time, ParticleDataArray& particles, u32 count) override;
+
+  private:
+
+    /*! Force vector. */
+    Vector3f m_force;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

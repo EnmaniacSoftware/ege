@@ -9,6 +9,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define NODE_AFFECTOR "affector"
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_DEFINE_NEW_OPERATORS(ResourceParticleEmitter)
 EGE_DEFINE_DELETE_OPERATORS(ResourceParticleEmitter)
@@ -65,8 +67,27 @@ EGEResult ResourceParticleEmitter::create(const String& path, const PXmlElement&
   // store name separately for further use
   m_name = m_parameters["name"];
 
-  // compose absolute path
- // m_path = path + "/" + m_path;
+  // go thru all sub node
+  PXmlElement child = tag->firstChild();
+  while (child->isValid())
+  {
+    // check child
+    if (NODE_AFFECTOR == child->name())
+    {
+      // add affector
+      result = addAffector(child);
+    }
+
+    // check if failed
+    if (EGE_SUCCESS != result)
+    {
+      // error, done!
+      break;
+    }
+
+    // go to next child
+    child = child->nextChild();
+  }
 
   return result;
 }
@@ -95,6 +116,28 @@ EGEResult ResourceParticleEmitter::load()
       // material not found
       result = EGE_ERROR_NOT_FOUND;
     }
+
+    // load all affectors
+    for (StringList::const_iterator it = m_affectors.begin(); it != m_affectors.end(); ++it)
+    {
+      // get affector resource
+      PResourceParticleAffector affectorResource = manager()->resource(RESOURCE_NAME_PARTICLE_AFFECTOR, *it);
+      if (affectorResource)
+      {
+        // load it
+        if (EGE_SUCCESS != (result = affectorResource->load()))
+        {
+          // error!
+          EGE_PRINT("ResourceParticleEmitter::load - Could not load!");
+          return result;
+        }
+      }
+      else
+      {
+        // affector not found
+        result = EGE_ERROR_NOT_FOUND;
+      }
+    }
   }
 
   return result;
@@ -122,8 +165,36 @@ PParticleEmitter ResourceParticleEmitter::createInstance()
       EGE_PRINT("ResourceParticleEmitter::createInstance - Could not initialize!");
       object = NULL;
     }
+
+    // add affectors
+    for (StringList::const_iterator it = m_affectors.begin(); it != m_affectors.end(); ++it)
+    {
+      // get affector resource
+      PResourceParticleAffector affectorResource = manager()->resource(RESOURCE_NAME_PARTICLE_AFFECTOR, *it);
+      
+      // create instance
+      PParticleAffector affector = affectorResource->createInstance();
+
+      // add to emitter
+      object->addAffector(affector);
+    }
   }
 
   return object;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds affector. */
+EGEResult ResourceParticleEmitter::addAffector(const PXmlElement& tag)
+{
+  // get obligatory data
+  String name = tag->attribute("name");
+  if (name.empty())
+  {
+    // error!
+    return EGE_ERROR;
+  }
+
+  m_affectors.push_back(name);
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

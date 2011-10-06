@@ -1,7 +1,7 @@
-#ifndef EGE_CORE_RESOURCEPARTICLEEMITTER_H
-#define EGE_CORE_RESOURCEPARTICLEEMITTER_H
+#ifndef EGE_CORE_RESOURCEPARTICLEAFFECTOR_H
+#define EGE_CORE_RESOURCEPARTICLEAFFECTOR_H
 
-/** Particle emitter resource definition class. This object (resource) contains definition of particle emitter.
+/** Particle affector resource definition class. This object (resource) contains definition of particle affector.
  */
 
 #include <EGE.h>
@@ -18,16 +18,15 @@ EGE_NAMESPACE_BEGIN
 
 class ResourceManager;
 
-EGE_DECLARE_SMART_CLASS(ResourceParticleEmitter, PResourceParticleEmitter)
-EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
+EGE_DECLARE_SMART_CLASS(ResourceParticleAffector, PResourceParticleAffector)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class ResourceParticleEmitter : public IResource
+class ResourceParticleAffector : public IResource
 {
   public:
 
-    virtual ~ResourceParticleEmitter();
+    virtual ~ResourceParticleAffector();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -48,16 +47,16 @@ class ResourceParticleEmitter : public IResource
     /* IResource override. Unloads resource. */
     void unload() override;
 
-    /* Creates instance of particle emitter object defined by resource. */
-    PParticleEmitter createInstance();
+    /* Creates instance of particle affector object defined by resource. */
+    PParticleAffector createInstance();
 
   private:
 
-    ResourceParticleEmitter(Application* app, ResourceManager* manager);
+    ResourceParticleAffector(Application* app, ResourceManager* manager);
     /* Returns TRUE if object is loaded. */
-    inline bool isLoaded() const { return (NULL != m_materialResource); }
-    /* Adds affector. */
-    EGEResult addAffector(const PXmlElement& tag);
+    inline bool isLoaded() const { return true; }
+
+  private:
 
   private:
 
@@ -65,14 +64,10 @@ class ResourceParticleEmitter : public IResource
     String m_name;
     /*! Dictionary with defined parameters. */
     Dictionary m_parameters;
-    /*! Material resource. NULL if not loaded yet. */
-    PResourceMaterial m_materialResource;
-    /*! List of affectors. */
-    StringList m_affectors;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_RESOURCEPARTICLEEMITTER_H
+#endif // EGE_CORE_RESOURCEPARTICLEAFFECTOR_H
