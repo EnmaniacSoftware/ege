@@ -27,6 +27,7 @@ files
   EGEComplex.h
   EGEDataBuffer.h
   EGEDebug.h
+  EGEDesktopServices.h
   EGEDevice.h
   EGEDir.h
   EGEDynamicArray.h
@@ -393,6 +394,11 @@ files
   Timer.cpp
   Timer.h
 
+	["Core/Tools"]
+  (../../Sources/Core/Tools)
+  DesktopServices.cpp
+  DesktopServices.h
+
 	["Core/XML"]
   (../../Sources/Core/XML)
 	XmlAttribute.cpp
@@ -461,6 +467,11 @@ files
 	(../../Sources/Airplay/Timer)
 	TimerAirplay_p.cpp
 	TimerAirplay_p.h
+
+	["Airplay/Tools"]
+  (../../Sources/Airplay/Tools)
+  DesktopServicesAirplay_p.cpp
+  DesktopServicesAirplay_p.h
 }
 
 subprojects

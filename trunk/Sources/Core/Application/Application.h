@@ -20,6 +20,7 @@ class Pointer;
 class SceneManager;
 class OverlayManager;
 class Debug;
+class DesktopServices;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -58,6 +59,8 @@ class Application
     ScreenManager* screenManager() const { return m_screenManager; }
     /*! Returns debug object. */
     Debug* debug() const { return m_debug; }
+    /*! Returns dektop services object. */
+    DesktopServices* desktopServices() const { return m_desktopServices; }
     /*! Returns TRUE if landscape mode is enabled. */
     inline bool isLandscape() const { return m_landscapeMode; }
     /* Returns current FPS indication. */
@@ -90,6 +93,8 @@ class Application
     ScreenManager* m_screenManager;
     /*! Debug object. */
     Debug* m_debug;
+    /*! Desktop services object. */
+    DesktopServices* m_desktopServices;
     /*! Landscape mode flag. */
     bool m_landscapeMode;
 };

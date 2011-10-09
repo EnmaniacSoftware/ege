@@ -13,6 +13,7 @@
 #include "Core/Input/Pointer.h"
 #include "Core/Screen/ScreenManager.h"
 #include "Core/Debug/Debug.h"
+#include "Core/Tools/DesktopServices.h"
 #include <EGETimer.h>
 #include <EGEGraphics.h>
 #include <EGEApplication.h>
@@ -20,8 +21,18 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Application::Application() : m_sceneManager(NULL), m_physicsManager(NULL), m_eventManager(NULL), m_graphics(NULL), m_appController(NULL), 
-                             m_resourceManager(NULL), m_pointer(NULL), m_overlayManager(NULL), m_screenManager(NULL), m_debug(NULL), m_landscapeMode(false)
+Application::Application() : m_sceneManager(NULL), 
+                             m_physicsManager(NULL), 
+                             m_eventManager(NULL), 
+                             m_graphics(NULL), 
+                             m_appController(NULL), 
+                             m_resourceManager(NULL), 
+                             m_pointer(NULL), 
+                             m_overlayManager(NULL), 
+                             m_screenManager(NULL), 
+                             m_debug(NULL), 
+                             m_desktopServices(NULL),
+                             m_landscapeMode(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -31,13 +42,12 @@ Application::~Application()
   EGE_DELETE(m_graphics);
   EGE_DELETE(m_appController);
   EGE_DELETE(m_resourceManager);
-
   EGE_DELETE(m_screenManager);
   EGE_DELETE(m_overlayManager);
   EGE_DELETE(m_pointer);
   EGE_DELETE(m_eventManager);
   EGE_DELETE(m_physicsManager);
-
+  EGE_DELETE(m_desktopServices);
   EGE_DELETE(m_debug);
 
   MemoryManager::Deinit();
@@ -63,6 +73,14 @@ EGEResult Application::initialize(const Dictionary& params)
   // create debug object
   m_debug = ege_new Debug(this);
   if (NULL == m_debug)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // create desktop services
+  m_desktopServices = ege_new DesktopServices();
+  if (NULL == m_desktopServices || !m_desktopServices->isValid())
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
