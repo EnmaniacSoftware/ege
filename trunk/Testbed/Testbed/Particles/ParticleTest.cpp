@@ -68,7 +68,6 @@ bool ParticleTest::initialize()
   // create particle from resource
   PResourceParticleEmitter emitterResource = app()->resourceManager()->resource(RESOURCE_NAME_PARTICLE_EMITTER, "point-emitter-example");
   m_emitter = emitterResource->createInstance();
-  m_emitter->setMaterial(resource->createInstance());
   m_emitter->start();
 
   app()->sceneManager()->rootNode()->createChildSceneNode("emitter-1")->attachObject(m_emitter);

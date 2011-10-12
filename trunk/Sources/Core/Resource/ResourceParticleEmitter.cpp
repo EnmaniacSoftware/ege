@@ -178,6 +178,9 @@ PParticleEmitter ResourceParticleEmitter::createInstance()
       // add to emitter
       object->addAffector(affector);
     }
+
+    // assign material
+    object->setMaterial(m_materialResource->createInstance());
   }
 
   return object;

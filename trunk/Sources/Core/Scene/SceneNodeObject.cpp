@@ -39,16 +39,29 @@ bool SceneNodeObject::addForRendering(Renderer* renderer)
 /*! Sets parent node. */
 void SceneNodeObject::setParentNode(SceneNode* parent)
 {
-  m_parentNode = parent;
+  if (parent != m_parentNode)
+  {
+    // notify first
+    parentChanged(m_parentNode, parent);
+
+    // store new node
+    m_parentNode = parent;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Sets visibility flag. */
+/*! Sets visibility flag. */
 void SceneNodeObject::setVisible(bool set)
 {
   m_visible = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+/*! Called when parent node changes. */
+void SceneNodeObject::parentChanged(SceneNode* oldNode, SceneNode* newNode)
+{
+  EGE_UNUSED(oldNode);
+  EGE_UNUSED(newNode);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
 void SceneNodeObject::queryLights( void )
 {

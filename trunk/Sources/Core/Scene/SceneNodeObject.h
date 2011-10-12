@@ -38,6 +38,11 @@ class SceneNodeObject : public Object
     /*! Returns TRUE if object is attached. */
     inline bool isAttached() const { return (NULL != m_parentNode); }
 
+  protected:
+
+    /* Called when parent node changes. */
+    virtual void parentChanged(SceneNode* oldNode, SceneNode* newNode);
+
     // bounding box related methods
    // inline const CAxisAlignedBox& getLocalAABB( void ) const { return m_cLocalAABB; } // gets local AABB
 
