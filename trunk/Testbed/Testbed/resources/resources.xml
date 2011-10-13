@@ -1,4 +1,4 @@
-<?xml version="1.0"  standalone='no'?>
+﻿<?xml version="1.0" encoding="UTF-8" standalone='no'?>
 
 <resources>
 
@@ -47,6 +47,29 @@
                       >
       <affector name='point-affector-example' />
     </particle-emitter>
+
+  </group>
+
+  <!-- Localization test resources -->
+  <group name='localization-test'>
+
+    <text name='text-1' description='This is translator helping message. This is not interpreted by framework at all.'>
+      <lang name='en' value='This is simple test' />
+      <lang name='pl' value='To jest prosty test' />
+    </text>
+
+    <text name='text-2' description='Another translator helping message. This is not interpreted by framework at all.'>
+      <lang name='en' value='This shows the number: %d' />
+      <lang name='pl' value='To pokazuje liczbę: %d' />
+    </text>
+
+    <text name='text-3' description='Yet another translator helping message. This is not interpreted by framework at all.'>
+      <lang name='en' value='There is %n apple.' />
+      <lang name='en' value='There are %n apples.' />
+      <lang name='pl' value='Tam jest %n jabłko.' />
+      <lang name='pl' value='Tam są %n jabłka.' />
+      <lang name='pl' value='Tam jest %n jabłek.' />
+    </text>
 
   </group>
 

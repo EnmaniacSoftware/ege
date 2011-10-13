@@ -34,6 +34,9 @@
     <Filter Include="Tests\Particles">
       <UniqueIdentifier>{9082668e-7f5f-4f2d-8c7a-7d9a18f34bf1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Localization">
+      <UniqueIdentifier>{5a792991-be8c-4c05-987c-5c4d9f5d6b89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -69,6 +72,9 @@
     <ClCompile Include="Particles\ParticleTest.cpp">
       <Filter>Tests\Particles</Filter>
     </ClCompile>
+    <ClCompile Include="Localization\LocalizationTest.cpp">
+      <Filter>Tests\Localization</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -103,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="Particles\ParticleTest.h">
       <Filter>Tests\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Localization\LocalizationTest.h">
+      <Filter>Tests\Localization</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

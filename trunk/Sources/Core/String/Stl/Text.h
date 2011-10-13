@@ -31,6 +31,11 @@ class Text : public std::wstring
     Text& toLower();
     /* Converts self to upper-case. */
     Text& toUpper();
+
+  private:
+
+    /* Converts from given UTF-8 string into UTF-16. */
+    bool fromString(const String& string);
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

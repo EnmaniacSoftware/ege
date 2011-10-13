@@ -94,6 +94,7 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSprite.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSpritesheet.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceText.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceTextureImage.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceTexture.cpp" />
     <ClCompile Include="..\..\Sources\Core\Scene\SceneManager.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSprite.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpritesheet.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceText.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceTextureImage.h" />
     <ClInclude Include="..\..\Sources\Core\Timer\TimeLine.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\DesktopServices.h" />

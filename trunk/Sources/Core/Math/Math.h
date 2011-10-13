@@ -40,6 +40,8 @@ class Math
 
     template <typename T>
     inline static T Bound(T value, T min, T max) { return (value > max) ? max : ((value < min) ? min : value); }
+    template <typename T>
+    inline static T MapTo01(T value, T min, T max) { T range = max - min; return (0 != range) ? ((value - min) / range) : 0; }
 
     template <typename T>
     inline static float32 Sqrt(T number) { return sqrtf(static_cast<float32>(number)); }

@@ -11,6 +11,7 @@
 #include "Core/Resource/ResourceCurve.h"
 #include "Core/Resource/ResourceParticleEmitter.h"
 #include "Core/Resource/ResourceParticleAffector.h"
+#include "Core/Resource/ResourceText.h"
 #include "Core/Graphics/Font.h"
 #include "Core/Debug/DebugFont.h"
 #include <EGEXml.h>
@@ -45,7 +46,8 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
                                                     { RESOURCE_NAME_SPRITE, ResourceSprite::Create },
                                                     { RESOURCE_NAME_CURVE, ResourceCurve::Create },
                                                     { RESOURCE_NAME_PARTICLE_EMITTER, ResourceParticleEmitter::Create },
-                                                    { RESOURCE_NAME_PARTICLE_AFFECTOR, ResourceParticleAffector::Create }
+                                                    { RESOURCE_NAME_PARTICLE_AFFECTOR, ResourceParticleAffector::Create },
+                                                    { RESOURCE_NAME_TEXT, ResourceText::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::ResourceManager(Application* app) : Object(app)
@@ -459,5 +461,17 @@ void ResourceManager::removeGroups()
   {
     m_groups.erase(it++);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns material resource of a given name. Optionally, from given group only. */
+PResourceMaterial ResourceManager::materialResource(const String& name, const String& groupName) const
+{
+  return resource(RESOURCE_NAME_MATERIAL, name, groupName);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns text resource of a given name. Optionally, from given group only. */
+PResourceText ResourceManager::textResource(const String& name, const String& groupName) const
+{
+  return resource(RESOURCE_NAME_TEXT, name, groupName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

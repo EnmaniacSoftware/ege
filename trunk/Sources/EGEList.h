@@ -19,6 +19,7 @@ EGE_NAMESPACE_BEGIN
 
 typedef List<s32> IntList;
 typedef List<String> StringList;
+typedef List<Text> TextList;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

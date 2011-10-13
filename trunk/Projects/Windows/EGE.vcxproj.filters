@@ -495,6 +495,9 @@
     <ClCompile Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.cpp">
       <Filter>Win32\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceText.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -959,6 +962,9 @@
     <ClInclude Include="..\..\Sources\EGEDesktopServices.h" />
     <ClInclude Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.h">
       <Filter>Win32\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceText.h">
+      <Filter>Core\Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

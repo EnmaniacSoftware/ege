@@ -19,6 +19,7 @@ EGE_NAMESPACE_BEGIN
 #define RESOURCE_NAME_CURVE             "curve"
 #define RESOURCE_NAME_PARTICLE_EMITTER  "particle-emitter"
 #define RESOURCE_NAME_PARTICLE_AFFECTOR "particle-affector"
+#define RESOURCE_NAME_TEXT              "text"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -37,6 +38,7 @@ EGE_NAMESPACE_END
 #include "Core/Resource/ResourceFont.h"
 #include "Core/Resource/ResourceParticleEmitter.h"
 #include "Core/Resource/ResourceParticleAffector.h"
+#include "Core/Resource/ResourceText.h"
 #include "Core/Resource/ResourceGroup.h"
 #include "Core/Resource/ResourceManager.h"
 

@@ -1,5 +1,6 @@
 #include "Core/Graphics/RenderObjectFactory.h"
 #include "Core/Data/DataBuffer.h"
+#include <EGESpline.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE
@@ -158,5 +159,99 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
   }
 
   return object;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates render component for given curve. 
+ * @param spline    Pointer to spline for which render component is to be generated.
+ * @param app       Pointer to application.
+ * @param name      Name of render component.
+ * @param offset    Curve position offset (local-space).
+ * @param semantics Render component's vertex buffer semantics.
+ * @param priority  Render priority.
+ * @return Returns render component. NULL if failed.
+ */
+PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Application* app, const String& name, Vector4f offset, 
+                                             EGEVertexBuffer::SemanticType semantics, s32 priority)
+{
+  s32 vertexCount = 25;
+
+  RenderComponent* component = ege_new RenderComponent(app, name, priority, EGEGraphics::RPT_LINES);
+  if (component && component->isValid())
+  {
+    if (component->vertexBuffer()->setSemantics(semantics))
+    {
+      float32* data = (float32*) component->vertexBuffer()->lock(0, vertexCount * 2);
+
+      Vector4f pos;
+
+	    for (s32 i = 0; i < vertexCount; ++i)
+	    {
+        spline->value(pos, i / (1.0f * vertexCount));
+        pos += offset;
+
+        *data++ = pos.x;
+        *data++ = pos.y;
+        *data++ = pos.z;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+
+        spline->value(pos, (i + 1) / (1.0f * vertexCount));
+        pos += offset;
+
+        *data++ = pos.x;
+        *data++ = pos.y;
+        *data++ = pos.z;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+      }
+
+      // tangents
+      //spline->value(pos, 0);
+      //*data++ = pos.x;
+      //*data++ = pos.y;
+      //*data++ = pos.z;
+      //*data++ = 1.0f;
+      //*data++ = 0.0f;
+      //*data++ = 0.0f;
+      //*data++ = 1.0f;
+
+      //pos = spline->segment(0)->beginTangent();
+
+      //*data++ = pos.x;
+      //*data++ = pos.y;
+      //*data++ = pos.z;
+      //*data++ = 1.0f;
+      //*data++ = 0.0f;
+      //*data++ = 0.0f;
+      //*data++ = 1.0f;
+
+      //spline->value(pos, 1);
+      //*data++ = pos.x;
+      //*data++ = pos.y;
+      //*data++ = pos.z;
+      //*data++ = 1.0f;
+      //*data++ = 0.0f;
+      //*data++ = 0.0f;
+      //*data++ = 1.0f;
+
+      //pos = spline->segment((2);
+
+      //*data++ = pos.x;
+      //*data++ = pos.y;
+      //*data++ = pos.z;
+      //*data++ = 1.0f;
+      //*data++ = 0.0f;
+      //*data++ = 0.0f;
+      //*data++ = 1.0f;
+
+      component->vertexBuffer()->unlock();
+    }
+  }
+
+  return component;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

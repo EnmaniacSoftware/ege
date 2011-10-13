@@ -12,6 +12,7 @@
 #include "Ripples/RipplesTest.h"
 #include "Lightning/LightningTest.h"
 #include "Particles/ParticleTest.h"
+#include "Localization/LocalizationTest.h"
 
 #include <gl/gl.h>
 #include <gl/glu.h>
@@ -84,6 +85,7 @@ bool App::start()
   m_tests.push_back(new RipplesTest(this));
   m_tests.push_back(new LightningTest(this));
   m_tests.push_back(new ParticleTest(this));
+  m_tests.push_back(new LocalizationTest(this));
 
   // select test to run
   selectTest();

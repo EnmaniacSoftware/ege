@@ -88,6 +88,8 @@ void AppController::update()
   m_updateAccumulator += timeInterval;
 
   // update as much as requested
+  EGE_PRINT("BEGINING");
+  int a = 0;
   while (m_updateAccumulator > m_updateInterval)
   {
     m_updateAccumulator -= m_updateInterval;
@@ -98,7 +100,9 @@ void AppController::update()
     app()->sceneManager()->update(m_updateInterval);
     app()->overlayManager()->update(m_updateInterval);
     app()->update(m_updateInterval);
+    a++;
   }
+  EGE_PRINT("ENDING %d", a);
 
   // interpolate physics by remaining value
   // ..

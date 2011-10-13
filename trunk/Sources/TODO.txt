@@ -8,6 +8,7 @@ FEATURES:
 
 * Resources
   - Physical textures should be defined by 'texture' resources. All references should be done to 'texture-image' resources.
+  - Resource loading/unloading should not be synchronous but more like request-waitforaffirmation type
 
 OPTIMIZATIONS:
 

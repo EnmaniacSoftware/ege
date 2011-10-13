@@ -1,8 +1,6 @@
 #include "Core/Debug/Debug.h"
 #include "Core/Debug/Logger.h"
 #include "Core/Debug/Console.h"
-#include "Core/Components/Render/RenderComponent.h"
-#include <EGESpline.h>
 
 EGE_NAMESPACE
 
@@ -48,89 +46,5 @@ void Debug::Log(const String& text)
   {
     Debug::m_log->write(text);
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates renderable for given object. */
-RenderComponent* Debug::Renderable(const CubicSpline* spline)
-{
-  s32 vertexCount = 25;
-
-  RenderComponent* component = ege_new RenderComponent(NULL, "debug-renderable-cubic-spline", EGEGraphics::RP_MAIN, 
-                                                       EGEGraphics::RPT_LINES);
-  if (component && component->isValid())
-  {
-    if (component->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4))
-    {
-      float32* data = (float32*) component->vertexBuffer()->lock(0, vertexCount * 2 + 2 * 2);
-
-      Vector4f pos;
-
-	    for (s32 i = 0; i < vertexCount; ++i)
-	    {
-        spline->value(pos, i / (1.0f * vertexCount));
-
-        *data++ = pos.x;
-        *data++ = pos.y;
-        *data++ = pos.z;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-
-        spline->value(pos, (i + 1) / (1.0f * vertexCount));
-
-        *data++ = pos.x;
-        *data++ = pos.y;
-        *data++ = pos.z;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-      }
-
-      // tangents
-      //spline->value(pos, 0);
-      //*data++ = pos.x;
-      //*data++ = pos.y;
-      //*data++ = pos.z;
-      //*data++ = 1.0f;
-      //*data++ = 0.0f;
-      //*data++ = 0.0f;
-      //*data++ = 1.0f;
-
-      //pos = spline->segment(0)->beginTangent();
-
-      //*data++ = pos.x;
-      //*data++ = pos.y;
-      //*data++ = pos.z;
-      //*data++ = 1.0f;
-      //*data++ = 0.0f;
-      //*data++ = 0.0f;
-      //*data++ = 1.0f;
-
-      //spline->value(pos, 1);
-      //*data++ = pos.x;
-      //*data++ = pos.y;
-      //*data++ = pos.z;
-      //*data++ = 1.0f;
-      //*data++ = 0.0f;
-      //*data++ = 0.0f;
-      //*data++ = 1.0f;
-
-      //pos = spline->segment((2);
-
-      //*data++ = pos.x;
-      //*data++ = pos.y;
-      //*data++ = pos.z;
-      //*data++ = 1.0f;
-      //*data++ = 0.0f;
-      //*data++ = 0.0f;
-      //*data++ = 1.0f;
-
-      component->vertexBuffer()->unlock();
-    }
-  }
-
-  return component;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

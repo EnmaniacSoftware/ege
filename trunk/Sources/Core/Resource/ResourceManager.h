@@ -17,6 +17,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DECLARE_SMART_CLASS(ResourceManager, PResourceManager)
 EGE_DECLARE_SMART_CLASS(ResourceGroup, PResourceGroup)
 EGE_DECLARE_SMART_CLASS(IResource, PResource)
+EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
+EGE_DECLARE_SMART_CLASS(ResourceText, PResourceText)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -52,6 +54,10 @@ class ResourceManager : public Object
     String makeFullPath(const String& localPath) const;
     /* Returns resource of a given type and name. Optionally, from given group only. */
     PResource resource(const String& typeName, const String& name, const String& groupName = "") const;
+    /* Returns material resource of a given name. Optionally, from given group only. */
+    PResourceMaterial materialResource(const String& name, const String& groupName = "") const;
+    /* Returns text resource of a given name. Optionally, from given group only. */
+    PResourceText textResource(const String& name, const String& groupName = "") const;
     /* Registeres custom resource type. */
     EGEResult registerResource(const String& typeName, egeResourceCreateFunc createFunc);
     /* Returns TRUE if given resource type is registered. */

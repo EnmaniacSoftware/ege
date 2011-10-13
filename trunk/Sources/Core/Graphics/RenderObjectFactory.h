@@ -14,6 +14,8 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+class CubicSpline;
+
 EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -35,6 +37,18 @@ class RenderObjectFactory
      */
     static PRenderComponent CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, 
                                          EGEVertexBuffer::SemanticType semantics, s32 priority, EGEGraphics::RenderPrimitiveType primitive);
+
+    /* Creates render component for given curve. 
+     * @param spline    Pointer to spline for which render component is to be generated.
+     * @param app       Pointer to application.
+     * @param name      Name of render component.
+     * @param offset    Curve position offset (local-space).
+     * @param semantics Render component's vertex buffer semantics.
+     * @param priority  Render priority.
+     * @return Returns render component. NULL if failed.
+     */
+    static PRenderComponent Create(const CubicSpline* spline, Application* app, const String& name, Vector4f offset, EGEVertexBuffer::SemanticType semantics, 
+                                   s32 priority);
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

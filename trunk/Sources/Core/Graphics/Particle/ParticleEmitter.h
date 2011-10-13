@@ -87,6 +87,9 @@ class ParticleEmitter : public SceneNodeObject
     /* Removes given affector. */
     void removeAffector(PParticleAffector& affector);
 
+    /*! Returns render component. */
+    inline const PRenderComponent& renderComponent() const { return m_renderData; }
+
   private:
 
     /*! Returns TRUE if there is no available space for new particle. */
