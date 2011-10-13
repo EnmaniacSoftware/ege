@@ -352,6 +352,8 @@ files
   ResourceSprite.h
   ResourceSpritesheet.cpp
   ResourceSpritesheet.h
+  ResourceText.cpp
+  ResourceText.h
   ResourceTexture.cpp
   ResourceTexture.h
   ResourceTextureImage.cpp
