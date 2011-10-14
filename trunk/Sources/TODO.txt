@@ -20,7 +20,9 @@ OPTIMIZATIONS:
     This is not a big issue as this method should be called rather infrequently
 
 - Files
-
   - write and read pointers are now the same, perhaps we can distinquish them
+
+- Text Overlays
+  - Indexed geometry
 
 CODING:

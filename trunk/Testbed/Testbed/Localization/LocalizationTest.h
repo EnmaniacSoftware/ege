@@ -2,10 +2,11 @@
 #define TEST_LOCALIZATION_H
 
 #include "Test.h"
+#include <EGEEvent.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class LocalizationTest : public Test
+class LocalizationTest : public Test, public EGE::IEventListener
 {
   public:
 
@@ -23,9 +24,10 @@ class LocalizationTest : public Test
 
     /* Test override. Pointer event receiver. */
     void pointerEvent(EGE::PPointerData data) override;
-
-  private:
-
+    /* IEventListener override. Event reciever. */
+    void onEventRecieved(EGE::PEvent event) override;
+    /* Updates texts. */
+    void updateTexts();
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

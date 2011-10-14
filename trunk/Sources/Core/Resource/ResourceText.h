@@ -45,6 +45,8 @@ class ResourceText : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* Returns text translation. */
+    Text text(s32 numerous = -1) const;
 
   private:
 
@@ -53,6 +55,8 @@ class ResourceText : public IResource
     inline bool isLoaded() const { return true; }
     /* Adds text localization. */
     EGEResult addLocalization(const PXmlElement& tag);
+    /* Returns index of translation for given numerous. */
+    s32 translationIndex(s32 numerous) const;
 
   private:
 

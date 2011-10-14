@@ -2,6 +2,7 @@
 #include "LocalizationTest.h"
 #include <EGESignal.h>
 #include <EGEResources.h>
+#include <EGEOverlay.h>
 
 EGE_NAMESPACE
 
@@ -12,6 +13,34 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 LocalizationTest::LocalizationTest(App* app) : Test(app)
 {
+  app->eventManager()->addListener(this);
+
+  PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
+  if (fontResource)
+  {
+    PTextOverlay overlay = ege_new TextOverlay(app, "lang");
+    overlay->setFont(fontResource->font());
+    app->overlayManager()->add(overlay);
+    overlay->physics()->setPosition(Vector4f(0, 80, 0));
+
+    overlay = ege_new TextOverlay(app, "text-1");
+    overlay->setFont(fontResource->font());
+    app->overlayManager()->add(overlay);
+    overlay->physics()->setPosition(Vector4f(40, 120, 0));
+
+    overlay = ege_new TextOverlay(app, "text-2");
+    overlay->setFont(fontResource->font());
+    app->overlayManager()->add(overlay);
+    overlay->physics()->setPosition(Vector4f(40, 140, 0));
+
+    overlay = ege_new TextOverlay(app, "text-3");
+    overlay->setFont(fontResource->font());
+    app->overlayManager()->add(overlay);
+    overlay->physics()->setPosition(Vector4f(40, 160, 0));
+  }
+
+  String ala("To jest %1 + %2 = %3");
+  String ola = ala.arg("2").arg("3").arg("5");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 LocalizationTest::~LocalizationTest()
@@ -62,6 +91,8 @@ bool LocalizationTest::initialize()
     return false;
   }
 
+  updateTexts();
+
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -73,6 +104,39 @@ void LocalizationTest::update(const Time& time)
 /*! Test override. Pointer event receiver. */
 void LocalizationTest::pointerEvent(PPointerData data)
 {
-  EGE_UNUSED(data);
+  if (EGEInput::ACTION_BUTTON_UP == data->action())
+  {
+    if ("en" == app()->language())
+    {
+      app()->setLanguage("pl");
+    }
+    else
+    {
+      app()->setLanguage("en");
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! IEventListener override. Event reciever. */
+void LocalizationTest::onEventRecieved(PEvent event)
+{
+  if (EGE_EVENT_UID_CORE_LANGUAGE_CHANGED == event->uid())
+  {
+    updateTexts();
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Updates texts. */
+void LocalizationTest::updateTexts()
+{
+  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("lang"))->setText(Text::Format("Language: %s", app()->language().toAscii()));
+
+  PResourceText textResource;
+  textResource = app()->resourceManager()->textResource("text-1");
+  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("text-1"))->setText(textResource->text());
+  textResource = app()->resourceManager()->textResource("text-2");
+  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("text-2"))->setText(textResource->text());
+  textResource = app()->resourceManager()->textResource("text-3");
+  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("text-3"))->setText(textResource->text(6));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

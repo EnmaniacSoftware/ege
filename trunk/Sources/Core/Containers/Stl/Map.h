@@ -19,6 +19,10 @@ class Map : public std::map<T, U>
     inline U value(const T& key, const U& defaultValue) const;
     /* Inserts value with given key to map. */
     inline void insert(const T& key, const U& value);
+    /* Returns value. */
+    U& at(const T& key);
+    /* Returns value. */
+    const U& at(const T& key) const;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -42,6 +46,22 @@ template <typename T, typename U>
 void Map<T, U>::insert(const T& key, const U& value)
 {
   std::map<T, U>::insert(std::pair<T, U>(key, value));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns value. */
+template <typename T, typename U>
+U& Map<T, U>::at(const T& key)
+{
+  std::map<T, U>::iterator it = std::map<T, U>::find(key);
+  return it->second;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns value. */
+template <typename T, typename U>
+const U& Map<T, U>::at(const T& key) const
+{
+  std::map<T, U>::const_iterator it = std::map<T, U>::find(key);
+  return it->second;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

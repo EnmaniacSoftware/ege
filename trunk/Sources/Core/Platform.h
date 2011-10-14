@@ -54,6 +54,7 @@ inline void ege_noop() {}
 
 // OS includes
 #if EGE_PLATFORM_WIN32
+#define NOMINMAX 1
 #include <windows.h>
 #include <math.h>
 #include <assert.h>

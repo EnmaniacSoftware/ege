@@ -32,7 +32,8 @@ Application::Application() : m_sceneManager(NULL),
                              m_screenManager(NULL), 
                              m_debug(NULL), 
                              m_desktopServices(NULL),
-                             m_landscapeMode(false)
+                             m_landscapeMode(false),
+                             m_language("en")
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -177,5 +178,17 @@ void Application::update(const Time& time)
 s32 Application::fps() const
 {
   return appController()->fps();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets new language. */
+void Application::setLanguage(const String& language)
+{
+  if (language != m_language)
+  {
+    m_language = language;
+
+    // broadcast change
+    eventManager()->send(EGE_EVENT_UID_CORE_LANGUAGE_CHANGED);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

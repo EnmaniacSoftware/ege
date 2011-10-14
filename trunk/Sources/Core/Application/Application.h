@@ -65,6 +65,10 @@ class Application
     inline bool isLandscape() const { return m_landscapeMode; }
     /* Returns current FPS indication. */
     s32 fps() const;
+    /* Sets new language. */
+    void setLanguage(const String& language);
+    /*! Returns current language. */
+    const String& language() const { return m_language; }
 
   private:
 
@@ -97,6 +101,8 @@ class Application
     DesktopServices* m_desktopServices;
     /*! Landscape mode flag. */
     bool m_landscapeMode;
+    /*! Current language identifier. */
+    String m_language;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

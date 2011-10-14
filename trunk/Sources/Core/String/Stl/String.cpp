@@ -351,3 +351,91 @@ bool String::startsWith(const String& string) const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+String::ArgEscapeData String::findArgEscapes() const
+{
+  ArgEscapeData data;
+
+  data.min_escape  = Math::MAX_INT;
+  data.occurrences = 0;
+
+  // go thru entire string
+  for (String::const_iterator it = begin(); it != end(); ++it)
+  {
+    // check if begining of escape found
+    if ('%' != *it)
+    {
+      // go on
+      continue;
+    }
+
+    ++it;
+    if (it != end())
+    {
+      // TAGE - do up to [1 - 99] range
+      // check if valid arg escape
+      if (('0' <= *it) && ('9' >= *it))
+      {
+        s32 escape = *it - '0';
+
+        // check if new smallest escape found
+        if (data.min_escape > escape)
+        {
+          // store it and reset occurences
+          data.min_escape = escape;
+          data.occurrences = 1;
+        }
+        else if (data.min_escape == escape)
+        {
+          // already min, increase occurences
+          ++data.occurrences;
+        }
+      }
+    }
+  }
+
+  return data;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void String::replaceArgEscapes(String& out, const String& arg, ArgEscapeData& argData) const
+{
+  String escape("%");
+  
+// TAGE - do up to [1 - 99] range
+
+  // preallocate enough space
+  out.reserve(length() + argData.occurrences * ((argData.min_escape + 10) / 10 + 1));
+
+  // go thru entire input string
+  for (String::const_iterator it = begin(); it != end(); ++it)
+  {
+    // check if proper args found
+    if ('%' == *it)
+    {
+  //    if ('%
+    }
+    
+    // just copy
+    out.push_back(*it);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+String String::arg(const String& string) const
+{
+  ArgEscapeData argEscapes = findArgEscapes();
+
+  String out;
+  replaceArgEscapes(out, string, argEscapes);
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+String String::arg(s32 value) const
+{
+  return String();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+String String::arg(float32 value) const
+{
+  return String();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

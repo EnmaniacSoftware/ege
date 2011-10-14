@@ -15,6 +15,7 @@ class Text : public std::wstring
     
     Text();
     Text(const Text& text);
+    Text(const Char* string);
     Text(const char* string);
     Text(const String& string);
    ~Text();
@@ -31,6 +32,11 @@ class Text : public std::wstring
     Text& toLower();
     /* Converts self to upper-case. */
     Text& toUpper();
+
+  public:
+
+    /*! Empty text. */
+    static Text EMPTY;
 
   private:
 

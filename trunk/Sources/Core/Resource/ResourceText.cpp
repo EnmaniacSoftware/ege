@@ -1,7 +1,9 @@
 #include "Core/Resource/ResourceText.h"
 #include "Core/Resource/ResourceManager.h"
+#include "Core/Application/Application.h"
 #include <EGEFile.h>
 #include <EGEResources.h>
+#include <EGEMath.h>
 
 EGE_NAMESPACE
 
@@ -108,5 +110,103 @@ EGEResult ResourceText::addLocalization(const PXmlElement& tag)
   m_translations[name] << value;
 
   return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns text translation. */
+Text ResourceText::text(s32 numerous) const
+{
+  Text outText;
+
+  // detrmine translation index based on given numerous
+  s32 index = (-1 != numerous) ? translationIndex(numerous) : 0;
+
+  // check if translations for current language exists
+  if (m_translations.contains(app()->language()))
+  {
+    const TextArray& list = m_translations.at(app()->language());
+
+    index = Math::Bound(index, static_cast<s32>(0), static_cast<s32>(list.size()));
+    outText = list[index];
+  }
+  else
+  {
+    // try to fallback to english
+    if (m_translations.contains("en"))
+    {
+      // get singular form just for indication that we could not find anything
+      outText = m_translations.at("en")[0];
+    }
+  }
+
+  // replace %n
+  if (-1 != numerous)
+  {
+    Text number   = Text::Format("%d", numerous);
+    Text percentN = EGE_TEXT("%n");
+
+    size_t pos = outText.find_first_of(percentN);
+    while (Text::npos != pos)
+    {
+      // replace
+      outText.replace(pos, 2, number);
+
+      // find next
+      pos = outText.find_first_of(percentN, pos + 2);
+    }
+  }
+
+  return outText;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns index of translation for given numerous. */
+s32 ResourceText::translationIndex(s32 numerous) const
+{
+  s32 index = 0;
+
+  // TAGE - this probably should end up in some Language class
+  if ("en" == app()->language())
+  {
+    switch (numerous)
+    {
+      case 1: 
+        
+        // singular
+        index = 0; 
+        break;
+      
+      default: 
+
+        // plural and zero
+        index = 1;
+        break;
+    }
+  }
+  else if ("pl" == app()->language())
+  {
+    switch (numerous)
+    {
+      case 1: 
+        
+        // singular
+        index = 0; 
+        break;
+      
+      case 2:
+      case 3:
+      case 4:
+
+        // plural, case 1
+        index = 1;
+        break;
+
+      default:
+
+        // zero, plural, case 2
+        index = 2;
+        break;
+    }
+  }
+
+  return index;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

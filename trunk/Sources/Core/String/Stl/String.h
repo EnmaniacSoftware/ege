@@ -49,6 +49,10 @@ class String : public std::string
     /* Returns TRUE if current string starts with given one. */
     bool startsWith(const String& string) const;
 
+    String arg(const String& string) const;
+    String arg(s32 value) const;
+    String arg(float32 value) const;
+
     /* Converts to integer. If error is valid, it holds TRUE if error occured during the conversion. */
     s32 toInt(bool* error = NULL) const;
     /* Converts to boolean. If error is valid, it holds TRUE if error occured during the conversion. */
@@ -67,6 +71,22 @@ class String : public std::string
     Vector4f toVector4f(bool* error = NULL) const;
     /* Converts to 4D vector of signed integers. If error is valid, it holds TRUE if error occured during the conversion. */
     Vector4i toVector4i(bool* error = NULL) const;
+
+  private:
+
+    struct ArgEscapeData
+    {
+      s32 min_escape;            // lowest escape sequence number
+      s32 occurrences;           // number of occurrences of the lowest escape sequence number
+      //int locale_occurrences;    // number of occurrences of the lowest escape sequence number that
+      //                            // contain 'L'
+      //int escape_len;            // total length of escape sequences which will be replaced
+    };
+
+  private:
+
+    ArgEscapeData findArgEscapes() const;
+    void replaceArgEscapes(String& out, const String& arg, ArgEscapeData& argData) const;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
