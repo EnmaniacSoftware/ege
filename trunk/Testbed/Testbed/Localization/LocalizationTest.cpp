@@ -38,9 +38,6 @@ LocalizationTest::LocalizationTest(App* app) : Test(app)
     app->overlayManager()->add(overlay);
     overlay->physics()->setPosition(Vector4f(40, 160, 0));
   }
-
-  String ala("To jest %1 + %2 = %3");
-  String ola = ala.arg("2").arg("3").arg("5");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 LocalizationTest::~LocalizationTest()
@@ -131,12 +128,8 @@ void LocalizationTest::updateTexts()
 {
   ege_cast<TextOverlay*>(app()->overlayManager()->overlay("lang"))->setText(Text::Format("Language: %s", app()->language().toAscii()));
 
-  PResourceText textResource;
-  textResource = app()->resourceManager()->textResource("text-1");
-  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("text-1"))->setText(textResource->text());
-  textResource = app()->resourceManager()->textResource("text-2");
-  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("text-2"))->setText(textResource->text());
-  textResource = app()->resourceManager()->textResource("text-3");
-  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("text-3"))->setText(textResource->text(6));
+  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("text-1"))->setText(TR(app(), "text-1"));
+  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("text-2"))->setText(TR(app(), "text-2"));
+  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("text-3"))->setText(TRN(app(), "text-3", 2));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

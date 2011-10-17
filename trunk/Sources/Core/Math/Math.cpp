@@ -4,6 +4,7 @@
 #include <EGEQuaternion.h>
 #include <EGEAngle.h>
 #include <EGEComplex.h>
+#include <EGEColor.h>
 #include <limits>
 #include <EGEDebug.h>
 
@@ -126,7 +127,7 @@ void Math::GetAngle(Angle* angle, const Vector2f* origin, const Vector2f* point)
   *  @param  time          Scalar in range [0..1] describing relative distance between quaternion for which interpolation is to be calculated.
   *  @param  shortestPath  TRUE if shortest path (if possible) is to be used for interpolation.
   */
-void Math::Slerp(Quaternionf* out, Quaternionf* from, Quaternionf* to, float32 time, bool shortestPath)
+void Math::Slerp(Quaternionf* out, const Quaternionf* from, const Quaternionf* to, float32 time, bool shortestPath)
 {
   EGE_ASSERT(out);
   EGE_ASSERT(from);
@@ -194,7 +195,7 @@ void Math::Slerp(Quaternionf* out, Quaternionf* from, Quaternionf* to, float32 t
   *  @param  to   Second (end) complex number.
   *  @param  time Scalar in range [0..1] describing relative distance between numbers for which interpolation is to be calculated.
   */
-void Math::Slerp(Complexf* out, Complexf* from, Complexf* to, float32 time)
+void Math::Slerp(Complexf* out, const Complexf* from, const Complexf* to, float32 time)
 {
   EGE_ASSERT(out);
   EGE_ASSERT(from);
@@ -252,7 +253,7 @@ void Math::Slerp(Complexf* out, Complexf* from, Complexf* to, float32 time)
  *  @param  to    Second (end) vector.
  *  @param  time  Scalar in range [0..1] describing relative distance between vectors for which interpolation is to be calculated.
  */
-void Math::Lerp(Vector2f* out, Vector2f* from, Vector2f* to, float32 time)
+void Math::Lerp(Vector2f* out, const Vector2f* from, const Vector2f* to, float32 time)
 {
   EGE_ASSERT(out);
   EGE_ASSERT(from);
@@ -270,6 +271,26 @@ void Math::Lerp(Vector2f* out, Vector2f* from, Vector2f* to, float32 time)
 float32 Math::Lerp(float32 from, float32 to, float32 time)
 {
   return (1.0f - time) * from + time * to;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*  Performs linear interpolation between given colors. 
+ *  @param  out  Resulting color.
+ *  @param  from First (start) color.
+ *  @param  to   Second (end) color.
+ *  @param  time Scalar in range [0..1] describing relative distance between input colors for which interpolation is to be calculated.
+ */
+void Math::Lerp(Color* out, const Color* from, const Color* to, float32 time)
+{
+  EGE_ASSERT(out);
+  EGE_ASSERT(from);
+  EGE_ASSERT(to);
+
+  float32 oneMinusTime = 1.0f - time;
+
+  out->red    = oneMinusTime * from->red + time * to->red;
+  out->green  = oneMinusTime * from->green + time * to->green;
+  out->blue   = oneMinusTime * from->blue + time * to->blue;
+  out->alpha  = oneMinusTime * from->alpha + time * to->alpha;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*  Calculates point on the segment lying closest to given point.
@@ -438,6 +459,24 @@ void Math::Align(Vector2f* point, Vector2f* size, Alignment currentAlignment, Al
   {
     point->y += size->y * 0.5f;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Aligns rectangle. 
+ *  @param rect             Rectangle to align.
+ *  @param currentAlignment Current rectangle alignment.
+ *  @param newAlignment     New rectangle alignment.
+ */
+void Math::Align(Rectf* rect, Alignment currentAlignment, Alignment newAlignment)
+{
+  EGE_ASSERT(rect);
+
+  Vector2f point(rect->x, rect->y);
+  Vector2f size(rect->width, rect->height);
+
+  Math::Align(&point, &size, currentAlignment, newAlignment);
+
+  rect->x = point.x;
+  rect->y = point.y;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Aligns point along XY plane. 

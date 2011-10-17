@@ -21,6 +21,9 @@ EGE_NAMESPACE_BEGIN
 #define RESOURCE_NAME_PARTICLE_AFFECTOR "particle-affector"
 #define RESOURCE_NAME_TEXT              "text"
 
+#define TR(app, name)     (app)->resourceManager()->textResource((name))->text()
+#define TRN(app, name, n) (app)->resourceManager()->textResource((name))->text((n))
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

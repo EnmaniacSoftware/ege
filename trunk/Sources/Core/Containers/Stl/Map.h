@@ -52,7 +52,7 @@ void Map<T, U>::insert(const T& key, const U& value)
 template <typename T, typename U>
 U& Map<T, U>::at(const T& key)
 {
-  std::map<T, U>::iterator it = std::map<T, U>::find(key);
+  typename Map<T, U>::iterator it = this->find(key);
   return it->second;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ U& Map<T, U>::at(const T& key)
 template <typename T, typename U>
 const U& Map<T, U>::at(const T& key) const
 {
-  std::map<T, U>::const_iterator it = std::map<T, U>::find(key);
+  typename Map<T, U>::const_iterator it = this->find(key);
   return it->second;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

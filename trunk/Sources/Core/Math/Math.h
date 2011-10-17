@@ -21,7 +21,10 @@ template <typename T> class TQuaternion;
 typedef TQuaternion<float32> Quaternionf;
 template <typename T> class TComplex;
 typedef TComplex<float32> Complexf;
+template <typename T> class TRect;
+typedef TRect<float32> Rectf;
 class Angle;
+class Color;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -78,7 +81,7 @@ class Math
      *  @param  time          Scalar in range [0..1] describing relative distance between quaternion for which interpolation is to be calculated.
      *  @param  shortestPath  TRUE if shortest path (if possible) is to be used for interpolation.
      */
-    static void Slerp(Quaternionf* out, Quaternionf* from, Quaternionf* to, float32 time, bool shortestPath = false);
+    static void Slerp(Quaternionf* out, const Quaternionf* from, const Quaternionf* to, float32 time, bool shortestPath = false);
 
     /*  Performs spherical linear interpolation between given complex numbers. 
      *  @param  out  Resulting complex number.
@@ -86,7 +89,7 @@ class Math
      *  @param  to   Second (end) complex number.
      *  @param  time Scalar in range [0..1] describing relative distance between numbers for which interpolation is to be calculated.
      */
-    static void Slerp(Complexf* out, Complexf* from, Complexf* to, float32 time);
+    static void Slerp(Complexf* out, const Complexf* from, const Complexf* to, float32 time);
 
     /*  Performs linear interpolation between given vectors. 
      *  @param  out  Resulting vector.
@@ -94,7 +97,7 @@ class Math
      *  @param  to   Second (end) vector.
      *  @param  time Scalar in range [0..1] describing relative distance between vectors for which interpolation is to be calculated.
      */
-    static void Lerp(Vector2f* out, Vector2f* from, Vector2f* to, float32 time);
+    static void Lerp(Vector2f* out, const Vector2f* from, const Vector2f* to, float32 time);
 
     /*  Performs linear interpolation between given scalars. 
      *  @param  from First (start) scalar.
@@ -103,6 +106,14 @@ class Math
      *  @return Resulting scalar.
      */
     static float32 Lerp(float32 from, float32 to, float32 time);
+
+    /*  Performs linear interpolation between given colors. 
+     *  @param  out  Resulting color.
+     *  @param  from First (start) color.
+     *  @param  to   Second (end) color.
+     *  @param  time Scalar in range [0..1] describing relative distance between input colors for which interpolation is to be calculated.
+     */
+    static void Lerp(Color* out, const Color* from, const Color* to, float32 time);
 
     /*  Calculates point on the segment lying closest to given point.
      *  @param  out         Calculated point on the segment lying closest to given point.
@@ -133,6 +144,12 @@ class Math
      * @param newAlignment     New point alignment within given area.
      */
     static void Align(Vector2f* point, Vector2f* size, Alignment currentAlignment, Alignment newAlignment);
+    /* Aligns rectangle. 
+     * @param rect             Rectangle to align.
+     * @param currentAlignment Current rectangle alignment.
+     * @param newAlignment     New rectangle alignment.
+     */
+    static void Align(Rectf* rect, Alignment currentAlignment, Alignment newAlignment);
     /* Aligns point along XY plane. 
      * @param point            Point to align. This point is realigned.
      * @param size             Area within each point is aligned.

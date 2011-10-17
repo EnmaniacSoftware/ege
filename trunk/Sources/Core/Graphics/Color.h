@@ -1,8 +1,6 @@
 #ifndef EGE_CORE_COLOR_H
 #define EGE_CORE_COLOR_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include <EGETypes.h>
 
 EGE_NAMESPACE_BEGIN
@@ -15,25 +13,14 @@ class Color
 
     Color(float32 red = 1.0f, float32 green = 1.0f, float32 blue = 1.0f, float32 alpha = 1.0f) : red(red), green(green), blue(blue), alpha(alpha) {}
 
-    inline Color& operator=(const Color& color)
-    {
-      red   = color.red;
-      green = color.green;
-      blue  = color.blue;
-      alpha = color.alpha;
-      return *this;
-    }
-    
-    inline bool operator==(const Color& color) const
-    {
-      // check if NOT equal
-      return !(red != color.red || green != color.green || blue != color.blue || alpha != color.alpha);
-    }
+    inline Color& operator =(const Color& color) { red = color.red; green = color.green; blue = color.blue; alpha = color.alpha; return *this; }
+    inline bool   operator==(const Color& color) const { return !(red != color.red || green != color.green || blue != color.blue || alpha != color.alpha); }
+    inline bool   operator!=(const Color& color) const { return !operator==(color); }
 
-    inline bool operator!=(const Color& color) const
-    {
-      return !operator==(color);
-    }
+  public:
+
+    /*! Returns TRUE if color is invalid. */
+    inline bool isNull() const { return (0.0f == red) && (0.0f == green) && (0.0f == blue) && (0.0f == alpha); }
 
   public:
 

@@ -49,8 +49,13 @@ class String : public std::string
     /* Returns TRUE if current string starts with given one. */
     bool startsWith(const String& string) const;
 
+    /* Returns copy of the current string with lowest arg marker replaced with a given string. */
     String arg(const String& string) const;
+    /* Returns copy of the current string with lowest arg marker replaced with a given integer value. */
     String arg(s32 value) const;
+    /* Returns copy of the current string with lowest arg marker replaced with a given integer value. */
+    String arg(int value) const;
+    /* Returns copy of the current string with lowest arg marker replaced with a given float value. */
     String arg(float32 value) const;
 
     /* Converts to integer. If error is valid, it holds TRUE if error occured during the conversion. */
@@ -74,18 +79,18 @@ class String : public std::string
 
   private:
 
+    /*! Arg escape data structure. */
     struct ArgEscapeData
     {
-      s32 min_escape;            // lowest escape sequence number
-      s32 occurrences;           // number of occurrences of the lowest escape sequence number
-      //int locale_occurrences;    // number of occurrences of the lowest escape sequence number that
-      //                            // contain 'L'
-      //int escape_len;            // total length of escape sequences which will be replaced
+      s32 min_escape;            /*!< Lowest escape sequence number. */
+      s32 occurrences;           /*!< Number of occurrences of the lowest escape sequence number. */
     };
 
   private:
 
+    /* Finds data about arg escape of the lowest sequence number. */
     ArgEscapeData findArgEscapes() const;
+    /* Replaces args with given string. */
     void replaceArgEscapes(String& out, const String& arg, ArgEscapeData& argData) const;
 };
 

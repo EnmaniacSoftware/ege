@@ -199,3 +199,152 @@ bool Text::fromString(const String& string)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Finds data about arg escape of the lowest sequence number. */
+Text::ArgEscapeData Text::findArgEscapes() const
+{
+  ArgEscapeData data;
+
+  data.min_escape  = Math::MAX_INT;
+  data.occurrences = 0;
+
+  // go thru entire string
+  Text::const_iterator it = begin();
+  while (it != end())
+  {
+    // check if begining of escape found
+    if ('%' != *(it++))
+    {
+      // go on
+      continue;
+    }
+
+    // check if valid escape identifier
+    // NOTE: only [1-99] range is supported
+    if ((it != end()) && ('0' <= *it) && ('9' >= *it))
+    {
+      s32 escape = *it - '0';
+      ++it;
+
+      if ((it != end()) && ('0' <= *it) && ('9' >= *it))
+      {
+        escape = escape * 10 + *it - '0';
+        ++it;
+      }
+
+      // check if new smallest escape found
+      if (data.min_escape > escape)
+      {
+        // store it and reset occurences
+        data.min_escape = escape;
+        data.occurrences = 1;
+      }
+      else if (data.min_escape == escape)
+      {
+        // already min, increase occurences
+        ++data.occurrences;
+      }
+    }
+  }
+
+  return data;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Replaces args with given string. */
+void Text::replaceArgEscapes(Text& out, const String& arg, ArgEscapeData& argData) const
+{
+  // preallocate enough space
+  out.reserve(length() + argData.occurrences * arg.length());
+
+  // go thru entire input string
+  Text::const_iterator it = begin();
+  while (it != end())
+  {
+    // check if proper args found
+    if ('%' == *it)
+    {
+      Text::const_iterator argBegin = it;
+
+      ++it;
+
+      // check if valid arg escape
+      if ((it != end()) && ('0' <= *it) && ('9' >= *it))
+      {
+        s32 escape = *it - '0';
+        ++it;
+
+        if ((it != end()) && ('0' <= *it) && ('9' >= *it))
+        {
+          escape = escape * 10 + *it - '0';
+          ++it;
+        }
+
+        // check if current escape is the one which needs to be replaced
+        if (argData.min_escape == escape)
+        {
+          // replace
+          out += arg;
+          continue;
+        }
+        else
+        {
+          // thats not the one, move back and copy chars instead
+          it = argBegin;
+        }
+      }
+      else
+      {
+        // thats not the one, move back and copy chars instead
+        it = argBegin;
+      }
+    }
+    
+    // just copy
+    out.push_back(*it);
+    ++it;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns copy of the current string with lowest arg marker replaced with a given string. */
+Text Text::arg(const String& string) const
+{
+  ArgEscapeData argEscapes = findArgEscapes();
+
+  Text out;
+  replaceArgEscapes(out, string, argEscapes);
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns copy of the current string with lowest arg marker replaced with a given integer value. */
+Text Text::arg(s32 value) const
+{
+  ArgEscapeData argEscapes = findArgEscapes();
+
+  Text out;
+  replaceArgEscapes(out, String::Format("%d", value), argEscapes);
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns copy of the current string with lowest arg marker replaced with a given integer value. */
+Text Text::arg(int value) const
+{
+  ArgEscapeData argEscapes = findArgEscapes();
+
+  Text out;
+  replaceArgEscapes(out, String::Format("%d", value), argEscapes);
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns copy of the current string with lowest arg marker replaced with a given float value. */
+Text Text::arg(float32 value) const
+{
+  ArgEscapeData argEscapes = findArgEscapes();
+
+  Text out;
+  replaceArgEscapes(out, String::Format("%f", value), argEscapes);
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
