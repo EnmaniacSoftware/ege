@@ -61,11 +61,11 @@ void ScreenManager::show(PScreen screen)
     }
   }
 
-  // enter new screen
-  screen->enter();
-
   // add to pool
   m_screens.push_back(screen);
+
+  // enter new screen
+  screen->enter();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Hides current (top) screen. */
