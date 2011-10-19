@@ -417,7 +417,7 @@ float32 Math::ACos(float32 radians)
  *  @param currentAlignment Current point alignment within given area.
  *  @param newAlignment     New point alignment within given area.
  */
-void Math::Align(Vector2f* point, Vector2f* size, Alignment currentAlignment, Alignment newAlignment)
+void Math::Align(Vector2f* point, const Vector2f* size, Alignment currentAlignment, Alignment newAlignment)
 {
   EGE_ASSERT(point);
   EGE_ASSERT(size);
@@ -485,7 +485,7 @@ void Math::Align(Rectf* rect, Alignment currentAlignment, Alignment newAlignment
  *  @param currentAlignment Current point alignment within given area.
  *  @param newAlignment     New point alignment within given area.
  */
-void Math::AlignXY(Vector4f* point, Vector2f* size, Alignment currentAlignment, Alignment newAlignment)
+void Math::AlignXY(Vector4f* point, const Vector2f* size, Alignment currentAlignment, Alignment newAlignment)
 {
   EGE_ASSERT(point);
   EGE_ASSERT(size);
