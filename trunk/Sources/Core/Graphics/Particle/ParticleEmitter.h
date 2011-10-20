@@ -46,6 +46,8 @@ class ParticleEmitter : public SceneNodeObject
      *  @note This resets all data. 
      */
     void start();
+    /* Stops system. */
+    void stop();
     /* Updates object. */
     void update(const Time& time);
 
