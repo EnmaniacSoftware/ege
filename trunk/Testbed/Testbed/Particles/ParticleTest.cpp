@@ -66,12 +66,19 @@ bool ParticleTest::initialize()
   PResourceMaterial resource = app()->resourceManager()->resource(RESOURCE_NAME_MATERIAL, "particle");
 
   // create particle from resource
-  PResourceParticleEmitter emitterResource = app()->resourceManager()->resource(RESOURCE_NAME_PARTICLE_EMITTER, "point-emitter-example");
-  m_emitter = emitterResource->createInstance();
-  m_emitter->start();
+  PResourceParticleEmitter emitterResource = app()->resourceManager()->resource(RESOURCE_NAME_PARTICLE_EMITTER, "point-emitter-example-1");
+  m_emitter[0] = emitterResource->createInstance();
+  //m_emitter[0]->start();
+  
+  emitterResource = app()->resourceManager()->resource(RESOURCE_NAME_PARTICLE_EMITTER, "point-emitter-example-2");
+  m_emitter[1] = emitterResource->createInstance();
+  m_emitter[1]->start();
 
-  app()->sceneManager()->rootNode()->createChildSceneNode("emitter-1")->attachObject(m_emitter);
+
+  app()->sceneManager()->rootNode()->createChildSceneNode("emitter-1")->attachObject(m_emitter[0]);
   app()->sceneManager()->rootNode()->childNode("emitter-1")->physics()->setPosition(Vector4f(200, 200, 0));
+  app()->sceneManager()->rootNode()->createChildSceneNode("emitter-2")->attachObject(m_emitter[1]);
+  app()->sceneManager()->rootNode()->childNode("emitter-2")->physics()->setPosition(Vector4f(400, 300, 0));
 
   return true;
 }
@@ -79,10 +86,7 @@ bool ParticleTest::initialize()
 /*! Test override. Updates test. */
 void ParticleTest::update(const Time& time)
 {
-  if (m_emitter)
-  {
-    m_emitter->update(time);
-    EGE_PRINT("%d", m_emitter->activeParticlesCount());
-  }
+  m_emitter[0]->update(time);
+  m_emitter[1]->update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

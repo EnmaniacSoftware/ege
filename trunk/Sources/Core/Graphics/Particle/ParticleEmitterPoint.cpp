@@ -107,7 +107,10 @@ void ParticleEmitterPoint::initializeParticle(s32 index)
   float32 inverseLifeTimeSeconds = 1.0f;
 
   // calculate start position
-	particleData.position = parentNode()->physics()->position().xyz() + m_particleStartPositionVariance * m_random(-1.0f, 1.0f);
+	particleData.position = parentNode()->physics()->position().xyz();
+  particleData.position.x += m_particleStartPositionVariance.x * m_random(-1.0f, 1.0f);
+  particleData.position.y += m_particleStartPositionVariance.y * m_random(-1.0f, 1.0f);
+  particleData.position.z += m_particleStartPositionVariance.z * m_random(-1.0f, 1.0f);
 
 	// calculate direction
 	Angle angle = m_emissionAngle + m_emissionAngleVariance.radians() * m_random(-1.0f, 1.0f);
@@ -122,7 +125,9 @@ void ParticleEmitterPoint::initializeParticle(s32 index)
   particleData.velocity *= m_particleSpeed + m_particleSpeedVariance * m_random(-1.0f, 1.0f);
 
   // calculate acceleration
-  particleData.acceleration = m_emissionAcceleration + m_emissionAccelerationVariance * m_random(-1.0f, 1.0f);
+  particleData.acceleration.x = m_emissionAcceleration.x + m_emissionAccelerationVariance.x * m_random(-1.0f, 1.0f);
+  particleData.acceleration.y = m_emissionAcceleration.y + m_emissionAccelerationVariance.y * m_random(-1.0f, 1.0f);
+  particleData.acceleration.z = m_emissionAcceleration.z + m_emissionAccelerationVariance.z * m_random(-1.0f, 1.0f);
 
 	// calculate the particles life span using the life span and variance passed in
 	particleData.timeLeft = m_particleLifeSpan + m_particleLifeSpanVariance * m_random(-1.0f, 1.0f);
@@ -133,10 +138,12 @@ void ParticleEmitterPoint::initializeParticle(s32 index)
   }
 
 	// calculate particle start size
-	particleData.size = m_particleStartSize + m_particleStartSizeVariance * m_random(-1.0f, 1.0f);
+	particleData.size.x = m_particleStartSize.x + m_particleStartSizeVariance.x * m_random(-1.0f, 1.0f);
+	particleData.size.y = m_particleStartSize.y + m_particleStartSizeVariance.y * m_random(-1.0f, 1.0f);
 
   // calulate particle end size
-  Vector2f endSize = m_particleEndSize + m_particleEndSizeVariance * m_random(-1.0f, 1.0f);
+  Vector2f endSize(m_particleEndSize.x + m_particleEndSizeVariance.x * m_random(-1.0f, 1.0f),
+                   m_particleEndSize.y + m_particleEndSizeVariance.y * m_random(-1.0f, 1.0f));
 
 	// calculate particle size change
 	particleData.sizeDelta = (endSize - particleData.size) * inverseLifeTimeSeconds;
