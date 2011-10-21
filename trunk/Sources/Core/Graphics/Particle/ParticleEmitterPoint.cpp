@@ -156,10 +156,10 @@ void ParticleEmitterPoint::initializeParticle(s32 index)
 
   // calculate end color
   Color endColor;
-  endColor.red    = Math::Bound(m_particleEndColor.red + m_particleEndColor.red * m_random(-1.0f, 1.0f), 0.0f, 1.0f);
-  endColor.green  = Math::Bound(m_particleEndColor.green + m_particleEndColor.green * m_random(-1.0f, 1.0f), 0.0f, 1.0f);
-  endColor.blue   = Math::Bound(m_particleEndColor.blue + m_particleEndColor.blue * m_random(-1.0f, 1.0f), 0.0f, 1.0f);
-  endColor.alpha  = Math::Bound(m_particleEndColor.alpha + m_particleEndColor.alpha * m_random(-1.0f, 1.0f), 0.0f, 1.0f);
+  endColor.red    = Math::Bound(m_particleEndColor.red + m_particleEndColorVariance.red * m_random(-1.0f, 1.0f), 0.0f, 1.0f);
+  endColor.green  = Math::Bound(m_particleEndColor.green + m_particleEndColorVariance.green * m_random(-1.0f, 1.0f), 0.0f, 1.0f);
+  endColor.blue   = Math::Bound(m_particleEndColor.blue + m_particleEndColorVariance.blue * m_random(-1.0f, 1.0f), 0.0f, 1.0f);
+  endColor.alpha  = Math::Bound(m_particleEndColor.alpha + m_particleEndColorVariance.alpha * m_random(-1.0f, 1.0f), 0.0f, 1.0f);
 
   // calculate color change
   particleData.colorDelta.red   = (endColor.red - particleData.color.red) * inverseLifeTimeSeconds;

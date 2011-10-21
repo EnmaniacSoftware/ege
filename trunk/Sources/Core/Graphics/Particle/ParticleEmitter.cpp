@@ -137,6 +137,9 @@ void ParticleEmitter::update(const Time& time)
       // add new particle and increase number of active particles
       initializeParticle(m_activeParticlesCount++);
 
+      // emit
+      emit particleSpawned(m_particles[m_activeParticlesCount - 1]);
+
       // decrement particle count for emission
       m_emitCount -= 1.0f;
     }
@@ -173,6 +176,9 @@ void ParticleEmitter::update(const Time& time)
     }
     else
     {
+      // emit
+      emit particleDied(particleData, i);
+
       // check if this is not last active particle
 			if (i != m_activeParticlesCount - 1)
       {
@@ -453,12 +459,31 @@ void ParticleEmitter::applyAffectors(const Time& time)
 /*! Adds affector. */
 void ParticleEmitter::addAffector(PParticleAffector& affector)
 {
+  affector->m_emitter = this;
   m_affectors.push_back(affector);
+
+  // check if affector needs detailed particle info
+  if (affector->detailedParticleInfoRequired())
+  {
+    ege_connect(this, particleSpawned, affector.object(), ParticleAffector::onNewParticleSpawned);
+    ege_connect(this, particleDied, affector.object(), ParticleAffector::onParticleDied);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Removes given affector. */
 void ParticleEmitter::removeAffector(PParticleAffector& affector)
 {
-  m_affectors.remove(affector);
+  if (m_affectors.contains(affector))
+  {
+    affector->m_emitter = NULL;
+    m_affectors.remove(affector);
+
+    // check if affector needed detailed particle info
+    if (affector->detailedParticleInfoRequired())
+    {
+      ege_disconnect(this, particleSpawned, affector.object(), ParticleAffector::onNewParticleSpawned);
+      ege_disconnect(this, particleDied, affector.object(), ParticleAffector::onParticleDied);
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

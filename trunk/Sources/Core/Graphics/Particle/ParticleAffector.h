@@ -11,6 +11,7 @@
 #include <EGEString.h>
 #include <EGEDictionary.h>
 #include <EGEParticle.h>
+#include <EGESignal.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -22,6 +23,8 @@ EGE_DECLARE_SMART_CLASS(ParticleAffector, PParticleAffector)
 
 class ParticleAffector : public Object
 {
+  friend class ParticleEmitter;
+
   public:
 
     ParticleAffector(Application* app, const String& name);
@@ -43,8 +46,30 @@ class ParticleAffector : public Object
     
   protected:
 
+    /*! Returns pointer to parent emitter. */
+    inline ParticleEmitter* emitter() const { return m_emitter; }
+
+  private:
+
+    /* Returns TRUE if detailed particle information is required like notification about particle spawns/deaths. */
+    virtual bool detailedParticleInfoRequired() const;
+
+  private slots:
+
+    /* Slot called when new particle has been spawned. */
+    virtual void onNewParticleSpawned(const EGEParticle::ParticleData& particle);
+    /* Slot called when particle dies. */
+    virtual void onParticleDied(const EGEParticle::ParticleData& particle, s32 index);
+
+  protected:
+
     /*! Active flag. */
     bool m_active;
+
+  private:
+
+    /*! Emitter affector is attached to. NULL if not attached to any emitter. Only settable by ParticleEmitter. */
+    ParticleEmitter* m_emitter;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

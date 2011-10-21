@@ -16,6 +16,7 @@
 #include <EGEScene.h>
 #include <EGERandom.h>
 #include <EGEParticle.h>
+#include <EGESignal.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -35,6 +36,21 @@ class ParticleEmitter : public SceneNodeObject
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
+
+    /* Signal emitted when new particle has been spawned. 
+     *  @param  particleData  Data of particle which has been just spawned.
+     *  @note   Signal is emitted just after particle has been added into particle pool. Thus, it is guaranteed it will be found at the position of last active 
+     *          particle.
+     */
+    Signal1<const EGEParticle::ParticleData&> particleSpawned;
+    /* Signal emitted when particle dies.
+     *  @param  particleData  Data of particle which has just died.
+     *  @param  index         Index of particle within particle pool.
+     *  @note   Signal is emitted just before particle is removed from pool. Thus, it is guaranteed index will point to proper entry in the pool.
+     */
+    Signal2<const EGEParticle::ParticleData&, s32> particleDied;
 
   public:
 
