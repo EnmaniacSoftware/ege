@@ -160,6 +160,9 @@
     <Filter Include="Win32\Tools">
       <UniqueIdentifier>{456ea8d8-688c-4555-a9e6-bfb22637b52c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Sound">
+      <UniqueIdentifier>{52af0465-8a1b-4d90-b681-2642284e84aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -496,6 +499,12 @@
       <Filter>Win32\Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceText.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Sound\SoundManager.cpp">
+      <Filter>Core\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceSound.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
   </ItemGroup>
@@ -964,6 +973,13 @@
       <Filter>Win32\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceText.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Sound\SoundManager.h">
+      <Filter>Core\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGESound.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceSound.h">
       <Filter>Core\Resource</Filter>
     </ClInclude>
   </ItemGroup>

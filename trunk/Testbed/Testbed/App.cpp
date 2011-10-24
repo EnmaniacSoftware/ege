@@ -13,6 +13,7 @@
 #include "Lightning/LightningTest.h"
 #include "Particles/ParticleTest.h"
 #include "Localization/LocalizationTest.h"
+#include "Sound/SoundTest.h"
 
 #include <gl/gl.h>
 #include <gl/glu.h>
@@ -86,6 +87,7 @@ bool App::start()
   m_tests.push_back(new LightningTest(this));
   m_tests.push_back(new LocalizationTest(this));
   m_tests.push_back(new ParticleTest(this));
+  m_tests.push_back(new SoundTest(this));
 
   // select test to run
   selectTest();

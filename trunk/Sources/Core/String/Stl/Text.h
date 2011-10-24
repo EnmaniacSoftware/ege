@@ -41,8 +41,6 @@ class Text : public std::wstring
     Text arg(const String& string) const;
     /* Returns copy of the current string with lowest arg marker replaced with a given integer value. */
     Text arg(s32 value) const;
-    /* Returns copy of the current string with lowest arg marker replaced with a given integer value. */
-    Text arg(int value) const;
     /* Returns copy of the current string with lowest arg marker replaced with a given float value. */
     Text arg(float32 value) const;
 

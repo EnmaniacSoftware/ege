@@ -326,17 +326,6 @@ Text Text::arg(s32 value) const
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns copy of the current string with lowest arg marker replaced with a given integer value. */
-Text Text::arg(int value) const
-{
-  ArgEscapeData argEscapes = findArgEscapes();
-
-  Text out;
-  replaceArgEscapes(out, String::Format("%d", value), argEscapes);
-
-  return out;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns copy of the current string with lowest arg marker replaced with a given float value. */
 Text Text::arg(float32 value) const
 {

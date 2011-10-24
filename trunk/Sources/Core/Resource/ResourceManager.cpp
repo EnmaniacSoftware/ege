@@ -12,6 +12,7 @@
 #include "Core/Resource/ResourceParticleEmitter.h"
 #include "Core/Resource/ResourceParticleAffector.h"
 #include "Core/Resource/ResourceText.h"
+#include "Core/Resource/ResourceSound.h"
 #include "Core/Graphics/Font.h"
 #include "Core/Debug/DebugFont.h"
 #include <EGEXml.h>
@@ -47,7 +48,8 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
                                                     { RESOURCE_NAME_CURVE, ResourceCurve::Create },
                                                     { RESOURCE_NAME_PARTICLE_EMITTER, ResourceParticleEmitter::Create },
                                                     { RESOURCE_NAME_PARTICLE_AFFECTOR, ResourceParticleAffector::Create },
-                                                    { RESOURCE_NAME_TEXT, ResourceText::Create }
+                                                    { RESOURCE_NAME_TEXT, ResourceText::Create },
+                                                    { RESOURCE_NAME_SOUND, ResourceSound::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::ResourceManager(Application* app) : Object(app)

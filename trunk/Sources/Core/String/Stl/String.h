@@ -53,8 +53,6 @@ class String : public std::string
     String arg(const String& string) const;
     /* Returns copy of the current string with lowest arg marker replaced with a given integer value. */
     String arg(s32 value) const;
-    /* Returns copy of the current string with lowest arg marker replaced with a given integer value. */
-    String arg(int value) const;
     /* Returns copy of the current string with lowest arg marker replaced with a given float value. */
     String arg(float32 value) const;
 

@@ -20,6 +20,7 @@ EGE_NAMESPACE_BEGIN
 #define RESOURCE_NAME_PARTICLE_EMITTER  "particle-emitter"
 #define RESOURCE_NAME_PARTICLE_AFFECTOR "particle-affector"
 #define RESOURCE_NAME_TEXT              "text"
+#define RESOURCE_NAME_SOUND             "sound"
 
 #define TR(app, name)     (app)->resourceManager()->textResource((name))->text()
 #define TRN(app, name, n) (app)->resourceManager()->textResource((name))->text((n))
@@ -42,6 +43,7 @@ EGE_NAMESPACE_END
 #include "Core/Resource/ResourceParticleEmitter.h"
 #include "Core/Resource/ResourceParticleAffector.h"
 #include "Core/Resource/ResourceText.h"
+#include "Core/Resource/ResourceSound.h"
 #include "Core/Resource/ResourceGroup.h"
 #include "Core/Resource/ResourceManager.h"
 
