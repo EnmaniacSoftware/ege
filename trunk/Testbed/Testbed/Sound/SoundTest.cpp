@@ -3,7 +3,7 @@
 #include <EGESignal.h>
 #include <EGEResources.h>
 #include <EGEOverlay.h>
-#include <EGESound.h>
+#include <EGEAudio.h>
 
 EGE_NAMESPACE
 
