@@ -160,8 +160,11 @@
     <Filter Include="Win32\Tools">
       <UniqueIdentifier>{456ea8d8-688c-4555-a9e6-bfb22637b52c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Sound">
-      <UniqueIdentifier>{52af0465-8a1b-4d90-b681-2642284e84aa}</UniqueIdentifier>
+    <Filter Include="Core\Audio">
+      <UniqueIdentifier>{6556f711-9739-4124-9e4d-40f130ad80e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Audio\OpenAL">
+      <UniqueIdentifier>{2469302f-a215-49ef-82ee-9745942d1421}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -501,11 +504,20 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceText.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Sound\SoundManager.cpp">
-      <Filter>Core\Sound</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSound.cpp">
       <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\AudioManager.cpp">
+      <Filter>Core\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL_p.cpp">
+      <Filter>Core\Audio\OpenAL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Sound.cpp">
+      <Filter>Core\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL_p.cpp">
+      <Filter>Core\Audio\OpenAL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -975,12 +987,21 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceText.h">
       <Filter>Core\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Sound\SoundManager.h">
-      <Filter>Core\Sound</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGESound.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSound.h">
       <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\AudioManager.h">
+      <Filter>Core\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL_p.h">
+      <Filter>Core\Audio\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Sound.h">
+      <Filter>Core\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL_p.h">
+      <Filter>Core\Audio\OpenAL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

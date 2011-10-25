@@ -14,6 +14,7 @@
 #include "Core/Screen/ScreenManager.h"
 #include "Core/Debug/Debug.h"
 #include "Core/Tools/DesktopServices.h"
+#include "Core/Audio/AudioManager.h"
 #include <EGETimer.h>
 #include <EGEGraphics.h>
 #include <EGEApplication.h>
@@ -30,6 +31,7 @@ Application::Application() : m_sceneManager(NULL),
                              m_pointer(NULL), 
                              m_overlayManager(NULL), 
                              m_screenManager(NULL), 
+                             m_audioManager(NULL),
                              m_debug(NULL), 
                              m_desktopServices(NULL),
                              m_landscapeMode(false),
@@ -44,6 +46,7 @@ Application::~Application()
   EGE_DELETE(m_appController);
   EGE_DELETE(m_resourceManager);
   EGE_DELETE(m_screenManager);
+  EGE_DELETE(m_audioManager);
   EGE_DELETE(m_overlayManager);
   EGE_DELETE(m_pointer);
   EGE_DELETE(m_eventManager);
@@ -155,6 +158,14 @@ EGEResult Application::initialize(const Dictionary& params)
   // create screen manager
   m_screenManager = ege_new ScreenManager(this);
   if (NULL == m_screenManager)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // create audio manager
+  m_audioManager = ege_new AudioManager(this);
+  if (NULL == m_audioManager || !m_audioManager->isValid())
   {
     // error!
     return EGE_ERROR_NO_MEMORY;

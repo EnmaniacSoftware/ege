@@ -1,8 +1,9 @@
-#ifndef EGE_SOUND_H
-#define EGE_SOUND_H
+#ifndef EGE_AUDIO_H
+#define EGE_AUDIO_H
 
-#include "Core/Sound/SoundManager.h"
+#include "Core/Audio/Sound.h"
+#include "Core/Audio/AudioManager.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // EGE_SOUND_H
+#endif // EGE_AUDIO_H

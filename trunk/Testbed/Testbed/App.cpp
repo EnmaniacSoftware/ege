@@ -58,7 +58,7 @@ bool App::start()
   }
 
   // initialize resource manager
-  resourceManager()->setRootDirectory("resources");
+  resourceManager()->addDataDirectory("resources");
   if (EGE_SUCCESS != resourceManager()->addResources("resources.xml"))
   {
     // error!

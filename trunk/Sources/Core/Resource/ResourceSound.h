@@ -8,6 +8,7 @@
 #include <EGEString.h>
 #include <EGEXml.h>
 #include <EGETime.h>
+#include <EGESound.h>
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN
@@ -45,8 +46,8 @@ class ResourceSound : public IResource
     /* IResource override. Unloads resource. */
     void unload() override;
 
-    /* Creates instance of particle affector object defined by resource. */
-    //PParticleAffector createInstance();
+    /* Creates instance of sound object defined by resource. */
+    PSound createInstance();
 
   private:
 

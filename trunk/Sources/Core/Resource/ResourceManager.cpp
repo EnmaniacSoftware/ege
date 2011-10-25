@@ -134,36 +134,57 @@ PResource ResourceManager::createResource(const String& name)
   return resource;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds resources from given file to repository. */
-EGEResult ResourceManager::addResources(String fileName)
+/*! Adds resources from given file to repository. 
+ * @param filePath    Path to resource definition file which is to be added into resources.
+ * @param autoDetect  If TRUE file given by filePath will be looked for within currently registered data paths. Otherwise, filePath will be treated as
+ *                    absolute path.
+ */
+EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
 {
   EGEResult result = EGE_SUCCESS;
 
+  bool atLeastOneResourceAddedSucessfully = false;
+
   // convert separators
-  fileName = Dir::FromNativeSeparators(fileName);
+  filePath = Dir::FromNativeSeparators(filePath);
 
-  XmlDocument xml;
-  if (EGE_SUCCESS != (result = xml.load(makeFullPath(fileName))))
+  // try to locate resource file in each data location
+  for (StringList::const_iterator it = m_dataDirs.begin(); it != m_dataDirs.end(); ++it)
   {
-    // error!
-    return result;
+    String fullPath = autoDetect ? (*it + "/" + filePath) : filePath;
+
+    XmlDocument xml;
+    if (EGE_SUCCESS != (result = xml.load(fullPath)))
+    {
+      // try another data location
+      continue;
+    }
+
+    // get main node
+    PXmlElement resourcesNode = xml.firstChild(NODE_RESOURCES);
+    if (!resourcesNode->isValid())
+    {
+      // error!
+      EGE_PRINT("ResourceManager::addResources - resource file %s has no %s tag", fullPath.toAscii(), NODE_RESOURCES);
+      result = EGE_ERROR;
+      break;
+    }
+
+    // process RESOURCES tag
+    String path;
+    String file;
+    Dir::DecomposePath(fullPath, path, file);
+    if (EGE_SUCCESS != (result = processResourcesTag(path, resourcesNode)))
+    {
+      // error!
+      break;
+    }
+
+    // note this success
+    atLeastOneResourceAddedSucessfully = true;
   }
 
-  // get main node
-  PXmlElement resourcesNode = xml.firstChild(NODE_RESOURCES);
-  if (!resourcesNode->isValid())
-  {
-    // error!
-    return EGE_ERROR;
-  }
-
-  // process RESOURCES tag
-  String path;
-  String file;
-  Dir::DecomposePath(fileName, path, file);
-  result = processResourcesTag(path, resourcesNode);
-
-  return result;
+  return atLeastOneResourceAddedSucessfully ? EGE_SUCCESS : result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds resources from given buffer. */
@@ -192,26 +213,13 @@ EGEResult ResourceManager::addResources(String fileName)
 //  return result;
 //}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets root directory for resources */
-void ResourceManager::setRootDirectory(const String& rootDir)
+/*! Adds data directory. */
+void ResourceManager::addDataDirectory(const String& path)
 {
-  m_rootDir = rootDir;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Composes full path to given resource */
-String ResourceManager::makeFullPath(const String& localPath) const
-{
-  if (!m_rootDir.empty())
+  if (!m_dataDirs.contains(path))
   {
-    if (localPath.empty())
-    {
-      return m_rootDir;
-    }
-
-    return m_rootDir + "/" + localPath;
+    m_dataDirs << path;
   }
-
-  return localPath;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /** Processes the RESOURCES tag.
@@ -251,7 +259,7 @@ EGEResult ResourceManager::processResourcesTag(const String& filePath, const PXm
       path = filePath + "/" + path;
 
       // add new resource
-      result = addResources(path);
+      result = addResources(path, false);
     }
 
     // check if error occured
@@ -288,7 +296,7 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
   result = newGroup->create(tag);
   if (EGE_SUCCESS == result)
   {
-    // check if such group DOES NOT   exists
+    // check if such group DOES NOT exists
     // NOTE: we quitely omit group duplicates so it is valid to ie. INCLUDE the same group multiple times
     if (NULL == group(newGroup->name()))
     {

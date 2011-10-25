@@ -38,10 +38,14 @@ class ResourceManager : public Object
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
-    /* Sets root directory for resources */
-    void setRootDirectory(const String& rootDir);
-    /* Adds resources from given file to repository. */
-    EGEResult addResources(String fileName);
+    /* Adds data directory. */
+    void addDataDirectory(const String& path);
+    /* Adds resources from given file to repository. 
+     * @param filePath    Path to resource definition file which is to be added into resources.
+     * @param autoDetect  If TRUE file given by filePath will be looked for within currently registered data paths. Otherwise, filePath will be treated as
+     *                    absolute path.
+     */
+    EGEResult addResources(String filePath, bool autoDetect = true);
     /* Adds resources from given buffer. */
    // EGEResult addResources(const PDataBuffer& buffer);
     /* Loads group with given name. */
@@ -50,8 +54,6 @@ class ResourceManager : public Object
     void unloadGroup(const String& name);
     /* Gets group of the given name. */
     PResourceGroup group(const String& name) const;
-    /* Composes full path to given resource */
-    String makeFullPath(const String& localPath) const;
     /* Returns resource of a given type and name. Optionally, from given group only. */
     PResource resource(const String& typeName, const String& name, const String& groupName = "") const;
     /* Returns material resource of a given name. Optionally, from given group only. */
@@ -67,8 +69,6 @@ class ResourceManager : public Object
 
   private:
     
-    /*! Gets resource root directory */
-    inline const String& rootDirectory() const { return m_rootDir; }
     /** Processes the RESOURCES tag.
     *  
     *   \param  filePath  relative (with respect to resource root directory) path to resouce file.
@@ -102,8 +102,8 @@ class ResourceManager : public Object
 
   private:
 
-    /*! Resource root dir */
-    String m_rootDir;
+    /*! List of resource data directories. */
+    StringList m_dataDirs;
     /*! Resource groups defined */
     GroupList m_groups;
     /*! Registered resources sorted by type name. */

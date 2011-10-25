@@ -13,6 +13,10 @@
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Application\AppController.cpp" />
     <ClCompile Include="..\..\Sources\Core\Application\Application.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\AudioManager.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\Sound.cpp" />
     <ClCompile Include="..\..\Sources\Core\ComplexTypes.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.cpp" />
@@ -103,7 +107,6 @@
     <ClCompile Include="..\..\Sources\Core\Scene\SceneNodeObject.cpp" />
     <ClCompile Include="..\..\Sources\Core\Screen\Screen.cpp" />
     <ClCompile Include="..\..\Sources\Core\Screen\ScreenManager.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Sound\SoundManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\String.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\Text.cpp" />
     <ClCompile Include="..\..\Sources\Core\Timer\TimeLine.cpp" />
@@ -116,6 +119,10 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.cpp" />
+    <ClInclude Include="..\..\Sources\Core\Audio\AudioManager.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Sound.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Hash.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h" />
@@ -149,7 +156,6 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpritesheet.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceText.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceTextureImage.h" />
-    <ClInclude Include="..\..\Sources\Core\Sound\SoundManager.h" />
     <ClInclude Include="..\..\Sources\Core\Timer\TimeLine.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\DesktopServices.h" />
     <ClInclude Include="..\..\Sources\Core\XML\TinyXml\XmlAttributeTinyXml_p.h" />
@@ -344,6 +350,14 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
+    <ProjectReference Include="..\..\External\OpenAL 1.13\build\OpenAL32.vcxproj">
+      <Project>{95572bef-4c1f-4ce1-9da2-e09f73498f84}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
     <ProjectReference Include="..\..\External\PNGLib\libpng.vcxproj">
       <Project>{9558633a-30ad-4309-bc0f-e9a45db9b2b9}</Project>
       <Private>true</Private>
@@ -403,8 +417,8 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_BOX2D;EGE_FEATURE_DEBUG;EGE_XML_TINYXML;EGE_RANDOM_C;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_BOX2D;EGE_FEATURE_DEBUG;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_C;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>
       <BrowseInformation>true</BrowseInformation>
@@ -428,9 +442,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_BOX2D;EGE_XML_TINYXML;EGE_RANDOM_C;TIXML_USE_STL;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_BOX2D;EGE_XML_TINYXML;EGE_RANDOM_C;EGE_AUDIO_OPENAL;TIXML_USE_STL;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

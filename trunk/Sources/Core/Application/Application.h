@@ -21,6 +21,7 @@ class SceneManager;
 class OverlayManager;
 class Debug;
 class DesktopServices;
+class AudioManager;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -57,6 +58,8 @@ class Application
     OverlayManager* overlayManager() const { return m_overlayManager; }
     /*! Returns screen manager. */
     ScreenManager* screenManager() const { return m_screenManager; }
+    /*! Returns audio manager. */
+    AudioManager* audioManager() const { return m_audioManager; }
     /*! Returns debug object. */
     Debug* debug() const { return m_debug; }
     /*! Returns dektop services object. */
@@ -95,6 +98,8 @@ class Application
     OverlayManager* m_overlayManager;
     /*! Screen manager. */
     ScreenManager* m_screenManager;
+    /*! Audio manager. */
+    AudioManager* m_audioManager;
     /*! Debug object. */
     Debug* m_debug;
     /*! Desktop services object. */

@@ -60,22 +60,31 @@ void ResourceSound::unload()
   EGE_PRINT("ResourceSound::unload - %s", name().toAscii());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of particle affector object defined by resource. */
-//PParticleAffector ResourceSound::createInstance()
-//{
-//  // create instance of particle emitter of a correct type and with given name
-//  PParticleAffector object = app()->graphics()->particleFactory()->createAffector(m_parameters["type"], m_name);
-//  if (object)
-//  {
-//    // initialize with dictionary
-//    if (!object->initialize(m_parameters))
-//    {
-//      // error!
-//      EGE_PRINT("ResourceSound::createInstance - Could not initialize!");
-//      object = NULL;
-//    }
-//  }
-//
-//  return object;
-//}
+/*! Creates instance of sound object defined by resource. */
+PSound ResourceSound::createInstance()
+{
+  // open sound file for reading
+  File file(m_path);
+  if (EGE_SUCCESS != file.open(EGEFile::MODE_READ_ONLY))
+  {
+    // error!
+    return NULL;
+  }
+
+  // find whats file size
+  s64 fileSize = file.size();
+
+  // read file data
+  DataBuffer data;
+  if (file.read(data, fileSize) != fileSize)
+  {
+    // error!
+    return NULL;
+  }
+
+  // create sound object from data
+  PSound object = ege_new Sound(data);
+
+  return object;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

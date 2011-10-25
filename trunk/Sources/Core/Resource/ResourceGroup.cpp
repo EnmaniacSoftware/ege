@@ -10,8 +10,11 @@ EGE_DEFINE_NEW_OPERATORS(ResourceGroup)
 EGE_DEFINE_DELETE_OPERATORS(ResourceGroup)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceGroup::ResourceGroup(Application* app, ResourceManager* manager, const String& path, const String& name) 
-: Object(app), m_manager(manager), m_name(name), m_loaded(false), m_path(path)
+ResourceGroup::ResourceGroup(Application* app, ResourceManager* manager, const String& dirPath, const String& name) : Object(app), 
+                                                                                                                      m_manager(manager), 
+                                                                                                                      m_name(name), 
+                                                                                                                      m_loaded(false), 
+                                                                                                                      m_dirPath(dirPath)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -45,7 +48,7 @@ EGEResult ResourceGroup::create(const PXmlElement& tag)
     if (resource)
     {
       // initialize from XML
-      if (EGE_SUCCESS != (result = resource->create(manager()->makeFullPath(path()), child)))
+      if (EGE_SUCCESS != (result = resource->create(m_dirPath, child)))
       {
         // error!
         break;
