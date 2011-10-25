@@ -8,7 +8,7 @@
 #include <EGEString.h>
 #include <EGEXml.h>
 #include <EGETime.h>
-#include <EGESound.h>
+#include <EGEAudio.h>
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN
