@@ -1,0 +1,350 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{3E919D17-DC23-467F-A52B-74D66B51CCF6}</ProjectGUID>
+    <SccProjectName />
+    <SccLocalPath />
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>OpenAL32</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+    <PropertyGroup>
+      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:\Projects\CPP\EGE\External\OpenAL 1.13\build\Debug\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">OpenAL32.dir\Debug\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">OpenAL32</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.dll</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:\Projects\CPP\EGE\External\OpenAL 1.13\build\Release\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">OpenAL32.dir\Release\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">OpenAL32</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.dll</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">E:\Projects\CPP\EGE\External\OpenAL 1.13\build\MinSizeRel\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">OpenAL32.dir\MinSizeRel\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">OpenAL32</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.dll</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">E:\Projects\CPP\EGE\External\OpenAL 1.13\build\RelWithDebInfo\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">OpenAL32.dir\RelWithDebInfo\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">OpenAL32</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.dll</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
+    </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/OpenAL 1.13/OpenAL32/Include;E:/Projects/CPP/EGE/External/OpenAL 1.13/include;E:/Projects/CPP/EGE/External/OpenAL 1.13/build;E:/DX9SDK/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsC</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_DEBUG;AL_ALEXT_PROTOTYPES;_WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;strcasecmp=_stricmp;strncasecmp=_strnicmp;snprintf=_snprintf;isnan=_isnan;CMAKE_INTDIR="Debug";AL_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>Debug</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>E:/Projects/CPP/EGE/External/OpenAL 1.13/build/Debug/OpenAL32.pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_DEBUG;AL_ALEXT_PROTOTYPES;_WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;strcasecmp=_stricmp;strncasecmp=_strnicmp;snprintf=_snprintf;isnan=_isnan;CMAKE_INTDIR=\"Debug\";AL_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/OpenAL 1.13/OpenAL32/Include;E:/Projects/CPP/EGE/External/OpenAL 1.13/include;E:/Projects/CPP/EGE/External/OpenAL 1.13/build;E:/DX9SDK/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/OpenAL 1.13/OpenAL32/Include;E:/Projects/CPP/EGE/External/OpenAL 1.13/include;E:/Projects/CPP/EGE/External/OpenAL 1.13/build;E:/DX9SDK/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 /debug %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;winmm.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:/DX9SDK/Lib;E:/DX9SDK/Lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>E:/Projects/CPP/EGE/External/OpenAL 1.13/build/Debug/OpenAL32.lib</ImportLibrary>
+      <LinkIncremental>true</LinkIncremental>
+      <ProgramDataBaseFileName>E:/Projects/CPP/EGE/External/OpenAL 1.13/build/Debug/OpenAL32.pdb</ProgramDataBaseFileName>
+      <StackReserveSize>10000000</StackReserveSize>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/OpenAL 1.13/OpenAL32/Include;E:/Projects/CPP/EGE/External/OpenAL 1.13/include;E:/Projects/CPP/EGE/External/OpenAL 1.13/build;E:/DX9SDK/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsC</CompileAs>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat></DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;NDEBUG;AL_ALEXT_PROTOTYPES;_WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;strcasecmp=_stricmp;strncasecmp=_strnicmp;snprintf=_snprintf;isnan=_isnan;CMAKE_INTDIR="Release";AL_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>Release</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>E:/Projects/CPP/EGE/External/OpenAL 1.13/build/Release/OpenAL32.pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;NDEBUG;AL_ALEXT_PROTOTYPES;_WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;strcasecmp=_stricmp;strncasecmp=_strnicmp;snprintf=_snprintf;isnan=_isnan;CMAKE_INTDIR=\"Release\";AL_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/OpenAL 1.13/OpenAL32/Include;E:/Projects/CPP/EGE/External/OpenAL 1.13/include;E:/Projects/CPP/EGE/External/OpenAL 1.13/build;E:/DX9SDK/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/OpenAL 1.13/OpenAL32/Include;E:/Projects/CPP/EGE/External/OpenAL 1.13/include;E:/Projects/CPP/EGE/External/OpenAL 1.13/build;E:/DX9SDK/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;winmm.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:/DX9SDK/Lib;E:/DX9SDK/Lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImportLibrary>E:/Projects/CPP/EGE/External/OpenAL 1.13/build/Release/OpenAL32.lib</ImportLibrary>
+      <ProgramDataBaseFileName>E:/Projects/CPP/EGE/External/OpenAL 1.13/build/Release/OpenAL32.pdb</ProgramDataBaseFileName>
+      <StackReserveSize>10000000</StackReserveSize>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <ClCompile>
+      <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/OpenAL 1.13/OpenAL32/Include;E:/Projects/CPP/EGE/External/OpenAL 1.13/include;E:/Projects/CPP/EGE/External/OpenAL 1.13/build;E:/DX9SDK/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsC</CompileAs>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat></DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;NDEBUG;AL_ALEXT_PROTOTYPES;_WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;strcasecmp=_stricmp;strncasecmp=_strnicmp;snprintf=_snprintf;isnan=_isnan;CMAKE_INTDIR="MinSizeRel";AL_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>MinSizeRel</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>E:/Projects/CPP/EGE/External/OpenAL 1.13/build/MinSizeRel/OpenAL32.pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;NDEBUG;AL_ALEXT_PROTOTYPES;_WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;strcasecmp=_stricmp;strncasecmp=_strnicmp;snprintf=_snprintf;isnan=_isnan;CMAKE_INTDIR=\"MinSizeRel\";AL_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/OpenAL 1.13/OpenAL32/Include;E:/Projects/CPP/EGE/External/OpenAL 1.13/include;E:/Projects/CPP/EGE/External/OpenAL 1.13/build;E:/DX9SDK/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/OpenAL 1.13/OpenAL32/Include;E:/Projects/CPP/EGE/External/OpenAL 1.13/include;E:/Projects/CPP/EGE/External/OpenAL 1.13/build;E:/DX9SDK/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;winmm.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:/DX9SDK/Lib;E:/DX9SDK/Lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImportLibrary>E:/Projects/CPP/EGE/External/OpenAL 1.13/build/MinSizeRel/OpenAL32.lib</ImportLibrary>
+      <ProgramDataBaseFileName>E:/Projects/CPP/EGE/External/OpenAL 1.13/build/MinSizeRel/OpenAL32.pdb</ProgramDataBaseFileName>
+      <StackReserveSize>10000000</StackReserveSize>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/OpenAL 1.13/OpenAL32/Include;E:/Projects/CPP/EGE/External/OpenAL 1.13/include;E:/Projects/CPP/EGE/External/OpenAL 1.13/build;E:/DX9SDK/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsC</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_DEBUG;AL_ALEXT_PROTOTYPES;_WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;strcasecmp=_stricmp;strncasecmp=_strnicmp;snprintf=_snprintf;isnan=_isnan;CMAKE_INTDIR="RelWithDebInfo";AL_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>RelWithDebInfo</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>E:/Projects/CPP/EGE/External/OpenAL 1.13/build/RelWithDebInfo/OpenAL32.pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_DEBUG;AL_ALEXT_PROTOTYPES;_WIN32;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;strcasecmp=_stricmp;strncasecmp=_strnicmp;snprintf=_snprintf;isnan=_isnan;CMAKE_INTDIR=\"RelWithDebInfo\";AL_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/OpenAL 1.13/OpenAL32/Include;E:/Projects/CPP/EGE/External/OpenAL 1.13/include;E:/Projects/CPP/EGE/External/OpenAL 1.13/build;E:/DX9SDK/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/OpenAL 1.13/OpenAL32/Include;E:/Projects/CPP/EGE/External/OpenAL 1.13/include;E:/Projects/CPP/EGE/External/OpenAL 1.13/build;E:/DX9SDK/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 /debug %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;winmm.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:/DX9SDK/Lib;E:/DX9SDK/Lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>E:/Projects/CPP/EGE/External/OpenAL 1.13/build/RelWithDebInfo/OpenAL32.lib</ImportLibrary>
+      <LinkIncremental>true</LinkIncremental>
+      <ProgramDataBaseFileName>E:/Projects/CPP/EGE/External/OpenAL 1.13/build/RelWithDebInfo/OpenAL32.pdb</ProgramDataBaseFileName>
+      <StackReserveSize>10000000</StackReserveSize>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule E:/Projects/CPP/EGE/External/OpenAL 1.13/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake 2.8\bin\cmake.exe" "-HE:/Projects/CPP/EGE/External/OpenAL 1.13" "-BE:/Projects/CPP/EGE/External/OpenAL 1.13/build" --check-stamp-file "E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:/Projects/CPP/EGE/External/OpenAL 1.13/CMakeLists.txt;E:\Projects\CPP\EGE\External\OpenAL 1.13\CMakeLists.txt;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckLibraryExists.cmake;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckSharedLibraryExists.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFiles.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckSymbolExists.cmake;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckCCompilerFlag.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeVS10FindMake.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineSystem.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeSystem.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeSystem.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeFindBinUtils.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCInformation.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-cl.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\cl.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeRCCompiler.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeRCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeTestRCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-cl.cmake.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-cl.cmake.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompilerABI.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_LONG.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_LONG_LONG.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_UINT.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_VOIDP.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckSharedFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckSharedFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\config.h.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\openal.pc.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\generate.stamp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule E:/Projects/CPP/EGE/External/OpenAL 1.13/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake 2.8\bin\cmake.exe" "-HE:/Projects/CPP/EGE/External/OpenAL 1.13" "-BE:/Projects/CPP/EGE/External/OpenAL 1.13/build" --check-stamp-file "E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:/Projects/CPP/EGE/External/OpenAL 1.13/CMakeLists.txt;E:\Projects\CPP\EGE\External\OpenAL 1.13\CMakeLists.txt;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckLibraryExists.cmake;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckSharedLibraryExists.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFiles.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckSymbolExists.cmake;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckCCompilerFlag.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeVS10FindMake.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineSystem.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeSystem.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeSystem.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeFindBinUtils.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCInformation.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-cl.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\cl.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeRCCompiler.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeRCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeTestRCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-cl.cmake.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-cl.cmake.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompilerABI.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_LONG.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_LONG_LONG.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_UINT.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_VOIDP.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckSharedFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckSharedFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\config.h.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\openal.pc.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\generate.stamp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule E:/Projects/CPP/EGE/External/OpenAL 1.13/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake 2.8\bin\cmake.exe" "-HE:/Projects/CPP/EGE/External/OpenAL 1.13" "-BE:/Projects/CPP/EGE/External/OpenAL 1.13/build" --check-stamp-file "E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">E:/Projects/CPP/EGE/External/OpenAL 1.13/CMakeLists.txt;E:\Projects\CPP\EGE\External\OpenAL 1.13\CMakeLists.txt;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckLibraryExists.cmake;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckSharedLibraryExists.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFiles.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckSymbolExists.cmake;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckCCompilerFlag.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeVS10FindMake.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineSystem.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeSystem.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeSystem.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeFindBinUtils.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCInformation.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-cl.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\cl.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeRCCompiler.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeRCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeTestRCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-cl.cmake.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-cl.cmake.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompilerABI.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_LONG.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_LONG_LONG.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_UINT.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_VOIDP.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckSharedFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckSharedFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\config.h.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\openal.pc.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\generate.stamp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule E:/Projects/CPP/EGE/External/OpenAL 1.13/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake 2.8\bin\cmake.exe" "-HE:/Projects/CPP/EGE/External/OpenAL 1.13" "-BE:/Projects/CPP/EGE/External/OpenAL 1.13/build" --check-stamp-file "E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">E:/Projects/CPP/EGE/External/OpenAL 1.13/CMakeLists.txt;E:\Projects\CPP\EGE\External\OpenAL 1.13\CMakeLists.txt;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckLibraryExists.cmake;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckSharedLibraryExists.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFiles.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckSymbolExists.cmake;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckCCompilerFlag.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeVS10FindMake.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineSystem.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeSystem.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeSystem.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeFindBinUtils.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCInformation.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-cl.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\cl.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeRCCompiler.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeRCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeTestRCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-cl.cmake.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\Platform\Windows-cl.cmake.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompilerABI.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeCCompiler.cmake.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CMakeCCompiler.cmake;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_LONG.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_LONG_LONG.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_UINT.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\CheckTypeSize\SIZEOF_VOIDP.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckSharedFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\cmake\CheckSharedFunctionExists.c;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\config.h.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\openal.pc.in;E:\Projects\CPP\EGE\External\OpenAL 1.13\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">E:\Projects\CPP\EGE\External\OpenAL 1.13\build\CMakeFiles\generate.stamp;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\OpenAL32\alAuxEffectSlot.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\OpenAL32\alBuffer.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\OpenAL32\alDatabuffer.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\OpenAL32\alEffect.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\OpenAL32\alError.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\OpenAL32\alExtension.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\OpenAL32\alFilter.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\OpenAL32\alListener.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\OpenAL32\alSource.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\OpenAL32\alState.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\OpenAL32\alThunk.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\ALc.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\ALu.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\alcConfig.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\alcEcho.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\alcModulator.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\alcReverb.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\alcRing.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\alcThread.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\bs2b.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\mixer.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\panning.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\null.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\dsound.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\winmm.c" />
+    <ClCompile Include="E:\Projects\CPP\EGE\External\OpenAL 1.13\Alc\wave.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="E:/Projects/CPP/EGE/External/OpenAL 1.13/build/ZERO_CHECK.vcxproj">
+      <Project>1A1CB736-85EA-462E-BDEE-434D7D0631AD</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
