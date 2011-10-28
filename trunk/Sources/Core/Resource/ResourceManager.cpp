@@ -485,3 +485,9 @@ PResourceText ResourceManager::textResource(const String& name, const String& gr
   return resource(RESOURCE_NAME_TEXT, name, groupName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns sound resource of a given name. Optionally, from given group only. */
+PResourceSound ResourceManager::soundResource(const String& name, const String& groupName) const
+{
+  return resource(RESOURCE_NAME_SOUND, name, groupName);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

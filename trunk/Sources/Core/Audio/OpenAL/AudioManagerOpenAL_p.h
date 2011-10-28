@@ -1,17 +1,21 @@
-#ifndef EGE_CORE_AUDIOMANAGER_PRIVATE_H
-#define EGE_CORE_AUDIOMANAGER_PRIVATE_H
+#ifndef EGE_CORE_AUDIOMANAGER_OPENAL_H
+#define EGE_CORE_AUDIOMANAGER_OPENAL_H
+
+#ifdef EGE_AUDIO_OPENAL
 
 #include <EGE.h>
 #include <EGETime.h>
 #include <EGEDynamicArray.h>
-#include <al/al.h>
-#include <al/alc.h>
+#include <al.h>
+#include <alc.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class AudioManager;
+
+EGE_DECLARE_SMART_CLASS(Sound, PSound)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -29,6 +33,13 @@ class AudioManagerPrivate
     bool isValid() const;
     /* Updates manager. */
     void update(const Time& time);
+    /* Plays given sound. */
+    EGEResult play(const PSound& sound);
+
+  private:
+
+    /* Returns first available channel. */
+    ALuint availableChannel() const;
 
   private:
 
@@ -48,4 +59,6 @@ class AudioManagerPrivate
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_AUDIOMANAGER_PRIVATE_H
+#endif // EGE_AUDIO_OPENAL
+
+#endif // EGE_CORE_AUDIOMANAGER_OPENAL_H

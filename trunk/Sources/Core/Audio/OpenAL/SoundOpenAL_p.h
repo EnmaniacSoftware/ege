@@ -1,10 +1,12 @@
-#ifndef EGE_CORE_SOUND_PRIVATE_H
-#define EGE_CORE_SOUND_PRIVATE_H
+#ifndef EGE_CORE_SOUND_OPENAL_H
+#define EGE_CORE_SOUND_OPENAL_H
+
+#ifdef EGE_AUDIO_OPENAL
 
 #include <EGE.h>
 #include <EGEDataBuffer.h>
-#include <al/al.h>
-#include <al/alc.h>
+#include <al.h>
+#include <alc.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -26,6 +28,8 @@ class SoundPrivate
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
+    /*! Returns OpenAL sound buffer object. */
+    inline ALuint bufferId() const { return m_buffer; }
 
   private:
 
@@ -37,4 +41,6 @@ class SoundPrivate
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_SOUND_PRIVATE_H
+#endif // EGE_AUDIO_OPENAL
+
+#endif // EGE_CORE_SOUND_OPENAL_H

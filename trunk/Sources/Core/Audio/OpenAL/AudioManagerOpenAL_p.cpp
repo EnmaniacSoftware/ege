@@ -1,5 +1,8 @@
+#ifdef EGE_AUDIO_OPENAL
 #include "Core/Application/Application.h"
 #include "Core/Audio/OpenAL/AudioManagerOpenAL_p.h"
+#include "Core/Audio/OpenAL/SoundOpenAL_p.h"
+#include <EGEAudio.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE
@@ -77,3 +80,59 @@ void AudioManagerPrivate::update(const Time& time)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Plays given sound. */
+EGEResult AudioManagerPrivate::play(const PSound& sound)
+{
+  ALuint channel = availableChannel();
+  if (0 < channel)
+  {
+    // clean up source
+	  alSourcei(channel, AL_BUFFER, 0);
+
+	  // attached sound buffer to source
+	  alSourcei(channel, AL_BUFFER, sound->p_func()->bufferId());
+	
+	  // set the pitch and gain of the source
+	  alSourcef(channel, AL_PITCH, sound->pitch());
+	  alSourcef(channel, AL_GAIN, sound->gain());
+	
+	  // set the looping value
+		alSourcei(channel, AL_LOOPING, sound->looping() ? AL_TRUE : AL_FALSE);
+	
+	  // check to see if there were any errors
+	  ALenum error = alGetError();
+	  if (AL_NO_ERROR != error)
+    {
+      // error!
+      return EGE_ERROR;
+	  }
+	
+	  // play the sound
+	  alSourcePlay(channel);
+
+    return EGE_SUCCESS;
+  }
+
+  return EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns first available channel. */
+ALuint AudioManagerPrivate::availableChannel() const
+{
+  // go thru all channels
+  for (ChannelsArray::const_iterator it = m_channels.begin(); it != m_channels.end(); ++it)
+  {
+    ALint state;
+		alGetSourcei(*it, AL_SOURCE_STATE, &state);
+
+		// if this source is not playing then return it
+		if (AL_PLAYING != state)
+    {
+      return *it;
+    }
+  }
+
+  return 0;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#endif // EGE_AUDIO_OPENAL

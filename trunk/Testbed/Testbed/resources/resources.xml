@@ -93,7 +93,8 @@
   <group name='sound-test'>
 
     <sound name='music' path='sounds/music.mp3' />
-    <sound name='sound-1' path='sounds/sound_1.wav' />
+    <sound name='sound-1' path='sounds/sound_1.wav' pitch='1.0' gain='1.0'/>
+    <sound name='sound-1-1' path='sounds/sound_1.wav' pitch='2.0' gain='1.0' looping='false'/>
     <sound name='sound-2' path='sounds/sound_2.wav' />
 
   </group>

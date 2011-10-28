@@ -57,12 +57,16 @@ class ResourceSound : public IResource
 
   private:
 
-  private:
-
     /*! Name. */
     String m_name;
     /*! Sound path. */
     String m_path;
+    /*! Pitch value. */
+    float32 m_pitch;
+    /*! Gain value. */
+    float32 m_gain;
+    /*! Looping flag. */
+    bool m_looping;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

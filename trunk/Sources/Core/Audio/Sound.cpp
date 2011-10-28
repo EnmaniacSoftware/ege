@@ -2,7 +2,8 @@
 
 #ifdef EGE_AUDIO_OPENAL
 #include "Core/Audio/OpenAL/SoundOpenAL_p.h"
-#else
+#elif EGE_AUDIO_FMOD
+#include "Core/Audio/FMod/SoundFMod_p.h"
 #endif // EGE_AUDIO_OPENAL
 
 EGE_NAMESPACE
@@ -13,7 +14,10 @@ EGE_DEFINE_NEW_OPERATORS(Sound)
 EGE_DEFINE_DELETE_OPERATORS(Sound)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Sound::Sound(const PDataBuffer& data) : Object(NULL)
+Sound::Sound(const PDataBuffer& data) : Object(NULL), 
+                                        m_pitch(1.0f), 
+                                        m_gain(1.0f), 
+                                        m_looping(false)
 {
   m_p = ege_new SoundPrivate(this, data);
 }
@@ -32,5 +36,23 @@ bool Sound::isValid() const
   }
 
   return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets pitch value. */
+void Sound::setPitch(float32 value)
+{
+  m_pitch = value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets gain value. */
+void Sound::setGain(float32 value)
+{
+  m_gain = value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets looping flag. */
+void Sound::setLooping(bool set)
+{
+  m_looping = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

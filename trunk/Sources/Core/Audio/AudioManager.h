@@ -12,7 +12,11 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class AudioManager
+EGE_DECLARE_SMART_CLASS(Sound, PSound)
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class AudioManager : public Object
 {
   public:
 
@@ -26,6 +30,10 @@ class AudioManager
     bool isValid() const;
     /* Updates manager. */
     void update(const Time& time);
+    /* Plays sound with given name. */
+    EGEResult play(const String& soundName);
+    /* Plays given sound. */
+    EGEResult play(const PSound& sound);
 
   private:
 

@@ -83,5 +83,13 @@ void SoundTest::update(const Time& time)
 /*! Test override. Pointer event receiver. */
 void SoundTest::pointerEvent(PPointerData data)
 {
+  if (EGEInput::ACTION_BUTTON_UP == data->action() && EGEInput::BUTTON_LEFT == data->button())
+  {
+    app()->audioManager()->play("sound-1");
+  }
+  else if (EGEInput::ACTION_BUTTON_UP == data->action() && EGEInput::BUTTON_RIGHT == data->button())
+  {
+    app()->audioManager()->play("sound-1-1");
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

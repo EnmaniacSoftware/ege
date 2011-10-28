@@ -19,6 +19,7 @@ EGE_DECLARE_SMART_CLASS(ResourceGroup, PResourceGroup)
 EGE_DECLARE_SMART_CLASS(IResource, PResource)
 EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
 EGE_DECLARE_SMART_CLASS(ResourceText, PResourceText)
+EGE_DECLARE_SMART_CLASS(ResourceSound, PResourceSound)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -60,6 +61,8 @@ class ResourceManager : public Object
     PResourceMaterial materialResource(const String& name, const String& groupName = "") const;
     /* Returns text resource of a given name. Optionally, from given group only. */
     PResourceText textResource(const String& name, const String& groupName = "") const;
+    /* Returns sound resource of a given name. Optionally, from given group only. */
+    PResourceSound soundResource(const String& name, const String& groupName = "") const;
     /* Registeres custom resource type. */
     EGEResult registerResource(const String& typeName, egeResourceCreateFunc createFunc);
     /* Returns TRUE if given resource type is registered. */
