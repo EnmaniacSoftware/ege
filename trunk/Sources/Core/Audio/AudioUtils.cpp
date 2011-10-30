@@ -4,16 +4,20 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define WAVE_RIFF_HEADER_ID 0x52494646
+#define WAVE_FMT_HEADER_ID  0x666d7420
+#define WAVE_DATA_HEADER_ID 0x64617461
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct WaveRiffHeader
 {
-  u8 id[4];               /*!< RIFF or 0x52494646 big-endian. */
-  s32 size;               /*!< This is size of entire file minus 8 bytes for id and size entires of this struct. */
-  u8 format[4];           /*!< WAVE or 0x57415645 big-endian. */
+  u32 id;               /*!< RIFF or 0x52494646 big-endian. */
+  s32 size;             /*!< This is size of entire file minus 8 bytes for id and size entires of this struct. */
+  u32 format;           /*!< WAVE or 0x57415645 big-endian. */
 };
 
 struct WaveFmtHeader
 {
-  u8 id[4];               /*!< fmt or 0x666d7420 big-endian. */
+  u32 id;                 /*!< fmt or 0x666d7420 big-endian. */
   s32 size;               /*!< Size of the rest of header starting from next entry. For PCM = 16. */
   s16 audioFormat;        /*!< 1 for PCM. Other values for some compressed formats. */
   s16 channels;           /*!< Mono = 1, Stereo = 2 etc. */
@@ -22,41 +26,45 @@ struct WaveFmtHeader
   s16 blockAlign;         /*!< NumChannels * BitsPerSample/8. */
   s16 bitsPerSample;      /*!< 8 - for 8 bits, 16 - for 16 bits etc. */
 };
+
+struct WaveDataHeader
+{
+  u32 id;               /*!< data or 0x64617461 big-endian. */
+  s32 size;             /*!< This is size of sound data (in bytes). */
+};
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Retrieves data from WAV file.
  * @param data            Data buffer containing wav file data.
  * @param soundDataOffset Offset (in bytes) to begining of sound data.
+ * @param soundDataSize   Size (in bytes) of all sound data.
  * @param channels        Number of channels of wav file.
  * @param sampleRate      Sample rate of wav file.
  * @param bitsPerSample   Number of bits per sample of wav file.
  * @return  Returns success if given buffer contains valid wav file data and data has been retrieved successfully.
  */
-EGEResult AudioUtils::GetWavData(const PDataBuffer& data, s32& soundDataOffset, s32& channels, s32& sampleRate, s32& bitsPerSample)
+EGEResult AudioUtils::GetWavData(const PDataBuffer& data, s32& soundDataOffset, s32& soundDataSize, s32& channels, s32& sampleRate, s32& bitsPerSample)
 {
   WaveRiffHeader riffHeader;
   WaveFmtHeader fmtHeader;
+  WaveDataHeader dataHeader;
 
-  if (data->size() < sizeof (WaveFmtHeader) + sizeof (WaveRiffHeader))
+  if (data->size() < sizeof (WaveFmtHeader) + sizeof (WaveRiffHeader) + sizeof (WaveDataHeader))
   {
     // insuffcient data size
     return EGE_ERROR;
   }
 
   // read headers in
-  *data >> riffHeader.id[0];
-  *data >> riffHeader.id[1];
-  *data >> riffHeader.id[2];
-  *data >> riffHeader.id[3];
+  data->setByteOrdering(EGEByteOrder::BIG_ENDIAN);
+  *data >> riffHeader.id;
+  data->setByteOrdering(EGEByteOrder::LITTLE_ENDIAN);
   *data >> riffHeader.size;
-  *data >> riffHeader.format[0];
-  *data >> riffHeader.format[1];
-  *data >> riffHeader.format[2];
-  *data >> riffHeader.format[3];
+  data->setByteOrdering(EGEByteOrder::BIG_ENDIAN);
+  *data >> riffHeader.format;
 
-  *data >> fmtHeader.id[0];
-  *data >> fmtHeader.id[1];
-  *data >> fmtHeader.id[2];
-  *data >> fmtHeader.id[3];
+  data->setByteOrdering(EGEByteOrder::BIG_ENDIAN);
+  *data >> fmtHeader.id;
+  data->setByteOrdering(EGEByteOrder::LITTLE_ENDIAN);
   *data >> fmtHeader.size;
   *data >> fmtHeader.audioFormat;
   *data >> fmtHeader.channels;
@@ -65,9 +73,19 @@ EGEResult AudioUtils::GetWavData(const PDataBuffer& data, s32& soundDataOffset, 
   *data >> fmtHeader.blockAlign;
   *data >> fmtHeader.bitsPerSample;
 
+  // skip extra data
+  if (16 < fmtHeader.size)
+  {
+    data->setReadOffset(data->readOffset() + fmtHeader.size - 16);
+  }
+
+  data->setByteOrdering(EGEByteOrder::BIG_ENDIAN);
+  *data >> dataHeader.id;
+  data->setByteOrdering(EGEByteOrder::LITTLE_ENDIAN);
+  *data >> dataHeader.size;
+
   // check if wave format
-  if (('R' != riffHeader.id[0]) || ('I' != riffHeader.id[1]) || ('F' != riffHeader.id[2]) || ('F' != riffHeader.id[3]) ||
-      ('f' != fmtHeader.id[0]) || ('m' != fmtHeader.id[1]) || ('t' != fmtHeader.id[2]) || (' ' != fmtHeader.id[3]))
+  if ((WAVE_RIFF_HEADER_ID != riffHeader.id) || (WAVE_FMT_HEADER_ID != fmtHeader.id) || (WAVE_DATA_HEADER_ID != dataHeader.id))
   {
     // error!
     return EGE_ERROR;
@@ -77,7 +95,8 @@ EGEResult AudioUtils::GetWavData(const PDataBuffer& data, s32& soundDataOffset, 
   channels        = fmtHeader.channels;
   sampleRate      = fmtHeader.sampleRate;
   bitsPerSample   = fmtHeader.bitsPerSample;
-  soundDataOffset = sizeof (WaveRiffHeader) + 8 + fmtHeader.size + 8;     // + 8 first 2 entires of WaveFmtHeader, + 8 first 2 entries of DATA header
+  soundDataSize   = dataHeader.size;
+  soundDataOffset = static_cast<s32>(data->readOffset());
 
   return EGE_SUCCESS;
 }

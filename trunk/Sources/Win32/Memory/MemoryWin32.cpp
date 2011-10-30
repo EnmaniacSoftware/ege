@@ -8,26 +8,31 @@ void* MemoryManager::DoMalloc(size_t size)
   return malloc(size);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void* MemoryManager::DoRealloc(void* pData, size_t size)
+void* MemoryManager::DoRealloc(void* data, size_t size)
 {
-  return realloc(pData, size);
+  return realloc(data, size);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void MemoryManager::DoFree(void* pData)
+void MemoryManager::DoFree(void* data)
 {
-  if (pData)
+  if (data)
   {
-    free(pData);
+    free(data);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void* MemoryManager::MemCpy(void* pDst, const void* pSrc, size_t size)
+void* MemoryManager::MemCpy(void* dst, const void* src, size_t size)
 {
-  return memcpy(pDst, pSrc, size);
+  return memcpy(dst, src, size);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void* MemoryManager::MemMove(void* pDst, const void* pSrc, size_t size)
+void* MemoryManager::MemMove(void* dst, const void* src, size_t size)
 {
-  return memmove(pDst, pSrc, size);
+  return memmove(dst, src, size);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void* MemoryManager::MemSet(void* dst, int c, size_t size)
+{
+  return memset(dst, c, size);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

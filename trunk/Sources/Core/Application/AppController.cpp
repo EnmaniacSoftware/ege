@@ -8,6 +8,7 @@
 #include "Core/Event/EventIDs.h"
 #include "Core/Overlay/OverlayManager.h"
 #include "Core/Screen/ScreenManager.h"
+#include "Core/Audio/AudioManager.h"
 
 #include <EGEGraphics.h>
 #include <EGETimer.h>
@@ -95,6 +96,7 @@ void AppController::update()
     m_updateAccumulator -= m_updateInterval;
 
     // update physics etc
+    app()->audioManager()->update(m_updateInterval);
     app()->screenManager()->update(m_updateInterval);
     app()->physicsManager()->update(m_updateInterval);
     app()->sceneManager()->update(m_updateInterval);

@@ -148,8 +148,11 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
   // convert separators
   filePath = Dir::FromNativeSeparators(filePath);
 
+  EGE_PRINT("ResourceManager::addResources - %s", filePath.toAscii());
+
   // try to locate resource file in each data location
-  for (StringList::const_iterator it = m_dataDirs.begin(); it != m_dataDirs.end(); ++it)
+  // NOTE: if no AUTO-DETECTION is set we do exactly one search with a given filePath
+  for (StringList::const_iterator it = m_dataDirs.begin(); (it != m_dataDirs.end() && ((it == m_dataDirs.begin() && !autoDetect) || autoDetect)); ++it)
   {
     String fullPath = autoDetect ? (*it + "/" + filePath) : filePath;
 
@@ -258,6 +261,8 @@ EGEResult ResourceManager::processResourcesTag(const String& filePath, const PXm
       // compose absolute path
       path = filePath + "/" + path;
 
+      EGE_PRINT("ResourceManager::processResourcesTag - including %s", path.toAscii());
+
       // add new resource
       result = addResources(path, false);
     }
@@ -296,6 +301,8 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
   result = newGroup->create(tag);
   if (EGE_SUCCESS == result)
   {
+    EGE_PRINT("ResourceManager::addGroup - %s", newGroup->name().toAscii());
+
     // check if such group DOES NOT exists
     // NOTE: we quitely omit group duplicates so it is valid to ie. INCLUDE the same group multiple times
     if (NULL == group(newGroup->name()))

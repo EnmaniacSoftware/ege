@@ -522,6 +522,9 @@
     <ClCompile Include="..\..\Sources\Core\Audio\AudioUtils.cpp">
       <Filter>Core\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Tools\ByteOrder.cpp">
+      <Filter>Core\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1009,6 +1012,10 @@
       <Filter>Core\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEAudio.h" />
+    <ClInclude Include="..\..\Sources\Core\Tools\ByteOrder.h">
+      <Filter>Core\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEByteOrder.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

@@ -10,13 +10,26 @@ EGE_DEFINE_NEW_OPERATORS(DataBuffer)
 EGE_DEFINE_DELETE_OPERATORS(DataBuffer)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer::DataBuffer() : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER), m_size(0), m_capacity(0), m_data(NULL), m_readOffset(0), m_writeOffset(0), m_mutable(true)
+DataBuffer::DataBuffer() : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER), 
+                           m_size(0), 
+                           m_capacity(0), 
+                           m_data(NULL), 
+                           m_readOffset(0), 
+                           m_writeOffset(0), 
+                           m_mutable(true),
+                           m_byteOrdering(EGEByteOrder::LITTLE_ENDIAN)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Wraps around given data pointer and size. Resulting buffer is not mutable */
-DataBuffer::DataBuffer(void* data, s64 size) : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER), m_size(size), m_capacity(size), m_data(data), m_readOffset(0), 
-                                               m_writeOffset(0), m_mutable(false)
+DataBuffer::DataBuffer(void* data, s64 size) : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER), 
+                                               m_size(size), 
+                                               m_capacity(size), 
+                                               m_data(data), 
+                                               m_readOffset(0), 
+                                               m_writeOffset(0), 
+                                               m_mutable(false),
+                                               m_byteOrdering(EGEByteOrder::LITTLE_ENDIAN)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -179,6 +192,12 @@ s64 DataBuffer::setReadOffset(s64 offset)
   return oldOffset;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets byte ordering. */
+void DataBuffer::setByteOrdering(EGEByteOrder::Ordering ordering)
+{
+  m_byteOrdering = ordering;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DataBuffer& DataBuffer::operator << (u8 value)
 {
   write(&value, sizeof (value));
@@ -193,7 +212,8 @@ DataBuffer& DataBuffer::operator << (s8 value)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DataBuffer& DataBuffer::operator << (u16 value)
 {
-  u8 data[2] = { value & 0x00ff, (value & 0xff00) >> 8 };
+  u8 data[2];
+  ByteOrder::Convert(data, value, byteOrdering());
 
   write(&data, sizeof (value));
   return *this;
@@ -201,7 +221,8 @@ DataBuffer& DataBuffer::operator << (u16 value)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DataBuffer& DataBuffer::operator << (s16 value)
 {
-  u8 data[2] = { value & 0x00ff, (value & 0xff00) >> 8 };
+  u8 data[2];
+  ByteOrder::Convert(data, value, byteOrdering());
 
   write(&data, sizeof (value));
   return *this;
@@ -209,7 +230,8 @@ DataBuffer& DataBuffer::operator << (s16 value)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DataBuffer& DataBuffer::operator << (u32 value)
 {
-  u8 data[4] = { (u8)(value & 0x000000ff), (u8)((value & 0x0000ff00) >> 8), (u8)((value & 0x00ff0000) >> 16), (u8)((value & 0xff000000) >> 24) };
+  u8 data[4];
+  ByteOrder::Convert(data, value, byteOrdering());
 
   write(&data, sizeof (value));
   return *this;
@@ -217,7 +239,8 @@ DataBuffer& DataBuffer::operator << (u32 value)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DataBuffer& DataBuffer::operator << (s32 value)
 {
-  u8 data[4] = { (u8)(value & 0x000000ff), (u8)((value & 0x0000ff00) >> 8), (u8)((value & 0x00ff0000) >> 16), (u8)((value & 0xff000000) >> 24) };
+  u8 data[4];
+  ByteOrder::Convert(data, value, byteOrdering());
 
   write(&data, sizeof (value));
   return *this;
@@ -225,10 +248,8 @@ DataBuffer& DataBuffer::operator << (s32 value)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DataBuffer& DataBuffer::operator << (u64 value)
 {
-  u8 data[8] = { (u8)((value & 0x00000000000000ffLL) >> 0), (u8)((value & 0x000000000000ff00LL) >> 8), 
-                 (u8)((value & 0x0000000000ff0000LL) >> 16), (u8)((value & 0x00000000ff000000LL) >> 24),
-                 (u8)((value & 0x000000ff00000000LL) >> 32), (u8)((value & 0x0000ff0000000000LL) >> 40), 
-                 (u8)((value & 0x00ff000000000000LL) >> 48), (u8)((value & 0xff00000000000000LL) >> 56) };
+  u8 data[8];
+  ByteOrder::Convert(data, value, byteOrdering());
 
   write(&data, sizeof (value));
   return *this;
@@ -236,10 +257,8 @@ DataBuffer& DataBuffer::operator << (u64 value)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DataBuffer& DataBuffer::operator << (s64 value)
 {
-  u8 data[8] = { (u8)((value & 0x00000000000000ffLL) >> 0), (u8)((value & 0x000000000000ff00LL) >> 8), 
-                 (u8)((value & 0x0000000000ff0000LL) >> 16), (u8)((value & 0x00000000ff000000LL) >> 24),
-                 (u8)((value & 0x000000ff00000000LL) >> 32), (u8)((value & 0x0000ff0000000000LL) >> 40), 
-                 (u8)((value & 0x00ff000000000000LL) >> 48), (u8)((value & 0xff00000000000000LL) >> 56) };
+  u8 data[8];
+  ByteOrder::Convert(data, value, byteOrdering());
 
   write(&data, sizeof (value));
   return *this;
@@ -279,7 +298,7 @@ DataBuffer& DataBuffer::operator >> (u16& value)
   u8 data[2];
   if (sizeof (value) == read(data, sizeof (value)))
   {
-    value = (u16)(data[0]) | ((u16)(data[1]) << 8);
+    ByteOrder::Convert(value, data, byteOrdering());
   }
 
   return *this;
@@ -290,7 +309,7 @@ DataBuffer& DataBuffer::operator >> (s16& value)
   u8 data[2];
   if (sizeof (value) == read(data, sizeof (value)))
   {
-    value = (u16)(data[0]) | ((u16)(data[1]) << 8);
+    ByteOrder::Convert(value, data, byteOrdering());
   }
 
   return *this;
@@ -301,7 +320,7 @@ DataBuffer& DataBuffer::operator >> (u32& value)
   u8 data[4];
   if (sizeof (value) == read(data, sizeof (value)))
   {
-    value = (u32)(data[0]) | ((u32)(data[1]) << 8) | ((u32)(data[2]) << 16) | ((u32)(data[3]) << 24);
+    ByteOrder::Convert(value, data, byteOrdering());
   }
 
   return *this;
@@ -312,7 +331,7 @@ DataBuffer& DataBuffer::operator >> (s32& value)
   u8 data[4];
   if (sizeof (value) == read(data, sizeof (value)))
   {
-    value = (u32)(data[0]) | ((u32)(data[1]) << 8) | ((u32)(data[2]) << 16) | ((u32)(data[3]) << 24);
+    ByteOrder::Convert(value, data, byteOrdering());
   }
 
   return *this;
@@ -323,8 +342,7 @@ DataBuffer& DataBuffer::operator >> (u64& value)
   u8 data[8];
   if (sizeof (value) == read(data, sizeof (value)))
   {
-    value = (u64)(data[0]) | ((u64)(data[1]) << 8) | ((u64)(data[2]) << 16) | ((u64)(data[3]) << 24) | ((u64)(data[4]) << 32) | ((u64)(data[5]) << 40) |
-            ((u64)(data[6]) << 48) | ((u64)(data[7]) << 56);
+    ByteOrder::Convert(value, data, byteOrdering());
   }
 
   return *this;
@@ -335,8 +353,7 @@ DataBuffer& DataBuffer::operator >> (s64& value)
   u8 data[8];
   if (sizeof (value) == read(data, sizeof (value)))
   {
-    value = (u64)(data[0]) | ((u64)(data[1]) << 8) | ((u64)(data[2]) << 16) | ((u64)(data[3]) << 24) | ((u64)(data[4]) << 32) | ((u64)(data[5]) << 40) |
-            ((u64)(data[6]) << 48) | ((u64)(data[7]) << 56);
+    ByteOrder::Convert(value, data, byteOrdering());
   }
 
   return *this;

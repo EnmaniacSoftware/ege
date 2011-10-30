@@ -165,6 +165,9 @@ class Math
      */
     static Vector3f RandomDeviant(const Angle* angle, const Vector3f* vector, const Vector3f* up = NULL);
     
+    /* Calculates greatest common divisor. */
+    static s32 GreatestCommonDivisor(s32 a, s32 b);
+
   public:
 
     /*! Inaccuracy cut-off value. */

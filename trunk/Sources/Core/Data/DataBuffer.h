@@ -2,6 +2,7 @@
 #define EGE_CORE_DATABUFFER_H
 
 #include <EGE.h>
+#include <EGEByteOrder.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -63,6 +64,11 @@ class DataBuffer : public Object
     s64 setReadOffset(s64 offset);
     /*! Returns read offset. */
     inline s64 readOffset() const { return m_readOffset; }
+    
+    /* Sets byte ordering. */
+    void setByteOrdering(EGEByteOrder::Ordering ordering);
+    /*! Returns current byte ordering. */
+    inline EGEByteOrder::Ordering byteOrdering() const { return m_byteOrdering; }
 
     DataBuffer& operator << (u8 value);
     DataBuffer& operator << (s8 value);
@@ -101,6 +107,8 @@ class DataBuffer : public Object
     s64 m_writeOffset;
     /*! TRUE if internal data can be changed, ie. realloc, free etc. */
     bool m_mutable;
+    /*! Current byte ordering. */
+    EGEByteOrder::Ordering m_byteOrdering;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,10 +1,12 @@
 #include "Core/Audio/Sound.h"
 
-#ifdef EGE_AUDIO_OPENAL
-#include "Core/Audio/OpenAL/SoundOpenAL_p.h"
-#elif EGE_AUDIO_FMOD
-#include "Core/Audio/FMod/SoundFMod_p.h"
-#endif // EGE_AUDIO_OPENAL
+#ifdef EGE_PLATFORM_WIN32
+  #ifdef EGE_AUDIO_OPENAL
+    #include "Core/Audio/OpenAL/SoundOpenAL_p.h"
+  #endif // EGE_AUDIO_OPENAL
+#elif EGE_PLATFORM_AIRPLAY
+  #include "Airplay/Audio/SoundAirplay_p.h"
+#endif // EGE_PLATFORM_WIN32
 
 EGE_NAMESPACE
 

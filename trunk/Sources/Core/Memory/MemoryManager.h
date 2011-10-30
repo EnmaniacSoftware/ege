@@ -19,20 +19,21 @@ class MemoryManager
     static MemoryManager* GetInstance();
     static void Deinit();
 
-    static void* Malloc(size_t size, const char* pszFileName, int iLine);
-    static void* Realloc(void* pData, size_t size, const char* pszFileName, int iLine);
-    static void  Free(void* pData);
+    static void* Malloc(size_t size, const char* fileName, int line);
+    static void* Realloc(void* data, size_t size, const char* fileName, int line);
+    static void  Free(void* data);
     static void* DoMalloc(size_t size);
-    static void* DoRealloc(void* pData, size_t size);
-    static void  DoFree(void* pData);
+    static void* DoRealloc(void* data, size_t size);
+    static void  DoFree(void* data);
 
-    static void* MemCpy(void* pDst, const void* pSrc, size_t size);
-    static void* MemMove(void* pDst, const void* pSrc, size_t size);
+    static void* MemCpy(void* dst, const void* src, size_t size);
+    static void* MemMove(void* dst, const void* src, size_t size);
+    static void* MemSet(void* dst, int c, size_t size);
 
   private:
 
-    bool addAlloc(void* pData, size_t size, const char* pszFileName, int iLine);
-    void removeAlloc(void* pData);
+    bool addAlloc(void* data, size_t size, const char* fileName, int line);
+    void removeAlloc(void* data);
     void finalize();
     bool internalRealloc(int newSize);
 

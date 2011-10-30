@@ -23,6 +23,8 @@ files
 	EGE.h
   EGEAngle.h
 	EGEApplication.h
+  EGEAudio.h
+  EGEByteOrder.h
   EGEColor.h
   EGEComplex.h
   EGEDataBuffer.h
@@ -83,6 +85,15 @@ files
   AppController.h
   Application.cpp
   Application.h
+
+	["Core/Audio"]
+	(../../Sources/Core/Audio)
+  AudioManager.cpp
+  AudioManager.h
+  AudioUtils.cpp
+  AudioUtils.h
+  Sound.cpp
+  Sound.h
 
 	["Core/Components"]
  	(../../Sources/Core/Components)
@@ -348,6 +359,8 @@ files
   ResourceParticleAffector.h
   ResourceParticleEmitter.cpp
   ResourceParticleEmitter.h
+  ResourceSound.cpp
+  ResourceSound.h
   ResourceSprite.cpp
   ResourceSprite.h
   ResourceSpritesheet.cpp
@@ -398,6 +411,8 @@ files
 
 	["Core/Tools"]
   (../../Sources/Core/Tools)
+  ByteOrder.cpp
+  ByteOrder.h
   DesktopServices.cpp
   DesktopServices.h
 
@@ -431,6 +446,13 @@ files
 	(../../Sources/Airplay/Application)
 	AppControllerAirplay_p.cpp
 	AppControllerAirplay_p.h
+
+	["Airplay/Audio"]
+	(../../Sources/Airplay/Audio)
+  AudioManagerAirplay_p.cpp
+  AudioManagerAirplay_p.h
+  SoundAirplay_p.cpp
+  SoundAirplay_p.h
 
 	["Airplay/Debug"]
 	(../../Sources/Airplay/Debug)

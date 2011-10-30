@@ -18,9 +18,10 @@ SoundPrivate::SoundPrivate(Sound* base, const PDataBuffer& data) : m_buffer(0)
   s32 sampleRate      = -1;
   s32 bitsPerSample   = -1;
   s32 soundDataOffset = 0;
+  s32 soundDataSize   = 0;
 
   // check if WAV file
-  if (EGE_SUCCESS != AudioUtils::GetWavData(data, soundDataOffset, channels, sampleRate, bitsPerSample))
+  if (EGE_SUCCESS != AudioUtils::GetWavData(data, soundDataOffset, soundDataSize, channels, sampleRate, bitsPerSample))
   {
     // check other formats
     // ...
@@ -28,7 +29,7 @@ SoundPrivate::SoundPrivate(Sound* base, const PDataBuffer& data) : m_buffer(0)
   }
 
   // check if we detected supported format
-  if ((-1 != channels) && (-1 != sampleRate) && (-1 != bitsPerSample))
+  if ((-1 != channels) && (-1 != sampleRate) && (-1 != bitsPerSample) && (0 < soundDataSize))
   {
     alGenBuffers(1, &m_buffer);
     if (AL_NO_ERROR != alGetError())
@@ -54,7 +55,13 @@ SoundPrivate::SoundPrivate(Sound* base, const PDataBuffer& data) : m_buffer(0)
         EGE_ASSERT("Invalid bits per sample!");
       }
 
-	    alBufferData(m_buffer, format, data->data(soundDataOffset), static_cast<ALsizei>(data->size() - soundDataOffset), sampleRate);
+	    alBufferData(m_buffer, format, data->data(soundDataOffset), soundDataSize, sampleRate);   
+      if (AL_NO_ERROR != alGetError())
+      {
+        // error!
+        EGE_PRINT("SoundPrivate::SoundPrivate - could not define data buffer.");
+        m_buffer = 0;
+      }
     }
   }
 }

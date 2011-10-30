@@ -2,9 +2,13 @@
 #include "Core/Audio/AudioManager.h"
 #include <EGEResources.h>
 
-#ifdef EGE_AUDIO_OPENAL
-#include "Core/Audio/OpenAL/AudioManagerOpenAL_p.h"
-#endif // EGE_AUDIO_OPENAL
+#ifdef EGE_PLATFORM_WIN32
+  #ifdef EGE_AUDIO_OPENAL
+    #include "Core/Audio/OpenAL/AudioManagerOpenAL_p.h"
+  #endif // EGE_AUDIO_OPENAL
+#elif EGE_PLATFORM_AIRPLAY
+  #include "Airplay/Audio/AudioManagerAirplay_p.h"
+#endif // EGE_PLATFORM_WIN32
 
 EGE_NAMESPACE
 
@@ -33,6 +37,10 @@ bool AudioManager::isValid() const
 /*! Updates manager. */
 void AudioManager::update(const Time& time)
 {
+  if (isValid())
+  {
+    p_func()->update(time);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Plays sound with given name. */

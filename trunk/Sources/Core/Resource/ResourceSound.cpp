@@ -94,7 +94,7 @@ PSound ResourceSound::createInstance()
   s64 fileSize = file.size();
 
   // read file data
-  DataBuffer data;
+  PDataBuffer data = ege_new DataBuffer();
   if (file.read(data, fileSize) != fileSize)
   {
     // error!

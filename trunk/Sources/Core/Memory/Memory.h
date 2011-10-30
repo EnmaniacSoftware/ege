@@ -61,6 +61,7 @@ EGE_NAMESPACE_BEGIN
 #endif // EGE_FEATURE_DEBUG
 
 #define EGE_MEMCPY(dst, src, size) MemoryManager::MemCpy(dst, src, size)
+#define EGE_MEMSET(dst, c, size) MemoryManager::MemSet(dst, c, size)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

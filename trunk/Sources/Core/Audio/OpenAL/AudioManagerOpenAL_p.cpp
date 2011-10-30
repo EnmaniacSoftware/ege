@@ -104,6 +104,7 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
 	  if (AL_NO_ERROR != error)
     {
       // error!
+      EGE_PRINT("AudioManagerPrivate::play - could not start playback!");
       return EGE_ERROR;
 	  }
 	
