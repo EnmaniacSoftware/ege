@@ -78,6 +78,27 @@ bool AudioManagerPrivate::isValid() const
 /*! Updates manager. */
 void AudioManagerPrivate::update(const Time& time)
 {
+  // remove finished sounds
+  for (ChannelsMap::const_iterator it = m_activeSounds.begin(); it != m_activeSounds.end();)
+  {
+    ALuint channel = it->first;
+    const PSound& sound = it->second;
+
+    ++it;
+
+    ALint state;
+		alGetSourcei(channel, AL_SOURCE_STATE, &state);
+
+		// check if done
+		if (AL_STOPPED == state)
+    {
+      // detach sources from channel
+	    alSourcei(channel, AL_BUFFER, 0);
+
+      // remove from pool
+      m_activeSounds.erase(channel);
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Plays given sound. */
@@ -98,7 +119,10 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
 	
 	  // set the looping value
 		alSourcei(channel, AL_LOOPING, sound->looping() ? AL_TRUE : AL_FALSE);
-	
+		
+	  // play the sound
+	  alSourcePlay(channel);
+
 	  // check to see if there were any errors
 	  ALenum error = alGetError();
 	  if (AL_NO_ERROR != error)
@@ -107,9 +131,9 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
       EGE_PRINT("AudioManagerPrivate::play - could not start playback!");
       return EGE_ERROR;
 	  }
-	
-	  // play the sound
-	  alSourcePlay(channel);
+
+    // add to channels map
+    m_activeSounds.insert(channel, sound);
 
     return EGE_SUCCESS;
   }

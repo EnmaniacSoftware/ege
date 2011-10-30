@@ -3,6 +3,7 @@
 
 #include <EGE.h>
 #include <EGEDataBuffer.h>
+#include <EGETime.h>
 
 EGE_NAMESPACE_BEGIN
 

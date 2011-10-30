@@ -60,6 +60,7 @@ SoundPrivate::SoundPrivate(Sound* base, const PDataBuffer& data) : m_buffer(0)
       {
         // error!
         EGE_PRINT("SoundPrivate::SoundPrivate - could not define data buffer.");
+        alDeleteBuffers(1, &m_buffer);
         m_buffer = 0;
       }
     }
@@ -71,6 +72,11 @@ SoundPrivate::~SoundPrivate()
   if (0 != m_buffer)
   {
     alDeleteBuffers(1, &m_buffer);
+    if (AL_NO_ERROR != alGetError())
+    {
+      // error!
+      EGE_PRINT("SoundPrivate::~SoundPrivate - could not delete audio buffer.");
+    }
     m_buffer = 0;
   }
 }

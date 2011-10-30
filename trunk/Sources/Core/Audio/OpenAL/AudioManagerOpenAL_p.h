@@ -6,6 +6,7 @@
 #include <EGE.h>
 #include <EGETime.h>
 #include <EGEDynamicArray.h>
+#include <EGEMap.h>
 #include <al.h>
 #include <alc.h>
 
@@ -44,6 +45,7 @@ class AudioManagerPrivate
   private:
 
     typedef DynamicArray<ALuint> ChannelsArray;
+    typedef Map<ALuint, PSound> ChannelsMap;
 
   private:
 
@@ -53,6 +55,8 @@ class AudioManagerPrivate
     ALCcontext* m_context;
     /*! Available channels. */
     ChannelsArray m_channels;
+    /*! Map of sounds being currently played sorted by channels. */
+    ChannelsMap m_activeSounds;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
