@@ -35,6 +35,20 @@
 #ifndef STB_VORBIS_INCLUDE_STB_VORBIS_H
 #define STB_VORBIS_INCLUDE_STB_VORBIS_H
 
+// EGE framework integration
+#include <EGE.h>
+#include <EGEMath.h>
+
+EGE_NAMESPACE
+
+#define STB_VORBIS_NO_CRT
+//#define assert(x)      // or MyAssert(x)
+
+#define malloc       EGE_MALLOC
+#define free         EGE_FREE
+#define pow          pow
+//#define floor        Math::Floor
+
 #if defined(STB_VORBIS_NO_CRT) && !defined(STB_VORBIS_NO_STDIO)
 #define STB_VORBIS_NO_STDIO 1
 #endif
@@ -1148,11 +1162,12 @@ static int vorbis_validate(uint8 *data)
 // (formula implied by specification)
 static int lookup1_values(int entries, int dim)
 {
-   int r = (int) floor(exp((float) log((float) entries) / dim));
-   if ((int) floor(pow((float) r+1, dim)) <= entries)   // (int) cast for MinGW warning;
+   // TAGE
+   int r = (int) Math::Floor(exp((float) log((float) entries) / dim));
+   if ((int) Math::Floor(pow((float) r+1, dim)) <= entries)   // (int) cast for MinGW warning;
       ++r;                                              // floor() to avoid _ftol() when non-CRT
    assert(pow((float) r+1, dim) > entries);
-   assert((int) floor(pow((float) r, dim)) <= entries); // (int),floor() as above
+   assert((int) Math::Floor(pow((float) r, dim)) <= entries); // (int),floor() as above
    return r;
 }
 
@@ -2361,7 +2376,9 @@ void dct_iv_slow(float *buffer, int n)
          //acc += x[j] * cos(M_PI / n * (i + 0.5) * (j + 0.5));
       buffer[i] = acc;
    }
-   free(x);
+
+   // TAGE
+   //free(x);
 }
 
 void inverse_mdct_slow(float *buffer, int n, vorb *f, int blocktype)
@@ -4786,7 +4803,7 @@ static int vorbis_seek_base(stb_vorbis *f, unsigned int sample_number, int fine)
             end_offset -= 4000;
 
          // now compute an interpolated search loc
-         probe = start_offset + (int) floor((float) (end_offset - start_offset) / (end_sample - start_sample) * (sample_number - start_sample));
+         probe = start_offset + (int) Math::Floor((float) (end_offset - start_offset) / (end_sample - start_sample) * (sample_number - start_sample));
 
          // next we need to bias towards binary search...
          // code is a little wonky to allow for full 32-bit unsigned values

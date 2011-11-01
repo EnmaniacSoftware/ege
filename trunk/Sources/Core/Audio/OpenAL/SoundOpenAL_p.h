@@ -11,6 +11,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define BUFFERS_COUNT 3
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Sound;
 
@@ -20,21 +22,27 @@ class SoundPrivate
 {
   public:
 
-    SoundPrivate(Sound* base, const PDataBuffer& data);
+    SoundPrivate(Sound* base);
    ~SoundPrivate();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+    EGE_DECLARE_PUBLIC_IMPLEMENTATION(Sound)
+
     /* Returns TRUE if object is valid. */
     bool isValid() const;
-    /*! Returns OpenAL sound buffer object. */
-    inline ALuint bufferId() const { return m_buffer; }
+    /* Updates buffers. This is called by AudioManagerPrivate. 
+     * @param channel OpenAL channel (source) id for which buffers should be updated.
+     */
+    void updateBuffers(ALuint channel);
 
   private:
 
-    /*! OpenAL sound buffer obejct. */
-    ALuint m_buffer;
+    /*! OpenAL sound buffer objects. */
+    ALuint m_buffers[BUFFERS_COUNT];
+    /*! OpenAL buffer format. */
+    ALenum m_format;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -13,8 +13,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Application\AppController.cpp" />
     <ClCompile Include="..\..\Sources\Core\Application\Application.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecOgg.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecWav.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioUtils.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\OggCodec.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\Sound.cpp" />
@@ -121,8 +124,12 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.cpp" />
+    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodec.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecOgg.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecWav.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioManager.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioUtils.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\OggCodec.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL_p.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL_p.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Sound.h" />

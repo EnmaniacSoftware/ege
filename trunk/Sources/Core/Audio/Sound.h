@@ -11,6 +11,8 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+class AudioCodec;
+
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -41,6 +43,8 @@ class Sound : public Object
     void setLooping(bool set);
     /*! Returns looping flag. */
     inline bool looping() const { return m_looping; }
+    /*! Returns codec. */
+    inline AudioCodec* codec() const { return m_codec; }
 
   private:
 
@@ -52,6 +56,8 @@ class Sound : public Object
     float32 m_gain;
     /*! Looping flag. */
     bool m_looping;
+    /*! Audio codec. */
+    AudioCodec* m_codec;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -65,11 +65,15 @@ void AudioManagerPrivate::update(const Time& time)
     s32 channel = it->first;
     const PSound& sound = it->second;
 
+    // updates buffers for given channel
+    sound->p_func()->updateBuffers();
+
+    // move iterator to next entry before potential removal
     ++it;
 
-    if (sound->p_func()->samplesCount() == sound->p_func()->samplesPlayed())
+    if (sound->p_func()->isDone() && (0 == s3eSoundChannelGetInt(channel, S3E_CHANNEL_STATUS)) && (0 == s3eSoundChannelGetInt(channel, S3E_CHANNEL_PAUSED)))
     {
-      EGE_PRINT("ERASING channel: %d", channel);
+      EGE_PRINT("AudioManagerPrivate::update - removing channel: %d", channel);
       m_activeSounds.erase(channel);
     }
   }
@@ -84,7 +88,8 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
     SoundPrivate* soundPrivate = sound->p_func();
 
     // set channel properties
-    s3eSoundChannelSetInt(channel, S3E_CHANNEL_RATE, soundPrivate->sampleRate());
+    //s3eSoundChannelSetInt(channel, S3E_CHANNEL_RATE, sound->codec()->frequency());
+    
   //  s3eSoundChannelSetInt(channel, S3E_CHANNEL_PITCH, sound->pitch());
 
     // register callbacks
@@ -96,7 +101,7 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
     }
 
     // check if stereo sound
-    if (2 == soundPrivate->channels())
+    if (2 == sound->codec()->channels())
     {
       if (S3E_RESULT_SUCCESS != s3eSoundChannelRegister(channel, S3E_CHANNEL_GEN_AUDIO_STEREO, AudioManagerPrivate::AudioCallback, soundPrivate))
       {
@@ -105,18 +110,19 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
       }
     }
 
+    // initially update all buffers
+    soundPrivate->updateBuffers();
+
     // play sound
-    if (S3E_RESULT_SUCCESS != s3eSoundChannelPlay(channel, reinterpret_cast<int16*>(soundPrivate->data()->data(soundPrivate->soundDataOffset())), 
-                                                  soundPrivate->samplesCount(), 0, 0))
+    const PDataBuffer& firstBuffer = *soundPrivate->buffers().begin();
+    if (S3E_RESULT_SUCCESS != s3eSoundChannelPlay(channel, reinterpret_cast<int16*>(firstBuffer->data()), static_cast<uint32>(firstBuffer->size() >> 1), 
+                                                  1, 0))
     {
       // error!
       return EGE_ERROR;
     }
 
-    EGE_PRINT("Playing at channel: %d", channel);
-
-    // reset sound data
-    soundPrivate->setSamplesPlayed(0);
+    EGE_PRINT("AudioManagerPrivate::play - channel: %d", channel);
 
     // add to channels map
     m_activeSounds.insert(channel, sound);
@@ -134,17 +140,15 @@ int32 AudioManagerPrivate::SampleEndCallback(void* systemData, void* userData)
 
   SoundPrivate* sound = reinterpret_cast<SoundPrivate*>(userData);
 
-  sound->setSamplesPlayed(sound->samplesCount());
+  //EGE_PRINT("AudioManagerPrivate::SampleEndCallback - channel %d", sampleInfo->m_Channel);
 
-  //char buffer[64];
-  //sprintf(buffer, "FINALIZE: channel %d", sampleInfo->m_Channel);
-  //s3eDebugOutputString(buffer);
-
-  // unregister ??
-  // TAGE this should probably be done only once we r really done (after all repets etc)
-  s3eSoundChannelUnRegister(sampleInfo->m_Channel, S3E_CHANNEL_END_SAMPLE);
-  s3eSoundChannelUnRegister(sampleInfo->m_Channel, S3E_CHANNEL_GEN_AUDIO_STEREO);
-  s3eSoundChannelUnRegister(sampleInfo->m_Channel, S3E_CHANNEL_GEN_AUDIO);
+  // unregister all if done to clean up
+  if (0 == sampleInfo->m_RepsRemaining)
+  {
+    s3eSoundChannelUnRegister(sampleInfo->m_Channel, S3E_CHANNEL_END_SAMPLE);
+    s3eSoundChannelUnRegister(sampleInfo->m_Channel, S3E_CHANNEL_GEN_AUDIO_STEREO);
+    s3eSoundChannelUnRegister(sampleInfo->m_Channel, S3E_CHANNEL_GEN_AUDIO);
+  }
 
   return sampleInfo->m_RepsRemaining;
 }
@@ -153,15 +157,18 @@ int32 AudioManagerPrivate::SampleEndCallback(void* systemData, void* userData)
 int32 AudioManagerPrivate::AudioCallback(void* systemData, void* userData)
 {
   s3eSoundGenAudioInfo* info = reinterpret_cast<s3eSoundGenAudioInfo*>(systemData);
+  // TAGE - garbage in info->m_OrigRepeats
 
   SoundPrivate* sound = reinterpret_cast<SoundPrivate*>(userData);
 
-  // calculate frequency resample factor
-  const s32 gcd = Math::GreatestCommonDivisor(sound->sampleRate(), s3eSoundGetInt(S3E_SOUND_OUTPUT_FREQ));
-  const float32 frequencyResampleFactor = (sound->sampleRate() / gcd) / static_cast<float32>(s3eSoundGetInt(S3E_SOUND_OUTPUT_FREQ) / gcd);
+  AudioCodec* codec = sound->d_func()->codec();
 
-  // get number of played samples so far
-  s32 currentSamplePosition = sound->samplesPlayed();
+  // get list of sound buffers
+  const SoundPrivate::BuffersList& buffers = sound->buffers();
+
+  // calculate frequency resample factor
+  const s32 gcd = Math::GreatestCommonDivisor(codec->frequency(), s3eSoundGetInt(S3E_SOUND_OUTPUT_FREQ));
+  const float32 frequencyResampleFactor = (codec->frequency() / gcd) / static_cast<float32>(s3eSoundGetInt(S3E_SOUND_OUTPUT_FREQ) / gcd);
 
   // set flag indicating sound hasnt been completly played yet
   info->m_EndSample = 0;
@@ -172,55 +179,120 @@ int32 AudioManagerPrivate::AudioCallback(void* systemData, void* userData)
   // get pointer to first sample to generate
   int16* target = (int16*) info->m_Target;
 
-  char buffer[245];
-  //sprintf(buffer, "AudioCallback for channel %d, mixing: %d STM: %d AS: %d (%d)\n", info->m_Channel, info->m_Mix, info->m_NumSamples, currentSamplePosition, info->m_OrigNumSamples);
+  //char buffer[245];
+  //sprintf(buffer, "AudioCallback for channel %d, mixing: %d\n", info->m_Channel, info->m_Mix);
   //s3eDebugOutputString(buffer);
 
-  // go thru all samples to be generated
-  for (uint32 i = 0; i < info->m_NumSamples; i++)
+  u32 samplesStillNeeded = info->m_NumSamples;
+
+  // go thru all buffers (or till all requested samples hasnt been played yet)
+  for (SoundPrivate::BuffersList::const_iterator it = buffers.begin(); it != buffers.end() && (0 < samplesStillNeeded); ++it)
   {
-    // check if end of samples reached
-    // NOTE: we do check while applying frequency factor. It seems input data is in sample frequency rather than output one ???
-    if ((currentSamplePosition + i) * frequencyResampleFactor >= info->m_OrigNumSamples)
+    const PDataBuffer& buffer = *it;
+
+    // check how many samples we can get from current buffer
+    u32 samplesAvailable = Math::Min(samplesStillNeeded, 
+                                     static_cast<uint32>((buffer->size() - buffer->readOffset()) / (sizeof (int16) * codec->channels() * frequencyResampleFactor)));
+
+    // check if in the buffer still some data is present but not enough for even one refrequenced sample
+    if ((0 == samplesAvailable) && (buffer->size() != buffer->readOffset()))
     {
-      // end of sound reached
-      info->m_EndSample = S3E_TRUE;
+      // move read pointer to the end of buffer so it gets refilled
+      buffer->setReadOffset(buffer->size());
 
-      //u64 dur = s3eTimerGetMs() - sound->play;
-      //sprintf(buffer, "AudioCallback for channel %d done\n", info->m_Channel);
-      //s3eDebugOutputString(buffer);
-      break;
-    }
-
-    // calculate base sample index (with frequency resampling applied)
-    s32 sampleIndex = static_cast<s32>(frequencyResampleFactor * (currentSamplePosition + i));
-
-    int16 currentValue = 0;
-
-    // check if stereo
-    if (info->m_Stereo)
-    {
-      // NOTE: for stereo each sample constists of two int16's one for each channel
-      // NOTE: if no mixing is necessary set it to 0. Otherwise, take what is currently in a target
-      currentValue = info->m_Mix ? *target : 0;
-      *target++ = ClipToS16(info->m_OrigStart[2 * sampleIndex] + currentValue);
-
-      currentValue = info->m_Mix ? *target : 0;
-      *target++ = ClipToS16(info->m_OrigStart[2 * sampleIndex + 1] + currentValue);
+      // skip this sample
+      samplesAvailable = 1;
+      continue;
     }
     else
     {
-      // NOTE: if no mixing is necessary set it to 0. Otherwise, take what is currently in a target
-      currentValue = info->m_Mix ? *target : 0;
-      *target++ = ClipToS16(info->m_OrigStart[sampleIndex] + currentValue);
+      // get pointer to begining of sample array 
+      int16* data = reinterpret_cast<int16*>(buffer->data(buffer->readOffset()));
+
+      // move read offset as we are going to reference buffer directly without any copying
+      buffer->setReadOffset(buffer->readOffset() + static_cast<s64>(samplesAvailable * sizeof (int16) * codec->channels() * frequencyResampleFactor));
+
+      // mix all available samples
+      for (uint32 i = 0; i < samplesAvailable; i++)
+      {
+        // calculate base sample index (with frequency resampling applied)
+        // TAGE - this probably fail if factor is not multiplication of 2 :-/
+        s32 sampleIndex = static_cast<s32>(frequencyResampleFactor * i) * codec->channels();
+
+        // get previous data
+        int16 currentValue = info->m_Mix ? *target : 0;
+
+        // mix and store to output
+        *target++ = ClipToS16(data[sampleIndex] + currentValue);
+        if (info->m_Stereo)
+        {
+          currentValue = info->m_Mix ? *target : 0;
+
+          // mix and store to output
+          *target++ = ClipToS16(data[sampleIndex + 1] + currentValue);
+        }
+      }  
     }
 
-    samplesPlayed++;
+    // update samples played counter
+    samplesPlayed += samplesAvailable;
+
+    // update requested number of samples counter
+    samplesStillNeeded -= samplesAvailable;
   }
 
-  // update number of samples played
-  // NOTE: all generated samples here will be played immediatly after this function exits
-  sound->setSamplesPlayed(currentSamplePosition + samplesPlayed);
+  // check if we played less samples than requested
+  if (0 < samplesStillNeeded)
+  {
+    // check if no more data in codec
+    if (sound->isDone())
+    {
+      // done
+      info->m_EndSample = S3E_TRUE;
+    }
+  }
+
+  // go thru all samples to be generated
+  //for (uint32 i = 0; i < info->m_NumSamples; i++)
+  //{
+  //  // check if end of samples reached
+  //  // NOTE: we do check while applying frequency factor. It seems input data is in sample frequency rather than output one ???
+  //  if ((currentSamplePosition + i) * frequencyResampleFactor >= info->m_OrigNumSamples)
+  //  {
+  //    // end of sound reached
+  //    info->m_EndSample = S3E_TRUE;
+
+  //    //u64 dur = s3eTimerGetMs() - sound->play;
+  //    //sprintf(buffer, "AudioCallback for channel %d done\n", info->m_Channel);
+  //    //s3eDebugOutputString(buffer);
+  //    break;
+  //  }
+
+  //  // calculate base sample index (with frequency resampling applied)
+  //  s32 sampleIndex = static_cast<s32>(frequencyResampleFactor * (currentSamplePosition + i));
+
+  //  int16 currentValue = 0;
+
+  //  // check if stereo
+  //  if (info->m_Stereo)
+  //  {
+  //    // NOTE: for stereo each sample constists of two int16's one for each channel
+  //    // NOTE: if no mixing is necessary set it to 0. Otherwise, take what is currently in a target
+  //    currentValue = info->m_Mix ? *target : 0;
+  //    *target++ = ClipToS16(info->m_OrigStart[2 * sampleIndex] + currentValue);
+
+  //    currentValue = info->m_Mix ? *target : 0;
+  //    *target++ = ClipToS16(info->m_OrigStart[2 * sampleIndex + 1] + currentValue);
+  //  }
+  //  else
+  //  {
+  //    // NOTE: if no mixing is necessary set it to 0. Otherwise, take what is currently in a target
+  //    currentValue = info->m_Mix ? *target : 0;
+  //    *target++ = ClipToS16(info->m_OrigStart[sampleIndex] + currentValue);
+  //  }
+
+  //  samplesPlayed++;
+  //}
 
   return samplesPlayed;
 }

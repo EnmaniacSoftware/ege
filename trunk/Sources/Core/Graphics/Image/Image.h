@@ -50,6 +50,7 @@ class Image : public Object
     
   protected:
 
+    /*! Available stream types. */
     enum StreamType
     {
       STREAM_TYPE_UNKNOWN = -1,

@@ -41,7 +41,7 @@ DataBuffer::~DataBuffer()
 /*! Gets pointer to data at given byte offset. */
 void* DataBuffer::data(s64 offset) const
 {
-  return (offset < size()) ? (static_cast<u8*>(m_data) + offset) : NULL;
+  return (offset < capacity()) ? (static_cast<u8*>(m_data) + offset) : NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Clears buffer. If FULL flag is set deallocates internal buffers as well. */
@@ -423,7 +423,6 @@ s64 DataBuffer::write(const PDataBuffer& src, s64 size)
   // copy new data
   // NOTE: src buffer read offset will be updated automatically
   src->read(data(writeOffset()), size);
-  //MemoryManager::MemCpy(static_cast<u8*>(m_data) + writeOffset(), src->data(src->readOffset()), static_cast<size_t>(size));
 
   // set new size
   // NOTE: taking MAX of what was before and after as we may want to overwrite data in the middle of buffer only

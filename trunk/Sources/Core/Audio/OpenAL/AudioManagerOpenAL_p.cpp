@@ -8,8 +8,6 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define CHANNELS_COUNT 24
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_DEFINE_NEW_OPERATORS(AudioManagerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(AudioManagerPrivate)
@@ -18,6 +16,8 @@ EGE_DEFINE_DELETE_OPERATORS(AudioManagerPrivate)
 AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_device(NULL),
                                                                m_context(NULL)
 {
+  EGE_MEMSET(m_channels, 0, sizeof (m_channels));
+
   m_device = alcOpenDevice(NULL);
   if (m_device)
   {
@@ -25,20 +25,11 @@ AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_device(NULL),
     alcMakeContextCurrent(m_context);
 
     // preallocate channels
-    for (s32 i = 0; i < CHANNELS_COUNT; ++i)
+    alGenSources(CHANNELS_COUNT, m_channels);
+    if (AL_NO_ERROR != alGetError())
     {
-      // generate OpenAL source
-      ALuint channel;
-      alGenSources(1, &channel);
-      if (AL_NO_ERROR == alGetError())
-      {
-        // add to pool
-        m_channels.push_back(channel);
-      }
-      else
-      {
-        EGE_PRINT("AudioManagerPrivate::AudioManagerPrivate - Could not generate source.");
-      }
+      EGE_PRINT("AudioManagerPrivate::AudioManagerPrivate - Could not generate sources.");
+      EGE_MEMSET(m_channels, 0, sizeof (m_channels));
     }
   }
 }
@@ -47,12 +38,11 @@ AudioManagerPrivate::~AudioManagerPrivate()
 {
   alcMakeContextCurrent(NULL);
   
-  // deallocate sources
-  for (ChannelsArray::const_iterator it = m_channels.begin(); it != m_channels.end(); ++it)
+  if (isValid())
   {
-    alDeleteSources(1, &(*it));
+    alDeleteSources(CHANNELS_COUNT, m_channels);
+    EGE_MEMSET(m_channels, 0, sizeof (m_channels));
   }
-  m_channels.clear();
 
   // destroy context
   if (m_context)
@@ -72,31 +62,55 @@ AudioManagerPrivate::~AudioManagerPrivate()
 /*! Returns TRUE if object is valid. */
 bool AudioManagerPrivate::isValid() const
 {
-  return (NULL != m_device) && (NULL != m_context) && (CHANNELS_COUNT == m_channels.size());
+  // check all channels
+  for (s32 i = 0; i < CHANNELS_COUNT; ++i)
+  {
+    if (0 == m_channels[i])
+    {
+      // not valid
+      return false;
+    }
+  }
+
+  return (NULL != m_device) && (NULL != m_context);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates manager. */
 void AudioManagerPrivate::update(const Time& time)
 {
-  // remove finished sounds
-  for (ChannelsMap::const_iterator it = m_activeSounds.begin(); it != m_activeSounds.end();)
+  // move thru all active channels
+  for (ChannelsMap::const_iterator it = m_activeChannels.begin(); it != m_activeChannels.end();)
   {
     ALuint channel = it->first;
     const PSound& sound = it->second;
 
+    // updates buffers for given channel
+    sound->p_func()->updateBuffers(channel);
+
+    // move iterator to next entry before potential removal
     ++it;
 
-    ALint state;
-		alGetSourcei(channel, AL_SOURCE_STATE, &state);
-
-		// check if done
-		if (AL_STOPPED == state)
+    // check if channel stopped
+    ALint value;
+		alGetSourcei(channel, AL_SOURCE_STATE, &value);
+    if (AL_PLAYING != value)
     {
-      // detach sources from channel
-	    alSourcei(channel, AL_BUFFER, 0);
+      // check if there are any queued buffers. If so it means audio was starved and needs to be resumed
+			alGetSourcei(channel, AL_BUFFERS_QUEUED, &value);
+			if (value)
+			{
+        // resume playback
+				alSourcePlay(channel);
+			}
+			else
+			{
+				// finished
+				alSourceStop(channel);
+				alSourcei(channel, AL_BUFFER, 0);			
 
-      // remove from pool
-      m_activeSounds.erase(channel);
+        // remove from pool
+        m_activeChannels.erase(channel);
+      }
     }
   }
 }
@@ -107,12 +121,14 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
   ALuint channel = availableChannel();
   if (0 < channel)
   {
+    SoundPrivate* soundPrivate = sound->p_func();
+
     // clean up source
 	  alSourcei(channel, AL_BUFFER, 0);
 
-	  // attached sound buffer to source
-	  alSourcei(channel, AL_BUFFER, sound->p_func()->bufferId());
-	
+    // initially update all buffers
+    soundPrivate->updateBuffers(channel);
+
 	  // set the pitch and gain of the source
 	  alSourcef(channel, AL_PITCH, sound->pitch());
 	  alSourcef(channel, AL_GAIN, sound->gain());
@@ -133,7 +149,7 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
 	  }
 
     // add to channels map
-    m_activeSounds.insert(channel, sound);
+    m_activeChannels.insert(channel, sound);
 
     return EGE_SUCCESS;
   }
@@ -145,15 +161,15 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
 ALuint AudioManagerPrivate::availableChannel() const
 {
   // go thru all channels
-  for (ChannelsArray::const_iterator it = m_channels.begin(); it != m_channels.end(); ++it)
+  for (s32 i = 0; i < CHANNELS_COUNT; ++i)
   {
     ALint state;
-		alGetSourcei(*it, AL_SOURCE_STATE, &state);
+		alGetSourcei(m_channels[i], AL_SOURCE_STATE, &state);
 
 		// if this source is not playing then return it
 		if (AL_PLAYING != state)
     {
-      return *it;
+      return m_channels[i];
     }
   }
 

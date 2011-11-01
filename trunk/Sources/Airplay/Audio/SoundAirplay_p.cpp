@@ -1,7 +1,9 @@
 #include "Core/Application/Application.h"
-#include "Core/Audio/AudioUtils.h"
 #include "Airplay/Audio/SoundAirplay_p.h"
+#include <s3eSound.h>
+#include <s3e.h>
 #include <EGEDebug.h>
+#include <EGEAudio.h>
 
 EGE_NAMESPACE
 
@@ -11,40 +13,76 @@ EGE_DEFINE_NEW_OPERATORS(SoundPrivate)
 EGE_DEFINE_DELETE_OPERATORS(SoundPrivate)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SoundPrivate::SoundPrivate(Sound* base, const PDataBuffer& data) : m_d(base),
-                                                                   m_data(data), 
-                                                                   m_channels(-1), 
-                                                                   m_sampleRate(-1), 
-                                                                   m_bitsPerSample(-1), 
-                                                                   m_soundDataOffset(0),
-                                                                   m_soundDataSize(0),
-                                                                   m_samplesPlayed(0),
-                                                                   m_samplesCount(0)
+#define BUFFERS_COUNT 3
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+SoundPrivate::SoundPrivate(Sound* base) : m_d(base),
+                                          m_done(false)
 {
-  // check if WAV file
-  if (EGE_SUCCESS != AudioUtils::GetWavData(data, m_soundDataOffset, m_soundDataSize, m_channels, m_sampleRate, m_bitsPerSample))
+  // allocate buffers
+  for (s32 i = 0; i < BUFFERS_COUNT; ++i)
   {
-    // check other formats
-    // ...
+    PDataBuffer buffer = ege_new DataBuffer();
+    if (buffer)
+    {
+      m_buffers.push_back(buffer);
+    }
   }
-
-  // calculate number of all samples
-  m_samplesCount = m_soundDataSize / (m_channels * (m_bitsPerSample >> 3));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SoundPrivate::~SoundPrivate()
 {
+  m_buffers.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
 bool SoundPrivate::isValid() const
 {
-  return (NULL != m_data) && (-1 != m_channels) && (-1 != m_sampleRate) && (-1 != m_bitsPerSample) && (0 < m_soundDataSize);
+  return BUFFERS_COUNT == m_buffers.size();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets number of played samples. */
-void SoundPrivate::setSamplesPlayed(s32 count)
+/*! Updates buffers. This is called by AudioManagerPrivate. */
+void SoundPrivate::updateBuffers()
 {
-  m_samplesPlayed = count;
+  AudioCodec* codec = d_func()->codec();
+
+  s32 samplesDecoded = 0;
+
+  // find empty buffers, remove them from main list and add into empty one for refilling
+  BuffersList emptyBuffers;
+  for (BuffersList::iterator it = m_buffers.begin(); it != m_buffers.end();)
+  {
+    const PDataBuffer& buffer = *it;
+
+    // check if list is empty
+    if (buffer->readOffset() == buffer->size())
+    {
+      // add it into empty buffers list first
+      emptyBuffers.push_back(buffer);
+
+      // remove from main list
+      it = m_buffers.erase(it);
+    }
+    else
+    {
+      // go to next
+      ++it;
+    }
+  }
+
+  // go thru all empty buffers and refill them
+  for (BuffersList::iterator it = emptyBuffers.begin(); it != emptyBuffers.end(); ++it)
+  {
+    PDataBuffer& buffer = *it;
+
+    // upload 250ms audio data to buffer
+    buffer->clear();
+    m_done = codec->decode(buffer, codec->frequency() * 8, samplesDecoded);
+
+    // add to the end of the buffer list
+    m_buffers.push_back(buffer);
+  }
+
+  // clean up
+  emptyBuffers.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

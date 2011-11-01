@@ -4,6 +4,7 @@
 #include <EGE.h>
 #include <EGEDataBuffer.h>
 #include <EGETime.h>
+#include <EGEList.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -17,7 +18,7 @@ class SoundPrivate
 {
   public:
 
-    SoundPrivate(Sound* base, const PDataBuffer& data);
+    SoundPrivate(Sound* base);
    ~SoundPrivate();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -25,44 +26,27 @@ class SoundPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(Sound)
 
+  public:
+
+    typedef List<PDataBuffer> BuffersList;
+
+  public
+    :
     /* Returns TRUE if object is valid. */
     bool isValid() const;
-    /*! Returns sound data buffer. */
-    inline const PDataBuffer& data() const { return m_data; }
-    /*! Returns sample rate. */
-    inline s32 sampleRate() const { return m_sampleRate; }
-    /*! Returns sound data offset (in bytes). */
-    inline s32 soundDataOffset() const { return m_soundDataOffset; }
-    /*! Returns sound data size (in bytes). */
-    inline s32 soundDataSize() const { return m_soundDataSize; }
-    /*! Returns number of channels. */
-    inline s32 channels() const { return m_channels; }
-    /*! Returns number of all samples. */
-    inline s32 samplesCount() const { return m_samplesCount; }
-
-    /*! Returns number of played samples. */
-    inline s32 samplesPlayed() const { return m_samplesPlayed; }
-    /* Sets number of played samples. */
-    void setSamplesPlayed(s32 count);
+    /* Updates buffers. This is called by AudioManagerPrivate. */
+    void updateBuffers();
+    /*! Returns list of data buffers. */
+    const BuffersList& buffers() const { return m_buffers; }
+    /*! Returns TRUE if all data from codec has been read. */
+    inline bool isDone() const { return m_done; }
 
   private:
 
-    /*! Sound data buffer. */
-    PDataBuffer m_data;
-    /*! Number of channels in the sample. */
-    s32 m_channels;
-    /*! Sample rate of sound (in Hz). */
-    s32 m_sampleRate;
-    /*! Number of bits per sample. */
-    s32 m_bitsPerSample;
-    /*! Offset to sound data within data buffer (in bytes). */
-    s32 m_soundDataOffset;
-    /*! Sound data size (in bytes). */
-    s32 m_soundDataSize;
-    /*! Number of samples played already. */
-    s32 m_samplesPlayed;
-    /*! Number of all samples. */
-    s32 m_samplesCount;
+    /*! List of data buffer filled with sound samples to be played. Buffers should be processed in the order of the list. */
+    BuffersList m_buffers;
+    /*! Flag indicating that all data from codec has been read. */
+    bool m_done;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

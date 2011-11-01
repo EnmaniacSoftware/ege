@@ -136,9 +136,6 @@
     <Filter Include="Core\Graphics\Render">
       <UniqueIdentifier>{a292a486-89b4-4c40-ba69-d653e15dd192}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Crypto">
-      <UniqueIdentifier>{3abc6d54-baea-4a5a-a348-0d4e4f8df1b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Graphics\Image">
       <UniqueIdentifier>{a355a3fe-25e5-4524-a444-3ab121584f80}</UniqueIdentifier>
     </Filter>
@@ -165,6 +162,9 @@
     </Filter>
     <Filter Include="Core\Audio\OpenAL">
       <UniqueIdentifier>{2469302f-a215-49ef-82ee-9745942d1421}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Data\Crypto">
+      <UniqueIdentifier>{3abc6d54-baea-4a5a-a348-0d4e4f8df1b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -409,7 +409,7 @@
       <Filter>Core\Debug</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Hash.cpp">
-      <Filter>Core\Crypto</Filter>
+      <Filter>Core\Data\Crypto</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Texture2D.cpp">
       <Filter>Core\Graphics</Filter>
@@ -524,6 +524,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Tools\ByteOrder.cpp">
       <Filter>Core\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\OggCodec.cpp">
+      <Filter>Core\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecWav.cpp">
+      <Filter>Core\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecOgg.cpp">
+      <Filter>Core\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -889,7 +898,7 @@
     <ClInclude Include="..\..\Sources\EGEVertexBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEHash.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Hash.h">
-      <Filter>Core\Crypto</Filter>
+      <Filter>Core\Data\Crypto</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h">
       <Filter>Core\Graphics</Filter>
@@ -1016,6 +1025,18 @@
       <Filter>Core\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEByteOrder.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\OggCodec.h">
+      <Filter>Core\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodec.h">
+      <Filter>Core\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecWav.h">
+      <Filter>Core\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecOgg.h">
+      <Filter>Core\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

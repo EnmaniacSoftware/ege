@@ -13,6 +13,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define CHANNELS_COUNT 24
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class AudioManager;
 
@@ -44,7 +46,6 @@ class AudioManagerPrivate
 
   private:
 
-    typedef DynamicArray<ALuint> ChannelsArray;
     typedef Map<ALuint, PSound> ChannelsMap;
 
   private:
@@ -54,9 +55,9 @@ class AudioManagerPrivate
     /*! Audio context. */
     ALCcontext* m_context;
     /*! Available channels. */
-    ChannelsArray m_channels;
-    /*! Map of sounds being currently played sorted by channels. */
-    ChannelsMap m_activeSounds;
+    ALuint m_channels[CHANNELS_COUNT];
+    /*! Map of currently active channels and sound associated with them. */
+    ChannelsMap m_activeChannels;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

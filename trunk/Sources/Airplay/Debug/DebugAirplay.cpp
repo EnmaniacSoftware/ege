@@ -1,16 +1,19 @@
 #include "Core/Debug/Debug.h"
 #include <stdio.h>
+#include <s3e.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Debug::Assert(const char* description, const char* fileName, s32 lineNumber)
 {
-  assert(description);
+  s3eDebugAssertShow(S3E_MESSAGE_CONTINUE_STOP_IGNORE, description);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Debug::Print(const String& text)
 {
-  printf("%s\n", text.toAscii());
+  char buffer[2048];
+  sprintf(buffer, "%s\n", text.toAscii());
+  s3eDebugOutputString(buffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
