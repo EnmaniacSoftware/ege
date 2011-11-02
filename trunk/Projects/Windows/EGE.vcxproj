@@ -17,10 +17,12 @@
     <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecWav.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioUtils.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Audio\OggCodec.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\Sound.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\stb_vorbis.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\ComplexTypes.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.cpp" />
@@ -129,7 +131,6 @@
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecWav.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioManager.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioUtils.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\OggCodec.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL_p.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL_p.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Sound.h" />

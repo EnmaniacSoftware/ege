@@ -89,14 +89,14 @@ files
 	["Core/Audio"]
 	(../../Sources/Core/Audio)
   AudioCodec.h
+  AudioCodecOgg.cpp
+  AudioCodecOgg.h
   AudioCodecWav.cpp
   AudioCodecWav.h
   AudioManager.cpp
   AudioManager.h
   AudioUtils.cpp
   AudioUtils.h
-  OggCodec.cpp
-  OggCodec.h
   Sound.cpp
   Sound.h
 

@@ -13,7 +13,13 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const float32 Math::EPSILON         = std::numeric_limits<float32>::epsilon();
 const float32 Math::EPSILON_SQUARED = std::numeric_limits<float32>::epsilon() * std::numeric_limits<float32>::epsilon();
-const s32     Math::MAX_INT         = std::numeric_limits<s32>::max();
+const s32     Math::MAX_S32         = std::numeric_limits<s32>::max();
+const s32     Math::MIN_S32         = std::numeric_limits<s32>::min();
+const s32     Math::MAX_S16         = std::numeric_limits<s16>::max();
+const s32     Math::MIN_S16         = std::numeric_limits<s16>::min();
+const s32     Math::MAX_U16         = std::numeric_limits<u16>::max();
+const s32     Math::MIN_U16         = std::numeric_limits<u16>::min();
+
 Random Math::m_random;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Math::Math()

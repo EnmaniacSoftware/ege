@@ -525,13 +525,13 @@
     <ClCompile Include="..\..\Sources\Core\Tools\ByteOrder.cpp">
       <Filter>Core\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\OggCodec.cpp">
-      <Filter>Core\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecWav.cpp">
       <Filter>Core\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecOgg.cpp">
+      <Filter>Core\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\stb_vorbis.c">
       <Filter>Core\Audio</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1025,9 +1025,6 @@
       <Filter>Core\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEByteOrder.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\OggCodec.h">
-      <Filter>Core\Audio</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodec.h">
       <Filter>Core\Audio</Filter>
     </ClInclude>

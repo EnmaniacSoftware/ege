@@ -356,7 +356,7 @@ String::ArgEscapeData String::findArgEscapes() const
 {
   ArgEscapeData data;
 
-  data.min_escape  = Math::MAX_INT;
+  data.min_escape  = Math::MAX_S32;
   data.occurrences = 0;
 
   // go thru entire string

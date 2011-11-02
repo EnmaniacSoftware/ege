@@ -1,8 +1,6 @@
 #ifndef EGE_STRING_H
 #define EGE_STRING_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include "Core/Platform.h"
 
 #if EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
