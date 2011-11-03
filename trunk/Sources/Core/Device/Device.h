@@ -55,6 +55,9 @@ class Device
     /* Returns maximal texture size (in texels). */
     static u32 TextureMaxSize();
 
+    /* Returns audio output device frequency (in Hz). */
+    static s32 AudioOutputFrequency();
+
   private:
 
     /*! Render capabilities. */

@@ -1,0 +1,8 @@
+[S3E]
+ScreenWidth=640
+ScreenHeight=960
+ScreenZoom=1
+FixScreenOrientation=2
+iPhoneScaleFactor = 200
+UseDirectScreenAccess=1
+MemSize=33554432

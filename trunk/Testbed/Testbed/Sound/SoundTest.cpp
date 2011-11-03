@@ -4,6 +4,7 @@
 #include <EGEResources.h>
 #include <EGEOverlay.h>
 #include <EGEAudio.h>
+#include <EGEDevice.h>
 
 EGE_NAMESPACE
 
@@ -65,6 +66,16 @@ bool SoundTest::initialize()
   viewport->setClearBufferTypes(Viewport::BUFFER_TYPE_COLOR);
   viewport->setClearColor(Color::BLUE);
 
+  PResourceFont fontResource = app()->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
+  if (fontResource)
+  {
+    PTextOverlay overlay = ege_new TextOverlay(app(), "frequency");
+    overlay->setFont(fontResource->font());
+    app()->overlayManager()->add(overlay);
+    overlay->physics()->setPosition(Vector4f(0, 60, 0));
+    overlay->setText(Text::Format("Output Freq: %dHz", Device::AudioOutputFrequency()));
+  }
+
   // load resources
   if (EGE_SUCCESS != app()->resourceManager()->loadGroup("sound-test"))
   {
@@ -85,11 +96,7 @@ void SoundTest::pointerEvent(PPointerData data)
 {
   if (EGEInput::ACTION_BUTTON_UP == data->action() && EGEInput::BUTTON_LEFT == data->button())
   {
-    app()->audioManager()->play("sound-1");
-  }
-  else if (EGEInput::ACTION_BUTTON_UP == data->action() && EGEInput::BUTTON_RIGHT == data->button())
-  {
-    app()->audioManager()->play("sound-1-1");
+    app()->audioManager()->play("stereo-22050");
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

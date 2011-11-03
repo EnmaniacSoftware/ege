@@ -7,6 +7,8 @@
 #include <EGEDebug.h>
 #include <EGEMath.h>
 
+#include <EGEOverlay.h>
+
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -42,12 +44,17 @@ static s16 ClipToS16(s32 value)
   return (s16) value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioManagerPrivate::AudioManagerPrivate(AudioManager* base)
+AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerPrivate::~AudioManagerPrivate()
 {
+  // clean up active channels
+  for (ChannelsMap::const_iterator it = m_activeSounds.begin(); it != m_activeSounds.end();)
+  {
+    s3eSoundChannelStop(it->first);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
@@ -179,7 +186,7 @@ int32 AudioManagerPrivate::AudioCallback(void* systemData, void* userData)
   // get pointer to first sample to generate
   int16* target = (int16*) info->m_Target;
 
-  //char buffer[245];
+  char szbuffer[245];
   //sprintf(buffer, "AudioCallback for channel %d, mixing: %d\n", info->m_Channel, info->m_Mix);
   //s3eDebugOutputString(buffer);
 
@@ -210,7 +217,7 @@ int32 AudioManagerPrivate::AudioCallback(void* systemData, void* userData)
       int16* data = reinterpret_cast<int16*>(buffer->data(buffer->readOffset()));
 
       // move read offset as we are going to reference buffer directly without any copying
-      buffer->setReadOffset(buffer->readOffset() + static_cast<s64>(samplesAvailable * sizeof (int16) * codec->channels() * frequencyResampleFactor));
+      buffer->setReadOffset(buffer->readOffset() + static_cast<s64>(samplesAvailable * frequencyResampleFactor) * sizeof (int16) * codec->channels());
 
       // mix all available samples
       for (uint32 i = 0; i < samplesAvailable; i++)
@@ -221,6 +228,9 @@ int32 AudioManagerPrivate::AudioCallback(void* systemData, void* userData)
 
         // get previous data
         int16 currentValue = info->m_Mix ? *target : 0;
+
+        //sprintf(szbuffer, "%d %d\n", data[sampleIndex], sampleIndex);
+        //s3eDebugOutputString(szbuffer);
 
         // mix and store to output
         *target++ = ClipToS16(data[sampleIndex] + currentValue);

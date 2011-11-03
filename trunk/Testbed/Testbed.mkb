@@ -1,0 +1,91 @@
+#!/usr/bin/env mkb
+
+defines
+{
+  AIRPLAY_BUILD
+}
+
+debug_defines
+{
+  EGE_FEATURE_DEBUG
+}
+
+includepath ./Testbed
+includepath ../Sources
+
+options
+{
+	app-icf="Testbed.icf"
+	arm-fpu=1
+  s3e-data-dir="Testbed/resources"
+}
+
+files
+{
+  ["Testbed"]
+	(Testbed)
+  App.cpp
+  App.h
+  main.cpp
+  RenderObject.cpp
+  RenderObject.h
+
+  ["Testbed/Tests"]
+  (Testbed)
+	Test.h
+
+  ["Testbed/Tests/Curves"]
+  (Testbed/Curves)
+  CurvesTest.cpp
+  CurvesTest.h
+
+  ["Testbed/Tests/Lightning"]
+  (Testbed/Lightning)
+  LightningEffect.cpp
+  LightningEffect.h
+  LightningTest.cpp
+  LightningTest.h
+
+  ["Testbed/Tests/Localization"]
+  (Testbed/Localization)
+  LocalizationTest.cpp
+  LocalizationTest.h
+
+  ["Testbed/Tests/Particles"]
+  (Testbed/Particles)
+  ParticleTest.cpp
+  ParticleTest.h
+
+  ["Testbed/Tests/Render To Texture"]
+  (Testbed/RenderToTexture)
+  RenderToTextureTest.cpp
+  RenderToTextureTest.h
+
+  ["Testbed/Tests/Ripples"]
+  (Testbed/Ripples)
+  RippleEffect.cpp
+  RippleEffect.h
+  RipplesTest.cpp
+  RipplesTest.h
+
+  ["Testbed/Tests/Sound"]
+  (Testbed/Sound)
+  SoundTest.cpp
+  SoundTest.h
+
+  ["Testbed/Tests/Timeline"]
+  (Testbed/Timeline)
+  TimelineTest.cpp
+  TimelineTest.h
+}
+
+subprojects
+{
+	"../Projects/Airplay/EGE"
+}
+
+assets
+{
+	(Testbed/resources)
+}
+

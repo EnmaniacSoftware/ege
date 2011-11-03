@@ -411,6 +411,8 @@ files
 	["Core/Timer"]
   (../../Sources/Core/Timer)
 	Time.h
+  TimeLine.cpp
+  TimeLine.h
   Timer.cpp
   Timer.h
 

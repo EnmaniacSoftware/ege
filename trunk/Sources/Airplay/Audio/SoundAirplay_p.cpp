@@ -43,6 +43,12 @@ bool SoundPrivate::isValid() const
 /*! Updates buffers. This is called by AudioManagerPrivate. */
 void SoundPrivate::updateBuffers()
 {
+  if (m_done)
+  {
+    // nothing to update as there is no more data
+    return;
+  }
+
   AudioCodec* codec = d_func()->codec();
 
   s32 samplesDecoded = 0;
@@ -75,8 +81,9 @@ void SoundPrivate::updateBuffers()
     PDataBuffer& buffer = *it;
 
     // upload 250ms audio data to buffer
+    EGE_PRINT("Uploading sound buffer");
     buffer->clear();
-    m_done = codec->decode(buffer, codec->frequency() * 8, samplesDecoded);
+    m_done = codec->decode(buffer, codec->frequency() >> 2, samplesDecoded);
 
     // add to the end of the buffer list
     m_buffers.push_back(buffer);

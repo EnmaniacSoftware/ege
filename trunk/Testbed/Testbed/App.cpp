@@ -15,8 +15,8 @@
 #include "Localization/LocalizationTest.h"
 #include "Sound/SoundTest.h"
 
-#include <gl/gl.h>
-#include <gl/glu.h>
+//#include <gl/gl.h>
+//#include <gl/glu.h>
 
 #define ORTHO 1
 
@@ -58,7 +58,11 @@ bool App::start()
   }
 
   // initialize resource manager
+#ifdef AIRPLAY_BUILD
+  resourceManager()->addDataDirectory(".");
+#else
   resourceManager()->addDataDirectory("resources");
+#endif // AIRPLAY_BUILD
   if (EGE_SUCCESS != resourceManager()->addResources("resources.xml"))
   {
     // error!
