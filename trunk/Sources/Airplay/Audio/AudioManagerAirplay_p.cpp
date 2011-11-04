@@ -73,6 +73,7 @@ void AudioManagerPrivate::update(const Time& time)
     const PSound& sound = it->second;
 
     // updates buffers for given channel
+      EGE_PRINT("AudioManagerPrivate::update - updating buffers");
     sound->p_func()->updateBuffers();
 
     // move iterator to next entry before potential removal
@@ -152,9 +153,9 @@ int32 AudioManagerPrivate::SampleEndCallback(void* systemData, void* userData)
   // unregister all if done to clean up
   if (0 == sampleInfo->m_RepsRemaining)
   {
-    s3eSoundChannelUnRegister(sampleInfo->m_Channel, S3E_CHANNEL_END_SAMPLE);
-    s3eSoundChannelUnRegister(sampleInfo->m_Channel, S3E_CHANNEL_GEN_AUDIO_STEREO);
-    s3eSoundChannelUnRegister(sampleInfo->m_Channel, S3E_CHANNEL_GEN_AUDIO);
+    //s3eSoundChannelUnRegister(sampleInfo->m_Channel, S3E_CHANNEL_END_SAMPLE);
+    //s3eSoundChannelUnRegister(sampleInfo->m_Channel, S3E_CHANNEL_GEN_AUDIO_STEREO);
+    //s3eSoundChannelUnRegister(sampleInfo->m_Channel, S3E_CHANNEL_GEN_AUDIO);
   }
 
   return sampleInfo->m_RepsRemaining;
@@ -168,11 +169,18 @@ int32 AudioManagerPrivate::AudioCallback(void* systemData, void* userData)
 
   SoundPrivate* sound = reinterpret_cast<SoundPrivate*>(userData);
 
+  if (sound->areBuffersLocked())
+  {
+    return 0;
+  }
+
+  sound->lockBuffers();
+
   AudioCodec* codec = sound->d_func()->codec();
 
   // get list of sound buffers
   const SoundPrivate::BuffersList& buffers = sound->buffers();
-
+  
   // calculate frequency resample factor
   const s32 gcd = Math::GreatestCommonDivisor(codec->frequency(), s3eSoundGetInt(S3E_SOUND_OUTPUT_FREQ));
   const float32 frequencyResampleFactor = (codec->frequency() / gcd) / static_cast<float32>(s3eSoundGetInt(S3E_SOUND_OUTPUT_FREQ) / gcd);
@@ -186,10 +194,6 @@ int32 AudioManagerPrivate::AudioCallback(void* systemData, void* userData)
   // get pointer to first sample to generate
   int16* target = (int16*) info->m_Target;
 
-  char szbuffer[245];
-  //sprintf(buffer, "AudioCallback for channel %d, mixing: %d\n", info->m_Channel, info->m_Mix);
-  //s3eDebugOutputString(buffer);
-
   u32 samplesStillNeeded = info->m_NumSamples;
 
   // go thru all buffers (or till all requested samples hasnt been played yet)
@@ -201,17 +205,8 @@ int32 AudioManagerPrivate::AudioCallback(void* systemData, void* userData)
     u32 samplesAvailable = Math::Min(samplesStillNeeded, 
                                      static_cast<uint32>((buffer->size() - buffer->readOffset()) / (sizeof (int16) * codec->channels() * frequencyResampleFactor)));
 
-    // check if in the buffer still some data is present but not enough for even one refrequenced sample
-    if ((0 == samplesAvailable) && (buffer->size() != buffer->readOffset()))
-    {
-      // move read pointer to the end of buffer so it gets refilled
-      buffer->setReadOffset(buffer->size());
-
-      // skip this sample
-      samplesAvailable = 1;
-      continue;
-    }
-    else
+    // check if any samples still can be played
+    if (0 < samplesAvailable)
     {
       // get pointer to begining of sample array 
       int16* data = reinterpret_cast<int16*>(buffer->data(buffer->readOffset()));
@@ -244,6 +239,16 @@ int32 AudioManagerPrivate::AudioCallback(void* systemData, void* userData)
       }  
     }
 
+    // check if in the buffer still some data is present but not enough for even one refrequenced sample
+    if ((samplesStillNeeded != samplesAvailable) && (buffer->size() != buffer->readOffset()))
+    {
+      // move read pointer to the end of buffer so it gets refilled
+      buffer->setReadOffset(buffer->size());
+
+      // skip sample on the edge
+      ++samplesPlayed;
+    }
+
     // update samples played counter
     samplesPlayed += samplesAvailable;
 
@@ -259,6 +264,11 @@ int32 AudioManagerPrivate::AudioCallback(void* systemData, void* userData)
     {
       // done
       info->m_EndSample = S3E_TRUE;
+    }
+    else
+    {
+      // audio is starved
+      s3eDeviceYield(1);
     }
   }
 
@@ -303,6 +313,12 @@ int32 AudioManagerPrivate::AudioCallback(void* systemData, void* userData)
 
   //  samplesPlayed++;
   //}
+
+  char szbuffer[245];
+  sprintf(szbuffer, "AudioCallback for channel %d, mixing: %d %d\n", info->m_Channel, info->m_Mix, samplesPlayed);
+  s3eDebugOutputString(szbuffer);
+
+  sound->unlockBuffers();
 
   return samplesPlayed;
 }

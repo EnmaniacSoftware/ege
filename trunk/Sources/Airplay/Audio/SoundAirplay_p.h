@@ -30,8 +30,8 @@ class SoundPrivate
 
     typedef List<PDataBuffer> BuffersList;
 
-  public
-    :
+  public:
+
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Updates buffers. This is called by AudioManagerPrivate. */
@@ -40,6 +40,12 @@ class SoundPrivate
     const BuffersList& buffers() const { return m_buffers; }
     /*! Returns TRUE if all data from codec has been read. */
     inline bool isDone() const { return m_done; }
+    /* Locks buffers. */
+    void lockBuffers();
+    /* Unlocks buffers. */
+    void unlockBuffers();
+    /*! Returns TRUE if buffers are locked. */
+    inline bool areBuffersLocked() const { return m_buffersLocked; }
 
   private:
 
@@ -47,6 +53,8 @@ class SoundPrivate
     BuffersList m_buffers;
     /*! Flag indicating that all data from codec has been read. */
     bool m_done;
+    /*! Flag indicating that data buffers are locked for writting. */
+    bool m_buffersLocked;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

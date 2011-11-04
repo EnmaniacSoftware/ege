@@ -16,7 +16,8 @@ EGE_DEFINE_DELETE_OPERATORS(SoundPrivate)
 #define BUFFERS_COUNT 3
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SoundPrivate::SoundPrivate(Sound* base) : m_d(base),
-                                          m_done(false)
+                                          m_done(false),
+                                          m_buffersLocked(false)
 {
   // allocate buffers
   for (s32 i = 0; i < BUFFERS_COUNT; ++i)
@@ -43,11 +44,14 @@ bool SoundPrivate::isValid() const
 /*! Updates buffers. This is called by AudioManagerPrivate. */
 void SoundPrivate::updateBuffers()
 {
-  if (m_done)
+  if (m_done || m_buffersLocked)
   {
     // nothing to update as there is no more data
     return;
   }
+
+  // lock
+  lockBuffers();
 
   AudioCodec* codec = d_func()->codec();
 
@@ -91,5 +95,20 @@ void SoundPrivate::updateBuffers()
 
   // clean up
   emptyBuffers.clear();
+
+  // unlock
+  unlockBuffers();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Locks buffers. */
+void SoundPrivate::lockBuffers()
+{
+  m_buffersLocked = true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Unlocks buffers. */
+void SoundPrivate::unlockBuffers()
+{
+  m_buffersLocked = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

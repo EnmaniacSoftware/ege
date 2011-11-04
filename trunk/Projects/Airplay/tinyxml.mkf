@@ -1,0 +1,17 @@
+includepath
+{
+	"../../External/tinyxml 2.6.1"
+}
+
+define TIXML_USE_STL
+
+files
+{
+	("../../External/tinyxml 2.6.1")
+	tinystr.cpp
+  tinystr.h
+	tinyxml.cpp
+  tinyxml.h
+  tinyxmlerror.cpp
+  tinyxmlparser.cpp
+}
