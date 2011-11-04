@@ -509,6 +509,6 @@ subprojects
 {
 	third_party/libpng/libpng
 	third_party/libjpeg/libjpeg
-	third_party/tinyxml/tinyxml
   box2d
+  tinyxml
 }
