@@ -29,6 +29,8 @@ class Sound : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  public:
+
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Sets pitch value. */

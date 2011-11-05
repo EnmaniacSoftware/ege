@@ -74,6 +74,11 @@ bool SoundTest::initialize()
     app()->overlayManager()->add(overlay);
     overlay->physics()->setPosition(Vector4f(0, 60, 0));
     overlay->setText(Text::Format("Output Freq: %dHz", Device::AudioOutputFrequency()));
+
+    overlay = ege_new TextOverlay(app(), "sound-info");
+    overlay->setFont(fontResource->font());
+    app()->overlayManager()->add(overlay);
+    overlay->physics()->setPosition(Vector4f(0, 80, 0));
   }
 
   // load resources
@@ -94,9 +99,49 @@ void SoundTest::update(const Time& time)
 /*! Test override. Pointer event receiver. */
 void SoundTest::pointerEvent(PPointerData data)
 {
-  if (EGEInput::ACTION_BUTTON_UP == data->action() && EGEInput::BUTTON_LEFT == data->button())
+  if (EGEInput::ACTION_BUTTON_DOWN == data->action() && EGEInput::BUTTON_LEFT == data->button())
   {
-    app()->audioManager()->play("stereo-22050");
+    // get window render target (created thru config options)
+    PRenderWindow window = app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
+
+    String name;
+
+    if (data->x() < (window->width() >> 1))
+    {
+      if (data->y() < (window->height() >> 1))
+      {
+        name = "mono-22050";
+      }
+      else
+      {
+        name = "stereo-22050";
+      }
+    }
+    else
+    {
+      if (data->y() < (window->height() >> 1))
+      {
+        name = "mono-11025";
+      }
+      else
+      {
+        name = "stereo-11025";
+      }
+    }
+
+    PResourceSound soundRes = app()->resourceManager()->soundResource(name);
+    if (soundRes)
+    {
+      PSound sound = soundRes->createInstance();
+
+      PTextOverlay overlay = app()->overlayManager()->overlay("sound-info");
+      if (overlay)
+      {
+        overlay->setText(Text::Format("Playing %s. Channels: %d. Freq: %dHz", name.toAscii(), sound->codec()->channels(), sound->codec()->frequency()));
+      }
+
+      app()->audioManager()->play(sound);
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

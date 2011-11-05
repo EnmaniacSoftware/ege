@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_CONTAINER_TREE_H
-#define EGE_CORE_CONTAINER_TREE_H
+#ifndef EGE_CORE_CONTAINER_MULTITREE_H
+#define EGE_CORE_CONTAINER_MULTITREE_H
 
 #include "Core/Platform.h"
 #include <set>
@@ -9,7 +9,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <typename T>
-class Tree : public std::set<T>
+class MultiTree : public std::multiset<T>
 {
   public:
 
@@ -20,9 +20,9 @@ class Tree : public std::set<T>
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Removes given object from set. */
 template <typename T>
-void Tree<T>::remove(const T object)
+void MultiTree<T>::remove(const T object)
 {
-  typename Tree<T>::iterator it = this->find(object);
+  typename MultiTree<T>::iterator it = this->find(object);
   if (it != this->end())
   {
     erase(it);
@@ -32,4 +32,4 @@ void Tree<T>::remove(const T object)
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_CONTAINER_TREE_H
+#endif // EGE_CORE_CONTAINER_MULTITREE_H

@@ -99,6 +99,7 @@ files
   AudioUtils.h
   Sound.cpp
   Sound.h
+  wsfir.h
 
 	["Core/Components"]
  	(../../Sources/Core/Components)
@@ -129,6 +130,7 @@ files
   List.h
   Map.h
   MultiMap.h
+  MultiTree.h
   Tree.h
 
 	["Core/Crypto"]

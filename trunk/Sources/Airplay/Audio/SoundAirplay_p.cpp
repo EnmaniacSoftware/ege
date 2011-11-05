@@ -1,9 +1,11 @@
 #include "Core/Application/Application.h"
+#include "Core/Audio/wsfir.h"
 #include "Airplay/Audio/SoundAirplay_p.h"
 #include <s3eSound.h>
 #include <s3e.h>
 #include <EGEDebug.h>
 #include <EGEAudio.h>
+#include <EGEDevice.h>
 
 EGE_NAMESPACE
 
@@ -13,11 +15,13 @@ EGE_DEFINE_NEW_OPERATORS(SoundPrivate)
 EGE_DEFINE_DELETE_OPERATORS(SoundPrivate)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define BUFFERS_COUNT 3
+#define BUFFERS_COUNT               3
+#define FILTER_COEFFICIENTS_COUNT 129
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SoundPrivate::SoundPrivate(Sound* base) : m_d(base),
                                           m_done(false),
-                                          m_buffersLocked(false)
+                                          m_buffersLocked(false),
+                                          m_audioManager(NULL)
 {
   // allocate buffers
   for (s32 i = 0; i < BUFFERS_COUNT; ++i)
@@ -27,6 +31,14 @@ SoundPrivate::SoundPrivate(Sound* base) : m_d(base),
     {
       m_buffers.push_back(buffer);
     }
+  }
+
+  m_filterBuffer.reserve(FILTER_COEFFICIENTS_COUNT);
+  m_filterCoefficients.reserve(FILTER_COEFFICIENTS_COUNT);
+
+  for (s32 i = 0; i < FILTER_COEFFICIENTS_COUNT; ++i)
+  {
+    m_filterBuffer[i] = 0;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -87,7 +99,7 @@ void SoundPrivate::updateBuffers()
     // upload 250ms audio data to buffer
     EGE_PRINT("Uploading sound buffer");
     buffer->clear();
-    m_done = codec->decode(buffer, codec->frequency() >> 2, samplesDecoded);
+    m_done = codec->decode(buffer, codec->frequency() * 10 /*>> 2*/, samplesDecoded);
 
     // add to the end of the buffer list
     m_buffers.push_back(buffer);
@@ -110,5 +122,21 @@ void SoundPrivate::lockBuffers()
 void SoundPrivate::unlockBuffers()
 {
   m_buffersLocked = false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Initializes audio filter. */
+void SoundPrivate::initializeFilter()
+{
+  const s32 fs = Math::Min(d_func()->codec()->frequency(), Device::AudioOutputFrequency());
+  const float32 fc = (fs / 2) / static_cast<float32>(Device::AudioOutputFrequency()); // half the input sample rate (eg nyquist limit of input)
+
+  // generate filter coefficients
+  wsfirLP(m_filterCoefficients, FILTER_COEFFICIENTS_COUNT, W_BLACKMAN, fc);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets pointer to private implementation of audio manager through which playback is being done. */
+void SoundPrivate::setAudioManagerPrivate(AudioManagerPrivate* manager)
+{
+  m_audioManager = manager;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

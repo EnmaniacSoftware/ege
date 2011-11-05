@@ -37,7 +37,14 @@ class AudioManager : public Object
 
   private:
 
+    typedef List<PSound> SoundList;
+
+  private:
+
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(AudioManager);
+
+    /*! Pool of active sounds. */
+    SoundList m_activeSounds;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

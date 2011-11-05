@@ -5,12 +5,14 @@
 #include <EGEDataBuffer.h>
 #include <EGETime.h>
 #include <EGEList.h>
+#include <EGEDynamicArray.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Sound;
+class AudioManagerPrivate;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -46,6 +48,14 @@ class SoundPrivate
     void unlockBuffers();
     /*! Returns TRUE if buffers are locked. */
     inline bool areBuffersLocked() const { return m_buffersLocked; }
+    /*! Returns keep alive timer. */
+    Time& keepAliveTimer() { return m_keepAlive; }
+    /* Initializes audio filter. */
+    void initializeFilter();
+    /* Sets pointer to private implementation of audio manager through which playback is being done. */
+    void setAudioManagerPrivate(AudioManagerPrivate* manager);
+    /*! Returns pointer to private implementation of audio manager through which playback is being done. */
+    AudioManagerPrivate* audioManager() const { return m_audioManager; }
 
   private:
 
@@ -55,6 +65,15 @@ class SoundPrivate
     bool m_done;
     /*! Flag indicating that data buffers are locked for writting. */
     bool m_buffersLocked;
+    /*! Keep alive timer. It is started after sound has ended. After predefined keep-alive period sound will be automatically removed. */
+    Time m_keepAlive;
+    /*! Pointer to private implementation of audio manager through which playback is being done. */
+    AudioManagerPrivate* m_audioManager;
+
+public:
+
+    DynamicArray<s16> m_filterBuffer;
+    DynamicArray<float32> m_filterCoefficients;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
