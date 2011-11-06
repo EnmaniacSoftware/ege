@@ -52,7 +52,10 @@ EGEResult AudioManager::play(const String& soundName)
     if (soundResource)
     {
       PSound sound = soundResource->createInstance();
-      return p_func()->play(sound);
+      if (sound)
+      {
+        return p_func()->play(sound);
+      }
     }
 
     return EGE_ERROR_NOT_FOUND;
