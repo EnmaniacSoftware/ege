@@ -21,7 +21,8 @@ EGE_DEFINE_DELETE_OPERATORS(SoundPrivate)
 SoundPrivate::SoundPrivate(Sound* base) : m_d(base),
                                           m_done(false),
                                           m_buffersLocked(false),
-                                          m_audioManager(NULL)
+                                          m_audioManager(NULL),
+                                          m_channelId(-1)
 {
   // allocate buffers
   for (s32 i = 0; i < BUFFERS_COUNT; ++i)
@@ -138,5 +139,11 @@ void SoundPrivate::initializeFilter()
 void SoundPrivate::setAudioManagerPrivate(AudioManagerPrivate* manager)
 {
   m_audioManager = manager;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets channel sound is being played on. */
+void SoundPrivate::setChannel(s32 channelId)
+{
+  m_channelId = channelId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

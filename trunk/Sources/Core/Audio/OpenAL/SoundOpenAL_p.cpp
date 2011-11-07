@@ -150,6 +150,24 @@ void SoundPrivate::updateBuffers(ALuint channel)
         EGE_PRINT("SoundPrivate::updateBuffer - could queue buffer to channel.");
       }
     }
+  
+    // check if no more data in codec
+    if (endOfData)
+    {
+      // check if any pending repeats
+      s32 repeatsLeft = d_func()->repeatsLeft();
+      if ((0 > repeatsLeft) || (1 <= repeatsLeft))
+      {
+        // update repeat counter
+        if (0 < repeatsLeft)
+        {
+          d_func()->setRepeatCount(repeatsLeft -1);
+        }
+
+        // reset codec
+        codec->reset();
+      }
+    }
 
     // proceed to next buffer
 		--buffersProcessed;

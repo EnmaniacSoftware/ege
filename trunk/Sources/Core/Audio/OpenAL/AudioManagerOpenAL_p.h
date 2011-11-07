@@ -32,12 +32,23 @@ class AudioManagerPrivate
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+    EGE_DECLARE_PUBLIC_IMPLEMENTATION(AudioManager)
+
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Updates manager. */
     void update(const Time& time);
-    /* Plays given sound. */
-    EGEResult play(const PSound& sound);
+    /* Plays given sound.
+     * @param sound       Sound to play.
+     * @param repeatCount Number of times sound should be repeated.
+     * @return  Returns EGE_SUCCESS if sound is sucessfully started or EGE_ERROR if sound could not be started.
+     * @note  When repeatCount is set to zero the sound is going to be played exactly once. For negative values sound will be played forever.
+     */
+    EGEResult play(const PSound& sound, s32 repeatCount);
+    /* Returns TRUE if sound of a given name is being played. */
+    bool isPlaying(const String& soundName) const;
+    /* Stops playback of the sound with a given name. */
+    void stop(const String& soundName);
 
   private:
 

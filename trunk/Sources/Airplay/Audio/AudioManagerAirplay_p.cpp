@@ -46,30 +46,31 @@ static s16 ClipToS16(s32 value)
   return (s16) value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base)
+AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base),
+                                                               m_resampleFactor(0.0f),
+                                                               m_mixing(false),
+                                                               m_sound(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerPrivate::~AudioManagerPrivate()
 {
   // unregister what is to be unregistered
-  for (SoundsDataList::iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
+  for (SoundsList::iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
   {
-    SoundData& soundData = *it;
-
-    SoundPrivate* sound = soundData.sound->p_func();
+    SoundPrivate* sound = (*it)->p_func();
 
     // check if unregistering is needed
     if (0 == sound->keepAliveTimer().microseconds())
     {
       // set time to some positive value so all callback which can be called before unregistering takes place will exit immediately
-      sound->keepAliveTimer() = 1.0f;
+      sound->keepAliveTimer() = ENDED_SOUND_KEEP_ALIVE_DURATION;
 
       // request unregistering and stop channel
-      s3eSoundChannelStop(soundData.channel);
-      s3eSoundChannelUnRegister(soundData.channel, S3E_CHANNEL_END_SAMPLE);
-      s3eSoundChannelUnRegister(soundData.channel, S3E_CHANNEL_GEN_AUDIO_STEREO);
-      s3eSoundChannelUnRegister(soundData.channel, S3E_CHANNEL_GEN_AUDIO);
+      s3eSoundChannelStop(sound->channel());
+      s3eSoundChannelUnRegister(sound->channel(), S3E_CHANNEL_END_SAMPLE);
+      s3eSoundChannelUnRegister(sound->channel(), S3E_CHANNEL_GEN_AUDIO_STEREO);
+      s3eSoundChannelUnRegister(sound->channel(), S3E_CHANNEL_GEN_AUDIO);
     }
   }
 
@@ -87,11 +88,9 @@ bool AudioManagerPrivate::isValid() const
 void AudioManagerPrivate::update(const Time& time)
 {
   // update sounds
-  for (SoundsDataList::iterator it = m_sounds.begin(); it != m_sounds.end();)
+  for (SoundsList::iterator it = m_sounds.begin(); it != m_sounds.end();)
   {
-    SoundData& soundData = *it;
-
-    SoundPrivate* sound = soundData.sound->p_func();
+    SoundPrivate* sound = (*it)->p_func();
 
     // check if sound is still being played
     if (0 == sound->keepAliveTimer().microseconds())
@@ -107,22 +106,19 @@ void AudioManagerPrivate::update(const Time& time)
         // clear callbacks
         // NOTE: Due to nature of callbacks setup (async) we request unregistration here and will keep sound alive for a while to make sure that
         //       if in the case any of the callbacks is called before it is unregistered we still have a valid sound object
-        EGE_PRINT("AudioManagerPrivate::update - unregistering: %d %p", soundData.channel, soundData.sound->p_func());
+        EGE_PRINT("AudioManagerPrivate::update - unregistering: %d %p", sound->channel(), sound);
 
-        s3eSoundChannelStop(soundData.channel);
-        s3eSoundChannelUnRegister(soundData.channel, S3E_CHANNEL_END_SAMPLE);
-        s3eSoundChannelUnRegister(soundData.channel, S3E_CHANNEL_GEN_AUDIO_STEREO);
-        s3eSoundChannelUnRegister(soundData.channel, S3E_CHANNEL_GEN_AUDIO);
-
-        // remove from active sounds
-        d_func()->m_activeSounds.remove(soundData.sound);
+        s3eSoundChannelStop(sound->channel());
+        s3eSoundChannelUnRegister(sound->channel(), S3E_CHANNEL_END_SAMPLE);
+        s3eSoundChannelUnRegister(sound->channel(), S3E_CHANNEL_GEN_AUDIO_STEREO);
+        s3eSoundChannelUnRegister(sound->channel(), S3E_CHANNEL_GEN_AUDIO);
       }
 
       // update keep alive timer
       sound->keepAliveTimer() -= time;
       if (0 >= sound->keepAliveTimer().microseconds())
       {
-        EGE_PRINT("AudioManagerPrivate::update - removing: %d %p", soundData.channel, sound);
+        EGE_PRINT("AudioManagerPrivate::update - removing: %d %p", sound->channel(), sound);
 
         // now we can safely remove sound
         m_sounds.erase(it++);
@@ -141,8 +137,13 @@ void AudioManagerPrivate::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Plays given sound. */
-EGEResult AudioManagerPrivate::play(const PSound& sound)
+/*! Plays given sound.
+ * @param sound       Sound to play.
+ * @param repeatCount Number of times sound should be repeated.
+ * @return  Returns EGE_SUCCESS if sound is sucessfully started or EGE_ERROR if sound could not be started.
+ * @note  When repeatCount is set to zero the sound is going to be played exactly once. For negative values sound will be played forever.
+ */
+EGEResult AudioManagerPrivate::play(const PSound& sound, s32 repeatCount)
 {
   int channel = s3eSoundGetFreeChannel();
   if (-1 != channel)
@@ -153,8 +154,7 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
 
     // set channel properties
     //s3eSoundChannelSetInt(channel, S3E_CHANNEL_RATE, sound->codec()->frequency());
-    
-  //  s3eSoundChannelSetInt(channel, S3E_CHANNEL_PITCH, sound->pitch());
+    //s3eSoundChannelSetInt(channel, S3E_CHANNEL_PITCH, sound->pitch());
 
     // register callbacks
     if (S3E_RESULT_SUCCESS != s3eSoundChannelRegister(channel, S3E_CHANNEL_END_SAMPLE, AudioManagerPrivate::SampleEndCallback, soundPrivate) ||
@@ -177,9 +177,12 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
     // initially update all buffers
     soundPrivate->updateBuffers();
 
+    // initialize filters
     soundPrivate->initializeFilter();
 
+    // setup data for later use
     soundPrivate->setAudioManagerPrivate(this);
+    soundPrivate->setChannel(channel);
 
     // play sound
     const PDataBuffer& firstBuffer = *soundPrivate->buffers().begin();
@@ -192,15 +195,8 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
 
     EGE_PRINT("AudioManagerPrivate::play - channel: %d %p", channel, soundPrivate);
 
-    d_func()->m_activeSounds.push_back(sound);
-
-    // add to channels map
-    SoundData soundData;
-    soundData.channel   = channel;
-    soundData.sound     = sound;
-
-    m_sounds.push_back(soundData);
-
+    // add list
+    m_sounds.push_back(sound);
     return EGE_SUCCESS;
   }
 
@@ -412,5 +408,38 @@ void AudioManagerPrivate::uploadStereoChannels(int16* out, int16* data, u32 coun
     *out++ = ClipToS16(l + (m_mixing ? *out : 0));
     *out++ = ClipToS16(r + (m_mixing ? *out : 0));
   }  
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Stops playback of the sound with a given name. */
+void AudioManagerPrivate::stop(const String& soundName)
+{
+  // go thru all sounds
+  for (SoundsList::iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
+  {
+    PSound& sound = *it;
+    if (sound->name() == soundName)
+    {
+      // mark it to stop
+      sound->p_func()->keepAliveTimer() = ENDED_SOUND_KEEP_ALIVE_DURATION;
+      return;
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if sound of a given name is being played. */
+bool AudioManagerPrivate::isPlaying(const String& soundName) const
+{
+  // look for the sound in the active pool
+  for (SoundsList::const_iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
+  {
+    const PSound& sound = *it;
+    if (sound->name() == soundName)
+    {
+      // found
+      return true;
+    }
+  }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

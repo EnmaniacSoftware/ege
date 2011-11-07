@@ -30,6 +30,8 @@ class AudioCodec : public Object
      *  @note Number of actually decoded samples may be less than requested if end of data is reached. Otherwise it should match the requested value.
      */
     virtual bool decode(const PDataBuffer& out, s32 samplesCount, s32& samplesDecoded) = 0;
+    /*! Resets codec. */
+    virtual bool reset() = 0;
     /*! Returns number of channels. */
     inline s32 channels() const { return m_channels; }
     /*! Returns playback frequency (in Hz). */

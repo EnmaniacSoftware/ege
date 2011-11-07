@@ -6,6 +6,7 @@
 
 #include <EGE.h>
 #include <EGEDataBuffer.h>
+#include <EGEString.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -23,7 +24,7 @@ class Sound : public Object
 
   public:
 
-    Sound(const PDataBuffer& data);
+    Sound(const String& name, const PDataBuffer& data);
     virtual ~Sound();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -33,6 +34,8 @@ class Sound : public Object
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
+    /*! Returns name. */
+    const String& name() const { return m_name; }
     /* Sets pitch value. */
     void setPitch(float32 value);
     /*! Returns pitch value. */
@@ -41,10 +44,10 @@ class Sound : public Object
     void setGain(float32 value);
     /*! Returns gain value. */
     inline float32 gain() const { return m_gain; }
-    /* Sets looping flag. */
-    void setLooping(bool set);
-    /*! Returns looping flag. */
-    inline bool looping() const { return m_looping; }
+    /* Sets repeat count. */
+    void setRepeatCount(s32 count);
+    /*! Returns number of repeats left. */
+    s32 repeatsLeft() const { return m_repeatsLeft; }
     /*! Returns codec. */
     inline AudioCodec* codec() const { return m_codec; }
 
@@ -52,12 +55,14 @@ class Sound : public Object
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(Sound);
 
+    /*! Name. */
+    String m_name;
     /*! Pitch value. */
     float32 m_pitch;
     /*! Gain value. */
     float32 m_gain;
-    /*! Looping flag. */
-    bool m_looping;
+    /*! Number of repeats left. */
+    s32 m_repeatsLeft;
     /*! Audio codec. */
     AudioCodec* m_codec;
 };

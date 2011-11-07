@@ -43,8 +43,13 @@ void AudioManager::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Plays sound with given name. */
-EGEResult AudioManager::play(const String& soundName)
+/*! Plays sound with given name. 
+ * @param soundName   Name of the sound to play.
+ * @param repeatCount Number of times sound should be repeated.
+ * @note  When repeatCount is set to zero the sound is going to be played exactly once. For negative values sound will be played forever.
+ * @return  Returns EGE_SUCCESS if sound is sucessfully started, EGE_ERROR_NOT_FOUND if sound could not be found or EGE_ERROR if sound could not be started.
+ */
+EGEResult AudioManager::play(const String& soundName, s32 repeatCount)
 {
   if (isValid())
   {
@@ -54,7 +59,11 @@ EGEResult AudioManager::play(const String& soundName)
       PSound sound = soundResource->createInstance();
       if (sound)
       {
-        return p_func()->play(sound);
+        // set number of repeats
+        sound->setRepeatCount(repeatCount);
+
+        // play
+        return p_func()->play(sound, repeatCount);
       }
     }
 
@@ -64,14 +73,43 @@ EGEResult AudioManager::play(const String& soundName)
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Plays given sound. */
-EGEResult AudioManager::play(const PSound& sound)
+/*! Plays given sound.
+ * @param sound       Sound to play.
+ * @param repeatCount Number of times sound should be repeated.
+ * @return  Returns EGE_SUCCESS if sound is sucessfully started or EGE_ERROR if sound could not be started.
+ * @note  When repeatCount is set to zero the sound is going to be played exactly once. For negative values sound will be played forever.
+ */
+EGEResult AudioManager::play(const PSound& sound, s32 repeatCount)
 {
   if (isValid())
   {
-    return p_func()->play(sound);
+    // set number of repeats
+    sound->setRepeatCount(repeatCount);
+
+    // play
+    return p_func()->play(sound, repeatCount);
   }
 
   return EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if sound of a given name is being played. */
+bool AudioManager::isPlaying(const String& soundName) const
+{
+  if (isValid())
+  {
+    return p_func()->isPlaying(soundName);
+  }
+
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Stops playback of the sound with a given name. */
+void AudioManager::stop(const String& soundName)
+{
+  if (isValid())
+  {
+    p_func()->stop(soundName);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

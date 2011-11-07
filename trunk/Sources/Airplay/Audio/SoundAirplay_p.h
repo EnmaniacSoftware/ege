@@ -56,6 +56,10 @@ class SoundPrivate
     void setAudioManagerPrivate(AudioManagerPrivate* manager);
     /*! Returns pointer to private implementation of audio manager through which playback is being done. */
     AudioManagerPrivate* audioManager() const { return m_audioManager; }
+    /* Sets channel sound is being played on. */
+    void setChannel(s32 channelId);
+    /*! Returns channel id sound is being played. */
+    inline s32 channel() const { return m_channelId; }
 
   private:
 
@@ -69,6 +73,8 @@ class SoundPrivate
     Time m_keepAlive;
     /*! Pointer to private implementation of audio manager through which playback is being done. */
     AudioManagerPrivate* m_audioManager;
+    /*! Channel sound is being played on. Negative if not being played. */
+    s32 m_channelId;
 
 public:
 

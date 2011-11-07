@@ -13,7 +13,8 @@ EGE_DEFINE_NEW_OPERATORS(AudioManagerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(AudioManagerPrivate)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_device(NULL),
+AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base),
+                                                               m_device(NULL),
                                                                m_context(NULL)
 {
   EGE_MEMSET(m_channels, 0, sizeof (m_channels));
@@ -115,9 +116,16 @@ void AudioManagerPrivate::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Plays given sound. */
-EGEResult AudioManagerPrivate::play(const PSound& sound)
+/*! Plays given sound.
+ * @param sound       Sound to play.
+ * @param repeatCount Number of times sound should be repeated.
+ * @return  Returns EGE_SUCCESS if sound is sucessfully started or EGE_ERROR if sound could not be started.
+ * @note  When repeatCount is set to zero the sound is going to be played exactly once. For negative values sound will be played forever.
+ */
+EGEResult AudioManagerPrivate::play(const PSound& sound, s32 repeatCount)
 {
+  EGE_UNUSED(repeatCount);
+
   ALuint channel = availableChannel();
   if (0 < channel)
   {
@@ -134,7 +142,7 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
 	  alSourcef(channel, AL_GAIN, sound->gain());
 	
 	  // set the looping value
-		alSourcei(channel, AL_LOOPING, sound->looping() ? AL_TRUE : AL_FALSE);
+		//alSourcei(channel, AL_LOOPING, sound->looping() ? AL_TRUE : AL_FALSE);
 		
 	  // play the sound
 	  alSourcePlay(channel);
@@ -174,6 +182,43 @@ ALuint AudioManagerPrivate::availableChannel() const
   }
 
   return 0;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Stops playback of the sound with a given name. */
+void AudioManagerPrivate::stop(const String& soundName)
+{
+  // go thru all sounds
+  for (ChannelsMap::iterator it = m_activeChannels.begin(); it != m_activeChannels.end(); ++it)
+  {
+    PSound& sound = it->second;
+    if (sound->name() == soundName)
+    {
+      // stop sound
+      alSourceStop(it->first);
+			alSourcei(it->first, AL_BUFFER, 0);			
+
+      // remove from pools
+      m_activeChannels.erase(it);
+      return;
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if sound of a given name is being played. */
+bool AudioManagerPrivate::isPlaying(const String& soundName) const
+{
+  // look for the sound in the active pool
+  for (ChannelsMap::const_iterator it = m_activeChannels.begin(); it != m_activeChannels.end(); ++it)
+  {
+    const PSound& sound = it->second;
+    if (sound->name() == soundName)
+    {
+      // found
+      return true;
+    }
+  }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #endif // EGE_AUDIO_OPENAL

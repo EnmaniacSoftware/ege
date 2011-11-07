@@ -13,18 +13,7 @@ EGE_DEFINE_DELETE_OPERATORS(AudioCodecWav)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioCodecWav::AudioCodecWav(const PDataBuffer& stream) : AudioCodec(stream)
 {
-  EGEAudio::WaveRiffHeader riffHeader;
-  EGEAudio::WaveFmtHeader fmtHeader;
-  EGEAudio::WaveDataHeader dataHeader;
-
-  stream->setReadOffset(0);
-  AudioUtils::ReadWavHeaders(stream, riffHeader, fmtHeader, dataHeader);
-
-  // store data
-  m_channels        = fmtHeader.channels;
-  m_frequency       = fmtHeader.sampleRate;
-  m_bitsPerSample   = fmtHeader.bitsPerSample;
-  m_streamSizeLeft  = dataHeader.size;
+  reset();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioCodecWav::~AudioCodecWav()
@@ -67,5 +56,34 @@ bool AudioCodecWav::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
   m_streamSizeLeft -= samplesDecoded * sampleSize;
 
   return (0 == m_streamSizeLeft);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Resets codec. */
+bool AudioCodecWav::reset()
+{
+  EGEAudio::WaveRiffHeader riffHeader;
+  EGEAudio::WaveFmtHeader fmtHeader;
+  EGEAudio::WaveDataHeader dataHeader;
+
+  PDataBuffer stream;
+  if (EGE_OBJECT_UID_DATA_BUFFER == m_stream->uid())
+  {
+    stream = m_stream;
+
+    stream->setReadOffset(0);
+    AudioUtils::ReadWavHeaders(stream, riffHeader, fmtHeader, dataHeader);
+  }
+  else
+  {
+      EGE_ASSERT("Not supported");
+  }
+
+  // store data
+  m_channels        = fmtHeader.channels;
+  m_frequency       = fmtHeader.sampleRate;
+  m_bitsPerSample   = fmtHeader.bitsPerSample;
+  m_streamSizeLeft  = dataHeader.size;
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

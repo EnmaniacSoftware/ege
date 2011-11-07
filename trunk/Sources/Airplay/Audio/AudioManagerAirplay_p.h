@@ -32,8 +32,17 @@ class AudioManagerPrivate
     bool isValid() const;
     /* Updates manager. */
     void update(const Time& time);
-    /* Plays given sound. */
-    EGEResult play(const PSound& sound);
+    /* Plays given sound.
+     * @param sound       Sound to play.
+     * @param repeatCount Number of times sound should be repeated.
+     * @return  Returns EGE_SUCCESS if sound is sucessfully started or EGE_ERROR if sound could not be started.
+     * @note  When repeatCount is set to zero the sound is going to be played exactly once. For negative values sound will be played forever.
+     */
+    EGEResult play(const PSound& sound, s32 repeatCount);
+    /* Returns TRUE if sound of a given name is being played. */
+    bool isPlaying(const String& soundName) const;
+    /* Stops playback of the sound with a given name. */
+    void stop(const String& soundName);
 
   private:
 
@@ -56,24 +65,17 @@ class AudioManagerPrivate
 
   private:
 
-    /*! Data structure for active sound. */
-    struct SoundData
-    {
-      s32 channel;                                    /*!< Channel sound was original played on.*/
-      PSound sound;                                   /*!< Sound played. */
-    };
-
-    typedef List<SoundData> SoundsDataList;
+    typedef List<PSound> SoundsList;
 
   private:
 
     /*! Set of all active sounds. */
-    SoundsDataList m_sounds;
+    SoundsList m_sounds;
     /*! Resample factor for sound being currently processed. */
     float32 m_resampleFactor;
     /*! Mixing flag for sound being currently processed. */
     bool m_mixing;
-
+    /*! Pointer to sound being currently processed. */
     SoundPrivate* m_sound;
  };
 

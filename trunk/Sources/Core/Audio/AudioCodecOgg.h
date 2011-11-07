@@ -35,6 +35,8 @@ class AudioCodecOgg : public AudioCodec
      *  @note Number of actually decoded samples may be less than requested if end of data is reached. Otherwise it should match the requested value.
      */
     bool decode(const PDataBuffer& out, s32 samplesCount, s32& samplesDecoded) override;
+    /* Resets codec. */
+    bool reset() override;
 
   private:
 

@@ -30,21 +30,28 @@ class AudioManager : public Object
     bool isValid() const;
     /* Updates manager. */
     void update(const Time& time);
-    /* Plays sound with given name. */
-    EGEResult play(const String& soundName);
-    /* Plays given sound. */
-    EGEResult play(const PSound& sound);
-
-  private:
-
-    typedef List<PSound> SoundList;
+    /* Plays sound with given name. 
+     * @param soundName   Name of the sound to play.
+     * @param repeatCount Number of times sound should be repeated.
+     * @return  Returns EGE_SUCCESS if sound is sucessfully started, EGE_ERROR_NOT_FOUND if sound could not be found or EGE_ERROR if sound could not be started.
+     * @note  When repeatCount is set to zero the sound is going to be played exactly once. For negative values sound will be played forever.
+     */
+    EGEResult play(const String& soundName, s32 repeatCount = 0);
+    /* Plays given sound.
+     * @param sound       Sound to play.
+     * @param repeatCount Number of times sound should be repeated.
+     * @return  Returns EGE_SUCCESS if sound is sucessfully started or EGE_ERROR if sound could not be started.
+     * @note  When repeatCount is set to zero the sound is going to be played exactly once. For negative values sound will be played forever.
+     */
+    EGEResult play(const PSound& sound, s32 repeatCount = 0);
+    /* Returns TRUE if sound of a given name is being played. */
+    bool isPlaying(const String& soundName) const;
+    /* Stops playback of the sound with a given name. */
+    void stop(const String& soundName);
 
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(AudioManager);
-
-    /*! Pool of active sounds. */
-    SoundList m_activeSounds;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

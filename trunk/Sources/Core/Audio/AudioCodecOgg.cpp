@@ -36,57 +36,7 @@ static s16 ClipToS16(s32 value)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioCodecOgg::AudioCodecOgg(const PDataBuffer& stream) : AudioCodec(stream)
 {
-  int error;
-  int streamDataUsed;
-
-  // initially supply up to 1024 bytes
-  s32 dataLength = Math::Min(static_cast<s32>(1024), static_cast<s32>(stream->size()));
-  do
-  {
-    // try to initialize stream with current data length
-    m_codecStream = stb_vorbis_open_pushdata(reinterpret_cast<unsigned char*>(stream->data()), dataLength, &streamDataUsed, &error, NULL);
-
-    // check if failed
-    if (NULL == m_codecStream) 
-    {
-      // check if more data needed
-      if (VORBIS_need_more_data == error) 
-      {
-        // try to increase data length by up to next 1024 bytes
-        s32 newDataLength = Math::Min(dataLength + 1024, static_cast<s32>(stream->size()));
-
-        // check if no more data is available
-        if (newDataLength == dataLength)
-        {
-          // error! not enough data in a stream
-          return;
-        }
-
-        // try again with new data length
-        dataLength = newDataLength;
-        continue;
-      }
-
-      // error!
-      return;
-    }
-  }
-  while (NULL == m_codecStream);
-
-  // set stream read offset to exactly what was used
-  stream->setReadOffset(streamDataUsed);
-
-  // retrive stream data
-  stb_vorbis_info info = stb_vorbis_get_info(m_codecStream);
-  m_channels      = info.channels;
-  m_frequency     = info.sample_rate;
-
-  // vorbis internally works on floating point samples but we will convert to 16 bit integers where required
-  m_bitsPerSample = 16;
-
-  // preallocate memory for 512 samples
-  m_overflousDecodedSamples.setCapacity(512 * (m_channels * (m_bitsPerSample >> 3)));
-  m_overflousDecodedSamples.setByteOrdering(EGEByteOrder::LITTLE_ENDIAN);
+  reset();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioCodecOgg::~AudioCodecOgg()
@@ -270,5 +220,73 @@ void AudioCodecOgg::uploadStereoChannels(const PDataBuffer& out, s32 outCount, s
     x = ClipToS16(static_cast<s32>(rightChannel[i] * Math::MAX_S16));
     m_overflousDecodedSamples << x;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Resets codec. */
+bool AudioCodecOgg::reset()
+{
+  int error;
+  int streamDataUsed;
+
+  PDataBuffer stream;
+  if (EGE_OBJECT_UID_DATA_BUFFER == m_stream->uid())
+  {
+    stream = m_stream;
+
+    // initially supply up to 1024 bytes
+    s32 dataLength = Math::Min(static_cast<s32>(1024), static_cast<s32>(stream->size()));
+    do
+    {
+      // try to initialize stream with current data length
+      m_codecStream = stb_vorbis_open_pushdata(reinterpret_cast<unsigned char*>(stream->data()), dataLength, &streamDataUsed, &error, NULL);
+
+      // check if failed
+      if (NULL == m_codecStream) 
+      {
+        // check if more data needed
+        if (VORBIS_need_more_data == error) 
+        {
+          // try to increase data length by up to next 1024 bytes
+          s32 newDataLength = Math::Min(dataLength + 1024, static_cast<s32>(stream->size()));
+
+          // check if no more data is available
+          if (newDataLength == dataLength)
+          {
+            // error! not enough data in a stream
+            return false;
+          }
+
+          // try again with new data length
+          dataLength = newDataLength;
+          continue;
+        }
+
+        // error!
+        return false;
+      }
+    }
+    while (NULL == m_codecStream);
+
+    // set stream read offset to exactly what was used
+    stream->setReadOffset(streamDataUsed);  
+  }
+  else
+  {
+      EGE_ASSERT("Not supported");
+  }
+
+  // retrive stream data
+  stb_vorbis_info info = stb_vorbis_get_info(m_codecStream);
+  m_channels  = info.channels;
+  m_frequency = info.sample_rate;
+
+  // vorbis internally works on floating point samples but we will convert to 16 bit integers where required
+  m_bitsPerSample = 16;
+
+  // preallocate memory for 512 samples
+  m_overflousDecodedSamples.setCapacity(512 * (m_channels * (m_bitsPerSample >> 3)));
+  m_overflousDecodedSamples.setByteOrdering(EGEByteOrder::LITTLE_ENDIAN);
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

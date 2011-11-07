@@ -19,11 +19,12 @@ EGE_DEFINE_NEW_OPERATORS(Sound)
 EGE_DEFINE_DELETE_OPERATORS(Sound)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Sound::Sound(const PDataBuffer& data) : Object(NULL), 
-                                        m_pitch(1.0f), 
-                                        m_gain(1.0f), 
-                                        m_looping(false),
-                                        m_codec(NULL)
+Sound::Sound(const String& name, const PDataBuffer& data) : Object(NULL), 
+                                                            m_name(name),
+                                                            m_pitch(1.0f), 
+                                                            m_gain(1.0f), 
+                                                            m_codec(NULL),
+                                                            m_repeatsLeft(0)
 {
   // detect stream type
   EGEAudio::StreamType type = AudioUtils::DetectStreamType(data);
@@ -74,9 +75,9 @@ void Sound::setGain(float32 value)
   m_gain = value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets looping flag. */
-void Sound::setLooping(bool set)
+/*! Sets repeat count. */
+void Sound::setRepeatCount(s32 count)
 {
-  m_looping = set;
+  m_repeatsLeft = count;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
