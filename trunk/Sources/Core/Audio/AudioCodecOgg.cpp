@@ -34,7 +34,7 @@ static s16 ClipToS16(s32 value)
   return (s16) value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioCodecOgg::AudioCodecOgg(const PDataBuffer& stream) : AudioCodec(stream)
+AudioCodecOgg::AudioCodecOgg(const PDataBuffer& stream) : AudioCodec(EGE_OBJECT_UID_AUDIO_CODEC_OGG, stream)
 {
   reset();
 }

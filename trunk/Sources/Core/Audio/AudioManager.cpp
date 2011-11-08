@@ -8,6 +8,7 @@
   #endif // EGE_AUDIO_OPENAL
 #elif EGE_PLATFORM_AIRPLAY
   #include "Airplay/Audio/AudioManagerAirplay_p.h"
+  #include "Airplay/Audio/AudioManagerSoftwareAirplay_p.h"
 #endif // EGE_PLATFORM_WIN32
 
 EGE_NAMESPACE
@@ -57,14 +58,7 @@ EGEResult AudioManager::play(const String& soundName, s32 repeatCount)
     if (soundResource)
     {
       PSound sound = soundResource->createInstance();
-      if (sound)
-      {
-        // set number of repeats
-        sound->setRepeatCount(repeatCount);
-
-        // play
-        return p_func()->play(sound, repeatCount);
-      }
+      return play(sound, repeatCount);
     }
 
     return EGE_ERROR_NOT_FOUND;
@@ -81,7 +75,7 @@ EGEResult AudioManager::play(const String& soundName, s32 repeatCount)
  */
 EGEResult AudioManager::play(const PSound& sound, s32 repeatCount)
 {
-  if (isValid())
+  if (isValid() && sound && sound->isValid())
   {
     // set number of repeats
     sound->setRepeatCount(repeatCount);

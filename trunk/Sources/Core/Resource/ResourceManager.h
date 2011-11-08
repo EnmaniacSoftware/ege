@@ -80,14 +80,20 @@ class ResourceManager : public Object
     EGEResult processResourcesTag(const String& filePath, const PXmlElement& tag);
     /** Add new group from XML data.
     *  
-    *   \param  filePath  relative (with respect to resource root directory) path to resouce file containing the group definition.
-    *   \param  tag       group element to process. 
+    *   @param  filePath  relative (with respect to resource root directory) path to resouce file containing the group definition.
+    *   @param  tag       group element to process. 
     */
     EGEResult addGroup(const String& filePath, const PXmlElement& tag);
     /* Removes all groups. */
     void removeGroups();
     /* Creates default resources. */
     void createDefaultResources();
+    /* Processes include command from XML data. 
+     *  
+     *   @param  filePath  relative (with respect to resource root directory) path to resouce file containing the group definition.
+     *   @param  tag       include element to process. 
+     */
+    EGEResult processInclude(const String& filePath, const PXmlElement& tag);
 
   private:
 

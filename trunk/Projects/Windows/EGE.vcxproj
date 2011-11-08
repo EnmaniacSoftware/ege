@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Application\AppController.cpp" />
     <ClCompile Include="..\..\Sources\Core\Application\Application.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecMp3.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecOgg.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecWav.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioManager.cpp" />
@@ -22,6 +23,7 @@
     <ClCompile Include="..\..\Sources\Core\Audio\Sound.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\stb_vorbis.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\ComplexTypes.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp" />
@@ -127,6 +129,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.cpp" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodec.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecMp3.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecOgg.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecWav.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioManager.h" />

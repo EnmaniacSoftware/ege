@@ -19,7 +19,7 @@ class AudioCodec : public Object
 {
   public:
 
-    AudioCodec(const PDataBuffer& stream) : Object(NULL), m_stream(stream), m_channels(0), m_frequency(0), m_bitsPerSample(0) {}
+    AudioCodec(u32 uid, const PDataBuffer& stream) : Object(NULL, uid), m_stream(stream), m_channels(0), m_frequency(0), m_bitsPerSample(0) {}
     virtual ~AudioCodec() {}
 
     /*! Decodes up to given number of samples. 
@@ -38,6 +38,8 @@ class AudioCodec : public Object
     inline s32 frequency() const { return m_frequency; }
     /*! Returns number of bits per sample (for single channel). */
     inline s32 bitsPerSample() const { return m_bitsPerSample; }
+    /*! Returns data stream. */
+    inline const PObject& stream() const { return m_stream; }
 
   protected:
 

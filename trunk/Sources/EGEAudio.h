@@ -14,7 +14,8 @@ namespace EGEAudio
   {
     ST_UNKNOWN = -1,
     ST_WAVE,
-    ST_OGG
+    ST_OGG,
+    ST_MP3
   };
 
   /*! Wave format RIFF header. */

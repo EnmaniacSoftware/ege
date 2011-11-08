@@ -249,22 +249,7 @@ EGEResult ResourceManager::processResourcesTag(const String& filePath, const PXm
     // process INCLUDE tag
     else if (NODE_INCLUDE == childName)
     {
-      String path = child->attribute("path");
-
-      // check if obligatory data is wrong
-      if (path.empty())
-      {
-        // erro!
-        break;
-      }
-
-      // compose absolute path
-      path = filePath + "/" + path;
-
-      EGE_PRINT("ResourceManager::processResourcesTag - including %s", path.toAscii());
-
-      // add new resource
-      result = addResources(path, false);
+      result = processInclude(filePath, child);
     }
 
     // check if error occured
@@ -496,5 +481,39 @@ PResourceText ResourceManager::textResource(const String& name, const String& gr
 PResourceSound ResourceManager::soundResource(const String& name, const String& groupName) const
 {
   return resource(RESOURCE_NAME_SOUND, name, groupName);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Processes include command from XML data. 
+ *  
+ *   @param  filePath  relative (with respect to resource root directory) path to resouce file containing the group definition.
+ *   @param  tag       include element to process. 
+ */
+EGEResult ResourceManager::processInclude(const String& filePath, const PXmlElement& tag)
+{
+  bool error = false;
+
+  // get data
+  String path     = tag->attribute("path");
+  bool autoDetect = tag->attribute("auto-detect", "false").toBool(&error);
+
+  // check if obligatory data is wrong
+  if (path.empty() || error)
+  {
+    // error!
+    return EGE_ERROR;
+  }
+
+  EGE_PRINT("ResourceManager::processInclude - including %s", path.toAscii());
+
+  // check if not autodetecting
+  // NOTE: in this case we assume path is with respect to current directory
+  if (!autoDetect)
+  {
+    // compose absolute path
+    path = filePath + "/" + path;
+  }
+
+  // add new resource
+  return addResources(path, autoDetect);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

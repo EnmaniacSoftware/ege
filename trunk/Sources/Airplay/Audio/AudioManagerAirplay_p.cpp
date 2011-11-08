@@ -1,13 +1,14 @@
+#ifndef EGE_AIRPLAY_AUDIO_SOFTWARE
 #include "Core/Application/Application.h"
 #include "Airplay/Audio/AudioManagerAirplay_p.h"
 #include "Airplay/Audio/SoundAirplay_p.h"
+#include "Core/Audio/AudioCodecWav.h"
 #include <s3eSound.h>
+#include <s3eAudio.h>
 #include <s3e.h>
 #include <EGEAudio.h>
 #include <EGEDebug.h>
 #include <EGEMath.h>
-
-#include <EGEOverlay.h>
 
 EGE_NAMESPACE
 
@@ -17,63 +18,12 @@ EGE_DEFINE_NEW_OPERATORS(AudioManagerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(AudioManagerPrivate)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define ENDED_SOUND_KEEP_ALIVE_DURATION 1.0f
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Local function clipping given value to S16 range. Taken from AIRPLAY SDK. */
-static s16 ClipToS16(s32 value)
-{
-  enum
-  {
-    minval =  INT16_MIN,
-    maxval =  INT16_MAX,
-    allbits = UINT16_MAX
-  };
-
-  // quick overflow test, the addition moves valid range to 0-allbits
-  if ((value - minval) & ~allbits)
-  {
-    // we overflowed.
-    if (value > maxval)
-    {
-        value = maxval;
-    }
-    else if (value < minval)
-    {
-      value = minval;
-    }
-  }
-
-  return (s16) value;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base),
-                                                               m_resampleFactor(0.0f),
-                                                               m_mixing(false),
-                                                               m_sound(NULL)
+AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerPrivate::~AudioManagerPrivate()
 {
-  // unregister what is to be unregistered
-  for (SoundsList::iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
-  {
-    SoundPrivate* sound = (*it)->p_func();
-
-    // check if unregistering is needed
-    if (0 == sound->keepAliveTimer().microseconds())
-    {
-      // set time to some positive value so all callback which can be called before unregistering takes place will exit immediately
-      sound->keepAliveTimer() = ENDED_SOUND_KEEP_ALIVE_DURATION;
-
-      // request unregistering and stop channel
-      s3eSoundChannelStop(sound->channel());
-      s3eSoundChannelUnRegister(sound->channel(), S3E_CHANNEL_END_SAMPLE);
-      s3eSoundChannelUnRegister(sound->channel(), S3E_CHANNEL_GEN_AUDIO_STEREO);
-      s3eSoundChannelUnRegister(sound->channel(), S3E_CHANNEL_GEN_AUDIO);
-    }
-  }
-
   // give some time to sound thread
   s3eDeviceYield(100);
 }
@@ -87,53 +37,32 @@ bool AudioManagerPrivate::isValid() const
 /*! Updates manager. */
 void AudioManagerPrivate::update(const Time& time)
 {
-  // update sounds
-  for (SoundsList::iterator it = m_sounds.begin(); it != m_sounds.end();)
+  // check if compressed audio was being played
+  if (m_compessedAudio && m_compessedAudio->isValid())
   {
-    SoundPrivate* sound = (*it)->p_func();
-
-    // check if sound is still being played
-    if (0 == sound->keepAliveTimer().microseconds())
+    // check if finished playing
+    if (S3E_FALSE == s3eAudioIsPlaying())
     {
-      // updates buffers for given channel
-      sound->updateBuffers();
+      // ok, clean up
+      m_compessedAudio = NULL;
     }
-    else
+  }
+
+  // go thru all uncompressed sounds
+  for (SoundsList::iterator it = m_uncompressedAudio.begin(); it != m_uncompressedAudio.end();)
+  {
+    PSound& sound = *it;
+
+    // check if finished playing
+    if ((0 == s3eSoundChannelGetInt(sound->p_func()->channel(), S3E_CHANNEL_STATUS)) && 
+        (0 == s3eSoundChannelGetInt(sound->p_func()->channel(), S3E_CHANNEL_PAUSED)))
     {
-      // check if sound was marked as stopped
-      if (ENDED_SOUND_KEEP_ALIVE_DURATION == sound->keepAliveTimer().seconds())
-      {
-        // clear callbacks
-        // NOTE: Due to nature of callbacks setup (async) we request unregistration here and will keep sound alive for a while to make sure that
-        //       if in the case any of the callbacks is called before it is unregistered we still have a valid sound object
-        EGE_PRINT("AudioManagerPrivate::update - unregistering: %d %p", sound->channel(), sound);
-
-        s3eSoundChannelStop(sound->channel());
-        s3eSoundChannelUnRegister(sound->channel(), S3E_CHANNEL_END_SAMPLE);
-        s3eSoundChannelUnRegister(sound->channel(), S3E_CHANNEL_GEN_AUDIO_STEREO);
-        s3eSoundChannelUnRegister(sound->channel(), S3E_CHANNEL_GEN_AUDIO);
-      }
-
-      // update keep alive timer
-      sound->keepAliveTimer() -= time;
-      if (0 >= sound->keepAliveTimer().microseconds())
-      {
-        EGE_PRINT("AudioManagerPrivate::update - removing: %d %p", sound->channel(), sound);
-
-        // now we can safely remove sound
-        m_sounds.erase(it++);
-        continue;
-      }
+      // ok, clean up
+      m_uncompressedAudio.erase(it++);
+      continue;
     }
 
     ++it;
-
-    //if (sound->p_func()->isDone() && (0 == s3eSoundChannelGetInt(channel, S3E_CHANNEL_STATUS)) && (0 == s3eSoundChannelGetInt(channel, S3E_CHANNEL_PAUSED)))
-    //{
-
-    //  EGE_PRINT("AudioManagerPrivate::update - removing channel: %d %p", channel, sound->p_func());
-    //  m_activeSounds.erase(channel);
-    //}
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -145,283 +74,93 @@ void AudioManagerPrivate::update(const Time& time)
  */
 EGEResult AudioManagerPrivate::play(const PSound& sound, s32 repeatCount)
 {
-  int channel = s3eSoundGetFreeChannel();
-  if (-1 != channel)
+  const PObject& stream = sound->codec()->stream();
+
+  // check if MP3 (or other supported compressed audio)
+  if (EGE_OBJECT_UID_AUDIO_CODEC_MP3 == sound->codec()->uid())
   {
-    SoundPrivate* soundPrivate = sound->p_func();
-
-    soundPrivate->keepAliveTimer() = 0.0f;
-
-    // set channel properties
-    //s3eSoundChannelSetInt(channel, S3E_CHANNEL_RATE, sound->codec()->frequency());
-    //s3eSoundChannelSetInt(channel, S3E_CHANNEL_PITCH, sound->pitch());
-
-    // register callbacks
-    if (S3E_RESULT_SUCCESS != s3eSoundChannelRegister(channel, S3E_CHANNEL_END_SAMPLE, AudioManagerPrivate::SampleEndCallback, soundPrivate) ||
-        S3E_RESULT_SUCCESS != s3eSoundChannelRegister(channel, S3E_CHANNEL_GEN_AUDIO, AudioManagerPrivate::AudioCallback, soundPrivate))
+    // process according to stream type
+    switch (stream->uid())
     {
-      // error!
-      return EGE_ERROR;
+      case EGE_OBJECT_UID_DATA_BUFFER:
+
+        // play sound
+        if (S3E_RESULT_ERROR == s3eAudioPlayFromBuffer(ege_cast<DataBuffer*>(stream)->data(), static_cast<uint32>(ege_cast<DataBuffer*>(stream)->size()), 
+                                                       repeatCount + 1))
+        {
+          // error!
+          return EGE_ERROR;
+        }
+
+        // store it
+        m_compessedAudio = sound;
+        break;
+
+      default:
+
+        EGE_ASSERT("Not supported!");
+        return EGE_ERROR_NOT_SUPPORTED;
     }
 
-    // check if stereo sound
-    if (2 == sound->codec()->channels())
+    return EGE_SUCCESS;
+  }
+  // check if WAV file
+  else if (EGE_OBJECT_UID_AUDIO_CODEC_WAV == sound->codec()->uid())
+  {
+    // get free channel
+    int channel = s3eSoundGetFreeChannel();
+    if (-1 != channel)
     {
-      if (S3E_RESULT_SUCCESS != s3eSoundChannelRegister(channel, S3E_CHANNEL_GEN_AUDIO_STEREO, AudioManagerPrivate::AudioCallback, soundPrivate))
+      DataBuffer* dataBuffer = ege_cast<DataBuffer*>(stream);
+
+      // setup playback data
+      // NOTE: first set channel frequency and then pitch as setting channel frequency modifies pitch
+      s3eSoundChannelSetInt(channel, S3E_CHANNEL_RATE, sound->codec()->frequency());
+      s3eSoundChannelSetInt(channel, S3E_CHANNEL_PITCH, static_cast<int32>(s3eSoundChannelGetInt(channel, S3E_CHANNEL_PITCH) * sound->pitch()));
+
+      // play sound
+      if (S3E_RESULT_ERROR == s3eSoundChannelPlay(channel, reinterpret_cast<int16*>(dataBuffer->data(dataBuffer->readOffset())),
+                                                  reinterpret_cast<AudioCodecWav*>(sound->codec())->remainingSamplesCount(), repeatCount + 1, 0))
       {
         // error!
         return EGE_ERROR;
       }
+
+      // setup data for later use
+      sound->p_func()->setChannel(channel);
+
+      // store it
+      m_uncompressedAudio.push_back(sound);
+      return EGE_SUCCESS;
     }
 
-    // initially update all buffers
-    soundPrivate->updateBuffers();
-
-    // initialize filters
-    soundPrivate->initializeFilter();
-
-    // setup data for later use
-    soundPrivate->setAudioManagerPrivate(this);
-    soundPrivate->setChannel(channel);
-
-    // play sound
-    const PDataBuffer& firstBuffer = *soundPrivate->buffers().begin();
-    if (S3E_RESULT_SUCCESS != s3eSoundChannelPlay(channel, reinterpret_cast<int16*>(firstBuffer->data()), static_cast<uint32>(firstBuffer->size() >> 1), 
-                                                  1, 0))
-    {
-      // error!
-      return EGE_ERROR;
-    }
-
-    EGE_PRINT("AudioManagerPrivate::play - channel: %d %p", channel, soundPrivate);
-
-    // add list
-    m_sounds.push_back(sound);
-    return EGE_SUCCESS;
+    return EGE_ERROR;
   }
 
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Airplay callback function called once sample has ended. */
-int32 AudioManagerPrivate::SampleEndCallback(void* systemData, void* userData)
-{ 
-  s3eSoundEndSampleInfo* info = reinterpret_cast<s3eSoundEndSampleInfo*>(systemData);
-
-  SoundPrivate* sound = reinterpret_cast<SoundPrivate*>(userData);
-
-  sound->keepAliveTimer().fromSeconds(ENDED_SOUND_KEEP_ALIVE_DURATION);
-
-  return info->m_RepsRemaining;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Airplay callback function called everytime when more audio data is required. */
-int32 AudioManagerPrivate::AudioCallback(void* systemData, void* userData)
-{
-  s3eSoundGenAudioInfo* info = reinterpret_cast<s3eSoundGenAudioInfo*>(systemData);
-  // TAGE - garbage in info->m_OrigRepeats
-
-  SoundPrivate* sound = reinterpret_cast<SoundPrivate*>(userData);
-
-  AudioManagerPrivate* me = sound->audioManager();
-
-  if (sound->areBuffersLocked() || (0 < sound->keepAliveTimer().microseconds()))
-  {
-    return 0;
-  }
-
-  me->m_mixing = (0 != info->m_Mix);
-  me->m_sound = sound;
-
-  sound->lockBuffers();
-
-  AudioCodec* codec = sound->d_func()->codec();
-
-  const s32 sampleSize = codec->channels() * sizeof (int16);
-
-  // get list of sound buffers
-  const SoundPrivate::BuffersList& buffers = sound->buffers();
-  
-  // calculate frequency resample factor
-  const s32 gcd = Math::GreatestCommonDivisor(codec->frequency(), s3eSoundGetInt(S3E_SOUND_OUTPUT_FREQ));
-  me->m_resampleFactor = (codec->frequency() / gcd) / static_cast<float32>(s3eSoundGetInt(S3E_SOUND_OUTPUT_FREQ) / gcd);
-
-  // set flag indicating sound hasnt been completly played yet
-  info->m_EndSample = 0;
-
-  // reset count indicating how many samples have been generated this time
-  s32 samplesPlayed = 0;
-
-  // get pointer to first sample to generate
-  int16* target = (int16*) info->m_Target;
-
-  u32 samplesStillNeeded = info->m_NumSamples;
-
-  // go thru all buffers (or till all requested samples hasnt been played yet)
-  for (SoundPrivate::BuffersList::const_iterator it = buffers.begin(); it != buffers.end() && (0 < samplesStillNeeded); ++it)
-  {
-    const PDataBuffer& buffer = *it;
-
-    // number of addressable samples in buffer
-    u32 addressableSamplesInBuffer = static_cast<uint32>((buffer->size() - buffer->readOffset())) / sampleSize;
-
-    // number of samples which can be processed to be in addressable range
-    u32 availableSamplesInBuffer = static_cast<u32>(Math::Floor(addressableSamplesInBuffer / me->m_resampleFactor));
-
-    // required number of addressable samples for currently needed samples
-    u32 addressableSamplesStillNeeded = static_cast<u32>(Math::Ceil(samplesStillNeeded * me->m_resampleFactor));
-
-    // determine number of 'base' samples according to what is addressable
-    u32 samplesAvailable = (addressableSamplesStillNeeded < addressableSamplesInBuffer) ? samplesStillNeeded : availableSamplesInBuffer;
-
-    // check if any samples still can be played
-    if (0 < samplesAvailable)
-    {
-      // get pointer to begining of sample array 
-      int16* data = reinterpret_cast<int16*>(buffer->data(buffer->readOffset()));
-
-      // move read offset as we are going to reference buffer directly without any copying
-      buffer->setReadOffset(buffer->readOffset() +  Math::Min(addressableSamplesStillNeeded, addressableSamplesInBuffer) * sampleSize);
-
-      // upload depending on number of channels
-      switch (codec->channels())
-      {
-        case 1:
-
-          me->uploadMonoChannel(target, data, samplesAvailable);
-          break;
-
-        case 2:
-
-          me->uploadStereoChannels(target, data, samplesAvailable);
-          break;
-
-        default:
-
-          EGE_ASSERT(false && "Not supported yet!");
-          break;
-      }
-    }
-
-    // check if in the buffer still some data is present but not enough for even one refrequenced sample
-    if ((samplesStillNeeded != samplesAvailable) && (buffer->size() != buffer->readOffset()))
-    {
-      // move read pointer to the end of buffer so it gets refilled
-      buffer->setReadOffset(buffer->size());
-
-      // skip sample on the edge
-      ++samplesPlayed;
-    }
-
-    // update samples played counter
-    samplesPlayed += samplesAvailable;
-
-    // update requested number of samples counter
-    samplesStillNeeded -= samplesAvailable;
-  }
-
-  // check if we played less samples than requested
-  if (0 < samplesStillNeeded)
-  {
-    // check if no more data in codec
-    if (sound->isDone())
-    {
-      // done
-      info->m_EndSample = S3E_TRUE;
-    }
-    else
-    {
-      // audio is starved
-      s3eDeviceYield(1);
-    }
-  }
-
-  sound->unlockBuffers();
-
-  return samplesPlayed;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Uploads mono channel into output buffer. 
- * @param out         Output buffer data in being uploaded into.
- * @param data        Input data buffer from which samples are to be mixed from.
- * @param count       Total number of samples to be uploaded.
- */
-void AudioManagerPrivate::uploadMonoChannel(int16* out, int16* data, u32 count) const
-{
-  // go thru all samples
-  for (register u32 i = 0; i < count; i++)
-  {
-    // calculate base sample index (with frequency resampling applied)
-    u32 sampleIndex = static_cast<s32>(m_resampleFactor * i);
-
-    // TAGE - debug
-    //if (sampleIndex >= Math::Min(addressableSamplesStillNeeded, addressableSamplesInBuffer))
-    //{
-    //  int a = 1;
-    //}
-
-    // get input sample data
-    int16 y = data[sampleIndex];
-
-    if (1)
-    {
-        // apply FIR filter to output to remove artifacts     
-        static int buffer_pos = -1;
-        buffer_pos = (buffer_pos + 1) % 129;
-
-        // use circular buffer to store previous inputs
-        m_sound->m_filterBuffer[buffer_pos] = y;
-
-        if (0)
-        {
-          y = 0;
-          for (int i=0; i< 129; i++)
-          {
-              y += (int16)(m_sound->m_filterCoefficients[i] * m_sound->m_filterBuffer[(buffer_pos + i) % 129]);
-          }
-        }
-    }
-
-    // mix and store to output
-    *out++ = ClipToS16(y + (m_mixing ? *out : 0));
-  }  
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Uploads stereo channel into output buffer. 
- * @param out         Output buffer data in being uploaded into.
- * @param data        Input data buffer from which samples are to be mixed from.
- * @param count       Total number of samples to be uploaded.
- */
-void AudioManagerPrivate::uploadStereoChannels(int16* out, int16* data, u32 count) const
-{
-  // go thru all samples
-  for (register u32 i = 0; i < count; i++)
-  {
-    // calculate base sample index (with frequency resampling applied)
-    u32 sampleIndex = static_cast<s32>(m_resampleFactor * (i << 1));
-
-    // get input sample data
-    int16 l = data[sampleIndex];
-    int16 r = data[sampleIndex + 1];
-
-    // mix and store to output
-    *out++ = ClipToS16(l + (m_mixing ? *out : 0));
-    *out++ = ClipToS16(r + (m_mixing ? *out : 0));
-  }  
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Stops playback of the sound with a given name. */
 void AudioManagerPrivate::stop(const String& soundName)
 {
-  // go thru all sounds
-  for (SoundsList::iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
+  // check if compressed audio
+  if (m_compessedAudio && m_compessedAudio->isValid() && m_compessedAudio->name() == soundName)
   {
-    PSound& sound = *it;
-    if (sound->name() == soundName)
+    // stop it
+    s3eAudioStop();
+  }
+  else
+  {
+    // go thru all uncompressed sounds
+    for (SoundsList::iterator it = m_uncompressedAudio.begin(); it != m_uncompressedAudio.end(); ++it)
     {
-      // mark it to stop
-      sound->p_func()->keepAliveTimer() = ENDED_SOUND_KEEP_ALIVE_DURATION;
-      return;
+      PSound& sound = *it;
+      if (sound->name() == soundName)
+      {
+        // mark it to stop
+        s3eSoundChannelStop(sound->p_func()->channel());
+        return;
+      }
     }
   }
 }
@@ -429,17 +168,28 @@ void AudioManagerPrivate::stop(const String& soundName)
 /*! Returns TRUE if sound of a given name is being played. */
 bool AudioManagerPrivate::isPlaying(const String& soundName) const
 {
-  // look for the sound in the active pool
-  for (SoundsList::const_iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
+  // check if compressed audio
+  if (m_compessedAudio && m_compessedAudio->isValid() && m_compessedAudio->name() == soundName)
   {
-    const PSound& sound = *it;
-    if (sound->name() == soundName)
+    // found
+    return true;
+  }
+  else
+  {
+    // go thru all uncompressed sounds
+    for (SoundsList::const_iterator it = m_uncompressedAudio.begin(); it != m_uncompressedAudio.end(); ++it)
     {
-      // found
-      return true;
+      const PSound& sound = *it;
+      if (sound->name() == soundName)
+      {
+        // found
+        return true;
+      }
     }
   }
 
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#endif // !EGE_AIRPLAY_AUDIO_SOFTWARE

@@ -223,26 +223,26 @@ void ByteOrder::Convert(u8* bytesData, s64 value, EGEByteOrder::Ordering orderin
   {
     case EGEByteOrder::BIG_ENDIAN:
 
-      *bytesData++ = static_cast<u8>((value & 0xff00000000000000) >> 56);
-      *bytesData++ = static_cast<u8>((value & 0x00ff000000000000) >> 48);
-      *bytesData++ = static_cast<u8>((value & 0x0000ff0000000000) >> 40);
-      *bytesData++ = static_cast<u8>((value & 0x000000ff00000000) >> 32);
-      *bytesData++ = static_cast<u8>((value & 0x00000000ff000000) >> 24);
-      *bytesData++ = static_cast<u8>((value & 0x0000000000ff0000) >> 16);
-      *bytesData++ = static_cast<u8>((value & 0x000000000000ff00) >> 8);
-      *bytesData++ = static_cast<u8>((value & 0x00000000000000ff));
+      *bytesData++ = static_cast<u8>((value & 0xff00000000000000LL) >> 56);
+      *bytesData++ = static_cast<u8>((value & 0x00ff000000000000LL) >> 48);
+      *bytesData++ = static_cast<u8>((value & 0x0000ff0000000000LL) >> 40);
+      *bytesData++ = static_cast<u8>((value & 0x000000ff00000000LL) >> 32);
+      *bytesData++ = static_cast<u8>((value & 0x00000000ff000000LL) >> 24);
+      *bytesData++ = static_cast<u8>((value & 0x0000000000ff0000LL) >> 16);
+      *bytesData++ = static_cast<u8>((value & 0x000000000000ff00LL) >> 8);
+      *bytesData++ = static_cast<u8>((value & 0x00000000000000ffLL));
       break;
 
     case EGEByteOrder::LITTLE_ENDIAN:
 
-      *bytesData++ = static_cast<u8>((value & 0x00000000000000ff));
-      *bytesData++ = static_cast<u8>((value & 0x000000000000ff00) >> 8);
-      *bytesData++ = static_cast<u8>((value & 0x0000000000ff0000) >> 16);
-      *bytesData++ = static_cast<u8>((value & 0x00000000ff000000) >> 24);
-      *bytesData++ = static_cast<u8>((value & 0x000000ff00000000) >> 32);
-      *bytesData++ = static_cast<u8>((value & 0x0000ff0000000000) >> 40);
-      *bytesData++ = static_cast<u8>((value & 0x00ff000000000000) >> 48);
-      *bytesData++ = static_cast<u8>((value & 0xff00000000000000) >> 56);
+      *bytesData++ = static_cast<u8>((value & 0x00000000000000ffLL));
+      *bytesData++ = static_cast<u8>((value & 0x000000000000ff00LL) >> 8);
+      *bytesData++ = static_cast<u8>((value & 0x0000000000ff0000LL) >> 16);
+      *bytesData++ = static_cast<u8>((value & 0x00000000ff000000LL) >> 24);
+      *bytesData++ = static_cast<u8>((value & 0x000000ff00000000LL) >> 32);
+      *bytesData++ = static_cast<u8>((value & 0x0000ff0000000000LL) >> 40);
+      *bytesData++ = static_cast<u8>((value & 0x00ff000000000000LL) >> 48);
+      *bytesData++ = static_cast<u8>((value & 0xff00000000000000LL) >> 56);
       break;
   }
 }
@@ -256,26 +256,26 @@ void ByteOrder::Convert(u8* bytesData, u64 value, EGEByteOrder::Ordering orderin
   {
     case EGEByteOrder::BIG_ENDIAN:
 
-      *bytesData++ = static_cast<u8>((value & 0xff00000000000000) >> 56);
-      *bytesData++ = static_cast<u8>((value & 0x00ff000000000000) >> 48);
-      *bytesData++ = static_cast<u8>((value & 0x0000ff0000000000) >> 40);
-      *bytesData++ = static_cast<u8>((value & 0x000000ff00000000) >> 32);
-      *bytesData++ = static_cast<u8>((value & 0x00000000ff000000) >> 24);
-      *bytesData++ = static_cast<u8>((value & 0x0000000000ff0000) >> 16);
-      *bytesData++ = static_cast<u8>((value & 0x000000000000ff00) >> 8);
-      *bytesData++ = static_cast<u8>((value & 0x00000000000000ff));
+      *bytesData++ = static_cast<u8>((value & 0xff00000000000000LL) >> 56);
+      *bytesData++ = static_cast<u8>((value & 0x00ff000000000000LL) >> 48);
+      *bytesData++ = static_cast<u8>((value & 0x0000ff0000000000LL) >> 40);
+      *bytesData++ = static_cast<u8>((value & 0x000000ff00000000LL) >> 32);
+      *bytesData++ = static_cast<u8>((value & 0x00000000ff000000LL) >> 24);
+      *bytesData++ = static_cast<u8>((value & 0x0000000000ff0000LL) >> 16);
+      *bytesData++ = static_cast<u8>((value & 0x000000000000ff00LL) >> 8);
+      *bytesData++ = static_cast<u8>((value & 0x00000000000000ffLL));
       break;
 
     case EGEByteOrder::LITTLE_ENDIAN:
 
-      *bytesData++ = static_cast<u8>((value & 0x00000000000000ff));
-      *bytesData++ = static_cast<u8>((value & 0x000000000000ff00) >> 8);
-      *bytesData++ = static_cast<u8>((value & 0x0000000000ff0000) >> 16);
-      *bytesData++ = static_cast<u8>((value & 0x00000000ff000000) >> 24);
-      *bytesData++ = static_cast<u8>((value & 0x000000ff00000000) >> 32);
-      *bytesData++ = static_cast<u8>((value & 0x0000ff0000000000) >> 40);
-      *bytesData++ = static_cast<u8>((value & 0x00ff000000000000) >> 48);
-      *bytesData++ = static_cast<u8>((value & 0xff00000000000000) >> 56);
+      *bytesData++ = static_cast<u8>((value & 0x00000000000000ffLL));
+      *bytesData++ = static_cast<u8>((value & 0x000000000000ff00LL) >> 8);
+      *bytesData++ = static_cast<u8>((value & 0x0000000000ff0000LL) >> 16);
+      *bytesData++ = static_cast<u8>((value & 0x00000000ff000000LL) >> 24);
+      *bytesData++ = static_cast<u8>((value & 0x000000ff00000000LL) >> 32);
+      *bytesData++ = static_cast<u8>((value & 0x0000ff0000000000LL) >> 40);
+      *bytesData++ = static_cast<u8>((value & 0x00ff000000000000LL) >> 48);
+      *bytesData++ = static_cast<u8>((value & 0xff00000000000000LL) >> 56);
       break;
   }
 }

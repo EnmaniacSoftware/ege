@@ -57,7 +57,7 @@ class Sound : public Object
 
     /*! Name. */
     String m_name;
-    /*! Pitch value. */
+    /*! Pitch value. Each reduction by 50% repesents 1 octave reduction. Each doubling represents 1 octave increase. */
     float32 m_pitch;
     /*! Gain value. */
     float32 m_gain;

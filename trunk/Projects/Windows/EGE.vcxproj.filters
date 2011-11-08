@@ -534,6 +534,9 @@
     <ClCompile Include="..\..\Sources\Core\Audio\stb_vorbis.c">
       <Filter>Core\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecMp3.cpp">
+      <Filter>Core\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1032,6 +1035,9 @@
       <Filter>Core\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecOgg.h">
+      <Filter>Core\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecMp3.h">
       <Filter>Core\Audio</Filter>
     </ClInclude>
   </ItemGroup>

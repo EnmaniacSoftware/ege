@@ -8,12 +8,17 @@ EGE_NAMESPACE
 #define WAVE_FMT_HEADER_ID  0x666d7420
 #define WAVE_DATA_HEADER_ID 0x64617461
 #define OGG_PAGE_HEADER_ID  0x4f676753
+#define MP3_ID3V1_HEADER_ID 0x49443300
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Retrieves WAV stream headers. */
 void AudioUtils::ReadWavHeaders(const PDataBuffer& data, EGEAudio::WaveRiffHeader& riffHeader, EGEAudio::WaveFmtHeader& fmtHeader, 
                                 EGEAudio::WaveDataHeader& dataHeader)
 {
-  // read headers in
+  EGE_MEMSET(&riffHeader, 0, sizeof (riffHeader));
+  EGE_MEMSET(&fmtHeader, 0, sizeof (fmtHeader));
+  EGE_MEMSET(&dataHeader, 0, sizeof (dataHeader));
+
+  // read in RIFF header
   data->setByteOrdering(EGEByteOrder::BIG_ENDIAN);
   *data >> riffHeader.id;
   data->setByteOrdering(EGEByteOrder::LITTLE_ENDIAN);
@@ -21,27 +26,59 @@ void AudioUtils::ReadWavHeaders(const PDataBuffer& data, EGEAudio::WaveRiffHeade
   data->setByteOrdering(EGEByteOrder::BIG_ENDIAN);
   *data >> riffHeader.format;
 
-  data->setByteOrdering(EGEByteOrder::BIG_ENDIAN);
-  *data >> fmtHeader.id;
-  data->setByteOrdering(EGEByteOrder::LITTLE_ENDIAN);
-  *data >> fmtHeader.size;
-  *data >> fmtHeader.audioFormat;
-  *data >> fmtHeader.channels;
-  *data >> fmtHeader.sampleRate;
-  *data >> fmtHeader.byteRate;
-  *data >> fmtHeader.blockAlign;
-  *data >> fmtHeader.bitsPerSample;
-
-  // skip extra data
-  if (16 < fmtHeader.size)
+  // check if there is a chance this is wav file
+  if (WAVE_RIFF_HEADER_ID == riffHeader.id)
   {
-    data->setReadOffset(data->readOffset() + fmtHeader.size - 16);
-  }
+    // read all chunks till we have required ones
+    while ((data->size() != data->readOffset()) && ((WAVE_FMT_HEADER_ID != fmtHeader.id) || (WAVE_DATA_HEADER_ID != dataHeader.id)))
+    {
+      // read chunk header
+      u32 chunkId;
+      u32 chunkSize;
+      data->setByteOrdering(EGEByteOrder::BIG_ENDIAN);
+      *data >> chunkId;
 
-  data->setByteOrdering(EGEByteOrder::BIG_ENDIAN);
-  *data >> dataHeader.id;
-  data->setByteOrdering(EGEByteOrder::LITTLE_ENDIAN);
-  *data >> dataHeader.size;
+      // read chunk size
+      data->setByteOrdering(EGEByteOrder::LITTLE_ENDIAN);
+      *data >> chunkSize;
+
+      // check if FMT chunk
+      switch (chunkId)
+      {
+        case WAVE_FMT_HEADER_ID:
+
+          fmtHeader.id = chunkId;
+          fmtHeader.size = chunkSize;
+
+          // read rest of header
+          *data >> fmtHeader.audioFormat;
+          *data >> fmtHeader.channels;
+          *data >> fmtHeader.sampleRate;
+          *data >> fmtHeader.byteRate;
+          *data >> fmtHeader.blockAlign;
+          *data >> fmtHeader.bitsPerSample;
+
+          // skip extra data
+          if (16 < fmtHeader.size)
+          {
+            data->setReadOffset(data->readOffset() + chunkSize - 16);
+          }
+          break;
+
+        case WAVE_DATA_HEADER_ID:
+
+          dataHeader.id   = chunkId;
+          dataHeader.size = chunkSize;
+          break;
+
+        default:
+
+          // skip header
+          data->setReadOffset(data->readOffset() + chunkSize);
+          break;
+      }
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Detects stream type of given data. */
@@ -79,6 +116,17 @@ EGEAudio::StreamType AudioUtils::DetectStreamType(const PDataBuffer& data)
   {
     // found
     return EGEAudio::ST_OGG;
+  }
+
+  // check if MP3 stream
+  data->setReadOffset(0);
+  data->setByteOrdering(EGEByteOrder::BIG_ENDIAN);
+  
+  *data >> headerId;
+  if (MP3_ID3V1_HEADER_ID == (headerId & 0xffffff00))
+  {
+    // found
+    return EGEAudio::ST_MP3;
   }
 
   return EGEAudio::ST_UNKNOWN;
