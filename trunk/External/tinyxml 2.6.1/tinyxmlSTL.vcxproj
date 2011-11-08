@@ -90,7 +90,7 @@
       <AssemblerListingLocation>.\Release_STL/</AssemblerListingLocation>
       <ObjectFileName>.\Release_STL/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release_STL/</ProgramDataBaseFileName>
-      <BrowseInformation>true</BrowseInformation>
+      <BrowseInformation>false</BrowseInformation>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
@@ -99,7 +99,7 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>Release_STL\tinyxmlSTL.lib</OutputFile>
+      <OutputFile>$(OutDir)tinyxmlSTL.lib</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
     <Bscmake>
