@@ -23,6 +23,7 @@ EGE_DEFINE_DELETE_OPERATORS(Sound)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Sound::Sound(const String& name, const PDataBuffer& data) : Object(NULL), 
+                                                            m_p(NULL),
                                                             m_name(name),
                                                             m_pitch(1.0f), 
                                                             m_gain(1.0f), 
@@ -56,7 +57,10 @@ Sound::Sound(const String& name, const PDataBuffer& data) : Object(NULL),
   }
 
   // create private
-  m_p = ege_new SoundPrivate(this);
+  if (m_codec)
+  {
+    m_p = ege_new SoundPrivate(this);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Sound::~Sound()

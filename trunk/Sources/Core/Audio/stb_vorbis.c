@@ -876,6 +876,12 @@ static void *setup_malloc(vorb *f, int sz)
       f->setup_offset += sz;
       return p;
    }
+
+   if (sz == 384 || sz == 192 || sz == 96)
+   {
+     int a = 1;
+   }
+
    return sz ? EGE_MALLOC(sz) : NULL;
 }
 
@@ -3649,7 +3655,7 @@ static int start_decoder(vorb *f)
    f->codebook_count = get_bits(f,8) + 1;
    f->codebooks = (Codebook *) setup_malloc(f, sizeof(*f->codebooks) * f->codebook_count);
    if (f->codebooks == NULL)                        return error(f, VORBIS_outofmem);
-   memset(f->codebooks, 0, sizeof(*f->codebooks) * f->codebook_count);
+   EGE_MEMSET(f->codebooks, 0, sizeof(*f->codebooks) * f->codebook_count);
    for (i=0; i < f->codebook_count; ++i) {
       uint32 *values;
       int ordered, sorted_count;
@@ -3681,7 +3687,7 @@ static int start_decoder(vorb *f)
             int limit = c->entries - current_entry;
             int n = get_bits(f, ilog(limit));
             if (current_entry + n > (int) c->entries) { return error(f, VORBIS_invalid_setup); }
-            memset(lengths + current_entry, current_length, n);
+            EGE_MEMSET(lengths + current_entry, current_length, n);
             current_entry += n;
             ++current_length;
          }
@@ -3703,7 +3709,7 @@ static int start_decoder(vorb *f)
             f->setup_temp_memory_required = c->entries;
 
          c->codeword_lengths = (uint8 *) setup_malloc(f, c->entries);
-         memcpy(c->codeword_lengths, lengths, c->entries);
+         EGE_MEMCPY(c->codeword_lengths, lengths, c->entries);
          setup_temp_free(f, lengths, c->entries); // note this is only safe if there have been no intervening temp mallocs!
          lengths = c->codeword_lengths;
          c->sparse = 0;

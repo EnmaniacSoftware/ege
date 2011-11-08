@@ -8,7 +8,8 @@ EGE_NAMESPACE
 #define WAVE_FMT_HEADER_ID  0x666d7420
 #define WAVE_DATA_HEADER_ID 0x64617461
 #define OGG_PAGE_HEADER_ID  0x4f676753
-#define MP3_ID3V1_HEADER_ID 0x49443300
+#define MP3_ID3_HEADER_ID   0x49443300
+#define MP3_ENC_HEADER_ID   0xfffb0000
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Retrieves WAV stream headers. */
 void AudioUtils::ReadWavHeaders(const PDataBuffer& data, EGEAudio::WaveRiffHeader& riffHeader, EGEAudio::WaveFmtHeader& fmtHeader, 
@@ -119,11 +120,16 @@ EGEAudio::StreamType AudioUtils::DetectStreamType(const PDataBuffer& data)
   }
 
   // check if MP3 stream
+  // NOTE: due to many different variations of MP3 formats we do the following checks:
+  // - for ID3v2 header which can be pre-appended or appended:
+  //    - if pre-appended it is at the begining of file
+  //    - if appened it is 10 bytes from the end of file (current not done!)
+  // - for ENC header first two bytes needs to be 0xFFFB
   data->setReadOffset(0);
   data->setByteOrdering(EGEByteOrder::BIG_ENDIAN);
   
   *data >> headerId;
-  if (MP3_ID3V1_HEADER_ID == (headerId & 0xffffff00))
+  if ((MP3_ID3_HEADER_ID == (headerId & 0xffffff00)) || (MP3_ENC_HEADER_ID == (headerId & 0xffff0000)))
   {
     // found
     return EGEAudio::ST_MP3;

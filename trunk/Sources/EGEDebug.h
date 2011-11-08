@@ -17,7 +17,7 @@
 #else
 
 #define EGE_ASSERT(cond) ege_noop()
-#define EGE_LOG(text) ege_noop()
+#define EGE_LOG(text) Debug::Log(text)
 #define EGE_PRINT(text, ...) ege_noop()
 #define EGE_WARNING(text, ...) ege_noop()
 
