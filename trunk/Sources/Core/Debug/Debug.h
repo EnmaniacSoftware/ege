@@ -31,9 +31,11 @@ class Debug : public Object
 
   public:
 
-    static void Deinit();
+    /* Asserts with given description. */
     static void Assert(const char* description, const char* fileName, s32 lineNumber);
+    /* Logs given text to file. */
     static void Log(const String& text);
+    /* Prints given text to output. */
     static void Print(const String& text);
 
   private:

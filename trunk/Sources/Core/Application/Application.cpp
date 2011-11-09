@@ -178,7 +178,7 @@ EGEResult Application::initialize(const Dictionary& params)
   // create audio manager
   EGE_LOG("Application::initialize - creating AudioManager");
   m_audioManager = ege_new AudioManager(this);
-  if (NULL == m_audioManager || !m_audioManager->isValid())
+  if ((NULL == m_audioManager) || !m_audioManager->isValid())
   {
     // error!
     return EGE_ERROR_NO_MEMORY;

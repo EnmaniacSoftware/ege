@@ -47,6 +47,9 @@
 extern "C" {
 #endif
 
+#define SETUP_MALLOC(f, size) setup_malloc((f), (size))
+//#define SETUP_MALLOC(f, size) setup_malloc((f), (size), __FUNCTION__, __LINE__)
+
 ///////////   THREAD SAFETY
 
 // Individual stb_vorbis* handles are not thread-safe; you cannot decode from
@@ -882,7 +885,7 @@ static void *setup_malloc(vorb *f, int sz)
      int a = 1;
    }
 
-   return sz ? EGE_MALLOC(sz) : NULL;
+   return sz ?/* MemoryManager::Malloc(sz, fileName, lineNo)*/EGE_MALLOC(sz) : NULL;
 }
 
 static void setup_free(vorb *f, void *p)
@@ -1200,15 +1203,15 @@ static void compute_bitreverse(int n, uint16 *rev)
 static int init_blocksize(vorb *f, int b, int n)
 {
    int n2 = n >> 1, n4 = n >> 2, n8 = n >> 3;
-   f->A[b] = (float *) setup_malloc(f, sizeof(float) * n2);
-   f->B[b] = (float *) setup_malloc(f, sizeof(float) * n2);
-   f->C[b] = (float *) setup_malloc(f, sizeof(float) * n4);
+   f->A[b] = (float *) SETUP_MALLOC(f, sizeof(float) * n2);
+   f->B[b] = (float *) SETUP_MALLOC(f, sizeof(float) * n2);
+   f->C[b] = (float *) SETUP_MALLOC(f, sizeof(float) * n4);
    if (!f->A[b] || !f->B[b] || !f->C[b]) return error(f, VORBIS_outofmem);
    compute_twiddle_factors(n, f->A[b], f->B[b], f->C[b]);
-   f->window[b] = (float *) setup_malloc(f, sizeof(float) * n2);
+   f->window[b] = (float *) SETUP_MALLOC(f, sizeof(float) * n2);
    if (!f->window[b]) return error(f, VORBIS_outofmem);
    compute_window(n, f->window[b]);
-   f->bit_reverse[b] = (uint16 *) setup_malloc(f, sizeof(uint16) * n8);
+   f->bit_reverse[b] = (uint16 *) SETUP_MALLOC(f, sizeof(uint16) * n8);
    if (!f->bit_reverse[b]) return error(f, VORBIS_outofmem);
    compute_bitreverse(n, f->bit_reverse[b]);
    return TRUE;
@@ -3653,7 +3656,7 @@ static int start_decoder(vorb *f)
    // codebooks
 
    f->codebook_count = get_bits(f,8) + 1;
-   f->codebooks = (Codebook *) setup_malloc(f, sizeof(*f->codebooks) * f->codebook_count);
+   f->codebooks = (Codebook *) SETUP_MALLOC(f, sizeof(*f->codebooks) * f->codebook_count);
    if (f->codebooks == NULL)                        return error(f, VORBIS_outofmem);
    EGE_MEMSET(f->codebooks, 0, sizeof(*f->codebooks) * f->codebook_count);
    for (i=0; i < f->codebook_count; ++i) {
@@ -3676,7 +3679,7 @@ static int start_decoder(vorb *f)
       if (c->sparse)
          lengths = (uint8 *) setup_temp_malloc(f, c->entries);
       else
-         lengths = c->codeword_lengths = (uint8 *) setup_malloc(f, c->entries);
+         lengths = c->codeword_lengths = (uint8 *) SETUP_MALLOC(f, c->entries);
 
       if (!lengths) return error(f, VORBIS_outofmem);
 
@@ -3708,7 +3711,7 @@ static int start_decoder(vorb *f)
          if (c->entries > (int) f->setup_temp_memory_required)
             f->setup_temp_memory_required = c->entries;
 
-         c->codeword_lengths = (uint8 *) setup_malloc(f, c->entries);
+         c->codeword_lengths = (uint8 *) SETUP_MALLOC(f, c->entries);
          EGE_MEMCPY(c->codeword_lengths, lengths, c->entries);
          setup_temp_free(f, lengths, c->entries); // note this is only safe if there have been no intervening temp mallocs!
          lengths = c->codeword_lengths;
@@ -3732,12 +3735,12 @@ static int start_decoder(vorb *f)
       values = NULL;
 
       if (!c->sparse) {
-         c->codewords = (uint32 *) setup_malloc(f, sizeof(c->codewords[0]) * c->entries);
+         c->codewords = (uint32 *) SETUP_MALLOC(f, sizeof(c->codewords[0]) * c->entries);
          if (!c->codewords)                  return error(f, VORBIS_outofmem);
       } else {
          unsigned int size;
          if (c->sorted_entries) {
-            c->codeword_lengths = (uint8 *) setup_malloc(f, c->sorted_entries);
+            c->codeword_lengths = (uint8 *) SETUP_MALLOC(f, c->sorted_entries);
             if (!c->codeword_lengths)           return error(f, VORBIS_outofmem);
             c->codewords = (uint32 *) setup_temp_malloc(f, sizeof(*c->codewords) * c->sorted_entries);
             if (!c->codewords)                  return error(f, VORBIS_outofmem);
@@ -3756,10 +3759,10 @@ static int start_decoder(vorb *f)
 
       if (c->sorted_entries) {
          // allocate an extra slot for sentinels
-         c->sorted_codewords = (uint32 *) setup_malloc(f, sizeof(*c->sorted_codewords) * (c->sorted_entries+1));
+         c->sorted_codewords = (uint32 *) SETUP_MALLOC(f, sizeof(*c->sorted_codewords) * (c->sorted_entries+1));
          // allocate an extra slot at the front so that c->sorted_values[-1] is defined
          // so that we can catch that case without an extra if
-         c->sorted_values    = ( int   *) setup_malloc(f, sizeof(*c->sorted_values   ) * (c->sorted_entries+1));
+         c->sorted_values    = ( int   *) SETUP_MALLOC(f, sizeof(*c->sorted_values   ) * (c->sorted_entries+1));
          if (c->sorted_values) { ++c->sorted_values; c->sorted_values[-1] = -1; }
          compute_sorted_huffman(c, lengths, values);
       }
@@ -3800,9 +3803,9 @@ static int start_decoder(vorb *f)
             // pre-expand the lookup1-style multiplicands, to avoid a divide in the inner loop
             if (sparse) {
                if (c->sorted_entries == 0) goto skip;
-               c->multiplicands = (codetype *) setup_malloc(f, sizeof(c->multiplicands[0]) * c->sorted_entries * c->dimensions);
+               c->multiplicands = (codetype *) SETUP_MALLOC(f, sizeof(c->multiplicands[0]) * c->sorted_entries * c->dimensions);
             } else
-               c->multiplicands = (codetype *) setup_malloc(f, sizeof(c->multiplicands[0]) * c->entries        * c->dimensions);
+               c->multiplicands = (codetype *) SETUP_MALLOC(f, sizeof(c->multiplicands[0]) * c->entries        * c->dimensions);
             if (c->multiplicands == NULL) { setup_temp_free(f,mults,sizeof(mults[0])*c->lookup_values); return error(f, VORBIS_outofmem); }
             len = sparse ? c->sorted_entries : c->entries;
             for (j=0; j < len; ++j) {
@@ -3829,7 +3832,7 @@ static int start_decoder(vorb *f)
          else
 #endif
          {
-            c->multiplicands = (codetype *) setup_malloc(f, sizeof(c->multiplicands[0]) * c->lookup_values);
+            c->multiplicands = (codetype *) SETUP_MALLOC(f, sizeof(c->multiplicands[0]) * c->lookup_values);
             #ifndef STB_VORBIS_CODEBOOK_FLOATS
             memcpy(c->multiplicands, mults, sizeof(c->multiplicands[0]) * c->lookup_values);
             #else
@@ -3860,7 +3863,7 @@ static int start_decoder(vorb *f)
 
    // Floors
    f->floor_count = get_bits(f, 6)+1;
-   f->floor_config = (Floor *)  setup_malloc(f, f->floor_count * sizeof(*f->floor_config));
+   f->floor_config = (Floor *)  SETUP_MALLOC(f, f->floor_count * sizeof(*f->floor_config));
    for (i=0; i < f->floor_count; ++i) {
       f->floor_types[i] = get_bits(f, 16);
       if (f->floor_types[i] > 1) return error(f, VORBIS_invalid_setup);
@@ -3932,7 +3935,7 @@ static int start_decoder(vorb *f)
 
    // Residue
    f->residue_count = get_bits(f, 6)+1;
-   f->residue_config = (Residue *) setup_malloc(f, f->residue_count * sizeof(*f->residue_config));
+   f->residue_config = (Residue *) SETUP_MALLOC(f, f->residue_count * sizeof(*f->residue_config));
    for (i=0; i < f->residue_count; ++i) {
       uint8 residue_cascade[64];
       Residue *r = f->residue_config+i;
@@ -3963,13 +3966,13 @@ static int start_decoder(vorb *f)
       }
       // precompute the classifications[] array to avoid inner-loop mod/divide
       // call it 'classdata' since we already have r->classifications
-      r->classdata = (uint8 **) setup_malloc(f, sizeof(*r->classdata) * f->codebooks[r->classbook].entries);
+      r->classdata = (uint8 **) SETUP_MALLOC(f, sizeof(*r->classdata) * f->codebooks[r->classbook].entries);
       if (!r->classdata) return error(f, VORBIS_outofmem);
       memset(r->classdata, 0, sizeof(*r->classdata) * f->codebooks[r->classbook].entries);
       for (j=0; j < f->codebooks[r->classbook].entries; ++j) {
          int classwords = f->codebooks[r->classbook].dimensions;
          int temp = j;
-         r->classdata[j] = (uint8 *) setup_malloc(f, sizeof(r->classdata[j][0]) * classwords);
+         r->classdata[j] = (uint8 *) SETUP_MALLOC(f, sizeof(r->classdata[j][0]) * classwords);
          for (k=classwords-1; k >= 0; --k) {
             r->classdata[j][k] = temp % r->classifications;
             temp /= r->classifications;
@@ -3978,12 +3981,12 @@ static int start_decoder(vorb *f)
    }
 
    f->mapping_count = get_bits(f,6)+1;
-   f->mapping = (Mapping *) setup_malloc(f, f->mapping_count * sizeof(*f->mapping));
+   f->mapping = (Mapping *) SETUP_MALLOC(f, f->mapping_count * sizeof(*f->mapping));
    for (i=0; i < f->mapping_count; ++i) {
       Mapping *m = f->mapping + i;      
       int mapping_type = get_bits(f,16);
       if (mapping_type != 0) return error(f, VORBIS_invalid_setup);
-      m->chan = (MappingChannel *) setup_malloc(f, f->channels * sizeof(*m->chan));
+      m->chan = (MappingChannel *) SETUP_MALLOC(f, f->channels * sizeof(*m->chan));
       if (get_bits(f,1))
          m->submaps = get_bits(f,4);
       else
@@ -4041,11 +4044,11 @@ static int start_decoder(vorb *f)
    f->previous_length = 0;
 
    for (i=0; i < f->channels; ++i) {
-      f->channel_buffers[i] = (float *) setup_malloc(f, sizeof(float) * f->blocksize_1);
-      f->previous_window[i] = (float *) setup_malloc(f, sizeof(float) * f->blocksize_1/2);
-      f->finalY[i]          = (int16 *) setup_malloc(f, sizeof(int16) * longest_floorlist);
+      f->channel_buffers[i] = (float *) SETUP_MALLOC(f, sizeof(float) * f->blocksize_1);
+      f->previous_window[i] = (float *) SETUP_MALLOC(f, sizeof(float) * f->blocksize_1/2);
+      f->finalY[i]          = (int16 *) SETUP_MALLOC(f, sizeof(int16) * longest_floorlist);
       #ifdef STB_VORBIS_NO_DEFER_FLOOR
-      f->floor_buffers[i]   = (float *) setup_malloc(f, sizeof(float) * f->blocksize_1/2);
+      f->floor_buffers[i]   = (float *) SETUP_MALLOC(f, sizeof(float) * f->blocksize_1/2);
       #endif
    }
 
@@ -4143,6 +4146,7 @@ static void vorbis_deinit(stb_vorbis *p)
       setup_free(p, p->B[i]);
       setup_free(p, p->C[i]);
       setup_free(p, p->window[i]);
+      setup_free(p, p->bit_reverse[i]);
    }
    #ifndef STB_VORBIS_NO_STDIO
    if (p->close_on_free) fclose(p->f);
@@ -4204,7 +4208,7 @@ int stb_vorbis_get_error(stb_vorbis *f)
 
 static stb_vorbis * vorbis_alloc(stb_vorbis *f)
 {
-   stb_vorbis *p = (stb_vorbis *) setup_malloc(f, sizeof(*p));
+   stb_vorbis *p = (stb_vorbis *) SETUP_MALLOC(f, sizeof(*p));
    return p;
 }
 

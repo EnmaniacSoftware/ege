@@ -10,9 +10,7 @@ EGE_DEFINE_NEW_OPERATORS(Debug)
 EGE_DEFINE_DELETE_OPERATORS(Debug)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 Logger* Debug::m_log = NULL;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug::Debug(Application* app) : Object(app)
 {
@@ -22,29 +20,22 @@ Debug::Debug(Application* app) : Object(app)
 Debug::~Debug()
 {
   EGE_DELETE(m_console);
-
-  Debug::Deinit();
+  EGE_DELETE(m_log);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Debug::Deinit()
-{
-  if (Debug::m_log)
-  {
-    delete Debug::m_log;
-    Debug::m_log = NULL;
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Logs given text to file. */
 void Debug::Log(const String& text)
 {
+  // check if no logger created yet
   if (NULL == Debug::m_log)
   {
-    Debug::m_log = ege_new Logger("engine.log", true);
+    // create logger
+    m_log = ege_new Logger("engine.log", true);
   }
 
-  if (Debug::m_log)
+  if (m_log)
   {
-    Debug::m_log->write(text);
+    m_log->write(text);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

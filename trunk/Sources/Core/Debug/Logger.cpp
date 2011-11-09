@@ -9,20 +9,15 @@ EGE_DEFINE_NEW_OPERATORS(Logger)
 EGE_DEFINE_DELETE_OPERATORS(Logger)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Logger::Logger(const String& filePath, bool timeStampEnabled) : m_file(filePath), m_timeStampEnabled(timeStampEnabled)
+Logger::Logger(const String& filePath, bool timeStampEnabled) : m_file(filePath), 
+                                                                m_timeStampEnabled(timeStampEnabled)
 {
-  //m_file = NULL;//ege_new File(filePath);
-
-  //// open file for writting
-  //if ( this->createLoggerFile( pszFilePath ) == true )
-  //{
-  //  // initiate Logger entries
-  //  this->write( "LoggerGER INITIALIZED!\n\n" );
-  //}
+  write("----------------- Logger session opened -----------------\n");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger::~Logger()
 {
+  write("\n--------------- Logger session ended --------------------\n");
   m_file.close();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -32,7 +27,7 @@ bool Logger::isValid() const
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Opens Logger. */
+/*! Opens logger. */
 EGEResult Logger::open()
 {
   if (isValid())
@@ -43,7 +38,7 @@ EGEResult Logger::open()
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Closes Logger. */
+/*! Closes logger. */
 void Logger::close()
 {
   if (isValid())

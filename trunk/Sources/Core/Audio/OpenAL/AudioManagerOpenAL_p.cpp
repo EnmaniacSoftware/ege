@@ -33,6 +33,10 @@ AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base),
       EGE_MEMSET(m_channels, 0, sizeof (m_channels));
     }
   }
+  else
+  {
+    EGE_LOG("AudioManagerPrivate::AudioManagerPrivate - Could not open device");
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerPrivate::~AudioManagerPrivate()

@@ -16,8 +16,9 @@ includepath ../../Sources
 
 options
 {
-	module_path="$AIRPLAY_ROOT/modules/third_party"
+	module_path="$MARMALADE_ROOT/modules/third_party"
 }
+
 files
 {
 	(../../Sources)
@@ -514,10 +515,16 @@ files
   DesktopServicesAirplay_p.h
 }
 
+packages
+{
+  libpng
+	libjpeg
+}
+
 subprojects
 {
-	third_party/libpng/libpng
-	third_party/libjpeg/libjpeg
+	libpng
+	libjpeg
   box2d
   tinyxml
 }
