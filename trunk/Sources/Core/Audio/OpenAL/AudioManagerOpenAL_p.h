@@ -47,13 +47,23 @@ class AudioManagerPrivate
     EGEResult play(const PSound& sound, s32 repeatCount);
     /* Returns TRUE if sound of a given name is being played. */
     bool isPlaying(const String& soundName) const;
-    /* Stops playback of the sound with a given name. */
-    void stop(const String& soundName);
+    /* Stops playback of the sound with a given name. 
+     * @param soundName     Name of the sound to stop playback.
+     * @param fadeDuration  Time interval during which sound should be faded out.
+     */
+    void stop(const String& soundName, const Time& fadeDuration);
 
   private:
 
     /* Returns first available channel. */
     ALuint availableChannel() const;
+
+  private slots:
+
+    /* Slot called on sound volume change. */
+    void soundVolumeChanged(const PSound& sound, float32 oldVolume);
+    /* Slot called on sound fade out completion. */
+    void soundFadeOutComplete(const PSound& sound);
 
   private:
 

@@ -526,5 +526,5 @@ subprojects
 	libpng
 	libjpeg
   box2d
-  tinyxml
+  tinyxmlstl
 }

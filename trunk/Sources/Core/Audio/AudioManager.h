@@ -46,8 +46,11 @@ class AudioManager : public Object
     EGEResult play(const PSound& sound, s32 repeatCount = 0);
     /* Returns TRUE if sound of a given name is being played. */
     bool isPlaying(const String& soundName) const;
-    /* Stops playback of the sound with a given name. */
-    void stop(const String& soundName);
+    /* Stops playback of the sound with a given name. 
+     * @param soundName     Name of the sound to stop playback.
+     * @param fadeDuration  Time interval during which sound should be faded out.
+     */
+    void stop(const String& soundName, const Time& fadeDuration = 0.0f);
 
   private:
 

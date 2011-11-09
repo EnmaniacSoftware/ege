@@ -40,10 +40,15 @@ void AudioManagerPrivate::update(const Time& time)
   // check if compressed audio was being played
   if (m_compessedAudio && m_compessedAudio->isValid())
   {
+    // update
+    m_compessedAudio->update(time);
+
     // check if finished playing
     if (S3E_FALSE == s3eAudioIsPlaying())
     {
       // ok, clean up
+      ege_disconnect(m_compessedAudio.object(), volumeChanged, this, AudioManagerPrivate::soundVolumeChanged);
+      ege_disconnect(m_compessedAudio.object(), fadeOutComplete, this, AudioManagerPrivate::soundFadeOutComplete);
       m_compessedAudio = NULL;
     }
   }
@@ -53,11 +58,16 @@ void AudioManagerPrivate::update(const Time& time)
   {
     PSound& sound = *it;
 
+    // update
+    sound->update(time);
+
     // check if finished playing
     if ((0 == s3eSoundChannelGetInt(sound->p_func()->channel(), S3E_CHANNEL_STATUS)) && 
         (0 == s3eSoundChannelGetInt(sound->p_func()->channel(), S3E_CHANNEL_PAUSED)))
     {
       // ok, clean up
+      ege_disconnect(sound.object(), volumeChanged, this, AudioManagerPrivate::soundVolumeChanged);
+      ege_disconnect(sound.object(), fadeOutComplete, this, AudioManagerPrivate::soundFadeOutComplete);
       m_uncompressedAudio.erase(it++);
       continue;
     }
@@ -102,6 +112,9 @@ EGEResult AudioManagerPrivate::play(const PSound& sound, s32 repeatCount)
         return EGE_ERROR_NOT_SUPPORTED;
     }
 
+    // connect for sound volume changes
+    ege_connect(sound.object(), volumeChanged, this, AudioManagerPrivate::soundVolumeChanged);
+    sound->setVolume(sound->volume());
     return EGE_SUCCESS;
   }
   // check if WAV file
@@ -131,6 +144,10 @@ EGEResult AudioManagerPrivate::play(const PSound& sound, s32 repeatCount)
 
       // store it
       m_uncompressedAudio.push_back(sound);
+
+      // connect for sound volume changes
+      ege_connect(sound.object(), volumeChanged, this, AudioManagerPrivate::soundVolumeChanged);
+      sound->setVolume(sound->volume());
       return EGE_SUCCESS;
     }
 
@@ -140,14 +157,20 @@ EGEResult AudioManagerPrivate::play(const PSound& sound, s32 repeatCount)
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Stops playback of the sound with a given name. */
-void AudioManagerPrivate::stop(const String& soundName)
+/*! Stops playback of the sound with a given name. 
+ * @param soundName     Name of the sound to stop playback.
+ * @param fadeDuration  Time interval during which sound should be faded out.
+ */
+void AudioManagerPrivate::stop(const String& soundName, const Time& fadeDuration)
 {
   // check if compressed audio
   if (m_compessedAudio && m_compessedAudio->isValid() && m_compessedAudio->name() == soundName)
   {
-    // stop it
-    s3eAudioStop();
+    // start fade out
+    m_compessedAudio->startFadeOut(fadeDuration);
+
+    // connect
+    ege_connect(m_compessedAudio.object(), fadeOutComplete, this, AudioManagerPrivate::soundFadeOutComplete);
   }
   else
   {
@@ -157,8 +180,11 @@ void AudioManagerPrivate::stop(const String& soundName)
       PSound& sound = *it;
       if (sound->name() == soundName)
       {
-        // mark it to stop
-        s3eSoundChannelStop(sound->p_func()->channel());
+        // start fade out
+        sound->startFadeOut(fadeDuration);
+
+        // connect
+        ege_connect(sound.object(), fadeOutComplete, this, AudioManagerPrivate::soundFadeOutComplete);
         return;
       }
     }
@@ -189,6 +215,47 @@ bool AudioManagerPrivate::isPlaying(const String& soundName) const
   }
 
   return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called on sound volume change. */
+void AudioManagerPrivate::soundVolumeChanged(const PSound& sound, float32 oldVolume)
+{
+  if (m_compessedAudio == sound)
+  {
+    s3eAudioSetInt(S3E_AUDIO_VOLUME, static_cast<int32>(S3E_AUDIO_MAX_VOLUME * sound->volume()));
+  }
+  else
+  {
+    for (SoundsList::const_iterator it = m_uncompressedAudio.begin(); it != m_uncompressedAudio.end(); ++it)
+    {
+      if (*it == sound)
+      {
+        s3eSoundChannelSetInt(sound->p_func()->channel(), S3E_CHANNEL_VOLUME, static_cast<int32>(S3E_SOUND_MAX_VOLUME * sound->volume()));
+        return;
+      }
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called on sound fade out completion. */
+void AudioManagerPrivate::soundFadeOutComplete(const PSound& sound)
+{
+  if (m_compessedAudio == sound)
+  {
+    s3eAudioStop();
+  }
+  else
+  {
+    for (SoundsList::const_iterator it = m_uncompressedAudio.begin(); it != m_uncompressedAudio.end(); ++it)
+    {
+      if (*it == sound)
+      {
+        // mark it to stop
+        s3eSoundChannelStop(sound->p_func()->channel());
+        return;
+      }
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

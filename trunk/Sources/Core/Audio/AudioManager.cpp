@@ -98,12 +98,15 @@ bool AudioManager::isPlaying(const String& soundName) const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Stops playback of the sound with a given name. */
-void AudioManager::stop(const String& soundName)
+/*! Stops playback of the sound with a given name. 
+ * @param soundName     Name of the sound to stop playback.
+ * @param fadeDuration  Time interval during which sound should be faded out.
+ */
+void AudioManager::stop(const String& soundName, const Time& fadeDuration)
 {
   if (isValid())
   {
-    p_func()->stop(soundName);
+    p_func()->stop(soundName, fadeDuration);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

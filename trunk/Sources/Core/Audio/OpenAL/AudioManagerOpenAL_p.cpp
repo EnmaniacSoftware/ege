@@ -89,6 +89,9 @@ void AudioManagerPrivate::update(const Time& time)
     ALuint channel = it->first;
     const PSound& sound = it->second;
 
+    // update
+    sound->update(time);
+
     // updates buffers for given channel
     sound->p_func()->updateBuffers(channel);
 
@@ -96,11 +99,12 @@ void AudioManagerPrivate::update(const Time& time)
     ++it;
 
     // check if channel stopped
-    ALint value;
-		alGetSourcei(channel, AL_SOURCE_STATE, &value);
-    if (AL_PLAYING != value)
+    ALint state;
+		alGetSourcei(channel, AL_SOURCE_STATE, &state);
+    if (AL_PLAYING != state)
     {
       // check if there are any queued buffers. If so it means audio was starved and needs to be resumed
+      ALint value;
 			alGetSourcei(channel, AL_BUFFERS_QUEUED, &value);
 			if (value)
 			{
@@ -112,6 +116,14 @@ void AudioManagerPrivate::update(const Time& time)
 				// finished
 				alSourceStop(channel);
 				alSourcei(channel, AL_BUFFER, 0);			
+
+	      // check to see if there were any errors
+	      ALenum error = alGetError();
+	      if (AL_NO_ERROR != error)
+        {
+          // error!
+          EGE_PRINT("AudioManagerPrivate::update - could not stop!");
+	      }
 
         // remove from pool
         m_activeChannels.erase(channel);
@@ -141,9 +153,8 @@ EGEResult AudioManagerPrivate::play(const PSound& sound, s32 repeatCount)
     // initially update all buffers
     soundPrivate->updateBuffers(channel);
 
-	  // set the pitch and gain of the source
+	  // set the pitch of the source
 	  alSourcef(channel, AL_PITCH, sound->pitch());
-	  alSourcef(channel, AL_GAIN, sound->gain());
 	
 	  // set the looping value
 		//alSourcei(channel, AL_LOOPING, sound->looping() ? AL_TRUE : AL_FALSE);
@@ -162,6 +173,10 @@ EGEResult AudioManagerPrivate::play(const PSound& sound, s32 repeatCount)
 
     // add to channels map
     m_activeChannels.insert(channel, sound);
+
+    // connect for sound volume changes
+    ege_connect(sound.object(), volumeChanged, this, AudioManagerPrivate::soundVolumeChanged);
+    sound->setVolume(sound->volume());
 
     return EGE_SUCCESS;
   }
@@ -188,8 +203,11 @@ ALuint AudioManagerPrivate::availableChannel() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Stops playback of the sound with a given name. */
-void AudioManagerPrivate::stop(const String& soundName)
+/*! Stops playback of the sound with a given name. 
+ * @param soundName     Name of the sound to stop playback.
+ * @param fadeDuration  Time interval during which sound should be faded out.
+ */
+void AudioManagerPrivate::stop(const String& soundName, const Time& fadeDuration)
 {
   // go thru all sounds
   for (ChannelsMap::iterator it = m_activeChannels.begin(); it != m_activeChannels.end(); ++it)
@@ -197,12 +215,11 @@ void AudioManagerPrivate::stop(const String& soundName)
     PSound& sound = it->second;
     if (sound->name() == soundName)
     {
-      // stop sound
-      alSourceStop(it->first);
-			alSourcei(it->first, AL_BUFFER, 0);			
+      // start fade out
+      sound->startFadeOut(fadeDuration);
 
-      // remove from pools
-      m_activeChannels.erase(it);
+      // connect
+      ege_connect(sound.object(), fadeOutComplete, this, AudioManagerPrivate::soundFadeOutComplete);
       return;
     }
   }
@@ -223,6 +240,68 @@ bool AudioManagerPrivate::isPlaying(const String& soundName) const
   }
 
   return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called on sound volume change. */
+void AudioManagerPrivate::soundVolumeChanged(const PSound& sound, float32 oldVolume)
+{
+  // move thru all active channels
+  for (ChannelsMap::const_iterator it = m_activeChannels.begin(); it != m_activeChannels.end(); ++it)
+  {
+    ALuint channel = it->first;
+    const PSound& curSound = it->second;
+
+    if (curSound == sound)
+    {
+      EGE_PRINT("Volume: %f", sound->volume());
+      alSourcef(channel, AL_GAIN, sound->volume());
+
+      // check to see if there were any errors
+	    ALenum error = alGetError();
+	    if (AL_NO_ERROR != error)
+      {
+        // error!
+        EGE_PRINT("AudioManagerPrivate::soundVolumeChanged - could not set gain!");
+	    }
+      return;
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called on sound fade out completion. */
+void AudioManagerPrivate::soundFadeOutComplete(const PSound& sound)
+{
+  // move thru all active channels
+  for (ChannelsMap::const_iterator it = m_activeChannels.begin(); it != m_activeChannels.end(); ++it)
+  {
+    ALuint channel = it->first;
+    const PSound& curSound = it->second;
+
+    if (curSound == sound)
+    {
+      // stop sound
+      alSourceStop(channel);
+
+      // unqueue all buffers
+      ALint value;
+			alGetSourcei(channel, AL_BUFFERS_QUEUED, &value);
+      for (s32 i = 0; i < value; ++i)
+      {
+        ALuint sink;
+        alSourceUnqueueBuffers(channel, 1, &sink);
+      }
+
+      // check to see if there were any errors
+	    ALenum error = alGetError();
+	    if (AL_NO_ERROR != error)
+      {
+        // error!
+        EGE_PRINT("AudioManagerPrivate::soundFadeOutComplete - could not stop!");
+	    }
+
+      return;
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #endif // EGE_AUDIO_OPENAL

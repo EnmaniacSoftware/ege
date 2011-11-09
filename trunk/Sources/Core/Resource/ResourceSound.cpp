@@ -49,7 +49,6 @@ EGEResult ResourceSound::create(const String& path, const PXmlElement& tag)
   m_name    = tag->attribute("name");
   m_path    = tag->attribute("path");
   m_pitch   = tag->attribute("pitch", "1.0").toFloat(&error);
-  m_gain    = tag->attribute("gain", "1.0").toFloat(&error);
 
   // check if obligatory data is wrong
   if (m_name.empty() || m_path.empty() || error)
@@ -105,7 +104,6 @@ PSound ResourceSound::createInstance()
 
   // set data
   object->setPitch(m_pitch);
-  object->setGain(m_gain);
 
   return object;
 }
