@@ -21,6 +21,7 @@
     <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\Sound.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\SoundEffectFadeOut.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\stb_vorbis.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -137,6 +138,8 @@
     <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL_p.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL_p.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Sound.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\SoundEffect.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeOut.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Hash.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h" />

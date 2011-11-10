@@ -103,6 +103,9 @@ files
   AudioUtils.h
   Sound.cpp
   Sound.h
+  SoundEffect.h
+  SoundEffectFadeOut.cpp
+  SoundEffectFadeOut.h
   wsfir.h
 
 	["Core/Components"]

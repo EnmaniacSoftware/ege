@@ -32,10 +32,24 @@ class SoundPrivate
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
-    /* Updates buffers. This is called by AudioManagerPrivate. 
-     * @param channel OpenAL channel (source) id for which buffers should be updated.
-     */
-    void updateBuffers(ALuint channel);
+    /* Updates object. */
+    void update(const Time& time);
+    /* Starts playback on given channel. */
+    EGEResult play(ALuint channel);
+    /* Stops playback. */
+    EGEResult stop();
+    /* Returns TRUE if sound is being played. */
+    bool isPlaying() const;
+
+  private:
+
+    /* Updates sound buffers. */
+    void updateBuffers();
+
+  private slots:
+
+    /* Slot called on sound volume change. */
+    void onSoundVolumeChanged(const Sound* sound, float32 oldVolume);
 
   private:
 
@@ -43,6 +57,10 @@ class SoundPrivate
     ALuint m_buffers[BUFFERS_COUNT];
     /*! OpenAL buffer format. */
     ALenum m_format;
+    /*! OpenAL channel id sound is being played on. */
+    ALuint m_channel;
+    /*! Flag indicating sound has been stopped and should not be updated anymore. */
+    bool m_stopped;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

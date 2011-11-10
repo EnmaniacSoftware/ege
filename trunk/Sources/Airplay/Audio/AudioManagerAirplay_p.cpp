@@ -2,7 +2,6 @@
 #include "Core/Application/Application.h"
 #include "Airplay/Audio/AudioManagerAirplay_p.h"
 #include "Airplay/Audio/SoundAirplay_p.h"
-#include "Core/Audio/AudioCodecWav.h"
 #include <s3eSound.h>
 #include <s3eAudio.h>
 #include <s3e.h>
@@ -13,6 +12,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static s16 l_emptySoundSampleData[1];
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_DEFINE_NEW_OPERATORS(AudioManagerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(AudioManagerPrivate)
@@ -20,6 +21,16 @@ EGE_DEFINE_DELETE_OPERATORS(AudioManagerPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base)
 {
+  // NOTE: we set an empty sound to be played here so Airplay sound system gets initialized
+  l_emptySoundSampleData[0] = 0;
+
+  // get free channel
+  s32 channel = s3eSoundGetFreeChannel();
+  if (-1 != channel)
+  {
+    s3eSoundChannelSetInt(channel, S3E_CHANNEL_RATE, 22050);
+    s3eSoundChannelPlay(channel, l_emptySoundSampleData, 1, 1, 0);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerPrivate::~AudioManagerPrivate()
@@ -37,226 +48,27 @@ bool AudioManagerPrivate::isValid() const
 /*! Updates manager. */
 void AudioManagerPrivate::update(const Time& time)
 {
-  // check if compressed audio was being played
-  if (m_compessedAudio && m_compessedAudio->isValid())
-  {
-    // update
-    m_compessedAudio->update(time);
-
-    // check if finished playing
-    if (S3E_FALSE == s3eAudioIsPlaying())
-    {
-      // ok, clean up
-      ege_disconnect(m_compessedAudio.object(), volumeChanged, this, AudioManagerPrivate::soundVolumeChanged);
-      ege_disconnect(m_compessedAudio.object(), fadeOutComplete, this, AudioManagerPrivate::soundFadeOutComplete);
-      m_compessedAudio = NULL;
-    }
-  }
-
-  // go thru all uncompressed sounds
-  for (SoundsList::iterator it = m_uncompressedAudio.begin(); it != m_uncompressedAudio.end();)
-  {
-    PSound& sound = *it;
-
-    // update
-    sound->update(time);
-
-    // check if finished playing
-    if ((0 == s3eSoundChannelGetInt(sound->p_func()->channel(), S3E_CHANNEL_STATUS)) && 
-        (0 == s3eSoundChannelGetInt(sound->p_func()->channel(), S3E_CHANNEL_PAUSED)))
-    {
-      // ok, clean up
-      ege_disconnect(sound.object(), volumeChanged, this, AudioManagerPrivate::soundVolumeChanged);
-      ege_disconnect(sound.object(), fadeOutComplete, this, AudioManagerPrivate::soundFadeOutComplete);
-      m_uncompressedAudio.erase(it++);
-      continue;
-    }
-
-    ++it;
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Plays given sound.
- * @param sound       Sound to play.
- * @param repeatCount Number of times sound should be repeated.
+ * @param sound Sound to play.
  * @return  Returns EGE_SUCCESS if sound is sucessfully started or EGE_ERROR if sound could not be started.
- * @note  When repeatCount is set to zero the sound is going to be played exactly once. For negative values sound will be played forever.
  */
-EGEResult AudioManagerPrivate::play(const PSound& sound, s32 repeatCount)
+EGEResult AudioManagerPrivate::play(const PSound& sound)
 {
-  const PObject& stream = sound->codec()->stream();
-
-  // check if MP3 (or other supported compressed audio)
-  if (EGE_OBJECT_UID_AUDIO_CODEC_MP3 == sound->codec()->uid())
-  {
-    // process according to stream type
-    switch (stream->uid())
-    {
-      case EGE_OBJECT_UID_DATA_BUFFER:
-
-        // play sound
-        if (S3E_RESULT_ERROR == s3eAudioPlayFromBuffer(ege_cast<DataBuffer*>(stream)->data(), static_cast<uint32>(ege_cast<DataBuffer*>(stream)->size()), 
-                                                       repeatCount + 1))
-        {
-          // error!
-          return EGE_ERROR;
-        }
-
-        // store it
-        m_compessedAudio = sound;
-        break;
-
-      default:
-
-        EGE_ASSERT("Not supported!");
-        return EGE_ERROR_NOT_SUPPORTED;
-    }
-
-    // connect for sound volume changes
-    ege_connect(sound.object(), volumeChanged, this, AudioManagerPrivate::soundVolumeChanged);
-    sound->setVolume(sound->volume());
-    return EGE_SUCCESS;
-  }
-  // check if WAV file
-  else if (EGE_OBJECT_UID_AUDIO_CODEC_WAV == sound->codec()->uid())
-  {
-    // get free channel
-    int channel = s3eSoundGetFreeChannel();
-    if (-1 != channel)
-    {
-      DataBuffer* dataBuffer = ege_cast<DataBuffer*>(stream);
-
-      // setup playback data
-      // NOTE: first set channel frequency and then pitch as setting channel frequency modifies pitch
-      s3eSoundChannelSetInt(channel, S3E_CHANNEL_RATE, sound->codec()->frequency());
-      s3eSoundChannelSetInt(channel, S3E_CHANNEL_PITCH, static_cast<int32>(s3eSoundChannelGetInt(channel, S3E_CHANNEL_PITCH) * sound->pitch()));
-
-      // play sound
-      if (S3E_RESULT_ERROR == s3eSoundChannelPlay(channel, reinterpret_cast<int16*>(dataBuffer->data(dataBuffer->readOffset())),
-                                                  reinterpret_cast<AudioCodecWav*>(sound->codec())->remainingSamplesCount(), repeatCount + 1, 0))
-      {
-        // error!
-        return EGE_ERROR;
-      }
-
-      // setup data for later use
-      sound->p_func()->setChannel(channel);
-
-      // store it
-      m_uncompressedAudio.push_back(sound);
-
-      // connect for sound volume changes
-      ege_connect(sound.object(), volumeChanged, this, AudioManagerPrivate::soundVolumeChanged);
-      sound->setVolume(sound->volume());
-      return EGE_SUCCESS;
-    }
-
-    return EGE_ERROR;
-  }
-
-  return EGE_ERROR;
+  return sound->p_func()->play();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Stops playback of the sound with a given name. 
- * @param soundName     Name of the sound to stop playback.
- * @param fadeDuration  Time interval during which sound should be faded out.
- */
-void AudioManagerPrivate::stop(const String& soundName, const Time& fadeDuration)
+/*! Stops playback of the given sound. */
+EGEResult AudioManagerPrivate::stop(const PSound& sound)
 {
-  // check if compressed audio
-  if (m_compessedAudio && m_compessedAudio->isValid() && m_compessedAudio->name() == soundName)
-  {
-    // start fade out
-    m_compessedAudio->startFadeOut(fadeDuration);
-
-    // connect
-    ege_connect(m_compessedAudio.object(), fadeOutComplete, this, AudioManagerPrivate::soundFadeOutComplete);
-  }
-  else
-  {
-    // go thru all uncompressed sounds
-    for (SoundsList::iterator it = m_uncompressedAudio.begin(); it != m_uncompressedAudio.end(); ++it)
-    {
-      PSound& sound = *it;
-      if (sound->name() == soundName)
-      {
-        // start fade out
-        sound->startFadeOut(fadeDuration);
-
-        // connect
-        ege_connect(sound.object(), fadeOutComplete, this, AudioManagerPrivate::soundFadeOutComplete);
-        return;
-      }
-    }
-  }
+  return sound->p_func()->stop();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if sound of a given name is being played. */
-bool AudioManagerPrivate::isPlaying(const String& soundName) const
+/*1 Returns TRUE if given sound is being played. */
+bool AudioManagerPrivate::isPlaying(const PSound& sound) const
 {
-  // check if compressed audio
-  if (m_compessedAudio && m_compessedAudio->isValid() && m_compessedAudio->name() == soundName)
-  {
-    // found
-    return true;
-  }
-  else
-  {
-    // go thru all uncompressed sounds
-    for (SoundsList::const_iterator it = m_uncompressedAudio.begin(); it != m_uncompressedAudio.end(); ++it)
-    {
-      const PSound& sound = *it;
-      if (sound->name() == soundName)
-      {
-        // found
-        return true;
-      }
-    }
-  }
-
-  return false;
+  return sound->p_func()->isPlaying();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called on sound volume change. */
-void AudioManagerPrivate::soundVolumeChanged(const PSound& sound, float32 oldVolume)
-{
-  if (m_compessedAudio == sound)
-  {
-    s3eAudioSetInt(S3E_AUDIO_VOLUME, static_cast<int32>(S3E_AUDIO_MAX_VOLUME * sound->volume()));
-  }
-  else
-  {
-    for (SoundsList::const_iterator it = m_uncompressedAudio.begin(); it != m_uncompressedAudio.end(); ++it)
-    {
-      if (*it == sound)
-      {
-        s3eSoundChannelSetInt(sound->p_func()->channel(), S3E_CHANNEL_VOLUME, static_cast<int32>(S3E_SOUND_MAX_VOLUME * sound->volume()));
-        return;
-      }
-    }
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called on sound fade out completion. */
-void AudioManagerPrivate::soundFadeOutComplete(const PSound& sound)
-{
-  if (m_compessedAudio == sound)
-  {
-    s3eAudioStop();
-  }
-  else
-  {
-    for (SoundsList::const_iterator it = m_uncompressedAudio.begin(); it != m_uncompressedAudio.end(); ++it)
-    {
-      if (*it == sound)
-      {
-        // mark it to stop
-        s3eSoundChannelStop(sound->p_func()->channel());
-        return;
-      }
-    }
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #endif // !EGE_AIRPLAY_AUDIO_SOFTWARE

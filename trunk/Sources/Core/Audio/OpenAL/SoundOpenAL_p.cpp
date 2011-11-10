@@ -13,7 +13,10 @@ EGE_DEFINE_NEW_OPERATORS(SoundPrivate)
 EGE_DEFINE_DELETE_OPERATORS(SoundPrivate)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SoundPrivate::SoundPrivate(Sound* base) : m_d(base), m_format(0)
+SoundPrivate::SoundPrivate(Sound* base) : m_d(base), 
+                                          m_format(0),
+                                          m_channel(0),
+                                          m_stopped(false)
 {
   EGE_MEMSET(m_buffers, 0, sizeof (m_buffers));
 
@@ -57,6 +60,8 @@ SoundPrivate::~SoundPrivate()
       // error!
       EGE_PRINT("SoundPrivate::~SoundPrivate - could not delete audio buffers.");
     }
+
+    // reset
     EGE_MEMSET(m_buffers, 0, sizeof (m_buffers));
   }
 }
@@ -77,10 +82,41 @@ bool SoundPrivate::isValid() const
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates buffers. This is called by AudioManagerPrivate. 
- *  @param channel OpenAL channel (source) id for which buffers should be updated.
- */
-void SoundPrivate::updateBuffers(ALuint channel)
+/*! Updates object. */
+void SoundPrivate::update(const Time& time)
+{
+  if (!m_stopped)
+  {
+    // updates buffers for given channel
+    updateBuffers();
+
+    // check if channel stopped
+    ALint state;
+	  alGetSourcei(m_channel, AL_SOURCE_STATE, &state);
+    if (AL_PLAYING != state)
+    {
+      // check if there are any queued buffers. If so it means audio was starved and needs to be resumed
+      ALint value;
+		  alGetSourcei(m_channel, AL_BUFFERS_QUEUED, &value);
+		  if (value)
+		  {
+        // resume playback
+			  alSourcePlay(m_channel);
+		  }
+		  else
+		  {
+			  // finished
+        d_func()->notifyFinished();
+
+        // stop
+        stop();
+      }
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Updates sound buffers. */
+void SoundPrivate::updateBuffers()
 {
   AudioCodec* codec = d_func()->codec();
 
@@ -88,7 +124,7 @@ void SoundPrivate::updateBuffers(ALuint channel)
 
   // get channel type
   ALint channelType;
-  alGetSourcei(channel, AL_SOURCE_TYPE, &channelType);
+  alGetSourcei(m_channel, AL_SOURCE_TYPE, &channelType);
   if (AL_NO_ERROR != alGetError())
   {
     // error!
@@ -105,7 +141,7 @@ void SoundPrivate::updateBuffers(ALuint channel)
   else
   {
   	// request the number of OpenAL buffers that have been processed (played and finished) for this channel
-	  alGetSourcei(channel, AL_BUFFERS_PROCESSED, &buffersProcessed);
+	  alGetSourcei(m_channel, AL_BUFFERS_PROCESSED, &buffersProcessed);
     if (AL_NO_ERROR != alGetError())
     {
       // error!
@@ -125,7 +161,7 @@ void SoundPrivate::updateBuffers(ALuint channel)
     if (AL_UNDETERMINED != channelType)
     {
       // NOTE: bufferId will hold id of processed buffer
-		  alSourceUnqueueBuffers(channel, 1, &bufferId);
+		  alSourceUnqueueBuffers(m_channel, 1, &bufferId);
     }
 
     // upload 250ms audio data to buffer
@@ -143,7 +179,7 @@ void SoundPrivate::updateBuffers(ALuint channel)
       }
 
 			// add buffer to channel
-			alSourceQueueBuffers(channel, 1, &bufferId);
+			alSourceQueueBuffers(m_channel, 1, &bufferId);
       if (AL_NO_ERROR != alGetError())
       {
         // error!
@@ -173,6 +209,108 @@ void SoundPrivate::updateBuffers(ALuint channel)
 		--buffersProcessed;
     ++index;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Starts playback on given channel. */
+EGEResult SoundPrivate::play(ALuint channel)
+{
+  // store channel
+  m_channel = channel;
+
+  // initially update all buffers
+  updateBuffers();
+
+	// set the pitch of the source
+	alSourcef(m_channel, AL_PITCH, d_func()->pitch());
+	
+	// set the looping value
+	//alSourcei(channel, AL_LOOPING, sound->looping() ? AL_TRUE : AL_FALSE);
+		
+	// play the sound
+	alSourcePlay(m_channel);
+
+	// check to see if there were any errors
+	ALenum error = alGetError();
+	if (AL_NO_ERROR != error)
+  {
+    // error!
+    EGE_PRINT("AudioManagerPrivate::play - could not start playback!");
+    return EGE_ERROR;
+	}
+
+  // connect for sound volume changes and set initial volume
+  ege_connect(d_func(), volumeChanged, this, SoundPrivate::onSoundVolumeChanged);
+  d_func()->setVolume(d_func()->volume());
+
+  // reset flag
+  m_stopped = false;
+
+  EGE_PRINT("SoundPrivate::play - %s", d_func()->name().toAscii());
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Stops playback. */
+EGEResult SoundPrivate::stop()
+{
+	alSourceStop(m_channel);
+  alSourcei(m_channel, AL_BUFFER, 0);
+
+  // unqueue all buffers
+  ALint value;
+	alGetSourcei(m_channel, AL_BUFFERS_QUEUED, &value);
+  for (s32 i = 0; i < value; ++i)
+  {
+    ALuint sink;
+    alSourceUnqueueBuffers(m_channel, 1, &sink);
+  }
+
+	// check to see if there were any errors
+	ALenum error = alGetError();
+	if (AL_NO_ERROR != error)
+  {
+    // error!
+    EGE_PRINT("AudioManagerPrivate::stop - %s error!", d_func()->name().toAscii());
+    return EGE_ERROR;
+	}
+
+  EGE_PRINT("AudioManagerPrivate::stop - %s", d_func()->name().toAscii());
+
+  // notify stopped
+  d_func()->notifyStopped();
+
+  // set flag to prevent this sound from being updated
+  m_stopped = true;
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if sound is being played. */
+bool SoundPrivate::isPlaying() const
+{
+  ALint state;
+	alGetSourcei(m_channel, AL_SOURCE_STATE, &state);
+
+  return AL_PLAYING == state;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called on sound volume change. */
+void SoundPrivate::onSoundVolumeChanged(const Sound* sound, float32 oldVolume)
+{
+  EGE_ASSERT(sound->p_func() == this);
+
+  EGE_PRINT("SoundPrivate::onSoundVolumeChanged: %s %.2f -> %.2f", sound->name().toAscii(), oldVolume, sound->volume());
+
+  // set new volume
+  alSourcef(m_channel, AL_GAIN, sound->volume());
+
+  // check to see if there were any errors
+	ALenum error = alGetError();
+	if (AL_NO_ERROR != error)
+  {
+    // error!
+    EGE_PRINT("SoundPrivate::onSoundVolumeChanged - %s could not set volume!", sound->name().toAscii());
+	}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #endif // EGE_AUDIO_OPENAL

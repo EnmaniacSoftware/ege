@@ -37,15 +37,24 @@ class SoundPrivate
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
-    /* Sets channel sound is being played on. */
-    void setChannel(s32 channelId);
-    /*! Returns channel id sound is being played. */
-    inline s32 channel() const { return m_channelId; }
+    /* Updates object. */
+    void update(const Time& time);
+    /* Starts playback. */
+    EGEResult play();
+    /* Stops playback. */
+    EGEResult stop();
+    /* Returns TRUE if sound is being played. */
+    bool isPlaying() const;
+
+  private slots:
+
+    /* Slot called on sound volume change. */
+    void onSoundVolumeChanged(const Sound* sound, float32 oldVolume);
 
   private:
 
-    /*! Channel sound is being played on. Negative if not being played. */
-    s32 m_channelId;
+    /*! Channel sound is being played on. */
+    s32 m_channel;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

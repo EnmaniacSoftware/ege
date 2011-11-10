@@ -28,8 +28,7 @@ Sound::Sound(const String& name, const PDataBuffer& data) : Object(NULL),
                                                             m_pitch(1.0f), 
                                                             m_codec(NULL),
                                                             m_repeatsLeft(0),
-                                                            m_volume(1.0f),
-                                                            m_state(STATE_IDLE)
+                                                            m_volume(1.0f)
 {
   // detect stream type
   EGEAudio::StreamType type = AudioUtils::DetectStreamType(data);
@@ -79,45 +78,26 @@ bool Sound::isValid() const
 /*! Updates object. */
 void Sound::update(const Time& time)
 {
-  switch (m_state)
+  // update effects
+  for (SoundEffectList::iterator it = m_effects.begin(); it != m_effects.end(); )
   {
-    case STATE_FADING_IN:
+    PSoundEffect& effect = *it;
 
-      // update fade time
-      m_fadeTime += time;
-      if (m_fadeTime >= m_fadeDuration)
-      {
-        m_fadeTime = m_fadeDuration;
+    // update
+    if (effect->update(time, this))
+    {
+      // effect is over, remove
+      m_effects.erase(it++);
+    }
+    else
+    {
+      ++it;
+    }
+  }
 
-        // reset state
-        m_state = STATE_IDLE;
-
-        // emit
-        emit fadeInComplete(this);
-      }
-
-      // set volume
-      setVolume(Math::Lerp(0.0f, 1.0f, m_fadeTime.seconds() / m_fadeDuration.seconds()));
-      break;
-
-    case STATE_FADING_OUT:
-
-      // update fade time
-      m_fadeTime += time;
-      if (m_fadeTime >= m_fadeDuration)
-      {
-        m_fadeTime = m_fadeDuration;
-
-        // reset state
-        m_state = STATE_IDLE;
-
-        // emit
-        emit fadeOutComplete(this);
-      }
-
-      // set volume
-      setVolume(Math::Lerp(1.0f, 0.0f, m_fadeTime.seconds() / m_fadeDuration.seconds()));
-      break;
+  if (isValid())
+  {
+    p_func()->update(time);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -141,27 +121,37 @@ void Sound::setVolume(float32 volume)
   // clamp to valid range
   m_volume = Math::Bound(volume, 0.0f, 1.0f);
 
-  // emit signal
-  emit volumeChanged(this, old);
+  // notify
+  notifyVolumeChanged(old);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts fading out. */
-void Sound::startFadeOut(const Time& duration)
+/*! Adds sound effect. */
+bool Sound::addEffect(PSoundEffect effect)
 {
-  m_fadeDuration = duration;
-  m_fadeTime = 0.0f;
+  if ((NULL != effect) && effect->isValid())
+  {
+    m_effects.push_back(effect);
+    return true;
+  }
 
-  // state state
-  m_state = STATE_FADING_OUT;
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts fading in. */
-void Sound::startFadeIn(const Time& duration)
+/*! Notifies sound has finished playback. */
+void Sound::notifyFinished()
 {
-  m_fadeDuration = duration;
-  m_fadeTime = 0.0f;
-
-  // state state
-  m_state = STATE_FADING_IN;
+  emit finished(this);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Notifies sound has stopped playback. */
+void Sound::notifyStopped()
+{
+  emit stopped(this);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Notifies sound volume has changed. */
+void Sound::notifyVolumeChanged(float32 oldVolume)
+{
+  emit volumeChanged(this, oldVolume);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

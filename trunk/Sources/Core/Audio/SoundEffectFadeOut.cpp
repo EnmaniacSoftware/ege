@@ -1,0 +1,66 @@
+#include "Core/Audio/SoundEffectFadeOut.h"
+#include "Core/Audio/Sound.h"
+
+EGE_NAMESPACE
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_DEFINE_NEW_OPERATORS(SoundEffectFadeOut)
+EGE_DEFINE_DELETE_OPERATORS(SoundEffectFadeOut)
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+SoundEffectFadeOut::SoundEffectFadeOut(const Time& duration) : SoundEffect(),
+                                                               m_duration(duration),
+                                                               m_time(0.0f)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+SoundEffectFadeOut::~SoundEffectFadeOut()
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! SoundEffect override. Returns TRUE if object is valid. */
+bool SoundEffectFadeOut::isValid() const
+{
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! SoundEffect override. Updates object. 
+ * @param time  Time frame for which update should be done.
+ * @param sound Sound object for which effect is being run.
+ * @return  Returns TRUE if effect came to completion. Otherwise, returns FALSE.
+ */
+bool SoundEffectFadeOut::update(const Time& time, Sound* sound)
+{
+  bool done = false;
+
+  // update time
+  m_time += time;
+
+  // check if done
+  if (m_time >= m_duration)
+  {
+    // we r done
+    m_time = m_duration;
+
+    done = true;
+  }
+
+  // update volume
+  sound->setVolume(1.0f - (m_time.seconds() / m_duration.seconds()));
+
+  if (done)
+  {
+    // notify
+    emit finished();
+  }
+
+  return done;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets fade duration. */
+void SoundEffectFadeOut::setDuration(const Time& time)
+{
+  m_duration = time;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

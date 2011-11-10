@@ -38,23 +38,31 @@ class AudioManager : public Object
      */
     EGEResult play(const String& soundName, s32 repeatCount = 0);
     /* Plays given sound.
-     * @param sound       Sound to play.
-     * @param repeatCount Number of times sound should be repeated.
+     * @param sound Sound to play.
      * @return  Returns EGE_SUCCESS if sound is sucessfully started or EGE_ERROR if sound could not be started.
-     * @note  When repeatCount is set to zero the sound is going to be played exactly once. For negative values sound will be played forever.
      */
-    EGEResult play(const PSound& sound, s32 repeatCount = 0);
+    EGEResult play(const PSound& sound);
     /* Returns TRUE if sound of a given name is being played. */
     bool isPlaying(const String& soundName) const;
-    /* Stops playback of the sound with a given name. 
-     * @param soundName     Name of the sound to stop playback.
-     * @param fadeDuration  Time interval during which sound should be faded out.
-     */
-    void stop(const String& soundName, const Time& fadeDuration = 0.0f);
+    /* Returns TRUE if given sound is being played. */
+    bool isPlaying(const PSound& sound) const;
+    /* Stops playback of all sounds with a given name. */
+    EGEResult stop(const String& soundName);
+    /* Stops playback of the given sound. */
+    EGEResult stop(const PSound& sound);
+    /* Returns list of sounds being played with the given name. */
+    List<PSound> sounds(const String& soundName) const;
+
+  private:
+
+    typedef List<PSound> SoundList;
 
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(AudioManager);
+
+    /*! List of sounds being played. */
+    SoundList m_sounds;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

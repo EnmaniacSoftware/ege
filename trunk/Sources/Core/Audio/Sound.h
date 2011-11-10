@@ -5,6 +5,7 @@
 */
 
 #include <EGE.h>
+#include <EGEList.h>
 #include <EGEDataBuffer.h>
 #include <EGEString.h>
 #include <EGESignal.h>
@@ -16,6 +17,7 @@ EGE_NAMESPACE_BEGIN
 
 class AudioCodec;
 
+EGE_DECLARE_SMART_CLASS(SoundEffect, PSoundEffect)
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -34,19 +36,15 @@ class Sound : public Object
 
   signals:
 
+    /*! Signal emitted when sound playback has come to an end. */
+    Signal1<const Sound*> finished;
+    /*! Signal emitted when sound playback has been stopped (by any means). */
+    Signal1<const Sound*> stopped;
     /*! Signal emitted when volume changes. 
      *  @param  Sound for which volume has changed.
      *  @param  oldVolume Old volume level.
      */
-    Signal2<const PSound&, float32> volumeChanged;
-    /*! Signal emitted when fade in state is over. 
-     *  @param  Sound for which fade in has been completed.
-     */
-    Signal1<const PSound&> fadeInComplete;
-    /*! Signal emitted when fade in state is over. 
-     *  @param  Sound for which fade out has been completed.
-     */
-    Signal1<const PSound&> fadeOutComplete;
+    Signal2<const Sound*, float32> volumeChanged;
 
   public:
 
@@ -70,20 +68,21 @@ class Sound : public Object
     void setVolume(float32 volume);
     /*! Returns current volume. */
     inline float32 volume() const { return m_volume; }
-    /* Starts fading out. */
-    void startFadeOut(const Time& duration);
-    /* Starts fading in. */
-    void startFadeIn(const Time& duration);
+    /* Adds sound effect. */
+    bool addEffect(PSoundEffect effect);
 
   private:
 
-    /*! Available states. */
-    enum State
-    {
-      STATE_IDLE,
-      STATE_FADING_IN,
-      STATE_FADING_OUT
-    };
+    /* Notifies sound has finished playback. */
+    void notifyFinished();
+    /* Notifies sound has stopped playback. */
+    void notifyStopped();
+    /* Notifies sound volume has changed. */
+    void notifyVolumeChanged(float32 oldVolume);
+
+  private:
+
+    typedef List<PSoundEffect> SoundEffectList;
 
   private:
 
@@ -99,12 +98,8 @@ class Sound : public Object
     AudioCodec* m_codec;
     /*! Volume in [0-1] range. */
     float32 m_volume;
-    /*! Current state. */
-    State m_state;
-    /*! Fade duration. */
-    Time m_fadeDuration;
-    /*! Current fade time. */
-    Time m_fadeTime;
+    /*! List of all sound effects attached. */
+    SoundEffectList m_effects;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

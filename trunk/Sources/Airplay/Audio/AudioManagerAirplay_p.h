@@ -40,26 +40,14 @@ class AudioManagerPrivate
     /* Updates manager. */
     void update(const Time& time);
     /* Plays given sound.
-     * @param sound       Sound to play.
-     * @param repeatCount Number of times sound should be repeated.
+     * @param sound Sound to play.
      * @return  Returns EGE_SUCCESS if sound is sucessfully started or EGE_ERROR if sound could not be started.
-     * @note  When repeatCount is set to zero the sound is going to be played exactly once. For negative values sound will be played forever.
      */
-    EGEResult play(const PSound& sound, s32 repeatCount);
-    /* Returns TRUE if sound of a given name is being played. */
-    bool isPlaying(const String& soundName) const;
-    /* Stops playback of the sound with a given name. 
-     * @param soundName     Name of the sound to stop playback.
-     * @param fadeDuration  Time interval during which sound should be faded out.
-     */
-    void stop(const String& soundName, const Time& fadeDuration);
-
-  private slots:
-
-    /* Slot called on sound volume change. */
-    void soundVolumeChanged(const PSound& sound, float32 oldVolume);
-    /* Slot called on sound fade out completion. */
-    void soundFadeOutComplete(const PSound& sound);
+    EGEResult play(const PSound& sound);
+    /* Returns TRUE if given sound is being played. */
+    bool isPlaying(const PSound& sound) const;
+    /* Stops playback of the given sound. */
+    EGEResult stop(const PSound& sound);
 
   private:
 
@@ -68,9 +56,9 @@ class AudioManagerPrivate
   private:
 
     /*! Currently played compressed audio. */
-    PSound m_compessedAudio;
+//    PSound m_compessedAudio;
     /*! Currently played uncompressed audio samples. */
-    SoundsList m_uncompressedAudio;
+  //  SoundsList m_uncompressedAudio;
  };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -54,6 +54,8 @@ EGE_NAMESPACE_END
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #include "Core/Audio/AudioUtils.h"
+#include "Core/Audio/SoundEffect.h"
+#include "Core/Audio/SoundEffectFadeOut.h"
 #include "Core/Audio/Sound.h"
 #include "Core/Audio/AudioManager.h"
 #include "Core/Audio/AudioCodec.h"
