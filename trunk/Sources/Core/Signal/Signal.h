@@ -63,9 +63,14 @@ public:
 
 	void Emit() const
 	{
-		for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i)
+		for (DelegateIterator i = delegateList.begin(); i != delegateList.end();)
 		{
-			(*i)();
+      // TAGE - already go to next iterator here to be able to proceed with iteration in the case current iterator gets erased in emission function
+      //        ie. due to signal disconnection in emitter function
+      DelegateIterator current = i++;
+
+      // now safetly call emitter function of current iterator
+			(*current)();
 		}
 	}
 
