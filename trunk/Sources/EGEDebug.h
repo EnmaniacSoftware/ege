@@ -21,7 +21,7 @@
 
 #endif // EGE_FEATURE_DEBUG
 
-#define EGE_LOG(text) Debug::Log(text)
+#define EGE_LOG(text, ...) Debug::Log(String::Format(#text, ##__VA_ARGS__))
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

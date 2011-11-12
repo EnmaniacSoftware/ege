@@ -92,6 +92,7 @@ EGEResult AudioManager::play(const String& soundName, s32 repeatCount)
       return play(sound);
     }
 
+    EGE_LOG("AudioManager::play - %s could not find!", soundName.toAscii());
     return EGE_ERROR_NOT_FOUND;
   }
 
