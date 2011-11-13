@@ -77,6 +77,10 @@ bool CurvesTest::initialize()
   m_splines[2].setType(EGESpline::TYPE_BEZIER);
   m_splines[2].addPoint(Vector4f(300, 100, 0), Vector4f(350, 100, 0));
   m_splines[2].addPoint(Vector4f(400, 100, 0), Vector4f(350, 100, 0));
+  m_splines[3].setType(EGESpline::TYPE_BEZIER);
+  m_splines[3].addPoint(Vector4f(300, 300, 0), Vector4f(300, 200, 0));
+  m_splines[3].addPoint(Vector4f(400, 300, 0), Vector4f(400, 200, 0));
+  m_splines[3].addPoint(Vector4f(300, 300, 0), Vector4f(300, 400, 0)).setBeginTangent(Vector4f(400, 400, 0));
 
   return true;
 }
@@ -84,6 +88,11 @@ bool CurvesTest::initialize()
 /*! Test override. Updates test. */
 void CurvesTest::update(const Time& time)
 {
+  m_timeParam += time.seconds();
+  if (1.0f < m_timeParam)
+  {
+    m_timeParam -= 1.0f;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called before target is rendered. */
@@ -94,6 +103,7 @@ void CurvesTest::preRender(PRenderTarget target)
   app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, RenderObjectFactory::Create(&m_splines[0], app(), "0", Vector4f::ZERO, EGEVertexBuffer::ST_V3_C4, 50));
   app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, RenderObjectFactory::Create(&m_splines[1], app(), "1", Vector4f::ZERO, EGEVertexBuffer::ST_V3_C4, 50));
   app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, RenderObjectFactory::Create(&m_splines[2], app(), "2", Vector4f::ZERO, EGEVertexBuffer::ST_V3_C4, 50));
+  app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, RenderObjectFactory::Create(&m_splines[3], app(), "3", Vector4f::ZERO, EGEVertexBuffer::ST_V3_C4, 50));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Pointer event receiver. */

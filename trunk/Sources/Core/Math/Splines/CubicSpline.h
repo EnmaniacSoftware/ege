@@ -57,11 +57,12 @@ class CubicSpline
      */
     void value(Vector4f& pos, float32 t) const;
     /* Returns segment of the spline at given position
-     * @param t Parametrized distance on a spline at which calculations are done. Typicially in [0-1] interval.
+     * @param t                 Parametrized distance on a spline at which calculations are done. Typicially in [0-1] interval.
+     * @param distanceToSegment Distance to returned segment (sum of distances of all previous segments).
      * @note    Parameter t is clamped to [0-1] interval.
      * @return  Curve segment at given position.
      */
-    const CurveSegment* segment(float32 t) const;
+    const CurveSegment* segment(float32 t, float32& distanceToSegment) const;
 
     /*! Returns spline length. */
     inline float32 length() const { return m_length; }

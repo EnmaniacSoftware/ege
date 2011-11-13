@@ -58,8 +58,10 @@ class ResourceCurve : public IResource
     /*! Point data info structure. */
     struct PointData
     {
-      Vector3f position;        /*!< Position. */
-      Vector3f tangent;         /*!< Tangent. */
+      Vector3f position;          /*!< Position. */
+      Vector3f tangent;           /*!< Tangent. */
+      Vector3f beginTangent;      /*!< Begin tangent override. */
+      bool beginTangentOverride;  /*!< TRUE if begin tangent is defined and should be overwritten. */
     };
 
   private:

@@ -38,6 +38,8 @@ class CurvesTest : public Test
     RenderObject* m_sceneObject;
     /*! Spline objects. */
     EGE::CubicSpline m_splines[4];
+    /*! Time parameter. */
+    EGE::float32 m_timeParam;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
