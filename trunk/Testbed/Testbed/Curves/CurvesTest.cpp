@@ -64,7 +64,7 @@ bool CurvesTest::initialize()
   }
 
   // create splines from resources
-  PResourceCurve curveResource = app()->resourceManager()->resource(RESOURCE_NAME_CURVE, "bezier-1");
+  PResourceCurve curveResource = app()->resourceManager()->resource(RESOURCE_NAME_CURVE, "bezier-2");
   if (curveResource)
   {
     curveResource->setInstance(m_splines[0]);

@@ -20,8 +20,15 @@
       <point pos='200 200 0' tangent='0 200 0' />
     </curve>
     
+    <curve name='bezier-2' type='bezier'>
+      <point pos='76 277 0' tangent='66 246 0' />
+      <point pos='150 120 0' tangent='110 130 0' />
+      <point pos='500 70 0' tangent='400 50 0' begin-tangent='190 80 0'/>
+      <point pos='750 520 0' tangent='780 430 0' begin-tangent='650 60 0'/>
+      <point pos='480 320 0' tangent='400 350 0' begin-tangent='700 560 0'/>
+    </curve>
   </group>
-
+  
   <!-- Particle test resources -->
   <group name='particle-test'>
 
