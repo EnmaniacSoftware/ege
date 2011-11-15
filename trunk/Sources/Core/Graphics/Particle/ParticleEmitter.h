@@ -66,6 +66,8 @@ class ParticleEmitter : public SceneNodeObject
     void stop();
     /* Updates object. */
     void update(const Time& time);
+    /*! Returns TRUE if emitter is working. */
+    inline bool isRunning() const { return m_active; }
 
     /* Sets system life span. Negative time causes emitter to live infinitely. */
     void setLifeSpan(const Time& time);

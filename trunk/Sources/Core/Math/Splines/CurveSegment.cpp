@@ -14,7 +14,7 @@ CurveSegment::~CurveSegment()
 /* Returns TRUE if object is valid. */
 bool CurveSegment::isValid() const
 {
-  return (Vector4f::ZERO == begin() || Vector4f::ZERO == end() || Vector4f::ZERO == beginTangent() || Vector4f::ZERO == endTangent()) ? false : true;
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets begin point. */
