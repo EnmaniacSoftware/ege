@@ -110,14 +110,15 @@ class ParticleEmitter : public SceneNodeObject
     /*! Returns render component. */
     inline const PRenderComponent& renderComponent() const { return m_renderData; }
 
+    /* SceneNodeObject override. Adds object render data for rendering with given renderer. */
+    bool addForRendering(Renderer* renderer) override;
+
   private:
 
     /*! Returns TRUE if there is no available space for new particle. */
     inline bool isFull() const { return m_activeParticlesCount == m_particleMaxCount; }
     /* Allocates particles data. */
     bool allocateParticlesData();
-    /* SceneNodeObject override. Adds object render data for rendering with given renderer. */
-    bool addForRendering(Renderer* renderer) override;
     /* Applies affectors. */
     void applyAffectors(const Time& time);
     /*! Initializes particle at given index. */
