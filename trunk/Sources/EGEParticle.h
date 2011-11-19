@@ -27,8 +27,8 @@ namespace EGEParticle
     Vector2f size;                /*!< Current size. */
     Vector2f sizeDelta;           /*!< Size delta. */
 
-    Angle spin;                   /*!< Current spin angle. */
-    Angle spinDelta;              /*!< Spin agnle delta. */
+    Angle spin;                   /*!< Current spin rotation. */
+    Angle spinDelta;              /*!< Spin rotation delta. */
 
     Time timeLeft;                /*!< Time left to die. */
   };

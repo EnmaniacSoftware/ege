@@ -27,8 +27,13 @@ class TQuaternion
     TQuaternion(T x, T y, T z, T w);
     TQuaternion(const TQuaternion& quat);
 
+  public:
+
+    bool        operator == (const TQuaternion& quaternion) const;
     TQuaternion operator - () const;
     TVector3<T> operator * (const TVector3<T>& vector) const;
+
+  public:
 
     /* Creates quaternion from rotation along arbitrary axis. */
     void create(const TVector3<T>& axis, const Angle& angle);
@@ -89,6 +94,12 @@ TQuaternion<T>::TQuaternion(T x, T y, T z, T w) : x(x), y(y), z(z), w(w)
 template <typename T>
 TQuaternion<T>::TQuaternion(const TQuaternion& quat) : x(quat.x), y(quat.y), z(quat.z), w(quat.w)
 {
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+bool TQuaternion<T>::operator == (const TQuaternion<T>& quaternion) const
+{
+  return (x == quaternion.x) && (y == quaternion.y) && (z == quaternion.z) && (w == quaternion.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

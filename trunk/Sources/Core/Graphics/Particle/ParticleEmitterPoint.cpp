@@ -169,6 +169,6 @@ void ParticleEmitterPoint::initializeParticle(s32 index)
 
   // calculate spin change
   particleData.spin = 0.0f;
-  particleData.spinDelta = m_particleSpinSpeed + m_particleSpeedVariance * m_random(-1.0f, 1.0f);
+  particleData.spinDelta = m_particleSpinSpeed + m_particleSpinSpeedVariance * m_random(-1.0f, 1.0f);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

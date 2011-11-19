@@ -354,8 +354,9 @@ bool ParticleEmitter::addForRendering(Renderer* renderer)
     {
       const Matrix4f& viewMatrix = renderer->viewMatrix();
 
-      Vector3f right(viewMatrix.data[0], viewMatrix.data[4], viewMatrix.data[8]);
-      Vector3f up(viewMatrix.data[1], viewMatrix.data[5], viewMatrix.data[9]);
+      Vector3f right(viewMatrix.data[0], viewMatrix.data[1], viewMatrix.data[2]);
+      Vector3f up(viewMatrix.data[4], viewMatrix.data[5], viewMatrix.data[6]);
+      Vector3f look(viewMatrix.data[8], viewMatrix.data[9], viewMatrix.data[10]);
 
       for (s32 i = 0; i < m_activeParticlesCount; ++i)
       {
@@ -376,10 +377,31 @@ bool ParticleEmitter::addForRendering(Renderer* renderer)
         //   (1)   (2,4)
 
         Vector3f halfSize(particleData.size.x * 0.5f, particleData.size.y * 0.5f, 0);
-        Vector3f point0 = particleData.position + ((-right - up) * halfSize);
-        Vector3f point1 = particleData.position + (( right - up) * halfSize);
-        Vector3f point2 = particleData.position + (( right + up) * halfSize);
-        Vector3f point5 = particleData.position + ((-right + up) * halfSize);
+        Vector3f point0;
+        Vector3f point1;
+        Vector3f point2;
+        Vector3f point5;
+
+        // calculate positions
+        // NOTE: we destinguish two cases here: with and without rotation
+        if (0.0f == particleData.spinDelta.radians())
+        {
+          point0 = particleData.position + ((-right - up) * halfSize);
+          point1 = particleData.position + ((-right + up) * halfSize);
+          point2 = particleData.position + (( right + up) * halfSize);
+          point5 = particleData.position + (( right - up) * halfSize);
+        }
+        else
+        {
+          Quaternionf quat;
+          quat.create(look, particleData.spin);
+          
+          // take rotation into account
+          point0 = particleData.position + quat * ((-right - up) * halfSize);
+          point1 = particleData.position + quat * ((-right + up) * halfSize);
+          point2 = particleData.position + quat * (( right + up) * halfSize);
+          point5 = particleData.position + quat * (( right - up) * halfSize);
+        }
 
         *data++ = point0.x;
         *data++ = point0.y;
