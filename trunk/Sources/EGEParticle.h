@@ -6,6 +6,7 @@
 #include <EGEColor.h>
 #include <EGETime.h>
 #include <EGEDynamicArray.h>
+#include <EGEAngle.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -25,6 +26,9 @@ namespace EGEParticle
 
     Vector2f size;                /*!< Current size. */
     Vector2f sizeDelta;           /*!< Size delta. */
+
+    Angle spin;                   /*!< Current spin angle. */
+    Angle spinDelta;              /*!< Spin agnle delta. */
 
     Time timeLeft;                /*!< Time left to die. */
   };

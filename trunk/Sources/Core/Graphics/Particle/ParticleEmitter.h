@@ -98,6 +98,10 @@ class ParticleEmitter : public SceneNodeObject
     void setParticleEndColor(const Color& color);
     /* Sets particle end color variance. */
     void setParticleEndColorVariance(const Color& variance);
+    /* Sets particle spin speed (degs/sec). */
+    void setParticleSpinSpeed(float32 speed);
+    /* Sets particle spin speed variance (degs/sec). */
+    void setParticleSpinSpeedVariance(float32 variance);
    
     /* Sets material. */
     void setMaterial(const PMaterial& material);
@@ -164,6 +168,10 @@ class ParticleEmitter : public SceneNodeObject
     Color m_particleEndColor;
     /*! Particle end color variance. */
     Color m_particleEndColorVariance;
+    /*! Particle spin speed (degs/sec). */
+    float32 m_particleSpinSpeed;
+    /*! Particle spin speed variance (degs/sec). */
+    float32 m_particleSpinSpeedVariance;
     /*! Render data. */
     PRenderComponent m_renderData;
     /*! Array of particles. */

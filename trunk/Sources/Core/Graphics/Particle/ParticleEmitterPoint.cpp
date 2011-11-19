@@ -166,5 +166,9 @@ void ParticleEmitterPoint::initializeParticle(s32 index)
   particleData.colorDelta.green = (endColor.green - particleData.color.green) * inverseLifeTimeSeconds;
   particleData.colorDelta.blue  = (endColor.blue - particleData.color.blue) * inverseLifeTimeSeconds;
   particleData.colorDelta.alpha = (endColor.alpha - particleData.color.alpha) * inverseLifeTimeSeconds;
+
+  // calculate spin change
+  particleData.spin = 0.0f;
+  particleData.spinDelta = m_particleSpinSpeed + m_particleSpeedVariance * m_random(-1.0f, 1.0f);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

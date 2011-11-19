@@ -80,6 +80,8 @@ bool ParticleEmitter::initialize(const Dictionary& params)
   m_particleStartColorVariance  = params.value("particle-start-color-variance", "0 0 0 0").toColor(&error);
   m_particleEndColor            = params.value("particle-end-color", "1 1 1 1").toColor(&error);
   m_particleEndColorVariance    = params.value("particle-end-color-variance", "0 0 0 0").toColor(&error);
+  m_particleSpinSpeed           = params.value("particle-spin-speed", "0").toFloat(&error);
+  m_particleSpinSpeedVariance   = params.value("particle-spin-speed-variance", "0").toFloat(&error);
 
   return !error;
 }
@@ -170,6 +172,9 @@ void ParticleEmitter::update(const Time& time)
 
       // update position
       particleData.position += particleData.velocity * timeInSeconds;
+
+      // update spin
+      particleData.spin += particleData.spinDelta.radians() * timeInSeconds;
 
       // go to next particle
       ++i;
@@ -275,6 +280,18 @@ void ParticleEmitter::setParticleEndColor(const Color& color)
 void ParticleEmitter::setParticleEndColorVariance(const Color& variance)
 {
   m_particleEndColorVariance = variance;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets particle spin speed (degs/sec). */
+void ParticleEmitter::setParticleSpinSpeed(float32 speed)
+{
+  m_particleSpinSpeed = speed;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets particle spin speed variance (degs/sec). */
+void ParticleEmitter::setParticleSpinSpeedVariance(float32 variance)
+{
+  m_particleSpinSpeedVariance = variance;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Allocates particles data. */
