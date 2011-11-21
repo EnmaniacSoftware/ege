@@ -1,0 +1,119 @@
+<?xml version="1.0"  standalone='no'?>
+
+<resources>
+
+  <group name='fonts'>
+
+    <texture type='2d' name='fonts' path='images/fonts.png' min-filter='bilinear' mag-filter='trilinear' mode-s='repeat' mode-t='repeat'/>
+
+    <material name='fonts' src-blend='src-alpha' dst-blend='one-minus-src-alpha'>
+      <texture name='fonts' />
+    </material>
+
+    <font name="fonts" material="fonts" height="16">
+      <glyph value="32" image-x="0"      image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="33" image-x="0.0625" image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="34" image-x="0.125"  image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="35" image-x="0.1875" image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="36" image-x="0.25"   image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="37" image-x="0.3125" image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="38" image-x="0.375"  image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="39" image-x="0.4375" image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="40" image-x="0.5"    image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="41" image-x="0.5625" image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="42" image-x="0.625"  image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="43" image-x="0.6875" image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="44" image-x="0.75"   image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="45" image-x="0.8125" image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="46" image-x="0.875"  image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="47" image-x="0.9375" image-y="0" image-width="0.0625" image-height="0.0625" width="16"/>
+
+      <glyph value="48" image-x="0"      image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="49" image-x="0.0625" image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="50" image-x="0.125"  image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="51" image-x="0.1875" image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="52" image-x="0.25"   image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="53" image-x="0.3125" image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="54" image-x="0.375"  image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="55" image-x="0.4375" image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="56" image-x="0.5"    image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="57" image-x="0.5625" image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="58" image-x="0.625"  image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="59" image-x="0.6875" image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="60" image-x="0.75"   image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="61" image-x="0.8125" image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="62" image-x="0.875"  image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="63" image-x="0.9375" image-y="0.0625" image-width="0.0625" image-height="0.0625" width="16"/>
+
+      <glyph value="64" image-x="0"      image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="65" image-x="0.0625" image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="66" image-x="0.125"  image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="67" image-x="0.1875" image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="68" image-x="0.25"   image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="69" image-x="0.3125" image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="70" image-x="0.375"  image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="71" image-x="0.4375" image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="72" image-x="0.5"    image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="73" image-x="0.5625" image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="74" image-x="0.625"  image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="75" image-x="0.6875" image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="76" image-x="0.75"   image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="77" image-x="0.8125" image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="78" image-x="0.875"  image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="79" image-x="0.9375" image-y="0.125" image-width="0.0625" image-height="0.0625" width="16"/>
+
+      <glyph value="80" image-x="0"      image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="81" image-x="0.0625" image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="82" image-x="0.125"  image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="83" image-x="0.1875" image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="84" image-x="0.25"   image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="85" image-x="0.3125" image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="86" image-x="0.375"  image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="87" image-x="0.4375" image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="88" image-x="0.5"    image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="89" image-x="0.5625" image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="90" image-x="0.625"  image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="91" image-x="0.6875" image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="92" image-x="0.75"   image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="93" image-x="0.8125" image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="94" image-x="0.875"  image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="95" image-x="0.9375" image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+
+      <glyph value="96"  image-x="0"      image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="97"  image-x="0.0625" image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="98"  image-x="0.125"  image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="99"  image-x="0.1875" image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="100" image-x="0.25"   image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="101" image-x="0.3125" image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="102" image-x="0.375"  image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="103" image-x="0.4375" image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="104" image-x="0.5"    image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="105" image-x="0.5625" image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="106" image-x="0.625"  image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="107" image-x="0.6875" image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="108" image-x="0.75"   image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="109" image-x="0.8125" image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="110" image-x="0.875"  image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="111" image-x="0.9375" image-y="0.25" image-width="0.0625" image-height="0.0625" width="16"/>
+
+      <glyph value="112" image-x="0"      image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="113" image-x="0.0625" image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="114" image-x="0.125"  image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="115" image-x="0.1875" image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="116" image-x="0.25"   image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="117" image-x="0.3125" image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="118" image-x="0.375"  image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="119" image-x="0.4375" image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="120" image-x="0.5"    image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="121" image-x="0.5625" image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="122" image-x="0.625"  image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="123" image-x="0.6875" image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="124" image-x="0.75"   image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="125" image-x="0.8125" image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="126" image-x="0.875"  image-y="0.3125" image-width="0.0625" image-height="0.0625" width="16"/>
+      <glyph value="127" image-x="0.9375" image-y="0.1875" image-width="0.0625" image-height="0.0625" width="16"/>
+    </font>
+    
+  </group>
+
+</resources>

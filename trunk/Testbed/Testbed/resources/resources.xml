@@ -106,4 +106,23 @@
 
   </group>
 
+  <!-- Fonts test resources -->
+  <group name='fonts-test'>
+
+    <text name='test-text-1' description='This is first line of text'>
+      <lang name='en' value='Put your text here for line 1' />
+    </text>
+
+    <text name='test-text-2' description='This is second line of text'>
+      <lang name='en' value='Put your text here for line 2' />
+    </text>
+
+    <text name='test-text-3' description='This is third line of text'>
+      <lang name='en' value='Put your text here for line 3' />
+    </text>
+  
+  </group>
+
+  <include path='fonts.xml' />
+  
 </resources>

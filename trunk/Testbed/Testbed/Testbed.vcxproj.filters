@@ -40,6 +40,9 @@
     <Filter Include="Tests\Sound">
       <UniqueIdentifier>{7cf6141d-ab29-4646-99a5-a4277d79e28c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Fonts">
+      <UniqueIdentifier>{cf4dc2be-a6ed-4d98-a87c-44a21081d18b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -81,6 +84,9 @@
     <ClCompile Include="Sound\SoundTest.cpp">
       <Filter>Tests\Sound</Filter>
     </ClCompile>
+    <ClCompile Include="Fonts\FontsTest.cpp">
+      <Filter>Tests\Fonts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -121,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="Sound\SoundTest.h">
       <Filter>Tests\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Fonts\FontsTest.h">
+      <Filter>Tests\Fonts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -125,7 +125,7 @@ Text ResourceText::text(s32 numerous) const
   {
     const TextArray& list = m_translations.at(app()->language());
 
-    index = Math::Bound(index, static_cast<s32>(0), static_cast<s32>(list.size()));
+    index = Math::Bound(index, static_cast<s32>(0), static_cast<s32>(list.size()) - 1);
     outText = list[index];
   }
   else
@@ -144,14 +144,14 @@ Text ResourceText::text(s32 numerous) const
     Text number   = Text::Format("%d", numerous);
     Text percentN = EGE_TEXT("%n");
 
-    size_t pos = outText.find_first_of(percentN);
+    size_t pos = outText.find(percentN);
     while (Text::npos != pos)
     {
       // replace
       outText.replace(pos, 2, number);
 
       // find next
-      pos = outText.find_first_of(percentN, pos + 2);
+      pos = outText.find(percentN, pos + 2);
     }
   }
 
