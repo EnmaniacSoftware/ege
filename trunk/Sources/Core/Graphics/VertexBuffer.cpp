@@ -11,7 +11,9 @@ EGE_DEFINE_NEW_OPERATORS(VertexBuffer)
 EGE_DEFINE_DELETE_OPERATORS(VertexBuffer)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBuffer::VertexBuffer(Application* app) : Object(app), m_locked(false), m_vertexSize(0)
+VertexBuffer::VertexBuffer(Application* app) : Object(app), 
+                                               m_locked(false), 
+                                               m_vertexSize(0)
 {
   m_buffer = ege_new DataBuffer();
 }
@@ -42,6 +44,7 @@ bool VertexBuffer::addArray(EGEVertexBuffer::ArrayType type)
     switch (iter->type)
     {
       case EGEVertexBuffer::AT_POSITION_XYZ:       offset += 3; break;
+      case EGEVertexBuffer::AT_POSITION_XY:        offset += 2; break;
       case EGEVertexBuffer::AT_COLOR_RGBA:         offset += 4; break;
       case EGEVertexBuffer::AT_NORMAL:             offset += 3; break;
       case EGEVertexBuffer::AT_TEXTURE_UV:         offset += 2; break;
@@ -172,7 +175,8 @@ u32 VertexBuffer::vertexSize() const
     {
       switch (iter->type)
       {
-        case EGEVertexBuffer::AT_POSITION_XYZ:       m_vertexSize += 3; break;
+        case EGEVertexBuffer::AT_POSITION_XYZ:        m_vertexSize += 3; break;
+        case EGEVertexBuffer::AT_POSITION_XY:         m_vertexSize += 2; break;
         case EGEVertexBuffer::AT_COLOR_RGBA:          m_vertexSize += 4; break;
         case EGEVertexBuffer::AT_NORMAL:              m_vertexSize += 3; break;
         case EGEVertexBuffer::AT_TEXTURE_UV:          m_vertexSize += 2; break;
@@ -282,6 +286,30 @@ bool VertexBuffer::setSemantics(EGEVertexBuffer::SemanticType type)
     case EGEVertexBuffer::ST_V3_C4:
 
       arrayList.push_back(EGEVertexBuffer::AT_POSITION_XYZ);
+      arrayList.push_back(EGEVertexBuffer::AT_COLOR_RGBA);
+      break;
+
+    case EGEVertexBuffer::ST_V2:
+
+      arrayList.push_back(EGEVertexBuffer::AT_POSITION_XY);
+      break;
+
+    case EGEVertexBuffer::ST_V2_T2:
+
+      arrayList.push_back(EGEVertexBuffer::AT_POSITION_XY);
+      arrayList.push_back(EGEVertexBuffer::AT_TEXTURE_UV);
+      break;
+
+    case EGEVertexBuffer::ST_V2_T2_C4:
+
+      arrayList.push_back(EGEVertexBuffer::AT_POSITION_XY);
+      arrayList.push_back(EGEVertexBuffer::AT_TEXTURE_UV);
+      arrayList.push_back(EGEVertexBuffer::AT_COLOR_RGBA);
+      break;
+
+    case EGEVertexBuffer::ST_V2_C4:
+
+      arrayList.push_back(EGEVertexBuffer::AT_POSITION_XY);
       arrayList.push_back(EGEVertexBuffer::AT_COLOR_RGBA);
       break;
 

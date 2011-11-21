@@ -242,6 +242,12 @@ void RendererPrivate::flush()
                 glEnableClientState(GL_VERTEX_ARRAY);
                 break;
 
+              case EGEVertexBuffer::AT_POSITION_XY:
+
+                glVertexPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                glEnableClientState(GL_VERTEX_ARRAY);
+                break;
+
               case EGEVertexBuffer::AT_NORMAL:
 
                 glNormalPointer(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);

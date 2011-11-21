@@ -132,6 +132,12 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
             *data++ = vertex.pos.z;
             break;
 
+          case EGEVertexBuffer::AT_POSITION_XY:
+
+            *data++ = vertex.pos.x;
+            *data++ = vertex.pos.y;
+            break;
+
           case EGEVertexBuffer::AT_TEXTURE_UV:
 
             *data++ = vertex.uv.x;
