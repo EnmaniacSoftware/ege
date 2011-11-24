@@ -232,7 +232,7 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
     case WM_QUIT:
 
       // shut down engine
-      me->app()->eventManager()->send(EGE_EVENT_UID_CORE_QUIT_REQUEST);
+      me->app()->quit();
       return 0;
 
     case WM_SETFOCUS:

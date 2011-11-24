@@ -15,6 +15,7 @@
 #include "Core/Resource/ResourceSound.h"
 #include "Core/Graphics/Font.h"
 #include "Core/Debug/DebugFont.h"
+#include "Core/Application/Application.h"
 #include <EGEXml.h>
 #include <EGEDir.h>
 
@@ -26,11 +27,9 @@ EGE_DEFINE_NEW_OPERATORS(ResourceManager)
 EGE_DEFINE_DELETE_OPERATORS(ResourceManager)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #define NODE_RESOURCES "resources"
 #define NODE_GROUP     "group"
 #define NODE_INCLUDE   "include"
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct BuiltInResource
 {
@@ -333,8 +332,16 @@ EGEResult ResourceManager::loadGroup(const String& name)
   {
     EGE_PRINT("ResourceManager::loadGroup: %s", name.toAscii());
 
+    // add for loading
+    LoadGroupData loadData;
+    loadData.name = name;
+
+    // add to pool
+    m_loadGroups.push_back(loadData);
+
+    return EGE_SUCCESS;
     // load it
-    return theGroup->load();
+//    return theGroup->load();
   }
 
   EGE_PRINT("ResourceManager::loadGroup: %s not found!", name.toAscii());
@@ -515,5 +522,39 @@ EGEResult ResourceManager::processInclude(const String& filePath, const PXmlElem
 
   // add new resource
   return addResources(path, autoDetect);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Updates object. */
+void ResourceManager::update(const Time& time)
+{
+  if (!app()->isQuitting())
+  {
+    // go thru all groups to be loaded
+    for (LoadGroupDataList::iterator it = m_loadGroups.begin(); it != m_loadGroups.end(); )
+    {
+      LoadGroupData& loadGroupData = *it;
+
+      // get group
+      PResourceGroup groupResource = group(loadGroupData.name);
+
+      // load group
+      if ((NULL != groupResource) && (EGE_SUCCESS != groupResource->load()))
+      {
+        // emit
+        emit groupLoadError(loadGroupData.name);
+
+        // remove from pool
+        it = m_loadGroups.erase(it);
+      }
+      else
+      {
+        // emit
+        emit groupLoadComplete(loadGroupData.name);
+
+        // remove from pool
+        it = m_loadGroups.erase(it);
+      }
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

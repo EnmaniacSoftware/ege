@@ -9,6 +9,8 @@
 #include <EGEXml.h>
 #include <EGEMap.h>
 #include <EGEList.h>
+#include <EGESignal.h>
+#include <EGETime.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -37,8 +39,23 @@ class ResourceManager : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  signals:
+
+    /*! Signal emitted when group has been loaded. 
+     *  @param name Name of a group which has been loaded.
+     */
+    Signal1<const String&> groupLoadComplete;
+    /*! Signal emitted when group could not be loaded. 
+     *  @param name Name of a group which failed to load.
+     */
+    Signal1<const String&> groupLoadError;
+
+  public:
+
     /* Returns TRUE if object is valid. */
     bool isValid() const;
+    /* Updates object. */
+    void update(const Time& time);
     /* Adds data directory. */
     void addDataDirectory(const String& path);
     /* Adds resources from given file to repository. 
@@ -97,17 +114,20 @@ class ResourceManager : public Object
 
   private:
 
-    /*! Class containing registration information for resource. */
-    class ResourceRegistryEntry
+    /*! Data struct containing information regarding group to load. */
+    struct LoadGroupData
     {
-      public:
-
-        egeResourceCreateFunc m_createFunc;
+      String name;                              /*!< Name of the group to be loaded. */
     };
 
-  private:
+    /*! Data struct containing registration information for resource. */
+    struct ResourceRegistryEntry
+    {
+      egeResourceCreateFunc m_createFunc;
+    };
 
     typedef List<PResourceGroup> GroupList;
+    typedef List<LoadGroupData> LoadGroupDataList;
 
   private:
 
@@ -117,6 +137,8 @@ class ResourceManager : public Object
     GroupList m_groups;
     /*! Registered resources sorted by type name. */
     Map<String, ResourceRegistryEntry> m_registeredResources;
+    /*! List of all groups to be loaded. */
+    LoadGroupDataList m_loadGroups;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

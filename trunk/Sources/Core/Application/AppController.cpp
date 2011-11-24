@@ -9,6 +9,7 @@
 #include "Core/Overlay/OverlayManager.h"
 #include "Core/Screen/ScreenManager.h"
 #include "Core/Audio/AudioManager.h"
+#include "Core/Resource/ResourceManager.h"
 
 #include <EGEGraphics.h>
 #include <EGETimer.h>
@@ -67,6 +68,7 @@ void AppController::onEventRecieved(PEvent pEvent)
   {
     case EGE_EVENT_UID_CORE_QUIT_REQUEST:
 
+      m_state = STATE_QUITTING;
       // TAGE - for testing
       m_state = STATE_QUIT;
       break;
@@ -90,19 +92,20 @@ void AppController::update()
 
   // update as much as requested
   //EGE_PRINT("BEGINING");
-  int a = 0;
+  //int a = 0;
   while (m_updateAccumulator > m_updateInterval)
   {
     m_updateAccumulator -= m_updateInterval;
 
     // update physics etc
+    app()->resourceManager()->update(m_updateInterval);
     app()->audioManager()->update(m_updateInterval);
     app()->screenManager()->update(m_updateInterval);
     app()->physicsManager()->update(m_updateInterval);
     app()->sceneManager()->update(m_updateInterval);
     app()->overlayManager()->update(m_updateInterval);
     app()->update(m_updateInterval);
-    a++;
+    //a++;
   }
   //EGE_PRINT("ENDING %d", a);
 

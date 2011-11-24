@@ -25,6 +25,18 @@ class AppController : public Object, public IEventListener
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  public:
+
+    /*! Available states. */
+    enum State
+    {
+      STATE_RUNNING,
+      STATE_QUITTING,
+      STATE_QUIT
+    };
+
+  public:
+
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Initializes controller with given parameters. */
@@ -39,23 +51,13 @@ class AppController : public Object, public IEventListener
     inline s32 fps() const { return m_fps; }
     /*! Returns controller timer. */
     inline const PTimer& timer() const { return m_timer; }
-
-  private:
-
-    /*! Controller states. */
-    enum State
-    {
-      STATE_RUNNING,
-      STATE_QUITTING,
-      STATE_QUIT
-    };
+    /*! Returns current state. */
+    inline State state() const { return m_state; }
 
   private:
 
     /* IEventListener override. Event reciever. */
     void onEventRecieved(PEvent pEvent) override;
-    /*! Returns current state. */
-    inline State state() const { return m_state; }
    
   private:
     

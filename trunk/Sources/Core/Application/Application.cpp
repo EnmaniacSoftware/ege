@@ -57,11 +57,10 @@ Application::~Application()
   MemoryManager::Deinit();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/** Initializes engine.
-*  
-*   \param  params    list of parameters to initialize engine with
-*   \param  listener  listener object which is to be notified with engine events. 
-*/
+/*! Initializes engine.
+ * @param params    List of parameters to initialize engine with.
+ * @param listener  Listener object which is to be notified with engine events. 
+ */
 EGEResult Application::initialize(const Dictionary& params)
 {
   EGE_LOG("Application::initialize");
@@ -190,7 +189,7 @@ EGEResult Application::initialize(const Dictionary& params)
 /*! Starts engine work. */
 EGEResult Application::run()
 {
-  return appController()->run();
+  return controller()->run();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Application updater. */
@@ -201,7 +200,7 @@ void Application::update(const Time& time)
 /*! Returns current FPS indication. */
 s32 Application::fps() const
 {
-  return appController()->fps();
+  return controller()->fps();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets new language. */
@@ -214,5 +213,17 @@ void Application::setLanguage(const String& language)
     // broadcast change
     eventManager()->send(EGE_EVENT_UID_CORE_LANGUAGE_CHANGED);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Requests quit. */
+void Application::quit()
+{
+  eventManager()->send(EGE_EVENT_UID_CORE_QUIT_REQUEST);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if application is quitting. */
+bool Application::isQuitting() const
+{
+  return (AppController::STATE_QUIT == controller()->state()) || (AppController::STATE_QUITTING == controller()->state());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
