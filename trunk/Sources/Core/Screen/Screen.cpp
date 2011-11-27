@@ -8,7 +8,10 @@ EGE_DEFINE_NEW_OPERATORS(Screen)
 EGE_DEFINE_DELETE_OPERATORS(Screen)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Screen::Screen(Application* app, const String& name) : Object(app), m_name(name), m_disabled(false)
+Screen::Screen(Application* app, const String& name) : Object(app), 
+                                                       m_name(name), 
+                                                       m_disabled(false),
+                                                       m_covered(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -38,11 +41,26 @@ void Screen::render(const Viewport* viewport, Renderer* renderer)
 /*! Screen is about to be partially covered by another one. */
 void Screen::cover()
 {
+  // set flag
+  m_covered = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Enables/disables screen. */
 void Screen::setEnable(bool enable)
 {
   m_disabled = !enable;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Screen is about to be shown either from complete hideout or uncovery. */
+void Screen::enter()
+{
+  // clear cover flag
+  m_covered = false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Screen is about to be hidden. */
+void Screen::leave()
+{
+  // do nothing
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
