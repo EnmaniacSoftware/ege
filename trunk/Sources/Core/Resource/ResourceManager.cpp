@@ -323,25 +323,62 @@ PResourceGroup ResourceManager::group(const String& name) const
   return group;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads group with given name. */
+/*! Loads group with given name. 
+ * @param name  Group name to be loaded.
+ * @return  Returns EGE_SUCCESS if group has been scheduled for loading. EGE_ERROR_ALREADY_EXISTS if group is already loaded. Otherwise, EGE_ERROR.  
+ * @note  Given group, when found, is scheduled for loading rather than loaded immediately.
+ */
 EGEResult ResourceManager::loadGroup(const String& name)
 {
-  // get group of given name
+  // find group of given name
   PResourceGroup theGroup = group(name);
   if (NULL != theGroup)
   {
-    EGE_PRINT("ResourceManager::loadGroup: %s", name.toAscii());
+    // check if given group is scheduled for unloading/loading already
+    CommandDataList::iterator it;
+    for (it = m_commands.begin(); it != m_commands.end(); ++it)
+    {
+      CommandData& commandData = *it;
+      if (((COMMAND_UNLOAD_GROUP == commandData.command) || (COMMAND_LOAD_GROUP == commandData.command)) && (commandData.name == name))
+      {
+        // found, done
+        break;
+      }
+    }
 
-    // add for loading
-    LoadGroupData loadData;
-    loadData.name = name;
+    // check if loaded already
+    if (theGroup->isLoaded())
+    {
+      // check if it awaits unloading
+      if ((it != m_commands.end()) && (COMMAND_UNLOAD_GROUP == (*it).command))
+      {
+        // remove it from command list
+        m_commands.erase(it);
+      }
+
+      // cannot be loaded
+      EGE_PRINT("ResourceManager::loadGroup: %s is already loaded.", name.toAscii());
+      return EGE_ERROR_ALREADY_EXISTS;
+    }
+    
+    // check if it is awaiting loading already
+    if ((it != m_commands.end()) && (COMMAND_LOAD_GROUP == (*it).command))
+    {
+      // do nothing
+      return EGE_SUCCESS;
+    }
+
+    // add group for loading
+    CommandData commandData;
+
+    commandData.command = COMMAND_LOAD_GROUP;
+    commandData.name    = name;
 
     // add to pool
-    m_loadGroups.push_back(loadData);
+    m_commands.push_back(commandData);
 
+    EGE_PRINT("ResourceManager::loadGroup: %s scheduled for loading.", name.toAscii());
     return EGE_SUCCESS;
-    // load it
-//    return theGroup->load();
   }
 
   EGE_PRINT("ResourceManager::loadGroup: %s not found!", name.toAscii());
@@ -351,19 +388,57 @@ EGEResult ResourceManager::loadGroup(const String& name)
 /*! Unloads group with given name. */
 void ResourceManager::unloadGroup(const String& name)
 {
-  // get group of given name
+  // find group of given name
   PResourceGroup theGroup = group(name);
   if (NULL != theGroup)
   {
-    EGE_PRINT("ResourceManager::unloadGroup: %s", name.toAscii());
+    // check if given group is scheduled for unloading/loading already
+    CommandDataList::iterator it;
+    for (it = m_commands.begin(); it != m_commands.end(); ++it)
+    {
+      CommandData& commandData = *it;
+      if (((COMMAND_UNLOAD_GROUP == commandData.command) || (COMMAND_LOAD_GROUP == commandData.command)) && (commandData.name == name))
+      {
+        // found, done
+        break;
+      }
+    }
 
-    // unload it
-    theGroup->unload();
+    // check if unloaded already
+    if (!theGroup->isLoaded())
+    {
+      // check if it awaits loading
+      if ((it != m_commands.end()) && (COMMAND_LOAD_GROUP == (*it).command))
+      {
+        // remove it from command list
+        m_commands.erase(it);
+      }
+
+      // done
+      return;
+    }
+    
+    // check if it is awaiting unloading already
+    if ((it != m_commands.end()) && (COMMAND_UNLOAD_GROUP == (*it).command))
+    {
+      // do nothing
+      return;
+    }
+
+    // add group for unloading
+    CommandData commandData;
+
+    commandData.command = COMMAND_UNLOAD_GROUP;
+    commandData.name    = name;
+
+    // add to pool
+    m_commands.push_back(commandData);
+
+    EGE_PRINT("ResourceManager::unloadGroup: %s scheduled for unloading.", name.toAscii());
+    return;
   }
-  else
-  {
-    EGE_PRINT("ResourceManager::unloadGroup: %s not found!", name.toAscii());
-  }
+
+  EGE_PRINT("ResourceManager::unloadGroup: %s not found!", name.toAscii());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns resource of a given type and name. Optionally, from given group only. */
@@ -530,30 +605,45 @@ void ResourceManager::update(const Time& time)
   if (!app()->isQuitting())
   {
     // go thru all groups to be loaded
-    for (LoadGroupDataList::iterator it = m_loadGroups.begin(); it != m_loadGroups.end(); )
+    for (CommandDataList::iterator it = m_commands.begin(); it != m_commands.end(); )
     {
-      LoadGroupData& loadGroupData = *it;
+      CommandData& commandData = *it;
 
-      // get group
-      PResourceGroup groupResource = group(loadGroupData.name);
-
-      // load group
-      if ((NULL != groupResource) && (EGE_SUCCESS != groupResource->load()))
+      if (COMMAND_LOAD_GROUP == commandData.command)
       {
-        // emit
-        emit groupLoadError(loadGroupData.name);
+        // find group
+        PResourceGroup groupResource = group(commandData.name);
 
-        // remove from pool
-        it = m_loadGroups.erase(it);
+        // load group
+        if ((NULL != groupResource) && (EGE_SUCCESS != groupResource->load()))
+        {
+          // emit
+          emit groupLoadError(commandData.name);
+        }
+        else
+        {
+          // emit
+          emit groupLoadComplete(commandData.name);
+        }
+      }
+      else if (COMMAND_UNLOAD_GROUP == commandData.command)
+      {
+        // find group
+        PResourceGroup groupResource = group(commandData.name);
+
+        // unload group
+        if (NULL != groupResource)
+        {
+          groupResource->unload();
+        }
       }
       else
       {
-        // emit
-        emit groupLoadComplete(loadGroupData.name);
-
-        // remove from pool
-        it = m_loadGroups.erase(it);
+        EGE_ASSERT("Invalid command!");
       }
+
+      // remove from pool
+      it = m_commands.erase(it);
     }
   }
 }

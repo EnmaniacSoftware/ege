@@ -64,9 +64,11 @@ class ResourceManager : public Object
      *                    absolute path.
      */
     EGEResult addResources(String filePath, bool autoDetect = true);
-    /* Adds resources from given buffer. */
-   // EGEResult addResources(const PDataBuffer& buffer);
-    /* Loads group with given name. */
+    /* Loads group with given name. 
+     * @param name  Group name to be loaded.
+     * @return  Returns EGE_SUCCESS if group has been scheduled for loading. EGE_ERROR_ALREADY_EXISTS if group is already loaded. Otherwise, EGE_ERROR.
+     * @note  Given group, when found, is scheduled for loading rather than loaded immediately.
+     */
     EGEResult loadGroup(const String& name);
     /* Unloads group with given name. */
     void unloadGroup(const String& name);
@@ -114,9 +116,17 @@ class ResourceManager : public Object
 
   private:
 
-    /*! Data struct containing information regarding group to load. */
-    struct LoadGroupData
+    /*! Available commands. */
+    enum Command
     {
+      COMMAND_LOAD_GROUP,
+      COMMAND_UNLOAD_GROUP
+    };
+
+    /*! Data struct containing information regarding group to load. */
+    struct CommandData
+    {
+      Command command;                          /*!< Command to perform. */
       String name;                              /*!< Name of the group to be loaded. */
     };
 
@@ -127,7 +137,7 @@ class ResourceManager : public Object
     };
 
     typedef List<PResourceGroup> GroupList;
-    typedef List<LoadGroupData> LoadGroupDataList;
+    typedef List<CommandData> CommandDataList;
 
   private:
 
@@ -137,8 +147,8 @@ class ResourceManager : public Object
     GroupList m_groups;
     /*! Registered resources sorted by type name. */
     Map<String, ResourceRegistryEntry> m_registeredResources;
-    /*! List of all groups to be loaded. */
-    LoadGroupDataList m_loadGroups;
+    /*! List of all pending commands to process. */
+    CommandDataList m_commands;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

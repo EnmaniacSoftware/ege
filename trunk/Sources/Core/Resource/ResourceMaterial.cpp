@@ -358,6 +358,11 @@ void ResourceMaterial::unload()
   for (PassDataArray::iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
   {
     PassData& pass = *passIt;
+
+    for (TextureImageList::iterator it = pass.m_textureImages.begin(); it != pass.m_textureImages.end(); ++it)
+    {
+      *it = NULL;
+    }
     pass.m_textureImages.clear();
   }
 

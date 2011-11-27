@@ -46,11 +46,11 @@ class ResourceGroup : public Object
     List<PResource> resources(const String& typeName) const;
     /* Adds given resource to group. */
     EGEResult addResource(const PResource& resource);
+    /*! Is group loaded. */
+    inline bool isLoaded() const { return m_loaded; }
 
   private:
 
-    /*! Is group loaded. */
-    inline bool isLoaded() const { return m_loaded; }
     /*! Gets owning manager */
     inline ResourceManager* manager() const { return m_manager; }
     /* Destroys group. */
