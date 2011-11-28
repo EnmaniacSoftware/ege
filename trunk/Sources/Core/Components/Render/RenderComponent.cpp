@@ -20,7 +20,8 @@ RenderComponent::RenderComponent(Application* app, const String& name, s32 prior
   m_hash(0), 
   m_hashInvalid(true), 
   m_clipRect(Rectf::INVALID),
-  m_pointSize(1.0f)
+  m_pointSize(1.0f),
+  m_lineWidth(1.0f)
 {
   m_indexBuffer  = ege_new IndexBuffer(app);
   m_vertexBuffer = ege_new VertexBuffer(app);
@@ -142,5 +143,12 @@ void RenderComponent::setPointSize(float32 size)
 {
   EGE_ASSERT(0 <= size);
   m_pointSize = size;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets line width. */
+void RenderComponent::setLineWidth(float32 width)
+{
+  EGE_ASSERT(0 <= width);
+  m_lineWidth = width;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -10,7 +10,8 @@ EGE_NAMESPACE
 #define ORTHO
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-LightningTest::LightningTest(App* app) : Test(app), m_effect(NULL)
+LightningTest::LightningTest(App* app) : Test(app), 
+                                         m_effect(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -64,32 +65,9 @@ bool LightningTest::initialize()
 
   // initialize effect
   m_effect = ege_new LightningEffect(app());
-  //if ((NULL == m_effect) || !m_effect->initialize(window->width(), window->height(), Vector2i(32, 32), camera))
-  //{
-  //  // error!
-  //  return false;
-  //}
 
-  m_sceneObject = RenderObject::CreateRectangle(app(), "SceneObject", window->width(), window->height(), false, true);
-  if (NULL == m_sceneObject)
-  {
-    // error!
-    return false;
-  }
-
-  SceneNode* node = app()->sceneManager()->rootNode()->createChildSceneNode(m_sceneObject->name());
-  node->attachObject(m_sceneObject);
-  node->physics()->setPosition(Vector4f(window->width() / 2.0f, window->height() / 2.0f, 0));
-
-  node = app()->sceneManager()->rootNode()->createChildSceneNode(m_effect->name());
+  SceneNode* node = app()->sceneManager()->rootNode()->createChildSceneNode("lightning-effect");
   node->attachObject(m_effect);
-
-  // assign material to scene object
-  PResourceMaterial materialResource = app()->resourceManager()->resource(RESOURCE_NAME_MATERIAL, "background");
-  m_sceneObject->renderData()->setMaterial(materialResource->createInstance());
- 
-  ege_connect(app()->graphics(), preRender, this, LightningTest::preRender);
-  ege_connect(app()->graphics(), postRender, this, LightningTest::postRender);
 
   return true;
 }
@@ -98,34 +76,6 @@ bool LightningTest::initialize()
 void LightningTest::update(const Time& time)
 {
   m_effect->update(time);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called before target is rendered. */
-void LightningTest::preRender(PRenderTarget target)
-{
-  // check if target is texture
-  if (RenderTarget::PRIORITY_RENDER_TEXTURE == target->priority())
-  {
-    // hide render texture quad
-    m_effect->setVisible(false);
-
-    // show scene object
-    m_sceneObject->setVisible(true);
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called after target has been rendered. */
-void LightningTest::postRender(PRenderTarget target)
-{
-  // check if target is texture
-  if (RenderTarget::PRIORITY_RENDER_TEXTURE == target->priority())
-  {
-    // show render texture quad
-    m_effect->setVisible(true);
-
-    // hide scene object
-    m_sceneObject->setVisible(false);
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Pointer event receiver. */

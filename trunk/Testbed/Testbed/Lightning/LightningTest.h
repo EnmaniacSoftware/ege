@@ -26,13 +26,6 @@ class LightningTest : public Test
     /* Test override. Pointer event receiver. */
     void pointerEvent(EGE::PPointerData data) override;
 
-  private slots:
-
-    /* Slot called before target is rendered. */
-    void preRender(EGE::PRenderTarget target);
-    /* Slot called after target has been rendered. */
-    void postRender(EGE::PRenderTarget target);
-
   private:
 
     /*! Scene object. */

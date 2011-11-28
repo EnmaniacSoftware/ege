@@ -55,6 +55,10 @@ class RenderComponent : public IComponent
     void setPointSize(float32 size);
     /*! Returns point size. */
     inline float32 pointSize() const { return m_pointSize; }
+    /* Sets line width. */
+    void setLineWidth(float32 width);
+    /*! Returns line width. */
+    inline float32 lineWidth() const { return m_lineWidth; }
 
   private:
 
@@ -87,6 +91,8 @@ class RenderComponent : public IComponent
     Rectf m_clipRect;
     /*! Point size. */
     float32 m_pointSize;
+    /*! Line width. */
+    float32 m_lineWidth;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

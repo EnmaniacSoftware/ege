@@ -47,6 +47,9 @@ class TVector2
     /* Returns squared distance between this and given points. */
     inline T distanceSquaredTo(const TVector2& vector) const;
 
+    /* Returns vector perpendicular to current one. */
+    inline TVector2 perpendicular() const;
+
   public:
 
     T x;
@@ -144,6 +147,13 @@ template <typename T>
 T TVector2<T>::distanceSquaredTo(const TVector2& vector) const
 {
   return (x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns vector perpendicular to current one. */
+template <typename T>
+TVector2<T> TVector2<T>::perpendicular() const
+{
+  return Vector2f(y, -x);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

@@ -613,5 +613,10 @@ void RendererPrivate::applyGeneralParams(const PRenderComponent& component)
     // set point size
     glPointSize(component->pointSize());
   }
+  // check if lines are to be rendered
+  else if ((EGEGraphics::RPT_LINES == component->primitiveType()) || (EGEGraphics::RPT_LINES == component->primitiveType()))
+  {
+    glLineWidth(component->lineWidth());
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

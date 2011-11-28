@@ -195,10 +195,10 @@ void RendererPrivate::flush()
       // apply general params
       applyGeneralParams(data.component);
 
-      //if (data.component->name() == "level-meter-classic")
-      //{
-      //  int a = 1;
-      //}
+      if (data.component->name() == "lightning-effect-lines")
+      {
+        int a = 1;
+      }
 
       // go thru all passes
       // NOTE: if there is no material, we consider it 1 pass
@@ -694,11 +694,16 @@ void RendererPrivate::applyGeneralParams(const PRenderComponent& component)
     glScissor(static_cast<GLint>(clipRect.x), static_cast<GLint>(clipRect.y), static_cast<GLsizei>(clipRect.width), static_cast<GLsizei>(clipRect.height));
   }
 
-  // check if points are be rendered
+  // check if points are to be rendered
   if (EGEGraphics::RPT_POINTS == component->primitiveType())
   {
     // set point size
     glPointSize(component->pointSize());
+  }
+  // check if lines are to be rendered
+  else if ((EGEGraphics::RPT_LINES == component->primitiveType()) || (EGEGraphics::RPT_LINES == component->primitiveType()))
+  {
+    glLineWidth(component->lineWidth());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

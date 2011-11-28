@@ -546,6 +546,24 @@ Vector3f Math::RandomDeviant(const Angle* angle, const Vector3f* vector, const V
   return q * (*vector);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Generates a new random vector which deviates from given vector by a given angle in a random direction.
+ *  @param  angle   The angle at which to deviate.
+ *  @param  vector  Vector from which deviation should be generated.
+ *  @returns  A random vector which deviates from this vector by angle. This vector will not be normalized.
+ */
+Vector2f Math::RandomDeviant(const Angle* angle, const Vector2f* vector)
+{
+  EGE_ASSERT(angle);
+  EGE_ASSERT(vector);
+
+  float32 randomization = m_random(-0.5f, 0.5f);
+
+  float32 cos = Math::Cos(angle->radians() * randomization);
+  float32 sin = Math::Sin(angle->radians() * randomization);
+
+  return Vector2f(vector->x * cos - vector->y * sin, vector->x * sin + vector->y * cos);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Calculates greatest common divisor. */
 s32 Math::GreatestCommonDivisor(s32 a, s32 b)
 {

@@ -164,7 +164,12 @@ class Math
      *  @returns  A random vector which deviates from this vector by angle. This vector will not be normalized.
      */
     static Vector3f RandomDeviant(const Angle* angle, const Vector3f* vector, const Vector3f* up = NULL);
-    
+    /*  Generates a new random vector which deviates from given vector by a given angle in a random direction.
+     *  @param  angle   The angle at which to deviate.
+     *  @param  vector  Vector from which deviation should be generated.
+     *  @returns  A random vector which deviates from this vector by angle. This vector will not be normalized.
+     */
+    static Vector2f RandomDeviant(const Angle* angle, const Vector2f* vector);
     /* Calculates greatest common divisor. */
     static s32 GreatestCommonDivisor(s32 a, s32 b);
 

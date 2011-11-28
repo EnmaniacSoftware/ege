@@ -123,6 +123,11 @@
   
   </group>
 
+  <!-- Lightning test resources -->
+  <group name='lightning-test'>
+
+  </group>
+
   <include path='fonts.xml' />
   
 </resources>

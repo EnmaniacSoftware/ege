@@ -7,6 +7,14 @@
 #include <EGETime.h>
 #include <EGEInput.h>
 #include <EGEDynamicArray.h>
+#include <EGERandom.h>
+
+struct Segment
+{
+  EGE::Vector2f start;
+  EGE::Vector2f end;
+  EGE::float32 intensity;
+};
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -28,6 +36,8 @@ class LightningEffect : public EGE::SceneNodeObject
 
     /* SceneNodeObject override. Adds object render data for rendering with given renderer. */
     bool addForRendering(EGE::Renderer* renderer) override;
+    /* Generates segments. */
+    EGE::List<Segment> generateSegments(const EGE::Vector2f& start, const EGE::Vector2f end);
 
   private:
 
@@ -35,6 +45,8 @@ class LightningEffect : public EGE::SceneNodeObject
     EGE::Application* m_app;
     /*! Render data. */
     EGE::PRenderComponent m_renderData;
+    /*! Randomizer. */
+    EGE::Random m_random;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
