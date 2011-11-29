@@ -12,9 +12,11 @@ LightningEffect::LightningEffect(Application* app) : SceneNodeObject("lightning-
                                                      m_app(app)
 {
   m_renderData = ege_new RenderComponent(app, "lightning-effect-lines", EGEGraphics::RP_MAIN, EGEGraphics::RPT_LINES);
+  m_renderDataQuad = ege_new RenderComponent(app, "lightning-effect-lines-1", EGEGraphics::RP_MAIN + 1, EGEGraphics::RPT_TRIANGLES);
   if (m_renderData)
   {
     m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_C4);
+    m_renderDataQuad->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2_C4);
     m_renderData->setLineWidth(2.0f);
 
     PMaterial material = ege_new Material(app);
@@ -22,8 +24,13 @@ LightningEffect::LightningEffect(Application* app) : SceneNodeObject("lightning-
     m_renderData->setMaterial(material);
     material->setSrcBlendFactor(EGEGraphics::BF_SRC_ALPHA);
     material->setDstBlendFactor(EGEGraphics::BF_ONE_MINUS_SRC_ALPHA);
+
+    PResourceMaterial resource = app->resourceManager()->resource(RESOURCE_NAME_MATERIAL, "beam");
+    m_renderDataQuad->setMaterial(resource->createInstance());
   }
 
+  m_renderDataQuad->indexBuffer()->create(IndexBuffer::SIZE_16BIT, 2);
+  
   PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
   if (fontResource)
   {
@@ -38,28 +45,18 @@ LightningEffect::~LightningEffect()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-  static float32 a = 0;
 /*! SceneNodeObject override. Adds object render data for rendering with given renderer. */
 bool LightningEffect::addForRendering(Renderer* renderer)
 {
-  //PointerData pointer(EGEInput::ACTION_BUTTON_DOWN, EGEInput::BUTTON_LEFT, 0, 0, 0);
-  //pointerEvent(pointer);
-  //++a;
-  return renderer->addForRendering(parentNode()->worldMatrix(), m_renderData);
+  renderer->addForRendering(parentNode()->worldMatrix(), m_renderData);
+  renderer->addForRendering(parentNode()->worldMatrix(), m_renderDataQuad);
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates effect. */
 void LightningEffect::update(const Time& time)
 {
-  a += time.seconds();
-  if ( a >= 0.5f)
-  {
-    PointerData pointer(EGEInput::ACTION_BUTTON_DOWN, EGEInput::BUTTON_LEFT, 0, 0, 0);
-//    pointerEvent(pointer);
-
-    a = 0.0f;
-  }
-
   //ege_cast<TextOverlay*>(m_app->overlayManager()->overlay("buhaha"))->setText(Text::Format("%d", a));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -89,6 +86,65 @@ void LightningEffect::pointerEvent(PPointerData data)
     }
 
     m_renderData->vertexBuffer()->unlock();
+
+    {
+      float32* data = (float32*) m_renderDataQuad->vertexBuffer()->lock(0, list.size() * 4);
+      s16* index = (s16*) m_renderDataQuad->indexBuffer()->lock(0, list.size() * 6);
+
+      const float32 width = 10.0f;
+
+      int i = 0;
+      for (List<Segment>::const_iterator it = list.begin(); it != list.end(); ++it, ++i)
+      {
+        const Segment& segment= *it;
+
+        *index++ = i * 4 + 0;
+        *index++ = i * 4 + 1;
+        *index++ = i * 4 + 2;
+        *index++ = i * 4 + 1;
+        *index++ = i * 4 + 2;
+        *index++ = i * 4 + 3;
+
+        *data++ = segment.start.x + segment.normal.x * width * segment.intensity;
+        *data++ = segment.start.y + segment.normal.y * width * segment.intensity;
+        *data++ = 0;
+        *data++ = 0;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = segment.intensity;
+
+        *data++ = segment.start.x - segment.normal.x * width * segment.intensity;
+        *data++ = segment.start.y - segment.normal.y * width * segment.intensity;
+        *data++ = 0;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = segment.intensity;
+
+        *data++ = segment.end.x + segment.normal.x * width * segment.intensity;
+        *data++ = segment.end.y + segment.normal.y * width * segment.intensity;
+        *data++ = 1;
+        *data++ = 0;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = segment.intensity;
+
+        *data++ = segment.end.x - segment.normal.x * width * segment.intensity;
+        *data++ = segment.end.y - segment.normal.y * width * segment.intensity;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = segment.intensity;
+      }
+
+      m_renderDataQuad->vertexBuffer()->unlock();
+      m_renderDataQuad->indexBuffer()->unlock();
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -100,11 +156,12 @@ EGE::List<Segment> LightningEffect::generateSegments(const Vector2f& start, cons
   Segment segment;
   segment.start     = start;
   segment.end       = end;
+  segment.normal    = (end - start).perpendicular().normalized();
   segment.intensity = 1.0f;
   segments.push_back(segment);
 
   float32 offset = 60;
-  for (s32 step = 0; step < 5; ++step)
+  for (s32 step = 0; step < 1; ++step)
   {
     // go thru all segments
     for (List<Segment>::iterator it = segments.begin(); it != segments.end(); ++it)
@@ -118,8 +175,8 @@ EGE::List<Segment> LightningEffect::generateSegments(const Vector2f& start, cons
       Vector2f midPoint(oldSegment.start.x + segmentVector.x * 0.5f, oldSegment.start.y + segmentVector.y * 0.5f);
 
       // calulate normalized vector perpendicular to current segment
-      Vector2f offsetVector = segmentVector.perpendicular();
-      offsetVector.normalize();
+      Vector2f offsetVector = segment.normal; //segmentVector.perpendicular();
+//      offsetVector.normalize();
       if (m_random() & 0x1)
       {
         offsetVector *= -1.0f;
@@ -131,10 +188,12 @@ EGE::List<Segment> LightningEffect::generateSegments(const Vector2f& start, cons
       // update current segment to second subsegment
       (*it).start = midPoint;
       (*it).end  = oldSegment.end;
+      (*it).normal = (oldSegment.end - midPoint).perpendicular().normalized();
 
       // create new segment for first subsegment
       segment.start     = oldSegment.start;
       segment.end       = midPoint;
+      segment.normal    = (segment.end - segment.start).perpendicular().normalized();
       segment.intensity = oldSegment.intensity;
       segments.insert(it, segment);
 
@@ -156,6 +215,7 @@ EGE::List<Segment> LightningEffect::generateSegments(const Vector2f& start, cons
         segment.end.y = direction.x * sin + direction.y * cos;
 
         segment.end = segment.end * dirLength * 0.7f + midPoint;
+        segment.normal    = (segment.end - segment.start).perpendicular().normalized();
         segment.intensity = oldSegment.intensity * 0.5f;
         segments.push_front(segment);
       }

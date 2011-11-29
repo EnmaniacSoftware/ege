@@ -25,6 +25,8 @@ class LightningTest : public Test
 
     /* Test override. Pointer event receiver. */
     void pointerEvent(EGE::PPointerData data) override;
+    /* Test override. Slot called when resource group has been loaded. */
+    void groupLoadComplete(const EGE::String& name) override;
 
   private:
 

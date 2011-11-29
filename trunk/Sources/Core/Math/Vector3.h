@@ -40,6 +40,8 @@ class TVector3
     
     /* Normalizes vector. */
  	  inline void normalize();
+    /* Returns normalized vector. */
+ 	  inline TVector3 normalized() const;
     
     /* Returns dot product between current and given vectors. */
     inline T dotProduct(const TVector3& vector) const;
@@ -54,50 +56,14 @@ class TVector3
     /* Returns 2D vector consisting of X and Y values of current one. */
     inline TVector2<T> xy() const;
 
-    //TVector3 randomDeviant(const float& fAngle,                                           // gets vector randomly deviant from itself
-    //                           const CVector3& cUp = CVector3::ZERO ) const;
-
     /* Returns vector perpendicular to current one. */
     inline TVector3 perpendicular() const;
-
-  //  // normalization related methods
-		//CVector3 getNormalized( void ) const;                                                     // gets normalized vector
-
-  //  // CROSS product related methods
-  //  inline CVector3 CVector3::getCrossProduct( const CVector3& cVector ) const                // gets cross product of vectors
-  //  {
-  //    return CVector3( ( y*cVector.z )-( z*cVector.y ), 
-  //                     ( z*cVector.x )-( x*cVector.z ),
-  //                     ( x*cVector.y )-( y*cVector.x ) );
-  //  }
 
   //  // helper methods
   //  CQuaternion getRotationTo( const CVector3& cDest,                                         // gets shortest rotation to given vector
   //                             const CVector3& cFallbackAxis = CVector3::ZERO ) const;
 
   //  float getAngleBetween( const CVector3& cVector ) const;                                   // returns angle (in radians) between vectors
-
-  //  inline void makeFloor( const CVector3& cVector )                                          // sets this vector's components to the minimum
-  //  {                                                                                         // of its own and the ones of the passed in vector
-  //    if ( cVector.x < x ) x = cVector.x;
-  //    if ( cVector.y < y ) y = cVector.y;
-  //    if ( cVector.z < z ) z = cVector.z;
-  //  }
-
-  //  inline void makeCeil( const CVector3& cVector )                                           // sets this vector's components to the maximum
-  //  {                                                                                         // of its own and the ones of the passed in vector
-  //    if ( cVector.x > x ) x = cVector.x;
-  //    if ( cVector.y > y ) y = cVector.y;
-  //    if ( cVector.z > z ) z = cVector.z;
-  //  }
-
-  //  inline bool isZeroLength( void ) const                                                    // returns TRUE if vector is zero in length
-  //  { 
-  //    return getSquaredMagnitude() < Math::Pow2( Math::EPSILON ); 
-  //  }
-
-  //  inline float getMax( void ) const { return _MAX( _MAX( x, y ), z ); }                     // gets max value of its components
-  //  inline float getMin( void ) const { return _MIN( _MIN( x, y ), z ); }                     // gets min value of its components
 
   public:
 
@@ -234,6 +200,16 @@ void TVector3<T>::normalize()
 	  y *= invLength;
 	  z *= invLength;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns normalized vector. */
+template <typename T>
+TVector3<T> TVector3<T>::normalized() const
+{
+  TVector3<T> out = *this;
+  out.normalize();
+  
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns cross product between current and given vectors. */

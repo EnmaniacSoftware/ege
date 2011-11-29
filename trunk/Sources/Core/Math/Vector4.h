@@ -39,6 +39,8 @@ class TVector4
  
     /* Normalizes the vector. */
     inline void normalize();
+    /* Returns normalized vector. */
+ 	  inline TVector4 normalized() const;
 
     /* Returns dot product between current and given vectors. */
     inline T dotProduct(const TVector4& vector) const;
@@ -184,6 +186,16 @@ void TVector4<T>::normalize()
 	  z *= invLength;
     w = 1;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns normalized vector. */
+template <typename T>
+TVector4<T> TVector4<T>::normalized() const
+{
+  TVector4<T> out = *this;
+  out.normalize();
+  
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns dot product between current and given vectors. */

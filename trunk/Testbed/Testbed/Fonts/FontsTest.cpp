@@ -65,27 +65,6 @@ bool FontsTest::initialize()
     return false;
   }
 
-  PResourceFont fontResource = app()->resourceManager()->resource(RESOURCE_NAME_FONT, "fonts");
-  if (fontResource)
-  {
-    PTextOverlay overlay = ege_new TextOverlay(app(), "fonts-text-1");
-    overlay->setFont(fontResource->font());
-    app()->overlayManager()->add(overlay);
-    overlay->physics()->setPosition(Vector4f(10, 120, 0));
-
-    overlay = ege_new TextOverlay(app(), "fonts-text-2");
-    overlay->setFont(fontResource->font());
-    app()->overlayManager()->add(overlay);
-    overlay->physics()->setPosition(Vector4f(10, 180, 0));
-
-    overlay = ege_new TextOverlay(app(), "fonts-text-3");
-    overlay->setFont(fontResource->font());
-    app()->overlayManager()->add(overlay);
-    overlay->physics()->setPosition(Vector4f(10, 240, 0));
-  }
-
-  updateTexts();
-
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -109,5 +88,36 @@ void FontsTest::updateTexts()
   ege_cast<TextOverlay*>(app()->overlayManager()->overlay("fonts-text-1"))->setText(TR(app(), "test-text-1"));
   ege_cast<TextOverlay*>(app()->overlayManager()->overlay("fonts-text-2"))->setText(TR(app(), "test-text-2"));
   ege_cast<TextOverlay*>(app()->overlayManager()->overlay("fonts-text-3"))->setText(TR(app(), "test-text-3"));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Test override. Slot called when resource group has been loaded. */
+void FontsTest::groupLoadComplete(const String& name)
+{
+  if ("fonts-test" == name)
+  {
+  }
+  else if ("fonts" == name)
+  {
+    PResourceFont fontResource = app()->resourceManager()->resource(RESOURCE_NAME_FONT, "fonts");
+    if (fontResource)
+    {
+      PTextOverlay overlay = ege_new TextOverlay(app(), "fonts-text-1");
+      overlay->setFont(fontResource->font());
+      app()->overlayManager()->add(overlay);
+      overlay->physics()->setPosition(Vector4f(10, 120, 0));
+
+      overlay = ege_new TextOverlay(app(), "fonts-text-2");
+      overlay->setFont(fontResource->font());
+      app()->overlayManager()->add(overlay);
+      overlay->physics()->setPosition(Vector4f(10, 180, 0));
+
+      overlay = ege_new TextOverlay(app(), "fonts-text-3");
+      overlay->setFont(fontResource->font());
+      app()->overlayManager()->add(overlay);
+      overlay->physics()->setPosition(Vector4f(10, 240, 0));
+    }
+
+    updateTexts();  
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

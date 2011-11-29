@@ -91,6 +91,7 @@
     <ClCompile Include="Ripples\RippleEffect.cpp" />
     <ClCompile Include="Ripples\RipplesTest.cpp" />
     <ClCompile Include="Sound\SoundTest.cpp" />
+    <ClCompile Include="Test.cpp" />
     <ClCompile Include="Timeline\TimeLineTest.cpp" />
   </ItemGroup>
   <ItemGroup>

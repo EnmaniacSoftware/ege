@@ -26,6 +26,8 @@ class FontsTest : public Test, public EGE::IEventListener
     void onEventRecieved(EGE::PEvent event) override;
     /* Updates texts. */
     void updateTexts();
+    /* Test override. Slot called when resource group has been loaded. */
+    void groupLoadComplete(const EGE::String& name) override;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

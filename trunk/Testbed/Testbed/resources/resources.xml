@@ -110,21 +110,26 @@
   <group name='fonts-test'>
 
     <text name='test-text-1' description='This is first line of text'>
-      <lang name='en' value='Put your text here for line 1' />
+      <lang name='en' value='0123456789,:' />
     </text>
 
     <text name='test-text-2' description='This is second line of text'>
-      <lang name='en' value='Put your text here for line 2' />
+      <lang name='en' value=':,9876543210' />
     </text>
 
     <text name='test-text-3' description='This is third line of text'>
-      <lang name='en' value='Put your text here for line 3' />
+      <lang name='en' value='0 1 2 3 4 5 6 7 8 9 , :' />
     </text>
   
   </group>
 
   <!-- Lightning test resources -->
   <group name='lightning-test'>
+
+    <texture type="2d" name="beam" path="images/beam.jpg" mag-filter="bilinear" min-filter="bilinear" />
+    <material name='beam' src-blend='one' dst-blend='one' >
+      <texture name='beam' />
+    </material>
 
   </group>
 

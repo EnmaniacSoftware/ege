@@ -91,8 +91,8 @@ bool App::start()
   m_tests.push_back(new ParticleTest(this));
   m_tests.push_back(new SoundTest(this));
   m_tests.push_back(new CurvesTest(this));
-  m_tests.push_back(new FontsTest(this));
   m_tests.push_back(new LightningTest(this));
+  m_tests.push_back(new FontsTest(this));
 
   // select test to run
   selectTest();

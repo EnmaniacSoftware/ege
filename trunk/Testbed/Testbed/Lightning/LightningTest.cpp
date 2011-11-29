@@ -63,12 +63,6 @@ bool LightningTest::initialize()
     return false;
   }
 
-  // initialize effect
-  m_effect = ege_new LightningEffect(app());
-
-  SceneNode* node = app()->sceneManager()->rootNode()->createChildSceneNode("lightning-effect");
-  node->attachObject(m_effect);
-
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -82,5 +76,18 @@ void LightningTest::update(const Time& time)
 void LightningTest::pointerEvent(PPointerData data)
 {
   m_effect->pointerEvent(data);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Test override. Slot called when resource group has been loaded. */
+void LightningTest::groupLoadComplete(const String& name)
+{
+  if ("lightning-test" == name)
+  {
+    // initialize effect
+    m_effect = ege_new LightningEffect(app());
+
+    SceneNode* node = app()->sceneManager()->rootNode()->createChildSceneNode("lightning-effect");
+    node->attachObject(m_effect);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -38,6 +38,8 @@ class TVector2
     
     /* Normalizes vector. */
  	  inline void normalize();
+    /* Returns normalized vector. */
+ 	  inline TVector2 normalized() const;
 
     /* Returns dot product between current and given vectors. */
     inline T dotProduct(const TVector2& vector) const;
@@ -128,6 +130,16 @@ void TVector2<T>::normalize()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns normalized vector. */
+template <typename T>
+TVector2<T> TVector2<T>::normalized() const
+{
+  TVector2<T> out = *this;
+  out.normalize();
+  
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns dot product between current and given vectors. */
 template <typename T>
 T TVector2<T>::dotProduct(const TVector2& vector) const 
@@ -153,7 +165,7 @@ T TVector2<T>::distanceSquaredTo(const TVector2& vector) const
 template <typename T>
 TVector2<T> TVector2<T>::perpendicular() const
 {
-  return Vector2f(y, -x);
+  return TVector2<T>(y, -x);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

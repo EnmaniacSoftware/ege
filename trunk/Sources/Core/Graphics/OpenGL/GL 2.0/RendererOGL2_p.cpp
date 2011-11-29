@@ -195,7 +195,7 @@ void RendererPrivate::flush()
       // apply general params
       applyGeneralParams(data.component);
 
-      if (data.component->name() == "lightning-effect-lines")
+      if (data.component->name() == "lightning-effect-lines-1")
       {
         int a = 1;
       }

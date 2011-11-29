@@ -13,6 +13,7 @@ struct Segment
 {
   EGE::Vector2f start;
   EGE::Vector2f end;
+  EGE::Vector2f normal;         // normalized
   EGE::float32 intensity;
 };
 
@@ -47,6 +48,8 @@ class LightningEffect : public EGE::SceneNodeObject
     EGE::PRenderComponent m_renderData;
     /*! Randomizer. */
     EGE::Random m_random;
+    /*! Render data. */
+    EGE::PRenderComponent m_renderDataQuad;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
