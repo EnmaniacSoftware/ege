@@ -7,7 +7,7 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 71
+#define VERSION_MINOR 8
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping image format name into framework enum. */
 static EGEImage::Format MapImageFormat(const String& formatName)
@@ -150,7 +150,7 @@ bool TextureAtlasGenerator::process()
          groupElement->hasAttribute("root") && groupElement->hasAttribute("texture-image"))
   {
     AtlasGroup* group = new AtlasGroup(groupElement->attribute("name"), groupElement->attribute("root"), groupElement->attribute("texture-image"), 
-                                       groupElement->attribute("texture-filters", "bilinear"), groupElement->attribute("texture-size").toInt(), outputFormat());
+                                       groupElement->attribute("texture-filters", "bilinear"), groupElement->attribute("texture-size").toVector2i(), outputFormat());
     if (!group || !group->isValid())
     {
       // error!
@@ -269,7 +269,7 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
   }
 
   // set root node to max size
-  root->m_rect = Recti(0, 0, group->textureImageSize(), group->textureImageSize());
+  root->m_rect = Recti(0, 0, group->textureImageSize().x, group->textureImageSize().y);
   
   // create group element
   XmlElement groupElement("group");
@@ -317,10 +317,10 @@ bool TextureAtlasGenerator::generate(AtlasGroup* group)
 #ifdef _DEBUG
     element.setAttribute("pixel-rect", String::Format("%d %d %d %d", rect.x, rect.y, rect.width, rect.height));
 #endif _DEBUG
-    element.setAttribute("rect", String::Format("%f %f %f %f", rect.x * 1.0f / group->textureImageSize(), 
-                                                               rect.y * 1.0f / group->textureImageSize(), 
-                                                               rect.width * 1.0f / group->textureImageSize(), 
-                                                               rect.height * 1.0f / group->textureImageSize()));
+    element.setAttribute("rect", String::Format("%f %f %f %f", rect.x * 1.0f / group->textureImageSize().x, 
+                                                               rect.y * 1.0f / group->textureImageSize().y, 
+                                                               rect.width * 1.0f / group->textureImageSize().x, 
+                                                               rect.height * 1.0f / group->textureImageSize().y));
 
     // add to group element
     groupElement.appendChildElement(element);

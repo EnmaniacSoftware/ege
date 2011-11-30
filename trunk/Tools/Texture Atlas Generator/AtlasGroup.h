@@ -16,7 +16,7 @@ class AtlasGroup
   public:
 
     AtlasGroup(const EGE::String& name, const EGE::String& root, const EGE::String& textureImageName, const EGE::String& textureFiltersName, 
-               EGE::s32 textureImageSize, EGE::EGEImage::Format imageFormat);
+               const EGE::Vector2i& textureImageSize, EGE::EGEImage::Format imageFormat);
    ~AtlasGroup();
 
     /* Returns TRUE if object is valid. */
@@ -36,7 +36,7 @@ class AtlasGroup
     /*! Returns list of entries. */
     inline EGE::List<AtlasGroupEntry*>& entries() { return m_entries; }
     /*! Returns atlas texture image size (in pixels). */
-    inline EGE::s32 textureImageSize() const { return m_textureImageSize; }
+    inline const EGE::Vector2i& textureImageSize() const { return m_textureImageSize; }
 
   private:
 
@@ -53,7 +53,7 @@ class AtlasGroup
     /*! Atlas image. */
     EGE::PImage m_image;
     /*! Atlas texture image size (in pixels). */
-    EGE::s32 m_textureImageSize;
+    EGE::Vector2i m_textureImageSize;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

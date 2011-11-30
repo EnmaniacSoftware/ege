@@ -4,11 +4,15 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AtlasGroup::AtlasGroup(const String& name, const String& root, const String& textureImageName, const String& textureFiltersName, s32 textureImageSize, 
-                       EGEImage::Format imageFormat) 
-: m_name(name), m_root(root), m_textureImageName(textureImageName), m_textureFiltersName(textureFiltersName), m_textureImageSize(textureImageSize)
+AtlasGroup::AtlasGroup(const String& name, const String& root, const String& textureImageName, const String& textureFiltersName, 
+                       const Vector2i& textureImageSize, EGEImage::Format imageFormat) 
+: m_name(name), 
+  m_root(root), 
+  m_textureImageName(textureImageName), 
+  m_textureFiltersName(textureFiltersName), 
+  m_textureImageSize(textureImageSize)
 {
-  m_image = ege_new EGE::Image(NULL, textureImageSize, textureImageSize, imageFormat);
+  m_image = ege_new EGE::Image(NULL, textureImageSize.x, textureImageSize.y, imageFormat);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AtlasGroup::~AtlasGroup()
