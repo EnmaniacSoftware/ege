@@ -55,6 +55,8 @@ class ResourceGroup : public Object
     inline ResourceManager* manager() const { return m_manager; }
     /* Destroys group. */
     void destroy();
+    /* Adds dependancy. */
+    EGEResult addDependancy(const PXmlElement& tag);
 
   private:
 
@@ -73,6 +75,8 @@ class ResourceGroup : public Object
     bool m_loaded;
     /*! Path to directory containing definition file. */
     String m_dirPath;
+    /*! Dependancy list. */
+    StringList m_dependancies;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

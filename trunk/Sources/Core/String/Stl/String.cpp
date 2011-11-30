@@ -259,6 +259,28 @@ Vector2f String::toVector2f(bool* error) const
   return vec;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Converts to 2D vector of ints. If error is valid, it holds TRUE if error occured during the conversion. */
+Vector2i String::toVector2i(bool* error) const
+{
+  if (empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return Vector2i::ZERO;
+  }
+
+  Vector2i vec(0, 0);
+  if (2 > sscanf(toAscii(), "%d %d", &vec.x, &vec.y) && error)
+  {
+    *error = true;
+  }
+
+  return vec;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts to 3D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
 Vector3f String::toVector3f(bool* error) const
 {

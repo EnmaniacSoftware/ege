@@ -3,6 +3,7 @@
 
 #include "Core/Platform.h"
 #include <list>
+#include <algorithm>
 
 EGE_NAMESPACE_BEGIN
 

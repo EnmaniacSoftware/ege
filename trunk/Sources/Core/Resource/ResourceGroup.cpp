@@ -10,6 +10,8 @@ EGE_DEFINE_NEW_OPERATORS(ResourceGroup)
 EGE_DEFINE_DELETE_OPERATORS(ResourceGroup)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define NODE_DEPENDANCY "dependancy"
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceGroup::ResourceGroup(Application* app, ResourceManager* manager, const String& dirPath, const String& name) : Object(app), 
                                                                                                                       m_manager(manager), 
                                                                                                                       m_name(name), 
@@ -43,22 +45,35 @@ EGEResult ResourceGroup::create(const PXmlElement& tag)
   PXmlElement child = tag->firstChild();
   while (child->isValid())
   {
-    // create resource instance
-    PResource resource = manager()->createResource(child->name());
-    if (resource)
+    // check if dependancy entry
+    if (NODE_DEPENDANCY == child->name())
     {
-      // initialize from XML
-      if (EGE_SUCCESS != (result = resource->create(m_dirPath, child)))
+      // add dependancy
+      if (EGE_SUCCESS != (result = addDependancy(child)))
       {
         // error!
         break;
       }
-
-      // add into pool
-      if (EGE_SUCCESS != (result = addResource(resource)))
+    }
+    else
+    {
+      // create resource instance
+      PResource resource = manager()->createResource(child->name());
+      if (resource)
       {
-        // error!
-        break;
+        // initialize from XML
+        if (EGE_SUCCESS != (result = resource->create(m_dirPath, child)))
+        {
+          // error!
+          break;
+        }
+
+        // add into pool
+        if (EGE_SUCCESS != (result = addResource(resource)))
+        {
+          // error!
+          break;
+        }
       }
     }
 
@@ -196,6 +211,33 @@ void ResourceGroup::destroy()
 EGEResult ResourceGroup::addResource(const PResource& resource)
 {
   m_resources.insert(resource->typeName(), resource);
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds dependancy. */
+EGEResult ResourceGroup::addDependancy(const PXmlElement& tag)
+{
+  // get data
+  String name = tag->attribute("name");
+
+  // check if wrong data
+  if (name.empty())
+  {
+    // error!
+    return EGE_ERROR_BAD_PARAM;
+  }
+
+  // check if such dependancy already exists
+  if (m_dependancies.contains(name))
+  {
+    EGE_PRINT("ResourceGroup::addDependancy - dependancy %s already exists.", name.toAscii());
+  }
+  else
+  {
+    // add dependancy
+    m_dependancies << name;
+  }
 
   return EGE_SUCCESS;
 }
