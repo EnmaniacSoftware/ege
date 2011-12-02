@@ -43,6 +43,8 @@ class ScreenManager : public Object
     void remove(PScreen screen);
     /* Returns first screen with given name. */
     PScreen screen(const String& name) const;
+    /* Returns top screen. */
+    PScreen top() const;
 
   private slots:
 
