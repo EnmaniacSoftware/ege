@@ -59,6 +59,9 @@ class Material : public Object
     /* Clears material. */
     void clear();
 
+    /* Returns cloned instance of this object. */
+    PMaterial clone() const;
+
   private:
 
     typedef DynamicArray<PRenderPass> PassArray;

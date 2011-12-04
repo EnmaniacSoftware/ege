@@ -143,3 +143,27 @@ void RenderPass::setEmissionColor(const Color& color)
   m_emissionColor = color;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns cloned instance of this object. */
+RenderPass* RenderPass::clone() const
+{
+  RenderPass* pass = ege_new RenderPass(app());
+  if (pass)
+  {
+    // TAGE - probably there is no need to clone textures too unless we need to modify textures as well
+    for (ObjectArray::const_iterator it = m_textures.begin(); it != m_textures.end(); ++it)
+    {
+      pass->m_textures.push_back(*it);
+    }
+
+    pass->m_srcBlendFactor = m_srcBlendFactor;
+    pass->m_dstBlendFactor = m_dstBlendFactor;
+    pass->m_ambientColor   = m_ambientColor;
+    pass->m_diffuseColor   = m_diffuseColor;
+    pass->m_specularColor  = m_specularColor;
+    pass->m_emissionColor  = m_emissionColor;
+    pass->m_shininess      = m_shininess;
+  }
+
+  return pass;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

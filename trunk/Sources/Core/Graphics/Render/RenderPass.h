@@ -74,10 +74,17 @@ class RenderPass : public Object
     /*! Returns emission color. */
     const Color& emissionColor() const { return m_emissionColor; }
 
+    /* Returns cloned instance of this object. */
+    RenderPass* clone() const;
+
+  private:
+
+    typedef DynamicArray<PObject> ObjectArray;
+
   private:
 
     /*! Textures assigned to pass. */
-    DynamicArray<PObject> m_textures;
+    ObjectArray m_textures;
     /*! Source blend value. */
     EGEGraphics::BlendFactor m_srcBlendFactor;
     /*! Destination blend value. */

@@ -142,3 +142,26 @@ void Material::clear()
   m_passes.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns cloned instance of this object. */
+PMaterial Material::clone() const
+{
+  PMaterial material = ege_new Material(app());
+  if (material)
+  {
+    // clone passes
+    for (PassArray::const_iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+    {
+      RenderPass* clonedPass = (*it)->clone();
+      if (NULL == clonedPass)
+      {
+        // error!
+        return NULL;
+      }
+
+      material->addPass(clonedPass);
+    }
+  }
+
+  return material;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
