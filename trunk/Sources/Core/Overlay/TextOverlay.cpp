@@ -9,9 +9,11 @@ EGE_DEFINE_NEW_OPERATORS(TextOverlay)
 EGE_DEFINE_DELETE_OPERATORS(TextOverlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextOverlay::TextOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) 
-: Overlay(app, name, EGEGraphics::RPT_TRIANGLES, EGE_OBJECT_UID_OVERLAY_TEXT, deleteFunc), m_alignmentOffset(Vector4f::ZERO)
+TextOverlay::TextOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Overlay(app, name, EGE_OBJECT_UID_OVERLAY_TEXT, deleteFunc), 
+                                                                                                 m_alignmentOffset(Vector4f::ZERO)
 {
+  initialize();
+
   ege_connect(physics(), transformationChanged, this, TextOverlay::transformationChanged);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -55,7 +57,13 @@ void TextOverlay::setFont(PFont font)
 {
   if (font != m_font && font->isValid())
   {
+    // store font
     m_font = font;
+
+    // clone font material so we can locally change it without propagation
+    renderData()->setMaterial(m_font->material()->clone());
+
+    // invalidate render data
     invalidate();
   }
 }
@@ -63,11 +71,6 @@ void TextOverlay::setFont(PFont font)
 /*! Updates render data. */
 void TextOverlay::updateRenderData()
 {
-  Color color = Color::WHITE;
-
-  // set material
-  renderData()->setMaterial(m_font->material());
-
   // allocate vertex buffer of required size
   float32* data = (float32*) renderData()->vertexBuffer()->lock(0, text().length() * 6);
   if (data)
@@ -106,63 +109,33 @@ void TextOverlay::updateRenderData()
 
         *data++ = pos.x;
         *data++ = pos.y;
-        *data++ = 0;
         *data++ = glyphData->m_textureRect.x;
         *data++ = glyphData->m_textureRect.y;
-        *data++ = color.red;
-        *data++ = color.green;
-        *data++ = color.blue;
-        *data++ = color.alpha;
 
         *data++ = pos.x;
         *data++ = pos.y + height;
-        *data++ = 0;
         *data++ = glyphData->m_textureRect.x;
         *data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
-        *data++ = color.red;
-        *data++ = color.green;
-        *data++ = color.blue;
-        *data++ = color.alpha;
 
         *data++ = pos.x + width;
         *data++ = pos.y + height;
-        *data++ = 0;
         *data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
         *data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
-        *data++ = color.red;
-        *data++ = color.green;
-        *data++ = color.blue;
-        *data++ = color.alpha;
 
         *data++ = pos.x;
         *data++ = pos.y;
-        *data++ = 0;
         *data++ = glyphData->m_textureRect.x;
         *data++ = glyphData->m_textureRect.y;
-        *data++ = color.red;
-        *data++ = color.green;
-        *data++ = color.blue;
-        *data++ = color.alpha;
 
         *data++ = pos.x + width;
         *data++ = pos.y + height;
-        *data++ = 0;
         *data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
         *data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
-        *data++ = color.red;
-        *data++ = color.green;
-        *data++ = color.blue;
-        *data++ = color.alpha;
 
         *data++ = pos.x + width;
         *data++ = pos.y;
-        *data++ = 0;
         *data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
         *data++ = glyphData->m_textureRect.y;
-        *data++ = color.red;
-        *data++ = color.green;
-        *data++ = color.blue;
-        *data++ = color.alpha;
 
         pos.x += (width + spacing);
 
@@ -230,5 +203,31 @@ void TextOverlay::transformationChanged()
   m_alignmentOffset.x = 0;
   m_alignmentOffset.y = 0;
   Math::AlignXY(&m_alignmentOffset, &size, EGEAlignment::ALIGN_TOP_LEFT, alignment());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns text size (in pixels). */
+Vector2f TextOverlay::textSize()
+{
+  // check if update is needed
+  if (isUpdateNeeded())
+  {
+    // update render data
+    updateRenderData();
+
+    // validate
+    validate();
+  }
+
+  return m_textSize;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Overlay override. Initializes object. */
+void TextOverlay::initialize()
+{
+  // call base class
+  Overlay::initialize();
+
+  m_renderData  = RenderObjectFactory::CreateQuadXY(app(), "overlay_" + name(), Vector4f::ZERO, Vector2f::ONE, EGEAlignment::ALIGN_TOP_LEFT, 
+                                                    EGEVertexBuffer::ST_V2_T2, EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLES);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

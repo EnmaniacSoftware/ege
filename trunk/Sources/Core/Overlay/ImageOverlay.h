@@ -37,6 +37,8 @@ class ImageOverlay : public Overlay
     void update(const Time& time) override;
     /* Overlay override. Renders element. */
     void render(const Viewport* viewport, Renderer* renderer) override;
+    /* Overlay override. Initializes object. */
+    void initialize() override;
     /* Updates render data. */
     void updateRenderData();
     /*! Returns material name. */

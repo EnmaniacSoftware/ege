@@ -22,7 +22,7 @@ class Overlay : public Object
 {
   public: 
 
-    Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, egeObjectDeleteFunc deleteFunc = NULL);
+    Overlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
     virtual ~Overlay();
     
     EGE_DECLARE_NEW_OPERATORS
@@ -79,25 +79,25 @@ class Overlay : public Object
 
   protected:
 
-    Overlay(Application* app, const String& name, EGEGraphics::RenderPrimitiveType renderType, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
+    Overlay(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
     /* Invalidates object forcing it to be updated next time it's possible. */
     void invalidate();
     /* Validates object. */
     void validate();
     /*! Returns TRUE if update is needed. */
     inline bool isUpdateNeeded() const { return m_updateNeeded; }
-
-  private:
-
     /* Initializes object. */
-    void initialize(EGEGraphics::RenderPrimitiveType renderType);
+    virtual void initialize();
+
+  protected:
+
+    /*! Render component. */
+    PRenderComponent m_renderData;
 
   private:
 
     /*! Name. */
     String m_name;
-    /*! Render component. */
-    PRenderComponent m_renderData;
     /*! Physics component. */
     PPhysicsComponent m_physics;
     /*! Update flag. */

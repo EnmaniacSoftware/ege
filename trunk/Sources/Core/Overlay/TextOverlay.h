@@ -34,6 +34,8 @@ class TextOverlay : public Overlay
     inline PFont font() const { return m_font; }
     /* Overlay override. Sets alignment. */
     virtual void setAlignment(Alignment align) override;
+    /* Returns text size (in pixels). */
+    Vector2f textSize();
 
     // visiblility related methods
     //inline bool isVisible( void ) const { return m_bVisible; }                                                // returns TRUE if overlay is visible
@@ -67,6 +69,8 @@ class TextOverlay : public Overlay
     void update(const Time& time) override;
     /* Overlay override. Renders element. */
     void render(const Viewport* viewport, Renderer* renderer) override;
+    /* Overlay override. Initializes object. */
+    void initialize() override;
     /* Updates render data. */
     void updateRenderData();
 

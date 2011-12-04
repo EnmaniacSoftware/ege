@@ -3,6 +3,7 @@
 #include "Core/Overlay/ImageOverlay.h"
 #include "Core/Graphics/Render/Renderer.h"
 #include "Core/Resource/ResourceMaterial.h"
+#include <EGEResources.h>
 
 EGE_NAMESPACE
 
@@ -12,9 +13,11 @@ EGE_DEFINE_NEW_OPERATORS(ImageOverlay)
 EGE_DEFINE_DELETE_OPERATORS(ImageOverlay)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImageOverlay::ImageOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) 
-: Overlay(app, name, EGEGraphics::RPT_TRIANGLE_STRIPS, EGE_OBJECT_UID_OVERLAY_IMAGE, deleteFunc), m_alignmentOffset(Vector4f::ZERO)
+ImageOverlay::ImageOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Overlay(app, name, EGE_OBJECT_UID_OVERLAY_IMAGE, deleteFunc), 
+                                                                                                   m_alignmentOffset(Vector4f::ZERO)
 {
+  initialize();
+
   m_material = ege_new Material(app);
 
   ege_connect(physics(), transformationChanged, this, ImageOverlay::transformationChanged);
@@ -54,63 +57,13 @@ void ImageOverlay::update(const Time& time)
 /*! Updates render data. */
 void ImageOverlay::updateRenderData()
 {
-  PResourceMaterial resource = app()->resourceManager()->resource("material", materialName());
+  PResourceMaterial resource = app()->resourceManager()->resource(RESOURCE_NAME_MATERIAL, materialName());
   if (resource)
   {
     resource->setInstance(m_material);
   }
 
-  Color m_color = Color::WHITE;
-
   renderData()->setMaterial(m_material);
-
-  float32* data = (float32*) renderData()->vertexBuffer()->lock(0, 4);
-
-  data += 5;
-  //*data++ = 0;
-  //*data++ = 1;
-  //*data++ = 0;
-  //*data++ = 0;
-  //*data++ = 1;
-  *data++ = m_color.red;
-  *data++ = m_color.green;
-  *data++ = m_color.blue;
-  *data++ = m_color.alpha;
-
-  data += 5;
-  //*data++ = 1;
-  //*data++ = 1;
-  //*data++ = 0;
-  //*data++ = 1;
-  //*data++ = 1;
-  *data++ = m_color.red;
-  *data++ = m_color.green;
-  *data++ = m_color.blue;
-  *data++ = m_color.alpha;
-
-  data += 5;
-  //*data++ = 0;
-  //*data++ = 0;
-  //*data++ = 0;
-  //*data++ = 0;
-  //*data++ = 0;
-  *data++ = m_color.red;
-  *data++ = m_color.green;
-  *data++ = m_color.blue;
-  *data++ = m_color.alpha;
-
-  data += 5;
-  //*data++ = 1;
-  //*data++ = 0;
-  //*data++ = 0;
-  //*data++ = 1;
-  //*data++ = 0;
-  *data++ = m_color.red;
-  *data++ = m_color.green;
-  *data++ = m_color.blue;
-  *data++ = m_color.alpha;
-
-  renderData()->vertexBuffer()->unlock();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Overlay override. Renders element. */
@@ -170,5 +123,15 @@ void ImageOverlay::transformationChanged()
   m_alignmentOffset.x = 0;
   m_alignmentOffset.y = 0;
   Math::AlignXY(&m_alignmentOffset, &size, EGEAlignment::ALIGN_TOP_LEFT, alignment());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Overlay override. Initializes object. */
+void ImageOverlay::initialize()
+{
+  // call base class
+  Overlay::initialize();
+
+  m_renderData  = RenderObjectFactory::CreateQuadXY(app(), "overlay_" + name(), Vector4f::ZERO, Vector2f::ONE, EGEAlignment::ALIGN_TOP_LEFT, 
+                                                    EGEVertexBuffer::ST_V2_T2, EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLE_STRIPS);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
