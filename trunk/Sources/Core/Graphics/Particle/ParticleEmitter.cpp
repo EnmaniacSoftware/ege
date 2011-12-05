@@ -133,6 +133,8 @@ void ParticleEmitter::update(const Time& time)
     // update particles to emit counter
     m_emitCount += m_emissionRate * timeInSeconds;
 
+    //EGE_PRINT("To emit: %f cap: %d active: %d", m_emitCount, m_particleMaxCount, m_activeParticlesCount);
+
     // add as much as we can
     while (!isFull() && (1.0f <= m_emitCount))
     {

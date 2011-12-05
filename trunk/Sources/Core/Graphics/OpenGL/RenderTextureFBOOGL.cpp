@@ -34,6 +34,9 @@ RenderTextureFBOOGL::RenderTextureFBOOGL(Application* app, const Dictionary& par
     glBindFramebuffer(GL_FRAMEBUFFER_EXT, m_defaultFBOId);
   }
 
+
+  GLenum error = glGetError();
+
   // decompose param list
   Dictionary::const_iterator iterWidth  = params.find(EGE_RENDER_TARGET_PARAM_WIDTH);
   Dictionary::const_iterator iterHeight = params.find(EGE_RENDER_TARGET_PARAM_HEIGHT);

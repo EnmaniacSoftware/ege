@@ -456,7 +456,7 @@ PResource ResourceManager::resource(const String& typeName, const String& name, 
   else
   {
     // go thru all groups
-    for (List<PResourceGroup>::const_iterator it = m_groups.begin(); it != m_groups.end(); ++it)
+    for (GroupList::const_iterator it = m_groups.begin(); it != m_groups.end(); ++it)
     {
       PResource resource = (*it)->resource(typeName, name);
       if (resource)
@@ -609,10 +609,16 @@ void ResourceManager::update(const Time& time)
     {
       CommandData& commandData = *it;
 
+      // process according to command type
       if (COMMAND_LOAD_GROUP == commandData.command)
       {
         // find group
         PResourceGroup groupResource = group(commandData.name);
+
+        if (commandData.name == "splash-screens")
+        {
+          int a= 1;
+        }
 
         // load group
         if ((NULL != groupResource) && (EGE_SUCCESS != groupResource->load()))

@@ -48,6 +48,8 @@ class ResourceGroup : public Object
     EGEResult addResource(const PResource& resource);
     /*! Is group loaded. */
     inline bool isLoaded() const { return m_loaded; }
+    /*! Returns list of dependancy group names. */
+    inline const StringList& dependancies() const { return m_dependancies; }
 
   private:
 

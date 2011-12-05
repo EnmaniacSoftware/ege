@@ -200,6 +200,8 @@ EGEResult Texture2DPrivate::create()
   //  }
   //}
 
+  GLenum error2 = glGetError();
+
   // create texture
   // NOTE: for compatibility with OpenGLES 'internalFormat' MUST be the same as 'imageFormat'
   glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, d_func()->width(), d_func()->height(), 0, imageFormat, GL_UNSIGNED_BYTE, NULL);
