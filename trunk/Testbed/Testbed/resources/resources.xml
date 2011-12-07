@@ -126,8 +126,8 @@
   <!-- Lightning test resources -->
   <group name='lightning-test'>
 
-    <texture type="2d" name="beam" path="images/beam.jpg" mag-filter="bilinear" min-filter="bilinear" />
-    <material name='beam' src-blend='one' dst-blend='one' >
+    <texture type="2d" name="beam" path="images/beam.png" mag-filter="bilinear" min-filter="bilinear" />
+    <material name='beam' src-blend='src-alpha' dst-blend='one' >
       <texture name='beam' />
     </material>
 

@@ -4,6 +4,7 @@
 #include <EGEResources.h>
 #include <EGEOverlay.h>
 #include <EGEApplication.h>
+#include <gl/GL.h>
 
 EGE_NAMESPACE
 
@@ -17,7 +18,7 @@ LightningEffect::LightningEffect(Application* app) : SceneNodeObject("lightning-
   {
     m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_C4);
     m_renderDataQuad->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2_C4);
-    m_renderData->setLineWidth(2.0f);
+    m_renderData->setLineWidth(1.0f);
 
     PMaterial material = ege_new Material(app);
     RenderPass* pass = material->addPass(NULL);
@@ -39,6 +40,8 @@ LightningEffect::LightningEffect(Application* app) : SceneNodeObject("lightning-
     app->overlayManager()->add(overlay);
     overlay->physics()->setPosition(Vector4f(0, 80, 0));
   }
+
+  glDisable(GL_DEPTH_TEST);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 LightningEffect::~LightningEffect()
@@ -48,8 +51,11 @@ LightningEffect::~LightningEffect()
 /*! SceneNodeObject override. Adds object render data for rendering with given renderer. */
 bool LightningEffect::addForRendering(Renderer* renderer)
 {
-  renderer->addForRendering(parentNode()->worldMatrix(), m_renderData);
-  renderer->addForRendering(parentNode()->worldMatrix(), m_renderDataQuad);
+  if (m_fadeTime.seconds() < 1.0f)
+  {
+    renderer->addForRendering(parentNode()->worldMatrix(), m_renderData);
+    renderer->addForRendering(parentNode()->worldMatrix(), m_renderDataQuad);
+  }
 
   return true;
 }
@@ -57,6 +63,150 @@ bool LightningEffect::addForRendering(Renderer* renderer)
 /*! Updates effect. */
 void LightningEffect::update(const Time& time)
 {
+  m_fadeTime += time * 2.0f;
+  if (m_fadeTime.seconds() > 1.0f)
+  {
+    m_fadeTime = 1.0f;
+  }
+
+  float32* data = (float32*) m_renderData->vertexBuffer()->lock(0, m_segments.size() * 2);
+  for (List<Segment>::const_iterator it = m_segments.begin(); it != m_segments.end(); ++it)
+  {
+    const Segment& segment= *it;
+
+    *data++;
+    *data++;
+    *data++;
+    *data++;
+    *data++;
+    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+    *data++;
+    *data++;
+    *data++;
+    *data++;
+    *data++;
+    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+  }
+  m_renderData->vertexBuffer()->unlock();
+
+  data = (float32*) m_renderDataQuad->vertexBuffer()->lock(0, m_segments.size() * 4 * 3);
+
+  for (List<Segment>::const_iterator it = m_segments.begin(); it != m_segments.end(); ++it)
+  {
+    const Segment& segment= *it;
+
+    *data++;// = segment.start.x + segment.normal.x * width * segment.intensity;
+    *data++;// = segment.start.y + segment.normal.y * width * segment.intensity;
+    *data++;// = 0;
+    *data++;// = 0;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+    *data++;// = segment.start.x - segment.normal.x * width * segment.intensity;
+    *data++;// = segment.start.y - segment.normal.y * width * segment.intensity;
+    *data++;// = 0;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+    *data++;//= segment.end.x + segment.normal.x * width * segment.intensity;
+    *data++;//= segment.end.y + segment.normal.y * width * segment.intensity;
+    *data++;//= 1;
+    *data++;//= 0;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+    *data++;//= segment.end.x - segment.normal.x * width * segment.intensity;
+    *data++;//= segment.end.y - segment.normal.y * width * segment.intensity;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+    *data++;// = segment.start.x + segment.normal.x * width * segment.intensity;
+    *data++;// = segment.start.y + segment.normal.y * width * segment.intensity;
+    *data++;// = 0;
+    *data++;// = 0;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+    *data++;// = segment.start.x - segment.normal.x * width * segment.intensity;
+    *data++;// = segment.start.y - segment.normal.y * width * segment.intensity;
+    *data++;// = 0;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+    *data++;//= segment.end.x + segment.normal.x * width * segment.intensity;
+    *data++;//= segment.end.y + segment.normal.y * width * segment.intensity;
+    *data++;//= 1;
+    *data++;//= 0;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+    *data++;//= segment.end.x - segment.normal.x * width * segment.intensity;
+    *data++;//= segment.end.y - segment.normal.y * width * segment.intensity;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+    *data++;// = segment.start.x + segment.normal.x * width * segment.intensity;
+    *data++;// = segment.start.y + segment.normal.y * width * segment.intensity;
+    *data++;// = 0;
+    *data++;// = 0;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+    *data++;// = segment.start.x - segment.normal.x * width * segment.intensity;
+    *data++;// = segment.start.y - segment.normal.y * width * segment.intensity;
+    *data++;// = 0;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++;// = 1;
+    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+    *data++;//= segment.end.x + segment.normal.x * width * segment.intensity;
+    *data++;//= segment.end.y + segment.normal.y * width * segment.intensity;
+    *data++;//= 1;
+    *data++;//= 0;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+    *data++;//= segment.end.x - segment.normal.x * width * segment.intensity;
+    *data++;//= segment.end.y - segment.normal.y * width * segment.intensity;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++;//= 1;
+    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+  }
+
+  m_renderDataQuad->vertexBuffer()->unlock();
+
   //ege_cast<TextOverlay*>(m_app->overlayManager()->overlay("buhaha"))->setText(Text::Format("%d", a));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -65,10 +215,12 @@ void LightningEffect::pointerEvent(PPointerData data)
 {
   if (EGEInput::ACTION_BUTTON_DOWN == data->action())
   {
-    List<Segment> list = generateSegments(Vector2f(100, 100), Vector2f(700, 500));
+    m_fadeTime = 0.0f;
 
-    float32* data = (float32*) m_renderData->vertexBuffer()->lock(0, list.size() * 2);
-    for (List<Segment>::const_iterator it = list.begin(); it != list.end(); ++it)
+    m_segments = generateSegments(Vector2f(100, 100), Vector2f(500, 300), 5, true);
+
+    float32* data = (float32*) m_renderData->vertexBuffer()->lock(0, m_segments.size() * 2);
+    for (List<Segment>::const_iterator it = m_segments.begin(); it != m_segments.end(); ++it)
     {
       *data++ = (*it).start.x;
       *data++ = (*it).start.y;
@@ -88,25 +240,45 @@ void LightningEffect::pointerEvent(PPointerData data)
     m_renderData->vertexBuffer()->unlock();
 
     {
-      float32* data = (float32*) m_renderDataQuad->vertexBuffer()->lock(0, list.size() * 4);
-      s16* index = (s16*) m_renderDataQuad->indexBuffer()->lock(0, list.size() * 6);
+      float32* data = (float32*) m_renderDataQuad->vertexBuffer()->lock(0, m_segments.size() * 4 * 3);
+      s16* index = (s16*) m_renderDataQuad->indexBuffer()->lock(0, m_segments.size() * 6 * 3);
 
-      const float32 width = 10.0f;
+      const float32 width = 3.0f;
+      const float32 beginEndSizeCoe = 0.05f;
+      const float32 beginEndOffset = 0.015f;
 
       int i = 0;
-      for (List<Segment>::const_iterator it = list.begin(); it != list.end(); ++it, ++i)
+      for (List<Segment>::const_iterator it = m_segments.begin(); it != m_segments.end(); ++it, ++i)
       {
         const Segment& segment= *it;
 
-        *index++ = i * 4 + 0;
-        *index++ = i * 4 + 1;
-        *index++ = i * 4 + 2;
-        *index++ = i * 4 + 1;
-        *index++ = i * 4 + 2;
-        *index++ = i * 4 + 3;
+        // begin
+        *index++ = i * 12 + 0;
+        *index++ = i * 12 + 1;
+        *index++ = i * 12 + 2;
+        *index++ = i * 12 + 1;
+        *index++ = i * 12 + 2;
+        *index++ = i * 12 + 3;
 
-        *data++ = segment.start.x + segment.normal.x * width * segment.intensity;
-        *data++ = segment.start.y + segment.normal.y * width * segment.intensity;
+        // middle
+        *index++ = i * 12 + 4;
+        *index++ = i * 12 + 5;
+        *index++ = i * 12 + 6;
+        *index++ = i * 12 + 5;
+        *index++ = i * 12 + 6;
+        *index++ = i * 12 + 7;
+
+        // end
+        *index++ = i * 12 + 8;
+        *index++ = i * 12 + 9;
+        *index++ = i * 12 + 10;
+        *index++ = i * 12 + 9;
+        *index++ = i * 12 + 10;
+        *index++ = i * 12 + 11;
+
+        // begin
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, -beginEndOffset) + segment.normal.x * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, -beginEndOffset) + segment.normal.y * width * segment.intensity;
         *data++ = 0;
         *data++ = 0;
         *data++ = 1;
@@ -114,8 +286,8 @@ void LightningEffect::pointerEvent(PPointerData data)
         *data++ = 1;
         *data++ = segment.intensity;
 
-        *data++ = segment.start.x - segment.normal.x * width * segment.intensity;
-        *data++ = segment.start.y - segment.normal.y * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, -beginEndOffset) - segment.normal.x * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, -beginEndOffset) - segment.normal.y * width * segment.intensity;
         *data++ = 0;
         *data++ = 1;
         *data++ = 1;
@@ -123,8 +295,82 @@ void LightningEffect::pointerEvent(PPointerData data)
         *data++ = 1;
         *data++ = segment.intensity;
 
-        *data++ = segment.end.x + segment.normal.x * width * segment.intensity;
-        *data++ = segment.end.y + segment.normal.y * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe - beginEndOffset) + segment.normal.x * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe - beginEndOffset) + segment.normal.y * width * segment.intensity;
+        *data++ = 0.25f;
+        *data++ = 0;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = segment.intensity;
+
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe - beginEndOffset) - segment.normal.x * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe - beginEndOffset) - segment.normal.y * width * segment.intensity;
+        *data++ = 0.25f;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = segment.intensity;
+
+        // middle
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe - beginEndOffset) + segment.normal.x * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe - beginEndOffset) + segment.normal.y * width * segment.intensity;
+        *data++ = 0.25f;
+        *data++ = 0;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = segment.intensity;
+
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe - beginEndOffset) - segment.normal.x * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe - beginEndOffset) - segment.normal.y * width * segment.intensity;
+        *data++ = 0.25f;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = segment.intensity;
+
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe + beginEndOffset) + segment.normal.x * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe + beginEndOffset) + segment.normal.y * width * segment.intensity;
+        *data++ = 0.75f;
+        *data++ = 0;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = segment.intensity;
+
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe + beginEndOffset) - segment.normal.x * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe + beginEndOffset) - segment.normal.y * width * segment.intensity;
+        *data++ = 0.75f;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = segment.intensity;
+
+        // end
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe + beginEndOffset) + segment.normal.x * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe + beginEndOffset) + segment.normal.y * width * segment.intensity;
+        *data++ = 0.75f;
+        *data++ = 0;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = segment.intensity;
+
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe + beginEndOffset) - segment.normal.x * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe + beginEndOffset) - segment.normal.y * width * segment.intensity;
+        *data++ = 0.75f;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = 1;
+        *data++ = segment.intensity;
+
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f + beginEndOffset) + segment.normal.x * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f + beginEndOffset) + segment.normal.y * width * segment.intensity;
         *data++ = 1;
         *data++ = 0;
         *data++ = 1;
@@ -132,8 +378,8 @@ void LightningEffect::pointerEvent(PPointerData data)
         *data++ = 1;
         *data++ = segment.intensity;
 
-        *data++ = segment.end.x - segment.normal.x * width * segment.intensity;
-        *data++ = segment.end.y - segment.normal.y * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f + beginEndOffset) - segment.normal.x * width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f + beginEndOffset) - segment.normal.y * width * segment.intensity;
         *data++ = 1;
         *data++ = 1;
         *data++ = 1;
@@ -149,7 +395,7 @@ void LightningEffect::pointerEvent(PPointerData data)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Generates segments. */
-EGE::List<Segment> LightningEffect::generateSegments(const Vector2f& start, const Vector2f end)
+EGE::List<Segment> LightningEffect::generateSegments(const Vector2f& start, const Vector2f end, s32 steps, bool allowOffshots)
 {
   List<Segment> segments;
 
@@ -161,7 +407,7 @@ EGE::List<Segment> LightningEffect::generateSegments(const Vector2f& start, cons
   segments.push_back(segment);
 
   float32 offset = 60;
-  for (s32 step = 0; step < 1; ++step)
+  for (s32 step = 0; step < steps; ++step)
   {
     // go thru all segments
     for (List<Segment>::iterator it = segments.begin(); it != segments.end(); ++it)
@@ -175,8 +421,7 @@ EGE::List<Segment> LightningEffect::generateSegments(const Vector2f& start, cons
       Vector2f midPoint(oldSegment.start.x + segmentVector.x * 0.5f, oldSegment.start.y + segmentVector.y * 0.5f);
 
       // calulate normalized vector perpendicular to current segment
-      Vector2f offsetVector = segment.normal; //segmentVector.perpendicular();
-//      offsetVector.normalize();
+      Vector2f offsetVector = segment.normal;
       if (m_random() & 0x1)
       {
         offsetVector *= -1.0f;
@@ -198,26 +443,29 @@ EGE::List<Segment> LightningEffect::generateSegments(const Vector2f& start, cons
       segments.insert(it, segment);
 
       // check if offshot should be generated
-      if ((m_random() % 100) < oldSegment.intensity * 50)
+      if (allowOffshots)
       {
-        segment.start = midPoint;
+        if ((m_random() % 100) < oldSegment.intensity * 50)
+        {
+          segment.start = midPoint;
 
-        Vector2f direction = midPoint - oldSegment.start;
-        float32 dirLength = direction.length();
-        direction.normalize();
+          Vector2f direction = midPoint - oldSegment.start;
+          float32 dirLength = direction.length();
+          direction.normalize();
 
-        Angle angle = Angle::FromDegrees(m_random(5, 10));
+          Angle angle = Angle::FromDegrees(m_random(5, 10));
 
-        float32 cos = Math::Cos(angle.radians());
-        float32 sin = Math::Sin(angle.radians());
+          float32 cos = Math::Cos(angle.radians());
+          float32 sin = Math::Sin(angle.radians());
 
-        segment.end.x = direction.x * cos - direction.y * sin;
-        segment.end.y = direction.x * sin + direction.y * cos;
+          segment.end.x = direction.x * cos - direction.y * sin;
+          segment.end.y = direction.x * sin + direction.y * cos;
 
-        segment.end = segment.end * dirLength * 0.7f + midPoint;
-        segment.normal    = (segment.end - segment.start).perpendicular().normalized();
-        segment.intensity = oldSegment.intensity * 0.5f;
-        segments.push_front(segment);
+          segment.end = segment.end * dirLength * 0.7f + midPoint;
+          segment.normal    = (segment.end - segment.start).perpendicular().normalized();
+          segment.intensity = oldSegment.intensity * 0.5f;
+          segments.push_front(segment);
+        }
       }
     }
 
