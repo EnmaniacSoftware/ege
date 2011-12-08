@@ -90,7 +90,7 @@ void LightningEffect::update(const Time& time)
   }
   m_renderData->vertexBuffer()->unlock();
 
-  data = (float32*) m_renderDataQuad->vertexBuffer()->lock(0, m_segments.size() * 4 * 3);
+  data = (float32*) m_renderDataQuad->vertexBuffer()->lock(0, m_segments.size() * 8);
 
   for (List<Segment>::const_iterator it = m_segments.begin(); it != m_segments.end(); ++it)
   {
@@ -168,41 +168,41 @@ void LightningEffect::update(const Time& time)
     *data++;//= 1;
     *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
 
-    *data++;// = segment.start.x + segment.normal.x * width * segment.intensity;
-    *data++;// = segment.start.y + segment.normal.y * width * segment.intensity;
-    *data++;// = 0;
-    *data++;// = 0;
-    *data++;// = 1;
-    *data++;// = 1;
-    *data++;// = 1;
-    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+    //*data++;// = segment.start.x + segment.normal.x * width * segment.intensity;
+    //*data++;// = segment.start.y + segment.normal.y * width * segment.intensity;
+    //*data++;// = 0;
+    //*data++;// = 0;
+    //*data++;// = 1;
+    //*data++;// = 1;
+    //*data++;// = 1;
+    ////*data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
 
-    *data++;// = segment.start.x - segment.normal.x * width * segment.intensity;
-    *data++;// = segment.start.y - segment.normal.y * width * segment.intensity;
-    *data++;// = 0;
-    *data++;// = 1;
-    *data++;// = 1;
-    *data++;// = 1;
-    *data++;// = 1;
-    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+    //*data++;// = segment.start.x - segment.normal.x * width * segment.intensity;
+    //*data++;// = segment.start.y - segment.normal.y * width * segment.intensity;
+    //*data++;// = 0;
+    //*data++;// = 1;
+    //*data++;// = 1;
+    //*data++;// = 1;
+    //*data++;// = 1;
+    ////*data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
 
-    *data++;//= segment.end.x + segment.normal.x * width * segment.intensity;
-    *data++;//= segment.end.y + segment.normal.y * width * segment.intensity;
-    *data++;//= 1;
-    *data++;//= 0;
-    *data++;//= 1;
-    *data++;//= 1;
-    *data++;//= 1;
-    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+    //*data++;//= segment.end.x + segment.normal.x * width * segment.intensity;
+    //*data++;//= segment.end.y + segment.normal.y * width * segment.intensity;
+    //*data++;//= 1;
+    //*data++;//= 0;
+    //*data++;//= 1;
+    //*data++;//= 1;
+    //*data++;//= 1;
+    ////*data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
 
-    *data++;//= segment.end.x - segment.normal.x * width * segment.intensity;
-    *data++;//= segment.end.y - segment.normal.y * width * segment.intensity;
-    *data++;//= 1;
-    *data++;//= 1;
-    *data++;//= 1;
-    *data++;//= 1;
-    *data++;//= 1;
-    *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+    //*data++;//= segment.end.x - segment.normal.x * width * segment.intensity;
+    //*data++;//= segment.end.y - segment.normal.y * width * segment.intensity;
+    //*data++;//= 1;
+    //*data++;//= 1;
+    //*data++;//= 1;
+    //*data++;//= 1;
+    //*data++;//= 1;
+    //*data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
   }
 
   m_renderDataQuad->vertexBuffer()->unlock();
@@ -217,7 +217,7 @@ void LightningEffect::pointerEvent(PPointerData data)
   {
     m_fadeTime = 0.0f;
 
-    m_segments = generateSegments(Vector2f(100, 100), Vector2f(500, 300), 5, true);
+    m_segments = generateSegments(Vector2f(100, 100), Vector2f(500, 300), 1, true);
 
     float32* data = (float32*) m_renderData->vertexBuffer()->lock(0, m_segments.size() * 2);
     for (List<Segment>::const_iterator it = m_segments.begin(); it != m_segments.end(); ++it)
@@ -240,10 +240,10 @@ void LightningEffect::pointerEvent(PPointerData data)
     m_renderData->vertexBuffer()->unlock();
 
     {
-      float32* data = (float32*) m_renderDataQuad->vertexBuffer()->lock(0, m_segments.size() * 4 * 3);
+      float32* data = (float32*) m_renderDataQuad->vertexBuffer()->lock(0, m_segments.size() * 8);
       s16* index = (s16*) m_renderDataQuad->indexBuffer()->lock(0, m_segments.size() * 6 * 3);
 
-      const float32 width = 3.0f;
+      const float32 width = 30.0f;
       const float32 beginEndSizeCoe = 0.05f;
       const float32 beginEndOffset = 0.015f;
 
@@ -253,28 +253,28 @@ void LightningEffect::pointerEvent(PPointerData data)
         const Segment& segment= *it;
 
         // begin
-        *index++ = i * 12 + 0;
-        *index++ = i * 12 + 1;
-        *index++ = i * 12 + 2;
-        *index++ = i * 12 + 1;
-        *index++ = i * 12 + 2;
-        *index++ = i * 12 + 3;
+        *index++ = i * 8 + 0;
+        *index++ = i * 8 + 1;
+        *index++ = i * 8 + 2;
+        *index++ = i * 8 + 1;
+        *index++ = i * 8 + 2;
+        *index++ = i * 8 + 3;
 
         // middle
-        *index++ = i * 12 + 4;
-        *index++ = i * 12 + 5;
-        *index++ = i * 12 + 6;
-        *index++ = i * 12 + 5;
-        *index++ = i * 12 + 6;
-        *index++ = i * 12 + 7;
+        *index++ = i * 8 + 2;
+        *index++ = i * 8 + 3;
+        *index++ = i * 8 + 4;
+        *index++ = i * 8 + 3;
+        *index++ = i * 8 + 4;
+        *index++ = i * 8 + 5;
 
         // end
-        *index++ = i * 12 + 8;
-        *index++ = i * 12 + 9;
-        *index++ = i * 12 + 10;
-        *index++ = i * 12 + 9;
-        *index++ = i * 12 + 10;
-        *index++ = i * 12 + 11;
+        *index++ = i * 8 + 4;
+        *index++ = i * 8 + 5;
+        *index++ = i * 8 + 6;
+        *index++ = i * 8 + 5;
+        *index++ = i * 8 + 6;
+        *index++ = i * 8 + 7;
 
         // begin
         *data++ = Math::Lerp(segment.start.x, segment.end.x, -beginEndOffset) + segment.normal.x * width * segment.intensity;
@@ -295,6 +295,7 @@ void LightningEffect::pointerEvent(PPointerData data)
         *data++ = 1;
         *data++ = segment.intensity;
 
+        // end of begin begining of middle
         *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe - beginEndOffset) + segment.normal.x * width * segment.intensity;
         *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe - beginEndOffset) + segment.normal.y * width * segment.intensity;
         *data++ = 0.25f;
@@ -313,24 +314,24 @@ void LightningEffect::pointerEvent(PPointerData data)
         *data++ = 1;
         *data++ = segment.intensity;
 
-        // middle
-        *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe - beginEndOffset) + segment.normal.x * width * segment.intensity;
-        *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe - beginEndOffset) + segment.normal.y * width * segment.intensity;
-        *data++ = 0.25f;
-        *data++ = 0;
-        *data++ = 1;
-        *data++ = 1;
-        *data++ = 1;
-        *data++ = segment.intensity;
+        // end of middle, begining of end
+        //*data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe - beginEndOffset) + segment.normal.x * width * segment.intensity;
+        //*data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe - beginEndOffset) + segment.normal.y * width * segment.intensity;
+        //*data++ = 0.25f;
+        //*data++ = 0;
+        //*data++ = 1;
+        //*data++ = 1;
+        //*data++ = 1;
+        //*data++ = segment.intensity;
 
-        *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe - beginEndOffset) - segment.normal.x * width * segment.intensity;
-        *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe - beginEndOffset) - segment.normal.y * width * segment.intensity;
-        *data++ = 0.25f;
-        *data++ = 1;
-        *data++ = 1;
-        *data++ = 1;
-        *data++ = 1;
-        *data++ = segment.intensity;
+        //*data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe - beginEndOffset) - segment.normal.x * width * segment.intensity;
+        //*data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe - beginEndOffset) - segment.normal.y * width * segment.intensity;
+        //*data++ = 0.25f;
+        //*data++ = 1;
+        //*data++ = 1;
+        //*data++ = 1;
+        //*data++ = 1;
+        //*data++ = segment.intensity;
 
         *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe + beginEndOffset) + segment.normal.x * width * segment.intensity;
         *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe + beginEndOffset) + segment.normal.y * width * segment.intensity;
@@ -351,23 +352,23 @@ void LightningEffect::pointerEvent(PPointerData data)
         *data++ = segment.intensity;
 
         // end
-        *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe + beginEndOffset) + segment.normal.x * width * segment.intensity;
-        *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe + beginEndOffset) + segment.normal.y * width * segment.intensity;
-        *data++ = 0.75f;
-        *data++ = 0;
-        *data++ = 1;
-        *data++ = 1;
-        *data++ = 1;
-        *data++ = segment.intensity;
+        //*data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe + beginEndOffset) + segment.normal.x * width * segment.intensity;
+        //*data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe + beginEndOffset) + segment.normal.y * width * segment.intensity;
+        //*data++ = 0.75f;
+        //*data++ = 0;
+        //*data++ = 1;
+        //*data++ = 1;
+        //*data++ = 1;
+        //*data++ = segment.intensity;
 
-        *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe + beginEndOffset) - segment.normal.x * width * segment.intensity;
-        *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe + beginEndOffset) - segment.normal.y * width * segment.intensity;
-        *data++ = 0.75f;
-        *data++ = 1;
-        *data++ = 1;
-        *data++ = 1;
-        *data++ = 1;
-        *data++ = segment.intensity;
+        //*data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe + beginEndOffset) - segment.normal.x * width * segment.intensity;
+        //*data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe + beginEndOffset) - segment.normal.y * width * segment.intensity;
+        //*data++ = 0.75f;
+        //*data++ = 1;
+        //*data++ = 1;
+        //*data++ = 1;
+        //*data++ = 1;
+        //*data++ = segment.intensity;
 
         *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f + beginEndOffset) + segment.normal.x * width * segment.intensity;
         *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f + beginEndOffset) + segment.normal.y * width * segment.intensity;

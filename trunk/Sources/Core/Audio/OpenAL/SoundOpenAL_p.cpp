@@ -245,7 +245,7 @@ EGEResult SoundPrivate::play(ALuint channel)
   // reset flag
   m_stopped = false;
 
-  EGE_PRINT("SoundPrivate::play - %s", d_func()->name().toAscii());
+  //EGE_PRINT("SoundPrivate::play - %s", d_func()->name().toAscii());
 
   return EGE_SUCCESS;
 }
@@ -299,7 +299,7 @@ void SoundPrivate::onSoundVolumeChanged(const Sound* sound, float32 oldVolume)
 {
   EGE_ASSERT(sound->p_func() == this);
 
-  EGE_PRINT("SoundPrivate::onSoundVolumeChanged: %s %.2f -> %.2f", sound->name().toAscii(), oldVolume, sound->volume());
+  //EGE_PRINT("SoundPrivate::onSoundVolumeChanged: %s %.2f -> %.2f", sound->name().toAscii(), oldVolume, sound->volume());
 
   // set new volume
   alSourcef(m_channel, AL_GAIN, sound->volume());

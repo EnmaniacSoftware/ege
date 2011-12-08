@@ -117,6 +117,8 @@ EGEResult ResourceGroup::load()
     }
     else
     {
+      EGE_PRINT("ResourceGroup::load - %s", name().toAscii());
+
       // set flag
       m_loaded = true;
     }
@@ -143,6 +145,8 @@ void ResourceGroup::unload()
         resource->unload();
       }
     }
+
+    EGE_PRINT("ResourceGroup::unload - %s", name().toAscii());
 
     // reset flag
     m_loaded = false;

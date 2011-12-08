@@ -614,6 +614,21 @@ void RendererPrivate::detectCapabilities()
     }
   }
 
+  // check if min and max blending functions are supported
+  if (isExtensionSupported("GL_ARB_imaging") || isExtensionSupported("GL_EXT_blend_minmax"))
+  {
+    glBlendEquation = (PFNGLBLENDEQUATIONPROC) wglGetProcAddress("glBlendEquationARB");
+    if (!glBlendEquation)
+    {
+      glBlendEquation = (PFNGLBLENDEQUATIONPROC) wglGetProcAddress("glBlendEquationEXT");
+    }
+
+    if (glBlendEquation)
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_BLEND_MINMAX, true);
+    }
+  }
+
   // Point sprite size array is not supported by default
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE_SIZE, false);
 }

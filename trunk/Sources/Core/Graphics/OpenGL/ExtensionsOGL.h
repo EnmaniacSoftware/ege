@@ -31,6 +31,9 @@ extern PFNGLUNMAPBUFFERPROC glUnmapBuffer;
 extern PFNGLPOINTPARAMETERFARBPROC  glPointParameterf;
 extern PFNGLPOINTPARAMETERFVARBPROC glPointParameterfv;
 
+// blend equations
+extern PFNGLBLENDEQUATIONPROC glBlendEquation;
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_CORE_EXTENSIONSOGL_H

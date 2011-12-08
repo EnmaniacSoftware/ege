@@ -28,4 +28,7 @@ PFNGLUNMAPBUFFERPROC glUnmapBuffer = NULL;
 PFNGLPOINTPARAMETERFARBPROC glPointParameterf = NULL;
 PFNGLPOINTPARAMETERFVARBPROC glPointParameterfv = NULL;
 
+// blend equations
+PFNGLBLENDEQUATIONPROC glBlendEquation = NULL;
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -114,6 +114,9 @@ class ResourceManager : public Object
      */
     EGEResult processInclude(const String& filePath, const PXmlElement& tag);
 
+    /* Builds dependancy list for a given group. */
+    bool buildDependacyList(StringList& list, const String& groupName) const;
+
   private:
 
     /*! Available commands. */
@@ -127,7 +130,8 @@ class ResourceManager : public Object
     struct CommandData
     {
       Command command;                          /*!< Command to perform. */
-      String name;                              /*!< Name of the group to be loaded. */
+      StringList groupNames;                    /*!< List of group names (main and dependancies) to be loaded/unloade.
+                                                     NOTE: This should be processed in end -> begin order. Frist entry is always the original (top) group. */
     };
 
     /*! Data struct containing registration information for resource. */

@@ -339,7 +339,7 @@ EGEResult ResourceManager::loadGroup(const String& name)
     for (it = m_commands.begin(); it != m_commands.end(); ++it)
     {
       CommandData& commandData = *it;
-      if (((COMMAND_UNLOAD_GROUP == commandData.command) || (COMMAND_LOAD_GROUP == commandData.command)) && (commandData.name == name))
+      if (((COMMAND_UNLOAD_GROUP == commandData.command) || (COMMAND_LOAD_GROUP == commandData.command)) && (commandData.groupNames.front() == name))
       {
         // found, done
         break;
@@ -372,10 +372,19 @@ EGEResult ResourceManager::loadGroup(const String& name)
     CommandData commandData;
 
     commandData.command = COMMAND_LOAD_GROUP;
-    commandData.name    = name;
+    commandData.groupNames.push_back(name);
 
-    // add to pool
-    m_commands.push_back(commandData);
+    // add dependancies
+    if (buildDependacyList(commandData.groupNames, name))
+    {
+      // add to pool
+      m_commands.push_back(commandData);
+    }
+    else
+    {
+      // error!
+      return EGE_ERROR;
+    }
 
     EGE_PRINT("ResourceManager::loadGroup: %s scheduled for loading.", name.toAscii());
     return EGE_SUCCESS;
@@ -397,7 +406,7 @@ void ResourceManager::unloadGroup(const String& name)
     for (it = m_commands.begin(); it != m_commands.end(); ++it)
     {
       CommandData& commandData = *it;
-      if (((COMMAND_UNLOAD_GROUP == commandData.command) || (COMMAND_LOAD_GROUP == commandData.command)) && (commandData.name == name))
+      if (((COMMAND_UNLOAD_GROUP == commandData.command) || (COMMAND_LOAD_GROUP == commandData.command)) && (commandData.groupNames.front() == name))
       {
         // found, done
         break;
@@ -429,10 +438,19 @@ void ResourceManager::unloadGroup(const String& name)
     CommandData commandData;
 
     commandData.command = COMMAND_UNLOAD_GROUP;
-    commandData.name    = name;
+    commandData.groupNames.push_back(name);
 
-    // add to pool
-    m_commands.push_back(commandData);
+    // add dependancies
+    if (buildDependacyList(commandData.groupNames, name))
+    {
+      // add to pool
+      m_commands.push_back(commandData);
+    }
+    else
+    {
+      // error!
+      return;
+    }
 
     EGE_PRINT("ResourceManager::unloadGroup: %s scheduled for unloading.", name.toAscii());
     return;
@@ -612,35 +630,42 @@ void ResourceManager::update(const Time& time)
       // process according to command type
       if (COMMAND_LOAD_GROUP == commandData.command)
       {
-        // find group
-        PResourceGroup groupResource = group(commandData.name);
+        // process groups in back to front order
+        for (StringList::reverse_iterator it = commandData.groupNames.rbegin(); it != commandData.groupNames.rend(); ++it)
+        {
+          // find group
+          PResourceGroup groupResource = group(*it);
 
-        if (commandData.name == "splash-screens")
-        {
-          int a= 1;
-        }
-
-        // load group
-        if ((NULL != groupResource) && (EGE_SUCCESS != groupResource->load()))
-        {
-          // emit
-          emit groupLoadError(commandData.name);
-        }
-        else
-        {
-          // emit
-          emit groupLoadComplete(commandData.name);
+          // load group
+          if ((NULL == groupResource) || (EGE_SUCCESS != groupResource->load()))
+          {
+            // error!
+            // NOTE: emit error for main group
+            emit groupLoadError(commandData.groupNames.front());
+          }
+          else
+          {
+            // emit completion if this is main group
+            if (*it == commandData.groupNames.front())
+            {
+              emit groupLoadComplete(*it);
+            }
+          }
         }
       }
       else if (COMMAND_UNLOAD_GROUP == commandData.command)
       {
-        // find group
-        PResourceGroup groupResource = group(commandData.name);
-
-        // unload group
-        if (NULL != groupResource)
+        // process groups in back to front order
+        for (StringList::reverse_iterator it = commandData.groupNames.rbegin(); it != commandData.groupNames.rend(); ++it)
         {
-          groupResource->unload();
+          // find group
+          PResourceGroup groupResource = group(*it);
+
+          // unload group
+          if (NULL != groupResource)
+          {
+            groupResource->unload();
+          }
         }
       }
       else
@@ -652,5 +677,51 @@ void ResourceManager::update(const Time& time)
       it = m_commands.erase(it);
     }
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Builds dependancy list for a given group. */
+bool ResourceManager::buildDependacyList(StringList& list, const String& groupName) const
+{
+  // find group
+  PResourceGroup groupResource = group(groupName);
+  if (NULL == groupResource)
+  {
+    // error!
+    EGE_PRINT("ResourceManager::buildDependacyList - could not find group: %s", groupName.toAscii());
+    return false;
+  }
+
+  // go thru all dependancies
+  for (StringList::const_iterator it = groupResource->dependancies().begin(); it != groupResource->dependancies().end(); ++it)
+  {
+    PResourceGroup groupResourceDependancy = group(*it);
+    if (NULL == groupResourceDependancy)
+    {
+      // error!
+      EGE_PRINT("ResourceManager::buildDependacyList - could not find dependancy group: %s", (*it).toAscii());
+      return false;
+    }
+
+    // check if NOT in pool yet
+    if (!list.contains(*it))
+    {
+      // add to pool
+      list.push_back(*it);
+    }
+    else
+    {
+      EGE_PRINT("ResourceManager::buildDependacyList - dependancy group already in list: %s. Circular dependancy possible.", (*it).toAscii());
+      continue;
+    }
+
+    // process its dependancies
+    if (!buildDependacyList(list, *it))
+    {
+      // error!
+      return false;
+    }
+  }
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
