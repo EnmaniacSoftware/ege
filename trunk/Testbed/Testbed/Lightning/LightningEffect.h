@@ -13,8 +13,26 @@ struct Segment
 {
   EGE::Vector2f start;
   EGE::Vector2f end;
-  EGE::Vector2f normal;         // normalized
+  EGE::Vector2f normal;       // normalized
+  EGE::Vector2f startNormal;       // normalized
+  EGE::Vector2f endNormal;         // normalized
   EGE::float32 intensity;
+  bool _begin;
+  bool _end;
+};
+
+struct Segment2
+{
+  EGE::Vector2f start;
+  EGE::Vector2f end;
+  EGE::Vector2f normal;             // normalized
+  EGE::float32 intensity;
+  bool _begin;
+  bool _end;
+
+  Segment2* prev;
+  Segment2* next;
+  Segment2* offshot;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -39,6 +57,8 @@ class LightningEffect : public EGE::SceneNodeObject
     bool addForRendering(EGE::Renderer* renderer) override;
     /* Generates segments. */
     EGE::List<Segment> generateSegments(const EGE::Vector2f& start, const EGE::Vector2f end, EGE::s32 steps, bool allowOffshots);
+    /* Generates segments. */
+    EGE::List<Segment2*> generateSegments2(const EGE::Vector2f& start, const EGE::Vector2f end, EGE::s32 steps, bool allowOffshots);
 
   private:
 
@@ -50,9 +70,13 @@ class LightningEffect : public EGE::SceneNodeObject
     EGE::Random m_random;
     /*! Render data. */
     EGE::PRenderComponent m_renderDataQuad;
+    /*! Render data. */
+    EGE::PRenderComponent m_renderDataQuad2;
 
     EGE::List<Segment> m_segments;
     EGE::Time m_fadeTime;
+
+    EGE::List<Segment2*> m_segments2;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

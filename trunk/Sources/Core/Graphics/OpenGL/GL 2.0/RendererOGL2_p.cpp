@@ -627,6 +627,8 @@ void RendererPrivate::detectCapabilities()
     {
       Device::SetRenderCapability(EGEDevice::RENDER_CAPS_BLEND_MINMAX, true);
     }
+
+    glBlendFuncSeparate = (PFNGLBLENDFUNCSEPARATEPROC) wglGetProcAddress("glBlendFuncSeparateEXT");
   }
 
   // Point sprite size array is not supported by default

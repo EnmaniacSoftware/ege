@@ -28,7 +28,7 @@ class SoundEffect : public Object
   signals:
 
     /*! Signal emitted when effect came to completion. */
-    Signal0<> finished;
+    Signal1<PSoundEffect> finished;
 
   public:
 

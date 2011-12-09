@@ -30,5 +30,6 @@ PFNGLPOINTPARAMETERFVARBPROC glPointParameterfv = NULL;
 
 // blend equations
 PFNGLBLENDEQUATIONPROC glBlendEquation = NULL;
+PFNGLBLENDFUNCSEPARATEPROC glBlendFuncSeparate = NULL;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -33,6 +33,7 @@ extern PFNGLPOINTPARAMETERFVARBPROC glPointParameterfv;
 
 // blend equations
 extern PFNGLBLENDEQUATIONPROC glBlendEquation;
+extern PFNGLBLENDFUNCSEPARATEPROC glBlendFuncSeparate;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

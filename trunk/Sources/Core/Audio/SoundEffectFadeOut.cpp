@@ -52,7 +52,7 @@ bool SoundEffectFadeOut::update(const Time& time, Sound* sound)
   if (done)
   {
     // notify
-    emit finished();
+    emit finished(this);
   }
 
   return done;
