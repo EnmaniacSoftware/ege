@@ -76,11 +76,13 @@ void ScreenManager::hide()
   // check if some screen is being shown
   if (!m_screens.empty())
   {
+    PScreen screen = m_screens.back();
+    
     // leave currently shown screen
-    m_screens.back()->leave();
+    screen->leave();
 
     // remove it
-    m_screens.pop_back();
+    m_screens.remove(screen);
   }
 
   // check if any screen present
