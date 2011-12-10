@@ -14,6 +14,7 @@ EGE_NAMESPACE
 
 EGE_DEFINE_NEW_OPERATORS(SoundPrivate)
 EGE_DEFINE_DELETE_OPERATORS(SoundPrivate)
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NO_CHANNEL_ID         -2
 #define COMPRESSED_CHANNEL_ID -1
@@ -67,12 +68,13 @@ EGEResult SoundPrivate::play()
         return EGE_ERROR_NOT_SUPPORTED;
     }
 
+    // store channel
+    m_channel = COMPRESSED_CHANNEL_ID;
+
     // connect for sound volume changes
     ege_connect(d_func(), volumeChanged, this, SoundPrivate::onSoundVolumeChanged);
     d_func()->setVolume(d_func()->volume());
 
-    // store channel
-    m_channel = COMPRESSED_CHANNEL_ID;
     return EGE_SUCCESS;
   }
   // check if WAV file
