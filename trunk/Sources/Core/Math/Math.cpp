@@ -268,6 +268,24 @@ void Math::Lerp(Vector2f* out, const Vector2f* from, const Vector2f* to, float32
   *out = (1.0f - time) * (*from) + time * (*to);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Math::Lerp(Vector3f* out, const Vector3f* from, const Vector3f* to, float32 time)
+{
+  EGE_ASSERT(out);
+  EGE_ASSERT(from);
+  EGE_ASSERT(to);
+
+  *out = (1.0f - time) * (*from) + time * (*to);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Math::Lerp(Vector4f* out, const Vector4f* from, const Vector4f* to, float32 time)
+{
+  EGE_ASSERT(out);
+  EGE_ASSERT(from);
+  EGE_ASSERT(to);
+
+  *out = (1.0f - time) * (*from) + time * (*to);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*  Performs linear interpolation between given scalars. 
  *  @param  from First (start) scalar.
  *  @param  to   Second (end) scalar.

@@ -60,6 +60,7 @@ class Math
     inline static float32 Tan(float32 radians) { return tanf(radians); }
     inline static float32 Ctg(float32 radians) { return 1.0f / Tan(radians); }
     inline static float32 ATan2(float32 y, float32 x) { return atan2f(y, x); }
+    inline static s32     Abs(s32 value) { return abs(value); }
     inline static float32 Abs(float32 value) { return fabsf(value); }
     static float32 ACos(float32 radians);
 
@@ -98,6 +99,8 @@ class Math
      *  @param  time Scalar in range [0..1] describing relative distance between vectors for which interpolation is to be calculated.
      */
     static void Lerp(Vector2f* out, const Vector2f* from, const Vector2f* to, float32 time);
+    static void Lerp(Vector3f* out, const Vector3f* from, const Vector3f* to, float32 time);
+    static void Lerp(Vector4f* out, const Vector4f* from, const Vector4f* to, float32 time);
 
     /*  Performs linear interpolation between given scalars. 
      *  @param  from First (start) scalar.

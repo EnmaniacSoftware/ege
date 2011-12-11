@@ -266,6 +266,18 @@ TVector2<T> TVector3<T>::xy() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
+inline TVector3<T> operator * (T scalar, const TVector3<T>& right)
+{
+  return TVector3<T>(right.x * scalar, right.y * scalar, right.z * scalar);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TVector3<T> operator * (const TVector3<T>& left, T scalar)
+{
+  return TVector3<T>(left.x * scalar, left.y * scalar, left.z * scalar);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
 inline TVector3<T> operator + (const TVector3<T>& left, const TVector3<T>& right)
 {
   return TVector3<T>(left.x + right.x, left.y + right.y, left.z + right.z);
@@ -275,12 +287,6 @@ template <typename T>
 inline TVector3<T> operator - (const TVector3<T>& left, const TVector3<T>& right)
 {
   return TVector3<T>(left.x - right.x, left.y - right.y, left.z - right.z);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-inline TVector3<T> operator * (const TVector3<T>& left, T scalar)
-{
-  return TVector3<T>(left.x * scalar, left.y * scalar, left.z * scalar);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
