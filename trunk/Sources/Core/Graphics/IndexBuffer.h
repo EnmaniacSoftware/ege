@@ -34,7 +34,7 @@ class IndexBuffer : public Object
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Creates buffer for requested number of indicies of given size. */
-    bool create(Size size, u32 count);
+    bool create(Size size, u32 count = 0);
     /* Destroys buffer. */
     void destroy();
     /* Locks buffer given part of the buffer for read/write operations. */

@@ -31,11 +31,14 @@ bool IndexBuffer::create(Size size, u32 count)
   // store indicies size
   m_size = size;
 
-  // allocate buffer
-  if (!reallocateBuffer(count))
+  // allocate buffer if necessary
+  if (0 < count)
   {
-    // error!
-    return false;
+    if (!reallocateBuffer(count))
+    {
+      // error!
+      return false;
+    }
   }
 
   m_locked = false;

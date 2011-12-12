@@ -107,7 +107,7 @@ void ParticleEmitterPoint::initializeParticle(s32 index)
   float32 inverseLifeTimeSeconds = 1.0f;
 
   // calculate start position
-	particleData.position = parentNode()->physics()->position().xyz();
+	particleData.position = (parentNode() && !m_localSpace) ? parentNode()->physics()->position().xyz() : Vector3f::ZERO;
   particleData.position.x += m_particleStartPositionVariance.x * m_random(-1.0f, 1.0f);
   particleData.position.y += m_particleStartPositionVariance.y * m_random(-1.0f, 1.0f);
   particleData.position.z += m_particleStartPositionVariance.z * m_random(-1.0f, 1.0f);

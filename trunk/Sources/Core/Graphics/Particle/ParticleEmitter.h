@@ -114,8 +114,8 @@ class ParticleEmitter : public SceneNodeObject
     /*! Returns render component. */
     inline const PRenderComponent& renderComponent() const { return m_renderData; }
 
-    /* SceneNodeObject override. Adds object render data for rendering with given renderer. */
-    bool addForRendering(Renderer* renderer) override;
+    /* Adds object render data for rendering with given renderer. */
+    bool addForRendering(Renderer* renderer, const Matrix4f& transfrom = Matrix4f::IDENTITY);
 
   private:
 
@@ -148,6 +148,8 @@ class ParticleEmitter : public SceneNodeObject
     s32 m_emissionRate;
     /*! Number of particles to emit. This can be fractional if it is still to early to emit next particle. */
     float32 m_emitCount;
+    /*! TRUE if particles should spawn in local space. */
+    bool m_localSpace;
     /*! Particles start size. */
     Vector2f m_particleStartSize;
     /*! Particles start size variance. */

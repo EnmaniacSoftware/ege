@@ -70,6 +70,7 @@ bool ParticleEmitter::initialize(const Dictionary& params)
   m_lifeSpan                    = params.value("life-span", "-1.0").toFloat(&error);
   m_particleMaxCount            = params.value("max-particle-count", "100").toInt(&error);
   m_emissionRate                = params.value("emission-rate", "15").toInt(&error);
+  m_localSpace                  = params.value("local-space", "false").toBool(&error);
   m_particleStartSize           = params.value("particle-start-size", "10 10").toVector2f(&error);
   m_particleStartSizeVariance   = params.value("particle-start-size-variance", "0 0").toVector2f(&error);
   m_particleEndSize             = params.value("particle-end-size", "0 0").toVector2f(&error);
@@ -315,8 +316,8 @@ bool ParticleEmitter::allocateParticlesData()
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! SceneNodeObject override. Adds object render data for rendering with given renderer. */
-bool ParticleEmitter::addForRendering(Renderer* renderer)
+/*! Adds object render data for rendering with given renderer. */
+bool ParticleEmitter::addForRendering(Renderer* renderer, const Matrix4f& transfrom)
 {
   // update vertex data
   float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_activeParticlesCount * ((pointSprite) ? 1 : 6)));
@@ -472,8 +473,7 @@ bool ParticleEmitter::addForRendering(Renderer* renderer)
 
   if (0 < m_activeParticlesCount)
   {
-    Matrix4f matrix = Matrix4f::IDENTITY;
-    return renderer->addForRendering(matrix, m_renderData);
+    return renderer->addForRendering(transfrom, m_renderData);
   }
 
   return true;

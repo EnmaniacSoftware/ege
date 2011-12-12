@@ -9,6 +9,7 @@
 #include "Core/Components/Component.h"
 #include "Core/Math/Quaternion.h"
 #include "Core/Math/Vector4.h"
+#include "Core/Math/Matrix4.h"
 #include "Core/Physics/PhysicsJoint.h"
 #include <EGEPhysics.h>
 #include <EGEList.h>
@@ -102,6 +103,9 @@ class PhysicsComponent : public IComponent
     */
     bool addPolygonShape(const DynamicArray<Vector4f>& points, float32 density, EGEPhysics::CollisionData colissionData = EGEPhysics::CollisionData());
 
+    /* Returns transformation matrix. */
+    const Matrix4f& transformationMatrix() const;
+
   private:
 
     /*! Returns pointer to physics manager. */
@@ -121,6 +125,10 @@ class PhysicsComponent : public IComponent
     Vector4f m_force;
     /*! Orientation quaternion. */
     Quaternionf m_orientation;
+    /*! Cached tranformation matrix. */
+    mutable Matrix4f m_transformationMatrix;
+    /*! Transformation matrix validity flag. */
+    mutable bool m_transformationMatrixValid;
     /*! Mass. */
     float32 m_mass;
     /*! Scale vector. */

@@ -16,8 +16,18 @@ EGE_DEFINE_DELETE_OPERATORS(PhysicsComponent)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsComponent::PhysicsComponent(Application* app, const String& name, EGEPhysics::ComponentType type) 
-: IComponent(app, EGE_OBJECT_UID_PHYSICS_COMPONENT, name), m_type(type), m_position(Vector4f::ZERO), m_linearVelocity(Vector4f::ZERO), 
-  m_force(Vector4f::ZERO), m_orientation(Quaternionf::IDENTITY), m_mass(1.0f), m_scale(Vector4f::ONE), m_awake(true), m_allowSleep(true)
+: IComponent(app, EGE_OBJECT_UID_PHYSICS_COMPONENT, name), 
+  m_type(type), 
+  m_position(Vector4f::ZERO), 
+  m_linearVelocity(Vector4f::ZERO), 
+  m_force(Vector4f::ZERO), 
+  m_orientation(Quaternionf::IDENTITY),
+  m_transformationMatrix(Matrix4f::IDENTITY),
+  m_transformationMatrixValid(false),
+  m_mass(1.0f), 
+  m_scale(Vector4f::ONE), 
+  m_awake(true), 
+  m_allowSleep(true)
 {
   m_manager = app->physicsManager();
 
@@ -40,6 +50,9 @@ void PhysicsComponent::setPosition(const Vector4f& position)
   }
   
   m_position = position;
+
+  // invalidate transformation matrix
+  m_transformationMatrixValid = false;
 
   emit transformationChanged();
 }
@@ -66,6 +79,9 @@ void PhysicsComponent::setOrientation(const Quaternionf& orientation)
   }
 
   m_orientation = orientation;
+
+  // invalidate transformation matrix
+  m_transformationMatrixValid = false;
 
   emit transformationChanged();
 }
@@ -231,6 +247,9 @@ void PhysicsComponent::setScale(const Vector4f& scale)
 
   m_scale = scale;
 
+  // invalidate transformation matrix
+  m_transformationMatrixValid = false;
+
   emit transformationChanged();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -280,5 +299,20 @@ void PhysicsComponent::setAllowSleep(bool set)
   }
 
   m_allowSleep = set;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns transformation matrix. */
+const Matrix4f& PhysicsComponent::transformationMatrix() const
+{
+  if (!m_transformationMatrixValid)
+  {
+    // update cached matrix
+    Math::CreateMatrix(&m_transformationMatrix, &m_position, &m_scale, &m_orientation);
+
+    // reser flag
+    m_transformationMatrixValid = true;
+  }
+
+  return m_transformationMatrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
