@@ -390,7 +390,12 @@ void RendererPrivate::applyPassParams(const PRenderComponent& component, const P
         Texture2D* tex2d = (Texture2D*) texImg->texture().object();
 
         activateTextureUnit(i);
-        bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
+        
+        // NOTE: it is possible texure object might be not present ie when it is manual and hasnt been set yet
+        if (tex2d)
+        {
+          bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
+        }
 
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MapPrimitiveType(texImg->environmentMode()));
 
