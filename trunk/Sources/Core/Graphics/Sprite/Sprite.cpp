@@ -58,6 +58,9 @@ void Sprite::play()
       m_frameTimeLeft = m_frameTime;
     }
 
+    // emit first frame straight away
+    emit frameChanged(m_frameIndex);
+
     // change state
     m_state = STATE_PLAYING;
   }
