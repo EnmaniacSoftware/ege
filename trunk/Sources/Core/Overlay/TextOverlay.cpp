@@ -172,7 +172,7 @@ void TextOverlay::render(const Viewport* viewport, Renderer* renderer)
       worldMatrix = Matrix4f::IDENTITY;
     }
 
-    renderer->addForRendering(worldMatrix, renderComponent);
+    renderer->addForRendering(renderComponent, worldMatrix);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

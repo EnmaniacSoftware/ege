@@ -38,7 +38,7 @@ class RenderQueue : public Object
   public:
 
     /*! Adds given data for rendering. */
-    bool addForRendering(const Matrix4f& worldMatrix, const PRenderComponent& component);
+    bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY);
     /* Clears (empties) queue. */
     void clear();
     /* Returns map of render data structures. */

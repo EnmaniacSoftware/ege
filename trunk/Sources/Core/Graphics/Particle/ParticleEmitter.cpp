@@ -317,7 +317,7 @@ bool ParticleEmitter::allocateParticlesData()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds object render data for rendering with given renderer. */
-bool ParticleEmitter::addForRendering(Renderer* renderer, const Matrix4f& transfrom)
+bool ParticleEmitter::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   // update vertex data
   float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_activeParticlesCount * ((pointSprite) ? 1 : 6)));
@@ -473,7 +473,7 @@ bool ParticleEmitter::addForRendering(Renderer* renderer, const Matrix4f& transf
 
   if (0 < m_activeParticlesCount)
   {
-    return renderer->addForRendering(transfrom, m_renderData);
+    return renderer->addForRendering(m_renderData, transform);
   }
 
   return true;

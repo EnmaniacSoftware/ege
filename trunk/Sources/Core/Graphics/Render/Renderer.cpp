@@ -66,7 +66,7 @@ void Renderer::setViewport(const PViewport& viewport)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds given data for rendering. */
-bool Renderer::addForRendering(const Matrix4f& worldMatrix, const PRenderComponent& component)
+bool Renderer::addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix)
 {
   EGE_ASSERT(component);
 
@@ -86,7 +86,7 @@ bool Renderer::addForRendering(const Matrix4f& worldMatrix, const PRenderCompone
   }
 
   // add data into queue
-  return m_renderQueues[component->priority()]->addForRendering(worldMatrix, component);
+  return m_renderQueues[component->priority()]->addForRendering(component, worldMatrix);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets projection matrix. */

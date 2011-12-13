@@ -16,7 +16,9 @@ EGE_DEFINE_DELETE_OPERATORS(SceneNode)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SceneNode::SceneNode(const String& name, SceneNode* parent, SceneManager* manager, EGEPhysics::ComponentType componentType)
-: Object(manager->app()), Node(manager->app(), name, parent, componentType), m_manager(manager)
+: Object(manager->app()), 
+  Node(manager->app(), name, parent, componentType), 
+  m_manager(manager)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -364,7 +366,7 @@ bool SceneNode::addForRendering(PCamera& camera, Renderer* renderer) const
 //  // go thru all children
 //  for ( SceneNodesVector::iterator iter = m_vpcChildNodes.begin(); iter != m_vpcChildNodes.end(); ++iter )
 //  {
-//    // invalidate child transfrom
+//    // invalidate child transform
 //    ( *iter )->m_bTransformNeedUpdate = true;
 //
 //    // make sure this propagades down

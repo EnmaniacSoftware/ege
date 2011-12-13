@@ -13,7 +13,10 @@ EGE_DEFINE_NEW_OPERATORS(SceneNodeObject)
 EGE_DEFINE_DELETE_OPERATORS(SceneNodeObject)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SceneNodeObject::SceneNodeObject(const String& name, u32 uid) : Object(NULL, uid), m_name(name), m_parentNode(NULL), m_visible(true)
+SceneNodeObject::SceneNodeObject(const String& name, u32 uid) : Object(NULL, uid), 
+                                                                m_name(name), 
+                                                                m_parentNode(NULL), 
+                                                                m_visible(true)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,12 +31,13 @@ SceneNodeObject::~SceneNodeObject()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds object render data for rendering with given renderer. */
-bool SceneNodeObject::addForRendering(Renderer* renderer)
+bool SceneNodeObject::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
-  bool result = false;
+  EGE_UNUSED(renderer);
+  EGE_UNUSED(transform);
 
-  
-  return result;
+  // do nothing
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets parent node. */

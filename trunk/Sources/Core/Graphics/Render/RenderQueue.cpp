@@ -17,7 +17,7 @@ RenderQueue::~RenderQueue()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds given data for rendering. */
-bool RenderQueue::addForRendering(const Matrix4f& worldMatrix, const PRenderComponent& component)
+bool RenderQueue::addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix)
 {
   SRENDERDATA data;
 

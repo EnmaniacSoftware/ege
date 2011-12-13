@@ -42,7 +42,7 @@ class Renderer : public Object
     /* Applies material for given pass. */
     void applyMaterial(const PMaterial& material, const RenderPass* pass);
     /* Adds given data for rendering. */
-    bool addForRendering(const Matrix4f& worldMatrix, const PRenderComponent& component);
+    bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY);
 
     /* Resets statistics. */
     void resetStats();

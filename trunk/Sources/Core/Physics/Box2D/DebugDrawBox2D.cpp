@@ -45,7 +45,7 @@ void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2C
 
     component->vertexBuffer()->unlock();
 
-    app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, component);
+    app()->graphics()->renderer()->addForRendering(component);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -95,8 +95,8 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
     component_fill->vertexBuffer()->unlock();
     component_frame->vertexBuffer()->unlock();
 
-    app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, component_fill);
-    app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, component_frame);
+    app()->graphics()->renderer()->addForRendering(component_fill);
+    app()->graphics()->renderer()->addForRendering(component_frame);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -134,7 +134,7 @@ void DebugDraw::DrawCircle(const b2Vec2& center, EGE::float32 radius, const b2Co
 
     component->vertexBuffer()->unlock();
 
-    app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, component);
+    app()->graphics()->renderer()->addForRendering(component);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -192,8 +192,8 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
     component_fill->vertexBuffer()->unlock();
     component_frame->vertexBuffer()->unlock();
 
-    app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, component_fill);
-    app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, component_frame);
+    app()->graphics()->renderer()->addForRendering(component_fill);
+    app()->graphics()->renderer()->addForRendering(component_frame);
   }
 
 	//b2Vec2 p = center + radius * axis;
@@ -234,7 +234,7 @@ void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& c
 
     component->vertexBuffer()->unlock();
 
-    app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, component);
+    app()->graphics()->renderer()->addForRendering(component);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
