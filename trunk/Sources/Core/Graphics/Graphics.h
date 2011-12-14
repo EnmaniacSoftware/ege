@@ -4,6 +4,7 @@
 #include <EGEMap.h>
 #include <EGESignal.h>
 #include <EGEDictionary.h>
+#include <EGEVertexBuffer.h>
 #include "Core/Graphics/Render/Renderer.h"
 
 EGE_NAMESPACE_BEGIN
@@ -54,11 +55,17 @@ class Graphics : public Object
     void removeRenderTarget(const String& name);
     /*! Returns pointer to particle factory. */
     inline ParticleFactory* particleFactory() const { return m_particleFactory; }
+    /* Creates vertex buffer obejct. */
+    PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const;
 
   private:
 
-    /*! Unregisteres all render targets. */
+    /* Unregisteres all render targets. */
     void unregisterAllRenderTargets();
+
+  private:
+
+    typedef MultiMap<s32, PRenderTarget> RenderTargetMap;
 
   private:
 
@@ -69,7 +76,7 @@ class Graphics : public Object
     /*! Current rendering context. NULL if none is set. */
     PRenderTarget m_currentRenderingContext;
     /*! Render targets sorted by priority. */
-    MultiMap<s32, PRenderTarget> m_renderTargets; 
+    RenderTargetMap m_renderTargets; 
     /*! Particle emitter factory. */
     ParticleFactory* m_particleFactory;
 };

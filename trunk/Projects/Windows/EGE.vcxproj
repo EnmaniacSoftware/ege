@@ -33,6 +33,7 @@
     <ClCompile Include="..\..\Sources\Core\Components\Render\RenderComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Hash.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Data\HardwareBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Node.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Console.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Debug.cpp" />
@@ -47,6 +48,8 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Font.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Graphics.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\HardwareIndexBuffer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\HardwareVertexBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\Image.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageUtils.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\IndexBuffer.cpp" />
@@ -54,6 +57,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Material.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\HardwareVertexBufferOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.cpp" />
@@ -141,12 +145,17 @@
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffect.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeOut.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Hash.h" />
+    <ClInclude Include="..\..\Sources\Core\Data\HardwareBuffer.h" />
+    <ClInclude Include="..\..\Sources\Core\Data\HardwareBufferTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\HardwareIndexBuffer.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\HardwareVertexBuffer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\Image.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\HardwareVertexBufferOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleAffector.h" />
@@ -159,6 +168,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Sprite\Sprite.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\VertexBufferTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Complex.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Splines\CubicSpline.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Splines\CurveSegment.h" />
@@ -186,7 +196,9 @@
     <ClInclude Include="..\..\Sources\EGEDesktopServices.h" />
     <ClInclude Include="..\..\Sources\EGEDictionary.h" />
     <ClInclude Include="..\..\Sources\EGEFlags.h" />
+    <ClInclude Include="..\..\Sources\EGEHardwareBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEHash.h" />
+    <ClInclude Include="..\..\Sources\EGEIndexBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEMatrix.h" />
     <ClInclude Include="..\..\Sources\EGEOpenGL.h" />
     <ClInclude Include="..\..\Sources\EGEParticle.h" />

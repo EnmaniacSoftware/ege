@@ -6,14 +6,19 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(VertexBuffer)
 EGE_DEFINE_DELETE_OPERATORS(VertexBuffer)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBuffer::VertexBuffer(Application* app) : Object(app), 
+VertexBuffer::VertexBuffer(Application* app) : Object(app, EGE_OBJECT_UID_VERTEX_BUFFER), 
                                                m_locked(false), 
                                                m_vertexSize(0)
+{
+  m_buffer = ege_new DataBuffer();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+VertexBuffer::VertexBuffer(Application* app, u32 uid) : Object(app, uid), 
+                                                        m_locked(false), 
+                                                        m_vertexSize(0)
 {
   m_buffer = ege_new DataBuffer();
 }
@@ -340,5 +345,19 @@ void VertexBuffer::clear()
   m_vertexSize = 0;
 
   m_semantics.clear();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Binds buffer. */
+bool VertexBuffer::bind()
+{
+  // nothing necessary
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Unbinds buffer. */
+bool VertexBuffer::unbind()
+{
+  // nothing necessary
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

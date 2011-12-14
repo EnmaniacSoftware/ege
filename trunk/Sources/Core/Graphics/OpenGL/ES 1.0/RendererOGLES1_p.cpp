@@ -76,13 +76,13 @@ static GLint MapPrimitiveType(EGETexture::EnvironmentMode mode)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps incides size to OpenGL compilant value. */
-static GLenum MapIndexSize(IndexBuffer::Size size)
+static GLenum MapIndexSize(EGEIndexBuffer::IndexSize size)
 {
   switch (size)
   {
-    case IndexBuffer::SIZE_8BIT:   return GL_UNSIGNED_BYTE;
-    case IndexBuffer::SIZE_16BIT:  return GL_UNSIGNED_SHORT;
-    case IndexBuffer::SIZE_32BIT:  return GL_UNSIGNED_INT;
+    case EGEIndexBuffer::IS_8BIT:   return GL_UNSIGNED_BYTE;
+    case EGEIndexBuffer::IS_16BIT:  return GL_UNSIGNED_SHORT;
+    case EGEIndexBuffer::IS_32BIT:  return GL_UNSIGNED_INT;
   }
 
   // default

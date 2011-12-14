@@ -3,6 +3,7 @@
 
 #include <EGE.h>
 #include <EGEGraphics.h>
+#include <EGEVertexBuffer.h>
 #include "Core/Components/Component.h"
 
 EGE_NAMESPACE_BEGIN
@@ -21,7 +22,8 @@ class RenderComponent : public IComponent
   public:
 
     RenderComponent(Application* app, const String& name, s32 priority = EGEGraphics::RP_MAIN, 
-                    EGEGraphics::RenderPrimitiveType primitive = EGEGraphics::RPT_TRIANGLES);
+                    EGEGraphics::RenderPrimitiveType primitive = EGEGraphics::RPT_TRIANGLES, 
+                    EGEVertexBuffer::UsageType usage = EGEVertexBuffer::UT_DYNAMIC_WRITE);
    ~RenderComponent();
 
     EGE_DECLARE_NEW_OPERATORS

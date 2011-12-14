@@ -2,6 +2,7 @@
 #define EGE_AIRPLAY_GRAPHICS_PRIVATE_H
 
 #include <EGE.h>
+#include <EGEDictionary.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -11,6 +12,7 @@ EGE_DECLARE_SMART_CLASS(Graphics, PGraphics)
 EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 EGE_DECLARE_SMART_CLASS(RenderWindow, PRenderWindow)
 EGE_DECLARE_SMART_CLASS(Renderer, PRenderer)
+EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -23,6 +25,11 @@ class GraphicsPrivate
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
+
+    /* Creates vertex buffer obejct. */
+    PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const;
 
   private:
 

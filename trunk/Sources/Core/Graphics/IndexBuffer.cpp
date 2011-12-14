@@ -9,7 +9,9 @@ EGE_DEFINE_NEW_OPERATORS(IndexBuffer)
 EGE_DEFINE_DELETE_OPERATORS(IndexBuffer)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IndexBuffer::IndexBuffer(Application* app) : Object(app), m_size(SIZE_UNKNOWN), m_locked(false)
+IndexBuffer::IndexBuffer(Application* app) : Object(app), 
+                                             m_size(EGEIndexBuffer::IS_UNKNOWN), 
+                                             m_locked(false)
 {
   m_buffer = ege_new DataBuffer();
 }
@@ -26,7 +28,7 @@ bool IndexBuffer::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates buffer for requested number of indicies of given size. */
-bool IndexBuffer::create(Size size, u32 count)
+bool IndexBuffer::create(EGEIndexBuffer::IndexSize size, u32 count)
 {
   // store indicies size
   m_size = size;
@@ -101,9 +103,9 @@ u8 IndexBuffer::indexSize() const
 {
   switch (m_size)
   {
-    case SIZE_8BIT:  return 1; 
-    case SIZE_16BIT: return 2; 
-    case SIZE_32BIT: return 4; 
+    case EGEIndexBuffer::IS_8BIT:  return 1; 
+    case EGEIndexBuffer::IS_16BIT: return 2; 
+    case EGEIndexBuffer::IS_32BIT: return 4; 
   }
 
   return 0;

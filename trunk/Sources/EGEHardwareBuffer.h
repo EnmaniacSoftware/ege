@@ -1,12 +1,11 @@
-#ifndef EGE_VERTEX_BUFFER_H
-#define EGE_VERTEX_BUFFER_H
+#ifndef EGE_HARDWAREBUFFER_H
+#define EGE_HARDWAREBUFFER_H
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#include "Core/Graphics/VertexBufferTypes.h"
-#include "Core/Graphics/VertexBuffer.h"
-#include "Core/Graphics/HardwareVertexBuffer.h"
+#include "Core/Data/HardwareBufferTypes.h"
+#include "Core/Data/HardwareBuffer.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // EGE_VERTEX_BUFFER_H
+#endif // EGE_HARDWAREBUFFER_H

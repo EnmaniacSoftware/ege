@@ -16,12 +16,11 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(Graphics)
 EGE_DEFINE_DELETE_OPERATORS(Graphics)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Graphics::Graphics(Application* app, const Dictionary& params) : Object(app), m_particleFactory(NULL)
+Graphics::Graphics(Application* app, const Dictionary& params) : Object(app), 
+                                                                 m_particleFactory(NULL)
 {
   m_p = ege_new GraphicsPrivate(this, params);
   if (m_p)
@@ -57,7 +56,7 @@ Graphics::~Graphics()
 void Graphics::render()
 {
   // go thru all elements
-  for (MultiMap<s32, PRenderTarget>::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
+  for (RenderTargetMap::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
   {
     PRenderTarget target = iter->second;
 
@@ -111,15 +110,17 @@ bool Graphics::isValid() const
   return (NULL != m_p) && (NULL != m_renderer) && (NULL != m_particleFactory);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Registers render target for use. */
 void Graphics::registerRenderTarget(PRenderTarget target)
 {
   m_renderTargets.insert(target->priority(), target);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes render target with the given name from registered pool. */
 void Graphics::removeRenderTarget(const String& name)
 {
   // go thru all elements
-  for (MultiMap<s32, PRenderTarget>::iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
+  for (RenderTargetMap::iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
   {
     // check if given render target has been found
     if (name == iter->second->name())
@@ -134,10 +135,11 @@ void Graphics::removeRenderTarget(const String& name)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns render target with the given name from registered pool. */
 PRenderTarget Graphics::renderTarget(const String& name) const
 {
   // go thru all elements
-  for (MultiMap<s32, PRenderTarget>::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
+  for (RenderTargetMap::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
   {
     // check if given render target has been found
     if (name == iter->second->name())
@@ -149,10 +151,11 @@ PRenderTarget Graphics::renderTarget(const String& name) const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Unregisteres all render targets. */
 void Graphics::unregisterAllRenderTargets()
 {
   // go thru all elements
-  for (MultiMap<s32, PRenderTarget>::iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end();)
+  for (RenderTargetMap::iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end();)
   {
     // deallocate
     iter->second = NULL;
@@ -160,5 +163,16 @@ void Graphics::unregisterAllRenderTargets()
     // remove from pool
     m_renderTargets.erase(iter++);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates vertex buffer obejct. */
+PVertexBuffer Graphics::createVertexBuffer(EGEVertexBuffer::UsageType usage) const
+{
+  if (isValid())
+  {
+    return p_func()->createVertexBuffer(usage);
+  }
+
+  return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

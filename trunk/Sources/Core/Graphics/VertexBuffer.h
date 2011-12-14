@@ -7,8 +7,8 @@
 */
 
 #include <EGE.h>
-#include <EGEVertexBuffer.h>
 #include <EGEDynamicArray.h>
+#include "Core/Graphics/VertexBufferTypes.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -24,7 +24,7 @@ class VertexBuffer : public Object
   public:
 
     VertexBuffer(Application* app);
-   ~VertexBuffer();
+    virtual ~VertexBuffer();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -38,14 +38,14 @@ class VertexBuffer : public Object
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Creates buffer for requested number of vertices. */
-    bool create(u32 count);
+    virtual bool create(u32 count);
     /* Locks buffer's given part of the buffer for read/write operations. 
      * @param offset  0-based vertex offset from which locking should be done. 
      * @param count   Number of vertices to lock.
      */
-    void* lock(u32 offset, u32 count);
+    virtual void* lock(u32 offset, u32 count);
     /* Unlocks buffer. */
-    void unlock();
+    virtual void unlock();
 
     /* Adds given array type to overall semantics. */
     bool addArray(EGEVertexBuffer::ArrayType type);
@@ -58,14 +58,28 @@ class VertexBuffer : public Object
     const SemanticsList& semantics() const;
 
     /* Returns number of allocated vertices. */
-    u32 vertexCount() const;
+    virtual u32 vertexCount() const;
     /* Returns vertex size for current semantics (in bytes). */
     u32 vertexSize() const;
 
+    /* Binds buffer. */
+    virtual bool bind();
+    /* Unbinds buffer. */
+    virtual bool unbind();
+
+  protected:
+
+    VertexBuffer(Application* app, u32 uid);
+    /* Reallocates internal buffer to accomodate given number of vertices. */
+    virtual bool reallocateBuffer(u32 count);
+
+  protected:
+
+    /*! TRUE if buffer is locked. */
+    bool m_locked;
+
   private:
 
-    /* Reallocates internal buffer to accomodate given number of vertices. */
-    bool reallocateBuffer(u32 count);
     /* Destroys buffer. */
     void destroy();
     /* Clears vertex data. */
@@ -73,8 +87,6 @@ class VertexBuffer : public Object
 
   private:
 
-    /*! TRUE if buffer is locked. */
-    bool m_locked;
     /*! Data buffer. */
     PDataBuffer m_buffer;         
     /*! Cached vertex size (in bytes), 0 if not calculated yet. */

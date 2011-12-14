@@ -1,3 +1,4 @@
+#include "Core/Application/Application.h"
 #include "Core/Graphics/IndexBuffer.h"
 #include "Core/Graphics/VertexBuffer.h"
 #include "Core/Graphics/Material.h"
@@ -8,12 +9,11 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(RenderComponent)
 EGE_DEFINE_DELETE_OPERATORS(RenderComponent)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderComponent::RenderComponent(Application* app, const String& name, s32 priority, EGEGraphics::RenderPrimitiveType primitive) 
+RenderComponent::RenderComponent(Application* app, const String& name, s32 priority, EGEGraphics::RenderPrimitiveType primitive, 
+                                 EGEVertexBuffer::UsageType usage) 
 : IComponent(app, EGE_OBJECT_UID_RENDER_COMPONENT, name), 
   m_priority(priority), 
   m_primitiveType(primitive), 
@@ -24,7 +24,7 @@ RenderComponent::RenderComponent(Application* app, const String& name, s32 prior
   m_lineWidth(1.0f)
 {
   m_indexBuffer  = ege_new IndexBuffer(app);
-  m_vertexBuffer = ege_new VertexBuffer(app);
+  m_vertexBuffer = app->graphics()->createVertexBuffer(usage);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderComponent::~RenderComponent()

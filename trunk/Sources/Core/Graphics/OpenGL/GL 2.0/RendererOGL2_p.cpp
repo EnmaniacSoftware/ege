@@ -16,10 +16,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(RendererPrivate)
 EGE_DEFINE_DELETE_OPERATORS(RendererPrivate)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps primitive type to OpenGL compilant one. */
 static GLenum MapPrimitiveType(EGEGraphics::RenderPrimitiveType type)
@@ -77,13 +75,13 @@ static GLint MapPrimitiveType(EGETexture::EnvironmentMode mode)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps incides size to OpenGL compilant value. */
-static GLenum MapIndexSize(IndexBuffer::Size size)
+static GLenum MapIndexSize(EGEIndexBuffer::IndexSize size)
 {
   switch (size)
   {
-    case IndexBuffer::SIZE_8BIT:   return GL_UNSIGNED_BYTE;
-    case IndexBuffer::SIZE_16BIT:  return GL_UNSIGNED_SHORT;
-    case IndexBuffer::SIZE_32BIT:  return GL_UNSIGNED_INT;
+    case EGEIndexBuffer::IS_8BIT:   return GL_UNSIGNED_BYTE;
+    case EGEIndexBuffer::IS_16BIT:  return GL_UNSIGNED_SHORT;
+    case EGEIndexBuffer::IS_32BIT:  return GL_UNSIGNED_INT;
   }
 
   // default
@@ -200,6 +198,23 @@ void RendererPrivate::flush()
         int a = 1;
       }
 
+      // bind buffers
+      if (!vertexBuffer->bind())
+      {
+        // error!
+        EGE_PRINT("RendererPrivate::flush - could not bind vertex buffer");
+        break;
+      }
+
+      // TAGE - index buffer
+      // ..
+
+      // lock buffers
+      // NOTE: Data is actually locked only for software buffers. 
+      //       For hardware ones, we set it to 0 (for arithmetics) as VBOs require offsets to be used rather than pointers.
+      void* vertexData = (EGE_OBJECT_UID_VERTEX_BUFFER == vertexBuffer->uid()) ? vertexBuffer->lock(0, vertexBuffer->vertexCount()) : 0;
+      void* indexData = indexBuffer->lock(0, indexBuffer->indexCount());
+
       // go thru all passes
       // NOTE: if there is no material, we consider it 1 pass
       u32 passes = material ? material->passCount() : 1;
@@ -226,9 +241,6 @@ void RendererPrivate::flush()
 
           d_func()->m_vertexCount += value;
           d_func()->m_batchCount++;
-
-          // lock vertex data
-          void* vertexData = vertexBuffer->lock(0, vertexBuffer->vertexCount());
 
           // go thru all buffers
           for (VertexBuffer::SemanticsList::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
@@ -295,23 +307,14 @@ void RendererPrivate::flush()
           // check if INDICIES are to be used
           if (0 < indexBuffer->indexCount())
           {
-            // lock INDEX buffer
-            void* indexData = indexBuffer->lock(0, indexBuffer->indexCount());
-
             // render only if there is anything to render
             glDrawElements(MapPrimitiveType(data.component->primitiveType()), indexBuffer->indexCount(), MapIndexSize(indexBuffer->size()), indexData);
-
-            // unlock INDEX buffer
-            indexBuffer->unlock();
           }
           else
           {
             // render only if there is anything to render
             glDrawArrays(MapPrimitiveType(data.component->primitiveType()), 0, vertexBuffer->vertexCount());
           }
-
-          // unlock vertex buffer
-          vertexBuffer->unlock();
 
           // disable all actived texture units
           for (DynamicArray<u32>::const_iterator itTextureUnit = m_activeTextureUnits.begin(); itTextureUnit != m_activeTextureUnits.end(); ++itTextureUnit)
@@ -348,6 +351,15 @@ void RendererPrivate::flush()
           glLoadIdentity();
         }
       }
+
+      // unlock vertex buffers
+      // NOTE: Data is actually unlocked only for software buffers. 
+      if (EGE_OBJECT_UID_VERTEX_BUFFER == vertexBuffer->uid())
+      {
+        vertexBuffer->unlock();
+      }
+
+      indexBuffer->unlock();
     }
 
     // clear render queue
