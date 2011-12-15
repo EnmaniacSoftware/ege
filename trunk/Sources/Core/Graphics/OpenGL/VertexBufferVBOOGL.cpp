@@ -1,11 +1,11 @@
-#include "Core/Graphics/OpenGL/HardwareVertexBufferOGL.h"
+#include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
 #include <EGEDebug.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(HardwareVertexBufferPrivate)
-EGE_DEFINE_DELETE_OPERATORS(HardwareVertexBufferPrivate)
+EGE_DEFINE_NEW_OPERATORS(VertexBufferVBO)
+EGE_DEFINE_DELETE_OPERATORS(VertexBufferVBO)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps vertex buffer usage type to OpenGL compilant one. */
 static GLenum MapUsageType(EGEVertexBuffer::UsageType type)
@@ -33,9 +33,13 @@ static GLenum MapUsageTypeToAccessType(EGEVertexBuffer::UsageType type)
   return GL_WRITE_ONLY;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-HardwareVertexBufferPrivate::HardwareVertexBufferPrivate(HardwareVertexBuffer* base) : m_d(base),
-                                                                                       m_id(0)
+VertexBufferVBO::VertexBufferVBO(Application* app) : VertexBuffer(app, EGE_OBJECT_UID_VERTEX_BUFFER_VBO),
+                                                     m_id(0),
+                                                     m_vertexCount(0)
 {
+  // TAGE
+  m_usage = EGEVertexBuffer::UT_DYNAMIC_WRITE;
+
   glGenBuffers(1, &m_id);
   if (GL_NO_ERROR != glGetError())
   {
@@ -44,23 +48,18 @@ HardwareVertexBufferPrivate::HardwareVertexBufferPrivate(HardwareVertexBuffer* b
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-HardwareVertexBufferPrivate::~HardwareVertexBufferPrivate()
+VertexBufferVBO::~VertexBufferVBO()
 {
-  if (0 < m_id)
-  {
-    glDeleteBuffers(1, &m_id);
-    m_id = 0;
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool HardwareVertexBufferPrivate::isValid() const
+/*! VertexBuffer override. Returns TRUE if object is valid. */
+bool VertexBufferVBO::isValid() const
 {
   return (0 < m_id);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates buffer for requested number of vertices. */
-bool HardwareVertexBufferPrivate::create(u32 count)
+/*! VertexBuffer override. Creates buffer for requested number of vertices. */
+bool VertexBufferVBO::create(u32 count)
 {
   // bind buffer
   glBindBuffer(GL_ARRAY_BUFFER, m_id);
@@ -71,7 +70,7 @@ bool HardwareVertexBufferPrivate::create(u32 count)
   }
 
   // allocate enough space
-  glBufferData(GL_ARRAY_BUFFER, count * d_func()->vertexSize(), NULL, MapUsageType(d_func()->m_usage));
+  glBufferData(GL_ARRAY_BUFFER, count * vertexSize(), NULL, MapUsageType(m_usage));
   if (GL_NO_ERROR != glGetError())
   {
     // error!
@@ -79,7 +78,7 @@ bool HardwareVertexBufferPrivate::create(u32 count)
   }
 
   // set vertex count
-  d_func()->m_vertexCount = count;
+  m_vertexCount = count;
 
   return true;
 }
@@ -88,15 +87,15 @@ bool HardwareVertexBufferPrivate::create(u32 count)
  * @param offset  0-based vertex offset from which locking should be done. 
  * @param count   Number of vertices to lock.
  */
-void* HardwareVertexBufferPrivate::lock(u32 offset, u32 count)
+void* VertexBufferVBO::lock(u32 offset, u32 count)
 {
   void* buffer = NULL;
 
   // check if NOT locked yet and any data to lock
-  if (!d_func()->m_locked && (0 <= count))
+  if (!m_locked && (0 <= count))
   {
     // check if NOT enough space in buffer
-    if (offset + count > d_func()->vertexCount())
+    if (offset + count > vertexCount())
     {
       // reallocate buffer
       if (!reallocateBuffer(offset + count))
@@ -114,21 +113,21 @@ void* HardwareVertexBufferPrivate::lock(u32 offset, u32 count)
     }
 
     // check if content is discardable
-	  if (d_func()->m_usage & EGEVertexBuffer::UT_DISCARDABLE)
+	  if (m_usage & EGEVertexBuffer::UT_DISCARDABLE)
 	  {
 	  	// discard the buffer
-	  	glBufferData(GL_ARRAY_BUFFER, d_func()->vertexCount() * d_func()->vertexSize(), NULL, MapUsageType(d_func()->m_usage));
+	  	glBufferData(GL_ARRAY_BUFFER, vertexCount() * vertexSize(), NULL, MapUsageType(m_usage));
 	  }
 
     // map the buffer
-	  buffer = glMapBuffer(GL_ARRAY_BUFFER, MapUsageTypeToAccessType(d_func()->m_usage));
+	  buffer = glMapBuffer(GL_ARRAY_BUFFER, MapUsageTypeToAccessType(m_usage));
     if (buffer)            
     {            
 	    // return offsetted
 	    buffer = static_cast<void*>(static_cast<u8*>(buffer) + offset);
 
       // store data
-      d_func()->m_locked = true;
+      m_locked = true;
     }
   }
 
@@ -136,13 +135,13 @@ void* HardwareVertexBufferPrivate::lock(u32 offset, u32 count)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Unlocks buffer. */
-void HardwareVertexBufferPrivate::unlock()
+void VertexBufferVBO::unlock()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_id);
   if (GL_NO_ERROR != glGetError())
   {
     // error!
-    EGE_PRINT("HardwareVertexBufferPrivate::unlock - Could not bind buffer.");
+    EGE_PRINT("VertexBufferVBO::unlock - Could not bind buffer.");
     return;
   }
 
@@ -150,30 +149,43 @@ void HardwareVertexBufferPrivate::unlock()
   if (GL_NO_ERROR != glGetError())
   {
     // error!
-    EGE_PRINT("HardwareVertexBufferPrivate::unlock - Could not unmap buffer.");
+    EGE_PRINT("VertexBufferVBO::unlock - Could not unmap buffer.");
   }
 
   // store data
-  d_func()->m_locked = false;
+  m_locked = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Reallocates internal buffer to accomodate given number of vertices. */
-bool HardwareVertexBufferPrivate::reallocateBuffer(u32 count)
+bool VertexBufferVBO::reallocateBuffer(u32 count)
 {
   return create(count);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Binds buffer. */
-bool HardwareVertexBufferPrivate::bind()
+bool VertexBufferVBO::bind()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_id);
   return (GL_NO_ERROR == glGetError());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Unbinds buffer. */
-bool HardwareVertexBufferPrivate::unbind()
+bool VertexBufferVBO::unbind()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
   return (GL_NO_ERROR == glGetError());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! VertexBuffer override. Destroys buffer. */
+void VertexBufferVBO::destroy()
+{
+  if (0 < m_id)
+  {
+    glDeleteBuffers(1, &m_id);
+    m_id = 0;
+  }
+
+  // call base class
+  VertexBuffer::destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

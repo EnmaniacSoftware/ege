@@ -543,6 +543,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVAOGL.cpp">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVBOOGL.cpp">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1057,6 +1060,9 @@
       <Filter>Core\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVAOGL.h">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVBOOGL.h">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>

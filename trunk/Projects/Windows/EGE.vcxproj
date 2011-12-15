@@ -58,6 +58,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVAOGL.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVBOOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleAffector.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleAffectorForce.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitter.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVAOGL.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVBOOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleAffector.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleAffectorForce.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitter.h" />
