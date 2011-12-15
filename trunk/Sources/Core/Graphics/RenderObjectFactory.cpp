@@ -120,8 +120,8 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
       const VertexData& vertex = vertices[*it];
 
       // go thru all vertex arrays one by one
-      const VertexBuffer::SemanticsList& semantics = object->vertexBuffer()->semantics();
-      for (VertexBuffer::SemanticsList::const_iterator itSem = semantics.begin(); itSem != semantics.end(); ++itSem)
+      const EGEVertexBuffer::SemanticArray& semantics = object->vertexBuffer()->semantics();
+      for (EGEVertexBuffer::SemanticArray::const_iterator itSem = semantics.begin(); itSem != semantics.end(); ++itSem)
       {
         switch ((*itSem).type)
         {

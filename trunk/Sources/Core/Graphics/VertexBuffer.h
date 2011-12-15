@@ -7,7 +7,6 @@
 */
 
 #include <EGE.h>
-#include <EGEDynamicArray.h>
 #include "Core/Graphics/VertexBufferTypes.h"
 
 EGE_NAMESPACE_BEGIN
@@ -15,7 +14,6 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
-EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -23,29 +21,20 @@ class VertexBuffer : public Object
 {
   public:
 
-    VertexBuffer(Application* app);
+    VertexBuffer(Application* app, u32 uid);
     virtual ~VertexBuffer();
 
-    EGE_DECLARE_NEW_OPERATORS
-    EGE_DECLARE_DELETE_OPERATORS
-
-  public:
-
-    typedef DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC> SemanticsList;
-
-  public:
-
     /* Returns TRUE if object is valid. */
-    bool isValid() const;
+    virtual bool isValid() const = 0;
     /* Creates buffer for requested number of vertices. */
-    virtual bool create(u32 count);
+    virtual bool create(u32 count) = 0;
     /* Locks buffer's given part of the buffer for read/write operations. 
      * @param offset  0-based vertex offset from which locking should be done. 
      * @param count   Number of vertices to lock.
      */
-    virtual void* lock(u32 offset, u32 count);
+    virtual void* lock(u32 offset, u32 count) = 0;
     /* Unlocks buffer. */
-    virtual void unlock();
+    virtual void unlock() = 0;
 
     /* Adds given array type to overall semantics. */
     bool addArray(EGEVertexBuffer::ArrayType type);
@@ -55,44 +44,33 @@ class VertexBuffer : public Object
     u32 arrayCount(EGEVertexBuffer::ArrayType type) const;
 
     /* Returns current array semantics. */
-    const SemanticsList& semantics() const;
+    const EGEVertexBuffer::SemanticArray& semantics() const;
 
     /* Returns number of allocated vertices. */
-    virtual u32 vertexCount() const;
+    virtual u32 vertexCount() const = 0;
     /* Returns vertex size for current semantics (in bytes). */
     u32 vertexSize() const;
 
-    /* Binds buffer. */
-    virtual bool bind();
-    /* Unbinds buffer. */
-    virtual bool unbind();
-
   protected:
 
-    VertexBuffer(Application* app, u32 uid);
-    /* Reallocates internal buffer to accomodate given number of vertices. */
-    virtual bool reallocateBuffer(u32 count);
+    /* Destroys buffer. */
+    virtual void destroy();
 
   protected:
 
     /*! TRUE if buffer is locked. */
     bool m_locked;
-
-  private:
-
-    /* Destroys buffer. */
-    void destroy();
-    /* Clears vertex data. */
-    void clear();
-
-  private:
-
-    /*! Data buffer. */
-    PDataBuffer m_buffer;         
     /*! Cached vertex size (in bytes), 0 if not calculated yet. */
     mutable u32 m_vertexSize;
     /*! Buffer semantics. */
-    SemanticsList m_semantics;
+    EGEVertexBuffer::SemanticArray m_semantics;
+    /*! Usage. */
+    EGEVertexBuffer::UsageType m_usage;
+
+  private:
+
+    /* Clears vertex data. */
+    virtual void clear();
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

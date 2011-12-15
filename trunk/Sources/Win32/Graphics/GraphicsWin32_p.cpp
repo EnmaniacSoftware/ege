@@ -4,6 +4,7 @@
 #if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 #include "Win32/Graphics/GraphicsWin32_p.h"
 #include "Win32/Graphics/OpenGL/GL 2.0/RenderWindowOGLWin32.h"
+#include "Core/Graphics/OpenGL/VertexBufferVAOGL.h"
 #endif // EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 
 EGE_NAMESPACE
@@ -32,7 +33,7 @@ PVertexBuffer GraphicsPrivate::createVertexBuffer(EGEVertexBuffer::UsageType usa
   //}
   //else
   {
-    vertexBuffer = ege_new VertexBuffer(m_base->app());
+    vertexBuffer = ege_new VertexBufferVA(m_base->app());
   }
 
   return vertexBuffer;

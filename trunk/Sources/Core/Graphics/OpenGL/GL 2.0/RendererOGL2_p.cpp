@@ -199,12 +199,12 @@ void RendererPrivate::flush()
       }
 
       // bind buffers
-      if (!vertexBuffer->bind())
-      {
-        // error!
-        EGE_PRINT("RendererPrivate::flush - could not bind vertex buffer");
-        break;
-      }
+      //if (!vertexBuffer->bind())
+      //{
+      //  // error!
+      //  EGE_PRINT("RendererPrivate::flush - could not bind vertex buffer");
+      //  break;
+      //}
 
       // TAGE - index buffer
       // ..
@@ -212,7 +212,7 @@ void RendererPrivate::flush()
       // lock buffers
       // NOTE: Data is actually locked only for software buffers. 
       //       For hardware ones, we set it to 0 (for arithmetics) as VBOs require offsets to be used rather than pointers.
-      void* vertexData = (EGE_OBJECT_UID_VERTEX_BUFFER == vertexBuffer->uid()) ? vertexBuffer->lock(0, vertexBuffer->vertexCount()) : 0;
+      void* vertexData = vertexBuffer->lock(0, vertexBuffer->vertexCount());
       void* indexData = indexBuffer->lock(0, indexBuffer->indexCount());
 
       // go thru all passes
@@ -226,7 +226,7 @@ void RendererPrivate::flush()
         // TAGE - is it overhead setting up whole geometry for each pass ? or should it be done only once ? what with texturing ?
         if (0 != vertexBuffer->vertexCount())
         {
-          const VertexBuffer::SemanticsList& semantics = vertexBuffer->semantics();
+          const EGEVertexBuffer::SemanticArray& semantics = vertexBuffer->semantics();
 
           // apply pass related params
           applyPassParams(data.component, material, renderPass);
@@ -243,7 +243,7 @@ void RendererPrivate::flush()
           d_func()->m_batchCount++;
 
           // go thru all buffers
-          for (VertexBuffer::SemanticsList::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
+          for (EGEVertexBuffer::SemanticArray::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
           {
             // set according to buffer type
             switch (itSemantic->type)
@@ -354,7 +354,7 @@ void RendererPrivate::flush()
 
       // unlock vertex buffers
       // NOTE: Data is actually unlocked only for software buffers. 
-      if (EGE_OBJECT_UID_VERTEX_BUFFER == vertexBuffer->uid())
+    //  if (EGE_OBJECT_UID_VERTEX_BUFFER == vertexBuffer->uid())
       {
         vertexBuffer->unlock();
       }
@@ -379,6 +379,13 @@ void RendererPrivate::applyPassParams(const PRenderComponent& component, const P
     if ((EGEGraphics::BF_ONE != pass->srcBlendFactor()) || (EGEGraphics::BF_ZERO != pass->dstBlendFactor()))
     {
       glEnable(GL_BLEND);
+      if (component->name() == "mode-selection-screen-chimney-smoke")
+      {
+        int a = 1;
+      //  glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+      //  glBlendFuncSeparate(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
+      }
+      //else
       glBlendFunc(MapBlendFactor(pass->srcBlendFactor()), MapBlendFactor(pass->dstBlendFactor()));
     }
 
