@@ -5,7 +5,6 @@
 
 #include "Core/Graphics/VertexBufferTypes.h"
 #include "Core/Graphics/VertexBuffer.h"
-#include "Core/Graphics/HardwareVertexBuffer.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

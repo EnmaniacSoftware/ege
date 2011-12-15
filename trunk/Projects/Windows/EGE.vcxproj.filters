@@ -540,18 +540,6 @@
     <ClCompile Include="..\..\Sources\Core\Audio\SoundEffectFadeOut.cpp">
       <Filter>Core\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\HardwareVertexBufferOGL.cpp">
-      <Filter>Core\Graphics\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\HardwareVertexBuffer.cpp">
-      <Filter>Core\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\HardwareIndexBuffer.cpp">
-      <Filter>Core\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Data\HardwareBuffer.cpp">
-      <Filter>Core\Data</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1062,24 +1050,8 @@
       <Filter>Core\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEIndexBuffer.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\HardwareVertexBufferOGL.h">
-      <Filter>Core\Graphics\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\HardwareVertexBuffer.h">
-      <Filter>Core\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexBufferTypes.h">
       <Filter>Core\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\HardwareIndexBuffer.h">
-      <Filter>Core\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Data\HardwareBuffer.h">
-      <Filter>Core\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\EGEHardwareBuffer.h" />
-    <ClInclude Include="..\..\Sources\Core\Data\HardwareBufferTypes.h">
-      <Filter>Core\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
