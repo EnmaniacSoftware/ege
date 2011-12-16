@@ -5,6 +5,7 @@
 #include <EGESignal.h>
 #include <EGEDictionary.h>
 #include <EGEVertexBuffer.h>
+#include <EGEIndexBuffer.h>
 #include "Core/Graphics/Render/Renderer.h"
 
 EGE_NAMESPACE_BEGIN
@@ -57,6 +58,8 @@ class Graphics : public Object
     inline ParticleFactory* particleFactory() const { return m_particleFactory; }
     /* Creates vertex buffer obejct. */
     PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const;
+    /* Creates index buffer obejct. */
+    PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const;
 
   private:
 

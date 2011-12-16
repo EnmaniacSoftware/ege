@@ -2,9 +2,8 @@
 #define EGE_CORE_VERTEXBUFFERVAOGL_H
 
 /** 
-*   VertexBuffer is used to define single vertex lookup and to keep certain amount of such vertices in memory
-*   Vertex data is stored one after another (interleaved)
-*/
+ *   VertexBuffer base class specializtion based on Vertex Arrays.
+ */
 
 #include <EGE.h>
 #include "Core/Graphics/VertexBuffer.h"
@@ -26,8 +25,6 @@ class VertexBufferVA : public VertexBuffer
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
-
-  public:
 
     /* VertexBuffer override. Returns TRUE if object is valid. */
     bool isValid() const override;

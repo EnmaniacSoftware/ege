@@ -264,7 +264,8 @@ EGEResult ResourceMaterial::load()
         if (textureImageData.m_manual)
         {
           // add placeholder only
-          PTextureImage manual = ege_new TextureImage(app(), textureImageData.m_name);
+          PTextureImage manual = ege_new TextureImage(app());
+          manual->setName(textureImageData.m_name);
           pass.m_textureImages.push_back(manual);
           continue;
         }
@@ -288,7 +289,7 @@ EGEResult ResourceMaterial::load()
           }
 
           // retrieve referred texture
-          TextureImage textureImage(app(), "");
+          TextureImage textureImage(app());
           if (EGE_SUCCESS != (result = textureImageRes->setInstance(textureImage)))
           {
             // error!
@@ -503,8 +504,20 @@ EGEResult ResourceMaterial::setInstance(const PMaterial& instance) const
     renderPass->removeTexture(-1);
     for (TextureImageList::const_iterator it = pass.m_textureImages.begin(); it != pass.m_textureImages.end(); ++it)
     {
+      // allocate new texture image
+      PTextureImage texImg = ege_new TextureImage(app());
+      if (NULL == texImg)
+      {
+        // error!
+        return EGE_ERROR_NO_MEMORY;
+      }
+
+      // copy data into new texture image
+      texImg->copy(*it);
+
+      // add to render pass
       EGEResult result;
-      if (EGE_SUCCESS != (result = renderPass->addTexture(*it)))
+      if (EGE_SUCCESS != (result = renderPass->addTexture(texImg)))
       {
         // error!
         return result;

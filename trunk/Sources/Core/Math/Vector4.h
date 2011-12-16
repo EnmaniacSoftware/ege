@@ -23,11 +23,11 @@ class TVector4
     TVector4(T x, T y, T z, T w = 1);
     TVector4(const TVector4& vector);
 
-		inline TVector4 operator = (const TVector4& vector);
-		inline void     operator += (const TVector4& vector);
-		inline void     operator -= (const TVector4& vector);
-    inline bool     operator == (const TVector4& vector) const;
-    inline bool     operator != (const TVector4& vector) const;
+		inline TVector4& operator = (const TVector4& vector);
+		inline void      operator += (const TVector4& vector);
+		inline void      operator -= (const TVector4& vector);
+    inline bool      operator == (const TVector4& vector) const;
+    inline bool      operator != (const TVector4& vector) const;
 
     /* Sets vector components. */
     inline void set(T x, T y, T z, T w);
@@ -102,7 +102,7 @@ TVector4<T>::TVector4(const TVector4<T>& vector) : x(vector.x), y(vector.y), z(v
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector4<T> TVector4<T>::operator = (const TVector4<T>& vector)
+TVector4<T>& TVector4<T>::operator = (const TVector4<T>& vector)
 {
   this->x = vector.x;
   this->y = vector.y;

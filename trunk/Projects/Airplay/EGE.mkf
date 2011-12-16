@@ -41,6 +41,7 @@ files
   EGEGraphics.h
   EGEHash.h
   EGEImage.h
+  EGEIndexBuffer.h
   EGEInput.h
   EGEList.h
   EGEMap.h
@@ -200,6 +201,7 @@ files
 	Graphics.h
 	IndexBuffer.cpp
 	IndexBuffer.h
+	IndexBufferTypes.h
   JpegDataSrcFile.cpp
   JpegDataSrcFile.h
   Material.cpp
@@ -212,6 +214,7 @@ files
   TextureImage.h
 	VertexBuffer.cpp
 	VertexBuffer.h
+	VertexBufferTypes.h
   Viewport.cpp
 	Viewport.h
 
@@ -226,12 +229,20 @@ files
  	(../../Sources/Core/Graphics/OpenGL)
 	ExtensionsOGLES.cpp
   ExtensionsOGLES.h
+  IndexBufferVAOGL.cpp
+  IndexBufferVAOGL.h
+  IndexBufferVBOOGL.cpp
+  IndexBufferVBOOGL.h
   RenderTextureCopyOGL.cpp
   RenderTextureCopyOGL.h
   RenderTextureFBOOGL.cpp
   RenderTextureFBOOGL.h
   Texture2DOGL.cpp
 	Texture2DOGL.h
+  VertexBufferVAOGL.cpp
+  VertexBufferVAOGL.h
+  VertexBufferVBOOGL.cpp
+  VertexBufferVBOOGL.h
 
 	["Core/Graphics/Particle"]
   ("../../Sources/Core/Graphics/Particle")

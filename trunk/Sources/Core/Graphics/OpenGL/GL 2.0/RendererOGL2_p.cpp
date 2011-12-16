@@ -4,8 +4,10 @@
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
-#include "Core/Graphics/IndexBuffer.h"
-#include "Core/Graphics/VertexBuffer.h"
+#include "Core/Graphics/OpenGL/IndexBufferVAOGL.h"
+#include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
+#include "Core/Graphics/OpenGL/VertexBufferVAOGL.h"
+#include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/Render/RenderWindow.h"
@@ -88,11 +90,10 @@ static GLenum MapIndexSize(EGEIndexBuffer::IndexSize size)
   return GL_UNSIGNED_INT;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RendererPrivate::RendererPrivate(Renderer* base) : m_d(base), m_activeTextureUnit(0xffffffff)
+RendererPrivate::RendererPrivate(Renderer* base) : m_d(base), 
+                                                   m_activeTextureUnit(0xffffffff)
 {
   detectCapabilities();
-
-  //glEnable(GL_CULL_FACE);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RendererPrivate::~RendererPrivate()
@@ -186,34 +187,21 @@ void RendererPrivate::flush()
     {
       const RenderQueue::SRENDERDATA& data = it->second;
 
-      PVertexBuffer& vertexBuffer = data.component->vertexBuffer();
-      PIndexBuffer& indexBuffer   = data.component->indexBuffer();
-      PMaterial& material         = data.component->material();
-
-      // apply general params
-      applyGeneralParams(data.component);
-
-      if (data.component->name() == "lightning-effect-lines-1")
+      if (data.component->name() == "mode-selection-screen-chimney-smoke")
       {
         int a = 1;
       }
 
-      // bind buffers
-      //if (!vertexBuffer->bind())
-      //{
-      //  // error!
-      //  EGE_PRINT("RendererPrivate::flush - could not bind vertex buffer");
-      //  break;
-      //}
+      PVertexBuffer& vertexBuffer = data.component->vertexBuffer();
+      PIndexBuffer& indexBuffer   = data.component->indexBuffer();
+      PMaterial& material         = data.component->material();
 
-      // TAGE - index buffer
-      // ..
+      // bind vertex and index buffers
+      void* vertexData = bindVertexBuffer(vertexBuffer);
+      void* indexData  = bindIndexBuffer(indexBuffer);
 
-      // lock buffers
-      // NOTE: Data is actually locked only for software buffers. 
-      //       For hardware ones, we set it to 0 (for arithmetics) as VBOs require offsets to be used rather than pointers.
-      void* vertexData = vertexBuffer->lock(0, vertexBuffer->vertexCount());
-      void* indexData = indexBuffer->lock(0, indexBuffer->indexCount());
+      // apply general params
+      applyGeneralParams(data.component);
 
       // go thru all passes
       // NOTE: if there is no material, we consider it 1 pass
@@ -328,6 +316,7 @@ void RendererPrivate::flush()
             {
               glClientActiveTexture(GL_TEXTURE0 + *itTextureUnit);
             }
+            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
             // disable point sprites
             if (EGEGraphics::RPT_POINTS == data.component->primitiveType())
@@ -337,8 +326,6 @@ void RendererPrivate::flush()
                 glDisable(GL_POINT_SPRITE_ARB);
               }
             }
-
-            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
           }
           m_activeTextureUnits.clear();
 
@@ -352,14 +339,9 @@ void RendererPrivate::flush()
         }
       }
 
-      // unlock vertex buffers
-      // NOTE: Data is actually unlocked only for software buffers. 
-    //  if (EGE_OBJECT_UID_VERTEX_BUFFER == vertexBuffer->uid())
-      {
-        vertexBuffer->unlock();
-      }
-
-      indexBuffer->unlock();
+      // unbind vertex and index buffers
+      unbindVertexBuffer(vertexBuffer);
+      unbindIndexBuffer(indexBuffer);
     }
 
     // clear render queue
@@ -379,13 +361,6 @@ void RendererPrivate::applyPassParams(const PRenderComponent& component, const P
     if ((EGEGraphics::BF_ONE != pass->srcBlendFactor()) || (EGEGraphics::BF_ZERO != pass->dstBlendFactor()))
     {
       glEnable(GL_BLEND);
-      if (component->name() == "mode-selection-screen-chimney-smoke")
-      {
-        int a = 1;
-      //  glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-      //  glBlendFuncSeparate(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
-      }
-      //else
       glBlendFunc(MapBlendFactor(pass->srcBlendFactor()), MapBlendFactor(pass->dstBlendFactor()));
     }
 
@@ -610,6 +585,7 @@ void RendererPrivate::detectCapabilities()
   }
 
   // check if vertex buffer object is supported
+  // NOTE: this implies that VBO mapping extension is present too
   if (isExtensionSupported("GL_ARB_vertex_buffer_object"))
   {
     glGenBuffers    = (PFNGLGENBUFFERSPROC) wglGetProcAddress("glGenBuffersARB");
@@ -623,6 +599,7 @@ void RendererPrivate::detectCapabilities()
     if (glGenBuffers && glBindBuffer && glBufferData && glBufferSubData && glDeleteBuffers && glMapBuffer && glUnmapBuffer)
     {
       Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VBO, true);
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER, true);
     }
   }
 
@@ -745,6 +722,140 @@ void RendererPrivate::applyGeneralParams(const PRenderComponent& component)
   else if ((EGEGraphics::RPT_LINES == component->primitiveType()) || (EGEGraphics::RPT_LINES == component->primitiveType()))
   {
     glLineWidth(component->lineWidth());
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Binds given vertex buffer.
+ * @param buffer  Vertex buffer to bind.
+ * @return Returns base value pointing to begining of buffer data.
+ */
+void* RendererPrivate::bindVertexBuffer(PVertexBuffer& buffer) const
+{
+  void* data;
+
+  // process according to buffer type
+  switch (buffer->uid())
+  {
+    case EGE_OBJECT_UID_VERTEX_BUFFER_VA:
+
+      // lock buffer to get pointer to first element
+      data = buffer->lock(0, buffer->vertexCount());
+      break;
+
+    case EGE_OBJECT_UID_VERTEX_BUFFER_VBO:
+
+      // bind VBO
+      if (!((VertexBufferVBO*) buffer.object())->bind())
+      {
+        EGE_PRINT("RendererPrivate::flush - could not bind buffer");
+      }
+
+      // set vertex data base to 0 as for VBO we use offsets
+      data = 0;
+      break;
+
+    default:
+
+      EGE_ASSERT(false && "Invalid vertex buffer type");
+      data = NULL;
+      break;
+  }
+
+  return data;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Unbinds given vertex buffer. */
+void RendererPrivate::unbindVertexBuffer(PVertexBuffer& buffer) const
+{
+  // process according to buffer type
+  switch (buffer->uid())
+  {
+    case EGE_OBJECT_UID_VERTEX_BUFFER_VA:
+
+      // unlock buffer
+      buffer->unlock();
+      break;
+
+    case EGE_OBJECT_UID_VERTEX_BUFFER_VBO:
+
+      // unbind VBO
+      if (!((VertexBufferVBO*) buffer.object())->unbind())
+      {
+        EGE_PRINT("RendererPrivate::flush - could not unbind buffer");
+      }
+      break;
+
+    default:
+
+      EGE_ASSERT(false && "Invalid vertex buffer type");
+      break;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Binds given index buffer.
+ * @param buffer  Index buffer to bind.
+ * @return Returns base value pointing to begining of buffer data.
+ */
+void* RendererPrivate::bindIndexBuffer(PIndexBuffer& buffer) const
+{
+  void* data;
+
+  // process according to buffer type
+  switch (buffer->uid())
+  {
+    case EGE_OBJECT_UID_INDEX_BUFFER_VA:
+
+      // lock buffer to get pointer to first element
+      data = buffer->lock(0, buffer->indexCount());
+      break;
+
+    case EGE_OBJECT_UID_INDEX_BUFFER_VBO:
+
+      // bind VBO
+      if (!((IndexBufferVBO*) buffer.object())->bind())
+      {
+        EGE_PRINT("RendererPrivate::flush - could not bind buffer");
+      }
+
+      // set index data base to 0 as for VBO we use offsets
+      data = 0;
+      break;
+
+    default:
+
+      EGE_ASSERT(false && "Invalid index buffer type");
+      data = NULL;
+      break;
+  }
+
+  return data;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Unbinds given index buffer. */
+void RendererPrivate::unbindIndexBuffer(PIndexBuffer& buffer) const
+{
+  // process according to buffer type
+  switch (buffer->uid())
+  {
+    case EGE_OBJECT_UID_INDEX_BUFFER_VA:
+
+      // unlock buffer
+      buffer->unlock();
+      break;
+
+    case EGE_OBJECT_UID_INDEX_BUFFER_VBO:
+
+      // unbind VBO
+      if (!((IndexBufferVBO*) buffer.object())->unbind())
+      {
+        EGE_PRINT("RendererPrivate::flush - could not unbind buffer");
+      }
+      break;
+
+    default:
+
+      EGE_ASSERT(false && "Invalid index buffer type");
+      break;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,44 +1,44 @@
-#ifndef EGE_CORE_VERTEXBUFFERVBOOGL_H
-#define EGE_CORE_VERTEXBUFFERVBOOGL_H
+#ifndef EGE_CORE_INDEXBUFFERVBOOGL_H
+#define EGE_CORE_INDEXBUFFERVBOOGL_H
 
 /** 
- *   VertexBuffer base class specializtion based on Vertex Buffer Objects extension.
+ *   IndexBuffer base class specialization based on Vertex Buffer Objects extension.
  */
 
 #include <EGE.h>
-#include "Core/Graphics/VertexBuffer.h"
+#include "Core/Graphics/IndexBuffer.h"
 #include <EGEOpenGL.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class VertexBufferVBO : public VertexBuffer
+class IndexBufferVBO : public IndexBuffer
 {
   public:
 
-    VertexBufferVBO(Application* app);
-   ~VertexBufferVBO();
+    IndexBufferVBO(Application* app);
+   ~IndexBufferVBO();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
   public:
 
-    /* VertexBuffer override. Returns TRUE if object is valid. */
+    /* IndexBuffer override. Returns TRUE if object is valid. */
     bool isValid() const override;
-    /* VertexBuffer override. Creates buffer for requested number of vertices. */
-    bool create(u32 count) override;
-    /* VertexBuffer override. Locks buffer's given part of the buffer for read/write operations. 
-     * @param offset  0-based vertex offset from which locking should be done. 
-     * @param count   Number of vertices to lock.
+    /* IndexBuffer override. Creates buffer for requested number of vertices. */
+    bool create(EGEIndexBuffer::IndexSize size, u32 count) override;
+    /* IndexBuffer override. Locks buffer's given part of the buffer for read/write operations. 
+     * @param offset  0-based index offset from which locking should be done. 
+     * @param count   Number of indicies to lock.
      */
     void* lock(u32 offset, u32 count) override;
-    /* VertexBuffer override. Unlocks buffer. */
+    /* IndexBuffer override. Unlocks buffer. */
     void unlock() override;
 
-    /*! VertexBuffer override. Returns number of allocated vertices. */
-    u32 vertexCount() const override { return m_vertexCount; }
+    /*! IndexBuffer override. Returns number of allocated vertices. */
+    u32 indexCount() const override { return m_indexCount; }
 
     /* Binds buffer. */
     bool bind();
@@ -56,12 +56,12 @@ class VertexBufferVBO : public VertexBuffer
 
     /*! OpenGL VBO identifier. */
     GLuint m_id;
-    /*! Vertex count. */
-    u32 m_vertexCount;
+    /*! Index count. */
+    u32 m_indexCount;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_VERTEXBUFFERVBOOGL_H
+#endif // EGE_CORE_INDEXBUFFERVBOOGL_H

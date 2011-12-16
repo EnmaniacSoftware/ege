@@ -2,9 +2,9 @@
 #define EGE_CORE_VERTEXBUFFER_H
 
 /** 
-*   VertexBuffer is used to define single vertex lookup and to keep certain amount of such vertices in memory
-*   Vertex data is stored one after another (interleaved)
-*/
+ *   VertexBuffer base class. Instances of this class are used to define vertex array of arbitrary type(s).
+ *   Vertex arrays data are stored one after another (interleaved)
+ */
 
 #include <EGE.h>
 #include "Core/Graphics/VertexBufferTypes.h"
@@ -28,6 +28,7 @@ class VertexBuffer : public Object
     virtual bool isValid() const = 0;
     /* Creates buffer for requested number of vertices. */
     virtual bool create(u32 count) = 0;
+
     /* Locks buffer's given part of the buffer for read/write operations. 
      * @param offset  0-based vertex offset from which locking should be done. 
      * @param count   Number of vertices to lock.

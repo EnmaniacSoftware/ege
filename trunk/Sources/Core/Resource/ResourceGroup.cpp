@@ -92,6 +92,11 @@ EGEResult ResourceGroup::load()
   // check if NOT already loaded
   if (!isLoaded())
   {
+    if (name() == "splash-screens")
+    {
+      int a = 1;
+    }
+
     // go thru all resources
     for (ResourcesMap::iterator it = m_resources.begin(); it != m_resources.end(); ++it)
     {

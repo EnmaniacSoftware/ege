@@ -4,16 +4,17 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(TextureImage)
 EGE_DEFINE_DELETE_OPERATORS(TextureImage)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureImage::TextureImage(Application* app, const String& name) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE), m_name(name), m_envMode(EGETexture::EM_MODULATE)
+TextureImage::TextureImage(Application* app) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE), 
+                                                m_envMode(EGETexture::EM_MODULATE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureImage::TextureImage(Application* app, PObject texture, const Rectf& rect) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE), m_texture(texture), m_rect(rect),
+TextureImage::TextureImage(Application* app, PObject texture, const Rectf& rect) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE), 
+                                                                                   m_texture(texture), 
+                                                                                   m_rect(rect),
                                                                                    m_envMode(EGETexture::EM_MODULATE)
 {
   // inherit name from texture
@@ -29,7 +30,8 @@ TextureImage::TextureImage(Application* app, PObject texture, const Rectf& rect)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextureImage::TextureImage(Application* app, const PTextureImage& texture, const Rectf& rect) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE), 
-                                                                                                m_name(texture->name()), m_texture(texture->m_texture), 
+                                                                                                m_name(texture->name()), 
+                                                                                                m_texture(texture->m_texture), 
                                                                                                 m_envMode(texture->m_envMode)
 {
   // NOTE: rect is in local space of this object, combine these for final local space coords
@@ -64,5 +66,22 @@ void TextureImage::setTexture(const PObject& texture)
 void TextureImage::setRect(const Rectf& rect)
 {
   m_rect = rect;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets name. */
+void TextureImage::setName(const String& name)
+{
+  m_name = name;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Makes a copy of given texture image. */
+void TextureImage::copy(const TextureImage* other)
+{
+  EGE_ASSERT(other);
+
+  m_name    = other->name();
+  m_rect    = other->m_rect;
+  m_texture = other->m_texture;
+  m_envMode = other->m_envMode;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

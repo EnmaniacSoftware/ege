@@ -56,6 +56,21 @@ class RendererPrivate
     /* Applies parameters for given pass. */
     void applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass* pass);
 
+    /* Binds given vertex buffer.
+     * @param buffer  Vertex buffer to bind.
+     * @return Returns base value pointing to begining of buffer data.
+     */
+    void* bindVertexBuffer(PVertexBuffer& buffer) const;
+    /* Unbinds given vertex buffer. */
+    void unbindVertexBuffer(PVertexBuffer& buffer) const;
+    /* Binds given index buffer.
+     * @param buffer  Index buffer to bind.
+     * @return Returns base value pointing to begining of buffer data.
+     */
+    void* bindIndexBuffer(PIndexBuffer& buffer) const;
+    /* Unbinds given index buffer. */
+    void unbindIndexBuffer(PIndexBuffer& buffer) const;
+
   private:
 
     /*! Texture unit currently active. */

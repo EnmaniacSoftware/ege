@@ -7,7 +7,10 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderTextureFBOOGL::RenderTextureFBOOGL(Application* app, const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId) 
-: RenderTarget(app, params), m_textureId(textureId), m_textureTarget(textureTarget), m_faceTarget(faceTarget)
+: RenderTarget(app, params), 
+  m_textureId(textureId), 
+  m_textureTarget(textureTarget), 
+  m_faceTarget(faceTarget)
 {
   // get defult FBO id
   glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &m_defaultFBOId);
@@ -33,9 +36,6 @@ RenderTextureFBOOGL::RenderTextureFBOOGL(Application* app, const Dictionary& par
     // unbind for the time being
     glBindFramebuffer(GL_FRAMEBUFFER_EXT, m_defaultFBOId);
   }
-
-
-  GLenum error = glGetError();
 
   // decompose param list
   Dictionary::const_iterator iterWidth  = params.find(EGE_RENDER_TARGET_PARAM_WIDTH);
@@ -79,6 +79,11 @@ void RenderTextureFBOOGL::bind()
 {
   // bind to FBO
   glBindFramebuffer(GL_FRAMEBUFFER_EXT, frameBufferObjectId());
+
+  if (GL_NO_ERROR != glGetError())
+  {
+    EGE_PRINT("RenderTextureFBOOGL::bind - could not bind framebuffer!");
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! RenderTarget override. Unbinds render target. */
@@ -86,6 +91,11 @@ void RenderTextureFBOOGL::unbind()
 {
   // bind default
   glBindFramebuffer(GL_FRAMEBUFFER_EXT, m_defaultFBOId);
+
+  if (GL_NO_ERROR != glGetError())
+  {
+    EGE_PRINT("RenderTextureFBOOGL::unbind - could not unbind framebuffer!");
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! RenderTarget override. Returns TRUE if texture flipping is required for this render target. */

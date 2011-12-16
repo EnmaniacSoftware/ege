@@ -13,6 +13,7 @@ EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 EGE_DECLARE_SMART_CLASS(RenderWindow, PRenderWindow)
 EGE_DECLARE_SMART_CLASS(Renderer, PRenderer)
 EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
+EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -30,6 +31,8 @@ class GraphicsPrivate
 
     /* Creates vertex buffer obejct. */
     PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const;
+    /* Creates index buffer obejct. */
+    PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const;
 
   private:
 

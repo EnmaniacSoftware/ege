@@ -1,6 +1,10 @@
 #ifndef EGE_CORE_INDEXBUFFER_H
 #define EGE_CORE_INDEXBUFFER_H
 
+/** 
+ *   IndexBuffer base class. Instances of this class are used to define index array to vertex buffers.
+ */
+
 #include <EGE.h>
 #include <EGEIndexBuffer.h>
 
@@ -9,7 +13,6 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
-EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -17,42 +20,43 @@ class IndexBuffer : public Object
 {
   public:
 
-    IndexBuffer(Application* app);
-   ~IndexBuffer();
-
-    EGE_DECLARE_NEW_OPERATORS
-    EGE_DECLARE_DELETE_OPERATORS
+    IndexBuffer(Application* app, u32 uid);
+    virtual ~IndexBuffer();
 
     /* Returns TRUE if object is valid. */
-    bool isValid() const;
+    virtual bool isValid() const = 0;
     /* Creates buffer for requested number of indicies of given size. */
-    bool create(EGEIndexBuffer::IndexSize size, u32 count = 0);
-    /* Destroys buffer. */
-    void destroy();
-    /* Locks buffer given part of the buffer for read/write operations. */
-    void* lock(u32 offset, u32 count);
+    virtual bool create(EGEIndexBuffer::IndexSize size, u32 count = 0);
+
+    /* Locks buffer's given part of the buffer for read/write operations. 
+     * @param offset  0-based index offset from which locking should be done. 
+     * @param count   Number of indicies to lock.
+     */
+    virtual void* lock(u32 offset, u32 count) = 0;
     /* Unlocks buffer. */
-    void  unlock();
+    virtual void unlock() = 0;
+
     /* Returns number of allocated indicies. */
-    u32 indexCount() const;
+    virtual u32 indexCount() const = 0;
     /* Returns index size (in bytes). */
     u8 indexSize() const;
+
     /*! Returns size type. */
     inline EGEIndexBuffer::IndexSize size() const { return m_size; }
  
-  private:
+  protected:
 
-    /* Reallocates internal buffer to accomodate given number of indicies. */
-    bool reallocateBuffer(u32 count);
+    /* Destroys buffer. */
+    virtual void destroy();
 
-  private:
+  protected:
 
     /*! Size of indicies. */
     EGEIndexBuffer::IndexSize m_size;
     /*! TRUE if buffer is locked. */
     bool m_locked;
-    /*! Data buffser. */
-    PDataBuffer m_buffer;         
+    /*! Usage. */
+    EGEIndexBuffer::UsageType m_usage;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

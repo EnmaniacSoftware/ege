@@ -21,7 +21,7 @@ class TextureImage : public Object
 {
   public:
 
-    TextureImage(Application* app, const String& name);
+    TextureImage(Application* app);
     TextureImage(Application* app, PObject texture, const Rectf& rect);
     TextureImage(Application* app, const PTextureImage& texture, const Rectf& rect);
    ~TextureImage();
@@ -34,6 +34,8 @@ class TextureImage : public Object
 
     /*! Return name. */
     inline const String& name() const { return m_name; }
+    /* Sets name. */
+    void setName(const String& name);
 
     /* Sets texture which obejct refers to. */
     void setTexture(const PObject& texture);
@@ -51,6 +53,9 @@ class TextureImage : public Object
     void setEnvironmentMode(EGETexture::EnvironmentMode mode);
     /*! Returns environment mode. */
     inline EGETexture::EnvironmentMode environmentMode() const { return m_envMode; }
+
+    /* Makes a copy of given texture image. */
+    void copy(const TextureImage* other);
 
   private:
 

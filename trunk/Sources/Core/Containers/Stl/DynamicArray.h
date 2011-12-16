@@ -33,6 +33,8 @@ class DynamicArray : public std::vector<T>
     DynamicArray& operator << (const T& value);
     /* Returns object at given position. If not found, returns default object. */
     const T at(s32 index, const T& defaultValue) const;
+    /* Returns index of occurence of a given object. Negative if not found. */
+    s32 indexOf(const T& object) const;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -113,6 +115,24 @@ template <typename T>
 const T DynamicArray<T>::at(s32 index, const T& defaultValue) const
 {
   return ((0 <= index) && (index < static_cast<s32>(this->size()))) ? this->operator[](static_cast<size_t>(index)) : defaultValue;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns index of occurence of a given object. Negative if not found. */
+template <typename T>
+s32 DynamicArray<T>::indexOf(const T& object) const
+{
+  s32 i = 0;
+  for (typename DynamicArray<T>::const_iterator it = this->begin(); it != this->end(); ++it, ++i)
+  {
+    if (*it == object)
+    {
+      // found
+      return i;
+    }
+  }
+
+  // not found
+  return -1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

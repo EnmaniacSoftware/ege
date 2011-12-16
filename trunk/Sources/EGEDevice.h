@@ -43,6 +43,7 @@ namespace EGEDevice
     RENDER_CAPS_POINT_SPRITE,                             /*!< Point sprite supported (GL_ARB_point_sprite && GL_ARB_point_parameters). */
     RENDER_CAPS_POINT_SPRITE_SIZE,                        /*!< Point sprite size array supported (ie. glPointSizePointerOES). */
     RENDER_CAPS_BLEND_MINMAX,                             /*!< Min and Max blending functions supported (thru glBlendEquation). */
+    RENDER_CAPS_MAP_BUFFER,                               /*!< Mapping of VBO starage in client memory space (thru glMapBuffer etc). */
     RENDER_CAPS_COUNT
   };
 }

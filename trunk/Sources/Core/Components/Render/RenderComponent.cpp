@@ -13,7 +13,7 @@ EGE_DEFINE_NEW_OPERATORS(RenderComponent)
 EGE_DEFINE_DELETE_OPERATORS(RenderComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderComponent::RenderComponent(Application* app, const String& name, s32 priority, EGEGraphics::RenderPrimitiveType primitive, 
-                                 EGEVertexBuffer::UsageType usage) 
+                                 EGEVertexBuffer::UsageType vertexUsage, EGEIndexBuffer::UsageType indexUsage) 
 : IComponent(app, EGE_OBJECT_UID_RENDER_COMPONENT, name), 
   m_priority(priority), 
   m_primitiveType(primitive), 
@@ -23,8 +23,8 @@ RenderComponent::RenderComponent(Application* app, const String& name, s32 prior
   m_pointSize(1.0f),
   m_lineWidth(1.0f)
 {
-  m_indexBuffer  = ege_new IndexBuffer(app);
-  m_vertexBuffer = app->graphics()->createVertexBuffer(usage);
+  m_indexBuffer  = app->graphics()->createIndexBuffer(indexUsage);
+  m_vertexBuffer = app->graphics()->createVertexBuffer(vertexUsage);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderComponent::~RenderComponent()

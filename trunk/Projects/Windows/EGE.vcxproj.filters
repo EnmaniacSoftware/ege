@@ -546,6 +546,12 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVBOOGL.cpp">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.cpp">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.cpp">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1063,6 +1069,15 @@
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVBOOGL.h">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.h">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\IndexBufferTypes.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.h">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,15 +5,17 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(RenderPass)
 EGE_DEFINE_DELETE_OPERATORS(RenderPass)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderPass::RenderPass(Application* app) : Object(app), m_diffuseColor(Color::WHITE), m_ambientColor(Color::WHITE), m_specularColor(Color::BLACK), 
-                                           m_shininess(0), m_emissionColor(Color::BLACK), m_srcBlendFactor(EGEGraphics::BF_ONE), 
+RenderPass::RenderPass(Application* app) : Object(app), 
+                                           m_diffuseColor(Color::WHITE), 
+                                           m_ambientColor(Color::WHITE), 
+                                           m_specularColor(Color::BLACK), 
+                                           m_shininess(0), 
+                                           m_emissionColor(Color::BLACK), 
+                                           m_srcBlendFactor(EGEGraphics::BF_ONE), 
                                            m_dstBlendFactor(EGEGraphics::BF_ZERO)
-
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -50,22 +52,22 @@ EGEResult RenderPass::setTexture(const String& name, PObject texture)
   // find texture with given name
   for (DynamicArray<PObject>::iterator it = m_textures.begin(); it != m_textures.end(); ++it)
   {
-    bool found = false;
-  
+    // check if texture image
     if (EGE_OBJECT_UID_TEXTURE_IMAGE == (*it)->uid())
     {
       PTextureImage texImg = *it;
       if (texImg->name() == name)
       {
-        found = true;
-      }
-    }
+        EGE_ASSERT(EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid());
 
-    // check if found
-    if (found)
-    {
-      *it = texture;
-      return EGE_SUCCESS;
+        // make a copy here
+        texImg->copy((TextureImage*) texture.object());
+
+        // make sure name stays the same
+        texImg->setName(name);
+
+        return EGE_SUCCESS;
+      }
     }
   }
 

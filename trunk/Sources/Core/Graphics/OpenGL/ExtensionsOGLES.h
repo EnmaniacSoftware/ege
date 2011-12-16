@@ -24,6 +24,12 @@ extern PFNGLFRAMEBUFFERTEXTURE2DOESPROC glFramebufferTexture2D;
 #define GL_COORD_REPLACE_ARB    GL_COORD_REPLACE_OES
 #define GL_POINT_SIZE_ARRAY_ARB GL_POINT_SIZE_ARRAY_OES
 
+// map buffer
+extern PFNGLMAPBUFFEROESPROC glMapBuffer;
+extern PFNGLUNMAPBUFFEROESPROC glUnmapBuffer;
+
+#define GL_WRITE_ONLY GL_WRITE_ONLY_OES
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_CORE_EXTENSIONSOGLES_H

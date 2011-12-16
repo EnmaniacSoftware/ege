@@ -159,7 +159,7 @@ void ResourceSprite::calculateFrameData()
 
   if (m_frameDataInvalid)
   {
-    TextureImage textureImage(app(), "");
+    TextureImage textureImage(app());
     m_sheet->textureImage()->setInstance(textureImage);
 
     // create new data for each frame

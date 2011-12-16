@@ -1,11 +1,15 @@
 #include "Core/Graphics/OpenGL/RenderTextureCopyOGL.h"
 #include <EGETexture.h>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderTextureCopyOGL::RenderTextureCopyOGL(Application* app, const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId) 
-: RenderTarget(app, params), m_textureId(textureId), m_textureTarget(textureTarget), m_faceTarget(faceTarget)
+: RenderTarget(app, params), 
+  m_textureId(textureId), 
+  m_textureTarget(textureTarget), 
+  m_faceTarget(faceTarget)
 {
   // decompose param list
   Dictionary::const_iterator iterWidth  = params.find(EGE_RENDER_TARGET_PARAM_WIDTH);
@@ -49,13 +53,21 @@ void RenderTextureCopyOGL::bind()
 void RenderTextureCopyOGL::unbind()
 {
   glBindTexture(textureTarget(), textureId());
+  if (GL_NO_ERROR != glGetError())
+  {
+    EGE_PRINT("RenderTextureCopyOGL::unbind - could not bind texture");
+  }
   
   switch (m_textureTarget)
   {
     case GL_TEXTURE_2D:
     //case GL_TEXTURE_CUBE_MAP:
 
-      glCopyTexSubImage2D(faceTarget(), 0, 0, 0, 0, 0, width(), height()); 
+      glCopyTexSubImage2D(faceTarget(), 0, 0, 0, 0, 0, width(), height());
+      if (GL_NO_ERROR != glGetError())
+      {
+        EGE_PRINT("RenderTextureCopyOGL::unbind - glCopyTexSubImage2D failed");
+      }
       break;
   }
 }

@@ -176,3 +176,14 @@ PVertexBuffer Graphics::createVertexBuffer(EGEVertexBuffer::UsageType usage) con
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates index buffer obejct. */
+PIndexBuffer Graphics::createIndexBuffer(EGEIndexBuffer::UsageType usage) const
+{
+  if (isValid())
+  {
+    return p_func()->createIndexBuffer(usage);
+  }
+
+  return NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
