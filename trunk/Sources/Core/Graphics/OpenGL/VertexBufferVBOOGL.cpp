@@ -1,5 +1,8 @@
 #include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
+#include "Core/Graphics/Graphics.h"
+#include "Core/Data/DataBuffer.h"
 #include <EGEDebug.h>
+#include <EGEDevice.h>
 
 EGE_NAMESPACE
 
@@ -35,7 +38,11 @@ static GLenum MapUsageTypeToAccessType(EGEVertexBuffer::UsageType type)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 VertexBufferVBO::VertexBufferVBO(Application* app) : VertexBuffer(app, EGE_OBJECT_UID_VERTEX_BUFFER_VBO),
                                                      m_id(0),
-                                                     m_vertexCount(0)
+                                                     m_vertexCount(0),
+                                                     m_vertexCapacity(0),
+                                                     m_shadowBufferLock(false),
+                                                     m_lockOffset(0),
+                                                     m_lockLength(0)
 {
   // TAGE
   m_usage = EGEVertexBuffer::UT_DYNAMIC_WRITE;
@@ -46,6 +53,8 @@ VertexBufferVBO::VertexBufferVBO(Application* app) : VertexBuffer(app, EGE_OBJEC
     // error!
     m_id = 0;
   }
+
+  m_buffer = ege_new DataBuffer();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 VertexBufferVBO::~VertexBufferVBO()
@@ -55,29 +64,32 @@ VertexBufferVBO::~VertexBufferVBO()
 /*! VertexBuffer override. Returns TRUE if object is valid. */
 bool VertexBufferVBO::isValid() const
 {
-  return (0 < m_id);
+  return (0 < m_id) && (NULL != m_buffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Creates buffer for requested number of vertices. */
-bool VertexBufferVBO::create(u32 count)
+/*! VertexBuffer override. Sets buffer to given size. 
+ * @param count Number of vertices buffer should contain.
+ * @return Returns TRUE if success. Otherwise, FALSE.
+ */
+bool VertexBufferVBO::setSize(u32 count)
 {
-  // bind buffer
-  glBindBuffer(GL_ARRAY_BUFFER, m_id);
-  if (GL_NO_ERROR != glGetError())
+  EGE_ASSERT(!m_locked);
+
+  // check if there is NO buffer to be created
+  if (m_semantics.empty())
   {
     // error!
     return false;
   }
 
-  // allocate enough space
-  glBufferData(GL_ARRAY_BUFFER, count * vertexSize(), NULL, MapUsageType(m_usage));
-  if (GL_NO_ERROR != glGetError())
+  // allocate buffer
+  if (!reallocateBuffer(count))
   {
     // error!
     return false;
   }
 
-  // set vertex count
+  // update amount of data used
   m_vertexCount = count;
 
   return true;
@@ -89,22 +101,32 @@ bool VertexBufferVBO::create(u32 count)
  */
 void* VertexBufferVBO::lock(u32 offset, u32 count)
 {
+  EGE_ASSERT(!m_locked);
+
   void* buffer = NULL;
 
-  // check if NOT locked yet and any data to lock
-  if (!m_locked && (0 <= count))
+  // make sure buffer is big enough
+  if (!reallocateBuffer(offset + count))
   {
-    // check if NOT enough space in buffer
-    if (offset + count > vertexCount())
-    {
-      // reallocate buffer
-      if (!reallocateBuffer(offset + count))
-      {
-        // error!
-        return NULL;
-      }
-    }
+    // error!
+    return NULL;
+  }
 
+  // update vertex count
+  m_vertexCount = Math::Max(m_vertexCount, offset + count);
+
+  // check if scratch buffer should be used
+  // TAGE - some threshold should be here ie 32K ?
+  if (true || !Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER))
+  {
+    // store information that shadow buffer was used
+    m_shadowBufferLock = true;      
+
+    // return pointer to begining of shadow buffer
+    buffer = m_buffer->data();
+  }
+  else
+  {
 	  glBindBuffer(GL_ARRAY_BUFFER, m_id);
     if (GL_NO_ERROR != glGetError())
     {
@@ -125,10 +147,16 @@ void* VertexBufferVBO::lock(u32 offset, u32 count)
     {            
 	    // return offsetted
 	    buffer = static_cast<void*>(static_cast<u8*>(buffer) + offset);
-
-      // store data
-      m_locked = true;
     }
+  }
+
+  if (buffer)
+  {
+    m_lockOffset = offset;
+    m_lockLength = count;
+
+    // store data
+    m_locked = true;
   }
 
   return buffer;
@@ -145,11 +173,47 @@ void VertexBufferVBO::unlock()
     return;
   }
 
-  glUnmapBuffer(GL_ARRAY_BUFFER);
-  if (GL_NO_ERROR != glGetError())
+  // check if locked on shadow buffer
+  if (m_shadowBufferLock)
   {
-    // error!
-    EGE_PRINT("VertexBufferVBO::unlock - Could not unmap buffer.");
+    // check if entire buffer was locked
+    if ((0 == m_lockOffset) && ((m_lockLength * vertexSize()) == static_cast<u32>(m_buffer->size())))
+    {
+      // update buffer at once
+      glBufferData(GL_ARRAY_BUFFER, static_cast<u32>(m_buffer->size()), m_buffer->data(), MapUsageType(m_usage));
+      if (GL_NO_ERROR != glGetError())
+      {
+        EGE_PRINT("VertexBufferVBO::unlock - Could not update entire buffer.");
+      }
+    }
+    else
+    {
+      // check if content is discardable
+	    if (m_usage & EGEVertexBuffer::UT_DISCARDABLE)
+	    {
+	  	  // discard the buffer
+	  	  glBufferData(GL_ARRAY_BUFFER, vertexCount() * vertexSize(), NULL, MapUsageType(m_usage));
+	    }
+
+      glBufferSubData(GL_ARRAY_BUFFER, m_lockOffset * vertexSize(), m_lockLength * vertexSize(), m_buffer->data());
+      if (GL_NO_ERROR != glGetError())
+      {
+        // error!
+        EGE_PRINT("VertexBufferVBO::unlock - Could not update buffer.");
+      }
+    }
+
+    // reset flag
+    m_shadowBufferLock = false;
+  }
+  else
+  {
+    glUnmapBuffer(GL_ARRAY_BUFFER);
+    if (GL_NO_ERROR != glGetError())
+    {
+      // error!
+      EGE_PRINT("VertexBufferVBO::unlock - Could not unmap buffer.");
+    }
   }
 
   // store data
@@ -159,7 +223,41 @@ void VertexBufferVBO::unlock()
 /*! Reallocates internal buffer to accomodate given number of vertices. */
 bool VertexBufferVBO::reallocateBuffer(u32 count)
 {
-  return create(count);
+  // check if requested count is NOT withing capacity
+  if (count > vertexCapacity())
+  {
+    // bind buffer
+    glBindBuffer(GL_ARRAY_BUFFER, m_id);
+    if (GL_NO_ERROR != glGetError())
+    {
+      // error!
+      return false;
+    }
+
+    // allocate enough space
+    glBufferData(GL_ARRAY_BUFFER, count * vertexSize(), NULL, MapUsageType(m_usage));
+    if (GL_NO_ERROR != glGetError())
+    {
+      // error!
+      return false;
+    }
+
+    // allocate buffer for requested indicies
+    // TAGE - do it for threshold value only ? ie 32K ?
+    if (true)
+    {
+      if (EGE_SUCCESS != m_buffer->setSize(static_cast<s64>(count) * vertexSize()))
+      {
+        // error!
+        return false;
+      }
+    }
+
+    // change capacity
+    m_vertexCapacity = count;
+  }
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Binds buffer. */

@@ -307,7 +307,7 @@ bool ParticleEmitter::allocateParticlesData()
   m_activeParticlesCount = Math::Min(m_activeParticlesCount, m_particleMaxCount);
 
   // update render data
-  if (!m_renderData->vertexBuffer()->create(m_particleMaxCount * ((pointSprite) ? 1 : 6)))
+  if (!m_renderData->vertexBuffer()->setSize(m_particleMaxCount * ((pointSprite) ? 1 : 6)))
   {
     // error!
     return false;

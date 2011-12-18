@@ -63,17 +63,23 @@ class TVector2
     static const TVector2<T> ONE;
     static const TVector2<T> UNIT_X;
     static const TVector2<T> UNIT_Y;
+    static const TVector2<T> NEGATIVE_UNIT_X;
+    static const TVector2<T> NEGATIVE_UNIT_Y;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-const TVector2<T> TVector2<T>::ZERO   = TVector2<T>(0, 0);
+const TVector2<T> TVector2<T>::ZERO             = TVector2<T>(0, 0);
 template <typename T>
-const TVector2<T> TVector2<T>::ONE    = TVector2<T>(1, 1);
+const TVector2<T> TVector2<T>::ONE              = TVector2<T>(1, 1);
 template <typename T>
-const TVector2<T> TVector2<T>::UNIT_X = TVector2<T>(1, 0);
+const TVector2<T> TVector2<T>::UNIT_X           = TVector2<T>(1, 0);
 template <typename T>
-const TVector2<T> TVector2<T>::UNIT_Y = TVector2<T>(0, 1);
+const TVector2<T> TVector2<T>::UNIT_Y           = TVector2<T>(0, 1);
+template <typename T>
+const TVector2<T> TVector2<T>::NEGATIVE_UNIT_X  = TVector2<T>(-1, 0);
+template <typename T>
+const TVector2<T> TVector2<T>::NEGATIVE_UNIT_Y  = TVector2<T>(0, -1);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 TVector2<T>::TVector2() : x(0), y(0)

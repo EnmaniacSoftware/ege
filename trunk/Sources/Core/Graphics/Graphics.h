@@ -18,6 +18,7 @@ EGE_DECLARE_SMART_CLASS(Graphics, PGraphics)
 EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 EGE_DECLARE_SMART_CLASS(RenderWindow, PRenderWindow)
 EGE_DECLARE_SMART_CLASS(Renderer, PRenderer)
+EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

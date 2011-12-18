@@ -10,6 +10,7 @@ define EGE_RENDERING_OPENGLES_1
 define EGE_PHYSICS_BOX2D
 define EGE_XML_TINYXML
 define EGE_RANDOM_C
+
 #define EGE_AIRPLAY_AUDIO_SOFTWARE
 
 includepath ../../Sources

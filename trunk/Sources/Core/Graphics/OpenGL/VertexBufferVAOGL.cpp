@@ -16,7 +16,6 @@ VertexBufferVA::VertexBufferVA(Application* app) : VertexBuffer(app, EGE_OBJECT_
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 VertexBufferVA::~VertexBufferVA()
 {
-  destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! VertexBuffer override. Returns TRUE if object is valid. */
@@ -25,9 +24,14 @@ bool VertexBufferVA::isValid() const
   return (NULL != m_buffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Creates buffer for requested number of vertices. */
-bool VertexBufferVA::create(u32 count)
+/*! VertexBuffer override. Sets buffer to given size. 
+ * @param count Number of vertices buffer should contain.
+ * @return Returns TRUE if success. Otherwise, FALSE.
+ */
+bool VertexBufferVA::setSize(u32 count)
 {
+  EGE_ASSERT(!m_locked);
+
   // check if there is NO buffer to be created
   if (m_semantics.empty())
   {
@@ -41,9 +45,6 @@ bool VertexBufferVA::create(u32 count)
     // error!
     return false;
   }
-
-  // store data
-  m_locked = false;
 
   return true;
 }
@@ -63,11 +64,13 @@ void VertexBufferVA::destroy()
  */
 void* VertexBufferVA::lock(u32 offset, u32 count)
 {
+  EGE_ASSERT(!m_locked);
+
   // check if NOT locked yet and any data to lock
-  if (!m_locked && (0 <= count))
+  if (0 <= count)
   {
     // check if NOT enough space in buffer
-    if (offset + count > vertexCount())
+    if (offset + count > vertexCapacity())
     {
       // reallocate buffer
       if (!reallocateBuffer(offset + count))
@@ -83,6 +86,7 @@ void* VertexBufferVA::lock(u32 offset, u32 count)
     // update amount of data used
     m_buffer->setSize((offset + count) * vertexSize());
 
+    // return offsetted
     return reinterpret_cast<void*>(reinterpret_cast<u8*>(m_buffer->data()) + offset * vertexSize());
   }
   
@@ -112,5 +116,11 @@ bool VertexBufferVA::reallocateBuffer(u32 count)
   }
 
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! VertexBuffer override. Returns maximal number of available vertices. */
+u32 VertexBufferVA::vertexCapacity() const
+{
+  return (m_buffer) ? static_cast<u32>(m_buffer->capacity() / vertexSize()) : 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,4 +1,5 @@
 #include "Core/String/Stl/String.h"
+#include "Core/Containers/Stl/List.h"
 #include <sstream>
 #include <algorithm>
 #include <cctype>
@@ -163,7 +164,7 @@ String String::FromNumber(s32 value)
 /*! Creates formatted text. */
 void String::format(const char* text, ...)
 {
-  char buffer[256];
+  char buffer[1024];
 
 	va_list arg;
 	va_start(arg, text);
@@ -178,7 +179,7 @@ String String::Format(const char* text, ...)
 {
   String out;
 
-  char buffer[256];
+  char buffer[1024];
 
 	va_list arg;
 	va_start(arg, text);
@@ -509,5 +510,39 @@ String String::arg(float32 value) const
   replaceArgEscapes(out, String::Format("%f", value), argEscapes);
 
   return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Splits the string into list of substrings whenever seperator occurs. */
+StringList String::split(const String& separator) const
+{
+  StringList list;
+
+  size_t pos = 0;
+  while (std::string::npos != pos)
+  {
+    size_t nextPos = this->find(separator, pos);
+    if (std::string::npos != nextPos)
+    {
+      // add to list
+      list.push_back(this->substr(pos, nextPos - pos));
+
+      // go to next character after separator
+      pos = nextPos + separator.length();
+    }
+    else
+    {
+      // check if any string is present after last seperator
+      if ((pos + 1) < length())
+      {
+        // add last substring to list as well
+        list.push_back(this->substr(pos, length() - pos));
+      }
+
+      // done
+      break;
+    }
+  }
+
+  return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

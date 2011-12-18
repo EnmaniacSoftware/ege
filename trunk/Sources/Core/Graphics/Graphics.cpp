@@ -5,6 +5,7 @@
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Graphics/Particle/ParticleFactory.h"
+#include "Core/Data/DataBuffer.h"
 #include <EGEDevice.h>
 
 #ifdef EGE_PLATFORM_WIN32

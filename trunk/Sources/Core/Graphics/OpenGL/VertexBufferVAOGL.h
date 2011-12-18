@@ -28,8 +28,11 @@ class VertexBufferVA : public VertexBuffer
 
     /* VertexBuffer override. Returns TRUE if object is valid. */
     bool isValid() const override;
-    /* VertexBuffer override. Creates buffer for requested number of vertices. */
-    bool create(u32 count) override;
+    /* VertexBuffer override. Sets buffer to given size. 
+     * @param count Number of vertices buffer should contain.
+     * @return Returns TRUE if success. Otherwise, FALSE.
+     */
+    bool setSize(u32 count) override;
     /* VertexBuffer override. Locks buffer's given part of the buffer for read/write operations. 
      * @param offset  0-based vertex offset from which locking should be done. 
      * @param count   Number of vertices to lock.
@@ -40,6 +43,8 @@ class VertexBufferVA : public VertexBuffer
 
     /* VertexBuffer override. Returns number of allocated vertices. */
     u32 vertexCount() const override;
+    /* VertexBuffer override. Returns maximal number of available vertices. */
+    u32 vertexCapacity() const override;
 
   private:
 

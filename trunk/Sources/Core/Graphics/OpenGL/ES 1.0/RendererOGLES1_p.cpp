@@ -493,6 +493,15 @@ bool RendererPrivate::bindTexture(GLenum target, GLuint textureId)
 /*! Detects rendering capabilities. */
 void RendererPrivate::detectCapabilities()
 {
+  // get list of all extensions
+  String extensionString(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
+  m_extensionList = extensionString.split(" ");
+
+  for (StringList::const_iterator it = m_extensionList.begin(); it != m_extensionList.end(); ++it)
+  {
+    EGE_PRINT("Available OGL extension: %s", (*it).toAscii());
+  }
+
 	GLint value;
 
   // get number of texture units
@@ -532,10 +541,16 @@ void RendererPrivate::detectCapabilities()
     glMapBuffer   = (PFNGLMAPBUFFEROESPROC) eglGetProcAddress("glMapBufferOES");
     glUnmapBuffer = (PFNGLUNMAPBUFFEROESPROC) eglGetProcAddress("glUnmapBufferOES");
 
+    EGE_PRINT("GL_OES_mapbuffer %p %p", eglGetProcAddress("glMapBufferOES"), eglGetProcAddress("glMapBuffer"));
+
     if (glMapBuffer && glUnmapBuffer)
     {
       Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER, true);
     }
+  }
+  else
+  {
+    EGE_PRINT("GL_OES_mapbuffer NOT SUPORTED");
   }
 
   // check if min and max blending functions are supported
@@ -552,7 +567,7 @@ void RendererPrivate::detectCapabilities()
   //    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_BLEND_MINMAX, true);
   //  }
   //}
-
+  
   // Combine texture environment mode is supported by default
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_COMBINE_TEXTURE_ENV, true);
 
@@ -569,48 +584,7 @@ void RendererPrivate::detectCapabilities()
 /*! Checks if given extension is supported. */
 bool RendererPrivate::isExtensionSupported(const char* extension) const
 {
-  const GLubyte* extensions = NULL;
-  const GLubyte* start;
-
-  GLubyte* where;
-  GLubyte* terminator;
-
-  // extension names should not have spaces
-  where = (GLubyte*) strchr(extension, ' ');
-  if (where || '\0' == *extension)
-  {
-    return false;
-  }
-
-  // get extensions string
-  extensions = glGetString(GL_EXTENSIONS);
-
-  // it takes a bit of care to be fool-proof about parsing the OpenGL extensions string. Don't be fooled by sub-strings, etc.
-  start = extensions;
-  for (;;) 
-  {
-    where = (GLubyte*) strstr((const char *) start, extension);
-    if (!where)
-    {
-      break;
-    }
-
-    terminator = where + strlen(extension);
-
-    if (where == start || *(where - 1) == ' ')
-    {
-      if (*terminator == ' ' || *terminator == '\0')
-      {
-        // found
-        return true;
-      }
-    }
-
-    start = terminator;
-  }
-
-  // not found
-  return false;
+  return m_extensionList.contains(extension);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Applies general parameters. 

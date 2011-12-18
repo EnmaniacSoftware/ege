@@ -259,7 +259,7 @@ EGEResult Texture2DPrivate::createRenderTarget()
   params[EGE_RENDER_TARGET_PARAM_HEIGHT]  = String::FromNumber(d_func()->height());
 
   // check if Frame Buffer Object is supported
-  if (!Device::HasRenderCapability(EGEDevice::RENDER_CAPS_FBO))
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_FBO))
   {
     d_func()->m_target = ege_new RenderTextureFBOOGL(d_func()->app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, id());
   }

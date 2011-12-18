@@ -33,10 +33,12 @@ PVertexBuffer GraphicsPrivate::createVertexBuffer(EGEVertexBuffer::UsageType usa
   if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     buffer = ege_new VertexBufferVBO(m_base->app());
+    EGE_PRINT("GraphicsPrivate::createVertexBuffer - VBO %p", buffer.object());
   }
   else
   {
     buffer = ege_new VertexBufferVA(m_base->app());
+    EGE_PRINT("GraphicsPrivate::createVertexBuffer - VA %p", buffer.object());
   }
 
   return buffer;
@@ -47,13 +49,15 @@ PIndexBuffer GraphicsPrivate::createIndexBuffer(EGEIndexBuffer::UsageType usage)
 {
   PIndexBuffer buffer;
 
-  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  if (!Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     buffer = ege_new IndexBufferVBO(m_base->app());
+    EGE_PRINT("GraphicsPrivate::createIndexBuffer - VBO %p", buffer.object());
   }
   else
   {
     buffer = ege_new IndexBufferVA(m_base->app());
+    EGE_PRINT("GraphicsPrivate::createIndexBuffer - VA %p", buffer.object());
   }
 
   return buffer;

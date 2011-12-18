@@ -26,8 +26,11 @@ class VertexBuffer : public Object
 
     /* Returns TRUE if object is valid. */
     virtual bool isValid() const = 0;
-    /* Creates buffer for requested number of vertices. */
-    virtual bool create(u32 count) = 0;
+    /* Sets buffer to given size. 
+     * @param count Number of vertices buffer should contain.
+     * @return Returns TRUE if success. Otherwise, FALSE.
+     */
+    virtual bool setSize(u32 count) = 0;
 
     /* Locks buffer's given part of the buffer for read/write operations. 
      * @param offset  0-based vertex offset from which locking should be done. 
@@ -47,8 +50,10 @@ class VertexBuffer : public Object
     /* Returns current array semantics. */
     const EGEVertexBuffer::SemanticArray& semantics() const;
 
-    /* Returns number of allocated vertices. */
+    /* Returns number of vertices currently in use. */
     virtual u32 vertexCount() const = 0;
+    /* Returns maximal number of available vertices. */
+    virtual u32 vertexCapacity() const = 0;
     /* Returns vertex size for current semantics (in bytes). */
     u32 vertexSize() const;
 
