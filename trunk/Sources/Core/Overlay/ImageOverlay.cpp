@@ -132,6 +132,7 @@ void ImageOverlay::initialize()
   Overlay::initialize();
 
   m_renderData  = RenderObjectFactory::CreateQuadXY(app(), "overlay_" + name(), Vector4f::ZERO, Vector2f::ONE, EGEAlignment::ALIGN_TOP_LEFT, 
-                                                    EGEVertexBuffer::ST_V2_T2, EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLE_STRIPS);
+                                                    EGEVertexBuffer::ST_V2_T2, EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLE_STRIPS,
+                                                    EGEVertexBuffer::UT_STATIC_WRITE);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

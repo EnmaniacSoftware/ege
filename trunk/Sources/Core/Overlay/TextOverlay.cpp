@@ -72,6 +72,7 @@ void TextOverlay::setFont(PFont font)
 void TextOverlay::updateRenderData()
 {
   // allocate vertex buffer of required size
+  renderData()->vertexBuffer()->setSize(text().length() * 6);
   float32* data = (float32*) renderData()->vertexBuffer()->lock(0, text().length() * 6);
   if (data)
   {
@@ -228,6 +229,7 @@ void TextOverlay::initialize()
   Overlay::initialize();
 
   m_renderData  = RenderObjectFactory::CreateQuadXY(app(), "overlay_" + name(), Vector4f::ZERO, Vector2f::ONE, EGEAlignment::ALIGN_TOP_LEFT, 
-                                                    EGEVertexBuffer::ST_V2_T2, EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLES);
+                                                    EGEVertexBuffer::ST_V2_T2, EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLES,
+                                                    EGEVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

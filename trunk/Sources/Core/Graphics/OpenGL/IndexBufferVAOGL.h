@@ -20,7 +20,7 @@ class IndexBufferVA : public IndexBuffer
 {
   public:
 
-    IndexBufferVA(Application* app);
+    IndexBufferVA(Application* app, EGEIndexBuffer::UsageType usage);
     virtual ~IndexBufferVA();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -28,8 +28,11 @@ class IndexBufferVA : public IndexBuffer
 
     /* IndexBuffer override. Returns TRUE if object is valid. */
     bool isValid() const override;
-    /* IndexBuffer override. Creates buffer for requested number of indicies of given size. */
-    bool create(EGEIndexBuffer::IndexSize size, u32 count = 0) override;
+    /* IndexBuffer override. Sets buffer to given size. 
+     * @param count Number of indicies buffer should contain.
+     * @return Returns TRUE if success. Otherwise, FALSE.
+     */
+    bool setSize(u32 count) override;
 
     /* IndexBuffer override. Locks buffer's given part of the buffer for read/write operations. 
      * @param offset  0-based index offset from which locking should be done. 
@@ -41,7 +44,9 @@ class IndexBufferVA : public IndexBuffer
 
     /* IndexBuffer override. Returns number of allocated indicies. */
     u32 indexCount() const override;
- 
+    /* IndexBuffer override. Returns maximal number of available indicies. */
+    u32 indexCapacity() const override;
+
   private:
 
     /* IndexBuffer override. Destroys buffer. */

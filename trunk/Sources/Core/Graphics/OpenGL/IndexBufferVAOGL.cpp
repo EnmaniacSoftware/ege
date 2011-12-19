@@ -1,5 +1,6 @@
 #include "Core/Graphics/OpenGL/IndexBufferVAOGL.h"
 #include "Core/Data/DataBuffer.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
@@ -7,7 +8,7 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(IndexBufferVA)
 EGE_DEFINE_DELETE_OPERATORS(IndexBufferVA)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IndexBufferVA::IndexBufferVA(Application* app) : IndexBuffer(app, EGE_OBJECT_UID_INDEX_BUFFER_VA)
+IndexBufferVA::IndexBufferVA(Application* app, EGEIndexBuffer::UsageType usage) : IndexBuffer(app, EGE_OBJECT_UID_INDEX_BUFFER_VA, usage)
 {
   m_buffer = ege_new DataBuffer();
 }
@@ -23,24 +24,20 @@ bool IndexBufferVA::isValid() const
   return (NULL != m_buffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IndexBuffer override. Creates buffer for requested number of indicies of given size. */
-bool IndexBufferVA::create(EGEIndexBuffer::IndexSize size, u32 count)
+/*! IndexBuffer override. Sets buffer to given size. 
+ * @param count Number of indicies buffer should contain.
+ * @return Returns TRUE if success. Otherwise, FALSE.
+ */
+bool IndexBufferVA::setSize(u32 count)
 {
-  // call base class
-  if (!IndexBuffer::create(size, count))
+  EGE_ASSERT(!m_locked);
+  EGE_ASSERT(EGEIndexBuffer::IS_UNKNOWN != m_indexSize);
+
+  // allocate buffer
+  if (!reallocateBuffer(count))
   {
     // error!
     return false;
-  }
-
-  // allocate buffer if necessary
-  if (0 < count)
-  {
-    if (!reallocateBuffer(count))
-    {
-      // error!
-      return false;
-    }
   }
 
   return true;
@@ -58,11 +55,13 @@ void IndexBufferVA::destroy()
 /*! IndexBuffer override. Locks buffer given part of the buffer for read/write operations. */
 void* IndexBufferVA::lock(u32 offset, u32 count)
 {
-  // check if NOT locked yet and any data to lock
-  if (!m_locked && (0 < count))
+  EGE_ASSERT(!m_locked);
+
+  // check if and any data to lock
+  if (0 <= count)
   {
     // check if NOT enough space in buffer
-    if (offset + count > indexCount())
+    if (offset + count > indexCapacity())
     {
       // reallocate buffer
       if (!reallocateBuffer(offset + count))
@@ -78,7 +77,8 @@ void* IndexBufferVA::lock(u32 offset, u32 count)
     // update amount of data used
     m_buffer->setSize((offset + count) * indexSize());
 
-    return reinterpret_cast<u8*>(m_buffer->data()) + offset * indexSize();
+    // return offsetted
+    return reinterpret_cast<void*>(reinterpret_cast<u8*>(m_buffer->data()) + offset * indexSize());
   }
 
   return NULL;
@@ -107,5 +107,11 @@ bool IndexBufferVA::reallocateBuffer(u32 count)
   }
 
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! IndexBuffer override. Returns maximal number of available indicies. */
+u32 IndexBufferVA::indexCapacity() const
+{
+  return (m_buffer) ? static_cast<u32>(m_buffer->capacity() / indexSize()) : 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

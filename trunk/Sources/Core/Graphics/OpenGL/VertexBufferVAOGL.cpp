@@ -9,7 +9,7 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(VertexBufferVA)
 EGE_DEFINE_DELETE_OPERATORS(VertexBufferVA)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBufferVA::VertexBufferVA(Application* app) : VertexBuffer(app, EGE_OBJECT_UID_VERTEX_BUFFER_VA)
+VertexBufferVA::VertexBufferVA(Application* app, EGEVertexBuffer::UsageType usage) : VertexBuffer(app, EGE_OBJECT_UID_VERTEX_BUFFER_VA, usage)
 {
   m_buffer = ege_new DataBuffer();
 }
@@ -66,7 +66,7 @@ void* VertexBufferVA::lock(u32 offset, u32 count)
 {
   EGE_ASSERT(!m_locked);
 
-  // check if NOT locked yet and any data to lock
+  // check if and any data to lock
   if (0 <= count)
   {
     // check if NOT enough space in buffer

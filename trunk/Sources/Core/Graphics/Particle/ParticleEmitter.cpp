@@ -24,7 +24,8 @@ ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNo
   initialize(params);
 
   // create render data
-  m_renderData = ege_new RenderComponent(app, name, EGEGraphics::RP_MAIN, pointSprite ? EGEGraphics::RPT_POINTS : EGEGraphics::RPT_TRIANGLES);
+  m_renderData = ege_new RenderComponent(app, name, EGEGraphics::RP_MAIN, pointSprite ? EGEGraphics::RPT_POINTS : EGEGraphics::RPT_TRIANGLES, 
+                                         EGEVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
   if (m_renderData)
   {
     if (pointSprite)
@@ -320,156 +321,159 @@ bool ParticleEmitter::allocateParticlesData()
 bool ParticleEmitter::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   // update vertex data
-  float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_activeParticlesCount * ((pointSprite) ? 1 : 6)));
-  if (data)
+  if (m_renderData->vertexBuffer()->setSize(m_activeParticlesCount * ((pointSprite) ? 1 : 6)))
   {
-    // go thru all active particles
-    if (pointSprite)
+    float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_activeParticlesCount * ((pointSprite) ? 1 : 6)));
+    if (data)
     {
-      // calculate point size
-      // NOTE: It is not always possible to define size per particle. That is why, we calculate the size here for entire batch. Additionally, we store size
-      //       per sprite (based on current data) so renderer with proper capabilities can utilize it. Anyways, point sprites can only be square'ish.
-      float32 size = Math::Max(m_particleStartSize.x + m_particleStartSizeVariance.x, m_particleStartSize.y + m_particleStartSizeVariance.y);
-      size = Math::Max(size, m_particleEndSize.x + m_particleEndSizeVariance.x);
-      size = Math::Max(size, m_particleEndSize.y + m_particleEndSizeVariance.y);
-
-      // set point size
-      m_renderData->setPointSize(size);
-
-      for (s32 i = 0; i < m_activeParticlesCount; ++i)
+      // go thru all active particles
+      if (pointSprite)
       {
-        const EGEParticle::ParticleData& particleData = m_particles[i];
+        // calculate point size
+        // NOTE: It is not always possible to define size per particle. That is why, we calculate the size here for entire batch. Additionally, we store size
+        //       per sprite (based on current data) so renderer with proper capabilities can utilize it. Anyways, point sprites can only be square'ish.
+        float32 size = Math::Max(m_particleStartSize.x + m_particleStartSizeVariance.x, m_particleStartSize.y + m_particleStartSizeVariance.y);
+        size = Math::Max(size, m_particleEndSize.x + m_particleEndSizeVariance.x);
+        size = Math::Max(size, m_particleEndSize.y + m_particleEndSizeVariance.y);
 
-        // NOTE: point sprites position determines sprite center point
-        *data++ = particleData.position.x;
-        *data++ = particleData.position.y;
-        *data++ = particleData.position.z;
-        *data++ = particleData.color.red;
-        *data++ = particleData.color.green;
-        *data++ = particleData.color.blue;
-        *data++ = particleData.color.alpha;
-        *data++ = Math::Max(particleData.size.x, particleData.size.y);
+        // set point size
+        m_renderData->setPointSize(size);
 
-        // NOTE: Point sprites auto texture coords generator, generates them in non-OpenGL mode, ie like DX - 0 is at top 1 is at bottom
-      }
-    }
-    else
-    {
-      const Matrix4f& viewMatrix = renderer->viewMatrix();
-
-      Vector3f right(viewMatrix.data[0], viewMatrix.data[1], viewMatrix.data[2]);
-      Vector3f up(viewMatrix.data[4], viewMatrix.data[5], viewMatrix.data[6]);
-      Vector3f look(viewMatrix.data[8], viewMatrix.data[9], viewMatrix.data[10]);
-
-      for (s32 i = 0; i < m_activeParticlesCount; ++i)
-      {
-        const EGEParticle::ParticleData& particleData = m_particles[i];
-
-        // Quad looks like follows:
-        //
-        //   (0,3)  (5)
-        //    *------*
-        //    |\     |
-        //    | \Tri2|
-        //    |  \   |
-        //    |   \  |
-        //    |    \ |
-        //    |Tri1 \|
-        //    |      |
-        //    *------*
-        //   (1)   (2,4)
-
-        Vector3f halfSize(particleData.size.x * 0.5f, particleData.size.y * 0.5f, 0);
-        Vector3f point0;
-        Vector3f point1;
-        Vector3f point2;
-        Vector3f point5;
-
-        // calculate positions
-        // NOTE: we destinguish two cases here: with and without rotation
-        if (0.0f == particleData.spinDelta.radians())
+        for (s32 i = 0; i < m_activeParticlesCount; ++i)
         {
-          point0 = particleData.position + ((-right - up) * halfSize);
-          point1 = particleData.position + ((-right + up) * halfSize);
-          point2 = particleData.position + (( right + up) * halfSize);
-          point5 = particleData.position + (( right - up) * halfSize);
+          const EGEParticle::ParticleData& particleData = m_particles[i];
+
+          // NOTE: point sprites position determines sprite center point
+          *data++ = particleData.position.x;
+          *data++ = particleData.position.y;
+          *data++ = particleData.position.z;
+          *data++ = particleData.color.red;
+          *data++ = particleData.color.green;
+          *data++ = particleData.color.blue;
+          *data++ = particleData.color.alpha;
+          *data++ = Math::Max(particleData.size.x, particleData.size.y);
+
+          // NOTE: Point sprites auto texture coords generator, generates them in non-OpenGL mode, ie like DX - 0 is at top 1 is at bottom
         }
-        else
+      }
+      else
+      {
+        const Matrix4f& viewMatrix = renderer->viewMatrix();
+
+        Vector3f right(viewMatrix.data[0], viewMatrix.data[1], viewMatrix.data[2]);
+        Vector3f up(viewMatrix.data[4], viewMatrix.data[5], viewMatrix.data[6]);
+        Vector3f look(viewMatrix.data[8], viewMatrix.data[9], viewMatrix.data[10]);
+
+        for (s32 i = 0; i < m_activeParticlesCount; ++i)
         {
-          Quaternionf quat;
-          quat.create(look, particleData.spin);
+          const EGEParticle::ParticleData& particleData = m_particles[i];
+
+          // Quad looks like follows:
+          //
+          //   (0,3)  (5)
+          //    *------*
+          //    |\     |
+          //    | \Tri2|
+          //    |  \   |
+          //    |   \  |
+          //    |    \ |
+          //    |Tri1 \|
+          //    |      |
+          //    *------*
+          //   (1)   (2,4)
+
+          Vector3f halfSize(particleData.size.x * 0.5f, particleData.size.y * 0.5f, 0);
+          Vector3f point0;
+          Vector3f point1;
+          Vector3f point2;
+          Vector3f point5;
+
+          // calculate positions
+          // NOTE: we destinguish two cases here: with and without rotation
+          if (0.0f == particleData.spinDelta.radians())
+          {
+            point0 = particleData.position + ((-right - up) * halfSize);
+            point1 = particleData.position + ((-right + up) * halfSize);
+            point2 = particleData.position + (( right + up) * halfSize);
+            point5 = particleData.position + (( right - up) * halfSize);
+          }
+          else
+          {
+            Quaternionf quat;
+            quat.create(look, particleData.spin);
           
-          // take rotation into account
-          point0 = particleData.position + quat * ((-right - up) * halfSize);
-          point1 = particleData.position + quat * ((-right + up) * halfSize);
-          point2 = particleData.position + quat * (( right + up) * halfSize);
-          point5 = particleData.position + quat * (( right - up) * halfSize);
+            // take rotation into account
+            point0 = particleData.position + quat * ((-right - up) * halfSize);
+            point1 = particleData.position + quat * ((-right + up) * halfSize);
+            point2 = particleData.position + quat * (( right + up) * halfSize);
+            point5 = particleData.position + quat * (( right - up) * halfSize);
+          }
+
+          *data++ = point0.x;
+          *data++ = point0.y;
+          *data++ = point0.z;
+          *data++ = 0;
+          *data++ = 1;
+          *data++ = particleData.color.red;
+          *data++ = particleData.color.green;
+          *data++ = particleData.color.blue;
+          *data++ = particleData.color.alpha;
+
+          *data++ = point1.x;
+          *data++ = point1.y;
+          *data++ = point1.z;
+          *data++ = 0;
+          *data++ = 0;
+          *data++ = particleData.color.red;
+          *data++ = particleData.color.green;
+          *data++ = particleData.color.blue;
+          *data++ = particleData.color.alpha;
+
+          *data++ = point2.x;
+          *data++ = point2.y;
+          *data++ = point2.z;
+          *data++ = 1;
+          *data++ = 0;
+          *data++ = particleData.color.red;
+          *data++ = particleData.color.green;
+          *data++ = particleData.color.blue;
+          *data++ = particleData.color.alpha;
+
+          *data++ = point0.x;
+          *data++ = point0.y;
+          *data++ = point0.z;
+          *data++ = 0;
+          *data++ = 1;
+          *data++ = particleData.color.red;
+          *data++ = particleData.color.green;
+          *data++ = particleData.color.blue;
+          *data++ = particleData.color.alpha;
+
+          *data++ = point2.x;
+          *data++ = point2.y;
+          *data++ = point2.z;
+          *data++ = 1;
+          *data++ = 0;
+          *data++ = particleData.color.red;
+          *data++ = particleData.color.green;
+          *data++ = particleData.color.blue;
+          *data++ = particleData.color.alpha;
+
+          *data++ = point5.x;
+          *data++ = point5.y;
+          *data++ = point5.z;
+          *data++ = 1;
+          *data++ = 1;
+          *data++ = particleData.color.red;
+          *data++ = particleData.color.green;
+          *data++ = particleData.color.blue;
+          *data++ = particleData.color.alpha;
         }
-
-        *data++ = point0.x;
-        *data++ = point0.y;
-        *data++ = point0.z;
-        *data++ = 0;
-        *data++ = 1;
-        *data++ = particleData.color.red;
-        *data++ = particleData.color.green;
-        *data++ = particleData.color.blue;
-        *data++ = particleData.color.alpha;
-
-        *data++ = point1.x;
-        *data++ = point1.y;
-        *data++ = point1.z;
-        *data++ = 0;
-        *data++ = 0;
-        *data++ = particleData.color.red;
-        *data++ = particleData.color.green;
-        *data++ = particleData.color.blue;
-        *data++ = particleData.color.alpha;
-
-        *data++ = point2.x;
-        *data++ = point2.y;
-        *data++ = point2.z;
-        *data++ = 1;
-        *data++ = 0;
-        *data++ = particleData.color.red;
-        *data++ = particleData.color.green;
-        *data++ = particleData.color.blue;
-        *data++ = particleData.color.alpha;
-
-        *data++ = point0.x;
-        *data++ = point0.y;
-        *data++ = point0.z;
-        *data++ = 0;
-        *data++ = 1;
-        *data++ = particleData.color.red;
-        *data++ = particleData.color.green;
-        *data++ = particleData.color.blue;
-        *data++ = particleData.color.alpha;
-
-        *data++ = point2.x;
-        *data++ = point2.y;
-        *data++ = point2.z;
-        *data++ = 1;
-        *data++ = 0;
-        *data++ = particleData.color.red;
-        *data++ = particleData.color.green;
-        *data++ = particleData.color.blue;
-        *data++ = particleData.color.alpha;
-
-        *data++ = point5.x;
-        *data++ = point5.y;
-        *data++ = point5.z;
-        *data++ = 1;
-        *data++ = 1;
-        *data++ = particleData.color.red;
-        *data++ = particleData.color.green;
-        *data++ = particleData.color.blue;
-        *data++ = particleData.color.alpha;
       }
     }
-  }
 
-  m_renderData->vertexBuffer()->unlock();
+    m_renderData->vertexBuffer()->unlock();
+  }
 
   if (0 < m_activeParticlesCount)
   {

@@ -43,8 +43,10 @@ namespace EGEVertexBuffer
   {
     UT_STATIC_WRITE   = 1,                  /*!< Created once, used many times. Data will be sent from application to GL. */
     UT_DYNAMIC_WRITE  = 2,                  /*!< Frequently changable. Data will be sent from application to GL. */
-    UT_DISCARDABLE    = 4                   /*!< Flag indicating that content before it is overwritten is completely out-of-interest to us. 
-                                                 This allows for some optimization. Makes sense with UT_DYNAMIC_WRITE. */                  
+    UT_DISCARDABLE    = 4,                  /*!< Flag indicating that content before it is overwritten is completely out-of-interest to us. 
+                                                 This allows for some optimization. Makes sense with UT_DYNAMIC_WRITE. */   
+    
+    UT_DYNAMIC_WRITE_DONT_CARE = UT_DYNAMIC_WRITE | UT_DISCARDABLE
   };
 
   /*! Data structure describing single array semantic. */

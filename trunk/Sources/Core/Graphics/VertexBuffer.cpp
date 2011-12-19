@@ -6,9 +6,10 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBuffer::VertexBuffer(Application* app, u32 uid) : Object(app, uid), 
-                                                        m_locked(false), 
-                                                        m_vertexSize(0)
+VertexBuffer::VertexBuffer(Application* app, u32 uid, EGEVertexBuffer::UsageType usage) : Object(app, uid), 
+                                                                                          m_locked(false), 
+                                                                                          m_vertexSize(0),
+                                                                                          m_usage(usage)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

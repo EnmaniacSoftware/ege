@@ -5,27 +5,16 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IndexBuffer::IndexBuffer(Application* app, u32 uid) : Object(app, uid), 
-                                                      m_size(EGEIndexBuffer::IS_UNKNOWN), 
-                                                      m_locked(false)
+IndexBuffer::IndexBuffer(Application* app, u32 uid, EGEIndexBuffer::UsageType usage) : Object(app, uid), 
+                                                                                       m_indexSize(EGEIndexBuffer::IS_UNKNOWN), 
+                                                                                       m_locked(false),
+                                                                                       m_usage(usage)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 IndexBuffer::~IndexBuffer()
 {
   destroy();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates buffer for requested number of indicies of given size. */
-bool IndexBuffer::create(EGEIndexBuffer::IndexSize size, u32 count)
-{
-  EGE_UNUSED(count);
-
-  EGE_ASSERT(!m_locked);
-
-  // store index size
-  m_size = size;
-  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Destroys buffer. */
@@ -38,7 +27,7 @@ void IndexBuffer::destroy()
 /*! Returns index size (in bytes). */
 u8 IndexBuffer::indexSize() const
 {
-  switch (m_size)
+  switch (m_indexSize)
   {
     case EGEIndexBuffer::IS_8BIT:  return 1; 
     case EGEIndexBuffer::IS_16BIT: return 2; 
@@ -46,5 +35,11 @@ u8 IndexBuffer::indexSize() const
   }
 
   return 0;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets index size. */
+void IndexBuffer::setIndexSize(EGEIndexBuffer::IndexSize size)
+{
+  m_indexSize = size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

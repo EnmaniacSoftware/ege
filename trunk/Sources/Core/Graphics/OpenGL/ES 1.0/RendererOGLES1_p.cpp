@@ -635,34 +635,37 @@ void RendererPrivate::applyGeneralParams(const PRenderComponent& component)
  */
 void* RendererPrivate::bindVertexBuffer(PVertexBuffer& buffer) const
 {
-  void* data;
+  void* data = NULL;
 
-  // process according to buffer type
-  switch (buffer->uid())
+  // process if any vertices exist
+  if (0 < buffer->vertexCount())
   {
-    case EGE_OBJECT_UID_VERTEX_BUFFER_VA:
+    // process according to buffer type
+    switch (buffer->uid())
+    {
+      case EGE_OBJECT_UID_VERTEX_BUFFER_VA:
 
-      // lock buffer to get pointer to first element
-      data = buffer->lock(0, buffer->vertexCount());
-      break;
+        // lock buffer to get pointer to first element
+        data = buffer->lock(0, buffer->vertexCount());
+        break;
 
-    case EGE_OBJECT_UID_VERTEX_BUFFER_VBO:
+      case EGE_OBJECT_UID_VERTEX_BUFFER_VBO:
 
-      // bind VBO
-      if (!((VertexBufferVBO*) buffer.object())->bind())
-      {
-        EGE_PRINT("RendererPrivate::flush - could not bind buffer");
-      }
+        // bind VBO
+        if (!((VertexBufferVBO*) buffer.object())->bind())
+        {
+          EGE_PRINT("RendererPrivate::flush - could not bind buffer");
+        }
 
-      // set vertex data base to 0 as for VBO we use offsets
-      data = 0;
-      break;
+        // set vertex data base to 0 as for VBO we use offsets
+        data = 0;
+        break;
 
-    default:
+      default:
 
-      EGE_ASSERT(false && "Invalid vertex buffer type");
-      data = NULL;
-      break;
+        EGE_ASSERT(false && "Invalid vertex buffer type");
+        break;
+    }
   }
 
   return data;
@@ -704,32 +707,35 @@ void* RendererPrivate::bindIndexBuffer(PIndexBuffer& buffer) const
 {
   void* data;
 
-  // process according to buffer type
-  switch (buffer->uid())
+  // process if any indicies exists
+  if (0 < buffer->indexCount())
   {
-    case EGE_OBJECT_UID_INDEX_BUFFER_VA:
+    // process according to buffer type
+    switch (buffer->uid())
+    {
+      case EGE_OBJECT_UID_INDEX_BUFFER_VA:
 
-      // lock buffer to get pointer to first element
-      data = buffer->lock(0, buffer->indexCount());
-      break;
+        // lock buffer to get pointer to first element
+        data = buffer->lock(0, buffer->indexCount());
+        break;
 
-    case EGE_OBJECT_UID_INDEX_BUFFER_VBO:
+      case EGE_OBJECT_UID_INDEX_BUFFER_VBO:
 
-      // bind VBO
-      if (!((IndexBufferVBO*) buffer.object())->bind())
-      {
-        EGE_PRINT("RendererPrivate::flush - could not bind buffer");
-      }
+        // bind VBO
+        if (!((IndexBufferVBO*) buffer.object())->bind())
+        {
+          EGE_PRINT("RendererPrivate::flush - could not bind buffer");
+        }
 
-      // set index data base to 0 as for VBO we use offsets
-      data = 0;
-      break;
+        // set index data base to 0 as for VBO we use offsets
+        data = 0;
+        break;
 
-    default:
+      default:
 
-      EGE_ASSERT(false && "Invalid index buffer type");
-      data = NULL;
-      break;
+        EGE_ASSERT(false && "Invalid index buffer type");
+        break;
+    }
   }
 
   return data;

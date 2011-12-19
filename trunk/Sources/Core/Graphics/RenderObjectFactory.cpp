@@ -7,20 +7,22 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates render component with 2D quad on XY plane. 
- * @param app       Pointer to application.
- * @param name      Name of render component.
- * @param position  Quad position (local-space).
- * @param size      Size of quad.
- * @param origin    Quad's origin alignment.
- * @param semantics Render component's vertex buffer semantics.
- * @param priority  Render priority.
- * @param primitive Render primitive type.
+ * @param app         Pointer to application.
+ * @param name        Name of render component.
+ * @param position    Quad position (local-space).
+ * @param size        Size of quad.
+ * @param origin      Quad's origin alignment.
+ * @param semantics   Render component's vertex buffer semantics.
+ * @param priority    Render priority.
+ * @param primitive   Render primitive type.
+ * @param vertexUsage Vertex buffer usage.
  * @return Returns render component. NULL if failed.
  */
 PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, 
-                                                   EGEVertexBuffer::SemanticType semantics, s32 priority, EGEGraphics::RenderPrimitiveType primitive)
+                                                   EGEVertexBuffer::SemanticType semantics, s32 priority, EGEGraphics::RenderPrimitiveType primitive,
+                                                   EGEVertexBuffer::UsageType vertexUsage)
 {
-  PRenderComponent object = ege_new RenderComponent(app, name, priority, primitive);
+  PRenderComponent object = ege_new RenderComponent(app, name, priority, primitive, vertexUsage);
   if (object)
   {
     // setup vertex buffer semantics

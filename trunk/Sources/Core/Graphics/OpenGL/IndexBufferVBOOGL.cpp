@@ -1,5 +1,7 @@
 #include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
+#include "Core/Data/DataBuffer.h"
 #include <EGEDebug.h>
+#include <EGEDevice.h>
 
 EGE_NAMESPACE
 
@@ -33,19 +35,25 @@ static GLenum MapUsageTypeToAccessType(EGEIndexBuffer::UsageType type)
   return GL_WRITE_ONLY;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IndexBufferVBO::IndexBufferVBO(Application* app) : IndexBuffer(app, EGE_OBJECT_UID_INDEX_BUFFER_VBO),
-                                                   m_id(0),
-                                                   m_indexCount(0)
+IndexBufferVBO::IndexBufferVBO(Application* app, EGEIndexBuffer::UsageType usage) : IndexBuffer(app, EGE_OBJECT_UID_INDEX_BUFFER_VBO, usage),
+                                                                                    m_id(0),
+                                                                                    m_indexCount(0),
+                                                                                    m_indexCapacity(0),
+                                                                                    m_shadowBufferLock(false),
+                                                                                    m_lockOffset(0),
+                                                                                    m_lockLength(0),
+                                                                                    m_mapping(NULL)
 {
-  // TAGE
-  m_usage = EGEIndexBuffer::UT_DYNAMIC_WRITE;
-
   glGenBuffers(1, &m_id);
   if (GL_NO_ERROR != glGetError())
   {
     // error!
+    EGE_PRINT("IndexBufferVBO::IndexBufferVBO - could not generate buffer!");
     m_id = 0;
   }
+
+  // allocate shadow buffer
+  m_shadowBuffer = ege_new DataBuffer();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 IndexBufferVBO::~IndexBufferVBO()
@@ -55,30 +63,20 @@ IndexBufferVBO::~IndexBufferVBO()
 /*! VertexBuffer override. Returns TRUE if object is valid. */
 bool IndexBufferVBO::isValid() const
 {
-  return (0 < m_id);
+  return (0 < m_id) && (NULL != m_shadowBuffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Creates buffer for requested number of vertices. */
-bool IndexBufferVBO::create(EGEIndexBuffer::IndexSize size, u32 count)
+/*! IndexBuffer override. Sets buffer to given size. 
+ * @param count Number of indicies buffer should contain.
+ * @return Returns TRUE if success. Otherwise, FALSE.
+ */
+bool IndexBufferVBO::setSize(u32 count)
 {
-  // call base class
-  if (!IndexBuffer::create(size, count))
-  {
-    // error!
-    return false;
-  }
+  EGE_ASSERT(!m_locked);
+  EGE_ASSERT(EGEIndexBuffer::IS_UNKNOWN != m_indexSize);
 
-  // bind buffer
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
-  if (GL_NO_ERROR != glGetError())
-  {
-    // error!
-    return false;
-  }
-
-  // allocate enough space
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * indexSize(), NULL, MapUsageType(m_usage));
-  if (GL_NO_ERROR != glGetError())
+  // allocate buffer
+  if (!reallocateBuffer(count))
   {
     // error!
     return false;
@@ -96,22 +94,32 @@ bool IndexBufferVBO::create(EGEIndexBuffer::IndexSize size, u32 count)
  */
 void* IndexBufferVBO::lock(u32 offset, u32 count)
 {
+  EGE_ASSERT(!m_locked);
+
   void* buffer = NULL;
 
-  // check if NOT locked yet and any data to lock
-  if (!m_locked && (0 <= count))
+  // make sure buffer is big enough
+  if (!reallocateBuffer(offset + count))
   {
-    // check if NOT enough space in buffer
-    if (offset + count > indexCount())
-    {
-      // reallocate buffer
-      if (!reallocateBuffer(offset + count))
-      {
-        // error!
-        return NULL;
-      }
-    }
+    // error!
+    return NULL;
+  }
 
+  // update vertex count
+  m_indexCount = Math::Max(m_indexCount, offset + count);
+
+  // check if scratch buffer should be used
+  // TAGE - some threshold should be here ie 32K ?
+  if (true || !Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER))
+  {
+    // set flags to indicate lock done on shadow buffer
+    m_shadowBufferLock = true;      
+
+    // return pointer to requested offset
+    buffer = m_shadowBuffer->data(static_cast<s64>(offset) * indexSize());
+  }
+  else
+  {
 	  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
     if (GL_NO_ERROR != glGetError())
     {
@@ -133,9 +141,22 @@ void* IndexBufferVBO::lock(u32 offset, u32 count)
 	    // return offsetted
 	    buffer = static_cast<void*>(static_cast<u8*>(buffer) + offset);
 
-      // store data
-      m_locked = true;
+      // store map pointer to begining of requested data for further use
+      m_mapping = buffer;
     }
+    else
+    {
+      EGE_PRINT("IndexBufferVBO::lock - mapping failed!");
+    }
+  }
+
+  if (buffer)
+  {
+    m_lockOffset = offset;
+    m_lockLength = count;
+
+    // store data
+    m_locked = true;
   }
 
   return buffer;
@@ -148,15 +169,59 @@ void IndexBufferVBO::unlock()
   if (GL_NO_ERROR != glGetError())
   {
     // error!
-    EGE_PRINT("IndexBufferVBO::unlock - Could not bind buffer.");
+    EGE_PRINT("VertexBufferVBO::unlock - Could not bind buffer.");
     return;
   }
 
-  glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
-  if (GL_NO_ERROR != glGetError())
+  // check if locked on shadow buffer
+  if (m_shadowBufferLock)
   {
-    // error!
-    EGE_PRINT("IndexBufferVBO::unlock - Could not unmap buffer.");
+    // check if entire buffer was locked
+    if ((0 == m_lockOffset) && (m_lockLength == indexCount()))
+    {
+      // update buffer at once
+      glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<u32>(m_shadowBuffer->size()), m_shadowBuffer->data(), MapUsageType(m_usage));
+      if (GL_NO_ERROR != glGetError())
+      {
+        EGE_PRINT("IndexBufferVBO::unlock - Could not update entire buffer.");
+      }
+    }
+    else
+    {
+      // check if content is discardable
+	    if (m_usage & EGEIndexBuffer::UT_DISCARDABLE)
+	    {
+	  	  // discard the buffer
+	  	  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount() * indexSize(), NULL, MapUsageType(m_usage));
+	    }
+
+      glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, m_lockOffset * indexSize(), m_lockLength * indexSize(), 
+                      m_shadowBuffer->data(static_cast<s64>(m_lockOffset) * indexSize()));
+      if (GL_NO_ERROR != glGetError())
+      {
+        // error!
+        EGE_PRINT("IndexBufferVBO::unlock - Could not update buffer.");
+      }
+    }
+
+    // reset flag
+    m_shadowBufferLock = false;
+  }
+  else
+  {
+    // update shadow buffer first
+    EGE_MEMCPY(m_shadowBuffer->data(static_cast<s64>(m_lockOffset) * indexSize()), m_mapping, m_lockOffset * indexSize());
+
+    // unmap
+    glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+    if (GL_NO_ERROR != glGetError())
+    {
+      // error!
+      EGE_PRINT("IndexBufferVBO::unlock - Could not unmap buffer.");
+    }
+
+    // reset data
+    m_mapping = NULL;
   }
 
   // store data
@@ -166,7 +231,37 @@ void IndexBufferVBO::unlock()
 /*! Reallocates internal buffer to accomodate given number of vertices. */
 bool IndexBufferVBO::reallocateBuffer(u32 count)
 {
-  return create(m_size, count);
+  // check if requested count is NOT within capacity
+  if (count > indexCapacity())
+  {
+    // bind buffer
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
+    if (GL_NO_ERROR != glGetError())
+    {
+      // error!
+      return false;
+    }
+
+    // allocate enough space
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * indexSize(), NULL, MapUsageType(m_usage));
+    if (GL_NO_ERROR != glGetError())
+    {
+      // error!
+      return false;
+    }
+
+    // allocate shadow buffer
+    if (EGE_SUCCESS != m_shadowBuffer->setSize(static_cast<s64>(count) * indexSize()))
+    {
+      // error!
+      return false;
+    }
+
+    // change capacity
+    m_indexCapacity = count;
+  }
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Binds buffer. */

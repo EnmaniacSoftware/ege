@@ -21,7 +21,7 @@ class VertexBufferVBO : public VertexBuffer
 {
   public:
 
-    VertexBufferVBO(Application* app);
+    VertexBufferVBO(Application* app, EGEVertexBuffer::UsageType usage);
    ~VertexBufferVBO();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -60,8 +60,6 @@ class VertexBufferVBO : public VertexBuffer
     void destroy() override;
     /* Reallocates internal buffer to accomodate given number of vertices. */
     bool reallocateBuffer(u32 count);
-    /* Reads data from VBO to shadow buffer. */
-    bool readData();
 
   private:
 
@@ -72,13 +70,15 @@ class VertexBufferVBO : public VertexBuffer
     /*! Vertex capacity. */
     u32 m_vertexCapacity;
     /*! Shadow data buffer. */
-    PDataBuffer m_buffer;  
-    /*! Flag indicating if current lock is done on shadow buffer. */
+    PDataBuffer m_shadowBuffer;  
+    /*! Flag indicating if current lock is done on shadow buffer directly. */
     bool m_shadowBufferLock;
     /*! Lock offset (in vertices). */
     u32 m_lockOffset;
     /*! Lock length (in vertices). */
     u32 m_lockLength;
+    /*! Map pointer. Only valid if mapping API is used for ie. m_shadowBufferLock is FALSE. */
+    void* m_mapping;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
