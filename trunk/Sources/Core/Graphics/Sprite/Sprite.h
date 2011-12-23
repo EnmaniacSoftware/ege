@@ -25,7 +25,7 @@ class Sprite : public Object
 {
   public:
 
-    Sprite(Application* app);
+    Sprite(Application* app, const String& name);
    ~Sprite();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -33,7 +33,25 @@ class Sprite : public Object
 
   signals:
     
-    Signal1<s32> frameChanged;
+    /*! Signal emitted on frame change.
+     *  @param sprite     Sprite object for which frame changed.
+     *  @param frameIndex New frame index.
+     */
+    Signal2<const Sprite*, s32> frameChanged;
+    /*! Signal emitted when playback is finished.
+     *  @param sprite     Sprite object for which playback is finished.
+     */
+    Signal1<const Sprite*> finished;
+
+  public:
+
+    /*! Available finish policy. */
+    enum FinishPolicy
+    {
+      FP_STOP,                        /*!< Sprite stops at finish. */
+      FP_REPEAT,                      /*!< Sprite repeats at finish. */
+      FP_PING_PONG                    /*!< Sprite ping-pongs at finish. */
+    };
 
   public:
 
@@ -51,6 +69,12 @@ class Sprite : public Object
     void setFrameData(const DynamicArray<EGESprite::FrameData>& data);
     /* Sets texture image containing sprite data. */
     void setTexture(const PTextureImage& texture);
+    /*! Returns name. */
+    inline const String& name() const { return m_name; }
+    /*! Returns TRUE if sprite is being played. */
+    inline bool isPlaying() const { return (state() & STATE_PLAYING) ? true : false; }
+    /* Sets/unsets finish policy. */
+    void setFinishPolicy(FinishPolicy policy);
 
   private:
 
@@ -67,13 +91,13 @@ class Sprite : public Object
 
     /*! Returns current state. */
     inline State state() const { return m_state; }
-    /*! Returns TRUE if sprite is being played. */
-    inline bool isPlaying() const { return (state() & STATE_PLAYING) ? true : false; }
 
   private:
 
     /*! State flags. */
     State m_state;
+    /*! Name. */
+    String m_name;
     /*! Current frame index (within m_frames). */
     s32 m_frameIndex;
     /*! Frame duration time. */
@@ -86,6 +110,8 @@ class Sprite : public Object
     DynamicArray<EGESprite::FrameData> m_frameData;
     /*! Texture image with sprite pixel data. */
     PTextureImage m_textureImage;
+    /*! Finish policy. */
+    FinishPolicy m_finishPolicy;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

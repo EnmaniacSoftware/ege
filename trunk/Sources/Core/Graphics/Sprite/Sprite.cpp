@@ -9,9 +9,11 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(Sprite)
 EGE_DEFINE_DELETE_OPERATORS(Sprite)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Sprite::Sprite(Application* app) : Object(app), 
-                                   m_state(STATE_STOPPED), 
-                                   m_frameIndex(0)
+Sprite::Sprite(Application* app, const String& name) : Object(app), 
+                                                       m_state(STATE_STOPPED), 
+                                                       m_name(name),
+                                                       m_frameIndex(0),
+                                                       m_finishPolicy(FP_STOP)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -33,12 +35,44 @@ void Sprite::update(const Time& time)
       // go to next frame
       if (++m_frameIndex == static_cast<s32>(m_frameData.size()))
       {
-        // we reach end of cycle, repeat
-        m_frameIndex = 0;
+        // we reach end of cycle
+
+        // process according to policy
+        switch (m_finishPolicy)
+        {
+          case FP_REPEAT:
+
+            m_frameIndex = 0;
+            break;
+
+          case FP_PING_PONG:
+
+            EGE_ASSERT(false && "Implement!");
+            break;
+
+          case FP_STOP:
+
+            // change state
+            m_state = STATE_STOPPED;
+
+            // set current frame to last frame
+            m_frameIndex--;
+
+            // emit
+            emit finished(this);
+
+            // done
+            return;
+
+          default:
+
+            EGE_ASSERT(false && "Unsupported finish policy!");
+            break;
+        }
       }
 
       // emit
-      emit frameChanged(m_frameIndex);
+      emit frameChanged(this, m_frameIndex);
 
       // add frame time to whats left
       m_frameTimeLeft += m_frameTime;
@@ -51,6 +85,9 @@ void Sprite::play()
 {
   if (!isPlaying())
   {
+    // reset frame
+    m_frameIndex = 0;
+
     // check if frame time is to be calculated
     if (0 == m_frameTime.microseconds() && (0 < m_frameData.size()))
     {
@@ -59,7 +96,7 @@ void Sprite::play()
     }
 
     // emit first frame straight away
-    emit frameChanged(m_frameIndex);
+    emit frameChanged(this, m_frameIndex);
 
     // change state
     m_state = STATE_PLAYING;
@@ -108,5 +145,11 @@ void Sprite::setFrameData(const DynamicArray<EGESprite::FrameData>& data)
 void Sprite::setTexture(const PTextureImage& texture)
 {
   m_textureImage = texture;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets/unsets finish policy. */
+void Sprite::setFinishPolicy(FinishPolicy policy)
+{
+  m_finishPolicy = policy;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

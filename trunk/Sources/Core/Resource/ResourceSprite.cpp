@@ -9,12 +9,11 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ResourceSprite)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSprite)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSprite::ResourceSprite(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_SPRITE), m_frameDataInvalid(false)
+ResourceSprite::ResourceSprite(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_SPRITE), 
+                                                                             m_frameDataInvalid(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -55,7 +54,7 @@ EGEResult ResourceSprite::create(const String& path, const PXmlElement& tag)
   m_repeat      = tag->attribute("repeat").toBool(&error);
 
   // check if obligatory data is wrong
-  if (error || m_name.empty() || m_sheetName.empty() || (m_pingPong && m_repeat) || (0 >= m_frameCount) || (0 > m_beginFrame))
+  if (error || m_name.empty() || m_sheetName.empty() || (0 >= m_frameCount) || (0 > m_beginFrame))
   {
     // error!
     EGE_PRINT("ResourceSprite::create - failed for name: %s", m_name.toAscii());
@@ -79,7 +78,7 @@ EGEResult ResourceSprite::load()
   if (!isLoaded())
   {
     // get sheet resource
-    m_sheet = manager()->resource("spritesheet", sheetName());
+    m_sheet = manager()->resource(RESOURCE_NAME_SPRITE_SHEET, sheetName());
     if (m_sheet)
     {
       // load sheet
@@ -112,7 +111,7 @@ void ResourceSprite::unload()
 /*! Creates instance of sprite object defined by resource. */
 PSprite ResourceSprite::createInstance()
 {
-	PSprite object = ege_new Sprite(app());
+	PSprite object = ege_new Sprite(app(), name());
   if (object)
   {
     // set new data
@@ -141,6 +140,17 @@ EGEResult ResourceSprite::setInstance(const PSprite& instance)
   instance->setDuration(m_duration);
   instance->setFrameData(m_frameData);
   instance->setTexture(m_sheet->textureImage()->createInstance());
+
+  Sprite::FinishPolicy finishPolicy = Sprite::FP_STOP;
+  if (m_repeat)
+  {
+    finishPolicy = Sprite::FP_REPEAT;
+  }
+  else if (m_pingPong)
+  {
+    finishPolicy = Sprite::FP_PING_PONG;
+  }
+  instance->setFinishPolicy(finishPolicy);
 
   return EGE_SUCCESS;
 }
@@ -179,9 +189,9 @@ void ResourceSprite::calculateFrameData()
     m_frameData.clear();
 
     // fill in frames for single cycle
-    if (m_repeat)
+    if (m_repeat || (!m_repeat && !m_pingPong))
     {
-      // for REPEAT mode, cycle consists of all frames from begin one to the end. After reaching end playback should repeat itself
+      // for REPEAT and STOP modes, cycle consists of all frames from begin one to the end. After reaching end playback should repeat itself
       for (s32 i = 0; i < m_frameCount; ++i)
       {
         m_frameData.push_back(allFramesData[i]);
