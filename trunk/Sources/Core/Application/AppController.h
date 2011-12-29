@@ -53,6 +53,10 @@ class AppController : public Object, public IEventListener
     inline const PTimer& timer() const { return m_timer; }
     /*! Returns current state. */
     inline State state() const { return m_state; }
+    /*! Returns last frame update duration. */
+    inline const Time& lastFrameUpdateDuration() const { return m_lastFrameUpdateDuration; }
+    /*! Returns last frame render duration. */
+    inline const Time& lastFrameRenderDuration() const { return m_lastFrameRenderDuration; }
 
   private:
 
@@ -81,6 +85,10 @@ class AppController : public Object, public IEventListener
     Time m_fpsCountStartTime;
     /*! Timer. */
     PTimer m_timer;
+    /*! Last frame update duration. */
+    Time m_lastFrameUpdateDuration;
+    /*! Last frame render duration. */
+    Time m_lastFrameRenderDuration;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -10,7 +10,6 @@
 #include "Core/Screen/ScreenManager.h"
 #include "Core/Audio/AudioManager.h"
 #include "Core/Resource/ResourceManager.h"
-
 #include <EGEGraphics.h>
 #include <EGETimer.h>
 
@@ -23,12 +22,13 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(AppController)
 EGE_DEFINE_DELETE_OPERATORS(AppController)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AppController::AppController(Application* app, const Dictionary& params) : Object(app), m_state(STATE_RUNNING), m_fps(0), m_rendersCount(0)
+AppController::AppController(Application* app, const Dictionary& params) : Object(app), 
+                                                                           m_state(STATE_RUNNING), 
+                                                                           m_fps(0), 
+                                                                           m_rendersCount(0)
 {
   // decompose param list
   Dictionary::const_iterator iterUPS = params.find(EGE_ENGINE_PARAM_UPDATES_PER_SECOND);
@@ -111,6 +111,9 @@ void AppController::update()
 
   // interpolate physics by remaining value
   // ..
+
+  // store update duration
+  m_lastFrameUpdateDuration.fromMicroseconds(m_timer->microseconds() - m_lastUpdateTime.microseconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders application. */
@@ -139,6 +142,9 @@ void AppController::render()
 
   // do render
   app()->graphics()->render();
+
+  // store render duration
+  m_lastFrameRenderDuration.fromMicroseconds(m_timer->microseconds() - time.microseconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */

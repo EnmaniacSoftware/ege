@@ -75,6 +75,10 @@ class Application
     void setLanguage(const String& language);
     /*! Returns current language. */
     inline const String& language() const { return m_language; }
+    /* Returns last frame update duration. */
+    const Time& lastFrameUpdateDuration() const;
+    /* Returns last frame render duration. */
+    const Time& lastFrameRenderDuration() const;
 
   private:
 

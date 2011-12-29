@@ -227,3 +227,15 @@ bool Application::isQuitting() const
   return (AppController::STATE_QUIT == controller()->state()) || (AppController::STATE_QUITTING == controller()->state());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns last frame update duration. */
+const Time& Application::lastFrameUpdateDuration() const
+{
+  return controller()->lastFrameUpdateDuration();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns last frame render duration. */
+const Time& Application::lastFrameRenderDuration() const
+{
+  return controller()->lastFrameRenderDuration();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
