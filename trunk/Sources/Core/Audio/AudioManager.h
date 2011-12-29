@@ -53,6 +53,14 @@ class AudioManager : public Object
     /* Returns list of sounds being played with the given name. */
     List<PSound> sounds(const String& soundName) const;
 
+    /* Enables/disables manager. 
+     * @note Disabling manager stops all currently played sounds and prevents any sound from being played. Enabling manager will allow sound to be played.
+     *       However, it will not resume playback of any sounds stopped during last disabling request.
+     */
+    void setEnable(bool set);
+    /*! Returns TRUE if manager is enabled. */
+    inline bool isEnabled() const { return m_enabled; }
+
   private:
 
     typedef List<PSound> SoundList;
@@ -63,6 +71,8 @@ class AudioManager : public Object
 
     /*! List of sounds being played. */
     SoundList m_sounds;
+    /*! Enable flag. */
+    bool m_enabled;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

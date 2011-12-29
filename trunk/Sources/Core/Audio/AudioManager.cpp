@@ -14,12 +14,11 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(AudioManager)
 EGE_DEFINE_DELETE_OPERATORS(AudioManager)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioManager::AudioManager(Application* app) : Object(app)
+AudioManager::AudioManager(Application* app) : Object(app),
+                                               m_enabled(true)
 {
   m_p = ege_new AudioManagerPrivate(this);
 }
@@ -78,6 +77,13 @@ EGEResult AudioManager::play(const String& soundName, s32 repeatCount)
 {
   if (isValid())
   {
+    // check if disabled
+    if (!isEnabled())
+    {
+      // done
+      return EGE_SUCCESS;
+    }
+
     // find sound resource
     PResourceSound soundResource = app()->resourceManager()->soundResource(soundName);
     if (soundResource)
@@ -109,6 +115,13 @@ EGEResult AudioManager::play(const PSound& sound)
 
   if (isValid() && sound && sound->isValid())
   {
+    // check if disabled
+    if (!isEnabled())
+    {
+      // done
+      return EGE_SUCCESS;
+    }
+
     EGE_PRINT("AudioManager::play - %s", sound->name().toAscii());
 
     // play
@@ -206,5 +219,31 @@ List<PSound> AudioManager::sounds(const String& soundName) const
   }
 
   return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Enables/disables manager. 
+ * @note Disabling manager stops all currently played sounds and prevents any sound from being played. Enabling manager will allow sound to be played.
+ *       However, it will not resume playback of any sounds stopped during last disabling request.
+ */
+void AudioManager::setEnable(bool set)
+{
+  if (set != m_enabled)
+  {
+    // check if disabling
+    if (!set)
+    {
+      // stop all active sounds
+      // NOTE: make a copy of all sounds first as there is no guarantee on when sounds will be removed from pool
+      SoundList soundsToStop(m_sounds);
+      for (SoundList::iterator it = soundsToStop.begin(); it != soundsToStop.end(); ++it)
+      {
+        // stop
+        stop(*it);
+      }
+    }
+
+    // store flag
+    m_enabled = set;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
