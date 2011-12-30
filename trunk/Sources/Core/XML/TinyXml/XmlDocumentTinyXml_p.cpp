@@ -8,10 +8,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(XmlDocumentPrivate)
 EGE_DEFINE_DELETE_OPERATORS(XmlDocumentPrivate)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 XmlDocumentPrivate::XmlDocumentPrivate(XmlDocument* base) : m_base(base)
 {
@@ -129,10 +127,10 @@ EGEResult XmlDocumentPrivate::save(const PDataBuffer& buffer)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Appends new element to document. */
-void XmlDocumentPrivate::appendElement(const PXmlElement& element)
+bool XmlDocumentPrivate::appendElement(const PXmlElement& element)
 {
   // NOTE: TiXmlDocument takes ownership of element
-  m_xml.LinkEndChild(element->p_func()->element(true));
+  return (NULL != m_xml.LinkEndChild(element->p_func()->element(true)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns root element. */

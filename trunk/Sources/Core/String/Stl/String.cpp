@@ -7,6 +7,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+char String::m_buffer[2048] = { '\0' };
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String::String() : std::string()
 {
 }
@@ -164,14 +166,12 @@ String String::FromNumber(s32 value)
 /*! Creates formatted text. */
 void String::format(const char* text, ...)
 {
-  char buffer[1024];
-
 	va_list arg;
 	va_start(arg, text);
-	vsprintf(buffer, text, arg);
+	vsprintf(m_buffer, text, arg);
 	va_end(arg);
 
-  *this = buffer;
+  *this = m_buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Create new object from formatted text. */
@@ -179,14 +179,12 @@ String String::Format(const char* text, ...)
 {
   String out;
 
-  char buffer[1024];
-
 	va_list arg;
 	va_start(arg, text);
-	vsprintf(buffer, text, arg);
+	vsprintf(m_buffer, text, arg);
 	va_end(arg);
 
-  out = buffer;
+  out = m_buffer;
 
   return out;
 }

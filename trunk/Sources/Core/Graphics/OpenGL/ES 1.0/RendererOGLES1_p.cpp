@@ -705,7 +705,7 @@ void RendererPrivate::unbindVertexBuffer(PVertexBuffer& buffer) const
  */
 void* RendererPrivate::bindIndexBuffer(PIndexBuffer& buffer) const
 {
-  void* data;
+  void* data = NULL;
 
   // process if any indicies exists
   if (0 < buffer->indexCount())

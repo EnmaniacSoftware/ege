@@ -30,11 +30,13 @@ class FilePrivate
     EGEResult open(EGEFile::EMode mode);
     /* Closes file. */
     void close();
-    /* Reads given amount of data into destination buffer. */
-    /// @return Returns number of bytes read.
+    /* Reads given amount of data into destination buffer.
+     * @return Returns number of bytes read.
+     */
     s64 read(const PDataBuffer& dst, s64 size);
-    /* Writes given amount of data from destination buffer. */
-    /// @return Returns number of bytes written.
+    /* Writes given amount of data from destination buffer.
+     * @return Returns number of bytes written.
+     */
     s64 write(const PDataBuffer& src, s64 size);
     /* Sets new position within file. Returns old position or -1 if error occured. */
     s64 seek(s64 offset, EGEFile::ESeekMode mode);
@@ -44,6 +46,8 @@ class FilePrivate
     bool isOpen() const;
     /* Returns file size. Returns -1 if error occured. */
     s64 size();
+    /* Returns TRUE if file exists. */
+    bool exists() const;
 
   private:
 

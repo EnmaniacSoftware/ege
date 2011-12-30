@@ -6,12 +6,11 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(TimerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(TimerPrivate)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TimerPrivate::TimerPrivate(Timer* base) : m_base(base), m_isPerformance(false)
+TimerPrivate::TimerPrivate(Timer* base) : m_base(base), 
+                                          m_isPerformance(false)
 {
   reset();
 }

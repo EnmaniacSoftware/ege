@@ -50,6 +50,8 @@ class File : public Object
     const String& filePath() const;
     /* Returns file size. Returns -1 if error occured. */
     s64 size();
+    /* Returns TRUE if file exists. */
+    bool exists() const;
 
     File& operator << (u8 value);
     File& operator << (s8 value);

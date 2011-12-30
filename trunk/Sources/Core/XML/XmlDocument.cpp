@@ -1,6 +1,7 @@
 #include "Core/XML/XMLDocument.h"
 #include "Core/XML/XMLElement.h"
 #include "Core/Data/DataBuffer.h"
+#include <EGEFile.h>
 
 #if EGE_XML_TINYXML
 #include "Core/XML/TinyXml/XMLDocumentTinyXML_p.h"
@@ -35,6 +36,13 @@ EGEResult XmlDocument::load(const String& fileName)
 {
   if (isValid())
   {
+    File file(fileName);
+    if (!file.exists())
+    {
+      // error!
+      return EGE_ERROR_NOT_FOUND;
+    }
+
     return p_func()->load(fileName);
   }
 
@@ -86,12 +94,14 @@ EGEResult XmlDocument::save(const PDataBuffer& buffer)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Appends new element to document. */
-void XmlDocument::appendElement(const PXmlElement& element)
+bool XmlDocument::appendElement(const PXmlElement& element)
 {
   if (isValid())
   {
-    p_func()->appendElement(element);
+    return p_func()->appendElement(element);
   }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns root element. */

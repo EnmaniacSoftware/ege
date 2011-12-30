@@ -43,7 +43,7 @@ class XmlDocumentPrivate
     /* Returns first child with the given name. */
     PXmlElement firstChild(const String& name);
     /* Appends new element to document. */
-    void appendElement(const PXmlElement& element);
+    bool appendElement(const PXmlElement& element);
 
     /* Returns root element. */
     PXmlElement rootElement();

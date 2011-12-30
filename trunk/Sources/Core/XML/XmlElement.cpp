@@ -8,10 +8,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(XmlElement)
 EGE_DEFINE_DELETE_OPERATORS(XmlElement)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 XmlElement::XmlElement() : Object(NULL)
 {
@@ -23,7 +21,8 @@ XmlElement::XmlElement(const String& name) : Object(NULL)
   m_p = ege_new XmlElementPrivate(this, name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElement::XmlElement(XmlElementPrivate* p) : Object(NULL), m_p(p)
+XmlElement::XmlElement(XmlElementPrivate* p) : Object(NULL), 
+                                               m_p(p)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -60,15 +59,30 @@ bool XmlElement::hasAttribute(const String& name) const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Sets attribute with a given value. 
+/* Sets attribute with a given string value. 
  * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
  */
-void XmlElement::setAttribute(const String& name, const String& value)
+bool XmlElement::setAttribute(const String& name, const String& value)
 {
   if (isValid())
   {
-    p_func()->setAttribute(name, value);
+    return p_func()->setAttribute(name, value);
   }
+
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Sets attribute with a given boolean value. 
+ * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+ */
+bool XmlElement::setAttribute(const String& name, bool value)
+{
+  if (isValid())
+  {
+    return p_func()->setAttribute(name, value ? "true" : "false");
+  }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns first child element. If any name is given returned will be first element with given name. */
@@ -95,12 +109,14 @@ String XmlElement::name() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Appends new child element. */
-void XmlElement::appendChildElement(const PXmlElement& element)
+bool XmlElement::appendChildElement(const PXmlElement& element)
 {
   if (isValid())
   {
-    p_func()->appendChildElement(element->p_func());
+    return p_func()->appendChildElement(element->p_func());
   }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns first attribute. */

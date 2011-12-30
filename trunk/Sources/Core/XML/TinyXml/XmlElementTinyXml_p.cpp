@@ -6,21 +6,23 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(XmlElementPrivate)
 EGE_DEFINE_DELETE_OPERATORS(XmlElementPrivate)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElementPrivate::XmlElementPrivate(XmlElement* base) : m_base(base), m_element(NULL), m_deallocElement(false)
+XmlElementPrivate::XmlElementPrivate(XmlElement* base) : m_base(base), 
+                                                         m_element(NULL), 
+                                                         m_deallocElement(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElementPrivate::XmlElementPrivate(XmlElement* base, const String& name) : m_base(base), m_deallocElement(true)
+XmlElementPrivate::XmlElementPrivate(XmlElement* base, const String& name) : m_base(base), 
+                                                                             m_deallocElement(true)
 {
   m_element = new TiXmlElement(name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElementPrivate::XmlElementPrivate(TiXmlElement* element, XmlElement* base) : m_base(base), m_deallocElement(false)
+XmlElementPrivate::XmlElementPrivate(TiXmlElement* element, XmlElement* base) : m_base(base), 
+                                                                                m_deallocElement(false)
 {
   m_element = element;
 }
@@ -54,12 +56,15 @@ bool XmlElementPrivate::hasAttribute(const String& name) const
 /* Sets attribute with a given value. 
  * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
  */
-void XmlElementPrivate::setAttribute(const String& name, const String& value)
+bool XmlElementPrivate::setAttribute(const String& name, const String& value)
 {
   if (isValid())
   {
     m_element->SetAttribute(name, value);
+    return true;
   }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns first child element. If any name is given returned will be first element with given name. */
@@ -104,14 +109,16 @@ void XmlElementPrivate::setElement(TiXmlElement* element)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Appends new child element. */
-void XmlElementPrivate::appendChildElement(const XmlElementPrivate* element)
+bool XmlElementPrivate::appendChildElement(const XmlElementPrivate* element)
 {
   EGE_ASSERT(isValid());
   if (m_element && element)
   {
     // NOTE: taking over ownership
-    m_element->LinkEndChild(element->element(true));
+    return (NULL != m_element->LinkEndChild(element->element(true)));
   }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns first attribute. */

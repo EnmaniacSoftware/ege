@@ -88,9 +88,6 @@
     <Filter Include="Win32\Timer">
       <UniqueIdentifier>{07d6b3c7-c933-4e30-ad93-e2d000239f48}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\File">
-      <UniqueIdentifier>{37b16d40-4fac-4a87-9902-c1c884e2bccd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Device">
       <UniqueIdentifier>{5232082b-8e65-44fe-8361-051d6d53f025}</UniqueIdentifier>
     </Filter>
@@ -165,6 +162,9 @@
     </Filter>
     <Filter Include="Core\Data\Crypto">
       <UniqueIdentifier>{3abc6d54-baea-4a5a-a348-0d4e4f8df1b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\File">
+      <UniqueIdentifier>{37b16d40-4fac-4a87-9902-c1c884e2bccd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

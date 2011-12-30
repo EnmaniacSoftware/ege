@@ -44,6 +44,8 @@ class FilePrivate
     bool isOpen() const;
     /* Returns file size. Returns -1 if error occured. */
     s64 size();
+    /* Returns TRUE if file exists. */
+    bool exists() const;
 
   private:
 

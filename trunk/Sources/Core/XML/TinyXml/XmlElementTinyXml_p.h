@@ -40,10 +40,10 @@ class XmlElementPrivate
 
     /* Returns value of given attribute if present. Otherwise, returns default value. */
     String attribute(const String& name, const String& defValue) const;
-    /* Sets attribute with a given value. 
+    /* Sets attribute with a given string value. 
      * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
      */
-    void setAttribute(const String& name, const String& value);
+    bool setAttribute(const String& name, const String& value);
     /* Returns TRUE if given attribute exists. */
     bool hasAttribute(const String& name) const;
     /* Returns first attribute. */
@@ -54,7 +54,7 @@ class XmlElementPrivate
     /* Returns next child element. If any name is given returned will be next element with given name. */
     XmlElementPrivate* nextChild(const String& name) const;
     /* Appends new child element. */
-    void appendChildElement(const XmlElementPrivate* element);
+    bool appendChildElement(const XmlElementPrivate* element);
 
     /* Returns element name. */
     String name() const;
