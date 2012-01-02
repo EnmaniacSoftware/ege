@@ -38,6 +38,9 @@ class PhysicsComponent : public IComponent
 
   public:
 
+    /* Constructor used to create non-managable component. */
+    PhysicsComponent();
+    /* Constructor used to create managable component. */
     PhysicsComponent(Application* app, const String& name, EGEPhysics::ComponentType type = EGEPhysics::COMPONENT_DYNAMIC);
    ~PhysicsComponent();
 
@@ -139,7 +142,7 @@ class PhysicsComponent : public IComponent
     bool m_allowSleep;
     /*! List of joints attached. */
     List<PhysicsJoint*> m_joints;
-    /*! Pointer to physics manager. */
+    /*! Pointer to physics manager. Can be NULL if component is not managable. */
     PhysicsManager* m_manager;
 };
 
