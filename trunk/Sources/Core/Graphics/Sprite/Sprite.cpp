@@ -9,6 +9,14 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(Sprite)
 EGE_DEFINE_DELETE_OPERATORS(Sprite)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sprite::Sprite() : Object(NULL), 
+                   m_state(STATE_STOPPED), 
+                   m_name(""),
+                   m_frameIndex(0),
+                   m_finishPolicy(FP_STOP)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Sprite::Sprite(Application* app, const String& name) : Object(app), 
                                                        m_state(STATE_STOPPED), 
                                                        m_name(name),
@@ -151,5 +159,11 @@ void Sprite::setTexture(const PTextureImage& texture)
 void Sprite::setFinishPolicy(FinishPolicy policy)
 {
   m_finishPolicy = policy;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets name. */
+void Sprite::setName(const String& name)
+{
+  m_name = name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -25,6 +25,7 @@ class Sprite : public Object
 {
   public:
 
+    Sprite();
     Sprite(Application* app, const String& name);
    ~Sprite();
 
@@ -71,6 +72,8 @@ class Sprite : public Object
     void setTexture(const PTextureImage& texture);
     /*! Returns name. */
     inline const String& name() const { return m_name; }
+    /* Sets name. */
+    void setName(const String& name);
     /*! Returns TRUE if sprite is being played. */
     inline bool isPlaying() const { return (state() & STATE_PLAYING) ? true : false; }
     /* Sets/unsets finish policy. */
