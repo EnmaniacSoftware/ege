@@ -54,7 +54,7 @@ class LightningEffect : public EGE::SceneNodeObject
   private:
 
     /* SceneNodeObject override. Adds object render data for rendering with given renderer. */
-    bool addForRendering(EGE::Renderer* renderer) override;
+    bool addForRendering(EGE::Renderer* renderer, const EGE::Matrix4f& transform = EGE::Matrix4f::IDENTITY) override;
     /* Generates segments. */
     EGE::List<Segment> generateSegments(const EGE::Vector2f& start, const EGE::Vector2f end, EGE::s32 steps, bool allowOffshots);
     /* Generates segments. */

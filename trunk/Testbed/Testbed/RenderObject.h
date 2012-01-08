@@ -3,6 +3,7 @@
 
 #include <EGEScene.h>
 #include <EGEGraphics.h>
+#include <EGEMatrix.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -29,7 +30,7 @@ class RenderObject : public EGE::SceneNodeObject
   private:
 
     /* SceneNodeObject override. Adds object render data for rendering with given renderer. */
-    bool addForRendering(EGE::Renderer* renderer) override;
+    bool addForRendering(EGE::Renderer* renderer, const EGE::Matrix4f& transform = EGE::Matrix4f::IDENTITY) override;
 
   private:
 

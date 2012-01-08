@@ -100,10 +100,10 @@ void CurvesTest::preRender(PRenderTarget target)
 {
   EGE_UNUSED(target);
 
-  app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, RenderObjectFactory::Create(&m_splines[0], app(), "0", Vector4f::ZERO, EGEVertexBuffer::ST_V3_C4, 50));
-  app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, RenderObjectFactory::Create(&m_splines[1], app(), "1", Vector4f::ZERO, EGEVertexBuffer::ST_V3_C4, 50));
-  app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, RenderObjectFactory::Create(&m_splines[2], app(), "2", Vector4f::ZERO, EGEVertexBuffer::ST_V3_C4, 50));
-  app()->graphics()->renderer()->addForRendering(Matrix4f::IDENTITY, RenderObjectFactory::Create(&m_splines[3], app(), "3", Vector4f::ZERO, EGEVertexBuffer::ST_V3_C4, 50));
+  app()->graphics()->renderer()->addForRendering(RenderObjectFactory::Create(&m_splines[0], app(), "0", Vector4f::ZERO, EGEVertexBuffer::ST_V3_C4, 50));
+  app()->graphics()->renderer()->addForRendering(RenderObjectFactory::Create(&m_splines[1], app(), "1", Vector4f::ZERO, EGEVertexBuffer::ST_V3_C4, 50));
+  app()->graphics()->renderer()->addForRendering(RenderObjectFactory::Create(&m_splines[2], app(), "2", Vector4f::ZERO, EGEVertexBuffer::ST_V3_C4, 50));
+  app()->graphics()->renderer()->addForRendering(RenderObjectFactory::Create(&m_splines[3], app(), "3", Vector4f::ZERO, EGEVertexBuffer::ST_V3_C4, 50));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Pointer event receiver. */

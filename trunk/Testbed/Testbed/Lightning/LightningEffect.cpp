@@ -33,11 +33,8 @@ LightningEffect::LightningEffect(Application* app) : SceneNodeObject("lightning-
     m_renderDataQuad2->setMaterial(resource->createInstance());
   }
 
-  m_renderDataQuad->indexBuffer()->create(IndexBuffer::SIZE_16BIT, 2);
-  m_renderDataQuad2->indexBuffer()->create(IndexBuffer::SIZE_16BIT, 2);
- 
-
-  
+  m_renderDataQuad->indexBuffer()->setIndexSize(EGEIndexBuffer::IS_16BIT);
+  m_renderDataQuad2->indexBuffer()->setIndexSize(EGEIndexBuffer::IS_16BIT);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 LightningEffect::~LightningEffect()
@@ -45,13 +42,13 @@ LightningEffect::~LightningEffect()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! SceneNodeObject override. Adds object render data for rendering with given renderer. */
-bool LightningEffect::addForRendering(Renderer* renderer)
+bool LightningEffect::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (m_fadeTime.seconds() < 1.0f)
   {
-    renderer->addForRendering(parentNode()->worldMatrix(), m_renderData);
-    renderer->addForRendering(parentNode()->worldMatrix(), m_renderDataQuad);
-    renderer->addForRendering(parentNode()->worldMatrix(), m_renderDataQuad2);
+    renderer->addForRendering(m_renderData, parentNode()->worldMatrix().multiply(transform));
+    renderer->addForRendering(m_renderDataQuad, parentNode()->worldMatrix().multiply(transform));
+    renderer->addForRendering(m_renderDataQuad2, parentNode()->worldMatrix().multiply(transform));
   }
 
   return true;
@@ -322,20 +319,20 @@ void LightningEffect::pointerEvent(PPointerData data)
         // begin
         *data++ = Math::Lerp(segment.start.x, segment.end.x, -beginEndOffset) + segment.startNormal.x * width * segment.intensity;
         *data++ = Math::Lerp(segment.start.y, segment.end.y, -beginEndOffset) + segment.startNormal.y * width * segment.intensity;
-        *data++ = segment._begin ? 0 : 0.25f;
+        *data++ = segment._begin ? 0.0f : 0.25f;
         *data++ = 0;
         *data++ = 1;
-        *data++ = (color) ? 0 : 1;
-        *data++ = (color) ? 0 : 1;
+        *data++ = (color) ? 0.0f : 1.0f;
+        *data++ = (color) ? 0.0f : 1.0f;
         *data++ = segment.intensity;
 
         *data++ = Math::Lerp(segment.start.x, segment.end.x, -beginEndOffset) - segment.startNormal.x * width * segment.intensity;
         *data++ = Math::Lerp(segment.start.y, segment.end.y, -beginEndOffset) - segment.startNormal.y * width * segment.intensity;
-        *data++ = segment._begin ? 0 : 0.25f;
+        *data++ = segment._begin ? 0.0f : 0.25f;
         *data++ = 1;
         *data++ = 1;
-        *data++ = (color) ? 0 : 1;
-        *data++ = (color) ? 0 : 1;
+        *data++ = (color) ? 0.0f : 1.0f;
+        *data++ = (color) ? 0.0f : 1.0f;
         *data++ = segment.intensity;
 
         // end of begin begining of middle
@@ -380,18 +377,18 @@ void LightningEffect::pointerEvent(PPointerData data)
         *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f + beginEndOffset) + segment.endNormal.y * width * segment.intensity;
         *data++ = segment._end ? 1.0f : 0.75f;
         *data++ = 0;
-        *data++ = (color) ? 0 : 1;
+        *data++ = (color) ? 0.0f : 1.0f;
         *data++ = 1;
-        *data++ = (color) ? 0 : 1;
+        *data++ = (color) ? 0.0f : 1.0f;
         *data++ = segment.intensity;
 
         *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f + beginEndOffset) - segment.endNormal.x * width * segment.intensity;
         *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f + beginEndOffset) - segment.endNormal.y * width * segment.intensity;
         *data++ = segment._end ? 1.0f : 0.75f;
         *data++ = 1;
-        *data++ = (color) ? 0 : 1;
+        *data++ = (color) ? 0.0f : 1.0f;
         *data++ = 1;
-        *data++ = (color) ? 0 : 1;
+        *data++ = (color) ? 0.0f : 1.0f;
         *data++ = segment.intensity;
       }
 
@@ -454,17 +451,17 @@ void LightningEffect::pointerEvent(PPointerData data)
         *data++ = segment._begin ? 0 : 0.25f;
         *data++ = 0;
         *data++ = 1;
-        *data++ = (color) ? 0 : 1;
-        *data++ = (color) ? 0 : 1;
+        *data++ = (color) ? 0.0f : 1.0f;
+        *data++ = (color) ? 0.0f : 1.0f;
         *data++ = segment.intensity;
 
         *data++ = Math::Lerp(segment.start.x, segment.end.x, 0) - normal.x * width * segment.intensity;
         *data++ = Math::Lerp(segment.start.y, segment.end.y, 0) - normal.y * width * segment.intensity;
-        *data++ = segment._begin ? 0 : 0.25f;
+        *data++ = segment._begin ? 0.0f : 0.25f;
         *data++ = 1;
         *data++ = 1;
-        *data++ = (color) ? 0 : 1;
-        *data++ = (color) ? 0 : 1;
+        *data++ = (color) ? 0.0f : 1.0f;
+        *data++ = (color) ? 0.0f : 1.0f;
         *data++ = segment.intensity;
 
         // end of begin begining of middle
@@ -518,18 +515,18 @@ void LightningEffect::pointerEvent(PPointerData data)
         *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f) + normal.y * width * segment.intensity;
         *data++ = segment._end ? 1.0f : 0.75f;
         *data++ = 0;
-        *data++ = (color) ? 0 : 1;
+        *data++ = (color) ? 0.0f : 1.0f;
         *data++ = 1;
-        *data++ = (color) ? 0 : 1;
+        *data++ = (color) ? 0.0f : 1.0f;
         *data++ = segment.intensity;
 
         *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f) - normal.x * width * segment.intensity;
         *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f) - normal.y * width * segment.intensity;
         *data++ = segment._end ? 1.0f : 0.75f;
         *data++ = 1;
-        *data++ = (color) ? 0 : 1;
+        *data++ = (color) ? 0.0f : 1.0f;
         *data++ = 1;
-        *data++ = (color) ? 0 : 1;
+        *data++ = (color) ? 0.0f : 1.0f;
         *data++ = segment.intensity;
       }
 

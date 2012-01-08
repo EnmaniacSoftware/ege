@@ -49,8 +49,9 @@ bool RippleEffect::initialize(s32 width, s32 height, const Vector2i& gridSize, P
 
   // create render data
   m_renderData = ege_new RenderComponent(m_app, name(), EGEGraphics::RP_MAIN);
+  m_renderData->indexBuffer()->setIndexSize(EGEIndexBuffer::IS_16BIT);
   if ((NULL == m_renderData) || !m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_T2) ||
-      !m_renderData->indexBuffer()->create(IndexBuffer::SIZE_16BIT, 6 * (m_gridSize.x - 1) * (m_gridSize.y - 1)))
+      !m_renderData->indexBuffer()->setSize(6 * (m_gridSize.x - 1) * (m_gridSize.y - 1)))
   {
     // error!
     return false;
@@ -120,9 +121,9 @@ bool RippleEffect::initialize(s32 width, s32 height, const Vector2i& gridSize, P
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! SceneNodeObject override. Adds object render data for rendering with given renderer. */
-bool RippleEffect::addForRendering(Renderer* renderer)
+bool RippleEffect::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
-  return renderer->addForRendering(parentNode()->worldMatrix(), m_renderData);
+  return renderer->addForRendering(m_renderData, parentNode()->worldMatrix().multiply(transform));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates effect. */

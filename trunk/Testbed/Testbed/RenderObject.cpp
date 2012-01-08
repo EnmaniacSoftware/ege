@@ -293,8 +293,8 @@ RenderObject* RenderObject::CreateRectangle(Application* app, const String& name
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! SceneNodeObject override. Adds object render data for rendering with given renderer. */
-bool RenderObject::addForRendering(EGE::Renderer* renderer)
+bool RenderObject::addForRendering(EGE::Renderer* renderer, const Matrix4f& transform)
 {
-  return renderer->addForRendering(parentNode()->worldMatrix(), m_renderData);
+  return renderer->addForRendering(m_renderData, parentNode()->worldMatrix().multiply(transform));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

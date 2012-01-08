@@ -44,7 +44,7 @@ class RippleEffect : public EGE::SceneNodeObject
   private:
 
     /* SceneNodeObject override. Adds object render data for rendering with given renderer. */
-    bool addForRendering(EGE::Renderer* renderer) override;
+    bool addForRendering(EGE::Renderer* renderer, const EGE::Matrix4f& transform = EGE::Matrix4f::IDENTITY) override;
     /* Computes the distance of the given window coordinate to the nearest window corner (in pixels). */
     EGE::s32 rippleMaxDistance(const EGE::Vector2i& pos) const;
     /* Precalculates data. */
