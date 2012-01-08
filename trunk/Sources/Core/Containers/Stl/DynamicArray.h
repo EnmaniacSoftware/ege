@@ -75,7 +75,7 @@ void DynamicArray<T>::removeAt(s32 index)
 template <typename T>
 const T DynamicArray<T>::last(const T& defaultValue) const
 {
-  return (0 == this->size()) ? defaultValue : this->at(this->size() - 1);
+  return this->at(this->size() - 1, defaultValue);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given object is present. */
