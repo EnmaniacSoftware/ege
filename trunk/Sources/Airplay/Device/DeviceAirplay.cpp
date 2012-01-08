@@ -34,10 +34,12 @@ EGEDevice::Device Device::GetDevice()
         case -565348713: return EGEDevice::DEVICE_IPHONE_3G;
         case -565347625: return EGEDevice::DEVICE_IPHONE_3GS;
         case -565346536: return EGEDevice::DEVICE_IPHONE_4;
+        case -565345447: return EGEDevice::DEVICE_IPHONE_4S;
         case 1494189823: return EGEDevice::DEVICE_IPOD_TOUCH_1;
         case 1494190912: return EGEDevice::DEVICE_IPOD_TOUCH_2;
         case 1477586929: return EGEDevice::DEVICE_IPAD;
-      }
+        case 1477588018: return EGEDevice::DEVICE_IPAD_2;
+      }      
       break;
 
     // for Windows
