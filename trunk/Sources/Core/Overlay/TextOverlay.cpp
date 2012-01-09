@@ -155,6 +155,8 @@ void TextOverlay::updateRenderData()
 /*! Overlay override. Renders element. */
 void TextOverlay::render(const Viewport* viewport, Renderer* renderer)
 {
+  EGE_UNUSED(viewport);
+
   if (visible())
   {
     PRenderComponent renderComponent = this->renderData();

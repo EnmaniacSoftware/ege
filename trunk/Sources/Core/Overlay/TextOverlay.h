@@ -36,6 +36,8 @@ class TextOverlay : public Overlay
     virtual void setAlignment(Alignment align) override;
     /* Returns text size (in pixels). */
     Vector2f textSize();
+    /* Overlay override. Updates overlay. */
+    void update(const Time& time) override;
 
     // visiblility related methods
     //inline bool isVisible( void ) const { return m_bVisible; }                                                // returns TRUE if overlay is visible
@@ -65,8 +67,6 @@ class TextOverlay : public Overlay
 
   private:
 
-    /* Overlay override. Updates overlay. */
-    void update(const Time& time) override;
     /* Overlay override. Renders element. */
     void render(const Viewport* viewport, Renderer* renderer) override;
     /* Overlay override. Initializes object. */

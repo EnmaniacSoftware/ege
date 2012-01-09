@@ -133,6 +133,13 @@
 
   </group>
 
+  <!-- Scrollable are test resources -->
+  <group name='scrollable-area-test'>
+
+    <material name='background' diffuse-color='0.75 0.75 0.75 1' />
+
+  </group>
+
   <include path='fonts.xml' />
   
 </resources>

@@ -15,6 +15,7 @@
 #include "Localization/LocalizationTest.h"
 #include "Sound/SoundTest.h"
 #include "Fonts/FontsTest.h"
+#include "ScrollableArea/ScrollableAreaTest.h"
 
 //#include <gl/gl.h>
 //#include <gl/glu.h>
@@ -93,6 +94,7 @@ bool App::start()
   m_tests.push_back(new CurvesTest(this));
   m_tests.push_back(new FontsTest(this));
   m_tests.push_back(new LightningTest(this));
+  m_tests.push_back(new ScrollableAreaTest(this));
 
   // select test to run
   selectTest();

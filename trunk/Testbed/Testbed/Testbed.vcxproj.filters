@@ -43,6 +43,9 @@
     <Filter Include="Tests\Fonts">
       <UniqueIdentifier>{cf4dc2be-a6ed-4d98-a87c-44a21081d18b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\ScrollableArea">
+      <UniqueIdentifier>{d7432585-7289-4b60-bc9f-f8815fbd3c15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -90,6 +93,12 @@
     <ClCompile Include="Test.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="ScrollableArea\ScrollableArea.cpp">
+      <Filter>Tests\ScrollableArea</Filter>
+    </ClCompile>
+    <ClCompile Include="ScrollableArea\ScrollableAreaTest.cpp">
+      <Filter>Tests\ScrollableArea</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -133,6 +142,12 @@
     </ClInclude>
     <ClInclude Include="Fonts\FontsTest.h">
       <Filter>Tests\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrollableArea\ScrollableArea.h">
+      <Filter>Tests\ScrollableArea</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrollableArea\ScrollableAreaTest.h">
+      <Filter>Tests\ScrollableArea</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

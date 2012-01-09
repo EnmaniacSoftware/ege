@@ -25,6 +25,9 @@ OPTIMIZATIONS:
 - Text Overlays
   - Indexed geometry
 
+- Rendering
+  - Early removal of geometry if its outside of clipping region
+
 CODING:
 
  - VertexBuffer/IndexBuffer sizes are determined by create method ONLY. Locks should not internally redefine size but return errror. Thats for when we want to update only several 
