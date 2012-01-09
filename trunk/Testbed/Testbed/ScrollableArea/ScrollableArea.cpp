@@ -13,8 +13,8 @@ EGE_DEFINE_DELETE_OPERATORS(ScrollableArea)
 ScrollableArea::ScrollableArea(Application* app) : m_app(app),
                                                    m_state(STATE_IDLE),
                                                    m_dampingCoefficient(0.95f, 0.95f),
-                                                   m_throwCoefficient(25.0f, 25.0f),
-                                                   m_baseReturnCoefficient(5.0f, 5.0f),
+                                                   m_throwCoefficient(10.0f, 10.0f),
+                                                   m_baseReturnCoefficient(3.0f, 3.0f),
                                                    m_direction(DIRECTION_BOTH)
 {
 }
@@ -26,6 +26,8 @@ ScrollableArea::~ScrollableArea()
 /*! Updates object. */
 void ScrollableArea::update(const Time& time)
 {
+  static const float32 cutOffValue = 0.1f;
+
   // update objects
   for (ObjectsList::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
@@ -42,8 +44,9 @@ void ScrollableArea::update(const Time& time)
   }
 
   // upate scrolling
-  Vector2f displacement = m_currentPointerPosition - m_lastPointerPosition;
+  Vector2f displacement = m_lastPointerPosition - m_currentPointerPosition;
 
+  // limit movement according to direction
   if (0 == (m_direction & DIRECTION_VERTICAL))
   {
     displacement.y = 0.0f;
@@ -58,10 +61,10 @@ void ScrollableArea::update(const Time& time)
   if (STATE_DRAGGED == m_state)
   {
     // while content is being dragged scroll immediately to final position
-    m_scrollOffset -= displacement;
+    m_scrollOffset += displacement;
 
-    // no velocity as we go to final position immediately
-    m_scrollVelocity = Vector2f::ZERO;
+    // calculate momentum based on durrent displacement
+    m_scrollVelocity = displacement * m_throwCoefficient;
   }
   else
   {
@@ -70,37 +73,32 @@ void ScrollableArea::update(const Time& time)
     {
       m_scrollVelocity.x = -m_scrollOffset.x * m_baseReturnCoefficient.x;
     }
-    else if (m_scrollOffset.x > m_scrollRange.x)
+    else if (cutOffValue < (m_scrollOffset.x - m_scrollRange.x))
     {
       m_scrollVelocity.x = -(m_scrollOffset.x - m_scrollRange.x) * m_baseReturnCoefficient.x;
-    }
-    else
-    {
-      m_scrollVelocity.x -= displacement.x * m_throwCoefficient.x;
     }
 
     if (0 > m_scrollOffset.y)
     {
       m_scrollVelocity.y = -m_scrollOffset.y * m_baseReturnCoefficient.y;
     }
-    else if (m_scrollOffset.y > m_scrollRange.y)
+    else if (cutOffValue < (m_scrollOffset.y - m_scrollRange.y))
     {
       m_scrollVelocity.y = -(m_scrollOffset.y - m_scrollRange.y) * m_baseReturnCoefficient.y;
     }
-    else
-    {
-      m_scrollVelocity.y -= displacement.y * m_throwCoefficient.y;
-    }
+
+    // update position
+    m_scrollOffset += m_scrollVelocity * time.seconds();
+
+    // dampen velocity
+    m_scrollVelocity.x *= m_dampingCoefficient.x;
+    m_scrollVelocity.y *= m_dampingCoefficient.y;
   }
+  
+  //EGE_PRINT("Pos: %.2f Vel: %.2f", m_scrollOffset.y, m_scrollVelocity.y);
 
   // update cache
   m_lastPointerPosition = m_currentPointerPosition;
-
-  // update position
-  m_scrollOffset += m_scrollVelocity * time.seconds();
-
-  m_scrollVelocity.x *= m_dampingCoefficient.x;
-  m_scrollVelocity.y *= m_dampingCoefficient.y;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pointer event processor. */
