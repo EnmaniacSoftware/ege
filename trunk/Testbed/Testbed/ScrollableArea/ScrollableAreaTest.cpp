@@ -109,7 +109,7 @@ void ScrollableAreaTest::groupLoadComplete(const String& name)
   {
     // create scrollable area
     m_area = ege_new ScrollableArea(app());
-    m_area->setDirection(ScrollableArea::DIRECTION_VERTICAL);
+    m_area->setDirection(ScrollableArea::DIRECTION_BOTH);
     m_area->physics().setPosition(Vector4f(50, 50, 0));
     m_area->physics().setScale(Vector4f(400, 500, 0));
 
@@ -130,7 +130,7 @@ void ScrollableAreaTest::groupLoadComplete(const String& name)
       {
         PTextOverlay text = ege_new TextOverlay(app(), "text");
         text->setFont(fontResource->font());
-        text->setText(Text::Format("Text line number %d", i + 1));
+        text->setText(Text::Format("Text line number %d YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY", i + 1));
         text->physics()->setPosition(Vector4f(0, i * 50.0f, 0));
         m_area->addObject(text);
       }

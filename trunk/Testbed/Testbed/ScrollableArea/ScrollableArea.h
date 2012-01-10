@@ -39,6 +39,8 @@ class ScrollableArea
 
   public:
 
+    /* Returns TRUE if object is valid. */
+    bool isValid() const;
     /* Updates object. */
     void update(const EGE::Time& time);
     /* Pointer event processor. */
@@ -57,7 +59,18 @@ class ScrollableArea
     void setThrowCoefficient(const EGE::Vector2f& coefficient);
     /* Sets scroll base return coefficient. */
     void setBaseReturnCoefficient(const EGE::Vector2f& coefficient);
+    /* Enables/disables scrollbars. */
+    void setScrollbarsEnabled(bool set);
 
+  private:
+
+    /* Shows scrollbars. */
+    void showScrollbars();
+    /* Hides scrollbars. */
+    void hidesScrollbars();
+    /* Updates scrollbars. */
+    void updateScrollbars(const EGE::Time& time);
+    
   private:
 
     /*! Available states. */
@@ -65,6 +78,15 @@ class ScrollableArea
     {
       STATE_IDLE,
       STATE_DRAGGED
+    };
+
+    /*! Available scrollbar states. */
+    enum ScrollbarState
+    {
+      SS_HIDDEN,
+      SS_FADING_IN,
+      SS_SHOWN,
+      SS_FADING_OUT
     };
 
     typedef EGE::List<EGE::PObject> ObjectsList;
@@ -103,6 +125,16 @@ class ScrollableArea
     EGE::Vector2f m_baseReturnCoefficient;
     /*! Current scroll direction. */
     Direction m_direction;
+    /*! Scollbar visibility flag. */
+    bool m_scrollbarsEnabled;
+    /*! Scrollbars current state time. */
+    EGE::Time m_scrollbarsStateTime;
+    /*! Scrollbars fade duration. */
+    EGE::Time m_scrollbarsFadeDuration;
+    /*! Current scrollbars state. */
+    ScrollbarState m_scrollbarsState;
+    /*! Scrollbar render component. */
+    EGE::PRenderComponent m_scrollbarRenderData;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
