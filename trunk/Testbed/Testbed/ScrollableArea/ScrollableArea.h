@@ -51,6 +51,10 @@ class ScrollableArea
     inline EGE::PhysicsComponent& physics() { return m_physics; }
     /* Adds object. */
     EGE::EGEResult addObject(EGE::PObject object);
+    /* Removes object. */
+    void removeObject(EGE::PObject object);
+    /* Removes all objects. */
+    void removeAll();
     /* Sets scroll direction. */
     void setDirection(Direction direction);
     /* Sets scroll damping coefficient. */
@@ -70,7 +74,9 @@ class ScrollableArea
     void hidesScrollbars();
     /* Updates scrollbars. */
     void updateScrollbars(const EGE::Time& time);
-    
+    /* Updates current content with given size. */
+    void updateContent(const EGE::Rectf& rectangle);
+
   private:
 
     /*! Available states. */
@@ -135,6 +141,8 @@ class ScrollableArea
     ScrollbarState m_scrollbarsState;
     /*! Scrollbar render component. */
     EGE::PRenderComponent m_scrollbarRenderData;
+    /*! Dirty content flag. */
+    bool m_dirtyContent;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

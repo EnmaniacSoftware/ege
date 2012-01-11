@@ -18,7 +18,8 @@ ScrollableArea::ScrollableArea(Application* app) : m_app(app),
                                                    m_direction(DIRECTION_BOTH),
                                                    m_scrollbarsEnabled(true),
                                                    m_scrollbarsFadeDuration(0.5f),
-                                                   m_scrollbarsState(SS_HIDDEN)
+                                                   m_scrollbarsState(SS_HIDDEN),
+                                                   m_dirtyContent(false)
 {
   PMaterial material = ege_new Material(app);
   if (material)
@@ -57,6 +58,34 @@ bool ScrollableArea::isValid() const
 void ScrollableArea::update(const Time& time)
 {
   static const float32 cutOffValue = 0.1f;
+
+  // check if content needs to be recalculated
+  if (m_dirtyContent)
+  {
+    // reset content size
+    m_contentSize = Vector2f::ZERO;
+
+    // go thru all objects
+    for (ObjectsList::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+    {
+      // process according to object id
+      switch ((*it)->uid())
+      {
+        case EGE_OBJECT_UID_OVERLAY_TEXT:
+          {
+            TextOverlay* overlay = ege_cast<TextOverlay*>((*it).object());
+
+            // update content
+            Rectf rectangle(overlay->physics()->position().x, overlay->physics()->position().y, overlay->textSize().x, overlay->textSize().y);
+            updateContent(rectangle);
+          }
+          break;
+      }
+    }
+
+    // reset flag
+    m_dirtyContent = false;
+  }
 
   // update objects
   for (ObjectsList::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
@@ -355,21 +384,12 @@ EGEResult ScrollableArea::addObject(PObject object)
   switch (object->uid())
   {
     case EGE_OBJECT_UID_OVERLAY_TEXT:
-      {
-        TextOverlay* overlay = ege_cast<TextOverlay*>(object);
 
-        // update content size
-        m_contentSize.x = Math::Max(m_contentSize.x, overlay->physics()->position().x + overlay->textSize().x);
-        m_contentSize.y = Math::Max(m_contentSize.y, overlay->physics()->position().y + overlay->textSize().y);
+      // add to pool
+      m_objects.push_back(object);
 
-        // update scroll range
-        m_scrollRange.x = Math::Max(0.0f, m_contentSize.x - m_physics.scale().x);
-        m_scrollRange.y = Math::Max(0.0f, m_contentSize.y - m_physics.scale().y);
-
-        // add to pool
-        m_objects.push_back(object);
-
-      }
+      // invalidate content
+      m_dirtyContent = true;
       break;
   }
 
@@ -518,5 +538,35 @@ void ScrollableArea::updateScrollbars(const Time& time)
 void ScrollableArea::setScrollbarsEnabled(bool set)
 {
   m_scrollbarsEnabled = set;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes object. */
+void ScrollableArea::removeObject(PObject object)
+{
+  m_objects.remove(object);
+  m_dirtyContent = true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes all objects. */
+void ScrollableArea::removeAll()
+{
+  m_objects.clear();
+  m_dirtyContent = true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Updates current content with given rectagle. */
+void ScrollableArea::updateContent(const Rectf& rectangle)
+{
+  // update content size
+  m_contentSize.x = Math::Max(m_contentSize.x, rectangle.right());
+  m_contentSize.y = Math::Max(m_contentSize.y, rectangle.bottom());
+
+  // update scroll range
+  m_scrollRange.x = Math::Max(0.0f, m_contentSize.x - m_physics.scale().x);
+  m_scrollRange.y = Math::Max(0.0f, m_contentSize.y - m_physics.scale().y);
+
+  // make sure current offset is in range
+  m_scrollOffset.x = Math::Min(m_scrollOffset.x, m_scrollRange.x);
+  m_scrollOffset.y = Math::Min(m_scrollOffset.y, m_scrollRange.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

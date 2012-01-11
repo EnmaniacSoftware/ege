@@ -38,6 +38,10 @@ class XmlElement : public Object
      * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
      */
     bool setAttribute(const String& name, const String& value);
+    /* Sets attribute with a given integer value. 
+     * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+     */
+    bool setAttribute(const String& name, s32 value);
     /* Sets attribute with a given boolean value. 
      * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
      */
