@@ -98,6 +98,19 @@ bool XmlElement::setAttribute(const String& name, s32 value)
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets attribute with a given 64-bit integer value. 
+  * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+  */
+bool XmlElement::setAttribute(const String& name, s64 value)
+{
+  if (isValid())
+  {
+    return p_func()->setAttribute(name, String::Format("%ld", value));
+  }
+
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns first child element. If any name is given returned will be first element with given name. */
 PXmlElement XmlElement::firstChild(const String& name) const
 {
