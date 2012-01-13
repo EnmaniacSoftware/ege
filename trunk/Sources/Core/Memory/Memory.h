@@ -32,6 +32,11 @@ EGE_NAMESPACE_BEGIN
                                               void * classname::operator new[](size_t size, const char* filename, int line) \
                                               { void* pData = EGE::MemoryManager::Malloc(size, filename, line); return pData; }
 
+  #define EGE_DEFINE_NEW_OPERATORS_INLINE void* operator new(size_t size, const char* filename, int line) \
+                                          { void* pData = EGE::MemoryManager::Malloc(size, filename, line); return pData; } \
+                                          void * operator new[](size_t size, const char* filename, int line) \
+                                          { void* pData = EGE::MemoryManager::Malloc(size, filename, line); return pData; }
+
   #define EGE_DEFINE_DELETE_OPERATORS(classname) void classname::operator delete (void *ptr) \
                                                  { EGE::MemoryManager::Free(ptr); } \
                                                  void classname::operator delete (void *ptr, const char* /*filename*/, int /*line*/) \
@@ -40,6 +45,15 @@ EGE_NAMESPACE_BEGIN
                                                  { EGE::MemoryManager::Free(ptr); } \
                                                  void classname::operator delete [](void *ptr, const char* /*filename*/, int /*line*/) \
                                                  { EGE::MemoryManager::Free(ptr); }
+
+  #define EGE_DEFINE_DELETE_OPERATORS_INLINE void operator delete (void *ptr) \
+                                             { EGE::MemoryManager::Free(ptr); } \
+                                             void operator delete (void *ptr, const char* /*filename*/, int /*line*/) \
+                                             { EGE::MemoryManager::Free(ptr); } \
+                                             void operator delete [] (void *ptr) \
+                                             { EGE::MemoryManager::Free(ptr); } \
+                                             void operator delete [](void *ptr, const char* /*filename*/, int /*line*/) \
+                                             { EGE::MemoryManager::Free(ptr); }
 
   #define ege_new new (__FILE__, __LINE__)
 

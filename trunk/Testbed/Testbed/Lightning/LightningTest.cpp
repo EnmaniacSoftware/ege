@@ -11,8 +11,11 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 LightningTest::LightningTest(App* app) : Test(app), 
-                                         m_effect(NULL)
+                                         m_effect(NULL),
+                                         m_effectLines(NULL),
+                                         m_effectQuads(NULL)
 {
+  ege_connect(app->graphics(), preRender, this, LightningTest::preRender);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 LightningTest::~LightningTest()
@@ -70,12 +73,28 @@ bool LightningTest::initialize()
 void LightningTest::update(const Time& time)
 {
   m_effect->update(time);
+  m_effectLines->update(time);
+
+  if (m_effectQuads)
+  {
+    m_effectQuads->update(time);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Pointer event receiver. */
 void LightningTest::pointerEvent(PPointerData data)
 {
   m_effect->pointerEvent(data);
+  m_effectLines->pointerEvent(data);
+
+  if (EGEInput::ACTION_BUTTON_DOWN == data->action())
+  {
+    if (m_effectQuads)
+    {
+      m_effectQuads->create(Vector2f(100, 350), Vector2f(600, 500), 5, true);
+      m_effectQuads->start();
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Slot called when resource group has been loaded. */
@@ -83,11 +102,35 @@ void LightningTest::groupLoadComplete(const String& name)
 {
   if ("lightning-test" == name)
   {
-    // initialize effect
+    // initialize effects
     m_effect = ege_new LightningEffect(app());
+    m_effectLines = ege_new LightningEffectLines(app());
+    m_effectQuads = ege_new LightningEffectQuads(app());
+
+    // setup effects
+    m_effectQuads->setOffshotAngle(Angle::FromDegrees(12.5f));
+    m_effectQuads->setOffshotAngleVariance(Angle::FromDegrees(2.5f));
 
     SceneNode* node = app()->sceneManager()->rootNode()->createChildSceneNode("lightning-effect");
     node->attachObject(m_effect);
+
+    node = app()->sceneManager()->rootNode()->createChildSceneNode("lightning-effect-lines");
+    node->attachObject(m_effectLines);
+
+    // assign materials
+    PResourceMaterial resource = app()->resourceManager()->resource(RESOURCE_NAME_MATERIAL, "beam");
+    m_effectQuads->renderData()->setMaterial(resource->createInstance());
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called before target is rendered. */
+void LightningTest::preRender(PRenderTarget target)
+{
+  EGE_UNUSED(target);
+
+  if (m_effectQuads)
+  {
+    m_effectQuads->render(app()->graphics()->renderer());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

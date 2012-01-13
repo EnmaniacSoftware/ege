@@ -99,6 +99,12 @@
     <ClCompile Include="ScrollableArea\ScrollableAreaTest.cpp">
       <Filter>Tests\ScrollableArea</Filter>
     </ClCompile>
+    <ClCompile Include="Lightning\LightningEffectLines.cpp">
+      <Filter>Tests\Lightning</Filter>
+    </ClCompile>
+    <ClCompile Include="Lightning\LightningEffectQuads.cpp">
+      <Filter>Tests\Lightning</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -148,6 +154,12 @@
     </ClInclude>
     <ClInclude Include="ScrollableArea\ScrollableAreaTest.h">
       <Filter>Tests\ScrollableArea</Filter>
+    </ClInclude>
+    <ClInclude Include="Lightning\LightningEffectLines.h">
+      <Filter>Tests\Lightning</Filter>
+    </ClInclude>
+    <ClInclude Include="Lightning\LightningEffectQuads.h">
+      <Filter>Tests\Lightning</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

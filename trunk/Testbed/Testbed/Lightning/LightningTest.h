@@ -4,6 +4,8 @@
 #include "Test.h"
 #include "RenderObject.h"
 #include "LightningEffect.h"
+#include "LightningEffectLines.h"
+#include "LightningEffectQuads.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -28,12 +30,21 @@ class LightningTest : public Test
     /* Test override. Slot called when resource group has been loaded. */
     void groupLoadComplete(const EGE::String& name) override;
 
+  private slots:
+
+    /* Slot called before target is rendered. */
+    void preRender(EGE::PRenderTarget target);
+
   private:
 
     /*! Scene object. */
     RenderObject* m_sceneObject;
     /*! Lightning effect object. */
     LightningEffect* m_effect;
+    /*! Lightning effect (based on lines) object. */
+    LightningEffectLines* m_effectLines;
+    /*! Lightning effect (based on quads) object. */
+    LightningEffectQuads* m_effectQuads;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

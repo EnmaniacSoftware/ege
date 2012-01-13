@@ -46,9 +46,9 @@ bool LightningEffect::addForRendering(Renderer* renderer, const Matrix4f& transf
 {
   if (m_fadeTime.seconds() < 1.0f)
   {
-    renderer->addForRendering(m_renderData, parentNode()->worldMatrix().multiply(transform));
-    renderer->addForRendering(m_renderDataQuad, parentNode()->worldMatrix().multiply(transform));
-    renderer->addForRendering(m_renderDataQuad2, parentNode()->worldMatrix().multiply(transform));
+    //renderer->addForRendering(m_renderData, parentNode()->worldMatrix().multiply(transform));
+    //renderer->addForRendering(m_renderDataQuad, parentNode()->worldMatrix().multiply(transform));
+    //renderer->addForRendering(m_renderDataQuad2, parentNode()->worldMatrix().multiply(transform));
   }
 
   return true;

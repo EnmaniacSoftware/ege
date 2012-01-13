@@ -82,6 +82,8 @@
     <ClCompile Include="Curves\CurvesTest.cpp" />
     <ClCompile Include="Fonts\FontsTest.cpp" />
     <ClCompile Include="Lightning\LightningEffect.cpp" />
+    <ClCompile Include="Lightning\LightningEffectLines.cpp" />
+    <ClCompile Include="Lightning\LightningEffectQuads.cpp" />
     <ClCompile Include="Lightning\LightningTest.cpp" />
     <ClCompile Include="Localization\LocalizationTest.cpp" />
     <ClCompile Include="main.cpp" />
@@ -101,6 +103,8 @@
     <ClInclude Include="Curves\CurvesTest.h" />
     <ClInclude Include="Fonts\FontsTest.h" />
     <ClInclude Include="Lightning\LightningEffect.h" />
+    <ClInclude Include="Lightning\LightningEffectLines.h" />
+    <ClInclude Include="Lightning\LightningEffectQuads.h" />
     <ClInclude Include="Lightning\LightningTest.h" />
     <ClInclude Include="Localization\LocalizationTest.h" />
     <ClInclude Include="Particles\ParticleTest.h" />
