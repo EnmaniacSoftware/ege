@@ -105,6 +105,9 @@
     <ClCompile Include="Lightning\LightningEffectQuads.cpp">
       <Filter>Tests\Lightning</Filter>
     </ClCompile>
+    <ClCompile Include="Lightning\LightningEffectStrips.cpp">
+      <Filter>Tests\Lightning</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -159,6 +162,9 @@
       <Filter>Tests\Lightning</Filter>
     </ClInclude>
     <ClInclude Include="Lightning\LightningEffectQuads.h">
+      <Filter>Tests\Lightning</Filter>
+    </ClInclude>
+    <ClInclude Include="Lightning\LightningEffectStrips.h">
       <Filter>Tests\Lightning</Filter>
     </ClInclude>
   </ItemGroup>

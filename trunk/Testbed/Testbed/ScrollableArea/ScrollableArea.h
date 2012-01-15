@@ -65,6 +65,8 @@ class ScrollableArea
     void setBaseReturnCoefficient(const EGE::Vector2f& coefficient);
     /* Enables/disables scrollbars. */
     void setScrollbarsEnabled(bool set);
+    /* Sets scrollbars fade duration. */
+    void setScrollbarsFadeDuration(const EGE::Time& duration);
 
   private:
 

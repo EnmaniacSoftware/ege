@@ -6,6 +6,7 @@
 #include "LightningEffect.h"
 #include "LightningEffectLines.h"
 #include "LightningEffectQuads.h"
+#include "LightningEffectStrips.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -45,6 +46,8 @@ class LightningTest : public Test
     LightningEffectLines* m_effectLines;
     /*! Lightning effect (based on quads) object. */
     LightningEffectQuads* m_effectQuads;
+    /*! Lightning effect (based on strips) object. */
+    LightningEffectStrips* m_effectStrips;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

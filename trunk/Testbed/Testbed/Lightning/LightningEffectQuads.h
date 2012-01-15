@@ -55,11 +55,13 @@ class LightningEffectQuads
     /*! Returns render data. */
     inline EGE::PRenderComponent renderData() const { return m_renderData; }
     /* Sets maximum segment midpoint offset. */
-    void setSegmentOffset(EGE::float32 offset);
+    void setMaxSegmentOffset(EGE::float32 offset);
     /* Set offshot angle. */
     void setOffshotAngle(const EGE::Angle& angle);
     /* Set offshot angle variance. */
     void setOffshotAngleVariance(const EGE::Angle& angle);
+    /* Sets width. */
+    void setWidth(EGE::float32 width);
 
   private:
 
@@ -116,6 +118,9 @@ class LightningEffectQuads
     EGE::Angle m_offshotAngleVariance;
     /*! Current state. */
     State m_state;
+    /*! Width. */
+    EGE::float32 m_width;
+
     EGE::Time m_fadeTime;
 };
 

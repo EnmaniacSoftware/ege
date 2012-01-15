@@ -63,6 +63,8 @@ EGE_NAMESPACE_BEGIN
   #define EGE_MALLOC(size) MemoryManager::DoMalloc(size)
   #define EGE_FREE(ptr) MemoryManager::DoFree(ptr)
 
+  #define EGE_DEFINE_NEW_OPERATORS_INLINE
+  #define EGE_DEFINE_DELETE_OPERATORS_INLINE
   #define EGE_DECLARE_NEW_OPERATORS
   #define EGE_DECLARE_DELETE_OPERATORS
   #define EGE_DEFINE_NEW_OPERATORS(classname)

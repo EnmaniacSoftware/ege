@@ -570,3 +570,9 @@ void ScrollableArea::updateContent(const Rectf& rectangle)
   m_scrollOffset.y = Math::Min(m_scrollOffset.y, m_scrollRange.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets scrollbars fade duration. */
+void ScrollableArea::setScrollbarsFadeDuration(const Time& duration)
+{
+  m_scrollbarsFadeDuration = duration;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

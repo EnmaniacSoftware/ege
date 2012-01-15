@@ -13,7 +13,8 @@ EGE_NAMESPACE
 LightningTest::LightningTest(App* app) : Test(app), 
                                          m_effect(NULL),
                                          m_effectLines(NULL),
-                                         m_effectQuads(NULL)
+                                         m_effectQuads(NULL),
+                                         m_effectStrips(NULL)
 {
   ege_connect(app->graphics(), preRender, this, LightningTest::preRender);
 }
@@ -94,6 +95,12 @@ void LightningTest::pointerEvent(PPointerData data)
       m_effectQuads->create(Vector2f(100, 350), Vector2f(600, 500), 5, true);
       m_effectQuads->start();
     }
+
+    if (m_effectStrips)
+    {
+      m_effectStrips->create(Vector2f(100, 50), Vector2f(600, 200), 5, true);
+      m_effectStrips->start();
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -106,10 +113,16 @@ void LightningTest::groupLoadComplete(const String& name)
     m_effect = ege_new LightningEffect(app());
     m_effectLines = ege_new LightningEffectLines(app());
     m_effectQuads = ege_new LightningEffectQuads(app());
+    m_effectStrips = ege_new LightningEffectStrips(app());
 
     // setup effects
     m_effectQuads->setOffshotAngle(Angle::FromDegrees(12.5f));
     m_effectQuads->setOffshotAngleVariance(Angle::FromDegrees(2.5f));
+    m_effectQuads->setWidth(3.0f);
+
+    m_effectStrips->setOffshotAngle(Angle::FromDegrees(12.5f));
+    m_effectStrips->setOffshotAngleVariance(Angle::FromDegrees(2.5f));
+    m_effectStrips->setWidth(3.0f);
 
     SceneNode* node = app()->sceneManager()->rootNode()->createChildSceneNode("lightning-effect");
     node->attachObject(m_effect);
@@ -120,6 +133,7 @@ void LightningTest::groupLoadComplete(const String& name)
     // assign materials
     PResourceMaterial resource = app()->resourceManager()->resource(RESOURCE_NAME_MATERIAL, "beam");
     m_effectQuads->renderData()->setMaterial(resource->createInstance());
+    m_effectStrips->renderData()->setMaterial(resource->createInstance());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -131,6 +145,11 @@ void LightningTest::preRender(PRenderTarget target)
   if (m_effectQuads)
   {
     m_effectQuads->render(app()->graphics()->renderer());
+  }
+
+  if (m_effectStrips)
+  {
+    m_effectStrips->render(app()->graphics()->renderer());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

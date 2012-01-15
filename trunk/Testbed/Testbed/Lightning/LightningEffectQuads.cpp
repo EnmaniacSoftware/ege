@@ -14,7 +14,8 @@ LightningEffectQuads::LightningEffectQuads(Application* app) : m_app(app),
                                                                m_maximumOffset(60.0f),
                                                                m_offshotAngle(EGEMath::PI * 0.25f),
                                                                m_offshotAngleVariance(EGEMath::PI * 0.125f),
-                                                               m_state(STATE_NONE)
+                                                               m_state(STATE_NONE),
+                                                               m_width(1.0f)
 {
   // create render data
   m_renderData = ege_new RenderComponent(app, "lightning-effect-lines", EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES);
@@ -275,7 +276,7 @@ void LightningEffectQuads::clear()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets maximum segment midpoint offset. */
-void LightningEffectQuads::setSegmentOffset(float32 offset)
+void LightningEffectQuads::setMaxSegmentOffset(float32 offset)
 {
   m_maximumOffset = offset;
 }
@@ -283,7 +284,6 @@ void LightningEffectQuads::setSegmentOffset(float32 offset)
 /*! Generates render data based on segments. */
 void LightningEffectQuads::generateRenderData()
 {
-  const float32 width = 1.0f;
   const float32 beginEndSizeCoe = 0.2f;
 
   float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_segments.size() * 8));
@@ -335,8 +335,8 @@ void LightningEffectQuads::generateRenderData()
       normal = segment->normal;
     }
 
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, 0) + normal.x * width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, 0) + normal.y * width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.x, segment->end.x, 0) + normal.x * m_width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.y, segment->end.y, 0) + normal.y * m_width * segment->intensity;
     *data++ = segment->begining ? 0.0f : 0.25f;
     *data++ = 0.0f;
     *data++ = 1.0f;
@@ -344,8 +344,8 @@ void LightningEffectQuads::generateRenderData()
     *data++ = 1.0f;
     *data++ = segment->intensity;
 
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, 0) - normal.x * width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, 0) - normal.y * width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.x, segment->end.x, 0) - normal.x * m_width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.y, segment->end.y, 0) - normal.y * m_width * segment->intensity;
     *data++ = segment->begining ? 0.0f : 0.25f;
     *data++ = 1.0f;
     *data++ = 1.0f;
@@ -354,8 +354,8 @@ void LightningEffectQuads::generateRenderData()
     *data++ = segment->intensity;
 
     // end of begining quad and begining of middle quad
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, beginEndSizeCoe) + segment->normal.x * width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, beginEndSizeCoe) + segment->normal.y * width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.x, segment->end.x, beginEndSizeCoe) + segment->normal.x * m_width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.y, segment->end.y, beginEndSizeCoe) + segment->normal.y * m_width * segment->intensity;
     *data++ = 0.25f;
     *data++ = 0.0f;
     *data++ = 1.0f;
@@ -363,8 +363,8 @@ void LightningEffectQuads::generateRenderData()
     *data++ = 1.0f;
     *data++ = segment->intensity;
 
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, beginEndSizeCoe) - segment->normal.x * width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, beginEndSizeCoe) - segment->normal.y * width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.x, segment->end.x, beginEndSizeCoe) - segment->normal.x * m_width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.y, segment->end.y, beginEndSizeCoe) - segment->normal.y * m_width * segment->intensity;
     *data++ = 0.25f;
     *data++ = 1.0f;
     *data++ = 1.0f;
@@ -373,8 +373,8 @@ void LightningEffectQuads::generateRenderData()
     *data++ = segment->intensity;
 
     // end of middle quad and begining of end quad
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, 1.0f - beginEndSizeCoe) + segment->normal.x * width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, 1.0f - beginEndSizeCoe) + segment->normal.y * width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.x, segment->end.x, 1.0f - beginEndSizeCoe) + segment->normal.x * m_width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.y, segment->end.y, 1.0f - beginEndSizeCoe) + segment->normal.y * m_width * segment->intensity;
     *data++ = 0.75f;
     *data++ = 0.0f;
     *data++ = 1.0f;
@@ -382,8 +382,8 @@ void LightningEffectQuads::generateRenderData()
     *data++ = 1.0f;
     *data++ = segment->intensity;
 
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, 1.0f - beginEndSizeCoe) - segment->normal.x * width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, 1.0f - beginEndSizeCoe) - segment->normal.y * width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.x, segment->end.x, 1.0f - beginEndSizeCoe) - segment->normal.x * m_width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.y, segment->end.y, 1.0f - beginEndSizeCoe) - segment->normal.y * m_width * segment->intensity;
     *data++ = 0.75f;
     *data++ = 1.0f;
     *data++ = 1.0f;
@@ -401,8 +401,8 @@ void LightningEffectQuads::generateRenderData()
     }
 
     // end of ending quad
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, 1.0f) + normal.x * width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, 1.0f) + normal.y * width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.x, segment->end.x, 1.0f) + normal.x * m_width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.y, segment->end.y, 1.0f) + normal.y * m_width * segment->intensity;
     *data++ = segment->ending ? 1.0f : 0.75f;
     *data++ = 0.0f;
     *data++ = 1.0f;
@@ -410,8 +410,8 @@ void LightningEffectQuads::generateRenderData()
     *data++ = 1.0f;
     *data++ = segment->intensity;
 
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, 1.0f) - normal.x * width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, 1.0f) - normal.y * width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.x, segment->end.x, 1.0f) - normal.x * m_width * segment->intensity;
+    *data++ = Math::Lerp(segment->start.y, segment->end.y, 1.0f) - normal.y * m_width * segment->intensity;
     *data++ = segment->ending ? 1.0f : 0.75f;
     *data++ = 1.0f;
     *data++ = 1.0f;
@@ -443,5 +443,11 @@ void LightningEffectQuads::start()
 
   // set state
   m_state = STATE_BUSY;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets width. */
+void LightningEffectQuads::setWidth(float32 width)
+{
+  m_width = width;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
