@@ -25,6 +25,8 @@ class AtlasGroup
     inline const EGE::String& name() const { return m_name; }
     /*! Returns image object. */
     inline EGE::PImage image() const { return m_image; }
+    /* Clears image. */
+    void clearImage();
     /*! Returns root data path. */
     inline const EGE::String& root() const { return m_root; }
     /*! Returns texture image name. */

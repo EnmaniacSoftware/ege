@@ -1,14 +1,13 @@
 #include "Core/Graphics/Image/ImageUtils.h"
 #include <EGEDataBuffer.h>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 typedef void (*PFNSCANLINEBLTFUNC) (void* dst, const void* src, s32 length);
-
+typedef void (*PFNFILLLINEBLTFUNC) (void* dst, u32 color, s32 length);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 struct ScanLineEntry
 {
   EGEImage::Format dstFormat;
@@ -20,7 +19,6 @@ struct ScanLineEntry
 static struct ScanLineEntry ScanLines[] = { {EGEImage::RGBA_8888, EGEImage::RGBA_8888, ImageUtils::ScanLineBltRGBA8888ToRGBA8888},
                                             {EGEImage::RGB_888, EGEImage::RGBA_8888, ImageUtils::ScanLineBltRGBA8888ToRGB888}
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns given format pixel size (in bytes). */
 u32 ImageUtils::PixelSize(EGEImage::Format format)
@@ -136,6 +134,56 @@ void ImageUtils::ScanLineBltRGBA8888ToRGB888(void* dst, const void* src, s32 len
     ++sorc;
 
     --length;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Performs fill blit on RGBA8888 surface. */
+void ImageUtils::FillLineBltRGBA8888(void* dst, u32 color, s32 length)
+{
+  u32* dest = reinterpret_cast<u32*>(dst);
+
+  while (0 != length)
+  {
+    *dest++ = color;
+
+    --length;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Fills region of image with given color. */
+void ImageUtils::Fill(PImage& dst, const Recti& dstRect, const Color& color)
+{
+  u32 nativeColor = 0;
+
+  PFNFILLLINEBLTFUNC filline = NULL;
+  switch (dst->format())
+  {
+    case EGEImage::RGBA_8888: 
+      
+      filline = FillLineBltRGBA8888; 
+      nativeColor = color.packed();
+      break;
+
+    default:
+
+      EGE_ASSERT(false && "Unsupported!");
+      break;
+  }
+
+  if (filline)
+  {
+    // get first line beginings in destination and source buffers
+    void* dstLine = reinterpret_cast<u8*>(dst->data()->data()) + dstRect.y * dst->m_rowLength + dstRect.x * PixelSize(dst->format());
+    
+    // fill line by line
+    for (s32 y = 0; y < dstRect.height; ++y)
+    {
+      // do blit
+      filline(dstLine, nativeColor, dstRect.width);
+
+      // move to next line
+      dstLine = reinterpret_cast<u8*>(dstLine) + dst->m_rowLength;
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

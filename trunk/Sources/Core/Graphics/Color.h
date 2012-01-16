@@ -21,6 +21,8 @@ class Color
 
     /*! Returns TRUE if color is invalid. */
     inline bool isNull() const { return (0.0f == red) && (0.0f == green) && (0.0f == blue) && (0.0f == alpha); }
+    /* Returns packed 32-bit RGBA color representation. */
+    u32 packed() const;
 
   public:
 

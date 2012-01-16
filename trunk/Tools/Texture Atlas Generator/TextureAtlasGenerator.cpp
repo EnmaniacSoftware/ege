@@ -2,12 +2,13 @@
 #include "AtlasGroupEntry.h"
 #include <iostream>
 #include <algorithm>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 8
+#define VERSION_MINOR 9
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping image format name into framework enum. */
 static EGEImage::Format MapImageFormat(const String& formatName)
@@ -39,7 +40,8 @@ static bool SortGreaterHeight(AtlasGroupEntry* left, AtlasGroupEntry* right)
   return left->image()->height() > right->image()->height();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureAtlasGenerator::TextureAtlasGenerator(int argc, char** argv) : m_outputFormat(EGEImage::NONE), m_sortMethod(SM_NONE)
+TextureAtlasGenerator::TextureAtlasGenerator(int argc, char** argv) : m_outputFormat(EGEImage::NONE), 
+                                                                      m_sortMethod(SM_NONE)
 {
   // go thru all parameters
   for (s32 i = 0; i < argc;)
@@ -114,7 +116,7 @@ void TextureAtlasGenerator::printHeader() const
 {
   std::cout << std::endl;
   std::cout << "Texture Atlas Generator, version " << VERSION_MAJOR << "." << VERSION_MINOR << std::endl;
-  std::cout << "Albert Banaszkiewicz, Little Bee Studios Ltd., 2011" << std::endl;
+  std::cout << "Albert Banaszkiewicz, Little Bee Studios Ltd., 2011-2012" << std::endl;
   std::cout << std::endl;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -238,6 +240,11 @@ bool TextureAtlasGenerator::generateAll()
 /*! Generates atlas for given group. */
 bool TextureAtlasGenerator::generate(AtlasGroup* group)
 {
+  EGE_ASSERT(group);
+
+  // prepare image
+  group->clearImage();
+
   // select next sort methods
   switch (sortMethod())
   {

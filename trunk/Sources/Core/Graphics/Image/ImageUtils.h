@@ -40,12 +40,17 @@ class ImageUtils
     /* Returns given format pixel size (in bytes). */
     static u32 PixelSize(EGEImage::Format format);
 
+    /* Fills region of image with given color. */
+    static void Fill(PImage& dst, const Recti& dstRect, const Color& color);
+
   public:
 
     /* Performs scan line bit blit from RGBA8888 format onto RGBA8888 format. */
     static void ScanLineBltRGBA8888ToRGBA8888(void* dst, const void* src, s32 length);
     /* Performs scan line bit blit from RGBA8888 format onto RGB888 format. */
     static void ScanLineBltRGBA8888ToRGB888(void* dst, const void* src, s32 length);
+    /* Performs fill blit on RGBA8888 surface. */
+    static void FillLineBltRGBA8888(void* dst, u32 color, s32 length);
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -34,6 +34,10 @@ class XmlElement : public Object
 
     /* Returns value of given attribute if present. Otherwise, returns default value. */
     String attribute(const String& name, const String& defValue = "") const;
+    /* Sets attribute with a given c-string value. 
+     * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+     */
+    bool setAttribute(const String& name, const char* value);
     /* Sets attribute with a given string value. 
      * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
      */

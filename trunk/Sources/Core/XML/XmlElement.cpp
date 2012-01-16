@@ -59,6 +59,19 @@ bool XmlElement::hasAttribute(const String& name) const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets attribute with a given c-string value. 
+ *  @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+ */
+bool XmlElement::setAttribute(const String& name, const char* value)
+{
+  if (isValid())
+  {
+    return p_func()->setAttribute(name, String(value));
+  }
+
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Sets attribute with a given string value. 
  * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
  */
