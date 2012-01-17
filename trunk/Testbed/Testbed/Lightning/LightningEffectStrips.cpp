@@ -18,16 +18,16 @@ LightningEffectStrips::LightningEffectStrips(Application* app) : m_app(app),
                                                                m_width(1.0f)
 {
   // create render data
-  m_renderData = ege_new RenderComponent(app, "lightning-effect-lines", EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES);
-  if (m_renderData)
-  {
-    m_renderData->indexBuffer()->setIndexSize(EGEIndexBuffer::IS_16BIT);
-    if (!m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2_C4))
-    {
-      // error!
-      m_renderData = NULL;
-    }
-  }
+  //m_renderData = ege_new RenderComponent(app, "lightning-effect-lines", EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLE_STRIPS);
+  //if (m_renderData)
+  //{
+  //  m_renderData->indexBuffer()->setIndexSize(EGEIndexBuffer::IS_16BIT);
+  //  if (!m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2_C4))
+  //  {
+  //    // error!
+  //    m_renderData = NULL;
+  //  }
+  //}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 LightningEffectStrips::~LightningEffectStrips()
@@ -38,7 +38,7 @@ LightningEffectStrips::~LightningEffectStrips()
 /*! Returns TRUE if object is valid. */
 bool LightningEffectStrips::isValid() const
 {
-  return (NULL != m_renderData);
+  return true;//(NULL != m_renderData);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders object. */
@@ -46,7 +46,13 @@ void LightningEffectStrips::render(Renderer* renderer)
 {
   if (STATE_BUSY == m_state)
   {
-    renderer->addForRendering(m_renderData);
+    // go thru all beams
+    for (BeamList::const_iterator it = m_beams.begin(); it != m_beams.end(); ++it)
+    {
+      const Beam& beam = *it;
+
+      renderer->addForRendering(beam.renderData);
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -64,188 +70,185 @@ void LightningEffectStrips::update(const Time& time)
 
     const float32 maxDisplacement = 10.0f;
 
-    float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_segments.size() * 8));
-
-    // go thru all segments
-    for (SegmentList::const_iterator it = m_segments.begin(); it != m_segments.end(); ++it)
+    // go thru all beams
+    for (BeamList::const_iterator it = m_beams.begin(); it != m_beams.end(); ++it)
     {
-      const Segment segment= **it;
+      const Beam& beam = *it;
 
-      *data++;// = segment.start.x + segment.normal.x * width * segment.intensity;
-      *data++;// = segment.start.y + segment.normal.y * width * segment.intensity;
-      *data++;// = 0;
-      *data++;// = 0;
-      *data++;// = 1;
-      *data++;// = 1;
-      *data++;// = 1;
-      *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+      float32* data = reinterpret_cast<float32*>(beam.renderData->vertexBuffer()->lock(0, beam.segments.size() * 6 + 2));
 
-      *data++;// = segment.start.x - segment.normal.x * width * segment.intensity;
-      *data++;// = segment.start.y - segment.normal.y * width * segment.intensity;
-      *data++;// = 0;
-      *data++;// = 1;
-      *data++;// = 1;
-      *data++;// = 1;
-      *data++;// = 1;
-      *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+      // go thru all segments
+      int i = 0;
+      for (SegmentList::const_iterator itSegment = beam.segments.begin(); itSegment != beam.segments.end(); ++itSegment, ++i)
+      {
+        const Segment& segment = *itSegment;
 
-      *data++;//= segment.end.x + segment.normal.x * width * segment.intensity;
-      *data++;//= segment.end.y + segment.normal.y * width * segment.intensity;
-      *data++;//= 1;
-      *data++;//= 0;
-      *data++;//= 1;
-      *data++;//= 1;
-      *data++;//= 1;
-      *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+        bool isFirst = (i == 0);
+        bool isLast  = (i == beam.segments.size() - 1);
 
-      *data++;//= segment.end.x - segment.normal.x * width * segment.intensity;
-      *data++;//= segment.end.y - segment.normal.y * width * segment.intensity;
-      *data++;//= 1;
-      *data++;//= 1;
-      *data++;//= 1;
-      *data++;//= 1;
-      *data++;//= 1;
-      *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+        if (isFirst)
+        {
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
 
-      *data++;// = segment.start.x + segment.normal.x * width * segment.intensity;
-      *data++;// = segment.start.y + segment.normal.y * width * segment.intensity;
-      *data++;// = 0;
-      *data++;// = 0;
-      *data++;// = 1;
-      *data++;// = 1;
-      *data++;// = 1;
-      *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+        }
 
-      *data++;// = segment.start.x - segment.normal.x * width * segment.intensity;
-      *data++;// = segment.start.y - segment.normal.y * width * segment.intensity;
-      *data++;// = 0;
-      *data++;// = 1;
-      *data++;// = 1;
-      *data++;// = 1;
-      *data++;// = 1;
-      *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
 
-      *data++;//= segment.end.x + segment.normal.x * width * segment.intensity;
-      *data++;//= segment.end.y + segment.normal.y * width * segment.intensity;
-      *data++;//= 1;
-      *data++;//= 0;
-      *data++;//= 1;
-      *data++;//= 1;
-      *data++;//= 1;
-      *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
 
-      *data++;//= segment.end.x - segment.normal.x * width * segment.intensity;
-      *data++;//= segment.end.y - segment.normal.y * width * segment.intensity;
-      *data++;//= 1;
-      *data++;//= 1;
-      *data++;//= 1;
-      *data++;//= 1;
-      *data++;//= 1;
-      *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++;
+        *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+      }
+
+      beam.renderData->vertexBuffer()->unlock();
     }
-
-    m_renderData->vertexBuffer()->unlock();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Generates segments. */
 void LightningEffectStrips::create(const Vector2f& start, const Vector2f end, s32 steps, bool allowOffshots)
 {
-  // cleanup
-  clear();
+  m_beams.clear();
+  m_beams.push_back(Beam());
 
-  // create first segment
-  Segment* segment       = ege_new Segment();
-  segment->start         = start;
-  segment->end           = end;
-  segment->begining      = true;
-  segment->ending        = true;
-  segment->normal        = (end - start).perpendicular().normalized();
-  segment->intensity     = 1.0f;
-  m_segments.push_back(segment);
+  Segment segment;
+  segment.start         = start;
+  segment.end           = end;
+  segment.normal        = (segment.end - segment.start).perpendicular().normalized();
+  segment.intensity     = 1.0f;
+  m_beams.back().segments.push_back(segment);
 
-  float32 offset = m_maximumOffset;
+  float32 offset = 60;
   for (s32 step = 0; step < steps; ++step)
   {
-    // go thru all segments
-    s32 count = m_segments.size();
-    for (SegmentList::iterator it = m_segments.begin(); count > 0; ++it, --count)
+    // go thru all beams
+    for (BeamList::iterator it = m_beams.begin(); it != m_beams.end(); ++it)
     {
-      Segment oldSegment = **it;
+      Beam& beam = *it;
 
-      // determine segment vector
-      Vector2f segmentVector = oldSegment.end - oldSegment.start;
-
-      // get point in the middle of segment
-      Vector2f midPoint(oldSegment.start.x + segmentVector.x * 0.5f, oldSegment.start.y + segmentVector.y * 0.5f);
-
-      // calulate normalized vector perpendicular to current segment
-      Vector2f offsetVector = segment->normal;
-      if (m_random() & 0x1)
+      for (SegmentList::iterator itSegment = beam.segments.begin(); itSegment != beam.segments.end(); ++itSegment)
       {
-        offsetVector *= -1.0f;
-      }
+        Segment& oldSegment = *itSegment;
 
-      // move mid point along the perpendicular vectors
-      midPoint += offsetVector * offset;
+        // determine segment vector
+        Vector2f segmentVector = oldSegment.end - oldSegment.start;
 
-      // update current segment to second subsegment
-      (*it)->start = midPoint;
-      (*it)->end  = oldSegment.end;
-      (*it)->normal = (oldSegment.end - midPoint).perpendicular().normalized();
-      (*it)->begining = false;
+        // get point in the middle of segment
+        Vector2f midPoint(oldSegment.start.x + segmentVector.x * 0.5f, oldSegment.start.y + segmentVector.y * 0.5f);
 
-      // create new segment for first subsegment
-      Segment* newSegment = ege_new Segment();
-      newSegment->start     = oldSegment.start;
-      newSegment->end       = midPoint;
-      newSegment->normal    = (newSegment->end - newSegment->start).perpendicular().normalized();
-      newSegment->intensity = oldSegment.intensity;
-      newSegment->begining  = oldSegment.begining;
-      newSegment->ending    = false;
-
-      (*it)->prev = newSegment;
-      newSegment->next = *it;
-      newSegment->prev = oldSegment.prev;
-
-      if (oldSegment.prev)
-      {
-        oldSegment.prev->next = newSegment;
-      }
-
-      m_segments.insert(it, newSegment);
-
-      // check if offshot should be generated
-      if (allowOffshots)
-      {
-        if (((m_random() % 100) < oldSegment.intensity * 50) && (NULL == (*it)->prev->offshot))
+        // calulate normalized vector perpendicular to current segment
+        Vector2f offsetVector = segment.normal;
+        if (m_random() & 0x1)
         {
-          Segment* newSegment = ege_new Segment();
+          offsetVector *= -1.0f;
+        }
 
-          newSegment->start = midPoint;
+        // move mid point along the perpendicular vectors
+        midPoint += offsetVector * offset;
 
-          Vector2f direction = midPoint - (*it)->prev->start;
-          float32 dirLength = direction.length();
-          direction.normalize();
+        // create new segment for first subsegment
+        segment.start     = oldSegment.start;
+        segment.end       = midPoint;
+        segment.normal    = (segment.end - segment.start).perpendicular().normalized();
+        segment.intensity = oldSegment.intensity;
 
-          Angle angle = m_offshotAngle + m_offshotAngleVariance * m_random(-1.0f, 1.0f);
+        // update current segment to second subsegment
+        oldSegment.start = midPoint;
+        oldSegment.end  = oldSegment.end;
+        oldSegment.normal = (oldSegment.end - midPoint).perpendicular().normalized();
 
-          float32 cos = Math::Cos(angle.radians());
-          float32 sin = Math::Sin(angle.radians());
+        beam.segments.insert(itSegment, segment);
 
-          newSegment->end.x = direction.x * cos - direction.y * sin;
-          newSegment->end.y = direction.x * sin + direction.y * cos;
+        // check if offshot should be generated
+        if (allowOffshots)
+        {
+          if ((m_random() % 100) < oldSegment.intensity * 50)
+          {
+            Beam offshotBeam;
 
-          newSegment->end       = newSegment->end * dirLength * 0.7f + midPoint;
-          newSegment->normal    = (newSegment->end - newSegment->start).perpendicular().normalized();
-          newSegment->begining  = false;
-          newSegment->ending    = true;
-          newSegment->prev      = (*it)->prev;
+            segment.start = midPoint;
 
-          (*it)->prev->offshot = newSegment;
+            Vector2f direction = oldSegment.end - midPoint;
+            float32 dirLength = direction.length();
+            direction.normalize();
 
-          newSegment->intensity = oldSegment.intensity * 0.5f;
-          m_segments.push_back(newSegment);
+            Angle angle = Angle::FromDegrees(m_random(5, 10));
+
+            float32 cos = Math::Cos(angle.radians());
+            float32 sin = Math::Sin(angle.radians());
+
+            segment.end.x = direction.x * cos - direction.y * sin;
+            segment.end.y = direction.x * sin + direction.y * cos;
+
+            segment.end     = segment.end * dirLength * 0.7f + midPoint;
+            segment.normal  = (segment.end - segment.start).perpendicular().normalized();
+            segment.intensity = oldSegment.intensity * 0.5f;
+            offshotBeam.segments.push_back(segment);
+
+            m_beams.push_front(offshotBeam);
+          }
         }
       }
     }
@@ -264,12 +267,7 @@ void LightningEffectStrips::create(const Vector2f& start, const Vector2f end, s3
 /*! Clears object. */
 void LightningEffectStrips::clear()
 {
-  // cleanup
-  for (SegmentList::iterator it = m_segments.begin(); it != m_segments.end(); ++it)
-  {
-    EGE_DELETE(*it);
-  }
-  m_segments.clear();
+  m_beams.clear();
 
   // set state
   m_state = STATE_NONE;
@@ -286,142 +284,110 @@ void LightningEffectStrips::generateRenderData()
 {
   const float32 beginEndSizeCoe = 0.2f;
 
-  float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_segments.size() * 8));
-  s16* index    = reinterpret_cast<s16*>(m_renderData->indexBuffer()->lock(0, m_segments.size() * 6 * 3));
-
-  Vector2f normal;
-
-  // go thru all segments
-  int i = 0;
-  for (SegmentList::const_iterator it = m_segments.begin(); it != m_segments.end(); ++it, ++i)
+  // go thru all beams
+  for (BeamList::iterator it = m_beams.begin(); it != m_beams.end(); ++it)
   {
-    const Segment* segment = *it;
+    Beam& beam = *it;
 
-    // begining quad
-    *index++ = i * 8 + 0;
-    *index++ = i * 8 + 1;
-    *index++ = i * 8 + 2;
-    *index++ = i * 8 + 1;
-    *index++ = i * 8 + 2;
-    *index++ = i * 8 + 3;
-
-    // middle quad
-    *index++ = i * 8 + 2;
-    *index++ = i * 8 + 3;
-    *index++ = i * 8 + 4;
-    *index++ = i * 8 + 3;
-    *index++ = i * 8 + 4;
-    *index++ = i * 8 + 5;
-
-    // ending quad
-    *index++ = i * 8 + 4;
-    *index++ = i * 8 + 5;
-    *index++ = i * 8 + 6;
-    *index++ = i * 8 + 5;
-    *index++ = i * 8 + 6;
-    *index++ = i * 8 + 7;
-
-    // check if current segment is an offshot segment
-    // NOTE: this happens if previous segment's offshot segment is current segment
-    bool isOffshot = segment->prev && (segment->prev->offshot == segment);
-
-    // begining quad
-    if (segment->prev && !isOffshot)
+    // create render data
+    beam.renderData = ege_new RenderComponent(m_app, "lightning-effect-lines", EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLE_STRIPS);
+    if (!beam.renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2_C4))
     {
-      normal = (segment->prev->normal + segment->normal).normalized();
-    }
-    else
-    {
-      normal = segment->normal;
+      // error!
+      return;
     }
 
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, 0) + normal.x * m_width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, 0) + normal.y * m_width * segment->intensity;
-    *data++ = segment->begining ? 0.0f : 0.25f;
-    *data++ = 0.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = segment->intensity;
+    beam.renderData->setMaterial(m_material);
 
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, 0) - normal.x * m_width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, 0) - normal.y * m_width * segment->intensity;
-    *data++ = segment->begining ? 0.0f : 0.25f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = segment->intensity;
+    float32* data = reinterpret_cast<float32*>(beam.renderData->vertexBuffer()->lock(0, beam.segments.size() * 6 + 2));
 
-    // end of begining quad and begining of middle quad
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, beginEndSizeCoe) + segment->normal.x * m_width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, beginEndSizeCoe) + segment->normal.y * m_width * segment->intensity;
-    *data++ = 0.25f;
-    *data++ = 0.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = segment->intensity;
-
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, beginEndSizeCoe) - segment->normal.x * m_width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, beginEndSizeCoe) - segment->normal.y * m_width * segment->intensity;
-    *data++ = 0.25f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = segment->intensity;
-
-    // end of middle quad and begining of end quad
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, 1.0f - beginEndSizeCoe) + segment->normal.x * m_width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, 1.0f - beginEndSizeCoe) + segment->normal.y * m_width * segment->intensity;
-    *data++ = 0.75f;
-    *data++ = 0.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = segment->intensity;
-
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, 1.0f - beginEndSizeCoe) - segment->normal.x * m_width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, 1.0f - beginEndSizeCoe) - segment->normal.y * m_width * segment->intensity;
-    *data++ = 0.75f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = segment->intensity;
-
-    if (segment->next)
+    // go thru all segments
+    int i = 0;
+    for (SegmentList::const_iterator itSegment = beam.segments.begin(); itSegment != beam.segments.end(); ++itSegment, ++i)
     {
-      normal = (segment->next->normal + segment->normal).normalized();
-    }
-    else
-    {
-      normal = segment->normal;
+      const Segment& segment = *itSegment;
+
+      bool isFirst = (i == 0);
+      bool isLast  = (i == beam.segments.size() - 1);
+
+      if (isFirst)
+      {
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, 0) - segment.normal.x * m_width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, 0) - segment.normal.y * m_width * segment.intensity;
+        *data++ = (0 == i) ? 0.0f : 0.25f;
+        *data++ = 0.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = segment.intensity;
+
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, 0) + segment.normal.x * m_width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, 0) + segment.normal.y * m_width * segment.intensity;
+        *data++ = (0 == i) ? 0.0f : 0.25f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = segment.intensity;
+      }
+
+      *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe) - segment.normal.x * m_width * segment.intensity;
+      *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe) - segment.normal.y * m_width * segment.intensity;
+      *data++ = 0.25f;
+      *data++ = 0.0f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = segment.intensity;
+
+      *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe) + segment.normal.x * m_width * segment.intensity;
+      *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe) + segment.normal.y * m_width * segment.intensity;
+      *data++ = 0.25f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = segment.intensity;
+
+      *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe) - segment.normal.x * m_width * segment.intensity;
+      *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe) - segment.normal.y * m_width * segment.intensity;
+      *data++ = 0.75f;
+      *data++ = 0.0f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = segment.intensity;
+
+      *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe) + segment.normal.x * m_width * segment.intensity;
+      *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe) + segment.normal.y * m_width * segment.intensity;
+      *data++ = 0.75f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = segment.intensity;
+
+      *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f) - segment.normal.x * m_width * segment.intensity;
+      *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f) - segment.normal.y * m_width * segment.intensity;
+      *data++ = isLast ? 1.0f : 0.75f;
+      *data++ = 0.0f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = segment.intensity;
+
+      *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f) + segment.normal.x * m_width * segment.intensity;
+      *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f) + segment.normal.y * m_width * segment.intensity;
+      *data++ = isLast ? 1.0f : 0.75f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = 1.0f;
+      *data++ = segment.intensity;
     }
 
-    // end of ending quad
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, 1.0f) + normal.x * m_width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, 1.0f) + normal.y * m_width * segment->intensity;
-    *data++ = segment->ending ? 1.0f : 0.75f;
-    *data++ = 0.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = segment->intensity;
-
-    *data++ = Math::Lerp(segment->start.x, segment->end.x, 1.0f) - normal.x * m_width * segment->intensity;
-    *data++ = Math::Lerp(segment->start.y, segment->end.y, 1.0f) - normal.y * m_width * segment->intensity;
-    *data++ = segment->ending ? 1.0f : 0.75f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = 1.0f;
-    *data++ = segment->intensity;
+    beam.renderData->vertexBuffer()->unlock();
   }
-
-  m_renderData->vertexBuffer()->unlock();
-  m_renderData->indexBuffer()->unlock();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Set offshot angle. */
@@ -449,5 +415,11 @@ void LightningEffectStrips::start()
 void LightningEffectStrips::setWidth(float32 width)
 {
   m_width = width;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets material. */
+void LightningEffectStrips::setMaterial(const PMaterial& material)
+{
+  m_material = material;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

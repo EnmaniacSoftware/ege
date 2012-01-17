@@ -53,7 +53,7 @@ class LightningEffectStrips
     /* Renders object. */
     void render(EGE::Renderer* renderer);
     /*! Returns render data. */
-    inline EGE::PRenderComponent renderData() const { return m_renderData; }
+//    inline EGE::PRenderComponent renderData() const { return m_renderData; }
     /* Sets maximum segment midpoint offset. */
     void setMaxSegmentOffset(EGE::float32 offset);
     /* Set offshot angle. */
@@ -62,6 +62,8 @@ class LightningEffectStrips
     void setOffshotAngleVariance(const EGE::Angle& angle);
     /* Sets width. */
     void setWidth(EGE::float32 width);
+    /* Sets material. */
+    void setMaterial(const EGE::PMaterial& material);
 
   private:
 
@@ -72,44 +74,32 @@ class LightningEffectStrips
 
   private:
 
-    /*! Segment data class. */
-    class Segment
+    /*! Segment data struct. */
+    struct Segment
     {
-      public:
-
-        Segment() : begining(false), ending(NULL), prev(NULL), next(NULL), offshot(NULL) {}
-
-        EGE_DEFINE_NEW_OPERATORS_INLINE
-        EGE_DEFINE_DELETE_OPERATORS_INLINE
-
-      public: 
-
-        EGE::Vector2f start;              /*!< Segment start point. */
-        EGE::Vector2f end;                /*!< Segment end point. */
-        EGE::Vector2f normal;             /*!< Normalized segment normal vector. */
-      
-        EGE::float32 intensity;           /*!< Segment intensity [0-1]. */
-      
-        bool begining;                    /*!< TRUE if segment is a begining segment. */
-        bool ending;                      /*!< TRUE if segment is an ending segment. */
-
-        Segment* prev;                    /*!< Previous segment this one is connected to. Can be NULL. */
-        Segment* next;                    /*!< Next segmnet this one is connected to. Can be NULL. */
-        Segment* offshot;                 /*!< Offshot segment this one is connected to. Can be NULL. */
+      EGE::Vector2f start;
+      EGE::Vector2f end;
+      EGE::Vector2f normal;
+      EGE::float32 intensity;
     };
 
-    typedef EGE::List<Segment*> SegmentList;
+    struct Beam
+    {
+      EGE::List<Segment> segments;
+      EGE::PRenderComponent renderData;
+    };
+
+    typedef EGE::List<Segment> SegmentList;
+    typedef EGE::List<Beam> BeamList;
 
   private:
 
     /*! Pointer to application object. */
     EGE::Application* m_app;
-    /*! Render data. */
-    EGE::PRenderComponent m_renderData;
     /*! Randomizer. */
     EGE::Random m_random;
-    /*! List of currently generated segments. */
-    SegmentList m_segments;
+    /*! List of currently generated beams. */
+    BeamList m_beams;
     /*! Maximum segment midpoint offset. */
     EGE::float32 m_maximumOffset;
     /*! Offshot angle. */
@@ -120,6 +110,8 @@ class LightningEffectStrips
     State m_state;
     /*! Width. */
     EGE::float32 m_width;
+    /*! Material. */
+    EGE::PMaterial m_material;
 
     EGE::Time m_fadeTime;
 };

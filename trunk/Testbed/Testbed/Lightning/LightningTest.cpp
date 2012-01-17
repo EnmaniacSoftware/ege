@@ -80,6 +80,11 @@ void LightningTest::update(const Time& time)
   {
     m_effectQuads->update(time);
   }
+
+  if (m_effectStrips)
+  {
+    m_effectStrips->update(time);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Pointer event receiver. */
@@ -133,7 +138,7 @@ void LightningTest::groupLoadComplete(const String& name)
     // assign materials
     PResourceMaterial resource = app()->resourceManager()->resource(RESOURCE_NAME_MATERIAL, "beam");
     m_effectQuads->renderData()->setMaterial(resource->createInstance());
-    m_effectStrips->renderData()->setMaterial(resource->createInstance());
+    m_effectStrips->setMaterial(resource->createInstance());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -171,7 +171,8 @@ PParticleEmitter ResourceParticleEmitter::createInstance()
     {
       // get affector resource
       PResourceParticleAffector affectorResource = manager()->resource(RESOURCE_NAME_PARTICLE_AFFECTOR, *it);
-      
+      EGE_ASSERT(affectorResource);
+
       // create instance
       PParticleAffector affector = affectorResource->createInstance();
 
