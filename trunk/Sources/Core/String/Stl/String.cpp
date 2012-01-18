@@ -236,6 +236,28 @@ Rectf String::toRectf(bool* error) const
   return rect;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Converts to rectangle of integers. If error is valid, it holds TRUE if error occured during the conversion. */
+Recti String::toRecti(bool* error) const
+{
+  if (empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return Recti::INVALID;
+  }
+
+  Recti rect;
+  if (4 > sscanf(toAscii(), "%d %d %d %d", &rect.x, &rect.y, &rect.width, &rect.height) && error)
+  {
+    *error = true;
+  }
+
+  return rect;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts to 2D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
 Vector2f String::toVector2f(bool* error) const
 {

@@ -133,11 +133,28 @@
 
   </group>
 
-  <!-- Scrollable are test resources -->
+  <!-- Scrollable area test resources -->
   <group name='scrollable-area-test'>
 
     <material name='background' diffuse-color='0.75 0.75 0.75 1' />
 
+  </group>
+
+  <!-- Dialogs test resources -->
+  <group name='dialogs-test'>
+
+    <texture type="2d" name="bubble-speech" path="images/bubble_speech.png" mag-filter="trilinear" min-filter="trilinear" />
+    <material name='bubble-speech' src-blend='src-alpha' dst-blend='one-minus-src-alpha' >
+      <texture name='bubble-speech' />
+    </material>
+
+    <dialog name='my-dialog' material='bubble-speech' max-size='300 300'
+            top-left-rect='0 0 59 51' top-middle-rect='59 0 4 51' top-right-rect='63 0 51 51'
+            middle-left-rect='0 50 59 4' fill-rect='59 50 4 4' middle-right-rect='63 50 51 4'
+            bottom-left-rect='0 55 59 51' bottom-middle-rect='59 55 4 51' bottom-right-rect='63 55 51 51'>
+      <content-area name='title' rect='0 0 1 1' />
+    </dialog>
+    
   </group>
 
   <include path='fonts.xml' />

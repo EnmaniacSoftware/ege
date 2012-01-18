@@ -80,6 +80,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Curves\CurvesTest.cpp" />
+    <ClCompile Include="Dialogs\DialogTest.cpp" />
     <ClCompile Include="Fonts\FontsTest.cpp" />
     <ClCompile Include="Lightning\LightningEffect.cpp" />
     <ClCompile Include="Lightning\LightningEffectLines.cpp" />
@@ -93,7 +94,6 @@
     <ClCompile Include="RenderToTexture\RenderToTextureTest.cpp" />
     <ClCompile Include="Ripples\RippleEffect.cpp" />
     <ClCompile Include="Ripples\RipplesTest.cpp" />
-    <ClCompile Include="ScrollableArea\ScrollableArea.cpp" />
     <ClCompile Include="ScrollableArea\ScrollableAreaTest.cpp" />
     <ClCompile Include="Sound\SoundTest.cpp" />
     <ClCompile Include="Test.cpp" />
@@ -102,6 +102,7 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Curves\CurvesTest.h" />
+    <ClInclude Include="Dialogs\DialogTest.h" />
     <ClInclude Include="Fonts\FontsTest.h" />
     <ClInclude Include="Lightning\LightningEffect.h" />
     <ClInclude Include="Lightning\LightningEffectLines.h" />
@@ -114,7 +115,6 @@
     <ClInclude Include="RenderToTexture\RenderToTextureTest.h" />
     <ClInclude Include="Ripples\RippleEffect.h" />
     <ClInclude Include="Ripples\RipplesTest.h" />
-    <ClInclude Include="ScrollableArea\ScrollableArea.h" />
     <ClInclude Include="ScrollableArea\ScrollableAreaTest.h" />
     <ClInclude Include="Sound\SoundTest.h" />
     <ClInclude Include="Test.h" />

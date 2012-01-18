@@ -1,5 +1,5 @@
-#ifndef SCROLLABLE_AREA_H
-#define SCROLLABLE_AREA_H
+#ifndef EGE_CORE_SCROLLABLEAREA_H
+#define EGE_CORE_SCROLLABLEAREA_H
 
 #include <EGETime.h>
 #include <EGEGraphics.h>
@@ -8,17 +8,19 @@
 #include <EGEList.h>
 #include <EGEFlags.h>
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class Game;
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class ScrollableArea
+EGE_DECLARE_SMART_CLASS(ScrollableArea, PScrollableArea)
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class ScrollableArea : public Object
 {
   public:
 
-    ScrollableArea(EGE::Application* app);
+    ScrollableArea(Application* app);
    ~ScrollableArea();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -42,31 +44,33 @@ class ScrollableArea
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Updates object. */
-    void update(const EGE::Time& time);
+    void update(const Time& time);
     /* Pointer event processor. */
-    void pointerEvent(EGE::PPointerData data);
+    void pointerEvent(PPointerData data);
     /* Renders object. */
-    void render(EGE::Renderer* renderer);
+    void render(Renderer* renderer);
     /*! Returns local physics. */
-    inline EGE::PhysicsComponent& physics() { return m_physics; }
+    inline PhysicsComponent& physics() { return m_physics; }
     /* Adds object. */
-    EGE::EGEResult addObject(EGE::PObject object);
+    EGE::EGEResult addObject(PObject object);
     /* Removes object. */
-    void removeObject(EGE::PObject object);
+    void removeObject(PObject object);
     /* Removes all objects. */
     void removeAll();
     /* Sets scroll direction. */
     void setDirection(Direction direction);
     /* Sets scroll damping coefficient. */
-    void setDampingCoefficient(const EGE::Vector2f& coefficient);
+    void setDampingCoefficient(const Vector2f& coefficient);
     /* Sets scroll throw coefficient. */
-    void setThrowCoefficient(const EGE::Vector2f& coefficient);
+    void setThrowCoefficient(const Vector2f& coefficient);
     /* Sets scroll base return coefficient. */
-    void setBaseReturnCoefficient(const EGE::Vector2f& coefficient);
+    void setBaseReturnCoefficient(const Vector2f& coefficient);
     /* Enables/disables scrollbars. */
     void setScrollbarsEnabled(bool set);
     /* Sets scrollbars fade duration. */
-    void setScrollbarsFadeDuration(const EGE::Time& duration);
+    void setScrollbarsFadeDuration(const Time& duration);
+    /* Returns size of content (in pixels). */
+    Vector2f contentSize();
 
   private:
 
@@ -75,9 +79,11 @@ class ScrollableArea
     /* Hides scrollbars. */
     void hidesScrollbars();
     /* Updates scrollbars. */
-    void updateScrollbars(const EGE::Time& time);
+    void updateScrollbars(const Time& time);
     /* Updates current content with given size. */
-    void updateContent(const EGE::Rectf& rectangle);
+    void updateContent(const Rectf& rectangle);
+    /* Recalculates content size. */
+    void recaluclateContentSize();
 
   private:
 
@@ -97,56 +103,56 @@ class ScrollableArea
       SS_FADING_OUT
     };
 
-    typedef EGE::List<EGE::PObject> ObjectsList;
+    typedef List<PObject> ObjectsList;
 
   private:
 
-    /*! Pointer to application object. */
-    EGE::Application* m_app;
     /*! Local physics. */
-    EGE::PhysicsComponent m_physics;
+    PhysicsComponent m_physics;
     /*! Content size (in pixels). */
-    EGE::Vector2f m_contentSize;
+    Vector2f m_contentSize;
     /*! List of attached objects. */
     ObjectsList m_objects;
     /*! Current state. */
     State m_state;
     /*! Current scroll velocity. */
-    EGE::Vector2f m_scrollVelocity;
+    Vector2f m_scrollVelocity;
     /*! Current scroll offset. */
-    EGE::Vector2f m_scrollOffset;
+    Vector2f m_scrollOffset;
     /*! Current scroll range. */
-    EGE::Vector2f m_scrollRange;
+    Vector2f m_scrollRange;
     /*! Last pointer position (absolute). */
-    EGE::Vector2f m_lastPointerPosition;
+    Vector2f m_lastPointerPosition;
     /*! Current pointer position (absolute). */
-    EGE::Vector2f m_currentPointerPosition;
+    Vector2f m_currentPointerPosition;
     /*! Damping coefficient. */
-    EGE::Vector2f m_dampingCoefficient;
+    Vector2f m_dampingCoefficient;
     /*! Throw coefficient. 
      *  @note This is how fast the scrolling initially is when pointer is released.
      */
-    EGE::Vector2f m_throwCoefficient;
+    Vector2f m_throwCoefficient;
     /*! Base return coefficient. *
      *  @note This is how fast the scrolling proceedes when pointer was released outside the available range.
      */
-    EGE::Vector2f m_baseReturnCoefficient;
+    Vector2f m_baseReturnCoefficient;
     /*! Current scroll direction. */
     Direction m_direction;
     /*! Scollbar visibility flag. */
     bool m_scrollbarsEnabled;
     /*! Scrollbars current state time. */
-    EGE::Time m_scrollbarsStateTime;
+    Time m_scrollbarsStateTime;
     /*! Scrollbars fade duration. */
-    EGE::Time m_scrollbarsFadeDuration;
+    Time m_scrollbarsFadeDuration;
     /*! Current scrollbars state. */
     ScrollbarState m_scrollbarsState;
     /*! Scrollbar render component. */
-    EGE::PRenderComponent m_scrollbarRenderData;
+    PRenderComponent m_scrollbarRenderData;
     /*! Dirty content flag. */
     bool m_dirtyContent;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // SCROLLABLE_AREA_H
+EGE_NAMESPACE_END
+
+#endif // EGE_CORE_SCROLLABLEAREA_H

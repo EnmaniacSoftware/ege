@@ -62,10 +62,10 @@ void LightningEffectStrips::update(const Time& time)
   if (STATE_BUSY == m_state)
   {
     m_fadeTime += time;
-    if (m_fadeTime.seconds() > 1.0f)
+    if (m_fadeTime.seconds() > 1.0f / 2.0f)
     {
-      m_fadeTime = 1.0f;
-      m_state = STATE_IDLE;
+      m_fadeTime = 1.0f / 2.0f;
+      //m_state = STATE_IDLE;
     }
 
     const float32 maxDisplacement = 10.0f;
@@ -314,7 +314,7 @@ void LightningEffectStrips::generateRenderData()
       {
         *data++ = Math::Lerp(segment.start.x, segment.end.x, 0) - segment.normal.x * m_width * segment.intensity;
         *data++ = Math::Lerp(segment.start.y, segment.end.y, 0) - segment.normal.y * m_width * segment.intensity;
-        *data++ = (0 == i) ? 0.0f : 0.25f;
+        *data++ = isFirst ? 0.0f : 0.25f;
         *data++ = 0.0f;
         *data++ = 1.0f;
         *data++ = 1.0f;
@@ -323,7 +323,7 @@ void LightningEffectStrips::generateRenderData()
 
         *data++ = Math::Lerp(segment.start.x, segment.end.x, 0) + segment.normal.x * m_width * segment.intensity;
         *data++ = Math::Lerp(segment.start.y, segment.end.y, 0) + segment.normal.y * m_width * segment.intensity;
-        *data++ = (0 == i) ? 0.0f : 0.25f;
+        *data++ = isFirst ? 0.0f : 0.25f;
         *data++ = 1.0f;
         *data++ = 1.0f;
         *data++ = 1.0f;

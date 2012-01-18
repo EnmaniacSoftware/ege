@@ -1,5 +1,4 @@
-#include "ScrollableArea.h"
-#include "App.h"
+#include "Core/UI/ScrollableArea.h"
 #include <EGEOverlay.h>
 #include <EGEMath.h>
 #include <EGEDebug.h>
@@ -10,7 +9,7 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(ScrollableArea)
 EGE_DEFINE_DELETE_OPERATORS(ScrollableArea)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ScrollableArea::ScrollableArea(Application* app) : m_app(app),
+ScrollableArea::ScrollableArea(Application* app) : Object(app, EGE_OBJECT_UID_UI_SCROLLABLE_AREA),
                                                    m_state(STATE_IDLE),
                                                    m_dampingCoefficient(0.95f, 0.95f),
                                                    m_throwCoefficient(10.0f, 10.0f),
@@ -62,26 +61,8 @@ void ScrollableArea::update(const Time& time)
   // check if content needs to be recalculated
   if (m_dirtyContent)
   {
-    // reset content size
-    m_contentSize = Vector2f::ZERO;
-
-    // go thru all objects
-    for (ObjectsList::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
-    {
-      // process according to object id
-      switch ((*it)->uid())
-      {
-        case EGE_OBJECT_UID_OVERLAY_TEXT:
-          {
-            TextOverlay* overlay = ege_cast<TextOverlay*>((*it).object());
-
-            // update content
-            Rectf rectangle(overlay->physics()->position().x, overlay->physics()->position().y, overlay->textSize().x, overlay->textSize().y);
-            updateContent(rectangle);
-          }
-          break;
-      }
-    }
+    // recalculate content size
+    recaluclateContentSize();
 
     // reset flag
     m_dirtyContent = false;
@@ -574,5 +555,45 @@ void ScrollableArea::updateContent(const Rectf& rectangle)
 void ScrollableArea::setScrollbarsFadeDuration(const Time& duration)
 {
   m_scrollbarsFadeDuration = duration;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns size of content (in pixels). */
+Vector2f ScrollableArea::contentSize()
+{
+  if (m_dirtyContent)
+  {
+    // recalculate content size
+    recaluclateContentSize();
+
+    // reset flag
+    m_dirtyContent = false;
+  }
+
+  return m_contentSize;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Recalculates content size. */
+void ScrollableArea::recaluclateContentSize()
+{
+  // reset content size
+  m_contentSize = Vector2f::ZERO;
+
+  // go thru all objects
+  for (ObjectsList::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+  {
+    // process according to object id
+    switch ((*it)->uid())
+    {
+      case EGE_OBJECT_UID_OVERLAY_TEXT:
+        {
+          TextOverlay* overlay = ege_cast<TextOverlay*>((*it).object());
+
+          // update content
+          Rectf rectangle(overlay->physics()->position().x, overlay->physics()->position().y, overlay->textSize().x, overlay->textSize().y);
+          updateContent(rectangle);
+        }
+        break;
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

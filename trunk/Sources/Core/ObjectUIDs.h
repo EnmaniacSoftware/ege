@@ -12,6 +12,7 @@ EGE_NAMESPACE_BEGIN
 #define EGE_CORE_PHYSICS_OBJECT_UID_BASE    (EGE_CORE_OBJECT_UID_BASE + 0x200)
 #define EGE_CORE_GRAPHICS_OBJECT_UID_BASE   (EGE_CORE_OBJECT_UID_BASE + 0x300)
 #define EGE_CORE_RESOURCES_OBJECT_UID_BASE  (EGE_CORE_OBJECT_UID_BASE + 0x400)
+#define EGE_CORE_UI_OBJECT_UID_BASE         (EGE_CORE_OBJECT_UID_BASE + 0x500)
 
 // Generic object ids
 #define EGE_OBJECT_UID_GENERIC                ((EGE_CORE_OBJECT_UID_BASE) + 0)
@@ -51,6 +52,10 @@ EGE_NAMESPACE_BEGIN
 #define EGE_OBJECT_UID_AUDIO_CODEC_WAV        ((EGE_CORE_AUDIO_OBJECT_UID_BASE) + 0)
 #define EGE_OBJECT_UID_AUDIO_CODEC_OGG        ((EGE_CORE_AUDIO_OBJECT_UID_BASE) + 1)
 #define EGE_OBJECT_UID_AUDIO_CODEC_MP3        ((EGE_CORE_AUDIO_OBJECT_UID_BASE) + 2)
+
+// UI related object ids
+#define EGE_OBJECT_UID_UI_DIALOG              ((EGE_CORE_UI_OBJECT_UID_BASE) + 0)
+#define EGE_OBJECT_UID_UI_SCROLLABLE_AREA     ((EGE_CORE_UI_OBJECT_UID_BASE) + 1)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

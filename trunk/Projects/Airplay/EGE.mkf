@@ -69,6 +69,7 @@ files
   EGETimer.h
   EGETree.h
 	EGETypes.h
+  EGEUI.h
   EGEVector.h
   EGEVertexBuffer.h
 	EGEXml.h
@@ -373,6 +374,8 @@ files
   ResourceCurve.h
   ResourceData.cpp
   ResourceData.h
+  ResourceDialog.cpp
+  ResourceDialog.h
   ResourceFont.cpp
   ResourceFont.h
   ResourceGroup.cpp
@@ -443,6 +446,13 @@ files
   ByteOrder.h
   DesktopServices.cpp
   DesktopServices.h
+
+	["Core/UI"]
+  (../../Sources/Core/UI)
+  Dialog.cpp
+  Dialog.h
+  ScrollableArea.cpp
+  ScrollableArea.h
 
 	["Core/XML"]
   (../../Sources/Core/XML)

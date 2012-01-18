@@ -16,6 +16,7 @@
 #include "Sound/SoundTest.h"
 #include "Fonts/FontsTest.h"
 #include "ScrollableArea/ScrollableAreaTest.h"
+#include "Dialogs/DialogTest.h"
 
 //#include <gl/gl.h>
 //#include <gl/glu.h>
@@ -25,7 +26,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-App::App() : Application(), m_activeTest(NULL)
+App::App() : Application(), 
+             m_activeTest(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -95,6 +97,7 @@ bool App::start()
   m_tests.push_back(new FontsTest(this));
   m_tests.push_back(new ScrollableAreaTest(this));
   m_tests.push_back(new LightningTest(this));
+  m_tests.push_back(new DialogTest(this));
 
   // select test to run
   selectTest();

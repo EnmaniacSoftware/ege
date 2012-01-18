@@ -11,10 +11,8 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_AFFECTOR "affector"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ResourceParticleEmitter)
 EGE_DEFINE_DELETE_OPERATORS(ResourceParticleEmitter)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceParticleEmitter::ResourceParticleEmitter(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_PARTICLE_EMITTER)
 {

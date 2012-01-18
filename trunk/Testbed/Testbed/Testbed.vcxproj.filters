@@ -46,6 +46,9 @@
     <Filter Include="Tests\ScrollableArea">
       <UniqueIdentifier>{d7432585-7289-4b60-bc9f-f8815fbd3c15}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Dialogs">
+      <UniqueIdentifier>{ecadea8f-aaa0-463f-a632-1bc4fe6a4aea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -93,9 +96,6 @@
     <ClCompile Include="Test.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="ScrollableArea\ScrollableArea.cpp">
-      <Filter>Tests\ScrollableArea</Filter>
-    </ClCompile>
     <ClCompile Include="ScrollableArea\ScrollableAreaTest.cpp">
       <Filter>Tests\ScrollableArea</Filter>
     </ClCompile>
@@ -107,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="Lightning\LightningEffectStrips.cpp">
       <Filter>Tests\Lightning</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\DialogTest.cpp">
+      <Filter>Tests\Dialogs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +155,6 @@
     <ClInclude Include="Fonts\FontsTest.h">
       <Filter>Tests\Fonts</Filter>
     </ClInclude>
-    <ClInclude Include="ScrollableArea\ScrollableArea.h">
-      <Filter>Tests\ScrollableArea</Filter>
-    </ClInclude>
     <ClInclude Include="ScrollableArea\ScrollableAreaTest.h">
       <Filter>Tests\ScrollableArea</Filter>
     </ClInclude>
@@ -166,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="Lightning\LightningEffectStrips.h">
       <Filter>Tests\Lightning</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\DialogTest.h">
+      <Filter>Tests\Dialogs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

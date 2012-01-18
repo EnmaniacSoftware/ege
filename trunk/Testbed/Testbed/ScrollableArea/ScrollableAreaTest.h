@@ -2,8 +2,8 @@
 #define TEST_SCROLLABLEAREA_H
 
 #include "Test.h"
-#include "ScrollableArea.h"
 #include <EGEString.h>
+#include <EGEUI.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ class ScrollableAreaTest : public Test
   private:
 
     /*! Scrollable area object. */
-    ScrollableArea* m_area;
+    EGE::ScrollableArea* m_area;
     /*! Scrollable area background object. */
     EGE::PRenderComponent m_areaBackground;
 };

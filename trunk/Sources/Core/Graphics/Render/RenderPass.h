@@ -6,6 +6,7 @@
 
 #include <EGE.h>
 #include <EGEGraphics.h>
+#include "Core/Graphics/TextureImage.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -29,15 +30,15 @@ class RenderPass : public Object
   public:
 
     /* Adds new texture. */
-    EGEResult addTexture(PObject texture);
+    EGEResult addTexture(PTextureImage texture);
     /* Sets new texture at given index. Can only succeed when setting texture within range. */
-    EGEResult setTexture(u32 index, PObject texture);
+    EGEResult setTexture(u32 index, PTextureImage texture);
     /* Sets new texture at the place of the one with given name. If no such texture exists it is added. */
-    EGEResult setTexture(const String& name, PObject texture);
+    EGEResult setTexture(const String& name, PTextureImage texture);
     /* Returns number of textures used. */
     u32 textureCount() const;
     /* Retrives texture at given index. */
-    PObject texture(u32 index) const;
+    PTextureImage texture(u32 index) const;
     /* Remove texture at given index. 
      * @param index Index of texture to be removed.
      * @note  if negative index is passed all textures are removed.
@@ -79,12 +80,12 @@ class RenderPass : public Object
 
   private:
 
-    typedef DynamicArray<PObject> ObjectArray;
+    typedef DynamicArray<PTextureImage> TextureImageArray;
 
   private:
 
     /*! Textures assigned to pass. */
-    ObjectArray m_textures;
+    TextureImageArray m_textures;
     /*! Source blend value. */
     EGEGraphics::BlendFactor m_srcBlendFactor;
     /*! Destination blend value. */

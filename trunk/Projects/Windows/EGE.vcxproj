@@ -103,6 +103,7 @@
     <ClCompile Include="..\..\Sources\Core\Random\Random.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceCurve.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceData.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceDialog.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceFont.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceGroup.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceManager.cpp" />
@@ -126,6 +127,8 @@
     <ClCompile Include="..\..\Sources\Core\Timer\Timer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Tools\ByteOrder.cpp" />
     <ClCompile Include="..\..\Sources\Core\Tools\DesktopServices.cpp" />
+    <ClCompile Include="..\..\Sources\Core\UI\Dialog.cpp" />
+    <ClCompile Include="..\..\Sources\Core\UI\ScrollableArea.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlAttributeTinyXml_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlDocumentTinyXml_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlElementTinyXml_p.cpp" />
@@ -176,6 +179,7 @@
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointPulley.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceCurve.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceDialog.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceParticleAffector.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSound.h" />
@@ -186,6 +190,8 @@
     <ClInclude Include="..\..\Sources\Core\Timer\TimeLine.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\ByteOrder.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\DesktopServices.h" />
+    <ClInclude Include="..\..\Sources\Core\UI\Dialog.h" />
+    <ClInclude Include="..\..\Sources\Core\UI\ScrollableArea.h" />
     <ClInclude Include="..\..\Sources\Core\XML\TinyXml\XmlAttributeTinyXml_p.h" />
     <ClInclude Include="..\..\Sources\Core\XML\XmlAttribute.h" />
     <ClInclude Include="..\..\Sources\EGEAlignment.h" />
@@ -345,6 +351,7 @@
     <ClInclude Include="..\..\Sources\EGETimer.h" />
     <ClInclude Include="..\..\Sources\EGETree.h" />
     <ClInclude Include="..\..\Sources\EGETypes.h" />
+    <ClInclude Include="..\..\Sources\EGEUI.h" />
     <ClInclude Include="..\..\Sources\EGEVector.h" />
     <ClInclude Include="..\..\Sources\EGEVertexBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEXml.h" />

@@ -24,7 +24,7 @@ RenderPass::~RenderPass()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds new texture. */
-EGEResult RenderPass::addTexture(PObject texture)
+EGEResult RenderPass::addTexture(PTextureImage texture)
 {
   m_textures.push_back(texture);
 
@@ -32,7 +32,7 @@ EGEResult RenderPass::addTexture(PObject texture)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets new texture at given index. Can only succeed when setting texture within range. */
-EGEResult RenderPass::setTexture(u32 index, PObject texture)
+EGEResult RenderPass::setTexture(u32 index, PTextureImage texture)
 {
   // check if index out of range
   if (index >= static_cast<u32>(m_textures.size()))
@@ -47,10 +47,10 @@ EGEResult RenderPass::setTexture(u32 index, PObject texture)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets new texture at the place of the one with given name. If no such texture exists it is added. */
-EGEResult RenderPass::setTexture(const String& name, PObject texture)
+EGEResult RenderPass::setTexture(const String& name, PTextureImage texture)
 {
   // find texture with given name
-  for (DynamicArray<PObject>::iterator it = m_textures.begin(); it != m_textures.end(); ++it)
+  for (TextureImageArray::iterator it = m_textures.begin(); it != m_textures.end(); ++it)
   {
     // check if texture image
     if (EGE_OBJECT_UID_TEXTURE_IMAGE == (*it)->uid())
@@ -98,7 +98,7 @@ u32 RenderPass::textureCount() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Retrives texture at given index. */
-PObject RenderPass::texture(u32 index) const
+PTextureImage RenderPass::texture(u32 index) const
 {
   return (index < textureCount()) ? m_textures[index] : NULL;
 }
@@ -152,7 +152,7 @@ RenderPass* RenderPass::clone() const
   if (pass)
   {
     // TAGE - probably there is no need to clone textures too unless we need to modify textures as well
-    for (ObjectArray::const_iterator it = m_textures.begin(); it != m_textures.end(); ++it)
+    for (TextureImageArray::const_iterator it = m_textures.begin(); it != m_textures.end(); ++it)
     {
       pass->m_textures.push_back(*it);
     }
