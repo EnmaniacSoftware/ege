@@ -172,7 +172,7 @@ EGEResult ResourceDialog::setInstance(const PDialog& instance) const
   for (ContentAreaDataMap::const_iterator it = m_contentAreas.begin(); it != m_contentAreas.end(); ++it)
   {
     EGEResult result;
-    if (EGE_SUCCESS != (result = instance->addContentArea(it->first, it->second.rect)))
+    if (EGE_SUCCESS != (result = instance->addContentArea(it->first, it->second.rect, it->second.vericalScroll, it->second.horizontalScroll)))
     {
       // error!
       return result;
@@ -192,8 +192,10 @@ EGEResult ResourceDialog::addContentArea(const PXmlElement& tag)
   ContentAreaData area;
 
   // retrieve data
-  String name = tag->attribute("name");
-  area.rect   = tag->attribute("rect").toRectf(&error);
+  String name           = tag->attribute("name");
+  area.rect             = tag->attribute("rect").toRectf(&error);
+  area.vericalScroll    = tag->attribute("vertical-scroll", "false").toBool(&error);
+  area.horizontalScroll = tag->attribute("horizontal-scroll", "false").toBool(&error);
 
   // check for error
   if (name.empty() || error)

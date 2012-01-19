@@ -187,7 +187,7 @@ void RendererPrivate::flush()
     {
       const RenderQueue::SRENDERDATA& data = it->second;
 
-      if (data.component->name() == "mode-selection-screen-chimney-smoke")
+      if (data.component->name() == "overlay-text")
       {
         int a = 1;
       }

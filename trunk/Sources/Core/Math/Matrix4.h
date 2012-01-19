@@ -45,7 +45,8 @@ class TMatrix4
     inline void setScale(T x, T y, T z);
     /* Sets translation part of the matrix. */
     inline void setTranslation(T x, T y, T z);
-
+    /* Returns translation vector. */
+    inline TVector4<T> translation() const;
     
     //  CMatrix4 concatenateAffine( const CMatrix4& cMatrix ) const;                                      // multiplies affine matrices
 
@@ -239,6 +240,13 @@ void TMatrix4<T>::setTranslation(T x, T y, T z)
   data[14] = z;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns translation vector. */
+template <typename T>
+TVector4<T> TMatrix4<T>::translation() const
+{
+  return TVector4<T>(data[12], data[13], data[14], data[15]);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 inline TMatrix4<T> operator + (const TMatrix4<T>& left, const TMatrix4<T>& right)
 {
@@ -255,6 +263,12 @@ inline TMatrix4<T> operator - (const TMatrix4<T>& left, const TMatrix4<T>& right
   out -= right;
 
   return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TMatrix4<T> operator * (const TMatrix4<T>& left, const TMatrix4<T>& right)
+{
+  return left.multiply(right);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -98,7 +98,7 @@ void ScrollableAreaTest::preRender(PRenderTarget target)
 
   if (m_area)
   {
-    m_area->render(app()->graphics()->renderer());
+    m_area->addForRendering(app()->graphics()->renderer());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

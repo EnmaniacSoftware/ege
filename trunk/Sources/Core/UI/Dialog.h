@@ -5,6 +5,7 @@
 #include <EGETime.h>
 #include <EGEAlignment.h>
 #include <EGEMap.h>
+#include <EGEOverlay.h>
 #include "Core/UI/ScrollableArea.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
@@ -34,14 +35,16 @@ class Dialog : public Object
     bool isValid() const;
     /* Updates overlay. */
     void update(const Time& time);
-    /* Renders element. */
-    void render(const Viewport* viewport, Renderer* renderer);
+    /* Renders dialog. */
+    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
     /* Sets alignment. */
     void setAlignment(Alignment align);
+    /* Pointer event processor. */
+    void pointerEvent(PPointerData data);
     /*! Returns name. */
     const String& name() const { return m_name; }
     /*! Returns physics component. */
-    PPhysicsComponent physics() const { return m_physics; }
+    PhysicsComponent& physics() { return m_physics; }
     /*! Returns TRUE if overlay is visible. */
     bool visible() const { return m_visible; }
     /* Sets visibility. */
@@ -57,8 +60,10 @@ class Dialog : public Object
 
     /* Sets max size. */
     void setMaxSize(const Vector2i& size);
-    /* Add content area. */
-    EGEResult addContentArea(const String& name, const Rectf& rect);
+    /* Adds content area. */
+    EGEResult addContentArea(const String& name, const Rectf& rect, bool verticalScroll = false, bool horizontalScroll = false);
+    /* Adds text overlay to given content area. */
+    EGEResult addTextOverlay(const String& contentName, PTextOverlay& overlay);
 
   private:
 
@@ -76,8 +81,8 @@ class Dialog : public Object
     /*! Content area data struct. */
     struct ContentAreaData
     {
-      PScrollableArea area;
-      Rectf rect;
+      PScrollableArea area;                 /*!< Scrollable area container. */
+      Rectf rect;                           /*!< Rectangle for container (relative and normalized). */
     };
 
     typedef Map<String, ContentAreaData> ContentAreaDataMap;
@@ -87,7 +92,7 @@ class Dialog : public Object
     /*! Name. */
     String m_name;
     /*! Physics component. */
-    PPhysicsComponent m_physics;
+    PhysicsComponent m_physics;
     /*! Render component. */
     PRenderComponent m_renderData;
     /*! Render data invalid flag. */

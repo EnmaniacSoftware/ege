@@ -129,6 +129,7 @@
     <ClCompile Include="..\..\Sources\Core\Tools\DesktopServices.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\Dialog.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\ScrollableArea.cpp" />
+    <ClCompile Include="..\..\Sources\Core\UI\WidgetFrame.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlAttributeTinyXml_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlDocumentTinyXml_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlElementTinyXml_p.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="..\..\Sources\Core\Tools\DesktopServices.h" />
     <ClInclude Include="..\..\Sources\Core\UI\Dialog.h" />
     <ClInclude Include="..\..\Sources\Core\UI\ScrollableArea.h" />
+    <ClInclude Include="..\..\Sources\Core\UI\WidgetFrame.h" />
     <ClInclude Include="..\..\Sources\Core\XML\TinyXml\XmlAttributeTinyXml_p.h" />
     <ClInclude Include="..\..\Sources\Core\XML\XmlAttribute.h" />
     <ClInclude Include="..\..\Sources\EGEAlignment.h" />

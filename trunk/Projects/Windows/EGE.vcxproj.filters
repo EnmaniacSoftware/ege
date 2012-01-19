@@ -564,6 +564,9 @@
     <ClCompile Include="..\..\Sources\Core\UI\ScrollableArea.cpp">
       <Filter>Core\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\UI\WidgetFrame.cpp">
+      <Filter>Core\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1100,6 +1103,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEUI.h" />
     <ClInclude Include="..\..\Sources\Core\UI\ScrollableArea.h">
+      <Filter>Core\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\UI\WidgetFrame.h">
       <Filter>Core\UI</Filter>
     </ClInclude>
   </ItemGroup>

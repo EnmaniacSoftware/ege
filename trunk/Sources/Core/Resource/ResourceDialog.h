@@ -67,6 +67,8 @@ class ResourceDialog : public IResource
     struct ContentAreaData
     {
       Rectf rect;               /*!< Rectangular area of content within the dialog (in local normalized coordinate system). */
+      bool vericalScroll;       /*!< TRUE if vertical scroll is required. */
+      bool horizontalScroll;    /*!< TRUE if horizontal scroll is required. */
     };
 
     typedef Map<String, ContentAreaData> ContentAreaDataMap;

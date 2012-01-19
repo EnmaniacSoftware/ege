@@ -29,7 +29,7 @@ ScrollableArea::ScrollableArea(Application* app) : Object(app, EGE_OBJECT_UID_UI
       material->setDstBlendFactor(EGEGraphics::BF_ONE_MINUS_SRC_ALPHA);
       material->setDiffuseColor(Color::NONE);
     
-      m_scrollbarRenderData = ege_new RenderComponent(app, "scrollable-area-scrollbar", 50, EGEGraphics::RPT_TRIANGLES);
+      m_scrollbarRenderData = ege_new RenderComponent(app, "scrollable-area-scrollbar", EGEGraphics::RP_MAIN + 20, EGEGraphics::RPT_TRIANGLES);
       if (m_scrollbarRenderData)
       {
         m_scrollbarRenderData->setMaterial(material);
@@ -41,10 +41,13 @@ ScrollableArea::ScrollableArea(Application* app) : Object(app, EGE_OBJECT_UID_UI
       }
     }
   }
+
+  ege_connect(&m_physics, transformationChanged, this, ScrollableArea::transformationChanged);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ScrollableArea::~ScrollableArea()
 {
+  ege_disconnect(&m_physics, transformationChanged, this, ScrollableArea::transformationChanged);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
@@ -211,15 +214,28 @@ void ScrollableArea::pointerEvent(PPointerData data)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders object. */
-void ScrollableArea::render(Renderer* renderer)
+void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
-  Matrix4f matrix = Matrix4f::IDENTITY;
-  Vector4f pos = m_physics.position();
+  Vector4f pos;
+
+  // create content objects matrix affected by current scroll offset
+  Matrix4f contentMatrix = Matrix4f::IDENTITY;
+  pos = m_physics.position();
   pos.x -= m_scrollOffset.x;
   pos.y -= m_scrollOffset.y;
+  Math::CreateMatrix(&contentMatrix, &pos, &Vector4f::ONE, &Quaternionf::IDENTITY);
+  contentMatrix = transform.multiply(contentMatrix);
 
+  // create matrix describing final position
+  Matrix4f matrix = Matrix4f::IDENTITY;
+  pos = m_physics.position();
   Math::CreateMatrix(&matrix, &pos, &Vector4f::ONE, &Quaternionf::IDENTITY);
+  matrix = transform.multiply(matrix);
 
+  // cache position
+  pos = matrix.translation();
+
+  // render all objects
   for (ObjectsList::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
     switch ((*it)->uid())
@@ -228,8 +244,8 @@ void ScrollableArea::render(Renderer* renderer)
         {
           TextOverlay* overlay = ege_cast<TextOverlay*>(*it);
 
-          overlay->renderData()->setClipRect(Rectf(m_physics.position().x, m_physics.position().y, m_physics.scale().x, m_physics.scale().y));
-          renderer->addForRendering(overlay->renderData(), matrix.multiply(overlay->physics()->transformationMatrix()));
+          overlay->renderData()->setClipRect(Rectf(pos.x, pos.y, m_physics.scale().x, m_physics.scale().y));
+          renderer->addForRendering(overlay->renderData(), contentMatrix * overlay->physics()->transformationMatrix());
         }
         break;
     }
@@ -351,8 +367,8 @@ void ScrollableArea::render(Renderer* renderer)
 
     m_scrollbarRenderData->vertexBuffer()->unlock();
 
-    m_scrollbarRenderData->setClipRect(Rectf(m_physics.position().x, m_physics.position().y, m_physics.scale().x, m_physics.scale().y));
-    renderer->addForRendering(m_scrollbarRenderData);
+    m_scrollbarRenderData->setClipRect(Rectf(pos.x, pos.y, m_physics.scale().x, m_physics.scale().y));
+    renderer->addForRendering(m_scrollbarRenderData, transform);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -512,7 +528,7 @@ void ScrollableArea::updateScrollbars(const Time& time)
       break;
   }
 
- // EGE_PRINT("%d - Time:%.2f", m_scrollbarsState, m_scrollbarsStateTime.seconds());
+  EGE_PRINT("%d - Time:%.2f", m_scrollbarsState, m_scrollbarsStateTime.seconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Enables/disables scrollbars. */
@@ -595,5 +611,12 @@ void ScrollableArea::recaluclateContentSize()
         break;
     }
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when internal transformation is changed. */
+void ScrollableArea::transformationChanged()
+{
+  // invalidate content
+  m_dirtyContent = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

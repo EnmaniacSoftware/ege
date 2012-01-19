@@ -1,20 +1,15 @@
-#include "Core/UI/Dialog.h"
+#include "Core/UI/WidgetFrame.h"
 #include <EGETexture.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(Dialog)
-EGE_DEFINE_DELETE_OPERATORS(Dialog)
+EGE_DEFINE_NEW_OPERATORS(WidgetFrame)
+EGE_DEFINE_DELETE_OPERATORS(WidgetFrame)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Dialog::Dialog(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Object(app, EGE_OBJECT_UID_UI_DIALOG, deleteFunc), 
-                                                                                       m_name(name),
-                                                                                       m_renderDataInvalid(true), 
-                                                                                       m_visible(true),
-                                                                                       m_maxSize(Vector2i::ZERO),
-                                                                                       m_sizeValid(false)
+WidgetFrame::WidgetFrame(Application* app) : m_renderDataInvalid(true)
 {
-  m_renderData  = ege_new RenderComponent(app, "dialog_" + name, EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES, EGEVertexBuffer::UT_STATIC_WRITE);
+  m_renderData  = ege_new RenderComponent(app, "widget-frame", EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES, EGEVertexBuffer::UT_STATIC_WRITE);
   if (m_renderData)
   {
     m_renderData->indexBuffer()->setIndexSize(EGEIndexBuffer::IS_8BIT);
@@ -26,72 +21,42 @@ Dialog::Dialog(Application* app, const String& name, egeObjectDeleteFunc deleteF
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Dialog::~Dialog()
+WidgetFrame::~WidgetFrame()
 {
   m_renderData = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
-bool Dialog::isValid() const
+bool WidgetFrame::isValid() const
 {
   return (NULL != m_renderData);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates overlay. */
-void Dialog::update(const Time& time)
-{
-  // update content
-  for (ContentAreaDataMap::const_iterator it = m_contentAreas.begin(); it != m_contentAreas.end(); ++it)
-  {
-    const ContentAreaData& data = it->second;
-
-    data.area->update(time);
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders dialog. */
-void Dialog::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void WidgetFrame::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
-  if (visible())
+  // regenerate render data if required
+  if (m_renderDataInvalid)
   {
-    // regenerate render data if required
-    if (m_renderDataInvalid)
-    {
-      generateRenderData();
-    }
-
-    // render dialog
-    renderer->addForRendering(m_renderData, transform.multiply(m_physics.transformationMatrix()));
-
-    // render content
-    for (ContentAreaDataMap::const_iterator it = m_contentAreas.begin(); it != m_contentAreas.end(); ++it)
-    {
-      const ContentAreaData& data = it->second;
-
-      data.area->addForRendering(renderer, transform.multiply(m_physics.transformationMatrix()));
-    }
+    generateRenderData();
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets visibility. */
-void Dialog::setVisible(bool set)
-{
-  if (m_visible != set)
-  {
-    m_visible = set;
-  }
+
+  renderer->addForRendering(m_renderData, transform);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets material. */
-void Dialog::setMaterial(const PMaterial& material)
+void WidgetFrame::setMaterial(const PMaterial& material)
 {
   EGE_ASSERT(m_renderData);
   m_renderData->setMaterial(material);
+
+  // invalidate render data
+  m_renderDataInvalid = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets rectanlges (in pixels). */
-void Dialog::setRects(const Recti& topLeft, const Recti& topMiddle, const Recti& topRight, const Recti& middleLeft, const Recti& fill, const Recti& middleRight, 
-                      const Recti& bottomLeft, const Recti& bottomMiddle, const Recti& bottomRight)
+void WidgetFrame::setRects(const Recti& topLeft, const Recti& topMiddle, const Recti& topRight, const Recti& middleLeft, const Recti& fill, 
+                           const Recti& middleRight, const Recti& bottomLeft, const Recti& bottomMiddle, const Recti& bottomRight)
 {
   m_topLeftRect       = topLeft;
   m_topMiddleRect     = topMiddle;
@@ -108,11 +73,11 @@ void Dialog::setRects(const Recti& topLeft, const Recti& topMiddle, const Recti&
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Generates render data. */
-void Dialog::generateRenderData()
+void WidgetFrame::generateRenderData()
 {
-  Vector2i dlgContentSize = size() - noContentSize();
+  Vector2f frameContentSize = m_size - minSize();
 
-  /* NOTE: Dialog widget is divided into following sections:
+  /* NOTE: WidgetFrame widget is divided into following sections:
    *
    *      *------*------------------------------------------------------*------*
    *      |      |                                                      |      |
@@ -162,7 +127,7 @@ void Dialog::generateRenderData()
 
         vertexData.x      = static_cast<float32>(m_topLeftRect.width);
         vertexData.y      = 0.0f;
-        vertexData.width  = static_cast<float32>(dlgContentSize.x);
+        vertexData.width  = static_cast<float32>(frameContentSize.x);
         vertexData.height = static_cast<float32>(m_topMiddleRect.height);
         uvData.x          = m_topMiddleRect.x * textureSize.x;
         uvData.y          = m_topMiddleRect.y * textureSize.y;
@@ -172,7 +137,7 @@ void Dialog::generateRenderData()
 
       case 2:
 
-        vertexData.x      = static_cast<float32>(m_topLeftRect.width + dlgContentSize.x);
+        vertexData.x      = static_cast<float32>(m_topLeftRect.width + frameContentSize.x);
         vertexData.y      = 0.0f;
         vertexData.width  = static_cast<float32>(m_topRightRect.width);
         vertexData.height = static_cast<float32>(m_topRightRect.height);
@@ -187,7 +152,7 @@ void Dialog::generateRenderData()
         vertexData.x      = 0.0f;
         vertexData.y      = static_cast<float32>(m_topLeftRect.height);
         vertexData.width  = static_cast<float32>(m_middleLeftRect.width);
-        vertexData.height = static_cast<float32>(dlgContentSize.y);
+        vertexData.height = static_cast<float32>(frameContentSize.y);
         uvData.x          = m_middleLeftRect.x * textureSize.x;
         uvData.y          = m_middleLeftRect.y * textureSize.y;
         uvData.width      = m_middleLeftRect.width * textureSize.x;
@@ -198,8 +163,8 @@ void Dialog::generateRenderData()
 
         vertexData.x      = static_cast<float32>(m_middleLeftRect.width);
         vertexData.y      = static_cast<float32>(m_topMiddleRect.height);
-        vertexData.width  = static_cast<float32>(dlgContentSize.x);
-        vertexData.height = static_cast<float32>(dlgContentSize.y);
+        vertexData.width  = static_cast<float32>(frameContentSize.x);
+        vertexData.height = static_cast<float32>(frameContentSize.y);
         uvData.x          = m_fillRect.x * textureSize.x;
         uvData.y          = m_fillRect.y * textureSize.y;
         uvData.width      = m_fillRect.width * textureSize.x;
@@ -208,10 +173,10 @@ void Dialog::generateRenderData()
 
       case 5:
 
-        vertexData.x      = static_cast<float32>(m_middleLeftRect.width + dlgContentSize.x);
+        vertexData.x      = static_cast<float32>(m_middleLeftRect.width + frameContentSize.x);
         vertexData.y      = static_cast<float32>(m_topRightRect.height);
         vertexData.width  = static_cast<float32>(m_middleRightRect.width);
-        vertexData.height = static_cast<float32>(dlgContentSize.y);
+        vertexData.height = static_cast<float32>(frameContentSize.y);
         uvData.x          = m_middleRightRect.x * textureSize.x;
         uvData.y          = m_middleRightRect.y * textureSize.y;
         uvData.width      = m_middleRightRect.width * textureSize.x;
@@ -221,7 +186,7 @@ void Dialog::generateRenderData()
       case 6:
 
         vertexData.x      = 0.0f;
-        vertexData.y      = static_cast<float32>(m_topLeftRect.height + dlgContentSize.y);
+        vertexData.y      = static_cast<float32>(m_topLeftRect.height + frameContentSize.y);
         vertexData.width  = static_cast<float32>(m_bottomLeftRect.width);
         vertexData.height = static_cast<float32>(m_bottomLeftRect.height);
         uvData.x          = m_bottomLeftRect.x * textureSize.x;
@@ -233,8 +198,8 @@ void Dialog::generateRenderData()
       case 7:
 
         vertexData.x      = static_cast<float32>(m_bottomLeftRect.width);
-        vertexData.y      = static_cast<float32>(m_topLeftRect.height + dlgContentSize.y);
-        vertexData.width  = static_cast<float32>(dlgContentSize.x);
+        vertexData.y      = static_cast<float32>(m_topLeftRect.height + frameContentSize.y);
+        vertexData.width  = static_cast<float32>(frameContentSize.x);
         vertexData.height = static_cast<float32>(m_bottomMiddleRect.height);
         uvData.x          = m_bottomMiddleRect.x * textureSize.x;
         uvData.y          = m_bottomMiddleRect.y * textureSize.y;
@@ -244,8 +209,8 @@ void Dialog::generateRenderData()
 
       case 8:
 
-        vertexData.x      = static_cast<float32>(m_bottomLeftRect.width + dlgContentSize.x);
-        vertexData.y      = static_cast<float32>(m_topRightRect.height + dlgContentSize.y);
+        vertexData.x      = static_cast<float32>(m_bottomLeftRect.width + frameContentSize.x);
+        vertexData.y      = static_cast<float32>(m_topRightRect.height + frameContentSize.y);
         vertexData.width  = static_cast<float32>(m_bottomRightRect.width);
         vertexData.height = static_cast<float32>(m_bottomRightRect.height);
         uvData.x          = m_bottomRightRect.x * textureSize.x;
@@ -292,160 +257,28 @@ void Dialog::generateRenderData()
   m_renderDataInvalid = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Determines size of the dialog (in pixels). */
-Vector2i Dialog::size()
+/*! Sets size. */
+void WidgetFrame::setSize(const Vector2f& size)
 {
-  if (!m_sizeValid)
+  if (m_size != size)
   {
-    Vector2f biggestSize = Vector2f::ZERO;
+    // store new size
+    m_size = size;
 
-    // go thru all content areas
-    for (ContentAreaDataMap::const_iterator it = m_contentAreas.begin(); it != m_contentAreas.end(); ++it)
-    {
-      const ContentAreaData& data = it->second;
-
-      // determine content size
-      Vector2f contentSize = data.area->contentSize();
-
-      // calculate desired dialog size to match requirements for this content area
-      Vector2f sizeFromContent(contentSize.x / data.rect.width, contentSize.y / data.rect.height);
-
-      // store if bigger than whats in so far
-      biggestSize.x = Math::Max(biggestSize.x, sizeFromContent.x);
-      biggestSize.y = Math::Max(biggestSize.y, sizeFromContent.y);
-    }
-
-    // make sure dialog size is in proper range
-    m_size.x = Math::Bound(static_cast<s32>(biggestSize.x), noContentSize().x, (0 == m_maxSize.x) ? Math::MAX_S32 : m_maxSize.x);
-    m_size.y = Math::Bound(static_cast<s32>(biggestSize.y), noContentSize().y, (0 == m_maxSize.y) ? Math::MAX_S32 : m_maxSize.y);
-
-    // go thru all content and reassign layouts
-    for (ContentAreaDataMap::iterator it = m_contentAreas.begin(); it != m_contentAreas.end(); ++it)
-    {
-      ContentAreaData& data = it->second;
-
-      data.area->physics().setPosition(Vector4f(data.rect.x * m_size.x, data.rect.y * m_size.y, 0));
-      data.area->physics().setScale(Vector4f(data.rect.width * m_size.x, data.rect.height * m_size.y, 0));
-    }
-
-    // set flag
-    m_sizeValid = true;
+    // invalidate render data
+    m_renderDataInvalid = true;
   }
-
-  return m_size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Determines size of the content only (in pixels). */
-Vector2i Dialog::contentSize() const
+/*! Returns minimal size (in pixels). */
+Vector2f WidgetFrame::minSize() const
 {
-  Vector2i size(0, 0);
-
-  // go thru all content areas
-  for (ContentAreaDataMap::const_iterator it = m_contentAreas.begin(); it != m_contentAreas.end(); ++it)
-  {
-    const ContentAreaData& data = it->second;
-
-    size.x += static_cast<s32>(data.area->contentSize().x);
-    size.y += static_cast<s32>(data.area->contentSize().y);
-  }
-
-  return size;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets max size. */
-void Dialog::setMaxSize(const Vector2i& size)
-{
-  m_maxSize = size;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Add content area. */
-EGEResult Dialog::addContentArea(const String& name, const Rectf& rect, bool verticalScroll, bool horizontalScroll)
-{
-  ContentAreaData contentArea;
-
-  // check if already exists
-  if (m_contentAreas.contains(name))
-  {
-    // error!
-    return EGE_ERROR_ALREADY_EXISTS;
-  }
- 
-  // allocate scrollable area
-  contentArea.area = ege_new ScrollableArea(app());
-  contentArea.rect = rect;
-  if (NULL == contentArea.area)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  // setup scrollable area
-  contentArea.area->setScrollbarsEnabled(true);
-  contentArea.area->setDirection(((horizontalScroll) ? ScrollableArea::DIRECTION_HORIZONTAL : ScrollableArea::DIRECTION_NONE) | 
-                                 ((verticalScroll) ? ScrollableArea::DIRECTION_VERTICAL : ScrollableArea::DIRECTION_NONE));
-
-  // add to pool
-  m_contentAreas.insert(name, contentArea);
-
-  return EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Determines size of the frame only, without any content (in pixels). */
-Vector2i Dialog::noContentSize() const
-{
-  Vector2i dlgSize(0, 0);
+  Vector2f frameSize(0, 0);
 
   // frame only
-  dlgSize.x += m_topLeftRect.width + m_topRightRect.width;
-  dlgSize.y += m_topLeftRect.height + m_bottomLeftRect.height;
+  frameSize.x += m_topLeftRect.width + m_topRightRect.width;
+  frameSize.y += m_topLeftRect.height + m_bottomLeftRect.height;
 
-  return dlgSize;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds text overlay to given content area. */
-EGEResult Dialog::addTextOverlay(const String& contentName, PTextOverlay& overlay)
-{
-  ContentAreaData dummy;
-
-  // get content
-  ContentAreaData content = m_contentAreas.value(contentName, dummy);
-  if (NULL == content.area)
-  {
-    // error!
-    return EGE_ERROR_NOT_FOUND;
-  }
-
-  // add to content area
-  EGEResult result;
-  if (EGE_SUCCESS != (result = content.area->addObject(overlay)))
-  {
-    // error!
-    return result;
-  }
-
-  return EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Pointer event processor. */
-void Dialog::pointerEvent(PPointerData data)
-{
-  // map to client area
-  Vector2f pos(data->x() - m_physics.position().x, data->y() - m_physics.position().y);
-  
-  // check if inside
-  if ((0 <= pos.x) && (pos.x < size().x) && (0 <= pos.y) && (pos.y < size().y))
-  {
-    // go thru all content areas
-    for (ContentAreaDataMap::const_iterator it = m_contentAreas.begin(); it != m_contentAreas.end(); ++it)
-    {
-      const ContentAreaData& contentData = it->second;
-
-      // update position into local space of the content.
-      // NOTE: content's position is in dialog's local space
-      PointerData localData(data->action(), data->button(), static_cast<s32>(pos.x), static_cast<s32>(pos.y), data->index());
-    
-      contentData.area->pointerEvent(localData);
-    }
-  }
+  return frameSize;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

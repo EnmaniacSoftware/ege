@@ -31,6 +31,7 @@ class ScrollableArea : public Object
     /*! Available directions. */
     enum DirectionFlags
     {
+      DIRECTION_NONE        = 0x0,
       DIRECTION_VERTICAL    = 0x1,
       DIRECTION_HORIZONTAL  = 0x2,
 
@@ -48,7 +49,7 @@ class ScrollableArea : public Object
     /* Pointer event processor. */
     void pointerEvent(PPointerData data);
     /* Renders object. */
-    void render(Renderer* renderer);
+    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
     /*! Returns local physics. */
     inline PhysicsComponent& physics() { return m_physics; }
     /* Adds object. */
@@ -84,6 +85,11 @@ class ScrollableArea : public Object
     void updateContent(const Rectf& rectangle);
     /* Recalculates content size. */
     void recaluclateContentSize();
+
+  private slots:
+
+    /* Slot called when internal transformation is changed. */
+    void transformationChanged();
 
   private:
 
