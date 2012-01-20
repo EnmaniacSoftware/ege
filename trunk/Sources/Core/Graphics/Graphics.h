@@ -13,6 +13,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class ParticleFactory;
+class WidgetFactory;
 
 EGE_DECLARE_SMART_CLASS(Graphics, PGraphics)
 EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
@@ -57,6 +58,8 @@ class Graphics : public Object
     void removeRenderTarget(const String& name);
     /*! Returns pointer to particle factory. */
     inline ParticleFactory* particleFactory() const { return m_particleFactory; }
+    /*! Returns pointer to widget factory. */
+    inline WidgetFactory* widgetFactory() const { return m_widgetFactory; }
     /* Creates vertex buffer obejct. */
     PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const;
     /* Creates index buffer obejct. */
@@ -81,8 +84,10 @@ class Graphics : public Object
     PRenderTarget m_currentRenderingContext;
     /*! Render targets sorted by priority. */
     RenderTargetMap m_renderTargets; 
-    /*! Particle emitter factory. */
+    /*! Particles factory. */
     ParticleFactory* m_particleFactory;
+    /*! Widgets factory. */
+    WidgetFactory* m_widgetFactory;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -54,7 +54,7 @@ EGEResult ResourceTextureImage::create(const String& path, const PXmlElement& ta
   if (error || m_name.empty() || m_textureName.empty())
   {
     // error!
-    EGE_PRINT("ResourceTextureImage::create - failed for name: %s", m_name.toAscii());
+    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 

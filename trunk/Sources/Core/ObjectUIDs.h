@@ -56,6 +56,7 @@ EGE_NAMESPACE_BEGIN
 // UI related object ids
 #define EGE_OBJECT_UID_UI_DIALOG              ((EGE_CORE_UI_OBJECT_UID_BASE) + 0)
 #define EGE_OBJECT_UID_UI_SCROLLABLE_AREA     ((EGE_CORE_UI_OBJECT_UID_BASE) + 1)
+#define EGE_OBJECT_UID_UI_PUSH_BUTTON         ((EGE_CORE_UI_OBJECT_UID_BASE) + 2)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

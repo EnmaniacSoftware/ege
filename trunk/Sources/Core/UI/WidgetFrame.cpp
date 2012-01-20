@@ -76,6 +76,8 @@ void WidgetFrame::setRects(const Recti& topLeft, const Recti& topMiddle, const R
 void WidgetFrame::generateRenderData()
 {
   Vector2f frameContentSize = m_size - minSize();
+  frameContentSize.x = Math::Max(frameContentSize.x, 0.0f);
+  frameContentSize.y = Math::Max(frameContentSize.y, 0.0f);
 
   /* NOTE: WidgetFrame widget is divided into following sections:
    *

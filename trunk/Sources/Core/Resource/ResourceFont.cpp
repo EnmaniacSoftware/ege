@@ -73,7 +73,7 @@ EGEResult ResourceFont::create(const String& path, const PXmlElement& tag)
   if (m_name.empty() || m_materialName.empty() || error)
   {
     // error!
-    EGE_PRINT("ResourceFont::create - failed for name: %s", m_name.toAscii());
+    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 

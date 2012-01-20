@@ -89,32 +89,14 @@ void DialogTest::groupLoadComplete(const String& name)
 {
   if ("dialogs-test" == name)
   {
-    PResourceDialog dialogRes = app()->resourceManager()->resource(RESOURCE_NAME_DIALOG, "my-dialog");
-    EGE_ASSERT(dialogRes);
+    PResourceWidget widgetRes = app()->resourceManager()->resource(RESOURCE_NAME_WIDGET, "my-dialog");
+    EGE_ASSERT(widgetRes);
 
-    m_dialog = dialogRes->createInstance();
+    m_dialog = widgetRes->createInstance();
 
     m_dialog->physics().setPosition(Vector4f(100, 100, 0));
-
-    PResourceFont fontResource = app()->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
-    if (fontResource)
-    {
-      PTextOverlay text = ege_new TextOverlay(app(), "text");
-      text->setFont(fontResource->font());
-      text->setText(Text::Format("Title"));
-      text->physics()->setPosition(Vector4f(0, 0, 0));
-      m_dialog->addTextOverlay("title", text);
-
-      // add scroll area content
-      for (s32 i = 0; i < 10; ++i)
-      {
-        text = ege_new TextOverlay(app(), "text");
-        text->setFont(fontResource->font());
-        text->setText(Text::Format("Content line %d Content line", i + 1));
-        text->physics()->setPosition(Vector4f(0, i * 50.0f, 0));
-        m_dialog->addTextOverlay("content", text);
-      }
-    }
+    m_dialog->setTitle("Title");
+    m_dialog->setText("ALA MA KOTA");
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

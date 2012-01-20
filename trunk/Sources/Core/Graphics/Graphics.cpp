@@ -5,6 +5,7 @@
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Graphics/Particle/ParticleFactory.h"
+#include "Core/UI/WidgetFactory.h"
 #include "Core/Data/DataBuffer.h"
 #include <EGEDevice.h>
 
@@ -21,7 +22,8 @@ EGE_DEFINE_NEW_OPERATORS(Graphics)
 EGE_DEFINE_DELETE_OPERATORS(Graphics)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Graphics::Graphics(Application* app, const Dictionary& params) : Object(app), 
-                                                                 m_particleFactory(NULL)
+                                                                 m_particleFactory(NULL),
+                                                                 m_widgetFactory(NULL)
 {
   m_p = ege_new GraphicsPrivate(this, params);
   if (m_p)
@@ -37,6 +39,9 @@ Graphics::Graphics(Application* app, const Dictionary& params) : Object(app),
 
     // create particle factory
     m_particleFactory = ege_new ParticleFactory(app);
+
+    // create widget factory
+    m_widgetFactory = ege_new WidgetFactory(app);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -50,6 +55,7 @@ Graphics::~Graphics()
   m_renderer = NULL;
 
   EGE_DELETE(m_particleFactory);
+  EGE_DELETE(m_widgetFactory);
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

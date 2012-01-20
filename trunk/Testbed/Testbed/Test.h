@@ -37,6 +37,8 @@ class Test
 
     /* Slot called when resource group has been loaded. */
     virtual void groupLoadComplete(const EGE::String& name);
+    /* Slot called when resource group could not be loaded. */
+    virtual void groupLoadError(const EGE::String& name);
 
   private:
     

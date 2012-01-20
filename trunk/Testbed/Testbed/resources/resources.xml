@@ -153,23 +153,20 @@
       <texture name='button' />
     </material>
 
-    <dialog name='my-dialog' material='bubble-speech' max-size='500 400'
-            top-left-rect='0 0 59 51' top-middle-rect='59 0 4 51' top-right-rect='63 0 51 51'
-            middle-left-rect='0 50 59 4' fill-rect='59 50 4 4' middle-right-rect='63 50 51 4'
-            bottom-left-rect='0 55 59 51' bottom-middle-rect='59 55 4 51' bottom-right-rect='63 55 51 51'>
+    <widget type='dialog' name='my-dialog' material='bubble-speech' max-size='500 400' >
+      <frame top-left-rect='0 0 59 51' top-middle-rect='59 0 4 51' top-right-rect='63 0 51 51'
+              middle-left-rect='0 50 59 4' fill-rect='59 50 4 4' middle-right-rect='63 50 51 4'
+              bottom-left-rect='0 55 59 51' bottom-middle-rect='59 55 4 51' bottom-right-rect='63 55 51 51' />
       <content-area name='title' rect='0.1 0.05 0.8 0.2' vertical-scroll='false' horizontal-scroll='false'/>
-      <content-area name='content' rect='0.1 0.25 0.8 0.6' vertical-scroll='true' horizontal-scroll='false'/>
-      <content-area name='action' rect='0.1 0.85 0.8 0.1' />
-    </dialog>
+      <content-area name='text' rect='0.1 0.25 0.8 0.6' vertical-scroll='true' horizontal-scroll='false'/>
+    </widget>
 
-    <button name='my-button' material='buttton' max-size='500 400'
-            top-left-rect='0 0 59 51' top-middle-rect='59 0 4 51' top-right-rect='63 0 51 51'
-            middle-left-rect='0 50 59 4' fill-rect='59 50 4 4' middle-right-rect='63 50 51 4'
-            bottom-left-rect='0 55 59 51' bottom-middle-rect='59 55 4 51' bottom-right-rect='63 55 51 51'>
-      <content-area name='title' rect='0.1 0.05 0.8 0.2' vertical-scroll='false' horizontal-scroll='false'/>
-      <content-area name='content' rect='0.1 0.25 0.8 0.6' vertical-scroll='true' horizontal-scroll='false'/>
-      <content-area name='action' rect='0.1 0.85 0.8 0.1' />
-    </button>
+    <widget type='push-button' name='my-button' material='button' max-size='500 400'>
+      <frame top-left-rect='0 0 11 11' top-middle-rect='11 0 6 11' top-right-rect='17 0 11 11'
+              middle-left-rect='0 11 11 2' fill-rect='11 11 6 2' middle-right-rect='17 11 11 2'
+              bottom-left-rect='0 13 11 11' bottom-middle-rect='11 13 6 11' bottom-right-rect='17 13 11 11' />
+      <content-area name='text' rect='1 1 1 1' />
+    </widget>
 
   </group>
 

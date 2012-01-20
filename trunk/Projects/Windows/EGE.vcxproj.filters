@@ -555,9 +555,6 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.cpp">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceDialog.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\UI\Dialog.cpp">
       <Filter>Core\UI</Filter>
     </ClCompile>
@@ -565,6 +562,18 @@
       <Filter>Core\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\UI\WidgetFrame.cpp">
+      <Filter>Core\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\UI\Widget.cpp">
+      <Filter>Core\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceWidget.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\UI\WidgetFactory.cpp">
+      <Filter>Core\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\UI\PushButton.cpp">
       <Filter>Core\UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1095,9 +1104,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.h">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceDialog.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\UI\Dialog.h">
       <Filter>Core\UI</Filter>
     </ClInclude>
@@ -1106,6 +1112,18 @@
       <Filter>Core\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\UI\WidgetFrame.h">
+      <Filter>Core\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\UI\Widget.h">
+      <Filter>Core\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceWidget.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\UI\WidgetFactory.h">
+      <Filter>Core\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\UI\PushButton.h">
       <Filter>Core\UI</Filter>
     </ClInclude>
   </ItemGroup>

@@ -29,13 +29,13 @@ AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base),
     alGenSources(CHANNELS_COUNT, m_channels);
     if (AL_NO_ERROR != alGetError())
     {
-      EGE_PRINT("AudioManagerPrivate::AudioManagerPrivate - Could not generate sources.");
+      EGE_PRINT("ERROR: Could not generate sources.");
       EGE_MEMSET(m_channels, 0, sizeof (m_channels));
     }
   }
   else
   {
-    EGE_LOG("AudioManagerPrivate::AudioManagerPrivate - Could not open device");
+    EGE_LOG("Could not open device");
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

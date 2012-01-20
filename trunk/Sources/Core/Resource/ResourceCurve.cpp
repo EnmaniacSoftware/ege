@@ -80,7 +80,7 @@ EGEResult ResourceCurve::create(const String& path, const PXmlElement& tag)
   if (error || m_name.empty())
   {
     // error!
-    EGE_PRINT("ResourceCurve::create - failed for name: %s", m_name.toAscii());
+    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -104,7 +104,7 @@ EGEResult ResourceCurve::create(const String& path, const PXmlElement& tag)
       if (error)
       {
         // error!
-        EGE_PRINT("ResourceCurve::create - failed for name: %s (2)", m_name.toAscii());
+        EGE_PRINT("ERROR: Failed for name: %s (2)", m_name.toAscii());
         result = EGE_ERROR_BAD_PARAM;
         break;
       }
@@ -137,7 +137,7 @@ EGEResult ResourceCurve::load()
 /*! IResource override. Unloads resource. */
 void ResourceCurve::unload() 
 { 
-  EGE_PRINT("ResourceCurve::unload - %s", name().toAscii());
+  EGE_PRINT("%s", name().toAscii());
 
   // nothing to do
 }

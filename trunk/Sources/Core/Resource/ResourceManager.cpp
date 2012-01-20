@@ -13,7 +13,7 @@
 #include "Core/Resource/ResourceParticleAffector.h"
 #include "Core/Resource/ResourceText.h"
 #include "Core/Resource/ResourceSound.h"
-#include "Core/Resource/ResourceDialog.h"
+#include "Core/Resource/ResourceWidget.h"
 #include "Core/Graphics/Font.h"
 #include "Core/Debug/DebugFont.h"
 #include "Core/Application/Application.h"
@@ -48,7 +48,7 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
                                                     { RESOURCE_NAME_PARTICLE_AFFECTOR, ResourceParticleAffector::Create },
                                                     { RESOURCE_NAME_TEXT, ResourceText::Create },
                                                     { RESOURCE_NAME_SOUND, ResourceSound::Create },
-                                                    { RESOURCE_NAME_DIALOG, ResourceDialog::Create },
+                                                    { RESOURCE_NAME_WIDGET, ResourceWidget::Create },
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::ResourceManager(Application* app) : Object(app)
@@ -147,7 +147,7 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
   // convert separators
   filePath = Dir::FromNativeSeparators(filePath);
 
-  EGE_PRINT("ResourceManager::addResources - %s", filePath.toAscii());
+  EGE_PRINT("%s", filePath.toAscii());
 
   // try to locate resource file in each data location
   // NOTE: if no AUTO-DETECTION is set we do exactly one search with a given filePath
@@ -167,7 +167,7 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
     if (!resourcesNode->isValid())
     {
       // error!
-      EGE_PRINT("ResourceManager::addResources - resource file %s has no %s tag", fullPath.toAscii(), NODE_RESOURCES);
+      EGE_PRINT("ERROR: Resource file %s has no %s tag", fullPath.toAscii(), NODE_RESOURCES);
       result = EGE_ERROR;
       break;
     }
@@ -285,7 +285,7 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
   result = newGroup->create(tag);
   if (EGE_SUCCESS == result)
   {
-    EGE_PRINT("ResourceManager::addGroup - %s", newGroup->name().toAscii());
+    EGE_PRINT("%s", newGroup->name().toAscii());
 
     // check if such group DOES NOT exists
     // NOTE: we quitely omit group duplicates so it is valid to ie. INCLUDE the same group multiple times
@@ -296,7 +296,7 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
     }
     else
     {
-      EGE_PRINT("Group %s already exists.", newGroup->name().toAscii());
+      EGE_WARNING("Group %s already exists.", newGroup->name().toAscii());
     }
   }
 
@@ -357,7 +357,7 @@ EGEResult ResourceManager::loadGroup(const String& name)
       }
 
       // cannot be loaded
-      EGE_PRINT("ResourceManager::loadGroup: %s is already loaded.", name.toAscii());
+      EGE_PRINT("%s is already loaded.", name.toAscii());
       return EGE_ERROR_ALREADY_EXISTS;
     }
     
@@ -386,11 +386,11 @@ EGEResult ResourceManager::loadGroup(const String& name)
       return EGE_ERROR;
     }
 
-    EGE_PRINT("ResourceManager::loadGroup: %s scheduled for loading.", name.toAscii());
+    EGE_PRINT("%s scheduled for loading.", name.toAscii());
     return EGE_SUCCESS;
   }
 
-  EGE_PRINT("ResourceManager::loadGroup: %s not found!", name.toAscii());
+  EGE_PRINT("ERROR: %s not found!", name.toAscii());
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -452,11 +452,11 @@ void ResourceManager::unloadGroup(const String& name)
       return;
     }
 
-    EGE_PRINT("ResourceManager::unloadGroup: %s scheduled for unloading.", name.toAscii());
+    EGE_PRINT("%s scheduled for unloading.", name.toAscii());
     return;
   }
 
-  EGE_PRINT("ResourceManager::unloadGroup: %s not found!", name.toAscii());
+  EGE_PRINT("%s not found!", name.toAscii());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns resource of a given type and name. Optionally, from given group only. */
@@ -603,7 +603,7 @@ EGEResult ResourceManager::processInclude(const String& filePath, const PXmlElem
     return EGE_ERROR;
   }
 
-  EGE_PRINT("ResourceManager::processInclude - including %s", path.toAscii());
+  EGE_PRINT("Including %s", path.toAscii());
 
   // check if not autodetecting
   // NOTE: in this case we assume path is with respect to current directory
@@ -687,7 +687,7 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
   if (NULL == groupResource)
   {
     // error!
-    EGE_PRINT("ResourceManager::buildDependacyList - could not find group: %s", groupName.toAscii());
+    EGE_PRINT("ERROR: Could not find group: %s", groupName.toAscii());
     return false;
   }
 
@@ -698,7 +698,7 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
     if (NULL == groupResourceDependancy)
     {
       // error!
-      EGE_PRINT("ResourceManager::buildDependacyList - could not find dependancy group: %s", (*it).toAscii());
+      EGE_PRINT("ERROR: Could not find dependancy group: %s", (*it).toAscii());
       return false;
     }
 
@@ -710,7 +710,7 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
     }
     else
     {
-      EGE_PRINT("ResourceManager::buildDependacyList - dependancy group already in list: %s. Circular dependancy possible.", (*it).toAscii());
+      EGE_PRINT("Dependancy group already in list: %s. Circular dependancy possible.", (*it).toAscii());
       continue;
     }
 

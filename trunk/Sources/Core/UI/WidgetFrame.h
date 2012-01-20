@@ -50,23 +50,23 @@ class WidgetFrame
     bool m_renderDataInvalid;
     /*! Frame size (in pixels). */
     Vector2f m_size;
-    /*! Top-left rectangle part (in pixels). This also defined texture coordinates. */
+    /*! Top-left rectangle part (in pixels). This also defines texture coordinates. */
     Recti m_topLeftRect;
-    /*! Top-middle rectangle part (in pixels). This also defined texture coordinates. */
+    /*! Top-middle rectangle part (in pixels). This also defines texture coordinates. */
     Recti m_topMiddleRect;
-    /*! Top-right v (in pixels). This also defined texture coordinates. */
+    /*! Top-right v (in pixels). This also defines texture coordinates. */
     Recti m_topRightRect;
-    /*! Middle-left rectangle part (in pixels). This also defined texture coordinates. */
+    /*! Middle-left rectangle part (in pixels). This also defines texture coordinates. */
     Recti m_middleLeftRect;
-    /*! Fill rectangle part (in pixels). This also defined texture coordinates. */
+    /*! Fill rectangle part (in pixels). This also defines texture coordinates. */
     Recti m_fillRect;
-    /*! Middle-right rectangle part (in pixels). This also defined texture coordinates. */
+    /*! Middle-right rectangle part (in pixels). This also defines texture coordinates. */
     Recti m_middleRightRect;
-    /*! Bottom-left rectangle part (in pixels). This also defined texture coordinates. */
+    /*! Bottom-left rectangle part (in pixels). This also defines texture coordinates. */
     Recti m_bottomLeftRect;
-    /*! Bottom-middle rectangle part (in pixels). This also defined texture coordinates. */
+    /*! Bottom-middle rectangle part (in pixels). This also defines texture coordinates. */
     Recti m_bottomMiddleRect;
-    /*! Bottom-right rectangle part (in pixels). This also defined texture coordinates. */
+    /*! Bottom-right rectangle part (in pixels). This also defines texture coordinates. */
     Recti m_bottomRightRect;
 };
 

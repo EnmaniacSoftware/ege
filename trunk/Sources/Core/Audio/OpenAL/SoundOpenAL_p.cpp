@@ -25,7 +25,7 @@ SoundPrivate::SoundPrivate(Sound* base) : m_d(base),
   if (AL_NO_ERROR != alGetError())
   {
     // error!
-    EGE_PRINT("SoundPrivate::SoundPrivate - could not generate audio buffers.");
+    EGE_PRINT("ERROR: Could not generate audio buffers.");
     EGE_MEMSET(m_buffers, 0, sizeof (m_buffers));
   }
   
@@ -58,7 +58,7 @@ SoundPrivate::~SoundPrivate()
     if (AL_NO_ERROR != alGetError())
     {
       // error!
-      EGE_PRINT("SoundPrivate::~SoundPrivate - could not delete audio buffers.");
+      EGE_PRINT("ERROR: Could not delete audio buffers.");
     }
 
     // reset
@@ -128,7 +128,7 @@ void SoundPrivate::updateBuffers()
   if (AL_NO_ERROR != alGetError())
   {
     // error!
-    EGE_PRINT("SoundPrivate::updateBuffers - could not retrive channel type.");
+    EGE_PRINT("ERROR: Could not retrive channel type.");
     return;
   }
 
@@ -145,7 +145,7 @@ void SoundPrivate::updateBuffers()
     if (AL_NO_ERROR != alGetError())
     {
       // error!
-      EGE_PRINT("SoundPrivate::updateBuffers - could not retrive number of processed buffers.");
+      EGE_PRINT("ERROR: Could not retrive number of processed buffers.");
       return;
     }
   }
@@ -175,7 +175,7 @@ void SoundPrivate::updateBuffers()
       if (AL_NO_ERROR != alGetError())
       {
         // error!
-        EGE_PRINT("SoundPrivate::updateBuffer - could not bind data to buffer.");
+        EGE_PRINT("ERROR: Could not bind data to buffer.");
       }
 
 			// add buffer to channel
@@ -183,7 +183,7 @@ void SoundPrivate::updateBuffers()
       if (AL_NO_ERROR != alGetError())
       {
         // error!
-        EGE_PRINT("SoundPrivate::updateBuffer - could queue buffer to channel.");
+        EGE_PRINT("ERROR: Could queue buffer to channel.");
       }
     }
   
@@ -234,7 +234,7 @@ EGEResult SoundPrivate::play(ALuint channel)
 	if (AL_NO_ERROR != error)
   {
     // error!
-    EGE_PRINT("AudioManagerPrivate::play - could not start playback!");
+    EGE_PRINT("ERROR: Could not start playback!");
     return EGE_ERROR;
 	}
 
@@ -270,11 +270,11 @@ EGEResult SoundPrivate::stop()
 	if (AL_NO_ERROR != error)
   {
     // error!
-    EGE_PRINT("AudioManagerPrivate::stop - %s error!", d_func()->name().toAscii());
+    EGE_PRINT("ERROR: %s!", d_func()->name().toAscii());
     return EGE_ERROR;
 	}
 
-  EGE_PRINT("AudioManagerPrivate::stop - %s", d_func()->name().toAscii());
+  EGE_PRINT("ERROR: %s", d_func()->name().toAscii());
 
   // notify stopped
   d_func()->notifyStopped();
@@ -309,7 +309,7 @@ void SoundPrivate::onSoundVolumeChanged(const Sound* sound, float32 oldVolume)
 	if (AL_NO_ERROR != error)
   {
     // error!
-    EGE_PRINT("SoundPrivate::onSoundVolumeChanged - %s could not set volume!", sound->name().toAscii());
+    EGE_PRINT("ERROR: %s could not set volume!", sound->name().toAscii());
 	}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

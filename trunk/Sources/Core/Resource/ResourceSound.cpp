@@ -54,7 +54,7 @@ EGEResult ResourceSound::create(const String& path, const PXmlElement& tag)
   if (m_name.empty() || m_path.empty() || error)
   {
     // error!
-    EGE_PRINT("ResourceSound::create - failed for name: %s", m_name.toAscii());
+    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -74,7 +74,7 @@ EGEResult ResourceSound::load()
 /*! IResource override. Unloads resource. */
 void ResourceSound::unload() 
 { 
-  EGE_PRINT("ResourceSound::unload - %s", name().toAscii());
+  EGE_PRINT("%s", name().toAscii());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of sound object defined by resource. */

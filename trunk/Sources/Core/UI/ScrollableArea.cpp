@@ -9,16 +9,17 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(ScrollableArea)
 EGE_DEFINE_DELETE_OPERATORS(ScrollableArea)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ScrollableArea::ScrollableArea(Application* app) : Object(app, EGE_OBJECT_UID_UI_SCROLLABLE_AREA),
-                                                   m_state(STATE_IDLE),
-                                                   m_dampingCoefficient(0.95f, 0.95f),
-                                                   m_throwCoefficient(10.0f, 10.0f),
-                                                   m_baseReturnCoefficient(3.0f, 3.0f),
-                                                   m_direction(DIRECTION_BOTH),
-                                                   m_scrollbarsEnabled(true),
-                                                   m_scrollbarsFadeDuration(0.5f),
-                                                   m_scrollbarsState(SS_HIDDEN),
-                                                   m_dirtyContent(false)
+ScrollableArea::ScrollableArea(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) 
+: Widget(app, name, EGE_OBJECT_UID_UI_SCROLLABLE_AREA, deleteFunc),
+  m_state(STATE_IDLE),
+  m_dampingCoefficient(0.95f, 0.95f),
+  m_throwCoefficient(10.0f, 10.0f),
+  m_baseReturnCoefficient(3.0f, 3.0f),
+  m_direction(DIRECTION_BOTH),
+  m_scrollbarsEnabled(true),
+  m_scrollbarsFadeDuration(0.5f),
+  m_scrollbarsState(SS_HIDDEN),
+  m_dirtyContent(false)
 {
   PMaterial material = ege_new Material(app);
   if (material)
@@ -29,20 +30,23 @@ ScrollableArea::ScrollableArea(Application* app) : Object(app, EGE_OBJECT_UID_UI
       material->setDstBlendFactor(EGEGraphics::BF_ONE_MINUS_SRC_ALPHA);
       material->setDiffuseColor(Color::NONE);
     
-      m_scrollbarRenderData = ege_new RenderComponent(app, "scrollable-area-scrollbar", EGEGraphics::RP_MAIN + 20, EGEGraphics::RPT_TRIANGLES);
-      if (m_scrollbarRenderData)
+      m_renderData = ege_new RenderComponent(app, "scrollable-area-scrollbar", EGEGraphics::RP_MAIN + 20, EGEGraphics::RPT_TRIANGLES);
+      if (m_renderData)
       {
-        m_scrollbarRenderData->setMaterial(material);
-        if (!m_scrollbarRenderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2))
+        m_renderData->setMaterial(material);
+        if (!m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2))
         {
           // error!
-          m_scrollbarRenderData = NULL;
+          m_renderData = NULL;
         }
       }
     }
   }
 
   ege_connect(&m_physics, transformationChanged, this, ScrollableArea::transformationChanged);
+
+  // initialize
+  initialize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ScrollableArea::~ScrollableArea()
@@ -50,10 +54,10 @@ ScrollableArea::~ScrollableArea()
   ege_disconnect(&m_physics, transformationChanged, this, ScrollableArea::transformationChanged);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool ScrollableArea::isValid() const
+/*! Creates instance of widget. This method is a registration method for factory. */
+PWidget ScrollableArea::Create(Application* app, const String& name)
 {
-  return (NULL != m_scrollbarRenderData);
+  return ege_new ScrollableArea(app, name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates object. */
@@ -170,6 +174,9 @@ void ScrollableArea::update(const Time& time)
       updateScrollbars(time);
     }
   }
+
+  // call base class
+  Widget::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pointer event processor. */
@@ -257,7 +264,7 @@ void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transfo
     static const float32 scrollbarSize = 2.0f;
 
     // update render data
-    float32* data = reinterpret_cast<float32*>(m_scrollbarRenderData->vertexBuffer()->lock(0, 12));
+    float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, 12));
 
     // vertical
     // NOTE: if there is need for scrolling do not show scrollbar
@@ -365,11 +372,14 @@ void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transfo
       *data++ = 0;
     }
 
-    m_scrollbarRenderData->vertexBuffer()->unlock();
+    m_renderData->vertexBuffer()->unlock();
 
-    m_scrollbarRenderData->setClipRect(Rectf(pos.x, pos.y, m_physics.scale().x, m_physics.scale().y));
-    renderer->addForRendering(m_scrollbarRenderData, transform);
+    m_renderData->setClipRect(Rectf(pos.x, pos.y, m_physics.scale().x, m_physics.scale().y));
+    renderer->addForRendering(m_renderData, transform);
   }
+
+  // call base class
+  Widget::addForRendering(renderer, transform);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds object. */
@@ -499,8 +509,7 @@ void ScrollableArea::updateScrollbars(const Time& time)
       }
 
       // update material
-      m_scrollbarRenderData->material()->setDiffuseColor(Color(0.25f, 0.25f, 0.25f, 
-                                                               1.0f - m_scrollbarsStateTime.seconds() / m_scrollbarsFadeDuration.seconds()));
+      m_renderData->material()->setDiffuseColor(Color(0.25f, 0.25f, 0.25f, 1.0f - m_scrollbarsStateTime.seconds() / m_scrollbarsFadeDuration.seconds()));
 
       // check if done
       if (m_scrollbarsStateTime == m_scrollbarsFadeDuration)
@@ -518,7 +527,7 @@ void ScrollableArea::updateScrollbars(const Time& time)
       }
 
       // update material
-      m_scrollbarRenderData->material()->setDiffuseColor(Color(0.25f, 0.25f, 0.25f, m_scrollbarsStateTime.seconds() / m_scrollbarsFadeDuration.seconds()));
+      m_renderData->material()->setDiffuseColor(Color(0.25f, 0.25f, 0.25f, m_scrollbarsStateTime.seconds() / m_scrollbarsFadeDuration.seconds()));
 
       // check if done
       if (m_scrollbarsStateTime == m_scrollbarsFadeDuration)
@@ -528,7 +537,7 @@ void ScrollableArea::updateScrollbars(const Time& time)
       break;
   }
 
-  EGE_PRINT("%d - Time:%.2f", m_scrollbarsState, m_scrollbarsStateTime.seconds());
+  //EGE_PRINT("%d - Time:%.2f", m_scrollbarsState, m_scrollbarsStateTime.seconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Enables/disables scrollbars. */
@@ -618,5 +627,17 @@ void ScrollableArea::transformationChanged()
 {
   // invalidate content
   m_dirtyContent = true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Widget override. Determines size of the dialog (in pixels). */
+Vector2i ScrollableArea::size()
+{
+  return Vector2i(static_cast<s32>(m_physics.scale().x), static_cast<s32>(m_physics.scale().y));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Widget override. Returns TRUE if widget is frameless. */
+bool ScrollableArea::isFrameless() const
+{
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

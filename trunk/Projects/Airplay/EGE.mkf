@@ -374,8 +374,6 @@ files
   ResourceCurve.h
   ResourceData.cpp
   ResourceData.h
-  ResourceDialog.cpp
-  ResourceDialog.h
   ResourceFont.cpp
   ResourceFont.h
   ResourceGroup.cpp
@@ -400,6 +398,8 @@ files
   ResourceTexture.h
   ResourceTextureImage.cpp
   ResourceTextureImage.h
+  ResourceWidget.cpp
+  ResourceWidget.h
 
 	["Core/Scene"]
   (../../Sources/Core/Scene)
@@ -451,8 +451,16 @@ files
   (../../Sources/Core/UI)
   Dialog.cpp
   Dialog.h
+  PushButton.cpp
+  PushButton.h
   ScrollableArea.cpp
   ScrollableArea.h
+  Widget.cpp
+  Widget.h
+  WidgetFactory.cpp
+  WidgetFactory.h
+  WidgetFrame.cpp
+  WidgetFrame.h
 
 	["Core/XML"]
   (../../Sources/Core/XML)

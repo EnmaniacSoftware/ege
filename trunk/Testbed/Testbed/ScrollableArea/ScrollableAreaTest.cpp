@@ -108,7 +108,7 @@ void ScrollableAreaTest::groupLoadComplete(const String& name)
   if ("scrollable-area-test" == name)
   {
     // create scrollable area
-    m_area = ege_new ScrollableArea(app());
+    m_area = ege_new ScrollableArea(app(), "my-scrollable-area");
     m_area->setDirection(ScrollableArea::DIRECTION_BOTH);
     m_area->physics().setPosition(Vector4f(50, 50, 0));
     m_area->physics().setScale(Vector4f(400, 500, 0));

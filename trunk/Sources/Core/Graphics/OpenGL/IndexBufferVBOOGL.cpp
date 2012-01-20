@@ -48,7 +48,7 @@ IndexBufferVBO::IndexBufferVBO(Application* app, EGEIndexBuffer::UsageType usage
   if (GL_NO_ERROR != glGetError())
   {
     // error!
-    EGE_PRINT("IndexBufferVBO::IndexBufferVBO - could not generate buffer!");
+    EGE_PRINT("ERROR: Could not generate buffer!");
     m_id = 0;
   }
 
@@ -146,7 +146,7 @@ void* IndexBufferVBO::lock(u32 offset, u32 count)
     }
     else
     {
-      EGE_PRINT("IndexBufferVBO::lock - mapping failed!");
+      EGE_PRINT("ERROR: Mapping failed!");
     }
   }
 
@@ -169,7 +169,7 @@ void IndexBufferVBO::unlock()
   if (GL_NO_ERROR != glGetError())
   {
     // error!
-    EGE_PRINT("VertexBufferVBO::unlock - Could not bind buffer.");
+    EGE_PRINT("ERROR: Could not bind buffer.");
     return;
   }
 
@@ -183,7 +183,7 @@ void IndexBufferVBO::unlock()
       glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<u32>(m_shadowBuffer->size()), m_shadowBuffer->data(), MapUsageType(m_usage));
       if (GL_NO_ERROR != glGetError())
       {
-        EGE_PRINT("IndexBufferVBO::unlock - Could not update entire buffer.");
+        EGE_PRINT("ERROR: Could not update entire buffer.");
       }
     }
     else
@@ -200,7 +200,7 @@ void IndexBufferVBO::unlock()
       if (GL_NO_ERROR != glGetError())
       {
         // error!
-        EGE_PRINT("IndexBufferVBO::unlock - Could not update buffer.");
+        EGE_PRINT("ERROR: Could not update buffer.");
       }
     }
 
@@ -217,7 +217,7 @@ void IndexBufferVBO::unlock()
     if (GL_NO_ERROR != glGetError())
     {
       // error!
-      EGE_PRINT("IndexBufferVBO::unlock - Could not unmap buffer.");
+      EGE_PRINT("ERROR: Could not unmap buffer.");
     }
 
     // reset data

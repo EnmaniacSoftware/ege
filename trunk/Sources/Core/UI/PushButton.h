@@ -1,7 +1,7 @@
-#ifndef EGE_CORE_DIALOG_H
-#define EGE_CORE_DIALOG_H
+#ifndef EGE_CORE_PUSHBUTTON_H
+#define EGE_CORE_PUSHBUTTON_H
 
-/** Dialogs are specialization of Widgets. Dialogs typically have title and main content areas.
+/** Push buttons are specialization of Widgets.
  */
 
 #include <EGEString.h>
@@ -19,16 +19,16 @@ EGE_NAMESPACE_BEGIN
 
 class Renderer;
 
-EGE_DECLARE_SMART_CLASS(Dialog, PDialog)
+EGE_DECLARE_SMART_CLASS(PushButton, PPushButton)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Dialog : public Widget
+class PushButton : public Widget
 {
   public: 
 
-    Dialog(Application* app, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
-    virtual ~Dialog();
+    PushButton(Application* app, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
+    virtual ~PushButton();
     
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -40,8 +40,6 @@ class Dialog : public Widget
 
   public:
 
-    /* Widget override. Returns TRUE if object is valid. */
-    bool isValid() const;
     /* Widget override. Updates overlay. */
     void update(const Time& time) override;
     /* Widget override. Renders dialog. */
@@ -54,15 +52,17 @@ class Dialog : public Widget
     PhysicsComponent& physics() { return m_physics; }
     /*! Returns current alignment. */
     const Alignment& alignment() const { return m_alignment; }
-    /* Sets title text. */
-    void setTitle(const Text& title);
-    /* Sets content text. */
-    void setText(const Text& text);
+    /* Adds text overlay to given content area. */
+    EGEResult addTextOverlay(const String& contentName, PTextOverlay& overlay);
 
   private:
 
     /* Widget override. Generates render data. */
     void generateRenderData() override;
+    /* Widget override. Determines size of the dialog (in pixels). */
+    Vector2i size() override;
+    /* Determines size of the content only (in pixels). */
+    Vector2i contentSize() const;
     /* Widget override. Returns TRUE if widget is frameless. */
     bool isFrameless() const override;
 
@@ -70,14 +70,10 @@ class Dialog : public Widget
 
     /*! Alignment. */
     Alignment m_alignment;
-    /*! Title text overlay. */
-    PTextOverlay m_titleOverlay;
-    /*! Content text overlay. */
-    PTextOverlay m_textOverlay;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_DIALOG_H
+#endif // EGE_CORE_PUSHBUTTON_H

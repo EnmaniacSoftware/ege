@@ -43,7 +43,7 @@ bool AudioCodecWav::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
     if (out->write(stream, samplesDecoded * sampleSize) != samplesDecoded * sampleSize)
     {
       // error!
-      EGE_PRINT("AudioCodecWav::decode - error decoding!");
+      EGE_PRINT("ERROR: error decoding!");
     }
   }
   else

@@ -57,7 +57,7 @@ EGEResult ResourceSprite::create(const String& path, const PXmlElement& tag)
   if (error || m_name.empty() || m_sheetName.empty() || (0 >= m_frameCount) || (0 > m_beginFrame))
   {
     // error!
-    EGE_PRINT("ResourceSprite::create - failed for name: %s", m_name.toAscii());
+    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -102,7 +102,7 @@ EGEResult ResourceSprite::load()
 /*! IResource override. Unloads resource. */
 void ResourceSprite::unload() 
 { 
-  EGE_PRINT("ResourceSprite::unload - %s", name().toAscii());
+  EGE_PRINT("%s", name().toAscii());
 
   // unload texture
   m_sheet = NULL;

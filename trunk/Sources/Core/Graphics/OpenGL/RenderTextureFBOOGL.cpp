@@ -82,7 +82,7 @@ void RenderTextureFBOOGL::bind()
 
   if (GL_NO_ERROR != glGetError())
   {
-    EGE_PRINT("RenderTextureFBOOGL::bind - could not bind framebuffer!");
+    EGE_PRINT("ERROR: Could not bind framebuffer!");
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -94,7 +94,7 @@ void RenderTextureFBOOGL::unbind()
 
   if (GL_NO_ERROR != glGetError())
   {
-    EGE_PRINT("RenderTextureFBOOGL::unbind - could not unbind framebuffer!");
+    EGE_PRINT("ERROR: Could not unbind framebuffer!");
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

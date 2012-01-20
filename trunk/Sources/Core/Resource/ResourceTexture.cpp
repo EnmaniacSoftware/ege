@@ -107,7 +107,7 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   if (m_name.empty() || m_path.empty() || m_type.empty())
   {
     // error!
-    EGE_PRINT("ResourceTexture::create - failed for name: %s", m_name.toAscii());
+    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -127,7 +127,7 @@ EGEResult ResourceTexture::load()
     // create according to type
     if ("2d" == type())
     {
-      EGE_PRINT("ResourceTexture::load - %s, 2D", name().toAscii());
+      EGE_PRINT("%s, 2D", name().toAscii());
       result = create2D();
     }
   }
@@ -165,7 +165,7 @@ EGEResult ResourceTexture::create2D()
 /*! IResource override. Unloads resource. */
 void ResourceTexture::unload() 
 { 
-  EGE_PRINT("ResourceTexture::unload - %s", name().toAscii());
+  EGE_PRINT("%s", name().toAscii());
 
   m_texture = NULL; 
 }

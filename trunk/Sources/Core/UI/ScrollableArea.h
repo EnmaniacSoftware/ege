@@ -7,6 +7,7 @@
 #include <EGEPhysics.h>
 #include <EGEList.h>
 #include <EGEFlags.h>
+#include "Core/UI/Widget.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -16,15 +17,20 @@ EGE_DECLARE_SMART_CLASS(ScrollableArea, PScrollableArea)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class ScrollableArea : public Object
+class ScrollableArea : public Widget
 {
   public:
 
-    ScrollableArea(Application* app);
-   ~ScrollableArea();
+    ScrollableArea(Application* app, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
+    virtual ~ScrollableArea();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
+
+    /* Creates instance of widget. This method is a registration method for factory. */
+    static PWidget Create(Application* app, const String& name);
 
   public:
 
@@ -42,16 +48,12 @@ class ScrollableArea : public Object
 
   public:
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
-    /* Updates object. */
-    void update(const Time& time);
-    /* Pointer event processor. */
-    void pointerEvent(PPointerData data);
-    /* Renders object. */
-    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
-    /*! Returns local physics. */
-    inline PhysicsComponent& physics() { return m_physics; }
+    /* Widget override. Updates object. */
+    void update(const Time& time) override;
+    /* Widget override. Pointer event processor. */
+    void pointerEvent(PPointerData data) override;
+    /* Widget override. Renders object. */
+    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
     /* Adds object. */
     EGE::EGEResult addObject(PObject object);
     /* Removes object. */
@@ -85,6 +87,10 @@ class ScrollableArea : public Object
     void updateContent(const Rectf& rectangle);
     /* Recalculates content size. */
     void recaluclateContentSize();
+    /* Widget override. Determines size of the dialog (in pixels). */
+    Vector2i size();
+    /* Widget override. Returns TRUE if widget is frameless. */
+    bool isFrameless() const override;
 
   private slots:
 
@@ -151,8 +157,6 @@ class ScrollableArea : public Object
     Time m_scrollbarsFadeDuration;
     /*! Current scrollbars state. */
     ScrollbarState m_scrollbarsState;
-    /*! Scrollbar render component. */
-    PRenderComponent m_scrollbarRenderData;
     /*! Dirty content flag. */
     bool m_dirtyContent;
 };

@@ -1,7 +1,7 @@
-#ifndef EGE_CORE_RESOURCEDIALOG_H
-#define EGE_CORE_RESOURCEDIALOG_H
+#ifndef EGE_CORE_RESOURCEWIDGET_H
+#define EGE_CORE_RESOURCEWIDGET_H
 
-/**  Dialog resource definition class. This object (resource) contains definition of dialog widget.
+/**  Widget resource definition class. This object (resource) contains definition of an arbitrary widget.
  */
 
 #include <EGE.h>
@@ -9,7 +9,7 @@
 #include <EGEXml.h>
 #include <EGEGraphics.h>
 #include <EGEMap.h>
-#include "Core/UI/Dialog.h"
+#include "Core/UI/Widget.h"
 #include "Core/Resource/Resource.h"
 #include "Core/Resource/ResourceMaterial.h"
 
@@ -19,15 +19,15 @@ EGE_NAMESPACE_BEGIN
 
 class ResourceManager;
 
-EGE_DECLARE_SMART_CLASS(ResourceDialog, PResourceDialog)
+EGE_DECLARE_SMART_CLASS(ResourceWidget, PResourceWidget)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class ResourceDialog : public IResource
+class ResourceWidget : public IResource
 {
   public:
 
-    virtual ~ResourceDialog();
+    virtual ~ResourceWidget();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -49,19 +49,19 @@ class ResourceDialog : public IResource
     void unload() override;
 
     /* Creates instance of dialog object defined by resource. */
-    PDialog createInstance() const;
+    PWidget createInstance() const;
     /* Set given instance of dialog object to what is defined by resource. */
-    EGEResult setInstance(const PDialog& instance) const;
+    EGEResult setInstance(const PWidget& instance) const;
 
   private:
 
-    ResourceDialog(Application* app, ResourceManager* manager);
+    ResourceWidget(Application* app, ResourceManager* manager);
     /*! Returns TRUE if material is loaded. */
     inline bool isLoaded() const { return NULL != m_material; }
     /* Processes content area data. */
     EGEResult processContentArea(const PXmlElement& tag);
-    /* Processes widget frame data. */
-    EGEResult processWidgetFrame(const PXmlElement& tag);
+    /* Processes frame data. */
+    EGEResult processFrame(const PXmlElement& tag);
 
   private:
 
@@ -73,8 +73,8 @@ class ResourceDialog : public IResource
       bool horizontalScroll;    /*!< TRUE if horizontal scroll is required. */
     };
 
-    /*! Widget frame data structure. */
-    struct WidgetFrameData
+    /*! Frame data structure. */
+    struct FrameData
     {
       Recti topLeftRect;          /*!< Top-left rectangle part (in pixels). This also defines texture coordinates. */
       Recti topMiddleRect;        /*!< Top-middle rectangle part (in pixels). This also defines texture coordinates. */
@@ -95,10 +95,12 @@ class ResourceDialog : public IResource
     String m_name;
     /*! Material name. */
     String m_materialName;
+    /*! Type. */
+    String m_type;
     /*! Maximal size. */
     Vector2i m_maxSize;
-    /*! Widget frame data. */
-    WidgetFrameData m_widgetFrameData;
+    /*! Frame data. */
+    FrameData m_frameData;
     /*! Loaded material. NULL if resource is not loaded yet. */
     PResourceMaterial m_material;
     /*! Map of content areas. */
@@ -109,4 +111,4 @@ class ResourceDialog : public IResource
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_RESOURCEDIALOG_H
+#endif // EGE_CORE_RESOURCEWIDGET_H

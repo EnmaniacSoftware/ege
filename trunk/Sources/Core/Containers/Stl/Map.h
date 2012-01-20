@@ -23,6 +23,10 @@ class Map : public std::map<T, U>
     U& at(const T& key);
     /* Returns value. */
     const U& at(const T& key) const;
+    /* Removes entry with a given value. */
+    void removeByValue(const U value);
+    /* Removes entry with a given key. */
+    void removeByKey(const T key);
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -62,6 +66,31 @@ const U& Map<T, U>::at(const T& key) const
 {
   typename Map<T, U>::const_iterator it = this->find(key);
   return it->second;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes given object. */
+template <typename T, typename U>
+void Map<T, U>::removeByValue(const U value)
+{
+  for (typename Map<T, U>::iterator it = this->begin(); it != this->end(); ++it)
+  {
+    if (it->second == value)
+    {
+      this->erase(it);
+      return;
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes entry with a given key. */
+template <typename T, typename U>
+void Map<T, U>::removeByKey(const T key)
+{
+  typename Map<T, U>::iterator it = this->find(key);
+  if (it != this->end())
+  {
+    this->erase(it);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

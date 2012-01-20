@@ -1,34 +1,37 @@
-#include "Core/Resource/ResourceDialog.h"
+#include "Core/Resource/ResourceWidget.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Graphics/Material.h"
 #include "Core/UI/WidgetFrame.h"
+#include "Core/UI/WidgetFactory.h"
+#include <EGEApplication.h>
 #include <EGEResources.h>
+#include <EGEGraphics.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_CONTENT_AREA "content-area"
-#define NODE_WIDGET_FRAME "widget-frame"
+#define NODE_FRAME        "frame"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(ResourceDialog)
-EGE_DEFINE_DELETE_OPERATORS(ResourceDialog)
+EGE_DEFINE_NEW_OPERATORS(ResourceWidget)
+EGE_DEFINE_DELETE_OPERATORS(ResourceWidget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceDialog::ResourceDialog(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_DIALOG)
+ResourceWidget::ResourceWidget(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_WIDGET)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceDialog::~ResourceDialog()
+ResourceWidget::~ResourceWidget()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceDialog::Create(Application* app, ResourceManager* manager)
+PResource ResourceWidget::Create(Application* app, ResourceManager* manager)
 {
-  return ege_new ResourceDialog(app, manager);
+  return ege_new ResourceWidget(app, manager);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
-const String& ResourceDialog::name() const
+const String& ResourceWidget::name() const
 {
   return m_name;
 }
@@ -38,7 +41,7 @@ const String& ResourceDialog::name() const
 *  \param  path  full path to resource definition file.
 *  \param  tag   xml element with resource definition. 
 */
-EGEResult ResourceDialog::create(const String& path, const PXmlElement& tag)
+EGEResult ResourceWidget::create(const String& path, const PXmlElement& tag)
 {
   EGE_UNUSED(path);
 
@@ -50,9 +53,10 @@ EGEResult ResourceDialog::create(const String& path, const PXmlElement& tag)
   m_name              = tag->attribute("name");
   m_materialName      = tag->attribute("material");
   m_maxSize           = tag->attribute("max-size", "0 0").toVector2i(&error);
+  m_type              = tag->attribute("type");
 
   // check if obligatory data is wrong
-  if (error || m_name.empty() || m_materialName.empty())
+  if (error || m_name.empty() || m_materialName.empty() || m_type.empty())
   {
     // error!
     EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
@@ -69,10 +73,10 @@ EGEResult ResourceDialog::create(const String& path, const PXmlElement& tag)
       // process content area
       result = processContentArea(child);
     }
-    else if (NODE_WIDGET_FRAME == child->name())
+    else if (NODE_FRAME == child->name())
     {
-      // process widget frame
-      result = processWidgetFrame(child);
+      // process frame
+      result = processFrame(child);
     }
 
     // check if failed
@@ -90,7 +94,7 @@ EGEResult ResourceDialog::create(const String& path, const PXmlElement& tag)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Loads resource. */
-EGEResult ResourceDialog::load()
+EGEResult ResourceWidget::load()
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -111,6 +115,7 @@ EGEResult ResourceDialog::load()
     else
     {
       // material not found
+      EGE_PRINT("ERROR: Could not find material %s", m_materialName.toAscii());
       result = EGE_ERROR_NOT_FOUND;
     }
   }
@@ -119,15 +124,16 @@ EGEResult ResourceDialog::load()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Unloads resource. */
-void ResourceDialog::unload()
+void ResourceWidget::unload()
 {
   m_material = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of material object defined by resource. */
-PDialog ResourceDialog::createInstance() const
+/*! Creates instance of widget object defined by resource. */
+PWidget ResourceWidget::createInstance() const
 {
-	PDialog object = ege_new Dialog(app(), m_name);
+  // create instance of widget of a correct type and with given name
+  PWidget object = app()->graphics()->widgetFactory()->createWidget(m_type, m_name);
   if (object)
   {
     // set new data
@@ -141,7 +147,7 @@ PDialog ResourceDialog::createInstance() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Set given instance of material object to what is defined by resource. */
-EGEResult ResourceDialog::setInstance(const PDialog& instance) const
+EGEResult ResourceWidget::setInstance(const PWidget& instance) const
 {
   // sanity check
   if (NULL == instance || !isLoaded())
@@ -150,9 +156,9 @@ EGEResult ResourceDialog::setInstance(const PDialog& instance) const
   }
 
   // set rects
-  instance->widgetFrame()->setRects(m_widgetFrameData.topLeftRect, m_widgetFrameData.topMiddleRect, m_widgetFrameData.topRightRect, 
-                                    m_widgetFrameData.middleLeftRect, m_widgetFrameData.fillRect, m_widgetFrameData.middleRightRect, 
-                                    m_widgetFrameData.bottomLeftRect, m_widgetFrameData.bottomMiddleRect, m_widgetFrameData.bottomRightRect);
+  instance->widgetFrame()->setRects(m_frameData.topLeftRect, m_frameData.topMiddleRect, m_frameData.topRightRect, 
+                                    m_frameData.middleLeftRect, m_frameData.fillRect, m_frameData.middleRightRect, 
+                                    m_frameData.bottomLeftRect, m_frameData.bottomMiddleRect, m_frameData.bottomRightRect);
   
   // set max size
   instance->setMaxSize(m_maxSize);
@@ -182,7 +188,7 @@ EGEResult ResourceDialog::setInstance(const PDialog& instance) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Processes content area. */
-EGEResult ResourceDialog::processContentArea(const PXmlElement& tag)
+EGEResult ResourceWidget::processContentArea(const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -218,22 +224,22 @@ EGEResult ResourceDialog::processContentArea(const PXmlElement& tag)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Processes widget frame data. */
-EGEResult ResourceDialog::processWidgetFrame(const PXmlElement& tag)
+EGEResult ResourceWidget::processFrame(const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
 
   bool error = false;
 
   // retrieve data
-  m_widgetFrameData.topLeftRect       = tag->attribute("top-left-rect").toRecti(&error);
-  m_widgetFrameData.topMiddleRect     = tag->attribute("top-middle-rect").toRecti(&error);
-  m_widgetFrameData.topRightRect      = tag->attribute("top-right-rect").toRecti(&error);
-  m_widgetFrameData.middleLeftRect    = tag->attribute("middle-left-rect").toRecti(&error);
-  m_widgetFrameData.fillRect          = tag->attribute("fill-rect").toRecti(&error);
-  m_widgetFrameData.middleRightRect   = tag->attribute("middle-right-rect").toRecti(&error);
-  m_widgetFrameData.bottomLeftRect    = tag->attribute("bottom-left-rect").toRecti(&error);
-  m_widgetFrameData.bottomMiddleRect  = tag->attribute("bottom-middle-rect").toRecti(&error);
-  m_widgetFrameData.bottomRightRect   = tag->attribute("bottom-right-rect").toRecti(&error);
+  m_frameData.topLeftRect       = tag->attribute("top-left-rect").toRecti(&error);
+  m_frameData.topMiddleRect     = tag->attribute("top-middle-rect").toRecti(&error);
+  m_frameData.topRightRect      = tag->attribute("top-right-rect").toRecti(&error);
+  m_frameData.middleLeftRect    = tag->attribute("middle-left-rect").toRecti(&error);
+  m_frameData.fillRect          = tag->attribute("fill-rect").toRecti(&error);
+  m_frameData.middleRightRect   = tag->attribute("middle-right-rect").toRecti(&error);
+  m_frameData.bottomLeftRect    = tag->attribute("bottom-left-rect").toRecti(&error);
+  m_frameData.bottomMiddleRect  = tag->attribute("bottom-middle-rect").toRecti(&error);
+  m_frameData.bottomRightRect   = tag->attribute("bottom-right-rect").toRecti(&error);
 
   // check for error
   if (error)

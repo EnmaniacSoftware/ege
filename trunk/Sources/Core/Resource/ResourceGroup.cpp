@@ -37,7 +37,7 @@ EGEResult ResourceGroup::create(const PXmlElement& tag)
   if (m_name.empty())
   {
     // error!
-    EGE_PRINT("ResourceGroup::create - failed for name: %s", m_name.toAscii());
+    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -122,7 +122,7 @@ EGEResult ResourceGroup::load()
     }
     else
     {
-      EGE_PRINT("ResourceGroup::load - %s", name().toAscii());
+      EGE_PRINT("%s loaded.", name().toAscii());
 
       // set flag
       m_loaded = true;
@@ -151,7 +151,7 @@ void ResourceGroup::unload()
       }
     }
 
-    EGE_PRINT("ResourceGroup::unload - %s", name().toAscii());
+    EGE_PRINT("%s unloaded.", name().toAscii());
 
     // reset flag
     m_loaded = false;
@@ -240,7 +240,7 @@ EGEResult ResourceGroup::addDependancy(const PXmlElement& tag)
   // check if such dependancy already exists
   if (m_dependancies.contains(name))
   {
-    EGE_PRINT("ResourceGroup::addDependancy - dependancy %s already exists.", name.toAscii());
+    EGE_WARNING("Dependancy %s already exists.", name.toAscii());
   }
   else
   {

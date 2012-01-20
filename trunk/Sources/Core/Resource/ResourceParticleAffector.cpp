@@ -58,7 +58,7 @@ EGEResult ResourceParticleAffector::create(const String& path, const PXmlElement
   if (!m_parameters.contains("name") || !m_parameters.contains("type"))
   {
     // error!
-    EGE_PRINT("ResourceParticleAffector::create - failed for name: %s", m_name.toAscii());
+    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -79,7 +79,7 @@ EGEResult ResourceParticleAffector::load()
 /*! IResource override. Unloads resource. */
 void ResourceParticleAffector::unload() 
 { 
-  EGE_PRINT("ResourceParticleAffector::unload - %s", name().toAscii());
+  EGE_PRINT("%s", name().toAscii());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of particle affector object defined by resource. */
@@ -93,7 +93,7 @@ PParticleAffector ResourceParticleAffector::createInstance()
     if (!object->initialize(m_parameters))
     {
       // error!
-      EGE_PRINT("ResourceParticleAffector::createInstance - Could not initialize!");
+      EGE_PRINT("ERROR: Could not initialize!");
       object = NULL;
     }
   }
