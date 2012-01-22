@@ -576,6 +576,9 @@
     <ClCompile Include="..\..\Sources\Core\UI\PushButton.cpp">
       <Filter>Core\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\UI\Label.cpp">
+      <Filter>Core\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1124,6 +1127,9 @@
       <Filter>Core\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\UI\PushButton.h">
+      <Filter>Core\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\UI\Label.h">
       <Filter>Core\UI</Filter>
     </ClInclude>
   </ItemGroup>

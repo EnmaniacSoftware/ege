@@ -8,7 +8,8 @@
 #include <EGEString.h>
 #include <EGEXml.h>
 #include <EGEGraphics.h>
-#include <EGEMap.h>
+#include <EGEList.h>
+#include <EGEDictionary.h>
 #include "Core/UI/Widget.h"
 #include "Core/Resource/Resource.h"
 #include "Core/Resource/ResourceMaterial.h"
@@ -48,29 +49,27 @@ class ResourceWidget : public IResource
     /* IResource override. Unloads resource. */
     void unload() override;
 
-    /* Creates instance of dialog object defined by resource. */
-    PWidget createInstance() const;
-    /* Set given instance of dialog object to what is defined by resource. */
-    EGEResult setInstance(const PWidget& instance) const;
+    /* Creates instance of widget object defined by resource. */
+    PWidget createInstance();
 
   private:
 
     ResourceWidget(Application* app, ResourceManager* manager);
     /*! Returns TRUE if material is loaded. */
-    inline bool isLoaded() const { return NULL != m_material; }
-    /* Processes content area data. */
-    EGEResult processContentArea(const PXmlElement& tag);
+    inline bool isLoaded() const { return m_loaded; }
+    /* Processes child data. */
+    EGEResult processChild(const PXmlElement& tag);
     /* Processes frame data. */
     EGEResult processFrame(const PXmlElement& tag);
 
   private:
 
-    /*! Content area data structure. */
-    struct ContentAreaData
+    /*! Child data structure. */
+    struct ChildData
     {
-      Rectf rect;               /*!< Rectangular area of content within the dialog (in local normalized coordinate system). */
-      bool vericalScroll;       /*!< TRUE if vertical scroll is required. */
-      bool horizontalScroll;    /*!< TRUE if horizontal scroll is required. */
+      Rectf rect;               /*!< Child rectangular area of within parent (in local normalized coordinate system). */
+      String name;              /*!< Child object name. */
+      String widgetName;        /*!< Child widget name. */
     };
 
     /*! Frame data structure. */
@@ -87,24 +86,20 @@ class ResourceWidget : public IResource
       Recti bottomRightRect;      /*!< Bottom-right rectangle part (in pixels). This also defines texture coordinates. */
     };
 
-    typedef Map<String, ContentAreaData> ContentAreaDataMap;
+    typedef List<ChildData> ChildDataList;
 
   private:
 
     /*! Name. */
     String m_name;
-    /*! Material name. */
-    String m_materialName;
-    /*! Type. */
-    String m_type;
-    /*! Maximal size. */
-    Vector2i m_maxSize;
+    /*! Dictionary with defined parameters. */
+    Dictionary m_parameters;
     /*! Frame data. */
     FrameData m_frameData;
-    /*! Loaded material. NULL if resource is not loaded yet. */
-    PResourceMaterial m_material;
-    /*! Map of content areas. */
-    ContentAreaDataMap m_contentAreas;
+    /*! List of children. */
+    ChildDataList m_children;
+    /*! Load flag. */
+    bool m_loaded;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -44,9 +44,6 @@ ScrollableArea::ScrollableArea(Application* app, const String& name, egeObjectDe
   }
 
   ege_connect(&m_physics, transformationChanged, this, ScrollableArea::transformationChanged);
-
-  // initialize
-  initialize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ScrollableArea::~ScrollableArea()
@@ -188,7 +185,7 @@ void ScrollableArea::pointerEvent(PPointerData data)
     Vector2f pos(data->x() - m_physics.position().x, data->y() - m_physics.position().y);
   
     // check if inside
-    if ((0 <= pos.x) && (pos.x < m_physics.scale().x) && (0 <= pos.y) && (pos.y < m_physics.scale().y))
+    if ((0 <= pos.x) && (pos.x < size().x) && (0 <= pos.y) && (pos.y < size().y))
     {
       // store current pointer position
       m_currentPointerPosition.x = static_cast<float32>(data->x());
@@ -233,14 +230,8 @@ void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transfo
   Math::CreateMatrix(&contentMatrix, &pos, &Vector4f::ONE, &Quaternionf::IDENTITY);
   contentMatrix = transform.multiply(contentMatrix);
 
-  // create matrix describing final position
-  Matrix4f matrix = Matrix4f::IDENTITY;
-  pos = m_physics.position();
-  Math::CreateMatrix(&matrix, &pos, &Vector4f::ONE, &Quaternionf::IDENTITY);
-  matrix = transform.multiply(matrix);
-
   // cache position
-  pos = matrix.translation();
+  pos = transform.multiply(m_physics.transformationMatrix()).translation();
 
   // render all objects
   for (ObjectsList::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
@@ -251,7 +242,7 @@ void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transfo
         {
           TextOverlay* overlay = ege_cast<TextOverlay*>(*it);
 
-          overlay->renderData()->setClipRect(Rectf(pos.x, pos.y, m_physics.scale().x, m_physics.scale().y));
+          overlay->renderData()->setClipRect(Rectf(pos.x, pos.y, m_size.x, m_size.y));
           renderer->addForRendering(overlay->renderData(), contentMatrix * overlay->physics()->transformationMatrix());
         }
         break;
@@ -270,13 +261,13 @@ void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transfo
     // NOTE: if there is need for scrolling do not show scrollbar
     if ((DIRECTION_VERTICAL & m_direction) && (0 < m_scrollRange.y))
     {
-      const float32 pageSize = Math::Ceil(m_physics.scale().y * (m_physics.scale().y / m_contentSize.y));
+      const float32 pageSize = Math::Ceil(size().y * (size().y / m_contentSize.y));
 
-      Vector2f topLeft(m_physics.position().x + m_physics.scale().x - scrollbarSize, 
-                       m_physics.position().y + (m_physics.scale().y - pageSize) * (m_scrollOffset.y / m_scrollRange.y));
+      Vector2f topLeft(m_physics.position().x + size().x - scrollbarSize, 
+                       m_physics.position().y + (size().y - pageSize) * (m_scrollOffset.y / m_scrollRange.y));
 
-      Vector2f bottomRight(m_physics.position().x + m_physics.scale().x, 
-                           m_physics.position().y + (m_physics.scale().y - pageSize) * (m_scrollOffset.y / m_scrollRange.y) + pageSize);
+      Vector2f bottomRight(m_physics.position().x + size().x, 
+                           m_physics.position().y + (size().y - pageSize) * (m_scrollOffset.y / m_scrollRange.y) + pageSize);
 
       // top left
       *data++ = topLeft.x;
@@ -323,13 +314,13 @@ void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transfo
     // NOTE: if there is need for scrolling do not show scrollbar
     if ((DIRECTION_HORIZONTAL & m_direction) && (0 < m_scrollRange.x))
     {
-      const float32 pageSize = Math::Ceil(m_physics.scale().x * (m_physics.scale().x / m_contentSize.x));
+      const float32 pageSize = Math::Ceil(size().x * (size().x / m_contentSize.x));
 
-      Vector2f topLeft(m_physics.position().x + (m_physics.scale().x - pageSize) * (m_scrollOffset.x / m_scrollRange.x), 
-                       m_physics.position().y + m_physics.scale().y - scrollbarSize);
+      Vector2f topLeft(m_physics.position().x + (size().x - pageSize) * (m_scrollOffset.x / m_scrollRange.x), 
+                       m_physics.position().y + size().y - scrollbarSize);
 
-      Vector2f bottomRight(m_physics.position().x + (m_physics.scale().x - pageSize) * (m_scrollOffset.x / m_scrollRange.x) + pageSize, 
-                           m_physics.position().y + m_physics.scale().y);
+      Vector2f bottomRight(m_physics.position().x + (size().x - pageSize) * (m_scrollOffset.x / m_scrollRange.x) + pageSize, 
+                           m_physics.position().y + size().y);
 
       // top left
       *data++ = topLeft.x;
@@ -374,7 +365,7 @@ void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transfo
 
     m_renderData->vertexBuffer()->unlock();
 
-    m_renderData->setClipRect(Rectf(pos.x, pos.y, m_physics.scale().x, m_physics.scale().y));
+    m_renderData->setClipRect(Rectf(pos.x, pos.y, m_size.x, m_size.y));
     renderer->addForRendering(m_renderData, transform);
   }
 
@@ -568,8 +559,8 @@ void ScrollableArea::updateContent(const Rectf& rectangle)
   m_contentSize.y = Math::Max(m_contentSize.y, rectangle.bottom());
 
   // update scroll range
-  m_scrollRange.x = Math::Max(0.0f, m_contentSize.x - m_physics.scale().x);
-  m_scrollRange.y = Math::Max(0.0f, m_contentSize.y - m_physics.scale().y);
+  m_scrollRange.x = Math::Max(0.0f, m_contentSize.x - size().x);
+  m_scrollRange.y = Math::Max(0.0f, m_contentSize.y - size().y);
 
   // make sure current offset is in range
   m_scrollOffset.x = Math::Min(m_scrollOffset.x, m_scrollRange.x);
@@ -629,15 +620,51 @@ void ScrollableArea::transformationChanged()
   m_dirtyContent = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Determines size of the dialog (in pixels). */
-Vector2i ScrollableArea::size()
+/*! Widget override. Determines size of the widget (in pixels). */
+Vector2f ScrollableArea::size()
 {
-  return Vector2i(static_cast<s32>(m_physics.scale().x), static_cast<s32>(m_physics.scale().y));
+  return m_size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Widget override. Returns TRUE if widget is frameless. */
 bool ScrollableArea::isFrameless() const
 {
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Widget override. Initializes widget from dictionary. */
+bool ScrollableArea::initialize(const Dictionary& params)
+{
+  // initialize base
+  bool error = !Widget::initialize(params);
+
+  return !error;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns object with a given name. */
+PObject ScrollableArea::object(const String& name) const
+{
+  // go thru all objects
+  for (ObjectsList::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+  {
+    // process according to object id
+    switch ((*it)->uid())
+    {
+      case EGE_OBJECT_UID_OVERLAY_TEXT:
+        {
+          TextOverlay* overlay = ege_cast<TextOverlay*>((*it).object());
+          
+          // check if found
+          if (overlay->name() == name)
+          {
+            // found
+            return (*it);
+          }
+        }
+        break;
+    }
+  }
+
+  return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -29,6 +29,8 @@ class WidgetFrame
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
     /* Sets material. */
     void setMaterial(const PMaterial& material);
+    /* Returns material. */
+    inline PMaterial material() const { return m_renderData->material(); }
     /* Sets rectanlges (in pixels). */
     void setRects(const Recti& topLeft, const Recti& topMiddle, const Recti& topRight, const Recti& middleLeft, const Recti& fill, const Recti& middleRight, 
                   const Recti& bottomLeft, const Recti& bottomMiddle, const Recti& bottomRight);

@@ -72,6 +72,7 @@ void DialogTest::update(const Time& time)
   if (m_dialog)
   {
     m_dialog->update(time);
+   // m_button->update(time);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -81,6 +82,7 @@ void DialogTest::pointerEvent(PPointerData data)
   if (m_dialog)
   {
     m_dialog->pointerEvent(data);
+   // m_button->pointerEvent(data);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -97,6 +99,15 @@ void DialogTest::groupLoadComplete(const String& name)
     m_dialog->physics().setPosition(Vector4f(100, 100, 0));
     m_dialog->setTitle("Title");
     m_dialog->setText("ALA MA KOTA");
+
+    widgetRes = app()->resourceManager()->resource(RESOURCE_NAME_WIDGET, "my-button");
+    EGE_ASSERT(widgetRes); 
+
+    m_button = widgetRes->createInstance();
+    m_button->physics().setPosition(Vector4f(30,30,0));
+    m_button->setText("BUTTON");
+
+    //m_dialog->addChild(m_button);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -108,6 +119,7 @@ void DialogTest::preRender(PRenderTarget target)
   if (m_dialog)
   {
     m_dialog->addForRendering(app()->graphics()->renderer());
+   // m_button->addForRendering(app()->graphics()->renderer());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

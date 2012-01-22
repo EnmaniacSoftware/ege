@@ -451,6 +451,8 @@ files
   (../../Sources/Core/UI)
   Dialog.cpp
   Dialog.h
+  Label.cpp
+  Label.h
   PushButton.cpp
   PushButton.h
   ScrollableArea.cpp

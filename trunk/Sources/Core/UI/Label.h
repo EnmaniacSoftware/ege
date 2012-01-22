@@ -1,13 +1,15 @@
-#ifndef EGE_CORE_DIALOG_H
-#define EGE_CORE_DIALOG_H
+#ifndef EGE_CORE_LABEL_H
+#define EGE_CORE_LABEL_H
 
-/** Dialogs are specialization of Widgets. Dialogs typically have title and main content areas.
+/** Labels are specialization of Widgets.
  */
 
 #include <EGEString.h>
 #include <EGETime.h>
 #include <EGEAlignment.h>
 #include <EGEMap.h>
+#include <EGESignal.h>
+#include <EGEOverlay.h>
 #include "Core/UI/Widget.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
@@ -18,16 +20,16 @@ EGE_NAMESPACE_BEGIN
 
 class Renderer;
 
-EGE_DECLARE_SMART_CLASS(Dialog, PDialog)
+EGE_DECLARE_SMART_CLASS(Label, PLabel)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Dialog : public Widget
+class Label : public Widget
 {
   public: 
 
-    Dialog(Application* app, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
-    virtual ~Dialog();
+    Label(Application* app, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
+    virtual ~Label();
     
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -53,32 +55,30 @@ class Dialog : public Widget
     PhysicsComponent& physics() { return m_physics; }
     /*! Returns current alignment. */
     const Alignment& alignment() const { return m_alignment; }
-    /* Sets title text. */
-    void setTitle(const Text& title);
     /* Sets content text. */
     void setText(const Text& text);
-    /* Sets transparency level. */
-    void setAlpha(float32 alpha);
+    /* Sets font. */
+    void setFont(PFont font);
 
   private:
 
-    /* Widget override. Generates render data. */
-    void generateRenderData() override;
     /* Widget override. Returns TRUE if widget is frameless. */
     bool isFrameless() const override;
     /* Widget override. Initializes widget from dictionary. */
     bool initialize(const Dictionary& params) override;
+    /* Widget override. Detrmines widget's content size (in pixels). */
+    Vector2f contentSize();
 
   private:
 
     /*! Alignment. */
     Alignment m_alignment;
-    /*! Render component. */
-    PRenderComponent m_renderData;
+    /*! Text overlay. */
+    PTextOverlay m_textOverlay;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_DIALOG_H
+#endif // EGE_CORE_LABEL_H

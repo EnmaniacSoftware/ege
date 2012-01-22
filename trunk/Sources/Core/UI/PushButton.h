@@ -9,6 +9,7 @@
 #include <EGEAlignment.h>
 #include <EGEMap.h>
 #include <EGEOverlay.h>
+#include <EGESignal.h>
 #include "Core/UI/Widget.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
@@ -33,6 +34,11 @@ class PushButton : public Widget
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  signals:
+
+    /*! Signal emitted when pointer is released over the button. */
+    Signal1<const PPushButton&> clicked;
+
   public:
 
     /* Creates instance of widget. This method is a registration method for factory. */
@@ -40,6 +46,8 @@ class PushButton : public Widget
 
   public:
 
+    /* Widget override. Returns TRUE if object is valid. */
+    bool isValid() const;
     /* Widget override. Updates overlay. */
     void update(const Time& time) override;
     /* Widget override. Renders dialog. */
@@ -52,24 +60,28 @@ class PushButton : public Widget
     PhysicsComponent& physics() { return m_physics; }
     /*! Returns current alignment. */
     const Alignment& alignment() const { return m_alignment; }
-    /* Adds text overlay to given content area. */
-    EGEResult addTextOverlay(const String& contentName, PTextOverlay& overlay);
+    /* Sets content text. */
+    void setText(const Text& text);
 
   private:
 
     /* Widget override. Generates render data. */
     void generateRenderData() override;
-    /* Widget override. Determines size of the dialog (in pixels). */
-    Vector2i size() override;
-    /* Determines size of the content only (in pixels). */
-    Vector2i contentSize() const;
     /* Widget override. Returns TRUE if widget is frameless. */
     bool isFrameless() const override;
+    /* Widget override. Initializes widget from dictionary. */
+    bool initialize(const Dictionary& params) override;
+    /* Widget override. Detrmines widget's content size (in pixels). */
+    Vector2f contentSize();
 
   private:
 
     /*! Alignment. */
     Alignment m_alignment;
+    /*! Click flag. TRUE if pointer was down over the button. */
+    bool m_clicked;
+    /*! Render component. */
+    PRenderComponent m_renderData;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

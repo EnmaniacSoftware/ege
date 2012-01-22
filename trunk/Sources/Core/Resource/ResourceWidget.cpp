@@ -1,6 +1,5 @@
 #include "Core/Resource/ResourceWidget.h"
 #include "Core/Resource/ResourceManager.h"
-#include "Core/Graphics/Material.h"
 #include "Core/UI/WidgetFrame.h"
 #include "Core/UI/WidgetFactory.h"
 #include <EGEApplication.h>
@@ -10,13 +9,14 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define NODE_CONTENT_AREA "content-area"
-#define NODE_FRAME        "frame"
+#define NODE_CHILD "child"
+#define NODE_FRAME "frame"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceWidget)
 EGE_DEFINE_DELETE_OPERATORS(ResourceWidget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceWidget::ResourceWidget(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_WIDGET)
+ResourceWidget::ResourceWidget(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_WIDGET),
+                                                                             m_loaded(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -47,16 +47,22 @@ EGEResult ResourceWidget::create(const String& path, const PXmlElement& tag)
 
   EGEResult result = EGE_SUCCESS;
 
-  bool error = false;
+  // parse all attributes
+  PXmlAttribute attribute = tag->firstAttribute();
+  while (attribute)
+  {
+    // store data
+    m_parameters[attribute->name()] = attribute->value();
 
-  // retrieve data
-  m_name              = tag->attribute("name");
-  m_materialName      = tag->attribute("material");
-  m_maxSize           = tag->attribute("max-size", "0 0").toVector2i(&error);
-  m_type              = tag->attribute("type");
+    // go to next attribute
+    attribute = attribute->next();
+  }
+
+  bool error = false;
+  m_name = m_parameters.value("name", "no name");
 
   // check if obligatory data is wrong
-  if (error || m_name.empty() || m_materialName.empty() || m_type.empty())
+  if (error || !m_parameters.contains("name") || !m_parameters.contains("type"))
   {
     // error!
     EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
@@ -68,10 +74,10 @@ EGEResult ResourceWidget::create(const String& path, const PXmlElement& tag)
   while (child->isValid())
   {
     // check child
-    if (NODE_CONTENT_AREA == child->name())
+    if (NODE_CHILD == child->name())
     {
-      // process content area
-      result = processContentArea(child);
+      // process child
+      result = processChild(child);
     }
     else if (NODE_FRAME == child->name())
     {
@@ -98,27 +104,8 @@ EGEResult ResourceWidget::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if (!isLoaded())
-  {
-    // load material
-    m_material = manager()->resource(RESOURCE_NAME_MATERIAL, m_materialName);
-    if (m_material)
-    {
-      // load sheet
-      if (EGE_SUCCESS != (result = m_material->load()))
-      {
-        // error!
-        m_material = NULL;
-        return result;
-      }
-    }
-    else
-    {
-      // material not found
-      EGE_PRINT("ERROR: Could not find material %s", m_materialName.toAscii());
-      result = EGE_ERROR_NOT_FOUND;
-    }
-  }
+  // set flag
+  m_loaded = true;
 
   return result;
 }
@@ -126,99 +113,110 @@ EGEResult ResourceWidget::load()
 /*! IResource override. Unloads resource. */
 void ResourceWidget::unload()
 {
-  m_material = NULL;
+  // reset flag
+  m_loaded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of widget object defined by resource. */
-PWidget ResourceWidget::createInstance() const
+PWidget ResourceWidget::createInstance()
 {
   // create instance of widget of a correct type and with given name
-  PWidget object = app()->graphics()->widgetFactory()->createWidget(m_type, m_name);
+  PWidget object = app()->graphics()->widgetFactory()->createWidget(m_parameters["type"], m_name);
   if (object)
   {
-    // set new data
-    if (EGE_SUCCESS != setInstance(object))
+    // initialize with dictionary
+    if (!object->initialize(m_parameters))
     {
-      object = NULL;
+      // error!
+      EGE_PRINT("ERROR: Could not initialize!");
+      return NULL;
+    }
+
+    // set frame rects
+    if (object->widgetFrame())
+    {
+      object->widgetFrame()->setRects(m_frameData.topLeftRect, m_frameData.topMiddleRect, m_frameData.topRightRect, 
+                                      m_frameData.middleLeftRect, m_frameData.fillRect, m_frameData.middleRightRect, 
+                                      m_frameData.bottomLeftRect, m_frameData.bottomMiddleRect, m_frameData.bottomRightRect);
+    }
+
+    // add children
+    for (ChildDataList::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
+    {
+      const ChildData& childData = *it;
+
+      PResourceWidget widgetRes = app()->resourceManager()->resource(RESOURCE_NAME_WIDGET, childData.widgetName);
+      EGE_ASSERT(widgetRes);
+      if (widgetRes)
+      {
+        PWidget childWidget = widgetRes->createInstance();
+        EGE_ASSERT(childWidget);
+        if (childWidget)
+        {
+          // set name
+          childWidget->setName(childData.name);
+
+          // add to child pool
+          if (EGE_SUCCESS != object->addChild(childWidget, childData.rect))
+          {
+            // error!
+            EGE_PRINT("ERROR: Could not add child widget with name %s.", childData.name.toAscii());
+            return NULL;
+          }
+        }
+        else
+        {
+          // error!
+          EGE_PRINT("ERROR: Could not create %s child widget.", childData.widgetName.toAscii());
+          return NULL;
+        }
+      }
+      else
+      {
+        // error!
+        EGE_PRINT("ERROR: Could not find %s child widget resource", childData.widgetName.toAscii());
+        return NULL;
+      }
     }
   }
 
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Set given instance of material object to what is defined by resource. */
-EGEResult ResourceWidget::setInstance(const PWidget& instance) const
-{
-  // sanity check
-  if (NULL == instance || !isLoaded())
-  {
-    return EGE_ERROR;
-  }
-
-  // set rects
-  instance->widgetFrame()->setRects(m_frameData.topLeftRect, m_frameData.topMiddleRect, m_frameData.topRightRect, 
-                                    m_frameData.middleLeftRect, m_frameData.fillRect, m_frameData.middleRightRect, 
-                                    m_frameData.bottomLeftRect, m_frameData.bottomMiddleRect, m_frameData.bottomRightRect);
-  
-  // set max size
-  instance->setMaxSize(m_maxSize);
-
-  // set material
-  PMaterial material = m_material->createInstance();
-  if (NULL == material)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  instance->setMaterial(material);
-
-  // add content areas
-  for (ContentAreaDataMap::const_iterator it = m_contentAreas.begin(); it != m_contentAreas.end(); ++it)
-  {
-    EGEResult result;
-    if (EGE_SUCCESS != (result = instance->addContentArea(it->first, it->second.rect, it->second.vericalScroll, it->second.horizontalScroll)))
-    {
-      // error!
-      return result;
-    }
-  }
-
-  return EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Processes content area. */
-EGEResult ResourceWidget::processContentArea(const PXmlElement& tag)
+/*! Processes child data. */
+EGEResult ResourceWidget::processChild(const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
 
   bool error = false;
 
-  ContentAreaData area;
+  ChildData childData;
 
   // retrieve data
-  String name           = tag->attribute("name");
-  area.rect             = tag->attribute("rect").toRectf(&error);
-  area.vericalScroll    = tag->attribute("vertical-scroll", "false").toBool(&error);
-  area.horizontalScroll = tag->attribute("horizontal-scroll", "false").toBool(&error);
-
+  childData.name        = tag->attribute("name");
+  childData.rect        = tag->attribute("rect").toRectf(&error);
+  childData.widgetName  = tag->attribute("widget-name");
+ 
   // check for error
-  if (name.empty() || error)
+  if (childData.name.empty() || childData.widgetName.empty() || error)
   {
     // error!
     EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
     return EGE_ERROR_BAD_PARAM;
   }
 
-  // check if area with such name exists
-  if (m_contentAreas.contains(name))
+  // check if child with such name exists
+  for (ChildDataList::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
   {
-    // error!
-    return EGE_ERROR_ALREADY_EXISTS;
+    if ((*it).name == childData.name)
+    {
+      // error!
+      return EGE_ERROR_ALREADY_EXISTS;
+    }
   }
 
   // add to pool
-  m_contentAreas.insert(name, area);
+  m_children.push_back(childData);
 
   return result;
 }

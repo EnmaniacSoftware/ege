@@ -15,7 +15,8 @@ struct BuiltInWidget
 
 static BuiltInWidget l_widgetsToRegister[] = {  { "dialog", Dialog::Create },
                                                 { "push-button", PushButton::Create },
-                                                { "scrollable-area", ScrollableArea::Create }
+                                                { "scrollable-area", ScrollableArea::Create },
+                                                { "label", Label::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 WidgetFactory::WidgetFactory(Application* app) : Object(app)

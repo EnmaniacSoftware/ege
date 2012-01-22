@@ -35,6 +35,8 @@ class Widget : public Object
 
     /* Returns TRUE if object is valid. */
     virtual bool isValid() const;
+    /* Initializes widget from dictionary. */
+    virtual bool initialize(const Dictionary& params);
     /* Updates overlay. */
     virtual void update(const Time& time);
     /* Renders dialog. */
@@ -43,6 +45,8 @@ class Widget : public Object
     virtual void pointerEvent(PPointerData data);
     /*! Returns name. */
     const String& name() const { return m_name; }
+    /* Sets name. */
+    void setName(const String& name);
     /*! Returns physics component. */
     inline PhysicsComponent& physics() { return m_physics; }
     /*! Returns TRUE if overlay is visible. */
@@ -55,46 +59,51 @@ class Widget : public Object
     void setMaxSize(const Vector2i& size);
     /*! Returns widget frame. */
     inline WidgetFrame* widgetFrame() const { return m_widgetFrame; }
-    /* Adds content area. */
-    EGEResult addContentArea(const String& name, const Rectf& rect, bool verticalScroll = false, bool horizontalScroll = false);
     
     /* Adds child. */
-    EGEResult addChild(PWidget widget);
+    EGEResult addChild(PWidget widget, const Rectf& relativeRect = Rectf(0, 0, 1, 1));
     /* Removes given child. */
     void removeChild(PWidget widget);
     /* Removes child with a given name. */
     void removeChild(const String& name);
     /* Removes all children. */
     void removeAllChildren();
+    /* Returns child with a given name. Optionally, stores child rectangle within parent. */
+    PWidget child(const String& name, Rectf* rect = NULL) const;
+
+    /*! Returns pointer to parent widget. NULL if no parent is set. */
+    inline Widget* parent() const { return m_parent; }
+
+    /*! Detrmines widget's content size (in pixels). */
+    virtual Vector2f contentSize();
+    /* Sets size. */
+    void setSize(const Vector2f& size);
+    /* Sets position. */
+    void setPosition(const Vector4f& position);
 
   protected:
 
     Widget(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
     /* Generates render data. */
     virtual void generateRenderData();
-    /* Initializes the object. This method is to be called from derived objects. */
-    void initialize();
+    /* Determines size of widget (in pixels). */
+    virtual Vector2f size();
 
   private:
 
-    /* Determines size of the dialog (in pixels). */
-    virtual Vector2i size();
-    /* Determines size of the content only (in pixels). */
-    Vector2i contentSize() const;
     /*! Returns TRUE if widget is frameless. */
     virtual bool isFrameless() const = 0;
 
   protected:
 
-    /*! Content area data struct. */
-    struct ContentAreaData
+    /*! Child data. */
+    struct ChildData
     {
-      PScrollableArea area;                 /*!< Scrollable area container. */
-      Rectf rect;                           /*!< Rectangle for container (relative and normalized). */
+      PWidget widget;                       /*!< Child widget. */
+      Rectf rect;                           /*!< Rectangle widget occupies within parent (relative and normalized). */
     };
 
-    typedef Map<String, ContentAreaData> ContentAreaDataMap;
-    typedef Map<String, PWidget> ChildrenMap;
+    typedef Map<String, ChildData> ChildrenDataMap;
 
   protected:
 
@@ -102,26 +111,22 @@ class Widget : public Object
     String m_name;
     /*! Physics component. */
     PhysicsComponent m_physics;
-    /*! Render component. */
-    PRenderComponent m_renderData;
     /*! Render data invalid flag. */
     bool m_renderDataInvalid;
     /*! Visibility flag. */
     bool m_visible;
     /*! Cached widget size (in pixels). */
-    Vector2i m_size;
+    Vector2f m_size;
     /*! Size cache validity flag. */
     bool m_sizeValid;
     /*! Widget frame. */
     WidgetFrame* m_widgetFrame;
     /*! Maximal dialog size. If zero, there is no max size restriction. */
     Vector2i m_maxSize;
-    /*! Map of content areas. */
-    ContentAreaDataMap m_contentAreas;
     /*! Pointer to parent widget. */
     Widget* m_parent;
-    /*! Children widgets. */
-    ChildrenMap m_children;
+    /*! Children data map. */
+    ChildrenDataMap m_children;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

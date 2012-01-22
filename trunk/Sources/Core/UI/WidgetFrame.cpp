@@ -39,6 +39,9 @@ void WidgetFrame::addForRendering(Renderer* renderer, const Matrix4f& transform)
   if (m_renderDataInvalid)
   {
     generateRenderData();
+
+    // validate
+    m_renderDataInvalid = false;
   }
 
   renderer->addForRendering(m_renderData, transform);
@@ -101,8 +104,7 @@ void WidgetFrame::generateRenderData()
   float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, 9 * 4));
   u8* indexData = reinterpret_cast<u8*>(m_renderData->indexBuffer()->lock(0, 9 * 6));
 
-  Vector2f textureSize(ege_cast<Texture2D*>(m_renderData->material()->pass(0)->texture(0)->texture())->width() * 1.0f,
-                       ege_cast<Texture2D*>(m_renderData->material()->pass(0)->texture(0)->texture())->height() * 1.0f);
+  Vector2f textureSize(m_renderData->material()->pass(0)->texture(0)->width() * 1.0f, m_renderData->material()->pass(0)->texture(0)->height() * 1.0f);
   textureSize.set(1.0f / textureSize.x, 1.0f / textureSize.y);
 
   // go thru all sections
@@ -254,9 +256,6 @@ void WidgetFrame::generateRenderData()
 
   m_renderData->vertexBuffer()->unlock();
   m_renderData->indexBuffer()->unlock();
-
-  // validate
-  m_renderDataInvalid = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets size. */

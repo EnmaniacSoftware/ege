@@ -37,9 +37,9 @@ class ScrollableArea : public Widget
     /*! Available directions. */
     enum DirectionFlags
     {
-      DIRECTION_NONE        = 0x0,
-      DIRECTION_VERTICAL    = 0x1,
-      DIRECTION_HORIZONTAL  = 0x2,
+      DIRECTION_NONE        = 0x00,
+      DIRECTION_VERTICAL    = 0x01,
+      DIRECTION_HORIZONTAL  = 0x02,
 
       DIRECTION_BOTH = DIRECTION_VERTICAL | DIRECTION_HORIZONTAL
     };
@@ -58,10 +58,15 @@ class ScrollableArea : public Widget
     EGE::EGEResult addObject(PObject object);
     /* Removes object. */
     void removeObject(PObject object);
+    /* Returns object with a given name. */
+    PObject object(const String& name) const;
     /* Removes all objects. */
     void removeAll();
     /* Sets scroll direction. */
     void setDirection(Direction direction);
+    /*! Returns scroll direction. */
+    inline Direction direction() const { return m_direction; }
+
     /* Sets scroll damping coefficient. */
     void setDampingCoefficient(const Vector2f& coefficient);
     /* Sets scroll throw coefficient. */
@@ -87,10 +92,12 @@ class ScrollableArea : public Widget
     void updateContent(const Rectf& rectangle);
     /* Recalculates content size. */
     void recaluclateContentSize();
-    /* Widget override. Determines size of the dialog (in pixels). */
-    Vector2i size();
+    /* Widget override. Determines size of the widget (in pixels). */
+    Vector2f size();
     /* Widget override. Returns TRUE if widget is frameless. */
     bool isFrameless() const override;
+    /* Widget override. Initializes widget from dictionary. */
+    bool initialize(const Dictionary& params) override;
 
   private slots:
 
@@ -119,8 +126,6 @@ class ScrollableArea : public Widget
 
   private:
 
-    /*! Local physics. */
-    PhysicsComponent m_physics;
     /*! Content size (in pixels). */
     Vector2f m_contentSize;
     /*! List of attached objects. */
@@ -159,6 +164,8 @@ class ScrollableArea : public Widget
     ScrollbarState m_scrollbarsState;
     /*! Dirty content flag. */
     bool m_dirtyContent;
+    /*! Render component. */
+    PRenderComponent m_renderData;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

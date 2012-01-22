@@ -3,8 +3,8 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-typedef signed long         s32;            // i
-typedef unsigned long       u32;            // ui
+typedef int                 s32;            // i
+typedef unsigned int        u32;            // ui
 typedef short               s16;            // si
 typedef unsigned short      u16;            // su
 typedef char                s8;             // c

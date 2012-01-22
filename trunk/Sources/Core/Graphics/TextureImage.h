@@ -57,6 +57,11 @@ class TextureImage : public Object
     /* Makes a copy of given texture image. */
     void copy(const TextureImage* other);
 
+    /* Returns width (in texels). */
+    s32 width() const;
+    /* Returns height (in texels). */
+    s32 height() const;
+
   private:
 
     /*! Name. */

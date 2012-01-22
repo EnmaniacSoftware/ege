@@ -8,6 +8,7 @@
 #include "Core/UI/ScrollableArea.h"
 #include "Core/UI/Dialog.h"
 #include "Core/UI/PushButton.h"
+#include "Core/UI/Label.h"
 #include "Core/UI/WidgetFactory.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,164 +1,119 @@
-#include "Core/UI/PushButton.h"
-#include "Core/UI/WidgetFactory.h"
+#include "Core/UI/Label.h"
+#include "Core/UI/ScrollableArea.h"
 #include <EGEApplication.h>
 #include <EGEResources.h>
-#include <EGEGraphics.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(PushButton)
-EGE_DEFINE_DELETE_OPERATORS(PushButton)
+EGE_DEFINE_NEW_OPERATORS(Label)
+EGE_DEFINE_DELETE_OPERATORS(Label)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static const Rectf l_defaultTextAreaRect = Rectf(0.1f, 0.1f, 0.8f, 0.8f);
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PushButton::PushButton(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(app, name, EGE_OBJECT_UID_UI_PUSH_BUTTON, deleteFunc),
-                                                                                               m_clicked(false)
+Label::Label(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(app, name, EGE_OBJECT_UID_UI_LABEL, deleteFunc)
 {
+  // set default font
   PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
   if (fontResource)
   {
-    // title label
-    PLabel label = app->graphics()->widgetFactory()->createWidget("label", "text");
-    if (label)
+    // add text overlays
+    m_textOverlay  = ege_new TextOverlay(app, "text");
+
+    if (NULL != m_textOverlay)
     {
-      label->setFont(fontResource->font());
-      addChild(label, l_defaultTextAreaRect);
+      m_textOverlay->setFont(fontResource->font());
+
+      m_textOverlay->physics()->setPosition(Vector4f(0, 0, 0));
     }
-  }
+  }  
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PushButton::~PushButton()
+Label::~Label()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of widget. This method is a registration method for factory. */
-PWidget PushButton::Create(Application* app, const String& name)
+PWidget Label::Create(Application* app, const String& name)
 {
-  return ege_new PushButton(app, name);
+  return ege_new Label(app, name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Widget override. Returns TRUE if object is valid. */
-bool PushButton::isValid() const
+bool Label::isValid() const
 {
-  return Widget::isValid() && (NULL != child("text"));
+  return Widget::isValid() && (NULL != m_textOverlay);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Widget override. Updates overlay. */
-void PushButton::update(const Time& time)
+void Label::update(const Time& time)
 {
   // call base class
   Widget::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Widget override. Renders dialog. */
-void PushButton::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void Label::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
+  renderer->addForRendering(m_textOverlay->renderData(), transform);
+
   // call base class
   Widget::addForRendering(renderer, transform);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pointer event processor. */
-void PushButton::pointerEvent(PPointerData data)
+void Label::pointerEvent(PPointerData data)
 {
-  // map to client area
-  Vector2f pos(data->x() - m_physics.position().x, data->y() - m_physics.position().y);
-  
-  // check if inside
-  if ((0 <= pos.x) && (pos.x < size().x) && (0 <= pos.y) && (pos.y < size().y))
-  {
-    switch (data->action())
-    {
-      case EGEInput::ACTION_BUTTON_DOWN:
-
-        // store flag
-        m_clicked = true;
-        break;
-
-      case EGEInput::ACTION_BUTTON_UP:
-
-        // check if was clicked
-        if (m_clicked)
-        {
-          // emit
-          emit clicked(this);
-        }
-        break;
-    }
-  }
-
-  // reset click flag if released
-  if (EGEInput::ACTION_BUTTON_UP == data->action())
-  {
-    m_clicked = false;
-  }
-
   // call base class
   Widget::pointerEvent(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Generates render data. */
-void PushButton::generateRenderData()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Widget override. Returns TRUE if widget is frameless. */
-bool PushButton::isFrameless() const
+bool Label::isFrameless() const
 {
-  return false;
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Widget override. Initializes widget from dictionary. */
-bool PushButton::initialize(const Dictionary& params)
+bool Label::initialize(const Dictionary& params)
 {
   // initialize base
   bool error = !Widget::initialize(params);
 
-  // check if material name is defined
-  if (params.contains("material"))
+  // process font
+  if (params.contains("font"))
   {
-    PResourceMaterial materialResource = app()->resourceManager()->materialResource(params.at("material"));
-    EGE_ASSERT(materialResource);
-    if (materialResource)
+    PResourceFont fontResource = app()->resourceManager()->resource(RESOURCE_NAME_FONT, params.at("font"));
+    if (fontResource)
     {
-      PMaterial material = materialResource->createInstance();
-      if (NULL == material)
-      {
-        // error!
-        error = true;
-      }
-      
-      // set frame material
-      widgetFrame()->setMaterial(material);
+      setFont(fontResource->font());
     }
-  }
-  else
-  {
-    // error!
-    error = true;
+    else
+    {
+      // error!
+      error = true;
+    }
   }
 
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets content text. */
-void PushButton::setText(const Text& text)
+void Label::setText(const Text& text)
 {
-  PLabel label = child("text");
-  if (NULL != label)
-  {
-    EGE_ASSERT(EGE_OBJECT_UID_UI_LABEL == label->uid());
-
-    label->setText(text);
-  }
+  m_textOverlay->setText(text);
 
   // invalidate size
   m_sizeValid = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Detrmines widget's content size (in pixels). */
-Vector2f PushButton::contentSize()
+/*! Sets font. */
+void Label::setFont(PFont font)
 {
-  return child("text")->contentSize();
+  m_textOverlay->setFont(font);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Detrmines widget's content size (in pixels). */
+Vector2f Label::contentSize()
+{
+  return m_textOverlay->textSize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

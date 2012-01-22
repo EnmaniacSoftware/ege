@@ -8,7 +8,7 @@ EGE_DEFINE_NEW_OPERATORS(TextureImage)
 EGE_DEFINE_DELETE_OPERATORS(TextureImage)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextureImage::TextureImage(Application* app) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE), 
-                                                m_envMode(EGETexture::EM_MODULATE)
+                                               m_envMode(EGETexture::EM_MODULATE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -83,5 +83,43 @@ void TextureImage::copy(const TextureImage* other)
   m_rect    = other->m_rect;
   m_texture = other->m_texture;
   m_envMode = other->m_envMode;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns width (in texels). */
+s32 TextureImage::width() const
+{
+  s32 width = 0;
+
+  if (m_texture)
+  {
+    switch (m_texture->uid())
+    {
+      case EGE_OBJECT_UID_TEXTURE_2D:
+
+        width = ege_cast<Texture2D*>(m_texture)->width() * m_rect.width;
+        break;
+    }
+  }
+
+  return width;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns height (in texels). */
+s32 TextureImage::height() const
+{
+  s32 height = 0;
+
+  if (m_texture)
+  {
+    switch (m_texture->uid())
+    {
+      case EGE_OBJECT_UID_TEXTURE_2D:
+
+        height = ege_cast<Texture2D*>(m_texture)->height() * m_rect.height;
+        break;
+    }
+  }
+
+  return height;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

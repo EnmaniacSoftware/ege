@@ -128,6 +128,7 @@
     <ClCompile Include="..\..\Sources\Core\Tools\ByteOrder.cpp" />
     <ClCompile Include="..\..\Sources\Core\Tools\DesktopServices.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\Dialog.cpp" />
+    <ClCompile Include="..\..\Sources\Core\UI\Label.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\PushButton.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\ScrollableArea.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\Widget.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="..\..\Sources\Core\Tools\ByteOrder.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\DesktopServices.h" />
     <ClInclude Include="..\..\Sources\Core\UI\Dialog.h" />
+    <ClInclude Include="..\..\Sources\Core\UI\Label.h" />
     <ClInclude Include="..\..\Sources\Core\UI\PushButton.h" />
     <ClInclude Include="..\..\Sources\Core\UI\ScrollableArea.h" />
     <ClInclude Include="..\..\Sources\Core\UI\Widget.h" />
