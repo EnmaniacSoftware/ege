@@ -91,7 +91,7 @@ void Sprite::update(const Time& time)
 /*! Starts playing. */
 void Sprite::play()
 {
-  if (!isPlaying())
+  if (!isPlaying() && !m_frameData.empty())
   {
     // reset frame
     m_frameIndex = 0;
