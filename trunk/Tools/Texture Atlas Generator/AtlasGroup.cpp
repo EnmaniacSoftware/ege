@@ -13,6 +13,7 @@ AtlasGroup::AtlasGroup(const String& name, const String& root, const String& tex
   m_textureImageSize(textureImageSize)
 {
   m_image = ege_new EGE::Image(NULL, textureImageSize.x, textureImageSize.y, imageFormat);
+  clearImage();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AtlasGroup::~AtlasGroup()

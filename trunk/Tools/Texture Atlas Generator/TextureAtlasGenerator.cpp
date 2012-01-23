@@ -8,7 +8,7 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 9
+#define VERSION_MINOR 91
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping image format name into framework enum. */
 static EGEImage::Format MapImageFormat(const String& formatName)
