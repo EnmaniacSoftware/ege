@@ -9,14 +9,15 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(Label)
 EGE_DEFINE_DELETE_OPERATORS(Label)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Label::Label(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(app, name, EGE_OBJECT_UID_UI_LABEL, deleteFunc)
+Label::Label(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(app, name, EGE_OBJECT_UID_UI_LABEL, deleteFunc),
+                                                                                     m_alignment(ALIGN_TOP_LEFT)
 {
   // set default font
   PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
   if (fontResource)
   {
     // add text overlays
-    m_textOverlay  = ege_new TextOverlay(app, "text");
+    m_textOverlay = ege_new TextOverlay(app, "text");
 
     if (NULL != m_textOverlay)
     {
@@ -43,17 +44,24 @@ bool Label::isValid() const
   return Widget::isValid() && (NULL != m_textOverlay);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Updates overlay. */
+/*! Widget override. Updates widget. */
 void Label::update(const Time& time)
 {
   // call base class
   Widget::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Renders dialog. */
+/*! Widget override. Renders widget. */
 void Label::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
-  renderer->addForRendering(m_textOverlay->renderData(), transform);
+  Rectf overlayRect(0, 0, m_textOverlay->textSize().x, m_textOverlay->textSize().y);
+  Rectf labelRect(0, 0, size().x, size().y);
+  Math::Align(&overlayRect, &labelRect, ALIGN_TOP_LEFT, m_alignment);
+
+  Matrix4f matrix;
+  Vector4f pos(m_physics.position().x + overlayRect.x, m_physics.position().y + overlayRect.y, 0, 1);
+  Math::CreateMatrix(&matrix, &pos, &Vector4f::ONE, &Quaternionf::IDENTITY);
+  m_textOverlay->addForRendering(renderer, transform * matrix);
 
   // call base class
   Widget::addForRendering(renderer, transform);
@@ -100,9 +108,6 @@ bool Label::initialize(const Dictionary& params)
 void Label::setText(const Text& text)
 {
   m_textOverlay->setText(text);
-
-  // invalidate size
-  m_sizeValid = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets font. */
@@ -115,5 +120,21 @@ void Label::setFont(PFont font)
 Vector2f Label::contentSize()
 {
   return m_textOverlay->textSize();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Widget override. Sets transparency level. */
+void Label::setAlpha(float32 alpha)
+{
+  // apply to text overlay
+  m_textOverlay->setAlpha(alpha);
+
+  // call base class
+  Widget::setAlpha(alpha);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets text alignment. */
+void Label::setTextAlignment(Alignment alignment)
+{
+  m_alignment = alignment;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

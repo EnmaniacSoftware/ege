@@ -3,6 +3,7 @@
 
 #include <EGETime.h>
 #include <EGEString.h>
+#include <EGEList.h>
 #include "Core/Overlay/Overlay.h"
 #include "Core/Graphics/Font.h"
 
@@ -33,11 +34,11 @@ class TextOverlay : public Overlay
     /*! Returns font. */
     inline PFont font() const { return m_font; }
     /* Overlay override. Sets alignment. */
-    virtual void setAlignment(Alignment align) override;
+    void setAlignment(Alignment align) override;
     /* Returns text size (in pixels). */
     Vector2f textSize();
-    /* Overlay override. Updates overlay. */
-    void update(const Time& time) override;
+    /* Overlay override. Renders overlay. */
+    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
 
     // visiblility related methods
     //inline bool isVisible( void ) const { return m_bVisible; }                                                // returns TRUE if overlay is visible
@@ -67,17 +68,30 @@ class TextOverlay : public Overlay
 
   private:
 
-    /* Overlay override. Renders element. */
-    void render(const Viewport* viewport, Renderer* renderer) override;
     /* Overlay override. Initializes object. */
     void initialize() override;
     /* Updates render data. */
     void updateRenderData();
+    /* Update text data. */
+    void updateTextData();
 
   private slots:
 
     /* Slot called when physics data has been updated. */
     void transformationChanged();
+
+  private:
+
+    /*! Single text line data structure. */
+    struct TextLineData
+    {
+      Text::const_iterator start;         /*!< Iterator to first character in line. */
+      Text::const_iterator end;           /*!< Iterator to one after last character in line. */
+
+      float32 width;                      /*!< Line width (in pixels). */
+    };
+
+    typedef List<TextLineData> TextLineDataList;
 
   private:
 
@@ -89,6 +103,12 @@ class TextOverlay : public Overlay
     Vector4f m_alignmentOffset;
     /*! Cached text size. */
     Vector2f m_textSize;
+    /*! List of text lines. */
+    TextLineDataList m_textLines;
+    /*! Text data validity flag. */
+    bool m_textDataValid;
+    /*! Renderable characters count. */
+    u32 m_renderableCharactersCount;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

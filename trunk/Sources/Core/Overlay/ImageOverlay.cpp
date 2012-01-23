@@ -63,31 +63,22 @@ void ImageOverlay::updateRenderData()
     resource->setInstance(m_material);
   }
 
-  renderData()->setMaterial(m_material);
+  m_renderData->setMaterial(m_material);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Overlay override. Renders element. */
-void ImageOverlay::render(const Viewport* viewport, Renderer* renderer)
+/*! Overlay override. Renders overlay. */
+void ImageOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (visible())
   {
-    PRenderComponent renderComponent = this->renderData();
-
     Matrix4f worldMatrix;
-    if (NULL != physics())
-    {
-      Quaternionf orientation = physics()->orientation();
-      Vector4f position = physics()->position() - m_alignmentOffset;
-      Vector4f scale = physics()->scale();
+    Quaternionf orientation = physics()->orientation();
+    Vector4f position = physics()->position() - m_alignmentOffset;
+    Vector4f scale = physics()->scale();
 
-      Math::CreateMatrix(&worldMatrix, &position, &scale, &orientation);
-    }
-    else
-    {
-      worldMatrix = Matrix4f::IDENTITY;
-    }
+    Math::CreateMatrix(&worldMatrix, &position, &scale, &orientation);
 
-    renderer->addForRendering(renderComponent, worldMatrix);
+    renderer->addForRendering(m_renderData, transform * worldMatrix);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -122,7 +113,7 @@ void ImageOverlay::transformationChanged()
 
   m_alignmentOffset.x = 0;
   m_alignmentOffset.y = 0;
-  Math::AlignXY(&m_alignmentOffset, &size, EGEAlignment::ALIGN_TOP_LEFT, alignment());
+  Math::AlignXY(&m_alignmentOffset, &size, ALIGN_TOP_LEFT, alignment());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Overlay override. Initializes object. */
@@ -131,7 +122,7 @@ void ImageOverlay::initialize()
   // call base class
   Overlay::initialize();
 
-  m_renderData  = RenderObjectFactory::CreateQuadXY(app(), "overlay_" + name(), Vector4f::ZERO, Vector2f::ONE, EGEAlignment::ALIGN_TOP_LEFT, 
+  m_renderData  = RenderObjectFactory::CreateQuadXY(app(), "overlay_" + name(), Vector4f::ZERO, Vector2f::ONE, ALIGN_TOP_LEFT, 
                                                     EGEVertexBuffer::ST_V2_T2, EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLE_STRIPS,
                                                     EGEVertexBuffer::UT_STATIC_WRITE);
 }

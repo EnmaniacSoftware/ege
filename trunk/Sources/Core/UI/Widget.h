@@ -39,7 +39,7 @@ class Widget : public Object
     virtual bool initialize(const Dictionary& params);
     /* Updates overlay. */
     virtual void update(const Time& time);
-    /* Renders dialog. */
+    /* Renders widget. */
     virtual void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
     /* Pointer event processor. */
     virtual void pointerEvent(PPointerData data);
@@ -55,31 +55,32 @@ class Widget : public Object
     void setVisible(bool set);
     /* Sets material. */
     void setMaterial(const PMaterial& material);
-    /* Sets max size. */
-    void setMaxSize(const Vector2i& size);
     /*! Returns widget frame. */
     inline WidgetFrame* widgetFrame() const { return m_widgetFrame; }
     
     /* Adds child. */
-    EGEResult addChild(PWidget widget, const Rectf& relativeRect = Rectf(0, 0, 1, 1));
+    EGEResult addChild(PWidget widget);
     /* Removes given child. */
     void removeChild(PWidget widget);
     /* Removes child with a given name. */
     void removeChild(const String& name);
     /* Removes all children. */
     void removeAllChildren();
-    /* Returns child with a given name. Optionally, stores child rectangle within parent. */
-    PWidget child(const String& name, Rectf* rect = NULL) const;
+    /* Returns child with a given name. */
+    PWidget child(const String& name) const;
 
     /*! Returns pointer to parent widget. NULL if no parent is set. */
     inline Widget* parent() const { return m_parent; }
 
-    /*! Detrmines widget's content size (in pixels). */
+    /* Detrmines widget's content size (in pixels). */
     virtual Vector2f contentSize();
     /* Sets size. */
     void setSize(const Vector2f& size);
     /* Sets position. */
     void setPosition(const Vector4f& position);
+
+    /* Sets transparency level. */
+    virtual void setAlpha(float32 alpha);
 
   protected:
 
@@ -100,7 +101,6 @@ class Widget : public Object
     struct ChildData
     {
       PWidget widget;                       /*!< Child widget. */
-      Rectf rect;                           /*!< Rectangle widget occupies within parent (relative and normalized). */
     };
 
     typedef Map<String, ChildData> ChildrenDataMap;
@@ -115,14 +115,10 @@ class Widget : public Object
     bool m_renderDataInvalid;
     /*! Visibility flag. */
     bool m_visible;
-    /*! Cached widget size (in pixels). */
+    /*! Widget size (in pixels). */
     Vector2f m_size;
-    /*! Size cache validity flag. */
-    bool m_sizeValid;
     /*! Widget frame. */
     WidgetFrame* m_widgetFrame;
-    /*! Maximal dialog size. If zero, there is no max size restriction. */
-    Vector2i m_maxSize;
     /*! Pointer to parent widget. */
     Widget* m_parent;
     /*! Children data map. */

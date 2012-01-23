@@ -12,10 +12,9 @@ Widget::Widget(Application* app, const String& name, u32 uid, egeObjectDeleteFun
                                                                                                 m_name(name),
                                                                                                 m_renderDataInvalid(true), 
                                                                                                 m_visible(true),
-                                                                                                m_maxSize(Vector2i::ZERO),
                                                                                                 m_widgetFrame(NULL),
-                                                                                                m_sizeValid(false),
-                                                                                                m_parent(NULL)
+                                                                                                m_parent(NULL),
+                                                                                                m_size(100.0f, 100.0f)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -44,8 +43,12 @@ bool Widget::initialize(const Dictionary& params)
   }
 
   bool error = false;
-  Vector2i maxSize = params.value("max-size", "0 0").toVector2i(&error);
-  setMaxSize(maxSize);
+  m_size = params.value("size", "0 0").toVector2f(&error);
+  if ((0 >= m_size.x) || (0 >= m_size.y))
+  {
+    // error!
+    error = true;
+  }
 
   return !error;
 }
@@ -122,12 +125,6 @@ void Widget::setMaterial(const PMaterial& material)
   m_renderDataInvalid = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets max size. */
-void Widget::setMaxSize(const Vector2i& size)
-{
-  m_maxSize = size;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pointer event processor. */
 void Widget::pointerEvent(PPointerData data)
 {
@@ -152,7 +149,7 @@ void Widget::pointerEvent(PPointerData data)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds child. */
-EGEResult Widget::addChild(PWidget widget, const Rectf& relativeRect)
+EGEResult Widget::addChild(PWidget widget)
 {
   EGE_ASSERT(NULL == widget->parent());
 
@@ -165,16 +162,12 @@ EGEResult Widget::addChild(PWidget widget, const Rectf& relativeRect)
 
   ChildData childData;
   childData.widget = widget;
-  childData.rect   = relativeRect;
 
   // add to pool
   m_children.insert(widget->name(), childData);
 
   // set child parent
   widget->m_parent = this;
-
-  // invalidate size
-  m_sizeValid = false;
 
   return EGE_SUCCESS;
 }
@@ -192,10 +185,6 @@ void Widget::removeChild(PWidget widget)
 
       // reset parent
       widget->m_parent = NULL;
-
-      // invalidate size
-      m_sizeValid = false;
-
       return;
     }
   }
@@ -216,10 +205,6 @@ void Widget::removeChild(const String& name)
 
       // reset parent
       widget->m_parent = NULL;
-
-      // invalidate size
-      m_sizeValid = false;
-
       return;
     }
   }
@@ -238,9 +223,6 @@ void Widget::removeAllChildren()
   }
 
   m_children.clear();
-
-  // invalidate size
-  m_sizeValid = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Generates render data. */
@@ -252,50 +234,50 @@ void Widget::generateRenderData()
 /*! Determines size of the widget (in pixels). */
 Vector2f Widget::size()
 {
-  static const float32 hugeSize = 10000.0f;
+  //static const float32 hugeSize = 10000.0f;
 
-  if (!m_sizeValid)
-  {
-    Vector2f contentSize = this->contentSize();
+  //if (!m_sizeValid)
+  //{
+  //  Vector2f contentSize = this->contentSize();
 
-    // make sure widget size is in proper range
-    Vector2f minFrameSize(0, 0);
-    if (NULL != m_widgetFrame)
-    {
-      minFrameSize = m_widgetFrame->minSize();
-    }
-    m_size.x = Math::Bound(contentSize.x, minFrameSize.x, (0.0f == m_maxSize.x) ? hugeSize : m_maxSize.x);
-    m_size.y = Math::Bound(contentSize.y, minFrameSize.y, (0.0f == m_maxSize.y) ? hugeSize : m_maxSize.y);
+  //  // make sure widget size is in proper range
+  //  Vector2f minFrameSize(0, 0);
+  //  if (NULL != m_widgetFrame)
+  //  {
+  //    minFrameSize = m_widgetFrame->minSize();
+  //  }
+  //  m_size.x = Math::Bound(contentSize.x, minFrameSize.x, (0.0f == m_maxSize.x) ? hugeSize : m_maxSize.x);
+  //  m_size.y = Math::Bound(contentSize.y, minFrameSize.y, (0.0f == m_maxSize.y) ? hugeSize : m_maxSize.y);
 
-    // go thru all children and reassign layouts
-    for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)
-    {
-      ChildData& data = it->second;
+  //  // go thru all children and reassign layouts
+  //  for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)
+  //  {
+  //    ChildData& data = it->second;
 
-      data.widget->setPosition(Vector4f(data.rect.x * m_size.x, data.rect.y * m_size.y, 0));
-      data.widget->setSize(Vector2f(data.rect.width * m_size.x, data.rect.height * m_size.y));
+  //    data.widget->setPosition(Vector4f(data.rect.x * m_size.x, data.rect.y * m_size.y, 0));
+  //    data.widget->setSize(Vector2f(data.rect.width * m_size.x, data.rect.height * m_size.y));
 
-      if (data.widget->m_widgetFrame)
-      {
-        data.widget->m_widgetFrame->setSize(Vector2f(data.rect.width * m_size.x, data.rect.height * m_size.y));
-      }
-    }
+  //    if (data.widget->m_widgetFrame)
+  //    {
+  //      data.widget->m_widgetFrame->setSize(Vector2f(data.rect.width * m_size.x, data.rect.height * m_size.y));
+  //    }
+  //  }
 
-    // pass size to widget frame if any
-    if (m_widgetFrame)
-    {
-      m_widgetFrame->setSize(m_size);
-    }
+  //  // pass size to widget frame if any
+  //  if (m_widgetFrame)
+  //  {
+  //    m_widgetFrame->setSize(m_size);
+  //  }
 
-    // set flag
-    m_sizeValid = true;
-  }
+  //  // set flag
+  //  m_sizeValid = true;
+  //}
 
   return m_size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns child with a given name. Optionally, stores child rectangle within parent. */
-PWidget Widget::child(const String& name, Rectf* rect) const
+PWidget Widget::child(const String& name) const
 {
   // go thru all children
   for (ChildrenDataMap::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
@@ -303,12 +285,6 @@ PWidget Widget::child(const String& name, Rectf* rect) const
     // check if found
     if (it->first == name)
     {
-      // check if rect to be set
-      if (NULL != rect)
-      {
-        *rect = it->second.rect;
-      }
-
       return it->second.widget;
     }
   }
@@ -330,21 +306,17 @@ Vector2f Widget::contentSize()
   // go thru all children
   for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)
   {
-    // go thru all widgets
-    for (ChildrenDataMap::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
-    {
-      const ChildData& data = it->second;
+    const ChildData& data = it->second;
 
-      // determine content size
-      Vector2f contentSize = data.widget->contentSize();
+    // determine content size
+    Vector2f contentSize = data.widget->contentSize();
 
-      // calculate desired dialog size to match requirements for this content area
-      Vector2f sizeFromContent(contentSize.x / data.rect.width, contentSize.y / data.rect.height);
+    // calculate desired dialog size to match requirements for this content area
+    //Vector2f sizeFromContent(contentSize.x / data.rect.width, contentSize.y / data.rect.height);
 
-      // store if bigger than whats in so far
-      biggestSize.x = Math::Max(biggestSize.x, sizeFromContent.x);
-      biggestSize.y = Math::Max(biggestSize.y, sizeFromContent.y);
-    }
+    // store if bigger than whats in so far
+    //biggestSize.x = Math::Max(biggestSize.x, sizeFromContent.x);
+    //biggestSize.y = Math::Max(biggestSize.y, sizeFromContent.y);
   }
 
   return biggestSize;
@@ -354,14 +326,29 @@ Vector2f Widget::contentSize()
 void Widget::setSize(const Vector2f& size)
 {
   m_size = size;
-
-  // validate size
-  m_sizeValid = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets position. */
 void Widget::setPosition(const Vector4f& position)
 {
   m_physics.setPosition(position);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets transparency level. */
+void Widget::setAlpha(float32 alpha)
+{
+  // apply to frame if any
+  if (NULL != m_widgetFrame)
+  {
+    m_widgetFrame->material()->setDiffuseAlpha(alpha);
+  }
+
+  // apply to all children
+  for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)
+  {
+    ChildData& data = it->second;
+
+    data.widget->setAlpha(alpha);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

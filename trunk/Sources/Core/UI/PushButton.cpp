@@ -18,12 +18,15 @@ PushButton::PushButton(Application* app, const String& name, egeObjectDeleteFunc
   PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
   if (fontResource)
   {
+    // store used font
+    m_font = fontResource->font();
+
     // title label
     PLabel label = app->graphics()->widgetFactory()->createWidget("label", "text");
     if (label)
     {
-      label->setFont(fontResource->font());
-      addChild(label, l_defaultTextAreaRect);
+      label->setFont(m_font);
+      addChild(label);
     }
   }
 }
@@ -138,6 +141,22 @@ bool PushButton::initialize(const Dictionary& params)
     error = true;
   }
 
+  // check if font name is defined
+  if (params.contains("font"))
+  {
+    PResourceFont fontResource = app()->resourceManager()->resource(RESOURCE_NAME_FONT, params.at("font"));
+    if (fontResource)
+    {
+      // set new font
+      setFont(fontResource->font());
+    }
+    else
+    {
+      // error!
+      error = true;
+    }
+  }
+
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -151,14 +170,27 @@ void PushButton::setText(const Text& text)
 
     label->setText(text);
   }
-
-  // invalidate size
-  m_sizeValid = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Detrmines widget's content size (in pixels). */
 Vector2f PushButton::contentSize()
 {
   return child("text")->contentSize();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Set font. */
+void PushButton::setFont(PFont font)
+{
+  if (font != m_font)
+  {
+    // title label
+    PLabel label = child("text");
+    if (label)
+    {
+      EGE_ASSERT(EGE_OBJECT_UID_UI_LABEL == label->uid());
+
+      label->setFont(m_font);
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

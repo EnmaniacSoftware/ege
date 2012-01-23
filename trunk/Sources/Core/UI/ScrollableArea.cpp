@@ -243,7 +243,7 @@ void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transfo
           TextOverlay* overlay = ege_cast<TextOverlay*>(*it);
 
           overlay->renderData()->setClipRect(Rectf(pos.x, pos.y, m_size.x, m_size.y));
-          renderer->addForRendering(overlay->renderData(), contentMatrix * overlay->physics()->transformationMatrix());
+          overlay->addForRendering(renderer, contentMatrix);
         }
         break;
     }
@@ -666,5 +666,34 @@ PObject ScrollableArea::object(const String& name) const
   }
 
   return NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Widget override. Sets transparency level. */
+void ScrollableArea::setAlpha(float32 alpha)
+{
+  // apply to all objects
+  for (ObjectsList::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+  {
+    // process according to object id
+    switch ((*it)->uid())
+    {
+      case EGE_OBJECT_UID_OVERLAY_TEXT:
+        {
+          TextOverlay* overlay = ege_cast<TextOverlay*>((*it).object());
+
+          overlay->renderData()->material()->setDiffuseAlpha(alpha);
+        }
+        break;
+    }
+  }
+
+  // call base class
+  Widget::setAlpha(alpha);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Reutrns list of all objects. */
+ScrollableArea::ObjectsList ScrollableArea::objects() const
+{
+  return m_objects;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

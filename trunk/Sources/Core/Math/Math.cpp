@@ -447,39 +447,39 @@ void Math::Align(Vector2f* point, const Vector2f* size, Alignment currentAlignme
   EGE_ASSERT(size);
 
   // align back to TOP-LEFT
-  if (currentAlignment & EGEAlignment::ALIGN_RIGHT)
+  if (currentAlignment & ALIGN_RIGHT)
   {
     point->x -= size->x;
   }
-  else if (currentAlignment & EGEAlignment::ALIGN_HCENTER)
+  else if (currentAlignment & ALIGN_HCENTER)
   {
     point->x -= size->x * 0.5f;
   }
 
-  if (currentAlignment & EGEAlignment::ALIGN_BOTTOM)
+  if (currentAlignment & ALIGN_BOTTOM)
   {
     point->y -= size->y;
   }
-  else if (currentAlignment & EGEAlignment::ALIGN_VCENTER)
+  else if (currentAlignment & ALIGN_VCENTER)
   {
     point->y -= size->y * 0.5f;
   }
 
   // do new alignment
-  if (newAlignment & EGEAlignment::ALIGN_RIGHT)
+  if (newAlignment & ALIGN_RIGHT)
   {
     point->x += size->x;
   }
-  else if (newAlignment & EGEAlignment::ALIGN_HCENTER)
+  else if (newAlignment & ALIGN_HCENTER)
   {
     point->x += size->x * 0.5f;
   }
 
-  if (newAlignment & EGEAlignment::ALIGN_BOTTOM)
+  if (newAlignment & ALIGN_BOTTOM)
   {
     point->y += size->y;
   }
-  else if (newAlignment & EGEAlignment::ALIGN_VCENTER)
+  else if (newAlignment & ALIGN_VCENTER)
   {
     point->y += size->y * 0.5f;
   }
@@ -519,6 +519,56 @@ void Math::AlignXY(Vector4f* point, const Vector2f* size, Alignment currentAlign
 
   point->x = newPoint.x;
   point->y = newPoint.y;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Aligns rectangle with respect to another rectangle. 
+ *  @param rect             Rectangle to align.
+ *  @param otherRect        Another rectangle with respect to which first rectangle is to be aligned.
+ *  @param currentAlignment Current rectangle alignment.
+ *  @param newAlignment     New rectangle alignment.
+ */
+void Math::Align(Rectf* rect, const Rectf* otherRect, Alignment currentAlignment, Alignment newAlignment)
+{
+  EGE_ASSERT(rect);
+  EGE_ASSERT(otherRect);
+
+  // align back to TOP-LEFT
+  if (currentAlignment & ALIGN_RIGHT)
+  {
+    rect->x -= (otherRect->width - rect->width);
+  }
+  else if (currentAlignment & ALIGN_HCENTER)
+  {
+    rect->x -= (otherRect->width - rect->width) * 0.5f;
+  }
+
+  if (currentAlignment & ALIGN_BOTTOM)
+  {
+    rect->y -= (otherRect->height - rect->height);
+  }
+  else if (currentAlignment & ALIGN_VCENTER)
+  {
+    rect->y -= (otherRect->height - rect->height) * 0.5f;
+  }
+
+  // do new alignment
+  if (newAlignment & ALIGN_RIGHT)
+  {
+    rect->x += (otherRect->width - rect->width);
+  }
+  else if (newAlignment & ALIGN_HCENTER)
+  {
+    rect->x += (otherRect->width - rect->width) * 0.5f;
+  }
+
+  if (newAlignment & ALIGN_BOTTOM)
+  {
+    rect->y += (otherRect->height - rect->height);
+  }
+  else if (newAlignment & ALIGN_VCENTER)
+  {
+    rect->y += (otherRect->height - rect->height) * 0.5f;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Calculates unit direction vector from given angle. This is relative to positive X axis. */

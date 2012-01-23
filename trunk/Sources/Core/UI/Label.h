@@ -43,22 +43,24 @@ class Label : public Widget
 
     /* Widget override. Returns TRUE if object is valid. */
     bool isValid() const;
-    /* Widget override. Updates overlay. */
+    /* Widget override. Updates widget. */
     void update(const Time& time) override;
-    /* Widget override. Renders dialog. */
+    /* Widget override. Renders widget. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
-    /* Sets alignment. */
-    void setAlignment(Alignment align);
+    /* Sets text alignment. */
+    void setTextAlignment(Alignment alignment);
+    /*! Returns current text alignment. */
+    const Alignment& textAlignment() const { return m_alignment; }
     /* Pointer event processor. */
     void pointerEvent(PPointerData data);
     /*! Returns physics component. */
     PhysicsComponent& physics() { return m_physics; }
-    /*! Returns current alignment. */
-    const Alignment& alignment() const { return m_alignment; }
     /* Sets content text. */
     void setText(const Text& text);
     /* Sets font. */
     void setFont(PFont font);
+    /* Widget override. Sets transparency level. */
+    void setAlpha(float32 alpha) override;
 
   private:
 

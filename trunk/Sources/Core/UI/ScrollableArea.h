@@ -46,6 +46,8 @@ class ScrollableArea : public Widget
 
     EGE_DECLARE_FLAGS(Direction, DirectionFlags)
 
+    typedef List<PObject> ObjectsList;
+
   public:
 
     /* Widget override. Updates object. */
@@ -60,6 +62,8 @@ class ScrollableArea : public Widget
     void removeObject(PObject object);
     /* Returns object with a given name. */
     PObject object(const String& name) const;
+    /* Reutrns list of all objects. */
+    ObjectsList objects() const;
     /* Removes all objects. */
     void removeAll();
     /* Sets scroll direction. */
@@ -79,6 +83,9 @@ class ScrollableArea : public Widget
     void setScrollbarsFadeDuration(const Time& duration);
     /* Returns size of content (in pixels). */
     Vector2f contentSize();
+
+    /* Widget override. Sets transparency level. */
+    void setAlpha(float32 alpha) override;
 
   private:
 
@@ -121,8 +128,6 @@ class ScrollableArea : public Widget
       SS_SHOWN,
       SS_FADING_OUT
     };
-
-    typedef List<PObject> ObjectsList;
 
   private:
 

@@ -57,8 +57,10 @@ class Dialog : public Widget
     void setTitle(const Text& title);
     /* Sets content text. */
     void setText(const Text& text);
-    /* Sets transparency level. */
-    void setAlpha(float32 alpha);
+    /* Sets title font. */
+    void setTitleFont(PFont font);
+    /* Sets text font. */
+    void setTextFont(PFont font);
 
   private:
 
@@ -75,6 +77,10 @@ class Dialog : public Widget
     Alignment m_alignment;
     /*! Render component. */
     PRenderComponent m_renderData;
+    /*! Title font. */
+    PFont m_titleFont;
+    /*! Text font. */
+    PFont m_textFont;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

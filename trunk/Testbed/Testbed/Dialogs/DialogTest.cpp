@@ -98,7 +98,7 @@ void DialogTest::groupLoadComplete(const String& name)
 
     m_dialog->physics().setPosition(Vector4f(100, 100, 0));
     m_dialog->setTitle("Title");
-    m_dialog->setText("ALA MA KOTA");
+    m_dialog->setText("ALA MA KOTA\nI DUZEGO PSA\n\nALE TAK NAPRAWDE\nTO UWIELBIA SLONIE!!!!\n");
 
     widgetRes = app()->resourceManager()->resource(RESOURCE_NAME_WIDGET, "my-button");
     EGE_ASSERT(widgetRes); 

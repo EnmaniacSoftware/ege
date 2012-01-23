@@ -32,8 +32,6 @@ class Overlay : public Object
     virtual bool isValid() const;
     /* Updates overlay. */
     virtual void update(const Time& time);
-    /* Renders element. */
-    virtual void render(const Viewport* viewport, Renderer* renderer);
     /* Sets alignment. */
     virtual void setAlignment(Alignment align);
     /*! Returns name. */
@@ -48,6 +46,10 @@ class Overlay : public Object
     inline PRenderComponent renderData() const { return m_renderData; }
     /*! Returns current alignment. */
     const Alignment& alignment() const { return m_alignment; }
+    /*! Renders overlay. */
+    virtual void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) = 0;
+    /* Sets transparency level. */
+    virtual void setAlpha(float32 alpha);
 
     /* Returns rectangle containing the overlay. */
 

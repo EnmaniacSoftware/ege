@@ -58,6 +58,8 @@ class RenderPass : public Object
     void setDiffuseColor(const Color& color);
     /*! Returns diffuse color. */
     const Color& diffuseColor() const { return m_diffuseColor; }
+    /*! Returns diffuse color. */
+    Color& diffuseColor() { return m_diffuseColor; }
     /* Sets ambient color. */
     void setAmbientColor(const Color& color);
     /*! Returns ambient color. */

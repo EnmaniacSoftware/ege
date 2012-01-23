@@ -34,20 +34,20 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
 
     // apply alignment
     // NOTE: by default it is TOP-LEFT
-    if (origin & EGEAlignment::ALIGN_RIGHT)
+    if (origin & ALIGN_RIGHT)
     {
       position.x -= size.x;
     }
-    else if (origin & EGEAlignment::ALIGN_HCENTER)
+    else if (origin & ALIGN_HCENTER)
     {
       position.x -= size.x / 2.0f;
     }
 
-    if (origin & EGEAlignment::ALIGN_BOTTOM)
+    if (origin & ALIGN_BOTTOM)
     {
       position.y -= size.y;
     }
-    else if (origin & EGEAlignment::ALIGN_VCENTER)
+    else if (origin & ALIGN_VCENTER)
     {
       position.y -= size.y / 2.0f;
     }

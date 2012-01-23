@@ -62,6 +62,8 @@ class PushButton : public Widget
     const Alignment& alignment() const { return m_alignment; }
     /* Sets content text. */
     void setText(const Text& text);
+    /* Set font. */
+    void setFont(PFont font);
 
   private:
 
@@ -82,6 +84,8 @@ class PushButton : public Widget
     bool m_clicked;
     /*! Render component. */
     PRenderComponent m_renderData;
+    /*! Font in use. */
+    PFont m_font;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

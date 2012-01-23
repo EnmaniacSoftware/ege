@@ -58,13 +58,6 @@ void Overlay::validate()
   m_updateNeeded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Renders element. */
-void Overlay::render(const Viewport* viewport, Renderer* renderer)
-{
-  EGE_UNUSED(viewport);
-  EGE_UNUSED(renderer);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets visibility. */
 void Overlay::setVisible(bool set)
 {
@@ -87,5 +80,11 @@ void Overlay::setAlignment(Alignment align)
     m_alignment = align;
     invalidate();
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Sets transparency level. */
+void Overlay::setAlpha(float32 alpha)
+{
+  m_renderData->material()->setDiffuseAlpha(alpha);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

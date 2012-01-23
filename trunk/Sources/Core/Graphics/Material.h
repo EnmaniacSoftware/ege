@@ -47,6 +47,8 @@ class Material : public Object
 
     /* Sets diffuse color for all passes. */
     void setDiffuseColor(const Color& color);
+    /* Sets diffuse alpha only for all passes. */
+    void setDiffuseAlpha(float32 alpha);
     /* Sets ambient color for all passes. */
     void setAmbientColor(const Color& color);
     /* Sets specular color for all passes. */

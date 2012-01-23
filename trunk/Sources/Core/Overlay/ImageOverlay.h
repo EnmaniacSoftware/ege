@@ -29,14 +29,14 @@ class ImageOverlay : public Overlay
     /* Overlay override. Returns TRUE if object is valid. */
     bool isValid() const override;
     /* Overlay override. Sets alignment. */
-    virtual void setAlignment(Alignment align) override;
+    void setAlignment(Alignment align) override;
+    /* Overlay override. Renders overlay. */
+    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
 
   private:
 
     /* Overlay override. Updates overlay. */
     void update(const Time& time) override;
-    /* Overlay override. Renders element. */
-    void render(const Viewport* viewport, Renderer* renderer) override;
     /* Overlay override. Initializes object. */
     void initialize() override;
     /* Updates render data. */

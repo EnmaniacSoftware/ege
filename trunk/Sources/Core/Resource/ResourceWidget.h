@@ -67,7 +67,7 @@ class ResourceWidget : public IResource
     /*! Child data structure. */
     struct ChildData
     {
-      Rectf rect;               /*!< Child rectangular area of within parent (in local normalized coordinate system). */
+      Vector2f offset;          /*!< Child offset (in pixels) within parent. */
       String name;              /*!< Child object name. */
       String widgetName;        /*!< Child widget name. */
     };

@@ -92,6 +92,17 @@ void Material::setDiffuseColor(const Color& color)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets diffuse alpha only for all passes. */
+void Material::setDiffuseAlpha(float32 alpha)
+{
+  for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+  {
+    PRenderPass& pass = *it;
+
+    pass->diffuseColor().alpha = alpha;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets ambient color for all passes. */
 void Material::setAmbientColor(const Color& color)
 {

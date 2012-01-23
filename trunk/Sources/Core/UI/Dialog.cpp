@@ -10,7 +10,7 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(Dialog)
 EGE_DEFINE_DELETE_OPERATORS(Dialog)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static const Rectf l_defaultTitleAreaRect = Rectf(0, 0, 1.0f, 0.2f);
+static const Rectf l_defaultTitleAreaRect = Rectf(0, 0.5f, 1.0f, 0.2f);
 static const Rectf l_defaultTextAreaRect  = Rectf(0, 0.2f, 1.0f, 0.8f);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Dialog::Dialog(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(app, name, EGE_OBJECT_UID_UI_DIALOG, deleteFunc)
@@ -29,28 +29,25 @@ Dialog::Dialog(Application* app, const String& name, egeObjectDeleteFunc deleteF
   PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
   if (fontResource)
   {
+    m_titleFont = fontResource->font();
+    m_textFont  = fontResource->font();
+
     // title label
     PLabel label = app->graphics()->widgetFactory()->createWidget("label", "title");
     if (label)
     {
-      label->setFont(fontResource->font());
-      addChild(label, l_defaultTitleAreaRect);
+      //label->setTextAlignment(ALIGN_CENTER);
+      label->setFont(m_titleFont);
+      addChild(label);
     }
 
-    // text scrollable area
-    PScrollableArea scrollableArea = app->graphics()->widgetFactory()->createWidget("scrollable-area", "text");
-    if (scrollableArea)
+    // text label
+    label = app->graphics()->widgetFactory()->createWidget("label", "text");
+    if (label)
     {
-      PTextOverlay textOverlay = ege_new TextOverlay(app, "text");
-      if (textOverlay)
-      {
-        textOverlay->setFont(fontResource->font());
-        scrollableArea->addObject(textOverlay);
-        addChild(scrollableArea, l_defaultTextAreaRect);
-      }
-
-      // set default behavior
-      scrollableArea->setDirection(ScrollableArea::DIRECTION_NONE);
+      label->setTextAlignment(ALIGN_HCENTER);
+      label->setFont(m_textFont);
+      addChild(label);
     }
   }
 }
@@ -107,29 +104,18 @@ void Dialog::setTitle(const Text& title)
 
     label->setText(title);
   }
-
-  // invalidate size
-  m_sizeValid = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets content text. */
 void Dialog::setText(const Text& text)
 {
-  PScrollableArea scrollableArea = child("text");
-  if (NULL != scrollableArea)
+  PLabel label = child("text");
+  if (NULL != label)
   {
-    EGE_ASSERT(EGE_OBJECT_UID_UI_SCROLLABLE_AREA == scrollableArea->uid());
+    EGE_ASSERT(EGE_OBJECT_UID_UI_LABEL == label->uid());
 
-    PTextOverlay textOverlay = scrollableArea->object("text");
-    if (NULL != textOverlay)
-    {
-      EGE_ASSERT(EGE_OBJECT_UID_OVERLAY_TEXT == textOverlay->uid());
-      textOverlay->setText(text);
-    }
+    label->setText(text);
   }
-
-  // invalidate size
-  m_sizeValid = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Widget override. Returns TRUE if widget is frameless. */
@@ -176,66 +162,96 @@ bool Dialog::initialize(const Dictionary& params)
   {
   }
 
-/*  // TITLE AREA
+  // TITLE AREA
   if (params.contains("title-rect"))
   {
-    titleArea.rect = params.at("title-area-rect").toRectf(&error);
+    PLabel label = child("title");
+
+    Rectf rect = params.at("title-rect").toRectf(&error);
+    
+    label->setPosition(Vector4f(rect.x, rect.y, 0));
+    label->setSize(Vector2f(rect.width, rect.height));
   }
 
-  if (params.contains("title-area-vertical-scroll"))
+  if (params.contains("title-font"))
   {
-    if (params.at("title-area-vertical-scroll").toBool(&error))
+    PResourceFont fontResource = app()->resourceManager()->resource(RESOURCE_NAME_FONT, params.at("title-font"));
+    if (fontResource)
     {
-      titleArea.area->setDirection(titleArea.area->direction() | ScrollableArea::DIRECTION_VERTICAL);
+      // set new font
+      setTitleFont(fontResource->font());
     }
-  }
-
-  if (params.contains("title-area-horizontal-scroll"))
-  {
-    if (params.at("title-area-horizontal-scroll").toBool(&error))
+    else
     {
-      titleArea.area->setDirection(titleArea.area->direction() | ScrollableArea::DIRECTION_HORIZONTAL);
+      // error!
+      error = true;
     }
   }
 
   // TEXT AREA
-  if (params.contains("text-area-rect"))
+  if (params.contains("text-rect"))
   {
-    titleArea.rect = params.at("text-area-rect").toRectf(&error);
+    PLabel label = child("text");
+
+    Rectf rect = params.at("text-rect").toRectf(&error);
+
+    label->setPosition(Vector4f(rect.x, rect.y, 0));
+    label->setSize(Vector2f(rect.width, rect.height));
   }
 
-  if (params.contains("text-area-vertical-scroll"))
+  if (params.contains("text-font"))
   {
-    if (params.at("text-area-vertical-scroll").toBool(&error))
+    PResourceFont fontResource = app()->resourceManager()->resource(RESOURCE_NAME_FONT, params.at("text-font"));
+    if (fontResource)
     {
-      titleArea.area->setDirection(titleArea.area->direction() | ScrollableArea::DIRECTION_VERTICAL);
+      // set new font
+      setTextFont(fontResource->font());
+    }
+    else
+    {
+      // error!
+      error = true;
     }
   }
 
-  if (params.contains("text-area-horizontal-scroll"))
-  {
-    if (params.at("text-area-horizontal-scroll").toBool(&error))
-    {
-      titleArea.area->setDirection(titleArea.area->direction() | ScrollableArea::DIRECTION_HORIZONTAL);
-    }
-  }*/
- 
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets transparency level. */
-void Dialog::setAlpha(float32 alpha)
+/*! Sets title font. */
+void Dialog::setTitleFont(PFont font)
 {
-  m_widgetFrame->material()->setDiffuseColor(Color(1.0f, 1.0f, 1.0f, alpha));
-
-  // go thru all children
-  for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)
+  if (font != m_titleFont)
   {
-    ChildData& data = it->second;
+    // store fonts
+    m_titleFont = font;
 
-    //data.widget->
+    // title label
+    PLabel label = child("title");
+    if (label)
+    {
+      EGE_ASSERT(EGE_OBJECT_UID_UI_LABEL == label->uid());
 
-    // TAGE - implement
+      label->setFont(m_titleFont);
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets text font. */
+void Dialog::setTextFont(PFont font)
+{
+  if (font != m_textFont)
+  {
+    // store fonts
+    m_textFont = font;
+
+    // text label
+    PLabel label = child("text");
+    if (label)
+    {
+      EGE_ASSERT(EGE_OBJECT_UID_UI_LABEL == label->uid());
+
+      label->setFont(m_textFont);
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

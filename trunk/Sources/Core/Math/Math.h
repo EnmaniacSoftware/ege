@@ -160,6 +160,13 @@ class Math
      * @param newAlignment     New point alignment within given area.
      */
     static void AlignXY(Vector4f* point, const Vector2f* size, Alignment currentAlignment, Alignment newAlignment);
+    /* Aligns rectangle with respect to another rectangle. 
+     * @param rect             Rectangle to align.
+     * @param otherRect        Another rectangle with respect to which first rectangle is to be aligned.
+     * @param currentAlignment Current rectangle alignment.
+     * @param newAlignment     New rectangle alignment.
+     */
+    static void Align(Rectf* rect, const Rectf* otherRect, Alignment currentAlignment, Alignment newAlignment);
     /*  Generates a new random vector which deviates from given vector by a given angle in a random direction.
      *  @param  angle   The angle at which to deviate.
      *  @param  vector  Vector from which deviation should be generated.

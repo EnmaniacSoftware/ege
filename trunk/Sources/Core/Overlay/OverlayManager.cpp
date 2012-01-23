@@ -3,10 +3,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(OverlayManager)
 EGE_DEFINE_DELETE_OPERATORS(OverlayManager)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 OverlayManager::OverlayManager(Application* app) : Object(app)
 {
@@ -103,7 +101,7 @@ void OverlayManager::render(Viewport* viewport, Renderer* renderer)
     Overlay* object = *it;
 
     // render
-    object->render(viewport, renderer);
+    object->addForRendering(renderer);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

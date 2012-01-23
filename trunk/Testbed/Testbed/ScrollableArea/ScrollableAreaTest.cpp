@@ -115,7 +115,7 @@ void ScrollableAreaTest::groupLoadComplete(const String& name)
 
     // create scrollable area background object
     m_areaBackground = RenderObjectFactory::CreateQuadXY(app(), "background", m_area->physics().position(), m_area->physics().scale().xy(), 
-                                                         EGEAlignment::ALIGN_TOP_LEFT, EGEVertexBuffer::ST_V2, 1, EGEGraphics::RPT_TRIANGLE_STRIPS, 
+                                                         ALIGN_TOP_LEFT, EGEVertexBuffer::ST_V2, 1, EGEGraphics::RPT_TRIANGLE_STRIPS, 
                                                          EGEVertexBuffer::UT_STATIC_WRITE);
 
     // get material resource

@@ -62,7 +62,7 @@ EGEResult ResourceWidget::create(const String& path, const PXmlElement& tag)
   m_name = m_parameters.value("name", "no name");
 
   // check if obligatory data is wrong
-  if (error || !m_parameters.contains("name") || !m_parameters.contains("type"))
+  if (error || !m_parameters.contains("name") || !m_parameters.contains("type") || !m_parameters.contains("size"))
   {
     // error!
     EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
@@ -155,9 +155,10 @@ PWidget ResourceWidget::createInstance()
         {
           // set name
           childWidget->setName(childData.name);
+          childWidget->setPosition(Vector4f(childData.offset.x, childData.offset.y, 0));
 
           // add to child pool
-          if (EGE_SUCCESS != object->addChild(childWidget, childData.rect))
+          if (EGE_SUCCESS != object->addChild(childWidget))
           {
             // error!
             EGE_PRINT("ERROR: Could not add child widget with name %s.", childData.name.toAscii());
@@ -194,7 +195,7 @@ EGEResult ResourceWidget::processChild(const PXmlElement& tag)
 
   // retrieve data
   childData.name        = tag->attribute("name");
-  childData.rect        = tag->attribute("rect").toRectf(&error);
+  childData.offset      = tag->attribute("offset", "0 0").toVector2f(&error);
   childData.widgetName  = tag->attribute("widget-name");
  
   // check for error

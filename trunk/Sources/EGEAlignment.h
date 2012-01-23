@@ -8,29 +8,26 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace EGEAlignment
+/*! Available alignment values. */
+enum AlignmentFlags
 {
-  /*! Available alignment values. */
-  enum AlignmentFlags
-  {
-    ALIGN_LEFT    = 0x01,
-    ALIGN_RIGHT   = 0x02,
-    ALIGN_HCENTER = 0x04,
+  ALIGN_LEFT    = 0x01,
+  ALIGN_RIGHT   = 0x02,
+  ALIGN_HCENTER = 0x04,
 
-    ALIGN_TOP     = 0x08,
-    ALIGN_BOTTOM  = 0x10,
-    ALIGN_VCENTER = 0x20,
+  ALIGN_TOP     = 0x08,
+  ALIGN_BOTTOM  = 0x10,
+  ALIGN_VCENTER = 0x20,
 
-    ALIGN_CENTER     = ALIGN_HCENTER | ALIGN_VCENTER,
-    ALIGN_TOP_LEFT   = ALIGN_TOP | ALIGN_LEFT,
-    ALIGN_TOP_RIGHT  = ALIGN_TOP | ALIGN_RIGHT,
-    ALIGN_TOP_CENTER = ALIGN_TOP | ALIGN_HCENTER
-  };
-}
+  ALIGN_CENTER     = ALIGN_HCENTER | ALIGN_VCENTER,
+  ALIGN_TOP_LEFT   = ALIGN_TOP | ALIGN_LEFT,
+  ALIGN_TOP_RIGHT  = ALIGN_TOP | ALIGN_RIGHT,
+  ALIGN_TOP_CENTER = ALIGN_TOP | ALIGN_HCENTER
+};
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_DECLARE_FLAGS(Alignment, EGEAlignment::AlignmentFlags)
+EGE_DECLARE_FLAGS(Alignment, AlignmentFlags)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
