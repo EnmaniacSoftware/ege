@@ -33,8 +33,6 @@ class TextOverlay : public Overlay
     void setFont(PFont font);
     /*! Returns font. */
     inline PFont font() const { return m_font; }
-    /* Overlay override. Sets alignment. */
-    void setAlignment(Alignment align) override;
     /* Returns text size (in pixels). */
     Vector2f textSize();
     /* Overlay override. Renders overlay. */
@@ -75,11 +73,6 @@ class TextOverlay : public Overlay
     /* Update text data. */
     void updateTextData();
 
-  private slots:
-
-    /* Slot called when physics data has been updated. */
-    void transformationChanged();
-
   private:
 
     /*! Single text line data structure. */
@@ -99,9 +92,7 @@ class TextOverlay : public Overlay
     Text m_text;
     /*! Font. */
     PFont m_font;
-    /*! Aligment position offset. */
-    Vector4f m_alignmentOffset;
-    /*! Cached text size. */
+    /*! Text size. */
     Vector2f m_textSize;
     /*! List of text lines. */
     TextLineDataList m_textLines;

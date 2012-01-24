@@ -27,17 +27,20 @@ class WidgetFrame
     bool isValid() const;
     /* Renders dialog. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
-    /* Sets material. */
-    void setMaterial(const PMaterial& material);
-    /* Returns material. */
-    inline PMaterial material() const { return m_renderData->material(); }
+
     /* Sets rectanlges (in pixels). */
     void setRects(const Recti& topLeft, const Recti& topMiddle, const Recti& topRight, const Recti& middleLeft, const Recti& fill, const Recti& middleRight, 
                   const Recti& bottomLeft, const Recti& bottomMiddle, const Recti& bottomRight);
+
     /* Sets size. */
     void setSize(const Vector2f& size);
     /* Returns minimal size (in pixels). */
     Vector2f minSize() const;
+
+    /* Sets material. */
+    void setMaterial(const PMaterial& material);
+    /*! Returns render data component. */
+    inline PRenderComponent renderComponent() const { return m_renderData; }
 
   private:
 

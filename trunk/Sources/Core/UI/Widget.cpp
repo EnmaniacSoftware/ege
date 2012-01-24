@@ -14,7 +14,8 @@ Widget::Widget(Application* app, const String& name, u32 uid, egeObjectDeleteFun
                                                                                                 m_visible(true),
                                                                                                 m_widgetFrame(NULL),
                                                                                                 m_parent(NULL),
-                                                                                                m_size(100.0f, 100.0f)
+                                                                                                m_size(100.0f, 100.0f),
+                                                                                                m_alignment(ALIGN_TOP_LEFT)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,12 +44,13 @@ bool Widget::initialize(const Dictionary& params)
   }
 
   bool error = false;
-  m_size = params.value("size", "0 0").toVector2f(&error);
-  if ((0 >= m_size.x) || (0 >= m_size.y))
+  Vector2f size = params.value("size", "0 0").toVector2f(&error);
+  if ((0 >= size.x) || (0 >= size.y))
   {
     // error!
     error = true;
   }
+  setSize(size);
 
   return !error;
 }
@@ -77,15 +79,6 @@ void Widget::addForRendering(Renderer* renderer, const Matrix4f& transform)
 
       // reset flag
       m_renderDataInvalid = false;
-    }
-
-    // update size if necessary to make sure frame has it correct before rendering
-    //if (m_sizeValid)
-    {
-      if (NULL != m_widgetFrame)
-      {
-        m_widgetFrame->setSize(Vector2f(size().x, size().y));
-      }
     }
 
     // render frame
@@ -326,6 +319,12 @@ Vector2f Widget::contentSize()
 void Widget::setSize(const Vector2f& size)
 {
   m_size = size;
+
+  // pass to frame if present
+  if (m_widgetFrame)
+  {
+    m_widgetFrame->setSize(size);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets position. */
@@ -340,7 +339,7 @@ void Widget::setAlpha(float32 alpha)
   // apply to frame if any
   if (NULL != m_widgetFrame)
   {
-    m_widgetFrame->material()->setDiffuseAlpha(alpha);
+    m_widgetFrame->renderComponent()->material()->setDiffuseAlpha(alpha);
   }
 
   // apply to all children
@@ -350,5 +349,11 @@ void Widget::setAlpha(float32 alpha)
 
     data.widget->setAlpha(alpha);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets widget alignment. */
+void Widget::setAlignment(Alignment alignment)
+{
+  m_alignment = alignment;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

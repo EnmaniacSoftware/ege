@@ -11,23 +11,13 @@ EGE_DEFINE_NEW_OPERATORS(LightningEffectStrips)
 EGE_DEFINE_DELETE_OPERATORS(LightningEffectStrips)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 LightningEffectStrips::LightningEffectStrips(Application* app) : m_app(app),
-                                                               m_maximumOffset(60.0f),
-                                                               m_offshotAngle(EGEMath::PI * 0.25f),
-                                                               m_offshotAngleVariance(EGEMath::PI * 0.125f),
-                                                               m_state(STATE_NONE),
-                                                               m_width(1.0f)
+                                                                 m_maximumOffset(60.0f),
+                                                                 m_offshotAngle(EGEMath::PI * 0.25f),
+                                                                 m_offshotAngleVariance(EGEMath::PI * 0.125f),
+                                                                 m_state(STATE_NONE),
+                                                                 m_width(1.0f),
+                                                                 m_renderPriority(EGEGraphics::RP_MAIN)
 {
-  // create render data
-  //m_renderData = ege_new RenderComponent(app, "lightning-effect-lines", EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLE_STRIPS);
-  //if (m_renderData)
-  //{
-  //  m_renderData->indexBuffer()->setIndexSize(EGEIndexBuffer::IS_16BIT);
-  //  if (!m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2_C4))
-  //  {
-  //    // error!
-  //    m_renderData = NULL;
-  //  }
-  //}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 LightningEffectStrips::~LightningEffectStrips()
@@ -38,7 +28,7 @@ LightningEffectStrips::~LightningEffectStrips()
 /*! Returns TRUE if object is valid. */
 bool LightningEffectStrips::isValid() const
 {
-  return true;//(NULL != m_renderData);
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders object. */
@@ -62,10 +52,10 @@ void LightningEffectStrips::update(const Time& time)
   if (STATE_BUSY == m_state)
   {
     m_fadeTime += time;
-    if (m_fadeTime.seconds() > 1.0f / 2.0f)
+    if (m_fadeTime.seconds() > 1.0f)
     {
-      m_fadeTime = 1.0f / 2.0f;
-      //m_state = STATE_IDLE;
+      //m_fadeTime = 1.0f / 2.0f;
+      m_state = STATE_IDLE;
     }
 
     const float32 maxDisplacement = 10.0f;
@@ -75,7 +65,7 @@ void LightningEffectStrips::update(const Time& time)
     {
       const Beam& beam = *it;
 
-      float32* data = reinterpret_cast<float32*>(beam.renderData->vertexBuffer()->lock(0, beam.segments.size() * 6 + 2));
+      float32* data = reinterpret_cast<float32*>(beam.renderData->vertexBuffer()->lock(0, 4 + beam.segments.size() * 2 + 2));
 
       // go thru all segments
       int i = 0;
@@ -105,43 +95,46 @@ void LightningEffectStrips::update(const Time& time)
           *data++;
           *data++;
           *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
         }
 
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+        if (isLast)
+        {
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
 
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
-
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
-
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++;
-        *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++;
+          *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
+        }
 
         *data++;
         *data++;
@@ -290,7 +283,7 @@ void LightningEffectStrips::generateRenderData()
     Beam& beam = *it;
 
     // create render data
-    beam.renderData = ege_new RenderComponent(m_app, "lightning-effect-lines", EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLE_STRIPS);
+    beam.renderData = ege_new RenderComponent(m_app, "lightning-effect-lines", m_renderPriority, EGEGraphics::RPT_TRIANGLE_STRIPS);
     if (!beam.renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2_C4))
     {
       // error!
@@ -299,7 +292,16 @@ void LightningEffectStrips::generateRenderData()
 
     beam.renderData->setMaterial(m_material);
 
-    float32* data = reinterpret_cast<float32*>(beam.renderData->vertexBuffer()->lock(0, beam.segments.size() * 6 + 2));
+    Vector2f startPosNegative;
+    Vector2f startPosPositive;
+    Vector2f endPosNegative;
+    Vector2f endPosPositive;
+
+    // NOTE: Required number of vertices: 4 + segments * 2 + 2
+    //       4 for initial 'rounding' @ first segment
+    //       2 per segments for the last 2 vertices
+    //       2 for final segment to form 'rounding'
+    float32* data = reinterpret_cast<float32*>(beam.renderData->vertexBuffer()->lock(0, 4 + beam.segments.size() * 2 + 2));
 
     // go thru all segments
     int i = 0;
@@ -310,20 +312,103 @@ void LightningEffectStrips::generateRenderData()
       bool isFirst = (i == 0);
       bool isLast  = (i == beam.segments.size() - 1);
 
+      // check if first segment
       if (isFirst)
       {
-        *data++ = Math::Lerp(segment.start.x, segment.end.x, 0) - segment.normal.x * m_width * segment.intensity;
-        *data++ = Math::Lerp(segment.start.y, segment.end.y, 0) - segment.normal.y * m_width * segment.intensity;
-        *data++ = isFirst ? 0.0f : 0.25f;
+        // generate start vertices
+        startPosNegative = segment.start - segment.normal * m_width * segment.intensity;
+        startPosPositive = segment.start + segment.normal * m_width * segment.intensity;
+
+        // first 2 vertices
+        *data++ = startPosNegative.x;
+        *data++ = startPosNegative.y;
+        *data++ = 0.0f;
         *data++ = 0.0f;
         *data++ = 1.0f;
         *data++ = 1.0f;
         *data++ = 1.0f;
         *data++ = segment.intensity;
 
-        *data++ = Math::Lerp(segment.start.x, segment.end.x, 0) + segment.normal.x * m_width * segment.intensity;
-        *data++ = Math::Lerp(segment.start.y, segment.end.y, 0) + segment.normal.y * m_width * segment.intensity;
-        *data++ = isFirst ? 0.0f : 0.25f;
+        *data++ = startPosPositive.x;
+        *data++ = startPosPositive.y;
+        *data++ = 0.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = segment.intensity;
+
+        // add additional 2 points which with previous ones will form the start 'rounding'
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe) - segment.normal.x * m_width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe) - segment.normal.y * m_width * segment.intensity;
+        *data++ = 0.25f;
+        *data++ = 0.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = segment.intensity;
+
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe) + segment.normal.x * m_width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe) + segment.normal.y * m_width * segment.intensity;
+        *data++ = 0.25f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = segment.intensity;
+      }
+      else
+      {
+        // if this is begining of segment other than first one, start points are exactly the same as last segment's end points
+        startPosNegative = endPosNegative;
+        startPosPositive = endPosPositive;
+      }
+
+      // generate end points
+      endPosNegative = segment.end - segment.normal * m_width * segment.intensity;
+      endPosPositive = segment.end + segment.normal * m_width * segment.intensity;
+
+      // check if there is at least 1 more segment
+      if (!isLast)
+      {
+        SegmentList::const_iterator itNextSegment = itSegment;
+        ++itNextSegment;
+        const Segment* nextSegment = &(*itNextSegment);
+
+        // calculate next segments' points
+        Vector2f nextStartPosNegative = nextSegment->start - nextSegment->normal * m_width * nextSegment->intensity;
+        Vector2f nextStartPosPositive = nextSegment->start + nextSegment->normal * m_width * nextSegment->intensity;
+        Vector2f nextEndPosNegative   = nextSegment->end - nextSegment->normal * m_width * nextSegment->intensity;
+        Vector2f nextEndPosPositive   = nextSegment->end + nextSegment->normal * m_width * nextSegment->intensity;
+
+        // find out intersection point between lines formed by negative edges of current and next segment
+        Vector2f outNegative;
+        Math::LineLineIntersectPoint(&outNegative, &startPosNegative, &endPosNegative, &nextStartPosNegative, &nextEndPosNegative);
+
+        // find out intersection point between lines formed by positive edges of current and next segment
+        Vector2f outPositive;
+        Math::LineLineIntersectPoint(&outPositive, &startPosPositive, &endPosPositive, &nextStartPosPositive, &nextEndPosPositive);
+
+        // store intersection points as new end points
+        endPosNegative = outNegative;
+        endPosPositive = outPositive;
+      }
+
+      // for last segment we add additional 2 vertices before end ones. Together they will form end 'rounding'
+      if (isLast)
+      {
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe) - segment.normal.x * m_width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe) - segment.normal.y * m_width * segment.intensity;
+        *data++ = 0.75f;
+        *data++ = 0.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = 1.0f;
+        *data++ = segment.intensity;
+
+        *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe) + segment.normal.x * m_width * segment.intensity;
+        *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe) + segment.normal.y * m_width * segment.intensity;
+        *data++ = 0.75f;
         *data++ = 1.0f;
         *data++ = 1.0f;
         *data++ = 1.0f;
@@ -331,44 +416,9 @@ void LightningEffectStrips::generateRenderData()
         *data++ = segment.intensity;
       }
 
-      *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe) - segment.normal.x * m_width * segment.intensity;
-      *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe) - segment.normal.y * m_width * segment.intensity;
-      *data++ = 0.25f;
-      *data++ = 0.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = segment.intensity;
-
-      *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe) + segment.normal.x * m_width * segment.intensity;
-      *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe) + segment.normal.y * m_width * segment.intensity;
-      *data++ = 0.25f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = segment.intensity;
-
-      *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe) - segment.normal.x * m_width * segment.intensity;
-      *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe) - segment.normal.y * m_width * segment.intensity;
-      *data++ = 0.75f;
-      *data++ = 0.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = segment.intensity;
-
-      *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe) + segment.normal.x * m_width * segment.intensity;
-      *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe) + segment.normal.y * m_width * segment.intensity;
-      *data++ = 0.75f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = 1.0f;
-      *data++ = segment.intensity;
-
-      *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f) - segment.normal.x * m_width * segment.intensity;
-      *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f) - segment.normal.y * m_width * segment.intensity;
+      // last 2 points
+      *data++ = endPosNegative.x;
+      *data++ = endPosNegative.y;
       *data++ = isLast ? 1.0f : 0.75f;
       *data++ = 0.0f;
       *data++ = 1.0f;
@@ -376,8 +426,8 @@ void LightningEffectStrips::generateRenderData()
       *data++ = 1.0f;
       *data++ = segment.intensity;
 
-      *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f) + segment.normal.x * m_width * segment.intensity;
-      *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f) + segment.normal.y * m_width * segment.intensity;
+      *data++ = endPosPositive.x;
+      *data++ = endPosPositive.y;
       *data++ = isLast ? 1.0f : 0.75f;
       *data++ = 1.0f;
       *data++ = 1.0f;
@@ -421,5 +471,11 @@ void LightningEffectStrips::setWidth(float32 width)
 void LightningEffectStrips::setMaterial(const PMaterial& material)
 {
   m_material = material;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets render priority. */
+void LightningEffectStrips::setRenderPriority(s32 priority)
+{
+  m_renderPriority = priority;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

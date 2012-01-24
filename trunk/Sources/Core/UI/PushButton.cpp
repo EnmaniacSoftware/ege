@@ -117,6 +117,8 @@ bool PushButton::initialize(const Dictionary& params)
   // initialize base
   bool error = !Widget::initialize(params);
 
+  PLabel label = child("text");
+
   // check if material name is defined
   if (params.contains("material"))
   {
@@ -155,6 +157,12 @@ bool PushButton::initialize(const Dictionary& params)
       // error!
       error = true;
     }
+  }
+
+  if (params.contains("text-alignment"))
+  {
+    Alignment alignment = params.at("text-alignment").toAlignment(&error);
+    label->setTextAlignment(alignment);
   }
 
   return !error;

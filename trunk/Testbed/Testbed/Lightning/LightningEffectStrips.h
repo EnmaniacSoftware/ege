@@ -52,8 +52,6 @@ class LightningEffectStrips
     void update(const EGE::Time& time);
     /* Renders object. */
     void render(EGE::Renderer* renderer);
-    /*! Returns render data. */
-//    inline EGE::PRenderComponent renderData() const { return m_renderData; }
     /* Sets maximum segment midpoint offset. */
     void setMaxSegmentOffset(EGE::float32 offset);
     /* Set offshot angle. */
@@ -64,6 +62,8 @@ class LightningEffectStrips
     void setWidth(EGE::float32 width);
     /* Sets material. */
     void setMaterial(const EGE::PMaterial& material);
+    /* Sets render priority. */
+    void setRenderPriority(EGE::s32 priority);
 
   private:
 
@@ -112,7 +112,8 @@ class LightningEffectStrips
     EGE::float32 m_width;
     /*! Material. */
     EGE::PMaterial m_material;
-
+    /*! Render priority. */
+    EGE::s32 m_renderPriority;
     EGE::Time m_fadeTime;
 };
 

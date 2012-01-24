@@ -153,22 +153,24 @@
       <texture name='button' />
     </material>
 
+    <!--tail-right-rect='114 56 61 54' tail-rect='114 0 61 56'-->
     <widget type='dialog' name='my-dialog' material='bubble-speech' size='500 400'
-            title-rect='0 0 500 50' title-font='debug-font'
-            text-rect='0 100 500 200' text-font='debug-font' >
+            title-rect='0 0 500 50' title-font='debug-font' title-alignment='center'
+            text-rect='0 100 500 200' text-font='debug-font' text-alignment='center'
+            tail-rect='114 56 61 54' tail-offset='100 100' >
       <frame top-left-rect='0 0 59 51' top-middle-rect='59 0 4 51' top-right-rect='63 0 51 51'
              middle-left-rect='0 50 59 4' fill-rect='59 50 4 4' middle-right-rect='63 50 51 4'
              bottom-left-rect='0 55 59 51' bottom-middle-rect='59 55 4 51' bottom-right-rect='63 55 51 51' />
       <child widget-name='my-button' name='yes-button' offset='100 350' />
     </widget>
 
-    <widget type='push-button' name='my-button' material='button' size='100 25' font='debug-font'>
+    <widget type='push-button' name='my-button' material='button' size='100 25' font='debug-font' text-alignment='center'>
       <frame top-left-rect='0 0 11 11' top-middle-rect='11 0 6 11' top-right-rect='17 0 11 11'
              middle-left-rect='0 11 11 2' fill-rect='11 11 6 2' middle-right-rect='17 11 11 2'
              bottom-left-rect='0 13 11 11' bottom-middle-rect='11 13 6 11' bottom-right-rect='17 13 11 11' />
     </widget>
 
-    <widget type='label' name='my-label' font='debug-font' size='200 50'>
+    <widget type='label' name='my-label' font='debug-font' size='200 50' text-alignment='center'>
     </widget>
 
   </group>

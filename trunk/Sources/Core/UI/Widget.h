@@ -82,6 +82,11 @@ class Widget : public Object
     /* Sets transparency level. */
     virtual void setAlpha(float32 alpha);
 
+    /* Sets widget alignment. */
+    void setAlignment(Alignment alignment);
+    /*! Returns current widget alignment. */
+    inline Alignment alignment() const { return m_alignment; }
+
   protected:
 
     Widget(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
@@ -123,6 +128,9 @@ class Widget : public Object
     Widget* m_parent;
     /*! Children data map. */
     ChildrenDataMap m_children;
+    /*! Widget alignment. */
+    // TAGE - currently not in use
+    Alignment m_alignment;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

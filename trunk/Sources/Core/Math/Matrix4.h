@@ -1,12 +1,13 @@
 #ifndef EGE_CORE_MATRIX4_H
 #define EGE_CORE_MATRIX4_H
 
-/** Class representing 4x4 matrix, in column major form (col, row).
+/** Class representing 4x4 matrix, in column major form (col, row). Each column represents a vector. Order of transformation is from right-to-left.
  *
  * | m00 m10 m20 m30 |
  * | m01 m11 m21 m31 |
  * | m02 m12 m22 m32 |
  * | m03 m13 m23 m33 |
+ *
  */
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,12 +29,13 @@ class TMatrix4
 		TMatrix4(const T column0[4], const T column1[4], const T column2[4], const T column3[4]);
 		TMatrix4(const TMatrix4& matrix);
 
-		inline TMatrix4& operator+=(const TMatrix4& matrix);
-	  inline TMatrix4& operator-=(const TMatrix4& matrix);
-    inline const T&  operator()(u32 column, u32 row) const;
-    inline T&        operator()(u32 column, u32 row);
-		inline T*        operator[](u32 column);
-    inline const T*  operator[](u32 column) const;
+		inline TMatrix4&   operator+=(const TMatrix4& matrix);
+	  inline TMatrix4&   operator-=(const TMatrix4& matrix);
+    inline const T&    operator()(u32 column, u32 row) const;
+    inline T&          operator()(u32 column, u32 row);
+		inline T*          operator[](u32 column);
+    inline const T*    operator[](u32 column) const;
+		inline TVector4<T> operator *(const TVector4<T>& vector) const;
 
     /* Multiplies current matrix by given one. */
     TMatrix4<T> multiply(const TMatrix4<T>& matrix) const;
@@ -171,6 +173,15 @@ const T* TMatrix4<T>::operator[](u32 column) const
 {
   EGE_ASSERT((4 > column) && (0 <= column));
   return &data[column * 4];
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector4<T> TMatrix4<T>::operator *(const TVector4<T>& vector) const
+{
+  return TVector4<T>(data[0] * vector.x + data[4] * vector.y + data[8]  * vector.z + data[12] * vector.w, 
+                     data[1] * vector.x + data[5] * vector.y + data[9]  * vector.z + data[13] * vector.w,
+                     data[2] * vector.x + data[6] * vector.y + data[10] * vector.z + data[14] * vector.w,
+                     data[3] * vector.x + data[7] * vector.y + data[11] * vector.z + data[15] * vector.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if matrix is affine. */

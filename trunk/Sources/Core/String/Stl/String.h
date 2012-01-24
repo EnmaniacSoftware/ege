@@ -83,9 +83,13 @@ class String : public std::string
     Vector4f toVector4f(bool* error = NULL) const;
     /* Converts to 4D vector of signed integers. If error is valid, it holds TRUE if error occured during the conversion. */
     Vector4i toVector4i(bool* error = NULL) const;
-
+    /* Converts to alignments flag. If error is valid, it holds TRUE if error occured during the conversion. */
+    Alignment toAlignment(bool* error = NULL) const;
+    
     /* Splits the string into list of substrings whenever seperator occurs. */
     StringList split(const String& separator) const;
+    /* Returns a string that has whitespace removed from the start and the end. */
+    String trimmed() const;
 
   private:
 

@@ -47,10 +47,6 @@ class Label : public Widget
     void update(const Time& time) override;
     /* Widget override. Renders widget. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
-    /* Sets text alignment. */
-    void setTextAlignment(Alignment alignment);
-    /*! Returns current text alignment. */
-    const Alignment& textAlignment() const { return m_alignment; }
     /* Pointer event processor. */
     void pointerEvent(PPointerData data);
     /*! Returns physics component. */
@@ -61,6 +57,9 @@ class Label : public Widget
     void setFont(PFont font);
     /* Widget override. Sets transparency level. */
     void setAlpha(float32 alpha) override;
+
+    /* Sets text alignment. */
+    void setTextAlignment(Alignment alignment);
 
   private:
 
@@ -73,8 +72,6 @@ class Label : public Widget
 
   private:
 
-    /*! Alignment. */
-    Alignment m_alignment;
     /*! Text overlay. */
     PTextOverlay m_textOverlay;
 };

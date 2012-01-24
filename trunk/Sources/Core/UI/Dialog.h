@@ -45,14 +45,10 @@ class Dialog : public Widget
     void update(const Time& time) override;
     /* Widget override. Renders dialog. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
-    /* Sets alignment. */
-    void setAlignment(Alignment align);
     /* Pointer event processor. */
     void pointerEvent(PPointerData data);
     /*! Returns physics component. */
     PhysicsComponent& physics() { return m_physics; }
-    /*! Returns current alignment. */
-    const Alignment& alignment() const { return m_alignment; }
     /* Sets title text. */
     void setTitle(const Text& title);
     /* Sets content text. */
@@ -61,6 +57,8 @@ class Dialog : public Widget
     void setTitleFont(PFont font);
     /* Sets text font. */
     void setTextFont(PFont font);
+    /* Widget override. Sets transparency level. */
+    void setAlpha(float32 alpha) override;
 
   private:
 
@@ -73,14 +71,16 @@ class Dialog : public Widget
 
   private:
 
-    /*! Alignment. */
-    Alignment m_alignment;
-    /*! Render component. */
-    PRenderComponent m_renderData;
+    /*! Tail render component. */
+    PRenderComponent m_tailRenderData;
     /*! Title font. */
     PFont m_titleFont;
     /*! Text font. */
     PFont m_textFont;
+    /*! Tail rectangle part (in pixels). This also defines texture coordinates. */
+    Recti m_tailRect;
+    /*! Tail offset (in pixels). */
+    Vector2f m_tailOffset;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -3,9 +3,23 @@
 #include <sstream>
 #include <algorithm>
 #include <cctype>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function detrmining if given character is a white space. */
+bool IsWhiteSpace(char c)
+{
+  if ((' ' == c) || ('\t' == c) || ('\n' == c) || ('\r' == c) || ('\v' == c) || ('\f' == c))
+  {
+    // yes
+    return true;
+  }
+
+  // no
+  return false;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 char String::m_buffer[2048] = { '\0' };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -552,7 +566,7 @@ StringList String::split(const String& separator) const
     else
     {
       // check if any string is present after last seperator
-      if ((pos + 1) < length())
+      if (pos < length())
       {
         // add last substring to list as well
         list.push_back(this->substr(pos, length() - pos));
@@ -564,5 +578,101 @@ StringList String::split(const String& separator) const
   }
 
   return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Converts to alignments flag. If error is valid, it holds TRUE if error occured during the conversion. */
+Alignment String::toAlignment(bool* error) const
+{
+  if (empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return ALIGN_TOP_LEFT;
+  }
+
+  // split into parts
+  StringList parts = split("-");
+
+  Alignment alignment;
+  for (StringList::const_iterator it = parts.begin(); it != parts.end(); ++it)
+  {
+    // remove whitespaces on both sides
+    String final = it->trimmed();
+    if ("top" == final)
+    {
+      alignment |= ALIGN_TOP;
+    }
+    else if ("bottom" == final)
+    {
+      alignment |= ALIGN_BOTTOM;
+    }
+    else if ("vcenter" == final)
+    {
+      alignment |= ALIGN_VCENTER;
+    }
+    else if ("left" == final)
+    {
+      alignment |= ALIGN_LEFT;
+    }
+    else if ("right" == final)
+    {
+      alignment |= ALIGN_RIGHT;
+    }
+    else if ("hcenter" == final)
+    {
+      alignment |= ALIGN_HCENTER;
+    }
+    else if ("center" == final)
+    {
+      alignment = ALIGN_CENTER;
+    }
+    else
+    {
+      EGE_ASSERT("Unknown alignment string");
+    }
+  }
+
+  return alignment;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns a string that has whitespace removed from the start and the end. */
+String String::trimmed() const
+{
+  // check if empty string
+  if (empty())
+  {
+    // done
+    return *this;
+  }
+
+  // check if at the start and end there are non-white characters
+  if (!IsWhiteSpace(*begin()) || !IsWhiteSpace(*(end() - 1)))
+  {
+    // done
+    return *this;
+  }
+
+  String::const_iterator startPos  = begin();
+  String::const_iterator endPos    = end() - 1;
+
+  // skip white spaces from the begining
+  while ((startPos <= endPos) && IsWhiteSpace(*startPos))
+  {
+    ++startPos;
+  }
+
+  if (startPos <= endPos)
+  {
+    // skip white spaces from the end
+    while ((endPos != begin()) && IsWhiteSpace(*endPos))
+    {
+      --endPos;
+    }
+  }
+
+  return String(std::string(startPos, endPos + 1));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

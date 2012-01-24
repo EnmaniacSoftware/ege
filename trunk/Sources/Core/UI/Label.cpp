@@ -9,8 +9,7 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(Label)
 EGE_DEFINE_DELETE_OPERATORS(Label)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Label::Label(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(app, name, EGE_OBJECT_UID_UI_LABEL, deleteFunc),
-                                                                                     m_alignment(ALIGN_TOP_LEFT)
+Label::Label(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(app, name, EGE_OBJECT_UID_UI_LABEL, deleteFunc)
 {
   // set default font
   PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
@@ -54,13 +53,19 @@ void Label::update(const Time& time)
 /*! Widget override. Renders widget. */
 void Label::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
+  // apply alignment to text overlay
+  // NOTE: Label can have different size than overlay so we additionally (to text in overlay) need to apply alignment to entire overlay
   Rectf overlayRect(0, 0, m_textOverlay->textSize().x, m_textOverlay->textSize().y);
   Rectf labelRect(0, 0, size().x, size().y);
-  Math::Align(&overlayRect, &labelRect, ALIGN_TOP_LEFT, m_alignment);
+  Math::Align(&overlayRect, &labelRect, ALIGN_TOP_LEFT, m_textOverlay->alignment());
 
   Matrix4f matrix;
   Vector4f pos(m_physics.position().x + overlayRect.x, m_physics.position().y + overlayRect.y, 0, 1);
   Math::CreateMatrix(&matrix, &pos, &Vector4f::ONE, &Quaternionf::IDENTITY);
+
+  // setup clipping region so text overlay does not exceed to label size
+  pos = transform * m_physics.position();
+  m_textOverlay->renderData()->setClipRect(Rectf(pos.x, pos.y, size().x, size().y));
   m_textOverlay->addForRendering(renderer, transform * matrix);
 
   // call base class
@@ -101,6 +106,12 @@ bool Label::initialize(const Dictionary& params)
     }
   }
 
+  if (params.contains("text-alignment"))
+  {
+    Alignment alignment = params.at("text-alignment").toAlignment(&error);
+    setTextAlignment(alignment);
+  }
+
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -135,6 +146,6 @@ void Label::setAlpha(float32 alpha)
 /*! Sets text alignment. */
 void Label::setTextAlignment(Alignment alignment)
 {
-  m_alignment = alignment;
+  m_textOverlay->setAlignment(alignment);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -103,7 +103,7 @@ void LightningTest::pointerEvent(PPointerData data)
 
     if (m_effectStrips)
     {
-      m_effectStrips->create(Vector2f(100, 50), Vector2f(600, 200), 2, false);
+      m_effectStrips->create(Vector2f(100, 50), Vector2f(600, 200), 5, true);
       m_effectStrips->start();
     }
   }
@@ -127,7 +127,7 @@ void LightningTest::groupLoadComplete(const String& name)
 
     m_effectStrips->setOffshotAngle(Angle::FromDegrees(12.5f));
     m_effectStrips->setOffshotAngleVariance(Angle::FromDegrees(2.5f));
-    m_effectStrips->setWidth(30.0f);
+    m_effectStrips->setWidth(3.0f);
 
     SceneNode* node = app()->sceneManager()->rootNode()->createChildSceneNode("lightning-effect");
     node->attachObject(m_effect);

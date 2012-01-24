@@ -15,14 +15,15 @@ static const Rectf l_defaultTextAreaRect  = Rectf(0, 0.2f, 1.0f, 0.8f);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Dialog::Dialog(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(app, name, EGE_OBJECT_UID_UI_DIALOG, deleteFunc)
 {
-  m_renderData  = ege_new RenderComponent(app, "dialog-" + name, EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES, EGEVertexBuffer::UT_STATIC_WRITE);
-  if (m_renderData)
+  // create tail render data
+  m_tailRenderData  = ege_new RenderComponent(app, "dialog-tail" + name, EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLE_STRIPS, 
+                                              EGEVertexBuffer::UT_STATIC_WRITE);
+  if (m_tailRenderData)
   {
-    m_renderData->indexBuffer()->setIndexSize(EGEIndexBuffer::IS_8BIT);
-    if (!m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2))
+    if (!m_tailRenderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2))
     {
       // error!
-      m_renderData = NULL;
+      m_tailRenderData = NULL;
     }
   }
 
@@ -36,7 +37,6 @@ Dialog::Dialog(Application* app, const String& name, egeObjectDeleteFunc deleteF
     PLabel label = app->graphics()->widgetFactory()->createWidget("label", "title");
     if (label)
     {
-      //label->setTextAlignment(ALIGN_CENTER);
       label->setFont(m_titleFont);
       addChild(label);
     }
@@ -45,7 +45,6 @@ Dialog::Dialog(Application* app, const String& name, egeObjectDeleteFunc deleteF
     label = app->graphics()->widgetFactory()->createWidget("label", "text");
     if (label)
     {
-      label->setTextAlignment(ALIGN_HCENTER);
       label->setFont(m_textFont);
       addChild(label);
     }
@@ -78,6 +77,9 @@ void Dialog::update(const Time& time)
 /*! Widget override. Renders dialog. */
 void Dialog::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
+  // tail
+  renderer->addForRendering(m_tailRenderData, transform * m_physics.transformationMatrix());
+
   // call base class
   Widget::addForRendering(renderer, transform);
 }
@@ -92,6 +94,36 @@ void Dialog::pointerEvent(PPointerData data)
 /*! Generates render data. */
 void Dialog::generateRenderData()
 {
+  // TAGE - need to find better way of doing this...
+  Vector2f textureSize(m_tailRenderData->material()->pass(0)->texture(0)->width() * 1.0f, m_tailRenderData->material()->pass(0)->texture(0)->height() * 1.0f);
+  textureSize.set(1.0f / textureSize.x, 1.0f / textureSize.y);
+
+  float32* data = reinterpret_cast<float32*>(m_tailRenderData->vertexBuffer()->lock(0, 4));
+  if (data)
+  {
+    *data++ = m_tailOffset.x;
+    *data++ = m_tailOffset.y + m_tailRect.height;
+    *data++ = m_tailRect.x * textureSize.x;
+    *data++ = (m_tailRect.y + m_tailRect.height) * textureSize.y;
+
+    *data++ = m_tailOffset.x + m_tailRect.width;
+    *data++ = m_tailOffset.y + m_tailRect.height;
+    *data++ = (m_tailRect.x + m_tailRect.width) * textureSize.x;
+    *data++ = (m_tailRect.y + m_tailRect.height) * textureSize.y;
+
+    *data++ = m_tailOffset.x;
+    *data++ = m_tailOffset.y;
+    *data++ = m_tailRect.x * textureSize.x;
+    *data++ = m_tailRect.y * textureSize.y;
+
+    *data++ = m_tailOffset.x + m_tailRect.width;
+    *data++ = m_tailOffset.y;
+    *data++ = (m_tailRect.x + m_tailRect.width) * textureSize.x;
+    *data++ = m_tailRect.y * textureSize.y;
+  }
+  m_tailRenderData->vertexBuffer()->unlock();
+
+  m_tailRenderData->setPriority(m_widgetFrame->renderComponent()->priority() + 1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets title text. */
@@ -147,8 +179,8 @@ bool Dialog::initialize(const Dictionary& params)
       // set frame material
       widgetFrame()->setMaterial(material);
 
-      // set render data material
-      m_renderData->setMaterial(material);
+      // set tail render data material
+      m_tailRenderData->setMaterial(material);
     }
   }
   else
@@ -162,15 +194,16 @@ bool Dialog::initialize(const Dictionary& params)
   {
   }
 
+  PLabel titlelabel = child("title");
+  PLabel textLabel  = child("text");
+
   // TITLE AREA
   if (params.contains("title-rect"))
   {
-    PLabel label = child("title");
-
     Rectf rect = params.at("title-rect").toRectf(&error);
     
-    label->setPosition(Vector4f(rect.x, rect.y, 0));
-    label->setSize(Vector2f(rect.width, rect.height));
+    titlelabel->setPosition(Vector4f(rect.x, rect.y, 0));
+    titlelabel->setSize(Vector2f(rect.width, rect.height));
   }
 
   if (params.contains("title-font"))
@@ -188,15 +221,19 @@ bool Dialog::initialize(const Dictionary& params)
     }
   }
 
+  if (params.contains("title-alignment"))
+  {
+    Alignment alignment = params.at("title-alignment").toAlignment(&error);
+    titlelabel->setTextAlignment(alignment);
+  }
+
   // TEXT AREA
   if (params.contains("text-rect"))
   {
-    PLabel label = child("text");
-
     Rectf rect = params.at("text-rect").toRectf(&error);
 
-    label->setPosition(Vector4f(rect.x, rect.y, 0));
-    label->setSize(Vector2f(rect.width, rect.height));
+    textLabel->setPosition(Vector4f(rect.x, rect.y, 0));
+    textLabel->setSize(Vector2f(rect.width, rect.height));
   }
 
   if (params.contains("text-font"))
@@ -212,6 +249,23 @@ bool Dialog::initialize(const Dictionary& params)
       // error!
       error = true;
     }
+  }
+
+  if (params.contains("text-alignment"))
+  {
+    Alignment alignment = params.at("text-alignment").toAlignment(&error);
+    textLabel->setTextAlignment(alignment);
+  }
+
+  // TAIL
+  if (params.contains("tail-rect"))
+  {
+    m_tailRect = params.at("tail-rect").toRecti(&error);
+  }
+
+  if (params.contains("tail-offset"))
+  {
+    m_tailOffset = params.at("tail-offset").toVector2f(&error);
   }
 
   return !error;
@@ -253,5 +307,15 @@ void Dialog::setTextFont(PFont font)
       label->setFont(m_textFont);
     }
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Widget override. Sets transparency level. */
+void Dialog::setAlpha(float32 alpha)
+{
+  // call base class
+  Widget::setAlpha(alpha);
+
+  // propagate to tail material
+  m_tailRenderData->material()->setDiffuseAlpha(alpha);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

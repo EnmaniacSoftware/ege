@@ -8,13 +8,10 @@ EGE_DEFINE_NEW_OPERATORS(TextOverlay)
 EGE_DEFINE_DELETE_OPERATORS(TextOverlay)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextOverlay::TextOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Overlay(app, name, EGE_OBJECT_UID_OVERLAY_TEXT, deleteFunc), 
-                                                                                                 m_alignmentOffset(Vector4f::ZERO),
                                                                                                  m_textDataValid(false),
                                                                                                  m_renderableCharactersCount(0)
 {
   initialize();
-
-  ege_connect(physics(), transformationChanged, this, TextOverlay::transformationChanged);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextOverlay::~TextOverlay()
@@ -67,8 +64,7 @@ void TextOverlay::updateRenderData()
   float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_renderableCharactersCount * 6));
   if (data)
   {
-    // get initial position
-    Vector4f pos = Vector4f::ZERO;
+    Vector4f pos;
 
     float32 spacing = 0.0f;
 
@@ -76,6 +72,21 @@ void TextOverlay::updateRenderData()
     for (TextLineDataList::const_iterator it = m_textLines.begin(); it != m_textLines.end(); ++it)
     {
       const TextLineData& lineData = *it;
+
+      // apply alignment
+      // NOTE: only horizontal alignment makes sense for TextOverlay as it is bound to its own region only
+      if (alignment() & ALIGN_RIGHT)
+      {
+        pos.x = m_textSize.x - lineData.width;
+      }
+      else if (alignment() & ALIGN_HCENTER)
+      {
+        pos.x = (m_textSize.x - lineData.width) * 0.5f;
+      }
+      else 
+      {
+        pos.x = 0.0f;
+      }
 
       // go thru all characters in current line
       for (Text::const_iterator itChar = lineData.start; itChar != lineData.end; ++itChar)
@@ -135,44 +146,11 @@ void TextOverlay::updateRenderData()
       }
 
       // next line of text
-      pos.x = 0.0f;
       pos.y += height;
     }
-
-    // update alignment offset
-    transformationChanged();
   }
 
   m_renderData->vertexBuffer()->unlock();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Overlay override. Sets alignment. */
-void TextOverlay::setAlignment(Alignment align)
-{
-  if (align != alignment())
-  {
-    // force alignment update
-    transformationChanged();
-
-    // call base class
-    Overlay::setAlignment(align);
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when physics data has been updated. */
-void TextOverlay::transformationChanged()
-{
-  // update alignment offset
-  Vector2f size(m_textSize.x * physics()->scale().x, m_textSize.y * physics()->scale().y);
-
-  if (alignment() != 0)
-  {
-    int a= 1;
-  }
-
-  m_alignmentOffset.x = 0;
-  m_alignmentOffset.y = 0;
-  Math::AlignXY(&m_alignmentOffset, &size, ALIGN_TOP_LEFT, alignment());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns text size (in pixels). */
@@ -299,13 +277,7 @@ void TextOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform)
       validate();
     }
 
-    Matrix4f worldMatrix;
-    Quaternionf orientation = physics()->orientation();
-    Vector4f position = physics()->position() - m_alignmentOffset;
-    Vector4f scale = physics()->scale();
-    Math::CreateMatrix(&worldMatrix, &position, &scale, &orientation);
-
-    renderer->addForRendering(m_renderData, transform * worldMatrix);
+    renderer->addForRendering(m_renderData, transform * physics()->transformationMatrix());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -404,23 +404,28 @@ bool Math::LineLineIntersectPoint(Vector2f* out, const Vector2f* line1PointA, co
   EGE_ASSERT(line2PointA);
   EGE_ASSERT(line2PointB);
 
-  float32 a1 = line1PointB->y - line1PointA->y;
-  float32 b1 = line1PointB->x - line1PointA->x;
-  float32 a2 = line2PointB->y - line2PointA->y;
-  float32 b2 = line2PointB->x - line2PointA->x;
-
-  float32 det = a1 * b2 - a2 * b1;
-  if (Math::EPSILON > Math::Abs(det))
+  // check if points forming the lines are unique
+  if ((Math::EPSILON > Math::Abs(line1PointB->x - line1PointA->x)) || (Math::EPSILON > Math::Abs(line2PointB->x - line2PointA->x)))
   {
-    // lines are parallel
+    // invalid
     return false;
   }
 
-  float c1 = a1 * line1PointA->x + b1 * line1PointA->y;
-  float c2 = a2 * line2PointA->x + b2 * line2PointA->y;
+  float32 a1 = (line1PointB->y - line1PointA->y) / (line1PointB->x - line1PointA->x);
+  float32 a2 = (line2PointB->y - line2PointA->y) / (line2PointB->x - line2PointA->x);
+  float32 b1 = line1PointA->y - a1 * line1PointA->x;
+  float32 b2 = line2PointA->y - a2 * line2PointA->x;
 
-  out->x = (b2 * c1 - b1 * c2) / det;
-  out->y = (a1 * c2 - a2 * c1) / det;
+  // check if lines are parallel
+  if (Math::EPSILON > Math::Abs(a1 - a2))
+  {
+    // parallel
+    return false;
+  }
+
+  // calculate final point
+  out->x = (b2 - b1) / (a1 - a2);
+  out->y = a1 * out->x + b1;
 
   return true;
 }
