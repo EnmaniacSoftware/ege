@@ -24,6 +24,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZLib", "..\External\Zlib\ZL
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Box2D", "..\External\Box2D 2.1.2\Box2D\Build\Box2D\Box2D.vcxproj", "{90B6C2E4-0188-4552-AD48-15C26CE84838}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FontDataGenerator", "FontDataGenerator\FontDataGenerator.vcxproj", "{9E8B64C8-6CA8-46FA-8E02-C940C2E7D6F2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{640BD281-71D7-4CC6-91DB-8381773CC8F4} = {640BD281-71D7-4CC6-91DB-8381773CC8F4}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -76,6 +81,12 @@ Global
 		{90B6C2E4-0188-4552-AD48-15C26CE84838}.Release|Win32.Build.0 = Release|Win32
 		{90B6C2E4-0188-4552-AD48-15C26CE84838}.Release|x64.ActiveCfg = Release|x64
 		{90B6C2E4-0188-4552-AD48-15C26CE84838}.Release|x64.Build.0 = Release|x64
+		{9E8B64C8-6CA8-46FA-8E02-C940C2E7D6F2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9E8B64C8-6CA8-46FA-8E02-C940C2E7D6F2}.Debug|Win32.Build.0 = Debug|Win32
+		{9E8B64C8-6CA8-46FA-8E02-C940C2E7D6F2}.Debug|x64.ActiveCfg = Debug|Win32
+		{9E8B64C8-6CA8-46FA-8E02-C940C2E7D6F2}.Release|Win32.ActiveCfg = Release|Win32
+		{9E8B64C8-6CA8-46FA-8E02-C940C2E7D6F2}.Release|Win32.Build.0 = Release|Win32
+		{9E8B64C8-6CA8-46FA-8E02-C940C2E7D6F2}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

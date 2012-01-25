@@ -274,8 +274,6 @@ EGEResult SoundPrivate::stop()
     return EGE_ERROR;
 	}
 
-  EGE_PRINT("ERROR: %s", d_func()->name().toAscii());
-
   // notify stopped
   d_func()->notifyStopped();
 

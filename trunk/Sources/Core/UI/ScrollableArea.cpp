@@ -60,7 +60,7 @@ PWidget ScrollableArea::Create(Application* app, const String& name)
 /*! Updates object. */
 void ScrollableArea::update(const Time& time)
 {
-  static const float32 cutOffValue = 0.1f;
+  const float32 cutOffValue = 0.1f;
 
   // check if content needs to be recalculated
   if (m_dirtyContent)
@@ -252,7 +252,7 @@ void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transfo
   // render scrollbars if required
   if (m_scrollbarsEnabled && (SS_HIDDEN != m_scrollbarsState))
   {
-    static const float32 scrollbarSize = 2.0f;
+    const float32 scrollbarSize = 2.0f;
 
     // update render data
     float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, 12));

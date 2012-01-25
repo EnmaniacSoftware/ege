@@ -16,7 +16,9 @@ LightningEffectStrips::LightningEffectStrips(Application* app) : m_app(app),
                                                                  m_offshotAngleVariance(EGEMath::PI * 0.125f),
                                                                  m_state(STATE_NONE),
                                                                  m_width(1.0f),
-                                                                 m_renderPriority(EGEGraphics::RP_MAIN)
+                                                                 m_renderPriority(EGEGraphics::RP_MAIN),
+                                                                 m_randomizationVariance(0.0f),
+                                                                 m_randomizationInterval(-1.0f)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -54,24 +56,35 @@ void LightningEffectStrips::update(const Time& time)
     m_fadeTime += time;
     if (m_fadeTime.seconds() > 1.0f)
     {
-      //m_fadeTime = 1.0f / 2.0f;
       m_state = STATE_IDLE;
+    }
+
+    // check if randomization is to be updated
+    bool randomize = false;
+    if (0 <= m_randomizationInterval.microseconds())
+    {
+      m_randomizationTime -= time;
+      if (0 >= m_randomizationTime.microseconds())
+      {
+        randomize = true;
+        m_randomizationTime = m_randomizationInterval;
+      }
     }
 
     const float32 maxDisplacement = 10.0f;
 
     // go thru all beams
-    for (BeamList::const_iterator it = m_beams.begin(); it != m_beams.end(); ++it)
+    for (BeamList::iterator it = m_beams.begin(); it != m_beams.end(); ++it)
     {
-      const Beam& beam = *it;
+      Beam& beam = *it;
 
       float32* data = reinterpret_cast<float32*>(beam.renderData->vertexBuffer()->lock(0, 4 + beam.segments.size() * 2 + 2));
 
       // go thru all segments
       int i = 0;
-      for (SegmentList::const_iterator itSegment = beam.segments.begin(); itSegment != beam.segments.end(); ++itSegment, ++i)
+      for (SegmentList::iterator itSegment = beam.segments.begin(); itSegment != beam.segments.end(); ++itSegment, ++i)
       {
-        const Segment& segment = *itSegment;
+        Segment& segment = *itSegment;
 
         bool isFirst = (i == 0);
         bool isLast  = (i == beam.segments.size() - 1);
@@ -136,8 +149,14 @@ void LightningEffectStrips::update(const Time& time)
           *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
         }
 
-        *data++;
-        *data++;
+        float32 oldOffset = segment.randomization;
+        if (randomize)
+        {
+          segment.randomization = m_random(-m_randomizationVariance, m_randomizationVariance);
+        }
+
+        *data++ = *data - (oldOffset - segment.randomization) * segment.randomizationNormal.x;
+        *data++ = *data - (oldOffset - segment.randomization) * segment.randomizationNormal.y;
         *data++;
         *data++;
         *data++;
@@ -145,8 +164,8 @@ void LightningEffectStrips::update(const Time& time)
         *data++;
         *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
 
-        *data++;
-        *data++;
+        *data++ = *data - (oldOffset - segment.randomization) * segment.randomizationNormal.x;
+        *data++ = *data - (oldOffset - segment.randomization) * segment.randomizationNormal.y;
         *data++;
         *data++;
         *data++;
@@ -305,9 +324,9 @@ void LightningEffectStrips::generateRenderData()
 
     // go thru all segments
     int i = 0;
-    for (SegmentList::const_iterator itSegment = beam.segments.begin(); itSegment != beam.segments.end(); ++itSegment, ++i)
+    for (SegmentList::iterator itSegment = beam.segments.begin(); itSegment != beam.segments.end(); ++itSegment, ++i)
     {
-      const Segment& segment = *itSegment;
+      Segment& segment = *itSegment;
 
       bool isFirst = (i == 0);
       bool isLast  = (i == beam.segments.size() - 1);
@@ -434,6 +453,10 @@ void LightningEffectStrips::generateRenderData()
       *data++ = 1.0f;
       *data++ = 1.0f;
       *data++ = segment.intensity;
+
+      // store end points normal for further update purposes
+      segment.randomizationNormal = (endPosNegative - endPosPositive).normalized();
+      segment.randomization = 0.0f;
     }
 
     beam.renderData->vertexBuffer()->unlock();
@@ -456,6 +479,7 @@ void LightningEffectStrips::setOffshotAngleVariance(const Angle& angle)
 void LightningEffectStrips::start()
 {
   m_fadeTime = 0.0f;
+  m_randomizationTime = m_randomizationInterval;
 
   // set state
   m_state = STATE_BUSY;
@@ -477,5 +501,17 @@ void LightningEffectStrips::setMaterial(const PMaterial& material)
 void LightningEffectStrips::setRenderPriority(s32 priority)
 {
   m_renderPriority = priority;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets randmization variance. */
+void LightningEffectStrips::setRandmizationVariance(float32 variance)
+{
+  m_randomizationVariance = variance;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets randomization interval. */
+void LightningEffectStrips::setRandomizationInterval(const Time& time)
+{
+  m_randomizationInterval = time;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

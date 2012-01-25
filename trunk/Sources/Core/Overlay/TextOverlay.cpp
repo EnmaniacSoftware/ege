@@ -9,7 +9,8 @@ EGE_DEFINE_DELETE_OPERATORS(TextOverlay)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextOverlay::TextOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Overlay(app, name, EGE_OBJECT_UID_OVERLAY_TEXT, deleteFunc), 
                                                                                                  m_textDataValid(false),
-                                                                                                 m_renderableCharactersCount(0)
+                                                                                                 m_renderableCharactersCount(0),
+                                                                                                 m_textAlignment(ALIGN_TOP_LEFT)
 {
   initialize();
 }
@@ -58,34 +59,48 @@ void TextOverlay::setFont(PFont font)
 void TextOverlay::updateRenderData()
 {
   // cache font height
-  static const float32 height = static_cast<float32>(font()->height());
+  const float32 height = static_cast<float32>(font()->height());
 
   // update vertex data
   float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_renderableCharactersCount * 6));
   if (data)
   {
-    Vector4f pos;
-
     float32 spacing = 0.0f;
+
+    Vector2f pos(0, 0);
+
+    // apply widget alignment
+    if (alignment() & ALIGN_RIGHT)
+    {
+      pos.x = -textSize().x;
+    }
+    else if (alignment() & ALIGN_HCENTER)
+    {
+      pos.x = -textSize().x * 0.5f;
+    }
+
+    if (alignment() & ALIGN_BOTTOM)
+    {
+      pos.y = -textSize().y;
+    }
+    else if (alignment() & ALIGN_VCENTER)
+    {
+      pos.y = -textSize().y * 0.5f;
+    }
 
     // go thru all lines of text
     for (TextLineDataList::const_iterator it = m_textLines.begin(); it != m_textLines.end(); ++it)
     {
       const TextLineData& lineData = *it;
 
-      // apply alignment
-      // NOTE: only horizontal alignment makes sense for TextOverlay as it is bound to its own region only
-      if (alignment() & ALIGN_RIGHT)
+      // apply text alignment
+      if (m_textAlignment & ALIGN_RIGHT)
       {
-        pos.x = m_textSize.x - lineData.width;
+        pos.x += (m_textSize.x - lineData.width);
       }
-      else if (alignment() & ALIGN_HCENTER)
+      else if (m_textAlignment & ALIGN_HCENTER)
       {
-        pos.x = (m_textSize.x - lineData.width) * 0.5f;
-      }
-      else 
-      {
-        pos.x = 0.0f;
+        pos.x += (m_textSize.x - lineData.width) * 0.5f;
       }
 
       // go thru all characters in current line
@@ -183,7 +198,7 @@ void TextOverlay::initialize()
 /*! Update text data. */
 void TextOverlay::updateTextData()
 {
-  static const float32 spacing = 0.0f;
+  const float32 spacing = 0.0f;
 
   // clear data
   m_textLines.clear();
@@ -279,5 +294,11 @@ void TextOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform)
 
     renderer->addForRendering(m_renderData, transform * physics()->transformationMatrix());
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets text alignment. */
+void TextOverlay::setTextAlignment(Alignment alignment)
+{
+  m_textAlignment = alignment;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

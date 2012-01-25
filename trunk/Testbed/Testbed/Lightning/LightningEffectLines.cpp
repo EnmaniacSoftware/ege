@@ -80,7 +80,7 @@ void LightningEffectLines::pointerEvent(PPointerData data)
   {
     m_fadeTime = 0.0f;
 
-    create(Vector2f(100, 50), Vector2f(600, 250), 5, true);
+    create(Vector2f(100, 50), Vector2f(600, 250), 5, false);
 
     float32* data = (float32*) m_renderData->vertexBuffer()->lock(0, m_segments.size() * 2);
     for (SegmentList::const_iterator it = m_segments.begin(); it != m_segments.end(); ++it)

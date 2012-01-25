@@ -508,13 +508,13 @@ void Math::Align(Rectf* rect, Alignment currentAlignment, Alignment newAlignment
   rect->y = point.y;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Aligns point along XY plane. 
+/*! Aligns point. 
  *  @param point            Point to align. This point is realigned.
  *  @param size             Area within each point is aligned.
  *  @param currentAlignment Current point alignment within given area.
  *  @param newAlignment     New point alignment within given area.
  */
-void Math::AlignXY(Vector4f* point, const Vector2f* size, Alignment currentAlignment, Alignment newAlignment)
+void Math::Align(Vector4f* point, const Vector2f* size, Alignment currentAlignment, Alignment newAlignment)
 {
   EGE_ASSERT(point);
   EGE_ASSERT(size);

@@ -54,13 +54,11 @@ void Label::update(const Time& time)
 void Label::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   // apply alignment to text overlay
-  // NOTE: Label can have different size than overlay so we additionally (to text in overlay) need to apply alignment to entire overlay
-  Rectf overlayRect(0, 0, m_textOverlay->textSize().x, m_textOverlay->textSize().y);
-  Rectf labelRect(0, 0, size().x, size().y);
-  Math::Align(&overlayRect, &labelRect, ALIGN_TOP_LEFT, m_textOverlay->alignment());
+  Vector4f overlayPos(0, 0, 0);
+  Math::Align(&overlayPos, &m_size, ALIGN_TOP_LEFT, m_textOverlay->alignment());
 
   Matrix4f matrix;
-  Vector4f pos(m_physics.position().x + overlayRect.x, m_physics.position().y + overlayRect.y, 0, 1);
+  Vector4f pos(m_physics.position().x + overlayPos.x, m_physics.position().y + overlayPos.y, 0, 1);
   Math::CreateMatrix(&matrix, &pos, &Vector4f::ONE, &Quaternionf::IDENTITY);
 
   // setup clipping region so text overlay does not exceed to label size
@@ -146,6 +144,7 @@ void Label::setAlpha(float32 alpha)
 /*! Sets text alignment. */
 void Label::setTextAlignment(Alignment alignment)
 {
+  m_textOverlay->setTextAlignment(alignment);
   m_textOverlay->setAlignment(alignment);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

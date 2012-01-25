@@ -37,32 +37,8 @@ class TextOverlay : public Overlay
     Vector2f textSize();
     /* Overlay override. Renders overlay. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
-
-    // visiblility related methods
-    //inline bool isVisible( void ) const { return m_bVisible; }                                                // returns TRUE if overlay is visible
-    //void        show( bool bShow ){ m_bVisible = bShow; }                                                     // shows/hides the overlay
-
-    //// position and dimensions related methods
-    //float getX( void ) const { return m_fX; }                                                                 // gets X relative position [0,1]
-    //float getY( void ) const { return m_fY; }                                                                 // gets Y relative position [0,1]
-    //float getWidth( void ) const { return m_fWidth; }                                                         // gets relative width [0,1]
-    //float getHeight( void ) const { return m_fHeight; }                                                       // gets relative height [0,1]
-
-    //float getDerivedX( void );                                                                                // gets derived (from own and parent) X position [0,1]
-    //float getDerivedY( void );                                                                                // gets derived (from own and parent) Y position [0,1]
-    //float getDerivedWidth( void );                                                                            // gets derived (from own and parent) width [0,1]
-    //float getDerivedHeight( void );                                                                           // gets derived (from own and parent) height [0,1]
-
-    //void setDimensions( float fX, float fY, float fWidth, float fHeight );                                    // sets relative position and dimensions
-
-    //// color related methods
-    //void                 setColor( const CColor& cColor );                                                    // sets color
-    //inline const CColor& getColor( void ) const { return m_cColor; }                                          // gets color
-
-    // CRenderable overrides
-//    virtual const CMatrix4& getWorldTransformMatrix( void ){ return CMatrix4::IDENTITY; }                     // gets world transformation matrix
-
-  //  virtual void findVisibleObject( CCamera* pcCamera, CViewport* pcViewport, CRenderQueue* pcRenderQueue );
+    /* Sets text alignment. */
+    void setTextAlignment(Alignment alignment);
 
   private:
 
@@ -100,6 +76,10 @@ class TextOverlay : public Overlay
     bool m_textDataValid;
     /*! Renderable characters count. */
     u32 m_renderableCharactersCount;
+    /*! Text alignment. 
+     *  @note Only horizontal alignment makes sense as it is bound to its own region only. 
+     */
+    Alignment m_textAlignment;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

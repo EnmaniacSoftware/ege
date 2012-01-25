@@ -54,10 +54,14 @@ class LightningEffectStrips
     void render(EGE::Renderer* renderer);
     /* Sets maximum segment midpoint offset. */
     void setMaxSegmentOffset(EGE::float32 offset);
-    /* Set offshot angle. */
+    /* Sets offshot angle. */
     void setOffshotAngle(const EGE::Angle& angle);
-    /* Set offshot angle variance. */
+    /* Sets offshot angle variance. */
     void setOffshotAngleVariance(const EGE::Angle& angle);
+    /* Sets randmization variance. */
+    void setRandmizationVariance(EGE::float32 variance);
+    /* Sets randomization interval. */
+    void setRandomizationInterval(const EGE::Time& time);
     /* Sets width. */
     void setWidth(EGE::float32 width);
     /* Sets material. */
@@ -77,10 +81,12 @@ class LightningEffectStrips
     /*! Segment data struct. */
     struct Segment
     {
-      EGE::Vector2f start;
-      EGE::Vector2f end;
-      EGE::Vector2f normal;
-      EGE::float32 intensity;
+      EGE::Vector2f start;                          /*!< Start point. */
+      EGE::Vector2f end;                            /*!< End point. */
+      EGE::Vector2f normal;                         /*!< Normal (from start and end points). */
+      EGE::Vector2f randomizationNormal;            /*!< Randomization normal (this may be different from normal). */
+      EGE::float32 randomization;                   /*!< Current randomization value. */
+      EGE::float32 intensity;                       /*!< Intensity. */
     };
 
     struct Beam
@@ -114,6 +120,13 @@ class LightningEffectStrips
     EGE::PMaterial m_material;
     /*! Render priority. */
     EGE::s32 m_renderPriority;
+    /*! Next randomization time. */
+    EGE::Time m_randomizationTime;
+    /*! Randomization variance. */
+    EGE::float32 m_randomizationVariance;
+    /*! Randomization interval. */
+    EGE::Time m_randomizationInterval;
+
     EGE::Time m_fadeTime;
 };
 

@@ -113,7 +113,7 @@ void ImageOverlay::transformationChanged()
 
   m_alignmentOffset.x = 0;
   m_alignmentOffset.y = 0;
-  Math::AlignXY(&m_alignmentOffset, &size, ALIGN_TOP_LEFT, alignment());
+  Math::Align(&m_alignmentOffset, &size, ALIGN_TOP_LEFT, alignment());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Overlay override. Initializes object. */

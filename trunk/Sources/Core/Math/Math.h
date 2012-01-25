@@ -153,13 +153,13 @@ class Math
      * @param newAlignment     New rectangle alignment.
      */
     static void Align(Rectf* rect, Alignment currentAlignment, Alignment newAlignment);
-    /* Aligns point along XY plane. 
+    /* Aligns point. 
      * @param point            Point to align. This point is realigned.
      * @param size             Area within each point is aligned.
      * @param currentAlignment Current point alignment within given area.
      * @param newAlignment     New point alignment within given area.
      */
-    static void AlignXY(Vector4f* point, const Vector2f* size, Alignment currentAlignment, Alignment newAlignment);
+    static void Align(Vector4f* point, const Vector2f* size, Alignment currentAlignment, Alignment newAlignment);
     /* Aligns rectangle with respect to another rectangle. 
      * @param rect             Rectangle to align.
      * @param otherRect        Another rectangle with respect to which first rectangle is to be aligned.
