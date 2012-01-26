@@ -29,6 +29,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FontDataGenerator", "FontDa
 		{640BD281-71D7-4CC6-91DB-8381773CC8F4} = {640BD281-71D7-4CC6-91DB-8381773CC8F4}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EGEEditor", "EGEEditor\EGEEditor.vcxproj", "{99FF25A8-D07C-496A-AA8F-A3983F857970}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -87,6 +89,12 @@ Global
 		{9E8B64C8-6CA8-46FA-8E02-C940C2E7D6F2}.Release|Win32.ActiveCfg = Release|Win32
 		{9E8B64C8-6CA8-46FA-8E02-C940C2E7D6F2}.Release|Win32.Build.0 = Release|Win32
 		{9E8B64C8-6CA8-46FA-8E02-C940C2E7D6F2}.Release|x64.ActiveCfg = Release|Win32
+		{99FF25A8-D07C-496A-AA8F-A3983F857970}.Debug|Win32.ActiveCfg = Debug|Win32
+		{99FF25A8-D07C-496A-AA8F-A3983F857970}.Debug|Win32.Build.0 = Debug|Win32
+		{99FF25A8-D07C-496A-AA8F-A3983F857970}.Debug|x64.ActiveCfg = Debug|Win32
+		{99FF25A8-D07C-496A-AA8F-A3983F857970}.Release|Win32.ActiveCfg = Release|Win32
+		{99FF25A8-D07C-496A-AA8F-A3983F857970}.Release|Win32.Build.0 = Release|Win32
+		{99FF25A8-D07C-496A-AA8F-A3983F857970}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
