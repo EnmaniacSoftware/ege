@@ -91,19 +91,22 @@ void LightningTest::update(const Time& time)
 void LightningTest::pointerEvent(PPointerData data)
 {
   m_effect->pointerEvent(data);
-  m_effectLines->pointerEvent(data);
+  //m_effectLines->pointerEvent(data);
 
   if (EGEInput::ACTION_BUTTON_DOWN == data->action())
   {
     if (m_effectQuads)
     {
-      m_effectQuads->create(Vector2f(100, 350), Vector2f(600, 500), 5, false);
-      m_effectQuads->start();
+      //m_effectQuads->create(Vector2f(100, 350), Vector2f(600, 500), 5, false);
+      //m_effectQuads->start();
     }
 
     if (m_effectStrips)
     {
-      m_effectStrips->create(Vector2f(100, 50), Vector2f(600, 200), 5, false);
+      List<Vector2f> points;
+      points << Vector2f(100, 50) << Vector2f(100, 150) << Vector2f(200, 250) << Vector2f(300, 150) << Vector2f(300, 50);
+     
+      m_effectStrips->create(points, 5, false);
       m_effectStrips->start();
     }
   }
@@ -127,9 +130,10 @@ void LightningTest::groupLoadComplete(const String& name)
 
     m_effectStrips->setOffshotAngle(Angle::FromDegrees(12.5f));
     m_effectStrips->setOffshotAngleVariance(Angle::FromDegrees(2.5f));
-    m_effectStrips->setWidth(5.0f);
-    m_effectStrips->setRandomizationInterval(0.1f);
-    m_effectStrips->setRandmizationVariance(20.0f);
+    m_effectStrips->setWidth(3.0f);
+    m_effectStrips->setMaxSegmentOffset(20.0f);
+    m_effectStrips->setRandomizationInterval(1.0f);
+    m_effectStrips->setRandmizationVariance(10.0f);
 
     SceneNode* node = app()->sceneManager()->rootNode()->createChildSceneNode("lightning-effect");
     node->attachObject(m_effect);

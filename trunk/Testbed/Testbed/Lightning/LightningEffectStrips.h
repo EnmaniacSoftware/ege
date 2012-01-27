@@ -43,7 +43,7 @@ class LightningEffectStrips
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Generates segments. */
-    void create(const EGE::Vector2f& start, const EGE::Vector2f end, EGE::s32 steps, bool allowOffshots);
+    void create(const EGE::List<EGE::Vector2f>& points, EGE::s32 steps, bool allowOffshots);
     /* Starts effect. */
     void start();
     /*! Returns current state. */
@@ -89,10 +89,11 @@ class LightningEffectStrips
       EGE::float32 intensity;                       /*!< Intensity. */
     };
 
+    /*! Beam data struct. */
     struct Beam
     {
-      EGE::List<Segment> segments;
-      EGE::PRenderComponent renderData;
+      EGE::List<Segment> segments;                  /*!< List of all segments. */
+      EGE::PRenderComponent renderData;             /*!< Render data. */
     };
 
     typedef EGE::List<Segment> SegmentList;

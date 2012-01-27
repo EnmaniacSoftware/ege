@@ -1132,6 +1132,10 @@
     <ClInclude Include="..\..\Sources\Core\UI\Label.h">
       <Filter>Core\UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Circle.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGECircle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

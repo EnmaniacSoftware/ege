@@ -53,7 +53,8 @@ void LightningEffectStrips::update(const Time& time)
 {
   if (STATE_BUSY == m_state)
   {
-    m_fadeTime += time;
+    //m_fadeTime += time;
+    m_fadeTime = 0.75f;
     if (m_fadeTime.seconds() > 1.0f)
     {
       m_state = STATE_IDLE;
@@ -71,17 +72,15 @@ void LightningEffectStrips::update(const Time& time)
       }
     }
 
-    const float32 maxDisplacement = 10.0f;
-
     // go thru all beams
     for (BeamList::iterator it = m_beams.begin(); it != m_beams.end(); ++it)
     {
       Beam& beam = *it;
 
-      float32* data = reinterpret_cast<float32*>(beam.renderData->vertexBuffer()->lock(0, 4 + beam.segments.size() * 2 + 2));
+      float32* data = reinterpret_cast<float32*>(beam.renderData->vertexBuffer()->lock(0, 2 + beam.segments.size() * 2));
 
       // go thru all segments
-      int i = 0;
+      u32 i = 0;
       for (SegmentList::iterator itSegment = beam.segments.begin(); itSegment != beam.segments.end(); ++itSegment, ++i)
       {
         Segment& segment = *itSegment;
@@ -108,55 +107,20 @@ void LightningEffectStrips::update(const Time& time)
           *data++;
           *data++;
           *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
-
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
-
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
-        }
-
-        if (isLast)
-        {
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
-
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++;
-          *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
         }
 
         float32 oldOffset = segment.randomization;
         if (randomize)
         {
-          segment.randomization = m_random(-m_randomizationVariance, m_randomizationVariance);
+          segment.randomization = isLast ? 0.0f : m_random(-m_randomizationVariance, m_randomizationVariance);
         }
 
-        *data++ = *data - (oldOffset - segment.randomization) * segment.randomizationNormal.x;
-        *data++ = *data - (oldOffset - segment.randomization) * segment.randomizationNormal.y;
+        // NOTE: *data++ = *data... is apparently not entirely defined operation if one uses pre or post incrementation of a variable which is used 
+        //       somehwere else in the expression too. Thus, decoupled into 2 statements
+        *data = *data - (oldOffset - segment.randomization) * segment.randomizationNormal.x;
+        ++data;
+        *data = *data - (oldOffset - segment.randomization) * segment.randomizationNormal.y;
+        ++data;
         *data++;
         *data++;
         *data++;
@@ -164,8 +128,10 @@ void LightningEffectStrips::update(const Time& time)
         *data++;
         *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
 
-        *data++ = *data - (oldOffset - segment.randomization) * segment.randomizationNormal.x;
-        *data++ = *data - (oldOffset - segment.randomization) * segment.randomizationNormal.y;
+        *data = *data - (oldOffset - segment.randomization) * segment.randomizationNormal.x;
+        ++data;
+        *data = *data - (oldOffset - segment.randomization) * segment.randomizationNormal.y;
+        ++data;
         *data++;
         *data++;
         *data++;
@@ -180,19 +146,36 @@ void LightningEffectStrips::update(const Time& time)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Generates segments. */
-void LightningEffectStrips::create(const Vector2f& start, const Vector2f end, s32 steps, bool allowOffshots)
+void LightningEffectStrips::create(const List<Vector2f>& points, s32 steps, bool allowOffshots)
 {
+  // check if at least 2 points present
+  if (2 > points.size())
+  {
+    // done
+    return;
+  }
+
   m_beams.clear();
   m_beams.push_back(Beam());
 
+  // create initial segments
+  List<Vector2f>::const_iterator it = points.begin();
   Segment segment;
-  segment.start         = start;
-  segment.end           = end;
-  segment.normal        = (segment.end - segment.start).perpendicular().normalized();
-  segment.intensity     = 1.0f;
-  m_beams.back().segments.push_back(segment);
+  segment.end = *it++;
+  for (; it != points.end(); ++it)
+  {
+    segment.start               = segment.end;
+    segment.end                 = *it;
+    segment.normal              = (segment.end - segment.start).perpendicular().normalized();
+    segment.intensity           = 1.0f;
+    segment.randomization       = 0.0f;
+    segment.randomizationNormal = Vector2f::ZERO;
+  
+    m_beams.back().segments.push_back(segment);
+  }
 
-  float32 offset = 60;
+  s32 a = 0;
+  float32 offset = m_maximumOffset;
   for (s32 step = 0; step < steps; ++step)
   {
     // go thru all beams
@@ -212,19 +195,32 @@ void LightningEffectStrips::create(const Vector2f& start, const Vector2f end, s3
 
         // calulate normalized vector perpendicular to current segment
         Vector2f offsetVector = segment.normal;
-        if (m_random() & 0x1)
+        //if (m_random() & 0x1)
+        if (a == 0)
         {
           offsetVector *= -1.0f;
         }
+        a++;
 
         // move mid point along the perpendicular vectors
         midPoint += offsetVector * offset;
 
         // create new segment for first subsegment
-        segment.start     = oldSegment.start;
-        segment.end       = midPoint;
-        segment.normal    = (segment.end - segment.start).perpendicular().normalized();
-        segment.intensity = oldSegment.intensity;
+        segment.start               = oldSegment.start;
+        segment.end                 = midPoint;
+        segment.normal              = (segment.end - segment.start).perpendicular().normalized();
+        segment.intensity           = oldSegment.intensity;
+        segment.randomization       = 0.0f;
+        segment.randomizationNormal = Vector2f::ZERO;
+
+        // check if 
+        Vector2f aaa = (oldSegment.end - midPoint).perpendicular().normalized();
+        float32 dot = aaa.dotProduct(segment.normal);
+        EGE_PRINT("%.2f %.2f %.2f %.2f DOT: %f", segment.normal.x, segment.normal.y, aaa.x, aaa.y, Math::RadiansToDegrees(Math::ACos(dot)));
+        if (dot < -0.9f)
+        {
+          int a = 1;
+        }
 
         // update current segment to second subsegment
         oldSegment.start = midPoint;
@@ -294,8 +290,6 @@ void LightningEffectStrips::setMaxSegmentOffset(float32 offset)
 /*! Generates render data based on segments. */
 void LightningEffectStrips::generateRenderData()
 {
-  const float32 beginEndSizeCoe = 0.2f;
-
   // go thru all beams
   for (BeamList::iterator it = m_beams.begin(); it != m_beams.end(); ++it)
   {
@@ -316,14 +310,13 @@ void LightningEffectStrips::generateRenderData()
     Vector2f endPosNegative;
     Vector2f endPosPositive;
 
-    // NOTE: Required number of vertices: 4 + segments * 2 + 2
-    //       4 for initial 'rounding' @ first segment
+    // NOTE: Required number of vertices: 2 + segments * 2
+    //       2 for initial points of first segment
     //       2 per segments for the last 2 vertices
-    //       2 for final segment to form 'rounding'
-    float32* data = reinterpret_cast<float32*>(beam.renderData->vertexBuffer()->lock(0, 4 + beam.segments.size() * 2 + 2));
+    float32* data = reinterpret_cast<float32*>(beam.renderData->vertexBuffer()->lock(0, 2 + beam.segments.size() * 2));
 
     // go thru all segments
-    int i = 0;
+    u32 i = 0;
     for (SegmentList::iterator itSegment = beam.segments.begin(); itSegment != beam.segments.end(); ++itSegment, ++i)
     {
       Segment& segment = *itSegment;
@@ -356,25 +349,6 @@ void LightningEffectStrips::generateRenderData()
         *data++ = 1.0f;
         *data++ = 1.0f;
         *data++ = segment.intensity;
-
-        // add additional 2 points which with previous ones will form the start 'rounding'
-        *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe) - segment.normal.x * m_width * segment.intensity;
-        *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe) - segment.normal.y * m_width * segment.intensity;
-        *data++ = 0.25f;
-        *data++ = 0.0f;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-        *data++ = segment.intensity;
-
-        *data++ = Math::Lerp(segment.start.x, segment.end.x, beginEndSizeCoe) + segment.normal.x * m_width * segment.intensity;
-        *data++ = Math::Lerp(segment.start.y, segment.end.y, beginEndSizeCoe) + segment.normal.y * m_width * segment.intensity;
-        *data++ = 0.25f;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-        *data++ = segment.intensity;
       }
       else
       {
@@ -394,51 +368,44 @@ void LightningEffectStrips::generateRenderData()
         ++itNextSegment;
         const Segment* nextSegment = &(*itNextSegment);
 
-        // calculate next segments' points
-        Vector2f nextStartPosNegative = nextSegment->start - nextSegment->normal * m_width * nextSegment->intensity;
-        Vector2f nextStartPosPositive = nextSegment->start + nextSegment->normal * m_width * nextSegment->intensity;
-        Vector2f nextEndPosNegative   = nextSegment->end - nextSegment->normal * m_width * nextSegment->intensity;
-        Vector2f nextEndPosPositive   = nextSegment->end + nextSegment->normal * m_width * nextSegment->intensity;
+        float32 absDot = segment.normal.dotProduct(nextSegment->normal);
+        if (absDot < -0.9f)
+        {
+          // store intersection points as new end points
+          //endPosNegative = nextSegment->start + nextSegment->normal * m_width * nextSegment->intensity;
+          //endPosPositive = nextSegment->start - nextSegment->normal * m_width * nextSegment->intensity;
+        }
+        else
+        {
+          // calculate next segments' points
+          Vector2f nextStartPosNegative = nextSegment->start - nextSegment->normal * m_width * nextSegment->intensity;
+          Vector2f nextStartPosPositive = nextSegment->start + nextSegment->normal * m_width * nextSegment->intensity;
+          Vector2f nextEndPosNegative   = nextSegment->end - nextSegment->normal * m_width * nextSegment->intensity;
+          Vector2f nextEndPosPositive   = nextSegment->end + nextSegment->normal * m_width * nextSegment->intensity;
 
-        // find out intersection point between lines formed by negative edges of current and next segment
-        Vector2f outNegative;
-        Math::LineLineIntersectPoint(&outNegative, &startPosNegative, &endPosNegative, &nextStartPosNegative, &nextEndPosNegative);
+          // find out intersection point between lines formed by negative edges of current and next segment
+          Vector2f outNegative;
+          Math::LineLineIntersectPoint(&outNegative, &startPosNegative, &endPosNegative, &nextStartPosNegative, &nextEndPosNegative);
 
-        // find out intersection point between lines formed by positive edges of current and next segment
-        Vector2f outPositive;
-        Math::LineLineIntersectPoint(&outPositive, &startPosPositive, &endPosPositive, &nextStartPosPositive, &nextEndPosPositive);
+          // find out intersection point between lines formed by positive edges of current and next segment
+          Vector2f outPositive;
+          Math::LineLineIntersectPoint(&outPositive, &startPosPositive, &endPosPositive, &nextStartPosPositive, &nextEndPosPositive);
 
-        // store intersection points as new end points
-        endPosNegative = outNegative;
-        endPosPositive = outPositive;
+          // store intersection points as new end points
+          endPosNegative = outNegative;
+          endPosPositive = outPositive;
+        }
       }
 
-      // for last segment we add additional 2 vertices before end ones. Together they will form end 'rounding'
-      if (isLast)
+      if (endPosNegative.x < 0 || endPosNegative.y < 0 || startPosPositive.x < 0 || startPosNegative.x < 0)
       {
-        *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe) - segment.normal.x * m_width * segment.intensity;
-        *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe) - segment.normal.y * m_width * segment.intensity;
-        *data++ = 0.75f;
-        *data++ = 0.0f;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-        *data++ = segment.intensity;
-
-        *data++ = Math::Lerp(segment.start.x, segment.end.x, 1.0f - beginEndSizeCoe) + segment.normal.x * m_width * segment.intensity;
-        *data++ = Math::Lerp(segment.start.y, segment.end.y, 1.0f - beginEndSizeCoe) + segment.normal.y * m_width * segment.intensity;
-        *data++ = 0.75f;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-        *data++ = 1.0f;
-        *data++ = segment.intensity;
+        int a = 1;
       }
 
       // last 2 points
       *data++ = endPosNegative.x;
       *data++ = endPosNegative.y;
-      *data++ = isLast ? 1.0f : 0.75f;
+      *data++ = 1.0f;
       *data++ = 0.0f;
       *data++ = 1.0f;
       *data++ = 1.0f;
@@ -447,7 +414,7 @@ void LightningEffectStrips::generateRenderData()
 
       *data++ = endPosPositive.x;
       *data++ = endPosPositive.y;
-      *data++ = isLast ? 1.0f : 0.75f;
+      *data++ = 1.0f;
       *data++ = 1.0f;
       *data++ = 1.0f;
       *data++ = 1.0f;

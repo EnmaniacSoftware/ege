@@ -28,6 +28,7 @@ files
 	EGEApplication.h
   EGEAudio.h
   EGEByteOrder.h
+  EGECircle.h
   EGEColor.h
   EGEComplex.h
   EGEDataBuffer.h
@@ -294,6 +295,7 @@ files
   Angle.cpp
   Angle.h
 	AxisAlignedBox.h
+  Circle.h
   Complex.h
 	Math.cpp
 	Math.h

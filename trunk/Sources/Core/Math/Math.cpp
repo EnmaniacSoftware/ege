@@ -404,28 +404,44 @@ bool Math::LineLineIntersectPoint(Vector2f* out, const Vector2f* line1PointA, co
   EGE_ASSERT(line2PointA);
   EGE_ASSERT(line2PointB);
 
-  // check if points forming the lines are unique
-  if ((Math::EPSILON > Math::Abs(line1PointB->x - line1PointA->x)) || (Math::EPSILON > Math::Abs(line2PointB->x - line2PointA->x)))
-  {
-    // invalid
-    return false;
-  }
+  //// check if points forming the lines are unique
+  //if ((Math::EPSILON > Math::Abs(line1PointB->x - line1PointA->x)) || (Math::EPSILON > Math::Abs(line2PointB->x - line2PointA->x)))
+  //{
+  //  // invalid
+  //  return false;
+  //}
 
-  float32 a1 = (line1PointB->y - line1PointA->y) / (line1PointB->x - line1PointA->x);
-  float32 a2 = (line2PointB->y - line2PointA->y) / (line2PointB->x - line2PointA->x);
-  float32 b1 = line1PointA->y - a1 * line1PointA->x;
-  float32 b2 = line2PointA->y - a2 * line2PointA->x;
+  //float32 a1 = (line1PointB->y - line1PointA->y) / (line1PointB->x - line1PointA->x);
+  //float32 a2 = (line2PointB->y - line2PointA->y) / (line2PointB->x - line2PointA->x);
+  //float32 b1 = line1PointA->y - a1 * line1PointA->x;
+  //float32 b2 = line2PointA->y - a2 * line2PointA->x;
 
-  // check if lines are parallel
-  if (Math::EPSILON > Math::Abs(a1 - a2))
+  //// check if lines are parallel
+  //if (Math::EPSILON > Math::Abs(a1 - a2))
+  //{
+  //  // parallel
+  //  return false;
+  //}
+
+  //// calculate final point
+  //out->x = (b2 - b1) / (a1 - a2);
+  //out->y = a1 * out->x + b1;
+
+  // calculate denotmiator
+  const float32 denominator = (line1PointA->x - line1PointB->x) * (line2PointA->y - line2PointB->y) - 
+                              (line1PointA->y - line1PointB->y) * (line2PointA->x - line2PointB->x);
+  if (Math::EPSILON > Math::Abs(denominator))
   {
     // parallel
     return false;
   }
 
-  // calculate final point
-  out->x = (b2 - b1) / (a1 - a2);
-  out->y = a1 * out->x + b1;
+  // calculate some coefficient for optimizaton purposes
+  const float32 nominatorCoe1 = (line1PointA->x * line1PointB->y - line1PointA->y * line1PointB->x);
+  const float32 nominatorCoe2 = (line2PointA->x * line2PointB->y - line2PointA->y * line2PointB->x);
+
+  out->x = (nominatorCoe1 * (line2PointA->x - line2PointB->x) - (line1PointA->x - line1PointB->x) * nominatorCoe2) / denominator;
+  out->y = (nominatorCoe1 * (line2PointA->y - line2PointB->y) - (line1PointA->y - line1PointB->y) * nominatorCoe2) / denominator;
 
   return true;
 }
