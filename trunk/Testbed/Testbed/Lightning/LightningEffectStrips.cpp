@@ -10,7 +10,7 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(LightningEffectStrips)
 EGE_DEFINE_DELETE_OPERATORS(LightningEffectStrips)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-LightningEffectStrips::LightningEffectStrips(Application* app) : m_app(app),
+LightningEffectStrips::LightningEffectStrips(Application* app) : Object(app),
                                                                  m_maximumOffset(60.0f),
                                                                  m_offshotAngle(EGEMath::PI * 0.25f),
                                                                  m_offshotAngleVariance(EGEMath::PI * 0.125f),
@@ -53,8 +53,7 @@ void LightningEffectStrips::update(const Time& time)
 {
   if (STATE_BUSY == m_state)
   {
-    //m_fadeTime += time;
-    m_fadeTime = 0.75f;
+    m_fadeTime += time;
     if (m_fadeTime.seconds() > 1.0f)
     {
       m_state = STATE_IDLE;
@@ -296,7 +295,7 @@ void LightningEffectStrips::generateRenderData()
     Beam& beam = *it;
 
     // create render data
-    beam.renderData = ege_new RenderComponent(m_app, "lightning-effect-lines", m_renderPriority, EGEGraphics::RPT_TRIANGLE_STRIPS);
+    beam.renderData = ege_new RenderComponent(app(), "lightning-effect-lines", m_renderPriority, EGEGraphics::RPT_TRIANGLE_STRIPS);
     if (!beam.renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2_C4))
     {
       // error!

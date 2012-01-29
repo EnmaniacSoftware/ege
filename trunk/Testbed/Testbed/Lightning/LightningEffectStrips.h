@@ -18,7 +18,11 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class LightningEffectStrips
+EGE_DECLARE_SMART_CLASS(LightningEffectStrips, PLightningEffect)
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class LightningEffectStrips : public EGE::Object
 {
   public:
 
@@ -101,8 +105,6 @@ class LightningEffectStrips
 
   private:
 
-    /*! Pointer to application object. */
-    EGE::Application* m_app;
     /*! Randomizer. */
     EGE::Random m_random;
     /*! List of currently generated beams. */

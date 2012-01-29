@@ -16,6 +16,7 @@ class List : public std::list<T>
 
     List();
     List(const T& object);
+    List(const List& list, s32 count);
 
     /* Removes object at given index. */
     void removeAt(s32 index);
@@ -41,6 +42,15 @@ template <typename T>
 List<T>::List(const T& object)
 {
   push_back(object);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+List<T>::List(const List<T>& list, s32 count)
+{
+  for (List<T>::const_iterator it = list.begin(); (it != list.end()) && (0 < count); ++it, --count)
+  {
+    this->push_back(*it);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Removes object at given index. */
