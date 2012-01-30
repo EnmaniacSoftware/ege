@@ -1,6 +1,7 @@
 #include "NewProjectDlg.h"
 #include "NewProjectDataModel.h"
 #include "ui_newproject.h"
+#include <QFileDialog.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 NewProjectDialog::NewProjectDialog(QWidget* parent) : QDialog(parent),
@@ -58,5 +59,18 @@ void NewProjectDialog::accept()
 
   // emit
   emit projectCreated(project);
+
+  // call base class
+  QDialog::accept();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when location browse button is clicked. */
+void NewProjectDialog::on_projectLocationBrowse_clicked()
+{
+  QString location = QFileDialog::getExistingDirectory(this, tr("Select project location"), m_ui->projectLocation->text());
+  if (!location.isEmpty())
+  {
+    m_ui->projectLocation->setText(location);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

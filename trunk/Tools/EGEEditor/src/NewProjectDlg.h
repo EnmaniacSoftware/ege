@@ -30,6 +30,8 @@ class NewProjectDialog : public QDialog
 
     /* Slot called when item in the list is clicked. */
     void on_projectListView_clicked(const QModelIndex& index);
+    /* Slot called when location browse button is clicked. */
+    void on_projectLocationBrowse_clicked();
     /* Slot called when OK button is clicked. */
     void accept();
 

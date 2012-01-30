@@ -15,3 +15,16 @@ Project* ProjectJuiceJumpers::Create(QObject* parent, const QString& name, const
   return new ProjectJuiceJumpers(parent, name, path);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Project override. Saves all data. */
+bool ProjectJuiceJumpers::save()
+{
+  // call base class
+  if (!Project::save())
+  {
+    // error!
+    return false;
+  }
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -7,6 +7,7 @@
 
 class Ui_MainWindow;
 class Project;
+class ResourceLibrary;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class MainWindow : public QMainWindow
@@ -30,8 +31,14 @@ class MainWindow : public QMainWindow
     void on_ActionFileClose_triggered(bool checked);
     /* Slot called when File -> Exit is selected. */
     void on_ActionFileExit_triggered(bool checked);
+    /* Slot called when View -> ResourceLibrary is selected. */
+    void on_ActionResourceLibrary_triggered(bool checked);
     /* Slot called when new project has been created. */
     void onNewProjectCreated(Project* project);
+    /* Updates title bar. */
+    void updateTitleBar();
+    /* Updates menus. */
+    void updateMenus();
 
   private:
 
@@ -39,6 +46,8 @@ class MainWindow : public QMainWindow
     Ui_MainWindow* m_ui;
     /*! Current project. */
     Project* m_project;
+    /*! Resource library. */
+    ResourceLibrary* m_resourceLibrary;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
