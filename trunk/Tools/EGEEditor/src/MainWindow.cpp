@@ -3,7 +3,9 @@
 #include "Project.h"
 #include "ui_mainwindow.h"
 #include "ResourceLibrary.h"
+#include "Config.h"
 #include <QMessageBox>
+#include <QCloseEvent>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define MAJOR_VERSION 0
@@ -11,24 +13,38 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MainWindow::MainWindow() : QMainWindow(),
                            m_ui(new Ui_MainWindow()),
-                           m_project(NULL)
+                           m_project(NULL),
+                           m_config(new Config())
 {
   // setup UI
   m_ui->setupUi(this);
 
   // allocate
   m_resourceLibrary = new ResourceLibrary(this);
+  addDockWidget(Qt::LeftDockWidgetArea, m_resourceLibrary);
 
   // do inital title bar update
   updateTitleBar();
+
+  // load settings
+  loadSettings();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MainWindow::~MainWindow()
 {
+  // save settings
+  saveSettings();
+
   if (m_ui)
   {
     delete m_ui;
     m_ui = NULL;
+  }
+
+  if (m_config)
+  {
+    delete m_config;
+    m_config = NULL;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -56,6 +72,9 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
 void MainWindow::on_ActionFileClose_triggered(bool checked)
 {
   Q_UNUSED(checked);
+
+  // save settings
+  saveSettings();
 
   // close project
   if (m_project)
@@ -88,19 +107,6 @@ void MainWindow::on_ActionFileClose_triggered(bool checked)
 void MainWindow::on_ActionFileExit_triggered(bool checked)
 {
   Q_UNUSED(checked);
-
-  // check if anything to save
-  if (m_project && m_project->isDirty())
-  {
-    // show warning
-    if (QMessageBox::Yes != QMessageBox::warning(this, tr("Project not saved"), 
-                                                 tr("Project contains changes which have not been saved yet!\n\nDo you want to quit anyway ?"),
-                                                 QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
-    {
-      // dont close
-      return;
-    }
-  }
 
   close();
 }
@@ -197,3 +203,52 @@ void MainWindow::on_ActionResourceLibrary_triggered(bool checked)
   int a = 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Saves settings. */
+void MainWindow::saveSettings()
+{
+  m_config->beginGroup("main-window");
+  m_config->setValue("size", size());
+  m_config->setValue("pos", pos());
+  m_config->endGroup();
+
+  // save resource library setting
+  m_resourceLibrary->saveSettings(m_config);
+
+  // sync
+  m_config->sync();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Loads settings. */
+void MainWindow::loadSettings()
+{
+  m_config->beginGroup("main-window");
+  resize(m_config->value("size", size()).toSize());
+  move(m_config->value("pos", pos()).toPoint());
+  m_config->endGroup();
+
+  // load resource library setting
+  m_resourceLibrary->loadSettings(m_config);
+
+  // sync
+  m_config->sync();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ void MainWindow::closeEvent(QCloseEvent *event)
+ {
+  // check if anything to save
+  if (m_project && m_project->isDirty())
+  {
+    // show warning
+    if (QMessageBox::Yes != QMessageBox::warning(this, tr("Project not saved"), 
+                                                 tr("Project contains changes which have not been saved yet!\n\nDo you want to quit anyway ?"),
+                                                 QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
+    {
+      // dont close
+      event->ignore();
+      return;
+    }
+  }
+
+  event->accept();
+ }
+ //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -76,6 +76,7 @@
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h" />
     <ClInclude Include="GeneratedFiles\ui_newproject.h" />
     <ClInclude Include="GeneratedFiles\ui_resourcelibrary.h" />
+    <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\JuiceJumpers\ProjectJuiceJumpers.h" />
     <ClInclude Include="src\NewProjectDataModel.h" />
     <CustomBuild Include="src\ResourceLibrary.h">
@@ -170,6 +171,7 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ResourceLibrary.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\JuiceJumpers\ProjectJuiceJumpers.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MainWindow.cpp" />

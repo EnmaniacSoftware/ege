@@ -6,6 +6,8 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Ui_ResourceLibrary;
+class Config;
+class MainWindow;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceLibrary : public QDockWidget
@@ -16,6 +18,16 @@ class ResourceLibrary : public QDockWidget
 
     ResourceLibrary(QWidget* parent);
    ~ResourceLibrary();
+
+    /* Saves settings. */
+    void saveSettings(Config* config);
+    /* Loads settings. */
+    void loadSettings(Config* config);
+
+  private:
+
+    /*! Returns pointer to main window object. */
+    inline MainWindow* mainWindow() const { return reinterpret_cast<MainWindow*>(parent()); }
 
   private:
 

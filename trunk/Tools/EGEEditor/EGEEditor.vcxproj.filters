@@ -50,6 +50,9 @@
     <ClInclude Include="GeneratedFiles\ui_resourcelibrary.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ui\mainwindow.ui">
@@ -119,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_ResourceLibrary.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Config.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

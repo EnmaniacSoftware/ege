@@ -8,6 +8,8 @@
 class Ui_MainWindow;
 class Project;
 class ResourceLibrary;
+class Config;
+class QCloseEvent;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class MainWindow : public QMainWindow
@@ -42,12 +44,23 @@ class MainWindow : public QMainWindow
 
   private:
 
+    /* Saves settings. */
+    void saveSettings();
+    /* Loads settings. */
+    void loadSettings();
+
+    void closeEvent(QCloseEvent *event);
+
+  private:
+
     /*! Main window UI. */
     Ui_MainWindow* m_ui;
     /*! Current project. */
     Project* m_project;
     /*! Resource library. */
     ResourceLibrary* m_resourceLibrary;
+    /*! Config. */
+    Config* m_config;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
