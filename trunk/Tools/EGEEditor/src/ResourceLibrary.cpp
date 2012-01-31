@@ -2,13 +2,28 @@
 #include "ui_resourcelibrary.h"
 #include "Config.h"
 #include "MainWindow.h"
+#include "ResourceLibraryDataModel.h"
+#include "ResourceLibraryItemDelegate.h"
+#include <QMenu>
+#include <QFile>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibrary::ResourceLibrary(QWidget* parent) : QDockWidget(parent),
-                                                    m_ui(new Ui_ResourceLibrary())
+                                                    m_ui(new Ui_ResourceLibrary()),
+                                                    m_model(new ResourceLibraryDataModel(this)),
+                                                    m_itemDelegate(new ResourceLibraryItemDelegate(this))
 {
   // setup UI
   m_ui->setupUi(this);
+
+  // set view delegate
+  m_ui->view->setItemDelegate(m_itemDelegate);
+
+  // establish connections
+	connect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
+
+  connect(parent, SIGNAL(projectCreated()), this, SLOT(onProjectCreated()));
+	connect(parent, SIGNAL(projectClosed()), this, SLOT(onProjectClosed()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibrary::~ResourceLibrary()
@@ -24,23 +39,39 @@ ResourceLibrary::~ResourceLibrary()
 void ResourceLibrary::saveSettings(Config* config)
 {
   Q_ASSERT(config);
-
-  config->beginGroup("resource-library");
-  config->setValue("size", size());
-  config->setValue("pos", pos());
-  config->setValue("dock", mainWindow()->dockWidgetArea(this));
-  config->endGroup();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Loads settings. */
 void ResourceLibrary::loadSettings(Config* config)
 {
   Q_ASSERT(config);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when context menu is requetsed. */
+void ResourceLibrary::onQueueContextMenuRequested(const QPoint& pos)
+{
+  QMenu menu(this);
 
-  config->beginGroup("resource-library");
-  resize(config->value("size", size()).toSize());
-  move(config->value("pos", pos()).toPoint());
-  mainWindow()->addDockWidget(static_cast<Qt::DockWidgetArea>(config->value("dock", mainWindow()->dockWidgetArea(this)).toInt()), this);
-  config->endGroup();
+  QAction* action = NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when new project has been created/opened. */
+void ResourceLibrary::onProjectCreated()
+{
+  // load up data if project file exists
+  if (QFile::exists(mainWindow()->project()->fullPath()))
+  {
+    // load resource library
+    if (!m_model->load(mainWindow()->project()->fullPath()))
+    {
+      // TAGE - error
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when project has been closed. */
+void ResourceLibrary::onProjectClosed()
+{
+  m_model->clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

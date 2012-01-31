@@ -8,6 +8,8 @@
 class Ui_ResourceLibrary;
 class Config;
 class MainWindow;
+class ResourceLibraryDataModel;
+class ResourceLibraryItemDelegate;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceLibrary : public QDockWidget
@@ -24,6 +26,15 @@ class ResourceLibrary : public QDockWidget
     /* Loads settings. */
     void loadSettings(Config* config);
 
+  private slots:
+
+    /* Slot called when context menu is requetsed. */
+		void onQueueContextMenuRequested(const QPoint& pos);
+    /* Slot called when new project has been created/opened. */
+    void onProjectCreated();
+    /* Slot called when project has been closed. */
+    void onProjectClosed();
+
   private:
 
     /*! Returns pointer to main window object. */
@@ -33,6 +44,10 @@ class ResourceLibrary : public QDockWidget
 
     /*! Resource library window UI. */
     Ui_ResourceLibrary* m_ui;
+    /*! Data model. */
+    ResourceLibraryDataModel* m_model;
+    /*! View item delegate. */
+    ResourceLibraryItemDelegate* m_itemDelegate;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

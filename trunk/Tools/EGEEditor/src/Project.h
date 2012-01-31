@@ -29,6 +29,8 @@ class Project : public QObject
     inline const QString& name() const { return m_name; }
     /*! Returns path. */
     inline const QString& path() const { return m_path; }
+    /*! Returns full path to project file. */
+    inline QString fullPath() const { return m_path + "/" + m_name + ".ege"; }
     /* Marks/unmarks project content as dirty. */
     void setDirty(bool set);
     /*! Returns dirty flag. */

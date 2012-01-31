@@ -19,7 +19,19 @@ class MainWindow : public QMainWindow
   public:
 
     MainWindow();
-    ~MainWindow();
+   ~MainWindow();
+
+  signals:
+
+    /*! Signal emitted when new project has been created/opened. */
+    void projectCreated();
+    /*! Signal emitted when project was closed. */
+    void projectClosed();
+
+  public:
+
+    /*! Return pointer to currently opened project. */
+    inline Project* project() const { return m_project; }
 
   private slots:
 
@@ -34,13 +46,15 @@ class MainWindow : public QMainWindow
     /* Slot called when File -> Exit is selected. */
     void on_ActionFileExit_triggered(bool checked);
     /* Slot called when View -> ResourceLibrary is selected. */
-    void on_ActionResourceLibrary_triggered(bool checked);
+    void on_ActionViewResourceLibrary_triggered(bool checked);
     /* Slot called when new project has been created. */
     void onNewProjectCreated(Project* project);
     /* Updates title bar. */
     void updateTitleBar();
     /* Updates menus. */
     void updateMenus();
+    /* Slot called when dock widget changes visibility. */
+    void onDockWidgetVisibilityChanged(bool visible);
 
   private:
 

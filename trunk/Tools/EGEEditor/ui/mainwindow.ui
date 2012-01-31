@@ -64,7 +64,7 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
-    <addaction name="ActionResourceLibrary"/>
+    <addaction name="ActionViewResourceLibrary"/>
    </widget>
    <addaction name="fileMenu"/>
    <addaction name="viewMenu"/>
@@ -115,7 +115,7 @@
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="ActionResourceLibrary">
+  <action name="ActionViewResourceLibrary">
    <property name="checkable">
     <bool>true</bool>
    </property>

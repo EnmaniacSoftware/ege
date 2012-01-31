@@ -39,6 +39,8 @@ class NewProjectDialog : public QDialog
 
     /* Populates project type list. */
     void populateProjectTypeList();
+    /* Checks if project already exists in a given directory. */
+    bool projectExists(const QString& name, const QString& path) const;
 
   private:
 

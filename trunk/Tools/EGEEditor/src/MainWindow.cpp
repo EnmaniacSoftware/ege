@@ -6,6 +6,7 @@
 #include "Config.h"
 #include <QMessageBox>
 #include <QCloseEvent>
+#include <QMenu>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define MAJOR_VERSION 0
@@ -19,9 +20,11 @@ MainWindow::MainWindow() : QMainWindow(),
   // setup UI
   m_ui->setupUi(this);
 
-  // allocate
+  // create and embed Resource Library dock widget
   m_resourceLibrary = new ResourceLibrary(this);
   addDockWidget(Qt::LeftDockWidgetArea, m_resourceLibrary);
+
+  connect(m_resourceLibrary, SIGNAL(visibilityChanged(bool)), this, SLOT(onDockWidgetVisibilityChanged(bool)));
 
   // do inital title bar update
   updateTitleBar();
@@ -100,6 +103,9 @@ void MainWindow::on_ActionFileClose_triggered(bool checked)
 
     // update menus
     updateMenus();
+
+    // emit
+    emit projectClosed();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -144,6 +150,9 @@ void MainWindow::onNewProjectCreated(Project* project)
 
   // update menus
   updateMenus();
+
+  // emit
+  emit projectCreated();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates title bar. */
@@ -195,20 +204,33 @@ void MainWindow::updateMenus()
     //  action->setEnabled(NULL != m_project);
     //}
   }
+
+  // View menu
+  menu = menuBar()->findChild<QMenu*>("viewMenu");
+  Q_ASSERT(menu);
+
+  actions = menu->actions();
+  foreach (QAction* action, actions)
+  {
+    if (("ActionViewResourceLibrary" == action->objectName()))
+    {
+      action->setChecked(m_resourceLibrary->isVisible());
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when View -> ResourceLibrary is selected. */
-void MainWindow::on_ActionResourceLibrary_triggered(bool checked)
+void MainWindow::on_ActionViewResourceLibrary_triggered(bool checked)
 {
-  int a = 1;
+  m_resourceLibrary->setVisible(checked);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Saves settings. */
 void MainWindow::saveSettings()
 {
   m_config->beginGroup("main-window");
-  m_config->setValue("size", size());
-  m_config->setValue("pos", pos());
+  m_config->setValue("geometry", saveGeometry());
+  m_config->setValue("state", saveState());
   m_config->endGroup();
 
   // save resource library setting
@@ -222,8 +244,8 @@ void MainWindow::saveSettings()
 void MainWindow::loadSettings()
 {
   m_config->beginGroup("main-window");
-  resize(m_config->value("size", size()).toSize());
-  move(m_config->value("pos", pos()).toPoint());
+  restoreGeometry(m_config->value("geometry").toByteArray());
+  restoreState(m_config->value("state").toByteArray());
   m_config->endGroup();
 
   // load resource library setting
@@ -251,4 +273,12 @@ void MainWindow::loadSettings()
 
   event->accept();
  }
- //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when dock widget changes visibility. */
+void MainWindow::onDockWidgetVisibilityChanged(bool visible)
+{
+  Q_UNUSED(visible);
+
+  updateMenus();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

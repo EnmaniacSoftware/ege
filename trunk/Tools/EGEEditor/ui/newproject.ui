@@ -77,7 +77,7 @@
      <item>
       <widget class="QLineEdit" name="projectName">
        <property name="text">
-        <string>enter-name-here</string>
+        <string>&lt;enter_name&gt;</string>
        </property>
       </widget>
      </item>

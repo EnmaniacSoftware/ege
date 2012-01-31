@@ -2,6 +2,7 @@
 #include "NewProjectDataModel.h"
 #include "ui_newproject.h"
 #include <QFileDialog.h>
+#include <QMessageBox>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 NewProjectDialog::NewProjectDialog(QWidget* parent) : QDialog(parent),
@@ -52,6 +53,18 @@ void NewProjectDialog::accept()
     return;
   }
 
+  // check if project already exists at specified destination
+  if (projectExists(m_ui->projectName->text(), m_ui->projectLocation->text()))
+  {
+    // prompt
+    if (QMessageBox::No == QMessageBox::warning(this, windowTitle(), tr("Project already exists at given destination.\n\nDo you want to overwrite ?"),
+                                                QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
+    {
+      // do nothing
+      return;
+    }
+  }
+
   NewProjectDataModel::ModelItem* modelItem = static_cast<NewProjectDataModel::ModelItem*>(index.internalPointer());
 
   // create new project
@@ -72,5 +85,11 @@ void NewProjectDialog::on_projectLocationBrowse_clicked()
   {
     m_ui->projectLocation->setText(location);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Checks if project already exists in a given directory. */
+bool NewProjectDialog::projectExists(const QString& name, const QString& path) const
+{
+  return QFile::exists(path + "/" + name + ".ege");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
