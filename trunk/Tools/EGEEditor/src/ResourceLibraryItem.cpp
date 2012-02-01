@@ -1,10 +1,10 @@
 #include "ResourceLibraryItem.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceLibraryItem::ResourceLibraryItem(ResourceLibraryItem* parent, const QString& name, const QString& path, Type type) : m_parent(parent),
-                                                                                                                             m_name(name),
-                                                                                                                             m_path(path),
-                                                                                                                             m_type(type)
+ResourceLibraryItem::ResourceLibraryItem(const QString& name, const QString& path, Type type) : m_parent(NULL),
+                                                                                                m_name(name),
+                                                                                                m_path(path),
+                                                                                                m_type(type)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -39,12 +39,22 @@ int ResourceLibraryItem::row() const
 /*! Returns data for a given column. */
 QVariant ResourceLibraryItem::data(int columnIndex) const
 {
-  return QVariant();
+  return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds child. */
 void ResourceLibraryItem::add(ResourceLibraryItem* child)
 {
+  // set parent
+  child->m_parent = this;
+
+  // append
   m_children.append(child);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns child at given index. */
+ResourceLibraryItem* ResourceLibraryItem::child(int index) const
+{
+  return ((0 <= index) && (index < childCount())) ? m_children[index] : NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

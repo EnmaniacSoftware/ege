@@ -18,6 +18,9 @@ ResourceLibrary::ResourceLibrary(QWidget* parent) : QDockWidget(parent),
 
   // set view delegate
   m_ui->view->setItemDelegate(m_itemDelegate);
+  
+  // set view model
+  m_ui->view->setModel(m_model);
 
   // establish connections
 	connect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
@@ -47,12 +50,30 @@ void ResourceLibrary::loadSettings(Config* config)
   Q_ASSERT(config);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when context menu is requetsed. */
+/*! Slot called when context menu is requested. */
 void ResourceLibrary::onQueueContextMenuRequested(const QPoint& pos)
 {
   QMenu menu(this);
 
   QAction* action = NULL;
+
+  QModelIndexList indexList = m_ui->view->selectionModel()->selectedIndexes();
+
+  if (0 == indexList.size())
+  {
+    action = menu.addAction(tr("Add container"));
+  }
+  else if (1 == indexList.size())
+  {
+  }
+  else
+  {
+  }
+
+	if (!menu.isEmpty())
+  {
+		menu.exec(m_ui->view->mapToGlobal(pos));
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when new project has been created/opened. */
@@ -66,6 +87,11 @@ void ResourceLibrary::onProjectCreated()
     {
       // TAGE - error
     }
+  }
+  else
+  {
+    // create empty
+    m_model->createDefault();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

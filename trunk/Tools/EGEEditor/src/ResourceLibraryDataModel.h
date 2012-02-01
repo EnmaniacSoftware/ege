@@ -27,7 +27,9 @@ class ResourceLibraryDataModel : public QAbstractItemModel
     /* Clears data. */
     void clear();
     /* Adds */
-    void add();
+    void add(ResourceLibraryItem* item);
+    /* Creates default. */
+    void createDefault();
 
   private:
 
@@ -46,13 +48,6 @@ class ResourceLibraryDataModel : public QAbstractItemModel
 
     /*! Root item. */
     ResourceLibraryItem* m_root;
-
-    /*! Structure describing single model item. */
-    struct ModelItem
-    {
-      QString name;       /*!< Item name. */
-      QString path;       /*!< Item path. */
-    };
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

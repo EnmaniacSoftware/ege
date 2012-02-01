@@ -28,7 +28,7 @@ class ResourceLibrary : public QDockWidget
 
   private slots:
 
-    /* Slot called when context menu is requetsed. */
+    /* Slot called when context menu is requested. */
 		void onQueueContextMenuRequested(const QPoint& pos);
     /* Slot called when new project has been created/opened. */
     void onProjectCreated();

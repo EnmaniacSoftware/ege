@@ -45,7 +45,7 @@
        <enum>Qt::CustomContextMenu</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QLabel" name="info">
        <property name="sizePolicy">
@@ -70,7 +70,17 @@
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QTreeView" name="view"/>
+      <widget class="QTreeView" name="view">
+       <property name="indentation">
+        <number>5</number>
+       </property>
+       <property name="allColumnsShowFocus">
+        <bool>true</bool>
+       </property>
+       <attribute name="headerVisible">
+        <bool>false</bool>
+       </attribute>
+      </widget>
      </widget>
     </item>
    </layout>

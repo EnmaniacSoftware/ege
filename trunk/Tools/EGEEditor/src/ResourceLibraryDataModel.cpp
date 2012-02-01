@@ -5,8 +5,9 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryDataModel::ResourceLibraryDataModel(QObject* parent) : QAbstractItemModel(parent),
-                                                                      m_root(new ResourceLibraryItem(NULL, "", "", ResourceLibraryItem::TYPE_NONE))
+                                                                      m_root(NULL)
 {
+  createDefault();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryDataModel::~ResourceLibraryDataModel()
@@ -36,18 +37,26 @@ QModelIndex ResourceLibraryDataModel::parent(const QModelIndex& index) const
 /*! QAbstractItemModel override. Returns the index of the item in the model specified by the given row, column and parent index. */
 QModelIndex ResourceLibraryDataModel::index(int row, int column, const QModelIndex& parent) const
 {
+  ResourceLibraryItem* parentItem;
   ResourceLibraryItem* item;
-  
+
   // check if parent invalid
   if (!parent.isValid())
   {
-    item = m_root;
+    parentItem = m_root;
   }
   else
   {
-    item = static_cast<ResourceLibraryItem*>(parent.internalPointer());
+    parentItem = static_cast<ResourceLibraryItem*>(parent.internalPointer());
   }
-  
+
+  // get proper child
+  item = parentItem->child(row);
+  if (NULL == item)
+  {
+    return QModelIndex();
+  }
+
   return createIndex(row, column, item);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -159,9 +168,16 @@ void ResourceLibraryDataModel::clear()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Adds */
-void ResourceLibraryDataModel::add()
+void ResourceLibraryDataModel::add(ResourceLibraryItem* item)
 {
-  ResourceLibraryItem* item = new ResourceLibraryItem(m_root, "ala", "ola", ResourceLibraryItem::TYPE_IMAGE);
   m_root->add(item);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates default. */
+void ResourceLibraryDataModel::createDefault()
+{
+  m_root = new ResourceLibraryItem(tr("Resources"), QString(), ResourceLibraryItem::TYPE_CONTAINER);
+  m_root->add(new ResourceLibraryItem(tr("Graphics"), QString(), ResourceLibraryItem::TYPE_CONTAINER));
+  m_root->add(new ResourceLibraryItem(tr("Sounds"), QString(), ResourceLibraryItem::TYPE_CONTAINER));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
