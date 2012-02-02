@@ -47,7 +47,8 @@ List<T>::List(const T& object)
 template <typename T>
 List<T>::List(const List<T>& list, s32 count)
 {
-  for (List<T>::const_iterator it = list.begin(); (it != list.end()) && (0 < count); ++it, --count)
+  typename List<T>::const_iterator it;
+  for (it = list.begin(); (it != list.end()) && (0 < count); ++it, --count)
   {
     this->push_back(*it);
   }
