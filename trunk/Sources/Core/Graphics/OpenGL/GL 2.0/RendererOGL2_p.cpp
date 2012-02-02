@@ -187,10 +187,10 @@ void RendererPrivate::flush()
     {
       const RenderQueue::SRENDERDATA& data = it->second;
 
-      if (data.component->name() == "overlay-text")
-      {
-        int a = 1;
-      }
+      //if (data.component->name() == "overlay-text")
+      //{
+      //  int a = 1;
+      //}
 
       PVertexBuffer& vertexBuffer = data.component->vertexBuffer();
       PIndexBuffer& indexBuffer   = data.component->indexBuffer();

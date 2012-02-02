@@ -4,6 +4,7 @@
 #include "MainWindow.h"
 #include "ResourceLibraryDataModel.h"
 #include "ResourceLibraryItemDelegate.h"
+#include "ResourceLibraryItem.h"
 #include <QMenu>
 #include <QFile>
 
@@ -61,13 +62,23 @@ void ResourceLibrary::onQueueContextMenuRequested(const QPoint& pos)
 
   if (0 == indexList.size())
   {
-    action = menu.addAction(tr("Add container"));
+    action = menu.addAction(tr("Add container"), this, SLOT(addContainer()));
   }
   else if (1 == indexList.size())
   {
+    QModelIndex modelIndex = indexList.front();
+    ResourceLibraryItem* item = static_cast<ResourceLibraryItem*>(modelIndex.internalPointer());
+
+    if (ResourceLibraryItem::TYPE_CONTAINER == item->type())
+    {
+      action = menu.addAction(tr("Add container"), this, SLOT(addContainer()));
+      action = menu.addAction(tr("Add resource"), this, SLOT(addResource()));
+      action = menu.addAction(tr("Remove"), this, SLOT(removeItem()));
+    }
   }
   else
   {
+    action = menu.addAction(tr("Remove"), this, SLOT(removeItem()));
   }
 
 	if (!menu.isEmpty())
@@ -99,5 +110,44 @@ void ResourceLibrary::onProjectCreated()
 void ResourceLibrary::onProjectClosed()
 {
   m_model->clear();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when container is requested to be added. */
+void ResourceLibrary::addContainer()
+{
+  ResourceLibraryItem* item;
+
+  // get current seclection index
+  QModelIndex index = m_ui->view->selectionModel()->currentIndex();
+
+  // insert row after selection
+  if (!m_model->insertRow(index.row() + 1, index.parent()))
+  {
+    // error!
+    return;
+  }
+
+  // update all columns
+  for (int column = 0; column < m_model->columnCount(index.parent()); ++column)
+  {
+    QModelIndex child = m_model->index(index.row() + 1, column, index.parent());
+
+    m_model->setData(child, QVariant(tr("No name")), Qt::DisplayRole);
+    m_model->setData(child, QVariant(ResourceLibraryItem::TYPE_CONTAINER), ResourceLibraryDataModel::TypeRole);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when resource is requested to be added. */
+void ResourceLibrary::addResource()
+{
+  QModelIndex modelIndex = m_ui->view->selectionModel()->selectedIndexes().first();
+
+  ResourceLibraryItem* item = static_cast<ResourceLibraryItem*>(modelIndex.internalPointer());
+//  item->add(new ResourceLibraryItem(tr("No name"), QString(), ResourceLibraryItem::TYPE_CONTAINER));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when resource item is requested to be removed. */
+void ResourceLibrary::removeItem()
+{
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

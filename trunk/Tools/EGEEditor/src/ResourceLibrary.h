@@ -34,6 +34,12 @@ class ResourceLibrary : public QDockWidget
     void onProjectCreated();
     /* Slot called when project has been closed. */
     void onProjectClosed();
+    /* Slot called when container is requested to be added. */
+    void addContainer();
+    /* Slot called when resource is requested to be added. */
+    void addResource();
+    /* Slot called when resource item is requested to be removed. */
+    void removeItem();
 
   private:
 

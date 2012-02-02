@@ -21,8 +21,15 @@ class ResourceLibraryItem
 
   public:
 
-    ResourceLibraryItem(const QString& name, const QString& path, Type type);
+    ResourceLibraryItem(ResourceLibraryItem* parent = NULL);
    ~ResourceLibraryItem();
+
+    /* Sets name. */
+    void setName(const QString& name);
+    /* Sets type. */
+    void setType(Type type);
+    /*! Returns item type. */
+    inline Type type() const { return m_type; }
 
     /* Returns number of columns. */
     int columnCount() const;
@@ -36,10 +43,8 @@ class ResourceLibraryItem
     int row() const;
     /* Returns data for a given column. */
     QVariant data(int columnIndex) const;
-    /* Adds child. */
-    void add(ResourceLibraryItem* child);
-    /*! Returns item type. */
-    inline Type type() const { return m_type; }
+    /* Inserts children. */
+    bool insertChildren(int position, int count, int columns);
 
   private:
 

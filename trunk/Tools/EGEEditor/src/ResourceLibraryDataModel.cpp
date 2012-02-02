@@ -26,7 +26,7 @@ QModelIndex ResourceLibraryDataModel::parent(const QModelIndex& index) const
   ResourceLibraryItem* childItem = static_cast<ResourceLibraryItem*>(index.internalPointer());
   ResourceLibraryItem* parentItem = childItem->parent();
 
-  if (parentItem == m_root)
+  if ((parentItem == m_root) || (NULL == parentItem))
   {
     return QModelIndex();
   }
@@ -170,14 +170,96 @@ void ResourceLibraryDataModel::clear()
 /* Adds */
 void ResourceLibraryDataModel::add(ResourceLibraryItem* item)
 {
-  m_root->add(item);
+  //m_root->add(item);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates default. */
 void ResourceLibraryDataModel::createDefault()
 {
-  m_root = new ResourceLibraryItem(tr("Resources"), QString(), ResourceLibraryItem::TYPE_CONTAINER);
-  m_root->add(new ResourceLibraryItem(tr("Graphics"), QString(), ResourceLibraryItem::TYPE_CONTAINER));
-  m_root->add(new ResourceLibraryItem(tr("Sounds"), QString(), ResourceLibraryItem::TYPE_CONTAINER));
+  m_root = new ResourceLibraryItem();
+  m_root->setType(ResourceLibraryItem::TYPE_CONTAINER);
+
+  //m_root->add(new ResourceLibraryItem(tr("Graphics"), QString(), ResourceLibraryItem::TYPE_CONTAINER));
+  //m_root->add(new ResourceLibraryItem(tr("Sounds"), QString(), ResourceLibraryItem::TYPE_CONTAINER));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! QAbstractItemModel override. */
+Qt::ItemFlags ResourceLibraryDataModel::flags(const QModelIndex &index) const
+{
+  if (!index.isValid())
+      return 0;
+
+  return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ResourceLibraryDataModel::insertRows(int position, int rows, const QModelIndex &parent)
+{
+  ResourceLibraryItem* parentItem = getItem(parent);
+
+  bool success;
+
+  // insert rows
+  beginInsertRows(parent, position, position + rows - 1);
+  success = parentItem->insertChildren(position, rows, m_root->columnCount());
+  endInsertRows();
+
+  return success;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ResourceLibraryDataModel::removeRows(int position, int rows, const QModelIndex &parent)
+{
+    ResourceLibraryItem* parentItem = getItem(parent);
+    bool success = true;
+
+    beginRemoveRows(parent, position, position + rows - 1);
+    //success = parentItem->removeChildren(position, rows);
+    endRemoveRows();
+
+    return success;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns resource library item connected for given model index. */
+ResourceLibraryItem* ResourceLibraryDataModel::getItem(const QModelIndex &index) const
+{
+  if (index.isValid()) 
+  {
+    ResourceLibraryItem* item = static_cast<ResourceLibraryItem*>(index.internalPointer());
+    if (NULL != item)
+    {
+      return item;
+    }
+  }
+  return m_root;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! QAbstractItemModel override. Sets the role data for the item at index to value.*/
+bool ResourceLibraryDataModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+  ResourceLibraryItem* item = getItem(index);
+
+  // process according to role
+  bool success = false;
+  switch (role)
+  {
+    case Qt::DisplayRole:
+
+      item->setName(value.toString());
+      success = true;
+      break;
+
+    case TypeRole:
+
+      item->setType(static_cast<ResourceLibraryItem::Type>(value.toInt()));
+      success = true;
+      break;
+  }
+
+  // emit
+  if (success)
+  {
+    emit dataChanged(index, index);
+  }
+
+  return success;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
