@@ -579,6 +579,9 @@
     <ClCompile Include="..\..\Sources\Core\UI\Label.cpp">
       <Filter>Core\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.cpp">
+      <Filter>Core\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1136,6 +1139,9 @@
       <Filter>Core\Math</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGECircle.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.h">
+      <Filter>Core\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

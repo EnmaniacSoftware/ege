@@ -135,4 +135,19 @@ bool AudioManagerPrivate::isPlaying(const PSound& sound) const
   return sound->p_func()->isPlaying();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Pauses given sound.
+ *  @param sound Sound to pause.
+ *  @return  Returns EGE_SUCCESS if sound is sucessfully paused or EGE_ERROR if sound could not be paused.
+ */
+EGEResult AudioManagerPrivate::pause(const PSound& sound)
+{
+  return sound->p_func()->pause();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if given sound is paused. */
+bool AudioManagerPrivate::isPaused(const PSound& sound) const
+{
+  return sound->p_func()->isPaused();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #endif // EGE_AUDIO_OPENAL

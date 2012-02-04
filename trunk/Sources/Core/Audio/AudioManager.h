@@ -52,6 +52,20 @@ class AudioManager : public Object
     EGEResult stop(const PSound& sound);
     /* Returns list of sounds being played with the given name. */
     List<PSound> sounds(const String& soundName) const;
+    /* Pauses sound with given name. 
+     * @param soundName   Name of the sound to pause.
+     * @return  Returns EGE_SUCCESS if sound is sucessfully paused, EGE_ERROR_NOT_FOUND if sound could not be found or EGE_ERROR if sound could not be paused.
+     */
+    EGEResult pause(const String& soundName);
+    /* Pauses given sound.
+     * @param sound Sound to pause.
+     * @return  Returns EGE_SUCCESS if sound is sucessfully paused or EGE_ERROR if sound could not be paused.
+     */
+    EGEResult pause(const PSound& sound);
+    /* Returns TRUE if sound of a given name is paused. */
+    bool isPaused(const String& soundName) const;
+    /* Returns TRUE if given sound is paused. */
+    bool isPaused(const PSound& sound) const;
 
     /* Enables/disables manager. 
      * @note Disabling manager stops all currently played sounds and prevents any sound from being played. Enabling manager will allow sound to be played.

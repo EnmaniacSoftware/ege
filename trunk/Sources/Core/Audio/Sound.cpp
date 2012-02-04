@@ -17,10 +17,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(Sound)
 EGE_DEFINE_DELETE_OPERATORS(Sound)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Sound::Sound(const String& name, const PDataBuffer& data) : Object(NULL), 
                                                             m_p(NULL),
@@ -125,7 +123,9 @@ void Sound::setVolume(float32 volume)
   notifyVolumeChanged(old);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds sound effect. */
+/*! Adds sound effect. 
+ *  @note Effect is removed when finished.
+ */
 bool Sound::addEffect(PSoundEffect effect)
 {
   if ((NULL != effect) && effect->isValid())

@@ -176,4 +176,16 @@ void SoundPrivate::onSoundVolumeChanged(const Sound* sound, float32 oldVolume)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Pauses playback. */
+EGEResult SoundPrivate::pause()
+{
+  return (S3E_TRUE == s3eSoundChannelPause(m_channel)) ? EGE_SUCCESS : EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if sound is paused. */
+bool SoundPrivate::isPaused() const
+{
+  return (1 == s3eSoundChannelGetInt(m_channel, S3E_CHANNEL_PAUSED));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #endif // !EGE_AIRPLAY_AUDIO_SOFTWARE

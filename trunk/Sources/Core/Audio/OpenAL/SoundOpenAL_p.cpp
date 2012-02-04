@@ -95,21 +95,25 @@ void SoundPrivate::update(const Time& time)
 	  alGetSourcei(m_channel, AL_SOURCE_STATE, &state);
     if (AL_PLAYING != state)
     {
-      // check if there are any queued buffers. If so it means audio was starved and needs to be resumed
-      ALint value;
-		  alGetSourcei(m_channel, AL_BUFFERS_QUEUED, &value);
-		  if (value)
-		  {
-        // resume playback
-			  alSourcePlay(m_channel);
-		  }
-		  else
-		  {
-			  // finished
-        d_func()->notifyFinished();
+      // check if not paused
+      if (AL_PAUSED != state)
+      {
+        // check if there are any queued buffers. If so it means audio was starved and needs to be resumed
+        ALint value;
+		    alGetSourcei(m_channel, AL_BUFFERS_QUEUED, &value);
+		    if (value)
+		    {
+          // resume playback
+			    alSourcePlay(m_channel);
+		    }
+		    else
+		    {
+			    // finished
+          d_func()->notifyFinished();
 
-        // stop
-        stop();
+          // stop
+          stop();
+        }
       }
     }
   }
@@ -245,7 +249,7 @@ EGEResult SoundPrivate::play(ALuint channel)
   // reset flag
   m_stopped = false;
 
-  //EGE_PRINT("SoundPrivate::play - %s", d_func()->name().toAscii());
+  //EGE_PRINT("%s", d_func()->name().toAscii());
 
   return EGE_SUCCESS;
 }
@@ -297,7 +301,7 @@ void SoundPrivate::onSoundVolumeChanged(const Sound* sound, float32 oldVolume)
 {
   EGE_ASSERT(sound->p_func() == this);
 
-  //EGE_PRINT("SoundPrivate::onSoundVolumeChanged: %s %.2f -> %.2f", sound->name().toAscii(), oldVolume, sound->volume());
+  EGE_PRINT("%s %.2f -> %.2f", sound->name().toAscii(), oldVolume, sound->volume());
 
   // set new volume
   alSourcef(m_channel, AL_GAIN, sound->volume());
@@ -309,6 +313,33 @@ void SoundPrivate::onSoundVolumeChanged(const Sound* sound, float32 oldVolume)
     // error!
     EGE_PRINT("ERROR: %s could not set volume!", sound->name().toAscii());
 	}
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Pauses playback. */
+EGEResult SoundPrivate::pause()
+{
+  // pause channel
+  alSourcePause(m_channel);
+
+	// check to see if there were any errors
+	ALenum error = alGetError();
+	if (AL_NO_ERROR != error)
+  {
+    // error!
+    EGE_PRINT("ERROR: Could not pause playback!");
+    return EGE_ERROR;
+	}
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if sound is paused. */
+bool SoundPrivate::isPaused() const
+{
+  ALint state;
+	alGetSourcei(m_channel, AL_SOURCE_STATE, &state);
+
+  return AL_PAUSED == state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #endif // EGE_AUDIO_OPENAL

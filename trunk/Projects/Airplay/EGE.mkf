@@ -108,6 +108,8 @@ files
   Sound.cpp
   Sound.h
   SoundEffect.h
+  SoundEffectFadeIn.cpp
+  SoundEffectFadeIn.h
   SoundEffectFadeOut.cpp
   SoundEffectFadeOut.h
   wsfir.h

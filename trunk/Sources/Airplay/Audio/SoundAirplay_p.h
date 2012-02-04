@@ -45,6 +45,10 @@ class SoundPrivate
     EGEResult stop();
     /* Returns TRUE if sound is being played. */
     bool isPlaying() const;
+    /* Pauses playback. */
+    EGEResult pause();
+    /* Returns TRUE if sound is paused. */
+    bool isPaused() const;
 
   private slots:
 

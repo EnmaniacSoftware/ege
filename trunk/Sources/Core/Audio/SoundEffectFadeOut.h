@@ -34,7 +34,9 @@ class SoundEffectFadeOut : public SoundEffect
      * @param sound Sound object for which effect is being run.
      * @return  Returns TRUE if effect came to completion. Otherwise, returns FALSE.
      */
-    bool update(const Time& time, Sound* sound) override;
+    bool update(const Time& time, PSound sound) override;
+    /* SoundEffect override. Resets effect. */
+    void reset() override;
     /* Sets fade duration. */
     void setDuration(const Time& time);
 

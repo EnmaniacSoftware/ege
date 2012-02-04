@@ -68,7 +68,9 @@ class Sound : public Object
     void setVolume(float32 volume);
     /*! Returns current volume. */
     inline float32 volume() const { return m_volume; }
-    /* Adds sound effect. */
+    /* Adds sound effect. 
+     * @note Effect is removed when finished.
+     */
     bool addEffect(PSoundEffect effect);
 
   private:

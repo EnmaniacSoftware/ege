@@ -12,9 +12,8 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Sound;
-
 EGE_DECLARE_SMART_CLASS(SoundEffect, PSoundEffect)
+EGE_DECLARE_SMART_CLASS(Sound, PSound)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -27,19 +26,24 @@ class SoundEffect : public Object
 
   signals:
 
-    /*! Signal emitted when effect came to completion. */
-    Signal1<PSoundEffect> finished;
+    /*! Signal emitted when effect came to completion. 
+     *  @param effect Effect which is finished.
+     *  @param sound  Sound for to which effect was bound while being finished.
+     */
+    Signal2<PSoundEffect, PSound> finished;
 
   public:
 
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     virtual bool isValid() const = 0;
-    /* Updates object. 
+    /*! Updates object. 
      * @param time  Time frame for which update should be done.
      * @param sound Sound object for which effect is being run.
      * @return  Returns TRUE if effect came to completion. Otherwise, returns FALSE.
      */
-    virtual bool update(const Time& time, Sound* sound) = 0;
+    virtual bool update(const Time& time, PSound sound) = 0;
+    /*! Resets effect. */
+    virtual void reset() = 0;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

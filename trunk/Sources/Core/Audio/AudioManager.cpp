@@ -157,7 +157,7 @@ bool AudioManager::isPlaying(const String& soundName) const
 /*! Returns TRUE if given sound is being played. */
 bool AudioManager::isPlaying(const PSound& sound) const
 {
-  if (isValid())
+  if (isValid() && sound && sound->isValid())
   {
     return p_func()->isPlaying(sound);
   }
@@ -194,8 +194,15 @@ EGEResult AudioManager::stop(const String& soundName)
 /*! Stops playback of the given sound. */
 EGEResult AudioManager::stop(const PSound& sound)
 {
-  if (isValid())
+  if (isValid() && sound && sound->isValid())
   {
+    // check if disabled
+    if (!isEnabled())
+    {
+      // done
+      return EGE_SUCCESS;
+    }
+
     return p_func()->stop(sound);
   }
 
@@ -245,5 +252,88 @@ void AudioManager::setEnable(bool set)
     // store flag
     m_enabled = set;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Pauses sound with given name. 
+ *  @param soundName   Name of the sound to pause.
+ *  @return  Returns EGE_SUCCESS if sound is sucessfully paused, EGE_ERROR_NOT_FOUND if sound could not be found or EGE_ERROR if sound could not be paused.
+ */
+EGEResult AudioManager::pause(const String& soundName)
+{
+  if (isValid())
+  {
+    // look for the sound in the active pool
+    for (SoundList::const_iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
+    {
+      const PSound& sound = *it;
+      if (sound->name() == soundName)
+      {
+        // pause
+        if (EGE_SUCCESS != pause(sound))
+        {
+          // error!
+          return EGE_ERROR;
+        }
+      }
+    }
+
+    return EGE_SUCCESS;
+  }
+
+  return EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Pauses given sound.
+ *  @param sound Sound to pause.
+ *  @return  Returns EGE_SUCCESS if sound is sucessfully paused or EGE_ERROR if sound could not be paused.
+ */
+EGEResult AudioManager::pause(const PSound& sound)
+{
+  EGEResult result = EGE_ERROR;
+
+  if (isValid() && sound && sound->isValid())
+  {
+    // check if disabled
+    if (!isEnabled())
+    {
+      // done
+      return EGE_SUCCESS;
+    }
+
+    // pause
+    return p_func()->pause(sound);
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if sound of a given name is paused. */
+bool AudioManager::isPaused(const String& soundName) const
+{
+  if (isValid())
+  {
+    // look for the sound in the active pool
+    for (SoundList::const_iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
+    {
+      const PSound& sound = *it;
+      if (sound->name() == soundName)
+      {
+        return isPaused(sound);
+      }
+    }
+  }
+
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if given sound is paused. */
+bool AudioManager::isPaused(const PSound& sound) const
+{
+  if (isValid())
+  {
+    return p_func()->isPaused(sound);
+  }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
