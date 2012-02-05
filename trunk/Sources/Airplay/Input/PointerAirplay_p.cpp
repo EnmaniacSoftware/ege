@@ -10,10 +10,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(PointerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(PointerPrivate)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PointerPrivate::PointerPrivate(Pointer* base) : m_base(base)
 {
@@ -21,13 +19,13 @@ PointerPrivate::PointerPrivate(Pointer* base) : m_base(base)
 
   if (multitouchSupported)
   {
-      s3ePointerRegister(S3E_POINTER_TOUCH_EVENT, (s3eCallback) MultiTouchButtonCB, this);
-      s3ePointerRegister(S3E_POINTER_TOUCH_MOTION_EVENT, (s3eCallback) MultiTouchMotionCB, this);
+    s3ePointerRegister(S3E_POINTER_TOUCH_EVENT, (s3eCallback) MultiTouchButtonCB, this);
+    s3ePointerRegister(S3E_POINTER_TOUCH_MOTION_EVENT, (s3eCallback) MultiTouchMotionCB, this);
   }
   else
   {
-      s3ePointerRegister(S3E_POINTER_BUTTON_EVENT, (s3eCallback) SingleTouchButtonCB, this);
-      s3ePointerRegister(S3E_POINTER_MOTION_EVENT, (s3eCallback) SingleTouchMotionCB, this);
+    s3ePointerRegister(S3E_POINTER_BUTTON_EVENT, (s3eCallback) SingleTouchButtonCB, this);
+    s3ePointerRegister(S3E_POINTER_MOTION_EVENT, (s3eCallback) SingleTouchMotionCB, this);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -37,13 +35,13 @@ PointerPrivate::~PointerPrivate()
 
   if (multitouchSupported)
   {
-      s3ePointerUnRegister(S3E_POINTER_TOUCH_EVENT, (s3eCallback) MultiTouchButtonCB);
-      s3ePointerUnRegister(S3E_POINTER_TOUCH_MOTION_EVENT, (s3eCallback) MultiTouchMotionCB);
+    s3ePointerUnRegister(S3E_POINTER_TOUCH_EVENT, (s3eCallback) MultiTouchButtonCB);
+    s3ePointerUnRegister(S3E_POINTER_TOUCH_MOTION_EVENT, (s3eCallback) MultiTouchMotionCB);
   }
   else
   {
-      s3ePointerUnRegister(S3E_POINTER_BUTTON_EVENT, (s3eCallback) SingleTouchButtonCB);
-      s3ePointerUnRegister(S3E_POINTER_MOTION_EVENT, (s3eCallback) SingleTouchMotionCB);
+    s3ePointerUnRegister(S3E_POINTER_BUTTON_EVENT, (s3eCallback) SingleTouchButtonCB);
+    s3ePointerUnRegister(S3E_POINTER_MOTION_EVENT, (s3eCallback) SingleTouchMotionCB);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

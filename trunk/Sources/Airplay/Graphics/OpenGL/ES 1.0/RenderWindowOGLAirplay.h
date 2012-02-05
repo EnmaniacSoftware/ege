@@ -37,6 +37,11 @@ class RenderWindowOGLAirplay : public RenderWindow
 
   private:
 
+    /* Orientation change callback. */
+    static int32 OrientationChangeCB(void* systemData, void* data);
+
+  private:
+
     /*! OpenGLES display device. */
     EGLDisplay m_eglDisplay;
     /*! OpengGLES context. */

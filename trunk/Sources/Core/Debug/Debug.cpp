@@ -5,10 +5,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(Debug)
 EGE_DEFINE_DELETE_OPERATORS(Debug)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger* Debug::m_log = NULL;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -37,5 +35,25 @@ void Debug::Log(const String& text)
   {
     m_log->write(text);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Prints given string to output including function name. */
+void Debug::PrintWithFunction(const char* functionName, const String& text)
+{
+  String finalText = functionName;
+  finalText += " ";
+  finalText += text;
+
+  PrintRaw(finalText.toAscii());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Prints given text to output as a warning including function name. */
+void Debug::WarningWithFunction(const char* functionName, const String& text)
+{
+  String finalText = functionName;
+  finalText += "WARNING: ";
+  finalText += text;
+
+  PrintRaw(finalText.toAscii());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

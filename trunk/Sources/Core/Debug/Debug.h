@@ -35,8 +35,14 @@ class Debug : public Object
     static void Assert(const char* description, const char* fileName, s32 lineNumber);
     /* Logs given text to file. */
     static void Log(const String& text);
-    /* Prints given text to output. */
-    static void Print(const String& text);
+
+    /* Prints given c-string to output. */
+    static void PrintRaw(const char* text);
+
+    /* Prints given string to output including function name. */
+    static void PrintWithFunction(const char* functionName, const String& text);
+    /* Prints given text to output as a warning including function name. */
+    static void WarningWithFunction(const char* functionName, const String& text);
 
   private:
 

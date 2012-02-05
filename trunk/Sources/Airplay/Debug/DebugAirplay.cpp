@@ -14,11 +14,10 @@ void Debug::Assert(const char* description, const char* fileName, s32 lineNumber
   s3eDebugAssertShow(S3E_MESSAGE_CONTINUE_STOP_IGNORE, description);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Prints given text to output. */
-void Debug::Print(const String& text)
+/*! Prints given c-string to output. */
+void Debug::PrintRaw(const char* text)
 {
-  char buffer[2048];
-  sprintf(buffer, "%s\n", text.toAscii());
-  s3eDebugOutputString(buffer);
+  s3eDebugOutputString(text);
+  s3eDebugOutputString("\n");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

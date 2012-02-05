@@ -10,10 +10,10 @@ void Debug::Assert(const char* description, const char* fileName, s32 lineNumber
   _CrtDbgBreak();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Prints given text to output. */
-void Debug::Print(const String& text)
+/*! Prints given c-string to output. */
+void Debug::PrintRaw(const char* text)
 {
-  OutputDebugStringA(text.toAscii());
+  OutputDebugStringA(text);
   OutputDebugStringA("\n");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

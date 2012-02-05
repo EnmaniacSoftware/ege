@@ -10,8 +10,8 @@
 #ifdef EGE_FEATURE_DEBUG
 
 #define EGE_ASSERT(cond) ((!(cond)) ? Debug::Assert(#cond, __FILE__, __LINE__) : ege_noop())
-#define EGE_PRINT(text, ...) Debug::Print(String::Format(__FUNCTION__##" "#text, ##__VA_ARGS__))
-#define EGE_WARNING(text, ...) Debug::Print(String::Format(__FUNCTION__##" WARNING: "#text, ##__VA_ARGS__))
+#define EGE_PRINT(text, ...) Debug::PrintWithFunction(__FUNCTION__, String::Format(#text, ##__VA_ARGS__))
+#define EGE_WARNING(text, ...) Debug::WarningWithFunction(__FUNCTION__, String::Format(#text, ##__VA_ARGS__))
 #define EGE_LOG(text, ...) Debug::Log(String::Format(#text, ##__VA_ARGS__))
 
 #define CHECK_GL_ERROR() if (GL_NO_ERROR == glGetError()) { EGE_PRINT("%s @ line %d - OpenGL error!", __FUNCTION__, __LINE__); }

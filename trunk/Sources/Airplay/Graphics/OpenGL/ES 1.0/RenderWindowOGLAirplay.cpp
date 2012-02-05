@@ -5,18 +5,31 @@
 #include <EGEDevice.h>
 #include <GLES/gl.h>
 #include <GLES/egl.h>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderWindowOGLAirplay::RenderWindowOGLAirplay(Application* app, const Dictionary& params) : RenderWindow(app, params), m_eglDisplay(EGL_NO_DISPLAY), 
-                                                                                             m_eglContext(EGL_NO_CONTEXT), m_eglSurface(EGL_NO_SURFACE)
+RenderWindowOGLAirplay::RenderWindowOGLAirplay(Application* app, const Dictionary& params) : RenderWindow(app, params), 
+                                                                                             m_eglDisplay(EGL_NO_DISPLAY), 
+                                                                                             m_eglContext(EGL_NO_CONTEXT), 
+                                                                                             m_eglSurface(EGL_NO_SURFACE)
 {
   create(params);
+
+  // register for surface orientation changes
+  if (S3E_RESULT_SUCCESS != s3eSurfaceRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB, this))
+  {
+    // error!
+    EGE_WARNING("Count not register surface orientation change callback.");
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderWindowOGLAirplay::~RenderWindowOGLAirplay()
 {
+  // unregister surface orientation change callback
+  s3eSurfaceUnRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB);
+
   destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -52,6 +65,11 @@ void RenderWindowOGLAirplay::create(const Dictionary& params)
   // get device screen dimensions
   m_physicalWidth  = Device::SurfaceWidth();
   m_physicalHeight = Device::SurfaceHeight();
+
+  int32 bd = s3eSurfaceGetInt(S3E_SURFACE_BLIT_DIRECTION);
+  int32 dbd = s3eSurfaceGetInt(S3E_SURFACE_DEVICE_BLIT_DIRECTION);
+
+  EGE_PRINT("BD: %d DBD: %d", bd, dbd);
 
   // apply dimensions according to landscape requirement
   if (landscape)
@@ -221,5 +239,30 @@ EGEResult RenderWindowOGLAirplay::enableFullScreen(s32 width, s32 height, bool e
 bool RenderWindowOGLAirplay::requiresTextureFlipping() const
 {
   return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Orientation change callback. */
+int32 RenderWindowOGLAirplay::OrientationChangeCB(void* systemData, void* userData)
+{
+  s3eSurfaceOrientation* so  = reinterpret_cast<s3eSurfaceOrientation*>(systemData);
+  RenderWindowOGLAirplay* me = reinterpret_cast<RenderWindowOGLAirplay*>(userData);
+
+  // process accroding to blit direction
+  switch (so->m_DeviceBlitDirection)
+  {
+    case S3E_SURFACE_BLIT_DIR_NORMAL: me->m_orientationRotation.fromDegrees(0.0f); break;
+    case S3E_SURFACE_BLIT_DIR_ROT90:  me->m_orientationRotation.fromDegrees(90.0f); break;
+    case S3E_SURFACE_BLIT_DIR_ROT180: me->m_orientationRotation.fromDegrees(180.0f); break;
+    case S3E_SURFACE_BLIT_DIR_ROT270: me->m_orientationRotation.fromDegrees(270.0f); break;
+
+    default:
+
+      EGE_WARNING("Unknown blit direction!");
+      break;
+  }
+
+  EGE_PRINT("ORIENTATION %d %f", so->m_DeviceBlitDirection, me->m_orientationRotation.degrees());
+
+  return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
