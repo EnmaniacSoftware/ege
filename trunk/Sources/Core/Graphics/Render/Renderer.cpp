@@ -122,20 +122,63 @@ Rectf Renderer::applyRotation(const Rectf& rect, const Angle& angle) const
 {
   Rectf out;
 
-  if (EGEMath::PI == angle.radians() * 2.0f)
+  //if (EGEMath::PI == angle.radians() * 2.0f)
+  //{
+  //  out.x       = rect.y;
+  //  out.y       = m_renderTarget->width() - rect.width - rect.x;
+  //  out.width   = rect.height;
+  //  out.height  = rect.width;
+  //}
+  //else if (-EGEMath::PI == angle.radians() * 2.0f)
+  //{
+  //  EGE_ASSERT("Implement!");
+  //}
+  //else
+  //{
+  //  out = rect;
+  //}
+
+  // 0 degrees rotation
+  if (0.0f == Math::ZeroRoundOff(angle.radians()))
+  {
+    // do nothing
+    out = rect;
+
+    EGE_PRINT("1. %d %d %d %d -> %d %d %d %d @ %f", rect.x, rect.y, rect.width, rect.height, out.x, out.y, out.width, out.height, angle.degrees());
+  }
+  // 90 degrees rotation
+  else if (0.0f == Math::ZeroRoundOff(angle.radians() - EGEMath::PI_HALF))
   {
     out.x       = rect.y;
     out.y       = m_renderTarget->width() - rect.width - rect.x;
     out.width   = rect.height;
     out.height  = rect.width;
+
+    EGE_PRINT("2. %d %d %d %d -> %d %d %d %d @ %f", rect.x, rect.y, rect.width, rect.height, out.x, out.y, out.width, out.height, angle.degrees());
   }
-  else if (-EGEMath::PI == angle.radians() * 2.0f)
+  // 180 degrees rotation
+  else if (0.0f == Math::ZeroRoundOff(angle.radians() - EGEMath::PI))
   {
-    EGE_ASSERT("Implement!");
+    out.x       = m_renderTarget->width() - rect.width - rect.x;
+    out.y       = m_renderTarget->height() - rect.height - rect.y;
+    out.width   = rect.width;
+    out.height  = rect.height;
+
+    EGE_PRINT("3. %d %d %d %d -> %d %d %d %d @ %f", rect.x, rect.y, rect.width, rect.height, out.x, out.y, out.width, out.height, angle.degrees());
+  }
+  // 270 degrees rotation
+  else if (0.0f == Math::ZeroRoundOff(angle.radians() - (EGEMath::PI + EGEMath::PI_HALF)))
+  {
+    out.x       = m_renderTarget->height() - rect.height - rect.y;
+    out.y       = rect.x;
+    out.width   = rect.height;
+    out.height  = rect.width;
+
+    EGE_PRINT("4. %d %d %d %d -> %d %d %d %d @ %f", rect.x, rect.y, rect.width, rect.height, out.x, out.y, out.width, out.height, angle.degrees());
   }
   else
   {
-    out = rect;
+    EGE_WARNING("Unsupported angle: %f", angle.degrees());
   }
 
   return out;

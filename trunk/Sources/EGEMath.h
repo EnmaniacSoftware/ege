@@ -13,6 +13,8 @@ namespace EGEMath
   static const float32 PI = 3.14159265f;
   /*! Two times PI number. */
   static const float32 TWO_PI = 6.28318531f;
+  /*! PI half number. */
+  static const float32 PI_HALF = 1.5708f;
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

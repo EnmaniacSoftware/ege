@@ -66,34 +66,49 @@ void RenderWindowOGLAirplay::create(const Dictionary& params)
   m_physicalWidth  = Device::SurfaceWidth();
   m_physicalHeight = Device::SurfaceHeight();
 
-  int32 bd = s3eSurfaceGetInt(S3E_SURFACE_BLIT_DIRECTION);
-  int32 dbd = s3eSurfaceGetInt(S3E_SURFACE_DEVICE_BLIT_DIRECTION);
+  // get current orientation screen dimensions
+  m_width  = s3eSurfaceGetInt(S3E_SURFACE_WIDTH);
+  m_height = s3eSurfaceGetInt(S3E_SURFACE_HEIGHT);
 
-  EGE_PRINT("BD: %d DBD: %d", bd, dbd);
+  // determine initial screen orientation
+  switch (s3eSurfaceGetInt(S3E_SURFACE_DEVICE_BLIT_DIRECTION))
+  {
+    case S3E_SURFACE_BLIT_DIR_NORMAL: m_orientationRotation.fromDegrees(0.0f); break;
+    case S3E_SURFACE_BLIT_DIR_ROT90:  m_orientationRotation.fromDegrees(90.0f); break;
+    case S3E_SURFACE_BLIT_DIR_ROT180: m_orientationRotation.fromDegrees(180.0f); break;
+    case S3E_SURFACE_BLIT_DIR_ROT270: m_orientationRotation.fromDegrees(270.0f); break;
+
+    default:
+
+      EGE_WARNING("Unknown blit direction!");
+      break;
+  }
+
+  EGE_PRINT("Pwidth: %d Pheight: %d width: %d height: %d orient: %f", m_physicalWidth, m_physicalHeight, m_width, m_height, m_orientationRotation.degrees());
 
   // apply dimensions according to landscape requirement
-  if (landscape)
-  {
-    m_height = Math::Min(m_physicalWidth, m_physicalHeight);
-    m_width  = Math::Max(m_physicalWidth, m_physicalHeight);
+  //if (landscape)
+  //{
+  //  m_height = Math::Min(m_physicalWidth, m_physicalHeight);
+  //  m_width  = Math::Max(m_physicalWidth, m_physicalHeight);
 
-    // check if rotation from portrait to landscape is needed for render target
-    if (m_physicalWidth != m_width)
-    {
-      m_orientationRotation.fromDegrees(-90);
-    }
-  }
-  else
-  {
-    m_height = Math::Max(m_physicalWidth, m_physicalHeight);
-    m_width  = Math::Min(m_physicalWidth, m_physicalHeight);
+  //  // check if rotation from portrait to landscape is needed for render target
+  //  if (m_physicalWidth != m_width)
+  //  {
+  //    m_orientationRotation.fromDegrees(-90);
+  //  }
+  //}
+  //else
+  //{
+  //  m_height = Math::Max(m_physicalWidth, m_physicalHeight);
+  //  m_width  = Math::Min(m_physicalWidth, m_physicalHeight);
 
-    // check if rotation from landscape to portrait is needed for render target
-    if (m_physicalWidth != m_width)
-    {
-      m_orientationRotation.fromDegrees(90);
-    }
-  }
+  //  // check if rotation from landscape to portrait is needed for render target
+  //  if (m_physicalWidth != m_width)
+  //  {
+  //    m_orientationRotation.fromDegrees(90);
+  //  }
+  //}
 
   static const EGLint configAttribs[] =
   {
@@ -261,7 +276,10 @@ int32 RenderWindowOGLAirplay::OrientationChangeCB(void* systemData, void* userDa
       break;
   }
 
-  EGE_PRINT("ORIENTATION %d %f", so->m_DeviceBlitDirection, me->m_orientationRotation.degrees());
+  int32 bd = s3eSurfaceGetInt(S3E_SURFACE_BLIT_DIRECTION);
+  int32 dbd = s3eSurfaceGetInt(S3E_SURFACE_DEVICE_BLIT_DIRECTION);
+
+  EGE_PRINT("ORIENTATION %d %f   bd: %d dbd: %d w: %d h: %d", so->m_DeviceBlitDirection, me->m_orientationRotation.degrees(), bd, dbd, s3eSurfaceGetInt(S3E_SURFACE_WIDTH), s3eSurfaceGetInt(S3E_SURFACE_HEIGHT));
 
   return 0;
 }

@@ -183,6 +183,9 @@ class Math
     /* Calculates greatest common divisor. */
     static s32 GreatestCommonDivisor(s32 a, s32 b);
 
+    /* Rounds to zero given value if less than default epsilon. */
+    static float32 ZeroRoundOff(float32 value);
+
   public:
 
     /*! Inaccuracy cut-off value. */
