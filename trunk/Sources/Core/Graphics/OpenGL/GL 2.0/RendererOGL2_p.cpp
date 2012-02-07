@@ -173,7 +173,9 @@ void RendererPrivate::flush()
 {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glRotatef(d_func()->m_renderTarget->orientationRotation().degrees(), 0, 0, 1);
+
+  // NOTE: actual OGLES rotation should be opposite
+  glRotatef(-d_func()->m_renderTarget->orientationRotation().degrees(), 0, 0, 1);
   glMultMatrixf(d_func()->m_projectionMatrix.data);
 
   // go thru all render queues
@@ -670,7 +672,7 @@ void RendererPrivate::applyGeneralParams(const PRenderComponent& component)
     }
 
     // apply opposite rotation to rectangle to convert it into native (non-transformed) coordinate
-    clipRect = d_func()->applyRotation(clipRect, -d_func()->m_renderTarget->orientationRotation());
+    clipRect = d_func()->applyRotation(clipRect, d_func()->m_renderTarget->orientationRotation());
 
     glScissor(static_cast<GLint>(clipRect.x), static_cast<GLint>(clipRect.y), static_cast<GLsizei>(clipRect.width), static_cast<GLsizei>(clipRect.height));
   }
