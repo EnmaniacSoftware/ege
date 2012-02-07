@@ -51,7 +51,7 @@ void Debug::PrintWithFunction(const char* functionName, const String& text)
 void Debug::WarningWithFunction(const char* functionName, const String& text)
 {
   String finalText = functionName;
-  finalText += "WARNING: ";
+  finalText += " WARNING: ";
   finalText += text;
 
   PrintRaw(finalText.toAscii());

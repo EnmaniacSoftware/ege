@@ -11,8 +11,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const float32 Math::EPSILON         = std::numeric_limits<float32>::epsilon();
-const float32 Math::EPSILON_SQUARED = std::numeric_limits<float32>::epsilon() * std::numeric_limits<float32>::epsilon();
+const float32 Math::EPSILON         = std::numeric_limits<float32>::round_error();
+const float32 Math::EPSILON_SQUARED = std::numeric_limits<float32>::round_error() * std::numeric_limits<float32>::round_error();
 const s32     Math::MAX_S32         = std::numeric_limits<s32>::max();
 const s32     Math::MIN_S32         = std::numeric_limits<s32>::min();
 const s32     Math::MAX_S16         = std::numeric_limits<s16>::max();
@@ -676,6 +676,6 @@ s32 Math::GreatestCommonDivisor(s32 a, s32 b)
 /*! Rounds to zero given value if less than default epsilon. */
 float32 Math::ZeroRoundOff(float32 value)
 {
-  return ((EPSILON > value) && (-EPSILON < value)) ? 0.0f : value;
+  return (Math::EPSILON > Math::Abs(value)) ? 0.0f : value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

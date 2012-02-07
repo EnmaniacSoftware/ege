@@ -11,10 +11,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ResourceTexture)
 EGE_DEFINE_DELETE_OPERATORS(ResourceTexture)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping literal filter function name into numeric value. */
 static EGETexture::Filter MapFilterName(const String& name, EGETexture::Filter defaultValue)
