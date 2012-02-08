@@ -8,6 +8,7 @@
 #include <EGETime.h>
 #include <EGEInput.h>
 #include <EGEMap.h>
+#include <EGESignal.h>
 #include "Core/UI/WidgetFrame.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
@@ -32,6 +33,8 @@ class Widget : public Object
     
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /* Returns TRUE if object is valid. */
     virtual bool isValid() const;
@@ -94,11 +97,18 @@ class Widget : public Object
     virtual void generateRenderData();
     /* Determines size of widget (in pixels). */
     virtual Vector2f size();
+    /* Returns global transformation matrix. */
+    const Matrix4f& globalTransformationMatrix() const;
 
   private:
 
     /*! Returns TRUE if widget is frameless. */
     virtual bool isFrameless() const = 0;
+
+  private slots:
+
+    /* Slot called when own transformation has been changed. */
+    void onTransformationChanged();
 
   protected:
 
@@ -116,6 +126,10 @@ class Widget : public Object
     String m_name;
     /*! Physics component. */
     PhysicsComponent m_physics;
+    /*! Cached global transformation matrix. */
+    mutable Matrix4f m_globalTransformation;
+    /*! Flag indicating whether global transformation matrix is valid. */
+    mutable bool m_globalTransformationMatrixInvalid;
     /*! Render data invalid flag. */
     bool m_renderDataInvalid;
     /*! Visibility flag. */

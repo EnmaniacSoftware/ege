@@ -15,12 +15,16 @@ Widget::Widget(Application* app, const String& name, u32 uid, egeObjectDeleteFun
                                                                                                 m_widgetFrame(NULL),
                                                                                                 m_parent(NULL),
                                                                                                 m_size(100.0f, 100.0f),
-                                                                                                m_alignment(ALIGN_TOP_LEFT)
+                                                                                                m_alignment(ALIGN_TOP_LEFT),
+                                                                                                m_globalTransformationMatrixInvalid(true)
 {
+  ege_connect(&m_physics, transformationChanged, this, Widget::onTransformationChanged);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Widget::~Widget()
 {
+  ege_disconnect(&m_physics, transformationChanged, this, Widget::onTransformationChanged);
+
   EGE_DELETE(m_widgetFrame);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -121,11 +125,17 @@ void Widget::setMaterial(const PMaterial& material)
 /*! Pointer event processor. */
 void Widget::pointerEvent(PPointerData data)
 {
+  const Matrix4f& globalMatrix = globalTransformationMatrix();
+
+  Vector4f pos = globalMatrix.translation();
+
+  Rectf rect(pos.x, pos.y, size().x, size().y);
+
   // map to client area
-  Vector2f pos(data->x() - m_physics.position().x, data->y() - m_physics.position().y);
+  //Vector2f pos(data->x() - m_physics.position().x, data->y() - m_physics.position().y);
   
   // check if inside
-  if ((0 <= pos.x) && (pos.x < size().x) && (0 <= pos.y) && (pos.y < size().y))
+  if (rect.contains(static_cast<float32>(data->x()), static_cast<float32>(data->y())))
   {
     // pass to children
     for (ChildrenDataMap::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
@@ -134,9 +144,9 @@ void Widget::pointerEvent(PPointerData data)
 
       // update position into local space of the child
       // NOTE: content's position is in widget's local space
-      PointerData localData(data->action(), data->button(), static_cast<s32>(pos.x), static_cast<s32>(pos.y), data->index());
+      //PointerData localData(data->action(), data->button(), static_cast<s32>(pos.x), static_cast<s32>(pos.y), data->index());
 
-      childData.widget->pointerEvent(localData);
+      childData.widget->pointerEvent(data);
     }
   }
 }
@@ -355,5 +365,44 @@ void Widget::setAlpha(float32 alpha)
 void Widget::setAlignment(Alignment alignment)
 {
   m_alignment = alignment;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when own transformation has been changed. */
+void Widget::onTransformationChanged()
+{
+  // check if not invalid yet
+  if (!m_globalTransformationMatrixInvalid)
+  {
+    // invalidate global transformation
+    m_globalTransformationMatrixInvalid = true;
+
+    // notify children
+    for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)
+    {
+      it->second.widget->onTransformationChanged();
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns global transformation matrix. */
+const Matrix4f& Widget::globalTransformationMatrix() const
+{
+  // check if matrix is invalid
+  if (m_globalTransformationMatrixInvalid)
+  {
+    if (m_parent)
+    {
+      m_globalTransformation = m_parent->globalTransformationMatrix() * m_physics.transformationMatrix();
+    }
+    else
+    {
+      m_globalTransformation = m_physics.transformationMatrix();
+    }
+
+    // validate
+    m_globalTransformationMatrixInvalid = false;
+  }
+
+  return m_globalTransformation;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

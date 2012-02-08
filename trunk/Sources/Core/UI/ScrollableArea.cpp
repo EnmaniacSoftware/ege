@@ -181,11 +181,14 @@ void ScrollableArea::pointerEvent(PPointerData data)
 {
   if (EGEInput::ACTION_BUTTON_DOWN == data->action())
   {
-    // map to client area
-    Vector2f pos(data->x() - m_physics.position().x, data->y() - m_physics.position().y);
-  
+    const Matrix4f& globalMatrix = globalTransformationMatrix();
+
+    Vector4f pos = globalMatrix.translation();
+
+    Rectf rect(pos.x, pos.y, size().x, size().y);
+
     // check if inside
-    if ((0 <= pos.x) && (pos.x < size().x) && (0 <= pos.y) && (pos.y < size().y))
+    if (rect.contains(static_cast<float32>(data->x()), static_cast<float32>(data->y())))
     {
       // store current pointer position
       m_currentPointerPosition.x = static_cast<float32>(data->x());
