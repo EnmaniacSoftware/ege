@@ -11,14 +11,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#ifdef EGE_PLATFORM_AIRPLAY
-const float32 Math::EPSILON         = 1.0e-6f;
-const float32 Math::EPSILON_SQUARED = 1.0e-6f * 1.0e-6f;
-#else
 const float32 Math::EPSILON         = std::numeric_limits<float32>::epsilon();
 const float32 Math::EPSILON_SQUARED = std::numeric_limits<float32>::epsilon() * std::numeric_limits<float32>::epsilon();
-#endif // EGE_PLATFORM_AIRPLAY
-
 const s32     Math::MAX_S32         = std::numeric_limits<s32>::max();
 const s32     Math::MIN_S32         = std::numeric_limits<s32>::min();
 const s32     Math::MAX_S16         = std::numeric_limits<s16>::max();

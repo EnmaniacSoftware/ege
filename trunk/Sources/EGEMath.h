@@ -10,13 +10,13 @@ EGE_NAMESPACE_BEGIN
 namespace EGEMath
 {
   /*! PI number. */
-  static const float32 PI = 3.14159265358979323846f;
+  static const float32 PI       = 3.14159265358979323846f;
   /*! Two times PI number. */
-  static const float32 TWO_PI = 6.28318530717958647692f;
+  static const float32 TWO_PI   = 6.28318530717958647692f;
   /*! PI half number. */
-  static const float32 PI_HALF = 1.57079632679489661923f;
-  /*! */
-  static const float32 PI_REP = 0.31830988618379067153f;
+  static const float32 PI_HALF  = 1.57079632679489661923f;
+  /*! Reciprocal of PI number. */
+  static const float32 PI_REP   = 0.31830988618379067153f;
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -126,7 +126,7 @@ Rectf Renderer::applyRotation(const Rectf& rect, const Angle& angle) const
     // do nothing
     out = rect;
 
-    EGE_PRINT("1. %d %d %d %d -> %d %d %d %d @ %f", rect.x, rect.y, rect.width, rect.height, out.x, out.y, out.width, out.height, angle.degrees());
+    //EGE_PRINT("1. %.2f %.2f %.2f %.2f -> %.2f %.2f %.2f %2.f @ %.2f", rect.x, rect.y, rect.width, rect.height, out.x, out.y, out.width, out.height, angle.degrees());
   }
   // 90 degrees rotation
   else if (0.0f == Math::ZeroRoundOff(angle.degrees() - 90.0f))
@@ -136,7 +136,7 @@ Rectf Renderer::applyRotation(const Rectf& rect, const Angle& angle) const
     out.width   = rect.height;
     out.height  = rect.width;
 
-    EGE_PRINT("2. %d %d %d %d -> %d %d %d %d @ %f", rect.x, rect.y, rect.width, rect.height, out.x, out.y, out.width, out.height, angle.degrees());
+    //EGE_PRINT("2. %.2f %.2f %.2f %.2f -> %.2f %.2f %.2f %2.f @ %.2f", rect.x, rect.y, rect.width, rect.height, out.x, out.y, out.width, out.height, angle.degrees());
   }
   // 180 degrees rotation
   else if (0.0f == Math::ZeroRoundOff(angle.degrees() - 180.0f))
@@ -146,7 +146,7 @@ Rectf Renderer::applyRotation(const Rectf& rect, const Angle& angle) const
     out.width   = rect.width;
     out.height  = rect.height;
 
-    EGE_PRINT("3. %d %d %d %d -> %d %d %d %d @ %f", rect.x, rect.y, rect.width, rect.height, out.x, out.y, out.width, out.height, angle.degrees());
+    //EGE_PRINT("3. %.2f %.2f %.2f %.2f -> %.2f %.2f %.2f %2.f @ %.2ff", rect.x, rect.y, rect.width, rect.height, out.x, out.y, out.width, out.height, angle.degrees());
   }
   // 270 degrees rotation
   else if (0.0f == Math::ZeroRoundOff(angle.degrees() - 270.0f))
@@ -156,11 +156,11 @@ Rectf Renderer::applyRotation(const Rectf& rect, const Angle& angle) const
     out.width   = rect.height;
     out.height  = rect.width;
 
-    EGE_PRINT("4. %d %d %d %d -> %d %d %d %d @ %f", rect.x, rect.y, rect.width, rect.height, out.x, out.y, out.width, out.height, angle.degrees());
+    //EGE_PRINT("4. %.2f %.2f %.2f %.2f -> %.2f %.2f %.2f %2.f @ %.2f", rect.x, rect.y, rect.width, rect.height, out.x, out.y, out.width, out.height, angle.degrees());
   }
   else
   {
-    EGE_WARNING("Unsupported angle: %f", angle.degrees());
+    EGE_WARNING("Unsupported angle: %.2f", angle.degrees());
   }
 
   return out;
