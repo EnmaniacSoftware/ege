@@ -56,6 +56,8 @@ class Widget : public Object
     bool visible() const { return m_visible; }
     /* Sets visibility. */
     void setVisible(bool set);
+    /*! Returns visibility flag. */
+    inline bool isVisible() const { return m_visible; }
     /* Sets material. */
     void setMaterial(const PMaterial& material);
     /*! Returns widget frame. */
