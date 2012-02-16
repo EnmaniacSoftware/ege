@@ -57,8 +57,11 @@ void PushButton::update(const Time& time)
 /*! Widget override. Renders dialog. */
 void PushButton::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
-  // call base class
-  Widget::addForRendering(renderer, transform);
+  if (isVisible())
+  {
+    // call base class
+    Widget::addForRendering(renderer, transform);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pointer event processor. */

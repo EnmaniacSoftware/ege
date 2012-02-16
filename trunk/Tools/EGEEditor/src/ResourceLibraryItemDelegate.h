@@ -5,6 +5,10 @@
 #include <QWidget>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class ResourceLibraryItem;
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceLibraryItemDelegate : public QStyledItemDelegate
 {
   Q_OBJECT
@@ -21,6 +25,9 @@ class ResourceLibraryItemDelegate : public QStyledItemDelegate
     /* QStyledItemDelegate override. Returns the size needed by the delegate to display the item specified by index, taking into account the style information 
        provided by option. */
     QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+
+    /* Paint container type. */
+    void paintContainer(QPainter* painter, const QStyleOptionViewItem& option, const ResourceLibraryItem* item) const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

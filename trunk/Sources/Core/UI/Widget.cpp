@@ -74,7 +74,7 @@ void Widget::update(const Time& time)
 /*! Renders dialog. */
 void Widget::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
-  if (visible())
+  if (isVisible())
   {
     // regenerate render data if required
     if (m_renderDataInvalid)

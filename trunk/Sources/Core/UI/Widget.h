@@ -52,8 +52,6 @@ class Widget : public Object
     void setName(const String& name);
     /*! Returns physics component. */
     inline PhysicsComponent& physics() { return m_physics; }
-    /*! Returns TRUE if overlay is visible. */
-    bool visible() const { return m_visible; }
     /* Sets visibility. */
     void setVisible(bool set);
     /*! Returns visibility flag. */

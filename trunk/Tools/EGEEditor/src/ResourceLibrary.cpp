@@ -11,11 +11,13 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibrary::ResourceLibrary(QWidget* parent) : QDockWidget(parent),
                                                     m_ui(new Ui_ResourceLibrary()),
-                                                    m_model(new ResourceLibraryDataModel(this)),
-                                                    m_itemDelegate(new ResourceLibraryItemDelegate(this))
+                                                    m_model(new ResourceLibraryDataModel(this))
 {
   // setup UI
   m_ui->setupUi(this);
+
+  // create item delegate
+  m_itemDelegate = new ResourceLibraryItemDelegate(m_ui->view);
 
   // set view delegate
   m_ui->view->setItemDelegate(m_itemDelegate);

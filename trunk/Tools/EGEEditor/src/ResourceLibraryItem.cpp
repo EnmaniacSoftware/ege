@@ -1,4 +1,5 @@
 #include "ResourceLibraryItem.h"
+#include "ResourceLibraryDataModel.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryItem::ResourceLibraryItem(ResourceLibraryItem* parent) : m_parent(parent),
@@ -34,10 +35,50 @@ int ResourceLibraryItem::row() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns data for a given column. */
-QVariant ResourceLibraryItem::data(int columnIndex) const
+/*! Returns data for a given column and role. 
+ *  @param columnIndex Column index for which data is to be retrieved.
+ *  @param role        Role for which data is to be retrieved.
+ *  @return Returns data associated with a given role at given column. If no valid data is present returns empty QVariant.
+ */
+QVariant ResourceLibraryItem::data(int columnIndex, int role) const
 {
-  return m_name;
+  // process according to role
+  switch (role)
+  {
+    //case Qt::DisplayRole:
+
+    //  return name();
+
+    case ResourceLibraryDataModel::TypeRole:
+
+      return type();
+  }
+
+  return QVariant();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets the role data. 
+ *  @param value  Value to be set.
+ *  @param role   Role for which data is set.
+ *  @return Returns TRUE if data has been changed. Otherwise FALSE.
+ */
+bool ResourceLibraryItem::setData(const QVariant &value, int role)
+{
+  // process according to role
+  switch (role)
+  {
+    case Qt::DisplayRole:
+
+      m_name = value.toString();
+      return true;
+
+    case ResourceLibraryDataModel::TypeRole:
+
+      m_type = static_cast<ResourceLibraryItem::Type>(value.toInt());
+      return true;
+  }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds child. */

@@ -77,11 +77,14 @@ void Dialog::update(const Time& time)
 /*! Widget override. Renders dialog. */
 void Dialog::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
-  // tail
-  renderer->addForRendering(m_tailRenderData, transform * m_physics.transformationMatrix());
+  if (isVisible())
+  {
+    // tail
+    renderer->addForRendering(m_tailRenderData, transform * m_physics.transformationMatrix());
 
-  // call base class
-  Widget::addForRendering(renderer, transform);
+    // call base class
+    Widget::addForRendering(renderer, transform);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pointer event processor. */

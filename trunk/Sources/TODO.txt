@@ -8,7 +8,7 @@ FEATURES:
 
 * Resources
   - Physical textures should be defined by 'texture' resources. All references should be done to 'texture-image' resources.
-  - Resource loading/unloading should not be synchronous but more like request-waitforaffirmation type
+  - Resource loading/unloading should not be synchronous but more like request-wait-for-affirmation type
 
 OPTIMIZATIONS:
 
@@ -27,6 +27,9 @@ OPTIMIZATIONS:
 
 - Rendering
   - Early removal of geometry if its outside of clipping region
+
+- UI
+  - Dialogs (or widgets?) instead of tail should have some sort of decoration ?
 
 CODING:
 

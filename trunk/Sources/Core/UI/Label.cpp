@@ -53,21 +53,24 @@ void Label::update(const Time& time)
 /*! Widget override. Renders widget. */
 void Label::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
-  // apply alignment to text overlay
-  Vector4f overlayPos(0, 0, 0);
-  Math::Align(&overlayPos, &m_size, ALIGN_TOP_LEFT, m_textOverlay->alignment());
+  if (isVisible())
+  {
+    // apply alignment to text overlay
+    Vector4f overlayPos(0, 0, 0);
+    Math::Align(&overlayPos, &m_size, ALIGN_TOP_LEFT, m_textOverlay->alignment());
 
-  Matrix4f matrix;
-  Vector4f pos(m_physics.position().x + overlayPos.x, m_physics.position().y + overlayPos.y, 0, 1);
-  Math::CreateMatrix(&matrix, &pos, &Vector4f::ONE, &Quaternionf::IDENTITY);
+    Matrix4f matrix;
+    Vector4f pos(m_physics.position().x + overlayPos.x, m_physics.position().y + overlayPos.y, 0, 1);
+    Math::CreateMatrix(&matrix, &pos, &Vector4f::ONE, &Quaternionf::IDENTITY);
 
-  // setup clipping region so text overlay does not exceed to label size
-  pos = transform * m_physics.position();
-  m_textOverlay->renderData()->setClipRect(Rectf(pos.x, pos.y, size().x, size().y));
-  m_textOverlay->addForRendering(renderer, transform * matrix);
+    // setup clipping region so text overlay does not exceed to label size
+    pos = transform * m_physics.position();
+    m_textOverlay->renderData()->setClipRect(Rectf(pos.x, pos.y, size().x, size().y));
+    m_textOverlay->addForRendering(renderer, transform * matrix);
 
-  // call base class
-  Widget::addForRendering(renderer, transform);
+    // call base class
+    Widget::addForRendering(renderer, transform);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pointer event processor. */

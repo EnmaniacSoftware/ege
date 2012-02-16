@@ -70,14 +70,9 @@ QVariant ResourceLibraryDataModel::data(const QModelIndex& index, int role) cons
     return QVariant();
   }
 
-  if (Qt::DisplayRole != role)
-  {
-    // done
-    return QVariant();
-  }
-
-  ResourceLibraryItem* modelItem = static_cast<ResourceLibraryItem*>(index.internalPointer());
-  return modelItem->data(index.column());
+  // get item form model
+  ResourceLibraryItem* item = getItem(index);
+  return item->data(index.column(), role);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! QAbstractItemModel override. Returns the number of columns for the children of the given parent. */
@@ -178,9 +173,6 @@ void ResourceLibraryDataModel::createDefault()
 {
   m_root = new ResourceLibraryItem();
   m_root->setType(ResourceLibraryItem::TYPE_CONTAINER);
-
-  //m_root->add(new ResourceLibraryItem(tr("Graphics"), QString(), ResourceLibraryItem::TYPE_CONTAINER));
-  //m_root->add(new ResourceLibraryItem(tr("Sounds"), QString(), ResourceLibraryItem::TYPE_CONTAINER));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! QAbstractItemModel override. */
@@ -229,6 +221,7 @@ ResourceLibraryItem* ResourceLibraryDataModel::getItem(const QModelIndex &index)
       return item;
     }
   }
+
   return m_root;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -238,21 +231,7 @@ bool ResourceLibraryDataModel::setData(const QModelIndex& index, const QVariant&
   ResourceLibraryItem* item = getItem(index);
 
   // process according to role
-  bool success = false;
-  switch (role)
-  {
-    case Qt::DisplayRole:
-
-      item->setName(value.toString());
-      success = true;
-      break;
-
-    case TypeRole:
-
-      item->setType(static_cast<ResourceLibraryItem::Type>(value.toInt()));
-      success = true;
-      break;
-  }
+  bool success = item->setData(value, role);
 
   // emit
   if (success)
