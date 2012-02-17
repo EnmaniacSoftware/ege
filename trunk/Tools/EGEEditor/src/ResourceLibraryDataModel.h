@@ -23,7 +23,8 @@ class ResourceLibraryDataModel : public QAbstractItemModel
     /*! Available custom roles. */
     enum ResourceLibraryModelRole
     {
-      TypeRole = Qt::UserRole
+      TypeRole = Qt::UserRole,
+      PathRole
     };
 
   public:
@@ -47,6 +48,10 @@ class ResourceLibraryDataModel : public QAbstractItemModel
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
     /* QAbstractItemModel override. Sets the role data for the item at index to value.*/
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
+    /* QAbstractItemModel override. On models that support this, inserts count rows into the model before the given row. 
+     * Items in the new row will be children of the item represented by the parent model index.
+     */
+    bool insertRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
 
   private:
 
@@ -58,8 +63,6 @@ class ResourceLibraryDataModel : public QAbstractItemModel
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     /* QAbstractItemModel override. */
     Qt::ItemFlags flags(const QModelIndex &index) const override;
-    /* QAbstractItemModel override. */
-    bool insertRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
     /* QAbstractItemModel override. */
     bool removeRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
     /* Returns resource library item connected for given model index. */

@@ -3,10 +3,17 @@
 #include "ResourceLibraryDataModel.h"
 #include <QPainter>
 #include <QTreeView>
+#include <QLineEdit>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceLibraryItemDelegate::ResourceLibraryItemDelegate(QWidget* parent) : QStyledItemDelegate(parent)
+#define ICON_OFFSET 2
+#define CONTAINER_TYPE_TEXT_OFFSET 5
+#define THUMBNAIL_SIZE 32
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceLibraryItemDelegate::ResourceLibraryItemDelegate(QWidget* parent) : QStyledItemDelegate(parent),
+                                                                            m_view(qobject_cast<QTreeView*>(parent))
 {
+  m_containerTypePixmap.load(":/small:folder");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryItemDelegate::~ResourceLibraryItemDelegate()
@@ -16,21 +23,40 @@ ResourceLibraryItemDelegate::~ResourceLibraryItemDelegate()
 /*! QStyledItemDelegate override. Renders the delegate using the given painter and style option for the item specified by index. */
 void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-  ResourceLibraryItem* item      = static_cast<ResourceLibraryItem*>(index.internalPointer());
-  ResourceLibraryItem::Type type = static_cast<ResourceLibraryItem::Type>(index.data(ResourceLibraryDataModel::TypeRole).toInt());
+  ResourceLibraryItem* item = static_cast<ResourceLibraryItem*>(index.internalPointer());
 
-  // call base class first
-  QStyledItemDelegate::paint(painter, option, index);
+  // store painter state
+  painter->save();
+
+  // draw background
+  m_view->style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, m_view);
 
   // process according to type
-  if (ResourceLibraryItem::TYPE_CONTAINER == type)
+  switch (item->type())
   {
-    paintContainer(painter, option, item);
+    case ResourceLibraryItem::TYPE_CONTAINER:
+  
+      paintContainer(painter, option, item);
+      break;
+
+    case ResourceLibraryItem::TYPE_IMAGE:
+
+      paintImage(painter, option, item);
+      break;
+
+    default:
+
+      Q_ASSERT("Type not supported!");
+      break;
   }
+
+  // restore painter state to original
+  painter->restore();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! QStyledItemDelegate override. 
-    Returns the size needed by the delegate to display the item specified by index, taking into account the style information provided by option. */
+ *  Returns the size needed by the delegate to display the item specified by index, taking into account the style information provided by option. 
+ */
 QSize ResourceLibraryItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
   ResourceLibraryItem* item = static_cast<ResourceLibraryItem*>(index.internalPointer());
@@ -44,9 +70,15 @@ QSize ResourceLibraryItemDelegate::sizeHint(const QStyleOptionViewItem& option, 
       size = QSize(200, 20);
       break;
 
+    case ResourceLibraryItem::TYPE_IMAGE:
+
+      size = QSize(200, qMax(item->thumbnailImage().size().height(), THUMBNAIL_SIZE));
+      break;
+
     default:
 
       Q_ASSERT("Type not supported");
+      break;
   }
 
   return size;
@@ -55,13 +87,52 @@ QSize ResourceLibraryItemDelegate::sizeHint(const QStyleOptionViewItem& option, 
 /*! Paint container type. */
 void ResourceLibraryItemDelegate::paintContainer(QPainter* painter, const QStyleOptionViewItem& option, const ResourceLibraryItem* item) const
 {
-  QPixmap icon(":/icons/add.ico");
-  
-  QRect rect(option.rect.x(), option.rect.y() + (option.rect.height() - option.decorationSize.height()) >> 1, option.decorationSize.width(), option.decorationSize.height());
-  painter->drawPixmap(rect.intersect(option.rect), icon);
+  QRect rect(option.rect.x() + ICON_OFFSET, option.rect.y() + ((option.rect.height() - m_containerTypePixmap.size().height()) >> 1), 
+             m_containerTypePixmap.size().width(), m_containerTypePixmap.size().height());
+  painter->drawPixmap(rect.intersect(option.rect), m_containerTypePixmap);
 
-  rect.translate(option.rect.height() + 5, 0);
+  rect.translate(option.rect.height() + CONTAINER_TYPE_TEXT_OFFSET, 0);
   rect.setWidth(option.fontMetrics.width(item->name()));
-  painter->drawText(rect.intersect(option.rect), item->name());
+  painter->drawText(rect.intersect(option.rect), Qt::AlignCenter, item->name());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Paint image type. */
+void ResourceLibraryItemDelegate::paintImage(QPainter* painter, const QStyleOptionViewItem& option, const ResourceLibraryItem* item) const
+{
+  int thumbSize = qMax(item->thumbnailImage().size().height(), THUMBNAIL_SIZE);
+
+  QRect rect(option.rect.x() + ICON_OFFSET, option.rect.y(), thumbSize, thumbSize);
+  painter->drawImage(rect.intersect(option.rect), item->thumbnailImage());
+
+  rect.translate(THUMBNAIL_SIZE + CONTAINER_TYPE_TEXT_OFFSET, 0);
+  rect.setWidth(option.fontMetrics.width(item->name()));
+  painter->drawText(rect.intersect(option.rect), Qt::AlignCenter, item->name());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! QStyledItemDelegate override. Returns the widget used to edit the item specified by index for editing. 
+ *  The parent widget and style option are used to control how the editor widget appears.
+ */
+QWidget* ResourceLibraryItemDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+	// create editor
+	QWidget* editor = QStyledItemDelegate::createEditor(parent, option, index);
+  
+	return editor;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! QStyledItemDelegate override. Updates the editor for the item specified by index according to the style option given. */
+void ResourceLibraryItemDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+  ResourceLibraryItem* item = static_cast<ResourceLibraryItem*>(index.internalPointer());
+
+  // process according to type
+  switch (item->type())
+  {
+    case ResourceLibraryItem::TYPE_CONTAINER:
+
+      editor->move(option.rect.x() + ICON_OFFSET + option.rect.height() + CONTAINER_TYPE_TEXT_OFFSET, option.rect.y());
+      editor->resize(editor->size().width(), option.rect.size().height());
+      break;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

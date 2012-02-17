@@ -7,6 +7,7 @@
 #include "ResourceLibraryItem.h"
 #include <QMenu>
 #include <QFile>
+#include <QFileDialog>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibrary::ResourceLibrary(QWidget* parent) : QDockWidget(parent),
@@ -120,19 +121,20 @@ void ResourceLibrary::addContainer()
   ResourceLibraryItem* item;
 
   // get current seclection index
-  QModelIndex index = m_ui->view->selectionModel()->currentIndex();
+  QModelIndexList list = m_ui->view->selectionModel()->selectedIndexes();
+  QModelIndex index = !list.isEmpty() ? list.front() : QModelIndex();
 
-  // insert row after selection
-  if (!m_model->insertRow(index.row() + 1, index.parent()))
+  // insert row at the begining of index
+  if (!m_model->insertRow(0, index))
   {
     // error!
     return;
   }
 
   // update all columns
-  for (int column = 0; column < m_model->columnCount(index.parent()); ++column)
+  for (int column = 0; column < m_model->columnCount(index); ++column)
   {
-    QModelIndex child = m_model->index(index.row() + 1, column, index.parent());
+    QModelIndex child = m_model->index(0, column, index);
 
     m_model->setData(child, QVariant(tr("No name")), Qt::DisplayRole);
     m_model->setData(child, QVariant(ResourceLibraryItem::TYPE_CONTAINER), ResourceLibraryDataModel::TypeRole);
@@ -142,10 +144,41 @@ void ResourceLibrary::addContainer()
 /*! Slot called when resource is requested to be added. */
 void ResourceLibrary::addResource()
 {
-  QModelIndex modelIndex = m_ui->view->selectionModel()->selectedIndexes().first();
+  QModelIndex index = m_ui->view->selectionModel()->selectedIndexes().first();
 
-  ResourceLibraryItem* item = static_cast<ResourceLibraryItem*>(modelIndex.internalPointer());
-//  item->add(new ResourceLibraryItem(tr("No name"), QString(), ResourceLibraryItem::TYPE_CONTAINER));
+  // prepare filters
+	QString filters = tr("Images");
+	filters += QLatin1String(" (*.png *.jpg)");
+
+  // open file selection dialog
+	QStringList list = QFileDialog::getOpenFileNames(this, tr("Add resource"), QString(), filters);
+  if (!list.isEmpty())
+  {
+    // insert rows at the begining of index
+    if (!m_model->insertRows(0, list.size(), index))
+    {
+      // error!
+      return;
+    }
+
+    // go thru all items
+    for (int i = 0; i < list.size(); ++i)
+    {
+      // update all columns
+      for (int column = 0; column < m_model->columnCount(index); ++column)
+      {
+        QModelIndex child = m_model->index(i, column, index);
+
+        QString item = QDir::fromNativeSeparators(list[i]);
+        QString name = item.section("/", -1);
+        QString path = item.section("/", 0, -2);
+
+        m_model->setData(child, QVariant(name), Qt::DisplayRole);
+        m_model->setData(child, QVariant(path), ResourceLibraryDataModel::PathRole);
+        m_model->setData(child, QVariant(ResourceLibraryItem::TYPE_IMAGE), ResourceLibraryDataModel::TypeRole);
+      }
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when resource item is requested to be removed. */

@@ -1,5 +1,6 @@
 #include "ResourceLibraryItem.h"
 #include "ResourceLibraryDataModel.h"
+#include <QImageReader>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryItem::ResourceLibraryItem(ResourceLibraryItem* parent) : m_parent(parent),
@@ -45,13 +46,18 @@ QVariant ResourceLibraryItem::data(int columnIndex, int role) const
   // process according to role
   switch (role)
   {
-    //case Qt::DisplayRole:
+    case Qt::DisplayRole:
+    case Qt::EditRole:
 
-    //  return name();
+      return name();
 
     case ResourceLibraryDataModel::TypeRole:
 
       return type();
+
+    case ResourceLibraryDataModel::PathRole:
+
+      return path();
   }
 
   return QVariant();
@@ -68,6 +74,7 @@ bool ResourceLibraryItem::setData(const QVariant &value, int role)
   switch (role)
   {
     case Qt::DisplayRole:
+    case Qt::EditRole:
 
       m_name = value.toString();
       return true;
@@ -75,6 +82,11 @@ bool ResourceLibraryItem::setData(const QVariant &value, int role)
     case ResourceLibraryDataModel::TypeRole:
 
       m_type = static_cast<ResourceLibraryItem::Type>(value.toInt());
+      return true;
+
+    case ResourceLibraryDataModel::PathRole:
+
+      m_path = value.toString();
       return true;
   }
 
@@ -126,5 +138,29 @@ void ResourceLibraryItem::setName(const QString& name)
 void ResourceLibraryItem::setType(Type type)
 {
   m_type = type;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets path. */
+void ResourceLibraryItem::setPath(const QString& path)
+{
+  m_path = path;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns thumbnail image. 
+ *  @note Generates thumbnail image if required. 
+ */
+const QImage& ResourceLibraryItem::thumbnailImage() const
+{
+  // check if thumbnail is to be generated
+  if ((TYPE_IMAGE == type()) && m_thumbnail.isNull() && !m_path.isEmpty() && !m_name.isEmpty())
+  {
+    // generate
+    QImageReader imageReader(m_path + "/" + m_name);
+
+    imageReader.setScaledSize(QSize(32, 32));
+    imageReader.read(&m_thumbnail);
+  }
+
+  return m_thumbnail;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

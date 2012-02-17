@@ -71,8 +71,11 @@
        </property>
       </widget>
       <widget class="QTreeView" name="view">
+       <property name="selectionMode">
+        <enum>QAbstractItemView::ExtendedSelection</enum>
+       </property>
        <property name="indentation">
-        <number>5</number>
+        <number>20</number>
        </property>
        <property name="allColumnsShowFocus">
         <bool>true</bool>

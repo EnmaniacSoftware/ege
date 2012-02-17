@@ -4,6 +4,7 @@
 #include <QList>
 #include <QString>
 #include <QVariant>
+#include <QImage>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceLibraryItem
@@ -28,6 +29,10 @@ class ResourceLibraryItem
     void setName(const QString& name);
     /*! Returns name. */
     inline const QString& name() const { return m_name; }
+    /* Sets path. */
+    void setPath(const QString& path);
+    /*! Returns path to asset. */
+    inline const QString& path() const { return m_path; }
     /* Sets type. */
     void setType(Type type);
     /*! Returns item type. */
@@ -58,6 +63,11 @@ class ResourceLibraryItem
     /* Inserts children. */
     bool insertChildren(int position, int count, int columns);
 
+    /* Returns thumbnail image. 
+     * @note Generates thumbnail image if required. 
+     */
+    const QImage& thumbnailImage() const;
+
   private:
 
     /*! Parent. */
@@ -66,10 +76,12 @@ class ResourceLibraryItem
     QList<ResourceLibraryItem*> m_children;
     /*! Name of asset. */
     QString m_name;
-    /*! Path to asset. */
+    /*! Path to asset. Only valid for specific types. */
     QString m_path;
     /*! Asset type. */
     Type m_type;
+    /*! Thumbnail image. Only valid for specific types. */
+    mutable QImage m_thumbnail;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

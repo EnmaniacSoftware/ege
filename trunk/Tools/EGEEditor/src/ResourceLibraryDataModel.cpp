@@ -179,11 +179,16 @@ void ResourceLibraryDataModel::createDefault()
 Qt::ItemFlags ResourceLibraryDataModel::flags(const QModelIndex &index) const
 {
   if (!index.isValid())
+  {
       return 0;
+  }
 
-  return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+  return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! QAbstractItemModel override. On models that support this, inserts count rows into the model before the given row. 
+ *  Items in the new row will be children of the item represented by the parent model index.
+ */
 bool ResourceLibraryDataModel::insertRows(int position, int rows, const QModelIndex &parent)
 {
   ResourceLibraryItem* parentItem = getItem(parent);
