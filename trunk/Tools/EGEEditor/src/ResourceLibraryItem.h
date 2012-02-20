@@ -68,6 +68,9 @@ class ResourceLibraryItem
      */
     const QImage& thumbnailImage() const;
 
+    /* Returns the item flags for the given item. */
+    Qt::ItemFlags flags() const;
+
   private:
 
     /*! Parent. */

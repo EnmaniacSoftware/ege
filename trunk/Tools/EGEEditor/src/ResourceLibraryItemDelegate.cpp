@@ -105,8 +105,9 @@ void ResourceLibraryItemDelegate::paintImage(QPainter* painter, const QStyleOpti
   painter->drawImage(rect.intersect(option.rect), item->thumbnailImage());
 
   rect.translate(THUMBNAIL_SIZE + CONTAINER_TYPE_TEXT_OFFSET, 0);
-  rect.setWidth(option.fontMetrics.width(item->name()));
-  painter->drawText(rect.intersect(option.rect), Qt::AlignCenter, item->name());
+  rect.setWidth(qMax(option.fontMetrics.width(item->name()), option.fontMetrics.width(item->path())));
+  painter->drawText(rect.intersect(option.rect), Qt::AlignTop, item->name());
+  painter->drawText(rect.intersect(option.rect), Qt::AlignBottom, item->path());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! QStyledItemDelegate override. Returns the widget used to edit the item specified by index for editing. 

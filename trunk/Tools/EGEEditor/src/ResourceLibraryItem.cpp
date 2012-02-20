@@ -164,3 +164,17 @@ const QImage& ResourceLibraryItem::thumbnailImage() const
   return m_thumbnail;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns the item flags for the given item. */
+Qt::ItemFlags ResourceLibraryItem::flags() const
+{
+  Qt::ItemFlags availableFlags = Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+
+  // process according to type
+  switch (m_type)
+  {
+    case TYPE_CONTAINER: availableFlags |= Qt::ItemIsEditable; break;
+  }
+
+  return availableFlags;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

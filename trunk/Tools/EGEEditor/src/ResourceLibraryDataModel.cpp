@@ -80,7 +80,7 @@ int ResourceLibraryDataModel::columnCount(const QModelIndex& parent) const
 {
   if (parent.isValid())
   {
-      return static_cast<ResourceLibraryItem*>(parent.internalPointer())->columnCount();
+    return static_cast<ResourceLibraryItem*>(parent.internalPointer())->columnCount();
   }
   
   return m_root->columnCount();
@@ -89,9 +89,12 @@ int ResourceLibraryDataModel::columnCount(const QModelIndex& parent) const
 /*! QAbstractItemModel override. Returns the number of rows under the given parent. */
 int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
 {
-  ResourceLibraryItem* parentItem;
-  if (parent.column() > 0)
-      return 0;
+  ResourceLibraryItem* parentItem = NULL;
+
+  if (0 < parent.column())
+  {
+    return 0;
+  }
 
   if (!parent.isValid())
   {
@@ -175,21 +178,22 @@ void ResourceLibraryDataModel::createDefault()
   m_root->setType(ResourceLibraryItem::TYPE_CONTAINER);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! QAbstractItemModel override. */
-Qt::ItemFlags ResourceLibraryDataModel::flags(const QModelIndex &index) const
+/*! QAbstractItemModel override. Returns the item flags for the given index. */
+Qt::ItemFlags ResourceLibraryDataModel::flags(const QModelIndex& index) const
 {
   if (!index.isValid())
   {
-      return 0;
+    return 0;
   }
 
-  return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+  ResourceLibraryItem* item = getItem(index);
+  return item->flags();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! QAbstractItemModel override. On models that support this, inserts count rows into the model before the given row. 
  *  Items in the new row will be children of the item represented by the parent model index.
  */
-bool ResourceLibraryDataModel::insertRows(int position, int rows, const QModelIndex &parent)
+bool ResourceLibraryDataModel::insertRows(int position, int rows, const QModelIndex& parent)
 {
   ResourceLibraryItem* parentItem = getItem(parent);
 
@@ -203,7 +207,7 @@ bool ResourceLibraryDataModel::insertRows(int position, int rows, const QModelIn
   return success;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ResourceLibraryDataModel::removeRows(int position, int rows, const QModelIndex &parent)
+bool ResourceLibraryDataModel::removeRows(int position, int rows, const QModelIndex& parent)
 {
     ResourceLibraryItem* parentItem = getItem(parent);
     bool success = true;
@@ -216,7 +220,7 @@ bool ResourceLibraryDataModel::removeRows(int position, int rows, const QModelIn
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns resource library item connected for given model index. */
-ResourceLibraryItem* ResourceLibraryDataModel::getItem(const QModelIndex &index) const
+ResourceLibraryItem* ResourceLibraryDataModel::getItem(const QModelIndex& index) const
 {
   if (index.isValid()) 
   {

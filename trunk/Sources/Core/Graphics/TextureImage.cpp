@@ -96,7 +96,7 @@ s32 TextureImage::width() const
     {
       case EGE_OBJECT_UID_TEXTURE_2D:
 
-        width = ege_cast<Texture2D*>(m_texture)->width() * m_rect.width;
+        width = static_cast<s32>(ege_cast<Texture2D*>(m_texture)->width() * m_rect.width);
         break;
     }
   }
@@ -115,7 +115,7 @@ s32 TextureImage::height() const
     {
       case EGE_OBJECT_UID_TEXTURE_2D:
 
-        height = ege_cast<Texture2D*>(m_texture)->height() * m_rect.height;
+        height = static_cast<s32>(ege_cast<Texture2D*>(m_texture)->height() * m_rect.height);
         break;
     }
   }
