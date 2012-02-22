@@ -32,11 +32,11 @@ class ImageOverlay : public Overlay
     void setAlignment(Alignment align) override;
     /* Overlay override. Renders overlay. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
+    /* Overlay override. Updates overlay. */
+    void update(const Time& time) override;
 
   private:
 
-    /* Overlay override. Updates overlay. */
-    void update(const Time& time) override;
     /* Overlay override. Initializes object. */
     void initialize() override;
     /* Updates render data. */

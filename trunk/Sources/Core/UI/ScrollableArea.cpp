@@ -84,6 +84,14 @@ void ScrollableArea::update(const Time& time)
           overlay->update(time);
         }
         break;
+
+      case EGE_OBJECT_UID_OVERLAY_IMAGE:
+        {
+          ImageOverlay* overlay = ege_cast<ImageOverlay*>(*it);
+
+          overlay->update(time);
+        }
+        break;
     }
   }
 
@@ -249,6 +257,15 @@ void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transfo
           overlay->addForRendering(renderer, contentMatrix);
         }
         break;
+
+      case EGE_OBJECT_UID_OVERLAY_IMAGE:
+        {
+          ImageOverlay* overlay = ege_cast<ImageOverlay*>(*it);
+
+          overlay->renderData()->setClipRect(Rectf(pos.x, pos.y, m_size.x, m_size.y));
+          overlay->addForRendering(renderer, contentMatrix);
+        }
+        break;
     }
   }
 
@@ -385,6 +402,7 @@ EGEResult ScrollableArea::addObject(PObject object)
   switch (object->uid())
   {
     case EGE_OBJECT_UID_OVERLAY_TEXT:
+    case EGE_OBJECT_UID_OVERLAY_IMAGE:
 
       // add to pool
       m_objects.push_back(object);
@@ -612,6 +630,16 @@ void ScrollableArea::recaluclateContentSize()
           updateContent(rectangle);
         }
         break;
+
+      case EGE_OBJECT_UID_OVERLAY_IMAGE:
+        {
+          ImageOverlay* overlay = ege_cast<ImageOverlay*>(*it);
+
+          // update content
+          Rectf rectangle(overlay->physics()->position().x, overlay->physics()->position().y, overlay->physics()->scale().x, overlay->physics()->scale().y);
+          updateContent(rectangle);
+        }
+        break;
     }
   }
 }
@@ -665,6 +693,19 @@ PObject ScrollableArea::object(const String& name) const
           }
         }
         break;
+
+      case EGE_OBJECT_UID_OVERLAY_IMAGE:
+        {
+          ImageOverlay* overlay = ege_cast<ImageOverlay*>((*it).object());
+          
+          // check if found
+          if (overlay->name() == name)
+          {
+            // found
+            return (*it);
+          }
+        }
+        break;
     }
   }
 
@@ -681,11 +722,11 @@ void ScrollableArea::setAlpha(float32 alpha)
     switch ((*it)->uid())
     {
       case EGE_OBJECT_UID_OVERLAY_TEXT:
-        {
-          TextOverlay* overlay = ege_cast<TextOverlay*>((*it).object());
-
-          overlay->renderData()->material()->setDiffuseAlpha(alpha);
-        }
+      case EGE_OBJECT_UID_OVERLAY_IMAGE:
+      {
+        Overlay* overlay = ege_cast<Overlay*>((*it).object());
+        overlay->renderData()->material()->setDiffuseAlpha(alpha);
+      }
         break;
     }
   }
