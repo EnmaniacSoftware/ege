@@ -10,9 +10,9 @@
 #include <QFileDialog>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceLibrary::ResourceLibrary(QWidget* parent) : QDockWidget(parent),
-                                                    m_ui(new Ui_ResourceLibrary()),
-                                                    m_model(new ResourceLibraryDataModel(this))
+ResourceLibraryWindow::ResourceLibraryWindow(QWidget* parent) : QDockWidget(parent),
+                                                                m_ui(new Ui_ResourceLibrary()),
+                                                                m_model(new ResourceLibraryDataModel(this))
 {
   // setup UI
   m_ui->setupUi(this);
@@ -26,14 +26,11 @@ ResourceLibrary::ResourceLibrary(QWidget* parent) : QDockWidget(parent),
   // set view model
   m_ui->view->setModel(m_model);
 
-  // establish connections
-	connect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
-
   connect(parent, SIGNAL(projectCreated()), this, SLOT(onProjectCreated()));
 	connect(parent, SIGNAL(projectClosed()), this, SLOT(onProjectClosed()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceLibrary::~ResourceLibrary()
+ResourceLibraryWindow::~ResourceLibraryWindow()
 {
   if (m_ui)
   {
@@ -43,19 +40,19 @@ ResourceLibrary::~ResourceLibrary()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Saves settings. */
-void ResourceLibrary::saveSettings(Config* config)
+void ResourceLibraryWindow::saveSettings(Config* config)
 {
   Q_ASSERT(config);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Loads settings. */
-void ResourceLibrary::loadSettings(Config* config)
+void ResourceLibraryWindow::loadSettings(Config* config)
 {
   Q_ASSERT(config);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when context menu is requested. */
-void ResourceLibrary::onQueueContextMenuRequested(const QPoint& pos)
+void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
 {
   QMenu menu(this);
 
@@ -91,7 +88,7 @@ void ResourceLibrary::onQueueContextMenuRequested(const QPoint& pos)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when new project has been created/opened. */
-void ResourceLibrary::onProjectCreated()
+void ResourceLibraryWindow::onProjectCreated()
 {
   // load up data if project file exists
   if (QFile::exists(mainWindow()->project()->fullPath()))
@@ -100,6 +97,7 @@ void ResourceLibrary::onProjectCreated()
     if (!m_model->load(mainWindow()->project()->fullPath()))
     {
       // TAGE - error
+      return;
     }
   }
   else
@@ -107,16 +105,28 @@ void ResourceLibrary::onProjectCreated()
     // create empty
     m_model->createDefault();
   }
+
+  // establish connections
+	connect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
+
+  // show resources page
+  m_ui->stackedWidget->setCurrentIndex(1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when project has been closed. */
-void ResourceLibrary::onProjectClosed()
+void ResourceLibraryWindow::onProjectClosed()
 {
   m_model->clear();
+
+  // make disconnections
+	disconnect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
+
+  // hide resources page
+  m_ui->stackedWidget->setCurrentIndex(0);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when container is requested to be added. */
-void ResourceLibrary::addContainer()
+void ResourceLibraryWindow::addContainer()
 {
   ResourceLibraryItem* item;
 
@@ -142,7 +152,7 @@ void ResourceLibrary::addContainer()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when resource is requested to be added. */
-void ResourceLibrary::addResource()
+void ResourceLibraryWindow::addResource()
 {
   QModelIndex index = m_ui->view->selectionModel()->selectedIndexes().first();
 
@@ -182,7 +192,22 @@ void ResourceLibrary::addResource()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when resource item is requested to be removed. */
-void ResourceLibrary::removeItem()
+void ResourceLibraryWindow::removeItem()
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Saves data. 
+ *  @return Returns XML string with content.
+ */
+QString ResourceLibraryWindow::save() const
+{
+  QString data;
+
+  return data;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! loads data. */
+void ResourceLibraryWindow::load()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

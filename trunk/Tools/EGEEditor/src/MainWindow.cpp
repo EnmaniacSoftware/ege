@@ -21,10 +21,10 @@ MainWindow::MainWindow() : QMainWindow(),
   m_ui->setupUi(this);
 
   // create and embed Resource Library dock widget
-  m_resourceLibrary = new ResourceLibrary(this);
-  addDockWidget(Qt::LeftDockWidgetArea, m_resourceLibrary);
+  m_resourceLibraryWindow = new ResourceLibraryWindow(this);
+  addDockWidget(Qt::LeftDockWidgetArea, m_resourceLibraryWindow);
 
-  connect(m_resourceLibrary, SIGNAL(visibilityChanged(bool)), this, SLOT(onDockWidgetVisibilityChanged(bool)));
+  connect(m_resourceLibraryWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(onDockWidgetVisibilityChanged(bool)));
 
   // do inital title bar update
   updateTitleBar();
@@ -214,7 +214,7 @@ void MainWindow::updateMenus()
   {
     if (("ActionViewResourceLibrary" == action->objectName()))
     {
-      action->setChecked(m_resourceLibrary->isVisible());
+      action->setChecked(m_resourceLibraryWindow->isVisible());
     }
   }
 }
@@ -222,7 +222,7 @@ void MainWindow::updateMenus()
 /*! Slot called when View -> ResourceLibrary is selected. */
 void MainWindow::on_ActionViewResourceLibrary_triggered(bool checked)
 {
-  m_resourceLibrary->setVisible(checked);
+  m_resourceLibraryWindow->setVisible(checked);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Saves settings. */
@@ -234,7 +234,7 @@ void MainWindow::saveSettings()
   m_config->endGroup();
 
   // save resource library setting
-  m_resourceLibrary->saveSettings(m_config);
+  m_resourceLibraryWindow->saveSettings(m_config);
 
   // sync
   m_config->sync();
@@ -249,7 +249,7 @@ void MainWindow::loadSettings()
   m_config->endGroup();
 
   // load resource library setting
-  m_resourceLibrary->loadSettings(m_config);
+  m_resourceLibraryWindow->loadSettings(m_config);
 
   // sync
   m_config->sync();

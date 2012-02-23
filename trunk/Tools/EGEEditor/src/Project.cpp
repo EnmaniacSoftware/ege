@@ -1,4 +1,6 @@
 #include "Project.h"
+#include "ResourceLibrary.h"
+#include "MainWindow.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Project::Project(QObject* parent, const QString& name, const QString& path) : QObject(parent),

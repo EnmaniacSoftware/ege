@@ -29,10 +29,10 @@ class ResourceLibraryDataModel : public QAbstractItemModel
 
   public:
 
-    /* Loads data from file at given path. */
-    bool load(const QString& path);
-    /* Saves data to file at given path. */
-    bool save(const QString& path);
+    /* Loads data from given string. */
+    bool load(const QString& data);
+    /* Saves data to string. */
+    QString save() const;
     /* Clears data. */
     void clear();
     /* Adds */

@@ -19,10 +19,11 @@ enum AlignmentFlags
   ALIGN_BOTTOM  = 0x10,
   ALIGN_VCENTER = 0x20,
 
-  ALIGN_CENTER     = ALIGN_HCENTER | ALIGN_VCENTER,
-  ALIGN_TOP_LEFT   = ALIGN_TOP | ALIGN_LEFT,
-  ALIGN_TOP_RIGHT  = ALIGN_TOP | ALIGN_RIGHT,
-  ALIGN_TOP_CENTER = ALIGN_TOP | ALIGN_HCENTER
+  ALIGN_CENTER      = ALIGN_HCENTER | ALIGN_VCENTER,
+  ALIGN_TOP_LEFT    = ALIGN_TOP | ALIGN_LEFT,
+  ALIGN_TOP_RIGHT   = ALIGN_TOP | ALIGN_RIGHT,
+  ALIGN_TOP_CENTER  = ALIGN_TOP | ALIGN_HCENTER,
+  ALIGN_BOTTOM_LEFT = ALIGN_BOTTOM | ALIGN_LEFT
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

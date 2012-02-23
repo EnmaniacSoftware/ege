@@ -2,6 +2,7 @@
 #include "ResourceLibraryItem.h"
 #include <QFile>
 #include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryDataModel::ResourceLibraryDataModel(QObject* parent) : QAbstractItemModel(parent),
@@ -108,17 +109,10 @@ int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
   return parentItem->childCount();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads data from file at given path. */
-bool ResourceLibraryDataModel::load(const QString& path)
+/*! Loads data from given string. */
+bool ResourceLibraryDataModel::load(const QString& data)
 {
-  QFile file(path);
-  if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-  {
-    // error!
-    return false;
-  }
-
-  QXmlStreamReader xmlReader(&file);
+  QXmlStreamReader xmlReader(data);
   while (!xmlReader.atEnd() && !xmlReader.hasError())
   {
     // read next element
@@ -149,9 +143,19 @@ bool ResourceLibraryDataModel::load(const QString& path)
   return !xmlReader.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Saves data to file at given path. */
-bool ResourceLibraryDataModel::save(const QString& path)
+/*! Saves data to string. */
+QString ResourceLibraryDataModel::save() const
 {
+  QString output;
+
+  QXmlStreamWriter stream(&output);
+  stream.setAutoFormatting(true);
+  stream.writeStartDocument();
+  stream.writeStartElement("bookmark");
+  stream.writeAttribute("href", "http://qt.nokia.com/");
+  stream.writeTextElement("title", "Qt Home");
+  stream.writeEndElement(); // bookmark
+
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

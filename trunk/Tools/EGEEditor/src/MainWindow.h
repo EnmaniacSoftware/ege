@@ -7,7 +7,7 @@
 
 class Ui_MainWindow;
 class Project;
-class ResourceLibrary;
+class ResourceLibraryWindow;
 class Config;
 class QCloseEvent;
 
@@ -72,7 +72,7 @@ class MainWindow : public QMainWindow
     /*! Current project. */
     Project* m_project;
     /*! Resource library. */
-    ResourceLibrary* m_resourceLibrary;
+    ResourceLibraryWindow* m_resourceLibraryWindow;
     /*! Config. */
     Config* m_config;
 };

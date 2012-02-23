@@ -12,19 +12,26 @@ class ResourceLibraryDataModel;
 class ResourceLibraryItemDelegate;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceLibrary : public QDockWidget
+/*! Resource library window. */
+class ResourceLibraryWindow : public QDockWidget
 {
   Q_OBJECT
 
   public:
 
-    ResourceLibrary(QWidget* parent);
-   ~ResourceLibrary();
+    ResourceLibraryWindow(QWidget* parent);
+   ~ResourceLibraryWindow();
 
     /* Saves settings. */
     void saveSettings(Config* config);
     /* Loads settings. */
     void loadSettings(Config* config);
+    /* Saves data. 
+     * @return Returns XML string with content.
+     */
+    QString save() const;
+    /* loads data. */
+    void load();
 
   private slots:
 
