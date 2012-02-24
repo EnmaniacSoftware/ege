@@ -69,6 +69,20 @@ void MainWindow::on_ActionFileNew_triggered(bool checked)
 void MainWindow::on_ActionFileOpen_triggered(bool checked)
 {
   Q_UNUSED(checked);
+
+  // TAGE - implement
+
+  // connect
+  connect(m_project, SIGNAL(dirtyFlagChanged()), this, SLOT(updateTitleBar()));
+
+  // update title bar
+  updateTitleBar();
+
+  // update menus
+  updateMenus();
+
+  // emit
+  emit projectOpened();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when File -> Close is selected. */

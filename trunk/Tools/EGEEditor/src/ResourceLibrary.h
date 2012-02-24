@@ -30,8 +30,8 @@ class ResourceLibraryWindow : public QDockWidget
      * @return Returns XML string with content.
      */
     QString save() const;
-    /* loads data. */
-    void load();
+    /* Loads data from given string. */
+    void load(const QString& data);
 
   private slots:
 

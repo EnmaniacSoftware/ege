@@ -201,13 +201,12 @@ void ResourceLibraryWindow::removeItem()
  */
 QString ResourceLibraryWindow::save() const
 {
-  QString data;
-
-  return data;
+  return m_model->save();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! loads data. */
-void ResourceLibraryWindow::load()
+/*! Loads data from given string. */
+bool ResourceLibraryWindow::load(const QString& data)
 {
+  return m_model->load(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
