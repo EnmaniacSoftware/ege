@@ -62,7 +62,13 @@
     <ClInclude Include="src\ResourceLibraryDataModel.h">
       <Filter>Header Files\Resource Library</Filter>
     </ClInclude>
-    <ClInclude Include="src\ResourceLibraryItem.h">
+    <ClInclude Include="src\Serializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ResourceItemFactory.h">
+      <Filter>Header Files\Resource Library</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ResourceItem.h">
       <Filter>Header Files\Resource Library</Filter>
     </ClInclude>
   </ItemGroup>
@@ -153,7 +159,7 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ResourceLibraryItemDelegate.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="src\ResourceLibraryItem.cpp">
+    <ClCompile Include="src\ResourceItem.cpp">
       <Filter>Source Files\Resource Library</Filter>
     </ClCompile>
   </ItemGroup>

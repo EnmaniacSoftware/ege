@@ -2,6 +2,7 @@
 #define RESOURCE_LIBRARY_H
 
 #include <QDockWidget>
+#include "Serializer.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +14,7 @@ class ResourceLibraryItemDelegate;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Resource library window. */
-class ResourceLibraryWindow : public QDockWidget
+class ResourceLibraryWindow : public QDockWidget, public ISerializer
 {
   Q_OBJECT
 
@@ -26,12 +27,11 @@ class ResourceLibraryWindow : public QDockWidget
     void saveSettings(Config* config);
     /* Loads settings. */
     void loadSettings(Config* config);
-    /* Saves data. 
-     * @return Returns XML string with content.
-     */
-    QString save() const;
-    /* Loads data from given string. */
-    void load(const QString& data);
+
+    /* ISerializer override. Serializes into given buffer. */
+    QString serialize() const override;
+    /* ISerializer override. Unserializes from given data buffer. */
+    bool unserialize(const QString& data) override;
 
   private slots:
 

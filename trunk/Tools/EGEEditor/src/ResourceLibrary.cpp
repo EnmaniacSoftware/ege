@@ -4,7 +4,7 @@
 #include "MainWindow.h"
 #include "ResourceLibraryDataModel.h"
 #include "ResourceLibraryItemDelegate.h"
-#include "ResourceLibraryItem.h"
+#include "ResourceItem.h"
 #include <QMenu>
 #include <QFile>
 #include <QFileDialog>
@@ -67,9 +67,9 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
   else if (1 == indexList.size())
   {
     QModelIndex modelIndex = indexList.front();
-    ResourceLibraryItem* item = static_cast<ResourceLibraryItem*>(modelIndex.internalPointer());
+    ResourceItem* item = static_cast<ResourceItem*>(modelIndex.internalPointer());
 
-    if (ResourceLibraryItem::TYPE_CONTAINER == item->type())
+    if (ResourceItem::TYPE_CONTAINER == item->type())
     {
       action = menu.addAction(tr("Add container"), this, SLOT(addContainer()));
       action = menu.addAction(tr("Add resource"), this, SLOT(addResource()));
@@ -90,22 +90,6 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
 /*! Slot called when new project has been created/opened. */
 void ResourceLibraryWindow::onProjectCreated()
 {
-  // load up data if project file exists
-  if (QFile::exists(mainWindow()->project()->fullPath()))
-  {
-    // load resource library
-    if (!m_model->load(mainWindow()->project()->fullPath()))
-    {
-      // TAGE - error
-      return;
-    }
-  }
-  else
-  {
-    // create empty
-    m_model->createDefault();
-  }
-
   // establish connections
 	connect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
 
@@ -116,6 +100,7 @@ void ResourceLibraryWindow::onProjectCreated()
 /*! Slot called when project has been closed. */
 void ResourceLibraryWindow::onProjectClosed()
 {
+  // clean up model
   m_model->clear();
 
   // make disconnections
@@ -128,7 +113,7 @@ void ResourceLibraryWindow::onProjectClosed()
 /*! Slot called when container is requested to be added. */
 void ResourceLibraryWindow::addContainer()
 {
-  ResourceLibraryItem* item;
+  ResourceItem* item;
 
   // get current seclection index
   QModelIndexList list = m_ui->view->selectionModel()->selectedIndexes();
@@ -147,7 +132,7 @@ void ResourceLibraryWindow::addContainer()
     QModelIndex child = m_model->index(0, column, index);
 
     m_model->setData(child, QVariant(tr("No name")), Qt::DisplayRole);
-    m_model->setData(child, QVariant(ResourceLibraryItem::TYPE_CONTAINER), ResourceLibraryDataModel::TypeRole);
+    m_model->setData(child, QVariant(ResourceItem::TYPE_CONTAINER), ResourceLibraryDataModel::TypeRole);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -185,7 +170,7 @@ void ResourceLibraryWindow::addResource()
 
         m_model->setData(child, QVariant(name), Qt::DisplayRole);
         m_model->setData(child, QVariant(path), ResourceLibraryDataModel::PathRole);
-        m_model->setData(child, QVariant(ResourceLibraryItem::TYPE_IMAGE), ResourceLibraryDataModel::TypeRole);
+        m_model->setData(child, QVariant(ResourceItem::TYPE_IMAGE), ResourceLibraryDataModel::TypeRole);
       }
     }
   }
@@ -196,17 +181,17 @@ void ResourceLibraryWindow::removeItem()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Saves data. 
- *  @return Returns XML string with content.
- */
-QString ResourceLibraryWindow::save() const
+/*! ISerializer override. Serializes into given buffer. */
+QString ResourceLibraryWindow::serialize() const
 {
-  return m_model->save();
+  QString data;
+
+  return data;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads data from given string. */
-bool ResourceLibraryWindow::load(const QString& data)
+/*! ISerializer override. Unserializes from given data buffer. */
+bool ResourceLibraryWindow::unserialize(const QString& data)
 {
-  return m_model->load(data);
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

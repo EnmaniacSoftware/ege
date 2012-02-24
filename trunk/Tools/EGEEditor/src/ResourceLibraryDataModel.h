@@ -8,7 +8,7 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class ResourceLibraryItem;
+class ResourceItem;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceLibraryDataModel : public QAbstractItemModel
@@ -36,11 +36,11 @@ class ResourceLibraryDataModel : public QAbstractItemModel
     /* Clears data. */
     void clear();
     /* Adds */
-    void add(ResourceLibraryItem* item);
+    void add(ResourceItem* item);
     /* Creates default. */
     void createDefault();
     /*! Returns root item. */
-    inline ResourceLibraryItem* root() const { return m_root; }
+    inline ResourceItem* root() const { return m_root; }
 
     /* QAbstractItemModel override. Returns the number of columns for the children of the given parent. */
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -66,12 +66,12 @@ class ResourceLibraryDataModel : public QAbstractItemModel
     /* QAbstractItemModel override. */
     bool removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) override;
     /* Returns resource library item connected for given model index. */
-    ResourceLibraryItem* getItem(const QModelIndex& index) const;
+    ResourceItem* getItem(const QModelIndex& index) const;
 
   private:
 
     /*! Root item. */
-    ResourceLibraryItem* m_root;
+    ResourceItem* m_root;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

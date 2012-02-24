@@ -1,36 +1,36 @@
-#include "ResourceLibraryItem.h"
+#include "ResourceItem.h"
 #include "ResourceLibraryDataModel.h"
 #include <QImageReader>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceLibraryItem::ResourceLibraryItem(ResourceLibraryItem* parent) : m_parent(parent),
+ResourceItem::ResourceItem(ResourceItem* parent) : m_parent(parent),
                                                                         m_type(TYPE_NONE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceLibraryItem::~ResourceLibraryItem()
+ResourceItem::~ResourceItem()
 {
   qDeleteAll(m_children);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns number of columns. */
-int ResourceLibraryItem::columnCount() const
+int ResourceItem::columnCount() const
 {
   return 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns children count. */
-int ResourceLibraryItem::childCount() const
+int ResourceItem::childCount() const
 {
   return m_children.count();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns row index at which current item is placed withing parent. */
-int ResourceLibraryItem::row() const
+int ResourceItem::row() const
 {
   if (NULL != m_parent)
   {
-    return m_parent->m_children.indexOf(const_cast<ResourceLibraryItem*>(this));
+    return m_parent->m_children.indexOf(const_cast<ResourceItem*>(this));
   }
 
   return 0;
@@ -41,7 +41,7 @@ int ResourceLibraryItem::row() const
  *  @param role        Role for which data is to be retrieved.
  *  @return Returns data associated with a given role at given column. If no valid data is present returns empty QVariant.
  */
-QVariant ResourceLibraryItem::data(int columnIndex, int role) const
+QVariant ResourceItem::data(int columnIndex, int role) const
 {
   // process according to role
   switch (role)
@@ -68,7 +68,7 @@ QVariant ResourceLibraryItem::data(int columnIndex, int role) const
  *  @param role   Role for which data is set.
  *  @return Returns TRUE if data has been changed. Otherwise FALSE.
  */
-bool ResourceLibraryItem::setData(const QVariant &value, int role)
+bool ResourceItem::setData(const QVariant &value, int role)
 {
   // process according to role
   switch (role)
@@ -81,7 +81,7 @@ bool ResourceLibraryItem::setData(const QVariant &value, int role)
 
     case ResourceLibraryDataModel::TypeRole:
 
-      m_type = static_cast<ResourceLibraryItem::Type>(value.toInt());
+      m_type = static_cast<ResourceItem::Type>(value.toInt());
       return true;
 
     case ResourceLibraryDataModel::PathRole:
@@ -94,7 +94,7 @@ bool ResourceLibraryItem::setData(const QVariant &value, int role)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds child. */
-//void ResourceLibraryItem::add(ResourceLibraryItem* child)
+//void ResourceItem::add(ResourceItem* child)
 //{
 //  // set parent
 //  child->m_parent = this;
@@ -104,13 +104,13 @@ bool ResourceLibraryItem::setData(const QVariant &value, int role)
 //}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns child at given index. */
-ResourceLibraryItem* ResourceLibraryItem::child(int index) const
+ResourceItem* ResourceItem::child(int index) const
 {
   return ((0 <= index) && (index < childCount())) ? m_children[index] : NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Inserts children. */
-bool ResourceLibraryItem::insertChildren(int position, int count, int columns)
+bool ResourceItem::insertChildren(int position, int count, int columns)
 {
   // check if insertion within proper range
   if ((0 > position) || (position > m_children.size()))
@@ -121,7 +121,7 @@ bool ResourceLibraryItem::insertChildren(int position, int count, int columns)
 
   for (int row = 0; row < count; ++row)
   {
-    ResourceLibraryItem* item = new ResourceLibraryItem(this);
+    ResourceItem* item = new ResourceItem(this);
     m_children.insert(position, item);
   }
 
@@ -129,19 +129,19 @@ bool ResourceLibraryItem::insertChildren(int position, int count, int columns)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets name. */
-void ResourceLibraryItem::setName(const QString& name)
+void ResourceItem::setName(const QString& name)
 {
   m_name = name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets type. */
-void ResourceLibraryItem::setType(Type type)
+void ResourceItem::setType(Type type)
 {
   m_type = type;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets path. */
-void ResourceLibraryItem::setPath(const QString& path)
+void ResourceItem::setPath(const QString& path)
 {
   m_path = path;
 }
@@ -149,7 +149,7 @@ void ResourceLibraryItem::setPath(const QString& path)
 /*! Returns thumbnail image. 
  *  @note Generates thumbnail image if required. 
  */
-const QImage& ResourceLibraryItem::thumbnailImage() const
+const QImage& ResourceItem::thumbnailImage() const
 {
   // check if thumbnail is to be generated
   if ((TYPE_IMAGE == type()) && m_thumbnail.isNull() && !m_path.isEmpty() && !m_name.isEmpty())
@@ -165,7 +165,7 @@ const QImage& ResourceLibraryItem::thumbnailImage() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns the item flags for the given item. */
-Qt::ItemFlags ResourceLibraryItem::flags() const
+Qt::ItemFlags ResourceItem::flags() const
 {
   Qt::ItemFlags availableFlags = Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 
@@ -176,5 +176,19 @@ Qt::ItemFlags ResourceLibraryItem::flags() const
   }
 
   return availableFlags;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! ISerializer override. Serializes into given buffer. */
+QString ResourceItem::serialize() const
+{
+  QString data;
+
+  return data;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! ISerializer override. Unserializes from given data buffer. */
+bool ResourceItem::unserialize(const QString& data)
+{
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

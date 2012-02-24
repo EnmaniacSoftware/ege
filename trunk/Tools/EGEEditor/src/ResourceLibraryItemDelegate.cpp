@@ -1,5 +1,5 @@
 #include "ResourceLibraryItemDelegate.h"
-#include "ResourceLibraryItem.h"
+#include "ResourceItem.h"
 #include "ResourceLibraryDataModel.h"
 #include <QPainter>
 #include <QTreeView>
@@ -23,7 +23,7 @@ ResourceLibraryItemDelegate::~ResourceLibraryItemDelegate()
 /*! QStyledItemDelegate override. Renders the delegate using the given painter and style option for the item specified by index. */
 void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-  ResourceLibraryItem* item = static_cast<ResourceLibraryItem*>(index.internalPointer());
+  ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
 
   // store painter state
   painter->save();
@@ -34,12 +34,12 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
   // process according to type
   switch (item->type())
   {
-    case ResourceLibraryItem::TYPE_CONTAINER:
+    case ResourceItem::TYPE_CONTAINER:
   
       paintContainer(painter, option, item);
       break;
 
-    case ResourceLibraryItem::TYPE_IMAGE:
+    case ResourceItem::TYPE_IMAGE:
 
       paintImage(painter, option, item);
       break;
@@ -59,18 +59,18 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
  */
 QSize ResourceLibraryItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-  ResourceLibraryItem* item = static_cast<ResourceLibraryItem*>(index.internalPointer());
+  ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
 
   // process according to type
   QSize size;
   switch (item->type())
   {
-    case ResourceLibraryItem::TYPE_CONTAINER:
+    case ResourceItem::TYPE_CONTAINER:
 
       size = QSize(200, 20);
       break;
 
-    case ResourceLibraryItem::TYPE_IMAGE:
+    case ResourceItem::TYPE_IMAGE:
 
       size = QSize(200, qMax(item->thumbnailImage().size().height(), THUMBNAIL_SIZE));
       break;
@@ -85,7 +85,7 @@ QSize ResourceLibraryItemDelegate::sizeHint(const QStyleOptionViewItem& option, 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Paint container type. */
-void ResourceLibraryItemDelegate::paintContainer(QPainter* painter, const QStyleOptionViewItem& option, const ResourceLibraryItem* item) const
+void ResourceLibraryItemDelegate::paintContainer(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItem* item) const
 {
   QRect rect(option.rect.x() + ICON_OFFSET, option.rect.y() + ((option.rect.height() - m_containerTypePixmap.size().height()) >> 1), 
              m_containerTypePixmap.size().width(), m_containerTypePixmap.size().height());
@@ -97,7 +97,7 @@ void ResourceLibraryItemDelegate::paintContainer(QPainter* painter, const QStyle
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Paint image type. */
-void ResourceLibraryItemDelegate::paintImage(QPainter* painter, const QStyleOptionViewItem& option, const ResourceLibraryItem* item) const
+void ResourceLibraryItemDelegate::paintImage(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItem* item) const
 {
   int thumbSize = qMax(item->thumbnailImage().size().height(), THUMBNAIL_SIZE);
 
@@ -124,12 +124,12 @@ QWidget* ResourceLibraryItemDelegate::createEditor(QWidget* parent, const QStyle
 /*! QStyledItemDelegate override. Updates the editor for the item specified by index according to the style option given. */
 void ResourceLibraryItemDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-  ResourceLibraryItem* item = static_cast<ResourceLibraryItem*>(index.internalPointer());
+  ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
 
   // process according to type
   switch (item->type())
   {
-    case ResourceLibraryItem::TYPE_CONTAINER:
+    case ResourceItem::TYPE_CONTAINER:
 
       editor->move(option.rect.x() + ICON_OFFSET + option.rect.height() + CONTAINER_TYPE_TEXT_OFFSET, option.rect.y());
       editor->resize(editor->size().width(), option.rect.size().height());

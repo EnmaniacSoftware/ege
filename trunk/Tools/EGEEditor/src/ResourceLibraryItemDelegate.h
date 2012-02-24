@@ -6,7 +6,7 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class ResourceLibraryItem;
+class ResourceItem;
 class QTreeView;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -35,9 +35,9 @@ class ResourceLibraryItemDelegate : public QStyledItemDelegate
     void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
     /* Paint container type. */
-    void paintContainer(QPainter* painter, const QStyleOptionViewItem& option, const ResourceLibraryItem* item) const;
+    void paintContainer(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItem* item) const;
     /* Paint image type. */
-    void paintImage(QPainter* painter, const QStyleOptionViewItem& option, const ResourceLibraryItem* item) const;
+    void paintImage(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItem* item) const;
 
   private:
 

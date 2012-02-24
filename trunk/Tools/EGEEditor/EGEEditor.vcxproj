@@ -79,8 +79,10 @@
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\JuiceJumpers\ProjectJuiceJumpers.h" />
     <ClInclude Include="src\NewProjectDataModel.h" />
+    <ClInclude Include="src\ResourceItem.h" />
+    <ClInclude Include="src\ResourceItemFactory.h" />
     <ClInclude Include="src\ResourceLibraryDataModel.h" />
-    <ClInclude Include="src\ResourceLibraryItem.h" />
+    <ClInclude Include="src\Serializer.h" />
     <CustomBuild Include="src\ResourceLibraryItemDelegate.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ResourceLibraryItemDelegate.h...</Message>
@@ -196,9 +198,9 @@
     <ClCompile Include="src\NewProjectDataModel.cpp" />
     <ClCompile Include="src\NewProjectDlg.cpp" />
     <ClCompile Include="src\Project.cpp" />
+    <ClCompile Include="src\ResourceItem.cpp" />
     <ClCompile Include="src\ResourceLibrary.cpp" />
     <ClCompile Include="src\ResourceLibraryDataModel.cpp" />
-    <ClCompile Include="src\ResourceLibraryItem.cpp" />
     <ClCompile Include="src\ResourceLibraryItemDelegate.cpp" />
   </ItemGroup>
   <ItemGroup>

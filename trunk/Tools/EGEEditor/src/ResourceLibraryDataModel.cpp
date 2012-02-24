@@ -1,5 +1,5 @@
 #include "ResourceLibraryDataModel.h"
-#include "ResourceLibraryItem.h"
+#include "ResourceItem.h"
 #include <QFile>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
@@ -24,8 +24,8 @@ QModelIndex ResourceLibraryDataModel::parent(const QModelIndex& index) const
     return QModelIndex();
   }
 
-  ResourceLibraryItem* childItem = static_cast<ResourceLibraryItem*>(index.internalPointer());
-  ResourceLibraryItem* parentItem = childItem->parent();
+  ResourceItem* childItem = static_cast<ResourceItem*>(index.internalPointer());
+  ResourceItem* parentItem = childItem->parent();
 
   if ((parentItem == m_root) || (NULL == parentItem))
   {
@@ -38,8 +38,8 @@ QModelIndex ResourceLibraryDataModel::parent(const QModelIndex& index) const
 /*! QAbstractItemModel override. Returns the index of the item in the model specified by the given row, column and parent index. */
 QModelIndex ResourceLibraryDataModel::index(int row, int column, const QModelIndex& parent) const
 {
-  ResourceLibraryItem* parentItem;
-  ResourceLibraryItem* item;
+  ResourceItem* parentItem;
+  ResourceItem* item;
 
   // check if parent invalid
   if (!parent.isValid())
@@ -48,7 +48,7 @@ QModelIndex ResourceLibraryDataModel::index(int row, int column, const QModelInd
   }
   else
   {
-    parentItem = static_cast<ResourceLibraryItem*>(parent.internalPointer());
+    parentItem = static_cast<ResourceItem*>(parent.internalPointer());
   }
 
   // get proper child
@@ -72,7 +72,7 @@ QVariant ResourceLibraryDataModel::data(const QModelIndex& index, int role) cons
   }
 
   // get item form model
-  ResourceLibraryItem* item = getItem(index);
+  ResourceItem* item = getItem(index);
   return item->data(index.column(), role);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ int ResourceLibraryDataModel::columnCount(const QModelIndex& parent) const
 {
   if (parent.isValid())
   {
-    return static_cast<ResourceLibraryItem*>(parent.internalPointer())->columnCount();
+    return static_cast<ResourceItem*>(parent.internalPointer())->columnCount();
   }
   
   return m_root->columnCount();
@@ -90,7 +90,7 @@ int ResourceLibraryDataModel::columnCount(const QModelIndex& parent) const
 /*! QAbstractItemModel override. Returns the number of rows under the given parent. */
 int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
 {
-  ResourceLibraryItem* parentItem = NULL;
+  ResourceItem* parentItem = NULL;
 
   if (0 < parent.column())
   {
@@ -103,7 +103,7 @@ int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
   }
   else
   {
-    parentItem = static_cast<ResourceLibraryItem*>(parent.internalPointer());
+    parentItem = static_cast<ResourceItem*>(parent.internalPointer());
   }
 
   return parentItem->childCount();
@@ -170,7 +170,7 @@ void ResourceLibraryDataModel::clear()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Adds */
-void ResourceLibraryDataModel::add(ResourceLibraryItem* item)
+void ResourceLibraryDataModel::add(ResourceItem* item)
 {
   //m_root->add(item);
 }
@@ -178,8 +178,8 @@ void ResourceLibraryDataModel::add(ResourceLibraryItem* item)
 /*! Creates default. */
 void ResourceLibraryDataModel::createDefault()
 {
-  m_root = new ResourceLibraryItem();
-  m_root->setType(ResourceLibraryItem::TYPE_CONTAINER);
+  m_root = new ResourceItem();
+  m_root->setType(ResourceItem::TYPE_CONTAINER);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! QAbstractItemModel override. Returns the item flags for the given index. */
@@ -190,7 +190,7 @@ Qt::ItemFlags ResourceLibraryDataModel::flags(const QModelIndex& index) const
     return 0;
   }
 
-  ResourceLibraryItem* item = getItem(index);
+  ResourceItem* item = getItem(index);
   return item->flags();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -199,7 +199,7 @@ Qt::ItemFlags ResourceLibraryDataModel::flags(const QModelIndex& index) const
  */
 bool ResourceLibraryDataModel::insertRows(int position, int rows, const QModelIndex& parent)
 {
-  ResourceLibraryItem* parentItem = getItem(parent);
+  ResourceItem* parentItem = getItem(parent);
 
   bool success;
 
@@ -213,7 +213,7 @@ bool ResourceLibraryDataModel::insertRows(int position, int rows, const QModelIn
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceLibraryDataModel::removeRows(int position, int rows, const QModelIndex& parent)
 {
-    ResourceLibraryItem* parentItem = getItem(parent);
+    ResourceItem* parentItem = getItem(parent);
     bool success = true;
 
     beginRemoveRows(parent, position, position + rows - 1);
@@ -224,11 +224,11 @@ bool ResourceLibraryDataModel::removeRows(int position, int rows, const QModelIn
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns resource library item connected for given model index. */
-ResourceLibraryItem* ResourceLibraryDataModel::getItem(const QModelIndex& index) const
+ResourceItem* ResourceLibraryDataModel::getItem(const QModelIndex& index) const
 {
   if (index.isValid()) 
   {
-    ResourceLibraryItem* item = static_cast<ResourceLibraryItem*>(index.internalPointer());
+    ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
     if (NULL != item)
     {
       return item;
@@ -241,7 +241,7 @@ ResourceLibraryItem* ResourceLibraryDataModel::getItem(const QModelIndex& index)
 /*! QAbstractItemModel override. Sets the role data for the item at index to value.*/
 bool ResourceLibraryDataModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-  ResourceLibraryItem* item = getItem(index);
+  ResourceItem* item = getItem(index);
 
   // process according to role
   bool success = item->setData(value, role);

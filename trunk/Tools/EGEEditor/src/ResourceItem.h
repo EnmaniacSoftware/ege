@@ -5,9 +5,10 @@
 #include <QString>
 #include <QVariant>
 #include <QImage>
+#include "Serializer.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceLibraryItem
+class ResourceItem : public ISerializer
 {
   public:
 
@@ -22,8 +23,8 @@ class ResourceLibraryItem
 
   public:
 
-    ResourceLibraryItem(ResourceLibraryItem* parent = NULL);
-   ~ResourceLibraryItem();
+    ResourceItem(ResourceItem* parent = NULL);
+   ~ResourceItem();
 
     /* Sets name. */
     void setName(const QString& name);
@@ -43,9 +44,9 @@ class ResourceLibraryItem
     /* Returns children count. */
     int childCount() const;
     /* Returns child at given index. */
-    ResourceLibraryItem* child(int index) const;
+    ResourceItem* child(int index) const;
     /*! Returns parent. */
-    inline ResourceLibraryItem* parent() const { return m_parent; }
+    inline ResourceItem* parent() const { return m_parent; }
     /* Returns row index at which current item is placed withing parent. */
     int row() const;
     /* Returns data for a given column and role. 
@@ -71,12 +72,17 @@ class ResourceLibraryItem
     /* Returns the item flags for the given item. */
     Qt::ItemFlags flags() const;
 
+    /* ISerializer override. Serializes into given buffer. */
+    QString serialize() const override;
+    /* ISerializer override. Unserializes from given data buffer. */
+    bool unserialize(const QString& data) override;
+
   private:
 
     /*! Parent. */
-    ResourceLibraryItem* m_parent;
+    ResourceItem* m_parent;
     /*! List of children. */
-    QList<ResourceLibraryItem*> m_children;
+    QList<ResourceItem*> m_children;
     /*! Name of asset. */
     QString m_name;
     /*! Path to asset. Only valid for specific types. */
