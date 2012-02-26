@@ -7,6 +7,8 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class ResourceItem;
+class ResourceItemContainer;
+class ResourceItemImage;
 class QTreeView;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,7 +28,7 @@ class ResourceLibraryItemDelegate : public QStyledItemDelegate
     /* QStyledItemDelegate override. Returns the size needed by the delegate to display the item specified by index, taking into account the style information 
      * provided by option. 
      */
-    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    //QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
     /* QStyledItemDelegate override. Returns the widget used to edit the item specified by index for editing. 
      * The parent widget and style option are used to control how the editor widget appears.
      */
@@ -35,9 +37,9 @@ class ResourceLibraryItemDelegate : public QStyledItemDelegate
     void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
     /* Paint container type. */
-    void paintContainer(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItem* item) const;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemContainer* item) const;
     /* Paint image type. */
-    void paintImage(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItem* item) const;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemImage* item) const;
 
   private:
 

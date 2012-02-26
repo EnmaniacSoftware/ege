@@ -79,21 +79,11 @@
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\JuiceJumpers\ProjectJuiceJumpers.h" />
     <ClInclude Include="src\NewProjectDataModel.h" />
-    <ClInclude Include="src\ResourceItem.h" />
-    <ClInclude Include="src\ResourceItemFactory.h" />
-    <ClInclude Include="src\ResourceLibraryDataModel.h" />
-    <ClInclude Include="src\Serializer.h" />
-    <CustomBuild Include="src\ResourceLibraryItemDelegate.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ResourceLibraryItemDelegate.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -D_UNICODE "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I.\src" "-I." "-I." "-I." "-I."</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing ResourceLibraryItemDelegate.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I.\src" "-I." "-I." "-I."</Command>
-    </CustomBuild>
-    <CustomBuild Include="src\ResourceLibrary.h">
+    <ClInclude Include="src\Resources\ResourceItem.h" />
+    <ClInclude Include="src\Resources\ResourceItemContainer.h" />
+    <ClInclude Include="src\Resources\ResourceItemFactory.h" />
+    <ClInclude Include="src\Resources\ResourceItemImage.h" />
+    <CustomBuild Include="src\Resources\ResourceLibrary.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ResourceLibrary.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -103,6 +93,18 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I.\src" "-I." "-I." "-I."</Command>
     </CustomBuild>
+    <ClInclude Include="src\Resources\ResourceLibraryDataModel.h" />
+    <CustomBuild Include="src\Resources\ResourceLibraryItemDelegate.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ResourceLibraryItemDelegate.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -D_UNICODE "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I.\src" "-I." "-I." "-I." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing ResourceLibraryItemDelegate.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I.\src" "-I." "-I." "-I."</Command>
+    </CustomBuild>
+    <ClInclude Include="src\Serializer.h" />
     <CustomBuild Include="src\Project.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing Project.h...</Message>
@@ -198,10 +200,13 @@
     <ClCompile Include="src\NewProjectDataModel.cpp" />
     <ClCompile Include="src\NewProjectDlg.cpp" />
     <ClCompile Include="src\Project.cpp" />
-    <ClCompile Include="src\ResourceItem.cpp" />
-    <ClCompile Include="src\ResourceLibrary.cpp" />
-    <ClCompile Include="src\ResourceLibraryDataModel.cpp" />
-    <ClCompile Include="src\ResourceLibraryItemDelegate.cpp" />
+    <ClCompile Include="src\Resources\ResourceItem.cpp" />
+    <ClCompile Include="src\Resources\ResourceItemContainer.cpp" />
+    <ClCompile Include="src\Resources\ResourceItemFactory.cpp" />
+    <ClCompile Include="src\Resources\ResourceItemImage.cpp" />
+    <ClCompile Include="src\Resources\ResourceLibrary.cpp" />
+    <ClCompile Include="src\Resources\ResourceLibraryDataModel.cpp" />
+    <ClCompile Include="src\Resources\ResourceLibraryItemDelegate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ui\resourcelibrary.ui">

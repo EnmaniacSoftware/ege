@@ -3,14 +3,14 @@
 #include <QImageReader>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItem::ResourceItem(ResourceItem* parent) : m_parent(parent),
-                                                                        m_type(TYPE_NONE)
+ResourceItem::ResourceItem() : m_parent(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItem::~ResourceItem()
 {
   qDeleteAll(m_children);
+  m_children.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns number of columns. */
@@ -81,7 +81,7 @@ bool ResourceItem::setData(const QVariant &value, int role)
 
     case ResourceLibraryDataModel::TypeRole:
 
-      m_type = static_cast<ResourceItem::Type>(value.toInt());
+      // just return success
       return true;
 
     case ResourceLibraryDataModel::PathRole:
@@ -92,16 +92,6 @@ bool ResourceItem::setData(const QVariant &value, int role)
 
   return false;
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds child. */
-//void ResourceItem::add(ResourceItem* child)
-//{
-//  // set parent
-//  child->m_parent = this;
-//
-//  // append
-//  m_children.append(child);
-//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns child at given index. */
 ResourceItem* ResourceItem::child(int index) const
@@ -121,8 +111,18 @@ bool ResourceItem::insertChildren(int position, int count, int columns)
 
   for (int row = 0; row < count; ++row)
   {
-    ResourceItem* item = new ResourceItem(this);
-    m_children.insert(position, item);
+    ResourceItem* object = new ResourceItem();
+    if (NULL == object)
+    {
+      // error!
+      return false;
+    }
+
+    object->setParent(this);
+
+    // insert default object
+    // NOTE: object shall be reallocated once the type is known
+    m_children.insert(position, object);
   }
 
   return true;
@@ -134,48 +134,16 @@ void ResourceItem::setName(const QString& name)
   m_name = name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets type. */
-void ResourceItem::setType(Type type)
-{
-  m_type = type;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets path. */
 void ResourceItem::setPath(const QString& path)
 {
   m_path = path;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns thumbnail image. 
- *  @note Generates thumbnail image if required. 
- */
-const QImage& ResourceItem::thumbnailImage() const
-{
-  // check if thumbnail is to be generated
-  if ((TYPE_IMAGE == type()) && m_thumbnail.isNull() && !m_path.isEmpty() && !m_name.isEmpty())
-  {
-    // generate
-    QImageReader imageReader(m_path + "/" + m_name);
-
-    imageReader.setScaledSize(QSize(32, 32));
-    imageReader.read(&m_thumbnail);
-  }
-
-  return m_thumbnail;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns the item flags for the given item. */
 Qt::ItemFlags ResourceItem::flags() const
 {
-  Qt::ItemFlags availableFlags = Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-
-  // process according to type
-  switch (m_type)
-  {
-    case TYPE_CONTAINER: availableFlags |= Qt::ItemIsEditable; break;
-  }
-
-  return availableFlags;
+  return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! ISerializer override. Serializes into given buffer. */
@@ -190,5 +158,24 @@ QString ResourceItem::serialize() const
 bool ResourceItem::unserialize(const QString& data)
 {
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets parent. */
+void ResourceItem::setParent(ResourceItem* parent)
+{
+  m_parent = parent;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns type name. */
+QString ResourceItem::type() const
+{
+  return "generic";
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets child item. */
+void ResourceItem::setChild(int index, ResourceItem* item)
+{
+  Q_ASSERT(index < m_children.size());
+  m_children[index] = item;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

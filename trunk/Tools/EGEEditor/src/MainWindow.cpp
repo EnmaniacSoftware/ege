@@ -2,7 +2,8 @@
 #include "NewProjectDlg.h"
 #include "Project.h"
 #include "ui_mainwindow.h"
-#include "ResourceLibrary.h"
+#include "Resources/ResourceLibrary.h"
+#include "Resources/ResourceItemFactory.h"
 #include "Config.h"
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -15,6 +16,7 @@
 MainWindow::MainWindow() : QMainWindow(),
                            m_ui(new Ui_MainWindow()),
                            m_project(NULL),
+                           m_resourceItemFactory(new ResourceItemFactory()),
                            m_config(new Config())
 {
   // setup UI
@@ -42,6 +44,12 @@ MainWindow::~MainWindow()
   {
     delete m_ui;
     m_ui = NULL;
+  }
+
+  if (m_resourceItemFactory)
+  {
+    delete m_resourceItemFactory;
+    m_resourceItemFactory = NULL;
   }
 
   if (m_config)

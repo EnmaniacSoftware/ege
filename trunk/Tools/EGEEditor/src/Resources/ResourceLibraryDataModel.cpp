@@ -1,14 +1,19 @@
 #include "ResourceLibraryDataModel.h"
-#include "ResourceItem.h"
+#include "Resources/ResourceItem.h"
+#include "Resources/ResourceItemFactory.h"
+#include "MainWindow.h"
 #include <QFile>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceLibraryDataModel::ResourceLibraryDataModel(QObject* parent) : QAbstractItemModel(parent),
-                                                                      m_root(NULL)
+ResourceLibraryDataModel::ResourceLibraryDataModel(QObject* parent) : QAbstractItemModel(parent)
 {
-  createDefault();
+  m_root = new ResourceItem();
+  if (m_root)
+  {
+    m_root->setName("root");
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryDataModel::~ResourceLibraryDataModel()
@@ -25,7 +30,7 @@ QModelIndex ResourceLibraryDataModel::parent(const QModelIndex& index) const
   }
 
   ResourceItem* childItem = static_cast<ResourceItem*>(index.internalPointer());
-  ResourceItem* parentItem = childItem->parent();
+  ResourceItem* parentItem = (childItem) ? childItem->parent() : NULL;
 
   if ((parentItem == m_root) || (NULL == parentItem))
   {
@@ -53,10 +58,10 @@ QModelIndex ResourceLibraryDataModel::index(int row, int column, const QModelInd
 
   // get proper child
   item = parentItem->child(row);
-  if (NULL == item)
-  {
-    return QModelIndex();
-  }
+  //if (NULL == item)
+  //{
+  //  return QModelIndex();
+  //}
 
   return createIndex(row, column, item);
 }
@@ -169,19 +174,6 @@ void ResourceLibraryDataModel::clear()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Adds */
-void ResourceLibraryDataModel::add(ResourceItem* item)
-{
-  //m_root->add(item);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates default. */
-void ResourceLibraryDataModel::createDefault()
-{
-  m_root = new ResourceItem();
-  m_root->setType(ResourceItem::TYPE_CONTAINER);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! QAbstractItemModel override. Returns the item flags for the given index. */
 Qt::ItemFlags ResourceLibraryDataModel::flags(const QModelIndex& index) const
 {
@@ -229,10 +221,7 @@ ResourceItem* ResourceLibraryDataModel::getItem(const QModelIndex& index) const
   if (index.isValid()) 
   {
     ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
-    if (NULL != item)
-    {
-      return item;
-    }
+    return item;
   }
 
   return m_root;
@@ -243,15 +232,48 @@ bool ResourceLibraryDataModel::setData(const QModelIndex& index, const QVariant&
 {
   ResourceItem* item = getItem(index);
 
+  // by default incoming model index is what will be changed
+  QModelIndex modelIndex = index;
+
+  // check if item should be re-allocated
+  if ((ResourceLibraryDataModel::TypeRole == role) && (value.toString() != item->type()))
+  {
+    // get parent item
+    ResourceItem* parentItem = getItem(parent(index));
+
+    // create object
+    ResourceItem* newItem = resourceItemFactory()->createItem(value.toString(), QString(), item->parent());
+    if (NULL == newItem)
+    {
+      // error!
+      return false;
+    }
+
+    // delete old item
+    delete item;
+
+    // insert newly created item into its placeholder
+    parentItem->setChild(index.column(), newItem);
+
+    // update model index changed
+    modelIndex = createIndex(index.row(), index.column(), newItem);
+  }
+
   // process according to role
   bool success = item->setData(value, role);
 
   // emit
   if (success)
   {
-    emit dataChanged(index, index);
+    emit dataChanged(modelIndex, modelIndex);
   }
 
   return success;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Returns pointer to resource item factory object. */
+ResourceItemFactory* ResourceLibraryDataModel::resourceItemFactory() const
+{
+  return reinterpret_cast<MainWindow*>(QObject::parent()->parent())->resourceItemFactory();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

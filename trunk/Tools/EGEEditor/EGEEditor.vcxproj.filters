@@ -33,11 +33,8 @@
     <Filter Include="Source Files\Juice Jumpers">
       <UniqueIdentifier>{a72d1651-53e5-4ac7-adf4-6ce1f03915af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Resource Library">
-      <UniqueIdentifier>{cc73e0f4-79f4-4308-804d-7f8ac9328443}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Resource Library">
-      <UniqueIdentifier>{15b7914a-600e-4a22-9dab-5507788f3e59}</UniqueIdentifier>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{e2ebb3be-025a-4531-baf4-c8764bfde79a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -59,17 +56,23 @@
     <ClInclude Include="src\Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ResourceLibraryDataModel.h">
-      <Filter>Header Files\Resource Library</Filter>
-    </ClInclude>
     <ClInclude Include="src\Serializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ResourceItemFactory.h">
-      <Filter>Header Files\Resource Library</Filter>
+    <ClInclude Include="src\Resources\ResourceItem.h">
+      <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="src\ResourceItem.h">
-      <Filter>Header Files\Resource Library</Filter>
+    <ClInclude Include="src\Resources\ResourceItemFactory.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resources\ResourceItemContainer.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resources\ResourceItemImage.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resources\ResourceLibraryDataModel.h">
+      <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -91,11 +94,11 @@
     <CustomBuild Include="ui\resourcelibrary.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="src\ResourceLibrary.h">
-      <Filter>Header Files\Resource Library</Filter>
+    <CustomBuild Include="src\Resources\ResourceLibrary.h">
+      <Filter>Resources</Filter>
     </CustomBuild>
-    <CustomBuild Include="src\ResourceLibraryItemDelegate.h">
-      <Filter>Header Files\Resource Library</Filter>
+    <CustomBuild Include="src\Resources\ResourceLibraryItemDelegate.h">
+      <Filter>Resources</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -135,32 +138,41 @@
     <ClCompile Include="src\Project.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resources\ResourceItem.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resources\ResourceItemFactory.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resources\ResourceItemContainer.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resources\ResourceItemImage.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resources\ResourceLibrary.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_ResourceLibrary.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_ResourceLibrary.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="src\Config.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Resources\ResourceLibraryDataModel.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="src\ResourceLibrary.cpp">
-      <Filter>Source Files\Resource Library</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ResourceLibraryDataModel.cpp">
-      <Filter>Source Files\Resource Library</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ResourceLibraryItemDelegate.cpp">
-      <Filter>Source Files\Resource Library</Filter>
+    <ClCompile Include="src\Resources\ResourceLibraryItemDelegate.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_ResourceLibraryItemDelegate.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_ResourceLibraryItemDelegate.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ResourceItem.cpp">
-      <Filter>Source Files\Resource Library</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -10,8 +10,10 @@ class Project;
 class ResourceLibraryWindow;
 class Config;
 class QCloseEvent;
+class ResourceItemFactory;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Application main window. */
 class MainWindow : public QMainWindow
 {
   Q_OBJECT
@@ -34,6 +36,8 @@ class MainWindow : public QMainWindow
 
     /*! Return pointer to currently opened project. */
     inline Project* project() const { return m_project; }
+    /*! Returns pointer to resource item factory. */
+    inline ResourceItemFactory* resourceItemFactory() const { return m_resourceItemFactory; }
 
   private slots:
 
@@ -73,8 +77,10 @@ class MainWindow : public QMainWindow
     Ui_MainWindow* m_ui;
     /*! Current project. */
     Project* m_project;
-    /*! Resource library. */
+    /*! Resource library window. */
     ResourceLibraryWindow* m_resourceLibraryWindow;
+    /*! Resource item factory. */
+    ResourceItemFactory* m_resourceItemFactory;
     /*! Config. */
     Config* m_config;
 };

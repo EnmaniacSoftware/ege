@@ -9,6 +9,7 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class ResourceItem;
+class ResourceItemFactory;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceLibraryDataModel : public QAbstractItemModel
@@ -35,10 +36,7 @@ class ResourceLibraryDataModel : public QAbstractItemModel
     QString save() const;
     /* Clears data. */
     void clear();
-    /* Adds */
-    void add(ResourceItem* item);
-    /* Creates default. */
-    void createDefault();
+
     /*! Returns root item. */
     inline ResourceItem* root() const { return m_root; }
 
@@ -67,6 +65,8 @@ class ResourceLibraryDataModel : public QAbstractItemModel
     bool removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) override;
     /* Returns resource library item connected for given model index. */
     ResourceItem* getItem(const QModelIndex& index) const;
+    /* Returns pointer to resource item factory object. */
+    ResourceItemFactory* resourceItemFactory() const;
 
   private:
 

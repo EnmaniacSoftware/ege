@@ -4,7 +4,7 @@
 #include "MainWindow.h"
 #include "ResourceLibraryDataModel.h"
 #include "ResourceLibraryItemDelegate.h"
-#include "ResourceItem.h"
+#include "Resources/ResourceItem.h"
 #include <QMenu>
 #include <QFile>
 #include <QFileDialog>
@@ -69,7 +69,7 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
     QModelIndex modelIndex = indexList.front();
     ResourceItem* item = static_cast<ResourceItem*>(modelIndex.internalPointer());
 
-    if (ResourceItem::TYPE_CONTAINER == item->type())
+    if ("container" == item->type())
     {
       action = menu.addAction(tr("Add container"), this, SLOT(addContainer()));
       action = menu.addAction(tr("Add resource"), this, SLOT(addResource()));
@@ -131,8 +131,13 @@ void ResourceLibraryWindow::addContainer()
   {
     QModelIndex child = m_model->index(0, column, index);
 
+    // NOTE: type should be first to set
+    m_model->setData(child, QVariant("container"), ResourceLibraryDataModel::TypeRole);
+
+    // NOTE: re-aquire child model index again. This is necessary casue actual backend is created line above
+    child = m_model->index(0, column, index);
+
     m_model->setData(child, QVariant(tr("No name")), Qt::DisplayRole);
-    m_model->setData(child, QVariant(ResourceItem::TYPE_CONTAINER), ResourceLibraryDataModel::TypeRole);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -168,9 +173,14 @@ void ResourceLibraryWindow::addResource()
         QString name = item.section("/", -1);
         QString path = item.section("/", 0, -2);
 
+        // NOTE: type should be first to set
+        m_model->setData(child, QVariant("image"), ResourceLibraryDataModel::TypeRole);
+
+        // NOTE: re-aquire child model index again. This is necessary casue actual backend is created line above
+        child = m_model->index(i, column, index);
+
         m_model->setData(child, QVariant(name), Qt::DisplayRole);
         m_model->setData(child, QVariant(path), ResourceLibraryDataModel::PathRole);
-        m_model->setData(child, QVariant(ResourceItem::TYPE_IMAGE), ResourceLibraryDataModel::TypeRole);
       }
     }
   }
