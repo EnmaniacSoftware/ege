@@ -59,8 +59,6 @@ class ResourceLibraryWindow : public QDockWidget, public ISerializer
     Ui_ResourceLibrary* m_ui;
     /*! Data model. */
     ResourceLibraryDataModel* m_model;
-    /*! View item delegate. */
-    ResourceLibraryItemDelegate* m_itemDelegate;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

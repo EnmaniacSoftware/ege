@@ -7,6 +7,7 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class MainWindow;
+class ResourceLibraryItemDelegate;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Project : public QObject
@@ -27,14 +28,20 @@ class Project : public QObject
 
     /*! Returns name. */
     inline const QString& name() const { return m_name; }
+    
     /*! Returns path. */
     inline const QString& path() const { return m_path; }
     /*! Returns full path to project file. */
     inline QString fullPath() const { return m_path + "/" + m_name + ".ege"; }
+
     /* Marks/unmarks project content as dirty. */
     void setDirty(bool set);
     /*! Returns dirty flag. */
     inline bool isDirty() const { return m_dirty; }
+    
+    /*! Returns resource library item delegate. */
+    inline ResourceLibraryItemDelegate* resourceLibraryItemDelegate() const { return m_resourceLibraryItemDelegate; }
+
     /* Saves all data. */
     virtual bool save();
 
@@ -42,6 +49,11 @@ class Project : public QObject
 
     /*! Returns pointer to main window object. */
     inline MainWindow* mainWindow() const { return reinterpret_cast<MainWindow*>(parent()); }
+
+  protected:
+
+    /*! Resource library item delegate. */
+    ResourceLibraryItemDelegate* m_resourceLibraryItemDelegate;
 
   private:
 

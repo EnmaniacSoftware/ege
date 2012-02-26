@@ -16,12 +16,6 @@ ResourceLibraryWindow::ResourceLibraryWindow(QWidget* parent) : QDockWidget(pare
 {
   // setup UI
   m_ui->setupUi(this);
-
-  // create item delegate
-  m_itemDelegate = new ResourceLibraryItemDelegate(m_ui->view);
-
-  // set view delegate
-  m_ui->view->setItemDelegate(m_itemDelegate);
   
   // set view model
   m_ui->view->setModel(m_model);
@@ -90,6 +84,12 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
 /*! Slot called when new project has been created/opened. */
 void ResourceLibraryWindow::onProjectCreated()
 {
+  // set view delegate
+  ResourceLibraryItemDelegate* delegate = mainWindow()->project()->resourceLibraryItemDelegate();
+  delegate->setView(m_ui->view);
+
+  m_ui->view->setItemDelegate(delegate);
+
   // establish connections
 	connect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
 
@@ -100,6 +100,9 @@ void ResourceLibraryWindow::onProjectCreated()
 /*! Slot called when project has been closed. */
 void ResourceLibraryWindow::onProjectClosed()
 {
+  // reset view delegate
+  m_ui->view->setItemDelegate(NULL);
+
   // clean up model
   m_model->clear();
 

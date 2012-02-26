@@ -12,8 +12,8 @@
 #define CONTAINER_TYPE_TEXT_OFFSET 5
 #define THUMBNAIL_SIZE 32
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceLibraryItemDelegate::ResourceLibraryItemDelegate(QWidget* parent) : QStyledItemDelegate(parent),
-                                                                            m_view(qobject_cast<QTreeView*>(parent))
+ResourceLibraryItemDelegate::ResourceLibraryItemDelegate(QObject* parent) : QStyledItemDelegate(parent),
+                                                                            m_view(NULL)
 {
   m_containerTypePixmap.load(":/small:folder");
 }
@@ -25,6 +25,8 @@ ResourceLibraryItemDelegate::~ResourceLibraryItemDelegate()
 /*! QStyledItemDelegate override. Renders the delegate using the given painter and style option for the item specified by index. */
 void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+  Q_ASSERT(m_view);
+
   ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
 
   // store painter state
@@ -46,37 +48,6 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
   // restore painter state to original
   painter->restore();
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! QStyledItemDelegate override. 
- *  Returns the size needed by the delegate to display the item specified by index, taking into account the style information provided by option. 
- */
-/*QSize ResourceLibraryItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
-{
-  ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
-
-  // process according to type
-  QSize size;
-  // TAGE
-  //switch (item->type())
-  //{
-  //  case ResourceItem::TYPE_CONTAINER:
-
-  //    size = QSize(200, 20);
-  //    break;
-
-  //  case ResourceItem::TYPE_IMAGE:
-
-  //    size = QSize(200, qMax(item->thumbnailImage().size().height(), THUMBNAIL_SIZE));
-  //    break;
-
-  //  default:
-
-  //    Q_ASSERT("Type not supported");
-  //    break;
-  //}
-
-  return size;
-}*/
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Paint container type. */
 void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemContainer* item) const
@@ -126,5 +97,11 @@ void ResourceLibraryItemDelegate::updateEditorGeometry(QWidget* editor, const QS
     editor->move(option.rect.x() + ICON_OFFSET + option.rect.height() + CONTAINER_TYPE_TEXT_OFFSET, option.rect.y());
     editor->resize(editor->size().width(), option.rect.size().height());
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets view. */
+void ResourceLibraryItemDelegate::setView(QTreeView* view)
+{
+  m_view = view;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

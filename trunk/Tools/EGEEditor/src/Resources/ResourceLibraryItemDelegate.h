@@ -12,23 +12,23 @@ class ResourceItemImage;
 class QTreeView;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! */
 class ResourceLibraryItemDelegate : public QStyledItemDelegate
 {
   Q_OBJECT
 
   public:
 
-    ResourceLibraryItemDelegate(QWidget* parent);
+    ResourceLibraryItemDelegate(QObject* parent);
    ~ResourceLibraryItemDelegate();
+
+    // Sets view. */
+    void setView(QTreeView* view);
 
   private:
 
     /* QStyledItemDelegate override. Renders the delegate using the given painter and style option for the item specified by index. */
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
-    /* QStyledItemDelegate override. Returns the size needed by the delegate to display the item specified by index, taking into account the style information 
-     * provided by option. 
-     */
-    //QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
     /* QStyledItemDelegate override. Returns the widget used to edit the item specified by index for editing. 
      * The parent widget and style option are used to control how the editor widget appears.
      */
