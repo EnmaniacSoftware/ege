@@ -55,6 +55,18 @@ bool ThreadsTest::initialize()
   viewport->setClearBufferTypes(Viewport::BUFFER_TYPE_COLOR);
   viewport->setClearColor(Color::BLUE);
 
+  PResourceFont fontResource = app()->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
+  if (fontResource)
+  {
+    for (s32 i = 0; i < THREADS_COUNT; ++i)
+    {
+      PTextOverlay overlay = ege_new TextOverlay(app(), String::Format("thread-%d-counter", i));
+      overlay->setFont(fontResource->font());
+      app()->overlayManager()->add(overlay);
+      overlay->physics()->setPosition(Vector4f(0, 80 + i * 40.0f, 0));
+    }
+  }
+
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

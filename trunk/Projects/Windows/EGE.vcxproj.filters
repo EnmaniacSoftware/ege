@@ -169,6 +169,9 @@
     <Filter Include="Core\UI">
       <UniqueIdentifier>{4df2a2d7-b7a3-4e48-89e6-c650774c3678}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Thread">
+      <UniqueIdentifier>{9a1b391b-5738-4af4-ab79-da5917870c66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -581,6 +584,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.cpp">
       <Filter>Core\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Thread\Thread.cpp">
+      <Filter>Core\Thread</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1141,6 +1147,10 @@
     <ClInclude Include="..\..\Sources\EGECircle.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.h">
       <Filter>Core\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEThread.h" />
+    <ClInclude Include="..\..\Sources\Core\Thread\Thread.h">
+      <Filter>Core\Thread</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
