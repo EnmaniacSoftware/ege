@@ -197,14 +197,12 @@ void ResourceLibraryWindow::removeItem()
 /*! ISerializer override. Serializes into given buffer. */
 QString ResourceLibraryWindow::serialize() const
 {
-  QString data;
-
-  return data;
+  return m_model->root()->serialize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! ISerializer override. Unserializes from given data buffer. */
 bool ResourceLibraryWindow::unserialize(const QString& data)
 {
-  return true;
+  return m_model->root()->unserialize(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

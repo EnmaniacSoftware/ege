@@ -14,8 +14,19 @@ Project::~Project()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Saves all data. */
-bool Project::save()
+/*! Serializes into given buffer. */
+QString Project::serialize() const
+{
+  QString data;
+
+  // reset flag
+  m_dirty = false;
+
+  return data;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Unserializes from given data buffer. */
+bool Project::unserialize(const QString& data)
 {
   return true;
 }

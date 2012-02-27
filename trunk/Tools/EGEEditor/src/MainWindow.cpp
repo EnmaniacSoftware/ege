@@ -143,19 +143,16 @@ void MainWindow::on_ActionFileExit_triggered(bool checked)
 void MainWindow::on_ActionFileSave_triggered(bool checked)
 {
   Q_UNUSED(checked);
+  Q_ASSERT(m_project);
 
-  // check if anything to save
-  if (m_project && m_project->isDirty())
-  {
-    // save
-    if (!m_project->save())
-    {
-      // TAGE - error!
-    }
+  // save project
+  QString data = m_project->serialize();
 
-    // update title bar
-    updateTitleBar();
-  }
+  // save resources
+  data += m_resourceLibraryWindow->serialize();
+
+  // update title bar
+  updateTitleBar();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when new project has been created. */

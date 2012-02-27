@@ -4,6 +4,7 @@
 #include "Project.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Juice Jumpers project. */
 class ProjectJuiceJumpers : public Project
 {
   public:
@@ -16,8 +17,10 @@ class ProjectJuiceJumpers : public Project
 
   private:
 
-    /* Project override. Saves all data. */
-    bool save() override;
+    /* Project override. Serializes into given buffer. */
+    QString serialize() const override;
+    /* Project override. Unserializes from given data buffer. */
+    bool unserialize(const QString& data) override;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

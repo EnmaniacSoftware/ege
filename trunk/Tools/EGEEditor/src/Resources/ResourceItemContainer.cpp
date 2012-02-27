@@ -1,6 +1,8 @@
 #include "ResourceItemContainer.h"
 #include "ResourceLibraryDataModel.h"
 #include <QImageReader>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemContainer::ResourceItemContainer() : ResourceItem()
@@ -27,5 +29,20 @@ Qt::ItemFlags ResourceItemContainer::flags() const
 QString ResourceItemContainer::type() const
 {
   return "container";
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! ISerializer override. Serializes into given buffer. */
+QString ResourceItemContainer::serialize() const
+{
+  QString data;
+
+  return QString();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! ISerializer override. Unserializes from given data buffer. */
+bool ResourceItemContainer::unserialize(const QString& data)
+{
+  Q_UNUSED(data);
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

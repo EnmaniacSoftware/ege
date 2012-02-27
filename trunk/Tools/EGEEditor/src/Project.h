@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include "Serializer.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -10,7 +11,8 @@ class MainWindow;
 class ResourceLibraryItemDelegate;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Project : public QObject
+/*! Project base class. */
+class Project : public QObject, public ISerializer
 {
   Q_OBJECT
 
@@ -42,8 +44,10 @@ class Project : public QObject
     /*! Returns resource library item delegate. */
     inline ResourceLibraryItemDelegate* resourceLibraryItemDelegate() const { return m_resourceLibraryItemDelegate; }
 
-    /* Saves all data. */
-    virtual bool save();
+    /* Serializes into given buffer. */
+    QString serialize() const override;
+    /* Unserializes from given data buffer. */
+    bool unserialize(const QString& data) override;
 
   protected:
 
@@ -62,7 +66,7 @@ class Project : public QObject
     /*! Path to project file. */
     QString m_path;
     /*! Dirty flag. */
-    bool m_dirty;
+    mutable bool m_dirty;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef Project* (*projectCreateFunc)(QObject* parent, const QString& name, const QString& path);

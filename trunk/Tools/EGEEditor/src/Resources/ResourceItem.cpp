@@ -149,14 +149,13 @@ Qt::ItemFlags ResourceItem::flags() const
 /*! ISerializer override. Serializes into given buffer. */
 QString ResourceItem::serialize() const
 {
-  QString data;
-
-  return data;
+  return QString();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! ISerializer override. Unserializes from given data buffer. */
 bool ResourceItem::unserialize(const QString& data)
 {
+  Q_UNUSED(data);
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
