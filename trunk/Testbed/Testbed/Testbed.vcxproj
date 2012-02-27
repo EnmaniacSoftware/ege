@@ -97,6 +97,7 @@
     <ClCompile Include="ScrollableArea\ScrollableAreaTest.cpp" />
     <ClCompile Include="Sound\SoundTest.cpp" />
     <ClCompile Include="Test.cpp" />
+    <ClCompile Include="Threads\ThreadsTest.cpp" />
     <ClCompile Include="Timeline\TimeLineTest.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +119,7 @@
     <ClInclude Include="ScrollableArea\ScrollableAreaTest.h" />
     <ClInclude Include="Sound\SoundTest.h" />
     <ClInclude Include="Test.h" />
+    <ClInclude Include="Threads\ThreadsTest.h" />
     <ClInclude Include="Timeline\TimeLineTest.h" />
   </ItemGroup>
   <ItemGroup>

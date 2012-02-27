@@ -17,6 +17,7 @@
 #include "Fonts/FontsTest.h"
 #include "ScrollableArea/ScrollableAreaTest.h"
 #include "Dialogs/DialogTest.h"
+#include "Threads/ThreadsTest.h"
 
 //#include <gl/gl.h>
 //#include <gl/glu.h>
@@ -98,6 +99,7 @@ bool App::start()
   m_tests.push_back(new LocalizationTest(this));
   m_tests.push_back(new DialogTest(this));
   m_tests.push_back(new LightningTest(this));
+  m_tests.push_back(new ThreadsTest(this));
 
   // select test to run
   selectTest();
