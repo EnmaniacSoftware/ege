@@ -172,6 +172,9 @@
     <Filter Include="Core\Thread">
       <UniqueIdentifier>{9a1b391b-5738-4af4-ab79-da5917870c66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Thread\PThread">
+      <UniqueIdentifier>{8c00b347-2dfe-4dbc-a955-3f2337a44efb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -587,6 +590,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Thread\Thread.cpp">
       <Filter>Core\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Thread\PThread\Thread_p.cpp">
+      <Filter>Core\Thread\PThread</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1151,6 +1157,9 @@
     <ClInclude Include="..\..\Sources\EGEThread.h" />
     <ClInclude Include="..\..\Sources\Core\Thread\Thread.h">
       <Filter>Core\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Thread\PThread\Thread_p.h">
+      <Filter>Core\Thread\PThread</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

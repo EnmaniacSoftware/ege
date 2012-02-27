@@ -1,33 +1,22 @@
-#include <EGEThread.h>
-
-#ifdef EGE_THREAD_PTHREAD
 #include "Core/Thread/PThread/Thread_p.h"
-#endif // EGE_THREAD_PTHREAD
+#include "Core/Thread/Thread.h"
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(Thread)
-EGE_DEFINE_DELETE_OPERATORS(Thread)
+EGE_DEFINE_NEW_OPERATORS(ThreadPrivate)
+EGE_DEFINE_DELETE_OPERATORS(ThreadPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Thread::Thread(Application* app) : Object(app, EGE_OBJECT_UID_THREAD)
+ThreadPrivate::ThreadPrivate(Thread* base) : m_d(base)
 {
-  m_p = ege_new ThreadPrivate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Thread::~Thread()
+ThreadPrivate::~ThreadPrivate()
 {
-  EGE_DELETE(m_p);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool Thread::isValid() const
-{
-  return (NULL != m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Starts work. */
-EGEResult Thread::run()
+EGEResult ThreadPrivate::run()
 {
   return EGE_SUCCESS;
 }

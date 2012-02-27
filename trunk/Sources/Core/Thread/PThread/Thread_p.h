@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_THREAD_H
-#define EGE_CORE_THREAD_H
+#ifndef EGE_CORE_THREAD_PRIVATE_H
+#define EGE_CORE_THREAD_PRIVATE_H
 
 /*! This class represents the seperate thread of control. */
 
@@ -9,29 +9,27 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class Thread;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Thread : public Object
+class ThreadPrivate
 {
   public:
 
-    Thread(Application* app);
-    virtual ~Thread();
+    ThreadPrivate(Thread* base);
+   ~ThreadPrivate();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
+    EGE_DECLARE_PUBLIC_IMPLEMENTATION(Thread)
+
     /* Starts work. */
-    virtual EGEResult run();
-
-  private:
-
-    EGE_DECLARE_PRIVATE_IMPLEMENTATION(Thread);
+    EGEResult run();
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_THREAD_H
+#endif // EGE_CORE_THREAD_PRIVATE_H

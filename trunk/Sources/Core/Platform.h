@@ -18,6 +18,9 @@ inline void ege_noop() {}
 // Available physics APIs
 // EGE_PHYSICS_BOX2D
 
+// Availaable threading APIs
+// EGE_THREAD_PTHREAD
+
 #if WIN32
 #define EGE_PLATFORM_WIN32 1
 #endif // WIN32
