@@ -10,6 +10,7 @@ define EGE_RENDERING_OPENGLES_1
 define EGE_PHYSICS_BOX2D
 define EGE_XML_TINYXML
 define EGE_RANDOM_C
+define EGE_THREAD_PTHREAD
 
 #define EGE_AIRPLAY_AUDIO_SOFTWARE
 
@@ -49,6 +50,7 @@ files
   EGEMap.h
 	EGEMath.h
   EGEMatrix.h
+  EGEMutex.h
 	EGEMemory.h
   EGEOpenGL.h
   EGEOverlay.h
@@ -66,6 +68,7 @@ files
   EGESprite.h
   EGEString.h
   EGETexture.h
+  EGEThread.h
   EGETime.h
   EGETimer.h
   EGETree.h
@@ -73,6 +76,7 @@ files
   EGEUI.h
   EGEVector.h
   EGEVertexBuffer.h
+  EGEWaitCondition.h
 	EGEXml.h
 
 	["Core"]
@@ -384,6 +388,8 @@ files
   ResourceGroup.h
 	ResourceManager.cpp
 	ResourceManager.h
+  ResourceManagerWorkThread.cpp
+  ResourceManagerWorkThread.h
   ResourceMaterial.cpp
   ResourceMaterial.h
   ResourceParticleAffector.cpp
@@ -425,6 +431,24 @@ files
   (../../Sources/Core/Signal)
   Delegate.h
   Signal.h
+
+	["Core/Threading"]
+  (../../Sources/Core/Threading)
+  Mutex.cpp
+  Mutex.h
+  Thread.cpp
+  Thread.h
+  WaitCondition.cpp
+  WaitCondition.h
+
+	["Core/Threading/PThread"]
+  (../../Sources/Core/Threading/PThread)
+  Mutex_p.cpp
+  Mutex_p.h
+  Thread_p.cpp
+  Thread_p.h
+  WaitCondition_p.cpp
+  WaitCondition_p.h
 
 	["Core/String"]
   (../../Sources/Core/String)

@@ -1,30 +1,30 @@
-#include "Core/Thread/PThread/WaitCondition_p.h"
+#include "Core/Threading/PThread/Mutex_p.h"
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(WaitConditionPrivate)
-EGE_DEFINE_DELETE_OPERATORS(WaitConditionPrivate)
+EGE_DEFINE_NEW_OPERATORS(MutexPrivate)
+EGE_DEFINE_DELETE_OPERATORS(MutexPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-WaitConditionPrivate::WaitConditionPrivate(WaitCondition* base)
+MutexPrivate::MutexPrivate(Mutex* base)
 {
-  pthread_cond_init(&m_condition, NULL);
+  pthread_mutex_init(&m_mutex, NULL);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-WaitConditionPrivate::~WaitConditionPrivate()
+MutexPrivate::~MutexPrivate()
 {
-  pthread_cond_destroy(&m_condition);
+  pthread_mutex_destroy(&m_mutex);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Locks mutex. */
-bool WaitConditionPrivate::lock()
+bool MutexPrivate::lock()
 {
-  return false;
+  return 0 == pthread_mutex_lock(&m_mutex);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Unlocks mutex. */
-bool WaitConditionPrivate::unlock()
+bool MutexPrivate::unlock()
 {
-  return false;
+  return 0 == pthread_mutex_unlock(&m_mutex);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

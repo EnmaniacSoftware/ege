@@ -1,5 +1,5 @@
-#include "Core/Thread/PThread/Thread_p.h"
-#include "Core/Thread/Thread.h"
+#include "Core/Threading/PThread/Thread_p.h"
+#include "Core/Threading/Thread.h"
 
 EGE_NAMESPACE
 

@@ -2,7 +2,7 @@
 #include <EGEDebug.h>
 
 #ifdef EGE_THREAD_PTHREAD
-#include "Core/Thread/PThread/Thread_p.h"
+#include "Core/Threading/PThread/Thread_p.h"
 #endif // EGE_THREAD_PTHREAD
 
 EGE_NAMESPACE
