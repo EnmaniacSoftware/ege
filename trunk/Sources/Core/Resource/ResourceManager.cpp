@@ -14,6 +14,7 @@
 #include "Core/Resource/ResourceText.h"
 #include "Core/Resource/ResourceSound.h"
 #include "Core/Resource/ResourceWidget.h"
+#include "Core/Resource/ResourceManagerWorkThread.h"
 #include "Core/Graphics/Font.h"
 #include "Core/Debug/DebugFont.h"
 #include "Core/Application/Application.h"
@@ -61,11 +62,21 @@ ResourceManager::ResourceManager(Application* app) : Object(app)
     registerResource(resource.name, resource.pfCreateFunc);
   }
 
+  // create work thread
+  m_workThread = ege_new ResourceManagerWorkThread(app);
+
+  // create access mutex
+  m_mutex = ege_new Mutex(app);
+
+  // create default resources
   createDefaultResources();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::~ResourceManager()
 {
+  m_workThread = NULL;
+  m_mutex = NULL;
+
   removeGroups();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -84,7 +95,7 @@ bool ResourceManager::isValid() const
     }
   }
 
-  return NULL != group(DEFAULT_GROUP_NAME);
+  return (NULL != group(DEFAULT_GROUP_NAME)) && (NULL != m_workThread) && m_workThread->isValid() && (NULL != m_mutex) && m_mutex->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Registeres custom resource type. */

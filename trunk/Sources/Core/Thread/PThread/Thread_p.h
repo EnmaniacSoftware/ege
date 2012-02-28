@@ -5,6 +5,8 @@
 
 #include <EGE.h>
 #include <EGESignal.h>
+#include <EGETime.h>
+#include <pthread.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -24,8 +26,30 @@ class ThreadPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(Thread)
 
-    /* Starts work. */
-    EGEResult run();
+    /* Starts thread. */
+    bool start();
+
+    /* Waits for thread to be finished. */
+    bool wait();
+
+    /* Returns TRUE if thread is currently running. */
+    bool isRunning() const;
+    /* Returns TRUE if thread has finished its work. */
+    bool isFinished() const;
+
+  private:
+
+    /* Thread function. */
+    static void* ThreadFunc(void* userData);
+
+  private:
+
+    /*! Thread object. */
+    pthread_t m_thread;
+    /*! Running flag. */
+    volatile bool m_running;
+    /*! Finished flag. */
+    bool m_finished;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

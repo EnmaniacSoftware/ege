@@ -13,6 +13,7 @@ EGE_NAMESPACE_BEGIN
 #define EGE_CORE_GRAPHICS_OBJECT_UID_BASE   (EGE_CORE_OBJECT_UID_BASE + 0x300)
 #define EGE_CORE_RESOURCES_OBJECT_UID_BASE  (EGE_CORE_OBJECT_UID_BASE + 0x400)
 #define EGE_CORE_UI_OBJECT_UID_BASE         (EGE_CORE_OBJECT_UID_BASE + 0x500)
+#define EGE_CORE_THREADING_OBJECT_UID_BASE  (EGE_CORE_OBJECT_UID_BASE + 0x600)
 
 // Generic object ids
 #define EGE_OBJECT_UID_GENERIC                ((EGE_CORE_OBJECT_UID_BASE) + 0)
@@ -24,7 +25,6 @@ EGE_NAMESPACE_BEGIN
 #define EGE_OBJECT_UID_FILE                   ((EGE_CORE_OBJECT_UID_BASE) + 6)
 #define EGE_OBJECT_UID_DATA_BUFFER            ((EGE_CORE_OBJECT_UID_BASE) + 7)
 #define EGE_OBJECT_UID_POINTER_DATA           ((EGE_CORE_OBJECT_UID_BASE) + 8)
-#define EGE_OBJECT_UID_THREAD                 ((EGE_CORE_OBJECT_UID_BASE) + 9)
 
 // Graphics related object ids
 #define EGE_OBJECT_UID_GRAPHICS               ((EGE_CORE_GRAPHICS_OBJECT_UID_BASE + 0))
@@ -59,6 +59,11 @@ EGE_NAMESPACE_BEGIN
 #define EGE_OBJECT_UID_UI_SCROLLABLE_AREA     ((EGE_CORE_UI_OBJECT_UID_BASE) + 1)
 #define EGE_OBJECT_UID_UI_PUSH_BUTTON         ((EGE_CORE_UI_OBJECT_UID_BASE) + 2)
 #define EGE_OBJECT_UID_UI_LABEL               ((EGE_CORE_UI_OBJECT_UID_BASE) + 3)
+
+// Threading related object ids
+#define EGE_OBJECT_UID_THREAD                 ((EGE_CORE_THREADING_OBJECT_UID_BASE) + 0)
+#define EGE_OBJECT_UID_MUTEX                  ((EGE_CORE_THREADING_OBJECT_UID_BASE) + 1)
+#define EGE_OBJECT_UID_WAIT_CONDITION         ((EGE_CORE_THREADING_OBJECT_UID_BASE) + 2)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

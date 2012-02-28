@@ -12,10 +12,23 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ThreadsTest::ThreadsTest(App* app) : Test(app)
 {
+  for (s32 i = 0; i < THREADS_COUNT; i++)
+  {
+    m_counters[i] = i * 1000;
+    m_threads[i] = ege_new TestThread(app, &m_counters[i]);
+    ege_connect(m_threads[i], started, this, ThreadsTest::onThreadStarted);
+    ege_connect(m_threads[i], finished, this, ThreadsTest::onThreadFinished);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ThreadsTest::~ThreadsTest()
 {
+  for (s32 i = 0; i < THREADS_COUNT; i++)
+  {
+    ege_disconnect(m_threads[i], started, this, ThreadsTest::onThreadStarted);
+    ege_disconnect(m_threads[i], finished, this, ThreadsTest::onThreadFinished);
+    m_threads[i] = NULL;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Returns test name. */
@@ -73,10 +86,41 @@ bool ThreadsTest::initialize()
 /*! Test override. Updates test. */
 void ThreadsTest::update(const Time& time)
 {
+  for (s32 i = 0; i < THREADS_COUNT; ++i)
+  {
+    PTextOverlay overlay = app()->overlayManager()->overlay(String::Format("thread-%d-counter", i));
+    overlay->setText(Text::Format("Thread %d: %d r: %d f: %d", i, m_counters[i], m_threads[i]->isRunning(), m_threads[i]->isFinished()));
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Pointer event receiver. */
 void ThreadsTest::pointerEvent(PPointerData data)
 {
+  if (EGEInput::ACTION_BUTTON_UP == data->action())
+  {
+    for (s32 i = 0; i < THREADS_COUNT; ++i)
+    {
+      if (!m_threads[i]->isRunning())
+      {
+        m_threads[i]->start();
+      }
+      else
+      {
+        m_threads[i]->stop();
+      }
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called then thread has finished. */
+void ThreadsTest::onThreadFinished(const PThread& thread)
+{
+  EGE_PRINT("Thread finished");
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called then thread has started. */
+void ThreadsTest::onThreadStarted(const PThread& thread)
+{
+  EGE_PRINT("Thread Started");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

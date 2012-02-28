@@ -5,8 +5,13 @@
 
 #include <EGE.h>
 #include <EGESignal.h>
+#include <EGETime.h>
 
 EGE_NAMESPACE_BEGIN
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_DECLARE_SMART_CLASS(Thread, PThread)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -15,19 +20,51 @@ class Thread : public Object
   public:
 
     Thread(Application* app);
-    virtual ~Thread();
+   ~Thread();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  signals:
+
+    /*! Signal emitted when thread finished its work. Signal is emitted from finished thread. */
+    Signal1<const PThread&> finished;
+    /*! Signal emitted when thread started its work. Signal is emitted from finished thread. */
+    Signal1<const PThread&> started;
+
+  public:
+
     /* Returns TRUE if object is valid. */
     bool isValid() const;
-    /* Starts work. */
-    virtual EGEResult run();
+
+    /* Starts thread. */
+    bool start();
+    /* Stops thread. */
+    void stop(s32 exitCode = 0);
+    
+    /* Waits for thread to be finished. */
+    bool wait();
+
+    /* Returns TRUE if thread is currently running. */
+    bool isRunning() const;
+    /* Returns TRUE if thread has finished its work. */
+    bool isFinished() const;
+    /* Returns TRUE if thread has been requested to terminate. */
+    bool isStopping() const;
+
+  protected:
+
+    /* Work method. */
+    virtual s32 run() = 0;
 
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(Thread);
+
+    /*! Stop request flag. */
+    volatile bool m_stopping;
+    /*! Exit code. Used with explicit stopping. */
+    s32 m_exitCode;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

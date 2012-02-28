@@ -11,6 +11,8 @@
 #include <EGEList.h>
 #include <EGESignal.h>
 #include <EGETime.h>
+#include <EGEThread.h>
+#include <EGEMutex.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -153,6 +155,10 @@ class ResourceManager : public Object
     Map<String, ResourceRegistryEntry> m_registeredResources;
     /*! List of all pending commands to process. */
     CommandDataList m_commands;
+    /*! Resource loading/unloading thread. */
+    PThread m_workThread;
+    /*! Resource access mutex. */
+    PMutex m_mutex;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

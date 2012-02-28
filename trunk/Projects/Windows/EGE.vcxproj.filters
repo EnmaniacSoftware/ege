@@ -594,6 +594,21 @@
     <ClCompile Include="..\..\Sources\Core\Thread\PThread\Thread_p.cpp">
       <Filter>Core\Thread\PThread</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Thread\Mutex.cpp">
+      <Filter>Core\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Thread\PThread\Mutex_p.cpp">
+      <Filter>Core\Thread\PThread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceManagerWorkThread.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Thread\WaitCondition.cpp">
+      <Filter>Core\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Thread\PThread\WaitCondition_p.cpp">
+      <Filter>Core\Thread\PThread</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1159,6 +1174,23 @@
       <Filter>Core\Thread</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Thread\PThread\Thread_p.h">
+      <Filter>Core\Thread\PThread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Thread\Mutex.h">
+      <Filter>Core\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Thread\PThread\Mutex_p.h">
+      <Filter>Core\Thread\PThread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEMutex.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceManagerWorkThread.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEWaitCondition.h" />
+    <ClInclude Include="..\..\Sources\Core\Thread\WaitCondition.h">
+      <Filter>Core\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Thread\PThread\WaitCondition_p.h">
       <Filter>Core\Thread\PThread</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,7 +2,7 @@
 #define TEST_THREADS_H
 
 #include "Test.h"
-#include <EGEThread.h>
+#include "TestThread.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define THREADS_COUNT 2
@@ -27,8 +27,16 @@ class ThreadsTest : public Test
     /* Test override. Pointer event receiver. */
     void pointerEvent(EGE::PPointerData data) override;
 
+  private slots:
+
+    /* Slot called then thread has finished. */
+    void onThreadFinished(const EGE::PThread& thread);
+    /* Slot called then thread has started. */
+    void onThreadStarted(const EGE::PThread& thread);
+
   private:
 
+    EGE::PThread m_threads[THREADS_COUNT];
     EGE::s32 m_counters[THREADS_COUNT];
 };
 

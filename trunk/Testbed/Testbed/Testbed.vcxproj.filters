@@ -117,6 +117,9 @@
     <ClCompile Include="Threads\ThreadsTest.cpp">
       <Filter>Tests\Threads</Filter>
     </ClCompile>
+    <ClCompile Include="Threads\TestThread.cpp">
+      <Filter>Tests\Threads</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -177,6 +180,9 @@
       <Filter>Tests\Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="Threads\ThreadsTest.h">
+      <Filter>Tests\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="Threads\TestThread.h">
       <Filter>Tests\Threads</Filter>
     </ClInclude>
   </ItemGroup>
