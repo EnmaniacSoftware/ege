@@ -28,9 +28,9 @@ class Thread : public Object
   signals:
 
     /*! Signal emitted when thread finished its work. Signal is emitted from finished thread. */
-    Signal1<const PThread&> finished;
+    Signal1<const Thread*> finished;
     /*! Signal emitted when thread started its work. Signal is emitted from finished thread. */
-    Signal1<const PThread&> started;
+    Signal1<const Thread*> started;
 
   public:
 
@@ -41,6 +41,10 @@ class Thread : public Object
     bool start();
     /* Stops thread. */
     void stop(s32 exitCode = 0);
+    /* Cancels tread. 
+     * @note This forcilbly stops the thread. Use with caution.
+     */
+    void cancel();
     
     /* Waits for thread to be finished. */
     bool wait();

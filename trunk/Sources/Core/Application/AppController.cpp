@@ -70,7 +70,7 @@ void AppController::onEventRecieved(PEvent pEvent)
 
       m_state = STATE_QUITTING;
       // TAGE - for testing
-      m_state = STATE_QUIT;
+      //m_state = STATE_QUIT;
       break;
   }
 }
@@ -114,6 +114,17 @@ void AppController::update()
 
   // store update duration
   m_lastFrameUpdateDuration.fromMicroseconds(m_timer->microseconds() - m_lastUpdateTime.microseconds());
+
+  // check if quitting
+  if (STATE_QUITTING == m_state)
+  {
+    // check if ready to quit
+    if (ResourceManager::STATE_CLOSED == app()->resourceManager()->state())
+    {
+      // change state
+      m_state = STATE_QUIT;
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders application. */

@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_RESOURCEMANAGER_H
 #define EGE_CORE_RESOURCEMANAGER_H
 
-/** Resource manager class. This object is a root to entire resource management.
+/*! Resource manager class. This object is a root to entire resource management.
  */
 
 #include <EGE.h>
@@ -13,6 +13,8 @@
 #include <EGETime.h>
 #include <EGEThread.h>
 #include <EGEMutex.h>
+#include <EGEWaitCondition.h>
+#include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -24,6 +26,7 @@ EGE_DECLARE_SMART_CLASS(IResource, PResource)
 EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
 EGE_DECLARE_SMART_CLASS(ResourceText, PResourceText)
 EGE_DECLARE_SMART_CLASS(ResourceSound, PResourceSound)
+EGE_DECLARE_SMART_CLASS(Event, PEvent)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -31,8 +34,11 @@ typedef PResource (*egeResourceCreateFunc)(Application* app, ResourceManager* ma
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class ResourceManager : public Object
+class ResourceManager : public Object, public IEventListener
 {
+  /*! For accessing private data. */
+  friend class ResourceManagerWorkThread;
+
   public:
 
     ResourceManager(Application* app);
@@ -54,8 +60,22 @@ class ResourceManager : public Object
 
   public:
 
+    /*! Available states. */
+    enum State
+    {
+      STATE_NONE = -1,
+      STATE_INITIALIZING,
+      STATE_READY,
+      STATE_CLOSING,
+      STATE_CLOSED
+    };
+
+  public:
+
     /* Returns TRUE if object is valid. */
     bool isValid() const;
+    /*! Returns current state. */
+    inline State state() const { return m_state; }
     /* Updates object. */
     void update(const Time& time);
     /* Adds data directory. */
@@ -118,6 +138,10 @@ class ResourceManager : public Object
 
     /* Builds dependancy list for a given group. */
     bool buildDependacyList(StringList& list, const String& groupName) const;
+    /* EventListener override. Event reciever. */
+    void onEventRecieved(PEvent event) override;
+    /* Shuts down. */
+    void shutDown();
 
   private:
 
@@ -157,8 +181,12 @@ class ResourceManager : public Object
     CommandDataList m_commands;
     /*! Resource loading/unloading thread. */
     PThread m_workThread;
-    /*! Resource access mutex. */
+    /*! Resource data access mutex. */
     PMutex m_mutex;
+    /*! Wait condition signaled when any commands are to be processed. */
+    PWaitCondition m_commandsToProcess;
+    /*! Current state. */
+    State m_state;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

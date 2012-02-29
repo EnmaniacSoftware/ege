@@ -5,7 +5,7 @@
 #include "TestThread.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define THREADS_COUNT 2
+#define THREADS_COUNT 1
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class ThreadsTest : public Test
@@ -30,9 +30,9 @@ class ThreadsTest : public Test
   private slots:
 
     /* Slot called then thread has finished. */
-    void onThreadFinished(const EGE::PThread& thread);
+    void onThreadFinished(const EGE::Thread* thread);
     /* Slot called then thread has started. */
-    void onThreadStarted(const EGE::PThread& thread);
+    void onThreadStarted(const EGE::Thread* thread);
 
   private:
 

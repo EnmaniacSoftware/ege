@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_THREAD_PRIVATE_H
 #define EGE_CORE_THREAD_PRIVATE_H
 
-/*! This class represents the seperate thread of control. */
+/*! PThreads implementation of Thread. */
 
 #include <EGE.h>
 #include <EGESignal.h>
@@ -28,6 +28,10 @@ class ThreadPrivate
 
     /* Starts thread. */
     bool start();
+    /* Cancels tread. 
+     * @note This forcilbly stops the thread. Use with caution.
+     */
+    void cancel();
 
     /* Waits for thread to be finished. */
     bool wait();

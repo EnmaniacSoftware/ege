@@ -1,4 +1,6 @@
+#include <EGEMutex.h>
 #include "Core/Threading/PThread/WaitCondition_p.h"
+#include "Core/Threading/PThread/Mutex_p.h"
 
 EGE_NAMESPACE
 
@@ -16,15 +18,39 @@ WaitConditionPrivate::~WaitConditionPrivate()
   pthread_cond_destroy(&m_condition);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Locks mutex. */
-bool WaitConditionPrivate::lock()
+/*! Releases the locked mutex and waits on the wait condition. 
+ *  @note The mutex must be initially locked by the calling thread. If mutex is not in a locked state, this function returns immediately. 
+ *  @note Raw pointer is used here so Mutex referece counter is not increased as this will block.
+ */
+bool WaitConditionPrivate::wait(Mutex* mutex)
 {
-  return false;
+  // NOTE: pthread_cond_wait releases the mutex
+  mutex->m_locked = false;
+
+  int result = pthread_cond_wait(&m_condition, &mutex->p_func()->m_mutex);
+
+  // if error occured, mutex is expected to be still locked
+  if (0 != result)
+  {
+    mutex->m_locked = true;
+  }
+
+  return 0 == result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unlocks mutex. */
-bool WaitConditionPrivate::unlock()
+/*! Wakes one thread waiting on the wait condition. 
+ *  @note The thread that is woken up depends on the operating system's scheduling policies, and cannot be controlled or predicted.
+ */
+void WaitConditionPrivate::wakeOne()
 {
-  return false;
+  pthread_cond_signal(&m_condition);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Wakes all threads waiting on the wait condition. 
+ *  @note The order in which the threads are woken up depends on the operating system's scheduling policies and cannot be controlled or predicted.
+ */
+void WaitConditionPrivate::wakeAll()
+{
+  pthread_cond_broadcast(&m_condition);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -113,13 +113,13 @@ void ThreadsTest::pointerEvent(PPointerData data)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called then thread has finished. */
-void ThreadsTest::onThreadFinished(const PThread& thread)
+void ThreadsTest::onThreadFinished(const Thread* thread)
 {
   EGE_PRINT("Thread finished");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called then thread has started. */
-void ThreadsTest::onThreadStarted(const PThread& thread)
+void ThreadsTest::onThreadStarted(const Thread* thread)
 {
   EGE_PRINT("Thread Started");
 }

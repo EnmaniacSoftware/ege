@@ -609,6 +609,9 @@
     <ClCompile Include="..\..\Sources\Core\Threading\PThread\WaitCondition_p.cpp">
       <Filter>Core\Threading\PThreads</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Threading\MutexLocker.cpp">
+      <Filter>Core\Threading</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1192,6 +1195,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Threading\PThread\WaitCondition_p.h">
       <Filter>Core\Threading\PThreads</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Threading\MutexLocker.h">
+      <Filter>Core\Threading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

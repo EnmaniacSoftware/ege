@@ -1,5 +1,6 @@
 #include "Core/Threading/PThread/Thread_p.h"
 #include "Core/Threading/Thread.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE
 
@@ -11,6 +12,7 @@ ThreadPrivate::ThreadPrivate(Thread* base) : m_d(base),
                                              m_running(false),
                                              m_finished(false)
 {
+  EGE_MEMSET(&m_thread, 0, sizeof (m_thread));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ThreadPrivate::~ThreadPrivate()
@@ -21,30 +23,32 @@ ThreadPrivate::~ThreadPrivate()
 void* ThreadPrivate::ThreadFunc(void* userData)
 {
   ThreadPrivate* me = reinterpret_cast<ThreadPrivate*>(userData);
+  
+  Thread* base = me->d_func();
 
   // set flags
   me->m_running = true;
 
   // emit
-  emit me->d_func()->started(me->d_func());
+  emit base->started(base);
 
   // start thread function execution
-  s32 result = me->d_func()->run();
+  s32 result = base->run();
   
   // check if was requested to stop
-  if (me->d_func()->isStopping())
+  if (base->isStopping())
   {
     // get requested exit code
-    result = me->d_func()->m_exitCode;
+    result = base->m_exitCode;
   }
 
   // set flags
-  me->m_running            = false;
-  me->m_finished           = true;
-  me->d_func()->m_stopping = false;
+  me->m_running    = false;
+  me->m_finished   = true;
+  base->m_stopping = false;
 
   // emit
-  emit me->d_func()->finished(me->d_func());
+  emit base->finished(base);
 
   // clean up
   pthread_exit(reinterpret_cast<void*>(result));
@@ -85,5 +89,15 @@ bool ThreadPrivate::wait()
 {
   void* status;
   return 0 == pthread_join(m_thread, &status);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Cancels tread. 
+ *  @note This forcilbly stops the thread. Use with caution.
+ */
+void ThreadPrivate::cancel()
+{
+  int result = pthread_cancel(m_thread);
+  EGE_MEMSET(&m_thread, 0, sizeof (m_thread));
+  EGE_PRINT("Canceling : %p, result code: %d", this, result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

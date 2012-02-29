@@ -18,8 +18,12 @@
 #include "Core/Graphics/Font.h"
 #include "Core/Debug/DebugFont.h"
 #include "Core/Application/Application.h"
+#include "Core/Event/Event.h"
+#include "Core/Event/EventIDs.h"
+#include "Core/Event/EventManager.h"
 #include <EGEXml.h>
 #include <EGEDir.h>
+#include <EGEMutex.h>
 
 EGE_NAMESPACE
 
@@ -52,7 +56,8 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
                                                     { RESOURCE_NAME_WIDGET, ResourceWidget::Create },
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManager::ResourceManager(Application* app) : Object(app)
+ResourceManager::ResourceManager(Application* app) : Object(app),
+                                                     m_state(STATE_INITIALIZING)
 {
   // register build-in resource types
   for (u32 i = 0; i < sizeof (l_resourcesToRegister) / sizeof (BuiltInResource); ++i)
@@ -68,16 +73,18 @@ ResourceManager::ResourceManager(Application* app) : Object(app)
   // create access mutex
   m_mutex = ege_new Mutex(app);
 
+  // create wait condition
+  m_commandsToProcess = ege_new WaitCondition(app);
+
   // create default resources
   createDefaultResources();
+
+  // subscribe for event notifications
+  app->eventManager()->addListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::~ResourceManager()
 {
-  m_workThread = NULL;
-  m_mutex = NULL;
-
-  removeGroups();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
@@ -95,7 +102,8 @@ bool ResourceManager::isValid() const
     }
   }
 
-  return (NULL != group(DEFAULT_GROUP_NAME)) && (NULL != m_workThread) && m_workThread->isValid() && (NULL != m_mutex) && m_mutex->isValid();
+  return (NULL != group(DEFAULT_GROUP_NAME)) && (NULL != m_workThread) && m_workThread->isValid() && (NULL != m_mutex) && m_mutex->isValid() && 
+         (NULL != m_commandsToProcess) && m_commandsToProcess->isValid() && app()->eventManager()->isListening(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Registeres custom resource type. */
@@ -345,6 +353,8 @@ EGEResult ResourceManager::loadGroup(const String& name)
   PResourceGroup theGroup = group(name);
   if (NULL != theGroup)
   {
+    MutexLocker locker(m_mutex);
+
     // check if given group is scheduled for unloading/loading already
     CommandDataList::iterator it;
     for (it = m_commands.begin(); it != m_commands.end(); ++it)
@@ -412,6 +422,8 @@ void ResourceManager::unloadGroup(const String& name)
   PResourceGroup theGroup = group(name);
   if (NULL != theGroup)
   {
+    MutexLocker locker(m_mutex);
+
     // check if given group is scheduled for unloading/loading already
     CommandDataList::iterator it;
     for (it = m_commands.begin(); it != m_commands.end(); ++it)
@@ -631,6 +643,34 @@ EGEResult ResourceManager::processInclude(const String& filePath, const PXmlElem
 /*! Updates object. */
 void ResourceManager::update(const Time& time)
 {
+  // check if initialization is done
+  if (STATE_INITIALIZING == m_state)
+  {
+    if (isValid())
+    {
+      // start work thread
+      m_workThread->start();
+
+      // change state
+      m_state = STATE_READY;
+    }
+  }
+  else if (STATE_READY == m_state)
+  {
+  }
+  else if (STATE_CLOSING == m_state)
+  {
+    if (m_workThread && m_workThread->isFinished())
+    {
+      m_workThread        = NULL;
+      m_commandsToProcess = NULL;
+      m_mutex             = NULL;
+
+      // set state
+      m_state = STATE_CLOSED;
+    }
+  }
+
   if (!app()->isQuitting())
   {
     // go thru all groups to be loaded
@@ -734,5 +774,34 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
   }
 
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! EventListener override. Event reciever. */
+void ResourceManager::onEventRecieved(PEvent event)
+{
+  switch (event->uid())
+  {
+    case EGE_EVENT_UID_CORE_QUIT_REQUEST:
+
+      // do shouting down
+      shutDown();
+      break;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Shuts down. */
+void ResourceManager::shutDown()
+{
+  // change state
+  m_state = STATE_CLOSING;
+
+  // remove all groups
+  removeGroups();
+
+  // request work thread stop
+  m_workThread->stop(0);
+
+  // make sure all threads starts work
+  m_commandsToProcess->wakeAll();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

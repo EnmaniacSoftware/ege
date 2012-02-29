@@ -15,6 +15,9 @@ EGE_DECLARE_SMART_CLASS(Mutex, PMutex)
 
 class Mutex : public Object
 {
+  /*! For accessing private implementation. */
+  friend class WaitConditionPrivate;
+
   public:
 
     Mutex(Application* app);
@@ -36,6 +39,9 @@ class Mutex : public Object
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(Mutex);
+
+    /*! Flag indicating wheter mutex if locked. For debugging purposes. */
+    bool m_locked;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
