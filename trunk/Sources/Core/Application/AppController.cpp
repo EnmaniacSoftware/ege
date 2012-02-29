@@ -87,37 +87,12 @@ void AppController::update()
   // store frame current time
   m_lastUpdateTime = time;
 
-  // update accumulator for updates
-  m_updateAccumulator += timeInterval;
-
-  // update as much as requested
-  //EGE_PRINT("BEGINING");
-  //int a = 0;
-  while (m_updateAccumulator > m_updateInterval)
-  {
-    m_updateAccumulator -= m_updateInterval;
-
-    // update physics etc
-    app()->resourceManager()->update(m_updateInterval);
-    app()->audioManager()->update(m_updateInterval);
-    app()->screenManager()->update(m_updateInterval);
-    app()->physicsManager()->update(m_updateInterval);
-    app()->sceneManager()->update(m_updateInterval);
-    app()->overlayManager()->update(m_updateInterval);
-    app()->update(m_updateInterval);
-    //a++;
-  }
-  //EGE_PRINT("ENDING %d", a);
-
-  // interpolate physics by remaining value
-  // ..
-
-  // store update duration
-  m_lastFrameUpdateDuration.fromMicroseconds(m_timer->microseconds() - m_lastUpdateTime.microseconds());
-
   // check if quitting
   if (STATE_QUITTING == m_state)
   {
+    // update only object which needs time to shut down
+    app()->resourceManager()->update(m_updateInterval);
+
     // check if ready to quit
     if (ResourceManager::STATE_CLOSED == app()->resourceManager()->state())
     {
@@ -125,6 +100,36 @@ void AppController::update()
       m_state = STATE_QUIT;
     }
   }
+  else if (STATE_RUNNING == m_state)
+  {
+    // update accumulator for updates
+    m_updateAccumulator += timeInterval;
+
+    // update as much as requested
+    //EGE_PRINT("BEGINING");
+    //int a = 0;
+    while (m_updateAccumulator > m_updateInterval)
+    {
+      m_updateAccumulator -= m_updateInterval;
+
+      // update physics etc
+      app()->resourceManager()->update(m_updateInterval);
+      app()->audioManager()->update(m_updateInterval);
+      app()->screenManager()->update(m_updateInterval);
+      app()->physicsManager()->update(m_updateInterval);
+      app()->sceneManager()->update(m_updateInterval);
+      app()->overlayManager()->update(m_updateInterval);
+      app()->update(m_updateInterval);
+      //a++;
+    }
+    //EGE_PRINT("ENDING %d", a);
+
+    // interpolate physics by remaining value
+    // ..
+  }
+
+  // store update duration
+  m_lastFrameUpdateDuration.fromMicroseconds(m_timer->microseconds() - m_lastUpdateTime.microseconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders application. */
@@ -151,8 +156,11 @@ void AppController::render()
     m_fpsCountStartTime = time;
   }
 
-  // do render
-  app()->graphics()->render();
+  if (STATE_RUNNING == m_state)
+  {
+    // do render
+    app()->graphics()->render();
+  }
 
   // store render duration
   m_lastFrameRenderDuration.fromMicroseconds(m_timer->microseconds() - time.microseconds());
