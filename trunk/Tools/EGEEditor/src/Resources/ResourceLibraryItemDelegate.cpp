@@ -105,3 +105,13 @@ void ResourceLibraryItemDelegate::setView(QTreeView* view)
   m_view = view;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! QStyledItemDelegate override. 
+ *  Returns the size needed by the delegate to display the item specified by index, taking into account the style information provided by option. 
+ */
+QSize ResourceLibraryItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+  ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
+
+  return item->sizeHint();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

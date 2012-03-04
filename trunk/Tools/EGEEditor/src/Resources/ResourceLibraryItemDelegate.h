@@ -33,6 +33,10 @@ class ResourceLibraryItemDelegate : public QStyledItemDelegate
      * The parent widget and style option are used to control how the editor widget appears.
      */
   	QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    /* QStyledItemDelegate override. Returns the size needed by the delegate to display the item specified by index, taking into account the style information 
+     * provided by option. 
+     */
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
     /* QStyledItemDelegate override. Updates the editor for the item specified by index according to the style option given. */
     void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 

@@ -17,10 +17,10 @@ class ProjectJuiceJumpers : public Project
 
   private:
 
-    /* Project override. Serializes into given buffer. */
-    QString serialize() const override;
-    /* Project override. Unserializes from given data buffer. */
-    bool unserialize(const QString& data) override;
+    /* Project override. Serializes into given stream. */
+    bool serialize(QXmlStreamWriter& stream) const override;
+    /* Project override. Unserializes from given data stream. */
+    bool unserialize(const QXmlStreamReader& stream) override;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

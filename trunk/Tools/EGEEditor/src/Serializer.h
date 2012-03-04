@@ -2,6 +2,8 @@
 #define SERIALIZRER_H
 
 #include <QString>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Interface for objects capable of serialization. */
@@ -9,10 +11,10 @@ class ISerializer
 {
   public:
 
-    /*! Serializes into given buffer. */
-    virtual QString serialize() const = 0;
-    /*! Unserializes from given data buffer. */
-    virtual bool unserialize(const QString& data) = 0;
+    /*! Serializes into given stream. */
+    virtual bool serialize(QXmlStreamWriter& stream) const = 0;
+    /*! Unserializes from given data stream. */
+    virtual bool unserialize(const QXmlStreamReader& stream) = 0;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

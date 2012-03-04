@@ -436,6 +436,8 @@ files
   (../../Sources/Core/Threading)
   Mutex.cpp
   Mutex.h
+  MutexLocker.cpp
+  MutexLocker.h
   Thread.cpp
   Thread.h
   WaitCondition.cpp

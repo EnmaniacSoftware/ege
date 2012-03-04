@@ -17,20 +17,17 @@ Project* ProjectJuiceJumpers::Create(QObject* parent, const QString& name, const
   return new ProjectJuiceJumpers(parent, name, path);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Project override. Serializes into given buffer. */
-QString ProjectJuiceJumpers::serialize() const
+/*! Project override. Serializes into given stream. */
+bool ProjectJuiceJumpers::serialize(QXmlStreamWriter& stream) const
 {
-  // call base class
-  QString data = Project::serialize();
-
-  return data;
+  return Project::serialize(stream);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Project override. Unserializes from given data buffer. */
-bool ProjectJuiceJumpers::unserialize(const QString& data)
+/*! Project override. Unserializes from given data stream. */
+bool ProjectJuiceJumpers::unserialize(const QXmlStreamReader& stream)
 {
   // call base class
-  if (!Project::unserialize(data))
+  if (!Project::unserialize(stream))
   {
     // error!
     return false;

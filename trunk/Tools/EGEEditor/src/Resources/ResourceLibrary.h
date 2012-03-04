@@ -28,10 +28,10 @@ class ResourceLibraryWindow : public QDockWidget, public ISerializer
     /* Loads settings. */
     void loadSettings(Config* config);
 
-    /* ISerializer override. Serializes into given buffer. */
-    QString serialize() const override;
-    /* ISerializer override. Unserializes from given data buffer. */
-    bool unserialize(const QString& data) override;
+    /* ISerializer override. Serializes into given stream. */
+    bool serialize(QXmlStreamWriter& stream) const override;
+    /* ISerializer override. Unserializes from given data stream. */
+    bool unserialize(const QXmlStreamReader& stream) override;
 
   private slots:
 

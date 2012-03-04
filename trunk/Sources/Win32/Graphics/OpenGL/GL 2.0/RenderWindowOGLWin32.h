@@ -49,6 +49,8 @@ class RenderWindowOGLWin32 : public RenderWindow
     HDC m_hDC;
     /*! Window OpenGL rendering context. */
     HGLRC m_hRC;
+    /*! Work thread OpenGL rendering context. */
+    HGLRC m_hRCWorkThread;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

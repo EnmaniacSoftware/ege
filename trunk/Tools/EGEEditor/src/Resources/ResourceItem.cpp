@@ -1,6 +1,5 @@
 #include "ResourceItem.h"
 #include "ResourceLibraryDataModel.h"
-#include <QImageReader>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItem::ResourceItem() : m_parent(NULL)
@@ -54,10 +53,6 @@ QVariant ResourceItem::data(int columnIndex, int role) const
     case ResourceLibraryDataModel::TypeRole:
 
       return type();
-
-    case ResourceLibraryDataModel::PathRole:
-
-      return path();
   }
 
   return QVariant();
@@ -82,11 +77,6 @@ bool ResourceItem::setData(const QVariant &value, int role)
     case ResourceLibraryDataModel::TypeRole:
 
       // just return success
-      return true;
-
-    case ResourceLibraryDataModel::PathRole:
-
-      m_path = value.toString();
       return true;
   }
 
@@ -134,29 +124,34 @@ void ResourceItem::setName(const QString& name)
   m_name = name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets path. */
-void ResourceItem::setPath(const QString& path)
-{
-  m_path = path;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns the item flags for the given item. */
 Qt::ItemFlags ResourceItem::flags() const
 {
   return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ISerializer override. Serializes into given buffer. */
-QString ResourceItem::serialize() const
+/*! ISerializer override. Serializes into given stream. */
+bool ResourceItem::serialize(QXmlStreamWriter& stream) const
 {
-  return QString();
+  // serialize children
+  foreach (const ResourceItem* item, m_children)
+  {
+    if (!item->serialize(stream))
+    {
+      // error!
+      return false;
+    }
+  }
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ISerializer override. Unserializes from given data buffer. */
-bool ResourceItem::unserialize(const QString& data)
+/*! ISerializer override. Unserializes from given data stream. */
+bool ResourceItem::unserialize(const QXmlStreamReader& stream)
 {
-  Q_UNUSED(data);
-  return true;
+  Q_ASSERT("Non-serializable! Implement in derivd class!");
+  Q_UNUSED(stream);
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets parent. */
@@ -176,5 +171,11 @@ void ResourceItem::setChild(int index, ResourceItem* item)
 {
   Q_ASSERT(index < m_children.size());
   m_children[index] = item;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns size hint. */
+QSize ResourceItem::sizeHint() const
+{
+  return QSize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

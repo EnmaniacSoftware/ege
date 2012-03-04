@@ -153,13 +153,15 @@ QString ResourceLibraryDataModel::save() const
 {
   QString output;
 
-  QXmlStreamWriter stream(&output);
-  stream.setAutoFormatting(true);
-  stream.writeStartDocument();
-  stream.writeStartElement("bookmark");
-  stream.writeAttribute("href", "http://qt.nokia.com/");
-  stream.writeTextElement("title", "Qt Home");
-  stream.writeEndElement(); // bookmark
+  //output = m_root->serialize();
+
+  //QXmlStreamWriter stream(&output);
+  //stream.setAutoFormatting(true);
+  //stream.writeStartDocument();
+  //stream.writeStartElement("bookmark");
+  //stream.writeAttribute("href", "http://qt.nokia.com/");
+  //stream.writeTextElement("title", "Qt Home");
+  //stream.writeEndElement(); // bookmark
 
   return true;
 }
@@ -257,6 +259,9 @@ bool ResourceLibraryDataModel::setData(const QModelIndex& index, const QVariant&
 
     // update model index changed
     modelIndex = createIndex(index.row(), index.column(), newItem);
+
+    // substitute item
+    item = newItem;
   }
 
   // process according to role

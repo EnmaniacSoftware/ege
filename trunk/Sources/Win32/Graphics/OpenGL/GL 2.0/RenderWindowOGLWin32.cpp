@@ -8,7 +8,11 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderWindowOGLWin32::RenderWindowOGLWin32(Application* app, const Dictionary& params) : RenderWindow(app, params), m_hWnd(NULL), m_hDC(NULL), m_hRC(NULL)
+RenderWindowOGLWin32::RenderWindowOGLWin32(Application* app, const Dictionary& params) : RenderWindow(app, params), 
+                                                                                         m_hWnd(NULL), 
+                                                                                         m_hDC(NULL), 
+                                                                                         m_hRC(NULL),
+                                                                                         m_hRCWorkThread(NULL)
 {
   create(params);
 }
@@ -128,9 +132,17 @@ void RenderWindowOGLWin32::create(const Dictionary& params)
     destroy();
     return;
   }
-
+  
   // create rendering context
-  if (NULL == (m_hRC = wglCreateContext(m_hDC)))
+  if ((NULL == (m_hRC = wglCreateContext(m_hDC))) || (NULL == (m_hRCWorkThread = (wglCreateContext(m_hDC)))))
+  {
+    // error!
+    destroy();
+    return;
+  }
+
+  // share objects between rendering contexts
+  if (FALSE == wglShareLists(m_hRC, m_hRCWorkThread))
   {
     // error!
     destroy();
@@ -165,6 +177,14 @@ void RenderWindowOGLWin32::destroy()
         m_hRC = NULL;
       }
       
+      // check if there is any RC 
+      if (NULL != m_hRCWorkThread)
+      {
+        // disconnect it from window
+        wglDeleteContext(m_hRCWorkThread);
+        m_hRCWorkThread = NULL;
+      }
+
       // delete DC
       ReleaseDC(m_hWnd, m_hDC);
       m_hDC = NULL;

@@ -194,15 +194,15 @@ void ResourceLibraryWindow::removeItem()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ISerializer override. Serializes into given buffer. */
-QString ResourceLibraryWindow::serialize() const
+/*! ISerializer override. Serializes into given stream. */
+bool ResourceLibraryWindow::serialize(QXmlStreamWriter& stream) const
 {
-  return m_model->root()->serialize();
+  return m_model->root()->serialize(stream);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ISerializer override. Unserializes from given data buffer. */
-bool ResourceLibraryWindow::unserialize(const QString& data)
+/*! ISerializer override. Unserializes from given data stream. */
+bool ResourceLibraryWindow::unserialize(const QXmlStreamReader& stream)
 {
-  return m_model->root()->unserialize(data);
+  return m_model->root()->unserialize(stream);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

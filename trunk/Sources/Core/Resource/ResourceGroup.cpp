@@ -92,7 +92,7 @@ EGEResult ResourceGroup::load()
   // check if NOT already loaded
   if (!isLoaded())
   {
-    //if (name() == "background")
+    //if (name() == "main-menu-screen")
     //{
     //  int a = 1;
     //}
@@ -105,10 +105,16 @@ EGEResult ResourceGroup::load()
       // check if non-manual
       if (!resource->isManual())
       {
+        if (resource->name() == "sprite-ripples")
+        {
+          int a = 1;
+        }
+
         // load resource
         if (EGE_SUCCESS != (result = resource->load()))
         {
           // error!
+          EGE_WARNING("Load failed: %s", resource->name().toAscii());
           break;
         }
       }

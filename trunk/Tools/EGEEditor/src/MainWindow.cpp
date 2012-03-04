@@ -145,11 +145,30 @@ void MainWindow::on_ActionFileSave_triggered(bool checked)
   Q_UNUSED(checked);
   Q_ASSERT(m_project);
 
-  // save project
-  QString data = m_project->serialize();
+  QString output;
+  QXmlStreamWriter stream(&output);
+  stream.writeStartDocument();
+  bool result = !stream.hasError();
+  if (result)
+  {
+    // save project
+    result = m_project->serialize(stream);
+    if (result)
+    {
+      // save resources
+      result = m_resourceLibraryWindow->serialize(stream);
+    }
 
-  // save resources
-  data += m_resourceLibraryWindow->serialize();
+    if (result)
+    {
+      stream.writeEndDocument();
+    }
+  }
+
+  if (!result)
+  {
+    // error!
+  }
 
   // update title bar
   updateTitleBar();

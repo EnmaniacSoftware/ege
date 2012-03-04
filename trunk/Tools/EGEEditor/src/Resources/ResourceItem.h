@@ -4,6 +4,7 @@
 #include <QList>
 #include <QString>
 #include <QVariant>
+#include <QSize>
 #include "Serializer.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,11 +29,6 @@ class ResourceItem : public ISerializer
     /*! Returns parent. */
     inline ResourceItem* parent() const { return m_parent; }
 
-    /* Sets path. */
-    void setPath(const QString& path);
-    /*! Returns path to asset. */
-    inline const QString& path() const { return m_path; }
-
     /* Returns number of columns. */
     int columnCount() const;
 
@@ -50,23 +46,26 @@ class ResourceItem : public ISerializer
      * @param role        Role for which data is to be retrieved.
      * @return Returns data associated with a given role at given column. If no valid data is present returns empty QVariant.
      */
-    QVariant data(int columnIndex, int role) const;
+    virtual QVariant data(int columnIndex, int role) const;
     /* Sets the role data.
      *  @param value  Value to be set.
      *  @param role   Role for which data is set.
      *  @return Returns TRUE if data has been changed. Otherwise FALSE.
      */
-    bool setData(const QVariant &value, int role);
+    virtual bool setData(const QVariant &value, int role);
     /* Inserts children. */
     bool insertChildren(int position, int count, int columns);
 
     /* Returns the item flags for the given item. */
     virtual Qt::ItemFlags flags() const;
 
-    /* ISerializer override. Serializes into given buffer. */
-    QString serialize() const override;
-    /* ISerializer override. Unserializes from given data buffer. */
-    bool unserialize(const QString& data) override;
+    /* ISerializer override. Serializes into given stream. */
+    bool serialize(QXmlStreamWriter& stream) const override;
+    /* ISerializer override. Unserializes from given data stream. */
+    bool unserialize(const QXmlStreamReader& stream) override;
+
+    /* Returns size hint. */
+    virtual QSize sizeHint() const;
 
   protected:
 
@@ -74,8 +73,6 @@ class ResourceItem : public ISerializer
     QList<ResourceItem*> m_children;
     /*! Name of asset. */
     QString m_name;
-    /*! Path to asset. Only valid for specific types. */
-    QString m_path;
 
   private:
 

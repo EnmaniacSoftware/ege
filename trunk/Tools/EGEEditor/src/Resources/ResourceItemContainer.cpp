@@ -1,8 +1,6 @@
 #include "ResourceItemContainer.h"
 #include "ResourceLibraryDataModel.h"
 #include <QImageReader>
-#include <QXmlStreamReader>
-#include <QXmlStreamWriter>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemContainer::ResourceItemContainer() : ResourceItem()
@@ -31,18 +29,37 @@ QString ResourceItemContainer::type() const
   return "container";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ISerializer override. Serializes into given buffer. */
-QString ResourceItemContainer::serialize() const
+/*! ResourceItem override. Serializes into given stream. */
+bool ResourceItemContainer::serialize(QXmlStreamWriter& stream) const
 {
-  QString data;
+  stream.writeStartElement("resource-item");
+  
+  stream.writeAttribute("type", type());
+  stream.writeAttribute("name", name());
 
-  return QString();
+  // serialize children
+  foreach (const ResourceItem* item, m_children)
+  {
+    if (!item->serialize(stream))
+    {
+      // error!
+      return false;
+    }
+  }
+
+  stream.writeEndElement();
+  return !stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ISerializer override. Unserializes from given data buffer. */
-bool ResourceItemContainer::unserialize(const QString& data)
+/*! ResourceItem override. Unserializes from given data stream. */
+bool ResourceItemContainer::unserialize(const QXmlStreamReader& stream)
 {
-  Q_UNUSED(data);
-  return true;
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! ResourceItem override. Returns size hint. */
+QSize ResourceItemContainer::sizeHint() const
+{
+  return QSize(200, 20);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

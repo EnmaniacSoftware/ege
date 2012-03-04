@@ -24,8 +24,8 @@ class ResourceLibraryDataModel : public QAbstractItemModel
     /*! Available custom roles. */
     enum ResourceLibraryModelRole
     {
-      TypeRole = Qt::UserRole,
-      PathRole
+      TypeRole = Qt::UserRole,                  /*!< Resource item type. */
+      PathRole                                  /*!< Resource item path. Only valid for certain types. */
     };
 
   public:

@@ -44,10 +44,10 @@ class Project : public QObject, public ISerializer
     /*! Returns resource library item delegate. */
     inline ResourceLibraryItemDelegate* resourceLibraryItemDelegate() const { return m_resourceLibraryItemDelegate; }
 
-    /* Serializes into given buffer. */
-    QString serialize() const override;
-    /* Unserializes from given data buffer. */
-    bool unserialize(const QString& data) override;
+    /* ISerializer override. Serializes into given stream. */
+    bool serialize(QXmlStreamWriter& stream) const override;
+    /* ISerializer override. Unserializes from given data stream. */
+    bool unserialize(const QXmlStreamReader& stream) override;
 
   protected:
 

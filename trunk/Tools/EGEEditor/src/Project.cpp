@@ -14,20 +14,18 @@ Project::~Project()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Serializes into given buffer. */
-QString Project::serialize() const
+/*! ISerializer override. Serializes into given stream. */
+bool Project::serialize(QXmlStreamWriter& stream) const
 {
-  QString data;
-
   // reset flag
   m_dirty = false;
 
-  return data;
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unserializes from given data buffer. */
-bool Project::unserialize(const QString& data)
+/*! ISerializer override. Unserializes from given data stream. */
+bool Project::unserialize(const QXmlStreamReader& stream)
 {
-  return true;
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

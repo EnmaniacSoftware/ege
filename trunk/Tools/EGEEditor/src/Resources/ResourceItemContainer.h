@@ -23,10 +23,12 @@ class ResourceItemContainer : public ResourceItem
     Qt::ItemFlags flags() const override;
     /*! ResourceItem override. Returns type name. */
     QString type() const override;
-    /* ResourceItem override. Serializes into given buffer. */
-    QString serialize() const override;
-    /* ResourceItem override. Unserializes from given data buffer. */
-    bool unserialize(const QString& data) override;
+    /* ResourceItem override. Serializes into given stream. */
+    bool serialize(QXmlStreamWriter& stream) const override;
+    /* ResourceItem override. Unserializes from given data stream. */
+    bool unserialize(const QXmlStreamReader& stream) override;
+    /* ResourceItem override. Returns size hint. */
+    QSize sizeHint() const override;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

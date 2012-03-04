@@ -649,7 +649,7 @@ void ResourceManager::update(const Time& time)
     if (isValid())
     {
       // start work thread
-      m_workThread->start();
+      //m_workThread->start();
 
       // change state
       m_state = STATE_READY;
@@ -660,7 +660,7 @@ void ResourceManager::update(const Time& time)
   }
   else if (STATE_CLOSING == m_state)
   {
-    if (m_workThread && m_workThread->isFinished())
+    if (m_workThread && (m_workThread->isFinished() || !m_workThread->isRunning()))
     {
       m_workThread        = NULL;
       m_commandsToProcess = NULL;

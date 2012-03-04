@@ -41,3 +41,88 @@ QString ResourceItemImage::type() const
   return "image";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! ResourceItem override. Returns size hint. */
+QSize ResourceItemImage::sizeHint() const
+{
+  return QSize(200, 40);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! ResourceItem override. Serializes into given stream. */
+bool ResourceItemImage::serialize(QXmlStreamWriter& stream) const
+{
+  stream.writeStartElement("resource-item");
+  
+  stream.writeAttribute("type", type());
+  stream.writeAttribute("name", name());
+  stream.writeAttribute("path", path());
+
+  stream.writeEndElement();
+
+  // serialize children
+  foreach (const ResourceItem* item, m_children)
+  {
+    if (!item->serialize(stream))
+    {
+      // error!
+      return false;
+    }
+  }
+
+  stream.writeEndElement();
+  return !stream.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! ResourceItem override. Unserializes from given data stream. */
+bool ResourceItemImage::unserialize(const QXmlStreamReader& stream)
+{
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets path. */
+void ResourceItemImage::setPath(const QString& path)
+{
+  m_path = path;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! ResourceItem override. Returns data for a given column and role. 
+ *  @param columnIndex Column index for which data is to be retrieved.
+ *  @param role        Role for which data is to be retrieved.
+ *  @return Returns data associated with a given role at given column. If no valid data is present returns empty QVariant.
+ */
+QVariant ResourceItemImage::data(int columnIndex, int role) const
+{
+  // call base class first
+  QVariant variant = ResourceItem::data(columnIndex, role);
+  
+  // process according to role
+  switch (role)
+  {
+    case ResourceLibraryDataModel::PathRole:
+
+      variant = path();
+      break;
+  }
+
+  return variant;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! ResourceItem override. Sets the role data.
+ *  @param value  Value to be set.
+ *  @param role   Role for which data is set.
+ *  @return Returns TRUE if data has been changed. Otherwise FALSE.
+ */
+bool ResourceItemImage::setData(const QVariant &value, int role)
+{
+  // process according to role
+  switch (role)
+  {
+    case ResourceLibraryDataModel::PathRole:
+
+      m_path = value.toString();
+      return true;
+  }
+
+  // call base class
+  return ResourceItem::setData(value, role);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
