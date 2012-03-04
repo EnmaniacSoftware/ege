@@ -147,7 +147,10 @@ void MainWindow::on_ActionFileSave_triggered(bool checked)
 
   QString output;
   QXmlStreamWriter stream(&output);
+  stream.setAutoFormatting(true);
   stream.writeStartDocument();
+  stream.writeStartElement("workspace");
+  stream.writeAttribute("version", QString("%1.%2").arg(MAJOR_VERSION).arg(MINOR_VERSION));
   bool result = !stream.hasError();
   if (result)
   {
@@ -161,6 +164,7 @@ void MainWindow::on_ActionFileSave_triggered(bool checked)
 
     if (result)
     {
+      stream.writeEndElement();
       stream.writeEndDocument();
     }
   }

@@ -20,18 +20,36 @@ Project* ProjectJuiceJumpers::Create(QObject* parent, const QString& name, const
 /*! Project override. Serializes into given stream. */
 bool ProjectJuiceJumpers::serialize(QXmlStreamWriter& stream) const
 {
-  return Project::serialize(stream);
+  stream.writeStartElement("project");
+  
+  stream.writeAttribute("name", name());
+  stream.writeAttribute("path", path());
+
+  stream.writeEndElement();
+
+  // serialize children
+  //foreach (const ResourceItem* item, m_children)
+  //{
+  //  if (!item->serialize(stream))
+  //  {
+  //    // error!
+  //    return false;
+  //  }
+  //}
+
+  stream.writeEndElement();
+  return !stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Project override. Unserializes from given data stream. */
 bool ProjectJuiceJumpers::unserialize(const QXmlStreamReader& stream)
 {
-  // call base class
-  if (!Project::unserialize(stream))
-  {
-    // error!
-    return false;
-  }
+  //// call base class
+  //if (!Project::unserialize(stream))
+  //{
+  //  // error!
+  //  return false;
+  //}
 
   return true;
 }

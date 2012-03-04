@@ -45,9 +45,9 @@ class Project : public QObject, public ISerializer
     inline ResourceLibraryItemDelegate* resourceLibraryItemDelegate() const { return m_resourceLibraryItemDelegate; }
 
     /* ISerializer override. Serializes into given stream. */
-    bool serialize(QXmlStreamWriter& stream) const override;
-    /* ISerializer override. Unserializes from given data stream. */
-    bool unserialize(const QXmlStreamReader& stream) override;
+    //bool serialize(QXmlStreamWriter& stream) const override;
+    ///* ISerializer override. Unserializes from given data stream. */
+    //bool unserialize(const QXmlStreamReader& stream) override;
 
   protected:
 
