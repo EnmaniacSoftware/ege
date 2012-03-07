@@ -676,3 +676,55 @@ String String::trimmed() const
   return String(std::string(startPos, endPos + 1));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Converts to angle. If error is valid, it holds TRUE if error occured during the conversion. */
+Angle String::toAngle(bool* error) const
+{
+  Angle angle;
+
+  if (empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return angle;
+  }
+
+  float32 value;
+  if (1 > sscanf(toAscii(), "%f", &value) && error)
+  {
+    *error = true;
+  }
+
+  angle.fromDegrees(value);
+
+  return angle;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Converts to time. If error is valid, it holds TRUE if error occured during the conversion. */
+Time String::toTime(bool* error) const
+{
+  Time time;
+
+  if (empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return time;
+  }
+
+  float32 value;
+  if (1 > sscanf(toAscii(), "%f", &value) && error)
+  {
+    *error = true;
+  }
+
+  time = value;
+
+  return time;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

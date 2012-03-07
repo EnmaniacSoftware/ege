@@ -42,6 +42,8 @@ class TRect
     inline bool contains(T x, T y) const;
     /* Returns TRUE if given point is within rectangle. */
     inline bool contains(const TVector2<T>& point) const;
+    /* Returns TRUE if given rectangle is within current one. */
+    inline bool contains(const TRect<T>& rect) const;
     /* Calculates intersection rectangle between current and given rectangle. If there is no intersection resulting rectangle is nulled. */
     inline TRect<T> intersect(const TRect<T>& rect) const;
     /* Calculates union rectangle between current and given rectangle. */
@@ -204,6 +206,25 @@ TRect<T> TRect<T>::combine(const TRect<T>& rect) const
   out.height  = height * rect.height;
 
   return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if given rectangle is within current one. */
+template <typename T>
+bool TRect<T>::contains(const TRect<T>& rect) const
+{
+  // sanity checks
+  if (rect.isNull() || rect.isEmpty() || isNull() || isEmpty())
+  {
+    return false;
+  }
+
+  // check if entirely inside
+  if ((rect.x >= x) && (rect.y >= y) && (rect.bottom() <= bottom()) && (rect.right() <= rect.right()))
+  {
+    return true;
+  }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

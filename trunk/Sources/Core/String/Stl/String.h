@@ -3,6 +3,8 @@
 
 #include <EGETypes.h>
 #include <EGERect.h>
+#include <EGEAngle.h>
+#include <EGETime.h>
 #include <string>
 #include "Core/Graphics/Color.h"
 
@@ -85,7 +87,11 @@ class String : public std::string
     Vector4i toVector4i(bool* error = NULL) const;
     /* Converts to alignments flag. If error is valid, it holds TRUE if error occured during the conversion. */
     Alignment toAlignment(bool* error = NULL) const;
-    
+    /* Converts to angle. If error is valid, it holds TRUE if error occured during the conversion. */
+    Angle toAngle(bool* error = NULL) const;
+    /* Converts to time. If error is valid, it holds TRUE if error occured during the conversion. */
+    Time toTime(bool* error = NULL) const;
+
     /* Splits the string into list of substrings whenever seperator occurs. */
     StringList split(const String& separator) const;
     /* Returns a string that has whitespace removed from the start and the end. */
