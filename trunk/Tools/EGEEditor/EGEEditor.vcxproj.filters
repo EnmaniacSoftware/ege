@@ -36,6 +36,9 @@
     <Filter Include="Resources">
       <UniqueIdentifier>{e2ebb3be-025a-4531-baf4-c8764bfde79a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{49fee3ee-fa97-45f4-8fe5-da6c5c7104ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h">
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="src\Resources\ResourceLibraryDataModel.h">
       <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\FSUtils.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_ResourceLibraryItemDelegate.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utils\FSUtils.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

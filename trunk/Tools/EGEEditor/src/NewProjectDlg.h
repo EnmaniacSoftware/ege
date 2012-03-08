@@ -34,6 +34,8 @@ class NewProjectDialog : public QDialog
     void on_projectLocationBrowse_clicked();
     /* Slot called when OK button is clicked. */
     void accept();
+    /* Slot called when project text name changes. */
+    void projectNameTextEdited(const QString& text);
 
   private:
 
@@ -41,6 +43,8 @@ class NewProjectDialog : public QDialog
     void populateProjectTypeList();
     /* Checks if project already exists in a given directory. */
     bool projectExists(const QString& name, const QString& path) const;
+    /* Updates OK button. */
+    void updateOKButton();
 
   private:
 

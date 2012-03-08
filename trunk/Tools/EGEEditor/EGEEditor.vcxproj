@@ -83,6 +83,7 @@
     <ClInclude Include="src\Resources\ResourceItemContainer.h" />
     <ClInclude Include="src\Resources\ResourceItemFactory.h" />
     <ClInclude Include="src\Resources\ResourceItemImage.h" />
+    <ClInclude Include="src\Utils\FSUtils.h" />
     <CustomBuild Include="src\Resources\ResourceLibrary.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ResourceLibrary.h...</Message>
@@ -207,6 +208,7 @@
     <ClCompile Include="src\Resources\ResourceLibrary.cpp" />
     <ClCompile Include="src\Resources\ResourceLibraryDataModel.cpp" />
     <ClCompile Include="src\Resources\ResourceLibraryItemDelegate.cpp" />
+    <ClCompile Include="src\Utils\FSUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ui\resourcelibrary.ui">

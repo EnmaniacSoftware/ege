@@ -14,6 +14,13 @@ Project::~Project()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Marks/unmarks project content as dirty. */
+void Project::setDirty(bool set)
+{
+  m_dirty = set;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 /*! ISerializer override. Serializes into given stream. */
 //bool Project::serialize(QXmlStreamWriter& stream) const
 //{

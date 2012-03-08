@@ -1,5 +1,6 @@
 #include "NewProjectDlg.h"
 #include "NewProjectDataModel.h"
+#include "Utils/FSUtils.h"
 #include "ui_newproject.h"
 #include <QFileDialog.h>
 #include <QMessageBox>
@@ -18,6 +19,9 @@ NewProjectDialog::NewProjectDialog(QWidget* parent) : QDialog(parent),
 
   // initially disable OK button
   m_ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+
+  // make connections
+  connect(m_ui->projectName, SIGNAL(textEdited(const QString&)), this, SLOT(projectNameTextEdited(const QString&)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 NewProjectDialog::~NewProjectDialog()
@@ -39,8 +43,10 @@ void NewProjectDialog::populateProjectTypeList()
 /*! Slot called when item in the list is clicked. */
 void NewProjectDialog::on_projectListView_clicked(const QModelIndex& index)
 {
-  // enable OK button
-  m_ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+  Q_UNUSED(index);
+
+  // update OK button
+  updateOKButton();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when OK button is clicked. */
@@ -91,5 +97,31 @@ void NewProjectDialog::on_projectLocationBrowse_clicked()
 bool NewProjectDialog::projectExists(const QString& name, const QString& path) const
 {
   return QFile::exists(path + "/" + name + ".ege");
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when project text name changes. */
+void NewProjectDialog::projectNameTextEdited(const QString& text)
+{
+  Q_UNUSED(text);
+
+  // update OK button
+  updateOKButton();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Updates OK button. */
+void NewProjectDialog::updateOKButton()
+{
+  // check if no selection or invalid project file name
+  if (m_ui->projectListView->selectionModel()->selectedRows().empty() ||
+      m_ui->projectName->text() != FSUtils::ValidateFileName(m_ui->projectName->text()))
+  {
+    // disable OK button
+    m_ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+  }
+  else
+  {
+    // enable OK button
+    m_ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

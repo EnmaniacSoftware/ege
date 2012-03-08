@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QMenu>
+#include <QTextStream>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define MAJOR_VERSION 0
@@ -169,6 +170,22 @@ void MainWindow::on_ActionFileSave_triggered(bool checked)
     }
   }
 
+  if (result)
+  {
+    // save it to file
+    QFile file(m_project->fullPath());
+    result = file.open(QIODevice::WriteOnly | QIODevice::Text);
+    if (result)
+    {
+      QTextStream out(&file);
+      out << output;
+    
+      // reset dirty flag
+      m_project->setDirty(false);
+    }
+  }
+
+  // check for errors
   if (!result)
   {
     // error!

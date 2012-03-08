@@ -37,7 +37,6 @@ bool ProjectJuiceJumpers::serialize(QXmlStreamWriter& stream) const
   //  }
   //}
 
-  stream.writeEndElement();
   return !stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
