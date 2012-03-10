@@ -1,10 +1,12 @@
 #ifndef RESOURCE_LIBRARY_DATA_MODEL_H
 #define RESOURCE_LIBRARY_DATA_MODEL_H
 
+/*! Resource library data model class. 
+ */
+
 #include <QAbstractItemModel>
 #include <QModelIndex>
 #include <QVariant>
-#include "Project.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

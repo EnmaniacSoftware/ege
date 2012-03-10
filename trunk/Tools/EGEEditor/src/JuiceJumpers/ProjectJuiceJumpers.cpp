@@ -53,3 +53,9 @@ bool ProjectJuiceJumpers::unserialize(const QXmlStreamReader& stream)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Project override. Returns project type name. */
+QString ProjectJuiceJumpers::typeName() const
+{
+  return "juice-jumpers";
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

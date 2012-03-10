@@ -1,14 +1,16 @@
 #include "MainWindow.h"
 #include "NewProjectDlg.h"
-#include "Project.h"
 #include "ui_mainwindow.h"
 #include "Resources/ResourceLibrary.h"
 #include "Resources/ResourceItemFactory.h"
+#include "Projects/Project.h"
+#include "Projects/ProjectFactory.h"
 #include "Config.h"
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QMenu>
 #include <QTextStream>
+#include <QFileDialog>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define MAJOR_VERSION 0
@@ -18,7 +20,8 @@ MainWindow::MainWindow() : QMainWindow(),
                            m_ui(new Ui_MainWindow()),
                            m_project(NULL),
                            m_resourceItemFactory(new ResourceItemFactory()),
-                           m_config(new Config())
+                           m_config(new Config()),
+                           m_projectFactory(new ProjectFactory())
 {
   // setup UI
   m_ui->setupUi(this);
@@ -58,6 +61,12 @@ MainWindow::~MainWindow()
     delete m_config;
     m_config = NULL;
   }
+
+  if (m_projectFactory)
+  {
+    delete m_projectFactory;
+    m_projectFactory = NULL;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when File -> New is selected. */
@@ -79,7 +88,63 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
 {
   Q_UNUSED(checked);
 
-  // TAGE - implement
+  // prepare filters
+	QString filters = tr("Projects");
+	filters += QLatin1String(" (*.ege)");
+
+  // open file selection dialog
+	QString file = QFileDialog::getOpenFileName(this, tr("Open Project"), QString(), filters);
+  if (file.isEmpty())
+  {
+    // do nothing
+    return;
+  }
+
+  /*
+  QString output;
+  QXmlStreamReader stream(&output);
+  stream.setAutoFormatting(true);
+  stream.writeStartDocument();
+  stream.writeStartElement("workspace");
+  stream.writeAttribute("version", QString("%1.%2").arg(MAJOR_VERSION).arg(MINOR_VERSION));
+  bool result = !stream.hasError();
+  if (result)
+  {
+    // save project
+    result = m_project->serialize(stream);
+    if (result)
+    {
+      // save resources
+      result = m_resourceLibraryWindow->serialize(stream);
+    }
+
+    if (result)
+    {
+      stream.writeEndElement();
+      stream.writeEndDocument();
+    }
+  }
+
+  if (result)
+  {
+    // save it to file
+    QFile file(m_project->fullPath());
+    result = file.open(QIODevice::WriteOnly | QIODevice::Text);
+    if (result)
+    {
+      QTextStream out(&file);
+      out << output;
+    
+      // reset dirty flag
+      m_project->setDirty(false);
+    }
+  }
+
+  // check for errors
+  if (!result)
+  {
+    // error!
+  }*/
 
   // connect
   connect(m_project, SIGNAL(dirtyFlagChanged()), this, SLOT(updateTitleBar()));

@@ -1,7 +1,8 @@
 #include "NewProjectDlg.h"
-#include "NewProjectDataModel.h"
 #include "Utils/FSUtils.h"
 #include "ui_newproject.h"
+#include "Projects/ProjectFactory.h"
+#include "MainWindow.h"
 #include <QFileDialog.h>
 #include <QMessageBox>
 
@@ -36,8 +37,8 @@ NewProjectDialog::~NewProjectDialog()
 /*! Populates project type list. */
 void NewProjectDialog::populateProjectTypeList()
 {
-  NewProjectDataModel* dataModel = new NewProjectDataModel(this);
-  m_ui->projectListView->setModel(dataModel);
+  Q_ASSERT(mainWindow());
+  m_ui->projectListView->setModel(mainWindow()->projectFactory());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when item in the list is clicked. */
@@ -71,10 +72,10 @@ void NewProjectDialog::accept()
     }
   }
 
-  NewProjectDataModel::ModelItem* modelItem = static_cast<NewProjectDataModel::ModelItem*>(index.internalPointer());
-
   // create new project
-  Project* project = modelItem->createFunc(parent(), m_ui->projectName->text(), m_ui->projectLocation->text());
+  Project* project = mainWindow()->projectFactory()->createProject(index.data(Qt::DisplayRole).toString(), m_ui->projectName->text(), 
+                                                                   m_ui->projectLocation->text(), NULL);
+  Q_ASSERT(project);
 
   // emit
   emit projectCreated(project);

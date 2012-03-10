@@ -5,6 +5,7 @@
 #include "ResourceLibraryDataModel.h"
 #include "ResourceLibraryItemDelegate.h"
 #include "Resources/ResourceItem.h"
+#include "Projects/Project.h"
 #include <QMenu>
 #include <QFile>
 #include <QFileDialog>

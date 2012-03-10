@@ -8,6 +8,7 @@
 
 class Ui_NewProjectDialog;
 class Project;
+class MainWindow;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class NewProjectDialog : public QDialog
@@ -45,6 +46,8 @@ class NewProjectDialog : public QDialog
     bool projectExists(const QString& name, const QString& path) const;
     /* Updates OK button. */
     void updateOKButton();
+    /*! Returns pointer to main window. */
+    inline MainWindow* mainWindow() const { return reinterpret_cast<MainWindow*>(parent()); }
 
   private:
 

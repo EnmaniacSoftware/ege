@@ -44,6 +44,9 @@ class Project : public QObject, public ISerializer
     /*! Returns resource library item delegate. */
     inline ResourceLibraryItemDelegate* resourceLibraryItemDelegate() const { return m_resourceLibraryItemDelegate; }
 
+    /*! Returns project type name. */
+    virtual QString typeName() const = 0;
+
     /* ISerializer override. Serializes into given stream. */
     //bool serialize(QXmlStreamWriter& stream) const override;
     ///* ISerializer override. Unserializes from given data stream. */
@@ -68,8 +71,6 @@ class Project : public QObject, public ISerializer
     /*! Dirty flag. */
     mutable bool m_dirty;
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef Project* (*projectCreateFunc)(QObject* parent, const QString& name, const QString& path);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // PROJECT_H
