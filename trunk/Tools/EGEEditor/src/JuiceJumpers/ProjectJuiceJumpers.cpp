@@ -17,6 +17,13 @@ Project* ProjectJuiceJumpers::Create(QObject* parent, const QString& name, const
   return new ProjectJuiceJumpers(parent, name, path);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns type name. */
+QString ProjectJuiceJumpers::TypeName()
+{
+  return "Juice Jumpers";
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 /*! Project override. Serializes into given stream. */
 bool ProjectJuiceJumpers::serialize(QXmlStreamWriter& stream) const
 {
@@ -24,6 +31,7 @@ bool ProjectJuiceJumpers::serialize(QXmlStreamWriter& stream) const
   
   stream.writeAttribute("name", name());
   stream.writeAttribute("path", path());
+  stream.writeAttribute("type", TypeName());
 
   stream.writeEndElement();
 
@@ -51,11 +59,5 @@ bool ProjectJuiceJumpers::unserialize(const QXmlStreamReader& stream)
   //}
 
   return true;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Project override. Returns project type name. */
-QString ProjectJuiceJumpers::typeName() const
-{
-  return "juice-jumpers";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

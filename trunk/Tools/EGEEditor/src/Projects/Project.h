@@ -1,6 +1,9 @@
 #ifndef PROJECT_H
 #define PROJECT_H
 
+/*! Project base class. 
+ */
+
 #include <QObject>
 #include <QString>
 #include "Serializer.h"
@@ -11,7 +14,6 @@ class MainWindow;
 class ResourceLibraryItemDelegate;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Project base class. */
 class Project : public QObject, public ISerializer
 {
   Q_OBJECT
@@ -43,14 +45,6 @@ class Project : public QObject, public ISerializer
     
     /*! Returns resource library item delegate. */
     inline ResourceLibraryItemDelegate* resourceLibraryItemDelegate() const { return m_resourceLibraryItemDelegate; }
-
-    /*! Returns project type name. */
-    virtual QString typeName() const = 0;
-
-    /* ISerializer override. Serializes into given stream. */
-    //bool serialize(QXmlStreamWriter& stream) const override;
-    ///* ISerializer override. Unserializes from given data stream. */
-    //bool unserialize(const QXmlStreamReader& stream) override;
 
   protected:
 

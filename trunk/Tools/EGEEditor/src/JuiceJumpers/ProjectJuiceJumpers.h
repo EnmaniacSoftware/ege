@@ -1,10 +1,12 @@
 #ifndef JUICE_JUMPERS_PROJECT_H
 #define JUICE_JUMPERS_PROJECT_H
 
+/*! Juice Jumpers project declaration. 
+ */
+
 #include "Projects/Project.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Juice Jumpers project. */
 class ProjectJuiceJumpers : public Project
 {
   public:
@@ -14,6 +16,8 @@ class ProjectJuiceJumpers : public Project
 
     /* Create method. */
     static Project* Create(QObject* parent, const QString& name, const QString& path);
+    /* Returns type name. */
+    static QString TypeName();
 
   private:
 
@@ -21,8 +25,6 @@ class ProjectJuiceJumpers : public Project
     bool serialize(QXmlStreamWriter& stream) const override;
     /* Project override. Unserializes from given data stream. */
     bool unserialize(const QXmlStreamReader& stream) override;
-    /* Project override. Returns project type name. */
-    QString typeName() const override;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

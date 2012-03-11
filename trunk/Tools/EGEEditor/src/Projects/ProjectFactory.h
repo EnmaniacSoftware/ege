@@ -17,6 +17,7 @@ class Project;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 typedef Project* (*projectCreateFunc) (QObject* parent, const QString& name, const QString& path);
+typedef QString  (*projectTypeNameFunc) ();
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ProjectFactory : public QAbstractItemModel
@@ -27,7 +28,7 @@ class ProjectFactory : public QAbstractItemModel
    ~ProjectFactory();
 
     /* Registeres custom project type. */
-    bool registerProject(const QString& typeName, projectCreateFunc createFunc);
+    bool registerProject(projectTypeNameFunc typeNameFunc, projectCreateFunc createFunc);
     /* Creates instance of project of the type given by name. */
     Project* createProject(const QString& typeName, const QString& name, const QString& path, QObject* parent) const;
     /* Returns TRUE if given project type is registered. */
@@ -51,8 +52,8 @@ class ProjectFactory : public QAbstractItemModel
     /*! Data struct of registered project. */
     struct ProjectData
     {
-      QString name;                   /*!< Project name. */
-      projectCreateFunc createFunc;   /*!< Project create function. */
+      projectTypeNameFunc typeNameFunc; /*!< Project type name function. */
+      projectCreateFunc createFunc;     /*!< Project create function. */
     };
 
     typedef QList<ProjectData> ProjectRegisterList;

@@ -5,11 +5,11 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct BuiltInProject
 {
-  const char* name;
+  projectTypeNameFunc pfTypeNameFunc;
   projectCreateFunc pfCreateFunc;
 };
 
-static BuiltInProject l_projectsToRegister[] = { {"Juice Jumpers", ProjectJuiceJumpers::Create }
+static BuiltInProject l_projectsToRegister[] = { {ProjectJuiceJumpers::TypeName, ProjectJuiceJumpers::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ProjectFactory::ProjectFactory()
@@ -19,7 +19,7 @@ ProjectFactory::ProjectFactory()
   {
     const BuiltInProject& item = l_projectsToRegister[i];
 
-    registerProject(item.name, item.pfCreateFunc);
+    registerProject(item.pfTypeNameFunc, item.pfCreateFunc);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,10 +28,12 @@ ProjectFactory::~ProjectFactory()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Registeres custom project type. */
-bool ProjectFactory::registerProject(const QString& typeName, projectCreateFunc createFunc)
+bool ProjectFactory::registerProject(projectTypeNameFunc typeNameFunc, projectCreateFunc createFunc)
 {
+  Q_ASSERT(typeNameFunc && createFunc);
+
   // check if project with such a name exists already
-  if (isProjectRegistered(typeName))
+  if (isProjectRegistered(typeNameFunc()))
   {
     // error!
     return false;
@@ -39,8 +41,8 @@ bool ProjectFactory::registerProject(const QString& typeName, projectCreateFunc 
 
   // register
   ProjectData projectData;
-  projectData.name       = typeName;
-  projectData.createFunc = createFunc;
+  projectData.typeNameFunc  = typeNameFunc;
+  projectData.createFunc    = createFunc;
 
   m_registeredProjects.append(projectData);
 
@@ -55,7 +57,7 @@ Project* ProjectFactory::createProject(const QString& typeName, const QString& n
   // get project create function for a given type name
   foreach (const ProjectData& projectData, m_registeredProjects)
   {
-    if (projectData.name == typeName)
+    if (projectData.typeNameFunc() == typeName)
     {
       // create instance
       project = projectData.createFunc(parent, name, path);
@@ -72,7 +74,7 @@ bool ProjectFactory::isProjectRegistered(const QString& typeName) const
   // get project create function for a given type name
   foreach (const ProjectData& projectData, m_registeredProjects)
   {
-    if (projectData.name == typeName)
+    if (projectData.typeNameFunc() == typeName)
     {
       // found
       return true;
@@ -112,7 +114,7 @@ QVariant ProjectFactory::data(const QModelIndex& index, int role) const
     return QVariant();
   }
 
-  return m_registeredProjects[index.row()].name;
+  return m_registeredProjects[index.row()].typeNameFunc();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! QAbstractItemModel override. Returns the number of columns for the children of the given parent. */
