@@ -26,7 +26,7 @@ class ResourceItemContainer : public ResourceItem
     /* ResourceItem override. Serializes into given stream. */
     bool serialize(QXmlStreamWriter& stream) const override;
     /* ResourceItem override. Unserializes from given data stream. */
-    bool unserialize(const QXmlStreamReader& stream) override;
+    bool unserialize(QXmlStreamReader& stream) override;
     /* ResourceItem override. Returns size hint. */
     QSize sizeHint() const override;
 };

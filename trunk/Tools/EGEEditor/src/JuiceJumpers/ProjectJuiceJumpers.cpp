@@ -49,7 +49,7 @@ bool ProjectJuiceJumpers::serialize(QXmlStreamWriter& stream) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Project override. Unserializes from given data stream. */
-bool ProjectJuiceJumpers::unserialize(const QXmlStreamReader& stream)
+bool ProjectJuiceJumpers::unserialize(QXmlStreamReader& stream)
 {
   //// call base class
   //if (!Project::unserialize(stream))

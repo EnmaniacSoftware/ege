@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
+#include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryDataModel::ResourceLibraryDataModel(QObject* parent) : QAbstractItemModel(parent)
@@ -280,5 +281,50 @@ bool ResourceLibraryDataModel::setData(const QModelIndex& index, const QVariant&
 ResourceItemFactory* ResourceLibraryDataModel::resourceItemFactory() const
 {
   return reinterpret_cast<MainWindow*>(QObject::parent()->parent())->resourceItemFactory();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Serializes into given stream. */
+bool ResourceLibraryDataModel::serialize(QXmlStreamWriter& stream) const
+{
+  stream.writeStartElement("resources");
+  
+  // serialize root
+  bool result = m_root->serialize(stream);
+
+  stream.writeEndElement();
+
+  return result && !stream.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Unserializes from given data stream. */
+bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
+{
+  bool done = false;
+  while (!stream.atEnd() && !done)
+  {
+    QXmlStreamReader::TokenType token = stream.readNext();
+    switch (token)
+    {
+      case QXmlStreamReader::StartElement:
+
+        // check if resources element
+        if ("resources" == stream.name())
+        {
+        }
+        else
+        {
+          qWarning() << "Skipping data: " << stream.name();
+        }
+        break;
+
+      case QXmlStreamReader::EndElement:
+
+        // done
+        done = true;
+        break;
+    }
+  }
+
+  return !stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

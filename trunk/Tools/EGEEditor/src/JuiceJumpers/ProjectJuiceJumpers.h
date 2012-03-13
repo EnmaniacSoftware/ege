@@ -24,7 +24,7 @@ class ProjectJuiceJumpers : public Project
     /* Project override. Serializes into given stream. */
     bool serialize(QXmlStreamWriter& stream) const override;
     /* Project override. Unserializes from given data stream. */
-    bool unserialize(const QXmlStreamReader& stream) override;
+    bool unserialize(QXmlStreamReader& stream) override;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -5,18 +5,33 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+  QApplication a(argc, argv);
 
-    // register resources
-    if (!QResource::registerResource("res/resources.rcc"))
-    {
-      // error!
-      return -1;
-    }
+  // register resources
+  if (!QResource::registerResource("res/resources.rcc"))
+  {
+    // error!
+    return -1;
+  }
 
-    MainWindow mainWindow;
+  // allocate main window
+  app = new MainWindow();
+  if (NULL == app)
+  {
+    // error!
+    return -2;
+  }
 
-    mainWindow.show();
-    return a.exec();
+  // show main window
+  app->show();
+
+  // run
+  int result = a.exec();
+
+  // clean up
+  delete app;
+  app = NULL;
+
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,6 +1,9 @@
 #include "ResourceItemImage.h"
 #include "ResourceLibraryDataModel.h"
+#include "ResourceItemFactory.h"
+#include "MainWindow.h"
 #include <QImageReader>
+#include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemImage::ResourceItemImage() : ResourceItem()
@@ -73,8 +76,64 @@ bool ResourceItemImage::serialize(QXmlStreamWriter& stream) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! ResourceItem override. Unserializes from given data stream. */
-bool ResourceItemImage::unserialize(const QXmlStreamReader& stream)
+bool ResourceItemImage::unserialize(QXmlStreamReader& stream)
 {
+  // retrieve data
+  m_name = stream.attributes().value("name").toString();
+  m_path = stream.attributes().value("path").toString();
+
+  ResourceItem* item = NULL;
+
+  // process children
+  while (!stream.atEnd())
+  {
+    QXmlStreamReader::TokenType token = stream.readNext();
+    switch (token)
+    {
+      case QXmlStreamReader::StartElement:
+
+        // check if resource item element
+        if ("resource-item" == stream.name())
+        {
+          // check if processing an item already
+          if (NULL != item)
+          {
+            // let item unserialize
+            if (!item->unserialize(stream))
+            {
+              // error!
+              return false;
+            }
+          }
+          else
+          {
+            // create proper item
+            item = app->resourceItemFactory()->createItem(stream.attributes().value("type").toString(), 
+                                                          stream.attributes().value("name").toString(), this);
+            if (NULL == item)
+            {
+              // error!
+  //            QMessageBox::warning(this, tr("Open Project error"), tr("Could not open project file!"), QMessageBox::Ok);
+              return false;
+            }
+
+            // add to pool
+            m_children.push_back(item);
+          }
+        }
+        else
+        {
+          qWarning() << "Skipping data: " << stream.name();
+        }
+        break;
+
+      case QXmlStreamReader::EndElement:
+
+        // done
+        return !stream.hasError();
+    }
+  }
+
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

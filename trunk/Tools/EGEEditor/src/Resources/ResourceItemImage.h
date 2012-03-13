@@ -37,7 +37,7 @@ class ResourceItemImage : public ResourceItem
     /* ResourceItem override. Serializes into given stream. */
     bool serialize(QXmlStreamWriter& stream) const override;
     /* ResourceItem override. Unserializes from given data stream. */
-    bool unserialize(const QXmlStreamReader& stream) override;
+    bool unserialize(QXmlStreamReader& stream) override;
     /* ResourceItem override. Returns data for a given column and role. 
      * @param columnIndex Column index for which data is to be retrieved.
      * @param role        Role for which data is to be retrieved.

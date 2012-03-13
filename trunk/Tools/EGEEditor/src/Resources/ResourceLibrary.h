@@ -31,7 +31,7 @@ class ResourceLibraryWindow : public QDockWidget, public ISerializer
     /* ISerializer override. Serializes into given stream. */
     bool serialize(QXmlStreamWriter& stream) const override;
     /* ISerializer override. Unserializes from given data stream. */
-    bool unserialize(const QXmlStreamReader& stream) override;
+    bool unserialize(QXmlStreamReader& stream) override;
 
   private slots:
 

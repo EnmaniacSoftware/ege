@@ -13,6 +13,8 @@
 #include <QFileDialog>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+MainWindow* app = NULL;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define MAJOR_VERSION 0
 #define MINOR_VERSION 1
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -93,58 +95,90 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
 	filters += QLatin1String(" (*.ege)");
 
   // open file selection dialog
-	QString file = QFileDialog::getOpenFileName(this, tr("Open Project"), QString(), filters);
-  if (file.isEmpty())
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), QString(), filters);
+  if (fileName.isEmpty())
   {
     // do nothing
     return;
   }
 
-  /*
-  QString output;
-  QXmlStreamReader stream(&output);
-  stream.setAutoFormatting(true);
-  stream.writeStartDocument();
-  stream.writeStartElement("workspace");
-  stream.writeAttribute("version", QString("%1.%2").arg(MAJOR_VERSION).arg(MINOR_VERSION));
-  bool result = !stream.hasError();
-  if (result)
-  {
-    // save project
-    result = m_project->serialize(stream);
-    if (result)
-    {
-      // save resources
-      result = m_resourceLibraryWindow->serialize(stream);
-    }
-
-    if (result)
-    {
-      stream.writeEndElement();
-      stream.writeEndDocument();
-    }
-  }
-
-  if (result)
-  {
-    // save it to file
-    QFile file(m_project->fullPath());
-    result = file.open(QIODevice::WriteOnly | QIODevice::Text);
-    if (result)
-    {
-      QTextStream out(&file);
-      out << output;
-    
-      // reset dirty flag
-      m_project->setDirty(false);
-    }
-  }
-
-  // check for errors
-  if (!result)
+  QFile file(fileName);
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
   {
     // error!
-  }*/
+    QMessageBox::warning(this, tr("Open Project error"), tr("Could not open project file!"), QMessageBox::Ok);
+    return;
+  }
+
+  // process input data
+  QXmlStreamReader stream(&file);
+  while (!stream.atEnd())
+  {
+    QXmlStreamReader::TokenType token = stream.readNext();
+    switch (token)
+    {
+      case QXmlStreamReader::StartElement:
+
+        // check if workspace element
+        if ("workspace" == stream.name())
+        {
+          // check file version
+          QString version = stream.attributes().value("version").toString();
+
+          int major = version.section(".", 0, -2).toInt();
+          int minor = version.section(".", 1).toInt();
+
+          if ((MAJOR_VERSION != major) || (MINOR_VERSION != minor))
+          {
+            // error!
+            QMessageBox::warning(this, tr("Open Project error"), tr("Invalid project version!"), QMessageBox::Ok);
+            return;
+          }
+        }
+        // check if project element
+        else if ("project" == stream.name())
+        {
+          // try to create project
+          Project* project = m_projectFactory->createProject(stream.attributes().value("type").toString(), stream.attributes().value("name").toString(),
+                                                             stream.attributes().value("path").toString(), this);
+
+          if (NULL == project)
+          {
+            // error!
+            QMessageBox::warning(this, tr("Open Project error"), tr("Could not create project!"), QMessageBox::Ok);
+            return;
+          }
+
+          // deserialize project
+          if (!project->unserialize(stream))
+          {
+            // error!
+            delete project;
+            return;
+          }
+
+          // deserialize resource library
+          if (!m_resourceLibraryWindow->unserialize(stream))
+          {
+            // error!
+            delete project;
+            return;
+          }
+
+          // store project
+          m_project = project;
+        }
+        break;
+    }
+  }
+
+  if (stream.hasError())
+  {
+    // error!
+    QMessageBox::warning(this, tr("Open Project error"), tr("Could not open project file!"), QMessageBox::Ok);
+    close();
+    return;
+  }
 
   // connect
   connect(m_project, SIGNAL(dirtyFlagChanged()), this, SLOT(updateTitleBar()));

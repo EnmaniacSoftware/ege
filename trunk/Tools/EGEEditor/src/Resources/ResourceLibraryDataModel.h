@@ -7,6 +7,7 @@
 #include <QAbstractItemModel>
 #include <QModelIndex>
 #include <QVariant>
+#include "Serializer.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +15,7 @@ class ResourceItem;
 class ResourceItemFactory;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceLibraryDataModel : public QAbstractItemModel
+class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
 {
   public:
 
@@ -52,6 +53,11 @@ class ResourceLibraryDataModel : public QAbstractItemModel
      * Items in the new row will be children of the item represented by the parent model index.
      */
     bool insertRows(int position, int rows, const QModelIndex& parent = QModelIndex()) override;
+
+    /* Serializes into given stream. */
+    bool serialize(QXmlStreamWriter& stream) const override;
+    /* Unserializes from given data stream. */
+    bool unserialize(QXmlStreamReader& stream) override;
 
   private:
 

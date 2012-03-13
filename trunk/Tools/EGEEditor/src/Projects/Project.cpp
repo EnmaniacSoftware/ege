@@ -31,7 +31,7 @@ void Project::setDirty(bool set)
 //}
 ////--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ///*! ISerializer override. Unserializes from given data stream. */
-//bool Project::unserialize(const QXmlStreamReader& stream)
+//bool Project::unserialize(QXmlStreamReader& stream)
 //{
 //  return false;
 //}

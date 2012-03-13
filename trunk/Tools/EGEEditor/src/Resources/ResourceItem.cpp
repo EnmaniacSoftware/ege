@@ -1,5 +1,9 @@
 #include "ResourceItem.h"
 #include "ResourceLibraryDataModel.h"
+#include "MainWindow.h"
+#include "ResourceItemFactory.h"
+#include <QMessageBox>
+#include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItem::ResourceItem() : m_parent(NULL)
@@ -133,6 +137,11 @@ Qt::ItemFlags ResourceItem::flags() const
 /*! ISerializer override. Serializes into given stream. */
 bool ResourceItem::serialize(QXmlStreamWriter& stream) const
 {
+  stream.writeStartElement("resource-item");
+  
+  stream.writeAttribute("type", type());
+  stream.writeAttribute("name", name());
+
   // serialize children
   foreach (const ResourceItem* item, m_children)
   {
@@ -143,15 +152,80 @@ bool ResourceItem::serialize(QXmlStreamWriter& stream) const
     }
   }
 
+  stream.writeEndElement();
+
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! ISerializer override. Unserializes from given data stream. */
-bool ResourceItem::unserialize(const QXmlStreamReader& stream)
+bool ResourceItem::unserialize(QXmlStreamReader& stream)
 {
-  Q_ASSERT("Non-serializable! Implement in derivd class!");
-  Q_UNUSED(stream);
-  return false;
+  QString name = stream.attributes().value("name").toString();
+  QString type = stream.attributes().value("type").toString();
+
+  //Q_ASSERT((m_name == stream.attributes().value("name")) && (type() == stream.attributes().value("type")));
+
+  ResourceItem* item = NULL;
+
+  // process children
+  while (!stream.atEnd())
+  {
+    QXmlStreamReader::TokenType token = stream.readNext();
+    switch (token)
+    {
+      case QXmlStreamReader::StartElement:
+
+        // check if resource item element
+        if ("resource-item" == stream.name())
+        {
+          // check if processing an item already
+          if (NULL != item)
+          {
+            // let item unserialize
+            if (!item->unserialize(stream))
+            {
+              // error!
+              return false;
+            }
+          }
+          else
+          {
+            // create proper item
+            item = app->resourceItemFactory()->createItem(stream.attributes().value("type").toString(), 
+                                                          stream.attributes().value("name").toString(), this);
+            if (NULL == item)
+            {
+              // error!
+  //            QMessageBox::warning(this, tr("Open Project error"), tr("Could not open project file!"), QMessageBox::Ok);
+              return false;
+            }
+
+            // add to pool
+            m_children.push_back(item);
+          }
+        }
+        else
+        {
+          qWarning() << "Skipping data: " << stream.name();
+        }
+        break;
+
+      case QXmlStreamReader::EndElement:
+
+        // done unserialization for current item
+        item = NULL;
+        break;
+    }
+  }
+
+  if (stream.hasError())
+  {
+    // error!
+//    QMessageBox::warning(this, tr("Open Project error"), tr("Could not open project file!"), QMessageBox::Ok);
+    return false;
+  }
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets parent. */
