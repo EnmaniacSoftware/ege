@@ -286,12 +286,8 @@ ResourceItemFactory* ResourceLibraryDataModel::resourceItemFactory() const
 /*! Serializes into given stream. */
 bool ResourceLibraryDataModel::serialize(QXmlStreamWriter& stream) const
 {
-  stream.writeStartElement("resources");
-  
   // serialize root
   bool result = m_root->serialize(stream);
-
-  stream.writeEndElement();
 
   return result && !stream.hasError();
 }
@@ -307,9 +303,14 @@ bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
     {
       case QXmlStreamReader::StartElement:
 
-        // check if resources element
-        if ("resources" == stream.name())
+        // check if root element
+        if ("resource-item" == stream.name() && stream.attributes().value("type") == m_root->type() && stream.attributes().value("name") == m_root->name())
         {
+          if (!m_root->unserialize(stream))
+          {
+            // error!
+            return false;
+          }
         }
         else
         {

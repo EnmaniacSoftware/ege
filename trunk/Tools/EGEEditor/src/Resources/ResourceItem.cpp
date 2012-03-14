@@ -165,10 +165,9 @@ bool ResourceItem::unserialize(QXmlStreamReader& stream)
 
   //Q_ASSERT((m_name == stream.attributes().value("name")) && (type() == stream.attributes().value("type")));
 
-  ResourceItem* item = NULL;
-
   // process children
-  while (!stream.atEnd())
+  bool done = false;
+  while (!stream.atEnd() && !done)
   {
     QXmlStreamReader::TokenType token = stream.readNext();
     switch (token)
@@ -178,6 +177,10 @@ bool ResourceItem::unserialize(QXmlStreamReader& stream)
         // check if resource item element
         if ("resource-item" == stream.name())
         {
+          // create proper item
+          ResourceItem* item = app->resourceItemFactory()->createItem(stream.attributes().value("type").toString(), 
+                                                                      stream.attributes().value("name").toString(), this);
+
           // check if processing an item already
           if (NULL != item)
           {
@@ -185,23 +188,17 @@ bool ResourceItem::unserialize(QXmlStreamReader& stream)
             if (!item->unserialize(stream))
             {
               // error!
+              delete item;
               return false;
             }
+ 
+            // add to pool
+            m_children.push_back(item);
           }
           else
           {
-            // create proper item
-            item = app->resourceItemFactory()->createItem(stream.attributes().value("type").toString(), 
-                                                          stream.attributes().value("name").toString(), this);
-            if (NULL == item)
-            {
-              // error!
-  //            QMessageBox::warning(this, tr("Open Project error"), tr("Could not open project file!"), QMessageBox::Ok);
-              return false;
-            }
-
-            // add to pool
-            m_children.push_back(item);
+            // error!
+            return false;
           }
         }
         else
@@ -212,20 +209,13 @@ bool ResourceItem::unserialize(QXmlStreamReader& stream)
 
       case QXmlStreamReader::EndElement:
 
-        // done unserialization for current item
-        item = NULL;
+        // done
+        done = true;
         break;
     }
   }
 
-  if (stream.hasError())
-  {
-    // error!
-//    QMessageBox::warning(this, tr("Open Project error"), tr("Could not open project file!"), QMessageBox::Ok);
-    return false;
-  }
-
-  return true;
+  return !stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets parent. */

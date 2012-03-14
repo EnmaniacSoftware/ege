@@ -90,6 +90,8 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
 {
   Q_UNUSED(checked);
 
+  Project* project = NULL;
+
   // prepare filters
 	QString filters = tr("Projects");
 	filters += QLatin1String(" (*.ege)");
@@ -139,8 +141,8 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
         else if ("project" == stream.name())
         {
           // try to create project
-          Project* project = m_projectFactory->createProject(stream.attributes().value("type").toString(), stream.attributes().value("name").toString(),
-                                                             stream.attributes().value("path").toString(), this);
+          project = m_projectFactory->createProject(stream.attributes().value("type").toString(), stream.attributes().value("name").toString(),
+                                                    stream.attributes().value("path").toString(), this);
 
           if (NULL == project)
           {
@@ -156,7 +158,9 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
             delete project;
             return;
           }
-
+        }
+        else if ("resources" == stream.name())
+        {
           // deserialize resource library
           if (!m_resourceLibraryWindow->unserialize(stream))
           {
@@ -164,9 +168,6 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
             delete project;
             return;
           }
-
-          // store project
-          m_project = project;
         }
         break;
     }
@@ -180,11 +181,14 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
     return;
   }
 
+  // store project
+  m_project = project;
+
   // connect
   connect(m_project, SIGNAL(dirtyFlagChanged()), this, SLOT(updateTitleBar()));
 
-  // update title bar
-  updateTitleBar();
+  // reset dirty flag
+  m_project->setDirty(false);
 
   // update menus
   updateMenus();

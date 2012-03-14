@@ -9,6 +9,7 @@
 #include <QMenu>
 #include <QFile>
 #include <QFileDialog>
+#include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryWindow::ResourceLibraryWindow(QWidget* parent) : QDockWidget(parent),
@@ -22,6 +23,7 @@ ResourceLibraryWindow::ResourceLibraryWindow(QWidget* parent) : QDockWidget(pare
   m_ui->view->setModel(m_model);
 
   connect(parent, SIGNAL(projectCreated()), this, SLOT(onProjectCreated()));
+  connect(parent, SIGNAL(projectOpened()), this, SLOT(onProjectCreated()));
 	connect(parent, SIGNAL(projectClosed()), this, SLOT(onProjectClosed()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -105,6 +107,7 @@ void ResourceLibraryWindow::onProjectClosed()
   m_ui->view->setItemDelegate(NULL);
 
   // clean up model
+  // TAGE - should not delete ROOT, reimplement when removing is done
   m_model->clear();
 
   // make disconnections
@@ -198,12 +201,22 @@ void ResourceLibraryWindow::removeItem()
 /*! ISerializer override. Serializes into given stream. */
 bool ResourceLibraryWindow::serialize(QXmlStreamWriter& stream) const
 {
-  return m_model->serialize(stream);
+  stream.writeStartElement("resources");
+  
+  // serialize model
+  bool result = m_model->serialize(stream);
+
+  stream.writeEndElement();
+
+  return result && !stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! ISerializer override. Unserializes from given data stream. */
 bool ResourceLibraryWindow::unserialize(QXmlStreamReader& stream)
 {
-  return m_model->unserialize(stream);
+  // unserialize model
+  bool result = m_model->unserialize(stream);
+ 
+  return result && !stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
