@@ -17,22 +17,17 @@ Project::~Project()
 /*! Marks/unmarks project content as dirty. */
 void Project::setDirty(bool set)
 {
-  m_dirty = set;
+  if (m_dirty != set)
+  {
+    m_dirty = set;
+
+    emit dirtyFlagChanged();
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-/*! ISerializer override. Serializes into given stream. */
-//bool Project::serialize(QXmlStreamWriter& stream) const
-//{
-//  // reset flag
-//  m_dirty = false;
-//
-//  return true;
-//}
-////--------------------------------------------------------------------------------------------------------------------------------------------------------------
-///*! ISerializer override. Unserializes from given data stream. */
-//bool Project::unserialize(QXmlStreamReader& stream)
-//{
-//  return false;
-//}
-////--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when project data has changed. */
+void Project::onProjectDataChanged()
+{
+  setDirty(true);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -243,3 +243,38 @@ QSize ResourceItem::sizeHint() const
   return QSize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes given child. */
+void ResourceItem::removeChild(ResourceItem* item)
+{
+  int index = m_children.indexOf(item);
+  if (0 <= index)
+  {
+    m_children.removeAt(index);
+
+    delete item;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns index of a given child. */
+int ResourceItem::childIndex(ResourceItem* item) const
+{
+  return m_children.indexOf(item);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds child to the end of pool. */
+void ResourceItem::addChild(ResourceItem* item)
+{
+  // set child's parent
+  item->setParent(this);
+
+  // add to pool
+  m_children.append(item);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes all children. */
+void ResourceItem::removeChildren()
+{
+  qDeleteAll(m_children);
+  m_children.clear();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

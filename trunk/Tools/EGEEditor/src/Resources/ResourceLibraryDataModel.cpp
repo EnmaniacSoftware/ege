@@ -20,6 +20,12 @@ ResourceLibraryDataModel::ResourceLibraryDataModel(QObject* parent) : QAbstractI
 ResourceLibraryDataModel::~ResourceLibraryDataModel()
 {
   clear();
+
+  if (m_root)
+  {
+    delete m_root;
+    m_root = NULL;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! QAbstractItemModel override. Returns the parent of the model item with the given index. If the item has no parent, an invalid QModelIndex is returned. */
@@ -59,10 +65,6 @@ QModelIndex ResourceLibraryDataModel::index(int row, int column, const QModelInd
 
   // get proper child
   item = parentItem->child(row);
-  //if (NULL == item)
-  //{
-  //  return QModelIndex();
-  //}
 
   return createIndex(row, column, item);
 }
@@ -115,65 +117,14 @@ int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
   return parentItem->childCount();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads data from given string. */
-bool ResourceLibraryDataModel::load(const QString& data)
-{
-  QXmlStreamReader xmlReader(data);
-  while (!xmlReader.atEnd() && !xmlReader.hasError())
-  {
-    // read next element
-    QXmlStreamReader::TokenType token = xmlReader.readNext();
-
-    // check if document start
-    if (QXmlStreamReader::StartDocument == token)
-    {
-      // skip
-      continue;
-    }
-
-    // check element start
-    if (QXmlStreamReader::StartElement == token) 
-    {
-      // process
-      if ("resource-item" == xmlReader.name())
-      {
-        QXmlStreamAttributes attributes = xmlReader.attributes();
-      }
-
-      //if(xmlReader->name() == "id") {
-      //    qDebug() << xmlReader->readElementText();
-      //}
-    }
-  }
-
-  return !xmlReader.hasError();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Saves data to string. */
-QString ResourceLibraryDataModel::save() const
-{
-  QString output;
-
-  //output = m_root->serialize();
-
-  //QXmlStreamWriter stream(&output);
-  //stream.setAutoFormatting(true);
-  //stream.writeStartDocument();
-  //stream.writeStartElement("bookmark");
-  //stream.writeAttribute("href", "http://qt.nokia.com/");
-  //stream.writeTextElement("title", "Qt Home");
-  //stream.writeEndElement(); // bookmark
-
-  return true;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Clears data. */
 void ResourceLibraryDataModel::clear()
 {
-  if (m_root)
+  if (m_root && (0 < m_root->childCount()))
   {
-    delete m_root;
-    m_root = NULL;
+	  beginRemoveRows(QModelIndex(), 0, m_root->childCount() - 1);
+    m_root->removeChildren();
+	  endRemoveRows();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -187,35 +138,6 @@ Qt::ItemFlags ResourceLibraryDataModel::flags(const QModelIndex& index) const
 
   ResourceItem* item = getItem(index);
   return item->flags();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! QAbstractItemModel override. On models that support this, inserts count rows into the model before the given row. 
- *  Items in the new row will be children of the item represented by the parent model index.
- */
-bool ResourceLibraryDataModel::insertRows(int position, int rows, const QModelIndex& parent)
-{
-  ResourceItem* parentItem = getItem(parent);
-
-  bool success;
-
-  // insert rows
-  beginInsertRows(parent, position, position + rows - 1);
-  success = parentItem->insertChildren(position, rows, m_root->columnCount());
-  endInsertRows();
-
-  return success;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ResourceLibraryDataModel::removeRows(int position, int rows, const QModelIndex& parent)
-{
-    ResourceItem* parentItem = getItem(parent);
-    bool success = true;
-
-    beginRemoveRows(parent, position, position + rows - 1);
-    //success = parentItem->removeChildren(position, rows);
-    endRemoveRows();
-
-    return success;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns resource library item connected for given model index. */
@@ -235,52 +157,16 @@ bool ResourceLibraryDataModel::setData(const QModelIndex& index, const QVariant&
 {
   ResourceItem* item = getItem(index);
 
-  // by default incoming model index is what will be changed
-  QModelIndex modelIndex = index;
-
-  // check if item should be re-allocated
-  if ((ResourceLibraryDataModel::TypeRole == role) && (value.toString() != item->type()))
-  {
-    // get parent item
-    ResourceItem* parentItem = getItem(parent(index));
-
-    // create object
-    ResourceItem* newItem = resourceItemFactory()->createItem(value.toString(), QString(), item->parent());
-    if (NULL == newItem)
-    {
-      // error!
-      return false;
-    }
-
-    // delete old item
-    delete item;
-
-    // insert newly created item into its placeholder
-    parentItem->setChild(index.column(), newItem);
-
-    // update model index changed
-    modelIndex = createIndex(index.row(), index.column(), newItem);
-
-    // substitute item
-    item = newItem;
-  }
-
   // process according to role
   bool success = item->setData(value, role);
 
   // emit
   if (success)
   {
-    emit dataChanged(modelIndex, modelIndex);
+    emit dataChanged(index, index);
   }
 
   return success;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Returns pointer to resource item factory object. */
-ResourceItemFactory* ResourceLibraryDataModel::resourceItemFactory() const
-{
-  return reinterpret_cast<MainWindow*>(QObject::parent()->parent())->resourceItemFactory();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Serializes into given stream. */
@@ -327,5 +213,31 @@ bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
   }
 
   return !stream.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes entry associated with given index. */
+void ResourceLibraryDataModel::removeItem(const QModelIndex& index)
+{
+  // get item form model
+  ResourceItem* item = getItem(index);
+  Q_ASSERT(item && item->parent());
+
+	beginRemoveRows(index.parent(), item->row(), item->row());
+  item->parent()->removeChild(item);
+	endRemoveRows();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Inserts item after given index. */
+QModelIndex ResourceLibraryDataModel::insertItem(const QModelIndex& index, ResourceItem* item)
+{
+  // get item form model
+  ResourceItem* parentItem = getItem(index);
+
+  // add to the end of the pool
+  beginInsertRows(index.parent(), parentItem->childCount(), parentItem->childCount());
+  parentItem->addChild(item);
+  endInsertRows();
+
+  return createIndex(parentItem->childCount() - 1, 0, item);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -34,12 +34,22 @@ class ResourceItem : public ISerializer
 
     /* Returns children count. */
     int childCount() const;
+
     /* Returns child at given index. */
     ResourceItem* child(int index) const;
+    /* Returns index of a given child. */
+    int childIndex(ResourceItem* item) const;
+    /* Adds child to the end of pool. */
+    void addChild(ResourceItem* item);
+
     /* Sets child item. */
     void setChild(int index, ResourceItem* item);
-    
-    /* Returns row index at which current item is placed withing parent. */
+    /* Removes given child. */
+    void removeChild(ResourceItem* item);
+    /* Removes all children. */
+    void removeChildren();
+
+    /* Returns row index at which current item is placed within parent. */
     int row() const;
     /* Returns data for a given column and role. 
      * @param columnIndex Column index for which data is to be retrieved.

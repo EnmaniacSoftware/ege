@@ -1,5 +1,5 @@
 #include "Core/String/Stl/String.h"
-#include "Core/Containers/Stl/List.h"
+#include "Core/Containers/Stl/DynamicArray.h"
 #include <sstream>
 #include <algorithm>
 #include <cctype>
@@ -114,6 +114,26 @@ s32 String::toInt(bool* error) const
   {
     *error = true;
   }
+
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Converts to 64-bit integer. If error is valid, it holds TRUE if error occured during the conversion. */
+s64 String::toInt64(bool* error) const
+{
+  if (empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return 0;
+  }
+
+  const char* text = c_str();
+
+  s64 value = _atoi64(text);
 
   return value;
 }
@@ -546,10 +566,10 @@ String String::arg(float32 value) const
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Splits the string into list of substrings whenever seperator occurs. */
-StringList String::split(const String& separator) const
+/*! Splits the string into array of substrings whenever seperator occurs. */
+StringArray String::split(const String& separator) const
 {
-  StringList list;
+  StringArray list;
 
   size_t pos = 0;
   while (std::string::npos != pos)
@@ -594,10 +614,10 @@ Alignment String::toAlignment(bool* error) const
   }
 
   // split into parts
-  StringList parts = split("-");
+  StringArray parts = split("-");
 
   Alignment alignment;
-  for (StringList::const_iterator it = parts.begin(); it != parts.end(); ++it)
+  for (StringArray::const_iterator it = parts.begin(); it != parts.end(); ++it)
   {
     // remove whitespaces on both sides
     String final = it->trimmed();
@@ -649,7 +669,7 @@ String String::trimmed() const
   }
 
   // check if at the start and end there are non-white characters
-  if (!IsWhiteSpace(*begin()) || !IsWhiteSpace(*(end() - 1)))
+  if (!IsWhiteSpace(*begin()) && !IsWhiteSpace(*(end() - 1)))
   {
     // done
     return *this;

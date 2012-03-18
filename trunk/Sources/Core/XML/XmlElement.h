@@ -33,7 +33,16 @@ class XmlElement : public Object
     String name() const;
 
     /* Returns value of given attribute if present. Otherwise, returns default value. */
-    String attribute(const String& name, const String& defValue = "") const;
+    String attribute(const String& name, const String& defValue) const;
+    /* Returns value of given attribute if present. Otherwise, returns default value. */
+    String attribute(const String& name, const char* defValue = NULL) const;
+    /* Returns value of given attribute if present. Otherwise, returns default value. */
+    s32 attribute(const String& name, s32 defValue) const;
+    /* Returns value of given attribute if present. Otherwise, returns default value. */
+    bool attribute(const String& name, bool defValue) const;
+    /* Returns value of given attribute if present. Otherwise, returns default value. */
+    s64 attribute(const String& name, s64 defValue) const;
+
     /* Sets attribute with a given c-string value. 
      * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
      */

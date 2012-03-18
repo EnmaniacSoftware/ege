@@ -194,7 +194,7 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
   updateMenus();
 
   // emit
-  emit projectOpened();
+  emit projectOpened(m_project);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when File -> Close is selected. */
@@ -258,12 +258,12 @@ void MainWindow::on_ActionFileSave_triggered(bool checked)
   bool result = !stream.hasError();
   if (result)
   {
-    // save project
-    result = m_project->serialize(stream);
+    // save resources
+    result = m_resourceLibraryWindow->serialize(stream);
     if (result)
     {
-      // save resources
-      result = m_resourceLibraryWindow->serialize(stream);
+      // save project
+      result = m_project->serialize(stream);
     }
 
     if (result)
@@ -314,7 +314,7 @@ void MainWindow::onNewProjectCreated(Project* project)
   updateMenus();
 
   // emit
-  emit projectCreated();
+  emit projectCreated(m_project);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates title bar. */

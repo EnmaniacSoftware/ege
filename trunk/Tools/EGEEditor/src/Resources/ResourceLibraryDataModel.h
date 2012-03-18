@@ -33,31 +33,21 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
 
   public:
 
-    /* Loads data from given string. */
-    bool load(const QString& data);
-    /* Saves data to string. */
-    QString save() const;
     /* Clears data. */
     void clear();
 
-    /*! Returns root item. */
-    inline ResourceItem* root() const { return m_root; }
-
-    /* QAbstractItemModel override. Returns the number of columns for the children of the given parent. */
-    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
-    /* QAbstractItemModel override. Returns the index of the item in the model specified by the given row, column and parent index. */
-    QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
     /* QAbstractItemModel override. Sets the role data for the item at index to value.*/
     bool setData(const QModelIndex& index, const QVariant& value, int role) override;
-    /* QAbstractItemModel override. On models that support this, inserts count rows into the model before the given row. 
-     * Items in the new row will be children of the item represented by the parent model index.
-     */
-    bool insertRows(int position, int rows, const QModelIndex& parent = QModelIndex()) override;
 
     /* Serializes into given stream. */
     bool serialize(QXmlStreamWriter& stream) const override;
     /* Unserializes from given data stream. */
     bool unserialize(QXmlStreamReader& stream) override;
+
+    /* Removes entry associated with given index. */
+    void removeItem(const QModelIndex& index);
+    /* Inserts item after given index. */
+    QModelIndex insertItem(const QModelIndex& index, ResourceItem* item);
 
   private:
 
@@ -69,12 +59,14 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     /* QAbstractItemModel override. Returns the item flags for the given index. */
     Qt::ItemFlags flags(const QModelIndex& index) const override;
-    /* QAbstractItemModel override. */
-    bool removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) override;
+    /* QAbstractItemModel override. Returns the number of columns for the children of the given parent. */
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    /* QAbstractItemModel override. Returns the index of the item in the model specified by the given row, column and parent index. */
+    QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
     /* Returns resource library item connected for given model index. */
     ResourceItem* getItem(const QModelIndex& index) const;
-    /* Returns pointer to resource item factory object. */
-    ResourceItemFactory* resourceItemFactory() const;
+    /*! Returns root item. */
+    inline ResourceItem* root() const { return m_root; }
 
   private:
 

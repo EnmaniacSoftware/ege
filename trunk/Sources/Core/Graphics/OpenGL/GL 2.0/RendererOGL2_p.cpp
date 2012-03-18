@@ -545,7 +545,7 @@ void RendererPrivate::detectCapabilities()
 {
   // get list of all extensions
   String extensionString(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
-  m_extensionList = extensionString.split(" ");
+  m_extensionArray = extensionString.split(" ");
 
 	GLint value;
 
@@ -645,7 +645,7 @@ void RendererPrivate::detectCapabilities()
 /*! Checks if given extension is supported. */
 bool RendererPrivate::isExtensionSupported(const char* extension) const
 {
-  return m_extensionList.contains(extension);
+  return m_extensionArray.contains(extension);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Applies general parameters. 

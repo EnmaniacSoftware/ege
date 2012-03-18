@@ -48,6 +48,71 @@ String XmlElement::attribute(const String& name, const String& defValue) const
   return defValue;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns value of given attribute if present. Otherwise, returns default value. */
+String XmlElement::attribute(const String& name, const char* defValue) const
+{
+  if (isValid())
+  {
+    return p_func()->attribute(name, String(defValue));
+  }
+
+  return String(defValue);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns value of given attribute if present. Otherwise, returns default value. */
+s32 XmlElement::attribute(const String& name, s32 defValue) const
+{
+  s32 value = defValue;
+
+  if (isValid())
+  {
+    bool error = false;
+    value = p_func()->attribute(name, "").toInt(&error);
+    if (error)
+    {
+      value = defValue;
+    }
+  }
+
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns value of given attribute if present. Otherwise, returns default value. */
+bool XmlElement::attribute(const String& name, bool defValue) const
+{
+  bool value = defValue;
+
+  if (isValid())
+  {
+    bool error = false;
+    value = p_func()->attribute(name, "").toBool(&error);
+    if (error)
+    {
+      value = defValue;
+    }
+  }
+
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns value of given attribute if present. Otherwise, returns default value. */
+s64 XmlElement::attribute(const String& name, s64 defValue) const
+{
+  s64 value = defValue;
+
+  if (isValid())
+  {
+    bool error = false;
+    value = p_func()->attribute(name, "").toInt64(&error);
+    if (error)
+    {
+      value = defValue;
+    }
+  }
+
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given attribute exists. */
 bool XmlElement::hasAttribute(const String& name) const
 {

@@ -59,8 +59,6 @@ bool ResourceItemImage::serialize(QXmlStreamWriter& stream) const
   stream.writeAttribute("name", name());
   stream.writeAttribute("path", path());
 
-  stream.writeEndElement();
-
   // serialize children
   foreach (const ResourceItem* item, m_children)
   {

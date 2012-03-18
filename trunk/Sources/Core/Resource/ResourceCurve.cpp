@@ -5,6 +5,7 @@
 #include <EGEXml.h>
 #include <EGEDebug.h>
 #include <EGEResources.h>
+#include <EGEVector.h>
 
 EGE_NAMESPACE
 

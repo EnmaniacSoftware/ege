@@ -13,8 +13,8 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class String;
-template <typename T> class List;
-typedef List<String> StringList;
+template <typename T> class DynamicArray;
+typedef DynamicArray<String> StringArray;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -65,6 +65,8 @@ class String : public std::string
 
     /* Converts to integer. If error is valid, it holds TRUE if error occured during the conversion. */
     s32 toInt(bool* error = NULL) const;
+    /* Converts to 64-bit integer. If error is valid, it holds TRUE if error occured during the conversion. */
+    s64 toInt64(bool* error = NULL) const;
     /* Converts to boolean. If error is valid, it holds TRUE if error occured during the conversion. */
     bool toBool(bool* error = NULL) const;
     /* Converts to float. If error is valid, it holds TRUE if error occured during the conversion. */
@@ -92,8 +94,8 @@ class String : public std::string
     /* Converts to time. If error is valid, it holds TRUE if error occured during the conversion. */
     Time toTime(bool* error = NULL) const;
 
-    /* Splits the string into list of substrings whenever seperator occurs. */
-    StringList split(const String& separator) const;
+    /* Splits the string into array of substrings whenever seperator occurs. */
+    StringArray split(const String& separator) const;
     /* Returns a string that has whitespace removed from the start and the end. */
     String trimmed() const;
 

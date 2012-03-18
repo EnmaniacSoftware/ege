@@ -45,6 +45,11 @@ class Project : public QObject, public ISerializer
     
     /*! Returns resource library item delegate. */
     inline ResourceLibraryItemDelegate* resourceLibraryItemDelegate() const { return m_resourceLibraryItemDelegate; }
+    
+  public slots:
+
+    /* Slot called when project data has changed. */
+    void onProjectDataChanged();
 
   protected:
 

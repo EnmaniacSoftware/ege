@@ -27,9 +27,9 @@ class MainWindow : public QMainWindow
   signals:
 
     /*! Signal emitted when new project has been created. */
-    void projectCreated();
+    void projectCreated(Project* project);
     /*! Signal emitted when existing project has been opened. */
-    void projectOpened();
+    void projectOpened(Project* project);
     /*! Signal emitted when project was closed. */
     void projectClosed();
 

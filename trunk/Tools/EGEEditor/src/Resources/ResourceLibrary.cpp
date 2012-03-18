@@ -5,6 +5,7 @@
 #include "ResourceLibraryDataModel.h"
 #include "ResourceLibraryItemDelegate.h"
 #include "Resources/ResourceItem.h"
+#include "Resources/ResourceItemFactory.h"
 #include "Projects/Project.h"
 #include <QMenu>
 #include <QFile>
@@ -22,8 +23,8 @@ ResourceLibraryWindow::ResourceLibraryWindow(QWidget* parent) : QDockWidget(pare
   // set view model
   m_ui->view->setModel(m_model);
 
-  connect(parent, SIGNAL(projectCreated()), this, SLOT(onProjectCreated()));
-  connect(parent, SIGNAL(projectOpened()), this, SLOT(onProjectCreated()));
+  connect(parent, SIGNAL(projectCreated(Project*)), this, SLOT(onProjectCreated(Project*)));
+  connect(parent, SIGNAL(projectOpened(Project*)), this, SLOT(onProjectCreated(Project*)));
 	connect(parent, SIGNAL(projectClosed()), this, SLOT(onProjectClosed()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -59,7 +60,7 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
 
   if (0 == indexList.size())
   {
-    action = menu.addAction(tr("Add container"), this, SLOT(addContainer()));
+    action = menu.addAction(tr("Add container"), this, SLOT(onAddContainer()));
   }
   else if (1 == indexList.size())
   {
@@ -68,14 +69,14 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
 
     if ("container" == item->type())
     {
-      action = menu.addAction(tr("Add container"), this, SLOT(addContainer()));
-      action = menu.addAction(tr("Add resource"), this, SLOT(addResource()));
-      action = menu.addAction(tr("Remove"), this, SLOT(removeItem()));
+      action = menu.addAction(tr("Add container"), this, SLOT(onAddContainer()));
+      action = menu.addAction(tr("Add resource"), this, SLOT(onAddResource()));
+      action = menu.addAction(tr("Remove"), this, SLOT(onRemoveItems()));
     }
   }
   else
   {
-    action = menu.addAction(tr("Remove"), this, SLOT(removeItem()));
+    action = menu.addAction(tr("Remove"), this, SLOT(onRemoveItems()));
   }
 
 	if (!menu.isEmpty())
@@ -85,7 +86,7 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when new project has been created/opened. */
-void ResourceLibraryWindow::onProjectCreated()
+void ResourceLibraryWindow::onProjectCreated(Project* project)
 {
   // set view delegate
   ResourceLibraryItemDelegate* delegate = mainWindow()->project()->resourceLibraryItemDelegate();
@@ -95,6 +96,10 @@ void ResourceLibraryWindow::onProjectCreated()
 
   // establish connections
 	connect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
+  connect(m_model, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), project, SLOT(onProjectDataChanged()));
+  connect(m_model, SIGNAL(rowsInserted(const QModelIndex&, int, int)), project, SLOT(onProjectDataChanged()));
+  connect(m_model, SIGNAL(rowsMoved(const QModelIndex&, int, int, const QModelIndex&, int)), project, SLOT(onProjectDataChanged()));
+  connect(m_model, SIGNAL(rowsRemoved(const QModelIndex&, int, int)), project, SLOT(onProjectDataChanged()));
 
   // show resources page
   m_ui->stackedWidget->setCurrentIndex(1);
@@ -107,7 +112,6 @@ void ResourceLibraryWindow::onProjectClosed()
   m_ui->view->setItemDelegate(NULL);
 
   // clean up model
-  // TAGE - should not delete ROOT, reimplement when removing is done
   m_model->clear();
 
   // make disconnections
@@ -118,7 +122,7 @@ void ResourceLibraryWindow::onProjectClosed()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when container is requested to be added. */
-void ResourceLibraryWindow::addContainer()
+void ResourceLibraryWindow::onAddContainer()
 {
   ResourceItem* item;
 
@@ -126,30 +130,15 @@ void ResourceLibraryWindow::addContainer()
   QModelIndexList list = m_ui->view->selectionModel()->selectedIndexes();
   QModelIndex index = !list.isEmpty() ? list.front() : QModelIndex();
 
-  // insert row at the begining of index
-  if (!m_model->insertRow(0, index))
+  ResourceItem* newItem = app->resourceItemFactory()->createItem("container", tr("No name"));
+  if (newItem)
   {
-    // error!
-    return;
-  }
-
-  // update all columns
-  for (int column = 0; column < m_model->columnCount(index); ++column)
-  {
-    QModelIndex child = m_model->index(0, column, index);
-
-    // NOTE: type should be first to set
-    m_model->setData(child, QVariant("container"), ResourceLibraryDataModel::TypeRole);
-
-    // NOTE: re-aquire child model index again. This is necessary casue actual backend is created line above
-    child = m_model->index(0, column, index);
-
-    m_model->setData(child, QVariant(tr("No name")), Qt::DisplayRole);
+    m_model->insertItem(index, newItem);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when resource is requested to be added. */
-void ResourceLibraryWindow::addResource()
+void ResourceLibraryWindow::onAddResource()
 {
   QModelIndex index = m_ui->view->selectionModel()->selectedIndexes().first();
 
@@ -161,41 +150,32 @@ void ResourceLibraryWindow::addResource()
 	QStringList list = QFileDialog::getOpenFileNames(this, tr("Add resource"), QString(), filters);
   if (!list.isEmpty())
   {
-    // insert rows at the begining of index
-    if (!m_model->insertRows(0, list.size(), index))
-    {
-      // error!
-      return;
-    }
-
     // go thru all items
     for (int i = 0; i < list.size(); ++i)
     {
-      // update all columns
-      for (int column = 0; column < m_model->columnCount(index); ++column)
+      QString item = QDir::fromNativeSeparators(list[i]);
+      QString name = item.section("/", -1);
+      QString path = item.section("/", 0, -2);
+
+      ResourceItem* newItem = app->resourceItemFactory()->createItem("image", name);
+      if (newItem)
       {
-        QModelIndex child = m_model->index(i, column, index);
+        QModelIndex childIndex = m_model->insertItem(index, newItem);
 
-        QString item = QDir::fromNativeSeparators(list[i]);
-        QString name = item.section("/", -1);
-        QString path = item.section("/", 0, -2);
-
-        // NOTE: type should be first to set
-        m_model->setData(child, QVariant("image"), ResourceLibraryDataModel::TypeRole);
-
-        // NOTE: re-aquire child model index again. This is necessary casue actual backend is created line above
-        child = m_model->index(i, column, index);
-
-        m_model->setData(child, QVariant(name), Qt::DisplayRole);
-        m_model->setData(child, QVariant(path), ResourceLibraryDataModel::PathRole);
+        m_model->setData(childIndex, QVariant(path), ResourceLibraryDataModel::PathRole);
       }
     }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when resource item is requested to be removed. */
-void ResourceLibraryWindow::removeItem()
+void ResourceLibraryWindow::onRemoveItems()
 {
+  QModelIndexList indexList = m_ui->view->selectionModel()->selectedIndexes();
+  foreach (const QModelIndex& index, indexList)
+  {
+    m_model->removeItem(index);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! ISerializer override. Serializes into given stream. */

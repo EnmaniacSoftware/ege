@@ -11,6 +11,7 @@ class Config;
 class MainWindow;
 class ResourceLibraryDataModel;
 class ResourceLibraryItemDelegate;
+class Project;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Resource library window. */
@@ -38,15 +39,15 @@ class ResourceLibraryWindow : public QDockWidget, public ISerializer
     /* Slot called when context menu is requested. */
 		void onQueueContextMenuRequested(const QPoint& pos);
     /* Slot called when new project has been created/opened. */
-    void onProjectCreated();
+    void onProjectCreated(Project* project);
     /* Slot called when project has been closed. */
     void onProjectClosed();
     /* Slot called when container is requested to be added. */
-    void addContainer();
+    void onAddContainer();
     /* Slot called when resource is requested to be added. */
-    void addResource();
-    /* Slot called when resource item is requested to be removed. */
-    void removeItem();
+    void onAddResource();
+    /* Slot called when resource items are requested to be removed. */
+    void onRemoveItems();
 
   private:
 
