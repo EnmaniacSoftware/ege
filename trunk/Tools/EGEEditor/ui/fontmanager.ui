@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FontsManagerWnd</class>
- <widget class="QDockWidget" name="FontsManagerWnd">
+ <class>FontManager</class>
+ <widget class="QDockWidget" name="FontManager">
   <property name="geometry">
    <rect>
     <x>0</x>

@@ -1,5 +1,5 @@
-#include "FontsLibrary.h"
-#include "ui_fontslibrary.h"
+#include "FontManager.h"
+#include "ui_fontmanager.h"
 #include "Config.h"
 #include "MainWindow.h"
 #include "Projects/Project.h"
@@ -9,8 +9,8 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FontsLibraryWindow::FontsLibraryWindow(QWidget* parent) : QDockWidget(parent),
-                                                                m_ui(new Ui_FontsLibrary())/*,
+FontManagerWindow::FontManagerWindow(QWidget* parent) : QDockWidget(parent),
+                                                                m_ui(new Ui_FontManager())/*,
                                                                 m_model(new ResourceLibraryDataModel(this))*/
 {
   // setup UI
@@ -24,7 +24,7 @@ FontsLibraryWindow::FontsLibraryWindow(QWidget* parent) : QDockWidget(parent),
 	//connect(parent, SIGNAL(projectClosed()), this, SLOT(onProjectClosed()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FontsLibraryWindow::~FontsLibraryWindow()
+FontManagerWindow::~FontManagerWindow()
 {
   if (m_ui)
   {
@@ -34,19 +34,19 @@ FontsLibraryWindow::~FontsLibraryWindow()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Saves settings. */
-void FontsLibraryWindow::saveSettings(Config* config)
+void FontManagerWindow::saveSettings(Config* config)
 {
   Q_ASSERT(config);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Loads settings. */
-void FontsLibraryWindow::loadSettings(Config* config)
+void FontManagerWindow::loadSettings(Config* config)
 {
   Q_ASSERT(config);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when context menu is requested. */
-void FontsLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
+void FontManagerWindow::onQueueContextMenuRequested(const QPoint& pos)
 {
   QMenu menu(this);
   /*
@@ -82,7 +82,7 @@ void FontsLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when new project has been created/opened. */
-void FontsLibraryWindow::onProjectCreated(Project* project)
+void FontManagerWindow::onProjectCreated(Project* project)
 {
   // set view delegate
 /*  ResourceLibraryItemDelegate* delegate = mainWindow()->project()->resourceLibraryItemDelegate();
@@ -102,7 +102,7 @@ void FontsLibraryWindow::onProjectCreated(Project* project)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when project has been closed. */
-void FontsLibraryWindow::onProjectClosed()
+void FontManagerWindow::onProjectClosed()
 {
   // reset view delegate
  // m_ui->view->setItemDelegate(NULL);
@@ -118,7 +118,7 @@ void FontsLibraryWindow::onProjectClosed()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when container is requested to be added. */
-void FontsLibraryWindow::onAddContainer()
+void FontManagerWindow::onAddContainer()
 {
   //ResourceItem* item;
 
@@ -134,7 +134,7 @@ void FontsLibraryWindow::onAddContainer()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when resource is requested to be added. */
-void FontsLibraryWindow::onAddResource()
+void FontManagerWindow::onAddResource()
 {
  // QModelIndex index = m_ui->view->selectionModel()->selectedIndexes().first();
 
@@ -165,7 +165,7 @@ void FontsLibraryWindow::onAddResource()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when resource item is requested to be removed. */
-void FontsLibraryWindow::onRemoveItems()
+void FontManagerWindow::onRemoveItems()
 {
   //QModelIndexList indexList = m_ui->view->selectionModel()->selectedIndexes();
   //foreach (const QModelIndex& index, indexList)
@@ -175,7 +175,7 @@ void FontsLibraryWindow::onRemoveItems()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! ISerializer override. Serializes into given stream. */
-bool FontsLibraryWindow::serialize(QXmlStreamWriter& stream) const
+bool FontManagerWindow::serialize(QXmlStreamWriter& stream) const
 {
   stream.writeStartElement("resources");
   
@@ -188,7 +188,7 @@ bool FontsLibraryWindow::serialize(QXmlStreamWriter& stream) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! ISerializer override. Unserializes from given data stream. */
-bool FontsLibraryWindow::unserialize(QXmlStreamReader& stream)
+bool FontManagerWindow::unserialize(QXmlStreamReader& stream)
 {
   // unserialize model
   //bool result = m_model->unserialize(stream);

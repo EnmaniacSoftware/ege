@@ -6,23 +6,21 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Ui_FontsLibrary;
+class Ui_FontManager;
 class Config;
 class MainWindow;
-class ResourceLibraryDataModel;
-class ResourceLibraryItemDelegate;
 class Project;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Fonts library window. */
-class FontsLibraryWindow : public QDockWidget, public ISerializer
+class FontManagerWindow : public QDockWidget, public ISerializer
 {
   Q_OBJECT
 
   public:
 
-    FontsLibraryWindow(QWidget* parent);
-   ~FontsLibraryWindow();
+    FontManagerWindow(QWidget* parent);
+   ~FontManagerWindow();
 
     /* Saves settings. */
     void saveSettings(Config* config);
@@ -51,13 +49,8 @@ class FontsLibraryWindow : public QDockWidget, public ISerializer
 
   private:
 
-    /*! Returns pointer to main window object. */
-    inline MainWindow* mainWindow() const { return reinterpret_cast<MainWindow*>(parent()); }
-
-  private:
-
-    /*! Fonts library window UI. */
-    Ui_FontsLibrary* m_ui;
+    /*! UI. */
+    Ui_FontManager* m_ui;
     /*! Data model. */
     //ResourceLibraryDataModel* m_model;
 };

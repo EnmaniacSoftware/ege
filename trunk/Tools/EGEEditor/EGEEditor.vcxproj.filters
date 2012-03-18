@@ -86,7 +86,7 @@
     <ClInclude Include="src\Projects\ProjectFactory.h">
       <Filter>Projects</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_fontslibrary.h">
+    <ClInclude Include="GeneratedFiles\ui_fontmanager.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -115,10 +115,10 @@
     <CustomBuild Include="src\Projects\Project.h">
       <Filter>Projects</Filter>
     </CustomBuild>
-    <CustomBuild Include="src\Fonts\FontsLibrary.h">
+    <CustomBuild Include="src\Fonts\FontManager.h">
       <Filter>Fonts</Filter>
     </CustomBuild>
-    <CustomBuild Include="ui\fontslibrary.ui">
+    <CustomBuild Include="ui\fontmanager.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -198,13 +198,13 @@
     <ClCompile Include="src\Projects\ProjectFactory.cpp">
       <Filter>Projects</Filter>
     </ClCompile>
-    <ClCompile Include="src\Fonts\FontsLibrary.cpp">
+    <ClCompile Include="src\Fonts\FontManager.cpp">
       <Filter>Fonts</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_FontsLibrary.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_FontManager.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_FontsLibrary.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_FontManager.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
