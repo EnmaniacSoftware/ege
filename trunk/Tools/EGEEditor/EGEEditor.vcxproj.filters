@@ -42,7 +42,7 @@
     <Filter Include="Projects">
       <UniqueIdentifier>{7704040a-a8e7-496f-a13b-ddc365b152ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Font">
+    <Filter Include="Fonts">
       <UniqueIdentifier>{246a798d-c94f-4289-9c8c-35b45de14441}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -86,6 +86,9 @@
     <ClInclude Include="src\Projects\ProjectFactory.h">
       <Filter>Projects</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_fontslibrary.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ui\mainwindow.ui">
@@ -111,6 +114,12 @@
     </CustomBuild>
     <CustomBuild Include="src\Projects\Project.h">
       <Filter>Projects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\Fonts\FontsLibrary.h">
+      <Filter>Fonts</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ui\fontslibrary.ui">
+      <Filter>Form Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +197,15 @@
     </ClCompile>
     <ClCompile Include="src\Projects\ProjectFactory.cpp">
       <Filter>Projects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Fonts\FontsLibrary.cpp">
+      <Filter>Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FontsLibrary.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FontsLibrary.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

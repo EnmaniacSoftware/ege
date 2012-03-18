@@ -454,6 +454,7 @@ files
 
 	["Core/String"]
   (../../Sources/Core/String)
+  StringUtils.h
 
 	["Core/String/Stl"]
   (../../Sources/Core/String/Stl)
@@ -568,6 +569,10 @@ files
 	(../../Sources/Airplay/Input)
 	PointerAirplay_p.cpp
 	PointerAirplay_p.h
+
+	["Airplay/String"]
+  (../../Sources/Airplay/String)
+  StringUtilsAirplay.cpp
 
 	["Airplay/Timer"]
 	(../../Sources/Airplay/Timer)

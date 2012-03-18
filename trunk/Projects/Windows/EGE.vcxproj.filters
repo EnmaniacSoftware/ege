@@ -175,6 +175,9 @@
     <Filter Include="Core\Threading\PThreads">
       <UniqueIdentifier>{3a46843a-400c-4f9c-b610-581681967cfe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Win32\String">
+      <UniqueIdentifier>{fa09a45a-6dce-4a7f-8087-cfddd7b2e35e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -611,6 +614,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Threading\MutexLocker.cpp">
       <Filter>Core\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp">
+      <Filter>Win32\String</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1198,6 +1204,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Threading\MutexLocker.h">
       <Filter>Core\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\String\StringUtils.h">
+      <Filter>Core\String</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

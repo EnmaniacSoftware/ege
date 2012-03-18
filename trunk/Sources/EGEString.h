@@ -2,6 +2,7 @@
 #define EGE_STRING_H
 
 #include "Core/Platform.h"
+#include "Core/String/StringUtils.h"
 
 #if EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
 #include "Core/String/Stl/String.h"

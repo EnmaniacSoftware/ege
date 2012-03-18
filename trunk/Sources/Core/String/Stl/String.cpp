@@ -104,16 +104,7 @@ s32 String::toInt(bool* error) const
     return 0;
   }
 
-  const char* text = c_str();
-  char* end;
-
-  s32 value = strtol(text, &end, 10);
-
-  // check for error
-  if (error && (0 != *end))
-  {
-    *error = true;
-  }
+  s32 value = StringUtils::ToInt(c_str(), error);
 
   return value;
 }
@@ -131,9 +122,7 @@ s64 String::toInt64(bool* error) const
     return 0;
   }
 
-  const char* text = c_str();
-
-  s64 value = _atoi64(text);
+  s64 value = StringUtils::ToInt64(c_str(), error);
 
   return value;
 }

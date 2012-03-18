@@ -77,8 +77,8 @@ class RendererPrivate
     u32 m_activeTextureUnit;
     /*! Pool of all currently active texture units. */
     DynamicArray<u32> m_activeTextureUnits;
-    /*! List of all extensions. */
-    StringList m_extensionList;
+    /*! Array of all extensions. */
+    StringArray m_extensionArray;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

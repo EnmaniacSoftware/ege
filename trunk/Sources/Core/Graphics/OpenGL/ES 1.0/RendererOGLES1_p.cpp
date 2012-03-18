@@ -497,9 +497,9 @@ void RendererPrivate::detectCapabilities()
 {
   // get list of all extensions
   String extensionString(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
-  m_extensionList = extensionString.split(" ");
+  m_extensionArray = extensionString.split(" ");
 
-  for (StringList::const_iterator it = m_extensionList.begin(); it != m_extensionList.end(); ++it)
+  for (StringArray::const_iterator it = m_extensionArray.begin(); it != m_extensionArray.end(); ++it)
   {
     EGE_PRINT("Available OGL extension: %s", (*it).toAscii());
   }
@@ -586,7 +586,7 @@ void RendererPrivate::detectCapabilities()
 /*! Checks if given extension is supported. */
 bool RendererPrivate::isExtensionSupported(const char* extension) const
 {
-  return m_extensionList.contains(extension);
+  return m_extensionArray.contains(extension);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Applies general parameters. 
