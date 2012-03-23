@@ -1,10 +1,10 @@
 #ifndef EGE_AIRPLAY_APPCONTROLLER_PRIVATE_H
 #define EGE_AIRPLAY_APPCONTROLLER_PRIVATE_H
 
-#include "EGE.h"
+#include <EGE.h>
 #include "Core/Event/EventListener.h"
 #include "Core/ConfigParams.h"
-#include "EGETime.h"
+#include <EGETime.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -24,6 +24,13 @@ class AppControllerPrivate
 
     /* Enters main loop. */
     EGEResult run();
+
+  private:
+
+    /* Pause callback. */
+    static int32 PauseCB(void* data, void* userData);
+    /* Resume callback. */
+    static int32 ResumeCB(void* data, void* userData);
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

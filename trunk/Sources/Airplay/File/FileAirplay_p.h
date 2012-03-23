@@ -46,6 +46,8 @@ class FilePrivate
     s64 size();
     /* Returns TRUE if file exists. */
     bool exists() const;
+    /* Removes file if possible. */
+    bool remove();
 
   private:
 

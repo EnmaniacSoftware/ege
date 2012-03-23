@@ -64,9 +64,9 @@ EGEResult AppController::run()
 /*! IEventListener override. Event reciever. */
 void AppController::onEventRecieved(PEvent pEvent)
 {
-  switch (pEvent->uid())
+  switch (pEvent->id())
   {
-    case EGE_EVENT_UID_CORE_QUIT_REQUEST:
+    case EGE_EVENT_ID_CORE_QUIT_REQUEST:
 
       m_state = STATE_QUITTING;
       // TAGE - for testing

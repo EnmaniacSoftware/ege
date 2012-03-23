@@ -26,6 +26,13 @@ class File : public Object
 
   public:
 
+    /* Returns TRUE if file at given path exists. */
+    static bool Exists(const String& filePath);
+    /* Removes file at given path is possible. */
+    static bool Remove(const String& filePath);
+
+  public:
+
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /* Opens the given file with requested mode. */
@@ -52,6 +59,8 @@ class File : public Object
     s64 size();
     /* Returns TRUE if file exists. */
     bool exists() const;
+    /* Removes file if possible. */
+    bool remove();
 
     File& operator << (u8 value);
     File& operator << (s8 value);

@@ -779,9 +779,9 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
 /*! EventListener override. Event reciever. */
 void ResourceManager::onEventRecieved(PEvent event)
 {
-  switch (event->uid())
+  switch (event->id())
   {
-    case EGE_EVENT_UID_CORE_QUIT_REQUEST:
+    case EGE_EVENT_ID_CORE_QUIT_REQUEST:
 
       // do shouting down
       shutDown();

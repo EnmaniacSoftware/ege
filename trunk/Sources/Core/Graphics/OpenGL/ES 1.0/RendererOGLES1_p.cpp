@@ -613,7 +613,7 @@ void RendererPrivate::applyGeneralParams(const PRenderComponent& component)
     }
 
     // apply opposite rotation to rectangle to convert it into native (non-transformed) coordinate
-    EGE_PRINT("ORIENTATION: %f %f", d_func()->m_renderTarget->orientationRotation().radians(), d_func()->m_renderTarget->orientationRotation().degrees());
+    //EGE_PRINT("ORIENTATION: %f %f", d_func()->m_renderTarget->orientationRotation().radians(), d_func()->m_renderTarget->orientationRotation().degrees());
 
     clipRect = d_func()->applyRotation(clipRect, d_func()->m_renderTarget->orientationRotation());
 

@@ -6,10 +6,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(EventManager)
 EGE_DEFINE_DELETE_OPERATORS(EventManager)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EventManager::EventManager(Application* app) : Object(app)
 {
@@ -20,9 +18,9 @@ EventManager::~EventManager()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Sends event with given ID. */
-EGEResult EventManager::send(u32 uid)
+EGEResult EventManager::send(s32 id)
 {
-  PEvent event = ege_new Event(app(), uid);
+  PEvent event = ege_new Event(app(), id);
   if (NULL == event)
   {
     // error!
@@ -36,9 +34,9 @@ EGEResult EventManager::send(u32 uid)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sends event with given ID and associates integral value. */
-EGEResult EventManager::send(u32 uid, s32 data)
+EGEResult EventManager::send(s32 id, s32 data)
 {
-  PEvent event = ege_new Event(app(), uid);
+  PEvent event = ege_new Event(app(), id);
   if (NULL == event)
   {
     // error!
@@ -61,9 +59,9 @@ EGEResult EventManager::send(u32 uid, s32 data)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sends event with given ID and associates floating value. */
-EGEResult EventManager::send(u32 uid, float32 data)
+EGEResult EventManager::send(s32 id, float32 data)
 {
-  PEvent event = ege_new Event(app(), uid);
+  PEvent event = ege_new Event(app(), id);
   if (NULL == event)
   {
     // error!
@@ -86,9 +84,9 @@ EGEResult EventManager::send(u32 uid, float32 data)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sends event with given ID and associates arbitrary data. */
-EGEResult EventManager::send(u32 uid, PObject data)
+EGEResult EventManager::send(s32 id, PObject data)
 {
-  PEvent event = ege_new Event(app(), uid);
+  PEvent event = ege_new Event(app(), id);
   if (NULL == event)
   {
     // error!

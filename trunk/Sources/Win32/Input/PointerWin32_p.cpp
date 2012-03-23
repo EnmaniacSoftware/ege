@@ -6,10 +6,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(PointerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(PointerPrivate)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PointerPrivate::PointerPrivate(Pointer* base) : m_base(base)
 {
@@ -30,9 +28,9 @@ bool PointerPrivate::isValid() const
 /*! Event reciever. */
 void PointerPrivate::onEventRecieved(PEvent event)
 {
-  switch (event->uid())
+  switch (event->id())
   {
-    case EGE_EVENT_UID_INTERNAL_POINTER_DATA:
+    case EGE_EVENT_ID_INTERNAL_POINTER_DATA:
 
       // emit signal
       emit base()->eventSignal(event->data());

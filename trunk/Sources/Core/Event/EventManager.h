@@ -27,13 +27,13 @@ class EventManager : public Object, public ListenerContainer<IEventListener>
     EGE_DECLARE_DELETE_OPERATORS
 
     /* Sends event with given ID. */
-    EGEResult send(u32 uid);
+    EGEResult send(s32 id);
     /* Sends event with given ID and associates integral value. */
-    EGEResult send(u32 uid, s32 data);
+    EGEResult send(s32 id, s32 data);
     /* Sends event with given ID and associates floating value. */
-    EGEResult send(u32 uid, float32 data);
+    EGEResult send(s32 id, float32 data);
     /* Sends event with given ID and associates arbitrary data. */
-    EGEResult send(u32 uid, PObject data);
+    EGEResult send(s32 id, PObject data);
 
   private:
 

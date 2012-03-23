@@ -211,14 +211,14 @@ void Application::setLanguage(const String& language)
     m_language = language;
 
     // broadcast change
-    eventManager()->send(EGE_EVENT_UID_CORE_LANGUAGE_CHANGED);
+    eventManager()->send(EGE_EVENT_ID_CORE_LANGUAGE_CHANGED);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Requests quit. */
 void Application::quit()
 {
-  eventManager()->send(EGE_EVENT_UID_CORE_QUIT_REQUEST);
+  eventManager()->send(EGE_EVENT_ID_CORE_QUIT_REQUEST);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if application is quitting. */

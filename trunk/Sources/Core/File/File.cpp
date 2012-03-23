@@ -26,6 +26,20 @@ File::~File()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if file at given path exists. */
+bool File::Exists(const String& filePath)
+{
+  File file(filePath);
+  return file.exists();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes file at given path is possible. */
+bool File::Remove(const String& filePath)
+{
+  File file(filePath);
+  return file.remove();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
 bool File::isValid() const
 {
@@ -394,6 +408,17 @@ bool File::exists() const
   if (isValid())
   {
     return p_func()->exists();
+  }
+
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes file if possible. */
+bool File::remove()
+{
+  if (isValid())
+  {
+    return p_func()->remove();
   }
 
   return false;

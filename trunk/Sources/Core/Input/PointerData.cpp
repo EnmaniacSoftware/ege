@@ -3,10 +3,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(PointerData)
 EGE_DEFINE_DELETE_OPERATORS(PointerData)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PointerData::PointerData(EGEInput::EAction action, EGEInput::EButton button, s32 x, s32 y, s32 index) : Object(NULL, EGE_OBJECT_UID_POINTER_DATA), 
                                                                                                         m_button(button), m_action(action), m_x(x), m_y(y), 
