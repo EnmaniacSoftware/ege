@@ -42,6 +42,10 @@ class XmlElement : public Object
     bool attribute(const String& name, bool defValue) const;
     /* Returns value of given attribute if present. Otherwise, returns default value. */
     s64 attribute(const String& name, s64 defValue) const;
+    /* Returns value of given attribute if present. Otherwise, returns default value. */
+    float32 attribute(const String& name, float32 defValue) const;
+    /* Returns value of given attribute if present. Otherwise, returns default value. */
+    Time attribute(const String& name, const Time& defValue) const;
 
     /* Sets attribute with a given c-string value. 
      * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
@@ -63,6 +67,15 @@ class XmlElement : public Object
      * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
      */
     bool setAttribute(const String& name, bool value);
+    /* Sets attribute with a given float value. 
+     * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+     */
+    bool setAttribute(const String& name, float32 value);
+    /* Sets attribute with a given Time value. 
+     * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+     */
+    bool setAttribute(const String& name, const Time& value);
+
     /* Returns TRUE if given attribute exists. */
     bool hasAttribute(const String& name) const;
     /* Returns first attribute. */

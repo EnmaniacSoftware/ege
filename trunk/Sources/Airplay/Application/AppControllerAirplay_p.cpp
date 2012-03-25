@@ -72,6 +72,8 @@ int32 AppControllerPrivate::PauseCB(void* data, void* userData)
 {
   AppControllerPrivate* me = static_cast<AppControllerPrivate*>(userData);
 
+  EGE_PRINT("PAUSING APP");
+
   // send event
   me->d_func()->app()->eventManager()->send(EGE_EVENT_ID_CORE_APP_PAUSE);
 
@@ -82,6 +84,8 @@ int32 AppControllerPrivate::PauseCB(void* data, void* userData)
 int32 AppControllerPrivate::ResumeCB(void* data, void* userData)
 {
   AppControllerPrivate* me = static_cast<AppControllerPrivate*>(userData);
+
+  EGE_PRINT("RESUMING APP");
 
   // send event
   me->d_func()->app()->eventManager()->send(EGE_EVENT_ID_CORE_APP_RESUME);

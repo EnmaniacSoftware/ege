@@ -257,16 +257,12 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
 
     case WM_SETFOCUS:
 
-      // activate window
-      //::engine->setWindowActive( true );
-      //::engine->enableFullScreen( ::engine->wWndWidth, ::engine->wWndHeight, ::engine->bFullScreen );
+      me->app()->eventManager()->send(EGE_EVENT_ID_CORE_APP_RESUME);
       return 0;
 
     case WM_KILLFOCUS:
 
-      // deactivate window
-     // ::engine->setWindowActive( false );
-   		//ChangeDisplaySettings( NULL, 0 );
+      me->app()->eventManager()->send(EGE_EVENT_ID_CORE_APP_PAUSE);
       return 0;
   } 
 

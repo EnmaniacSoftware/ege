@@ -31,6 +31,7 @@ class AppController : public Object, public IEventListener
     enum State
     {
       STATE_RUNNING,
+      STATE_PAUSED,
       STATE_QUITTING,
       STATE_QUIT
     };

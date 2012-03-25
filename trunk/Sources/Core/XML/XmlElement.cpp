@@ -113,6 +113,42 @@ s64 XmlElement::attribute(const String& name, s64 defValue) const
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns value of given attribute if present. Otherwise, returns default value. */
+float32 XmlElement::attribute(const String& name, float32 defValue) const
+{
+  float32 value = defValue;
+
+  if (isValid())
+  {
+    bool error = false;
+    value = p_func()->attribute(name, "").toFloat(&error);
+    if (error)
+    {
+      value = defValue;
+    }
+  }
+
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns value of given attribute if present. Otherwise, returns default value. */
+Time XmlElement::attribute(const String& name, const Time& defValue) const
+{
+  Time value = defValue;
+
+  if (isValid())
+  {
+    bool error = false;
+    value = p_func()->attribute(name, "").toTime(&error);
+    if (error)
+    {
+      value = defValue;
+    }
+  }
+
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given attribute exists. */
 bool XmlElement::hasAttribute(const String& name) const
 {
@@ -177,8 +213,8 @@ bool XmlElement::setAttribute(const String& name, s32 value)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets attribute with a given 64-bit integer value. 
-  * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
-  */
+ *  @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+ */
 bool XmlElement::setAttribute(const String& name, s64 value)
 {
   if (isValid())
@@ -187,6 +223,27 @@ bool XmlElement::setAttribute(const String& name, s64 value)
   }
 
   return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Sets attribute with a given float value. 
+ * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+ */
+bool XmlElement::setAttribute(const String& name, float32 value)
+{
+  if (isValid())
+  {
+    return p_func()->setAttribute(name, String::Format("%f", value));
+  }
+
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Sets attribute with a given Time value. 
+ * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+ */
+bool XmlElement::setAttribute(const String& name, const Time& value)
+{
+  return setAttribute(name, value.seconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns first child element. If any name is given returned will be first element with given name. */

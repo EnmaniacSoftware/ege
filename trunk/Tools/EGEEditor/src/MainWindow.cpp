@@ -26,7 +26,7 @@ MainWindow::MainWindow() : QMainWindow(),
                            m_resourceItemFactory(new ResourceItemFactory()),
                            m_config(new Config()),
                            m_projectFactory(new ProjectFactory()),
-                           m_fontManagerWindow(new FontManagerWindow(this))
+                           m_fontManagerWindow(NULL)
 {
   // setup UI
   m_ui->setupUi(this);
@@ -453,12 +453,20 @@ void MainWindow::on_ActionProjectFontManager_triggered(bool checked)
 {
   Q_UNUSED(checked);
 
+  // check if window needs to be created
+  if (NULL == m_fontManagerWindow)
+  {
+    // allocate window
+    m_fontManagerWindow = new FontManagerWindow();
+  }
+
   // check if already in MDI area
   QMdiSubWindow* subWindow = findMdiChild(m_fontManagerWindow->objectName());
   if (NULL == subWindow)
   {
     // add to MDI area
     m_ui->mdiArea->addSubWindow(m_fontManagerWindow);
+    //m_fontManagerWindow->setAttribute(Qt::WA_DeleteOnClose, false);
   }
 
   // show it
@@ -471,7 +479,7 @@ QMdiSubWindow* MainWindow::findMdiChild(const QString& name) const
   foreach (QMdiSubWindow* window, m_ui->mdiArea->subWindowList())
   {
     // check if found
-    if (name == window->widget()->objectName())
+    if (name == window->objectName())
     {
       // found
       return window;

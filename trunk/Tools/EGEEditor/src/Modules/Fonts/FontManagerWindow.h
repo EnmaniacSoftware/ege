@@ -1,7 +1,7 @@
-#ifndef FONTS_LIBRARY_H
-#define FONTS_LIBRARY_H
+#ifndef FONTMANAGERWINDOW_H
+#define FONTMANAGERWINDOW_H
 
-#include <QDockWidget>
+#include <QMdiSubWindow>
 #include "Serializer.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -13,13 +13,13 @@ class Project;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Fonts library window. */
-class FontManagerWindow : public QWidget, public ISerializer
+class FontManagerWindow : public QMdiSubWindow, public ISerializer
 {
   Q_OBJECT
 
   public:
 
-    FontManagerWindow(QWidget* parent);
+    FontManagerWindow();
    ~FontManagerWindow();
 
     /* Saves settings. */
@@ -49,6 +49,11 @@ class FontManagerWindow : public QWidget, public ISerializer
 
   private:
 
+    /* Event called on application close request. */
+    void closeEvent(QCloseEvent *event);
+
+  private:
+
     /*! UI. */
     Ui_FontManager* m_ui;
     /*! Data model. */
@@ -56,4 +61,4 @@ class FontManagerWindow : public QWidget, public ISerializer
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // FONTS_LIBRARY_H
+#endif // FONTMANAGERWINDOW_H

@@ -7,10 +7,11 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QDebug>
+#include <QCloseEvent>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FontManagerWindow::FontManagerWindow(QWidget* parent) : QWidget(parent),
-                                                        m_ui(new Ui_FontManager())/*,
+FontManagerWindow::FontManagerWindow() : QMdiSubWindow(NULL),
+                                         m_ui(new Ui_FontManager())/*,
                                                                 m_model(new ResourceLibraryDataModel(this))*/
 {
   // setup UI
@@ -194,5 +195,13 @@ bool FontManagerWindow::unserialize(QXmlStreamReader& stream)
   //bool result = m_model->unserialize(stream);
  
   return true;//result && !stream.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Event called on application close request. */
+void FontManagerWindow::closeEvent(QCloseEvent* event)
+{
+  event->ignore();
+
+  hide();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

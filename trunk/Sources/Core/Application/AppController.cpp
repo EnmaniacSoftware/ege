@@ -72,6 +72,22 @@ void AppController::onEventRecieved(PEvent pEvent)
       // TAGE - for testing
       //m_state = STATE_QUIT;
       break;
+
+    case EGE_EVENT_ID_CORE_APP_PAUSE:
+
+      if (STATE_RUNNING == m_state)
+      {
+        m_state = STATE_PAUSED;
+      }
+      break;
+
+    case EGE_EVENT_ID_CORE_APP_RESUME:
+
+      if (STATE_PAUSED == m_state)
+      {
+        m_state = STATE_RUNNING;
+      }
+      break;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
