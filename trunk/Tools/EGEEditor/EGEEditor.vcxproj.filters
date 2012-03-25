@@ -42,8 +42,11 @@
     <Filter Include="Projects">
       <UniqueIdentifier>{7704040a-a8e7-496f-a13b-ddc365b152ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Fonts">
-      <UniqueIdentifier>{246a798d-c94f-4289-9c8c-35b45de14441}</UniqueIdentifier>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{236c6c88-ec0f-4a50-9013-c65d7ada6091}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Fonts">
+      <UniqueIdentifier>{750587e1-2642-4896-ba72-d2cb56d30e8e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -115,11 +118,11 @@
     <CustomBuild Include="src\Projects\Project.h">
       <Filter>Projects</Filter>
     </CustomBuild>
-    <CustomBuild Include="src\Fonts\FontManager.h">
-      <Filter>Fonts</Filter>
-    </CustomBuild>
     <CustomBuild Include="ui\fontmanager.ui">
       <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\Modules\Fonts\FontManagerWindow.h">
+      <Filter>Modules\Fonts</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -198,13 +201,13 @@
     <ClCompile Include="src\Projects\ProjectFactory.cpp">
       <Filter>Projects</Filter>
     </ClCompile>
-    <ClCompile Include="src\Fonts\FontManager.cpp">
-      <Filter>Fonts</Filter>
+    <ClCompile Include="src\Modules\Fonts\FontManagerWindow.cpp">
+      <Filter>Modules\Fonts</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_FontManager.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_FontManagerWindow.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_FontManager.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_FontManagerWindow.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>

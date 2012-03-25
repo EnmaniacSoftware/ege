@@ -13,7 +13,7 @@ class Project;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Fonts library window. */
-class FontManagerWindow : public QDockWidget, public ISerializer
+class FontManagerWindow : public QWidget, public ISerializer
 {
   Q_OBJECT
 

@@ -59,6 +59,13 @@
     <property name="title">
      <string>&amp;Project</string>
     </property>
+    <widget class="QMenu" name="menuModules">
+     <property name="title">
+      <string>Modules</string>
+     </property>
+     <addaction name="ActionProjectFontManager"/>
+    </widget>
+    <addaction name="menuModules"/>
    </widget>
    <widget class="QMenu" name="viewMenu">
     <property name="title">
@@ -124,6 +131,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+R</string>
+   </property>
+  </action>
+  <action name="ActionProjectFontManager">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Font Manager</string>
    </property>
   </action>
  </widget>

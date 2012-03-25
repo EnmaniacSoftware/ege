@@ -5,12 +5,14 @@
 #include "Resources/ResourceItemFactory.h"
 #include "Projects/Project.h"
 #include "Projects/ProjectFactory.h"
+#include "Modules/Fonts/FontManagerWindow.h"
 #include "Config.h"
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QMenu>
 #include <QTextStream>
 #include <QFileDialog>
+#include <QMdiSubWindow>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MainWindow* app = NULL;
@@ -23,7 +25,8 @@ MainWindow::MainWindow() : QMainWindow(),
                            m_project(NULL),
                            m_resourceItemFactory(new ResourceItemFactory()),
                            m_config(new Config()),
-                           m_projectFactory(new ProjectFactory())
+                           m_projectFactory(new ProjectFactory()),
+                           m_fontManagerWindow(new FontManagerWindow(this))
 {
   // setup UI
   m_ui->setupUi(this);
@@ -417,15 +420,16 @@ void MainWindow::loadSettings()
   m_config->sync();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
- void MainWindow::closeEvent(QCloseEvent *event)
- {
+/*! Event called on application close request. */
+void MainWindow::closeEvent(QCloseEvent *event)
+{
   // check if anything to save
   if (m_project && m_project->isDirty())
   {
     // show warning
     if (QMessageBox::Yes != QMessageBox::warning(this, tr("Project not saved"), 
-                                                 tr("Project contains changes which have not been saved yet!\n\nDo you want to quit anyway ?"),
-                                                 QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
+                                                  tr("Project contains changes which have not been saved yet!\n\nDo you want to quit anyway ?"),
+                                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
     {
       // dont close
       event->ignore();
@@ -434,7 +438,7 @@ void MainWindow::loadSettings()
   }
 
   event->accept();
- }
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when dock widget changes visibility. */
 void MainWindow::onDockWidgetVisibilityChanged(bool visible)
@@ -442,5 +446,38 @@ void MainWindow::onDockWidgetVisibilityChanged(bool visible)
   Q_UNUSED(visible);
 
   updateMenus();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when Project -> Font Manager is selected. */
+void MainWindow::on_ActionProjectFontManager_triggered(bool checked)
+{
+  Q_UNUSED(checked);
+
+  // check if already in MDI area
+  QMdiSubWindow* subWindow = findMdiChild(m_fontManagerWindow->objectName());
+  if (NULL == subWindow)
+  {
+    // add to MDI area
+    m_ui->mdiArea->addSubWindow(m_fontManagerWindow);
+  }
+
+  // show it
+  m_fontManagerWindow->show();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns MDI subwindow with the given name. */
+QMdiSubWindow* MainWindow::findMdiChild(const QString& name) const
+{
+  foreach (QMdiSubWindow* window, m_ui->mdiArea->subWindowList())
+  {
+    // check if found
+    if (name == window->widget()->objectName())
+    {
+      // found
+      return window;
+    }
+  }
+
+  return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

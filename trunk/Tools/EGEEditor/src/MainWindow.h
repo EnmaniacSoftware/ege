@@ -12,6 +12,8 @@ class Config;
 class QCloseEvent;
 class ResourceItemFactory;
 class ProjectFactory;
+class FontManagerWindow;
+class QMdiSubWindow;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Application main window. */
@@ -56,6 +58,8 @@ class MainWindow : public QMainWindow
     void on_ActionFileExit_triggered(bool checked);
     /* Slot called when View -> ResourceLibrary is selected. */
     void on_ActionViewResourceLibrary_triggered(bool checked);
+    /* Slot called when Project -> Font Manager is selected. */
+    void on_ActionProjectFontManager_triggered(bool checked);
     /* Slot called when new project has been created. */
     void onNewProjectCreated(Project* project);
     /* Updates title bar. */
@@ -71,8 +75,10 @@ class MainWindow : public QMainWindow
     void saveSettings();
     /* Loads settings. */
     void loadSettings();
-
+    /* Event called on application close request. */
     void closeEvent(QCloseEvent *event);
+    /* Returns MDI subwindow with the given name. */
+    QMdiSubWindow* findMdiChild(const QString& name) const;
 
   private:
 
@@ -88,6 +94,8 @@ class MainWindow : public QMainWindow
     Config* m_config;
     /*! Project factory. */
     ProjectFactory* m_projectFactory;
+    /*! Font manager. */
+    FontManagerWindow* m_fontManagerWindow;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

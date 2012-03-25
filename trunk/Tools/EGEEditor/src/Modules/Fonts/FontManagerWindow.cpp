@@ -1,4 +1,4 @@
-#include "FontManager.h"
+#include "Modules/Fonts/FontManagerWindow.h"
 #include "ui_fontmanager.h"
 #include "Config.h"
 #include "MainWindow.h"
@@ -9,8 +9,8 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FontManagerWindow::FontManagerWindow(QWidget* parent) : QDockWidget(parent),
-                                                                m_ui(new Ui_FontManager())/*,
+FontManagerWindow::FontManagerWindow(QWidget* parent) : QWidget(parent),
+                                                        m_ui(new Ui_FontManager())/*,
                                                                 m_model(new ResourceLibraryDataModel(this))*/
 {
   // setup UI
