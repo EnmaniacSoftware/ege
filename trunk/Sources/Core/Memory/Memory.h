@@ -76,6 +76,7 @@ EGE_NAMESPACE_BEGIN
 
 #define EGE_MEMCPY(dst, src, size) MemoryManager::MemCpy(dst, src, size)
 #define EGE_MEMSET(dst, c, size) MemoryManager::MemSet(dst, c, size)
+#define EGE_MEMMOVE(dst, src, size) MemoryManager::MemMove(dst, src, size)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
