@@ -8,19 +8,20 @@
 #include <QModelIndex>
 #include <QVariant>
 #include "Serializer.h"
+#include "IResourceLibraryDataModel.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceItem;
 class ResourceItemFactory;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
+class ResourceLibraryDataModel : public QAbstractItemModel, public IResourceLibraryDataModel, public ISerializer
 {
+  Q_OBJECT
+
   public:
 
     ResourceLibraryDataModel(QObject* parent = NULL);
-   ~ResourceLibraryDataModel();
+    virtual ~ResourceLibraryDataModel();
 
   public:
 
@@ -30,6 +31,13 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
       TypeRole = Qt::UserRole,                  /*!< Resource item type. */
       PathRole                                  /*!< Resource item path. Only valid for certain types. */
     };
+
+  signals:
+
+    /*! IResourceLibraryDataModel override. Signal emitted when given item has been added to model. */
+    void onItemAdded(ResourceItem* item);
+    /*! IResourceLibraryDataModel override. Signal emitted when given item has been removed from model. */
+    void onItemRemoved(ResourceItem* item);
 
   public:
 
@@ -67,6 +75,10 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
     ResourceItem* getItem(const QModelIndex& index) const;
     /*! Returns root item. */
     inline ResourceItem* root() const { return m_root; }
+    /* IResourceLibraryDataModel override. Returns list of all items in the model. */
+    QList<ResourceItem*> allItems() const;
+    /* Adds children of given resource item to the list. */
+    void addChildren(ResourceItem* item, QList<ResourceItem*>& list) const;
 
   private:
 

@@ -24,7 +24,7 @@ class ProjectFactory : public QAbstractItemModel
 {
   public:
 
-    ProjectFactory();
+    ProjectFactory(QObject* parent = NULL);
    ~ProjectFactory();
 
     /* Registeres custom project type. */

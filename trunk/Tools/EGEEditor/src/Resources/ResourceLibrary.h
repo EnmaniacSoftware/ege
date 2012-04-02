@@ -34,6 +34,9 @@ class ResourceLibraryWindow : public QDockWidget, public ISerializer
     /* ISerializer override. Unserializes from given data stream. */
     bool unserialize(QXmlStreamReader& stream) override;
 
+    /*! Returns model. */
+    ResourceLibraryDataModel* model() const { return m_model; }
+
   private slots:
 
     /* Slot called when context menu is requested. */

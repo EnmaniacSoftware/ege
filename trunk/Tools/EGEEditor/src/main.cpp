@@ -22,6 +22,13 @@ int main(int argc, char *argv[])
     return -2;
   }
 
+  // initialize
+  if (!app->initialize())
+  {
+    // error!
+    return -3;
+  }
+
   // show main window
   app->show();
 

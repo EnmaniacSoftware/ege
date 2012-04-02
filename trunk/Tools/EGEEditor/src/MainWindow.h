@@ -14,6 +14,7 @@ class ResourceItemFactory;
 class ProjectFactory;
 class FontManagerWindow;
 class QMdiSubWindow;
+class PluginsManager;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Application main window. */
@@ -37,12 +38,16 @@ class MainWindow : public QMainWindow
 
   public:
 
+    /* Initializes object. */
+    bool initialize();
     /*! Return pointer to currently opened project. */
     inline Project* project() const { return m_project; }
     /*! Returns pointer to resource item factory. */
     inline ResourceItemFactory* resourceItemFactory() const { return m_resourceItemFactory; }
     /*! Returns pointer to project factory. */
     inline ProjectFactory* projectFactory() const { return m_projectFactory; }
+    /*! Returns pointer to plugins manager. */
+    inline PluginsManager* pluginsManager() const { return m_pluginsManager; }
 
   private slots:
 
@@ -96,6 +101,8 @@ class MainWindow : public QMainWindow
     ProjectFactory* m_projectFactory;
     /*! Font manager. */
     FontManagerWindow* m_fontManagerWindow;
+    /*! Plugins manager. */
+    PluginsManager* m_pluginsManager;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

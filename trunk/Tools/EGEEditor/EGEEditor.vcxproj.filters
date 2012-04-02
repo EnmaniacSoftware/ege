@@ -48,6 +48,9 @@
     <Filter Include="Modules\Fonts">
       <UniqueIdentifier>{750587e1-2642-4896-ba72-d2cb56d30e8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plugins">
+      <UniqueIdentifier>{d727c274-c49d-4491-80f0-c8acb0b511e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h">
@@ -80,9 +83,6 @@
     <ClInclude Include="src\Resources\ResourceItemImage.h">
       <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="src\Resources\ResourceLibraryDataModel.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="src\Utils\FSUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -91,6 +91,15 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_fontmanager.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Modules\Fonts\ResourceItemFont.h">
+      <Filter>Modules\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Plugins\PluginsManager.h">
+      <Filter>Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Plugins\Plugin_global.h">
+      <Filter>Plugins</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +132,15 @@
     </CustomBuild>
     <CustomBuild Include="src\Modules\Fonts\FontManagerWindow.h">
       <Filter>Modules\Fonts</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\Resources\IResourceLibraryDataModel.h">
+      <Filter>Resources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\Resources\ResourceLibraryDataModel.h">
+      <Filter>Resources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\Plugins\IPlugin.h">
+      <Filter>Plugins</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +227,18 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_FontManagerWindow.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ResourceLibraryDataModel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ResourceLibraryDataModel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Modules\Fonts\ResourceItemFont.cpp">
+      <Filter>Modules\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Plugins\PluginsManager.cpp">
+      <Filter>Plugins</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

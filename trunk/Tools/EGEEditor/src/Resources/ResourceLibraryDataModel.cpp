@@ -8,7 +8,7 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceLibraryDataModel::ResourceLibraryDataModel(QObject* parent) : QAbstractItemModel(parent)
+ResourceLibraryDataModel::ResourceLibraryDataModel(QObject* parent) : QAbstractItemModel(parent), IResourceLibraryDataModel(this)
 {
   m_root = new ResourceItem();
   if (m_root)
@@ -222,9 +222,12 @@ void ResourceLibraryDataModel::removeItem(const QModelIndex& index)
   ResourceItem* item = getItem(index);
   Q_ASSERT(item && item->parent());
 
-	beginRemoveRows(index.parent(), item->row(), item->row());
+  beginRemoveRows(index.parent(), item->row(), item->row());
   item->parent()->removeChild(item);
 	endRemoveRows();
+
+  emit onItemRemoved(item);
+  delete item;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Inserts item after given index. */
@@ -238,6 +241,33 @@ QModelIndex ResourceLibraryDataModel::insertItem(const QModelIndex& index, Resou
   parentItem->addChild(item);
   endInsertRows();
 
+  emit onItemAdded(item);
+
   return createIndex(parentItem->childCount() - 1, 0, item);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! IResourceLibraryDataModel override. Returns list of all items in the model. */
+QList<ResourceItem*> ResourceLibraryDataModel::allItems() const
+{
+  QList<ResourceItem*> list;
+
+  addChildren(m_root, list);
+
+  return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds children of given resource item to the list. */
+void ResourceLibraryDataModel::addChildren(ResourceItem* item, QList<ResourceItem*>& list) const
+{
+  for (int i = 0; i < item->childCount(); ++i)
+  {
+    ResourceItem* child = item->child(i);
+
+    // add current child children first
+    addChildren(child, list);
+
+    // add child
+    list.append(child);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

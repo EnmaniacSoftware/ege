@@ -3,9 +3,11 @@
 #include "ui_mainwindow.h"
 #include "Resources/ResourceLibrary.h"
 #include "Resources/ResourceItemFactory.h"
+#include "Resources/ResourceLibraryDataModel.h"
 #include "Projects/Project.h"
 #include "Projects/ProjectFactory.h"
 #include "Modules/Fonts/FontManagerWindow.h"
+#include "Plugins/PluginsManager.h"
 #include "Config.h"
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -23,25 +25,15 @@ MainWindow* app = NULL;
 MainWindow::MainWindow() : QMainWindow(),
                            m_ui(new Ui_MainWindow()),
                            m_project(NULL),
-                           m_resourceItemFactory(new ResourceItemFactory()),
-                           m_config(new Config()),
-                           m_projectFactory(new ProjectFactory()),
-                           m_fontManagerWindow(NULL)
+                           m_resourceLibraryWindow(NULL),
+                           m_resourceItemFactory(NULL),
+                           m_config(NULL),
+                           m_projectFactory(NULL),
+                           m_fontManagerWindow(NULL),
+                           m_pluginsManager(NULL)
 {
   // setup UI
   m_ui->setupUi(this);
-
-  // create and embed Resource Library dock widget
-  m_resourceLibraryWindow = new ResourceLibraryWindow(this);
-  addDockWidget(Qt::LeftDockWidgetArea, m_resourceLibraryWindow);
-
-  connect(m_resourceLibraryWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(onDockWidgetVisibilityChanged(bool)));
-
-  // do inital title bar update
-  updateTitleBar();
-
-  // load settings
-  loadSettings();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MainWindow::~MainWindow()
@@ -54,24 +46,31 @@ MainWindow::~MainWindow()
     delete m_ui;
     m_ui = NULL;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Initializes object. */
+bool MainWindow::initialize()
+{
+  // create and embed Resource Library dock widget
+  m_resourceLibraryWindow = new ResourceLibraryWindow(this);
+  addDockWidget(Qt::LeftDockWidgetArea, m_resourceLibraryWindow);
 
-  if (m_resourceItemFactory)
-  {
-    delete m_resourceItemFactory;
-    m_resourceItemFactory = NULL;
-  }
+  connect(m_resourceLibraryWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(onDockWidgetVisibilityChanged(bool)));
 
-  if (m_config)
-  {
-    delete m_config;
-    m_config = NULL;
-  }
+  m_config = new Config(this);                           
+  m_resourceItemFactory = new ResourceItemFactory(this);
+  m_projectFactory = new ProjectFactory(this);
+  m_pluginsManager = new PluginsManager(this);
 
-  if (m_projectFactory)
-  {
-    delete m_projectFactory;
-    m_projectFactory = NULL;
-  }
+  m_fontManagerWindow = new FontManagerWindow(m_resourceLibraryWindow->model());
+
+  // do inital title bar update
+  updateTitleBar();
+
+  // load settings
+  loadSettings();
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when File -> New is selected. */
@@ -453,24 +452,16 @@ void MainWindow::on_ActionProjectFontManager_triggered(bool checked)
 {
   Q_UNUSED(checked);
 
-  // check if window needs to be created
-  if (NULL == m_fontManagerWindow)
-  {
-    // allocate window
-    m_fontManagerWindow = new FontManagerWindow();
-  }
-
   // check if already in MDI area
   QMdiSubWindow* subWindow = findMdiChild(m_fontManagerWindow->objectName());
   if (NULL == subWindow)
   {
     // add to MDI area
-    m_ui->mdiArea->addSubWindow(m_fontManagerWindow);
-    //m_fontManagerWindow->setAttribute(Qt::WA_DeleteOnClose, false);
+    subWindow = m_ui->mdiArea->addSubWindow(m_fontManagerWindow);
   }
 
   // show it
-  m_fontManagerWindow->show();
+  subWindow->show();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns MDI subwindow with the given name. */
@@ -479,7 +470,7 @@ QMdiSubWindow* MainWindow::findMdiChild(const QString& name) const
   foreach (QMdiSubWindow* window, m_ui->mdiArea->subWindowList())
   {
     // check if found
-    if (name == window->objectName())
+    if (name == window->widget()->objectName())
     {
       // found
       return window;

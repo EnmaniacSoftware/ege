@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QMap>
+#include <QObject>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -13,11 +14,11 @@ class ResourceItem;
 typedef ResourceItem* (*resourceItemCreateFunc) ();
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceItemFactory
+class ResourceItemFactory : public QObject
 {
   public:
 
-    ResourceItemFactory();
+    ResourceItemFactory(QObject* parent = NULL);
    ~ResourceItemFactory();
 
     /* Registeres custom resource item type. */

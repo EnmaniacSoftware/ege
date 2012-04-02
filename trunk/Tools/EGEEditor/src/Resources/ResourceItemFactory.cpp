@@ -14,7 +14,7 @@ static BuiltInResourceItem l_resourceItemsToRegister[] = {  { "container", Resou
                                                             { "image", ResourceItemImage::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemFactory::ResourceItemFactory()
+ResourceItemFactory::ResourceItemFactory(QObject* parent) : QObject(parent)
 {
   // register build-in emitter types
   for (int i = 0; i < sizeof (l_resourceItemsToRegister) / sizeof (BuiltInResourceItem); ++i)

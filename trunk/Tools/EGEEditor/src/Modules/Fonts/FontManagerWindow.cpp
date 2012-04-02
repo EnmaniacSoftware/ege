@@ -1,28 +1,50 @@
 #include "Modules/Fonts/FontManagerWindow.h"
+#include "Modules/Fonts/ResourceItemFont.h"
 #include "ui_fontmanager.h"
 #include "Config.h"
 #include "MainWindow.h"
 #include "Projects/Project.h"
+#include "Resources/ResourceItem.h"
+#include "Resources/ResourceItemImage.h"
+#include "Resources/IResourceLibraryDataModel.h"
+#include "Resources/ResourceItemFactory.h"
 #include <QMenu>
 #include <QFile>
 #include <QFileDialog>
 #include <QDebug>
-#include <QCloseEvent>
+#include <QWindowStateChangeEvent>
+#include <QMdiSubwindow>
+#include <QImageReader>
+#include <QDir>
+#include <QMenuBar>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FontManagerWindow::FontManagerWindow() : QMdiSubWindow(NULL),
-                                         m_ui(new Ui_FontManager())/*,
+FontManagerWindow::FontManagerWindow(IResourceLibraryDataModel* resourceDataModel) : QDialog(NULL),
+                                                                                     m_ui(new Ui_FontManager())/*,
                                                                 m_model(new ResourceLibraryDataModel(this))*/
 {
   // setup UI
   m_ui->setupUi(this);
   
-  // set view model
- // m_ui->view->setModel(m_model);
+  // connect to library data model
+  connect(resourceDataModel->object(), SIGNAL(onItemAdded(ResourceItem*)), this, SLOT(onResourceModelItemAdded(ResourceItem*)));
+  connect(resourceDataModel->object(), SIGNAL(onItemRemoved(ResourceItem*)), this, SLOT(onResourceModelItemRemoved(ResourceItem*)));
 
- // connect(parent, SIGNAL(projectCreated(Project*)), this, SLOT(onProjectCreated(Project*)));
- // connect(parent, SIGNAL(projectOpened(Project*)), this, SLOT(onProjectCreated(Project*)));
-	//connect(parent, SIGNAL(projectClosed()), this, SLOT(onProjectClosed()));
+  // connect to widgets
+  connect(m_ui->bitmaps, SIGNAL(currentIndexChanged(int)), this, SLOT(onFontBitmapChanged(int)));
+
+  // retrieve current resource items
+  QList<ResourceItem*> list = resourceDataModel->allItems();
+  foreach (ResourceItem* item, list)
+  {
+    onResourceModelItemAdded(item);
+  }
+
+  // update title
+  updateTitle();
+
+  // register font resource item
+  app->resourceItemFactory()->registerItem("font", ResourceItemFont::Create);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 FontManagerWindow::~FontManagerWindow()
@@ -197,11 +219,85 @@ bool FontManagerWindow::unserialize(QXmlStreamReader& stream)
   return true;//result && !stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Event called on application close request. */
-void FontManagerWindow::closeEvent(QCloseEvent* event)
+/*! QDialog override. Receives events to an object and should return true if the event was recognized and processed. */
+bool FontManagerWindow::event(QEvent* event)
 {
-  event->ignore();
+  switch (event->type())
+  {
+    case QEvent::Close:
 
-  hide();
+      // ignore closing
+      event->ignore();
+
+      // update action menu
+      setActionMenu(false);
+
+      // just hide parent MdiSubWindow
+      qobject_cast<QMdiSubWindow*>(parent())->hide();
+      return true;
+
+    case QEvent::WindowActivate:
+    case QEvent::Show:
+
+      event->accept();
+      activated();
+      return true;
+  }
+
+  return QDialog::event(event);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when item has been added to resource model. */
+void FontManagerWindow::onResourceModelItemAdded(ResourceItem* item)
+{
+  if ("image" == item->type())
+  {
+    m_ui->bitmaps->addItem(item->name(), QVariant::fromValue(reinterpret_cast<void*>(item)));
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when item has been removed from resource model. */
+void FontManagerWindow::onResourceModelItemRemoved(ResourceItem* item)
+{
+  int index = m_ui->bitmaps->findData(QVariant::fromValue(reinterpret_cast<void*>(item)));
+  
+  if (-1 != index)
+  {
+    m_ui->bitmaps->removeItem(index);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when bitmap font selection changes. */
+void FontManagerWindow::onFontBitmapChanged(int index)
+{
+  ResourceItemImage* item = reinterpret_cast<ResourceItemImage*>(m_ui->bitmaps->itemData(index).value<void*>());
+
+  QImageReader imageReader(item->path() + QDir::separator() + item->name());
+  imageReader.read(&m_image);
+
+  m_ui->bitmapPreview->setPixmap(QPixmap::fromImage(m_image));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Window has been activated. */
+void FontManagerWindow::activated()
+{
+  // enable action menu
+  setActionMenu(true);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets action menu. */
+void FontManagerWindow::setActionMenu(bool enable)
+{
+  QMenu* menu = app->menuBar()->findChild<QMenu*>("actionsMenu");
+  menu->clear();
+
+  menu->setEnabled(enable);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when title should be updated. */
+void FontManagerWindow::updateTitle()
+{
+  QString title = tr("Font Manager");
+  setWindowTitle(title);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -12,7 +12,7 @@ struct BuiltInProject
 static BuiltInProject l_projectsToRegister[] = { {ProjectJuiceJumpers::TypeName, ProjectJuiceJumpers::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ProjectFactory::ProjectFactory()
+ProjectFactory::ProjectFactory(QObject* parent) : QAbstractItemModel(parent)
 {
   // register build-in project types
   for (int i = 0; i < sizeof (l_projectsToRegister) / sizeof (BuiltInProject); ++i)

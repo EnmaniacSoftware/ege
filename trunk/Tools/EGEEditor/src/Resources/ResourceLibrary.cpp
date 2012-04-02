@@ -71,8 +71,9 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
     {
       action = menu.addAction(tr("Add container"), this, SLOT(onAddContainer()));
       action = menu.addAction(tr("Add resource"), this, SLOT(onAddResource()));
-      action = menu.addAction(tr("Remove"), this, SLOT(onRemoveItems()));
     }
+
+    action = menu.addAction(tr("Remove"), this, SLOT(onRemoveItems()));
   }
   else
   {
