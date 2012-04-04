@@ -2,7 +2,7 @@
 #define PLUGINS_MANAGER_H
 
 #include <QStringList>
-#include <QList>
+#include <List>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IPlugin;
@@ -24,10 +24,20 @@ class PluginsManager : public QObject
     
   private:
 
+    /*! Plugin data. */
+    struct PluginData
+    {
+      QString name;
+      QStringList dependencies;
+      IPlugin* instance;
+    };
+
+  private:
+
     /*! Plugin paths. */
     QStringList m_paths;
     /*! List of all plugins. */
-    QList<IPlugin*> m_plugins;
+    QList<PluginData> m_plugins;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

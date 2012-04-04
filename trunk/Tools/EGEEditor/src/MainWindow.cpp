@@ -51,18 +51,49 @@ MainWindow::~MainWindow()
 /*! Initializes object. */
 bool MainWindow::initialize()
 {
-  // create and embed Resource Library dock widget
-  m_resourceLibraryWindow = new ResourceLibraryWindow(this);
-  addDockWidget(Qt::LeftDockWidgetArea, m_resourceLibraryWindow);
+  if (NULL == (m_resourceLibraryWindow = new ResourceLibraryWindow(this)))
+  {
+    // error!
+    return false;
+  }
 
+  addDockWidget(Qt::LeftDockWidgetArea, m_resourceLibraryWindow);
   connect(m_resourceLibraryWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(onDockWidgetVisibilityChanged(bool)));
 
-  m_config = new Config(this);                           
-  m_resourceItemFactory = new ResourceItemFactory(this);
-  m_projectFactory = new ProjectFactory(this);
-  m_pluginsManager = new PluginsManager(this);
+  if (NULL == (m_config = new Config(this)))
+  {
+    // error!
+    return false;
+  }
 
-  m_fontManagerWindow = new FontManagerWindow(m_resourceLibraryWindow->model());
+  if (NULL == (m_resourceItemFactory = new ResourceItemFactory(this)))
+  {
+    // error!
+    return false;
+  }
+
+  if (NULL == (m_projectFactory = new ProjectFactory(this)))
+  {
+    // error!
+    return false;
+  }
+
+  if (NULL == (m_pluginsManager = new PluginsManager(this)))
+  {
+    // error!
+    return false;
+  }
+
+  QStringList pluginPaths;
+  pluginPaths << "Plugins";
+  m_pluginsManager->setPluginPaths(pluginPaths);
+  m_pluginsManager->loadPlugins();
+
+  if (NULL == (m_fontManagerWindow = new FontManagerWindow(m_resourceLibraryWindow->model())))
+  {
+    // error!
+    return false;
+  }
 
   // do inital title bar update
   updateTitleBar();
