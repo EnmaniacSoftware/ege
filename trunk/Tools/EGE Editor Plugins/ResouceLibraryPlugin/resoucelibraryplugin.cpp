@@ -1,26 +1,26 @@
-#include "fontmanagerplugin.h"
+#include "resoucelibraryplugin.h"
 #include <QtPlugin>
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FontManagerPlugin::FontManagerPlugin(QObject* parent) : QObject(parent)
+ResouceLibraryPlugin::ResouceLibraryPlugin(QObject* parent) : QObject(parent)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FontManagerPlugin::~FontManagerPlugin()
+ResouceLibraryPlugin::~ResouceLibraryPlugin()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Initialized plugin. */
-bool FontManagerPlugin::initialize()
+bool ResouceLibraryPlugin::initialize()
 {
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Deinitializes plugin. */
-void FontManagerPlugin::deinitialize()
+void ResouceLibraryPlugin::deinitialize()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_EXPORT_PLUGIN("fontmanager", FontManagerPlugin, "core")
+EGE_EXPORT_PLUGIN("resourcelibrary", ResouceLibraryPlugin, "core")

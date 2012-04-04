@@ -1,19 +1,19 @@
-#ifndef FONTMANAGERPLUGIN_H
-#define FONTMANAGERPLUGIN_H
+#ifndef RESOUCELIBRARYPLUGIN_H
+#define RESOUCELIBRARYPLUGIN_H
 
 #include <Plugins/IPlugin.h>
-#include "fontmanagerplugin_global.h"
+#include "resoucelibraryplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class FONTMANAGERPLUGIN_API FontManagerPlugin : public QObject, public IPlugin
+class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPlugin
 {
   Q_OBJECT
   Q_INTERFACES(IPlugin)
 
   public:
-
-    explicit FontManagerPlugin(QObject* parent = NULL);
-    ~FontManagerPlugin();
+  
+    explicit ResouceLibraryPlugin(QObject* parent = NULL);
+    ~ResouceLibraryPlugin();
 
     /* IPlugin override. Initialized plugin. */
     bool initialize() override;
@@ -22,4 +22,4 @@ class FONTMANAGERPLUGIN_API FontManagerPlugin : public QObject, public IPlugin
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // FONTMANAGERPLUGIN_H
+#endif // RESOUCELIBRARYPLUGIN_H

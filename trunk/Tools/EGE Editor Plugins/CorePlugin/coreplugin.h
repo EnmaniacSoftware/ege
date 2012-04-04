@@ -1,19 +1,19 @@
-#ifndef FONTMANAGERPLUGIN_H
-#define FONTMANAGERPLUGIN_H
+#ifndef COREPLUGIN_H
+#define COREPLUGIN_H
 
 #include <Plugins/IPlugin.h>
-#include "fontmanagerplugin_global.h"
+#include "coreplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class FONTMANAGERPLUGIN_API FontManagerPlugin : public QObject, public IPlugin
+class COREPLUGIN_API CorePlugin : public QObject, public IPlugin
 {
   Q_OBJECT
   Q_INTERFACES(IPlugin)
 
   public:
-
-    explicit FontManagerPlugin(QObject* parent = NULL);
-    ~FontManagerPlugin();
+  
+    explicit CorePlugin(QObject* parent = NULL);
+    ~CorePlugin();
 
     /* IPlugin override. Initialized plugin. */
     bool initialize() override;
@@ -22,4 +22,4 @@ class FONTMANAGERPLUGIN_API FontManagerPlugin : public QObject, public IPlugin
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // FONTMANAGERPLUGIN_H
+#endif // COREPLUGIN_H

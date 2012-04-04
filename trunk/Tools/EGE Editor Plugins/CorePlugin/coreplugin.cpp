@@ -1,26 +1,26 @@
-#include "fontmanagerplugin.h"
+#include "coreplugin.h"
 #include <QtPlugin>
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FontManagerPlugin::FontManagerPlugin(QObject* parent) : QObject(parent)
+CorePlugin::CorePlugin(QObject* parent) : QObject(parent)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FontManagerPlugin::~FontManagerPlugin()
+CorePlugin::~CorePlugin()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Initialized plugin. */
-bool FontManagerPlugin::initialize()
+bool CorePlugin::initialize()
 {
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Deinitializes plugin. */
-void FontManagerPlugin::deinitialize()
+void CorePlugin::deinitialize()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_EXPORT_PLUGIN("fontmanager", FontManagerPlugin, "core")
+EGE_EXPORT_PLUGIN("core", CorePlugin, "")
