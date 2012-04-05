@@ -49,10 +49,16 @@
     <ClInclude Include="resoucelibraryplugin_global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_resourcelibrary.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="resoucelibraryplugin.h">
       <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="resourcelibrary.ui">
+      <Filter>Form Files</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

@@ -1,34 +1,30 @@
-#include "coreplugin.h"
 #include "core.h"
-#include <QtPlugin>
-#include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CorePlugin::CorePlugin(QObject* parent) : QObject(parent)
+Core::Core()
 {
+  m_mainWindow = new MainWindow();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CorePlugin::~CorePlugin()
+Core::~Core()
 {
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IPlugin override. Initialized plugin. */
-bool CorePlugin::initialize()
-{
-  MainWindow* mainWindow = Core::instance()->mainWindow();
-  if (mainWindow)
+  if (NULL != m_mainWindow)
   {
-    mainWindow->show();
-    return true;
+    delete m_mainWindow;
+    m_mainWindow = NULL;
   }
-
-  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IPlugin override. Deinitializes plugin. */
-void CorePlugin::deinitialize()
+/*! Returns core instance. */       
+Core* Core::instance()
 {
+  static Core core;
+  return &core;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_EXPORT_PLUGIN("core", CorePlugin, "")
+/*! Returns main window. */
+MainWindow* Core::mainWindow() const
+{
+  return m_mainWindow;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
