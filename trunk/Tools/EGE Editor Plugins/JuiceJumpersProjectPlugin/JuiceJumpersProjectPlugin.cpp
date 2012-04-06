@@ -1,26 +1,38 @@
-#include "fontmanagerplugin.h"
+#include "JuiceJumpersProjectPlugin.h"
+#include "ProjectJuiceJumpers.h"
+#include <Core.h>
+#include <ProjectFactory.h>
 #include <QtPlugin>
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FontManagerPlugin::FontManagerPlugin(QObject* parent) : QObject(parent)
+JuiceJumpersProjectPlugin::JuiceJumpersProjectPlugin(QObject* parent) : QObject(parent)
 {
+
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FontManagerPlugin::~FontManagerPlugin()
+JuiceJumpersProjectPlugin::~JuiceJumpersProjectPlugin()
 {
+
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Initialized plugin. */
-bool FontManagerPlugin::initialize()
+bool JuiceJumpersProjectPlugin::initialize()
 {
-  return true;
+  ProjectFactory* projectFactory = Core::instance()->projectFactory();
+  if (projectFactory)
+  {
+    return projectFactory->registerProject(ProjectJuiceJumpers::TypeName, ProjectJuiceJumpers::Create);
+  }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Deinitializes plugin. */
-void FontManagerPlugin::deinitialize()
+void JuiceJumpersProjectPlugin::deinitialize()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_EXPORT_PLUGIN("fontmanager", FontManagerPlugin, "core resourcelibrary")
+EGE_EXPORT_PLUGIN("juicejumpersproject", JuiceJumpersProjectPlugin, "core resourcelibrary")
+

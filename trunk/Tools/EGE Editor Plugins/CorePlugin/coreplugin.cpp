@@ -1,5 +1,6 @@
 #include "coreplugin.h"
 #include "core.h"
+#include "MainWindow.h"
 #include <QtPlugin>
 #include <QDebug>
 
@@ -18,6 +19,14 @@ bool CorePlugin::initialize()
   MainWindow* mainWindow = Core::instance()->mainWindow();
   if (mainWindow)
   {
+    // initialize main window
+    if (!mainWindow->initialize())
+    {
+      // error!
+      return false;
+    }
+
+    // show main window
     mainWindow->show();
     return true;
   }

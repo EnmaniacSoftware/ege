@@ -5,6 +5,8 @@
 #include "resoucelibraryplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class ResourceLibraryWindow;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPlugin
 {
   Q_OBJECT
@@ -19,6 +21,11 @@ class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPl
     bool initialize() override;
     /* IPlugin override. Deinitializes plugin. */
     void deinitialize() override;
+
+  private:
+
+    /*! Resource library window. */
+    ResourceLibraryWindow* m_resourceLibraryWindow;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

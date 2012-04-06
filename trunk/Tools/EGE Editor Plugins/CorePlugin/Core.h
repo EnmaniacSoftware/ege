@@ -2,8 +2,10 @@
 #define CORE_H
 
 #include "coreplugin_global.h"
-#include "MainWindow.h"
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class MainWindow;
+class ProjectFactory;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class COREPLUGIN_API Core
 {
@@ -21,11 +23,15 @@ class COREPLUGIN_API Core
 
     /* Returns main window. */
     MainWindow* mainWindow() const;
+    /* Returns project factory. */
+    ProjectFactory* projectFactory() const;
 
   private:
 
     /*! Main window. */
     MainWindow* m_mainWindow;
+    /*! Project factory. */
+    ProjectFactory* m_projectFactory;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

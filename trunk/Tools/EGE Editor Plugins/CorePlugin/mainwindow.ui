@@ -52,39 +52,22 @@
      <string>&amp;Help</string>
     </property>
    </widget>
-   <widget class="QMenu" name="projectMenu">
+   <widget class="QMenu" name="actionMenu">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="title">
-     <string>&amp;Project</string>
+     <string>&amp;Action</string>
     </property>
-    <widget class="QMenu" name="menuModules">
-     <property name="title">
-      <string>Modules</string>
-     </property>
-     <addaction name="ActionProjectFontManager"/>
-    </widget>
-    <addaction name="menuModules"/>
    </widget>
-   <widget class="QMenu" name="viewMenu">
+   <widget class="QMenu" name="moduleMenu">
     <property name="title">
-     <string>&amp;View</string>
-    </property>
-    <addaction name="ActionViewResourceLibrary"/>
-   </widget>
-   <widget class="QMenu" name="actionsMenu">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="title">
-     <string>&amp;Actions</string>
+     <string>&amp;Module</string>
     </property>
    </widget>
    <addaction name="fileMenu"/>
-   <addaction name="viewMenu"/>
-   <addaction name="actionsMenu"/>
-   <addaction name="projectMenu"/>
+   <addaction name="actionMenu"/>
+   <addaction name="moduleMenu"/>
    <addaction name="helpMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

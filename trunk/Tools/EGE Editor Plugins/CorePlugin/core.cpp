@@ -1,13 +1,22 @@
 #include "core.h"
+#include "MainWindow.h"
+#include "ProjectFactory.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Core::Core()
 {
   m_mainWindow = new MainWindow();
+  m_projectFactory = new ProjectFactory();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Core::~Core()
 {
+  if (NULL != m_projectFactory)
+  {
+    delete m_projectFactory;
+    m_projectFactory = NULL;
+  }
+
   if (NULL != m_mainWindow)
   {
     delete m_mainWindow;
@@ -26,5 +35,11 @@ Core* Core::instance()
 MainWindow* Core::mainWindow() const
 {
   return m_mainWindow;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns project factory. */
+ProjectFactory* Core::projectFactory() const
+{
+  return m_projectFactory;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

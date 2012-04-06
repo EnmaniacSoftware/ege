@@ -11,7 +11,6 @@ class ResourceLibraryWindow;
 class Config;
 class QCloseEvent;
 class ResourceItemFactory;
-class ProjectFactory;
 class FontManagerWindow;
 class QMdiSubWindow;
 class PluginsManager;
@@ -41,26 +40,26 @@ class MainWindow : public QMainWindow
   //  /*! Returns pointer to plugins manager. */
   //  inline PluginsManager* pluginsManager() const { return m_pluginsManager; }
 
-  //private slots:
+  private slots:
 
-  //  /* Slot called when File -> New is selected. */
-  //  void on_ActionFileNew_triggered(bool checked);
-  //  /* Slot called when File -> Open is selected. */
-  //  void on_ActionFileOpen_triggered(bool checked);
-  //  /* Slot called when File -> Save is selected. */
-  //  void on_ActionFileSave_triggered(bool checked);
-  //  /* Slot called when File -> Close is selected. */
-  //  void on_ActionFileClose_triggered(bool checked);
-  //  /* Slot called when File -> Exit is selected. */
-  //  void on_ActionFileExit_triggered(bool checked);
+    /* Slot called when File -> New is selected. */
+    void on_ActionFileNew_triggered(bool checked);
+    /* Slot called when File -> Open is selected. */
+    void on_ActionFileOpen_triggered(bool checked);
+    /* Slot called when File -> Save is selected. */
+    void on_ActionFileSave_triggered(bool checked);
+    /* Slot called when File -> Close is selected. */
+    void on_ActionFileClose_triggered(bool checked);
+    /* Slot called when File -> Exit is selected. */
+    void on_ActionFileExit_triggered(bool checked);
   //  /* Slot called when View -> ResourceLibrary is selected. */
   //  void on_ActionViewResourceLibrary_triggered(bool checked);
   //  /* Slot called when Project -> Font Manager is selected. */
   //  void on_ActionProjectFontManager_triggered(bool checked);
   //  /* Slot called when new project has been created. */
-  //  void onNewProjectCreated(Project* project);
-  //  /* Updates title bar. */
-  //  void updateTitleBar();
+    //void onNewProjectCreated(Project* project);
+    /* Updates title bar. */
+    void updateTitleBar();
   //  /* Updates menus. */
   //  void updateMenus();
   //  /* Slot called when dock widget changes visibility. */
@@ -89,8 +88,6 @@ class MainWindow : public QMainWindow
   //  ResourceItemFactory* m_resourceItemFactory;
   //  /*! Config. */
   //  Config* m_config;
-  //  /*! Project factory. */
-  //  ProjectFactory* m_projectFactory;
   //  /*! Font manager. */
   //  FontManagerWindow* m_fontManagerWindow;
   //  /*! Plugins manager. */

@@ -1,19 +1,19 @@
-#ifndef FONTMANAGERPLUGIN_H
-#define FONTMANAGERPLUGIN_H
+#ifndef JUICEJUMPERSPROJECTPLUGIN_H
+#define JUICEJUMPERSPROJECTPLUGIN_H
 
 #include <Plugins/IPlugin.h>
-#include "fontmanagerplugin_global.h"
+#include "juicejumpersprojectplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class FONTMANAGERPLUGIN_API FontManagerPlugin : public QObject, public IPlugin
+class JUICEJUMPERSPROJECTPLUGIN_API JuiceJumpersProjectPlugin : public QObject, public IPlugin
 {
   Q_OBJECT
   Q_INTERFACES(IPlugin)
 
   public:
-
-    explicit FontManagerPlugin(QObject* parent = NULL);
-    ~FontManagerPlugin();
+  
+    explicit JuiceJumpersProjectPlugin(QObject* parent = NULL);
+    ~JuiceJumpersProjectPlugin();
 
   private:
 
@@ -24,4 +24,4 @@ class FONTMANAGERPLUGIN_API FontManagerPlugin : public QObject, public IPlugin
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // FONTMANAGERPLUGIN_H
+#endif // JUICEJUMPERSPROJECTPLUGIN_H
