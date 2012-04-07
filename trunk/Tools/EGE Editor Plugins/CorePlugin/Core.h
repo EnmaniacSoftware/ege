@@ -1,18 +1,27 @@
 #ifndef CORE_H
 #define CORE_H
 
+#include <QObject>
 #include "coreplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class MainWindow;
 class ProjectFactory;
+class Project;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class COREPLUGIN_API Core
+class COREPLUGIN_API Core : public QObject
 {
+  Q_OBJECT
+
   public:
   
-    Core();
+    Core(QObject* parent = NULL);
    ~Core();
+
+  signals:
+
+    /*! Signal emitted when new project is created. */
+    void projectCreated(Project* project);
 
   public:
 
@@ -25,6 +34,13 @@ class COREPLUGIN_API Core
     MainWindow* mainWindow() const;
     /* Returns project factory. */
     ProjectFactory* projectFactory() const;
+    /* Returns current project. */
+    Project* currentProject() const;
+
+  public slots:
+
+    /* Slot called when new project is created. */
+    void onProjectCreated(Project* project);
 
   private:
 
@@ -32,6 +48,8 @@ class COREPLUGIN_API Core
     MainWindow* m_mainWindow;
     /*! Project factory. */
     ProjectFactory* m_projectFactory;
+    /*! Current project. */
+    Project* m_project;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

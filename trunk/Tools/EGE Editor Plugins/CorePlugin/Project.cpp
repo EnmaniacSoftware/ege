@@ -2,11 +2,12 @@
 #include "MainWindow.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Project::Project(QObject* parent, const QString& name, const QString& path) : QObject(parent),
-                                                                              m_name(name),
-                                                                              m_path(path),
-                                                                              m_dirty(true),
-                                                                              m_resourceLibraryItemDelegate(NULL)
+Project::Project(QObject* parent, const QString& typeName, const QString& name, const QString& path) :  QObject(parent),
+                                                                                                        m_typeName(typeName),
+                                                                                                        m_name(name),
+                                                                                                        m_path(path),
+                                                                                                        m_dirty(true),
+                                                                                                        m_resourceLibraryItemDelegate(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

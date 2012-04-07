@@ -1,13 +1,12 @@
 #include "MainWindow.h"
-//#include "NewProjectDlg.h"
+#include "NewProjectWindow.h"
 #include "ui_mainwindow.h"
+#include "Core.h"
+#include "Project.h"
 //#include "Resources/ResourceLibrary.h"
 //#include "Resources/ResourceItemFactory.h"
 //#include "Resources/ResourceLibraryDataModel.h"
-//#include "Projects/Project.h"
-//#include "Projects/ProjectFactory.h"
 //#include "Modules/Fonts/FontManagerWindow.h"
-//#include "Plugins/PluginsManager.h"
 //#include "Config.h"
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -24,13 +23,9 @@ MainWindow* app = NULL;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MainWindow::MainWindow() : QMainWindow(),
                            m_ui(new Ui_MainWindow())/*,
-                           m_project(NULL),
-                           m_resourceLibraryWindow(NULL),
                            m_resourceItemFactory(NULL),
                            m_config(NULL),
-                           m_projectFactory(NULL),
-                           m_fontManagerWindow(NULL),
-                           m_pluginsManager(NULL)*/
+                           m_fontManagerWindow(NULL)*/
 {
   // setup UI
   m_ui->setupUi(this);
@@ -51,6 +46,11 @@ MainWindow::~MainWindow()
 /*! Initializes object. */
 bool MainWindow::initialize()
 {
+  Core* core = Core::instance();
+  Q_ASSERT(core);
+
+  connect(core, SIGNAL(projectCreated(Project*)), this, SLOT(onProjectCreated(Project*)));
+
   //if (NULL == (m_resourceLibraryWindow = new ResourceLibraryWindow(this)))
   //{
   //  // error!
@@ -109,20 +109,17 @@ void MainWindow::on_ActionFileNew_triggered(bool checked)
 {
   Q_UNUSED(checked);
 
-  //NewProjectDialog dlg(this);
-
-  // connect for notifications
- // connect(&dlg, SIGNAL(projectCreated(Project*)), this, SLOT(onNewProjectCreated(Project*)));
+  NewProjectWindow dlg(this);
 
   // show dialog
- // dlg.exec();
+  dlg.exec();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when File -> Open is selected. */
 void MainWindow::on_ActionFileOpen_triggered(bool checked)
 {
   Q_UNUSED(checked);
-  /*
+  
   Project* project = NULL;
 
   // prepare filters
@@ -146,7 +143,7 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
   }
 
   // process input data
-  QXmlStreamReader stream(&file);
+  /*QXmlStreamReader stream(&file);
   while (!stream.atEnd())
   {
     QXmlStreamReader::TokenType token = stream.readNext();
@@ -331,39 +328,30 @@ void MainWindow::on_ActionFileSave_triggered(bool checked)
   updateTitleBar();*/
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-///*! Slot called when new project has been created. */
-//void MainWindow::onNewProjectCreated(Project* project)
-//{
-//  // store pointer
-//  m_project = project;
-//
-//  // connect
-//  connect(m_project, SIGNAL(dirtyFlagChanged()), this, SLOT(updateTitleBar()));
-//
-//  // update title bar
-//  updateTitleBar();
-//
-//  // update menus
-//  updateMenus();
-//
-//  // emit
-//  emit projectCreated(m_project);
-//}
-////--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when new project has been created. */
+void MainWindow::onProjectCreated(Project* project)
+{
+  // connect
+  connect(project, SIGNAL(dirtyFlagChanged()), this, SLOT(updateTitleBar()));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates title bar. */
 void MainWindow::updateTitleBar()
 {
+  Core* core = Core::instance();
+  Q_ASSERT(core);
+
   QString title;
-  //if (m_project)
-  //{
-  //  title = m_project->name() + " - ";
-  //}
+  if (core->currentProject())
+  {
+    title = core->currentProject()->name() + " [" + core->currentProject()->typeName() + "] - ";
+  }
   title += "Enmaniac Game Engine Editor";
 
-  //if (m_project && m_project->isDirty())
-  //{
-  //  title += " *";
-  //}
+  if (core->currentProject() && core->currentProject()->isDirty())
+  {
+    title += " *";
+  }
 
   setWindowTitle(title);
 }
@@ -449,27 +437,29 @@ void MainWindow::updateTitleBar()
 //  // sync
 //  m_config->sync();
 //}
-////--------------------------------------------------------------------------------------------------------------------------------------------------------------
-///*! Event called on application close request. */
-//void MainWindow::closeEvent(QCloseEvent *event)
-//{
-//  // check if anything to save
-//  if (m_project && m_project->isDirty())
-//  {
-//    // show warning
-//    if (QMessageBox::Yes != QMessageBox::warning(this, tr("Project not saved"), 
-//                                                  tr("Project contains changes which have not been saved yet!\n\nDo you want to quit anyway ?"),
-//                                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
-//    {
-//      // dont close
-//      event->ignore();
-//      return;
-//    }
-//  }
-//
-//  event->accept();
-//}
-////--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Event called on application close request. */
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+  Project* project = Core::instance()->currentProject();
+
+  // check if anything to save
+  if (project && project->isDirty())
+  {
+    // show warning
+    if (QMessageBox::Yes != QMessageBox::warning(this, tr("Project not saved"), 
+                                                  tr("Project contains changes which have not been saved yet!\n\nDo you want to quit anyway ?"),
+                                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
+    {
+      // dont close
+      event->ignore();
+      return;
+    }
+  }
+
+  event->accept();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ///*! Slot called when dock widget changes visibility. */
 //void MainWindow::onDockWidgetVisibilityChanged(bool visible)
 //{

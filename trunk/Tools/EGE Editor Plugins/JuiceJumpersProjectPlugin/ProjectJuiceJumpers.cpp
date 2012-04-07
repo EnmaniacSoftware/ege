@@ -2,7 +2,7 @@
 #include <ResourceLibraryItemDelegate.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ProjectJuiceJumpers::ProjectJuiceJumpers(QObject* parent, const QString& name, const QString& path) : Project(parent, name, path)
+ProjectJuiceJumpers::ProjectJuiceJumpers(QObject* parent, const QString& name, const QString& path) : Project(parent, TypeName(), name, path)
 {
   m_resourceLibraryItemDelegate = new ResourceLibraryItemDelegate(this);
 }

@@ -21,7 +21,6 @@ class COREPLUGIN_API Project : public QObject, public ISerializer
 
   public:
 
-    Project(QObject* parent, const QString& name, const QString& path);
     virtual ~Project();
 
   signals:
@@ -30,6 +29,9 @@ class COREPLUGIN_API Project : public QObject, public ISerializer
     void dirtyFlagChanged();
 
   public:
+
+    /*! Returns type name. */
+    inline const QString& typeName() const { return m_typeName; }
 
     /*! Returns name. */
     inline const QString& name() const { return m_name; }
@@ -59,11 +61,15 @@ class COREPLUGIN_API Project : public QObject, public ISerializer
 
   protected:
 
+    /* Constructor. */
+    Project(QObject* parent, const QString& typeName, const QString& name, const QString& path);
     /*! Resource library item delegate. */
     ResourceLibraryItemDelegate* m_resourceLibraryItemDelegate;
 
   private:
 
+    /*! Type name. */
+    QString m_typeName;
     /*! Name. */
     QString m_name;
     /*! Path to project file. */

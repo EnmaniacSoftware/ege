@@ -3,7 +3,7 @@
 #include "ProjectFactory.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Core::Core()
+Core::Core(QObject* parent) : QObject(parent), m_project(NULL)
 {
   m_mainWindow = new MainWindow();
   m_projectFactory = new ProjectFactory();
@@ -11,6 +11,12 @@ Core::Core()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Core::~Core()
 {
+  if (NULL != m_project)
+  {
+    delete m_project;
+    m_project = NULL;
+  }
+
   if (NULL != m_projectFactory)
   {
     delete m_projectFactory;
@@ -41,5 +47,20 @@ MainWindow* Core::mainWindow() const
 ProjectFactory* Core::projectFactory() const
 {
   return m_projectFactory;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns current project. */
+Project* Core::currentProject() const
+{
+  return m_project;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when new project is created. */
+void Core::onProjectCreated(Project* project)
+{
+  // store project
+  m_project = project;
+
+  emit projectCreated(project);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
