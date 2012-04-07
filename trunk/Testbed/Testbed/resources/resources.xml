@@ -175,6 +175,10 @@
 
   </group>
 
+  <!-- Imaged animation test resources -->
+  <group name='imaged-animation-test'>
+  </group>
+  
   <include path='fonts.xml' />
   
 </resources>

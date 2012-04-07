@@ -5,8 +5,8 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct BuiltInProject
 {
-  projectTypeNameFunc pfTypeNameFunc;
-  projectCreateFunc pfCreateFunc;
+  PFPROJECTTYPENAMEFUNC pfTypeNameFunc;
+  PFPROJECTCREATEFUNC pfCreateFunc;
 };
 
 static BuiltInProject l_projectsToRegister[] = { {ProjectJuiceJumpers::TypeName, ProjectJuiceJumpers::Create }
@@ -28,7 +28,7 @@ ProjectFactory::~ProjectFactory()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Registeres custom project type. */
-bool ProjectFactory::registerProject(projectTypeNameFunc typeNameFunc, projectCreateFunc createFunc)
+bool ProjectFactory::registerProject(PFPROJECTTYPENAMEFUNC typeNameFunc, PFPROJECTCREATEFUNC createFunc)
 {
   Q_ASSERT(typeNameFunc && createFunc);
 

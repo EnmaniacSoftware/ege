@@ -44,6 +44,7 @@ files
   EGEGraphics.h
   EGEHash.h
   EGEImage.h
+  EGEImagedAnimation.h
   EGEIndexBuffer.h
   EGEInput.h
   EGEList.h
@@ -88,6 +89,11 @@ files
 	ListenerContainer.h
 	ObjectUIDs.h
 	Platform.h
+
+	["Core/Animation"]
+	(../../Sources/Core/Animation)
+  ImagedAnimation.cpp
+  ImagedAnimation.h
 
 	["Core/Application"]
 	(../../Sources/Core/Application)
@@ -386,6 +392,8 @@ files
   ResourceFont.h
   ResourceGroup.cpp
   ResourceGroup.h
+  ResourceImagedAnimation.cpp
+  ResourceImagedAnimation.h
 	ResourceManager.cpp
 	ResourceManager.h
   ResourceManagerWorkThread.cpp

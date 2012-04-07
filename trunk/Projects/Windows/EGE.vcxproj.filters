@@ -178,6 +178,9 @@
     <Filter Include="Win32\String">
       <UniqueIdentifier>{fa09a45a-6dce-4a7f-8087-cfddd7b2e35e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Animation">
+      <UniqueIdentifier>{0441ae33-55ff-4f7e-ba8d-b9d6816989f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -617,6 +620,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp">
       <Filter>Win32\String</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceImagedAnimation.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Animation\ImagedAnimation.cpp">
+      <Filter>Core\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1208,6 +1217,13 @@
     <ClInclude Include="..\..\Sources\Core\String\StringUtils.h">
       <Filter>Core\String</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceImagedAnimation.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Animation\ImagedAnimation.h">
+      <Filter>Core\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEImagedAnimation.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

@@ -82,6 +82,7 @@
     <ClCompile Include="Curves\CurvesTest.cpp" />
     <ClCompile Include="Dialogs\DialogTest.cpp" />
     <ClCompile Include="Fonts\FontsTest.cpp" />
+    <ClCompile Include="ImagedAnimation\ImagedAnimationTest.cpp" />
     <ClCompile Include="Lightning\LightningEffect.cpp" />
     <ClCompile Include="Lightning\LightningEffectLines.cpp" />
     <ClCompile Include="Lightning\LightningEffectQuads.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="Curves\CurvesTest.h" />
     <ClInclude Include="Dialogs\DialogTest.h" />
     <ClInclude Include="Fonts\FontsTest.h" />
+    <ClInclude Include="ImagedAnimation\ImagedAnimationTest.h" />
     <ClInclude Include="Lightning\LightningEffect.h" />
     <ClInclude Include="Lightning\LightningEffectLines.h" />
     <ClInclude Include="Lightning\LightningEffectQuads.h" />
@@ -128,6 +130,9 @@
     <ProjectReference Include="..\..\Projects\Windows\EGE.vcxproj">
       <Project>{640bd281-71d7-4cc6-91db-8381773cc8f4}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\resources.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

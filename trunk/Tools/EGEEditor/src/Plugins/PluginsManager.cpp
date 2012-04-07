@@ -31,56 +31,39 @@ bool PluginsManager::loadPlugins()
 
       // load plugin
       QLibrary library(file.absoluteFilePath(), this);
-    
+
       // resolve
-      fpPluginDependencies dependencies = (fpPluginDependencies) library.resolve("ege_plugin_dependencies");
-      fpPluginName name                 = (fpPluginName) library.resolve("ege_plugin_name");
-      fpPluginInstance instance         = (fpPluginInstance) library.resolve("ege_plugin_instance");
+      PFPLUGINDEPENDENCIES dependencies = (PFPLUGINDEPENDENCIES) library.resolve("ege_plugin_dependencies");
+      PFPLUGINNAME name                 = (PFPLUGINNAME) library.resolve("ege_plugin_name");
+      PFPLUGININSTANCE instance         = (PFPLUGININSTANCE) library.resolve("ege_plugin_instance");
 
       if ((NULL == dependencies) || (NULL == name) || (NULL == instance))
       {
         // error!
         qDebug() << Q_FUNC_INFO << tr("Could not resolve for plugin: %1...").arg(file.absoluteFilePath());
+        continue;
       }
 
-      PluginData pluginData;
-      pluginData.dependencies = QString(dependencies()).split(" ");
-      pluginData.name         = name();
-      //pluginData.instance     = qobject_cast<IPlugin*>(instance());
+      PluginData* pluginData = new PluginData;
+      if (NULL == pluginData)
+      {
+        // error!
+        qDebug() << Q_FUNC_INFO << tr("Could not create plugin: %1...").arg(file.absoluteFilePath());
+        continue;
+      }
 
-      m_plugins << pluginData;
+      pluginData->name         = name();
+      pluginData->dependencies = QString(dependencies()).split(" ", QString::SkipEmptyParts);
+      pluginData->instance     = qobject_cast<IPlugin*>(instance());
 
-      //QObject* pluginObj = loader.instance();
-      //if (pluginObj)
-      //{
-      //  IPlugin* plugin = qobject_cast<IPlugin*>(pluginObj);
-      //  if (plugin)
-      //  {
-      //    qDebug() << Q_FUNC_INFO << tr("Initializing plugin: %1...").arg(file.absoluteFilePath());
-    
-      //    // initialize
-      //    if (!plugin->initialize())
-      //    {
-      //      qDebug() << Q_FUNC_INFO << tr("ERROR: Could not initialize!");
-      //      loader.unload();
-      //    }
-      //    else
-      //    {
-      //      // add to pool
-      //     // m_plugins << plugin;
-      //    }
-      //  }
-      //  else
-      //  {
-      //    qDebug() << Q_FUNC_INFO << tr("ERROR: Casting failed for plugin %1!").arg(file.absoluteFilePath());
-      //    loader.unload();
-      //  }
-      //}
-      //else
-      //{
-      //  qDebug() << Q_FUNC_INFO << tr("ERROR: Could not load plugin %1!").arg(file.absoluteFilePath());
-      //}
+      m_plugins.insert(name(), pluginData);
     }
+  }
+
+  QList<PluginData*> queue = loadQueue();
+  foreach (PluginData* plugin, queue)
+  {
+    plugin->instance->initialize();
   }
 
   return true;
@@ -89,10 +72,11 @@ bool PluginsManager::loadPlugins()
 /*! Unloads plugins. */
 void PluginsManager::unloadPlugins()
 {
-  //foreach (IPlugin* plugin, m_plugins)
-  //{
-  //  plugin->deinitialize();
-  //}
+  foreach (PluginData* plugin, m_plugins)
+  {
+    plugin->instance->deinitialize();
+  }
+  qDeleteAll(m_plugins);
   m_plugins.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -100,5 +84,57 @@ void PluginsManager::unloadPlugins()
 void PluginsManager::setPluginPaths(const QStringList& paths)
 {
   m_paths = paths;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Generates load queue from all plugins. */
+QList<PluginsManager::PluginData*> PluginsManager::loadQueue() const
+{
+  QList<PluginsManager::PluginData*> queue;
+
+  // go thru all plugins
+  foreach (PluginData* pluginData, m_plugins)
+  {
+    QList<PluginsManager::PluginData*> loopQueue;
+    loadQueue(pluginData, queue, loopQueue);
+  }
+
+  return queue;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Processes given plugin resolving its dependencies and updating load queue. */
+bool PluginsManager::loadQueue(PluginData* plugin, QList<PluginsManager::PluginData*>& queue, QList<PluginsManager::PluginData*>& loopQueue) const
+{
+  // check if already in load queue
+  if (queue.contains(plugin))
+  {
+    // done
+    return true;
+  }
+
+  // check if circular dependancy found
+  if (loopQueue.contains(plugin))
+  {
+    // error!
+    return false;
+  }
+
+  // add to loop queue pool
+  loopQueue << plugin;
+
+  // resolve dependencies
+  foreach (const QString& dep, plugin->dependencies)
+  {
+    PluginData* depPlugin = m_plugins.value(dep);
+    if (!loadQueue(depPlugin, queue, loopQueue))
+    {
+      // error!
+      return false;
+    }
+  }
+
+  // add to queue
+  queue << plugin;
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

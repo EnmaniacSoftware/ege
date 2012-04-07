@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Sources\Core\Animation\ImagedAnimation.cpp" />
     <ClCompile Include="..\..\Sources\Core\Application\AppController.cpp" />
     <ClCompile Include="..\..\Sources\Core\Application\Application.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecMp3.cpp" />
@@ -106,6 +107,7 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceData.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceFont.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceGroup.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceImagedAnimation.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceManagerWorkThread.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceMaterial.cpp" />
@@ -151,6 +153,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
     <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.cpp" />
+    <ClInclude Include="..\..\Sources\Core\Animation\ImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodec.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecMp3.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecOgg.h" />
@@ -196,6 +199,7 @@
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointPulley.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceCurve.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceManagerWorkThread.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceParticleAffector.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.h" />
@@ -235,6 +239,7 @@
     <ClInclude Include="..\..\Sources\EGEDictionary.h" />
     <ClInclude Include="..\..\Sources\EGEFlags.h" />
     <ClInclude Include="..\..\Sources\EGEHash.h" />
+    <ClInclude Include="..\..\Sources\EGEImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\EGEIndexBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEMatrix.h" />
     <ClInclude Include="..\..\Sources\EGEMutex.h" />

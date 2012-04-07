@@ -77,7 +77,7 @@ void FontsTest::update(const Time& time)
 /*! IEventListener override. Event reciever. */
 void FontsTest::onEventRecieved(PEvent event)
 {
-  if (EGE_EVENT_UID_CORE_LANGUAGE_CHANGED == event->uid())
+  if (EGE_EVENT_ID_CORE_LANGUAGE_CHANGED == event->uid())
   {
     updateTexts();
   }

@@ -100,16 +100,6 @@
     <ClInclude Include="AtlasGroup.h" />
     <ClInclude Include="TextureAtlasGenerator.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\EGE\Projects\Windows\EGE.vcxproj">
-      <Project>{640bd281-71d7-4cc6-91db-8381773cc8f4}</Project>
-      <Private>true</Private>
-      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

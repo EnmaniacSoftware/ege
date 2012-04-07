@@ -2,7 +2,7 @@
 #define PLUGINS_MANAGER_H
 
 #include <QStringList>
-#include <List>
+#include <QMap>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IPlugin;
@@ -34,10 +34,17 @@ class PluginsManager : public QObject
 
   private:
 
+    /* Generates load queue from all plugins. */
+    QList<PluginData*> loadQueue() const;
+    /* Processes given plugin resolving its dependencies and updating load queue. */
+    bool loadQueue(PluginData* plugin, QList<PluginData*>& queue, QList<PluginsManager::PluginData*>& loopQueue) const;
+
+  private:
+
     /*! Plugin paths. */
     QStringList m_paths;
-    /*! List of all plugins. */
-    QList<PluginData> m_plugins;
+    /*! Map of all plugins [name, plugindata]. */
+    QMap<QString, PluginData*> m_plugins;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

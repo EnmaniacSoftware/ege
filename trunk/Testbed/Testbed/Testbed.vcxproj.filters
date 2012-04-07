@@ -52,6 +52,9 @@
     <Filter Include="Tests\Threads">
       <UniqueIdentifier>{a7dca0ea-ab42-4cb1-b95c-d17819706b4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\ImagedAnimation">
+      <UniqueIdentifier>{d59ff2b7-0aec-4682-85bb-61416f27989c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -120,6 +123,9 @@
     <ClCompile Include="Threads\TestThread.cpp">
       <Filter>Tests\Threads</Filter>
     </ClCompile>
+    <ClCompile Include="ImagedAnimation\ImagedAnimationTest.cpp">
+      <Filter>Tests\ImagedAnimation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -185,5 +191,13 @@
     <ClInclude Include="Threads\TestThread.h">
       <Filter>Tests\Threads</Filter>
     </ClInclude>
+    <ClInclude Include="ImagedAnimation\ImagedAnimationTest.h">
+      <Filter>Tests\ImagedAnimation</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\resources.xml">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
