@@ -3,10 +3,11 @@
 #include "ProjectFactory.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Core::Core(QObject* parent) : QObject(parent), m_project(NULL)
+Core::Core(QObject* parent) : QObject(parent), 
+                              m_mainWindow(NULL),
+                              m_projectFactory(NULL),
+                              m_project(NULL)
 {
-  m_mainWindow = new MainWindow();
-  m_projectFactory = new ProjectFactory();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Core::~Core()
@@ -16,7 +17,27 @@ Core::~Core()
     delete m_project;
     m_project = NULL;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns core instance. */       
+Core* Core::instance()
+{
+  static Core core;
+  return &core;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Initializes object. */
+bool Core::initialize()
+{
+  m_mainWindow = new MainWindow();
+  m_projectFactory = new ProjectFactory();
 
+  return m_mainWindow && m_projectFactory;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Deinitializes object. */
+void Core::deinitialize()
+{
   if (NULL != m_projectFactory)
   {
     delete m_projectFactory;
@@ -28,13 +49,6 @@ Core::~Core()
     delete m_mainWindow;
     m_mainWindow = NULL;
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns core instance. */       
-Core* Core::instance()
-{
-  static Core core;
-  return &core;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns main window. */

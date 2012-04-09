@@ -27,6 +27,10 @@ class COREPLUGIN_API Core : public QObject
 
     /* Returns core instance. */       
     static Core* instance();
+    /* Initializes object. */
+    bool initialize();
+    /* Deinitializes object. */
+    void deinitialize();
 
   public:
 

@@ -72,10 +72,18 @@ bool PluginsManager::loadPlugins()
 /*! Unloads plugins. */
 void PluginsManager::unloadPlugins()
 {
-  foreach (PluginData* plugin, m_plugins)
+  // deinitialize plugins in reverse order
+  QList<PluginData*> queue = loadQueue();
+  while (!queue.isEmpty())
   {
-    plugin->instance->deinitialize();
+    PluginData* pluginData = queue.takeLast();
+
+    if (m_plugins.contains(pluginData->name))
+    {
+      pluginData->instance->deinitialize();
+    }
   }
+
   qDeleteAll(m_plugins);
   m_plugins.clear();
 }

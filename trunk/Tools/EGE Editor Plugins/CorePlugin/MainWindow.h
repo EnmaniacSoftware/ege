@@ -2,20 +2,18 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
+#include "coreplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Ui_MainWindow;
 class Project;
 class Config;
 class QCloseEvent;
 class ResourceItemFactory;
 class FontManagerWindow;
-class QMdiSubWindow;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Application main window. */
-class MainWindow : public QMainWindow
+class COREPLUGIN_API MainWindow : public QMainWindow
 {
   Q_OBJECT
 
@@ -28,6 +26,10 @@ class MainWindow : public QMainWindow
 
     /* Initializes object. */
     bool initialize();
+    /* Adds child window. */
+    void addChildWindow(QWidget* widget);
+    /* Removes child window. */
+    void removeChildWindow(QWidget* widget);
 
   //  /*! Returns pointer to resource item factory. */
   //  inline ResourceItemFactory* resourceItemFactory() const { return m_resourceItemFactory; }

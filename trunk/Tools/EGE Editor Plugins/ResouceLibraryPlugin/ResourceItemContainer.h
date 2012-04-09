@@ -1,7 +1,7 @@
 #ifndef RESOURCE_ITEM_CONTAINER_H
 #define RESOURCE_ITEM_CONTAINER_H
 
-#include "Resources/ResourceItem.h"
+#include "ResourceItem.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Container resource item. */

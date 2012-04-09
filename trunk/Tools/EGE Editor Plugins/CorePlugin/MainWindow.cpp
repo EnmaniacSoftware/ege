@@ -356,6 +356,18 @@ void MainWindow::updateTitleBar()
   setWindowTitle(title);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds child window. */
+void MainWindow::addChildWindow(QWidget* widget)
+{
+  m_ui->mdiArea->addSubWindow(widget);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes child window. */
+void MainWindow::removeChildWindow(QWidget* widget)
+{
+  m_ui->mdiArea->removeSubWindow(widget);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ///*! Updates menus. */
 //void MainWindow::updateMenus()
 //{

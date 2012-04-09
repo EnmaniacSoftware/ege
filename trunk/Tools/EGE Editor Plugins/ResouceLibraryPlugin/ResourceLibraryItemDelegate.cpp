@@ -1,7 +1,7 @@
 #include "ResourceLibraryItemDelegate.h"
-#include "Resources/ResourceItem.h"
-#include "Resources/ResourceItemContainer.h"
-#include "Resources/ResourceItemImage.h"
+#include "ResourceItem.h"
+#include "ResourceItemContainer.h"
+#include "ResourceItemImage.h"
 #include "ResourceLibraryDataModel.h"
 #include <QPainter>
 #include <QTreeView>

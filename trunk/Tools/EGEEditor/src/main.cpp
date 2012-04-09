@@ -44,6 +44,8 @@ int main(int argc, char *argv[])
   // run
   int result = a.exec();
 
+  pluginManager.unloadPlugins();
+
   // clean up
   //delete app;
   //app = NULL;
