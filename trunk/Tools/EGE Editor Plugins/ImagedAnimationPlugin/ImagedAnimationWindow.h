@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "Serializer.h"
+#include "SwfmillToEgeConverter.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Ui_ImagedAnimation;
@@ -37,6 +38,8 @@ class ImagedAnimationWindow : public QDialog, public ISerializer
 
     /*! Imaged animation window UI. */
     Ui_ImagedAnimation* m_ui;
+    /*! SWFMILL XML to EGE framework XML converter. */
+    SwfMillToEgeConverter m_converter;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

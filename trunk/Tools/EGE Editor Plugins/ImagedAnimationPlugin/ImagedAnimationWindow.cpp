@@ -18,6 +18,21 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
   m_ui->setupUi(this);
   
   updateMenus();
+
+  // TAGE
+  QFile file("data/static_banana.xml");
+  file.open(QIODevice::Text | QIODevice::ReadOnly);
+  QXmlStreamReader input(&file);
+
+  QString string;
+  QXmlStreamWriter output(&string);
+
+  m_converter.convert(input, output);
+
+  QFile fileOut("ege_static_banana.xml");
+  bool a= fileOut.open(QIODevice::Text | QIODevice::WriteOnly);
+  QTextStream out(&fileOut);
+  out << string;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ImagedAnimationWindow::~ImagedAnimationWindow()

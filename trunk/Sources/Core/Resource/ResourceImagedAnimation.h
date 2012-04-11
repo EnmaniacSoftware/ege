@@ -9,6 +9,8 @@
 #include <EGEString.h>
 #include <EGEXml.h>
 #include <EGETime.h>
+#include <EGEDynamicArray.h>
+#include <EGEList.h>
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN
@@ -19,6 +21,7 @@ class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceImagedAnimation, PResourceImagedAnimation)
 EGE_DECLARE_SMART_CLASS(ImagedAnimation, PImagedAnimation)
+EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -53,57 +56,53 @@ class ResourceImagedAnimation : public IResource
     /* Set given instance of imaged animation object to what is defined by resource. */
     EGEResult setInstance(const PImagedAnimation& instance);
 
-    /*! Returns number of frames. */
-    //inline s32 frameCount() const { return m_frameCount; }
-    ///*! Returns first frame index within sheet. */
-    //inline s32 beginFrame() const { return m_beginFrame; }
-    ///*! Returns ping-pong flag. */
-    //inline bool pingPong() const { return m_pingPong; }
-    ///*! Returns repeat flag. */
-    //inline bool repeat() const { return m_repeat; }
-    ///*! Returns duration. */
-    //inline const Time& duration() const { return m_duration; }
-
   private:
 
     ResourceImagedAnimation(Application* app, ResourceManager* manager);
     /* Returns TRUE if object is loaded. */
-    inline bool isLoaded() const { return false; }//NULL != m_sheet; }
-    /*! Returns sprite sheet name. */
-    //inline const String& sheetName() const { return m_sheetName; } 
-    ///* Invalidates frame data. */
-    //void invalidateFrameData();
-    ///* Calculates frame data. */
-    //void calculateFrameData();
-    ///*! Returns spritesheet object containing sprite. */
-    //inline PResourceSpritesheet sheet() const { return m_sheet; }
+    bool isLoaded() const;
+    /* Adds object. */
+    EGEResult addObject(const PXmlElement& tag);
+    /* Adds frame. */
+    EGEResult addFrame(const PXmlElement& tag);
 
   private:
 
-//    typedef DynamicArray<EGESprite::FrameData> FameDataArray;
+    /*! Object data. */
+    struct ObjectData
+    {
+      String name;
+      String materialName;
+      Vector2f translate;
+      Vector2f scale;
+      Vector2f skew;
+
+      PResourceMaterial materialResource;
+    };
+
+    /*! Frame data. */
+    struct FrameData
+    {
+      String objectName;
+      s32 queue;
+      Vector2f translate;
+      Vector2f scale;
+      Vector2f skew;
+    };
+
+    typedef DynamicArray<ObjectData> ObjectDataArray;
+    typedef List<FrameData> FrameDataList;
 
   private:
 
     /*! Name. */
     String m_name;
-    ///*! Sprite sheet name. */
-    //String m_sheetName;
-    ///*! Sprite play duration. */
-    //Time m_duration;
-    ///*! Ping-pong flag. If set sprite animation will progress forth and back. Mutually exclusive with 'repeat'. */
-    //bool m_pingPong;
-    ///*! Repeat flag. If set sprite animation will repeat once end is reached. Mutually exclusive with 'pingpong'. */
-    //bool m_repeat;
-    ///*! First frame index within sheet. */
-    //s32 m_beginFrame;
-    ///*! Number of frames. */
-    //s32 m_frameCount;
-    ///*! Cached frame data validity flag. */
-    //bool m_frameDataInvalid;
-    ///*! Cached frame data. */
-    //FameDataArray m_frameData;
-    ///*! Loaded sheet. If NULL resource has not been loaded yet. */
-    //PResourceSpritesheet m_sheet;
+    /*! Frames per second. */
+    s32 m_fps;
+    /*! Objects array. */
+    ObjectDataArray m_objects;
+    /*! Frames list. */
+    FrameDataList m_frames;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

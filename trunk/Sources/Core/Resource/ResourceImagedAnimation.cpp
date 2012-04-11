@@ -8,11 +8,13 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define NODE_OBJECT "object"
+#define NODE_FRAME  "frame"
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceImagedAnimation)
 EGE_DEFINE_DELETE_OPERATORS(ResourceImagedAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceImagedAnimation::ResourceImagedAnimation(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_IMAGED_ANIMATION)//, 
-//                                                                             m_frameDataInvalid(false)
+ResourceImagedAnimation::ResourceImagedAnimation(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_IMAGED_ANIMATION)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -44,29 +46,61 @@ EGEResult ResourceImagedAnimation::create(const String& path, const PXmlElement&
   bool error = false;
 
   // get data
-  m_name        = tag->attribute("name");
-  //m_sheetName   = tag->attribute("sheet");
-  //m_duration    = tag->attribute("duration").toFloat(&error);
-  //m_pingPong    = tag->attribute("ping-pong").toBool(&error);
-  //m_frameCount  = tag->attribute("frame-count").toInt(&error);
-  //m_beginFrame  = tag->attribute("begin-frame").toInt(&error);
-  //m_repeat      = tag->attribute("repeat").toBool(&error);
+  m_name = tag->attribute("name");
+  m_fps  = tag->attribute("fps").toInt(&error);
 
   // check if obligatory data is wrong
-  //if (error || m_name.empty() || m_sheetName.empty() || (0 >= m_frameCount) || (0 > m_beginFrame))
-  //{
-  //  // error!
-  //  EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
-  //  return EGE_ERROR_BAD_PARAM;
-  //}
+  if (error || m_name.empty())
+  {
+    // error!
+    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
+    return EGE_ERROR_BAD_PARAM;
+  }
 
-  //// invalidate frame data
-  //invalidateFrameData();
+  // go thru all sub nodes
+  PXmlElement child = tag->firstChild();
+  while (child->isValid())
+  {
+    // check child
+    if (NODE_OBJECT == child->name())
+    {
+      // add object
+      result = addObject(child);
+    }
+    else if (NODE_FRAME == child->name())
+    {
+      // add frame
+      result = addFrame(child);
+    }
 
-  // compose absolute path
- // m_path = path + "/" + m_path;
+    // check if failed
+    if (EGE_SUCCESS != result)
+    {
+      // error, done!
+      break;
+    }
+
+    // go to next child
+    child = child->nextChild();
+  }
 
   return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if object is loaded. */
+bool ResourceImagedAnimation::isLoaded() const
+{
+  // check if all materials are loaded
+  for (s32 i = 0; i < static_cast<s32>(m_objects.size()); ++i)
+  {
+    if (NULL == m_objects[i].materialResource)
+    {
+      // not loaded
+      return false;
+    }
+  }
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Loads resource. */
@@ -76,23 +110,28 @@ EGEResult ResourceImagedAnimation::load()
 
   if (!isLoaded())
   {
-    //// get sheet resource
-    //m_sheet = manager()->resource(RESOURCE_NAME_SPRITE_SHEET, sheetName());
-    //if (m_sheet)
-    //{
-    //  // load sheet
-    //  if (EGE_SUCCESS != (result = m_sheet->load()))
-    //  {
-    //    // error!
-    //    m_sheet = NULL;
-    //    return result;
-    //  }
-    //}
-    //else
-    //{
-    //  // material not found
-    //  result = EGE_ERROR_NOT_FOUND;
-    //}
+    // load all objects materials
+    for (s32 i = 0; i < static_cast<s32>(m_objects.size()); ++i)
+    {
+      ObjectData& objectData = m_objects[i];
+
+      objectData.materialResource = manager()->resource(RESOURCE_NAME_MATERIAL, objectData.materialName);
+      if (objectData.materialResource)
+      {
+        // load material
+        if (EGE_SUCCESS != (result = objectData.materialResource->load()))
+        {
+          // error!
+          objectData.materialResource = NULL;
+          return result;
+        }
+      }
+      else
+      {
+        // material not found
+        result = EGE_ERROR_NOT_FOUND;
+      }
+    }
   }
 
   return result;
@@ -103,8 +142,13 @@ void ResourceImagedAnimation::unload()
 { 
   EGE_PRINT("%s", name().toAscii());
 
-  // unload texture
-//  m_sheet = NULL;
+  // unload all objects materials
+  for (s32 i = 0; i < static_cast<s32>(m_objects.size()); ++i)
+  {
+    ObjectData& objectData = m_objects[i];
+
+    objectData.materialResource = NULL;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of imaged animation object defined by resource. */
@@ -219,4 +263,51 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
 //    m_frameDataInvalid = false;
 //  }
 //}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds object. */
+EGEResult ResourceImagedAnimation::addObject(const PXmlElement& tag)
+{
+  ObjectData data;
+
+  bool error = false;
+
+  // get data
+  data.name       = tag->attribute("name");
+  data.translate  = tag->attribute("translate", "0 0").toVector2f(&error);
+  data.scale      = tag->attribute("scale", "1 1").toVector2f(&error);
+  data.skew       = tag->attribute("skew", "0 0").toVector2f(&error);
+
+  if (data.name.empty() || error)
+  {
+    // error!
+    return EGE_ERROR;
+  }
+
+  m_objects.push_back(data);
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds frame. */
+EGEResult ResourceImagedAnimation::addFrame(const PXmlElement& tag)
+{
+  FrameData data;
+
+  bool error = false;
+
+  // get data
+  data.objectName = tag->attribute("object");
+  data.queue      = tag->attribute("queue").toInt(&error);
+  data.translate  = tag->attribute("translate", "0 0").toVector2f(&error);
+  data.scale      = tag->attribute("scale", "1 1").toVector2f(&error);
+  data.skew       = tag->attribute("skew", "0 0").toVector2f(&error);
+
+  if (data.objectName.empty() || error)
+  {
+    // error!
+    return EGE_ERROR;
+  }
+
+  m_frames.push_back(data);
+  return EGE_SUCCESS;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

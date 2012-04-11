@@ -13,20 +13,6 @@ int main(int argc, char *argv[])
 //    return -1;
 //  }
 //
-//  // allocate main window
-//  app = new MainWindow();
-//  if (NULL == app)
-//  {
-//    // error!
-//    return -2;
-//  }
-//
-//  // initialize
-//  if (!app->initialize())
-//  {
-//    // error!
-//    return -3;
-//  }
 
   PluginsManager pluginManager;
   QStringList pluginPaths;
@@ -38,17 +24,10 @@ int main(int argc, char *argv[])
     return -1;
   }
 
-  // show main window
-//  app->show();
-
   // run
   int result = a.exec();
 
   pluginManager.unloadPlugins();
-
-  // clean up
-  //delete app;
-  //app = NULL;
 
   return result;
 }
