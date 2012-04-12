@@ -1,5 +1,5 @@
 #include "ResourceLibraryWindow.h"
-#include "ui_resourcelibrary.h"
+#include "ui_ResourceLibraryWindow.h"
 #include "Config.h"
 #include "MainWindow.h"
 #include "ResourceLibraryDataModel.h"

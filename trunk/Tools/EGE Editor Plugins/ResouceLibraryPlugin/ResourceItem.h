@@ -1,15 +1,17 @@
-#ifndef RESOURCE_ITEM_H
-#define RESOURCE_ITEM_H
+#ifndef RESOURCEITEM_H
+#define RESOURCEITEM_H
+
+/*! Generic resource item. */
 
 #include <QList>
 #include <QString>
 #include <QVariant>
 #include <QSize>
 #include "Serializer.h"
+#include "resoucelibraryplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Generic resource item. */
-class ResourceItem : public ISerializer
+class RESOUCELIBRARYPLUGIN_API ResourceItem : public ISerializer
 {
   public:
 
@@ -91,4 +93,4 @@ class ResourceItem : public ISerializer
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // RESOURCE_ITEM_H
+#endif // RESOURCEITEM_H

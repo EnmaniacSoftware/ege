@@ -1,21 +1,21 @@
-#ifndef IMAGEDANIMATIONPLUGIN_H
-#define IMAGEDANIMATIONPLUGIN_H
+#ifndef RESOUCELIBRARYPLUGIN_H
+#define RESOUCELIBRARYPLUGIN_H
 
 #include <Plugins/IPlugin.h>
-#include "imagedanimationplugin_global.h"
+#include "resoucelibraryplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ImagedAnimationWindow;
+class ResourceLibraryWindow;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class IMAGEDANIMATIONPLUGIN_API ImagedAnimationPlugin : public QObject, public IPlugin
+class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPlugin
 {
   Q_OBJECT
   Q_INTERFACES(IPlugin)
 
   public:
   
-    explicit ImagedAnimationPlugin(QObject* parent = NULL);
-    ~ImagedAnimationPlugin();
+    explicit ResouceLibraryPlugin(QObject* parent = NULL);
+    ~ResouceLibraryPlugin();
 
   private:
 
@@ -27,8 +27,8 @@ class IMAGEDANIMATIONPLUGIN_API ImagedAnimationPlugin : public QObject, public I
   private:
 
     /*! Module window. */
-    ImagedAnimationWindow* m_window;
+    ResourceLibraryWindow* m_window;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // IMAGEDANIMATIONPLUGIN_H
+#endif // RESOUCELIBRARYPLUGIN_H

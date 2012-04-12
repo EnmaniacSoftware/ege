@@ -1,21 +1,23 @@
-#ifndef RESOUCELIBRARYPLUGIN_H
-#define RESOUCELIBRARYPLUGIN_H
+#ifndef MATERIALMANAGERPLUGIN_H
+#define MATERIALMANAGERPLUGIN_H
 
 #include <Plugins/IPlugin.h>
-#include "resoucelibraryplugin_global.h"
+#include "materialmanagerplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceLibraryWindow;
+class MaterialManagerWindow;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPlugin
+class MATERIALMANAGERPLUGIN_API MaterialManagerPlugin : public QObject, public IPlugin
 {
   Q_OBJECT
   Q_INTERFACES(IPlugin)
 
   public:
   
-    explicit ResouceLibraryPlugin(QObject* parent = NULL);
-    ~ResouceLibraryPlugin();
+    explicit MaterialManagerPlugin(QObject* parent = NULL);
+    ~MaterialManagerPlugin();
+
+  private:
 
     /* IPlugin override. Initialized plugin. */
     bool initialize() override;
@@ -24,9 +26,9 @@ class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPl
 
   private:
 
-    /*! Resource library window. */
-    ResourceLibraryWindow* m_resourceLibraryWindow;
+    /*! Module window. */
+    MaterialManagerWindow* m_window;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // RESOUCELIBRARYPLUGIN_H
+#endif // MATERIALMANAGERPLUGIN_H

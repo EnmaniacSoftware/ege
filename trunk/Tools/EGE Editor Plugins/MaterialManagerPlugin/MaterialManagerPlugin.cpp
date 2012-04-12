@@ -1,46 +1,53 @@
-#include "resoucelibraryplugin.h"
-#include <QtPlugin>
-#include <QDebug>
+#include "MaterialManagerPlugin.h"
+#include "MaterialManagerWindow.h"
 #include <Core.h>
 #include <MainWindow.h>
-#include "ResourceLibraryWindow.h"
+#include <QtPlugin>
+#include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResouceLibraryPlugin::ResouceLibraryPlugin(QObject* parent) : QObject(parent),
-                                                              m_resourceLibraryWindow(NULL)
+MaterialManagerPlugin::MaterialManagerPlugin(QObject* parent) : QObject(parent),
+                                                                m_window(NULL)
 {
-  qDebug() << Q_FUNC_INFO;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResouceLibraryPlugin::~ResouceLibraryPlugin()
+MaterialManagerPlugin::~MaterialManagerPlugin()
 {
-  qDebug() << Q_FUNC_INFO;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Initialized plugin. */
-bool ResouceLibraryPlugin::initialize()
+bool MaterialManagerPlugin::initialize()
 {
   qDebug() << Q_FUNC_INFO;
 
   Core* core = Core::instance();
   MainWindow* mainWindow = core->mainWindow();
 
-  m_resourceLibraryWindow = new ResourceLibraryWindow(mainWindow);
+  m_window = new MaterialManagerWindow();
+  if (NULL != m_window)
+  {
+    mainWindow->addChildWindow(m_window);
+  }
 
-  return true;
+  return NULL != m_window;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Deinitializes plugin. */
-void ResouceLibraryPlugin::deinitialize()
+void MaterialManagerPlugin::deinitialize()
 {
   qDebug() << Q_FUNC_INFO;
 
-  if (m_resourceLibraryWindow)
+  Core* core = Core::instance();
+  MainWindow* mainWindow = core->mainWindow();
+
+  if (NULL != m_window)
   {
-    delete m_resourceLibraryWindow;
-    m_resourceLibraryWindow = NULL;
+    mainWindow->removeChildWindow(m_window);
+    delete m_window;
+    m_window = NULL;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_EXPORT_PLUGIN("resourcelibrary", ResouceLibraryPlugin, "core")
+EGE_EXPORT_PLUGIN("materialmanager", MaterialManagerPlugin, "core resourcelibrary")
+
