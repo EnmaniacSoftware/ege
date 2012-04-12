@@ -1,5 +1,6 @@
 #include "MaterialManagerWindow.h"
 #include "ui_MaterialManagerWindow.h"
+#include <ResourceLibraryWindow.h>
 #include <Core.h>
 #include <MainWindow.h>
 #include <CoreConstants.h>
@@ -8,6 +9,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QDebug>
+#include <ObjectPool.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MaterialManagerWindow::MaterialManagerWindow(QWidget* parent) : QDialog(parent),
@@ -91,6 +93,8 @@ void MaterialManagerWindow::attachToResourceLibrary()
   MainWindow* mainWindow = Core::instance()->mainWindow();
   Q_ASSERT(mainWindow);
 
-  //mainWindow()->
+  //ResourceLibraryWindow* resourceLibraryWindow = ObjectPool::instance()->getObject<ResourceLibraryWindow>();
+
+  //resourceLibraryWindow = resourceLibraryWindow;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

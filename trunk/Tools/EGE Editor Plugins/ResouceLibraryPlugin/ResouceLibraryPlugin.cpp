@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <Core.h>
 #include <MainWindow.h>
+#include <ObjectPool.h>
 #include "ResourceLibraryWindow.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,8 +27,12 @@ bool ResouceLibraryPlugin::initialize()
   MainWindow* mainWindow = core->mainWindow();
 
   m_window = new ResourceLibraryWindow(mainWindow);
+  if (NULL != m_window)
+  {
+    return ObjectPool::instance()->addObject(m_window);
+  }
 
-  return NULL != m_window;
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Deinitializes plugin. */
@@ -37,6 +42,8 @@ void ResouceLibraryPlugin::deinitialize()
 
   if (m_window)
   {
+    ObjectPool::instance()->removeObject(m_window);
+
     delete m_window;
     m_window = NULL;
   }

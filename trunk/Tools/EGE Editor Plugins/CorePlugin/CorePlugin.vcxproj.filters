@@ -86,6 +86,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_Core.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ObjectPool.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ObjectPool.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectPool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="coreplugin_global.h">
@@ -130,6 +139,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="Core.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ObjectPool.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

@@ -4,6 +4,7 @@
 #include <MainWindow.h>
 #include <QtPlugin>
 #include <QDebug>
+#include <ObjectPool.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MaterialManagerPlugin::MaterialManagerPlugin(QObject* parent) : QObject(parent),
@@ -27,9 +28,11 @@ bool MaterialManagerPlugin::initialize()
   if (NULL != m_window)
   {
     mainWindow->addChildWindow(m_window);
+
+    return ObjectPool::instance()->addObject(m_window);
   }
 
-  return NULL != m_window;
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Deinitializes plugin. */
@@ -42,6 +45,8 @@ void MaterialManagerPlugin::deinitialize()
 
   if (NULL != m_window)
   {
+    ObjectPool::instance()->removeObject(m_window);
+
     mainWindow->removeChildWindow(m_window);
     delete m_window;
     m_window = NULL;

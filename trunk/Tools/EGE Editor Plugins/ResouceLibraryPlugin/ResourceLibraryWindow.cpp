@@ -34,6 +34,7 @@ ResourceLibraryWindow::ResourceLibraryWindow(QWidget* parent) : QDockWidget(pare
   // initial placement
   Core::instance()->mainWindow()->addDockWidget(Qt::LeftDockWidgetArea, this);
 
+  // update menus
   updateMenus();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

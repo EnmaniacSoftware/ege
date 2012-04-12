@@ -1,0 +1,53 @@
+#include "ObjectPool.h"
+#include <QWriteLocker>
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ObjectPool::ObjectPool() : QObject()
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ObjectPool::~ObjectPool()
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns pool instance. */       
+ObjectPool* ObjectPool::instance()
+{
+  static ObjectPool pool;
+  return &pool;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds given object into pool. */
+bool ObjectPool::addObject(QObject* object)
+{
+  QWriteLocker lock(&m_lock);
+
+  // check if already in pool
+  if ((NULL != object) && !m_objects.contains(object))
+  {
+    // add to pool
+    m_objects.append(object);
+
+    // emit
+    emit objectAdded(object);
+
+    return true;
+  }
+
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Removes given object from pool. */
+void ObjectPool::removeObject(QObject *object)
+{
+  // check if in pool
+  if ((NULL != object) && m_objects.contains(object))
+  {
+    // emit
+    emit aboutToRemoveObject(object);
+
+    QWriteLocker lock(&m_lock);
+    m_objects.removeAll(object);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
