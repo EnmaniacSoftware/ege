@@ -4,24 +4,21 @@
 #include <QDebug>
 #include <Core.h>
 #include <MainWindow.h>
+#include <ObjectPool.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ImagedAnimationPlugin::ImagedAnimationPlugin(QObject* parent) : QObject(parent),
                                                                 m_window(NULL)
 {
-  qDebug() << Q_FUNC_INFO;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ImagedAnimationPlugin::~ImagedAnimationPlugin()
 {
-  qDebug() << Q_FUNC_INFO;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Initialized plugin. */
 bool ImagedAnimationPlugin::initialize()
 {
-  qDebug() << Q_FUNC_INFO;
-
   Core* core = Core::instance();
   MainWindow* mainWindow = core->mainWindow();
 
@@ -31,14 +28,14 @@ bool ImagedAnimationPlugin::initialize()
     mainWindow->addChildWindow(m_window);
   }
 
+  ObjectPool::instance()->addObject(m_window);
+
   return NULL != m_window;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Deinitializes plugin. */
 void ImagedAnimationPlugin::deinitialize()
 {
-  qDebug() << Q_FUNC_INFO;
-
   Core* core = Core::instance();
   MainWindow* mainWindow = core->mainWindow();
 
@@ -51,5 +48,5 @@ void ImagedAnimationPlugin::deinitialize()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_EXPORT_PLUGIN("imagedanimation", ImagedAnimationPlugin, "core resourcelibrary")
+EGE_EXPORT_PLUGIN(ImagedAnimationPlugin)
 

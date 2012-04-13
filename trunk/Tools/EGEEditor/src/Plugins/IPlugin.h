@@ -16,13 +16,9 @@ class IPlugin
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Q_DECLARE_INTERFACE(IPlugin, "com.littlebeestudios.plugin.iplugin/1.0");
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define EGE_EXPORT_PLUGIN(pluginName, pluginClass, pluginDependencies) \
-            Q_EXTERN_C Q_DECL_EXPORT const char * Q_STANDARD_CALL ege_plugin_dependencies() { return pluginDependencies; } \
-            Q_EXTERN_C Q_DECL_EXPORT const char * Q_STANDARD_CALL ege_plugin_name() { return pluginName; } \
+#define EGE_EXPORT_PLUGIN(pluginClass) \
             Q_EXTERN_C Q_DECL_EXPORT QT_PREPEND_NAMESPACE(QObject) * Q_STANDARD_CALL ege_plugin_instance() Q_PLUGIN_INSTANCE(pluginClass)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef const char*                     (*PFPLUGINDEPENDENCIES) ();
-typedef const char*                     (*PFPLUGINNAME) ();
 typedef QT_PREPEND_NAMESPACE(QObject)*  (*PFPLUGININSTANCE) ();
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

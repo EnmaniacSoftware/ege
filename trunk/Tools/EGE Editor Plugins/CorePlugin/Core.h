@@ -35,6 +35,8 @@ class COREPLUGIN_API Core : public QObject
   public:
 
     /* Returns main window. */
+    QObject* mainWindow2() const;
+    /* Returns main window. */
     MainWindow* mainWindow() const;
     /* Returns project factory. */
     ProjectFactory* projectFactory() const;

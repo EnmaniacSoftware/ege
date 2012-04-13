@@ -1,6 +1,8 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
+/*! Application main window. */
+
 #include <QMainWindow>
 #include "coreplugin_global.h"
 
@@ -9,10 +11,7 @@ class Ui_MainWindow;
 class Project;
 class Config;
 class QCloseEvent;
-class ResourceItemFactory;
-class FontManagerWindow;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Application main window. */
 class COREPLUGIN_API MainWindow : public QMainWindow
 {
   Q_OBJECT

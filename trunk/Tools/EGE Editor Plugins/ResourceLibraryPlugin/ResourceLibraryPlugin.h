@@ -6,6 +6,7 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceLibraryWindow;
+class ResourceItemFactory;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPlugin
 {
@@ -28,6 +29,8 @@ class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPl
 
     /*! Module window. */
     ResourceLibraryWindow* m_window;
+    /*! Resource item factory. */
+    ResourceItemFactory* m_resourceItemFactory;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

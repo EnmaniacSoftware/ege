@@ -1,16 +1,18 @@
 #ifndef IMAGEDANIMATIONWINDOW_H
 #define IMAGEDANIMATIONWINDOW_H
 
+/*! Imaged animation module window. */
+
 #include <QDialog>
 #include "Serializer.h"
 #include "SwfmillToEgeConverter.h"
+#include "imagedanimationplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Ui_ImagedAnimation;
 class Config;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Imaged animation module window. */
-class ImagedAnimationWindow : public QDialog, public ISerializer
+class IMAGEDANIMATIONPLUGIN_API ImagedAnimationWindow : public QDialog, public ISerializer
 {
   Q_OBJECT
 

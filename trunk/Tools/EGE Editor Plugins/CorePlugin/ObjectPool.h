@@ -35,6 +35,8 @@ class COREPLUGIN_API ObjectPool : public QObject
     bool addObject(QObject* object);
     /* Removes given object from pool. */
     void removeObject(QObject *object);
+    /* Returns all objects. */
+    QList<QObject*> allObjects() const;
 
     /*! Returns list of objects of a given type. */
     template <typename T> 

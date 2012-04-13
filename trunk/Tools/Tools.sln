@@ -13,11 +13,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EGEEditor", "EGEEditor\EGEE
 		{5C8EABF0-AE37-44AF-83F6-820841D14D27} = {5C8EABF0-AE37-44AF-83F6-820841D14D27}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ResouceLibraryPlugin", "EGE Editor Plugins\ResouceLibraryPlugin\ResouceLibraryPlugin.vcxproj", "{48259AED-792B-40E7-99F2-5F1CD109B589}"
-	ProjectSection(ProjectDependencies) = postProject
-		{4CC7913B-77C6-4945-BBF0-4E14A532F60C} = {4CC7913B-77C6-4945-BBF0-4E14A532F60C}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CorePlugin", "EGE Editor Plugins\CorePlugin\CorePlugin.vcxproj", "{4CC7913B-77C6-4945-BBF0-4E14A532F60C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JuiceJumpersProjectPlugin", "EGE Editor Plugins\JuiceJumpersProjectPlugin\JuiceJumpersProjectPlugin.vcxproj", "{F250CE4A-A8C4-45A7-A4B6-9DBE3F5B6703}"
@@ -40,6 +35,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MaterialManagerPlugin", "EG
 		{48259AED-792B-40E7-99F2-5F1CD109B589} = {48259AED-792B-40E7-99F2-5F1CD109B589}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ResourceLibraryPlugin", "EGE Editor Plugins\ResourceLibraryPlugin\ResourceLibraryPlugin.vcxproj", "{48259AED-792B-40E7-99F2-5F1CD109B589}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -60,12 +57,6 @@ Global
 		{99FF25A8-D07C-496A-AA8F-A3983F857970}.Release|Win32.ActiveCfg = Release|Win32
 		{99FF25A8-D07C-496A-AA8F-A3983F857970}.Release|Win32.Build.0 = Release|Win32
 		{99FF25A8-D07C-496A-AA8F-A3983F857970}.Release|x64.ActiveCfg = Release|Win32
-		{48259AED-792B-40E7-99F2-5F1CD109B589}.Debug|Win32.ActiveCfg = Debug|Win32
-		{48259AED-792B-40E7-99F2-5F1CD109B589}.Debug|Win32.Build.0 = Debug|Win32
-		{48259AED-792B-40E7-99F2-5F1CD109B589}.Debug|x64.ActiveCfg = Debug|Win32
-		{48259AED-792B-40E7-99F2-5F1CD109B589}.Release|Win32.ActiveCfg = Release|Win32
-		{48259AED-792B-40E7-99F2-5F1CD109B589}.Release|Win32.Build.0 = Release|Win32
-		{48259AED-792B-40E7-99F2-5F1CD109B589}.Release|x64.ActiveCfg = Release|Win32
 		{4CC7913B-77C6-4945-BBF0-4E14A532F60C}.Debug|Win32.ActiveCfg = Debug|Win32
 		{4CC7913B-77C6-4945-BBF0-4E14A532F60C}.Debug|Win32.Build.0 = Debug|Win32
 		{4CC7913B-77C6-4945-BBF0-4E14A532F60C}.Debug|x64.ActiveCfg = Debug|Win32
@@ -96,6 +87,12 @@ Global
 		{5C8EABF0-AE37-44AF-83F6-820841D14D27}.Release|Win32.ActiveCfg = Release|Win32
 		{5C8EABF0-AE37-44AF-83F6-820841D14D27}.Release|Win32.Build.0 = Release|Win32
 		{5C8EABF0-AE37-44AF-83F6-820841D14D27}.Release|x64.ActiveCfg = Release|Win32
+		{48259AED-792B-40E7-99F2-5F1CD109B589}.Debug|Win32.ActiveCfg = Debug|Win32
+		{48259AED-792B-40E7-99F2-5F1CD109B589}.Debug|Win32.Build.0 = Debug|Win32
+		{48259AED-792B-40E7-99F2-5F1CD109B589}.Debug|x64.ActiveCfg = Debug|Win32
+		{48259AED-792B-40E7-99F2-5F1CD109B589}.Release|Win32.ActiveCfg = Release|Win32
+		{48259AED-792B-40E7-99F2-5F1CD109B589}.Release|Win32.Build.0 = Release|Win32
+		{48259AED-792B-40E7-99F2-5F1CD109B589}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

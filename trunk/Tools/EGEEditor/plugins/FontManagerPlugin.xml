@@ -1,0 +1,4 @@
+<plugin name="FontManagerPlugin">
+  <dependency name="CorePlugin" />
+  <dependency name="ResourceLibraryPlugin" />
+</plugin>

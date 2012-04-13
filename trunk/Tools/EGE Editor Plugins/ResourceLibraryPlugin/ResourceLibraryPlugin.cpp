@@ -1,54 +1,59 @@
-#include "MaterialManagerPlugin.h"
-#include "MaterialManagerWindow.h"
-#include <Core.h>
-#include <MainWindow.h>
+#include "ResourceLibraryPlugin.h"
+#include "ResourceLibraryWindow.h"
+#include "ResourceItemFactory.h"
 #include <QtPlugin>
 #include <QDebug>
+#include <Core.h>
+#include <MainWindow.h>
 #include <ObjectPool.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-MaterialManagerPlugin::MaterialManagerPlugin(QObject* parent) : QObject(parent),
-                                                                m_window(NULL)
+ResouceLibraryPlugin::ResouceLibraryPlugin(QObject* parent) : QObject(parent),
+                                                              m_window(NULL),
+                                                              m_resourceItemFactory(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-MaterialManagerPlugin::~MaterialManagerPlugin()
+ResouceLibraryPlugin::~ResouceLibraryPlugin()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Initialized plugin. */
-bool MaterialManagerPlugin::initialize()
+bool ResouceLibraryPlugin::initialize()
 {
   Core* core = Core::instance();
   MainWindow* mainWindow = core->mainWindow();
 
-  m_window = new MaterialManagerWindow();
-  if (NULL != m_window)
-  {
-    mainWindow->addChildWindow(m_window);
+  m_window = new ResourceLibraryWindow(mainWindow);
+  m_resourceItemFactory = new ResourceItemFactory();
 
-    return ObjectPool::instance()->addObject(m_window);
+  if ((NULL != m_window) && (NULL != m_resourceItemFactory))
+  {
+    return ObjectPool::instance()->addObject(m_window) && ObjectPool::instance()->addObject(m_resourceItemFactory);
   }
 
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Deinitializes plugin. */
-void MaterialManagerPlugin::deinitialize()
+void ResouceLibraryPlugin::deinitialize()
 {
-  Core* core = Core::instance();
-  MainWindow* mainWindow = core->mainWindow();
+  if (m_resourceItemFactory)
+  {
+    ObjectPool::instance()->removeObject(m_resourceItemFactory);
 
-  if (NULL != m_window)
+    delete m_resourceItemFactory;
+    m_resourceItemFactory = NULL;
+  }
+
+  if (m_window)
   {
     ObjectPool::instance()->removeObject(m_window);
 
-    mainWindow->removeChildWindow(m_window);
     delete m_window;
     m_window = NULL;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_EXPORT_PLUGIN(MaterialManagerPlugin)
-
+EGE_EXPORT_PLUGIN(ResouceLibraryPlugin)

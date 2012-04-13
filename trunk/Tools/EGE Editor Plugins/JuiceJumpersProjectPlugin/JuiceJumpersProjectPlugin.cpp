@@ -8,19 +8,15 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 JuiceJumpersProjectPlugin::JuiceJumpersProjectPlugin(QObject* parent) : QObject(parent)
 {
-  qDebug() << Q_FUNC_INFO;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 JuiceJumpersProjectPlugin::~JuiceJumpersProjectPlugin()
 {
-  qDebug() << Q_FUNC_INFO;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Initialized plugin. */
 bool JuiceJumpersProjectPlugin::initialize()
 {
-  qDebug() << Q_FUNC_INFO;
-
   ProjectFactory* projectFactory = Core::instance()->projectFactory();
   if (projectFactory)
   {
@@ -33,9 +29,8 @@ bool JuiceJumpersProjectPlugin::initialize()
 /*! IPlugin override. Deinitializes plugin. */
 void JuiceJumpersProjectPlugin::deinitialize()
 {
-  qDebug() << Q_FUNC_INFO;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_EXPORT_PLUGIN("juicejumpersproject", JuiceJumpersProjectPlugin, "core resourcelibrary")
+EGE_EXPORT_PLUGIN(JuiceJumpersProjectPlugin)
 

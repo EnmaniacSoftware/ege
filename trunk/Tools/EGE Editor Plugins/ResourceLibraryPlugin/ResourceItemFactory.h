@@ -1,28 +1,30 @@
-#ifndef RESOURCE_ITEM_FACTORY_H
-#define RESOURCE_ITEM_FACTORY_H
+#ifndef RESOURCEITEM_FACTORY_H
+#define RESOURCEITEM_FACTORY_H
+
+/*! Factory class for resource items. 
+ */
 
 #include <QString>
 #include <QMap>
 #include <QObject>
+#include "resoucelibraryplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceItem;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-typedef ResourceItem* (*resourceItemCreateFunc) ();
-
+typedef ResourceItem* (*FPRESOURCEITEMCREATEFUNC) ();
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceItemFactory : public QObject
+class RESOUCELIBRARYPLUGIN_API ResourceItemFactory : public QObject
 {
+  Q_OBJECT
+
   public:
 
-    ResourceItemFactory(QObject* parent = NULL);
+    explicit ResourceItemFactory(QObject* parent = NULL);
    ~ResourceItemFactory();
 
     /* Registeres custom resource item type. */
-    bool registerItem(const QString& typeName, resourceItemCreateFunc createFunc);
+    bool registerItem(const QString& typeName, FPRESOURCEITEMCREATEFUNC createFunc);
     /* Creates instance of resource item of the type given by name. */
     ResourceItem* createItem(const QString& typeName, const QString& name, ResourceItem* parent = NULL) const;
     /* Returns TRUE if given resource item type is registered. */
@@ -30,7 +32,7 @@ class ResourceItemFactory : public QObject
 
   private:
 
-    typedef QMap<QString, resourceItemCreateFunc> ResourceItemRegisterMap;
+    typedef QMap<QString, FPRESOURCEITEMCREATEFUNC> ResourceItemRegisterMap;
 
   private:
 
@@ -39,4 +41,4 @@ class ResourceItemFactory : public QObject
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // RESOURCE_ITEM_FACTORY_H
+#endif // RESOURCEITEM_FACTORY_H

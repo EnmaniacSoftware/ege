@@ -1,7 +1,7 @@
 #include "ResourceLibraryDataModel.h"
-#include "Resources/ResourceItem.h"
-#include "Resources/ResourceItemFactory.h"
-#include "MainWindow.h"
+#include "ResourceItem.h"
+#include "ResourceItemFactory.h"
+#include <MainWindow.h>
 #include <QFile>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>

@@ -1,6 +1,7 @@
 #include "MaterialManagerWindow.h"
 #include "ui_MaterialManagerWindow.h"
-#include <ResourceLibraryWindow.h>
+#include "ResourceItemMaterial.h"
+#include <ResourceItemFactory.h>
 #include <Core.h>
 #include <MainWindow.h>
 #include <CoreConstants.h>
@@ -92,9 +93,12 @@ void MaterialManagerWindow::attachToResourceLibrary()
 {
   MainWindow* mainWindow = Core::instance()->mainWindow();
   Q_ASSERT(mainWindow);
+  
+  ResourceItemFactory* resourceItemFactory = ObjectPool::instance()->getObject<ResourceItemFactory>();
 
-  //ResourceLibraryWindow* resourceLibraryWindow = ObjectPool::instance()->getObject<ResourceLibraryWindow>();
-
-  //resourceLibraryWindow = resourceLibraryWindow;
+  if (!resourceItemFactory->registerItem("material", ResourceItemMaterial::Create))
+  {
+    qWarning() << "Could not register ResourceItemMaterial";
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

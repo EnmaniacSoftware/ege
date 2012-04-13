@@ -1,0 +1,4 @@
+<plugin name="ImagedAnimationPlugin">
+  <dependency name="CorePlugin" />
+  <dependency name="ResourceLibraryPlugin" />
+</plugin>

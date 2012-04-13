@@ -1,13 +1,16 @@
-#include "ResourceLibrary.h"
-#include "ui_resourcelibrary.h"
+#include "ResourceLibraryWindow.h"
+#include "ui_ResourceLibraryWindow.h"
 #include "Config.h"
-#include "MainWindow.h"
 #include "ResourceLibraryDataModel.h"
 #include "ResourceLibraryItemDelegate.h"
-#include "Resources/ResourceItem.h"
-#include "Resources/ResourceItemFactory.h"
-#include "Projects/Project.h"
+#include "ResourceItem.h"
+#include "ResourceItemFactory.h"
+#include <Project.h>
+#include <Core.h>
+#include <MainWindow.h>
+#include <CoreConstants.h>
 #include <QMenu>
+#include <QMenuBar>
 #include <QFile>
 #include <QFileDialog>
 #include <QDebug>
@@ -26,6 +29,12 @@ ResourceLibraryWindow::ResourceLibraryWindow(QWidget* parent) : QDockWidget(pare
   connect(parent, SIGNAL(projectCreated(Project*)), this, SLOT(onProjectCreated(Project*)));
   connect(parent, SIGNAL(projectOpened(Project*)), this, SLOT(onProjectCreated(Project*)));
 	connect(parent, SIGNAL(projectClosed()), this, SLOT(onProjectClosed()));
+
+  // initial placement
+  Core::instance()->mainWindow()->addDockWidget(Qt::LeftDockWidgetArea, this);
+
+  // update menus
+  updateMenus();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryWindow::~ResourceLibraryWindow()
@@ -90,7 +99,7 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
 void ResourceLibraryWindow::onProjectCreated(Project* project)
 {
   // set view delegate
-  ResourceLibraryItemDelegate* delegate = mainWindow()->project()->resourceLibraryItemDelegate();
+  ResourceLibraryItemDelegate* delegate = NULL;//mainWindow()->project()->resourceLibraryItemDelegate();
   delegate->setView(m_ui->view);
 
   m_ui->view->setItemDelegate(delegate);
@@ -131,7 +140,7 @@ void ResourceLibraryWindow::onAddContainer()
   QModelIndexList list = m_ui->view->selectionModel()->selectedIndexes();
   QModelIndex index = !list.isEmpty() ? list.front() : QModelIndex();
 
-  ResourceItem* newItem = app->resourceItemFactory()->createItem("container", tr("No name"));
+  ResourceItem* newItem = NULL;//app->resourceItemFactory()->createItem("container", tr("No name"));
   if (newItem)
   {
     m_model->insertItem(index, newItem);
@@ -158,7 +167,7 @@ void ResourceLibraryWindow::onAddResource()
       QString name = item.section("/", -1);
       QString path = item.section("/", 0, -2);
 
-      ResourceItem* newItem = app->resourceItemFactory()->createItem("image", name);
+      ResourceItem* newItem = NULL;//app->resourceItemFactory()->createItem("image", name);
       if (newItem)
       {
         QModelIndex childIndex = m_model->insertItem(index, newItem);
@@ -199,5 +208,19 @@ bool ResourceLibraryWindow::unserialize(QXmlStreamReader& stream)
   bool result = m_model->unserialize(stream);
  
   return result && !stream.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Updates menus. */
+void ResourceLibraryWindow::updateMenus()
+{
+  MainWindow* mainWindow = Core::instance()->mainWindow();
+
+  QMenu* menu = mainWindow->menuBar()->findChild<QMenu*>(MENU_MODULE);
+  Q_ASSERT(menu);
+
+  QAction* action = new QAction(tr("Resource library"), menu);
+  action->setShortcut(QKeySequence("Ctrl+Shift+R"));
+  connect(action, SIGNAL(triggered()), this, SLOT(show()));
+  menu->addAction(action);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

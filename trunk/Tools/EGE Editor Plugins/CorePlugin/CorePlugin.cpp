@@ -1,53 +1,47 @@
-#include "resoucelibraryplugin.h"
+#include "coreplugin.h"
+#include "core.h"
+#include "MainWindow.h"
 #include <QtPlugin>
 #include <QDebug>
-#include <Core.h>
-#include <MainWindow.h>
-#include <ObjectPool.h>
-#include "ResourceLibraryWindow.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResouceLibraryPlugin::ResouceLibraryPlugin(QObject* parent) : QObject(parent),
-                                                              m_window(NULL)
+CorePlugin::CorePlugin(QObject* parent) : QObject(parent)
 {
-  qDebug() << Q_FUNC_INFO;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResouceLibraryPlugin::~ResouceLibraryPlugin()
+CorePlugin::~CorePlugin()
 {
-  qDebug() << Q_FUNC_INFO;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Initialized plugin. */
-bool ResouceLibraryPlugin::initialize()
+bool CorePlugin::initialize()
 {
-  qDebug() << Q_FUNC_INFO;
-
-  Core* core = Core::instance();
-  MainWindow* mainWindow = core->mainWindow();
-
-  m_window = new ResourceLibraryWindow(mainWindow);
-  if (NULL != m_window)
+  if (Core::instance()->initialize())
   {
-    return ObjectPool::instance()->addObject(m_window);
+    MainWindow* mainWindow = Core::instance()->mainWindow();
+    if (mainWindow)
+    {
+      // initialize main window
+      if (!mainWindow->initialize())
+      {
+        // error!
+        return false;
+      }
+
+      // show main window
+      mainWindow->show();
+      return true;
+    }
   }
 
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Deinitializes plugin. */
-void ResouceLibraryPlugin::deinitialize()
+void CorePlugin::deinitialize()
 {
-  qDebug() << Q_FUNC_INFO;
-
-  if (m_window)
-  {
-    ObjectPool::instance()->removeObject(m_window);
-
-    delete m_window;
-    m_window = NULL;
-  }
+  Core::instance()->deinitialize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_EXPORT_PLUGIN("resourcelibrary", ResouceLibraryPlugin, "core")
+EGE_EXPORT_PLUGIN(CorePlugin)

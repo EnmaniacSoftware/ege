@@ -7,7 +7,7 @@
 struct BuiltInResourceItem
 {
   const char* name;
-  resourceItemCreateFunc pfCreateFunc;
+  FPRESOURCEITEMCREATEFUNC pfCreateFunc;
 };
 
 static BuiltInResourceItem l_resourceItemsToRegister[] = {  { "container", ResourceItemContainer::Create },
@@ -30,7 +30,7 @@ ResourceItemFactory::~ResourceItemFactory()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Registeres custom resource item type. */
-bool ResourceItemFactory::registerItem(const QString& typeName, resourceItemCreateFunc createFunc)
+bool ResourceItemFactory::registerItem(const QString& typeName, FPRESOURCEITEMCREATEFUNC createFunc)
 {
   // check if resource with such a name exists already
   if (isItemRegistered(typeName))
@@ -51,7 +51,7 @@ ResourceItem* ResourceItemFactory::createItem(const QString& typeName, const QSt
   ResourceItem* item = NULL;
 
   // get resource item create function for a given type name
-  resourceItemCreateFunc createFunc = m_registeredItems.value(typeName, NULL);
+  FPRESOURCEITEMCREATEFUNC createFunc = m_registeredItems.value(typeName, NULL);
   if (createFunc)
   {
     // create instance

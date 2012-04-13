@@ -38,9 +38,6 @@
     <ProjectReference Include="..\CorePlugin\CorePlugin.vcxproj">
       <Project>{4cc7913b-77c6-4945-bbf0-4e14a532f60c}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\ResouceLibraryPlugin\ResouceLibraryPlugin.vcxproj">
-      <Project>{48259aed-792b-40e7-99f2-5f1cd109b589}</Project>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CD3CFD28-D43F-4666-A906-6D4E4C5D2370}</ProjectGuid>

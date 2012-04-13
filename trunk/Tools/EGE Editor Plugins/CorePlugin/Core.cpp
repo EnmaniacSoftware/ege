@@ -78,3 +78,8 @@ void Core::onProjectCreated(Project* project)
   emit projectCreated(project);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+    /* Returns main window. */
+    QObject* Core::mainWindow2() const
+    {
+      return m_mainWindow;
+    }

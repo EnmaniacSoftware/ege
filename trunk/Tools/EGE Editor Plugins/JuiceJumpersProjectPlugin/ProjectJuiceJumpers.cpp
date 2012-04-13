@@ -1,10 +1,10 @@
 #include "ProjectJuiceJumpers.h"
-#include <ResourceLibraryItemDelegate.h>
+//#include <ResourceLibraryItemDelegate.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ProjectJuiceJumpers::ProjectJuiceJumpers(QObject* parent, const QString& name, const QString& path) : Project(parent, TypeName(), name, path)
 {
-  m_resourceLibraryItemDelegate = new ResourceLibraryItemDelegate(this);
+  //m_resourceLibraryItemDelegate = new ResourceLibraryItemDelegate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ProjectJuiceJumpers::~ProjectJuiceJumpers()

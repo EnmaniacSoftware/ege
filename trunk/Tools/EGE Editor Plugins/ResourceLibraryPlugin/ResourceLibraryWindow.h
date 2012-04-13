@@ -1,27 +1,27 @@
-#ifndef RESOURCE_LIBRARY_H
-#define RESOURCE_LIBRARY_H
+#ifndef RESOURCELIBRARY_WINDOW_H
+#define RESOURCELIBRARY_WINDOW_H
+
+/*! Resource library window. */
 
 #include <QDockWidget>
 #include "Serializer.h"
+#include "resoucelibraryplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Ui_ResourceLibrary;
 class Config;
 class MainWindow;
 class ResourceLibraryDataModel;
 class ResourceLibraryItemDelegate;
 class Project;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Resource library window. */
-class ResourceLibraryWindow : public QDockWidget, public ISerializer
+class RESOUCELIBRARYPLUGIN_API ResourceLibraryWindow : public QDockWidget, public ISerializer
 {
   Q_OBJECT
 
   public:
 
-    ResourceLibraryWindow(QWidget* parent);
+    explicit ResourceLibraryWindow(QWidget* parent = NULL);
    ~ResourceLibraryWindow();
 
     /* Saves settings. */
@@ -54,8 +54,8 @@ class ResourceLibraryWindow : public QDockWidget, public ISerializer
 
   private:
 
-    /*! Returns pointer to main window object. */
-    inline MainWindow* mainWindow() const { return reinterpret_cast<MainWindow*>(parent()); }
+    /* Updates menus. */
+    void updateMenus();
 
   private:
 
@@ -66,4 +66,4 @@ class ResourceLibraryWindow : public QDockWidget, public ISerializer
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // RESOURCE_LIBRARY_H
+#endif // RESOURCELIBRARY_WINDOW_H

@@ -5,7 +5,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(PROJECTS_DIR)\Cpp\Ege\Tools\EGE Editor Plugins\ResouceLibraryPlugin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PROJECTS_DIR)\Cpp\Ege\Tools\EGE Editor Plugins\ResourceLibraryPlugin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />

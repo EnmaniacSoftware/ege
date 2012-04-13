@@ -28,6 +28,7 @@ class PluginsManager : public QObject
     struct PluginData
     {
       QString name;
+      QString path;
       QStringList dependencies;
       IPlugin* instance;
     };
