@@ -5,22 +5,16 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Core::Core(QObject* parent) : QObject(parent), 
                               m_mainWindow(NULL),
-                              m_projectFactory(NULL),
-                              m_project(NULL)
+                              m_projectFactory(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Core::~Core()
 {
-  if (NULL != m_project)
-  {
-    delete m_project;
-    m_project = NULL;
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns core instance. */       
-Core* Core::instance()
+Core* Core::Instance()
 {
   static Core core;
   return &core;
@@ -63,23 +57,3 @@ ProjectFactory* Core::projectFactory() const
   return m_projectFactory;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current project. */
-Project* Core::currentProject() const
-{
-  return m_project;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when new project is created. */
-void Core::onProjectCreated(Project* project)
-{
-  // store project
-  m_project = project;
-
-  emit projectCreated(project);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-    /* Returns main window. */
-    QObject* Core::mainWindow2() const
-    {
-      return m_mainWindow;
-    }

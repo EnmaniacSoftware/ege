@@ -7,7 +7,6 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class MainWindow;
 class ProjectFactory;
-class Project;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class COREPLUGIN_API Core : public QObject
 {
@@ -18,15 +17,13 @@ class COREPLUGIN_API Core : public QObject
     Core(QObject* parent = NULL);
    ~Core();
 
-  signals:
-
-    /*! Signal emitted when new project is created. */
-    void projectCreated(Project* project);
-
   public:
 
     /* Returns core instance. */       
-    static Core* instance();
+    static Core* Instance();
+
+  public:
+
     /* Initializes object. */
     bool initialize();
     /* Deinitializes object. */
@@ -35,18 +32,9 @@ class COREPLUGIN_API Core : public QObject
   public:
 
     /* Returns main window. */
-    QObject* mainWindow2() const;
-    /* Returns main window. */
     MainWindow* mainWindow() const;
     /* Returns project factory. */
     ProjectFactory* projectFactory() const;
-    /* Returns current project. */
-    Project* currentProject() const;
-
-  public slots:
-
-    /* Slot called when new project is created. */
-    void onProjectCreated(Project* project);
 
   private:
 
@@ -54,8 +42,6 @@ class COREPLUGIN_API Core : public QObject
     MainWindow* m_mainWindow;
     /*! Project factory. */
     ProjectFactory* m_projectFactory;
-    /*! Current project. */
-    Project* m_project;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

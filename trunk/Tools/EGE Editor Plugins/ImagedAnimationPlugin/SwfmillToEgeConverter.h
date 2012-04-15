@@ -5,6 +5,7 @@
 #include <QXmlStreamWriter>
 #include <QList>
 #include <QVector2D>
+#include <QByteArray>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class SwfMillToEgeConverter
@@ -58,6 +59,7 @@ class SwfMillToEgeConverter
     struct ObjectData
     {
       int objectId;                           /*!< Object ID. */
+      QByteArray data;                        /*!< Decoded data array. */
     };
 
     /*! Shape data structure. */

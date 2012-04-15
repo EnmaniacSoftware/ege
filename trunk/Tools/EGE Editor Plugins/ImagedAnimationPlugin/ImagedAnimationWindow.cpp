@@ -26,6 +26,7 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
 
   QString string;
   QXmlStreamWriter output(&string);
+  output.setAutoFormatting(true);
 
   m_converter.convert(input, output);
 
@@ -85,7 +86,7 @@ bool ImagedAnimationWindow::unserialize(QXmlStreamReader& stream)
 /*! Updates menus. */
 void ImagedAnimationWindow::updateMenus()
 {
-  MainWindow* mainWindow = Core::instance()->mainWindow();
+  MainWindow* mainWindow = Core::Instance()->mainWindow();
 
   QMenu* menu = mainWindow->menuBar()->findChild<QMenu*>(MENU_MODULE);
   Q_ASSERT(menu);

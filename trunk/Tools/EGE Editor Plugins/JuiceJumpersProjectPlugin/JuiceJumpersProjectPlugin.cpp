@@ -17,7 +17,7 @@ JuiceJumpersProjectPlugin::~JuiceJumpersProjectPlugin()
 /*! IPlugin override. Initialized plugin. */
 bool JuiceJumpersProjectPlugin::initialize()
 {
-  ProjectFactory* projectFactory = Core::instance()->projectFactory();
+  ProjectFactory* projectFactory = Core::Instance()->projectFactory();
   if (projectFactory)
   {
     return projectFactory->registerProject(ProjectJuiceJumpers::TypeName, ProjectJuiceJumpers::Create);

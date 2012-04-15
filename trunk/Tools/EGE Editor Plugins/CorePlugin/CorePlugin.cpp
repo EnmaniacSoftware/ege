@@ -16,9 +16,9 @@ CorePlugin::~CorePlugin()
 /*! IPlugin override. Initialized plugin. */
 bool CorePlugin::initialize()
 {
-  if (Core::instance()->initialize())
+  if (Core::Instance()->initialize())
   {
-    MainWindow* mainWindow = Core::instance()->mainWindow();
+    MainWindow* mainWindow = Core::Instance()->mainWindow();
     if (mainWindow)
     {
       // initialize main window
@@ -40,7 +40,7 @@ bool CorePlugin::initialize()
 /*! IPlugin override. Deinitializes plugin. */
 void CorePlugin::deinitialize()
 {
-  Core::instance()->deinitialize();
+  Core::Instance()->deinitialize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

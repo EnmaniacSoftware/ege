@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_ResourceLibraryWindow.h" />
+    <ClInclude Include="IResourceLibrary.h" />
     <ClInclude Include="IResourceLibraryDataModel.h" />
     <ClInclude Include="resoucelibraryplugin_global.h" />
     <ClInclude Include="ResourceItem.h" />

@@ -1,5 +1,6 @@
 #include "Project.h"
 #include "MainWindow.h"
+#include "ObjectPool.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Project::Project(QObject* parent, const QString& typeName, const QString& name, const QString& path) :  QObject(parent),
@@ -9,6 +10,8 @@ Project::Project(QObject* parent, const QString& typeName, const QString& name, 
                                                                                                         m_dirty(true),
                                                                                                         m_resourceLibraryItemDelegate(NULL)
 {
+  // add self to pool
+  ObjectPool::Instance()->addObject(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Project::~Project()

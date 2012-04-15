@@ -26,12 +26,12 @@ ResourceLibraryWindow::ResourceLibraryWindow(QWidget* parent) : QDockWidget(pare
   // set view model
   m_ui->view->setModel(m_model);
 
-  connect(parent, SIGNAL(projectCreated(Project*)), this, SLOT(onProjectCreated(Project*)));
-  connect(parent, SIGNAL(projectOpened(Project*)), this, SLOT(onProjectCreated(Project*)));
-	connect(parent, SIGNAL(projectClosed()), this, SLOT(onProjectClosed()));
+  connect(Core::Instance(), SIGNAL(projectCreated(Project*)), this, SLOT(onProjectCreated(Project*)));
+  //connect(Core::Instance(), SIGNAL(projectOpened(Project*)), this, SLOT(onProjectCreated(Project*)));
+	//connect(Core::Instance(), SIGNAL(projectClosed()), this, SLOT(onProjectClosed()));
 
   // initial placement
-  Core::instance()->mainWindow()->addDockWidget(Qt::LeftDockWidgetArea, this);
+  Core::Instance()->mainWindow()->addDockWidget(Qt::LeftDockWidgetArea, this);
 
   // update menus
   updateMenus();
@@ -213,7 +213,7 @@ bool ResourceLibraryWindow::unserialize(QXmlStreamReader& stream)
 /*! Updates menus. */
 void ResourceLibraryWindow::updateMenus()
 {
-  MainWindow* mainWindow = Core::instance()->mainWindow();
+  MainWindow* mainWindow = Core::Instance()->mainWindow();
 
   QMenu* menu = mainWindow->menuBar()->findChild<QMenu*>(MENU_MODULE);
   Q_ASSERT(menu);

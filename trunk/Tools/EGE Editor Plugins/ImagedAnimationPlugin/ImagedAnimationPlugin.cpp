@@ -19,7 +19,7 @@ ImagedAnimationPlugin::~ImagedAnimationPlugin()
 /*! IPlugin override. Initialized plugin. */
 bool ImagedAnimationPlugin::initialize()
 {
-  Core* core = Core::instance();
+  Core* core = Core::Instance();
   MainWindow* mainWindow = core->mainWindow();
 
   m_window = new ImagedAnimationWindow();
@@ -28,7 +28,7 @@ bool ImagedAnimationPlugin::initialize()
     mainWindow->addChildWindow(m_window);
   }
 
-  ObjectPool::instance()->addObject(m_window);
+  ObjectPool::Instance()->addObject(m_window);
 
   return NULL != m_window;
 }
@@ -36,7 +36,7 @@ bool ImagedAnimationPlugin::initialize()
 /*! IPlugin override. Deinitializes plugin. */
 void ImagedAnimationPlugin::deinitialize()
 {
-  Core* core = Core::instance();
+  Core* core = Core::Instance();
   MainWindow* mainWindow = core->mainWindow();
 
   if (m_window)

@@ -76,7 +76,7 @@ bool MaterialManagerWindow::unserialize(QXmlStreamReader& stream)
 /*! Updates menus. */
 void MaterialManagerWindow::updateMenus()
 {
-  MainWindow* mainWindow = Core::instance()->mainWindow();
+  MainWindow* mainWindow = Core::Instance()->mainWindow();
   Q_ASSERT(mainWindow);
 
   QMenu* menu = mainWindow->menuBar()->findChild<QMenu*>(MENU_MODULE);
@@ -91,10 +91,10 @@ void MaterialManagerWindow::updateMenus()
 /*! Attaches resource library specific data. */
 void MaterialManagerWindow::attachToResourceLibrary()
 {
-  MainWindow* mainWindow = Core::instance()->mainWindow();
+  MainWindow* mainWindow = Core::Instance()->mainWindow();
   Q_ASSERT(mainWindow);
   
-  ResourceItemFactory* resourceItemFactory = ObjectPool::instance()->getObject<ResourceItemFactory>();
+  ResourceItemFactory* resourceItemFactory = ObjectPool::Instance()->getObject<ResourceItemFactory>();
 
   if (!resourceItemFactory->registerItem("material", ResourceItemMaterial::Create))
   {

@@ -50,8 +50,11 @@ class COREPLUGIN_API MainWindow : public QMainWindow
   //  /* Slot called when Project -> Font Manager is selected. */
   //  void on_ActionProjectFontManager_triggered(bool checked);
 
-    /* Slot called when new project has been created. */
-    void onProjectCreated(Project* project);
+    /* Slot called when new object has been added into the pool. */
+    void onObjectAdded(QObject* object);
+    /* Slot called when object is about to be removed from pool. */
+    void onObjectRemoved(QObject* object);
+
     /* Updates title bar. */
     void updateTitleBar();
   //  /* Updates menus. */
@@ -67,6 +70,10 @@ class COREPLUGIN_API MainWindow : public QMainWindow
   //  void loadSettings();
     /* Event called on application close request. */
     void closeEvent(QCloseEvent *event);
+    /* Closes the project. 
+     * @note  If project is to be saved, prompt is shown.
+     */
+    bool close();
   //  /* Returns MDI subwindow with the given name. */
   //  QMdiSubWindow* findMdiChild(const QString& name) const;
 

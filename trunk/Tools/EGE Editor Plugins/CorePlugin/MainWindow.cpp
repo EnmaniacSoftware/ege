@@ -2,7 +2,9 @@
 #include "NewProjectWindow.h"
 #include "ui_mainwindow.h"
 #include "Core.h"
+#include "ObjectPool.h"
 #include "Project.h"
+#include "ProjectFactory.h"
 //#include "Resources/ResourceLibrary.h"
 //#include "Resources/ResourceItemFactory.h"
 //#include "Resources/ResourceLibraryDataModel.h"
@@ -46,10 +48,8 @@ MainWindow::~MainWindow()
 /*! Initializes object. */
 bool MainWindow::initialize()
 {
-  Core* core = Core::instance();
-  Q_ASSERT(core);
-
-  connect(core, SIGNAL(projectCreated(Project*)), this, SLOT(onProjectCreated(Project*)));
+  connect(ObjectPool::Instance(), SIGNAL(objectAdded(QObject*)), this, SLOT(onObjectAdded(QObject*)));
+  connect(ObjectPool::Instance(), SIGNAL(objectRemoved(QObject*)), this, SLOT(onObjectRemoved(QObject*)));
 
   //if (NULL == (m_resourceLibraryWindow = new ResourceLibraryWindow(this)))
   //{
@@ -143,7 +143,7 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
   }
 
   // process input data
-  /*QXmlStreamReader stream(&file);
+  QXmlStreamReader stream(&file);
   while (!stream.atEnd())
   {
     QXmlStreamReader::TokenType token = stream.readNext();
@@ -171,8 +171,9 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
         else if ("project" == stream.name())
         {
           // try to create project
-          project = m_projectFactory->createProject(stream.attributes().value("type").toString(), stream.attributes().value("name").toString(),
-                                                    stream.attributes().value("path").toString(), this);
+          project = Core::Instance()->projectFactory()->createProject(stream.attributes().value("type").toString(), 
+                                                                      stream.attributes().value("name").toString(),
+                                                                      stream.attributes().value("path").toString(), this);
 
           if (NULL == project)
           {
@@ -183,16 +184,6 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
 
           // deserialize project
           if (!project->unserialize(stream))
-          {
-            // error!
-            delete project;
-            return;
-          }
-        }
-        else if ("resources" == stream.name())
-        {
-          // deserialize resource library
-          if (!m_resourceLibraryWindow->unserialize(stream))
           {
             // error!
             delete project;
@@ -211,20 +202,20 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
     return;
   }
 
-  // store project
-  m_project = project;
+  //// store project
+  //m_project = project;
 
-  // connect
-  connect(m_project, SIGNAL(dirtyFlagChanged()), this, SLOT(updateTitleBar()));
+  //// connect
+  //connect(m_project, SIGNAL(dirtyFlagChanged()), this, SLOT(updateTitleBar()));
 
-  // reset dirty flag
-  m_project->setDirty(false);
+  //// reset dirty flag
+  //m_project->setDirty(false);
 
   // update menus
-  updateMenus();
+  //updateMenus();
 
-  // emit
-  emit projectOpened(m_project);*/
+  //// emit
+  //emit projectOpened(m_project);*/
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when File -> Close is selected. */
@@ -277,7 +268,9 @@ void MainWindow::on_ActionFileExit_triggered(bool checked)
 void MainWindow::on_ActionFileSave_triggered(bool checked)
 {
   Q_UNUSED(checked);
-/*  Q_ASSERT(m_project);
+
+  Project* project = ObjectPool::Instance()->getObject<Project>();
+  Q_ASSERT(project);
 
   QString output;
   QXmlStreamWriter stream(&output);
@@ -288,33 +281,22 @@ void MainWindow::on_ActionFileSave_triggered(bool checked)
   bool result = !stream.hasError();
   if (result)
   {
-    // save resources
-    result = m_resourceLibraryWindow->serialize(stream);
-    if (result)
-    {
-      // save project
-      result = m_project->serialize(stream);
-    }
+    // save project
+    result = project->serialize(stream);
 
-    if (result)
-    {
-      stream.writeEndElement();
-      stream.writeEndDocument();
-    }
+    stream.writeEndElement();
+    stream.writeEndDocument();
   }
 
   if (result)
   {
     // save it to file
-    QFile file(m_project->fullPath());
+    QFile file(project->fullPath());
     result = file.open(QIODevice::WriteOnly | QIODevice::Text);
     if (result)
     {
       QTextStream out(&file);
       out << output;
-    
-      // reset dirty flag
-      m_project->setDirty(false);
     }
   }
 
@@ -322,33 +304,44 @@ void MainWindow::on_ActionFileSave_triggered(bool checked)
   if (!result)
   {
     // error!
+    QMessageBox::critical(this, tr("Save Error!"), tr("Error occured during the save process!"));
   }
-
-  // update title bar
-  updateTitleBar();*/
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when new project has been created. */
-void MainWindow::onProjectCreated(Project* project)
+/*! Slot called when new object has been added into the pool. */
+void MainWindow::onObjectAdded(QObject* object)
 {
-  // connect
-  connect(project, SIGNAL(dirtyFlagChanged()), this, SLOT(updateTitleBar()));
+  // check if project added
+  if (qobject_cast<Project*>(object))
+  {
+    connect(object, SIGNAL(dirtyFlagChanged()), this, SLOT(updateTitleBar()));
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when object is about to be removed from pool. */
+void MainWindow::onObjectRemoved(QObject* object)
+{
+  // check if project removed
+  if (qobject_cast<Project*>(object))
+  {
+    // update title
+    updateTitleBar();
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates title bar. */
 void MainWindow::updateTitleBar()
 {
-  Core* core = Core::instance();
-  Q_ASSERT(core);
+  Project* project = ObjectPool::Instance()->getObject<Project>();
 
   QString title;
-  if (core->currentProject())
+  if (project)
   {
-    title = core->currentProject()->name() + " [" + core->currentProject()->typeName() + "] - ";
+    title = project->name() + " [" + project->typeName() + "] - ";
   }
   title += "Enmaniac Game Engine Editor";
 
-  if (core->currentProject() && core->currentProject()->isDirty())
+  if (project && project->isDirty())
   {
     title += " *";
   }
@@ -453,23 +446,14 @@ void MainWindow::removeChildWindow(QWidget* widget)
 /*! Event called on application close request. */
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-  Project* project = Core::instance()->currentProject();
-
-  // check if anything to save
-  if (project && project->isDirty())
+  if (!close())
   {
-    // show warning
-    if (QMessageBox::Yes != QMessageBox::warning(this, tr("Project not saved"), 
-                                                  tr("Project contains changes which have not been saved yet!\n\nDo you want to quit anyway ?"),
-                                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
-    {
-      // dont close
-      event->ignore();
-      return;
-    }
+    event->ignore();
   }
-
-  event->accept();
+  else
+  {
+    event->accept();
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ///*! Slot called when dock widget changes visibility. */
@@ -512,4 +496,36 @@ void MainWindow::closeEvent(QCloseEvent *event)
 //
 //  return NULL;
 //}
-////--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Closes the project. 
+ *  @note  If project is to be saved, prompt is shown.
+ */
+bool MainWindow::close()
+{
+  Project* project = ObjectPool::Instance()->getObject<Project>();
+
+  // close project
+  if (project)
+  {
+    // show warning
+    if (project->isDirty())
+    {
+      // prompt
+      if (QMessageBox::No == QMessageBox::warning(this, tr("Project not saved"), 
+                                                  tr("Project contains changes which have not been saved yet!\n\nDo you want to close anyway ?"),
+                                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
+      {
+        // dont close
+        return false;
+      }
+    }
+
+    // remove from pool
+    ObjectPool::Instance()->removeObject(project);
+
+    delete project;
+  }
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

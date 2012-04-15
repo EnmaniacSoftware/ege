@@ -1,4 +1,7 @@
 #include "ProjectJuiceJumpers.h"
+#include <IResourceLibrary.h>
+#include <Core.h>
+#include <ObjectPool.h>
 //#include <ResourceLibraryItemDelegate.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -23,41 +26,37 @@ QString ProjectJuiceJumpers::TypeName()
   return "Juice Jumpers";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 /*! Project override. Serializes into given stream. */
 bool ProjectJuiceJumpers::serialize(QXmlStreamWriter& stream) const
 {
   stream.writeStartElement("project");
   
+  // project data
   stream.writeAttribute("name", name());
   stream.writeAttribute("path", path());
   stream.writeAttribute("type", TypeName());
 
+  // serialize resources
+  IResourceLibrary* resourceLibrary = ObjectPool::Instance()->getObject<IResourceLibrary>();
+  bool result = resourceLibrary->serialize(stream);
+
   stream.writeEndElement();
 
-  // serialize children
-  //foreach (const ResourceItem* item, m_children)
-  //{
-  //  if (!item->serialize(stream))
-  //  {
-  //    // error!
-  //    return false;
-  //  }
-  //}
+  bool success = !stream.hasError() && result;
 
-  return !stream.hasError();
+  // update flag
+  //setDirty(!success);
+
+  return success;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Project override. Unserializes from given data stream. */
 bool ProjectJuiceJumpers::unserialize(QXmlStreamReader& stream)
 {
-  //// call base class
-  //if (!Project::unserialize(stream))
-  //{
-  //  // error!
-  //  return false;
-  //}
+  // unserialize resources
+  IResourceLibrary* resourceLibrary = ObjectPool::Instance()->getObject<IResourceLibrary>();
+  bool result = resourceLibrary->unserialize(stream);
 
-  return true;
+  return !stream.hasError() && result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

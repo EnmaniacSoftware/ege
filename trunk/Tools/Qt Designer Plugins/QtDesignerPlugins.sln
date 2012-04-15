@@ -1,0 +1,40 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlendModeSelectorWidget", "BlendModeSelectorWidget\BlendModeSelectorWidget.vcxproj", "{13E60A33-2A8E-37CC-BCA7-479232AEC438}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextureAddressingModeSelectorWidget", "TextureAddressingModeSelectorWidget\TextureAddressingModeSelectorWidget.vcxproj", "{79D89A5D-8ABE-3C9A-9656-CC2864C9E56E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextureFilterModeSelectorWidget", "TextureFilterModeSelectorWidget\TextureFilterModeSelectorWidget.vcxproj", "{DBA87DA7-DBA7-3F5F-91C9-224CED2934C7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextureEnvironmentModeSelectorWidget", "TextureEnvironmentModeSelectorWidget\TextureEnvironmentModeSelectorWidget.vcxproj", "{DCB1F792-7BE3-3D59-93AE-656F895C330B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13E60A33-2A8E-37CC-BCA7-479232AEC438}.Debug|Win32.ActiveCfg = Debug|Win32
+		{13E60A33-2A8E-37CC-BCA7-479232AEC438}.Debug|Win32.Build.0 = Debug|Win32
+		{13E60A33-2A8E-37CC-BCA7-479232AEC438}.Release|Win32.ActiveCfg = Release|Win32
+		{13E60A33-2A8E-37CC-BCA7-479232AEC438}.Release|Win32.Build.0 = Release|Win32
+		{79D89A5D-8ABE-3C9A-9656-CC2864C9E56E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{79D89A5D-8ABE-3C9A-9656-CC2864C9E56E}.Debug|Win32.Build.0 = Debug|Win32
+		{79D89A5D-8ABE-3C9A-9656-CC2864C9E56E}.Release|Win32.ActiveCfg = Release|Win32
+		{79D89A5D-8ABE-3C9A-9656-CC2864C9E56E}.Release|Win32.Build.0 = Release|Win32
+		{DBA87DA7-DBA7-3F5F-91C9-224CED2934C7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DBA87DA7-DBA7-3F5F-91C9-224CED2934C7}.Debug|Win32.Build.0 = Debug|Win32
+		{DBA87DA7-DBA7-3F5F-91C9-224CED2934C7}.Release|Win32.ActiveCfg = Release|Win32
+		{DBA87DA7-DBA7-3F5F-91C9-224CED2934C7}.Release|Win32.Build.0 = Release|Win32
+		{DCB1F792-7BE3-3D59-93AE-656F895C330B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DCB1F792-7BE3-3D59-93AE-656F895C330B}.Debug|Win32.Build.0 = Debug|Win32
+		{DCB1F792-7BE3-3D59-93AE-656F895C330B}.Release|Win32.ActiveCfg = Release|Win32
+		{DCB1F792-7BE3-3D59-93AE-656F895C330B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		QtVersion = 4.8.0
+	EndGlobalSection
+EndGlobal

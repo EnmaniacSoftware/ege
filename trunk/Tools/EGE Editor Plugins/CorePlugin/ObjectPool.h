@@ -23,11 +23,13 @@ class COREPLUGIN_API ObjectPool : public QObject
     void objectAdded(QObject* object);
     /*! Signal emitted when object is to about to be removed from pool. */
     void aboutToRemoveObject(QObject* object);
+    /*! Signal emitted when object is removed from pool. */
+    void objectRemoved(QObject* object);
 
   public:
 
     /* Returns pool instance. */       
-    static ObjectPool* instance();
+    static ObjectPool* Instance();
     
   public:
 

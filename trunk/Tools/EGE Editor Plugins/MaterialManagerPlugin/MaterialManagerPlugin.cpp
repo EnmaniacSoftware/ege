@@ -19,7 +19,7 @@ MaterialManagerPlugin::~MaterialManagerPlugin()
 /*! IPlugin override. Initialized plugin. */
 bool MaterialManagerPlugin::initialize()
 {
-  Core* core = Core::instance();
+  Core* core = Core::Instance();
   MainWindow* mainWindow = core->mainWindow();
 
   m_window = new MaterialManagerWindow();
@@ -27,7 +27,7 @@ bool MaterialManagerPlugin::initialize()
   {
     mainWindow->addChildWindow(m_window);
 
-    return ObjectPool::instance()->addObject(m_window);
+    return ObjectPool::Instance()->addObject(m_window);
   }
 
   return false;
@@ -36,12 +36,12 @@ bool MaterialManagerPlugin::initialize()
 /*! IPlugin override. Deinitializes plugin. */
 void MaterialManagerPlugin::deinitialize()
 {
-  Core* core = Core::instance();
+  Core* core = Core::Instance();
   MainWindow* mainWindow = core->mainWindow();
 
   if (NULL != m_window)
   {
-    ObjectPool::instance()->removeObject(m_window);
+    ObjectPool::Instance()->removeObject(m_window);
 
     mainWindow->removeChildWindow(m_window);
     delete m_window;

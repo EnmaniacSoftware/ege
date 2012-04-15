@@ -21,7 +21,7 @@ ResouceLibraryPlugin::~ResouceLibraryPlugin()
 /*! IPlugin override. Initialized plugin. */
 bool ResouceLibraryPlugin::initialize()
 {
-  Core* core = Core::instance();
+  Core* core = Core::Instance();
   MainWindow* mainWindow = core->mainWindow();
 
   m_window = new ResourceLibraryWindow(mainWindow);
@@ -29,7 +29,7 @@ bool ResouceLibraryPlugin::initialize()
 
   if ((NULL != m_window) && (NULL != m_resourceItemFactory))
   {
-    return ObjectPool::instance()->addObject(m_window) && ObjectPool::instance()->addObject(m_resourceItemFactory);
+    return ObjectPool::Instance()->addObject(m_window) && ObjectPool::Instance()->addObject(m_resourceItemFactory);
   }
 
   return false;
@@ -40,7 +40,7 @@ void ResouceLibraryPlugin::deinitialize()
 {
   if (m_resourceItemFactory)
   {
-    ObjectPool::instance()->removeObject(m_resourceItemFactory);
+    ObjectPool::Instance()->removeObject(m_resourceItemFactory);
 
     delete m_resourceItemFactory;
     m_resourceItemFactory = NULL;
@@ -48,7 +48,7 @@ void ResouceLibraryPlugin::deinitialize()
 
   if (m_window)
   {
-    ObjectPool::instance()->removeObject(m_window);
+    ObjectPool::Instance()->removeObject(m_window);
 
     delete m_window;
     m_window = NULL;

@@ -77,6 +77,32 @@ bool SwfMillToEgeConverter::processDefineBitsJPEG3Tag(QXmlStreamReader& input)
   ObjectData objectData;
   objectData.objectId = input.attributes().value("objectID").toString().toInt(&ok);
   
+  // process children
+  bool done = false;
+  while (!input.atEnd() && !done)
+  {
+    QXmlStreamReader::TokenType token = input.readNext();
+    switch (token)
+    {
+      case QXmlStreamReader::Characters:
+
+        if (!input.isWhitespace())
+        {
+          objectData.data = QByteArray::fromBase64(input.text().toAscii());
+        }
+        break;
+
+      case QXmlStreamReader::EndElement:
+
+        if ("DefineBitsJPEG3" == input.name())
+        {
+          // done
+          done = true;
+        }
+        break;
+    }
+  }
+
   m_objects.append(objectData);
 
   return !input.hasError() && ok;

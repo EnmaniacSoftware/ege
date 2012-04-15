@@ -4,8 +4,7 @@
 /*! Resource library window. */
 
 #include <QDockWidget>
-#include "Serializer.h"
-#include "resoucelibraryplugin_global.h"
+#include "IResourceLibrary.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Ui_ResourceLibrary;
@@ -15,9 +14,10 @@ class ResourceLibraryDataModel;
 class ResourceLibraryItemDelegate;
 class Project;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RESOUCELIBRARYPLUGIN_API ResourceLibraryWindow : public QDockWidget, public ISerializer
+class ResourceLibraryWindow : public QDockWidget, public IResourceLibrary
 {
   Q_OBJECT
+  Q_INTERFACES(IResourceLibrary)
 
   public:
 

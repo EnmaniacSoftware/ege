@@ -11,7 +11,7 @@ ObjectPool::~ObjectPool()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns pool instance. */       
-ObjectPool* ObjectPool::instance()
+ObjectPool* ObjectPool::Instance()
 {
   static ObjectPool pool;
   return &pool;
@@ -20,17 +20,15 @@ ObjectPool* ObjectPool::instance()
 /*! Adds given object into pool. */
 bool ObjectPool::addObject(QObject* object)
 {
-  QWriteLocker lock(&m_lock);
-
   // check if already in pool
   if ((NULL != object) && !m_objects.contains(object))
   {
-    // add to pool
+    QWriteLocker lock(&m_lock);
     m_objects.append(object);
+    lock.unlock();
 
     // emit
     emit objectAdded(object);
-
     return true;
   }
 
@@ -48,6 +46,10 @@ void ObjectPool::removeObject(QObject *object)
 
     QWriteLocker lock(&m_lock);
     m_objects.removeAll(object);
+    lock.unlock();
+
+    // emit
+    emit objectRemoved(object);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

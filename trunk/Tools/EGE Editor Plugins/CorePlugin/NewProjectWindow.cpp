@@ -24,7 +24,7 @@ NewProjectWindow::NewProjectWindow(QWidget* parent) : QDialog(parent),
 
   // make connections
   connect(m_ui->projectName, SIGNAL(textEdited(const QString&)), this, SLOT(projectNameTextEdited(const QString&)));
-  connect(this, SIGNAL(projectCreated(Project*)), Core::instance(), SLOT(onProjectCreated(Project*)));
+  connect(this, SIGNAL(projectCreated(Project*)), Core::Instance(), SLOT(onProjectCreated(Project*)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 NewProjectWindow::~NewProjectWindow()
@@ -39,7 +39,7 @@ NewProjectWindow::~NewProjectWindow()
 /*! Populates project type list. */
 void NewProjectWindow::populateProjectTypeList()
 {
-  Core* core = Core::instance();
+  Core* core = Core::Instance();
   Q_ASSERT(core);
 
   m_ui->projectListView->setModel(core->projectFactory());
@@ -57,7 +57,7 @@ void NewProjectWindow::on_projectListView_clicked(const QModelIndex& index)
 /*! Slot called when OK button is clicked. */
 void NewProjectWindow::accept()
 {
-  Core* core = Core::instance();
+  Core* core = Core::Instance();
   Q_ASSERT(core);
 
   QModelIndex index = m_ui->projectListView->selectionModel()->selectedIndexes().first();
