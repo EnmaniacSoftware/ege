@@ -2,21 +2,29 @@
 #define EGE_IMAGEDANIMATION_H
 
 #include "Core/Platform.h"
-#include <EGERect.h>
+#include <EGEMatrix.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//namespace EGESprite
-//{
-//  /*! Structure defining frame data info. */
-//  struct FrameData
-//  {
-//    /*! Frame rectangle on texture (in normalized local coords). */
-//    Rectf m_rect;
-//  };
-//}
+namespace EGEImagedAnimation
+{
+  /*! Available actions. */
+  //enum Action
+  //{
+  //  ACTION_SHOW,
+  //  ACTION_HIDE,
+  //  ACTION_UPDATE
+  //};
+
+  /*! Structure defining frame data info. */
+  struct ActionData
+  {
+    s32 queue;
+    Matrix4f matrix;
+  };
+}
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

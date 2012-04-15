@@ -11,16 +11,18 @@
 #include <EGEDynamicArray.h>
 #include <EGESignal.h>
 #include <EGEImagedAnimation.h>
-#include "Core/Graphics/TextureImage.h"
+#include <EGEMatrix.h>
+#include <EGEMap.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+class Renderer;
 EGE_DECLARE_SMART_CLASS(ImagedAnimation, PImagedAnimation)
-
+EGE_DECLARE_SMART_CLASS(Material, PMaterial)
+EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
+EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ImagedAnimation : public Object
 {
   public:
@@ -62,14 +64,8 @@ class ImagedAnimation : public Object
     void play();
     /* Stops playing. */
     void stop();
-    /* Returns texture image for current frame. */
-    PTextureImage frameTexture() const;
     /* Sets playback duration. */
     void setDuration(const Time& duration);
-    /* Sets frame data. */
-    //void setFrameData(const DynamicArray<EGEImagedAnimation::FrameData>& data);
-    /* Sets texture image containing sprite data. */
-    void setTexture(const PTextureImage& texture);
     /*! Returns name. */
     inline const String& name() const { return m_name; }
     /* Sets name. */
@@ -78,8 +74,26 @@ class ImagedAnimation : public Object
     inline bool isPlaying() const { return (state() & STATE_PLAYING) ? true : false; }
     /* Sets/unsets finish policy. */
     void setFinishPolicy(FinishPolicy policy);
+    /* Adds object with a given id to animation. 
+     * @param objectId    Object Id which is being added.
+     * @param material    Material used by the object.
+     * @param baseMatrix  Object's base transformation matrix.
+     * @param actions     Array of animation actions of the object. Each entry corresponds to a given frame.
+     */
+    EGEResult addObject(s32 objectId, PMaterial material, const Matrix4f& baseMatrix, const DynamicArray<EGEImagedAnimation::ActionData>& actions);
+    /* Renders animation. */
+    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
 
   private:
+
+    /*! Object data structure. */
+    struct ObjectData
+    {
+      PRenderComponent renderData;                            /*!< Render data. */
+      Matrix4f matrix;                                        /*!< Base transformation matrix. */
+      bool visible;                                           /*!< TRUE if object is visible. */
+      DynamicArray<EGEImagedAnimation::ActionData> actions;   /*!< Array of actions for all frames. */
+    };
 
     /*! Internal state flags. */
     enum StateFlags
@@ -90,10 +104,14 @@ class ImagedAnimation : public Object
 
 	  EGE_DECLARE_FLAGS(State, StateFlags)
 
+    typedef Map<s32, ObjectData> ObjectDataMap;
+
   private:
 
     /*! Returns current state. */
     inline State state() const { return m_state; }
+    /* Updates objects for current frame index. */
+    void updateObjects();
 
   private:
 
@@ -109,14 +127,13 @@ class ImagedAnimation : public Object
     Time m_frameTimeLeft;
     /*! Playback duration. */
     Time m_duration;
-    /*! List of all frames in correct sequence for playback. */
-    //DynamicArray<EGEImagedAnimation::FrameData> m_frameData;
-    /*! Texture image with sprite pixel data. */
-    PTextureImage m_textureImage;
+    /*! Frame count. */
+    s32 m_frameCount;
     /*! Finish policy. */
     FinishPolicy m_finishPolicy;
+    /*! Map of all objects [objectId, ObjectData]. */
+    ObjectDataMap m_objects;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

@@ -10,6 +10,7 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_OBJECT "object"
 #define NODE_FRAME  "frame"
+#define NODE_ACTION "action"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceImagedAnimation)
 EGE_DEFINE_DELETE_OPERATORS(ResourceImagedAnimation)
@@ -46,8 +47,8 @@ EGEResult ResourceImagedAnimation::create(const String& path, const PXmlElement&
   bool error = false;
 
   // get data
-  m_name = tag->attribute("name");
-  m_fps  = tag->attribute("fps").toInt(&error);
+  m_name      = tag->attribute("name");
+  m_duration  = tag->attribute("duration").toTime(&error);
 
   // check if obligatory data is wrong
   if (error || m_name.empty())
@@ -171,16 +172,59 @@ PImagedAnimation ResourceImagedAnimation::createInstance()
 EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
 {
   // sanity check
-  if (NULL == instance || !isLoaded())
+  if ((NULL == instance) || !isLoaded())
   {
     return EGE_ERROR;
+  }
+
+  // add objects
+  for (ObjectDataArray::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+  {
+    const ObjectData& data = *it;
+
+    Matrix4f matrix = Matrix4f::IDENTITY;
+    matrix.setTranslation(data.translate.x, data.translate.y, 0);
+    matrix.setScale(data.scale.x, data.scale.y, 1);
+    matrix[1][0] = Math::Tan(data.skew.x);
+    matrix[0][2] = Math::Tan(data.skew.y);
+    
+    // go thru all frames and compose list of actions for a given object
+    DynamicArray<EGEImagedAnimation::ActionData> actions;
+    for (FrameDataList::const_iterator itFrame = m_frames.begin(); itFrame != m_frames.end(); ++itFrame)
+    {
+      const FrameData& frameData = *itFrame;
+      for (FrameActionDataList::const_iterator itAction = frameData.actions.begin(); itAction != frameData.actions.end(); ++itAction)
+      {
+        const FrameActionData& action = *itAction;
+        if (action.objectId == data.id)
+        {
+          EGEImagedAnimation::ActionData actionData;
+          
+          actionData.queue  = action.queue;
+          actionData.matrix = Matrix4f::IDENTITY;
+          actionData.matrix.setTranslation(action.translate.x, action.translate.y, 0);
+          actionData.matrix.setScale(action.scale.x, action.scale.y, 1);
+          actionData.matrix[1][0] = Math::Tan(action.skew.x);
+          actionData.matrix[0][2] = Math::Tan(action.skew.y);
+
+          // add to pool
+          actions.push_back(actionData);
+        }
+      }
+    }
+
+    if (EGE_SUCCESS != instance->addObject(data.id, data.materialResource->createInstance(), matrix, actions))
+    {
+      // error!
+      return EGE_ERROR;
+    }
   }
 
   // generate frame data
 //  calculateFrameData();
   
   // setup data
-  //instance->setDuration(m_duration);
+  instance->setDuration(m_duration);
   //instance->setFrameData(m_frameData);
   //instance->setTexture(m_sheet->textureImage()->createInstance());
 
@@ -272,12 +316,13 @@ EGEResult ResourceImagedAnimation::addObject(const PXmlElement& tag)
   bool error = false;
 
   // get data
-  data.name       = tag->attribute("name");
-  data.translate  = tag->attribute("translate", "0 0").toVector2f(&error);
-  data.scale      = tag->attribute("scale", "1 1").toVector2f(&error);
-  data.skew       = tag->attribute("skew", "0 0").toVector2f(&error);
+  data.id           = tag->attribute("id").toInt(&error);
+  data.materialName = tag->attribute("material");
+  data.translate    = tag->attribute("translate", "0 0").toVector2f(&error);
+  data.scale        = tag->attribute("scale", "1 1").toVector2f(&error);
+  data.skew         = tag->attribute("skew", "0 0").toVector2f(&error);
 
-  if (data.name.empty() || error)
+  if (error)
   {
     // error!
     return EGE_ERROR;
@@ -290,24 +335,61 @@ EGEResult ResourceImagedAnimation::addObject(const PXmlElement& tag)
 /*! Adds frame. */
 EGEResult ResourceImagedAnimation::addFrame(const PXmlElement& tag)
 {
+  EGEResult result = EGE_SUCCESS;
+
   FrameData data;
 
   bool error = false;
 
-  // get data
-  data.objectName = tag->attribute("object");
-  data.queue      = tag->attribute("queue").toInt(&error);
-  data.translate  = tag->attribute("translate", "0 0").toVector2f(&error);
-  data.scale      = tag->attribute("scale", "1 1").toVector2f(&error);
-  data.skew       = tag->attribute("skew", "0 0").toVector2f(&error);
+  // go thru all sub nodes
+  PXmlElement child = tag->firstChild();
+  while (child->isValid())
+  {
+    // check child
+    if (NODE_ACTION == child->name())
+    {
+      // add action
+      result = addAction(child, &data);
+    }
 
-  if (data.objectName.empty() || error)
+    // check if failed
+    if (EGE_SUCCESS != result)
+    {
+      // error, done!
+      break;
+    }
+
+    // go to next child
+    child = child->nextChild();
+  }
+
+  m_frames.push_back(data);
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds action to the given frame. */
+EGEResult ResourceImagedAnimation::addAction(const PXmlElement& tag, FrameData* frameData) const
+{
+  bool error = false;
+
+  FrameActionData action;
+
+  // get data
+  action.objectId   = tag->attribute("object-id").toInt(&error);
+  action.queue      = tag->attribute("queue").toInt(&error);
+  action.translate  = tag->attribute("translate", "0 0").toVector2f(&error);
+  action.scale      = tag->attribute("scale", "1 1").toVector2f(&error);
+  action.skew       = tag->attribute("skew", "0 0").toVector2f(&error);
+
+  if (error)
   {
     // error!
     return EGE_ERROR;
   }
 
-  m_frames.push_back(data);
+  // add to frame
+  frameData->actions.push_back(action);
+
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

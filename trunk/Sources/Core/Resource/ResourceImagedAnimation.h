@@ -16,17 +16,15 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager;
-
 EGE_DECLARE_SMART_CLASS(ResourceImagedAnimation, PResourceImagedAnimation)
 EGE_DECLARE_SMART_CLASS(ImagedAnimation, PImagedAnimation)
 EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceImagedAnimation : public IResource
 {
+  struct FrameData;
+
   public:
 
     virtual ~ResourceImagedAnimation();
@@ -65,13 +63,15 @@ class ResourceImagedAnimation : public IResource
     EGEResult addObject(const PXmlElement& tag);
     /* Adds frame. */
     EGEResult addFrame(const PXmlElement& tag);
+    /* Adds action to the given frame. */
+    EGEResult addAction(const PXmlElement& tag, FrameData* frameData) const;
 
   private:
 
-    /*! Object data. */
+    /*! Object data structure. */
     struct ObjectData
     {
-      String name;
+      s32 id;
       String materialName;
       Vector2f translate;
       Vector2f scale;
@@ -80,31 +80,37 @@ class ResourceImagedAnimation : public IResource
       PResourceMaterial materialResource;
     };
 
-    /*! Frame data. */
-    struct FrameData
+    /*! Frame action data struct. */
+    struct FrameActionData
     {
-      String objectName;
+      s32 objectId;
       s32 queue;
       Vector2f translate;
       Vector2f scale;
       Vector2f skew;
     };
 
+    /*! Frame data structure. */
+    struct FrameData
+    {
+      List<FrameActionData> actions;
+    };
+
     typedef DynamicArray<ObjectData> ObjectDataArray;
     typedef List<FrameData> FrameDataList;
+    typedef List<FrameActionData> FrameActionDataList;
 
   private:
 
     /*! Name. */
     String m_name;
-    /*! Frames per second. */
-    s32 m_fps;
+    /*! Duration. */
+    Time m_duration;
     /*! Objects array. */
     ObjectDataArray m_objects;
     /*! Frames list. */
     FrameDataList m_frames;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

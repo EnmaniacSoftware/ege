@@ -1,6 +1,8 @@
 #include "SwfmillToEgeConverter.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define SWF_TWIPS_TO_PIXELS(x) ((x) * 0.05f)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SwfMillToEgeConverter::SwfMillToEgeConverter()
 {
 }
@@ -69,6 +71,9 @@ bool SwfMillToEgeConverter::processHeaderTag(QXmlStreamReader& input)
   return !input.hasError() && ok;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include <QFile>
+
 /*! Processes SWFMILL DefineBitsJPEG3 tag. */
 bool SwfMillToEgeConverter::processDefineBitsJPEG3Tag(QXmlStreamReader& input)
 {
@@ -89,6 +94,12 @@ bool SwfMillToEgeConverter::processDefineBitsJPEG3Tag(QXmlStreamReader& input)
         if (!input.isWhitespace())
         {
           objectData.data = QByteArray::fromBase64(input.text().toAscii());
+          
+          // TAGE store
+          QFile file(QString("object-%1.png").arg(objectData.objectId));
+          file.open(QIODevice::WriteOnly);
+          file.write(objectData.data);
+          file.close();
         }
         break;
 
@@ -163,8 +174,30 @@ bool SwfMillToEgeConverter::processPlaceObject2Tag(QXmlStreamReader& input)
 
   FrameData frameData;
 
-  frameData.objectId  = input.attributes().value("objectID").toString().toInt(&ok);
-  frameData.depth     = input.attributes().value("depth").toString().toInt(&ok);
+  frameData.depth = input.attributes().value("depth").toString().toInt(&ok);
+  if (!ok)
+  {
+    // error!
+    return false;
+  }
+
+  frameData.objectId = input.attributes().value("objectID").toString().toInt(&ok);
+  if (!ok)
+  {
+    // try to find if placement map
+    frameData.objectId = m_objectPlacementMap.value(frameData.depth, 0);
+  }
+
+  // check if object for given depth not found
+  if (0 == frameData.objectId)
+  {
+    // error!
+    return false;
+  }
+
+  // update object placement map
+  m_objectPlacementMap.insert(frameData.depth, frameData.objectId);
+
   frameData.translate = QVector2D(0, 0);
   frameData.scale     = QVector2D(1, 1);
   frameData.skew      = QVector2D(0, 0);
@@ -224,12 +257,12 @@ bool SwfMillToEgeConverter::processTransformTag(QXmlStreamReader& input, QVector
 
   if (input.attributes().hasAttribute("transX"))
   {
-    translate.setX(input.attributes().value("transX").toString().toInt(&ok));
+    translate.setX(SWF_TWIPS_TO_PIXELS(input.attributes().value("transX").toString().toInt(&ok)));
   }
 
   if (input.attributes().hasAttribute("transY"))
   {
-    translate.setY(input.attributes().value("transY").toString().toInt(&ok));
+    translate.setY(SWF_TWIPS_TO_PIXELS(input.attributes().value("transY").toString().toInt(&ok)));
   }
 
   if (input.attributes().hasAttribute("scaleX"))
@@ -262,14 +295,19 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
 
   // main attributes
   output.writeAttribute("name", "my-name");
-  output.writeAttribute("fps", QString::number(m_fps));
+  float duration = 0.0f;
+  if (0 < m_fps)
+  {
+    duration = (1.0f / m_fps) * m_framesDataList.count();
+  }
+  output.writeAttribute("duration", QString::number(duration));
 
   // shapes
   foreach (const ShapeData& shapeData, m_shapes)
   {
     output.writeStartElement("object");
     
-    output.writeAttribute("name", QString("%1").arg(shapeData.objectId));
+    output.writeAttribute("id", QString("%1").arg(shapeData.objectId));
     output.writeAttribute("material", "my-material");
     output.writeAttribute("translate", QString("%1 %2").arg(shapeData.translate.x()).arg(shapeData.translate.y()));
     output.writeAttribute("scale", QString("%1 %2").arg(shapeData.scale.x()).arg(shapeData.scale.y()));
@@ -287,7 +325,7 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
     {
       output.writeStartElement("action");
 
-      output.writeAttribute("object", QString("%1").arg(frameData.objectId));
+      output.writeAttribute("object-id", QString("%1").arg(frameData.objectId));
       output.writeAttribute("queue", QString("%1").arg(frameData.depth));
       output.writeAttribute("translate", QString("%1 %2").arg(frameData.translate.x()).arg(frameData.translate.y()));
       output.writeAttribute("scale", QString("%1 %2").arg(frameData.scale.x()).arg(frameData.scale.y()));

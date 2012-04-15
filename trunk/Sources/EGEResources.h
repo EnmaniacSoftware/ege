@@ -47,6 +47,7 @@ EGE_NAMESPACE_END
 #include "Core/Resource/ResourceText.h"
 #include "Core/Resource/ResourceSound.h"
 #include "Core/Resource/ResourceWidget.h"
+#include "Core/Resource/ResourceImagedAnimation.h"
 #include "Core/Resource/ResourceGroup.h"
 #include "Core/Resource/ResourceManager.h"
 

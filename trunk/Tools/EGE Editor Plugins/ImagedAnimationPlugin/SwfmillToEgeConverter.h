@@ -6,6 +6,7 @@
 #include <QList>
 #include <QVector2D>
 #include <QByteArray>
+#include <QMap>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class SwfMillToEgeConverter
@@ -90,6 +91,8 @@ class SwfMillToEgeConverter
     ObjectDataList m_objects;
     /*! List of all shapes. */
     ShapeDataList m_shapes;
+    /*! Map containing current depth for objects [depth, objectId]. */
+    QMap<int, int> m_objectPlacementMap;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

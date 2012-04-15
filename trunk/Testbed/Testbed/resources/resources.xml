@@ -177,6 +177,82 @@
 
   <!-- Imaged animation test resources -->
   <group name='imaged-animation-test'>
+
+    <texture type="2d" name="static-banana" path="images/static_banana.jpg" mag-filter="trilinear" min-filter="trilinear" />
+    <material name='static-banana' src-blend='src-alpha' dst-blend='one-minus-src-alpha' >
+      <texture name='static-banana' />
+    </material>
+    <texture type="2d" name="banana-glasses" path="images/glasses.png" mag-filter="trilinear" min-filter="trilinear" />
+    <material name='banana-glasses' src-blend='src-alpha' dst-blend='one-minus-src-alpha' >
+      <texture name='banana-glasses' />
+    </material>
+
+    <imaged-animation name="static-banana" duration="0.1">
+      <object id="2" material="static-banana" translate="0 0" scale="1 1" skew="0 0"/>
+      <frame>
+        <action object-id="2" queue="1" translate="51 9" scale="1 1" skew="0 0"/>
+      </frame>
+    </imaged-animation>
+
+    <imaged-animation name="translate-scale-banana" duration="1">
+      <object id="2" material="static-banana" translate="0 0" scale="20 20" skew="0 0"/>
+      <frame>
+        <action object-id="2" queue="1" translate="-22 9" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="2" queue="1" translate="33.7 46.8" scale="0.875 0.875" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="2" queue="1" translate="89.4 84.5" scale="0.75 0.75" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="2" queue="1" translate="145.05 122.3" scale="0.625 0.625" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="2" queue="1" translate="200.75 160" scale="0.5 0.5" skew="0 0"/>
+      </frame>
+    </imaged-animation>
+
+    <imaged-animation name="translate-2-images" duration="1">
+      <object id="2" material="static-banana" translate="0 0" scale="1 1" skew="0 0"/>
+      <object id="4" material="banana-glasses" translate="95.05 3" scale="1 1" skew="0 0"/>
+      <frame>
+        <action object-id="2" queue="1" translate="-22 9" scale="1 1" skew="0 0"/>
+        <action object-id="4" queue="2" translate="-163 0" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="2" queue="1" translate="-3.9 9" scale="1 1" skew="0 0"/>
+        <action object-id="4" queue="2" translate="-122.25 0" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="2" queue="1" translate="14.2 9" scale="1 1" skew="0 0"/>
+        <action object-id="4" queue="2" translate="-81.5 0" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="2" queue="1" translate="32.35 9" scale="1 1" skew="0 0"/>
+        <action object-id="4" queue="2" translate="-40.75 0" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="2" queue="1" translate="50.45 9" scale="1 1" skew="0 0"/>
+        <action object-id="4" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="2" queue="1" translate="68.55 9" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="2" queue="1" translate="86.65 9" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="2" queue="1" translate="104.8 9" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="2" queue="1" translate="122.9 9" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="2" queue="1" translate="140.9 9" scale="1 1" skew="0 0"/>
+      </frame>
+    </imaged-animation>
+    
   </group>
   
   <include path='fonts.xml' />

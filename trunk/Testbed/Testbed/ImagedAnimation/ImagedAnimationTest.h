@@ -2,11 +2,13 @@
 #define TEST_IMAGED_ANIMATION_H
 
 #include "Test.h"
-#include <EGEEvent.h>
+#include <EGEImagedAnimation.h>
+#include <EGEGraphics.h>
+#include <EGEList.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class ImagedAnimationTest : public Test, public EGE::IEventListener
+class ImagedAnimationTest : public Test
 {
   public:
 
@@ -24,8 +26,17 @@ class ImagedAnimationTest : public Test, public EGE::IEventListener
 
     /* Test override. Pointer event receiver. */
     void pointerEvent(EGE::PPointerData data) override;
-    /* IEventListener override. Event reciever. */
-    void onEventRecieved(EGE::PEvent event) override;
+
+  private slots:
+
+    /* Slot called before target is rendered. */
+    void preRender(EGE::PRenderTarget target);
+    /* Test override. Slot called when resource group has been loaded. */
+    void groupLoadComplete(const EGE::String& name) override;
+
+  private:
+
+    EGE::List<EGE::PImagedAnimation> m_anims;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

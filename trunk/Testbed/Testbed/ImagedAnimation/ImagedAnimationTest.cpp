@@ -13,7 +13,7 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ImagedAnimationTest::ImagedAnimationTest(App* app) : Test(app)
 {
-  app->eventManager()->addListener(this);
+  ege_connect(app->graphics(), preRender, this, ImagedAnimationTest::preRender);
 
   PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
   if (fontResource)
@@ -42,7 +42,6 @@ ImagedAnimationTest::ImagedAnimationTest(App* app) : Test(app)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ImagedAnimationTest::~ImagedAnimationTest()
 {
-  app()->eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Returns test name. */
@@ -95,6 +94,11 @@ bool ImagedAnimationTest::initialize()
 /*! Test override. Updates test. */
 void ImagedAnimationTest::update(const Time& time)
 {
+  for (List<PImagedAnimation>::iterator it = m_anims.begin(); it != m_anims.end(); ++it)
+  {
+    PImagedAnimation anim = *it;
+    anim->update(time);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Pointer event receiver. */
@@ -102,11 +106,61 @@ void ImagedAnimationTest::pointerEvent(PPointerData data)
 {
   if (EGEInput::ACTION_BUTTON_UP == data->action())
   {
+    for (List<PImagedAnimation>::iterator it = m_anims.begin(); it != m_anims.end(); ++it)
+    {
+      PImagedAnimation anim = *it;
+
+      if (anim)
+      {
+        if (!anim->isPlaying())
+        {
+          anim->play();
+        }
+        else
+        {
+          anim->stop();
+        }
+      }
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IEventListener override. Event reciever. */
-void ImagedAnimationTest::onEventRecieved(PEvent event)
+/*! Test override. Slot called when resource group has been loaded. */
+void ImagedAnimationTest::groupLoadComplete(const String& name)
 {
+  if ("imaged-animation-test" == name)
+  {
+    PResourceImagedAnimation animRes;
+
+    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "static-banana");
+    //EGE_ASSERT(animRes);
+    //m_anims.push_back(animRes->createInstance());
+
+    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "translate-scale-banana");
+    //EGE_ASSERT(animRes);
+    //m_anims.push_back(animRes->createInstance());
+
+    animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "translate-2-images");
+    EGE_ASSERT(animRes);
+    m_anims.push_back(animRes->createInstance());
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called before target is rendered. */
+void ImagedAnimationTest::preRender(PRenderTarget target)
+{
+  EGE_UNUSED(target);
+
+  s32 i = 0;
+  for (List<PImagedAnimation>::iterator it = m_anims.begin(); it != m_anims.end(); ++it, ++i)
+  {
+    PImagedAnimation anim = *it;
+  
+    Matrix4f matrix = Matrix4f::IDENTITY;
+    //matrix.setTranslation(100 + i * 300.0f, 100, 0);
+    matrix.setScale(256, 256, 1);
+
+    anim->addForRendering(app()->graphics()->renderer(), matrix);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
