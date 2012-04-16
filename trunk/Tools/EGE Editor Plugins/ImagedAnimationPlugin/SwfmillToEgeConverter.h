@@ -7,6 +7,7 @@
 #include <QVector2D>
 #include <QByteArray>
 #include <QMap>
+#include <QRectF>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class SwfMillToEgeConverter
@@ -28,6 +29,8 @@ class SwfMillToEgeConverter
     bool processHeaderTag(QXmlStreamReader& input);
     /* Processes SWFMILL DefineBitsJPEG3 tag. */
     bool processDefineBitsJPEG3Tag(QXmlStreamReader& input);
+    /* Processes SWFMILL DefineBitsLossless2 tag. */
+    bool processDefineBitsLossless2Tag(QXmlStreamReader& input);
     /* Processes SWFMILL DefineShape tag. */
     bool processDefineShapeTag(QXmlStreamReader& input);
     /* Processes SWFMILL PlaceObject2 tag. */
@@ -36,6 +39,8 @@ class SwfMillToEgeConverter
     bool processShowFrameTag(QXmlStreamReader& input);
     /* Processes SWFMILL Transform tag. */
     bool processTransformTag(QXmlStreamReader& input, QVector2D& translate, QVector2D& scale, QVector2D& skew) const;
+    /* Processes SWFMILL Rectangle tag. */
+    bool processRectangleTag(QXmlStreamReader& input, QRectF& rect) const;
     /* Generates EGE compilant XML. */
     bool generateEgeXML(QXmlStreamWriter& output);
 
@@ -71,6 +76,7 @@ class SwfMillToEgeConverter
       QVector2D translate;                    /*!< Base translation vector. */
       QVector2D scale;                        /*!< Base scale vector. */
       QVector2D skew;                         /*!< Base skew vector. */
+      QRectF boundingBox;                     /*!< Bounding box. */
     };
 
     typedef QList<FrameData> FrameDataList;

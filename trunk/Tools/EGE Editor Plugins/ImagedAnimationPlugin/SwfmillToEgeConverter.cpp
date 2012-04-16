@@ -33,6 +33,10 @@ bool SwfMillToEgeConverter::convert(QXmlStreamReader& input, QXmlStreamWriter& o
         {
           processDefineBitsJPEG3Tag(input);
         }
+        else if ("DefineBitsLossless2" == input.name())
+        {
+          processDefineBitsLossless2Tag(input);
+        }
         else if ("DefineShape" == input.name())
         {
           processDefineShapeTag(input);
@@ -119,6 +123,51 @@ bool SwfMillToEgeConverter::processDefineBitsJPEG3Tag(QXmlStreamReader& input)
   return !input.hasError() && ok;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Processes SWFMILL DefineBitsLossless2 tag. */
+bool SwfMillToEgeConverter::processDefineBitsLossless2Tag(QXmlStreamReader& input)
+{
+  bool ok = true;
+
+  ObjectData objectData;
+  objectData.objectId = input.attributes().value("objectID").toString().toInt(&ok);
+  
+  // process children
+  bool done = false;
+  while (!input.atEnd() && !done)
+  {
+    QXmlStreamReader::TokenType token = input.readNext();
+    switch (token)
+    {
+      case QXmlStreamReader::Characters:
+
+        if (!input.isWhitespace())
+        {
+          objectData.data = QByteArray::fromBase64(input.text().toAscii());
+          
+          // TAGE store
+          QFile file(QString("object-%1.png").arg(objectData.objectId));
+          file.open(QIODevice::WriteOnly);
+          file.write(objectData.data);
+          file.close();
+        }
+        break;
+
+      case QXmlStreamReader::EndElement:
+
+        if ("DefineBitsLossless2" == input.name())
+        {
+          // done
+          done = true;
+        }
+        break;
+    }
+  }
+
+  m_objects.append(objectData);
+
+  return !input.hasError() && ok;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Processes SWFMILL DefineShape tag. */
 bool SwfMillToEgeConverter::processDefineShapeTag(QXmlStreamReader& input)
 {
@@ -126,10 +175,11 @@ bool SwfMillToEgeConverter::processDefineShapeTag(QXmlStreamReader& input)
 
   ShapeData shapeData;
   shapeData.referenceObjectId = 0;
-  shapeData.objectId = input.attributes().value("objectID").toString().toInt(&ok);
-  shapeData.translate = QVector2D(0, 0);
-  shapeData.scale     = QVector2D(1, 1);
-  shapeData.skew      = QVector2D(0, 0);
+  shapeData.objectId          = input.attributes().value("objectID").toString().toInt(&ok);
+  shapeData.translate         = QVector2D(0, 0);
+  shapeData.scale             = QVector2D(1, 1);
+  shapeData.skew              = QVector2D(0, 0);
+  shapeData.boundingBox       = QRectF();
 
   // process children
   bool done = false;
@@ -147,6 +197,10 @@ bool SwfMillToEgeConverter::processDefineShapeTag(QXmlStreamReader& input)
         else if ("Transform" == input.name())
         {
           processTransformTag(input, shapeData.translate, shapeData.scale, shapeData.skew);
+        }
+        else if ("Rectangle" == input.name())
+        {
+          processRectangleTag(input, shapeData.boundingBox);
         }
         break;
 
@@ -255,34 +309,62 @@ bool SwfMillToEgeConverter::processTransformTag(QXmlStreamReader& input, QVector
 {
   bool ok = true;
 
-  if (input.attributes().hasAttribute("transX"))
+  if (input.attributes().hasAttribute("transX") && ok)
   {
     translate.setX(SWF_TWIPS_TO_PIXELS(input.attributes().value("transX").toString().toInt(&ok)));
   }
 
-  if (input.attributes().hasAttribute("transY"))
+  if (input.attributes().hasAttribute("transY") && ok)
   {
     translate.setY(SWF_TWIPS_TO_PIXELS(input.attributes().value("transY").toString().toInt(&ok)));
   }
 
-  if (input.attributes().hasAttribute("scaleX"))
+  if (input.attributes().hasAttribute("scaleX") && ok)
   {
     scale.setX(input.attributes().value("scaleX").toString().toFloat(&ok));
   }
 
-  if (input.attributes().hasAttribute("scaleY"))
+  if (input.attributes().hasAttribute("scaleY") && ok)
   {
     scale.setY(input.attributes().value("scaleY").toString().toFloat(&ok));
   }
 
-  if (input.attributes().hasAttribute("skewX"))
+  if (input.attributes().hasAttribute("skewX") && ok)
   {
     skew.setX(input.attributes().value("skewX").toString().toFloat(&ok));
   }
 
-  if (input.attributes().hasAttribute("skewY"))
+  if (input.attributes().hasAttribute("skewY") && ok)
   {
     skew.setY(input.attributes().value("skewY").toString().toFloat(&ok));
+  }
+
+  return !input.hasError() && ok;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Processes SWFMILL Rectangle tag. */
+bool SwfMillToEgeConverter::processRectangleTag(QXmlStreamReader& input, QRectF& rect) const
+{
+  bool ok = true;
+
+  if (input.attributes().hasAttribute("left"))
+  {
+    rect.setLeft(SWF_TWIPS_TO_PIXELS(input.attributes().value("left").toString().toFloat(&ok)));
+  }
+
+  if (input.attributes().hasAttribute("right") && ok)
+  {
+    rect.setRight(SWF_TWIPS_TO_PIXELS(input.attributes().value("right").toString().toInt(&ok)));
+  }
+
+  if (input.attributes().hasAttribute("top") && ok)
+  {
+    rect.setTop(SWF_TWIPS_TO_PIXELS(input.attributes().value("top").toString().toFloat(&ok)));
+  }
+
+  if (input.attributes().hasAttribute("bottom") && ok)
+  {
+    rect.setBottom(SWF_TWIPS_TO_PIXELS(input.attributes().value("bottom").toString().toInt(&ok)));
   }
 
   return !input.hasError() && ok;
@@ -312,7 +394,7 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
     output.writeAttribute("translate", QString("%1 %2").arg(shapeData.translate.x()).arg(shapeData.translate.y()));
     output.writeAttribute("scale", QString("%1 %2").arg(shapeData.scale.x()).arg(shapeData.scale.y()));
     output.writeAttribute("skew", QString("%1 %2").arg(shapeData.skew.x()).arg(shapeData.skew.y()));
-
+    output.writeAttribute("rect", QString("%1 %2 %3 %4").arg(shapeData.boundingBox.x()).arg(shapeData.boundingBox.y()).arg(shapeData.boundingBox.width()).arg(shapeData.boundingBox.height()));
     output.writeEndElement();
   }
 
