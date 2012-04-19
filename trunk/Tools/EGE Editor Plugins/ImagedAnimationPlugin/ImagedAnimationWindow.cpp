@@ -20,7 +20,7 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
   updateMenus();
 
   // TAGE
-  QFile file("data/chomp_1_banana.xml");
+  QFile file("data/blink.xml");
   file.open(QIODevice::Text | QIODevice::ReadOnly);
   QXmlStreamReader input(&file);
 
@@ -30,7 +30,7 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
 
   m_converter.convert(input, output);
 
-  QFile fileOut("ege_chomp_1_banana.xml");
+  QFile fileOut("ege_blink.xml");
   bool a= fileOut.open(QIODevice::Text | QIODevice::WriteOnly);
   QTextStream out(&fileOut);
   out << string;

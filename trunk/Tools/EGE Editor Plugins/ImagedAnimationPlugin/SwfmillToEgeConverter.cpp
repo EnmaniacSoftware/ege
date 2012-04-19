@@ -1,4 +1,5 @@
 #include "SwfmillToEgeConverter.h"
+#include <QByteArray>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define SWF_TWIPS_TO_PIXELS(x) ((x) * 0.05f)
@@ -41,9 +42,17 @@ bool SwfMillToEgeConverter::convert(QXmlStreamReader& input, QXmlStreamWriter& o
         {
           processDefineShapeTag(input);
         }
+        else if ("DefineShape2" == input.name())
+        {
+          processDefineShape2Tag(input);
+        }
         else if ("PlaceObject2" == input.name())
         {
           processPlaceObject2Tag(input);
+        }
+        else if ("RemoveObject2" == input.name())
+        {
+          processRemoveObject2Tag(input);
         }
         else if ("ShowFrame" == input.name())
         {
@@ -75,9 +84,6 @@ bool SwfMillToEgeConverter::processHeaderTag(QXmlStreamReader& input)
   return !input.hasError() && ok;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-#include <QFile>
-
 /*! Processes SWFMILL DefineBitsJPEG3 tag. */
 bool SwfMillToEgeConverter::processDefineBitsJPEG3Tag(QXmlStreamReader& input)
 {
@@ -86,6 +92,8 @@ bool SwfMillToEgeConverter::processDefineBitsJPEG3Tag(QXmlStreamReader& input)
   ObjectData objectData;
   objectData.objectId = input.attributes().value("objectID").toString().toInt(&ok);
   
+  int offsetToAlpha = input.attributes().value("offset_to_alpha").toString().toInt(&ok);
+
   // process children
   bool done = false;
   while (!input.atEnd() && !done)
@@ -97,13 +105,48 @@ bool SwfMillToEgeConverter::processDefineBitsJPEG3Tag(QXmlStreamReader& input)
 
         if (!input.isWhitespace())
         {
-          objectData.data = QByteArray::fromBase64(input.text().toAscii());
-          
-          // TAGE store
-          QFile file(QString("object-%1.png").arg(objectData.objectId));
-          file.open(QIODevice::WriteOnly);
-          file.write(objectData.data);
-          file.close();
+          // retrive all image data
+          // NOTE: this may contain alpha block as well
+          QByteArray imageData = QByteArray::fromBase64(input.text().toAscii());
+
+          // retrieve alpha block
+          QByteArray alphaData = imageData.mid(offsetToAlpha);
+
+          // remove alpha block from pixel data
+          imageData = imageData.left(offsetToAlpha);
+
+          // create image from pixel data
+          QImage image = QImage::fromData(imageData);
+
+          // prepend alpha data block with uncompressed size so qUncompress can be used
+          // NOTE: alpha block format is 8-bit per pixel
+          int alphaBlockUncompressedSize = objectData.image.width() * objectData.image.height();
+
+          alphaData.prepend((alphaBlockUncompressedSize & 0x000000ff));
+          alphaData.prepend((alphaBlockUncompressedSize & 0x0000ff00) >> 8);
+          alphaData.prepend((alphaBlockUncompressedSize & 0x00ff0000) >> 16);
+          alphaData.prepend((alphaBlockUncompressedSize & 0xff000000) >> 24);
+
+          // decompress alpha channel
+          alphaData = qUncompress(alphaData);
+
+          // create ARGBA image from pixel data image
+          objectData.image = image.convertToFormat(QImage::Format_ARGB32);
+      
+          // TAGE - optimize
+
+          // add alpha channel
+          for (int y = 0; y < objectData.image.height(); ++y)
+          {
+            for (int x = 0; x < objectData.image.width(); ++x)
+            {
+              QRgb color = objectData.image.pixel(x, y);
+              objectData.image.setPixel(x, y, qRgba(qRed(color), qGreen(color), qBlue(color), alphaData[x + y * objectData.image.width()]));
+            }
+          }
+
+          // TAGE - save image
+          objectData.image.save(QString("JPeg3-%1.png").arg(objectData.objectId), "png");
         }
         break;
 
@@ -131,6 +174,12 @@ bool SwfMillToEgeConverter::processDefineBitsLossless2Tag(QXmlStreamReader& inpu
   ObjectData objectData;
   objectData.objectId = input.attributes().value("objectID").toString().toInt(&ok);
   
+  int format  = input.attributes().value("format").toString().toInt(&ok);
+  int width   = input.attributes().value("width").toString().toInt(&ok);
+  int height  = input.attributes().value("height").toString().toInt(&ok);
+
+  Q_ASSERT(5 == format);
+
   // process children
   bool done = false;
   while (!input.atEnd() && !done)
@@ -142,13 +191,37 @@ bool SwfMillToEgeConverter::processDefineBitsLossless2Tag(QXmlStreamReader& inpu
 
         if (!input.isWhitespace())
         {
-          objectData.data = QByteArray::fromBase64(input.text().toAscii());
+          QByteArray imageData = QByteArray::fromBase64(input.text().toAscii());
           
-          // TAGE store
-          QFile file(QString("object-%1.png").arg(objectData.objectId));
-          file.open(QIODevice::WriteOnly);
-          file.write(objectData.data);
-          file.close();
+          // prepend pixel data block with uncompressed size so qUncompress can be used
+          // NOTE: image rows need to be 4-bytes aligned
+          int imageUncompressedSize = width * height;
+
+          imageData.prepend((imageUncompressedSize & 0x000000ff));
+          imageData.prepend((imageUncompressedSize & 0x0000ff00) >> 8);
+          imageData.prepend((imageUncompressedSize & 0x00ff0000) >> 16);
+          imageData.prepend((imageUncompressedSize & 0xff000000) >> 24);
+
+          // decompress image
+          imageData = qUncompress(imageData);
+
+          // create empty ARGB image
+          objectData.image = QImage(width, height, QImage::Format_ARGB32);
+
+          // TAGE - optimize
+
+          // fill in pixel data
+          for (int y = 0; y < height; ++y)
+          {
+            for (int x = 0; x < width; ++x)
+            {
+              objectData.image.setPixel(x, y, qRgba(imageData[4 * (x + y * width) + 1], imageData[4 * (x + y * width) + 2], 
+                                                    imageData[4 * (x + y * width) + 3], imageData[4 * (x + y * width) + 0]));
+            }
+          }
+
+          // TAGE - save image
+          objectData.image.save(QString("Lossless-%1.png").arg(objectData.objectId), "png");
         }
         break;
 
@@ -174,12 +247,8 @@ bool SwfMillToEgeConverter::processDefineShapeTag(QXmlStreamReader& input)
   bool ok = true;
 
   ShapeData shapeData;
-  shapeData.referenceObjectId = 0;
-  shapeData.objectId          = input.attributes().value("objectID").toString().toInt(&ok);
-  shapeData.translate         = QVector2D(0, 0);
-  shapeData.scale             = QVector2D(1, 1);
-  shapeData.skew              = QVector2D(0, 0);
-  shapeData.boundingBox       = QRectF();
+  shapeData.objectId    = input.attributes().value("objectID").toString().toInt(&ok);
+  shapeData.boundingBox = QRectF();
 
   // process children
   bool done = false;
@@ -192,11 +261,14 @@ bool SwfMillToEgeConverter::processDefineShapeTag(QXmlStreamReader& input)
 
         if ("ClippedBitmap2" == input.name())
         {
-          shapeData.referenceObjectId = input.attributes().value("objectID").toString().toInt(&ok);
+          ShapeObjectData shapeObject;
+          shapeObject.objectId = input.attributes().value("objectID").toString().toInt(&ok);
+          shapeData.shapeDataObjects << shapeObject;
         }
         else if ("Transform" == input.name())
         {
-          processTransformTag(input, shapeData.translate, shapeData.scale, shapeData.skew);
+          ShapeObjectData& shapeObject = shapeData.shapeDataObjects.last();
+          processTransformTag(input, shapeObject.translate, shapeObject.scale, shapeObject.skew);
         }
         else if ("Rectangle" == input.name())
         {
@@ -211,11 +283,81 @@ bool SwfMillToEgeConverter::processDefineShapeTag(QXmlStreamReader& input)
           // done
           done = true;
         }
+        else if ("ClippedBitmap2" == input.name())
+        {
+          // check if improper shape
+          ShapeObjectData& shapeObject = shapeData.shapeDataObjects.last();
+          if (0xffff == shapeObject.objectId)
+          {
+            // pop it off the pool
+            shapeData.shapeDataObjects.pop_back();
+          }
+        }
         break;
     }
   }
 
-  Q_ASSERT(0 < shapeData.referenceObjectId);
+  m_shapes.append(shapeData);
+
+  return !input.hasError() && ok;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Processes SWFMILL DefineShape2 tag. */
+bool SwfMillToEgeConverter::processDefineShape2Tag(QXmlStreamReader& input)
+{
+  bool ok = true;
+
+  ShapeData shapeData;
+  shapeData.objectId    = input.attributes().value("objectID").toString().toInt(&ok);
+  shapeData.boundingBox = QRectF();
+
+  // process children
+  bool done = false;
+  while (!input.atEnd() && !done)
+  {
+    QXmlStreamReader::TokenType token = input.readNext();
+    switch (token)
+    {
+      case QXmlStreamReader::StartElement:
+
+        if ("ClippedBitmap2" == input.name())
+        {
+          ShapeObjectData shapeObject;
+          shapeObject.objectId = input.attributes().value("objectID").toString().toInt(&ok);
+          shapeData.shapeDataObjects << shapeObject;
+        }
+        else if ("Transform" == input.name())
+        {
+          ShapeObjectData& shapeObject = shapeData.shapeDataObjects.last();
+          processTransformTag(input, shapeObject.translate, shapeObject.scale, shapeObject.skew);
+        }
+        else if ("Rectangle" == input.name())
+        {
+          processRectangleTag(input, shapeData.boundingBox);
+        }
+        break;
+
+      case QXmlStreamReader::EndElement:
+
+        if ("DefineShape2" == input.name())
+        {
+          // done
+          done = true;
+        }
+        else if ("ClippedBitmap2" == input.name())
+        {
+          // check if improper shape
+          ShapeObjectData& shapeObject = shapeData.shapeDataObjects.last();
+          if (0xffff == shapeObject.objectId)
+          {
+            // pop it off the pool
+            shapeData.shapeDataObjects.pop_back();
+          }
+        }
+        break;
+    }
+  }
+
   m_shapes.append(shapeData);
 
   return !input.hasError() && ok;
@@ -227,6 +369,7 @@ bool SwfMillToEgeConverter::processPlaceObject2Tag(QXmlStreamReader& input)
   bool ok = true;
 
   FrameData frameData;
+  frameData.action = OA_PLACE;
 
   frameData.depth = input.attributes().value("depth").toString().toInt(&ok);
   if (!ok)
@@ -281,6 +424,41 @@ bool SwfMillToEgeConverter::processPlaceObject2Tag(QXmlStreamReader& input)
         }
         break;
     }
+  }
+
+  // add to current frame data list
+  m_currentFrameDataList.append(frameData);
+
+  return !input.hasError() && ok;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Processes SWFMILL RemoveObject2 tag. */
+bool SwfMillToEgeConverter::processRemoveObject2Tag(QXmlStreamReader& input)
+{
+  bool ok = true;
+
+  FrameData frameData;
+  frameData.action = OA_REMOVE;
+
+  frameData.depth = input.attributes().value("depth").toString().toInt(&ok);
+  if (!ok)
+  {
+    // error!
+    return false;
+  }
+
+  frameData.objectId = input.attributes().value("objectID").toString().toInt(&ok);
+  if (!ok)
+  {
+    // try to find if placement map
+    frameData.objectId = m_objectPlacementMap.value(frameData.depth, 0);
+  }
+
+  // check if object for given depth not found
+  if (0 == frameData.objectId)
+  {
+    // error!
+    return false;
   }
 
   // add to current frame data list
@@ -385,17 +563,29 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
   output.writeAttribute("duration", QString::number(duration));
 
   // shapes
+  QList<int> processedObjectIds;
   foreach (const ShapeData& shapeData, m_shapes)
   {
-    output.writeStartElement("object");
+    foreach (const ShapeObjectData& shapeObject, shapeData.shapeDataObjects)
+    {
+      // check if object wasnt saved yet
+      if (!processedObjectIds.contains(shapeObject.objectId))
+      {
+        output.writeStartElement("object");
     
-    output.writeAttribute("id", QString("%1").arg(shapeData.objectId));
-    output.writeAttribute("material", "my-material");
-    output.writeAttribute("translate", QString("%1 %2").arg(shapeData.translate.x()).arg(shapeData.translate.y()));
-    output.writeAttribute("scale", QString("%1 %2").arg(shapeData.scale.x()).arg(shapeData.scale.y()));
-    output.writeAttribute("skew", QString("%1 %2").arg(shapeData.skew.x()).arg(shapeData.skew.y()));
-    output.writeAttribute("rect", QString("%1 %2 %3 %4").arg(shapeData.boundingBox.x()).arg(shapeData.boundingBox.y()).arg(shapeData.boundingBox.width()).arg(shapeData.boundingBox.height()));
-    output.writeEndElement();
+        output.writeAttribute("id", QString("%1").arg(shapeObject.objectId));
+        output.writeAttribute("material", "my-material");
+        output.writeAttribute("translate", QString("%1 %2").arg(shapeObject.translate.x()).arg(shapeObject.translate.y()));
+        output.writeAttribute("scale", QString("%1 %2").arg(shapeObject.scale.x()).arg(shapeObject.scale.y()));
+        output.writeAttribute("skew", QString("%1 %2").arg(shapeObject.skew.x()).arg(shapeObject.skew.y()));
+        output.writeAttribute("rect", QString("%1 %2 %3 %4").arg(shapeData.boundingBox.x()).arg(shapeData.boundingBox.y()).arg(shapeData.boundingBox.width()).arg(shapeData.boundingBox.height()));
+   
+        output.writeEndElement();
+
+        // add to pool of already saved object
+        processedObjectIds << shapeObject.objectId;
+      }
+    }
   }
 
   // frames
@@ -405,15 +595,28 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
     
     foreach (const FrameData& frameData, frameDataList)
     {
-      output.writeStartElement("action");
+      // find shape
+      foreach (const ShapeData& shapeData, m_shapes)
+      {
+        // check if proper shape
+        if (shapeData.objectId == frameData.objectId)
+        {
+          // go thru all shape objects
+          foreach (const ShapeObjectData& shapeObject, shapeData.shapeDataObjects)
+          {
+            output.writeStartElement("action");
 
-      output.writeAttribute("object-id", QString("%1").arg(frameData.objectId));
-      output.writeAttribute("queue", QString("%1").arg(frameData.depth));
-      output.writeAttribute("translate", QString("%1 %2").arg(frameData.translate.x()).arg(frameData.translate.y()));
-      output.writeAttribute("scale", QString("%1 %2").arg(frameData.scale.x()).arg(frameData.scale.y()));
-      output.writeAttribute("skew", QString("%1 %2").arg(frameData.skew.x()).arg(frameData.skew.y()));
+            output.writeAttribute("type", objectActionName(frameData.action));
+            output.writeAttribute("object-id", QString("%1").arg(shapeObject.objectId));
+            output.writeAttribute("queue", QString("%1").arg(frameData.depth));
+            output.writeAttribute("translate", QString("%1 %2").arg(frameData.translate.x()).arg(frameData.translate.y()));
+            output.writeAttribute("scale", QString("%1 %2").arg(frameData.scale.x()).arg(frameData.scale.y()));
+            output.writeAttribute("skew", QString("%1 %2").arg(frameData.skew.x()).arg(frameData.skew.y()));
 
-      output.writeEndElement();
+            output.writeEndElement();
+          }
+        }
+      }
     }
 
     output.writeEndElement();
@@ -422,5 +625,18 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
   output.writeEndElement();
 
   return !output.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns given action name. */
+QString SwfMillToEgeConverter::objectActionName(ObjectAction action) const
+{
+  switch (action)
+  {
+    case OA_PLACE:  return "place";
+    case OA_REMOVE: return "remove";
+  }
+
+  Q_ASSERT("Invalid action");
+  return "";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

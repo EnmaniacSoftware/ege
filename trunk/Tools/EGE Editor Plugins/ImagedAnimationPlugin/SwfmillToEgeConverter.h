@@ -5,9 +5,9 @@
 #include <QXmlStreamWriter>
 #include <QList>
 #include <QVector2D>
-#include <QByteArray>
 #include <QMap>
 #include <QRectF>
+#include <QImage>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class SwfMillToEgeConverter
@@ -25,37 +25,19 @@ class SwfMillToEgeConverter
 
   private:
 
-    /* Processes SWFMILL Header tag. */
-    bool processHeaderTag(QXmlStreamReader& input);
-    /* Processes SWFMILL DefineBitsJPEG3 tag. */
-    bool processDefineBitsJPEG3Tag(QXmlStreamReader& input);
-    /* Processes SWFMILL DefineBitsLossless2 tag. */
-    bool processDefineBitsLossless2Tag(QXmlStreamReader& input);
-    /* Processes SWFMILL DefineShape tag. */
-    bool processDefineShapeTag(QXmlStreamReader& input);
-    /* Processes SWFMILL PlaceObject2 tag. */
-    bool processPlaceObject2Tag(QXmlStreamReader& input);
-    /* Processes SWFMILL ShowFrame tag. */
-    bool processShowFrameTag(QXmlStreamReader& input);
-    /* Processes SWFMILL Transform tag. */
-    bool processTransformTag(QXmlStreamReader& input, QVector2D& translate, QVector2D& scale, QVector2D& skew) const;
-    /* Processes SWFMILL Rectangle tag. */
-    bool processRectangleTag(QXmlStreamReader& input, QRectF& rect) const;
-    /* Generates EGE compilant XML. */
-    bool generateEgeXML(QXmlStreamWriter& output);
-
-  private:
-
-    enum Action
+    /*! Available object actions. */
+    enum ObjectAction
     {
-      ACTION_PLACE = 0,
+      OA_PLACE = 0,
+      OA_REMOVE
     };
 
     /*! Frame data structure. */
     struct FrameData
     {
       int depth;                              /*!< Depth at which action is to be done. */
-      int objectId;                           /*!< Object . */
+      int objectId;                           /*!< Object ID for which action is to be done. */
+      ObjectAction action;                    /*!< Action to be done. */
       QVector2D translate;
       QVector2D scale;
       QVector2D skew;
@@ -65,23 +47,56 @@ class SwfMillToEgeConverter
     struct ObjectData
     {
       int objectId;                           /*!< Object ID. */
-      QByteArray data;                        /*!< Decoded data array. */
+      QImage image;                           /*!< Image. */
+    };
+
+    /*! Shape object data structure. */
+    struct ShapeObjectData
+    {
+      int objectId;                           /*!< Object ID. */
+      QVector2D translate;                    /*!< Base translation vector. */
+      QVector2D scale;                        /*!< Base scale vector. */
+      QVector2D skew;                         /*!< Base skew vector. */
     };
 
     /*! Shape data structure. */
     struct ShapeData
     {
-      int objectId;                           /*!< Object ID. */
-      int referenceObjectId;                  /*!< ID of the object which is refered by shape. */
-      QVector2D translate;                    /*!< Base translation vector. */
-      QVector2D scale;                        /*!< Base scale vector. */
-      QVector2D skew;                         /*!< Base skew vector. */
-      QRectF boundingBox;                     /*!< Bounding box. */
+      int objectId;                             /*!< Object ID. */
+      QRectF boundingBox;                       /*!< Bounding box. */
+      QList<ShapeObjectData> shapeDataObjects;  /*!< Underlying objects the shape is built of. */
     };
 
     typedef QList<FrameData> FrameDataList;
     typedef QList<ObjectData> ObjectDataList;
     typedef QList<ShapeData> ShapeDataList;
+
+  private:
+
+    /* Processes SWFMILL Header tag. */
+    bool processHeaderTag(QXmlStreamReader& input);
+    /* Processes SWFMILL DefineBitsJPEG3 tag. */
+    bool processDefineBitsJPEG3Tag(QXmlStreamReader& input);
+    /* Processes SWFMILL DefineBitsLossless2 tag. */
+    bool processDefineBitsLossless2Tag(QXmlStreamReader& input);
+    /* Processes SWFMILL DefineShape tag. */
+    bool processDefineShapeTag(QXmlStreamReader& input);
+    /* Processes SWFMILL DefineShape2 tag. */
+    bool processDefineShape2Tag(QXmlStreamReader& input);
+    /* Processes SWFMILL PlaceObject2 tag. */
+    bool processPlaceObject2Tag(QXmlStreamReader& input);
+    /* Processes SWFMILL RemoveObject2 tag. */
+    bool processRemoveObject2Tag(QXmlStreamReader& input);
+    /* Processes SWFMILL ShowFrame tag. */
+    bool processShowFrameTag(QXmlStreamReader& input);
+    /* Processes SWFMILL Transform tag. */
+    bool processTransformTag(QXmlStreamReader& input, QVector2D& translate, QVector2D& scale, QVector2D& skew) const;
+    /* Processes SWFMILL Rectangle tag. */
+    bool processRectangleTag(QXmlStreamReader& input, QRectF& rect) const;
+    /* Generates EGE compilant XML. */
+    bool generateEgeXML(QXmlStreamWriter& output);
+    /* Returns given action name. */
+    QString objectActionName(ObjectAction action) const;
 
   private:
 
