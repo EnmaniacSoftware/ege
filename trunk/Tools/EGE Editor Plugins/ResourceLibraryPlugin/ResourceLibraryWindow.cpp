@@ -6,9 +6,9 @@
 #include "ResourceItem.h"
 #include "ResourceItemFactory.h"
 #include <Project.h>
-#include <Core.h>
 #include <MainWindow.h>
 #include <CoreConstants.h>
+#include <ObjectPool.h>
 #include <QMenu>
 #include <QMenuBar>
 #include <QFile>
@@ -26,13 +26,17 @@ ResourceLibraryWindow::ResourceLibraryWindow(QWidget* parent) : QDockWidget(pare
   // set view model
   m_ui->view->setModel(m_model);
 
-  connect(Core::Instance(), SIGNAL(projectCreated(Project*)), this, SLOT(onProjectCreated(Project*)));
+ // connect(Core::Instance(), SIGNAL(projectCreated(Project*)), this, SLOT(onProjectCreated(Project*)));
   //connect(Core::Instance(), SIGNAL(projectOpened(Project*)), this, SLOT(onProjectCreated(Project*)));
 	//connect(Core::Instance(), SIGNAL(projectClosed()), this, SLOT(onProjectClosed()));
 
-  // initial placement
-  Core::Instance()->mainWindow()->addDockWidget(Qt::LeftDockWidgetArea, this);
-
+  MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
+  if (mainWindow)
+  {
+    // initial placement
+    mainWindow->addDockWidget(Qt::LeftDockWidgetArea, this);
+  }
+  
   // update menus
   updateMenus();
 }
@@ -213,8 +217,14 @@ bool ResourceLibraryWindow::unserialize(QXmlStreamReader& stream)
 /*! Updates menus. */
 void ResourceLibraryWindow::updateMenus()
 {
-  MainWindow* mainWindow = Core::Instance()->mainWindow();
-
+  MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
+  if (!mainWindow)
+  {
+    // error!
+    qWarning() << Q_FUNC_INFO << "No MainWindow found!";
+    return;
+  }
+ 
   QMenu* menu = mainWindow->menuBar()->findChild<QMenu*>(MENU_MODULE);
   Q_ASSERT(menu);
 

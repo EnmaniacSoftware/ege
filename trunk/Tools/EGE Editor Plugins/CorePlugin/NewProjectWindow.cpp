@@ -2,7 +2,7 @@
 #include "FSUtils.h"
 #include "ui_newproject.h"
 #include "ProjectFactory.h"
-#include "Core.h"
+#include "ObjectPool.h"
 #include "MainWindow.h"
 #include <QFileDialog.h>
 #include <QMessageBox>
@@ -24,7 +24,7 @@ NewProjectWindow::NewProjectWindow(QWidget* parent) : QDialog(parent),
 
   // make connections
   connect(m_ui->projectName, SIGNAL(textEdited(const QString&)), this, SLOT(projectNameTextEdited(const QString&)));
-  connect(this, SIGNAL(projectCreated(Project*)), Core::Instance(), SLOT(onProjectCreated(Project*)));
+//  connect(this, SIGNAL(projectCreated(Project*)), Core::Instance(), SLOT(onProjectCreated(Project*)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 NewProjectWindow::~NewProjectWindow()
@@ -39,10 +39,10 @@ NewProjectWindow::~NewProjectWindow()
 /*! Populates project type list. */
 void NewProjectWindow::populateProjectTypeList()
 {
-  Core* core = Core::Instance();
-  Q_ASSERT(core);
+  ProjectFactory* projectFactory = ObjectPool::Instance()->getObject<ProjectFactory>();
+  Q_ASSERT(projectFactory);
 
-  m_ui->projectListView->setModel(core->projectFactory());
+  m_ui->projectListView->setModel(projectFactory);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when item in the list is clicked. */
@@ -57,8 +57,8 @@ void NewProjectWindow::on_projectListView_clicked(const QModelIndex& index)
 /*! Slot called when OK button is clicked. */
 void NewProjectWindow::accept()
 {
-  Core* core = Core::Instance();
-  Q_ASSERT(core);
+  ProjectFactory* projectFactory = ObjectPool::Instance()->getObject<ProjectFactory>();
+  Q_ASSERT(projectFactory);
 
   QModelIndex index = m_ui->projectListView->selectionModel()->selectedIndexes().first();
   if (!index.isValid())
@@ -80,8 +80,7 @@ void NewProjectWindow::accept()
   }
 
   // create new project
-  Project* project = core->projectFactory()->createProject(index.data(Qt::DisplayRole).toString(), m_ui->projectName->text(), 
-                                                           m_ui->projectLocation->text(), NULL);
+  Project* project = projectFactory->createProject(index.data(Qt::DisplayRole).toString(), m_ui->projectName->text(), m_ui->projectLocation->text(), NULL);
   Q_ASSERT(project);
 
   // emit

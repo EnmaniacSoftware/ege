@@ -2,7 +2,6 @@
 #include "ui_MaterialManagerWindow.h"
 #include "ResourceItemMaterial.h"
 #include <ResourceItemFactory.h>
-#include <Core.h>
 #include <MainWindow.h>
 #include <CoreConstants.h>
 #include <QMenu>
@@ -76,8 +75,12 @@ bool MaterialManagerWindow::unserialize(QXmlStreamReader& stream)
 /*! Updates menus. */
 void MaterialManagerWindow::updateMenus()
 {
-  MainWindow* mainWindow = Core::Instance()->mainWindow();
-  Q_ASSERT(mainWindow);
+  MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
+  if (!mainWindow)
+  {
+    qWarning() << Q_FUNC_INFO << "No MainWindow found!";
+    return;
+  }
 
   QMenu* menu = mainWindow->menuBar()->findChild<QMenu*>(MENU_MODULE);
   Q_ASSERT(menu);
@@ -91,8 +94,12 @@ void MaterialManagerWindow::updateMenus()
 /*! Attaches resource library specific data. */
 void MaterialManagerWindow::attachToResourceLibrary()
 {
-  MainWindow* mainWindow = Core::Instance()->mainWindow();
-  Q_ASSERT(mainWindow);
+  MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
+  if (NULL == mainWindow)
+  {
+    qWarning() << Q_FUNC_INFO << "No MainWindow found!";
+    return;
+  }
   
   ResourceItemFactory* resourceItemFactory = ObjectPool::Instance()->getObject<ResourceItemFactory>();
 

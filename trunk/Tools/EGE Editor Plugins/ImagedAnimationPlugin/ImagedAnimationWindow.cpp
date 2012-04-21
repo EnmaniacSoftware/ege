@@ -1,9 +1,8 @@
 #include "ImagedAnimationWindow.h"
 #include "ui_ImagedAnimationWindow.h"
-#include "MainWindow.h"
-#include <Core.h>
 #include <MainWindow.h>
 #include <CoreConstants.h>
+#include <ObjectPool.h>
 #include <QMenu>
 #include <QMenuBar>
 #include <QFile>
@@ -19,21 +18,33 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
   
   updateMenus();
 
-  // TAGE
-  QFile file("data/blink.xml");
-  file.open(QIODevice::Text | QIODevice::ReadOnly);
-  QXmlStreamReader input(&file);
+  QStringList list;
+  list << "static_banana";
+  list << "translate_scale_banana";
+  list << "004_translate_2images";
+  list << "blink";
+  list << "idle";
+  list << "dance";
+  list << "chomp";
 
-  QString string;
-  QXmlStreamWriter output(&string);
-  output.setAutoFormatting(true);
+  foreach (const QString& string, list)
+  {
+    // TAGE
+    QFile file(QString("data/") + string + QString(".xml"));
+    file.open(QIODevice::Text | QIODevice::ReadOnly);
+    QXmlStreamReader input(&file);
 
-  m_converter.convert(input, output);
+    QString outXml;
+    QXmlStreamWriter output(&outXml);
+    output.setAutoFormatting(true);
 
-  QFile fileOut("ege_blink.xml");
-  bool a= fileOut.open(QIODevice::Text | QIODevice::WriteOnly);
-  QTextStream out(&fileOut);
-  out << string;
+    m_converter.convert(input, output, string);
+
+    QFile fileOut(QString("ege_") + string + QString(".xml"));
+    fileOut.open(QIODevice::Text | QIODevice::WriteOnly);
+    QTextStream out(&fileOut);
+    out << outXml;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ImagedAnimationWindow::~ImagedAnimationWindow()
@@ -86,7 +97,13 @@ bool ImagedAnimationWindow::unserialize(QXmlStreamReader& stream)
 /*! Updates menus. */
 void ImagedAnimationWindow::updateMenus()
 {
-  MainWindow* mainWindow = Core::Instance()->mainWindow();
+  MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
+  if (NULL == mainWindow)
+  {
+    // error!
+    qWarning() << Q_FUNC_INFO << "No MainWindow found!";
+    return;
+  }
 
   QMenu* menu = mainWindow->menuBar()->findChild<QMenu*>(MENU_MODULE);
   Q_ASSERT(menu);

@@ -5,6 +5,10 @@
 #include "coreplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class MainWindow;
+class ProjectFactory;
+class Configuration;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class COREPLUGIN_API CorePlugin : public QObject, public IPlugin
 {
   Q_OBJECT
@@ -19,6 +23,15 @@ class COREPLUGIN_API CorePlugin : public QObject, public IPlugin
     bool initialize() override;
     /* IPlugin override. Deinitializes plugin. */
     void deinitialize() override;
+
+  private:
+
+    /*! Main window. */
+    MainWindow* m_mainWindow;
+    /*! Project factory. */
+    ProjectFactory* m_projectFactory;
+    /*! Configuration. */
+    Configuration* m_configuration;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

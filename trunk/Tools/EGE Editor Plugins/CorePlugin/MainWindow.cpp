@@ -1,7 +1,6 @@
 #include "MainWindow.h"
 #include "NewProjectWindow.h"
 #include "ui_mainwindow.h"
-#include "Core.h"
 #include "ObjectPool.h"
 #include "Project.h"
 #include "ProjectFactory.h"
@@ -16,6 +15,8 @@
 #include <QTextStream>
 #include <QFileDialog>
 #include <QMdiSubWindow>
+#include <QLabel>
+#include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MainWindow* app = NULL;
@@ -120,6 +121,16 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
 {
   Q_UNUSED(checked);
   
+  ObjectPool* pool = ObjectPool::Instance();
+
+  ProjectFactory* projectFactory = pool->findChild<ProjectFactory*>();
+  if (NULL == projectFactory)
+  {
+    // done
+    qWarning() << Q_FUNC_INFO << "No ProjectFactory found";
+    return;
+  }
+
   Project* project = NULL;
 
   // prepare filters
@@ -171,9 +182,8 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
         else if ("project" == stream.name())
         {
           // try to create project
-          project = Core::Instance()->projectFactory()->createProject(stream.attributes().value("type").toString(), 
-                                                                      stream.attributes().value("name").toString(),
-                                                                      stream.attributes().value("path").toString(), this);
+          project = projectFactory->createProject(stream.attributes().value("type").toString(), stream.attributes().value("name").toString(),
+                                                  stream.attributes().value("path").toString(), this);
 
           if (NULL == project)
           {

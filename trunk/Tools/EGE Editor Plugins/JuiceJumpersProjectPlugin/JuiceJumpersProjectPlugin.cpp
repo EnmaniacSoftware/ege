@@ -1,7 +1,7 @@
 #include "JuiceJumpersProjectPlugin.h"
 #include "ProjectJuiceJumpers.h"
-#include <Core.h>
 #include <ProjectFactory.h>
+#include <ObjectPool.h>
 #include <QtPlugin>
 #include <QDebug>
 
@@ -17,7 +17,7 @@ JuiceJumpersProjectPlugin::~JuiceJumpersProjectPlugin()
 /*! IPlugin override. Initialized plugin. */
 bool JuiceJumpersProjectPlugin::initialize()
 {
-  ProjectFactory* projectFactory = Core::Instance()->projectFactory();
+  ProjectFactory* projectFactory = ObjectPool::Instance()->getObject<ProjectFactory>();
   if (projectFactory)
   {
     return projectFactory->registerProject(ProjectJuiceJumpers::TypeName, ProjectJuiceJumpers::Create);

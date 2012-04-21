@@ -19,6 +19,8 @@ typedef QString  (*PFPROJECTTYPENAMEFUNC) ();
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class COREPLUGIN_API ProjectFactory : public QAbstractItemModel
 {
+  Q_OBJECT
+
   public:
 
     ProjectFactory(QObject* parent = NULL);

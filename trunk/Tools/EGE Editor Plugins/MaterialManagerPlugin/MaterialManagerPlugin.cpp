@@ -1,6 +1,5 @@
 #include "MaterialManagerPlugin.h"
 #include "MaterialManagerWindow.h"
-#include <Core.h>
 #include <MainWindow.h>
 #include <QtPlugin>
 #include <QDebug>
@@ -19,9 +18,14 @@ MaterialManagerPlugin::~MaterialManagerPlugin()
 /*! IPlugin override. Initialized plugin. */
 bool MaterialManagerPlugin::initialize()
 {
-  Core* core = Core::Instance();
-  MainWindow* mainWindow = core->mainWindow();
-
+  MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
+  if (!mainWindow)
+  {
+    // error!
+    qWarning() << Q_FUNC_INFO << "No MainWindow found!";
+    return false;
+  }
+ 
   m_window = new MaterialManagerWindow();
   if (NULL != m_window)
   {
@@ -36,14 +40,16 @@ bool MaterialManagerPlugin::initialize()
 /*! IPlugin override. Deinitializes plugin. */
 void MaterialManagerPlugin::deinitialize()
 {
-  Core* core = Core::Instance();
-  MainWindow* mainWindow = core->mainWindow();
-
   if (NULL != m_window)
   {
-    ObjectPool::Instance()->removeObject(m_window);
+    //ObjectPool::Instance()->removeObject(m_window);
 
-    mainWindow->removeChildWindow(m_window);
+    MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
+    if (mainWindow)
+    {
+      mainWindow->removeChildWindow(m_window);
+    }
+
     delete m_window;
     m_window = NULL;
   }

@@ -18,10 +18,11 @@ class SwfMillToEgeConverter
     ~SwfMillToEgeConverter();
 
     /* Converts SWFMILL generated XML into EGE framework format. 
-     * @param input   SWFMILL generated input XML stream
-     * @param output  EGE framework output XML stream
+     * @param input     SWFMILL generated input XML stream.
+     * @param output    EGE framework output XML stream.
+     * @param baseName  Base name for generated assets.
      */
-    bool convert(QXmlStreamReader& input, QXmlStreamWriter& output);
+    bool convert(QXmlStreamReader& input, QXmlStreamWriter& output, const QString& baseName);
 
   private:
 
@@ -53,7 +54,7 @@ class SwfMillToEgeConverter
     /*! Shape object data structure. */
     struct ShapeObjectData
     {
-      int objectId;                           /*!< Object ID. */
+      int objectId;                           /*!< ID of the referenced object. */
       QVector2D translate;                    /*!< Base translation vector. */
       QVector2D scale;                        /*!< Base scale vector. */
       QVector2D skew;                         /*!< Base skew vector. */
@@ -97,6 +98,8 @@ class SwfMillToEgeConverter
     bool generateEgeXML(QXmlStreamWriter& output);
     /* Returns given action name. */
     QString objectActionName(ObjectAction action) const;
+    /* Clears converter data. */
+    void clear();
 
   private:
 
@@ -114,6 +117,8 @@ class SwfMillToEgeConverter
     ShapeDataList m_shapes;
     /*! Map containing current depth for objects [depth, objectId]. */
     QMap<int, int> m_objectPlacementMap;
+    /*! Base name. */
+    QString m_baseName;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

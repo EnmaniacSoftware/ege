@@ -1,6 +1,5 @@
 #include "ProjectJuiceJumpers.h"
 #include <IResourceLibrary.h>
-#include <Core.h>
 #include <ObjectPool.h>
 //#include <ResourceLibraryItemDelegate.h>
 

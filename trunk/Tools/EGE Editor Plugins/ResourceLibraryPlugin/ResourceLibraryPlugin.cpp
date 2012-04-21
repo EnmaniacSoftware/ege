@@ -3,7 +3,6 @@
 #include "ResourceItemFactory.h"
 #include <QtPlugin>
 #include <QDebug>
-#include <Core.h>
 #include <MainWindow.h>
 #include <ObjectPool.h>
 
@@ -21,18 +20,25 @@ ResouceLibraryPlugin::~ResouceLibraryPlugin()
 /*! IPlugin override. Initialized plugin. */
 bool ResouceLibraryPlugin::initialize()
 {
-  Core* core = Core::Instance();
-  MainWindow* mainWindow = core->mainWindow();
-
-  m_window = new ResourceLibraryWindow(mainWindow);
-  m_resourceItemFactory = new ResourceItemFactory();
-
-  if ((NULL != m_window) && (NULL != m_resourceItemFactory))
+  MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
+  if (NULL == mainWindow)
   {
-    return ObjectPool::Instance()->addObject(m_window) && ObjectPool::Instance()->addObject(m_resourceItemFactory);
+    // error!
+    return false;
   }
 
-  return false;
+  // create objects
+  m_window              = new ResourceLibraryWindow(mainWindow);
+  m_resourceItemFactory = new ResourceItemFactory();
+
+  // add to pool
+  if (!ObjectPool::Instance()->addObject(m_window) || !ObjectPool::Instance()->addObject(m_resourceItemFactory))
+  {
+    // error!
+    return false;
+  }
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IPlugin override. Deinitializes plugin. */
@@ -40,7 +46,7 @@ void ResouceLibraryPlugin::deinitialize()
 {
   if (m_resourceItemFactory)
   {
-    ObjectPool::Instance()->removeObject(m_resourceItemFactory);
+    //ObjectPool::Instance()->removeObject(m_resourceItemFactory);
 
     delete m_resourceItemFactory;
     m_resourceItemFactory = NULL;
@@ -48,7 +54,7 @@ void ResouceLibraryPlugin::deinitialize()
 
   if (m_window)
   {
-    ObjectPool::Instance()->removeObject(m_window);
+   // ObjectPool::Instance()->removeObject(m_window);
 
     delete m_window;
     m_window = NULL;

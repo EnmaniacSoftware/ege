@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="configuration-add">../../../resources/icons/16x16/add.png</file>
+        <file alias="configuration-remove">../../../resources/icons/16x16/cancel.png</file>
+    </qresource>
+</RCC>
