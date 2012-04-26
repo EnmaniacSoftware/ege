@@ -34,10 +34,10 @@ class SwfMillToEgeConverter
     };
 
     /*! Frame data structure. */
-    struct FrameData
+    struct FrameData // rename to FrameActionData
     {
       int depth;                              /*!< Depth at which action is to be done. */
-      int objectId;                           /*!< Object ID for which action is to be done. */
+      int objectId;                           /*!< Object ID (shape) for which action is to be done. */
       ObjectAction action;                    /*!< Action to be done. */
       QVector2D translate;
       QVector2D scale;
@@ -55,6 +55,7 @@ class SwfMillToEgeConverter
     struct ShapeObjectData
     {
       int objectId;                           /*!< ID of the referenced object. */
+      int depth;                              /*!< Current depth object is place on. Only used while generating EGE XML. */
       QVector2D translate;                    /*!< Base translation vector. */
       QVector2D scale;                        /*!< Base scale vector. */
       QVector2D skew;                         /*!< Base skew vector. */
@@ -63,7 +64,7 @@ class SwfMillToEgeConverter
     /*! Shape data structure. */
     struct ShapeData
     {
-      int objectId;                             /*!< Object ID. */
+      int objectId;                             /*!< Object ID (shape object). */
       QRectF boundingBox;                       /*!< Bounding box. */
       QList<ShapeObjectData> shapeDataObjects;  /*!< Underlying objects the shape is built of. */
     };

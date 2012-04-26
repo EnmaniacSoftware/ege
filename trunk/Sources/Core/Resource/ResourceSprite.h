@@ -65,6 +65,8 @@ class ResourceSprite : public IResource
     inline bool repeat() const { return m_repeat; }
     /*! Returns duration. */
     inline const Time& duration() const { return m_duration; }
+    /*! Returns repeat delay. */
+    inline const Time& repeatDelay() const { return m_repeatDelay; }
 
   private:
 
@@ -106,6 +108,8 @@ class ResourceSprite : public IResource
     FameDataArray m_frameData;
     /*! Loaded sheet. If NULL resource has not been loaded yet. */
     PResourceSpritesheet m_sheet;
+    /*! Repeat delay. */
+    Time m_repeatDelay;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

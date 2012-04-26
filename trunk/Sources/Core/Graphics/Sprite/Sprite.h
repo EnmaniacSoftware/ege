@@ -78,6 +78,8 @@ class Sprite : public Object
     inline bool isPlaying() const { return (state() & STATE_PLAYING) ? true : false; }
     /* Sets/unsets finish policy. */
     void setFinishPolicy(FinishPolicy policy);
+    /* Sets repeat delay. */
+    void setRepeatDelay(const Time& time);
 
   private:
 
@@ -115,6 +117,10 @@ class Sprite : public Object
     PTextureImage m_textureImage;
     /*! Finish policy. */
     FinishPolicy m_finishPolicy;
+    /*! Repeat delay. */
+    Time m_repeatDelay;
+    /*! Repeat delay time left. */
+    Time m_repeatDelayLeft;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

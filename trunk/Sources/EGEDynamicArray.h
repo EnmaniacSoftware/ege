@@ -12,12 +12,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 typedef DynamicArray<s32>     IntArray;
 typedef DynamicArray<float32> FloatArray;
 typedef DynamicArray<String>  StringArray;
 typedef DynamicArray<Text>    TextArray;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

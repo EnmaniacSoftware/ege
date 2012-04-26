@@ -178,83 +178,307 @@
   <!-- Imaged animation test resources -->
   <group name='imaged-animation-test'>
 
-    <texture type="2d" name="static-banana" path="images/static_banana.jpg" mag-filter="trilinear" min-filter="trilinear" />
-    <material name='static-banana' src-blend='src-alpha' dst-blend='one-minus-src-alpha' >
-      <texture name='static-banana' />
-    </material>
-    <texture type="2d" name="banana-glasses" path="images/glasses.png" mag-filter="trilinear" min-filter="trilinear" />
-    <material name='banana-glasses' src-blend='src-alpha' dst-blend='one-minus-src-alpha' >
-      <texture name='banana-glasses' />
-    </material>
+    <dependancy name='atlas-imaged-anims' />
 
-    <imaged-animation name="static-banana" duration="0.1">
-      <object id="2" material="static-banana" translate="0 0" scale="1 1" skew="0 0"/>
+    <material name="blink_object_1" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="blink_object_1"/>
+    </material>
+    <material name="blink_object_2" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="blink_object_2"/>
+    </material>
+    <material name="blink_object_3" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="blink_object_3"/>
+    </material>
+    <material name="blink_object_4" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="blink_object_4"/>
+    </material>
+    <material name="blink_object_6" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="blink_object_6"/>
+    </material>
+    <imaged-animation name="blink" duration="0.133333">
+      <object id="4" material="blink_object_4" translate="31 24" scale="1 1" skew="0 0" rect="31 23.5 267 267" size="267 267"/>
+      <object id="3" material="blink_object_3" translate="101 208" scale="1 1" skew="0 0" rect="31 23.5 267 267" size="103 51"/>
+      <object id="2" material="blink_object_2" translate="85 115" scale="1 1" skew="0 0" rect="31 23.5 267 267" size="146 83"/>
+      <object id="1" material="blink_object_1" translate="89 59" scale="1 1" skew="0 0" rect="31 23.5 267 267" size="125 53"/>
+      <object id="6" material="blink_object_6" translate="84 115" scale="1 1" skew="0 0" rect="31 23.5 267 267" size="146 83"/>
       <frame>
-        <action object-id="2" queue="1" translate="51 9" scale="1 1" skew="0 0"/>
+        <action object-id="4" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="2" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="1" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="4" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="2" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="6" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="1" queue="4" translate="0 0" scale="1 1" skew="0 0"/>
       </frame>
     </imaged-animation>
 
-    <imaged-animation name="translate-scale-banana" duration="1">
-      <object id="2" material="static-banana" translate="0 0" scale="20 20" skew="0 0"/>
+
+    <material name="idle_object_1" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="idle_object_1"/>
+    </material>
+    <material name="idle_object_3" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="idle_object_3"/>
+    </material>
+    <material name="idle_object_5" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="idle_object_5"/>
+    </material>
+    <material name="idle_object_7" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="idle_object_7"/>
+    </material>
+    <material name="idle_object_9" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="idle_object_9"/>
+    </material>
+    <imaged-animation name="idle" duration="0.8">
+      <object id="1" material="idle_object_1" translate="82 183" scale="1 1" skew="0 0" rect="81.5 183 132 98" size="132 98"/>
+      <object id="3" material="idle_object_3" translate="31 24" scale="1 1" skew="0 0" rect="31 23.5 267 267" size="267 267"/>
+      <object id="5" material="idle_object_5" translate="101 208" scale="1 1" skew="0 0" rect="101 208 103 51" size="103 51"/>
+      <object id="7" material="idle_object_7" translate="84 115" scale="1 1" skew="0 0" rect="83.95 115 146 83" size="146 83"/>
+      <object id="9" material="idle_object_9" translate="89 52" scale="1 1" skew="0 0" rect="89.45 52 125 53" size="125 53"/>
       <frame>
-        <action object-id="2" queue="1" translate="-22 9" scale="1 1" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="5" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="9" queue="4" translate="0 5" scale="1 1" skew="0 0"/>
       </frame>
       <frame>
-        <action object-id="2" queue="1" translate="33.7 46.8" scale="0.875 0.875" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="1 3" scale="0.999969 0.987625" skew="0.00473022 -0.00466919"/>
+        <action object-id="5" queue="2" translate="4 12" scale="0.984695 0.95137" skew="0.00465393 -0.00450134"/>
+        <action object-id="7" queue="3" translate="1 3" scale="1.00114 0.987625" skew="0.00473022 -0.00466919"/>
+        <action object-id="9" queue="4" translate="1 6" scale="1 1" skew="0 0"/>
       </frame>
       <frame>
-        <action object-id="2" queue="1" translate="89.4 84.5" scale="0.75 0.75" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="3 6" scale="0.999924 0.97525" skew="0.00946045 -0.00923157"/>
+        <action object-id="5" queue="2" translate="8 23" scale="0.969391 0.902725" skew="0.00917053 -0.00854492"/>
+        <action object-id="7" queue="3" translate="2 6" scale="1.00226 0.97525" skew="0.00947571 -0.00923157"/>
+        <action object-id="9" queue="4" translate="1 7" scale="1 1" skew="0 0"/>
       </frame>
       <frame>
-        <action object-id="2" queue="1" translate="145.05 122.3" scale="0.625 0.625" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="5" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="9" queue="4" translate="2 8" scale="1 1" skew="0 0"/>
       </frame>
       <frame>
-        <action object-id="2" queue="1" translate="200.75 160" scale="0.5 0.5" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="-2 -2" scale="0.999939 1.01274" skew="-0.00823975 0.00785828"/>
+        <action object-id="5" queue="2" translate="-5 -14" scale="1.01595 1.05682" skew="-0.00886536 0.00772095"/>
+        <action object-id="7" queue="3" translate="-2 -2" scale="1.00113 1.01276" skew="-0.008255 0.00787354"/>
+        <action object-id="9" queue="4" translate="2 7" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="-4 -5" scale="0.999908 1.02551" skew="-0.0131836 0.0125885"/>
+        <action object-id="5" queue="2" translate="-9 -28" scale="1.03191 1.11366" skew="-0.0145874 0.0127411"/>
+        <action object-id="7" queue="3" translate="-3 -5" scale="1.0023 1.02551" skew="-0.0131989 0.0126343"/>
+        <action object-id="9" queue="4" translate="2 4" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="5" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="9" queue="4" translate="2 1" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="-1 0" scale="0.999969 1.0023" skew="-0.00473022 0.00474548"/>
+        <action object-id="5" queue="2" translate="-1 1" scale="0.999969 1.0023" skew="-0.00473022 0.00474548"/>
+        <action object-id="7" queue="3" translate="-1 0" scale="1.00116 1.0023" skew="-0.00473022 0.00474548"/>
+        <action object-id="9" queue="4" translate="1 1" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="-3 0" scale="0.999924 1.00459" skew="-0.00944519 0.00949097"/>
+        <action object-id="5" queue="2" translate="-2 2" scale="0.999924 1.00459" skew="-0.00944519 0.00949097"/>
+        <action object-id="7" queue="3" translate="-2 1" scale="1.00232 1.00458" skew="-0.00947571 0.00950623"/>
+        <action object-id="9" queue="4" translate="1 0" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="5" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="9" queue="4" translate="0 0" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="2 -1" scale="0.999954 0.997467" skew="0.00801086 -0.00808716"/>
+        <action object-id="5" queue="2" translate="2 -1" scale="0.999954 0.997467" skew="0.00801086 -0.00808716"/>
+        <action object-id="7" queue="3" translate="1 -1" scale="1.00111 0.997467" skew="0.00802612 -0.00814819"/>
+        <action object-id="9" queue="4" translate="1 2" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="5" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="9" queue="4" translate="0 0" scale="1 1" skew="0 0"/>
       </frame>
     </imaged-animation>
 
-    <imaged-animation name="translate-2-images" duration="1">
-      <object id="2" material="static-banana" translate="0 0" scale="1 1" skew="0 0"/>
-      <object id="4" material="banana-glasses" translate="95.05 3" scale="1 1" skew="0 0"/>
+
+    <material name="dance_object_1" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="dance_object_1"/>
+    </material>
+    <material name="dance_object_3" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="dance_object_3"/>
+    </material>
+    <material name="dance_object_5" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="dance_object_5"/>
+    </material>
+    <material name="dance_object_7" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="dance_object_7"/>
+    </material>
+    <material name="dance_object_9" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="dance_object_9"/>
+    </material>
+    <imaged-animation name="dance" duration="0.533333">
+      <object id="1" material="dance_object_1" translate="82 183" scale="1 1" skew="0 0" rect="81.5 183 132 98" size="132 98"/>
+      <object id="3" material="dance_object_3" translate="31 24" scale="1 1" skew="0 0" rect="31 23.5 267 267" size="267 267"/>
+      <object id="5" material="dance_object_5" translate="101 208" scale="1 1" skew="0 0" rect="101 208 103 51" size="103 51"/>
+      <object id="7" material="dance_object_7" translate="84 115" scale="1 1" skew="0 0" rect="83.95 115 146 83" size="146 83"/>
+      <object id="9" material="dance_object_9" translate="89 57" scale="1 1" skew="0 0" rect="89.45 56.5 125 53" size="125 53"/>
       <frame>
-        <action object-id="2" queue="1" translate="-22 9" scale="1 1" skew="0 0"/>
-        <action object-id="4" queue="2" translate="-163 0" scale="1 1" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="5" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="9" queue="4" translate="0 0" scale="1 1" skew="0 0"/>
       </frame>
       <frame>
-        <action object-id="2" queue="1" translate="-3.9 9" scale="1 1" skew="0 0"/>
-        <action object-id="4" queue="2" translate="-122.25 0" scale="1 1" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="13 2" scale="0.998886 0.962753" skew="0.0440521 -0.0424652"/>
+        <action object-id="5" queue="2" translate="12 -2" scale="0.994278 0.980377" skew="0.0438538 -0.0432587"/>
+        <action object-id="7" queue="3" translate="12 -3" scale="0.999191 0.980377" skew="0.0440826 -0.0432587"/>
+        <action object-id="9" queue="4" translate="14 -5" scale="0.999359 0.980377" skew="0.0440826 -0.0432587"/>
       </frame>
       <frame>
-        <action object-id="2" queue="1" translate="14.2 9" scale="1 1" skew="0 0"/>
-        <action object-id="4" queue="2" translate="-81.5 0" scale="1 1" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="5" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="9" queue="4" translate="0 0" scale="1 1" skew="0 0"/>
       </frame>
       <frame>
-        <action object-id="2" queue="1" translate="32.35 9" scale="1 1" skew="0 0"/>
-        <action object-id="4" queue="2" translate="-40.75 0" scale="1 1" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="-13 -1" scale="0.998917 1.03752" skew="-0.0501862 0.0449219"/>
+        <action object-id="5" queue="2" translate="-11 3" scale="0.994125 1.01787" skew="-0.0486298 0.0454102"/>
+        <action object-id="7" queue="3" translate="-12 4" scale="0.99913 1.01788" skew="-0.0484161 0.0458679"/>
+        <action object-id="9" queue="4" translate="-14 3" scale="0.998734 1.01791" skew="-0.0484467 0.0458221"/>
       </frame>
       <frame>
-        <action object-id="2" queue="1" translate="50.45 9" scale="1 1" skew="0 0"/>
-        <action object-id="4" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="5" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="9" queue="4" translate="0 0" scale="1 1" skew="0 0"/>
       </frame>
       <frame>
-        <action object-id="2" queue="1" translate="68.55 9" scale="1 1" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="-13 7" scale="0.998886 1.00238" skew="-0.0441284 0.044281"/>
+        <action object-id="5" queue="2" translate="-11 6" scale="0.993896 1.00237" skew="-0.0438385 0.0442047"/>
+        <action object-id="7" queue="3" translate="-12 6" scale="0.9991 1.00237" skew="-0.0440674 0.0442047"/>
+        <action object-id="9" queue="4" translate="-11 11" scale="0.999496 1.00237" skew="-0.0440826 0.04422"/>
       </frame>
       <frame>
-        <action object-id="2" queue="1" translate="86.65 9" scale="1 1" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="5" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="9" queue="4" translate="0 0" scale="1 1" skew="0 0"/>
       </frame>
       <frame>
-        <action object-id="2" queue="1" translate="104.8 9" scale="1 1" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="5" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="9" queue="4" translate="0 0" scale="1 1" skew="0 0"/>
+      </frame>
+    </imaged-animation>
+
+
+    <material name="chomp_object_1" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="chomp_object_1"/>
+    </material>
+    <material name="chomp_object_3" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="chomp_object_3"/>
+    </material>
+    <material name="chomp_object_5" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="chomp_object_5"/>
+    </material>
+    <material name="chomp_object_7" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="chomp_object_7"/>
+    </material>
+    <material name="chomp_object_9" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="chomp_object_9"/>
+    </material>
+    <material name="chomp_object_11" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="chomp_object_11"/>
+    </material>
+    <material name="chomp_object_13" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="chomp_object_13"/>
+    </material>
+    <imaged-animation name="chomp" duration="0.4">
+      <object id="1" material="chomp_object_1" translate="31 24" scale="1 1" skew="0 0" rect="31 23.5 267 267" size="267 267"/>
+      <object id="3" material="chomp_object_3" translate="-66 -49" scale="1 1" skew="0 0" rect="-66 -49 132 98" size="132 98"/>
+      <object id="5" material="chomp_object_5" translate="84 115" scale="1 1" skew="0 0" rect="83.95 115 146 83" size="146 83"/>
+      <object id="7" material="chomp_object_7" translate="89 59" scale="1 1" skew="0 0" rect="89.45 59 125 53" size="125 53"/>
+      <object id="9" material="chomp_object_9" translate="85 115" scale="1 1" skew="0 0" rect="84.5 115 146 83" size="146 83"/>
+      <object id="11" material="chomp_object_11" translate="84 115" scale="1 1" skew="0 0" rect="84 114.5 146.5 83.5" size="146 83"/>
+      <object id="13" material="chomp_object_13" translate="-66 -41" scale="1 0.826538" skew="0 0" rect="-66 -40.5 132 81" size="132 98"/>
+      <frame>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="3" queue="1" translate="154 237" scale="0.4543 0.4543" skew="0 0"/>
+        <action object-id="5" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
       </frame>
       <frame>
-        <action object-id="2" queue="1" translate="122.9 9" scale="1 1" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 6" scale="1 0.979401" skew="0 0"/>
+        <action object-id="3" queue="1" translate="152 237" scale="0.698456 0.630325" skew="0 0"/>
+        <action object-id="9" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="3" translate="0 -1" scale="1 1" skew="0 0"/>
       </frame>
       <frame>
-        <action object-id="2" queue="1" translate="140.9 9" scale="1 1" skew="0 0"/>
+        <action object-id="1" queue="0" translate="0 12" scale="1 0.958801" skew="0 0"/>
+        <action object-id="3" queue="1" translate="151 237" scale="0.942612 0.806335" skew="0 0"/>
+        <action object-id="9" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="11" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="4" translate="0 -3" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="0 8" scale="1 0.973709" skew="0 0"/>
+        <action object-id="13" queue="1" translate="148 237" scale="1 1" skew="0 0"/>
+        <action object-id="9" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="11" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="4" translate="0 -4" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="13" queue="1" translate="149 237" scale="1.05302 1" skew="0 0"/>
+        <action object-id="9" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="11" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="4" translate="0 0" scale="1 1" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="13" queue="1" translate="149 237" scale="1.10606 1" skew="0 0"/>
+        <action object-id="9" queue="2" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="11" queue="3" translate="0 0" scale="1 1" skew="0 0"/>
+        <action object-id="7" queue="4" translate="0 0" scale="1 1" skew="0 0"/>
       </frame>
     </imaged-animation>
     
   </group>
   
   <include path='fonts.xml' />
-  
+  <include path='imaged_anims_atlas.xml' />
+
 </resources>

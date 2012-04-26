@@ -296,7 +296,8 @@ bool SwfMillToEgeConverter::processDefineShapeTag(QXmlStreamReader& input)
         if ("ClippedBitmap2" == input.name())
         {
           ShapeObjectData shapeObject;
-          shapeObject.objectId = input.attributes().value("objectID").toString().toInt(&ok);
+          shapeObject.depth     = 0;
+          shapeObject.objectId  = input.attributes().value("objectID").toString().toInt(&ok);
           RETURN_FALSE_IF_ERROR(ok);
         
           shapeData.shapeDataObjects << shapeObject;
@@ -368,6 +369,7 @@ bool SwfMillToEgeConverter::processDefineShape2Tag(QXmlStreamReader& input)
         if ("ClippedBitmap2" == input.name())
         {
           ShapeObjectData shapeObject;
+          shapeObject.depth    = 0;
           shapeObject.objectId = input.attributes().value("objectID").toString().toInt(&ok);
           RETURN_FALSE_IF_ERROR(ok);
 
@@ -448,7 +450,6 @@ bool SwfMillToEgeConverter::processPlaceObject2Tag(QXmlStreamReader& input)
   frameData.translate = QVector2D(0, 0);
   frameData.scale     = QVector2D(1, 1);
   frameData.skew      = QVector2D(0, 0);
-//  frameData.depth     = input.attributes().value("replace").toString().toInt(&error);
 
   // process children
   bool done = false;
@@ -681,38 +682,76 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
     }
   }
 
-  // frames
+  struct ActionDefinition
+  {
+    int objectId;
+    FrameData actionData;
+  };
+
+  typedef QMap<int, ActionDefinition> DepthToActionDefMap;
+
+  QList<DepthToActionDefMap> displayList;
+
+  // go thru all frames
+  DepthToActionDefMap currentFrameDisplayList;
   foreach (const FrameDataList& frameDataList, m_framesDataList)
   {
-    output.writeStartElement("frame");
-    
-    foreach (const FrameData& frameData, frameDataList)
+    // go thru all frame actions
+    for (int frameActionIndex = 0; frameActionIndex < frameDataList.count(); ++frameActionIndex)
     {
-      // find shape
-      foreach (const ShapeData& shapeData, m_shapes)
+      if (OA_PLACE == frameDataList[frameActionIndex].action)
+      {
+        ActionDefinition actionDef;
+        actionDef.objectId    = frameDataList[frameActionIndex].objectId;
+        actionDef.actionData  = frameDataList[frameActionIndex];
+
+        currentFrameDisplayList.insert(frameDataList[frameActionIndex].depth, actionDef);
+      }
+      else
+      {
+        currentFrameDisplayList.remove(frameDataList[frameActionIndex].depth);
+      }
+    }
+
+    // store current frame display list
+    displayList.append(currentFrameDisplayList);
+  }
+
+  int frameNo = 0;
+  foreach (const DepthToActionDefMap& frameDisplayList, displayList)
+  {
+    output.writeStartElement("frame");
+
+    int depthOffset = 0;
+    foreach (const ActionDefinition& actionDef, frameDisplayList)
+    {
+      int objectId = actionDef.objectId;
+
+      // find shape current action refers to
+      foreach (const ShapeData& shape, m_shapes)
       {
         // check if proper shape
-        if (shapeData.objectId == frameData.objectId)
+        if (shape.objectId == objectId)
         {
-          // go thru all shape objects
-          foreach (const ShapeObjectData& shapeObject, shapeData.shapeDataObjects)
+          foreach (const ShapeObjectData& shapeObject, shape.shapeDataObjects)
           {
             output.writeStartElement("action");
 
-            output.writeAttribute("type", objectActionName(frameData.action));
             output.writeAttribute("object-id", QString("%1").arg(shapeObject.objectId));
-            output.writeAttribute("queue", QString("%1").arg(frameData.depth));
-            output.writeAttribute("translate", QString("%1 %2").arg(frameData.translate.x()).arg(frameData.translate.y()));
-            output.writeAttribute("scale", QString("%1 %2").arg(frameData.scale.x()).arg(frameData.scale.y()));
-            output.writeAttribute("skew", QString("%1 %2").arg(frameData.skew.x()).arg(frameData.skew.y()));
+            output.writeAttribute("queue", QString("%1").arg(depthOffset));            
+            output.writeAttribute("translate", QString("%1 %2").arg(actionDef.actionData.translate.x()).arg(actionDef.actionData.translate.y()));
+            output.writeAttribute("scale", QString("%1 %2").arg(actionDef.actionData.scale.x()).arg(actionDef.actionData.scale.y()));
+            output.writeAttribute("skew", QString("%1 %2").arg(actionDef.actionData.skew.x()).arg(actionDef.actionData.skew.y()));
 
             output.writeEndElement();
+            ++depthOffset;
           }
         }
       }
     }
 
     output.writeEndElement();
+    ++frameNo;
   }
 
   output.writeEndElement();

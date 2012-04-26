@@ -45,13 +45,14 @@ EGEResult ResourceSprite::create(const String& path, const PXmlElement& tag)
   bool error = false;
 
   // get data
-  m_name        = tag->attribute("name");
-  m_sheetName   = tag->attribute("sheet");
-  m_duration    = tag->attribute("duration").toFloat(&error);
-  m_pingPong    = tag->attribute("ping-pong").toBool(&error);
-  m_frameCount  = tag->attribute("frame-count").toInt(&error);
-  m_beginFrame  = tag->attribute("begin-frame").toInt(&error);
-  m_repeat      = tag->attribute("repeat").toBool(&error);
+  m_name          = tag->attribute("name");
+  m_sheetName     = tag->attribute("sheet");
+  m_duration      = tag->attribute("duration").toFloat(&error);
+  m_pingPong      = tag->attribute("ping-pong").toBool(&error);
+  m_frameCount    = tag->attribute("frame-count").toInt(&error);
+  m_beginFrame    = tag->attribute("begin-frame").toInt(&error);
+  m_repeat        = tag->attribute("repeat").toBool(&error);
+  m_repeatDelay   = tag->attribute("repeat-delay", "0").toTime(&error);
 
   // check if obligatory data is wrong
   if (error || m_name.empty() || m_sheetName.empty() || (0 >= m_frameCount) || (0 > m_beginFrame))
@@ -140,6 +141,7 @@ EGEResult ResourceSprite::setInstance(const PSprite& instance)
   instance->setDuration(m_duration);
   instance->setFrameData(m_frameData);
   instance->setTexture(m_sheet->textureImage()->createInstance());
+  instance->setRepeatDelay(m_repeatDelay);
 
   Sprite::FinishPolicy finishPolicy = Sprite::FP_STOP;
   if (m_repeat)

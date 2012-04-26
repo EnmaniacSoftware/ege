@@ -132,15 +132,31 @@ void ImagedAnimationTest::groupLoadComplete(const String& name)
   {
     PResourceImagedAnimation animRes;
 
-    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "static-banana");
+    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "static_banana");
     //EGE_ASSERT(animRes);
     //m_anims.push_back(animRes->createInstance());
 
-    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "translate-scale-banana");
+    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "translate_scale_banana");
     //EGE_ASSERT(animRes);
     //m_anims.push_back(animRes->createInstance());
 
-    animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "translate-2-images");
+    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "004_translate_2images");
+    //EGE_ASSERT(animRes);
+    //m_anims.push_back(animRes->createInstance());
+
+    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "blink");
+    //EGE_ASSERT(animRes);
+    //m_anims.push_back(animRes->createInstance());
+
+    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "idle");
+    //EGE_ASSERT(animRes);
+    //m_anims.push_back(animRes->createInstance());
+
+    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "dance");
+    //EGE_ASSERT(animRes);
+    //m_anims.push_back(animRes->createInstance());
+
+    animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "chomp");
     EGE_ASSERT(animRes);
     m_anims.push_back(animRes->createInstance());
   }
@@ -157,8 +173,7 @@ void ImagedAnimationTest::preRender(PRenderTarget target)
     PImagedAnimation anim = *it;
   
     Matrix4f matrix = Matrix4f::IDENTITY;
-    //matrix.setTranslation(100 + i * 300.0f, 100, 0);
-    matrix.setScale(256, 256, 1);
+    matrix.setTranslation(100, i * 300.0f, 0);
 
     anim->addForRendering(app()->graphics()->renderer(), matrix);
   }

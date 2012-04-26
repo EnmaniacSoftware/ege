@@ -10,19 +10,12 @@ EGE_NAMESPACE_BEGIN
 
 namespace EGEImagedAnimation
 {
-  /*! Available actions. */
-  //enum Action
-  //{
-  //  ACTION_SHOW,
-  //  ACTION_HIDE,
-  //  ACTION_UPDATE
-  //};
-
   /*! Structure defining frame data info. */
   struct ActionData
   {
-    s32 queue;
-    Matrix4f matrix;
+    s32 objectId;                             /*!< Object ID for which action is to be performed. */
+    s32 queue;                                /*!< Render queue offset. */
+    Matrix4f matrix;                          /*!< Transformation matrix. */
   };
 }
 

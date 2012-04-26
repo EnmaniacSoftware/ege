@@ -13,6 +13,9 @@
 #include <EGEImagedAnimation.h>
 #include <EGEMatrix.h>
 #include <EGEMap.h>
+#include <EGEGraphics.h>
+#include <EGEVector.h>
+#include <EGEList.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -76,13 +79,22 @@ class ImagedAnimation : public Object
     void setFinishPolicy(FinishPolicy policy);
     /* Adds object with a given id to animation. 
      * @param objectId    Object Id which is being added.
+     * @param size        Object size (in pixels).
      * @param material    Material used by the object.
      * @param baseMatrix  Object's base transformation matrix.
      * @param actions     Array of animation actions of the object. Each entry corresponds to a given frame.
      */
-    EGEResult addObject(s32 objectId, PMaterial material, const Matrix4f& baseMatrix, const DynamicArray<EGEImagedAnimation::ActionData>& actions);
+    EGEResult addObject(s32 objectId, const Vector2f& size, PMaterial material, const Matrix4f& baseMatrix);
+    /* Adds frame data.
+     * @param action  List of action to be processed at given frame.
+     * @note  This creates new frame and appends it into existing ones.
+     */
+    EGEResult addFrameData(const List<EGEImagedAnimation::ActionData>& actions);
+
     /* Renders animation. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
+    /* Sets base render priority. */
+    void setBaseRenderPriority(EGEGraphics::RenderPriority basePriority);
 
   private:
 
@@ -90,28 +102,34 @@ class ImagedAnimation : public Object
     struct ObjectData
     {
       PRenderComponent renderData;                            /*!< Render data. */
-      Matrix4f matrix;                                        /*!< Base transformation matrix. */
-      bool visible;                                           /*!< TRUE if object is visible. */
-      DynamicArray<EGEImagedAnimation::ActionData> actions;   /*!< Array of actions for all frames. */
+      Matrix4f baseMatrix;                                    /*!< Base transformation matrix. */
+      Matrix4f baseFrameMatrix;                               /*!< Combined base and frame transformations matrix. */
+    };
+
+    /*! Frame data struct. */
+    struct FrameData
+    {
+      List<EGEImagedAnimation::ActionData> actions;           /*!< Array of actions for all frames. */
     };
 
     /*! Internal state flags. */
     enum StateFlags
     {
-      STATE_STOPPED = 0x00,               /*!< Playback is stopped. */
-      STATE_PLAYING = 0x01                /*!< Playing. */
+      STATE_STOPPED = 0x00,                                   /*!< Playback is stopped. */
+      STATE_PLAYING = 0x01                                    /*!< Playing. */
     };
 
 	  EGE_DECLARE_FLAGS(State, StateFlags)
 
     typedef Map<s32, ObjectData> ObjectDataMap;
+    typedef DynamicArray<FrameData> FrameDataArray;
 
   private:
 
     /*! Returns current state. */
     inline State state() const { return m_state; }
-    /* Updates objects for current frame index. */
-    void updateObjects();
+    /* Updates animation objects with given frame data. */
+    void update(s32 frameIndex);
 
   private:
 
@@ -127,12 +145,14 @@ class ImagedAnimation : public Object
     Time m_frameTimeLeft;
     /*! Playback duration. */
     Time m_duration;
-    /*! Frame count. */
-    s32 m_frameCount;
     /*! Finish policy. */
     FinishPolicy m_finishPolicy;
     /*! Map of all objects [objectId, ObjectData]. */
     ObjectDataMap m_objects;
+    /*! Base render priority. */
+    EGEGraphics::RenderPriority m_baseRenderPriority; 
+    /*! Array of frame data. */
+    FrameDataArray m_frames;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

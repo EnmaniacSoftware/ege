@@ -11,6 +11,8 @@
 #include <EGETime.h>
 #include <EGEDynamicArray.h>
 #include <EGEList.h>
+#include <EGERect.h>
+#include <EGEImagedAnimation.h>
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN
@@ -76,6 +78,8 @@ class ResourceImagedAnimation : public IResource
       Vector2f translate;
       Vector2f scale;
       Vector2f skew;
+      Rectf rect;
+      Vector2f size;
 
       PResourceMaterial materialResource;
     };

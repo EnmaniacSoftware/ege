@@ -15,8 +15,8 @@ ImagedAnimation::ImagedAnimation() : Object(NULL),
                                      m_state(STATE_STOPPED), 
                                      m_name(""),
                                      m_frameIndex(0),
-                                     m_frameCount(0),
-                                     m_finishPolicy(FP_STOP)
+                                     m_finishPolicy(FP_STOP),
+                                     m_baseRenderPriority(EGEGraphics::RP_MAIN)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -24,8 +24,8 @@ ImagedAnimation::ImagedAnimation(Application* app, const String& name) : Object(
                                                                          m_state(STATE_STOPPED), 
                                                                          m_name(name),
                                                                          m_frameIndex(0),
-                                                                         m_frameCount(0),
-                                                                         m_finishPolicy(FP_STOP)
+                                                                         m_finishPolicy(FP_STOP),
+                                                                         m_baseRenderPriority(EGEGraphics::RP_MAIN)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ void ImagedAnimation::update(const Time& time)
     if (0 >= m_frameTimeLeft.microseconds())
     {
       // go to next frame
-      if (++m_frameIndex == static_cast<s32>(m_frameCount))
+      if (++m_frameIndex == static_cast<s32>(m_frames.size()))
       {
         // we reach end of cycle
 
@@ -83,6 +83,9 @@ void ImagedAnimation::update(const Time& time)
         }
       }
 
+      // update objects
+      update(m_frameIndex);
+
       // emit
       emit frameChanged(this, m_frameIndex);
 
@@ -95,14 +98,17 @@ void ImagedAnimation::update(const Time& time)
 /*! Starts playing. */
 void ImagedAnimation::play()
 {
-  if (!isPlaying() && !m_objects.empty())
+  if (!isPlaying() && !m_objects.empty() && !m_frames.empty())
   {
     // reset frame
     m_frameIndex = 0;
 
     // recalculate frame time 
-    m_frameTime     = m_duration / static_cast<float32>(m_frameCount);
+    m_frameTime     = m_duration / static_cast<float32>(m_frames.size());
     m_frameTimeLeft = m_frameTime;
+
+    // update objects
+    update(m_frameIndex);
 
     // emit first frame straight away
     emit frameChanged(this, m_frameIndex);
@@ -148,11 +154,11 @@ void ImagedAnimation::setName(const String& name)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds object with a given id to animation. 
  *  @param objectId    Object Id which is being added.
+ *  @param size        Object size (in pixels).
  *  @param material    Material used by the object.
  *  @param baseMatrix  Object's base transformation matrix.
- *  @param actions     Array of animation actions of the object. Each entry corresponds to a given frame.
  */
-EGEResult ImagedAnimation::addObject(s32 objectId, PMaterial material, const Matrix4f& baseMatrix, const DynamicArray<EGEImagedAnimation::ActionData>& actions)
+EGEResult ImagedAnimation::addObject(s32 objectId, const Vector2f& size, PMaterial material, const Matrix4f& baseMatrix)
 {
   ObjectData data;
 
@@ -164,20 +170,17 @@ EGEResult ImagedAnimation::addObject(s32 objectId, PMaterial material, const Mat
   }
 
   // create object
-  data.matrix     = baseMatrix;
-  data.renderData = RenderObjectFactory::CreateQuadXY(app(), String::Format("image-animation-object-%d", m_objects.size()), Vector4f::ZERO, Vector2f::ONE,
-                                                      ALIGN_TOP_LEFT, EGEVertexBuffer::ST_V2_T2, 50, EGEGraphics::RPT_TRIANGLE_STRIPS, 
-                                                      EGEVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
-  data.actions    = actions;
+  data.baseFrameMatrix  = Matrix4f::IDENTITY;
+  data.baseMatrix       = baseMatrix;
+  data.renderData       = RenderObjectFactory::CreateQuadXY(app(), String::Format("image-animation-object-%d", m_objects.size()), Vector4f::ZERO, size,
+                                                            ALIGN_TOP_LEFT, EGEVertexBuffer::ST_V2_T2, 0, EGEGraphics::RPT_TRIANGLE_STRIPS, 
+                                                            EGEVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
 
   // check if properly created
   if ((NULL != data.renderData))
   {
     // set material
     data.renderData->setMaterial(material);
-
-    // cache number of frames
-    m_frameCount = Math::Max(m_frameCount, static_cast<s32>(actions.size()));
 
     // add into pool
     m_objects.insert(objectId, data);
@@ -187,37 +190,62 @@ EGEResult ImagedAnimation::addObject(s32 objectId, PMaterial material, const Mat
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds frame data.
+ *  @param action  List of action to be processed at given frame.
+ *  @note  This creates new frame and appends it into existing ones.
+ */
+EGEResult ImagedAnimation::addFrameData(const List<EGEImagedAnimation:: ActionData>& actions)
+{
+  FrameData frameData;
+  frameData.actions = actions;
+
+  m_frames.push_back(frameData);
+
+  // if first frame added, update object
+  if (1 == m_frames.size())
+  {
+    update(0);
+  }
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders animation. */
 void ImagedAnimation::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
-  for (ObjectDataMap::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+  // NOTE: it is imperative to render objects in the order of appearence for a given frame
+
+  const FrameData& frameData = m_frames[m_frameIndex];
+  for (List<EGEImagedAnimation::ActionData>::const_iterator it = frameData.actions.begin(); it != frameData.actions.end(); ++it)
   {
-    const ObjectData& data = it->second;
+    const EGEImagedAnimation::ActionData& action = *it;
 
-    s32 frameIndex = Math::Min(m_frameIndex, static_cast<s32>(data.actions.size() - 1));
-
-    Matrix4f mat = transform * data.matrix * data.actions[frameIndex].matrix;
-    Matrix4f mat2 = data.actions[frameIndex].matrix * data.matrix * transform;
-    Matrix4f mat3 = data.matrix * data.actions[frameIndex].matrix * transform;
-
-    if (data.actions.size() > 1)
-    {
-      int a = 1;
-    }
-
-    data.renderData->setPriority(50 + data.actions[frameIndex].queue);
-    renderer->addForRendering(data.renderData, mat3);
+    const ObjectData& objectData = m_objects.at(action.objectId);
+    renderer->addForRendering(objectData.renderData, transform * objectData.baseFrameMatrix);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates objects for current frame index. */
-void ImagedAnimation::updateObjects()
+/*! Sets base render priority. */
+void ImagedAnimation::setBaseRenderPriority(EGEGraphics::RenderPriority basePriority)
 {
-  //for (ObjectDataMap::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
-  //{
-  //  ObjectData& data = it->second;
+  m_baseRenderPriority = basePriority;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Updates animation objects with given frame data. */
+void ImagedAnimation::update(s32 frameIndex)
+{
+  FrameData& frameData = m_frames[m_frameIndex];
+  for (List<EGEImagedAnimation::ActionData>::iterator it = frameData.actions.begin(); it != frameData.actions.end(); ++it)
+  {
+    EGEImagedAnimation::ActionData& action = *it;
 
-  //  data.matrix = data.actions[m_frameIndex].matrix;
-  //}
+    ObjectData& objectData = m_objects.at(action.objectId);
+
+    // update matrix
+    objectData.baseFrameMatrix = action.matrix * objectData.baseMatrix;
+
+    // update priority
+    objectData.renderData->setPriority(m_baseRenderPriority + action.queue);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

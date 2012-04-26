@@ -26,6 +26,7 @@ class TQuaternion
     TQuaternion();
     TQuaternion(T x, T y, T z, T w);
     TQuaternion(const TQuaternion& quat);
+    TQuaternion(const TVector3<T>& axis, const Angle& angle);
 
   public:
 
@@ -94,6 +95,12 @@ TQuaternion<T>::TQuaternion(T x, T y, T z, T w) : x(x), y(y), z(z), w(w)
 template <typename T>
 TQuaternion<T>::TQuaternion(const TQuaternion& quat) : x(quat.x), y(quat.y), z(quat.z), w(quat.w)
 {
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TQuaternion<T>::TQuaternion(const TVector3<T>& axis, const Angle& angle)
+{
+  create(axis, angle);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

@@ -13,7 +13,9 @@ Sprite::Sprite() : Object(NULL),
                    m_state(STATE_STOPPED), 
                    m_name(""),
                    m_frameIndex(0),
-                   m_finishPolicy(FP_STOP)
+                   m_finishPolicy(FP_STOP),
+                   m_repeatDelay(0LL),
+                   m_repeatDelayLeft(0LL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,7 +23,9 @@ Sprite::Sprite(Application* app, const String& name) : Object(app),
                                                        m_state(STATE_STOPPED), 
                                                        m_name(name),
                                                        m_frameIndex(0),
-                                                       m_finishPolicy(FP_STOP)
+                                                       m_finishPolicy(FP_STOP),
+                                                       m_repeatDelay(0LL),
+                                                       m_repeatDelayLeft(0LL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -34,56 +38,85 @@ void Sprite::update(const Time& time)
 {
   if (isPlaying())
   {
-    // update frame time
-    m_frameTimeLeft -= time;
-
-    // check if frame time passed
-    if (0 >= m_frameTimeLeft.microseconds())
+    // check if in delay between repeats
+    if (0 < m_repeatDelayLeft.microseconds())
     {
-      // go to next frame
-      if (++m_frameIndex == static_cast<s32>(m_frameData.size()))
+      m_repeatDelayLeft -= time;
+      if (0 >= m_repeatDelayLeft.microseconds())
       {
-        // we reach end of cycle
+        m_frameIndex = 0;
 
-        // process according to policy
-        switch (m_finishPolicy)
-        {
-          case FP_REPEAT:
+        // emit
+        emit frameChanged(this, m_frameIndex);
 
-            m_frameIndex = 0;
-            break;
+        // restart frame time
+        m_frameTimeLeft = m_frameTime;
 
-          case FP_PING_PONG:
-
-            EGE_ASSERT(false && "Implement!");
-            break;
-
-          case FP_STOP:
-
-            // change state
-            m_state = STATE_STOPPED;
-
-            // set current frame to last frame
-            m_frameIndex--;
-
-            // emit
-            emit finished(this);
-
-            // done
-            return;
-
-          default:
-
-            EGE_ASSERT(false && "Unsupported finish policy!");
-            break;
-        }
+        // done
       }
+    }
+    else
+    {
+      // update frame time
+      m_frameTimeLeft -= time;
 
-      // emit
-      emit frameChanged(this, m_frameIndex);
+      // check if frame time passed
+      if (0 >= m_frameTimeLeft.microseconds())
+      {
+        // go to next frame
+        if (++m_frameIndex == static_cast<s32>(m_frameData.size()))
+        {
+          // we reach end of cycle
 
-      // add frame time to whats left
-      m_frameTimeLeft += m_frameTime;
+          // process according to policy
+          switch (m_finishPolicy)
+          {
+            case FP_REPEAT:
+
+              // check if any restart delay is needed
+              if (0 < m_repeatDelay.microseconds())
+              {
+                // lets wait
+                m_repeatDelayLeft = m_repeatDelay;
+                return;
+              }
+
+              // restart immediately
+              m_frameIndex = 0;
+              break;
+
+            case FP_PING_PONG:
+
+              EGE_ASSERT(false && "Implement!");
+              break;
+
+            case FP_STOP:
+
+              // change state
+              m_state = STATE_STOPPED;
+
+              // set current frame to last frame
+              m_frameIndex--;
+
+              // emit
+              emit finished(this);
+
+              // done
+              return;
+
+            default:
+
+              EGE_ASSERT(false && "Unsupported finish policy!");
+              break;
+          }
+        }
+
+        // emit
+        emit frameChanged(this, m_frameIndex);
+
+        // add frame time to whats left
+        m_frameTimeLeft += m_frameTime;
+      }
     }
   }
 }
@@ -93,8 +126,9 @@ void Sprite::play()
 {
   if (!isPlaying() && !m_frameData.empty())
   {
-    // reset frame
+    // reset data
     m_frameIndex = 0;
+    m_repeatDelayLeft = 0LL;
 
     // check if frame time is to be calculated
     if (0 == m_frameTime.microseconds() && (0 < m_frameData.size()))
@@ -116,8 +150,9 @@ void Sprite::stop()
 {
   if (isPlaying())
   {
-    // reset frame index
+    // reset data
     m_frameIndex = 0;
+    m_repeatDelayLeft = 0LL;
 
     // change state
     m_state = STATE_STOPPED;
@@ -165,5 +200,11 @@ void Sprite::setFinishPolicy(FinishPolicy policy)
 void Sprite::setName(const String& name)
 {
   m_name = name;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets repeat delay. */
+void Sprite::setRepeatDelay(const Time& time)
+{
+  m_repeatDelay = time;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

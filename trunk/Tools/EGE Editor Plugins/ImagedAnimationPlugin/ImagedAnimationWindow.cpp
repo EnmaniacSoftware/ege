@@ -19,9 +19,6 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
   updateMenus();
 
   QStringList list;
-  list << "static_banana";
-  list << "translate_scale_banana";
-  list << "004_translate_2images";
   list << "blink";
   list << "idle";
   list << "dance";

@@ -185,40 +185,49 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
     Matrix4f matrix = Matrix4f::IDENTITY;
     matrix.setTranslation(data.translate.x, data.translate.y, 0);
     matrix.setScale(data.scale.x, data.scale.y, 1);
-    matrix[1][0] = Math::Tan(data.skew.x);
-    matrix[0][2] = Math::Tan(data.skew.y);
+    matrix[0][1] = data.skew.x;
+    matrix[1][0] = data.skew.y;
     
-    // go thru all frames and compose list of actions for a given object
-    DynamicArray<EGEImagedAnimation::ActionData> actions;
-    for (FrameDataList::const_iterator itFrame = m_frames.begin(); itFrame != m_frames.end(); ++itFrame)
-    {
-      const FrameData& frameData = *itFrame;
-      for (FrameActionDataList::const_iterator itAction = frameData.actions.begin(); itAction != frameData.actions.end(); ++itAction)
-      {
-        const FrameActionData& action = *itAction;
-        if (action.objectId == data.id)
-        {
-          EGEImagedAnimation::ActionData actionData;
-          
-          actionData.queue  = action.queue;
-          actionData.matrix = Matrix4f::IDENTITY;
-          actionData.matrix.setTranslation(action.translate.x, action.translate.y, 0);
-          actionData.matrix.setScale(action.scale.x, action.scale.y, 1);
-          actionData.matrix[1][0] = Math::Tan(action.skew.x);
-          actionData.matrix[0][2] = Math::Tan(action.skew.y);
-
-          // add to pool
-          actions.push_back(actionData);
-        }
-      }
-    }
-
-    if (EGE_SUCCESS != instance->addObject(data.id, data.materialResource->createInstance(), matrix, actions))
+    if (EGE_SUCCESS != instance->addObject(data.id, data.size, data.materialResource->createInstance(), matrix))
     {
       // error!
       return EGE_ERROR;
     }
   }
+
+  // add frames
+  List<EGEImagedAnimation::ActionData> actions;
+  for (FrameDataList::const_iterator itFrame = m_frames.begin(); itFrame != m_frames.end(); ++itFrame)
+  {
+    const FrameData& frameData = *itFrame;
+    for (FrameActionDataList::const_iterator itAction = frameData.actions.begin(); itAction != frameData.actions.end(); ++itAction)
+    {
+      const FrameActionData& action = *itAction;
+
+      EGEImagedAnimation::ActionData actionData;
+          
+      actionData.queue    = action.queue;
+      actionData.objectId = action.objectId;
+      actionData.matrix   = Matrix4f::IDENTITY;
+      actionData.matrix.setTranslation(action.translate.x, action.translate.y, 0);
+      actionData.matrix.setScale(action.scale.x, action.scale.y, 1);
+      actionData.matrix[0][1] = action.skew.x;
+      actionData.matrix[1][0] = action.skew.y;
+
+      // add to pool
+      actions.push_back(actionData);
+    }
+
+    if (EGE_SUCCESS != instance->addFrameData(actions))
+    {
+      // error!
+      return EGE_ERROR;
+    }
+
+    // clean up
+    actions.clear();
+  }
+
 
   // generate frame data
 //  calculateFrameData();
@@ -321,6 +330,8 @@ EGEResult ResourceImagedAnimation::addObject(const PXmlElement& tag)
   data.translate    = tag->attribute("translate", "0 0").toVector2f(&error);
   data.scale        = tag->attribute("scale", "1 1").toVector2f(&error);
   data.skew         = tag->attribute("skew", "0 0").toVector2f(&error);
+  data.rect         = tag->attribute("rect", "0 0 0 0").toRectf(&error);
+  data.size         = tag->attribute("size", "0 0").toVector2f(&error);
 
   if (error)
   {
