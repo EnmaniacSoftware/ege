@@ -8,10 +8,8 @@ EGE_NAMESPACE
   static bool pointSprite = false;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ParticleEmitter)
 EGE_DEFINE_DELETE_OPERATORS(ParticleEmitter)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNodeObject(name),
                                                                          m_active(false), 

@@ -19,7 +19,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(ResourceManager, PResourceManager)
 EGE_DECLARE_SMART_CLASS(ResourceGroup, PResourceGroup)
 EGE_DECLARE_SMART_CLASS(IResource, PResource)
@@ -27,13 +26,9 @@ EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
 EGE_DECLARE_SMART_CLASS(ResourceText, PResourceText)
 EGE_DECLARE_SMART_CLASS(ResourceSound, PResourceSound)
 EGE_DECLARE_SMART_CLASS(Event, PEvent)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 typedef PResource (*egeResourceCreateFunc)(Application* app, ResourceManager* manager);
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager : public Object, public IEventListener
 {
   /*! For accessing private data. */
@@ -188,7 +183,6 @@ class ResourceManager : public Object, public IEventListener
     /*! Current state. */
     State m_state;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

@@ -152,13 +152,13 @@ void ImagedAnimationTest::groupLoadComplete(const String& name)
     //EGE_ASSERT(animRes);
     //m_anims.push_back(animRes->createInstance());
 
-    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "dance");
-    //EGE_ASSERT(animRes);
-    //m_anims.push_back(animRes->createInstance());
-
-    animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "chomp");
+    animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "dance");
     EGE_ASSERT(animRes);
     m_anims.push_back(animRes->createInstance());
+
+    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "chomp");
+    //EGE_ASSERT(animRes);
+    //m_anims.push_back(animRes->createInstance());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

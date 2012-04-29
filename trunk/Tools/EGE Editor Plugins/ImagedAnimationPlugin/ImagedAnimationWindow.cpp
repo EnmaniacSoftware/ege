@@ -24,23 +24,28 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
   list << "dance";
   list << "chomp";
 
-  foreach (const QString& string, list)
+  float scales[] = { 0.25f, 0.5f };
+
+  for (int i = 0; i < sizeof (scales) / sizeof (scales[0]); ++i)
   {
-    // TAGE
-    QFile file(QString("data/") + string + QString(".xml"));
-    file.open(QIODevice::Text | QIODevice::ReadOnly);
-    QXmlStreamReader input(&file);
+    foreach (const QString& string, list)
+    {
+      // TAGE
+      QFile file(QString("data/") + string + QString(".xml"));
+      file.open(QIODevice::Text | QIODevice::ReadOnly);
+      QXmlStreamReader input(&file);
 
-    QString outXml;
-    QXmlStreamWriter output(&outXml);
-    output.setAutoFormatting(true);
+      QString outXml;
+      QXmlStreamWriter output(&outXml);
+      output.setAutoFormatting(true);
 
-    m_converter.convert(input, output, string);
+      m_converter.convert(input, output, string, scales[i]);
 
-    QFile fileOut(QString("ege_") + string + QString(".xml"));
-    fileOut.open(QIODevice::Text | QIODevice::WriteOnly);
-    QTextStream out(&fileOut);
-    out << outXml;
+      QFile fileOut(QString("ege_%1_%2.xml").arg(string).arg(QString::number(scales[i]).remove(",")));
+      fileOut.open(QIODevice::Text | QIODevice::WriteOnly);
+      QTextStream out(&fileOut);
+      out << outXml;
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

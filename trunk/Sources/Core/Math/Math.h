@@ -186,6 +186,9 @@ class Math
     /* Rounds to zero given value if less than default epsilon. */
     static float32 ZeroRoundOff(float32 value);
 
+    /* Returns random generator. */
+    static Random& Random();
+
   public:
 
     /*! Inaccuracy cut-off value. */
@@ -204,11 +207,6 @@ class Math
     static const s32 MAX_U16;
     /*! Min 16-bit unsigned integer value. */
     static const s32 MIN_U16;
-
-  private:
-
-    /*! Random generator. */
-    static Random m_random;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

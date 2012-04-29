@@ -1,5 +1,6 @@
 #include "Core/Resource/ResourceImagedAnimation.h"
 #include "Core/Resource/ResourceManager.h"
+#include "Core/Resource/ResourceSequencer.h"
 #include "Core/Animation/ImagedAnimation.h"
 #include <EGEXml.h>
 #include <EGEDebug.h>
@@ -8,9 +9,10 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define NODE_OBJECT "object"
-#define NODE_FRAME  "frame"
-#define NODE_ACTION "action"
+#define NODE_OBJECT   "object"
+#define NODE_FRAME    "frame"
+#define NODE_ACTION   "action"
+#define NODE_SEQUENCE "sequence"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceImagedAnimation)
 EGE_DEFINE_DELETE_OPERATORS(ResourceImagedAnimation)
@@ -47,8 +49,9 @@ EGEResult ResourceImagedAnimation::create(const String& path, const PXmlElement&
   bool error = false;
 
   // get data
-  m_name      = tag->attribute("name");
-  m_duration  = tag->attribute("duration").toTime(&error);
+  m_name          = tag->attribute("name");
+  m_frameDuration = tag->attribute("frame-duration").toTime(&error);
+  m_displaySize   = tag->attribute("size").toVector2f(&error);
 
   // check if obligatory data is wrong
   if (error || m_name.empty())
@@ -72,6 +75,11 @@ EGEResult ResourceImagedAnimation::create(const String& path, const PXmlElement&
     {
       // add frame
       result = addFrame(child);
+    }
+    else if (NODE_SEQUENCE == child->name())
+    {
+      // add sequence
+      result = addSequence(child);
     }
 
     // check if failed
@@ -133,6 +141,17 @@ EGEResult ResourceImagedAnimation::load()
         result = EGE_ERROR_NOT_FOUND;
       }
     }
+
+    // load all sequencers
+    for (SequenceResourceList::iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
+    {
+      PResourceSequencer seqResource = *it;
+      if (EGE_SUCCESS != (result = seqResource->load()))
+      {
+        // error!
+        return result;
+      }
+    }
   }
 
   return result;
@@ -176,6 +195,9 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
   {
     return EGE_ERROR;
   }
+
+  // clear instance
+  instance->clear();
 
   // add objects
   for (ObjectDataArray::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
@@ -227,95 +249,30 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
     // clean up
     actions.clear();
   }
-
-
-  // generate frame data
-//  calculateFrameData();
   
   // setup data
-  instance->setDuration(m_duration);
-  //instance->setFrameData(m_frameData);
-  //instance->setTexture(m_sheet->textureImage()->createInstance());
+  instance->setFrameDuration(m_frameDuration);
+  instance->setName(name());
+  instance->setDisplaySize(m_displaySize);
 
-  //Sprite::FinishPolicy finishPolicy = Sprite::FP_STOP;
-  //if (m_repeat)
-  //{
-  //  finishPolicy = Sprite::FP_REPEAT;
-  //}
-  //else if (m_pingPong)
-  //{
-  //  finishPolicy = Sprite::FP_PING_PONG;
-  //}
-  //instance->setFinishPolicy(finishPolicy);
+  // add sequencers
+  for (SequenceResourceList::iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
+  {
+    PResourceSequencer seqRes = *it;
+
+    // create instance of sequencer
+    PSequencer seq = seqRes->createInstance();
+    if (NULL == seq)
+    {
+      // error!
+      return EGE_ERROR_NO_MEMORY;
+    }
+
+    instance->addSequencer(seq);
+  }
 
   return EGE_SUCCESS;
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-///*! Invalidates frame data. */
-//void ResourceImagedAnimation::invalidateFrameData()
-//{
-//  m_frameDataInvalid = true;
-//}
-////--------------------------------------------------------------------------------------------------------------------------------------------------------------
-///*! Calculates frame data. */
-//void ResourceImagedAnimation::calculateFrameData()
-//{
-//  const float32 cellWidth  = 1.0f / sheet()->framesPerRow();
-//  const float32 cellHeight = 1.0f / Math::Ceil(sheet()->frameCount() / static_cast<float32>(sheet()->framesPerRow()));
-//
-//  if (m_frameDataInvalid)
-//  {
-//    TextureImage textureImage(app());
-//    m_sheet->textureImage()->setInstance(textureImage);
-//
-//    // create new data for each frame
-//    FameDataArray allFramesData;
-//    for (s32 i = 0; i < m_frameCount; ++i)
-//    {
-//      EGESprite::FrameData data;
-//  
-//      data.m_rect = textureImage.rect().combine(Rectf((m_beginFrame + i) % sheet()->framesPerRow() * cellWidth, 
-//                                                      (m_beginFrame + i) / sheet()->framesPerRow() * cellHeight, cellWidth, cellHeight));
-//
-//      // add to pool
-//      allFramesData.push_back(data);
-//    }
-//
-//    // clear old data
-//    m_frameData.clear();
-//
-//    // fill in frames for single cycle
-//    if (m_repeat || (!m_repeat && !m_pingPong))
-//    {
-//      // for REPEAT and STOP modes, cycle consists of all frames from begin one to the end. After reaching end playback should repeat itself
-//      for (s32 i = 0; i < m_frameCount; ++i)
-//      {
-//        m_frameData.push_back(allFramesData[i]);
-//      }
-//    }
-//    else if (m_pingPong)
-//    {
-//      // for PING-PONG mode, cycle consists of all frames from begin one to the end and back. However, last frame should be counted only once and final frame
-//      // should end before first frame so in next cycle first frame is only processed once (by new cycle only)
-//      for (s32 i = 0; i < m_frameCount; ++i)
-//      {
-//        m_frameData.push_back(allFramesData[i]);
-//      }
-//
-//      for (s32 i = m_frameCount - 1; i > 0; --i)
-//      {
-//        m_frameData.push_back(allFramesData[i]);
-//      }
-//    }
-//    else
-//    {
-//      EGE_ASSERT(false && "Not implemented mode");
-//    }
-//
-//    // validate
-//    m_frameDataInvalid = false;
-//  }
-//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds object. */
 EGEResult ResourceImagedAnimation::addObject(const PXmlElement& tag)
@@ -400,6 +357,43 @@ EGEResult ResourceImagedAnimation::addAction(const PXmlElement& tag, FrameData* 
 
   // add to frame
   frameData->actions.push_back(action);
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Adds sequence. */
+EGEResult ResourceImagedAnimation::addSequence(const PXmlElement& tag)
+{
+  EGEResult result = EGE_SUCCESS;
+
+  // create sequence resource manually
+  PResourceSequencer seqRes = ResourceSequencer::Create(app(), manager());
+  if (NULL == seqRes)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // deserialize resource
+  if (EGE_SUCCESS != (result = seqRes->create("", tag)))
+  {
+    // error!
+    return result;
+  }
+
+  // check if such sequence already exists
+  for (SequenceResourceList::const_iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
+  {
+    const PResourceSequencer& resource = *it;
+    if (resource->name() == seqRes->name())
+    {
+      // error!
+      return EGE_ERROR_ALREADY_EXISTS;
+    }
+  }
+
+  // add to pool
+  m_sequenceResources.push_back(seqRes);
 
   return EGE_SUCCESS;
 }

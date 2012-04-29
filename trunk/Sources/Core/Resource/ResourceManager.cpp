@@ -16,6 +16,7 @@
 #include "Core/Resource/ResourceWidget.h"
 #include "Core/Resource/ResourceImagedAnimation.h"
 #include "Core/Resource/ResourceManagerWorkThread.h"
+#include "Core/Resource/ResourceSequencer.h"
 #include "Core/Graphics/Font.h"
 #include "Core/Debug/DebugFont.h"
 #include "Core/Application/Application.h"
@@ -56,6 +57,7 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
                                                     { RESOURCE_NAME_SOUND, ResourceSound::Create },
                                                     { RESOURCE_NAME_WIDGET, ResourceWidget::Create },
                                                     { RESOURCE_NAME_IMAGED_ANIMATION, ResourceImagedAnimation::Create },
+                                                    { RESOURCE_NAME_SEQUENCE, ResourceSequencer::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::ResourceManager(Application* app) : Object(app),

@@ -23,6 +23,7 @@ EGE_NAMESPACE_BEGIN
 #define RESOURCE_NAME_SOUND             "sound"
 #define RESOURCE_NAME_WIDGET            "widget"
 #define RESOURCE_NAME_IMAGED_ANIMATION  "imaged-animation"
+#define RESOURCE_NAME_SEQUENCE          "sequence"
 
 #define TR(app, name)     (app)->resourceManager()->textResource((name))->text()
 #define TRN(app, name, n) (app)->resourceManager()->textResource((name))->text((n))

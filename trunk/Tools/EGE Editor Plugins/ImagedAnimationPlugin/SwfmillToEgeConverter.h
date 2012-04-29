@@ -17,12 +17,13 @@ class SwfMillToEgeConverter
     SwfMillToEgeConverter();
     ~SwfMillToEgeConverter();
 
-    /* Converts SWFMILL generated XML into EGE framework format. 
-     * @param input     SWFMILL generated input XML stream.
-     * @param output    EGE framework output XML stream.
-     * @param baseName  Base name for generated assets.
+    /* Converts SWFMILL   generated XML into EGE framework format. 
+     * @param input       SWFMILL generated input XML stream.
+     * @param output      EGE framework output XML stream.
+     * @param baseName    Base name for generated assets.
+     * @param scaleFactor Scale factor to be applied to transformations and other size related figures.
      */
-    bool convert(QXmlStreamReader& input, QXmlStreamWriter& output, const QString& baseName);
+    bool convert(QXmlStreamReader& input, QXmlStreamWriter& output, const QString& baseName, float scaleFactor = 1.0f);
 
   private:
 
@@ -120,6 +121,10 @@ class SwfMillToEgeConverter
     QMap<int, int> m_objectPlacementMap;
     /*! Base name. */
     QString m_baseName;
+    /*! Current scale factor. */
+    float m_scaleFactor;
+    /*! Display rect. */
+    QRectF m_displayRect;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

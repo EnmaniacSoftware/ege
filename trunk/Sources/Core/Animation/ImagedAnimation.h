@@ -16,6 +16,7 @@
 #include <EGEGraphics.h>
 #include <EGEVector.h>
 #include <EGEList.h>
+#include <EGEAnimation.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -25,8 +26,9 @@ EGE_DECLARE_SMART_CLASS(ImagedAnimation, PImagedAnimation)
 EGE_DECLARE_SMART_CLASS(Material, PMaterial)
 EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
+EGE_DECLARE_SMART_CLASS(Sequencer, PSequencer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ImagedAnimation : public Object
+class ImagedAnimation : public Object, public IAnimation
 {
   public:
 
@@ -43,11 +45,11 @@ class ImagedAnimation : public Object
      *  @param sprite     ImagedAnimation object for which frame changed.
      *  @param frameIndex New frame index.
      */
-    Signal2<const ImagedAnimation*, s32> frameChanged;
+    Signal2<ImagedAnimation*, s32> frameChanged;
     /*! Signal emitted when playback is finished.
      *  @param sprite     ImagedAnimation object for which playback is finished.
      */
-    Signal1<const ImagedAnimation*> finished;
+    Signal1<ImagedAnimation*> finished;
 
   public:
 
@@ -61,22 +63,38 @@ class ImagedAnimation : public Object
 
   public:
 
-    /* Updates object. */
-    void update(const Time& time);
-    /* Starts playing. */
-    void play();
-    /* Stops playing. */
-    void stop();
-    /* Sets playback duration. */
-    void setDuration(const Time& duration);
+    /* IAnimation override. Starts playback with a given sequencer. 
+     * @param sequencerName  Name of the sequencer to use for playback.
+     * @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
+     */
+    EGEResult play(const String& sequencerName) override;
+    /* IAnimation override. Stops playback. */
+    void stop() override;
+    /* IAnimation override. Pauses playback. */
+    void pause() override;
+    /* IAnimation override. Returns TRUE if animation is being played. */
+    bool isPlaying() const override;
+    /* IAnimation override. Returns TRUE if animation is paused. */
+    bool isPaused() const override;
+    /* IAnimation override. Returns TRUE if animation is stopped. */
+    bool isStopped() const override;
+    /* IAnimation override. Updates animation. */
+    void update(const Time& time) override;
+
+    /* Sets frame duration. */
+    void setFrameDuration(const Time& duration);
+    /* Sets display size. */
+    void setDisplaySize(const Vector2f& size);
+    /* Sets base display alignment. 
+     * @param alignment Alignment animation is originally created for.
+     * @note  Animation if always aligned to TOP_LEFT anchor from its base alignment.
+     */
+    void setBaseAlignment(Alignment alignment);
     /*! Returns name. */
     inline const String& name() const { return m_name; }
     /* Sets name. */
     void setName(const String& name);
-    /*! Returns TRUE if sprite is being played. */
-    inline bool isPlaying() const { return (state() & STATE_PLAYING) ? true : false; }
-    /* Sets/unsets finish policy. */
-    void setFinishPolicy(FinishPolicy policy);
+
     /* Adds object with a given id to animation. 
      * @param objectId    Object Id which is being added.
      * @param size        Object size (in pixels).
@@ -90,11 +108,18 @@ class ImagedAnimation : public Object
      * @note  This creates new frame and appends it into existing ones.
      */
     EGEResult addFrameData(const List<EGEImagedAnimation::ActionData>& actions);
+    
+    /* Adds sequencer. */
+    void addSequencer(const PSequencer& sequencer);
+    /* Returns current sequencer. */
+    PSequencer currentSequencer() const;
 
     /* Renders animation. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
     /* Sets base render priority. */
-    void setBaseRenderPriority(EGEGraphics::RenderPriority basePriority);
+    void setBaseRenderPriority(s32 priority);
+    /* Clears object. */
+    void clear();
 
   private:
 
@@ -112,24 +137,23 @@ class ImagedAnimation : public Object
       List<EGEImagedAnimation::ActionData> actions;           /*!< Array of actions for all frames. */
     };
 
-    /*! Internal state flags. */
-    enum StateFlags
-    {
-      STATE_STOPPED = 0x00,                                   /*!< Playback is stopped. */
-      STATE_PLAYING = 0x01                                    /*!< Playing. */
-    };
-
-	  EGE_DECLARE_FLAGS(State, StateFlags)
-
     typedef Map<s32, ObjectData> ObjectDataMap;
     typedef DynamicArray<FrameData> FrameDataArray;
+    typedef List<PSequencer> SequencerList;
 
   private:
 
     /*! Returns current state. */
     inline State state() const { return m_state; }
-    /* Updates animation objects with given frame data. */
-    void update(s32 frameIndex);
+    /* Returns sequencer of a given name. */
+    PSequencer sequencer(const String& name) const;
+    
+  private slots:
+
+    /* Slot called when sequencer animated into new frame. */
+    void onSequencerFrameChanged(PSequencer sequencer, s32 frameId);
+    /* Slot called when sequencer finished animation .*/
+    void onSequencerFinished(PSequencer sequencer);
 
   private:
 
@@ -137,22 +161,22 @@ class ImagedAnimation : public Object
     State m_state;
     /*! Name. */
     String m_name;
-    /*! Current frame index (within m_frames). */
-    s32 m_frameIndex;
-    /*! Frame duration time. */
-    Time m_frameTime;
-    /*! Current frame duration left. */
-    Time m_frameTimeLeft;
-    /*! Playback duration. */
-    Time m_duration;
-    /*! Finish policy. */
-    FinishPolicy m_finishPolicy;
+    /*! Frame duration. */
+    Time m_frameDuration;
     /*! Map of all objects [objectId, ObjectData]. */
     ObjectDataMap m_objects;
     /*! Base render priority. */
-    EGEGraphics::RenderPriority m_baseRenderPriority; 
+    s32 m_baseRenderPriority; 
     /*! Array of frame data. */
     FrameDataArray m_frames;
+    /*! Display size. */
+    Vector2f m_displaySize;
+    /*! Base display alignment. */
+    Alignment m_baseAlignment;
+    /*! List of all sequencers. */
+    SequencerList m_sequencers;
+    /*! Current sequencer. */
+    PSequencer m_currentSequencer;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

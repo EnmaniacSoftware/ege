@@ -14,7 +14,6 @@
 #include <EGEColor.h>
 #include <EGEVector.h>
 #include <EGEScene.h>
-#include <EGERandom.h>
 #include <EGEParticle.h>
 #include <EGESignal.h>
 
@@ -178,8 +177,6 @@ class ParticleEmitter : public SceneNodeObject
     PRenderComponent m_renderData;
     /*! Array of particles. */
     ParticleDataArray m_particles;
-    /*! Random generator. */
-    Random m_random;
     /*! List of affectors. */
     ParticleAffectorList m_affectors;
 };

@@ -14,7 +14,7 @@ EGE_DEFINE_DELETE_OPERATORS(Random)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Random::Random(u32 seed) : Object(NULL)
 {
-  m_p = ege_new RandomPrivate(this);
+    m_p = ege_new RandomPrivate(this);
   if (m_p && (0 < seed))
   {
     setSeed(seed);

@@ -5,8 +5,8 @@
 #include <EGEAngle.h>
 #include <EGEComplex.h>
 #include <EGEColor.h>
-#include <limits>
 #include <EGEDebug.h>
+#include <limits>
 
 EGE_NAMESPACE
 
@@ -20,7 +20,7 @@ const s32     Math::MIN_S16         = std::numeric_limits<s16>::min();
 const s32     Math::MAX_U16         = std::numeric_limits<u16>::max();
 const s32     Math::MIN_U16         = std::numeric_limits<u16>::min();
 
-Random Math::m_random;
+static Random random;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Math::Math()
 {
@@ -627,7 +627,7 @@ Vector3f Math::RandomDeviant(const Angle* angle, const Vector3f* vector, const V
 
   // rotate up vector by random amount around this
   Quaternionf q;
-  q.create(*vector, Angle(EGEMath::TWO_PI * m_random(0.0f, 1.0f)));
+  q.create(*vector, Angle(EGEMath::TWO_PI * random(0.0f, 1.0f)));
   newUp = q * newUp;
 
   // finally rotate this by given angle around randomised up
@@ -645,7 +645,7 @@ Vector2f Math::RandomDeviant(const Angle* angle, const Vector2f* vector)
   EGE_ASSERT(angle);
   EGE_ASSERT(vector);
 
-  float32 randomization = m_random(-0.5f, 0.5f);
+  float32 randomization = random(-0.5f, 0.5f);
 
   float32 cos = Math::Cos(angle->radians() * randomization);
   float32 sin = Math::Sin(angle->radians() * randomization);
@@ -677,5 +677,11 @@ s32 Math::GreatestCommonDivisor(s32 a, s32 b)
 float32 Math::ZeroRoundOff(float32 value)
 {
   return (Math::EPSILON > Math::Abs(value)) ? 0.0f : value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns random generator. */
+Random& Math::Random()
+{
+  return random;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

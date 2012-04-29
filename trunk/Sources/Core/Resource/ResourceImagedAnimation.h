@@ -22,6 +22,7 @@ class ResourceManager;
 EGE_DECLARE_SMART_CLASS(ResourceImagedAnimation, PResourceImagedAnimation)
 EGE_DECLARE_SMART_CLASS(ImagedAnimation, PImagedAnimation)
 EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
+EGE_DECLARE_SMART_CLASS(ResourceSequencer, PResourceSequencer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceImagedAnimation : public IResource
 {
@@ -67,6 +68,8 @@ class ResourceImagedAnimation : public IResource
     EGEResult addFrame(const PXmlElement& tag);
     /* Adds action to the given frame. */
     EGEResult addAction(const PXmlElement& tag, FrameData* frameData) const;
+    /* Adds sequence. */
+    EGEResult addSequence(const PXmlElement& tag);
 
   private:
 
@@ -103,17 +106,22 @@ class ResourceImagedAnimation : public IResource
     typedef DynamicArray<ObjectData> ObjectDataArray;
     typedef List<FrameData> FrameDataList;
     typedef List<FrameActionData> FrameActionDataList;
+    typedef List<PResourceSequencer> SequenceResourceList;
 
   private:
 
     /*! Name. */
     String m_name;
-    /*! Duration. */
-    Time m_duration;
+    /*! Frame duration. */
+    Time m_frameDuration;
     /*! Objects array. */
     ObjectDataArray m_objects;
     /*! Frames list. */
     FrameDataList m_frames;
+    /*! Display size (in pixels). */
+    Vector2f m_displaySize;
+    /*! List of sequence resources. */
+    SequenceResourceList m_sequenceResources;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

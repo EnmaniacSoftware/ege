@@ -15,19 +15,21 @@ SwfMillToEgeConverter::~SwfMillToEgeConverter()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts SWFMILL generated XML into EGE framework format. 
- *  @param input      SWFMILL generated input XML stream.
- *  @param output     EGE framework output XML stream.
- *  @param baseName   Base name for generated assets.
+ *  @param input        SWFMILL generated input XML stream.
+ *  @param output       EGE framework output XML stream.
+ *  @param baseName     Base name for generated assets.
+ *  @param scaleFactor  Scale factor to be applied to transformations and other size related figures.
  */
-bool SwfMillToEgeConverter::convert(QXmlStreamReader& input, QXmlStreamWriter& output, const QString& baseName)
+bool SwfMillToEgeConverter::convert(QXmlStreamReader& input, QXmlStreamWriter& output, const QString& baseName, float scaleFactor)
 {
   bool ok;
 
   // clean up
   clear();
 
-  // store base name
-  m_baseName = baseName;
+  // store data
+  m_baseName    = baseName;
+  m_scaleFactor = scaleFactor;
 
   // process children
   while (!input.atEnd() && !output.hasError())
@@ -108,6 +110,24 @@ bool SwfMillToEgeConverter::processHeaderTag(QXmlStreamReader& input)
 
   m_frameCount = input.attributes().value("frames").toString().toInt(&ok);
   RETURN_FALSE_IF_ERROR(ok);
+
+  // process children
+  bool done = false;
+  while (!input.atEnd() && !done)
+  {
+    QXmlStreamReader::TokenType token = input.readNext();
+    switch (token)
+    {
+      case QXmlStreamReader::StartElement:
+
+        if ("Rectangle" == input.name())
+        {
+          ok = processRectangleTag(input, m_displayRect);
+          done = true;
+        }
+        break;
+    }
+  }
 
   return !input.hasError();
 }
@@ -537,13 +557,13 @@ bool SwfMillToEgeConverter::processTransformTag(QXmlStreamReader& input, QVector
 
   if (input.attributes().hasAttribute("transX") && ok)
   {
-    translate.setX(qRound(SWF_TWIPS_TO_PIXELS(input.attributes().value("transX").toString().toInt(&ok))));
+    translate.setX(qRound(SWF_TWIPS_TO_PIXELS(m_scaleFactor * input.attributes().value("transX").toString().toInt(&ok))));
     RETURN_FALSE_IF_ERROR(ok);
   }
 
   if (input.attributes().hasAttribute("transY") && ok)
   {
-    translate.setY(qRound(SWF_TWIPS_TO_PIXELS(input.attributes().value("transY").toString().toInt(&ok))));
+    translate.setY(qRound(SWF_TWIPS_TO_PIXELS(m_scaleFactor * input.attributes().value("transY").toString().toInt(&ok))));
     RETURN_FALSE_IF_ERROR(ok);
   }
 
@@ -581,25 +601,25 @@ bool SwfMillToEgeConverter::processRectangleTag(QXmlStreamReader& input, QRectF&
 
   if (input.attributes().hasAttribute("left"))
   {
-    rect.setLeft(SWF_TWIPS_TO_PIXELS(input.attributes().value("left").toString().toFloat(&ok)));
+    rect.setLeft(qRound(SWF_TWIPS_TO_PIXELS(m_scaleFactor * input.attributes().value("left").toString().toFloat(&ok))));
     RETURN_FALSE_IF_ERROR(ok);
   }
 
   if (input.attributes().hasAttribute("right") && ok)
   {
-    rect.setRight(SWF_TWIPS_TO_PIXELS(input.attributes().value("right").toString().toInt(&ok)));
+    rect.setRight(qRound(SWF_TWIPS_TO_PIXELS(m_scaleFactor * input.attributes().value("right").toString().toInt(&ok))));
     RETURN_FALSE_IF_ERROR(ok);
   }
 
   if (input.attributes().hasAttribute("top") && ok)
   {
-    rect.setTop(SWF_TWIPS_TO_PIXELS(input.attributes().value("top").toString().toFloat(&ok)));
+    rect.setTop(qRound(SWF_TWIPS_TO_PIXELS(m_scaleFactor * input.attributes().value("top").toString().toFloat(&ok))));
     RETURN_FALSE_IF_ERROR(ok);
   }
 
   if (input.attributes().hasAttribute("bottom") && ok)
   {
-    rect.setBottom(SWF_TWIPS_TO_PIXELS(input.attributes().value("bottom").toString().toInt(&ok)));
+    rect.setBottom(qRound(SWF_TWIPS_TO_PIXELS(m_scaleFactor * input.attributes().value("bottom").toString().toInt(&ok))));
     RETURN_FALSE_IF_ERROR(ok);
   }
 
@@ -610,8 +630,10 @@ bool SwfMillToEgeConverter::processRectangleTag(QXmlStreamReader& input, QRectF&
 bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
 {
   // materials
-  foreach (const ObjectData& object, m_objects)
+  for (int i = 0; i < m_objects.count(); ++i)
   {
+    ObjectData& object = m_objects[i];
+
     output.writeStartElement("material");
 
     output.writeAttribute("name", QString("%1_object_%2").arg(m_baseName).arg(object.objectId));
@@ -624,8 +646,12 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
 
     output.writeEndElement();
 
+    // rescale
+    object.image = object.image.scaled(QSize(object.image.width() * m_scaleFactor, object.image.height() * m_scaleFactor), Qt::KeepAspectRatio, 
+                                       Qt::SmoothTransformation);
+
     // store image
-    if (!object.image.save(QString("%1_object_%2.png").arg(m_baseName).arg(object.objectId), "png"))
+    if (!object.image.save(QString("%3_%1_object_%2.png").arg(m_baseName).arg(object.objectId).arg(QString::number(m_scaleFactor).remove(".")), "png"))
     {
       // error!
       return false;
@@ -636,12 +662,13 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
 
   // main attributes
   output.writeAttribute("name", m_baseName);
-  float duration = 0.0f;
+  float frameDuration = 0.0f;
   if (0 < m_fps)
   {
-    duration = (1.0f / m_fps) * m_framesDataList.count();
+    frameDuration = (1.0f / m_fps);
   }
-  output.writeAttribute("duration", QString::number(duration));
+  output.writeAttribute("frame-duration", QString::number(frameDuration));
+  output.writeAttribute("size", QString("%1 %2").arg(m_displayRect.width()).arg(m_displayRect.height()));
 
   // shapes
   QList<int> processedObjectIds;
@@ -681,6 +708,20 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
       }
     }
   }
+
+  // main sequence
+  output.writeStartElement("sequence");
+  
+  output.writeAttribute("name", "all");
+
+  QString sequencerFrames;
+  for (int i = 0; i < m_framesDataList.count(); ++i)
+  {
+    sequencerFrames += QString::number(i) + " ";
+  }
+  output.writeAttribute("frames", sequencerFrames.trimmed());
+  
+  output.writeEndElement();
 
   struct ActionDefinition
   {
