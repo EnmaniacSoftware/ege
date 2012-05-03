@@ -1,39 +1,37 @@
-#include "Core/Random/Random.h"
+#include "Core/RandomGenerator/RandomGenerator.h"
 
 #ifdef EGE_RANDOM_C
-#include "Core/Random/C/RandomC_p.h"
+#include "Core/RandomGenerator/C/RandomGeneratorC_p.h"
 #endif // EGE_RANDOM_C
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_DEFINE_NEW_OPERATORS(Random)
-EGE_DEFINE_DELETE_OPERATORS(Random)
-
+EGE_DEFINE_NEW_OPERATORS(RandomGenerator)
+EGE_DEFINE_DELETE_OPERATORS(RandomGenerator)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Random::Random(u32 seed) : Object(NULL)
+RandomGenerator::RandomGenerator(u32 seed) : Object(NULL)
 {
-    m_p = ege_new RandomPrivate(this);
+    m_p = ege_new RandomGeneratorPrivate(this);
   if (m_p && (0 < seed))
   {
     setSeed(seed);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Random::~Random()
+RandomGenerator::~RandomGenerator()
 {
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
-bool Random::isValid() const
+bool RandomGenerator::isValid() const
 {
   return NULL != m_p;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns randomly generated integer. */
-s32 Random::operator() ()
+s32 RandomGenerator::operator() ()
 {
   if (isValid())
   {
@@ -44,7 +42,7 @@ s32 Random::operator() ()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets random seed. */
-void Random::setSeed(u32 seed)
+void RandomGenerator::setSeed(u32 seed)
 {
   if (isValid())
   {
@@ -53,7 +51,7 @@ void Random::setSeed(u32 seed)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns randomly generated floating number from given interval. */
-float32 Random::operator() (float32 min, float32 max)
+float32 RandomGenerator::operator() (float32 min, float32 max)
 {
   if (isValid())
   {

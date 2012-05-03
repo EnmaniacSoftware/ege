@@ -1,18 +1,17 @@
-#ifndef EGE_CORE_RANDOM_H
-#define EGE_CORE_RANDOM_H
+#ifndef EGE_CORE_RANDOMGENERATOR_H
+#define EGE_CORE_RANDOMGENERATOR_H
 
 #include <EGE.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class Random : public Object
+class RandomGenerator : public Object
 {
   public:
 
-    Random(u32 seed = 0);
-   ~Random();
+    RandomGenerator(u32 seed = 0);
+   ~RandomGenerator();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -29,11 +28,10 @@ class Random : public Object
 
   private:
 
-    EGE_DECLARE_PRIVATE_IMPLEMENTATION(Random);
+    EGE_DECLARE_PRIVATE_IMPLEMENTATION(RandomGenerator);
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_RANDOM_H
+#endif // #define EGE_CORE_RANDOMGENERATOR_H

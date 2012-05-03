@@ -5,34 +5,32 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_DEFINE_NEW_OPERATORS(RandomPrivate)
-EGE_DEFINE_DELETE_OPERATORS(RandomPrivate)
-
+EGE_DEFINE_NEW_OPERATORS(RandomGeneratorPrivate)
+EGE_DEFINE_DELETE_OPERATORS(RandomGeneratorPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RandomPrivate::RandomPrivate(Random* base) : m_base(base)
+RandomGeneratorPrivate::RandomGeneratorPrivate()
 {
   setSeed((u32) time(NULL));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RandomPrivate::~RandomPrivate()
+RandomGeneratorPrivate::~RandomGeneratorPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets random seed. */
-void RandomPrivate::setSeed(u32 seed)
+void RandomGeneratorPrivate::setSeed(u32 seed)
 {
   srand(seed);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns randomly generated integer. */
-s32 RandomPrivate::rand()
+s32 RandomGeneratorPrivate::rand()
 {
   return ::rand();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns randomly generated floating value from given interval. */
-float32 RandomPrivate::rand(float32 min, float32 max)
+float32 RandomGeneratorPrivate::rand(float32 min, float32 max)
 {
   // generate value from [0-1]
   float32 value = static_cast<float32>(rand()) / RAND_MAX;
