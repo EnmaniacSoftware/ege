@@ -9,7 +9,7 @@ define STDC
 define EGE_RENDERING_OPENGLES_1
 define EGE_PHYSICS_BOX2D
 define EGE_XML_TINYXML
-define EGE_RANDOM_C
+define EGE_RANDOM_STDC
 define EGE_THREAD_PTHREAD
 
 #define EGE_AIRPLAY_AUDIO_SOFTWARE
@@ -26,6 +26,7 @@ files
 	(../../Sources)
 	EGE.h
   EGEAngle.h
+  EGEAnimation.h
 	EGEApplication.h
   EGEAudio.h
   EGEByteOrder.h
@@ -64,9 +65,10 @@ files
   EGEResources.h
 	EGEScene.h
   EGEScreen.h
+  EGESequencer.h
   EGESignal.h
   EGESpline.h
-  EGESprite.h
+  EGESpriteAnimation.h
   EGEString.h
   EGETexture.h
   EGEThread.h
@@ -92,8 +94,7 @@ files
 
 	["Core/Animation"]
 	(../../Sources/Core/Animation)
-  ImagedAnimation.cpp
-  ImagedAnimation.h
+  IAnimation.h
 
 	["Core/Application"]
 	(../../Sources/Core/Application)
@@ -240,6 +241,11 @@ files
 	ImageUtils.cpp
 	ImageUtils.h
 
+	["Core/Graphics/ImagedAnimation"]
+ 	(../../Sources/Core/Graphics/ImagedAnimation)
+  ImagedAnimation.cpp
+  ImagedAnimation.h
+
 	["Core/Graphics/OpenGL"]
  	(../../Sources/Core/Graphics/OpenGL)
 	ExtensionsOGLES.cpp
@@ -290,10 +296,10 @@ files
 	RenderWindow.cpp
 	RenderWindow.h
 
-	["Core/Graphics/Sprite"]
- 	(../../Sources/Core/Graphics/Sprite)
-	Sprite.cpp
-	Sprite.h
+	["Core/Graphics/SpriteAnimation"]
+ 	(../../Sources/Core/Graphics/SpriteAnimation)
+	SpriteAnimation.cpp
+	SpriteAnimation.h
 
 	["Core/Input"]
   (../../Sources/Core/Input)
@@ -373,13 +379,13 @@ files
 
   ["Core/Random"]
   (../../Sources/Core/Random)
-  Random.cpp
-  Random.h
+  RandomGenerator.cpp
+  RandomGenerator.h
 
-  ["Core/Random/C"]
-  (../../Sources/Core/Random/C)
-  RandomC_p.cpp
-  RandomC_p.h
+  ["Core/Random/StdC"]
+  (../../Sources/Core/Random/StdC)
+  RandomGeneratorStdC_p.cpp
+  RandomGeneratorStdC_p.h
 
 	["Core/Resource"]
   (../../Sources/Core/Resource)
@@ -406,8 +412,10 @@ files
   ResourceParticleEmitter.h
   ResourceSound.cpp
   ResourceSound.h
-  ResourceSprite.cpp
-  ResourceSprite.h
+  ResourceSequencer.cpp
+  ResourceSequencer.h
+  ResourceSpriteAnimation.cpp
+  ResourceSpriteAnimation.h
   ResourceSpritesheet.cpp
   ResourceSpritesheet.h
   ResourceText.cpp
@@ -434,6 +442,11 @@ files
   Screen.h
   ScreenManager.cpp
   ScreenManager.h
+
+	["Core/Sequencer"]
+  (../../Sources/Core/Sequencer)
+  Sequencer.cpp
+  Sequencer.h
 
 	["Core/Signal"]
   (../../Sources/Core/Signal)

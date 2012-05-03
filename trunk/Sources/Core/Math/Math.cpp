@@ -20,7 +20,7 @@ const s32     Math::MIN_S16         = std::numeric_limits<s16>::min();
 const s32     Math::MAX_U16         = std::numeric_limits<u16>::max();
 const s32     Math::MIN_U16         = std::numeric_limits<u16>::min();
 
-static Random random;
+static RandomGenerator l_random;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Math::Math()
 {
@@ -627,7 +627,7 @@ Vector3f Math::RandomDeviant(const Angle* angle, const Vector3f* vector, const V
 
   // rotate up vector by random amount around this
   Quaternionf q;
-  q.create(*vector, Angle(EGEMath::TWO_PI * random(0.0f, 1.0f)));
+  q.create(*vector, Angle(EGEMath::TWO_PI * l_random(0.0f, 1.0f)));
   newUp = q * newUp;
 
   // finally rotate this by given angle around randomised up
@@ -645,7 +645,7 @@ Vector2f Math::RandomDeviant(const Angle* angle, const Vector2f* vector)
   EGE_ASSERT(angle);
   EGE_ASSERT(vector);
 
-  float32 randomization = random(-0.5f, 0.5f);
+  float32 randomization = l_random(-0.5f, 0.5f);
 
   float32 cos = Math::Cos(angle->radians() * randomization);
   float32 sin = Math::Sin(angle->radians() * randomization);
@@ -680,8 +680,8 @@ float32 Math::ZeroRoundOff(float32 value)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns random generator. */
-Random& Math::Random()
+RandomGenerator& Math::Random()
 {
-  return random;
+  return l_random;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

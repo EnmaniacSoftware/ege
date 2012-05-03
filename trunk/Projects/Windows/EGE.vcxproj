@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Sources\Core\Animation\ImagedAnimation.cpp" />
     <ClCompile Include="..\..\Sources\Core\Application\AppController.cpp" />
     <ClCompile Include="..\..\Sources\Core\Application\Application.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecMp3.cpp" />
@@ -49,6 +48,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Font.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Graphics.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\ImagedAnimation\ImagedAnimation.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\Image.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageUtils.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\IndexBuffer.cpp" />
@@ -74,7 +74,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderQueue.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderTarget.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderWindow.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Graphics\Sprite\Sprite.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Texture2D.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\TextureImage.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\VertexBuffer.cpp" />
@@ -101,8 +101,8 @@
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJointDistance.cpp" />
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJointPulley.cpp" />
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsManager.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Random\C\RandomC_p.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Random\Random.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Random\RandomGenerator.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceCurve.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceData.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceFont.cpp" />
@@ -115,7 +115,7 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSequencer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSound.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceSprite.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceSpriteAnimation.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSpritesheet.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceText.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceTextureImage.cpp" />
@@ -156,7 +156,6 @@
     <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.cpp" />
     <ClInclude Include="..\..\Sources\Core\Animation\IAnimation.h" />
-    <ClInclude Include="..\..\Sources\Core\Animation\ImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodec.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecMp3.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecOgg.h" />
@@ -173,6 +172,7 @@
     <ClInclude Include="..\..\Sources\Core\Debug\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\ImagedAnimation\ImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\Image.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\IndexBufferTypes.h" />
@@ -191,7 +191,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\RenderObjectFactory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderPass.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\Sprite\Sprite.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexBufferTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Circle.h" />
@@ -201,6 +201,8 @@
     <ClInclude Include="..\..\Sources\Core\Overlay\ImageOverlay.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointPulley.h" />
+    <ClInclude Include="..\..\Sources\Core\Random\RandomGenerator.h" />
+    <ClInclude Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceCurve.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceManagerWorkThread.h" />
@@ -208,7 +210,7 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSequencer.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSound.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceSprite.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpriteAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpritesheet.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceText.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceTextureImage.h" />
@@ -336,8 +338,6 @@
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointDistance.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsManager.h" />
     <ClInclude Include="..\..\Sources\Core\Platform.h" />
-    <ClInclude Include="..\..\Sources\Core\Random\C\RandomC_p.h" />
-    <ClInclude Include="..\..\Sources\Core\Random\Random.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Resource.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceData.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceFont.h" />
@@ -386,7 +386,7 @@
     <ClInclude Include="..\..\Sources\EGESequencer.h" />
     <ClInclude Include="..\..\Sources\EGESignal.h" />
     <ClInclude Include="..\..\Sources\EGESpline.h" />
-    <ClInclude Include="..\..\Sources\EGESprite.h" />
+    <ClInclude Include="..\..\Sources\EGESpriteAnimation.h" />
     <ClInclude Include="..\..\Sources\EGEString.h" />
     <ClInclude Include="..\..\Sources\EGETexture.h" />
     <ClInclude Include="..\..\Sources\EGEThread.h" />
@@ -491,7 +491,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_BOX2D;EGE_FEATURE_DEBUG;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_C;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_BOX2D;EGE_FEATURE_DEBUG;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>
@@ -515,7 +515,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_BOX2D;EGE_XML_TINYXML;EGE_RANDOM_C;EGE_AUDIO_OPENAL;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_BOX2D;EGE_XML_TINYXML;EGE_RANDOM_STDC;EGE_AUDIO_OPENAL;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>

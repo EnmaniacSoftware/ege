@@ -37,6 +37,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MaterialManagerPlugin", "EG
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ResourceLibraryPlugin", "EGE Editor Plugins\ResourceLibraryPlugin\ResourceLibraryPlugin.vcxproj", "{48259AED-792B-40E7-99F2-5F1CD109B589}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Imaged Animation Tool", "Imaged Animation Tool\Imaged Animation Tool.vcxproj", "{E2C495DC-47B5-47F5-8D04-D505820DE20C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -93,6 +95,12 @@ Global
 		{48259AED-792B-40E7-99F2-5F1CD109B589}.Release|Win32.ActiveCfg = Release|Win32
 		{48259AED-792B-40E7-99F2-5F1CD109B589}.Release|Win32.Build.0 = Release|Win32
 		{48259AED-792B-40E7-99F2-5F1CD109B589}.Release|x64.ActiveCfg = Release|Win32
+		{E2C495DC-47B5-47F5-8D04-D505820DE20C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E2C495DC-47B5-47F5-8D04-D505820DE20C}.Debug|Win32.Build.0 = Debug|Win32
+		{E2C495DC-47B5-47F5-8D04-D505820DE20C}.Debug|x64.ActiveCfg = Debug|Win32
+		{E2C495DC-47B5-47F5-8D04-D505820DE20C}.Release|Win32.ActiveCfg = Release|Win32
+		{E2C495DC-47B5-47F5-8D04-D505820DE20C}.Release|Win32.Build.0 = Release|Win32
+		{E2C495DC-47B5-47F5-8D04-D505820DE20C}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

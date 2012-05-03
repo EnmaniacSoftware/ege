@@ -1,7 +1,7 @@
-#ifndef EGE_CORE_SPRITE_H
-#define EGE_CORE_SPRITE_H
+#ifndef EGE_CORE_SPRITEANIMATION_H
+#define EGE_CORE_SPRITEANIMATION_H
 
-/** Sprite objects represent discreet instances of sprites. Sprites represent rectangular subset of spritesheets which define their look.
+/** SpriteAnimation objects represent discreet instances of sprites. Sprites represent rectangular subset of spritesheets which define their look.
  *  Usually, sprites change their look (area within sheet) while time passes. This can be used to achieve some basic frame based animated images.
  */
 
@@ -10,7 +10,7 @@
 #include <EGEFlags.h>
 #include <EGEDynamicArray.h>
 #include <EGESignal.h>
-#include <EGESprite.h>
+#include <EGESpriteAnimation.h>
 #include <EGEAnimation.h>
 #include <EGESequencer.h>
 #include "Core/Graphics/TextureImage.h"
@@ -18,15 +18,15 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(Sprite, PSprite)
+EGE_DECLARE_SMART_CLASS(SpriteAnimation, PSpriteAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Sprite : public Object, public IAnimation
+class SpriteAnimation : public Object, public IAnimation
 {
   public:
 
-    Sprite();
-    Sprite(Application* app, const String& name);
-   ~Sprite();
+    SpriteAnimation();
+    SpriteAnimation(Application* app, const String& name);
+   ~SpriteAnimation();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -34,14 +34,14 @@ class Sprite : public Object, public IAnimation
   signals:
     
     /*! Signal emitted on frame change.
-     *  @param sprite     Sprite object for which frame changed.
+     *  @param sprite     SpriteAnimation object for which frame changed.
      *  @param frameIndex New frame index.
      */
-    Signal2<PSprite, s32> frameChanged;
+    Signal2<PSpriteAnimation, s32> frameChanged;
     /*! Signal emitted when playback is finished.
-     *  @param sprite     Sprite object for which playback is finished.
+     *  @param sprite     SpriteAnimation object for which playback is finished.
      */
-    Signal1<PSprite> finished;
+    Signal1<PSpriteAnimation> finished;
 
   public:
 
@@ -131,4 +131,4 @@ class Sprite : public Object, public IAnimation
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_SPRITE_H
+#endif // EGE_CORE_SPRITEANIMATION_H

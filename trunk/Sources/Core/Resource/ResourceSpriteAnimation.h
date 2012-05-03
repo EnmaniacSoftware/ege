@@ -1,15 +1,15 @@
-#ifndef EGE_CORE_RESOURCESPRITE_H
-#define EGE_CORE_RESOURCESPRITE_H
+#ifndef EGE_CORE_RESOURCESPRITEANIMATION_H
+#define EGE_CORE_RESOURCESPRITEANIMATION_H
 
-/** Sprite resource definition class. This object (resource) contains definition of sprite object.
- *  Sprite resources define how sequence of frames from sprite sheet should be animated (played).
+/** SpriteAnimation resource definition class. This object (resource) contains definition of sprite object.
+ *  SpriteAnimation resources define how sequence of frames from sprite sheet should be animated (played).
  */
 
 #include <EGE.h>
 #include <EGEString.h>
 #include <EGEXml.h>
 #include <EGETime.h>
-#include <EGESprite.h>
+#include <EGESpriteAnimation.h>
 #include <EGEList.h>
 #include "Core/Resource/Resource.h"
 #include "Core/Resource/ResourceSpritesheet.h"
@@ -19,16 +19,16 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManager;
 
-EGE_DECLARE_SMART_CLASS(ResourceSprite, PResourceSprite)
+EGE_DECLARE_SMART_CLASS(ResourceSpriteAnimation, PResourceSprite)
 EGE_DECLARE_SMART_CLASS(ResourceSpritesheet, PResourceSpritesheet)
-EGE_DECLARE_SMART_CLASS(Sprite, PSprite)
+EGE_DECLARE_SMART_CLASS(SpriteAnimation, PSpriteAnimation)
 EGE_DECLARE_SMART_CLASS(ResourceSequencer, PResourceSequencer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceSprite : public IResource
+class ResourceSpriteAnimation : public IResource
 {
   public:
 
-    virtual ~ResourceSprite();
+    virtual ~ResourceSpriteAnimation();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -50,9 +50,9 @@ class ResourceSprite : public IResource
     void unload() override;
 
     /* Creates instance of sprite object defined by resource. */
-    PSprite createInstance();
+    PSpriteAnimation createInstance();
     /* Set given instance of sprite object to what is defined by resource. */
-    EGEResult setInstance(const PSprite& instance);
+    EGEResult setInstance(const PSpriteAnimation& instance);
 
     /*! Returns number of frames. */
     //inline s32 frameCount() const { return m_frameCount; }
@@ -69,7 +69,7 @@ class ResourceSprite : public IResource
 
   private:
 
-    ResourceSprite(Application* app, ResourceManager* manager);
+    ResourceSpriteAnimation(Application* app, ResourceManager* manager);
     /* Returns TRUE if object is loaded. */
     bool isLoaded() const;
     /*! Returns sprite sheet name. */
@@ -92,11 +92,11 @@ class ResourceSprite : public IResource
 
     /*! Name. */
     String m_name;
-    /*! Sprite sheet name. */
+    /*! SpriteAnimation sheet name. */
     String m_sheetName;
     /*! FPS playback count. */
     float32 m_fps;
-    /*! Sprite play duration. */
+    /*! SpriteAnimation play duration. */
    // Time m_duration;
     ///*! Ping-pong flag. If set sprite animation will progress forth and back. Mutually exclusive with 'repeat'. */
     //bool m_pingPong;
@@ -121,4 +121,4 @@ class ResourceSprite : public IResource
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_RESOURCESPRITE_H
+#endif // EGE_CORE_RESOURCESPRITEANIMATION_H

@@ -52,18 +52,23 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
   //list << "strawberry_lvl3_idle";
   //list << "strawberry_lvl3_dance";
   //list << "strawberry_lvl3_chomp";
-  list << "peach_lvl1_blink";
-  list << "peach_lvl1_idle";
-  list << "peach_lvl1_dance";
-  list << "peach_lvl1_chomp";
-  list << "peach_lvl2_blink";
-  list << "peach_lvl2_idle";
-  list << "peach_lvl2_dance";
-  list << "peach_lvl2_chomp";
-  list << "peach_lvl3_idle";
-  list << "peach_lvl3_dance";
-  list << "peach_lvl3_chomp";
-  list << "peach_lvl3_blink";
+  //list << "peach_lvl1_blink";
+  //list << "peach_lvl1_idle";
+  //list << "peach_lvl1_dance";
+  //list << "peach_lvl1_chomp";
+  //list << "peach_lvl2_blink";
+  //list << "peach_lvl2_idle";
+  //list << "peach_lvl2_dance";
+  //list << "peach_lvl2_chomp";
+  //list << "peach_lvl3_idle";
+  //list << "peach_lvl3_dance";
+  //list << "peach_lvl3_chomp";
+  //list << "peach_lvl3_blink";
+  list << "sick_blink";
+  list << "sick_idle";
+  list << "sick_dance";
+  list << "sick_chomp";
+  list << "sick_chained";
 
   float scales[] = { 0.25f, 0.5f };
 

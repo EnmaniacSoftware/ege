@@ -1,6 +1,6 @@
-#include "Core/Resource/ResourceSprite.h"
+#include "Core/Resource/ResourceSpriteAnimation.h"
 #include "Core/Resource/ResourceManager.h"
-#include "Core/Graphics/Sprite/Sprite.h"
+#include "Core/Graphics/SpriteAnimation/SpriteAnimation.h"
 #include "Core/Resource/ResourceTextureImage.h"
 #include "Core/Resource/ResourceSequencer.h"
 #include <EGEXml.h>
@@ -12,26 +12,26 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_SEQUENCE "sequence"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(ResourceSprite)
-EGE_DEFINE_DELETE_OPERATORS(ResourceSprite)
+EGE_DEFINE_NEW_OPERATORS(ResourceSpriteAnimation)
+EGE_DEFINE_DELETE_OPERATORS(ResourceSpriteAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSprite::ResourceSprite(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_SPRITE), 
-                                                                             m_frameDataInvalid(false)
+ResourceSpriteAnimation::ResourceSpriteAnimation(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_SPRITE_ANIMATION), 
+                                                                                               m_frameDataInvalid(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSprite::~ResourceSprite()
+ResourceSpriteAnimation::~ResourceSpriteAnimation()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceSprite::Create(Application* app, ResourceManager* manager)
+PResource ResourceSpriteAnimation::Create(Application* app, ResourceManager* manager)
 {
-  return ege_new ResourceSprite(app, manager);
+  return ege_new ResourceSpriteAnimation(app, manager);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
-const String& ResourceSprite::name() const
+const String& ResourceSpriteAnimation::name() const
 {
   return m_name;
 }
@@ -41,7 +41,7 @@ const String& ResourceSprite::name() const
 *  \param  path  full path to resource definition file.
 *  \param  tag   xml element with resource definition. 
 */
-EGEResult ResourceSprite::create(const String& path, const PXmlElement& tag)
+EGEResult ResourceSpriteAnimation::create(const String& path, const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -93,7 +93,7 @@ EGEResult ResourceSprite::create(const String& path, const PXmlElement& tag)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is loaded. */
-bool ResourceSprite::isLoaded() const 
+bool ResourceSpriteAnimation::isLoaded() const 
 { 
   if (NULL == m_sheet)
   {
@@ -116,7 +116,7 @@ bool ResourceSprite::isLoaded() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Loads resource. */
-EGEResult ResourceSprite::load()
+EGEResult ResourceSpriteAnimation::load()
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -156,7 +156,7 @@ EGEResult ResourceSprite::load()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Unloads resource. */
-void ResourceSprite::unload() 
+void ResourceSpriteAnimation::unload() 
 { 
   EGE_PRINT("%s", name().toAscii());
 
@@ -167,9 +167,9 @@ void ResourceSprite::unload()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of sprite object defined by resource. */
-PSprite ResourceSprite::createInstance()
+PSpriteAnimation ResourceSpriteAnimation::createInstance()
 {
-	PSprite object = ege_new Sprite(app(), name());
+	PSpriteAnimation object = ege_new SpriteAnimation(app(), name());
   if (object)
   {
     // set new data
@@ -183,7 +183,7 @@ PSprite ResourceSprite::createInstance()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Set given instance of sprite object to what is defined by resource. */
-EGEResult ResourceSprite::setInstance(const PSprite& instance)
+EGEResult ResourceSpriteAnimation::setInstance(const PSpriteAnimation& instance)
 {
   // sanity check
   if (NULL == instance || !isLoaded())
@@ -201,14 +201,14 @@ EGEResult ResourceSprite::setInstance(const PSprite& instance)
   instance->setTexture(m_sheet->textureImage()->createInstance());
   instance->setRepeatDelay(m_repeatDelay);
 
-  //Sprite::FinishPolicy finishPolicy = Sprite::FP_STOP;
+  //SpriteAnimation::FinishPolicy finishPolicy = SpriteAnimation::FP_STOP;
   //if (m_repeat)
   //{
-  //  finishPolicy = Sprite::FP_REPEAT;
+  //  finishPolicy = SpriteAnimation::FP_REPEAT;
   //}
   //else if (m_pingPong)
   //{
-  //  finishPolicy = Sprite::FP_PING_PONG;
+  //  finishPolicy = SpriteAnimation::FP_PING_PONG;
   //}
   //instance->setFinishPolicy(finishPolicy);
 
@@ -232,13 +232,13 @@ EGEResult ResourceSprite::setInstance(const PSprite& instance)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Invalidates frame data. */
-void ResourceSprite::invalidateFrameData()
+void ResourceSpriteAnimation::invalidateFrameData()
 {
   m_frameDataInvalid = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Calculates frame data. */
-void ResourceSprite::calculateFrameData()
+void ResourceSpriteAnimation::calculateFrameData()
 {
   const float32 cellWidth  = 1.0f / sheet()->framesPerRow();
   const float32 cellHeight = 1.0f / Math::Ceil(sheet()->frameCount() / static_cast<float32>(sheet()->framesPerRow()));
@@ -267,7 +267,7 @@ void ResourceSprite::calculateFrameData()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds sequence. */
-EGEResult ResourceSprite::addSequence(const PXmlElement& tag)
+EGEResult ResourceSpriteAnimation::addSequence(const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
 

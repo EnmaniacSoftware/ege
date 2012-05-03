@@ -1,5 +1,5 @@
-#ifndef EGE_SPRITE_H
-#define EGE_SPRITE_H
+#ifndef EGE_SPRITEANIMATION_H
+#define EGE_SPRITEANIMATION_H
 
 #include "Core/Platform.h"
 #include <EGERect.h>
@@ -7,7 +7,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 namespace EGESprite
 {
   /*! Structure defining frame data info. */
@@ -17,15 +16,12 @@ namespace EGESprite
     Rectf m_rect;
   };
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-#include "Core/Graphics/Sprite/Sprite.h"
-
+#include "Core/Graphics/SpriteAnimation/SpriteAnimation.h"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // EGE_SPRITE_H
+#endif // EGE_SPRITEANIMATION_H

@@ -1,7 +1,7 @@
 #include "Core/Resource/ResourceImagedAnimation.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceSequencer.h"
-#include "Core/Animation/ImagedAnimation.h"
+#include "Core/Graphics/ImagedAnimation/ImagedAnimation.h"
 #include <EGEXml.h>
 #include <EGEDebug.h>
 #include <EGEResources.h>

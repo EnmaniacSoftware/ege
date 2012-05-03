@@ -1,6 +1,6 @@
 #include "Core/Resource/ResourceCurve.h"
 #include "Core/Resource/ResourceManager.h"
-#include "Core/Graphics/Sprite/Sprite.h"
+#include "Core/Graphics/SpriteAnimation/SpriteAnimation.h"
 #include "Core/Resource/ResourceTextureImage.h"
 #include <EGEXml.h>
 #include <EGEDebug.h>

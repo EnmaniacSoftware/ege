@@ -187,7 +187,7 @@ class Math
     static float32 ZeroRoundOff(float32 value);
 
     /* Returns random generator. */
-    static Random& Random();
+    static RandomGenerator& Random();
 
   public:
 

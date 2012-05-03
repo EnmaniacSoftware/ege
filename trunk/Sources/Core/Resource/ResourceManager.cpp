@@ -7,7 +7,7 @@
 #include "Core/Resource/ResourceFont.h"
 #include "Core/Resource/ResourceTextureImage.h"
 #include "Core/Resource/ResourceSpritesheet.h"
-#include "Core/Resource/ResourceSprite.h"
+#include "Core/Resource/ResourceSpriteAnimation.h"
 #include "Core/Resource/ResourceCurve.h"
 #include "Core/Resource/ResourceParticleEmitter.h"
 #include "Core/Resource/ResourceParticleAffector.h"
@@ -49,7 +49,7 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
                                                     { RESOURCE_NAME_FONT, ResourceFont::Create },
                                                     { RESOURCE_NAME_DATA, ResourceData::Create },
                                                     { RESOURCE_NAME_SPRITE_SHEET, ResourceSpritesheet::Create },
-                                                    { RESOURCE_NAME_SPRITE, ResourceSprite::Create },
+                                                    { RESOURCE_NAME_SPRITE_ANIMATION, ResourceSpriteAnimation::Create },
                                                     { RESOURCE_NAME_CURVE, ResourceCurve::Create },
                                                     { RESOURCE_NAME_PARTICLE_EMITTER, ResourceParticleEmitter::Create },
                                                     { RESOURCE_NAME_PARTICLE_AFFECTOR, ResourceParticleAffector::Create },

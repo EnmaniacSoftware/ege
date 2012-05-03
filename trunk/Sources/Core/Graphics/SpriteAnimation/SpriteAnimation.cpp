@@ -1,4 +1,4 @@
-#include "Core/Graphics/Sprite/Sprite.h"
+#include "Core/Graphics/SpriteAnimation/SpriteAnimation.h"
 #include "Core/Resource/ResourceSpritesheet.h"
 #include "Core/Resource/ResourceTextureImage.h"
 #include <EGEDebug.h>
@@ -6,10 +6,10 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(Sprite)
-EGE_DEFINE_DELETE_OPERATORS(Sprite)
+EGE_DEFINE_NEW_OPERATORS(SpriteAnimation)
+EGE_DEFINE_DELETE_OPERATORS(SpriteAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Sprite::Sprite() : Object(NULL), 
+SpriteAnimation::SpriteAnimation() : Object(NULL), 
                    m_state(STATE_STOPPED), 
                    m_name(""),
                    m_repeatDelay(0LL),
@@ -17,7 +17,7 @@ Sprite::Sprite() : Object(NULL),
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Sprite::Sprite(Application* app, const String& name) : Object(app), 
+SpriteAnimation::SpriteAnimation(Application* app, const String& name) : Object(app), 
                                                        m_state(STATE_STOPPED), 
                                                        m_name(name),
                                                        m_repeatDelay(0LL),
@@ -25,7 +25,7 @@ Sprite::Sprite(Application* app, const String& name) : Object(app),
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Sprite::~Sprite()
+SpriteAnimation::~SpriteAnimation()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ Sprite::~Sprite()
  *  @param sequencerName  Name of the sequencer to use for playback.
  *  @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
  */
-EGEResult Sprite::play(const String& sequencerName)
+EGEResult SpriteAnimation::play(const String& sequencerName)
 {
   // check if resumed
   if (isPaused())
@@ -60,8 +60,8 @@ EGEResult Sprite::play(const String& sequencerName)
     m_currentSequencer->setFrameDuration(m_frameDuration);
 
     // connect to sequencer
-    ege_connect(m_currentSequencer, frameChanged, this, Sprite::onSequencerFrameChanged);
-    ege_connect(m_currentSequencer, finished, this, Sprite::onSequencerFinished);
+    ege_connect(m_currentSequencer, frameChanged, this, SpriteAnimation::onSequencerFrameChanged);
+    ege_connect(m_currentSequencer, finished, this, SpriteAnimation::onSequencerFinished);
 
     // change state
     m_state = STATE_PLAYING;
@@ -77,7 +77,7 @@ EGEResult Sprite::play(const String& sequencerName)
  *  @param sequencerIndex Index of the sequencer to use for playback.
  *  @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
  */
-EGEResult Sprite::play(s32 sequencerIndex)
+EGEResult SpriteAnimation::play(s32 sequencerIndex)
 {
   PSequencer seq = m_sequencers.at(sequencerIndex, NULL);
   if (NULL == seq)
@@ -90,13 +90,13 @@ EGEResult Sprite::play(s32 sequencerIndex)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* IAnimation override. Stops playback. */
-void Sprite::stop()
+void SpriteAnimation::stop()
 {
   if (isPlaying())
   {
     // disconnect from sequencer
-    ege_disconnect(m_currentSequencer, frameChanged, this, Sprite::onSequencerFrameChanged);
-    ege_disconnect(m_currentSequencer, finished, this, Sprite::onSequencerFinished);
+    ege_disconnect(m_currentSequencer, frameChanged, this, SpriteAnimation::onSequencerFrameChanged);
+    ege_disconnect(m_currentSequencer, finished, this, SpriteAnimation::onSequencerFinished);
 
     // change state
     m_state = STATE_STOPPED;
@@ -104,32 +104,32 @@ void Sprite::stop()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* IAnimation override. Pauses playback. */
-void Sprite::pause()
+void SpriteAnimation::pause()
 {
   // change state
   m_state = STATE_PAUSED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IAnimation override. Returns TRUE if animation is being played. */
-bool Sprite::isPlaying() const
+bool SpriteAnimation::isPlaying() const
 {
   return STATE_PLAYING == m_state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IAnimation override. Returns TRUE if animation is paused. */
-bool Sprite::isPaused() const
+bool SpriteAnimation::isPaused() const
 {
   return STATE_PAUSED == m_state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IAnimation override. Returns TRUE if animation is stopped. */
-bool Sprite::isStopped() const
+bool SpriteAnimation::isStopped() const
 {
   return STATE_STOPPED == m_state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IAnimation override. Updates animation. */
-void Sprite::update(const Time& time)
+void SpriteAnimation::update(const Time& time)
 {
   if (isPlaying())
   {
@@ -142,7 +142,7 @@ void Sprite::update(const Time& time)
 
 /*! Updates object. */
 /*
-void Sprite::update(const Time& time)
+void SpriteAnimation::update(const Time& time)
 {
   if (isPlaying())
   {
@@ -230,7 +230,7 @@ void Sprite::update(const Time& time)
 }*/
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Starts playing. */
-//void Sprite::play()
+//void SpriteAnimation::play()
 //{
 //  if (!isPlaying() && !m_frameData.empty())
 //  {
@@ -254,7 +254,7 @@ void Sprite::update(const Time& time)
 //}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Stops playing. */
-//void Sprite::stop()
+//void SpriteAnimation::stop()
 //{
 //  if (isPlaying())
 //  {
@@ -268,7 +268,7 @@ void Sprite::update(const Time& time)
 //}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns texture image for current frame. */
-PTextureImage Sprite::frameTexture() const
+PTextureImage SpriteAnimation::frameTexture() const
 {
   EGE_ASSERT(NULL != m_currentSequencer);
 
@@ -277,13 +277,13 @@ PTextureImage Sprite::frameTexture() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets FPS playback value. */
-void Sprite::setFPS(float32 fps)
+void SpriteAnimation::setFPS(float32 fps)
 {
   m_frameDuration = (0.0f < fps) ? (1.0f / fps) : 0.0f;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets frame data. */
-void Sprite::setFrameData(const DynamicArray<EGESprite::FrameData>& data)
+void SpriteAnimation::setFrameData(const DynamicArray<EGESprite::FrameData>& data)
 {
   m_frameData.copy(data);
 
@@ -292,25 +292,25 @@ void Sprite::setFrameData(const DynamicArray<EGESprite::FrameData>& data)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets texture image containing sprite data. */
-void Sprite::setTexture(const PTextureImage& texture)
+void SpriteAnimation::setTexture(const PTextureImage& texture)
 {
   m_textureImage = texture;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets name. */
-void Sprite::setName(const String& name)
+void SpriteAnimation::setName(const String& name)
 {
   m_name = name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets repeat delay. */
-void Sprite::setRepeatDelay(const Time& time)
+void SpriteAnimation::setRepeatDelay(const Time& time)
 {
   m_repeatDelay = time;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds sequencer. */
-void Sprite::addSequencer(const PSequencer& sequencer)
+void SpriteAnimation::addSequencer(const PSequencer& sequencer)
 {
   // check if sequencer with such name exists
   if (NULL != this->sequencer(sequencer->name()))
@@ -325,7 +325,7 @@ void Sprite::addSequencer(const PSequencer& sequencer)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns sequencer of a given name. */
-PSequencer Sprite::sequencer(const String& name) const
+PSequencer SpriteAnimation::sequencer(const String& name) const
 {
   // go thru all sequencers
   for (SequencerArray::const_iterator it = m_sequencers.begin(); it != m_sequencers.end(); ++it)
@@ -343,7 +343,7 @@ PSequencer Sprite::sequencer(const String& name) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when sequencer animated into new frame. */
-void Sprite::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
+void SpriteAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
 {
   // update object data
 /*  FrameData& frameData = m_frames[frameId];
@@ -373,7 +373,7 @@ void Sprite::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when sequencer finished animation .*/
-void Sprite::onSequencerFinished(PSequencer sequencer)
+void SpriteAnimation::onSequencerFinished(PSequencer sequencer)
 {
   // stop
   m_state = STATE_STOPPED;
@@ -383,7 +383,7 @@ void Sprite::onSequencerFinished(PSequencer sequencer)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns current sequencer. */
-PSequencer Sprite::currentSequencer() const 
+PSequencer SpriteAnimation::currentSequencer() const 
 { 
   return m_currentSequencer; 
 }

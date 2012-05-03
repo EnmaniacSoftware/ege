@@ -1,4 +1,4 @@
-#include "Core/Animation/ImagedAnimation.h"
+#include "Core/Graphics/ImagedAnimation/ImagedAnimation.h"
 #include "Core/Resource/ResourceImagedAnimation.h"
 #include "Core/Resource/ResourceTextureImage.h"
 #include <EGESequencer.h>

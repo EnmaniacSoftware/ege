@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_RESOURCESPRITESHEET_H
 #define EGE_CORE_RESOURCESPRITESHEET_H
 
-/** Sprite sheet resource definition class. This object (resource) contains definition of sprite sheet object.
- *  Sprite sheets describes series of frames which can be played one after another to form sort of animation. Frames are counted from left to right and from 
+/** SpriteAnimation sheet resource definition class. This object (resource) contains definition of sprite sheet object.
+ *  SpriteAnimation sheets describes series of frames which can be played one after another to form sort of animation. Frames are counted from left to right and from 
  *  first (top) row to last (bottom) one.
  */
 

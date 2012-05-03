@@ -1,5 +1,4 @@
-#include "Core/Random/Random.h"
-#include "Core/Random/C/RandomC_p.h"
+#include "Core/Random/StdC/RandomGeneratorStdC_p.h"
 #include <time.h>
 
 EGE_NAMESPACE

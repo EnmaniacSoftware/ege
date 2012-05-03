@@ -94,12 +94,6 @@
     <Filter Include="Win32\Device">
       <UniqueIdentifier>{25a62b6a-217f-4530-ba1d-0da96d2edbc9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Random">
-      <UniqueIdentifier>{8280ece7-066e-4853-9384-ee2673c198da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Random\C">
-      <UniqueIdentifier>{65993860-9874-4227-a8bb-96fcd04291ad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Input">
       <UniqueIdentifier>{3e89d702-36f3-48ce-8b71-24222bda8208}</UniqueIdentifier>
     </Filter>
@@ -142,9 +136,6 @@
     <Filter Include="Core\Overlay">
       <UniqueIdentifier>{083fc304-3a3c-4ce0-b212-2f3cb230c477}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Graphics\Sprite">
-      <UniqueIdentifier>{db4c0789-ac83-427c-a272-2cf0d25b3806}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Graphics\Particle">
       <UniqueIdentifier>{4b87de33-b883-48cb-9822-856766c15071}</UniqueIdentifier>
     </Filter>
@@ -183,6 +174,18 @@
     </Filter>
     <Filter Include="Core\Sequencer">
       <UniqueIdentifier>{e9428cee-fe31-4a3b-858e-732d0fdb08c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\ImagedAnimation">
+      <UniqueIdentifier>{62d75aa3-f484-4515-8c84-78c9760f68fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\SpriteAnimation">
+      <UniqueIdentifier>{81b5cf78-7a9f-4f51-9546-c9671afa5f5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Random">
+      <UniqueIdentifier>{4bbd156a-4496-4354-86a7-0884329ca3f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Random\StdC">
+      <UniqueIdentifier>{f9b0add1-3507-4fbf-8de9-798010aaf021}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -351,12 +354,6 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.cpp">
       <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Random\Random.cpp">
-      <Filter>Core\Random</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Random\C\RandomC_p.cpp">
-      <Filter>Core\Random\C</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Input\Pointer.cpp">
       <Filter>Core\Input</Filter>
     </ClCompile>
@@ -467,12 +464,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSpritesheet.cpp">
       <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceSprite.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\Sprite\Sprite.cpp">
-      <Filter>Core\Graphics\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\RenderObjectFactory.cpp">
       <Filter>Core\Graphics</Filter>
@@ -627,14 +618,26 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceImagedAnimation.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Animation\ImagedAnimation.cpp">
-      <Filter>Core\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Sequencer\Sequencer.cpp">
       <Filter>Core\Sequencer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSequencer.cpp">
       <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\ImagedAnimation\ImagedAnimation.cpp">
+      <Filter>Core\Graphics\ImagedAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.cpp">
+      <Filter>Core\Graphics\SpriteAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceSpriteAnimation.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Random\RandomGenerator.cpp">
+      <Filter>Core\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.cpp">
+      <Filter>Core\Random\StdC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -881,12 +884,6 @@
       <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGERandom.h" />
-    <ClInclude Include="..\..\Sources\Core\Random\Random.h">
-      <Filter>Core\Random</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Random\C\RandomC_p.h">
-      <Filter>Core\Random\C</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEInput.h" />
     <ClInclude Include="..\..\Sources\Core\Input\Pointer.h">
       <Filter>Core\Input</Filter>
@@ -1043,13 +1040,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpritesheet.h">
       <Filter>Core\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\EGESprite.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceSprite.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\Sprite\Sprite.h">
-      <Filter>Core\Graphics\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEAlignment.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\RenderObjectFactory.h">
@@ -1229,9 +1219,6 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceImagedAnimation.h">
       <Filter>Core\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Animation\ImagedAnimation.h">
-      <Filter>Core\Animation</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Sequencer\Sequencer.h">
       <Filter>Core\Sequencer</Filter>
@@ -1244,6 +1231,22 @@
       <Filter>Core\Animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEAnimation.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\ImagedAnimation\ImagedAnimation.h">
+      <Filter>Core\Graphics\ImagedAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.h">
+      <Filter>Core\Graphics\SpriteAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGESpriteAnimation.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpriteAnimation.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Random\RandomGenerator.h">
+      <Filter>Core\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.h">
+      <Filter>Core\Random\StdC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

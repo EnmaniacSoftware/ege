@@ -1,8 +1,8 @@
-#include "Core/RandomGenerator/RandomGenerator.h"
+#include "Core/Random/RandomGenerator.h"
 
-#ifdef EGE_RANDOM_C
-#include "Core/RandomGenerator/C/RandomGeneratorC_p.h"
-#endif // EGE_RANDOM_C
+#ifdef EGE_RANDOM_STDC
+#include "Core/Random/StdC/RandomGeneratorStdC_p.h"
+#endif // EGE_RANDOM_STDC
 
 EGE_NAMESPACE
 
@@ -12,7 +12,7 @@ EGE_DEFINE_DELETE_OPERATORS(RandomGenerator)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RandomGenerator::RandomGenerator(u32 seed) : Object(NULL)
 {
-    m_p = ege_new RandomGeneratorPrivate(this);
+  m_p = ege_new RandomGeneratorPrivate();
   if (m_p && (0 < seed))
   {
     setSeed(seed);
