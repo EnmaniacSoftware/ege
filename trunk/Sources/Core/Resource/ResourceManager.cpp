@@ -357,7 +357,7 @@ EGEResult ResourceManager::loadGroup(const String& name)
   PResourceGroup theGroup = group(name);
   if (NULL != theGroup)
   {
-    MutexLocker locker(m_mutex);
+   // MutexLocker locker(m_mutex);
 
     // check if given group is scheduled for unloading/loading already
     CommandDataList::iterator it;
@@ -426,7 +426,7 @@ void ResourceManager::unloadGroup(const String& name)
   PResourceGroup theGroup = group(name);
   if (NULL != theGroup)
   {
-    MutexLocker locker(m_mutex);
+    //MutexLocker locker(m_mutex);
 
     // check if given group is scheduled for unloading/loading already
     CommandDataList::iterator it;

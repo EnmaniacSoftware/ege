@@ -78,6 +78,22 @@ EGEResult ImagedAnimation::play(const String& sequencerName)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! IAnimation override. Starts playback with a given sequencer. 
+ *  @param sequencerIndex Index of the sequencer to use for playback.
+ *  @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
+ */
+EGEResult ImagedAnimation::play(s32 sequencerIndex)
+{
+  PSequencer seq = m_sequencers.at(sequencerIndex, NULL);
+  if (NULL == seq)
+  {
+    // error!
+    return EGE_ERROR_NOT_FOUND;
+  }
+
+  return play(seq->name());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* IAnimation override. Stops playback. */
 void ImagedAnimation::stop()
 {
@@ -258,7 +274,7 @@ void ImagedAnimation::addSequencer(const PSequencer& sequencer)
   if (NULL != this->sequencer(sequencer->name()))
   {
     // cannot add
-    EGE_WARNING("Sequencer with name: %s already exists", sequencer->name());
+    EGE_WARNING("Sequencer with name: %s already exists", sequencer->name().toAscii());
     return;
   }
 
@@ -270,7 +286,7 @@ void ImagedAnimation::addSequencer(const PSequencer& sequencer)
 PSequencer ImagedAnimation::sequencer(const String& name) const
 {
   // go thru all sequencers
-  for (SequencerList::const_iterator it = m_sequencers.begin(); it != m_sequencers.end(); ++it)
+  for (SequencerArray::const_iterator it = m_sequencers.begin(); it != m_sequencers.end(); ++it)
   {
     const PSequencer& current = *it;
     if (current->name() == name)

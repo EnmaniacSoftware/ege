@@ -15,7 +15,6 @@
 #include <EGEMap.h>
 #include <EGEGraphics.h>
 #include <EGEVector.h>
-#include <EGEList.h>
 #include <EGEAnimation.h>
 
 EGE_NAMESPACE_BEGIN
@@ -45,21 +44,11 @@ class ImagedAnimation : public Object, public IAnimation
      *  @param sprite     ImagedAnimation object for which frame changed.
      *  @param frameIndex New frame index.
      */
-    Signal2<ImagedAnimation*, s32> frameChanged;
+    Signal2<PImagedAnimation, s32> frameChanged;
     /*! Signal emitted when playback is finished.
      *  @param sprite     ImagedAnimation object for which playback is finished.
      */
-    Signal1<ImagedAnimation*> finished;
-
-  public:
-
-    /*! Available finish policy. */
-    enum FinishPolicy
-    {
-      FP_STOP,                        /*!< ImagedAnimation stops at finish. */
-      FP_REPEAT,                      /*!< ImagedAnimation repeats at finish. */
-      FP_PING_PONG                    /*!< ImagedAnimation ping-pongs at finish. */
-    };
+    Signal1<PImagedAnimation> finished;
 
   public:
 
@@ -68,6 +57,11 @@ class ImagedAnimation : public Object, public IAnimation
      * @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
      */
     EGEResult play(const String& sequencerName) override;
+    /* IAnimation override. Starts playback with a given sequencer. 
+     * @param sequencerIndex Index of the sequencer to use for playback.
+     * @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
+     */
+    EGEResult play(s32 sequencerIndex = 0) override;
     /* IAnimation override. Stops playback. */
     void stop() override;
     /* IAnimation override. Pauses playback. */
@@ -139,7 +133,7 @@ class ImagedAnimation : public Object, public IAnimation
 
     typedef Map<s32, ObjectData> ObjectDataMap;
     typedef DynamicArray<FrameData> FrameDataArray;
-    typedef List<PSequencer> SequencerList;
+    typedef DynamicArray<PSequencer> SequencerArray;
 
   private:
 
@@ -157,7 +151,7 @@ class ImagedAnimation : public Object, public IAnimation
 
   private:
 
-    /*! State flags. */
+    /*! Current state. */
     State m_state;
     /*! Name. */
     String m_name;
@@ -173,8 +167,8 @@ class ImagedAnimation : public Object, public IAnimation
     Vector2f m_displaySize;
     /*! Base display alignment. */
     Alignment m_baseAlignment;
-    /*! List of all sequencers. */
-    SequencerList m_sequencers;
+    /*! Array of all sequencers. */
+    SequencerArray m_sequencers;
     /*! Current sequencer. */
     PSequencer m_currentSequencer;
 };

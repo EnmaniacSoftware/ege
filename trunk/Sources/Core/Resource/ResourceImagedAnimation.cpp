@@ -109,6 +109,17 @@ bool ResourceImagedAnimation::isLoaded() const
     }
   }
 
+  // check if all sequencers are loaded
+  for (SequenceResourceList::const_iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
+  {
+    PResourceSequencer seqResource = *it;
+    if (!seqResource->isLoaded())
+    {
+      // error!
+      return false;
+    }
+  }
+
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -169,6 +180,8 @@ void ResourceImagedAnimation::unload()
 
     objectData.materialResource = NULL;
   }
+
+  m_sequenceResources.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of imaged animation object defined by resource. */

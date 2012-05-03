@@ -7,8 +7,7 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Text Text::EMPTY = "";
-char Text::m_buffer[2048] = { '\0' };
+static char l_buffer[2048];
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Text::Text() : std::wstring()
 {
@@ -71,10 +70,10 @@ void Text::format(const char* text, ...)
 {
 	va_list arg;
 	va_start(arg, text);
-	vsprintf(m_buffer, text, arg);
+	vsprintf(l_buffer, text, arg);
 	va_end(arg);
 
-  *this = m_buffer;
+  *this = l_buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Create new object from formatted text. */
@@ -84,10 +83,10 @@ Text Text::Format(const char* text, ...)
 
 	va_list arg;
 	va_start(arg, text);
-	vsprintf(m_buffer, text, arg);
+	vsprintf(l_buffer, text, arg);
 	va_end(arg);
 
-  out = m_buffer;
+  out = l_buffer;
 
   return out;
 }

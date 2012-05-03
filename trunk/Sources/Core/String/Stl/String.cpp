@@ -8,6 +8,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static char l_buffer[2048];
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function detrmining if given character is a white space. */
 bool IsWhiteSpace(char c)
 {
@@ -20,8 +22,6 @@ bool IsWhiteSpace(char c)
   // no
   return false;
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-char String::m_buffer[2048] = { '\0' };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String::String() : std::string()
 {
@@ -191,10 +191,10 @@ void String::format(const char* text, ...)
 {
 	va_list arg;
 	va_start(arg, text);
-	vsprintf(m_buffer, text, arg);
+	vsprintf(l_buffer, text, arg);
 	va_end(arg);
 
-  *this = m_buffer;
+  *this = l_buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Create new object from formatted text. */
@@ -204,10 +204,10 @@ String String::Format(const char* text, ...)
 
 	va_list arg;
 	va_start(arg, text);
-	vsprintf(m_buffer, text, arg);
+	vsprintf(l_buffer, text, arg);
 	va_end(arg);
 
-  out = m_buffer;
+  out = l_buffer;
 
   return out;
 }

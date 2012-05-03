@@ -112,11 +112,6 @@ class String : public std::string
     ArgEscapeData findArgEscapes() const;
     /* Replaces args with given string. */
     void replaceArgEscapes(String& out, const String& arg, ArgEscapeData& argData) const;
-
-  private:
-
-    /*! Helper buffer. */
-    static char m_buffer[2048];
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

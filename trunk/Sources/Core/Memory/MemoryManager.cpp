@@ -43,7 +43,8 @@ void* MemoryManager::Malloc(size_t size, const char* pszFileName, int iLine)
   void* pData = MemoryManager::DoMalloc(size);
   if (pData)
   {
-    EGE_ASSERT(MemoryManager::GetInstance()->addAlloc(pData, size, pszFileName, iLine));
+    bool result = MemoryManager::GetInstance()->addAlloc(pData, size, pszFileName, iLine);
+    EGE_ASSERT(result);
   }
 
   return pData;

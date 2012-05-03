@@ -47,11 +47,12 @@ class ResourceSequencer : public IResource
     /* Set given instance of sequencer object to what is defined by resource. */
     EGEResult setInstance(PSequencer& instance);
 
+    /*! Returns TRUE if material is loaded. */
+    inline bool isLoaded() const { return true; }
+
   private:
 
     ResourceSequencer(Application* app, ResourceManager* manager);
-    /*! Returns TRUE if material is loaded. */
-    inline bool isLoaded() const { return true; }
 
   private:
 

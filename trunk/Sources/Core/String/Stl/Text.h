@@ -66,11 +66,6 @@ class Text : public std::wstring
     ArgEscapeData findArgEscapes() const;
     /* Replaces args with given string. */
     void replaceArgEscapes(Text& out, const String& arg, ArgEscapeData& argData) const;
-
-  private:
-
-    /*! Helper buffer. */
-    static char m_buffer[2048];
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

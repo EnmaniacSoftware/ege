@@ -10,21 +10,20 @@
 #include <EGEXml.h>
 #include <EGETime.h>
 #include <EGESprite.h>
+#include <EGEList.h>
 #include "Core/Resource/Resource.h"
 #include "Core/Resource/ResourceSpritesheet.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceSprite, PResourceSprite)
 EGE_DECLARE_SMART_CLASS(ResourceSpritesheet, PResourceSpritesheet)
 EGE_DECLARE_SMART_CLASS(Sprite, PSprite)
-
+EGE_DECLARE_SMART_CLASS(ResourceSequencer, PResourceSequencer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceSprite : public IResource
 {
   public:
@@ -56,15 +55,15 @@ class ResourceSprite : public IResource
     EGEResult setInstance(const PSprite& instance);
 
     /*! Returns number of frames. */
-    inline s32 frameCount() const { return m_frameCount; }
-    /*! Returns first frame index within sheet. */
-    inline s32 beginFrame() const { return m_beginFrame; }
-    /*! Returns ping-pong flag. */
-    inline bool pingPong() const { return m_pingPong; }
-    /*! Returns repeat flag. */
-    inline bool repeat() const { return m_repeat; }
+    //inline s32 frameCount() const { return m_frameCount; }
+    ///*! Returns first frame index within sheet. */
+    //inline s32 beginFrame() const { return m_beginFrame; }
+    ///*! Returns ping-pong flag. */
+    //inline bool pingPong() const { return m_pingPong; }
+    ///*! Returns repeat flag. */
+    //inline bool repeat() const { return m_repeat; }
     /*! Returns duration. */
-    inline const Time& duration() const { return m_duration; }
+   // inline const Time& duration() const { return m_duration; }
     /*! Returns repeat delay. */
     inline const Time& repeatDelay() const { return m_repeatDelay; }
 
@@ -72,7 +71,7 @@ class ResourceSprite : public IResource
 
     ResourceSprite(Application* app, ResourceManager* manager);
     /* Returns TRUE if object is loaded. */
-    inline bool isLoaded() const { return NULL != m_sheet; }
+    bool isLoaded() const;
     /*! Returns sprite sheet name. */
     inline const String& sheetName() const { return m_sheetName; } 
     /* Invalidates frame data. */
@@ -81,10 +80,13 @@ class ResourceSprite : public IResource
     void calculateFrameData();
     /*! Returns spritesheet object containing sprite. */
     inline PResourceSpritesheet sheet() const { return m_sheet; }
+    /* Adds sequence. */
+    EGEResult addSequence(const PXmlElement& tag);
 
   private:
 
     typedef DynamicArray<EGESprite::FrameData> FameDataArray;
+    typedef List<PResourceSequencer> SequenceResourceList;
 
   private:
 
@@ -92,16 +94,18 @@ class ResourceSprite : public IResource
     String m_name;
     /*! Sprite sheet name. */
     String m_sheetName;
+    /*! FPS playback count. */
+    float32 m_fps;
     /*! Sprite play duration. */
-    Time m_duration;
-    /*! Ping-pong flag. If set sprite animation will progress forth and back. Mutually exclusive with 'repeat'. */
-    bool m_pingPong;
-    /*! Repeat flag. If set sprite animation will repeat once end is reached. Mutually exclusive with 'pingpong'. */
-    bool m_repeat;
-    /*! First frame index within sheet. */
-    s32 m_beginFrame;
+   // Time m_duration;
+    ///*! Ping-pong flag. If set sprite animation will progress forth and back. Mutually exclusive with 'repeat'. */
+    //bool m_pingPong;
+    ///*! Repeat flag. If set sprite animation will repeat once end is reached. Mutually exclusive with 'pingpong'. */
+    //bool m_repeat;
+    ///*! First frame index within sheet. */
+    //s32 m_beginFrame;
     /*! Number of frames. */
-    s32 m_frameCount;
+  //  s32 m_frameCount;
     /*! Cached frame data validity flag. */
     bool m_frameDataInvalid;
     /*! Cached frame data. */
@@ -110,8 +114,9 @@ class ResourceSprite : public IResource
     PResourceSpritesheet m_sheet;
     /*! Repeat delay. */
     Time m_repeatDelay;
+    /*! List of sequence resources. */
+    SequenceResourceList m_sequenceResources;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
