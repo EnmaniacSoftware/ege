@@ -329,8 +329,9 @@ bool SwfMillToEgeConverter::processDefineShapeTag(QXmlStreamReader& input)
           RETURN_FALSE_IF_ERROR(ok);
 
           // rescale
-          // TAGE - scale seems always to be multiplied by 20 for some reason
+          // TAGE - scale and skew seems always to be multiplied by 20 for some reason
           shapeObject.scale *= 0.05f;
+          shapeObject.skew  *= 0.05f;
         }
         else if ("Rectangle" == input.name())
         {
@@ -403,6 +404,7 @@ bool SwfMillToEgeConverter::processDefineShape2Tag(QXmlStreamReader& input)
 
           // rescale
           // TAGE - scale seems always to be multiplied by 20 for some reason
+          // NOTE in contrary to DefineShape skew seems to be ok
           shapeObject.scale *= 0.05f;
         }
         else if ("Rectangle" == input.name())
