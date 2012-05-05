@@ -58,7 +58,7 @@ class ImagedAnimation : public Object, public IAnimation
      */
     EGEResult play(const String& sequencerName) override;
     /* IAnimation override. Starts playback with a given sequencer. 
-     * @param sequencerIndex Index of the sequencer to use for playback.
+     * @param sequencerIndex Index of the sequencer to use for playback. Negative value replays last sequence if available.
      * @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
      */
     EGEResult play(s32 sequencerIndex = 0) override;

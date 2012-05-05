@@ -10,18 +10,14 @@ EGE_DEFINE_NEW_OPERATORS(SpriteAnimation)
 EGE_DEFINE_DELETE_OPERATORS(SpriteAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SpriteAnimation::SpriteAnimation() : Object(NULL), 
-                   m_state(STATE_STOPPED), 
-                   m_name(""),
-                   m_repeatDelay(0LL),
-                   m_repeatDelayLeft(0LL)
+                                     m_state(STATE_STOPPED), 
+                                     m_name("")
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SpriteAnimation::SpriteAnimation(Application* app, const String& name) : Object(app), 
-                                                       m_state(STATE_STOPPED), 
-                                                       m_name(name),
-                                                       m_repeatDelay(0LL),
-                                                       m_repeatDelayLeft(0LL)
+                                                                         m_state(STATE_STOPPED), 
+                                                                         m_name(name)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -74,11 +70,24 @@ EGEResult SpriteAnimation::play(const String& sequencerName)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IAnimation override. Starts playback with a given sequencer. 
- *  @param sequencerIndex Index of the sequencer to use for playback.
+ *  @param sequencerIndex Index of the sequencer to use for playback. Negative value replays last sequence if available.
  *  @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
  */
 EGEResult SpriteAnimation::play(s32 sequencerIndex)
 {
+  // check if replay requested
+  if (0 > sequencerIndex)
+  {
+    // check if replay possible
+    if (NULL != m_currentSequencer)
+    {
+      // replay
+      return play(m_currentSequencer->name());
+    }
+
+    return EGE_ERROR_NOT_FOUND;
+  }
+
   PSequencer seq = m_sequencers.at(sequencerIndex, NULL);
   if (NULL == seq)
   {
@@ -136,136 +145,6 @@ void SpriteAnimation::update(const Time& time)
     m_currentSequencer->update(time);
   }
 }
-
-
-
-
-/*! Updates object. */
-/*
-void SpriteAnimation::update(const Time& time)
-{
-  if (isPlaying())
-  {
-    // check if in delay between repeats
-    if (0 < m_repeatDelayLeft.microseconds())
-    {
-      m_repeatDelayLeft -= time;
-      if (0 >= m_repeatDelayLeft.microseconds())
-      {
-        m_frameIndex = 0;
-
-        // emit
-        emit frameChanged(this, m_frameIndex);
-
-        // restart frame time
-        m_frameTimeLeft = m_frameTime;
-
-        // done
-      }
-    }
-    else
-    {
-      // update frame time
-      m_frameTimeLeft -= time;
-
-      // check if frame time passed
-      if (0 >= m_frameTimeLeft.microseconds())
-      {
-        // go to next frame
-        if (++m_frameIndex == static_cast<s32>(m_frameData.size()))
-        {
-          // we reach end of cycle
-
-          // process according to policy
-          switch (m_finishPolicy)
-          {
-            case FP_REPEAT:
-
-              // check if any restart delay is needed
-              if (0 < m_repeatDelay.microseconds())
-              {
-                // lets wait
-                m_repeatDelayLeft = m_repeatDelay;
-                return;
-              }
-
-              // restart immediately
-              m_frameIndex = 0;
-              break;
-
-            case FP_PING_PONG:
-
-              EGE_ASSERT(false && "Implement!");
-              break;
-
-            case FP_STOP:
-
-              // change state
-              m_state = STATE_STOPPED;
-
-              // set current frame to last frame
-              m_frameIndex--;
-
-              // emit
-              emit finished(this);
-
-              // done
-              return;
-
-            default:
-
-              EGE_ASSERT(false && "Unsupported finish policy!");
-              break;
-          }
-        }
-
-        // emit
-        emit frameChanged(this, m_frameIndex);
-
-        // add frame time to whats left
-        m_frameTimeLeft += m_frameTime;
-      }
-    }
-  }
-}*/
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts playing. */
-//void SpriteAnimation::play()
-//{
-//  if (!isPlaying() && !m_frameData.empty())
-//  {
-//    // reset data
-//    m_frameIndex = 0;
-//    m_repeatDelayLeft = 0LL;
-//
-//    // check if frame time is to be calculated
-//    if (0 == m_frameTime.microseconds() && (0 < m_frameData.size()))
-//    {
-//      m_frameTime = m_duration / static_cast<float32>(m_frameData.size());
-//      m_frameTimeLeft = m_frameTime;
-//    }
-//
-//    // emit first frame straight away
-//    emit frameChanged(this, m_frameIndex);
-//
-//    // change state
-//    m_state = STATE_PLAYING;
-//  }
-//}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Stops playing. */
-//void SpriteAnimation::stop()
-//{
-//  if (isPlaying())
-//  {
-//    // reset data
-//    m_frameIndex = 0;
-//    m_repeatDelayLeft = 0LL;
-//
-//    // change state
-//    m_state = STATE_STOPPED;
-//  }
-//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns texture image for current frame. */
 PTextureImage SpriteAnimation::frameTexture() const
@@ -286,9 +165,6 @@ void SpriteAnimation::setFPS(float32 fps)
 void SpriteAnimation::setFrameData(const DynamicArray<EGESprite::FrameData>& data)
 {
   m_frameData.copy(data);
-
-  // reset frame time for further evaluation
- // m_frameTime = 0.0f;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets texture image containing sprite data. */
@@ -301,12 +177,6 @@ void SpriteAnimation::setTexture(const PTextureImage& texture)
 void SpriteAnimation::setName(const String& name)
 {
   m_name = name;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets repeat delay. */
-void SpriteAnimation::setRepeatDelay(const Time& time)
-{
-  m_repeatDelay = time;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds sequencer. */
@@ -345,29 +215,6 @@ PSequencer SpriteAnimation::sequencer(const String& name) const
 /*! Slot called when sequencer animated into new frame. */
 void SpriteAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
 {
-  // update object data
-/*  FrameData& frameData = m_frames[frameId];
-  for (List<EGEImagedAnimation::ActionData>::iterator it = frameData.actions.begin(); it != frameData.actions.end(); ++it)
-  {
-    EGEImagedAnimation::ActionData& action = *it;
-
-    ObjectData& objectData = m_objects.at(action.objectId);
-
-    // update matrix
-    objectData.baseFrameMatrix = action.matrix * objectData.baseMatrix;
-    
-    // apply alignment
-    Vector4f translation = objectData.baseFrameMatrix.translation();
-    Math::Align(&translation, &m_displaySize, m_baseAlignment, ALIGN_TOP_LEFT);
-    objectData.baseFrameMatrix.setTranslation(translation.x, translation.y, translation.z);
-
-    // update priority
-    objectData.renderData->setPriority(m_baseRenderPriority + action.queue);
-  
-    // set clipping rect
-   // objectData.renderData->setClipRect(Rectf(translation.x, translation.y, m_displaySize.x, m_displaySize.y));
-  }*/
-
   // emit
   emit frameChanged(this, frameId);
 }

@@ -48,17 +48,12 @@ EGEResult ResourceSpriteAnimation::create(const String& path, const PXmlElement&
   bool error = false;
 
   // get data
-  m_name          = tag->attribute("name");
-  m_sheetName     = tag->attribute("sheet");
-  m_fps           = tag->attribute("fps").toFloat(&error);
-//  m_pingPong      = tag->attribute("ping-pong").toBool(&error);
-  //m_frameCount    = tag->attribute("frame-count").toInt(&error);
-  //m_beginFrame    = tag->attribute("begin-frame").toInt(&error);
- // m_repeat        = tag->attribute("repeat").toBool(&error);
-  m_repeatDelay   = tag->attribute("repeat-delay", "0").toTime(&error);
+  m_name      = tag->attribute("name");
+  m_sheetName = tag->attribute("sheet");
+  m_fps       = tag->attribute("fps").toFloat(&error);
 
   // check if obligatory data is wrong
-  if (error || m_name.empty() || m_sheetName.empty() /*|| (0 >= m_frameCount)*/ /*|| (0 > m_beginFrame)*/)
+  if (error || m_name.empty() || m_sheetName.empty())
   {
     // error!
     EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
@@ -196,21 +191,8 @@ EGEResult ResourceSpriteAnimation::setInstance(const PSpriteAnimation& instance)
   
   // setup data
   instance->setFPS(m_fps);
-  //instance->setDuration(m_duration);
   instance->setFrameData(m_frameData);
   instance->setTexture(m_sheet->textureImage()->createInstance());
-  instance->setRepeatDelay(m_repeatDelay);
-
-  //SpriteAnimation::FinishPolicy finishPolicy = SpriteAnimation::FP_STOP;
-  //if (m_repeat)
-  //{
-  //  finishPolicy = SpriteAnimation::FP_REPEAT;
-  //}
-  //else if (m_pingPong)
-  //{
-  //  finishPolicy = SpriteAnimation::FP_PING_PONG;
-  //}
-  //instance->setFinishPolicy(finishPolicy);
 
   // add sequencers
   for (SequenceResourceList::iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)

@@ -54,19 +54,6 @@ class ResourceSpriteAnimation : public IResource
     /* Set given instance of sprite object to what is defined by resource. */
     EGEResult setInstance(const PSpriteAnimation& instance);
 
-    /*! Returns number of frames. */
-    //inline s32 frameCount() const { return m_frameCount; }
-    ///*! Returns first frame index within sheet. */
-    //inline s32 beginFrame() const { return m_beginFrame; }
-    ///*! Returns ping-pong flag. */
-    //inline bool pingPong() const { return m_pingPong; }
-    ///*! Returns repeat flag. */
-    //inline bool repeat() const { return m_repeat; }
-    /*! Returns duration. */
-   // inline const Time& duration() const { return m_duration; }
-    /*! Returns repeat delay. */
-    inline const Time& repeatDelay() const { return m_repeatDelay; }
-
   private:
 
     ResourceSpriteAnimation(Application* app, ResourceManager* manager);
@@ -96,24 +83,12 @@ class ResourceSpriteAnimation : public IResource
     String m_sheetName;
     /*! FPS playback count. */
     float32 m_fps;
-    /*! SpriteAnimation play duration. */
-   // Time m_duration;
-    ///*! Ping-pong flag. If set sprite animation will progress forth and back. Mutually exclusive with 'repeat'. */
-    //bool m_pingPong;
-    ///*! Repeat flag. If set sprite animation will repeat once end is reached. Mutually exclusive with 'pingpong'. */
-    //bool m_repeat;
-    ///*! First frame index within sheet. */
-    //s32 m_beginFrame;
-    /*! Number of frames. */
-  //  s32 m_frameCount;
     /*! Cached frame data validity flag. */
     bool m_frameDataInvalid;
     /*! Cached frame data. */
     FameDataArray m_frameData;
     /*! Loaded sheet. If NULL resource has not been loaded yet. */
     PResourceSpritesheet m_sheet;
-    /*! Repeat delay. */
-    Time m_repeatDelay;
     /*! List of sequence resources. */
     SequenceResourceList m_sequenceResources;
 };

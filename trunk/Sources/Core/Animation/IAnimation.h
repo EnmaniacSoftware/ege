@@ -20,8 +20,8 @@ class IAnimation
      */
     virtual EGEResult play(const String& sequencerName) = 0;
     /*! Starts playback with a given sequencer. 
-     *  @param sequencerIndex Index of the sequencer to use for playback.
-     *  @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
+     *  @param sequencerIndex Index of the sequencer to use for playback. Negative value replays last sequence if available.
+     *  @note If animation for given sequencer was paused it will be resumed. Otherwise, animation will be started from the begining.
      */
     virtual EGEResult play(s32 sequencerIndex) = 0;
     /*! Stops playback. */

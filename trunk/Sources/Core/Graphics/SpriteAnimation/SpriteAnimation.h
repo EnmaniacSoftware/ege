@@ -51,7 +51,7 @@ class SpriteAnimation : public Object, public IAnimation
      */
     EGEResult play(const String& sequencerName) override;
     /* IAnimation override. Starts playback with a given sequencer. 
-     * @param sequencerIndex Index of the sequencer to use for playback.
+     * @param sequencerIndex Index of the sequencer to use for playback. Negative value replays last sequence if available.
      * @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
      */
     EGEResult play(s32 sequencerIndex = 0) override;
@@ -80,8 +80,6 @@ class SpriteAnimation : public Object, public IAnimation
     inline const String& name() const { return m_name; }
     /* Sets name. */
     void setName(const String& name);
-    /* Sets repeat delay. */
-    void setRepeatDelay(const Time& time);
 
     /* Adds sequencer. */
     void addSequencer(const PSequencer& sequencer);
@@ -118,10 +116,6 @@ class SpriteAnimation : public Object, public IAnimation
     DynamicArray<EGESprite::FrameData> m_frameData;
     /*! Texture image with sprite pixel data. */
     PTextureImage m_textureImage;
-    /*! Repeat delay. */
-    Time m_repeatDelay;
-    /*! Repeat delay time left. */
-    Time m_repeatDelayLeft;
     /*! Array of all sequencers. */
     SequencerArray m_sequencers;
     /*! Current sequencer. */

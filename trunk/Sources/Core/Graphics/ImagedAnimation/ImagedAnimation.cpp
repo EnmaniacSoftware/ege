@@ -58,6 +58,11 @@ EGEResult ImagedAnimation::play(const String& sequencerName)
   
   // get sequencer
   m_currentSequencer = this->sequencer(sequencerName);
+  if (NULL == m_currentSequencer)
+  {
+    // error!
+    return EGE_ERROR_NOT_FOUND;
+  }
 
   if (!isPlaying() && !m_objects.empty() && !m_frames.empty() && (NULL != m_currentSequencer))
   {
@@ -79,11 +84,24 @@ EGEResult ImagedAnimation::play(const String& sequencerName)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IAnimation override. Starts playback with a given sequencer. 
- *  @param sequencerIndex Index of the sequencer to use for playback.
+ *  @param sequencerIndex Index of the sequencer to use for playback. Negative value replays last sequence if available.
  *  @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
  */
 EGEResult ImagedAnimation::play(s32 sequencerIndex)
 {
+  // check if replay requested
+  if (0 > sequencerIndex)
+  {
+    // check if replay possible
+    if (NULL != m_currentSequencer)
+    {
+      // replay
+      return play(m_currentSequencer->name());
+    }
+
+    return EGE_ERROR_NOT_FOUND;
+  }
+
   PSequencer seq = m_sequencers.at(sequencerIndex, NULL);
   if (NULL == seq)
   {
