@@ -27,7 +27,15 @@ void Sequencer::update(const Time& time)
     {
       // go to next frame
       ++m_frameIndex;
-      if (m_frameIndex >= static_cast<s32>(m_framesIds.size()))
+
+      // reset time
+      m_frameTimeLeft = 0.0f;
+
+      // emit
+      emit frameChanged(this, m_framesIds[m_frameIndex]);
+
+      // check if end reached
+      if (m_frameIndex >= static_cast<s32>(m_framesIds.size() - 1))
       {
         // check if done
         if (!m_repeatable)
@@ -41,11 +49,8 @@ void Sequencer::update(const Time& time)
         m_frameIndex = 0;
       }
 
-      // emit
-      emit frameChanged(this, m_framesIds[m_frameIndex]);
-
       // update frame time left
-      m_frameTimeLeft += m_frameDuration;
+      m_frameTimeLeft = m_frameDuration;
     }
   }
 }
@@ -88,11 +93,23 @@ void Sequencer::setName(const String& name)
   m_name = name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current frame id. */
-s32 Sequencer::currentFrameId() const
+/*! Returns given frame id. */
+s32 Sequencer::frameId(s32 frameIndex) const
 {
-  s32 index = Math::Bound(m_frameIndex, 0, static_cast<s32>(m_framesIds.size() - 1));
+  s32 index = Math::Bound(frameIndex, 0, static_cast<s32>(m_framesIds.size() - 1));
 
   return m_framesIds[index];
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns normalized position between current and next frame. */
+float32 Sequencer::normalizedFrameTime() const
+{
+  // sanity check
+  if (0 == m_frameDuration.microseconds())
+  {
+    return 0.0f;
+  }
+
+  return 1.0f - m_frameTimeLeft.seconds() / m_frameDuration.seconds();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

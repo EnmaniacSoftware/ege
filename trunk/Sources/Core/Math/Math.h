@@ -8,7 +8,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T> class TMatrix4;
 typedef TMatrix4<float32> Matrix4f;
 template <typename T> class TVector2;
@@ -25,9 +24,7 @@ template <typename T> class TRect;
 typedef TRect<float32> Rectf;
 class Angle;
 class Color;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Math
 {
   public:
@@ -208,7 +205,6 @@ class Math
     /*! Min 16-bit unsigned integer value. */
     static const s32 MIN_U16;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

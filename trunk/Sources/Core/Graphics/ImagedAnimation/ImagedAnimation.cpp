@@ -156,7 +156,40 @@ void ImagedAnimation::update(const Time& time)
 {
   if (isPlaying())
   {
+    // update sequencer
     m_currentSequencer->update(time);
+
+    float32 dt = m_currentSequencer->normalizedFrameTime();
+
+    FrameData& frameData = m_frames[m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex())];
+    for (List<EGEImagedAnimation::ActionData>::iterator it = frameData.actions.begin(); it != frameData.actions.end(); ++it)
+    {
+      EGEImagedAnimation::ActionData& action = *it;
+
+      ObjectData& objectData = m_objects.at(action.objectId);
+      objectData.baseFrameMatrix[0][0] = (objectData.toMatrix[0][0] - objectData.fromMatrix[0][0]) * dt + objectData.fromMatrix[0][0];
+      objectData.baseFrameMatrix[0][1] = (objectData.toMatrix[0][1] - objectData.fromMatrix[0][1]) * dt + objectData.fromMatrix[0][1];
+      objectData.baseFrameMatrix[0][2] = (objectData.toMatrix[0][2] - objectData.fromMatrix[0][2]) * dt + objectData.fromMatrix[0][2];
+
+      objectData.baseFrameMatrix[1][0] = (objectData.toMatrix[1][0] - objectData.fromMatrix[1][0]) * dt + objectData.fromMatrix[1][0];
+      objectData.baseFrameMatrix[1][1] = (objectData.toMatrix[1][1] - objectData.fromMatrix[1][1]) * dt + objectData.fromMatrix[1][1];
+      objectData.baseFrameMatrix[1][2] = (objectData.toMatrix[1][2] - objectData.fromMatrix[1][2]) * dt + objectData.fromMatrix[1][2];
+
+      objectData.baseFrameMatrix[2][0] = (objectData.toMatrix[2][0] - objectData.fromMatrix[2][0]) * dt + objectData.fromMatrix[2][0];
+      objectData.baseFrameMatrix[2][1] = (objectData.toMatrix[2][1] - objectData.fromMatrix[2][1]) * dt + objectData.fromMatrix[2][1];
+      objectData.baseFrameMatrix[2][2] = (objectData.toMatrix[2][2] - objectData.fromMatrix[2][2]) * dt + objectData.fromMatrix[2][2];
+
+      objectData.baseFrameMatrix[3][0] = (objectData.toMatrix[3][0] - objectData.fromMatrix[3][0]) * dt + objectData.fromMatrix[3][0];
+      objectData.baseFrameMatrix[3][1] = (objectData.toMatrix[3][1] - objectData.fromMatrix[3][1]) * dt + objectData.fromMatrix[3][1];
+      objectData.baseFrameMatrix[3][2] = (objectData.toMatrix[3][2] - objectData.fromMatrix[3][2]) * dt + objectData.fromMatrix[3][2];
+
+      // apply alignment
+      Vector4f translation = objectData.baseFrameMatrix.translation();
+      Math::Align(&translation, &m_displaySize, m_baseAlignment, ALIGN_TOP_LEFT);
+      objectData.baseFrameMatrix.setTranslation(translation.x, translation.y, translation.z);
+
+     // EGE_PRINT("%f %f", objectData.baseFrameMatrix.translation().x, objectData.baseFrameMatrix.translation().y);
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -233,16 +266,23 @@ EGEResult ImagedAnimation::addFrameData(const List<EGEImagedAnimation:: ActionDa
 /*! Renders animation. */
 void ImagedAnimation::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
-  if (NULL != m_currentSequencer)
+  // check if no sequencer
+  if (NULL == m_currentSequencer)
   {
-    const FrameData& frameData = m_frames[m_currentSequencer->currentFrameId()];
-    for (List<EGEImagedAnimation::ActionData>::const_iterator it = frameData.actions.begin(); it != frameData.actions.end(); ++it)
-    {
-      const EGEImagedAnimation::ActionData& action = *it;
+    // do nothing
+    return;
+  }
 
-      const ObjectData& objectData = m_objects.at(action.objectId);
-      renderer->addForRendering(objectData.renderData, transform * objectData.baseFrameMatrix);
-    }
+  const FrameData& frameData = m_frames[m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex())];
+  for (List<EGEImagedAnimation::ActionData>::const_iterator it = frameData.actions.begin(); it != frameData.actions.end(); ++it)
+  {
+    const EGEImagedAnimation::ActionData& action = *it;
+
+    const ObjectData& objectData = m_objects.at(action.objectId);
+    renderer->addForRendering(objectData.renderData, transform * objectData.baseFrameMatrix);
+
+    //  EGE_PRINT("%f %f", objectData.baseFrameMatrix.translation().x, objectData.baseFrameMatrix.translation().y);
+
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -321,8 +361,16 @@ PSequencer ImagedAnimation::sequencer(const String& name) const
 /*! Slot called when sequencer animated into new frame. */
 void ImagedAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
 {
+  s32 nextFrameId = sequencer->frameId((sequencer->currentFrameIndex() + 1) % sequencer->frameCount());
+
+  if (sequencer->name() == "open-mouth")
+  {
+    int a = 1;
+  }
+
   // update object data
-  FrameData& frameData = m_frames[frameId];
+  FrameData& frameData            = m_frames[frameId];
+  const FrameData& nextFrameData  = m_frames[nextFrameId];
   for (List<EGEImagedAnimation::ActionData>::iterator it = frameData.actions.begin(); it != frameData.actions.end(); ++it)
   {
     EGEImagedAnimation::ActionData& action = *it;
@@ -330,8 +378,24 @@ void ImagedAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
     ObjectData& objectData = m_objects.at(action.objectId);
 
     // update matrix
-    objectData.baseFrameMatrix = action.matrix * objectData.baseMatrix;
-    
+    objectData.fromMatrix = action.matrix * objectData.baseMatrix;
+    objectData.toMatrix   = action.matrix * objectData.baseMatrix;
+
+    // TAGE - change this to matrix as this is current interpolation matrix between from and to matrices
+    objectData.baseFrameMatrix = objectData.fromMatrix;
+
+    // find object in next frame and store matrix transformation
+    for (List<EGEImagedAnimation::ActionData>::const_iterator itNext = nextFrameData.actions.begin(); itNext != nextFrameData.actions.end(); ++itNext)
+    {
+      const EGEImagedAnimation::ActionData& actionNext = *itNext;
+      if (actionNext.objectId == action.objectId)
+      {
+        // found, store transformation
+        objectData.toMatrix = actionNext.matrix * objectData.baseMatrix;
+        break;
+      }
+    }
+
     // apply alignment
     Vector4f translation = objectData.baseFrameMatrix.translation();
     Math::Align(&translation, &m_displaySize, m_baseAlignment, ALIGN_TOP_LEFT);

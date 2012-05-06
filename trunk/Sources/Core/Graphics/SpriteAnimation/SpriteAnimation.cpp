@@ -151,7 +151,7 @@ PTextureImage SpriteAnimation::frameTexture() const
 {
   EGE_ASSERT(NULL != m_currentSequencer);
 
-  m_textureImage->setRect(m_frameData[m_currentSequencer->currentFrameId()].m_rect);
+  m_textureImage->setRect(m_frameData[m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex())].m_rect);
   return m_textureImage;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -50,13 +50,20 @@ class Sequencer : public Object
     /* Sets repeat flag. */
     void setRepeatable(bool set);
 
-    /* Returns current frame id. */
-    s32 currentFrameId() const;
+    /* Returns given frame id. */
+    s32 frameId(s32 frameIndex) const;
+    /* Returns current frame index. */
+    inline s32 currentFrameIndex() const { return m_frameIndex; }
+    /* Returns number of frames. */
+    inline s32 frameCount() const { return static_cast<s32>(m_framesIds.size()); }
 
     /* Sets name. */
     void setName(const String& name);
     /*! Returns name. */
     inline const String& name() const { return m_name; }
+
+    /* Returns normalized position between current and next frame. */
+    float32 normalizedFrameTime() const;
 
   private:
 

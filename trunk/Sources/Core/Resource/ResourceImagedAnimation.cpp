@@ -181,7 +181,7 @@ void ResourceImagedAnimation::unload()
     objectData.materialResource = NULL;
   }
 
-  m_sequenceResources.clear();
+  //m_sequenceResources.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of imaged animation object defined by resource. */
