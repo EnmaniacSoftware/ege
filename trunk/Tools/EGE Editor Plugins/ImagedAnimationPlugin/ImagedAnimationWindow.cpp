@@ -90,19 +90,26 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
   //list << "orange_lvl2_chomp";
   //list << "orange_lvl3_idle";
   //list << "orange_lvl3_dance";
-  list << "banana_lvl1_blink";
-  list << "banana_lvl1_idle";
-  list << "banana_lvl1_dance";
-  list << "banana_lvl1_chomp";
-  list << "banana_lvl2_blink";
-  list << "banana_lvl2_idle";
-  list << "banana_lvl2_dance";
-  list << "banana_lvl2_chomp";
-  list << "banana_lvl3_idle";
-  list << "banana_lvl3_chomp";
-  list << "banana_lvl3_blink";
+  //list << "banana_lvl1_blink";
+  //list << "banana_lvl1_idle";
+  //list << "banana_lvl1_dance";
+  //list << "banana_lvl1_chomp";
+  //list << "banana_lvl2_blink";
+  //list << "banana_lvl2_idle";
+  //list << "banana_lvl2_dance";
+  //list << "banana_lvl2_chomp";
+  //list << "banana_lvl3_idle";
+  //list << "banana_lvl3_chomp";
+  //list << "banana_lvl3_blink";
+  //list << "neutral_blink";
+  //list << "neutral_idle";
+  //list << "neutral_dance";
+  //list << "neutral_chomp";
 
-  float scales[] = { 0.25f, 0.5f };
+  list << "003_translate_scale_rotate_banana";
+
+  float scales[] = { 1.0f };
+//  float scales[] = { 0.25f, 0.5f };
 
   for (int i = 0; i < sizeof (scales) / sizeof (scales[0]); ++i)
   {

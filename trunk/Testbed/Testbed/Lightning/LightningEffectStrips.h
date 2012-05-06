@@ -105,8 +105,6 @@ class LightningEffectStrips : public EGE::Object
 
   private:
 
-    /*! Randomizer. */
-    EGE::Random m_random;
     /*! List of currently generated beams. */
     BeamList m_beams;
     /*! Maximum segment midpoint offset. */

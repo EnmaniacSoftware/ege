@@ -181,7 +181,7 @@ void LightningEffectQuads::create(const Vector2f& start, const Vector2f end, s32
 
       // calulate normalized vector perpendicular to current segment
       Vector2f offsetVector = segment->normal;
-      if (m_random() & 0x1)
+      if (Math::Random()() & 0x1)
       {
         offsetVector *= -1.0f;
       }
@@ -218,7 +218,7 @@ void LightningEffectQuads::create(const Vector2f& start, const Vector2f end, s32
       // check if offshot should be generated
       if (allowOffshots)
       {
-        if (((m_random() % 100) < oldSegment.intensity * 50) && (NULL == (*it)->prev->offshot))
+        if (((Math::Random()() % 100) < oldSegment.intensity * 50) && (NULL == (*it)->prev->offshot))
         {
           Segment* newSegment = ege_new Segment();
 
@@ -228,7 +228,7 @@ void LightningEffectQuads::create(const Vector2f& start, const Vector2f end, s32
           float32 dirLength = direction.length();
           direction.normalize();
 
-          Angle angle = m_offshotAngle + m_offshotAngleVariance * m_random(-1.0f, 1.0f);
+          Angle angle = m_offshotAngle + m_offshotAngleVariance * Math::Random()(-1.0f, 1.0f);
 
           float32 cos = Math::Cos(angle.radians());
           float32 sin = Math::Sin(angle.radians());

@@ -111,7 +111,7 @@ void LightningEffectStrips::update(const Time& time)
         float32 oldOffset = segment.randomization;
         if (randomize)
         {
-          segment.randomization = isLast ? 0.0f : m_random(-m_randomizationVariance, m_randomizationVariance);
+          segment.randomization = isLast ? 0.0f : Math::Random()(-m_randomizationVariance, m_randomizationVariance);
         }
 
         // NOTE: *data++ = *data... is apparently not entirely defined operation if one uses pre or post incrementation of a variable which is used 
@@ -231,7 +231,7 @@ void LightningEffectStrips::create(const List<Vector2f>& points, s32 steps, bool
         // check if offshot should be generated
         if (allowOffshots)
         {
-          if ((m_random() % 100) < oldSegment.intensity * 50)
+          if ((Math::Random()() % 100) < oldSegment.intensity * 50)
           {
             Beam offshotBeam;
 
@@ -241,7 +241,7 @@ void LightningEffectStrips::create(const List<Vector2f>& points, s32 steps, bool
             float32 dirLength = direction.length();
             direction.normalize();
 
-            Angle angle = Angle::FromDegrees(m_random(5, 10));
+            Angle angle = Angle::FromDegrees(Math::Random()(5, 10));
 
             float32 cos = Math::Cos(angle.radians());
             float32 sin = Math::Sin(angle.radians());

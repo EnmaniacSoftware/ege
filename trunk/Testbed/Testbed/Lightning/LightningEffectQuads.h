@@ -106,8 +106,6 @@ class LightningEffectQuads
     EGE::Application* m_app;
     /*! Render data. */
     EGE::PRenderComponent m_renderData;
-    /*! Randomizer. */
-    EGE::Random m_random;
     /*! List of currently generated segments. */
     SegmentList m_segments;
     /*! Maximum segment midpoint offset. */

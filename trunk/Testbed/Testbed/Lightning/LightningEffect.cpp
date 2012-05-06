@@ -603,7 +603,7 @@ EGE::List<Segment> LightningEffect::generateSegments(const Vector2f& start, cons
       // check if offshot should be generated
       if (allowOffshots)
       {
-        if ((m_random() % 100) < oldSegment.intensity * 50)
+        if ((Math::Random()() % 100) < oldSegment.intensity * 50)
         {
           segment.start = midPoint;
 
@@ -611,7 +611,7 @@ EGE::List<Segment> LightningEffect::generateSegments(const Vector2f& start, cons
           float32 dirLength = direction.length();
           direction.normalize();
 
-          Angle angle = Angle::FromDegrees(m_random(5, 10));
+          Angle angle = Angle::FromDegrees(Math::Random()(5, 10));
 
           float32 cos = Math::Cos(angle.radians());
           float32 sin = Math::Sin(angle.radians());
@@ -711,7 +711,7 @@ List<Segment2*> LightningEffect::generateSegments2(const EGE::Vector2f& start, c
       // check if offshot should be generated
       if (allowOffshots)
       {
-        if (((m_random() % 100) < oldSegment.intensity * 50) && (NULL == (*it)->prev->offshot))
+        if (((Math::Random()() % 100) < oldSegment.intensity * 50) && (NULL == (*it)->prev->offshot))
         {
           Segment2* newSegment = new Segment2;
 
@@ -721,7 +721,7 @@ List<Segment2*> LightningEffect::generateSegments2(const EGE::Vector2f& start, c
           float32 dirLength = direction.length();
           direction.normalize();
 
-          Angle angle = Angle::FromDegrees(m_random(10, 15));
+          Angle angle = Angle::FromDegrees(Math::Random()(10, 15));
 
           float32 cos = Math::Cos(angle.radians());
           float32 sin = Math::Sin(angle.radians());

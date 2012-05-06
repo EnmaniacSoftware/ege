@@ -50,8 +50,6 @@ class LightningEffectLines : public EGE::SceneNodeObject
     EGE::Application* m_app;
     /*! Render data. */
     EGE::PRenderComponent m_renderData;
-    /*! Randomizer. */
-    EGE::Random m_random;
     /*! Currently generated segments. */
     SegmentList m_segments;
     EGE::Time m_fadeTime;

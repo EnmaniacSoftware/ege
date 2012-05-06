@@ -131,7 +131,7 @@ void LightningEffectLines::create(const Vector2f& start, const Vector2f end, s32
 
       // calulate normalized vector perpendicular to current segment
       Vector2f offsetVector = segment.normal;
-      if (m_random() & 0x1)
+      if (Math::Random()() & 0x1)
       {
         offsetVector *= -1.0f;
       }
@@ -155,7 +155,7 @@ void LightningEffectLines::create(const Vector2f& start, const Vector2f end, s32
       // check if offshot should be generated
       if (allowOffshots)
       {
-        if ((m_random() % 100) < oldSegment.intensity * 50)
+        if ((Math::Random()() % 100) < oldSegment.intensity * 50)
         {
           segment.start = midPoint;
 
@@ -163,7 +163,7 @@ void LightningEffectLines::create(const Vector2f& start, const Vector2f end, s32
           float32 dirLength = direction.length();
           direction.normalize();
 
-          Angle angle = Angle::FromDegrees(m_random(5, 10));
+          Angle angle = Angle::FromDegrees(Math::Random()(5, 10));
 
           float32 cos = Math::Cos(angle.radians());
           float32 sin = Math::Sin(angle.radians());

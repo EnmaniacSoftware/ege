@@ -66,8 +66,6 @@ class LightningEffect : public EGE::SceneNodeObject
     EGE::Application* m_app;
     /*! Render data. */
     EGE::PRenderComponent m_renderData;
-    /*! Randomizer. */
-    EGE::Random m_random;
     /*! Render data. */
     EGE::PRenderComponent m_renderDataQuad;
     /*! Render data. */
