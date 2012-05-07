@@ -166,7 +166,7 @@ bool AudioManager::isPlaying(const PSound& sound) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Stops playback of all sounds with a given name. */
-EGEResult AudioManager::stop(const String& soundName)
+void AudioManager::stop(const String& soundName)
 {
   if (isValid())
   {
@@ -177,22 +177,14 @@ EGEResult AudioManager::stop(const String& soundName)
       if (sound->name() == soundName)
       {
         // stop
-        if (EGE_SUCCESS != stop(sound))
-        {
-          // error!
-          return EGE_ERROR;
-        }
+        stop(sound);
       }
     }
-
-    return EGE_SUCCESS;
   }
-
-  return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Stops playback of the given sound. */
-EGEResult AudioManager::stop(const PSound& sound)
+void AudioManager::stop(PSound sound)
 {
   if (isValid() && sound && sound->isValid())
   {
@@ -200,13 +192,11 @@ EGEResult AudioManager::stop(const PSound& sound)
     if (!isEnabled())
     {
       // done
-      return EGE_SUCCESS;
+      return;
     }
 
-    return p_func()->stop(sound);
+    p_func()->stop(sound);
   }
-
-  return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns list of sounds being played with the given name. */

@@ -158,7 +158,7 @@ void ResourceSpriteAnimation::unload()
   // unload texture
   m_sheet = NULL;
 
-  m_sequenceResources.clear();
+ // m_sequenceResources.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of sprite object defined by resource. */

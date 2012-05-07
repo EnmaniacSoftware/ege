@@ -102,6 +102,8 @@ class SwfMillToEgeConverter
     QString objectActionName(ObjectAction action) const;
     /* Clears converter data. */
     void clear();
+    /* Checks whether object with given ID exists. */
+    bool objectExists(int objectId) const;
 
   private:
 

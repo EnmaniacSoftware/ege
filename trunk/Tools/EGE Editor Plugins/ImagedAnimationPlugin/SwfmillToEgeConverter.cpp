@@ -320,6 +320,16 @@ bool SwfMillToEgeConverter::processDefineShapeTag(QXmlStreamReader& input)
           shapeObject.objectId  = input.attributes().value("objectID").toString().toInt(&ok);
           RETURN_FALSE_IF_ERROR(ok);
         
+          // check if object with such ID exists
+          if (!objectExists(shapeObject.objectId))
+          {
+            // error!
+            qWarning() << Q_FUNC_INFO << "ObjectID:" << shapeObject.objectId << "does not exists! Skipping...";
+
+            // make it 0xffff so it gets removed at the end
+            shapeObject.objectId = 0xffff;
+          }
+          
           shapeData.shapeDataObjects << shapeObject;
         }
         else if ("Transform" == input.name())
@@ -393,6 +403,16 @@ bool SwfMillToEgeConverter::processDefineShape2Tag(QXmlStreamReader& input)
           shapeObject.depth    = 0;
           shapeObject.objectId = input.attributes().value("objectID").toString().toInt(&ok);
           RETURN_FALSE_IF_ERROR(ok);
+
+          // check if object with such ID exists
+          if (!objectExists(shapeObject.objectId))
+          {
+            // error!
+            qWarning() << Q_FUNC_INFO << "ObjectID:" << shapeObject.objectId << "does not exists! Skipping...";
+
+            // make it 0xffff so it gets removed at the end
+            shapeObject.objectId = 0xffff;
+          }
 
           shapeData.shapeDataObjects << shapeObject;
         }
@@ -680,12 +700,11 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
     {
       // check if object wasnt saved yet
       if (!processedObjectIds.contains(shapeObject.objectId))
-      {
-        output.writeStartElement("object");
-    
+      {    
         // found object data referenced by current shape object
         ObjectData objectData;
-        for (int i = 0; i < m_objects.count(); ++i)
+        int i;
+        for (i = 0; i < m_objects.count(); ++i)
         {
           objectData = m_objects[i];
           if (objectData.objectId == shapeObject.objectId)
@@ -694,6 +713,15 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
             break;
           }
         }
+
+        // check if not found
+        if (i == m_objects.count())
+        {
+          qWarning() << Q_FUNC_INFO << "Could not locate objectID: " << shapeObject.objectId << "Skipping...";
+          continue;
+        }
+
+        output.writeStartElement("object");
 
         output.writeAttribute("id", QString("%1").arg(shapeObject.objectId));
         output.writeAttribute("material", QString("%1_object_%2").arg(m_baseName).arg(objectData.objectId));
@@ -823,5 +851,20 @@ void SwfMillToEgeConverter::clear()
   m_objects.clear();
   m_shapes.clear();
   m_objectPlacementMap.clear();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Checks whether object with given ID exists. */
+bool SwfMillToEgeConverter::objectExists(int objectId) const
+{
+  foreach (const ObjectData& objectData, m_objects)
+  {
+    if (objectData.objectId == objectId)
+    {
+      // exists
+      return true;
+    }
+  }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

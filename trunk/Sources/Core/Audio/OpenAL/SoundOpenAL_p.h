@@ -13,11 +13,8 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define BUFFERS_COUNT 3
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class Sound;
-
+EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class SoundPrivate
 {
   public:
@@ -53,7 +50,7 @@ class SoundPrivate
   private slots:
 
     /* Slot called on sound volume change. */
-    void onSoundVolumeChanged(const Sound* sound, float32 oldVolume);
+    void onSoundVolumeChanged(PSound sound, float32 oldVolume);
 
   private:
 
@@ -68,7 +65,6 @@ class SoundPrivate
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_NAMESPACE_END
 
 #endif // EGE_AUDIO_OPENAL

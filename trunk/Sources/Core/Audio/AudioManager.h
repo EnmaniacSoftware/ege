@@ -11,11 +11,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AudioManager : public Object
 {
   public:
@@ -25,6 +22,8 @@ class AudioManager : public Object
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
@@ -47,9 +46,7 @@ class AudioManager : public Object
     /* Returns TRUE if given sound is being played. */
     bool isPlaying(const PSound& sound) const;
     /* Stops playback of all sounds with a given name. */
-    EGEResult stop(const String& soundName);
-    /* Stops playback of the given sound. */
-    EGEResult stop(const PSound& sound);
+    void stop(const String& soundName);
     /* Returns list of sounds being played with the given name. */
     List<PSound> sounds(const String& soundName) const;
     /* Pauses sound with given name. 
@@ -75,6 +72,11 @@ class AudioManager : public Object
     /*! Returns TRUE if manager is enabled. */
     inline bool isEnabled() const { return m_enabled; }
 
+  public slots:
+
+    /* Stops playback of the given sound. */
+    void stop(PSound sound);
+
   private:
 
     typedef List<PSound> SoundList;
@@ -88,7 +90,6 @@ class AudioManager : public Object
     /*! Enable flag. */
     bool m_enabled;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

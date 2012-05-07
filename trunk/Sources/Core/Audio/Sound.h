@@ -14,14 +14,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AudioCodec;
 
 EGE_DECLARE_SMART_CLASS(SoundEffect, PSoundEffect)
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Sound : public Object
 {
   friend class AudioManagerPrivate;
@@ -37,14 +34,14 @@ class Sound : public Object
   signals:
 
     /*! Signal emitted when sound playback has come to an end. */
-    Signal1<const Sound*> finished;
+    Signal1<PSound> finished;
     /*! Signal emitted when sound playback has been stopped (by any means). */
-    Signal1<const Sound*> stopped;
+    Signal1<PSound> stopped;
     /*! Signal emitted when volume changes. 
      *  @param  Sound for which volume has changed.
      *  @param  oldVolume Old volume level.
      */
-    Signal2<const Sound*, float32> volumeChanged;
+    Signal2<PSound, float32> volumeChanged;
 
   public:
 
@@ -103,7 +100,6 @@ class Sound : public Object
     /*! List of all sound effects attached. */
     SoundEffectList m_effects;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

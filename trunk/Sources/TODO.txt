@@ -10,6 +10,8 @@ FEATURES:
 * Resources
   - Physical textures should be defined by 'texture' resources. All references should be done to 'texture-image' resources.
   - Resource loading/unloading should not be synchronous but more like request-wait-for-affirmation type
+  - Resource loading in sperate thead
+  - Rethink loading/unloading of resources and their dependencies (when to unload dependency ?)
 
 OPTIMIZATIONS:
 

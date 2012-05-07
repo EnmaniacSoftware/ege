@@ -297,7 +297,7 @@ bool SoundPrivate::isPlaying() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called on sound volume change. */
-void SoundPrivate::onSoundVolumeChanged(const Sound* sound, float32 oldVolume)
+void SoundPrivate::onSoundVolumeChanged(PSound sound, float32 oldVolume)
 {
   EGE_ASSERT(sound->p_func() == this);
 
