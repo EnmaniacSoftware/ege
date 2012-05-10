@@ -1247,6 +1247,9 @@
     <ClInclude Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.h">
       <Filter>Core\Random\StdC</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\IRenderable.h">
+      <Filter>Core\Graphics\Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

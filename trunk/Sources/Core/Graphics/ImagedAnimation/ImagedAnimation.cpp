@@ -363,11 +363,6 @@ void ImagedAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
 {
   s32 nextFrameId = sequencer->frameId((sequencer->currentFrameIndex() + 1) % sequencer->frameCount());
 
-  if (sequencer->name() == "open-mouth")
-  {
-    int a = 1;
-  }
-
   // update object data
   FrameData& frameData            = m_frames[frameId];
   const FrameData& nextFrameData  = m_frames[nextFrameId];

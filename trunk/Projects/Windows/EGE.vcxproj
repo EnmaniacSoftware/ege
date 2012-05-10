@@ -189,6 +189,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterPoint.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleFactory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\RenderObjectFactory.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\IRenderable.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderPass.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.h" />

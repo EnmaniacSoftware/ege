@@ -1,6 +1,8 @@
 #include "Core/Graphics/SpriteAnimation/SpriteAnimation.h"
 #include "Core/Resource/ResourceSpritesheet.h"
 #include "Core/Resource/ResourceTextureImage.h"
+#include <EGEPhysics.h>
+#include <EGEGraphics.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE
@@ -9,20 +11,81 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(SpriteAnimation)
 EGE_DEFINE_DELETE_OPERATORS(SpriteAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SpriteAnimation::SpriteAnimation() : Object(NULL), 
-                                     m_state(STATE_STOPPED), 
-                                     m_name("")
-{
-}
+//SpriteAnimation::SpriteAnimation() : Object(NULL), 
+//                                     m_state(STATE_STOPPED), 
+//                                     m_name("")
+//{
+//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SpriteAnimation::SpriteAnimation(Application* app, const String& name) : Object(app), 
                                                                          m_state(STATE_STOPPED), 
-                                                                         m_name(name)
+                                                                         m_name(name),
+                                                                         m_baseAlignment(ALIGN_TOP_LEFT)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SpriteAnimation::~SpriteAnimation()
 {
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Constructs objects. */
+EGEResult SpriteAnimation::construct()
+{
+  EGEResult result;
+
+  // create render data
+  m_renderData = RenderObjectFactory::CreateQuadXY(app(), name(), Vector4f::ZERO, Vector2f::ONE, ALIGN_TOP_LEFT, EGEVertexBuffer::ST_V2_T2, 
+                                                   EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLE_STRIPS, EGEVertexBuffer::UT_STATIC_WRITE);
+  if (NULL == m_renderData)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // create local material
+  PMaterial material = ege_new Material(app());
+  if (NULL == material)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  PRenderPass pass = material->addPass(NULL);
+  if (NULL == pass)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  material->setSrcBlendFactor(EGEGraphics::BF_SRC_ALPHA);
+  material->setDstBlendFactor(EGEGraphics::BF_ONE_MINUS_SRC_ALPHA);
+
+  PTextureImage texture = ege_new TextureImage(app());
+  if (NULL == texture)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  texture->setName("sprite-texture");
+  if (EGE_SUCCESS != (result = pass->addTexture(texture)))
+  {
+    // error!
+    return result;
+  }
+
+  // associate material with render data
+  m_renderData->setMaterial(material);
+
+  // create physics data
+  m_physicsData = ege_new PhysicsComponent(app(), name());
+  if (NULL == m_physicsData)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IAnimation override. Starts playback with a given sequencer. 
@@ -215,6 +278,11 @@ PSequencer SpriteAnimation::sequencer(const String& name) const
 /*! Slot called when sequencer animated into new frame. */
 void SpriteAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
 {
+  EGE_ASSERT(NULL != m_renderData);
+
+  // update render data
+  m_renderData->material()->pass(0)->setTexture(0, frameTexture());
+
   // emit
   emit frameChanged(this, frameId);
 }
@@ -233,5 +301,28 @@ void SpriteAnimation::onSequencerFinished(PSequencer sequencer)
 PSequencer SpriteAnimation::currentSequencer() const 
 { 
   return m_currentSequencer; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Renders animation. */
+void SpriteAnimation::addForRendering(Renderer* renderer, const Matrix4f& transform)
+{
+  // apply alignment
+  Matrix4f matrix       = Matrix4f::IDENTITY;
+  Vector4f translation  = m_physicsData->position();
+  Vector4f scale        = m_physicsData->scale();
+
+  Math::Align(&translation, &scale, m_baseAlignment, ALIGN_TOP_LEFT);
+  Math::CreateMatrix(&matrix, &translation, &scale, &Quaternionf::IDENTITY);
+
+  renderer->addForRendering(m_renderData, transform * matrix);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets base display alignment. 
+ *  @param alignment Alignment animation is originally created for.
+ *  @note  Animation if always aligned to TOP_LEFT anchor from its base alignment.
+ */
+void SpriteAnimation::setBaseAlignment(Alignment alignment)
+{
+  m_baseAlignment = alignment;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

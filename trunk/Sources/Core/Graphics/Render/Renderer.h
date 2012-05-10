@@ -9,7 +9,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class SceneNode;
 class RenderPass;
 
@@ -18,9 +17,7 @@ EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
 EGE_DECLARE_SMART_CLASS(Material, PMaterial)
 EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
 EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Renderer : public Object
 {
   public:
@@ -135,7 +132,6 @@ class Renderer : public Object
     /*! Currently active render target. */
     PRenderTarget m_renderTarget;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

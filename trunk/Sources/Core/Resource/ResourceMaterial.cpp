@@ -101,10 +101,8 @@ EGEGraphics::BlendFactor MapBlendFactor(const String& name, EGEGraphics::BlendFa
   return factor;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ResourceMaterial)
 EGE_DEFINE_DELETE_OPERATORS(ResourceMaterial)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceMaterial::ResourceMaterial(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_MATERIAL), m_loaded(false)
 {

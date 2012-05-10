@@ -9,14 +9,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 EGE_DECLARE_SMART_CLASS(Material, PMaterial)
 EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
 EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class RenderComponent : public IComponent
 {
   public:
@@ -97,7 +94,6 @@ class RenderComponent : public IComponent
     /*! Line width. */
     float32 m_lineWidth;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

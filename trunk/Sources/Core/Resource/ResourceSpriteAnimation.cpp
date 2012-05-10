@@ -180,10 +180,19 @@ PSpriteAnimation ResourceSpriteAnimation::createInstance()
 /* Set given instance of sprite object to what is defined by resource. */
 EGEResult ResourceSpriteAnimation::setInstance(const PSpriteAnimation& instance)
 {
+  EGEResult result;
+
   // sanity check
   if (NULL == instance || !isLoaded())
   {
     return EGE_ERROR;
+  }
+
+  // construct
+  if (EGE_SUCCESS != (result = instance->construct()))
+  {
+    // error!
+    return result;
   }
 
   // generate frame data

@@ -10,16 +10,13 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(IComponent, PComponent)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class IComponent : public Object
 {
   public:
 
-    IComponent(Application* app, u32 uid, const String& name = "");
+    IComponent(Application* app, u32 uid, const String& name);
     virtual ~IComponent();
 
     /*! Returns TRUE if component is valid. */
@@ -32,7 +29,6 @@ class IComponent : public Object
     /*! Component name. */
     String m_name;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

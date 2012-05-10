@@ -13,18 +13,22 @@
 #include <EGESpriteAnimation.h>
 #include <EGEAnimation.h>
 #include <EGESequencer.h>
+#include <EGEMatrix.h>
 #include "Core/Graphics/TextureImage.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class Renderer;
 EGE_DECLARE_SMART_CLASS(SpriteAnimation, PSpriteAnimation)
+EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
+EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class SpriteAnimation : public Object, public IAnimation
 {
   public:
 
-    SpriteAnimation();
+   // SpriteAnimation();
     SpriteAnimation(Application* app, const String& name);
    ~SpriteAnimation();
 
@@ -44,6 +48,9 @@ class SpriteAnimation : public Object, public IAnimation
     Signal1<PSpriteAnimation> finished;
 
   public:
+
+    /* Constructs objects. */
+    EGEResult construct();
 
     /* IAnimation override. Starts playback with a given sequencer. 
      * @param sequencerName  Name of the sequencer to use for playback.
@@ -68,8 +75,6 @@ class SpriteAnimation : public Object, public IAnimation
     /* IAnimation override. Updates animation. */
     void update(const Time& time) override;
 
-    /* Returns texture image for current frame. */
-    PTextureImage frameTexture() const;
     /* Sets FPS playback value. */
     void setFPS(float32 fps);
     /* Sets frame data. */
@@ -81,10 +86,24 @@ class SpriteAnimation : public Object, public IAnimation
     /* Sets name. */
     void setName(const String& name);
 
+    /* Sets base display alignment. 
+     * @param alignment Alignment animation is originally created for.
+     * @note  Animation if always aligned to TOP_LEFT anchor from its base alignment.
+     */
+    void setBaseAlignment(Alignment alignment);
+
     /* Adds sequencer. */
     void addSequencer(const PSequencer& sequencer);
     /* Returns current sequencer. */
     PSequencer currentSequencer() const;
+
+    /* Renders animation. */
+    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
+
+    /*! Returns physics data component. */
+    inline const PPhysicsComponent& physics() const { return m_physicsData; }
+    /*! Returns render data component. */
+    inline const PRenderComponent& renderData() const { return m_renderData; }
 
   private:
 
@@ -92,7 +111,9 @@ class SpriteAnimation : public Object, public IAnimation
     inline State state() const { return m_state; }
     /* Returns sequencer of a given name. */
     PSequencer sequencer(const String& name) const;
-
+    /* Returns texture image for current frame. */
+    PTextureImage frameTexture() const;
+ 
   private slots:
 
     /* Slot called when sequencer animated into new frame. */
@@ -120,6 +141,12 @@ class SpriteAnimation : public Object, public IAnimation
     SequencerArray m_sequencers;
     /*! Current sequencer. */
     PSequencer m_currentSequencer;
+    /*! Render data. */
+    PRenderComponent m_renderData;
+    /*! Physics data. */
+    PPhysicsComponent m_physicsData;
+    /*! Base display alignment. */
+    Alignment m_baseAlignment;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -542,6 +542,25 @@ void Math::Align(Vector4f* point, const Vector2f* size, Alignment currentAlignme
   point->y = newPoint.y;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Aligns point. 
+ *  @param point            Point to align. This point is realigned.
+ *  @param size             Area within each point is aligned.
+ *  @param currentAlignment Current point alignment within given area.
+ *  @param newAlignment     New point alignment within given area.
+ */
+void Math::Align(Vector4f* point, const Vector4f* size, Alignment currentAlignment, Alignment newAlignment)
+{
+  EGE_ASSERT(point);
+  EGE_ASSERT(size);
+
+  Vector2f newPoint(point->x, point->y);
+  Vector2f newSize(size->x, size->y);
+  Math::Align(&newPoint, &newSize, currentAlignment, newAlignment);
+
+  point->x = newPoint.x;
+  point->y = newPoint.y;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Aligns rectangle with respect to another rectangle. 
  *  @param rect             Rectangle to align.
  *  @param otherRect        Another rectangle with respect to which first rectangle is to be aligned.

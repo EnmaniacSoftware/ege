@@ -13,14 +13,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Viewport;
 class Renderer;
-
 EGE_DECLARE_SMART_CLASS(Screen, PScreen)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Screen : public Object
 {
   public:
@@ -31,6 +27,8 @@ class Screen : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+    /* Constructs object. */
+    virtual EGEResult construct();
     /* Updates object. */
     virtual void update(const Time& time);
     /* Pointer event. */
@@ -63,7 +61,6 @@ class Screen : public Object
     /*! Cover flag. */
     bool m_covered;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
