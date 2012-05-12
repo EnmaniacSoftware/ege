@@ -28,6 +28,13 @@ bool PointerPrivate::isValid() const
 /*! Event reciever. */
 void PointerPrivate::onEventRecieved(PEvent event)
 {
+  // check if quitting already
+  if (base()->app()->isQuitting())
+  {
+    // do not propagate
+    return;
+  }
+
   switch (event->id())
   {
     case EGE_EVENT_ID_INTERNAL_POINTER_DATA:

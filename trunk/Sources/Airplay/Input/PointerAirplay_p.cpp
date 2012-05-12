@@ -75,6 +75,13 @@ void PointerPrivate::MultiTouchButtonCB(s3ePointerTouchEvent* event, void* data)
   s32 x = event->m_x;
   s32 y = event->m_y;
 
+  // check if quitting already
+  if (me->base()->app()->isQuitting())
+  {
+    // do not propagate
+    return;
+  }
+
   // send event
   emit me->base()->eventSignal(ege_new PointerData(action, button, x, y, event->m_TouchID));
   //me->base()->app()->eventManager()->send(EGE_EVENT_ID_CORE_POINTER_DATA, ege_new PointerData(action, button, x, y, event->m_TouchID));
@@ -87,6 +94,13 @@ void PointerPrivate::MultiTouchMotionCB(s3ePointerTouchMotionEvent* event, void*
 
   s32 x = event->m_x;
   s32 y = event->m_y;
+
+  // check if quitting already
+  if (me->base()->app()->isQuitting())
+  {
+    // do not propagate
+    return;
+  }
 
   // send event
   emit me->base()->eventSignal(ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, event->m_TouchID));
@@ -130,6 +144,13 @@ void PointerPrivate::SingleTouchButtonCB(s3ePointerEvent* event, void* data)
   s32 x = event->m_x;
   s32 y = event->m_y;
 
+  // check if quitting already
+  if (me->base()->app()->isQuitting())
+  {
+    // do not propagate
+    return;
+  }
+
   // send event
   emit me->base()->eventSignal(ege_new PointerData(action, button, x, y, 0));
 
@@ -143,6 +164,13 @@ void PointerPrivate::SingleTouchMotionCB(s3ePointerMotionEvent* event, void* dat
 
   s32 x = event->m_x;
   s32 y = event->m_y;
+
+  // check if quitting already
+  if (me->base()->app()->isQuitting())
+  {
+    // do not propagate
+    return;
+  }
 
   // send event
   emit me->base()->eventSignal(ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, 0));
