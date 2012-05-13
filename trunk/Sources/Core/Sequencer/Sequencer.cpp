@@ -28,18 +28,15 @@ void Sequencer::update(const Time& time)
       // go to next frame
       ++m_frameIndex;
 
-      // reset time
-      m_frameTimeLeft = 0.0f;
-
-      // emit
-      emit frameChanged(this, m_framesIds[m_frameIndex]);
-
       // check if end reached
-      if (m_frameIndex >= static_cast<s32>(m_framesIds.size() - 1))
+      if (m_frameIndex >= static_cast<s32>(m_framesIds.size()))
       {
         // check if done
         if (!m_repeatable)
         {
+          // make sure we stop at last frame
+          m_frameIndex = static_cast<s32>(m_framesIds.size() - 1);
+
           // done
           emit finished(this);
           return;
@@ -49,8 +46,11 @@ void Sequencer::update(const Time& time)
         m_frameIndex = 0;
       }
 
+      // emit
+      emit frameChanged(this, m_framesIds[m_frameIndex]);
+
       // update frame time left
-      m_frameTimeLeft = m_frameDuration;
+      m_frameTimeLeft += m_frameDuration;
     }
   }
 }
