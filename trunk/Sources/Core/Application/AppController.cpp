@@ -108,9 +108,11 @@ void AppController::update()
   {
     // update only object which needs time to shut down
     app()->resourceManager()->update(m_updateInterval);
+    app()->audioManager()->update(m_updateInterval);
 
     // check if ready to quit
-    if (ResourceManager::STATE_CLOSED == app()->resourceManager()->state())
+    if ((ResourceManager::STATE_CLOSED == app()->resourceManager()->state()) &&
+        (AudioManager::STATE_CLOSED == app()->audioManager()->state()))
     {
       // change state
       m_state = STATE_QUIT;
@@ -130,7 +132,7 @@ void AppController::update()
 
       // update physics etc
       app()->resourceManager()->update(m_updateInterval);
-      app()->audioManager()->update(m_updateInterval);
+     // app()->audioManager()->update(m_updateInterval);
       app()->screenManager()->update(m_updateInterval);
       app()->physicsManager()->update(m_updateInterval);
       app()->sceneManager()->update(m_updateInterval);

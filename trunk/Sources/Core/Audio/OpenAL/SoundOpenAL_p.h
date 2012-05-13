@@ -11,7 +11,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define BUFFERS_COUNT 3
+#define BUFFERS_COUNT 2
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -27,12 +27,14 @@ class SoundPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(Sound)
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
+    /* Constructs object. */
+    EGEResult construct();
     /* Updates object. */
     void update(const Time& time);
     /* Starts playback on given channel. */
     EGEResult play(ALuint channel);
+    /* Resumes playback. */
+    EGEResult resume();
     /* Stops playback. */
     EGEResult stop();
     /* Returns TRUE if sound is being played. */
@@ -41,6 +43,8 @@ class SoundPrivate
     EGEResult pause();
     /* Returns TRUE if sound is paused. */
     bool isPaused() const;
+    /* Returns TRUE if sound is stopped. */
+    bool isStopped() const;
 
   private:
 
@@ -60,7 +64,7 @@ class SoundPrivate
     ALenum m_format;
     /*! OpenAL channel id sound is being played on. */
     ALuint m_channel;
-    /*! Flag indicating sound has been stopped and should not be updated anymore. */
+    /*! Flag indicating sound has been stopped and should not be updated anymore. Also indicated all resources has been freed up. */
     bool m_stopped;
 };
 

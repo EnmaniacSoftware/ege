@@ -63,6 +63,8 @@ Application::~Application()
  */
 EGEResult Application::initialize(const Dictionary& params)
 {
+  EGEResult result;
+
   EGE_LOG("Application::initialize");
 
   // check landscape mode
@@ -177,10 +179,16 @@ EGEResult Application::initialize(const Dictionary& params)
   // create audio manager
   EGE_LOG("Application::initialize - creating AudioManager");
   m_audioManager = ege_new AudioManager(this);
-  if ((NULL == m_audioManager) || !m_audioManager->isValid())
+  if (NULL == m_audioManager)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
+  }
+
+  if (EGE_SUCCESS != (result = m_audioManager->construct()))
+  {
+    // error!
+    return result;
   }
 
   return EGE_SUCCESS;

@@ -11,10 +11,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(SoundPrivate)
 EGE_DEFINE_DELETE_OPERATORS(SoundPrivate)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NO_CHANNEL_ID         -2
 #define COMPRESSED_CHANNEL_ID -1
@@ -28,10 +26,10 @@ SoundPrivate::~SoundPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool SoundPrivate::isValid() const
+/*! Constructs object. */
+EGEResult SoundPrivate::construct()
 {
-  return true;;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates object. */
@@ -179,13 +177,38 @@ void SoundPrivate::onSoundVolumeChanged(PSound sound, float32 oldVolume)
 /*! Pauses playback. */
 EGEResult SoundPrivate::pause()
 {
+  // check if compressed sound
+  if (COMPRESSED_CHANNEL_ID == m_channel)
+  {
+    return (S3E_RESULT_SUCCESS == s3eAudioPause()) ? EGE_SUCCESS : EGE_ERROR;
+  }
+
   return (S3E_TRUE == s3eSoundChannelPause(m_channel)) ? EGE_SUCCESS : EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if sound is paused. */
 bool SoundPrivate::isPaused() const
 {
+  // check if compressed sound
+  if (COMPRESSED_CHANNEL_ID == m_channel)
+  {
+    return (S3E_AUDIO_PAUSED == s3eAudioGetInt(S3E_AUDIO_STATUS));
+  }
+
   return (1 == s3eSoundChannelGetInt(m_channel, S3E_CHANNEL_PAUSED));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if sound is stopped. */
+bool SoundPrivate::isStopped() const
+{
+  // check if compressed sound
+  if (COMPRESSED_CHANNEL_ID == m_channel)
+  {
+    return (S3E_AUDIO_STOPPED == s3eAudioGetInt(S3E_AUDIO_STATUS));
+  }
+
+  return (0 == s3eSoundChannelGetInt(m_channel, S3E_CHANNEL_STATUS));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 #endif // !EGE_AIRPLAY_AUDIO_SOFTWARE

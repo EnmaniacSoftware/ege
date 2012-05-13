@@ -7,14 +7,20 @@
 #include <EGE.h>
 #include <EGETime.h>
 #include <EGEList.h>
+#include <EGEThread.h>
+#include <EGEMutex.h>
+#include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AudioManager : public Object
+class AudioManager : public Object, public IEventListener
 {
+  /*! For accessing private data. */
+  friend class AudioThread;
+
   public:
 
     AudioManager(Application* app);
@@ -25,8 +31,22 @@ class AudioManager : public Object
 
   public:
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
+    /*! Available states. */
+    enum State
+    {
+      STATE_NONE = -1,
+      STATE_INITIALIZING,
+      STATE_READY,
+      STATE_CLOSING,
+      STATE_CLOSED
+    };
+
+  public:
+
+    /* Creates object. */
+    EGEResult construct();
+    /*! Returns current state. */
+    inline State state() const { return m_state; }
     /* Updates manager. */
     void update(const Time& time);
     /* Plays sound with given name. 
@@ -79,6 +99,13 @@ class AudioManager : public Object
 
   private:
 
+    /* EventListener override. Event reciever. */
+    void onEventRecieved(PEvent event) override;
+    /* Shuts down. */
+    void shutDown();
+
+  private:
+
     typedef List<PSound> SoundList;
 
   private:
@@ -89,6 +116,12 @@ class AudioManager : public Object
     SoundList m_sounds;
     /*! Enable flag. */
     bool m_enabled;
+    /*! Audio thread. */
+    PThread m_thread;
+    /*! Data access mutex. */
+    PMutex m_mutex;
+    /*! Current state. */
+    State m_state;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

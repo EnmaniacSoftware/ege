@@ -26,39 +26,9 @@ Sound::Sound(const String& name, const PDataBuffer& data) : Object(NULL),
                                                             m_pitch(1.0f), 
                                                             m_codec(NULL),
                                                             m_repeatsLeft(0),
-                                                            m_volume(1.0f)
+                                                            m_volume(1.0f),
+                                                            m_data(data)
 {
-  // detect stream type
-  EGEAudio::StreamType type = AudioUtils::DetectStreamType(data);
-
-  switch (type)
-  {
-    case EGEAudio::ST_WAVE:
-        
-      m_codec = ege_new AudioCodecWav(data);
-      break;
-
-    case EGEAudio::ST_OGG:
-
-      m_codec = ege_new AudioCodecOgg(data);
-      break;
-      
-    case EGEAudio::ST_MP3:
-
-      m_codec = ege_new AudioCodecMp3(data);
-      break;
-
-    default:
-
-      EGE_ASSERT("Unsupported audio format!");
-      break;
-  }
-
-  // create private
-  if (m_codec)
-  {
-    m_p = ege_new SoundPrivate(this);
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Sound::~Sound()
@@ -67,10 +37,50 @@ Sound::~Sound()
   EGE_DELETE(m_codec);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool Sound::isValid() const
+/*! Constructs object. */
+EGEResult Sound::construct()
 {
-  return (NULL != m_p) && m_p->isValid() && (NULL != m_codec);
+  // detect stream type
+  EGEAudio::StreamType type = AudioUtils::DetectStreamType(m_data);
+
+  switch (type)
+  {
+    case EGEAudio::ST_WAVE:
+        
+      m_codec = ege_new AudioCodecWav(m_data);
+      break;
+
+    case EGEAudio::ST_OGG:
+
+      m_codec = ege_new AudioCodecOgg(m_data);
+      break;
+      
+    case EGEAudio::ST_MP3:
+
+      m_codec = ege_new AudioCodecMp3(m_data);
+      break;
+
+    default:
+
+      EGE_ASSERT("Unsupported audio format!");
+      return EGE_ERROR_NOT_SUPPORTED;
+  }
+
+  if (NULL == m_codec)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // create and initialize private
+  m_p = ege_new SoundPrivate(this);
+  if (NULL == m_p)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  return m_p->construct();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates object. */
@@ -93,10 +103,7 @@ void Sound::update(const Time& time)
     }
   }
 
-  if (isValid())
-  {
-    p_func()->update(time);
-  }
+  p_func()->update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets pitch value. */

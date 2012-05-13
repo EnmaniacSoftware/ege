@@ -8,10 +8,12 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+static ALenum l_result;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define IS_AL_ERROR() (AL_NO_ERROR != (l_result = alGetError()))
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(AudioManagerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(AudioManagerPrivate)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base),
                                                                m_device(NULL),
@@ -27,9 +29,9 @@ AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base),
 
     // preallocate channels
     alGenSources(CHANNELS_COUNT, m_channels);
-    if (AL_NO_ERROR != alGetError())
+    if (IS_AL_ERROR())
     {
-      EGE_PRINT("ERROR: Could not generate sources.");
+      EGE_PRINT("ERROR (5d): Could not generate sources.", l_result);
       EGE_MEMSET(m_channels, 0, sizeof (m_channels));
     }
   }
@@ -91,6 +93,13 @@ void AudioManagerPrivate::update(const Time& time)
  */
 EGEResult AudioManagerPrivate::play(const PSound& sound)
 {
+  // check if paused
+  if (isPaused(sound))
+  {
+    // resume playback
+    return sound->p_func()->resume();
+  }
+
   // try to find available channel
   ALuint channel = availableChannel();
   if (0 < channel)
@@ -112,9 +121,15 @@ ALuint AudioManagerPrivate::availableChannel() const
   {
     ALint state;
 		alGetSourcei(m_channels[i], AL_SOURCE_STATE, &state);
+    if (IS_AL_ERROR())
+    {
+      // error!
+      EGE_PRINT("ERROR (%d): Could not retrieve channel state: %d at index %d.", l_result, m_channels[i], i);
+      continue;
+    }
 
-		// if this source is not playing then return it
-		if (AL_PLAYING != state)
+		// if this source is not playing/paused then return it
+		if ((AL_PLAYING != state) && (AL_PAUSED != state))
     {
       return m_channels[i];
     }
@@ -150,4 +165,11 @@ bool AudioManagerPrivate::isPaused(const PSound& sound) const
   return sound->p_func()->isPaused();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if given sound is stopped. */
+bool AudioManagerPrivate::isStopped(const PSound& sound) const
+{
+  return sound->p_func()->isStopped();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 #endif // EGE_AUDIO_OPENAL

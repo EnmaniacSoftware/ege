@@ -58,6 +58,9 @@ class Device
     /* Returns audio output device frequency (in Hz). */
     static s32 AudioOutputFrequency();
 
+    /* Sleeps current thread for a specified number of miliseconds. */
+    static void Sleep(u32 ms);
+
   private:
 
     /*! Render capabilities. */

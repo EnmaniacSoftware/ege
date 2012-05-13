@@ -101,6 +101,11 @@ PSound ResourceSound::createInstance()
 
   // create sound object from data
   PSound object = ege_new Sound(name(), data);
+  if ((NULL == object) || (EGE_SUCCESS != object->construct()))
+  {
+    // error!
+    return NULL;
+  }
 
   // set data
   object->setPitch(m_pitch);

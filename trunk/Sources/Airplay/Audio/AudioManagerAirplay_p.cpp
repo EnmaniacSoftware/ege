@@ -65,7 +65,7 @@ EGEResult AudioManagerPrivate::stop(const PSound& sound)
   return sound->p_func()->stop();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*1 Returns TRUE if given sound is being played. */
+/*! Returns TRUE if given sound is being played. */
 bool AudioManagerPrivate::isPlaying(const PSound& sound) const
 {
   return sound->p_func()->isPlaying();
@@ -84,6 +84,12 @@ EGEResult AudioManagerPrivate::pause(const PSound& sound)
 bool AudioManagerPrivate::isPaused(const PSound& sound) const
 {
   return sound->p_func()->isPaused();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if given sound is stopped. */
+bool AudioManagerPrivate::isStopped(const PSound& sound) const
+{
+  return sound->p_func()->isStopped();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #endif // !EGE_AIRPLAY_AUDIO_SOFTWARE

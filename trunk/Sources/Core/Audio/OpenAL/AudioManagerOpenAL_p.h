@@ -54,6 +54,8 @@ class AudioManagerPrivate
     EGEResult pause(const PSound& sound);
     /* Returns TRUE if given sound is paused. */
     bool isPaused(const PSound& sound) const;
+    /* Returns TRUE if given sound is stopped. */
+    bool isStopped(const PSound& sound) const;
 
   private:
 

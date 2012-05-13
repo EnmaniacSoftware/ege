@@ -31,8 +31,8 @@ class SoundPrivate
 
   public:
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
+    /* Constructs object. */
+    EGEResult construct();
     /* Updates object. */
     void update(const Time& time);
     /* Starts playback. */
@@ -45,6 +45,8 @@ class SoundPrivate
     EGEResult pause();
     /* Returns TRUE if sound is paused. */
     bool isPaused() const;
+    /* Returns TRUE if sound is stopped. */
+    bool isStopped() const;
 
   private slots:
 

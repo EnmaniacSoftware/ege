@@ -639,6 +639,9 @@
     <ClCompile Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.cpp">
       <Filter>Core\Random\StdC</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\AudioThread.cpp">
+      <Filter>Core\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1249,6 +1252,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\IRenderable.h">
       <Filter>Core\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\AudioThread.h">
+      <Filter>Core\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

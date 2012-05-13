@@ -17,6 +17,7 @@
     <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecOgg.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecWav.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioManager.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\AudioThread.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioUtils.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL_p.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecOgg.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecWav.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioManager.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\AudioThread.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL_p.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL_p.h" />

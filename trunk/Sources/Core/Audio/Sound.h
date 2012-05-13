@@ -45,8 +45,8 @@ class Sound : public Object
 
   public:
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
+    /* Constructs object. */
+    EGEResult construct();
     /* Updates object. */
     void update(const Time& time);
     /*! Returns name. */
@@ -99,6 +99,8 @@ class Sound : public Object
     float32 m_volume;
     /*! List of all sound effects attached. */
     SoundEffectList m_effects;
+    /*! Data buffer. */
+    PDataBuffer m_data;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

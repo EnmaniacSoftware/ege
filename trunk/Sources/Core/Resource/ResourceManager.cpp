@@ -787,8 +787,11 @@ void ResourceManager::onEventRecieved(PEvent event)
   {
     case EGE_EVENT_ID_CORE_QUIT_REQUEST:
 
-      // do shouting down
-      shutDown();
+      if ((STATE_CLOSING != m_state) && (STATE_CLOSED != m_state))
+      {
+        // do shouting down
+        shutDown();
+      }
       break;
   }
 }
