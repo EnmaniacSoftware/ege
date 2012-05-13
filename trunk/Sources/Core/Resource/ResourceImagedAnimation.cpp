@@ -49,9 +49,9 @@ EGEResult ResourceImagedAnimation::create(const String& path, const PXmlElement&
   bool error = false;
 
   // get data
-  m_name          = tag->attribute("name");
-  m_frameDuration = tag->attribute("frame-duration").toTime(&error);
-  m_displaySize   = tag->attribute("size").toVector2f(&error);
+  m_name        = tag->attribute("name");
+  m_fps         = tag->attribute("fps").toFloat(&error);
+  m_displaySize = tag->attribute("size").toVector2f(&error);
 
   // check if obligatory data is wrong
   if (error || m_name.empty())
@@ -264,7 +264,7 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
   }
   
   // setup data
-  instance->setFrameDuration(m_frameDuration);
+  instance->setFPS(m_fps);
   instance->setName(name());
   instance->setDisplaySize(m_displaySize);
 

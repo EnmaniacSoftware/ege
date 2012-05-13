@@ -45,7 +45,7 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
   //list << "strawberry_lvl1_idle";
   //list << "strawberry_lvl1_dance";
   //list << "strawberry_lvl1_chomp";
-  list << "strawberry_lvl2_blink";
+  //list << "strawberry_lvl2_blink";
   //list << "strawberry_lvl2_idle";
   //list << "strawberry_lvl2_dance";
   //list << "strawberry_lvl2_chomp";
@@ -108,7 +108,10 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
 
   //list << "003_translate_scale_rotate_banana";
 
-  float scales[] = { 1.0f };
+  list << "Neutral_body_test_KEYFRAMED";
+  list << "Neutral_body_test_TWEENED";
+
+  float scales[] = { 1.0f, 0.5f, 0.25f };
 //  float scales[] = { 0.25f, 0.5f };
 
   for (int i = 0; i < sizeof (scales) / sizeof (scales[0]); ++i)

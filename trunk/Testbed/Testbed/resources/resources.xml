@@ -181,41 +181,67 @@
     <dependancy name='atlas-imaged-anims' />
 
 
-    <material name="003_translate_scale_rotate_banana_object_1" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
-      <texture name="003_translate_scale_rotate_banana_object_1"/>
+    <material name="Neutral_body_test_KEYFRAMED_object_1" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="1_Neutral_body_test_KEYFRAMED_object_1"/>
     </material>
-    <imaged-animation name="003_translate_scale_rotate_banana" frame-duration="0.1" size="320 320">
-      <object id="1" material="003_translate_scale_rotate_banana_object_1" translate="0 0" scale="1 1" skew="0 0" rect="0 0 239 302" size="239 302"/>
-      <sequence name="all" frames="0 1 2 3 4 5 6 7 8 9"/>
+    <imaged-animation name="Neutral_body_test_KEYFRAMED" fps="15" size="320 320">
+      <object id="1" material="Neutral_body_test_KEYFRAMED_object_1" translate="-134 -134" scale="1 1" skew="0 0" rect="-134 -134 268 268" size="267 267"/>
+      <sequence name="all" frames="0 1 2 3 4 5 6 7" repeat="true"/>
       <frame>
-        <action object-id="1" queue="0" translate="-22 9" scale="1 1" skew="0 0"/>
+        <action object-id="1" queue="0" translate="165 157" scale="1 1" skew="0 0"/>
       </frame>
       <frame>
-        <action object-id="1" queue="0" translate="-44 49" scale="0.930084 0.930084" skew="-0.16095 0.16095"/>
+        <action object-id="1" queue="0" translate="170 160" scale="0.998871 0.962906" skew="0.0440674 -0.0424805"/>
       </frame>
       <frame>
-        <action object-id="1" queue="0" translate="-57 95" scale="0.835281 0.835281" skew="-0.30127 0.30127"/>
+        <action object-id="1" queue="0" translate="176 164" scale="0.99585 0.924149" skew="0.0906677 -0.084137"/>
       </frame>
       <frame>
-        <action object-id="1" queue="0" translate="-60 143" scale="0.721695 0.721695" skew="-0.414291 0.414291"/>
+        <action object-id="1" queue="0" translate="170 160" scale="0.998825 0.962891" skew="0.0440826 -0.0424957"/>
       </frame>
       <frame>
-        <action object-id="1" queue="0" translate="-52 191" scale="0.595825 0.595825" skew="-0.497986 0.497986"/>
+        <action object-id="1" queue="0" translate="165 157" scale="0.999954 0.999985" skew="0 0"/>
       </frame>
       <frame>
-        <action object-id="1" queue="0" translate="-34 237" scale="0.464249 0.464249" skew="-0.551727 0.551727"/>
+        <action object-id="1" queue="0" translate="159 157" scale="0.998917 1.00235" skew="-0.0440521 0.04422"/>
       </frame>
       <frame>
-        <action object-id="1" queue="0" translate="-8 279" scale="0.333359 0.333359" skew="-0.576248 0.576248"/>
+        <action object-id="1" queue="0" translate="152 157" scale="0.995987 1.00281" skew="-0.0906525 0.0913086"/>
       </frame>
       <frame>
-        <action object-id="1" queue="0" translate="26 316" scale="0.20903 0.20903" skew="-0.573563 0.573563"/>
+        <action object-id="1" queue="0" translate="159 157" scale="0.998856 1.00198" skew="-0.0436096 0.0437622"/>
+      </frame>
+    </imaged-animation>
+
+    <material name="025_Neutral_body_test_KEYFRAMED_object_1" src-blend="src-alpha" dst-blend="one-minus-src-alpha">
+      <texture name="025_Neutral_body_test_KEYFRAMED_object_1"/>
+    </material>
+    <imaged-animation name="025_Neutral_body_test_KEYFRAMED" fps="15" size="80 80">
+      <object id="1" material="025_Neutral_body_test_KEYFRAMED_object_1" translate="-33 -33" scale="1 1" skew="0 0" rect="-33 -33 66 66" size="66 66"/>
+      <sequence name="all" frames="0 1 2 3 4 5 6 7" repeat="true"/>
+      <frame>
+        <action object-id="1" queue="0" translate="41 39" scale="1 1" skew="0 0"/>
       </frame>
       <frame>
-        <action object-id="1" queue="0" translate="66 347" scale="0.0964966 0.0964966" skew="-0.546799 0.546799"/>
+        <action object-id="1" queue="0" translate="43 40" scale="0.998871 0.962906" skew="0.0440674 -0.0424805"/>
       </frame>
       <frame>
-        <action object-id="1" queue="0" translate="110 371" scale="9.15527e-05 9.15527e-05" skew="-0.5 0.5"/>
+        <action object-id="1" queue="0" translate="44 41" scale="0.99585 0.924149" skew="0.0906677 -0.084137"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="43 40" scale="0.998825 0.962891" skew="0.0440826 -0.0424957"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="41 39" scale="0.999954 0.999985" skew="0 0"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="40 39" scale="0.998917 1.00235" skew="-0.0440521 0.04422"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="38 39" scale="0.995987 1.00281" skew="-0.0906525 0.0913086"/>
+      </frame>
+      <frame>
+        <action object-id="1" queue="0" translate="40 39" scale="0.998856 1.00198" skew="-0.0436096 0.0437622"/>
       </frame>
     </imaged-animation>
     

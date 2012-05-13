@@ -112,8 +112,8 @@ class ResourceImagedAnimation : public IResource
 
     /*! Name. */
     String m_name;
-    /*! Frame duration. */
-    Time m_frameDuration;
+    /*! FPS playback count. */
+    float32 m_fps;
     /*! Objects array. */
     ObjectDataArray m_objects;
     /*! Frames list. */

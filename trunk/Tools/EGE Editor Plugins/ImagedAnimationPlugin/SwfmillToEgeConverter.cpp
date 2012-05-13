@@ -684,12 +684,7 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
 
   // main attributes
   output.writeAttribute("name", m_baseName);
-  float frameDuration = 0.0f;
-  if (0 < m_fps)
-  {
-    frameDuration = (1.0f / m_fps);
-  }
-  output.writeAttribute("frame-duration", QString::number(frameDuration));
+  output.writeAttribute("fps", QString::number(m_fps));
   output.writeAttribute("size", QString("%1 %2").arg(m_displayRect.width()).arg(m_displayRect.height()));
 
   // shapes

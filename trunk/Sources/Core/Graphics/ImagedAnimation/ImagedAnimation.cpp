@@ -193,10 +193,10 @@ void ImagedAnimation::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets frame duration. */
-void ImagedAnimation::setFrameDuration(const Time& duration)
+/*! Sets FPS playback value. */
+void ImagedAnimation::setFPS(float32 fps)
 {
-  m_frameDuration = duration;
+  m_frameDuration = (0.0f < fps) ? (1.0f / fps) : 0.0f;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets name. */

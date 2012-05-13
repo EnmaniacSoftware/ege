@@ -75,8 +75,8 @@ class ImagedAnimation : public Object, public IAnimation
     /* IAnimation override. Updates animation. */
     void update(const Time& time) override;
 
-    /* Sets frame duration. */
-    void setFrameDuration(const Time& duration);
+    /* Sets FPS playback value. */
+    void setFPS(float32 fps);
     /* Sets display size. */
     void setDisplaySize(const Vector2f& size);
     /* Sets base display alignment. 

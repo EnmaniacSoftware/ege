@@ -152,7 +152,7 @@ void ImagedAnimationTest::groupLoadComplete(const String& name)
     //EGE_ASSERT(animRes);
     //m_anims.push_back(animRes->createInstance());
 
-    animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "003_translate_scale_rotate_banana");
+    animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "Neutral_body_test_KEYFRAMED");
     EGE_ASSERT(animRes);
     m_anims.push_back(animRes->createInstance());
 
