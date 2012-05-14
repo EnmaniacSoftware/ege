@@ -2,6 +2,7 @@
 #define EGE_CORE_SEQUENCER_H
 
 /** Sequencer is an animation object which goes through all defined frame indicies.
+    Sequencer emits signal every time new frame is reached. Additional signal is emitted when last frame is reached any no more repeats are to be done.
  */
 
 #include <EGE.h>

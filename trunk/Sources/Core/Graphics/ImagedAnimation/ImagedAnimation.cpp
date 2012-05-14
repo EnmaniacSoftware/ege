@@ -161,6 +161,11 @@ void ImagedAnimation::update(const Time& time)
 
     float32 dt = m_currentSequencer->normalizedFrameTime();
 
+    //if (name() == "chomp" && (m_currentSequencer->name() == "open-mouth" || m_currentSequencer->name() == "idle"))
+    //{
+    //  EGE_PRINT("frame %s %s %d, %f", name().toAscii(), m_currentSequencer->name().toAscii(), m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex()), dt);
+    //}
+
     FrameData& frameData = m_frames[m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex())];
     for (List<EGEImagedAnimation::ActionData>::iterator it = frameData.actions.begin(); it != frameData.actions.end(); ++it)
     {
@@ -361,7 +366,7 @@ PSequencer ImagedAnimation::sequencer(const String& name) const
 /*! Slot called when sequencer animated into new frame. */
 void ImagedAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
 {
-  s32 nextFrameId = sequencer->frameId((sequencer->currentFrameIndex() + 1) % sequencer->frameCount());
+  s32 nextFrameId = sequencer->frameId(Math::Min(sequencer->currentFrameIndex() + 1, sequencer->frameCount() - 1));
 
   // update object data
   FrameData& frameData            = m_frames[frameId];
