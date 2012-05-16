@@ -172,21 +172,8 @@ void ImagedAnimation::update(const Time& time)
       EGEImagedAnimation::ActionData& action = *it;
 
       ObjectData& objectData = m_objects.at(action.objectId);
-      objectData.baseFrameMatrix[0][0] = (objectData.toMatrix[0][0] - objectData.fromMatrix[0][0]) * dt + objectData.fromMatrix[0][0];
-      objectData.baseFrameMatrix[0][1] = (objectData.toMatrix[0][1] - objectData.fromMatrix[0][1]) * dt + objectData.fromMatrix[0][1];
-      objectData.baseFrameMatrix[0][2] = (objectData.toMatrix[0][2] - objectData.fromMatrix[0][2]) * dt + objectData.fromMatrix[0][2];
-
-      objectData.baseFrameMatrix[1][0] = (objectData.toMatrix[1][0] - objectData.fromMatrix[1][0]) * dt + objectData.fromMatrix[1][0];
-      objectData.baseFrameMatrix[1][1] = (objectData.toMatrix[1][1] - objectData.fromMatrix[1][1]) * dt + objectData.fromMatrix[1][1];
-      objectData.baseFrameMatrix[1][2] = (objectData.toMatrix[1][2] - objectData.fromMatrix[1][2]) * dt + objectData.fromMatrix[1][2];
-
-      objectData.baseFrameMatrix[2][0] = (objectData.toMatrix[2][0] - objectData.fromMatrix[2][0]) * dt + objectData.fromMatrix[2][0];
-      objectData.baseFrameMatrix[2][1] = (objectData.toMatrix[2][1] - objectData.fromMatrix[2][1]) * dt + objectData.fromMatrix[2][1];
-      objectData.baseFrameMatrix[2][2] = (objectData.toMatrix[2][2] - objectData.fromMatrix[2][2]) * dt + objectData.fromMatrix[2][2];
-
-      objectData.baseFrameMatrix[3][0] = (objectData.toMatrix[3][0] - objectData.fromMatrix[3][0]) * dt + objectData.fromMatrix[3][0];
-      objectData.baseFrameMatrix[3][1] = (objectData.toMatrix[3][1] - objectData.fromMatrix[3][1]) * dt + objectData.fromMatrix[3][1];
-      objectData.baseFrameMatrix[3][2] = (objectData.toMatrix[3][2] - objectData.fromMatrix[3][2]) * dt + objectData.fromMatrix[3][2];
+      
+      Math::Lerp(&objectData.baseFrameMatrix, &objectData.fromMatrix, &objectData.toMatrix, dt);
 
       // apply alignment
       Vector4f translation = objectData.baseFrameMatrix.translation();
@@ -380,7 +367,7 @@ void ImagedAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
     // update matrix
     objectData.fromMatrix = action.matrix * objectData.baseMatrix;
     objectData.toMatrix   = action.matrix * objectData.baseMatrix;
-
+    
     // TAGE - change this to matrix as this is current interpolation matrix between from and to matrices
     objectData.baseFrameMatrix = objectData.fromMatrix;
 

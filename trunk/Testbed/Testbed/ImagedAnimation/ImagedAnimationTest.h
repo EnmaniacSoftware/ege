@@ -34,6 +34,8 @@ class ImagedAnimationTest : public Test
     /* Test override. Slot called when resource group has been loaded. */
     void groupLoadComplete(const EGE::String& name) override;
 
+    void onFrameChanged(EGE::PImagedAnimation anim, EGE::s32 frameId);
+
   private:
 
     EGE::List<EGE::PImagedAnimation> m_anims;

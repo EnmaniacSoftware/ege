@@ -98,6 +98,7 @@ class Math
     static void Lerp(Vector2f* out, const Vector2f* from, const Vector2f* to, float32 time);
     static void Lerp(Vector3f* out, const Vector3f* from, const Vector3f* to, float32 time);
     static void Lerp(Vector4f* out, const Vector4f* from, const Vector4f* to, float32 time);
+    static void Lerp(Matrix4f* out, const Matrix4f* from, const Matrix4f* to, float32 time);
 
     /*  Performs linear interpolation between given scalars. 
      *  @param  from First (start) scalar.

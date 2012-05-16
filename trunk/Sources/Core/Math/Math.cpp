@@ -286,6 +286,32 @@ void Math::Lerp(Vector4f* out, const Vector4f* from, const Vector4f* to, float32
   *out = (1.0f - time) * (*from) + time * (*to);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Math::Lerp(Matrix4f* out, const Matrix4f* from, const Matrix4f* to, float32 time)
+{
+  EGE_ASSERT(out);
+  EGE_ASSERT(from);
+  EGE_ASSERT(to);
+
+  const float32 oneMinusTime = (1.0f - time);
+
+  out->data[0]  = oneMinusTime * from->data[0]  + time * to->data[0];
+  out->data[1]  = oneMinusTime * from->data[1]  + time * to->data[1];
+  out->data[2]  = oneMinusTime * from->data[2]  + time * to->data[2];
+  out->data[3]  = oneMinusTime * from->data[3]  + time * to->data[3];
+  out->data[4]  = oneMinusTime * from->data[4]  + time * to->data[4];
+  out->data[5]  = oneMinusTime * from->data[5]  + time * to->data[5];
+  out->data[6]  = oneMinusTime * from->data[6]  + time * to->data[6];
+  out->data[7]  = oneMinusTime * from->data[7]  + time * to->data[7];
+  out->data[8]  = oneMinusTime * from->data[8]  + time * to->data[8];
+  out->data[9]  = oneMinusTime * from->data[9]  + time * to->data[9];
+  out->data[10] = oneMinusTime * from->data[10] + time * to->data[10];
+  out->data[11] = oneMinusTime * from->data[11] + time * to->data[11];
+  out->data[12] = oneMinusTime * from->data[12] + time * to->data[12];
+  out->data[13] = oneMinusTime * from->data[13] + time * to->data[13];
+  out->data[14] = oneMinusTime * from->data[14] + time * to->data[14];
+  out->data[15] = oneMinusTime * from->data[15] + time * to->data[15];
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*  Performs linear interpolation between given scalars. 
  *  @param  from First (start) scalar.
  *  @param  to   Second (end) scalar.

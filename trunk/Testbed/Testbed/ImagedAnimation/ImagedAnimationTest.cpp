@@ -18,10 +18,10 @@ ImagedAnimationTest::ImagedAnimationTest(App* app) : Test(app)
   PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
   if (fontResource)
   {
-    //PTextOverlay overlay = ege_new TextOverlay(app, "lang");
-    //overlay->setFont(fontResource->font());
-    //app->overlayManager()->add(overlay);
-    //overlay->physics()->setPosition(Vector4f(0, 80, 0));
+    PTextOverlay overlay = ege_new TextOverlay(app, "frame");
+    overlay->setFont(fontResource->font());
+    app->overlayManager()->add(overlay);
+    overlay->physics()->setPosition(Vector4f(0, 80, 0));
 
     //overlay = ege_new TextOverlay(app, "text-1");
     //overlay->setFont(fontResource->font());
@@ -152,9 +152,10 @@ void ImagedAnimationTest::groupLoadComplete(const String& name)
     //EGE_ASSERT(animRes);
     //m_anims.push_back(animRes->createInstance());
 
-    animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "Neutral_body_test_KEYFRAMED");
+    animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "cherry_lvl1_idle");
     EGE_ASSERT(animRes);
     m_anims.push_back(animRes->createInstance());
+    ege_connect(m_anims.back(), frameChanged, this, ImagedAnimationTest::onFrameChanged);
 
     //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "chomp");
     //EGE_ASSERT(animRes);
@@ -174,8 +175,14 @@ void ImagedAnimationTest::preRender(PRenderTarget target)
   
     Matrix4f matrix = Matrix4f::IDENTITY;
     matrix.setTranslation(100, i * 300.0f, 0);
+    matrix.setScale(2, 2, 1);
 
     anim->addForRendering(app()->graphics()->renderer(), matrix);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ImagedAnimationTest::onFrameChanged(PImagedAnimation anim, s32 frameId)
+{
+  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("frame"))->setText(Text::Format("Frame: %d", frameId));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
