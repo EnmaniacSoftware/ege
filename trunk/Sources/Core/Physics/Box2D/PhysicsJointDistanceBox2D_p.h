@@ -1,18 +1,18 @@
 #ifndef EGE_CORE_PHYSICSJOINTDISTANCEBOX2D_H
 #define EGE_CORE_PHYSICSJOINTDISTANCEBOX2D_H
 
+#ifdef EGE_PHYSICS_BOX2D
+
 #include <EGE.h>
-#include <Box2D/Box2D.h>
+
+class b2DistanceJoint;
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class PhysicsJointDistance;
 class PhysicsManagerPrivate;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class PhysicsJointDistancePrivate
 {
   public:
@@ -57,9 +57,10 @@ class PhysicsJointDistancePrivate
     /*! Pointer to Box2D physics manager. */
     PhysicsManagerPrivate* m_managerPrivate;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // EGE_PHYSICS_BOX2D
 
 #endif // EGE_CORE_PHYSICSJOINTDISTANCEBOX2D_H

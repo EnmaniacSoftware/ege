@@ -6,7 +6,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 namespace EGEPhysics
 {
     /*! Available physics component types. */
@@ -34,7 +33,6 @@ namespace EGEPhysics
       u16 policy;
     };
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
@@ -48,6 +46,20 @@ EGE_NAMESPACE_END
 #include "Core/Physics/PhysicsJointDistance.h"
 #include "Core/Physics/PhysicsJointAttract.h"
 #include "Core/Physics/PhysicsJointPulley.h"
+
+#ifdef EGE_PHYSICS_BOX2D
+#include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"
+#include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"
+#include "Core/Physics/Box2D/PhysicsJointDistanceBox2D_p.h"
+#include "Core/Physics/Box2D/PhysicsJointAttractBox2D_p.h"
+#include "Core/Physics/Box2D/PhysicsJointPulleyBox2D_p.h"
+#elif defined EGE_PHYSICS_NULL
+#include "Core/Components/Physics/Null/PhysicsComponentNull_p.h"
+#include "Core/Physics/Null/PhysicsManagerNull_p.h"
+#include "Core/Physics/Null/PhysicsJointDistanceNull_p.h"
+#include "Core/Physics/Null/PhysicsJointAttractNull_p.h"
+#include "Core/Physics/Null/PhysicsJointPulleyNull_p.h"
+#endif // EGE_PHYSICS_BOX2D
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

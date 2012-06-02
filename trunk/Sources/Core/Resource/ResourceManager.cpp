@@ -390,6 +390,7 @@ EGEResult ResourceManager::loadGroup(const String& name)
     if ((it != m_commands.end()) && (COMMAND_LOAD_GROUP == (*it).command))
     {
       // do nothing
+      EGE_PRINT("Group %s already scheduled. Skipping.", name.toAscii());
       return EGE_SUCCESS;
     }
 

@@ -3,12 +3,12 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(PhysicsJoint)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsJoint)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsJoint::PhysicsJoint(Application* app, PPhysicsComponent bodyA, PPhysicsComponent bodyB, u32 uid) : Object(app, uid), m_bodyA(bodyA), m_bodyB(bodyB)
+PhysicsJoint::PhysicsJoint(Application* app, PPhysicsComponent bodyA, PPhysicsComponent bodyB, u32 uid) : Object(app, uid), 
+                                                                                                          m_bodyA(bodyA), 
+                                                                                                          m_bodyB(bodyB)
 {
   // associate joint with bodies
   if (m_bodyA)

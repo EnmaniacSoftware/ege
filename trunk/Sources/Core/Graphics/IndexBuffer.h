@@ -11,11 +11,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class IndexBuffer : public Object
 {
   public:
@@ -37,7 +34,7 @@ class IndexBuffer : public Object
      */
     virtual void* lock(u32 offset, u32 count) = 0;
     /*! Unlocks buffer. */
-    virtual void unlock() = 0;
+    virtual void unlock(void* data) = 0;
 
     /*! Returns number of allocated indicies. */
     virtual u32 indexCount() const = 0;
@@ -66,7 +63,6 @@ class IndexBuffer : public Object
     /*! Usage. */
     EGEIndexBuffer::UsageType m_usage;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

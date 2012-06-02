@@ -1,60 +1,42 @@
+#ifdef EGE_PHYSICS_NULL
+
 #include "Core/Application/Application.h"
 #include <EGEPhysics.h>
-#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(PhysicsJointPulley)
-EGE_DEFINE_DELETE_OPERATORS(PhysicsJointPulley)
+EGE_DEFINE_NEW_OPERATORS(PhysicsJointPulleyPrivate)
+EGE_DEFINE_DELETE_OPERATORS(PhysicsJointPulleyPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsJointPulley::PhysicsJointPulley(Application* app, PPhysicsComponent bodyA, PPhysicsComponent bodyB, float32 maxLengthA, float32 maxLengthB, 
-                                       const Vector4f& groundAnchorA, const Vector4f& groundAnchorB) 
-: PhysicsJoint(app, bodyA, bodyB, EGE_OBJECT_UID_PHYSICS_JOINT_PULLEY), 
-  m_maxLengthA(maxLengthA), 
-  m_maxLengthB(maxLengthB), 
-  m_groundAnchorA(groundAnchorA), 
-  m_groundAnchorB(groundAnchorB)
+PhysicsJointPulleyPrivate::PhysicsJointPulleyPrivate(PhysicsJointPulley* parent, PhysicsManagerPrivate* managerPrivate) : m_d(parent), 
+                                                                                                                          m_managerPrivate(managerPrivate)
 {
-  m_p = ege_new PhysicsJointPulleyPrivate(this, app->physicsManager()->p_func());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsJointPulley::~PhysicsJointPulley()
+PhysicsJointPulleyPrivate::~PhysicsJointPulleyPrivate()
 {
-  EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns length of segment attached to body A. */
-EGE::float32 PhysicsJointPulley::lengthA() const
+float32 PhysicsJointPulleyPrivate::lengthA() const
 {
-  EGE_ASSERT(NULL != p_func());
-
-  if (isValid())
-  {
-    return p_func()->lengthA();
-  }
-
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns length of segment attached to body B. */
-EGE::float32 PhysicsJointPulley::lengthB() const
+float32 PhysicsJointPulleyPrivate::lengthB() const
 {
-  EGE_ASSERT(NULL != p_func());
-
-  if (isValid())
-  {
-    return p_func()->lengthB();
-  }
-
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
-bool PhysicsJointPulley::isValid() const
+bool PhysicsJointPulleyPrivate::isValid() const
 {
-  return (NULL != m_p) && m_p->isValid();
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // EGE_PHYSICS_NULL

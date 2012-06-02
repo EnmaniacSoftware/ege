@@ -1,36 +1,34 @@
-#ifndef EGE_CORE_PHYSICSJOINTATTRACTBOX2D_H
-#define EGE_CORE_PHYSICSJOINTATTRACTBOX2D_H
+#ifndef EGE_CORE_PHYSICSJOINTDISTANCENULL_H
+#define EGE_CORE_PHYSICSJOINTDISTANCENULL_H
 
-#ifdef EGE_PHYSICS_BOX2D
+#ifdef EGE_PHYSICS_NULL
 
 #include <EGE.h>
-#include <Box2D/Box2D.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class PhysicsJointAttract;
+class PhysicsJointDistance;
 class PhysicsManagerPrivate;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class PhysicsJointAttractPrivate
+class PhysicsJointDistancePrivate
 {
   public:
 
-    PhysicsJointAttractPrivate(PhysicsJointAttract* parent, PhysicsManagerPrivate* managerPrivate);
-   ~PhysicsJointAttractPrivate();
+    PhysicsJointDistancePrivate(PhysicsJointDistance* parent, PhysicsManagerPrivate* managerPrivate);
+   ~PhysicsJointDistancePrivate();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    EGE_DECLARE_PUBLIC_IMPLEMENTATION(PhysicsJointAttract)
+    EGE_DECLARE_PUBLIC_IMPLEMENTATION(PhysicsJointDistance)
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
-    /* Sets target position to attract to. */
-    void setTarget(const Vector4f& position);
+    /* Sets natural length. */
+    void setLength(float32 length);
+    /* Returns natural length. */
+    float32 length() const;
     /* Sets damping ratio.
     *
     *  @param   ration Damping ratio to set. 0 - no damping, 1 - critical damping.
@@ -52,10 +50,6 @@ class PhysicsJointAttractPrivate
 
   private:
 
-    /*! Box2D mouse joint object. */
-    b2MouseJoint* m_joint;
-    /*! Dummy ground Box2D body. */
-    b2Body* m_groundBody;
     /*! Pointer to Box2D physics manager. */
     PhysicsManagerPrivate* m_managerPrivate;
 };
@@ -64,6 +58,6 @@ class PhysicsJointAttractPrivate
 
 EGE_NAMESPACE_END
 
-#endif // EGE_PHYSICS_BOX2D
+#endif // EGE_PHYSICS_NULL
 
-#endif // EGE_CORE_PHYSICSJOINTATTRACTBOX2D_H
+#endif // EGE_CORE_PHYSICSJOINTDISTANCENULL_H

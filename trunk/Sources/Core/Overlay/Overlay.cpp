@@ -1,12 +1,10 @@
 #include "Core/Overlay/Overlay.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(Overlay)
 EGE_DEFINE_DELETE_OPERATORS(Overlay)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Overlay::Overlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Object(app, EGE_OBJECT_UID_OVERLAY, deleteFunc), 
                                                                                          m_name(name), 
@@ -88,3 +86,5 @@ void Overlay::setAlpha(float32 alpha)
   m_renderData->material()->setDiffuseAlpha(alpha);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

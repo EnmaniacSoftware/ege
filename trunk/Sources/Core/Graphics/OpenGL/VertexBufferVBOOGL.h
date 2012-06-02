@@ -12,11 +12,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class VertexBufferVBO : public VertexBuffer
 {
   public:
@@ -42,7 +39,7 @@ class VertexBufferVBO : public VertexBuffer
      */
     void* lock(u32 offset, u32 count) override;
     /* VertexBuffer override. Unlocks buffer. */
-    void unlock() override;
+    void unlock(void* data) override;
 
     /*! VertexBuffer override. Returns number of allocated vertices. */
     u32 vertexCount() const override { return m_vertexCount; }
@@ -80,7 +77,6 @@ class VertexBufferVBO : public VertexBuffer
     /*! Map pointer. Only valid if mapping API is used for ie. m_shadowBufferLock is FALSE. */
     void* m_mapping;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

@@ -1,14 +1,12 @@
-#ifndef EGE_CORE_PHYSICSCOMPONENTBOX2D_H
-#define EGE_CORE_PHYSICSCOMPONENTBOX2D_H
+#ifndef EGE_CORE_PHYSICSCOMPONENTNULL_H
+#define EGE_CORE_PHYSICSCOMPONENTNULL_H
 
-#ifdef EGE_PHYSICS_BOX2D
+#ifdef EGE_PHYSICS_NULL
 
 #include <EGE.h>
 #include <EGEVector.h>
 #include <EGEDynamicArray.h>
 #include <EGEPhysics.h>
-
-class b2Body;
 
 EGE_NAMESPACE_BEGIN
 
@@ -72,9 +70,6 @@ class PhysicsComponentPrivate
     /* Sets whether object is allowed to sleep. */
     void setAllowSleep(bool set);
 
-    /*! Returns Box2D representation. */
-    inline b2Body* body() const { return m_body; }
-
     /* Adds circular shape. */
     bool addCircleShape(float32 radius, float32 density, EGEPhysics::CollisionData colissionData);
     /* Adds polygonal shape. 
@@ -90,8 +85,6 @@ class PhysicsComponentPrivate
 
   private:
 
-    /*! Pointer to Box2D body object representation. */
-    b2Body* m_body;
     /*! Pointer to Box2D physics manager. */
     PhysicsManagerPrivate* m_managerPrivate;
 };
@@ -99,6 +92,6 @@ class PhysicsComponentPrivate
 
 EGE_NAMESPACE_END
 
-#endif // EGE_PHYSICS_BOX2D
+#endif // EGE_PHYSICS_NULL
 
-#endif // EGE_CORE_PHYSICSCOMPONENTBOX2D_H
+#endif // EGE_CORE_PHYSICSCOMPONENTNULL_H

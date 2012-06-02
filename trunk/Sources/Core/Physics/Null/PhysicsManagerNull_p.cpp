@@ -1,70 +1,57 @@
+#ifdef EGE_PHYSICS_NULL
+
 #include <EGEPhysics.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(PhysicsManager)
-EGE_DEFINE_DELETE_OPERATORS(PhysicsManager)
+EGE_DEFINE_NEW_OPERATORS(PhysicsManagerPrivate)
+EGE_DEFINE_DELETE_OPERATORS(PhysicsManagerPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsManager::PhysicsManager(Application* app, const Dictionary& params) : Object(app)
+PhysicsManagerPrivate::PhysicsManagerPrivate(PhysicsManager* base, const Dictionary& params) :  m_d(base), 
+                                                                                                m_scale(1.0f), 
+                                                                                                m_invScale(1.0f)
 {
-  m_p = ege_new PhysicsManagerPrivate(this, params);
+  bool error = false;
+
+  // decompose param list
+  m_scale = params.value(EGE_PHYSICS_PARAM_SCALE_FACTOR, "1").toFloat(&error);
+  if (!error)
+  {
+    m_invScale = 1.0f / m_scale;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsManager::~PhysicsManager()
+PhysicsManagerPrivate::~PhysicsManagerPrivate()
 {
-  EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates manager. */
-void PhysicsManager::update(const Time& time)
+void PhysicsManagerPrivate::update(const Time& time)
 {
-  p_func()->update(time);
-
-  //float32 fTimeInSeconds = time.seconds();
-
-  //// go thru all components
-  //for (std::vector<PPhysicsComponent>::iterator iter = m_vpComponents.begin(); iter != m_vpComponents.end(); ++iter)
-  //{
-  //  PPhysicsComponent& pComponent = *iter;
-
-  //  // calculate acceleration vector
-  //  Vector4f cAcceleration = pComponent->force() / pComponent->mass();
-
-  //  // reset forces acting on component
-  //  pComponent->setForce(Vector4f::ZERO);
-
-  //  // update velocity
-  //  pComponent->setVelocity(pComponent->velocity() + cAcceleration * fTimeInSeconds);
-
-  //  // update position
-  //  pComponent->setPosition(pComponent->position() + pComponent->velocity() * fTimeInSeconds);
-  //}
+  EGE_UNUSED(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if manager is valid. */
-bool PhysicsManager::isValid() const
+/* Returns TRUE if manager is valid. */
+bool PhysicsManagerPrivate::isValid() const
 {
-  return (NULL != m_p) && p_func()->isValid();
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets gravity. */
-void PhysicsManager::setGravity(const Vector4f& gravity)
+void PhysicsManagerPrivate::setGravity(const Vector4f& gravity)
 {
   if (isValid())
   {
-    p_func()->setGravity(gravity);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders data. */
-void PhysicsManager::render()
+void PhysicsManagerPrivate::render()
 {
-  if (isValid())
-  {
-    p_func()->render();
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // EGE_PHYSICS_NULL

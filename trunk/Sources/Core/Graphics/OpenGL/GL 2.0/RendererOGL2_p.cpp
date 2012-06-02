@@ -742,7 +742,7 @@ void RendererPrivate::unbindVertexBuffer(PVertexBuffer& buffer) const
     case EGE_OBJECT_UID_VERTEX_BUFFER_VA:
 
       // unlock buffer
-      buffer->unlock();
+      buffer->unlock(NULL);
       break;
 
     case EGE_OBJECT_UID_VERTEX_BUFFER_VBO:
@@ -812,7 +812,7 @@ void RendererPrivate::unbindIndexBuffer(PIndexBuffer& buffer) const
     case EGE_OBJECT_UID_INDEX_BUFFER_VA:
 
       // unlock buffer
-      buffer->unlock();
+      buffer->unlock(NULL);
       break;
 
     case EGE_OBJECT_UID_INDEX_BUFFER_VBO:

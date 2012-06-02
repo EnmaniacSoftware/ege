@@ -1,17 +1,14 @@
 #ifndef EGE_CORE_PHYSICSJOINT_H
 #define EGE_CORE_PHYSICSJOINT_H
 
-#include "EGE.h"
+#include <EGE.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(PhysicsJoint, PPhysicsJoint)
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class PhysicsJoint : public Object
 {
   public:
@@ -37,7 +34,6 @@ class PhysicsJoint : public Object
     /*! Second attached body. */
     PPhysicsComponent m_bodyB;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

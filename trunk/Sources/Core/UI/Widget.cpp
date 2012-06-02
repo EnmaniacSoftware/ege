@@ -2,7 +2,7 @@
 #include "Core/UI/ScrollableArea.h"
 #include <EGETexture.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(Widget)
@@ -406,3 +406,5 @@ const Matrix4f& Widget::globalTransformationMatrix() const
   return m_globalTransformation;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

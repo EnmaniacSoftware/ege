@@ -1,6 +1,8 @@
 #ifndef EGE_CORE_PHYSICS_DEBUG_DRAW_BOX2D_H
 #define EGE_CORE_PHYSICS_DEBUG_DRAW_BOX2D_H
 
+#ifdef EGE_PHYSICS_BOX2D
+
 #include <EGE.h>
 #include <Box2D/Box2D.h>
 
@@ -53,5 +55,7 @@ class DebugDraw : public b2DebugDraw
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // EGE_PHYSICS_BOX2D
 
 #endif // EGE_CORE_PHYSICS_DEBUG_DRAW_BOX2D_H

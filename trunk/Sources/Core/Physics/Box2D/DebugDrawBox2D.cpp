@@ -1,17 +1,19 @@
+#ifdef EGE_PHYSICS_BOX2D
+
 #include "Core/Application/Application.h"
 #include "Core/Physics/Box2D/DebugDrawBox2D.h"
 #include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"
 #include <EGEGraphics.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(DebugDraw)
 EGE_DEFINE_DELETE_OPERATORS(DebugDraw)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DebugDraw::DebugDraw(Application* app, PhysicsManagerPrivate* managerPrivate) : b2DebugDraw(), m_app(app), m_managerPrivate(managerPrivate)
+DebugDraw::DebugDraw(Application* app, PhysicsManagerPrivate* managerPrivate) : b2DebugDraw(), 
+                                                                                m_app(app), 
+                                                                                m_managerPrivate(managerPrivate)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,7 +28,7 @@ void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2C
                                                        EGEGraphics::RPT_LINE_LOOP);
   if (component->isValid())
   {
-    EGE::float32 scale = manager()->simulationToWorldScaleFactor();
+    float32 scale = manager()->simulationToWorldScaleFactor();
  
     component->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
 
@@ -43,7 +45,7 @@ void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2C
       *data++ = 1.0f;
     }
 
-    component->vertexBuffer()->unlock();
+    component->vertexBuffer()->unlock(data - 1);
 
     app()->graphics()->renderer()->addForRendering(component);
   }
@@ -65,7 +67,7 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
   
   if (component_fill->isValid() && component_frame->isValid())
   {
-    EGE::float32 scale = manager()->simulationToWorldScaleFactor();
+    float32 scale = manager()->simulationToWorldScaleFactor();
  
     component_fill->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
     component_frame->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
@@ -92,8 +94,8 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
       *data_frame++ = 0.5f;
     }
 
-    component_fill->vertexBuffer()->unlock();
-    component_frame->vertexBuffer()->unlock();
+    component_fill->vertexBuffer()->unlock(data_fill - 1);
+    component_frame->vertexBuffer()->unlock(data_frame - 1);
 
     app()->graphics()->renderer()->addForRendering(component_fill);
     app()->graphics()->renderer()->addForRendering(component_frame);
@@ -111,7 +113,7 @@ void DebugDraw::DrawCircle(const b2Vec2& center, EGE::float32 radius, const b2Co
 	  const float32 k_increment = 2.0f * b2_pi / k_segments;
 	  float32 theta = 0.0f;
 
-    EGE::float32 scale = manager()->simulationToWorldScaleFactor();
+    float32 scale = manager()->simulationToWorldScaleFactor();
  
     component->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
 
@@ -132,7 +134,7 @@ void DebugDraw::DrawCircle(const b2Vec2& center, EGE::float32 radius, const b2Co
   		theta += k_increment;
     }
 
-    component->vertexBuffer()->unlock();
+    component->vertexBuffer()->unlock(data - 1);
 
     app()->graphics()->renderer()->addForRendering(component);
   }
@@ -158,7 +160,7 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
 	  const float32 k_increment = 2.0f * b2_pi / k_segments;
 	  float32 theta = 0.0f;
 
-    EGE::float32 scale = manager()->simulationToWorldScaleFactor();
+    float32 scale = manager()->simulationToWorldScaleFactor();
  
     component_fill->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
     component_frame->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
@@ -189,8 +191,8 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
 	  	theta += k_increment;
     }
 
-    component_fill->vertexBuffer()->unlock();
-    component_frame->vertexBuffer()->unlock();
+    component_fill->vertexBuffer()->unlock(data_fill - 1);
+    component_frame->vertexBuffer()->unlock(data_frame - 1);
 
     app()->graphics()->renderer()->addForRendering(component_fill);
     app()->graphics()->renderer()->addForRendering(component_frame);
@@ -210,7 +212,7 @@ void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& c
                                                        EGEGraphics::RPT_LINES);
   if (component->isValid())
   {
-    EGE::float32 scale = manager()->simulationToWorldScaleFactor();
+    float32 scale = manager()->simulationToWorldScaleFactor();
  
     component->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
 
@@ -232,7 +234,7 @@ void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& c
     *data++ = color.b;
     *data++ = 1.0f;
 
-    component->vertexBuffer()->unlock();
+    component->vertexBuffer()->unlock(data - 1);
 
     app()->graphics()->renderer()->addForRendering(component);
   }
@@ -258,3 +260,7 @@ void DebugDraw::DrawTransform(const b2Transform& xf)
 	//glEnd();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
+
+#endif // EGE_PHYSICS_BOX2D

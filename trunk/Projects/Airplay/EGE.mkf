@@ -7,7 +7,7 @@ define PNG_NO_SNPRINTF
 define TIXML_USE_STL
 define STDC
 define EGE_RENDERING_OPENGLES_1
-define EGE_PHYSICS_BOX2D
+define EGE_PHYSICS_NULL
 define EGE_XML_TINYXML
 define EGE_RANDOM_STDC
 define EGE_THREAD_PTHREAD
@@ -141,6 +141,11 @@ files
  	(../../Sources/Core/Components/Physics/Box2D)
 	PhysicsComponentBox2D_p.cpp
 	PhysicsComponentBox2D_p.h
+
+	["Core/Components/Physics/Null"]
+ 	(../../Sources/Core/Components/Physics/Null)
+	PhysicsComponentNull_p.cpp
+	PhysicsComponentNull_p.h
 
 	["Core/Components/Render"]
  	(../../Sources/Core/Components/Render)
@@ -378,6 +383,17 @@ files
 	PhysicsJointPulleyBox2D_p.h
 	PhysicsManagerBox2D_p.cpp
 	PhysicsManagerBox2D_p.h
+
+	["Core/Physics/Null"]
+  (../../Sources/Core/Physics/Null)
+	PhysicsJointAttractNull_p.cpp
+	PhysicsJointAttractNull_p.h
+	PhysicsJointDistanceNull_p.cpp
+	PhysicsJointDistanceNull_p.h
+	PhysicsJointPulleyNull_p.cpp
+	PhysicsJointPulleyNull_p.h
+	PhysicsManagerNull_p.cpp
+	PhysicsManagerNull_p.h
 
   ["Core/Random"]
   (../../Sources/Core/Random)

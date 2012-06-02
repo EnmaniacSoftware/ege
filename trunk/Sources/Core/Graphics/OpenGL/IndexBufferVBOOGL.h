@@ -12,11 +12,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class IndexBufferVBO : public IndexBuffer
 {
   public:
@@ -43,7 +40,7 @@ class IndexBufferVBO : public IndexBuffer
      */
     void* lock(u32 offset, u32 count) override;
     /* IndexBuffer override. Unlocks buffer. */
-    void unlock() override;
+    void unlock(void* data) override;
 
     /*! IndexBuffer override. Returns number of allocated vertices. */
     u32 indexCount() const override { return m_indexCount; }

@@ -2,14 +2,17 @@
 #include <EGEDebug.h>
 #include <fstream>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+#define INTEGRITY_CHECK 0
+#define ORDERING 0
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MemoryManager* MemoryManager::m_instance = NULL;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-MemoryManager::MemoryManager() : m_psAllocs(NULL), m_iAllocCount(0), m_iAllocUsed(0)
+MemoryManager::MemoryManager() :  m_psAllocs(NULL), 
+                                  m_iAllocCount(0), 
+                                  m_iAllocUsed(0)
 {
   internalRealloc(1000);
 }
@@ -74,11 +77,38 @@ bool MemoryManager::addAlloc(void* pData, size_t size, const char* pszFileName, 
     }
   }
 
-  m_psAllocs[m_iAllocUsed].iCount      = 1;
-  m_psAllocs[m_iAllocUsed].pszFileName = pszFileName;
-  m_psAllocs[m_iAllocUsed].iLine       = iLine;
-  m_psAllocs[m_iAllocUsed].size        = size;
-  m_psAllocs[m_iAllocUsed].pData       = pData;
+#if INTEGRITY_CHECK
+  for (int i = 0; i < m_iAllocUsed; ++i)
+  {
+    SALLOCDATA* psData = &m_psAllocs[i];
+
+    if (reinterpret_cast<u8*>(pData) >= reinterpret_cast<u8*>(psData->pData) && 
+        reinterpret_cast<u8*>(pData) < reinterpret_cast<u8*>(psData->pData) + psData->size)
+    {
+      EGE_ASSERT("Overlapping!");
+    }
+  }
+#endif // INTEGRITY_CHECK
+
+  int i = m_iAllocUsed;
+#if ORDERING
+  for (i = 0; i < m_iAllocUsed; ++i)
+  {
+    SALLOCDATA* psData = &m_psAllocs[i];
+
+    if (reinterpret_cast<u8*>(pData) < reinterpret_cast<u8*>(psData->pData))
+    {
+      MemoryManager::MemMove(&m_psAllocs[i + 1], &m_psAllocs[i], sizeof (SALLOCDATA) * (m_iAllocUsed - i));
+      break;
+    }
+  }
+#endif // ORDERING
+
+  m_psAllocs[i].iCount      = 1;
+  m_psAllocs[i].pszFileName = pszFileName;
+  m_psAllocs[i].iLine       = iLine;
+  m_psAllocs[i].size        = size;
+  m_psAllocs[i].pData       = pData;
 
   m_iAllocUsed++;
 
@@ -160,3 +190,5 @@ bool MemoryManager::internalRealloc(int newSize)
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

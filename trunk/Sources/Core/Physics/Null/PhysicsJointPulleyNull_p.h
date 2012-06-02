@@ -1,11 +1,9 @@
-#ifndef EGE_CORE_PHYSICSJOINTPULLEYBOX2D_H
-#define EGE_CORE_PHYSICSJOINTPULLEYBOX2D_H
+#ifndef EGE_CORE_PHYSICSJOINTPULLEYNULL_H
+#define EGE_CORE_PHYSICSJOINTPULLEYNULL_H
 
-#ifdef EGE_PHYSICS_BOX2D
+#ifdef EGE_PHYSICS_NULL
 
 #include <EGE.h>
-
-class b2PulleyJoint;
 
 EGE_NAMESPACE_BEGIN
 
@@ -39,8 +37,6 @@ class PhysicsJointPulleyPrivate
 
   private:
 
-    /*! Box2D distance joint object. */
-    b2PulleyJoint* m_joint;
     /*! Pointer to Box2D physics manager. */
     PhysicsManagerPrivate* m_managerPrivate;
 };
@@ -48,6 +44,6 @@ class PhysicsJointPulleyPrivate
 
 EGE_NAMESPACE_END
 
-#endif // EGE_PHYSICS_BOX2D
+#endif // EGE_PHYSICS_NULL
 
-#endif // EGE_CORE_PHYSICSJOINTPULLEYBOX2D_H
+#endif // EGE_CORE_PHYSICSJOINTPULLEYNULL_H

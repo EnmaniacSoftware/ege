@@ -85,8 +85,13 @@ void* IndexBufferVA::lock(u32 offset, u32 count)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IndexBuffer override. Unlocks buffer. */
-void IndexBufferVA::unlock()
+void IndexBufferVA::unlock(void* data)
 {
+  if (data)
+  {
+    EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_buffer->data()) + indexCapacity() * indexSize());
+  }
+
   m_locked = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

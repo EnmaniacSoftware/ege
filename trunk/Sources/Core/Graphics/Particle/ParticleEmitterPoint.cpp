@@ -1,13 +1,11 @@
 #include "Core/Graphics/Particle/ParticleEmitterPoint.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ParticleEmitterPoint)
 EGE_DEFINE_DELETE_OPERATORS(ParticleEmitterPoint)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ParticleEmitterPoint::ParticleEmitterPoint(Application* app, const String& name) : ParticleEmitter(app, name)
 {
@@ -172,3 +170,5 @@ void ParticleEmitterPoint::initializeParticle(s32 index)
   particleData.spinDelta = m_particleSpinSpeed + m_particleSpinSpeedVariance * Math::Random()(-1.0f, 1.0f);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

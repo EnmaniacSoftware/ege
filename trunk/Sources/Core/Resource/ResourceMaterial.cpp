@@ -7,7 +7,7 @@
 #include <EGETexture.h>
 #include <EGEResources.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_TEXTURE  "texture"
@@ -568,3 +568,5 @@ float32 ResourceMaterial::shininess(u32 pass) const
   return (pass < passCount()) ? m_passes[pass].m_shininess : 0.0f; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

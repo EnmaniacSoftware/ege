@@ -1,36 +1,33 @@
+#ifdef EGE_PHYSICS_NULL
+
 #include "Core/Application/Application.h"
 #include <EGEPhysics.h>
-#include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(PhysicsJointAttract)
-EGE_DEFINE_DELETE_OPERATORS(PhysicsJointAttract)
+EGE_DEFINE_NEW_OPERATORS(PhysicsJointAttractPrivate)
+EGE_DEFINE_DELETE_OPERATORS(PhysicsJointAttractPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsJointAttract::PhysicsJointAttract(Application* app, PPhysicsComponent body) : PhysicsJoint(app, body, NULL, EGE_OBJECT_UID_PHYSICS_JOINT_ATTRACT)
+PhysicsJointAttractPrivate::PhysicsJointAttractPrivate(PhysicsJointAttract* parent, PhysicsManagerPrivate* managerPrivate) : m_d(parent), 
+                                                                                                                             m_managerPrivate(managerPrivate)
 {
-  m_p = ege_new PhysicsJointAttractPrivate(this, app->physicsManager()->p_func());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsJointAttract::~PhysicsJointAttract()
+PhysicsJointAttractPrivate::~PhysicsJointAttractPrivate()
 {
-  EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
-bool PhysicsJointAttract::isValid() const
+bool PhysicsJointAttractPrivate::isValid() const
 {
-  return (NULL != m_p) && m_p->isValid();
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets target position to attract to. */
-void PhysicsJointAttract::setTarget(const Vector4f& position)
+void PhysicsJointAttractPrivate::setTarget(const Vector4f& position)
 {
-  if (isValid())
-  {
-    p_func()->setTarget(position);
-  }
+  EGE_UNUSED(position);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Sets damping ratio.
@@ -38,44 +35,32 @@ void PhysicsJointAttract::setTarget(const Vector4f& position)
 *  @param   ration Damping ratio to set. 0 - no damping, 1 - critical damping.
 */
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PhysicsJointAttract::setDampingRatio(EGE::float32 ratio)
+void PhysicsJointAttractPrivate::setDampingRatio(float32 ratio)
 {
-  if (isValid())
-  {
-    p_func()->setDampingRatio(ratio);
-  }
+  EGE_UNUSED(ratio);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns current damping ratio. */
-EGE::float32 PhysicsJointAttract::dampingRatio() const
+float32 PhysicsJointAttractPrivate::dampingRatio() const
 {
-  if (isValid())
-  {
-    return p_func()->dampingRatio();
-  }
-
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Sets mass-spring-damper frequency (in Hz). 
 *  @note  This describes the speed of response of the system.
 */
-void PhysicsJointAttract::setFrequency(EGE::float32 frequencyHz)
+void PhysicsJointAttractPrivate::setFrequency(float32 frequencyHz)
 {
-  if (isValid())
-  {
-    p_func()->setFrequency(frequencyHz);
-  }
+  EGE_UNUSED(frequencyHz);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns current mass-spring-damper frequency (in Hz). */
-EGE::float32 PhysicsJointAttract::frequency() const
+float32 PhysicsJointAttractPrivate::frequency() const
 {
-  if (isValid())
-  {
-    return p_func()->frequency();
-  }
-
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
+
+#endif // EGE_PHYSICS_NULL

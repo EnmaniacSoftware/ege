@@ -2,7 +2,7 @@
 #include "Core/Graphics/TextureImage.h"
 #include "Core/Math/Math.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(RenderPass)
@@ -169,3 +169,5 @@ RenderPass* RenderPass::clone() const
   return pass;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

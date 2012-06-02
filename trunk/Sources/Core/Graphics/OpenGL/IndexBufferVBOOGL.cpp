@@ -163,8 +163,10 @@ void* IndexBufferVBO::lock(u32 offset, u32 count)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Unlocks buffer. */
-void IndexBufferVBO::unlock()
+void IndexBufferVBO::unlock(void* data)
 {
+  EGE_UNUSED(data);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
   if (GL_NO_ERROR != glGetError())
   {

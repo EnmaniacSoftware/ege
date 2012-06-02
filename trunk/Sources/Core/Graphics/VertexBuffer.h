@@ -12,11 +12,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class VertexBuffer : public Object
 {
   public:
@@ -38,7 +35,7 @@ class VertexBuffer : public Object
      */
     virtual void* lock(u32 offset, u32 count) = 0;
     /*! Unlocks buffer. */
-    virtual void unlock() = 0;
+    virtual void unlock(void* data) = 0;
 
     /* Adds given array type to overall semantics. */
     bool addArray(EGEVertexBuffer::ArrayType type);
@@ -78,7 +75,6 @@ class VertexBuffer : public Object
     /* Clears vertex data. */
     virtual void clear();
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

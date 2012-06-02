@@ -1,20 +1,17 @@
-#include "EGEPhysics.h"
-#include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"
-#include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"
-#include "Core/Physics/Box2D/PhysicsJointDistanceBox2D_p.h"
-#include "Core/Physics/Box2D/PhysicsJointAttractBox2D_p.h"
-#include "Core/Physics/Box2D/PhysicsJointPulleyBox2D_p.h"
+#ifdef EGE_PHYSICS_BOX2D
+
+#include <EGEPhysics.h>
 #include "Core/Physics/Box2D/DebugDrawBox2D.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(PhysicsManagerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsManagerPrivate)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsManagerPrivate::PhysicsManagerPrivate(PhysicsManager* base, const Dictionary& params) : m_d(base), m_scale(1.0f), m_invScale(1.0f)
+PhysicsManagerPrivate::PhysicsManagerPrivate(PhysicsManager* base, const Dictionary& params) :  m_d(base), 
+                                                                                                m_scale(1.0f), 
+                                                                                                m_invScale(1.0f)
 {
   bool error = false;
 
@@ -77,38 +74,6 @@ bool PhysicsManagerPrivate::isValid() const
   return NULL != m_world;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Registers component. This is supposed to be called by PhysicsComponent only.
-*
-*  @param   component component object for which registration is to be performed.
-*  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
-*/
-PhysicsComponentPrivate* PhysicsManagerPrivate::registerComponent(PhysicsComponent* component)
-{
-  PhysicsComponentPrivate* object = ege_new PhysicsComponentPrivate(component, this);
-  if (!object->isValid())
-  {
-    EGE_DELETE(object);
-  }
-
-  return  object;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Registers distance joint. This is supposed to be called by PhysicsJointDistance only.
-*
-*  @param   joint joint object for which registration is to be performed.
-*  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
-*/
-PhysicsJointDistancePrivate* PhysicsManagerPrivate::registerJoint(PhysicsJointDistance* joint)
-{
-  PhysicsJointDistancePrivate* object = ege_new PhysicsJointDistancePrivate(joint, this);
-  if (!object->isValid())
-  {
-    EGE_DELETE(object);
-  }
-
-  return object;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! b2DestructionListener override. Box2D fixture is about to be destroyed. */
 void PhysicsManagerPrivate::SayGoodbye(b2Fixture* fixture)
 {
@@ -147,35 +112,7 @@ void PhysicsManagerPrivate::render()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Registers attract joint. This is supposed to be called by PhysicsJointAttract only.
-*
-*  @param   joint joint object for which registration is to be performed.
-*  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
-*/
-PhysicsJointAttractPrivate* PhysicsManagerPrivate::registerJoint(PhysicsJointAttract* joint)
-{
-  PhysicsJointAttractPrivate* object = ege_new PhysicsJointAttractPrivate(joint, this);
-  if (!object->isValid())
-  {
-    EGE_DELETE(object);
-  }
 
-  return object;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Registers pulley joint. This is supposed to be called by PhysicsJointPulley only.
-*
-*  @param   joint joint object for which registration is to be performed.
-*  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
-*/
-PhysicsJointPulleyPrivate* PhysicsManagerPrivate::registerJoint(PhysicsJointPulley* joint)
-{
-  PhysicsJointPulleyPrivate* object = ege_new PhysicsJointPulleyPrivate(joint, this);
-  if (!object->isValid())
-  {
-    EGE_DELETE(object);
-  }
+EGE_NAMESPACE_END
 
-  return object;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#endif // EGE_PHYSICS_BOX2D

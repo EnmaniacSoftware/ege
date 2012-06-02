@@ -19,14 +19,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class PhysicsManager;
 
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 EGE_DECLARE_SMART_CLASS(PhysicsJoint, PPhysicsJoint)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class PhysicsComponent : public IComponent
 {
     /* For access to private implementation. */
@@ -145,7 +142,6 @@ class PhysicsComponent : public IComponent
     /*! Pointer to physics manager. Can be NULL if component is not managable. */
     PhysicsManager* m_manager;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

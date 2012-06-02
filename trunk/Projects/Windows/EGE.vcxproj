@@ -31,6 +31,7 @@
     <ClCompile Include="..\..\Sources\Core\ComplexTypes.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Render\RenderComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Hash.cpp" />
@@ -97,6 +98,10 @@
     <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointDistanceBox2D_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsManagerBox2D_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Physics\Null\PhysicsJointAttractNull_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Physics\Null\PhysicsJointDistanceNull_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Physics\Null\PhysicsJointPulleyNull_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Physics\Null\PhysicsManagerNull_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJoint.cpp" />
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJointAttract.cpp" />
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJointDistance.cpp" />
@@ -170,6 +175,7 @@
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffect.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeOut.h" />
+    <ClInclude Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Hash.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h" />
@@ -203,6 +209,10 @@
     <ClInclude Include="..\..\Sources\Core\Math\Splines\CurveSegment.h" />
     <ClInclude Include="..\..\Sources\Core\Overlay\ImageOverlay.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsJointAttractNull_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsJointDistanceNull_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsJointPulleyNull_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsManagerNull_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointPulley.h" />
     <ClInclude Include="..\..\Sources\Core\Random\RandomGenerator.h" />
     <ClInclude Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.h" />
@@ -417,6 +427,7 @@
     <None Include="..\..\Sources\README.txt" />
     <None Include="..\..\Sources\Rendering Pipe.txt" />
     <None Include="..\..\Sources\TODO.txt" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\External\Box2D 2.1.2\Box2D\Build\Box2D\Box2D.vcxproj">
@@ -494,7 +505,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_BOX2D;EGE_FEATURE_DEBUG;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_NULL;EGE_FEATURE_DEBUG;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>

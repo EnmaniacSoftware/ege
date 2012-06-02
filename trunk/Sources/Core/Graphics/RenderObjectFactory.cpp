@@ -163,7 +163,7 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
     }
 
     // unlock vertex buffer
-    object->vertexBuffer()->unlock();
+    object->vertexBuffer()->unlock(data - 1);
   }
 
   return object;
@@ -256,7 +256,7 @@ PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Applicat
       //*data++ = 0.0f;
       //*data++ = 1.0f;
 
-      component->vertexBuffer()->unlock();
+      component->vertexBuffer()->unlock(data - 1);
     }
   }
 

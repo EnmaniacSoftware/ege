@@ -3,7 +3,7 @@
 #include <EGEApplication.h>
 #include <EGEResources.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(Label)
@@ -151,3 +151,5 @@ void Label::setTextAlignment(Alignment alignment)
   m_textOverlay->setAlignment(alignment);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -2,7 +2,7 @@
 #include <EGEGraphics.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
   // TAGE
   static bool pointSprite = false;
@@ -470,7 +470,7 @@ bool ParticleEmitter::addForRendering(Renderer* renderer, const Matrix4f& transf
       }
     }
 
-    m_renderData->vertexBuffer()->unlock();
+    m_renderData->vertexBuffer()->unlock((data) ? (data - 1) : NULL);
   }
 
   if (0 < m_activeParticlesCount)
@@ -530,3 +530,5 @@ void ParticleEmitter::removeAffector(PParticleAffector& affector)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

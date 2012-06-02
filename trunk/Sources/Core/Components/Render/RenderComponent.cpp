@@ -6,7 +6,7 @@
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Crypto/Hash.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(RenderComponent)
@@ -152,3 +152,5 @@ void RenderComponent::setLineWidth(float32 width)
   m_lineWidth = width;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

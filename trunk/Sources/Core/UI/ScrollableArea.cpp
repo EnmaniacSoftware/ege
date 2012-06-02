@@ -3,7 +3,7 @@
 #include <EGEMath.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ScrollableArea)
@@ -383,7 +383,7 @@ void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transfo
       *data++ = 0;
     }
 
-    m_renderData->vertexBuffer()->unlock();
+    m_renderData->vertexBuffer()->unlock(data - 1);
 
     m_renderData->setClipRect(Rectf(pos.x, pos.y, m_size.x, m_size.y));
     renderer->addForRendering(m_renderData, transform);
@@ -741,3 +741,5 @@ ScrollableArea::ObjectsList ScrollableArea::objects() const
   return m_objects;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

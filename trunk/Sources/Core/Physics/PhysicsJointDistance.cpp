@@ -1,25 +1,17 @@
 #include "Core/Application/Application.h"
-#include "Core/Physics/PhysicsManager.h"
-#include "Core/Physics/PhysicsJointDistance.h"
+#include <EGEPhysics.h>
 #include <EGEDebug.h>
-
-#ifdef EGE_PHYSICS_BOX2D
-#include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"
-#include "Core/Physics/Box2D/PhysicsJointDistanceBox2D_p.h"
-#endif // EGE_PHYSICS_BOX2D
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(PhysicsJointDistance)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsJointDistance)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsJointDistance::PhysicsJointDistance(Application* app, PPhysicsComponent bodyA, PPhysicsComponent bodyB) 
 : PhysicsJoint(app, bodyA, bodyB, EGE_OBJECT_UID_PHYSICS_JOINT_DISTANCE)
 {
-  m_p = app->physicsManager()->registerJoint(this);
+  m_p = ege_new PhysicsJointDistancePrivate(this, app->physicsManager()->p_func());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsJointDistance::~PhysicsJointDistance()

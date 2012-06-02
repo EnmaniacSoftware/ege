@@ -187,6 +187,12 @@
     <Filter Include="Core\Random\StdC">
       <UniqueIdentifier>{f9b0add1-3507-4fbf-8de9-798010aaf021}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Physics\Null">
+      <UniqueIdentifier>{595662c9-fce8-45c5-844d-5b67cd2af04d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Components\Physics\Null">
+      <UniqueIdentifier>{000e664f-b486-4705-956a-d82be8dd5948}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -641,6 +647,21 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Audio\AudioThread.cpp">
       <Filter>Core\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Physics\Null\PhysicsJointAttractNull_p.cpp">
+      <Filter>Core\Physics\Null</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Physics\Null\PhysicsJointDistanceNull_p.cpp">
+      <Filter>Core\Physics\Null</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Physics\Null\PhysicsJointPulleyNull_p.cpp">
+      <Filter>Core\Physics\Null</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Physics\Null\PhysicsManagerNull_p.cpp">
+      <Filter>Core\Physics\Null</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.cpp">
+      <Filter>Core\Components\Physics\Null</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1256,6 +1277,21 @@
     <ClInclude Include="..\..\Sources\Core\Audio\AudioThread.h">
       <Filter>Core\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsJointAttractNull_p.h">
+      <Filter>Core\Physics\Null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsJointDistanceNull_p.h">
+      <Filter>Core\Physics\Null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsJointPulleyNull_p.h">
+      <Filter>Core\Physics\Null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsManagerNull_p.h">
+      <Filter>Core\Physics\Null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.h">
+      <Filter>Core\Components\Physics\Null</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">
@@ -1264,5 +1300,6 @@
     <None Include="..\..\Sources\README.txt" />
     <None Include="..\..\Sources\Rendering Pipe.txt" />
     <None Include="..\..\Sources\TODO.txt" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

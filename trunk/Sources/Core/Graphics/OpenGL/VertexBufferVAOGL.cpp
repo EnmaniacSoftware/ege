@@ -94,8 +94,13 @@ void* VertexBufferVA::lock(u32 offset, u32 count)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! VertexBuffer override. Unlocks buffer. */
-void VertexBufferVA::unlock()
+void VertexBufferVA::unlock(void* data)
 {
+  if (data)
+  {
+    EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_buffer->data()) + vertexCapacity() * vertexSize());
+  }
+
   m_locked = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

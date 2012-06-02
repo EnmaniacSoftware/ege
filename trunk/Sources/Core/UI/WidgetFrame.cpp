@@ -255,8 +255,8 @@ void WidgetFrame::generateRenderData()
     *indexData++ = i * 4 + 3;
   }
 
-  m_renderData->vertexBuffer()->unlock();
-  m_renderData->indexBuffer()->unlock();
+  m_renderData->vertexBuffer()->unlock(data - 1);
+  m_renderData->indexBuffer()->unlock(indexData - 1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets size. */

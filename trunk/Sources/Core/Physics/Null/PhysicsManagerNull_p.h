@@ -1,11 +1,10 @@
-#ifndef EGE_CORE_PHYSICSMANAGERBOX2D_H
-#define EGE_CORE_PHYSICSMANAGERBOX2D_H
+#ifndef EGE_CORE_PHYSICSMANAGERNULL_H
+#define EGE_CORE_PHYSICSMANAGERNULL_H
 
-#ifdef EGE_PHYSICS_BOX2D
+#ifdef EGE_PHYSICS_NULL
 
 #include <EGE.h>
 #include <EGETime.h>
-#include <Box2D/Box2d.h>
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Physics/PhysicsJointDistance.h"
 #include "Core/Physics/PhysicsJointAttract.h"
@@ -21,9 +20,8 @@ EGE_DECLARE_SMART_CLASS(PhysicsJointAttract, PPhysicsJointAttract)
 EGE_DECLARE_SMART_CLASS(PhysicsJointPulley, PPhysicsJointPulley)
 
 class PhysicsManager;
-class DebugDraw;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class PhysicsManagerPrivate : public b2DestructionListener
+class PhysicsManagerPrivate
 {
   public:
 
@@ -43,8 +41,6 @@ class PhysicsManagerPrivate : public b2DestructionListener
     void render();
     /* Sets gravity. */
     void setGravity(const Vector4f& gravity);
-    /*! Returns Box2D world. */
-    inline b2World* world() const { return m_world; }
     /*! Returns world to simulation world scale coefficient. */
     inline float32 worldToSimulationScaleFactor() const { return m_scale; }
     /*! Returns simulation world to world scale coefficient. */
@@ -52,17 +48,6 @@ class PhysicsManagerPrivate : public b2DestructionListener
 
   private:
 
-    /* b2DestructionListener override. Box2D fixture is about to be destroyed. */
-  	void SayGoodbye(b2Fixture* fixture) override;
-    /* b2DestructionListener override. Box2D joint is about to be destroyed. */
-  	void SayGoodbye(b2Joint* joint) override;
-
-  private:
-
-    /*! Box2D world. */
-    b2World* m_world;
-    /*! Debug draw for Box2D entities. */
-    DebugDraw* m_debugDraw;
     /*! Extrnal world to simulation world scale coeficient. */
     float32 m_scale;
     /*! Simulation world to extrnal world scale coeficient. Inverse of scale factor. */
@@ -72,6 +57,6 @@ class PhysicsManagerPrivate : public b2DestructionListener
 
 EGE_NAMESPACE_END
 
-#endif // EGE_PHYSICS_BOX2D
+#endif // EGE_PHYSICS_NULL
 
-#endif // EGE_CORE_PHYSICSMANAGERODE_H
+#endif // EGE_CORE_PHYSICSMANAGERNULL_H

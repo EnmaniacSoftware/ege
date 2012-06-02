@@ -1,17 +1,14 @@
 #ifndef EGE_CORE_PHYSICSJOINTATTRACT_H
 #define EGE_CORE_PHYSICSJOINTATTRACT_H
 
-#include "EGE.h"
+#include <EGE.h>
 #include "Core/Physics/PhysicsJoint.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(PhysicsJointAttract, PPhysicsJointAttract)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class PhysicsJointAttract : public PhysicsJoint
 {
   public:
@@ -44,7 +41,6 @@ class PhysicsJointAttract : public PhysicsJoint
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(PhysicsJointAttract)
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

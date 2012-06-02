@@ -5,7 +5,7 @@
 #include <EGEGraphics.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(SpriteAnimation)
@@ -326,3 +326,5 @@ void SpriteAnimation::setBaseAlignment(Alignment alignment)
   m_baseAlignment = alignment;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

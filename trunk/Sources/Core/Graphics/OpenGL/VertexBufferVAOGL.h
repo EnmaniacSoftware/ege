@@ -11,11 +11,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class VertexBufferVA : public VertexBuffer
 {
   public:
@@ -39,7 +36,7 @@ class VertexBufferVA : public VertexBuffer
      */
     void* lock(u32 offset, u32 count) override;
     /* VertexBuffer override. Unlocks buffer. */
-    void unlock() override;
+    void unlock(void* data) override;
 
     /* VertexBuffer override. Returns number of allocated vertices. */
     u32 vertexCount() const override;
@@ -58,7 +55,6 @@ class VertexBufferVA : public VertexBuffer
     /*! Data buffer. */
     PDataBuffer m_buffer;         
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

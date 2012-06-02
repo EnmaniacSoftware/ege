@@ -4,7 +4,7 @@
 #include <EGEResources.h>
 #include <EGEGraphics.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(Dialog)
@@ -124,7 +124,7 @@ void Dialog::generateRenderData()
     *data++ = (m_tailRect.x + m_tailRect.width) * textureSize.x;
     *data++ = m_tailRect.y * textureSize.y;
   }
-  m_tailRenderData->vertexBuffer()->unlock();
+  m_tailRenderData->vertexBuffer()->unlock(data - 1);
 
   m_tailRenderData->setPriority(m_widgetFrame->renderComponent()->priority() + 1);
 }
@@ -322,3 +322,5 @@ void Dialog::setAlpha(float32 alpha)
   m_tailRenderData->material()->setDiffuseAlpha(alpha);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

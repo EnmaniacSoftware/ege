@@ -170,8 +170,10 @@ void* VertexBufferVBO::lock(u32 offset, u32 count)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Unlocks buffer. */
-void VertexBufferVBO::unlock()
+void VertexBufferVBO::unlock(void* data)
 {
+  EGE_UNUSED(data);
+
 	glBindBuffer(GL_ARRAY_BUFFER, m_id);
   if (GL_NO_ERROR != glGetError())
   {

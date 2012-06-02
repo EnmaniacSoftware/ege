@@ -1,13 +1,8 @@
 #include "Core/Application/Application.h"
-#include "Core/Physics/PhysicsManager.h"
-#include "Core/Components/Physics/PhysicsComponent.h"
+#include <EGEPhysics.h>
 #include <EGEDebug.h>
 
-#ifdef EGE_PHYSICS_BOX2D
-#include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"
-#endif // EGE_PHYSICS_BOX2D
-
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(PhysicsComponent)
@@ -49,7 +44,7 @@ PhysicsComponent::PhysicsComponent(Application* app, const String& name, EGEPhys
   m_manager = app->physicsManager();
 
   // create private thru manager
-  m_p = m_manager->registerComponent(this);
+  m_p = ege_new PhysicsComponentPrivate(this, app->physicsManager()->p_func());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsComponent::~PhysicsComponent()
@@ -333,3 +328,5 @@ const Matrix4f& PhysicsComponent::transformationMatrix() const
   return m_transformationMatrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

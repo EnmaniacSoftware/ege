@@ -10,7 +10,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class PhysicsJointDistance;
 class PhysicsJointDistancePrivate;
 class PhysicsJointAttract;
@@ -21,9 +20,7 @@ class PhysicsComponent;
 class PhysicsComponentPrivate;
 
 EGE_DECLARE_SMART_CLASS(PhysicsManager, PPhysicsManager)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class PhysicsManager : public Object
 {
     /* For registration. */
@@ -51,36 +48,8 @@ class PhysicsManager : public Object
 
   private:
 
-    /* Registers component. This is supposed to be called by PhysicsComponent only.
-    *
-    *  @param   component component object for which registration is to be performed.
-    *  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
-    */
-    PhysicsComponentPrivate* registerComponent(PhysicsComponent* component);
-    /* Registers distance joint. This is supposed to be called by PhysicsJointDistance only.
-    *
-    *  @param   joint joint object for which registration is to be performed.
-    *  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
-    */
-    PhysicsJointDistancePrivate* registerJoint(PhysicsJointDistance* joint);
-    /* Registers attract joint. This is supposed to be called by PhysicsJointAttract only.
-    *
-    *  @param   joint joint object for which registration is to be performed.
-    *  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
-    */
-    PhysicsJointAttractPrivate* registerJoint(PhysicsJointAttract* joint);
-    /* Registers pulley joint. This is supposed to be called by PhysicsJointPulley only.
-    *
-    *  @param   joint joint object for which registration is to be performed.
-    *  @return  on successful registration, private implementation is returned. Otherwise, NULL is returned. 
-    */
-    PhysicsJointPulleyPrivate* registerJoint(PhysicsJointPulley* joint);
-
-  private:
-
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(PhysicsManager)
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

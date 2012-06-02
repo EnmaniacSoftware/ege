@@ -6,7 +6,7 @@
 #include <EGEGraphics.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ImagedAnimation)
@@ -415,3 +415,5 @@ PSequencer ImagedAnimation::currentSequencer() const
   return m_currentSequencer; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

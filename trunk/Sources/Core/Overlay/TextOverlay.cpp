@@ -165,7 +165,7 @@ void TextOverlay::updateRenderData()
     }
   }
 
-  m_renderData->vertexBuffer()->unlock();
+  m_renderData->vertexBuffer()->unlock(data - 1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns text size (in pixels). */

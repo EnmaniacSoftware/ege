@@ -40,7 +40,7 @@ class IndexBufferVA : public IndexBuffer
      */
     void* lock(u32 offset, u32 count) override;
     /* IndexBuffer override. Unlocks buffer. */
-    void  unlock() override;
+    void unlock(void* data) override;
 
     /* IndexBuffer override. Returns number of allocated indicies. */
     u32 indexCount() const override;
