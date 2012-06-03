@@ -19,7 +19,7 @@
 #include <EGEGraphics.h>
 #include <EGEApplication.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Application::Application() : m_sceneManager(NULL), 
@@ -247,3 +247,5 @@ const Time& Application::lastFrameRenderDuration() const
   return controller()->lastFrameRenderDuration();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -19,7 +19,7 @@
 #include "Airplay/Application/AppControllerAirplay_p.h"
 #endif
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(AppController)
@@ -132,7 +132,7 @@ void AppController::update()
 
       // update physics etc
       app()->resourceManager()->update(m_updateInterval);
-     // app()->audioManager()->update(m_updateInterval);
+      app()->audioManager()->update(m_updateInterval);
       app()->screenManager()->update(m_updateInterval);
       app()->physicsManager()->update(m_updateInterval);
       app()->sceneManager()->update(m_updateInterval);
@@ -190,3 +190,5 @@ bool AppController::isValid() const
   return (NULL != m_p) && (NULL != m_timer) && m_timer->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

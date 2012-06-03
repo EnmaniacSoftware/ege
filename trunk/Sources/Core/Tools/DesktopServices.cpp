@@ -6,13 +6,11 @@
 #include "Airplay/Tools/DesktopServicesAirplay_p.h"
 #endif
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(DesktopServices)
 EGE_DEFINE_DELETE_OPERATORS(DesktopServices)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DesktopServices::DesktopServices()
 {
@@ -41,3 +39,5 @@ bool DesktopServices::openUrl(const String& url)
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

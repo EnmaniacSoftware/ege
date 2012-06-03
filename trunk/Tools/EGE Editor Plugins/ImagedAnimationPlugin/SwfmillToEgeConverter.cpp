@@ -804,10 +804,19 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
             output.writeStartElement("action");
 
             output.writeAttribute("object-id", QString("%1").arg(shapeObject.objectId));
-            output.writeAttribute("queue", QString("%1").arg(depthOffset));            
-            output.writeAttribute("translate", QString("%1 %2").arg(actionDef.actionData.translate.x()).arg(actionDef.actionData.translate.y()));
-            output.writeAttribute("scale", QString("%1 %2").arg(actionDef.actionData.scale.x()).arg(actionDef.actionData.scale.y()));
-            output.writeAttribute("skew", QString("%1 %2").arg(actionDef.actionData.skew.x()).arg(actionDef.actionData.skew.y()));
+            output.writeAttribute("queue", QString("%1").arg(depthOffset));        
+
+            QVector2D translation = shapeObject.translate + actionDef.actionData.translate;
+            QVector2D scale       = shapeObject.scale ;
+            QVector2D skew        = shapeObject.skew / 10.0f;
+
+            output.writeAttribute("translate", QString("%1 %2").arg(translation.x()).arg(translation.y()));
+            output.writeAttribute("scale", QString("%1 %2").arg(scale.x()).arg(scale.y()));
+            output.writeAttribute("skew", QString("%1 %2").arg(skew.x()).arg(skew.y()));
+
+            //output.writeAttribute("translate", QString("%1 %2").arg(actionDef.actionData.translate.x()).arg(actionDef.actionData.translate.y()));
+            //output.writeAttribute("scale", QString("%1 %2").arg(actionDef.actionData.scale.x()).arg(actionDef.actionData.scale.y()));
+            //output.writeAttribute("skew", QString("%1 %2").arg(actionDef.actionData.skew.x()).arg(actionDef.actionData.skew.y()));
 
             output.writeEndElement();
             ++depthOffset;

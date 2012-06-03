@@ -106,7 +106,6 @@ void SoundPrivate::update(const Time& time)
 		    {
           // resume playback
 			    alSourcePlay(m_channel);
-          EGE_PRINT("AAAA %d", m_channel);
           if (IS_AL_ERROR())
           {
             // error!

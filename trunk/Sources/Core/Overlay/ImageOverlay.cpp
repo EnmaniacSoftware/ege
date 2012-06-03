@@ -5,13 +5,11 @@
 #include "Core/Resource/ResourceMaterial.h"
 #include <EGEResources.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ImageOverlay)
 EGE_DEFINE_DELETE_OPERATORS(ImageOverlay)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ImageOverlay::ImageOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Overlay(app, name, EGE_OBJECT_UID_OVERLAY_IMAGE, deleteFunc), 
                                                                                                    m_alignmentOffset(Vector4f::ZERO)
@@ -127,3 +125,5 @@ void ImageOverlay::initialize()
                                                     EGEVertexBuffer::UT_STATIC_WRITE);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

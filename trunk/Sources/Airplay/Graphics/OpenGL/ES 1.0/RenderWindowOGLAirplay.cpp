@@ -7,7 +7,7 @@
 #include <GLES/egl.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderWindowOGLAirplay::RenderWindowOGLAirplay(Application* app, const Dictionary& params) : RenderWindow(app, params), 
@@ -284,3 +284,5 @@ int32 RenderWindowOGLAirplay::OrientationChangeCB(void* systemData, void* userDa
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -4,13 +4,11 @@
 #include "Core/XML/TinyXml/XMLAttributeTinyXML_p.h"
 #endif // EGE_XML_TINYXML
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(XmlAttribute)
 EGE_DEFINE_DELETE_OPERATORS(XmlAttribute)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 XmlAttribute::XmlAttribute() : Object(NULL)
 {
@@ -61,3 +59,5 @@ PXmlAttribute XmlAttribute::next() const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

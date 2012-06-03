@@ -1,9 +1,8 @@
 #include "Core/Graphics/Color.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 const Color Color::BLACK      = Color(0, 0, 0, 1);
 const Color Color::WHITE      = Color(1, 1, 1, 1);
 const Color Color::RED        = Color(1, 0, 0, 1);
@@ -14,7 +13,6 @@ const Color Color::NONE       = Color(0, 0, 0, 0);
 const Color Color::GRAY       = Color(0.5f, 0.5f, 0.5f, 1);
 const Color Color::DARK_GRAY  = Color(0.66f, 0.66f, 0.66f, 1);
 const Color Color::LIGHT_GRAY = Color(0.82f, 0.82f, 0.82f, 1);
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns packed 32-bit RGBA color representation. */
 u32 Color::packed() const
@@ -27,3 +25,5 @@ u32 Color::packed() const
   return (r << 24) | (g << 16) | (b << 8) | a;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

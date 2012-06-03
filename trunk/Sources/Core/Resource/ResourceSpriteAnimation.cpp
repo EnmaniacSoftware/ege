@@ -7,7 +7,7 @@
 #include <EGEDebug.h>
 #include <EGEResources.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_SEQUENCE "sequence"
@@ -294,3 +294,5 @@ EGEResult ResourceSpriteAnimation::addSequence(const PXmlElement& tag)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

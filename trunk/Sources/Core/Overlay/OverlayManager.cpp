@@ -1,6 +1,6 @@
 #include "Core/Overlay/OverlayManager.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(OverlayManager)
@@ -105,3 +105,5 @@ void OverlayManager::render(Viewport* viewport, Renderer* renderer)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

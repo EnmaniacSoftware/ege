@@ -15,13 +15,11 @@ extern "C"
 #include "Core/Graphics/JpegDataSrcFile.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(Image)
 EGE_DEFINE_DELETE_OPERATORS(Image)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function used to read data from media to PNG allocated memory. */
 static void PngReadDataFromFileFunc(png_structp png_ptr, png_bytep outBytes, png_size_t byteCountToRead)
@@ -632,3 +630,5 @@ EGEResult Image::saveJpg(File& file, EGEImage::Format format)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

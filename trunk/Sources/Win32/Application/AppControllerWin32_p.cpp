@@ -2,13 +2,11 @@
 #include "Win32/Application/AppControllerWin32_p.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(AppControllerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(AppControllerPrivate)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AppControllerPrivate::AppControllerPrivate(AppController* base) : m_d(base)
 {
@@ -59,3 +57,5 @@ EGEResult AppControllerPrivate::run()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

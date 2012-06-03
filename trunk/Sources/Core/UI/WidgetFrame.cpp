@@ -1,7 +1,7 @@
 #include "Core/UI/WidgetFrame.h"
 #include <EGETexture.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(WidgetFrame)
@@ -284,3 +284,5 @@ Vector2f WidgetFrame::minSize() const
   return frameSize;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

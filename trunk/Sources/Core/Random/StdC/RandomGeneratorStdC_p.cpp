@@ -1,7 +1,7 @@
 #include "Core/Random/StdC/RandomGeneratorStdC_p.h"
 #include <time.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(RandomGeneratorPrivate)
@@ -38,3 +38,5 @@ float32 RandomGeneratorPrivate::rand(float32 min, float32 max)
   return min + value * (max - min);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

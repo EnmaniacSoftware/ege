@@ -3,13 +3,11 @@
 #include <EGEFile.h>
 #include <EGEResources.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ResourceData)
 EGE_DEFINE_DELETE_OPERATORS(ResourceData)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceData::ResourceData(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_DATA), m_nulled(false)
 {
@@ -119,3 +117,4 @@ void ResourceData::unload()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+EGE_NAMESPACE_END

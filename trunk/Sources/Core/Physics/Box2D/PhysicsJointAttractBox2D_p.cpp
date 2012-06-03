@@ -5,6 +5,7 @@
 #include "Core/Physics/Box2D/PhysicsJointAttractBox2D_p.h"
 #include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"
 #include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"
+#include <Box2D/Box2D.h>
 
 EGE_NAMESPACE_BEGIN
 

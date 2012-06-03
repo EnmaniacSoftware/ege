@@ -15,7 +15,7 @@
 #include "Airplay/Graphics/GraphicsAirplay_p.h"
 #endif
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(Graphics)
@@ -194,3 +194,5 @@ PIndexBuffer Graphics::createIndexBuffer(EGEIndexBuffer::UsageType usage) const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

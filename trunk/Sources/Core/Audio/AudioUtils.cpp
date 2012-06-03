@@ -1,7 +1,7 @@
 #include "Core/Audio/AudioUtils.h"
 #include <EGEDataBuffer.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define WAVE_RIFF_HEADER_ID 0x52494646
@@ -138,3 +138,5 @@ EGEAudio::StreamType AudioUtils::DetectStreamType(const PDataBuffer& data)
   return EGEAudio::ST_UNKNOWN;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

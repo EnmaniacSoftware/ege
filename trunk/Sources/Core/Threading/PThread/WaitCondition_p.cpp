@@ -2,7 +2,7 @@
 #include "Core/Threading/PThread/WaitCondition_p.h"
 #include "Core/Threading/PThread/Mutex_p.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(WaitConditionPrivate)
@@ -54,3 +54,5 @@ void WaitConditionPrivate::wakeAll()
   pthread_cond_broadcast(&m_condition);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

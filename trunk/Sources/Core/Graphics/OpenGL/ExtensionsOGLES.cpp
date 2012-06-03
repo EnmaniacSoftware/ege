@@ -1,6 +1,6 @@
 #include "Core/Graphics/OpenGL/ExtensionsOGLES.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -16,3 +16,5 @@ PFNGLMAPBUFFEROESPROC glMapBuffer = NULL;
 PFNGLUNMAPBUFFEROESPROC glUnmapBuffer = NULL;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

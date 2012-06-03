@@ -14,7 +14,7 @@
   #include "Airplay/Audio/SoundSoftwareAirplay_p.h"
 #endif // EGE_PLATFORM_WIN32
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(Sound)
@@ -162,3 +162,5 @@ void Sound::notifyVolumeChanged(float32 oldVolume)
   emit volumeChanged(this, oldVolume);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

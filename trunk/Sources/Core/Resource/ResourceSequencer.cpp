@@ -3,7 +3,7 @@
 #include "Core/Sequencer/Sequencer.h"
 #include <EGEResources.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceSequencer)
@@ -110,3 +110,4 @@ PSequencer ResourceSequencer::createInstance()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+EGE_NAMESPACE_END

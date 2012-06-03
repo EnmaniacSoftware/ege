@@ -3,7 +3,7 @@
 #include <EGEList.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(VertexBufferVA)
@@ -129,3 +129,5 @@ u32 VertexBufferVA::vertexCapacity() const
   return (m_buffer) ? static_cast<u32>(m_buffer->capacity() / vertexSize()) : 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

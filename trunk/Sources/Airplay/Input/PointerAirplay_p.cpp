@@ -7,7 +7,7 @@
 #include <EGEResources.h>
 #include <EGEOverlay.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(PointerPrivate)
@@ -178,3 +178,5 @@ void PointerPrivate::SingleTouchMotionCB(s3ePointerMotionEvent* event, void* dat
   //                                        ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, 0));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

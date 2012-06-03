@@ -1,6 +1,6 @@
 #ifdef EGE_PHYSICS_NULL
 
-#include <EGEPhysics.h>
+#include "Core/Components/Physics/Null/PhysicsComponentNull_p.h"
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN

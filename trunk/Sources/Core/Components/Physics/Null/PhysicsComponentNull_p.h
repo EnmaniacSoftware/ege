@@ -80,12 +80,12 @@ class PhysicsComponentPrivate
 
   private:
 
-    /*! Returns pointer to Box2D physics manager. */
+    /*! Returns pointer to physics manager. */
     inline PhysicsManagerPrivate* manager() const { return m_managerPrivate; }
 
   private:
 
-    /*! Pointer to Box2D physics manager. */
+    /*! Pointer to physics manager. */
     PhysicsManagerPrivate* m_managerPrivate;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

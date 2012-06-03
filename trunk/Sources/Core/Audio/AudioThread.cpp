@@ -5,7 +5,7 @@
 #include <EGETime.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define UPDATE_PERIOD (20)
@@ -27,11 +27,11 @@ s32 AudioThread::run()
   updateTime.fromMiliseconds(UPDATE_PERIOD);
 
   while (!isStopping())
-  {
+  {   
     manager->m_mutex->lock();
     manager->update(updateTime);
     manager->m_mutex->unlock();
-
+    
     // yield
     Device::Sleep(UPDATE_PERIOD);
   }
@@ -39,3 +39,5 @@ s32 AudioThread::run()
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

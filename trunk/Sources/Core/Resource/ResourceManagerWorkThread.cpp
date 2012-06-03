@@ -4,7 +4,7 @@
 #include "Core/Resource/ResourceManagerWorkThread.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManagerWorkThread::ResourceManagerWorkThread(Application* app) : Thread(app)
@@ -133,3 +133,5 @@ void ResourceManagerWorkThread::updateList()
   resourceManager->m_commands.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

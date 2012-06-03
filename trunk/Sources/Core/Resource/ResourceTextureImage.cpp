@@ -6,13 +6,11 @@
 #include <EGEDebug.h>
 #include <EGEResources.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ResourceTextureImage)
 EGE_DEFINE_DELETE_OPERATORS(ResourceTextureImage)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceTextureImage::ResourceTextureImage(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_TEXTURE_IMAGE)
 {
@@ -147,3 +145,5 @@ EGEResult ResourceTextureImage::setInstance(const PTextureImage& instance)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

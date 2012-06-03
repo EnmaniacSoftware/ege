@@ -1300,6 +1300,5 @@
     <None Include="..\..\Sources\README.txt" />
     <None Include="..\..\Sources\Rendering Pipe.txt" />
     <None Include="..\..\Sources\TODO.txt" />
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

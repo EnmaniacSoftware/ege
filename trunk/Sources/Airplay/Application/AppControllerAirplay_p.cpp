@@ -6,7 +6,7 @@
 #include <EGEEvent.h>
 #include <EGEApplication.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(AppControllerPrivate)
@@ -93,3 +93,5 @@ int32 AppControllerPrivate::ResumeCB(void* data, void* userData)
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

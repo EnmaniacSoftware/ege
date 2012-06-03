@@ -3,7 +3,7 @@
 #include <EGESpline.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates render component with 2D quad on XY plane. 
@@ -263,3 +263,5 @@ PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Applicat
   return component;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

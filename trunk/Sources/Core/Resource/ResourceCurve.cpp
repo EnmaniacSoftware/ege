@@ -7,17 +7,13 @@
 #include <EGEResources.h>
 #include <EGEVector.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ResourceCurve)
 EGE_DEFINE_DELETE_OPERATORS(ResourceCurve)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #define NODE_POINT "point"
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping literal curve type name into numeric value. */
 static EGESpline::Type MapCurveTypeName(const String& name, EGESpline::Type defaultValue)
@@ -174,3 +170,5 @@ EGEResult ResourceCurve::setInstance(CubicSpline& instance) const
   return instance.isValid() ? EGE_SUCCESS : EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

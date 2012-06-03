@@ -1,7 +1,7 @@
 #include "Core/Sequencer/Sequencer.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(Sequencer)
@@ -20,58 +20,19 @@ Sequencer::~Sequencer()
 /*! IAnimation override. Updates animation. */
 void Sequencer::update(const Time& time)
 {
-  // NOTE: number of transitions equals = number of frames - 1
-
-  // check if multi frame case
-  if (m_frameIndex < static_cast<s32>(m_framesIds.size()) - 1)
+  // update frame time
+  m_frameTimeLeft -= time;
+  if (0 >= m_frameTimeLeft.microseconds())
   {
-    m_frameTimeLeft -= time;
-    if (0 >= m_frameTimeLeft.microseconds())
-    {
-      // go to next frame
-      ++m_frameIndex;
-
-      // check if end reached
-      if (m_frameIndex >= static_cast<s32>(m_framesIds.size()) - 1)
-      {
-        // check if done
-        if (!m_repeatable)
-        {
-          // make sure we stop at end of one before last frame
-          m_frameIndex    = static_cast<s32>(m_framesIds.size() - 1);
-          m_frameTimeLeft = m_frameDuration;
-
-          // emit
-          emit frameChanged(this, m_framesIds[m_frameIndex]);
-
-          // done
-          emit finished(this);
-          return;
-        }
-
-        // start from begining
-        m_frameIndex = 0;
-      }
-
-      // emit
-      emit frameChanged(this, m_framesIds[m_frameIndex]);
-
-      // update frame time left
-      m_frameTimeLeft += m_frameDuration;
-    }
-  }
-  // check if special case single frame sequence
-  else if ((0 == m_frameIndex) && (1 == m_framesIds.size()))
-  {
-    // check if not notified yet
-    if (m_frameTimeLeft == m_frameDuration)
+    // check if end reached
+    if (m_frameIndex >= static_cast<s32>(m_framesIds.size()) - 1)
     {
       // check if done
       if (!m_repeatable)
       {
-        // stop at the begining of only frame
-        m_frameIndex    = 0;
-        m_frameTimeLeft = 0.0f;
+        // make sure we stop at end of one before last frame
+        m_frameIndex    = static_cast<s32>(m_framesIds.size() - 1);
+        m_frameTimeLeft = m_frameDuration;
 
         // emit
         emit frameChanged(this, m_framesIds[m_frameIndex]);
@@ -83,10 +44,18 @@ void Sequencer::update(const Time& time)
 
       // start from begining
       m_frameIndex = 0;
-
-      // emit
-      emit frameChanged(this, m_framesIds[m_frameIndex]);
     }
+    else
+    {
+      // go to next frame
+      ++m_frameIndex;
+    }
+
+    // emit
+    emit frameChanged(this, m_framesIds[m_frameIndex]);
+
+    // update frame time left
+    m_frameTimeLeft += m_frameDuration;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -148,3 +117,5 @@ float32 Sequencer::normalizedFrameTime() const
   return 1.0f - m_frameTimeLeft.seconds() / m_frameDuration.seconds();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

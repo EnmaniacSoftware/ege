@@ -2,7 +2,13 @@
 #include <EGEPhysics.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+#ifdef EGE_PHYSICS_BOX2D
+#include "Core/Physics/Box2D/PhysicsJointDistanceBox2D_p.h"
+#elif defined EGE_PHYSICS_NULL
+#include "Core/Physics/Null/PhysicsJointDistanceNull_p.h"
+#endif // EGE_PHYSICS_BOX2D
+
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(PhysicsJointDistance)
@@ -95,3 +101,5 @@ EGE::float32 PhysicsJointDistance::frequency() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

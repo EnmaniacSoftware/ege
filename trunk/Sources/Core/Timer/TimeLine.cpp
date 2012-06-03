@@ -2,13 +2,11 @@
 #include <EGEMath.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(TimeLine)
 EGE_DEFINE_DELETE_OPERATORS(TimeLine)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TimeLine::TimeLine(Application* app) : Object(app), m_duration(1.0f), m_startFrame(0), m_endFrame(0), m_loopCount(1), m_state(STATE_IDLE), 
                                        m_direction(EGETimeLine::DIRECTION_FORWARD)
@@ -125,3 +123,5 @@ s32 TimeLine::frameForTime(const Time& time) const
   return m_startFrame + (s32) Math::Ceil((m_endFrame - m_startFrame) * time.seconds() / m_duration.seconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

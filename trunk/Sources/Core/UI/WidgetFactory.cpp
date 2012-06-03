@@ -1,7 +1,7 @@
 #include "Core/UI/WidgetFactory.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(WidgetFactory)
@@ -95,3 +95,5 @@ bool WidgetFactory::isWidgetRegistered(const String& typeName) const
   return m_registeredWidgets.contains(typeName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

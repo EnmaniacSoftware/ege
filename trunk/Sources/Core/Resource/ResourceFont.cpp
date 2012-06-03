@@ -4,13 +4,11 @@
 #include "Core/Graphics/Font.h"
 #include <EGEResources.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ResourceFont)
 EGE_DEFINE_DELETE_OPERATORS(ResourceFont)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceFont::ResourceFont(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_FONT)
 {
@@ -167,3 +165,4 @@ void ResourceFont::unload()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+EGE_NAMESPACE_END

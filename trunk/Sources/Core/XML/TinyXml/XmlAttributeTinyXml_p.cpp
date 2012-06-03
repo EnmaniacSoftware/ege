@@ -2,15 +2,14 @@
 #include "Core/XML/XmlAttribute.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(XmlAttributePrivate)
 EGE_DEFINE_DELETE_OPERATORS(XmlAttributePrivate)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlAttributePrivate::XmlAttributePrivate(XmlAttribute* base) : m_base(base), m_attribute(NULL)
+XmlAttributePrivate::XmlAttributePrivate(XmlAttribute* base) : m_base(base), 
+                                                               m_attribute(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -73,3 +72,5 @@ void XmlAttributePrivate::setAttribute(TiXmlAttribute* attribute)
   m_attribute = attribute;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

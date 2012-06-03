@@ -10,7 +10,7 @@
 #include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
 #endif // EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(GraphicsPrivate)
@@ -33,12 +33,12 @@ PVertexBuffer GraphicsPrivate::createVertexBuffer(EGEVertexBuffer::UsageType usa
   if (!Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     buffer = ege_new VertexBufferVBO(m_base->app(), usage);
-    EGE_PRINT("GraphicsPrivate::createVertexBuffer - VBO %p", buffer.object());
+//    EGE_PRINT("GraphicsPrivate::createVertexBuffer - VBO %p", buffer.object());
   }
   else
   {
     buffer = ege_new VertexBufferVA(m_base->app(), usage);
-    EGE_PRINT("GraphicsPrivate::createVertexBuffer - VA %p", buffer.object());
+  //  EGE_PRINT("GraphicsPrivate::createVertexBuffer - VA %p", buffer.object());
   }
 
   return buffer;
@@ -52,14 +52,16 @@ PIndexBuffer GraphicsPrivate::createIndexBuffer(EGEIndexBuffer::UsageType usage)
   if (!Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     buffer = ege_new IndexBufferVBO(m_base->app(), usage);
-    EGE_PRINT("GraphicsPrivate::createIndexBuffer - VBO %p", buffer.object());
+   // EGE_PRINT("GraphicsPrivate::createIndexBuffer - VBO %p", buffer.object());
   }
   else
   {
     buffer = ege_new IndexBufferVA(m_base->app(), usage);
-    EGE_PRINT("GraphicsPrivate::createIndexBuffer - VA %p", buffer.object());
+    //EGE_PRINT("GraphicsPrivate::createIndexBuffer - VA %p", buffer.object());
   }
 
   return buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

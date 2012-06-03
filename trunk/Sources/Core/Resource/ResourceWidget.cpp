@@ -6,7 +6,7 @@
 #include <EGEResources.h>
 #include <EGEGraphics.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_CHILD "child"
@@ -251,3 +251,5 @@ EGEResult ResourceWidget::processFrame(const PXmlElement& tag)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

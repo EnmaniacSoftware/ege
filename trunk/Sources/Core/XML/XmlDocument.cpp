@@ -7,13 +7,11 @@
 #include "Core/XML/TinyXml/XMLDocumentTinyXML_p.h"
 #endif // EGE_XML_TINYXML
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(XmlDocument)
 EGE_DEFINE_DELETE_OPERATORS(XmlDocument)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 XmlDocument::XmlDocument() : Object(NULL)
 {
@@ -115,3 +113,5 @@ PXmlElement XmlDocument::rootElement()
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

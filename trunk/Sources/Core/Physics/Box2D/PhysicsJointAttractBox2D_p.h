@@ -4,17 +4,17 @@
 #ifdef EGE_PHYSICS_BOX2D
 
 #include <EGE.h>
-#include <Box2D/Box2D.h>
+#include <EGEVector.h>
+
+class b2MouseJoint;
+class b2Body;
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class PhysicsJointAttract;
 class PhysicsManagerPrivate;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class PhysicsJointAttractPrivate
 {
   public:
@@ -59,7 +59,6 @@ class PhysicsJointAttractPrivate
     /*! Pointer to Box2D physics manager. */
     PhysicsManagerPrivate* m_managerPrivate;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

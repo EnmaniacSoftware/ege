@@ -2,7 +2,7 @@
 #include <EGEDataBuffer.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef void (*PFNSCANLINEBLTFUNC) (void* dst, const void* src, s32 length);
@@ -187,3 +187,5 @@ void ImageUtils::Fill(PImage& dst, const Recti& dstRect, const Color& color)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

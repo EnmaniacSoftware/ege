@@ -3,7 +3,7 @@
 #include <EGEList.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 VertexBuffer::VertexBuffer(Application* app, u32 uid, EGEVertexBuffer::UsageType usage) : Object(app, uid), 
@@ -204,3 +204,5 @@ void VertexBuffer::clear()
   m_semantics.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

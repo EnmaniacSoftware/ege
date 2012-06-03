@@ -1,7 +1,7 @@
 #include "Core/Tools/ByteOrder.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Converts bytes into value with specified byte ordering. */
@@ -280,3 +280,5 @@ void ByteOrder::Convert(u8* bytesData, u64 value, EGEByteOrder::Ordering orderin
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

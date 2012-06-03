@@ -5,6 +5,8 @@
 #include <GLES/egl.h>
 #include <GLES/glext.h>
 
+EGE_NAMESPACE_BEGIN
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // frame buffer object
@@ -31,5 +33,7 @@ extern PFNGLUNMAPBUFFEROESPROC glUnmapBuffer;
 #define GL_WRITE_ONLY GL_WRITE_ONLY_OES
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
 
 #endif // EGE_CORE_EXTENSIONSOGLES_H

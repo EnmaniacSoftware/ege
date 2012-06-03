@@ -11,7 +11,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ParticleFactory;
 class WidgetFactory;
 
@@ -20,9 +19,7 @@ EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 EGE_DECLARE_SMART_CLASS(RenderWindow, PRenderWindow)
 EGE_DECLARE_SMART_CLASS(Renderer, PRenderer)
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Graphics : public Object
 {
   public:
@@ -89,7 +86,6 @@ class Graphics : public Object
     /*! Widgets factory. */
     WidgetFactory* m_widgetFactory;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

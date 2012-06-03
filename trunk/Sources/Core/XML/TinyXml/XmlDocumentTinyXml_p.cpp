@@ -5,7 +5,7 @@
 #include "Core/Data/DataBuffer.h"
 #include <EGEFile.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(XmlDocumentPrivate)
@@ -151,3 +151,5 @@ PXmlElement XmlDocumentPrivate::rootElement()
   return element;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

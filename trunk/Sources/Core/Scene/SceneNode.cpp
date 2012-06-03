@@ -7,13 +7,11 @@
 #include "Core/Graphics/VertexBuffer.h"
 #include "Core/Graphics/Material.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(SceneNode)
 EGE_DEFINE_DELETE_OPERATORS(SceneNode)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SceneNode::SceneNode(const String& name, SceneNode* parent, SceneManager* manager, EGEPhysics::ComponentType componentType)
 : Object(manager->app()), 
@@ -383,3 +381,5 @@ bool SceneNode::addForRendering(PCamera& camera, Renderer* renderer) const
 //    m_vpcListeners[ i ]->onSceneNodeDestroyed( this );
 //  }
 //}
+
+EGE_NAMESPACE_END

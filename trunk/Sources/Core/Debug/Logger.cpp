@@ -1,13 +1,11 @@
 #include "Core/Debug/Logger.h"
 #include "Core/Data/DataBuffer.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(Logger)
 EGE_DEFINE_DELETE_OPERATORS(Logger)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger::Logger(const String& filePath, bool timeStampEnabled) : m_file(filePath), 
                                                                 m_timeStampEnabled(timeStampEnabled)
@@ -158,3 +156,5 @@ EGEResult Logger::write(const String& text)
 
 /////////////////////////////////////////////////////////////
 // PRIVATES
+
+EGE_NAMESPACE_END

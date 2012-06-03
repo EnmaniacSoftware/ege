@@ -1,7 +1,10 @@
 #ifdef EGE_PHYSICS_BOX2D
 
-#include <EGEPhysics.h>
+#include "Core/Application/Application.h"
+#include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"
+#include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"
 #include "Core/Physics/Box2D/DebugDrawBox2D.h"
+#include <Box2D/Box2D.h>
 
 EGE_NAMESPACE_BEGIN
 

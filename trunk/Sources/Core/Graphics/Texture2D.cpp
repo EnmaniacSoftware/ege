@@ -7,13 +7,11 @@
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #endif // EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(Texture2D)
 EGE_DEFINE_DELETE_OPERATORS(Texture2D)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates render texture. */
 PTexture2D Texture2D::CreateRenderTexture(Application* app, const String& name, s32 width, s32 height, EGEImage::Format format)
@@ -124,3 +122,5 @@ void Texture2D::setTextureAddressingModeT(EGETexture::AddressingMode mode)
   m_addressingModeT = mode;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

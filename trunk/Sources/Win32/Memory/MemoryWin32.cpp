@@ -1,6 +1,6 @@
 #include "Core/Memory/MemoryManager.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void* MemoryManager::DoMalloc(size_t size)
@@ -36,3 +36,5 @@ void* MemoryManager::MemSet(void* dst, int c, size_t size)
   return memset(dst, c, size);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

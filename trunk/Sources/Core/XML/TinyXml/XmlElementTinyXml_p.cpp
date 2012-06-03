@@ -3,7 +3,7 @@
 #include "Core/XML/TinyXml/XmlAttributeTinyXml_p.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(XmlElementPrivate)
@@ -144,3 +144,5 @@ PXmlAttribute XmlElementPrivate::firstAttribute() const
   return attribute;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -15,7 +15,7 @@
   #include "Airplay/Audio/AudioManagerSoftwareAirplay_p.h"
 #endif // EGE_PLATFORM_WIN32
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(AudioManager)
@@ -62,11 +62,11 @@ EGEResult AudioManager::construct()
   }
 
   // start thread
-  if (!m_thread->start())
-  {
-    // error!
-    return EGE_ERROR;
-  }
+  //if (!m_thread->start())
+  //{
+  //  // error!
+  //  return EGE_ERROR;
+  //}
 
   // subscribe for event notifications
   if (!app()->eventManager()->addListener(this))
@@ -77,7 +77,7 @@ EGEResult AudioManager::construct()
 
   // set state
   m_state = STATE_READY;
-
+ 
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -390,3 +390,5 @@ void AudioManager::shutDown()
   m_thread->stop(0);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

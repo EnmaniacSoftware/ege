@@ -1,5 +1,11 @@
 #include <EGEPhysics.h>
 
+#ifdef EGE_PHYSICS_BOX2D
+#include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"
+#elif defined EGE_PHYSICS_NULL
+#include "Core/Physics/Null/PhysicsManagerNull_p.h"
+#endif // EGE_PHYSICS_BOX2D
+
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

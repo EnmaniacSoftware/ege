@@ -2,6 +2,12 @@
 #include <EGEPhysics.h>
 #include <EGEDebug.h>
 
+#ifdef EGE_PHYSICS_BOX2D
+#include "Core/Physics/Box2D/PhysicsJointPulleyBox2D_p.h"
+#elif defined EGE_PHYSICS_NULL
+#include "Core/Physics/Null/PhysicsJointPulleyNull_p.h"
+#endif // EGE_PHYSICS_BOX2D
+
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

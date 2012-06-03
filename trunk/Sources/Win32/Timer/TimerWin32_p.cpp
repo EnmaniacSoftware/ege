@@ -2,20 +2,22 @@
 #include "Win32/Timer/TimerWin32_p.h"
 #include "EGEMath.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(TimerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(TimerPrivate)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #define FREQUENCY_RESAMPLE_RATE 200
 #define DISCRAPANCY_THRESHOLD   500
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TimerPrivate::TimerPrivate(Timer* base) : m_base(base), m_isPerformance(false), m_startTick(0), m_procMask(0), m_sysMask(0), m_queryCount(0), m_lastTime(0), 
+TimerPrivate::TimerPrivate(Timer* base) : m_base(base), 
+                                          m_isPerformance(false), 
+                                          m_startTick(0), 
+                                          m_procMask(0), 
+                                          m_sysMask(0), 
+                                          m_queryCount(0), 
+                                          m_lastTime(0), 
                                           m_thread(NULL)
 {
   reset();
@@ -140,3 +142,5 @@ LONGLONG TimerPrivate::updatePerformanceTimer()
   return llNewTime;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

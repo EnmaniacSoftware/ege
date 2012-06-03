@@ -2,7 +2,7 @@
 #include "Core/Math/Math.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(FilePrivate)
@@ -227,3 +227,5 @@ bool FilePrivate::remove()
   return (S3E_RESULT_SUCCESS == s3eFileDelete(m_base->filePath().c_str()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

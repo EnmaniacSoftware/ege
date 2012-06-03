@@ -1,12 +1,10 @@
 #include "Core/Graphics/Font.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(Font)
 EGE_DEFINE_DELETE_OPERATORS(Font)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Font::Font(Application* app, s32 height, const Map<Char, GlyphData>& glyphData) : Object(app), m_height(height)
 {
@@ -57,3 +55,5 @@ Vector2i Font::metrics(const Text& text) const
   return metrics;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

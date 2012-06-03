@@ -2,7 +2,7 @@
 #include <EGETexture.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderTextureCopyOGL::RenderTextureCopyOGL(Application* app, const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId) 
@@ -78,3 +78,5 @@ bool RenderTextureCopyOGL::requiresTextureFlipping() const
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

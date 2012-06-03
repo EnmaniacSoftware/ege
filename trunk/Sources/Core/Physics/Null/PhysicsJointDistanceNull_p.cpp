@@ -1,7 +1,7 @@
 #ifdef EGE_PHYSICS_NULL
 
 #include "Core/Application/Application.h"
-#include <EGEPhysics.h>
+#include "Core/Physics/Null/PhysicsJointDistanceNull_p.h"
 
 EGE_NAMESPACE_BEGIN
 

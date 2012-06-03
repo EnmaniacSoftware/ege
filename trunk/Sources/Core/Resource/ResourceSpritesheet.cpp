@@ -5,13 +5,11 @@
 #include <EGEDebug.h>
 #include <EGEResources.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ResourceSpritesheet)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSpritesheet)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceSpritesheet::ResourceSpritesheet(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_SPRITE_SHEET)
 {
@@ -106,3 +104,5 @@ void ResourceSpritesheet::unload()
   m_texture = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

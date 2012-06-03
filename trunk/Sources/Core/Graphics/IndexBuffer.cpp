@@ -2,7 +2,7 @@
 #include "Core/Data/DataBuffer.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 IndexBuffer::IndexBuffer(Application* app, u32 uid, EGEIndexBuffer::UsageType usage) : Object(app, uid), 
@@ -43,3 +43,5 @@ void IndexBuffer::setIndexSize(EGEIndexBuffer::IndexSize size)
   m_indexSize = size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

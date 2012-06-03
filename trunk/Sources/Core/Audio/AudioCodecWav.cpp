@@ -2,13 +2,11 @@
 #include <EGEMath.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(AudioCodecWav)
 EGE_DEFINE_DELETE_OPERATORS(AudioCodecWav)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioCodecWav::AudioCodecWav(const PDataBuffer& stream) : AudioCodec(EGE_OBJECT_UID_AUDIO_CODEC_WAV, stream)
 {
@@ -90,3 +88,5 @@ u32 AudioCodecWav::remainingSamplesCount() const
   return m_streamSizeLeft / sampleSize;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

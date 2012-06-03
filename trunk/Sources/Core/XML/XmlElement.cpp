@@ -5,7 +5,7 @@
 #include "Core/XML/TinyXml/XMLElementTinyXML_p.h"
 #endif // EGE_XML_TINYXML
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(XmlElement)
@@ -291,3 +291,5 @@ PXmlAttribute XmlElement::firstAttribute() const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

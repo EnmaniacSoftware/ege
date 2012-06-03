@@ -2,7 +2,7 @@
 #include "Core/Threading/Thread.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ThreadPrivate)
@@ -101,3 +101,5 @@ void ThreadPrivate::cancel()
   EGE_PRINT("Canceling : %p, result code: %d", this, result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

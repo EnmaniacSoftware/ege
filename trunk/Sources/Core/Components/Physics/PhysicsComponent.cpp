@@ -2,6 +2,12 @@
 #include <EGEPhysics.h>
 #include <EGEDebug.h>
 
+#ifdef EGE_PHYSICS_BOX2D
+#include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"
+#elif defined EGE_PHYSICS_NULL
+#include "Core/Components/Physics/Null/PhysicsComponentNull_p.h"
+#endif // EGE_PHYSICS_BOX2D
+
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 #include <EGETexture.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderTextureFBOOGL::RenderTextureFBOOGL(Application* app, const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId) 
@@ -44,6 +44,8 @@ RenderTextureFBOOGL::RenderTextureFBOOGL(Application* app, const Dictionary& par
   // set physical size to logical one
   m_physicalWidth  = (iterWidth != params.end()) ? iterWidth->second.toInt() : 0;
   m_physicalHeight = (iterHeight != params.end()) ? iterHeight->second.toInt() : 0;
+
+  EGE_PRINT("Creating FBO: %d, %d %d %d", m_physicalWidth, m_physicalHeight, m_defaultFBOId, m_frameBufferObjectId);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderTextureFBOOGL::~RenderTextureFBOOGL()
@@ -104,3 +106,5 @@ bool RenderTextureFBOOGL::requiresTextureFlipping() const
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

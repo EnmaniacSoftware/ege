@@ -3,13 +3,11 @@
 #include "Core/Graphics/Particle/ParticleAffectorForce.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ParticleFactory)
 EGE_DEFINE_DELETE_OPERATORS(ParticleFactory)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct BuiltInEmitter
 {
@@ -168,3 +166,5 @@ bool ParticleFactory::isAffectorRegistered(const String& typeName) const
   return m_registeredAffectors.contains(typeName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

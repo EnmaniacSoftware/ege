@@ -3,6 +3,26 @@
 
 /** Sequencer is an animation object which goes through all defined frame indicies.
     Sequencer emits signal every time new frame is reached. Additional signal is emitted when last frame is reached any no more repeats are to be done.
+
+    Typical sequencing looks as follows:
+
+    1) NO REPEAT case:
+
+                                
+                         <-- frameTime --> <-- frameTime --> <-- frameTime --> <-- frameTime --> <-- frameTime -->
+    Time line:          0                 1                 2                 3                 4
+                        ^                 ^                 ^                 ^                 ^                 ^
+                        |                 |                 |                 |                 |                 |
+                  frameChanged(0)   frameChanged(1)   frameChanged(2)   frameChanged(3)   frameChanged(4)      finished
+
+    2) REPEAT case:
+
+                                
+                         <-- frameTime --> <-- frameTime --> <-- frameTime --> <-- frameTime --> <-- frameTime --> <-- ... ->
+    Time line:          0                 1                 2                 3                 4                 0
+                        ^                 ^                 ^                 ^                 ^                 ^
+                        |                 |                 |                 |                 |                 |
+                  frameChanged(0)   frameChanged(1)   frameChanged(2)   frameChanged(3)   frameChanged(4)   frameChanged(0)
  */
 
 #include <EGE.h>

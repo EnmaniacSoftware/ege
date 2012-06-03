@@ -10,7 +10,7 @@
 #include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
 #endif // EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(GraphicsPrivate)
@@ -60,3 +60,4 @@ PIndexBuffer GraphicsPrivate::createIndexBuffer(EGEIndexBuffer::UsageType usage)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+EGE_NAMESPACE_END

@@ -8,7 +8,7 @@
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #endif // EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceTexture)
@@ -168,3 +168,5 @@ void ResourceTexture::unload()
   m_texture = NULL; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

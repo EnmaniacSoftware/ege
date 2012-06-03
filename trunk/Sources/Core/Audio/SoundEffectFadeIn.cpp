@@ -1,7 +1,7 @@
 #include "Core/Audio/SoundEffectFadeIn.h"
 #include "Core/Audio/Sound.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(SoundEffectFadeIn)
@@ -68,3 +68,5 @@ void SoundEffectFadeIn::reset()
   m_time = 0.0f;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

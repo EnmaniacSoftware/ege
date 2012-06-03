@@ -1,7 +1,7 @@
 #include "Core/Overlay/TextOverlay.h"
 #include "Core/Graphics/Render/Renderer.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(TextOverlay)
@@ -302,3 +302,5 @@ void TextOverlay::setTextAlignment(Alignment alignment)
   m_textAlignment = alignment;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -1,6 +1,6 @@
 #include "Core/Graphics/Render/RenderWindow.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderWindow::RenderWindow(Application* app, const Dictionary& params) : RenderTarget(app, params), m_fullScreen(false)
@@ -32,3 +32,5 @@ void RenderWindow::unbind()
   // do nothing, main window does not need to be unbound
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

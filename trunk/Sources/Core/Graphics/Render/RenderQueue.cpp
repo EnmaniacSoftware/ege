@@ -1,6 +1,6 @@
 #include "Core/Graphics/Render/RenderQueue.h"
   
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(RenderQueue)
@@ -39,3 +39,5 @@ const MultiMap<u32, RenderQueue::SRENDERDATA>& RenderQueue::renderData() const
   return m_renderData;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

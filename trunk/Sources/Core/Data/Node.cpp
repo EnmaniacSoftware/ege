@@ -1,9 +1,12 @@
 #include "Core/Data/Node.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Node::Node(Application* app, const String& name, Node* parent, EGEPhysics::ComponentType componentType) : m_name(name), m_parent(parent), m_visible(true)
+Node::Node(Application* app, const String& name, Node* parent, EGEPhysics::ComponentType componentType) : m_name(name), 
+                                                                                                          m_parent(parent), 
+                                                                                                          m_visible(true),
+                                                                                                          m_worldMatrixInvalid(true)
 {
   m_physics = ege_new PhysicsComponent(app, "node-physics-" + name, componentType);
   if (m_physics)
@@ -138,7 +141,7 @@ const Matrix4f& Node::worldMatrix() const
     Vector4f scale = physics()->scale();
   
     Math::CreateMatrix(&m_worldMatrix, &position, &scale, &orientation);
-
+  
     if (NULL != parent())
     {
       m_worldMatrix = parent()->worldMatrix().multiply(m_worldMatrix);
@@ -167,3 +170,5 @@ void Node::setVisible(bool set)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -1,6 +1,6 @@
 #include "Core/Device/Device.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Device::m_renderCapabilities[EGEDevice::RENDER_CAPS_COUNT] = { false };
@@ -95,3 +95,5 @@ u32 Device::SurfaceAlphaChannelBitsCount()
   return m_surfaceAlphaChannelBitsCount;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -5,7 +5,7 @@
 #include <EGEMath.h>
 #include <EGEDevice.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderWindowOGLWin32::RenderWindowOGLWin32(Application* app, const Dictionary& params) : RenderWindow(app, params), 
@@ -425,3 +425,5 @@ bool RenderWindowOGLWin32::requiresTextureFlipping() const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

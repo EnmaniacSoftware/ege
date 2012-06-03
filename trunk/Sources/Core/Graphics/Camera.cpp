@@ -4,15 +4,15 @@
 #include "Core/Components/Physics/PhysicsComponent.h"
 #include "Core/Graphics/Viewport.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(Camera)
 EGE_DEFINE_DELETE_OPERATORS(Camera)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Camera::Camera(const String& name, SceneManager* sceneManager) : Frustum(sceneManager->app(), m_viewMatrix), m_sceneManager(sceneManager), m_name(name)
+Camera::Camera(const String& name, SceneManager* sceneManager) : Frustum(sceneManager->app(), m_viewMatrix), 
+                                                                 m_sceneManager(sceneManager), 
+                                                                 m_name(name)
 {
   // create new physics component
   m_physics = ege_new PhysicsComponent(sceneManager->app(), "camera");
@@ -97,3 +97,5 @@ bool Camera::isValid() const
   return NULL != m_physics || !m_physics->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -6,7 +6,7 @@
 #include "Core/Threading/PThread/WaitCondition_p.h"
 #endif // EGE_THREAD_PTHREAD
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(WaitCondition)
@@ -68,3 +68,5 @@ void WaitCondition::wakeAll()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

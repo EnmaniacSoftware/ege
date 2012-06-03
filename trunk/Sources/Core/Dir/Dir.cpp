@@ -1,6 +1,6 @@
 #include "Core/Dir/Dir.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns given path with converted sperators. */
@@ -36,3 +36,5 @@ void Dir::DecomposePath(const String& fullPath, String& path, String& fileName)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

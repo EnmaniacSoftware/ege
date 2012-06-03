@@ -8,13 +8,11 @@
 #include <EGEAudio.h>
 #include <EGEDevice.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(SoundPrivate)
 EGE_DEFINE_DELETE_OPERATORS(SoundPrivate)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define BUFFERS_COUNT               3
 #define FILTER_COEFFICIENTS_COUNT 129
@@ -148,4 +146,7 @@ void SoundPrivate::setChannel(s32 channelId)
   m_channelId = channelId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
+
 #endif // EGE_AIRPLAY_AUDIO_SOFTWARE

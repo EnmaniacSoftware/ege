@@ -2,7 +2,7 @@
 #include "Core/Data/DataBuffer.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(IndexBufferVA)
@@ -120,3 +120,5 @@ u32 IndexBufferVA::indexCapacity() const
   return (m_buffer) ? static_cast<u32>(m_buffer->capacity() / indexSize()) : 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

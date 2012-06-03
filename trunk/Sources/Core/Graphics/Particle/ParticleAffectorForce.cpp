@@ -2,13 +2,11 @@
 #include <EGEGraphics.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ParticleAffectorForce)
 EGE_DEFINE_DELETE_OPERATORS(ParticleAffectorForce)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ParticleAffectorForce::ParticleAffectorForce(Application* app, const String& name) : ParticleAffector(app, name)
 {
@@ -52,3 +50,5 @@ void ParticleAffectorForce::apply(const Time& time, ParticleDataArray& particles
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

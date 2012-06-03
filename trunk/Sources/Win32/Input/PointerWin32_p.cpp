@@ -3,7 +3,7 @@
 #include "Win32/Input/PointerWin32_p.h"
 #include "Core/ListenerContainer.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(PointerPrivate)
@@ -45,3 +45,5 @@ void PointerPrivate::onEventRecieved(PEvent event)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

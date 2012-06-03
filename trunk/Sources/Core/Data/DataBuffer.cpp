@@ -2,13 +2,11 @@
 #include "Core/Math/Math.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(DataBuffer)
 EGE_DEFINE_DELETE_OPERATORS(DataBuffer)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DataBuffer::DataBuffer() : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER), 
                            m_size(0), 
@@ -434,3 +432,5 @@ s64 DataBuffer::write(const PDataBuffer& src, s64 size)
   return size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -10,13 +10,11 @@
 
 #include <EGEScreen.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(SceneManager)
 EGE_DEFINE_DELETE_OPERATORS(SceneManager)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SceneManager::SceneManager(Application* app) : Object(app), m_rootNode(NULL)
 {
@@ -563,3 +561,4 @@ void SceneManager::addForRendering(PCamera& camera, Renderer* renderer)
 //
 //  return true;
 //}
+EGE_NAMESPACE_END

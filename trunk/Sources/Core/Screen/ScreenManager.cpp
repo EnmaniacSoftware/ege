@@ -3,13 +3,11 @@
 #include "Core/Screen/ScreenManager.h"
 #include <EGESignal.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ScreenManager)
 EGE_DEFINE_DELETE_OPERATORS(ScreenManager)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ScreenManager::ScreenManager(Application* app) : Object(app)
 {
@@ -178,3 +176,5 @@ PScreen ScreenManager::top() const
   return m_screens.empty() ? NULL : m_screens.back();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -152,7 +152,7 @@ void ImagedAnimationTest::groupLoadComplete(const String& name)
     //EGE_ASSERT(animRes);
     //m_anims.push_back(animRes->createInstance());
 
-    animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "cherry_lvl1_idle");
+    animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "lvl1_idle");
     EGE_ASSERT(animRes);
     m_anims.push_back(animRes->createInstance());
     ege_connect(m_anims.back(), frameChanged, this, ImagedAnimationTest::onFrameChanged);
@@ -174,8 +174,8 @@ void ImagedAnimationTest::preRender(PRenderTarget target)
     PImagedAnimation anim = *it;
   
     Matrix4f matrix = Matrix4f::IDENTITY;
-    matrix.setTranslation(100, i * 300.0f, 0);
-    matrix.setScale(2, 2, 1);
+  //  matrix.setTranslation(100, i * 300.0f, 0);
+   // matrix.setScale(2, 2, 1);
 
     anim->addForRendering(app()->graphics()->renderer(), matrix);
   }

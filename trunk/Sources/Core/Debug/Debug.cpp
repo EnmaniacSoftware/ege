@@ -2,7 +2,7 @@
 #include "Core/Debug/Logger.h"
 #include "Core/Debug/Console.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(Debug)
@@ -57,3 +57,5 @@ void Debug::WarningWithFunction(const char* functionName, const String& text)
   PrintRaw(finalText.toAscii());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -8,7 +8,7 @@
 #include <EGEAudio.h>
 #include <EGEDevice.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(SoundPrivate)
@@ -106,7 +106,7 @@ EGEResult SoundPrivate::play()
     return EGE_ERROR;
   }
 
-  EGE_PRINT("SoundPrivate::play - %s", d_func()->name().toAscii());
+ // EGE_PRINT("SoundPrivate::play - %s", d_func()->name().toAscii());
 
   return EGE_SUCCESS;
 }
@@ -133,7 +133,7 @@ EGEResult SoundPrivate::stop()
     }
   }
 
-  EGE_PRINT("SoundPrivate::stop - %s", d_func()->name().toAscii());
+ // EGE_PRINT("SoundPrivate::stop - %s", d_func()->name().toAscii());
 
   return EGE_SUCCESS;
 }
@@ -160,7 +160,7 @@ void SoundPrivate::onSoundVolumeChanged(PSound sound, float32 oldVolume)
 {
   EGE_ASSERT(sound->p_func() == this);
 
-  EGE_PRINT("SoundPrivate::onSoundVolumeChanged: %s %.2f -> %.2f", sound->name().toAscii(), oldVolume, sound->volume());
+ // EGE_PRINT("SoundPrivate::onSoundVolumeChanged: %s %.2f -> %.2f", sound->name().toAscii(), oldVolume, sound->volume());
 
   // check if compressed sound
   if (COMPRESSED_CHANNEL_ID == m_channel)
@@ -210,5 +210,7 @@ bool SoundPrivate::isStopped() const
   return (0 == s3eSoundChannelGetInt(m_channel, S3E_CHANNEL_STATUS));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
 
 #endif // !EGE_AIRPLAY_AUDIO_SOFTWARE

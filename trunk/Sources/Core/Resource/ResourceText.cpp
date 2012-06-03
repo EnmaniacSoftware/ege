@@ -5,15 +5,13 @@
 #include <EGEResources.h>
 #include <EGEMath.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_LANG "lang"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ResourceText)
 EGE_DEFINE_DELETE_OPERATORS(ResourceText)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceText::ResourceText(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_TEXT)
 {
@@ -210,3 +208,5 @@ s32 ResourceText::translationIndex(s32 numerous) const
   return index;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -9,15 +9,13 @@
 #include <EGEDebug.h>
 #include <EGEMath.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static s16 l_emptySoundSampleData[1];
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(AudioManagerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(AudioManagerPrivate)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base)
 {
@@ -92,4 +90,7 @@ bool AudioManagerPrivate::isStopped(const PSound& sound) const
   return sound->p_func()->isStopped();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
+
 #endif // !EGE_AIRPLAY_AUDIO_SOFTWARE

@@ -1,7 +1,7 @@
 #include "Core/String/StringUtils.h"
 #include <stdlib.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 // TAGE - HACK for Airplay where strtoll function seems to be missing for VC compiler
 #ifdef _MSC_VER
@@ -46,3 +46,5 @@ s64 StringUtils::ToInt64(const char* text, bool* error)
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

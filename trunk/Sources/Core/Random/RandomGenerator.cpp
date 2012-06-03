@@ -4,7 +4,7 @@
 #include "Core/Random/StdC/RandomGeneratorStdC_p.h"
 #endif // EGE_RANDOM_STDC
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(RandomGenerator)
@@ -61,3 +61,5 @@ float32 RandomGenerator::operator() (float32 min, float32 max)
   return 0.0f;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

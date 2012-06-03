@@ -14,7 +14,7 @@
 #include "Core/Graphics/OpenGL/GL 2.0/RendererOGL2_p.h"
 #endif // EGE_RENDERING_OPENGLES_1
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(Renderer)
@@ -669,3 +669,5 @@ Rectf Renderer::applyRotation(const Rectf& rect, const Angle& angle) const
 //    glBlendFunc( eSrc, eDst );
 //  }
 //}
+
+EGE_NAMESPACE_END

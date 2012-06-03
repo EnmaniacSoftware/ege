@@ -6,10 +6,9 @@
 #include <EGEDevice.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(Texture2DPrivate)
 EGE_DEFINE_DELETE_OPERATORS(Texture2DPrivate)
 
@@ -278,3 +277,5 @@ EGEResult Texture2DPrivate::createRenderTarget()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

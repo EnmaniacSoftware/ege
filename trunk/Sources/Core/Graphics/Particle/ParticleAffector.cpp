@@ -2,13 +2,11 @@
 #include <EGEGraphics.h>
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DEFINE_NEW_OPERATORS(ParticleAffector)
 EGE_DEFINE_DELETE_OPERATORS(ParticleAffector)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ParticleAffector::ParticleAffector(Application* app, const String& name) : Object(app)
 {
@@ -52,3 +50,5 @@ bool ParticleAffector::detailedParticleInfoRequired() const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
