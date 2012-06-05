@@ -193,6 +193,9 @@
     <Filter Include="Core\Components\Physics\Null">
       <UniqueIdentifier>{000e664f-b486-4705-956a-d82be8dd5948}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Math\Tweeners">
+      <UniqueIdentifier>{bafdcfb4-1648-43bf-9ce1-fa7db79a2489}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -662,6 +665,18 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.cpp">
       <Filter>Core\Components\Physics\Null</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tweeners\LinearTweener.cpp">
+      <Filter>Core\Math\Tweeners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tweeners\BackTweener.cpp">
+      <Filter>Core\Math\Tweeners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tweeners\SineTweener.cpp">
+      <Filter>Core\Math\Tweeners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tweeners\PowerTweener.cpp">
+      <Filter>Core\Math\Tweeners</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1291,6 +1306,22 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.h">
       <Filter>Core\Components\Physics\Null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGETweener.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\ITweener.h">
+      <Filter>Core\Math\Tweeners</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\LinearTweener.h">
+      <Filter>Core\Math\Tweeners</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\BackTweener.h">
+      <Filter>Core\Math\Tweeners</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\SineTweener.h">
+      <Filter>Core\Math\Tweeners</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\PowerTweener.h">
+      <Filter>Core\Math\Tweeners</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

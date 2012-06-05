@@ -2,9 +2,7 @@
 #define EGE_CORE_PLATFORM_H
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 inline void ege_noop() {}
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Available platform defines
@@ -17,6 +15,7 @@ inline void ege_noop() {}
 
 // Available physics APIs
 // EGE_PHYSICS_BOX2D
+// EGE_PHYSICS_NULL
 
 // Availaable threading APIs
 // EGE_THREAD_PTHREAD
@@ -30,7 +29,6 @@ inline void ege_noop() {}
 #endif // AIRPLAY_BUILD
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 // Common defines
 #define EGE_DECLARE_SMART_CLASS(className, smartName) class className; typedef EGE::SmartPointer<className> smartName;
 //#define DECLARE_TEMPLATED_SMART_CLASS(className, smartName) template <class T> class className; typedef Pointer<className> smartName;
@@ -52,9 +50,7 @@ inline void ege_noop() {}
 #define signals public
 #define emit
 #define slots
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 // OS includes
 #if EGE_PLATFORM_WIN32
 #define NOMINMAX 1
@@ -72,7 +68,6 @@ inline void ege_noop() {}
 #ifdef __GNUC__
 #define override
 #endif // __GNUC__
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_CORE_PLATFORM_H

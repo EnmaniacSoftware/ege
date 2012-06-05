@@ -2,7 +2,6 @@
 #define EGE_AIRPLAY_TYPES_H
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 typedef signed int          s32;            // i
 typedef unsigned int        u32;            // ui
 typedef short               s16;            // si
@@ -15,7 +14,6 @@ typedef long long           s64;            // li
 typedef unsigned long long  u64;            // lu
 typedef float               float32;
 typedef double              float64;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_AIRPLAY_TYPES_H

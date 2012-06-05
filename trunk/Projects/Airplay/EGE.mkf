@@ -75,6 +75,7 @@ files
   EGETime.h
   EGETimer.h
   EGETree.h
+  EGETweener.h
 	EGETypes.h
   EGEUI.h
   EGEVector.h
@@ -331,6 +332,18 @@ files
 	Vector2.h
 	Vector3.h
 	Vector4.h
+
+	["Core/Math/Tweeners"]
+  (../../Sources/Core/Math/Tweeners)
+  BackTweener.cpp
+  BackTweener.h
+  ITweener.h
+  LinearTweener.cpp
+  LinearTweener.h
+  PowerTweener.cpp
+  PowerTweener.h
+  SineTweener.cpp
+  SineTweener.h
 
 	["Core/Math/Splines"]
   (../../Sources/Core/Math/Splines)

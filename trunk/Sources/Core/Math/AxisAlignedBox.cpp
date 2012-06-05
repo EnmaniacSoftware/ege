@@ -2,36 +2,29 @@
 #include "Core/Math/Vector4.h"
 #include <EGEDebug.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-AxisAlignedBox::AxisAlignedBox() : m_minimum(Vector4f::ZERO), m_maximum(Vector4f::ZERO), m_extent(EXTENT_NULL)
+AxisAlignedBox::AxisAlignedBox() : m_minimum(Vector4f::ZERO), 
+                                   m_maximum(Vector4f::ZERO), 
+                                   m_extent(EXTENT_NULL)
 {
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 AxisAlignedBox::AxisAlignedBox(const AxisAlignedBox& cBox)
 {
 //  *this = cBox; 
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 AxisAlignedBox::AxisAlignedBox(const Vector4f& cMin, const Vector4f& cMax)
 {
   setExtents(cMin, cMax);
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 AxisAlignedBox::~AxisAlignedBox()
 {
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 void AxisAlignedBox::setExtents(const Vector4f& min, const Vector4f& max)
 {
   EGE_ASSERT(min.x <= max.x && min.y <= max.y && min.z <= max.z);
@@ -40,7 +33,6 @@ void AxisAlignedBox::setExtents(const Vector4f& min, const Vector4f& max)
   m_minimum = min;
   m_maximum = max;
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //
@@ -300,3 +292,5 @@ void AxisAlignedBox::setExtents(const Vector4f& min, const Vector4f& max)
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //// PRIVATES
+
+EGE_NAMESPACE_END

@@ -88,6 +88,10 @@
     <ClCompile Include="..\..\Sources\Core\Math\Math.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Splines\CubicSpline.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Splines\CurveSegment.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Math\Tweeners\BackTweener.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Math\Tweeners\LinearTweener.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Math\Tweeners\PowerTweener.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Math\Tweeners\SineTweener.cpp" />
     <ClCompile Include="..\..\Sources\Core\Memory\MemoryManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Overlay\ImageOverlay.cpp" />
     <ClCompile Include="..\..\Sources\Core\Overlay\Overlay.cpp" />
@@ -207,6 +211,11 @@
     <ClInclude Include="..\..\Sources\Core\Math\Complex.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Splines\CubicSpline.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Splines\CurveSegment.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\BackTweener.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\ITweener.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\LinearTweener.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\PowerTweener.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\SineTweener.h" />
     <ClInclude Include="..\..\Sources\Core\Overlay\ImageOverlay.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsJointAttractNull_p.h" />
@@ -407,6 +416,7 @@
     <ClInclude Include="..\..\Sources\EGETimeline.h" />
     <ClInclude Include="..\..\Sources\EGETimer.h" />
     <ClInclude Include="..\..\Sources\EGETree.h" />
+    <ClInclude Include="..\..\Sources\EGETweener.h" />
     <ClInclude Include="..\..\Sources\EGETypes.h" />
     <ClInclude Include="..\..\Sources\EGEUI.h" />
     <ClInclude Include="..\..\Sources\EGEVector.h" />

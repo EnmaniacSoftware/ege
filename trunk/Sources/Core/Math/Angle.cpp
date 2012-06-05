@@ -1,7 +1,7 @@
 #include "Core/Math/Angle.h"
 #include "Core/Math/Math.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Angle::Angle() : m_radians(0)
@@ -115,3 +115,5 @@ Angle Angle::distanceTo(const Angle& angle, EGEAngle::Direction direction)
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

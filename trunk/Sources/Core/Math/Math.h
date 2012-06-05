@@ -46,8 +46,10 @@ class Math
     template <typename T>
     inline static float32 Sqrt(T number) { return sqrtf(static_cast<float32>(number)); }
 
-    inline static float32 Floor(float32 value) { return floorf(value); }
-    inline static float32 Ceil(float32 value) { return ceilf(value); }
+    inline static float32 Pow(float32 value, float32 power) { return powf(value, power); }
+
+    inline static s32 Floor(float32 value) { return static_cast<s32>(floorf(value)); }
+    inline static s32 Ceil(float32 value) { return static_cast<s32>(ceilf(value)); }
 
     inline static float32 RadiansToDegrees(float32 radians) { return radians * 57.29577951f; }
     inline static float32 DegreesToRadians(float32 degrees) { return degrees * 0.017453292f; }
