@@ -71,7 +71,7 @@ bool RippleEffect::initialize(s32 width, s32 height, const Vector2i& gridSize, P
       *indexData++ = static_cast<u16>(i * m_gridSize.y + j + m_gridSize.y);
     }
   }
-  m_renderData->indexBuffer()->unlock();
+  m_renderData->indexBuffer()->unlock(indexData - 1);
 
   // create material with render texture for render texture object
   PMaterial material = ege_new Material(app());
@@ -113,7 +113,7 @@ bool RippleEffect::initialize(s32 width, s32 height, const Vector2i& gridSize, P
       *data++ = m_defaultTextureCoords[i * m_gridSize.y + j].y;
     }
   }
-  m_renderData->vertexBuffer()->unlock();
+  m_renderData->vertexBuffer()->unlock(data - 1);
 
   precalculate();
 
@@ -230,7 +230,7 @@ void RippleEffect::update(const Time& time)
     }
   }
 
-  m_renderData->vertexBuffer()->unlock();
+  m_renderData->vertexBuffer()->unlock(data - 1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*!	Computes the distance of the given window coordinate to the nearest window corner (in pixels). */

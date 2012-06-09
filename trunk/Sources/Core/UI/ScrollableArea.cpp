@@ -19,7 +19,8 @@ ScrollableArea::ScrollableArea(Application* app, const String& name, egeObjectDe
   m_scrollbarsEnabled(true),
   m_scrollbarsFadeDuration(0.5f),
   m_scrollbarsState(SS_HIDDEN),
-  m_dirtyContent(false)
+  m_dirtyContent(false),
+  m_autoContentSize(true)
 {
   PMaterial material = ege_new Material(app);
   if (material)
@@ -157,7 +158,7 @@ void ScrollableArea::update(const Time& time)
     }
   }
   
-  //EGE_PRINT("Off: %.2f Rng: %.2f Vel: %.2f", m_scrollOffset.y, m_scrollRange.y, m_scrollVelocity.y);
+ // EGE_PRINT("Off: %.2f Rng: %.2f Vel: %.2f", m_scrollOffset.y, m_scrollRange.y, m_scrollVelocity.y);
 
   // update cache
   m_lastPointerPosition = m_currentPointerPosition;
@@ -187,6 +188,12 @@ void ScrollableArea::update(const Time& time)
 /*! Pointer event processor. */
 void ScrollableArea::pointerEvent(PPointerData data)
 {
+  if (!isVisible())
+  {
+    // do nothing
+    return;
+  }
+
   if (EGEInput::ACTION_BUTTON_DOWN == data->action())
   {
     const Matrix4f& globalMatrix = globalTransformationMatrix();
@@ -231,6 +238,12 @@ void ScrollableArea::pointerEvent(PPointerData data)
 /*! Renders object. */
 void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
+  if (!isVisible())
+  {
+    // do nothing
+    return;
+  }
+
   Vector4f pos;
 
   // create content objects matrix affected by current scroll offset
@@ -281,7 +294,7 @@ void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transfo
     // NOTE: if there is need for scrolling do not show scrollbar
     if ((DIRECTION_VERTICAL & m_direction) && (0 < m_scrollRange.y))
     {
-      const float32 pageSize = Math::Ceil(size().y * (size().y / m_contentSize.y));
+      const s32 pageSize = Math::Ceil(size().y * (size().y / m_contentSize.y));
 
       Vector2f topLeft(m_physics.position().x + size().x - scrollbarSize, 
                        m_physics.position().y + (size().y - pageSize) * (m_scrollOffset.y / m_scrollRange.y));
@@ -334,7 +347,7 @@ void ScrollableArea::addForRendering(Renderer* renderer, const Matrix4f& transfo
     // NOTE: if there is need for scrolling do not show scrollbar
     if ((DIRECTION_HORIZONTAL & m_direction) && (0 < m_scrollRange.x))
     {
-      const float32 pageSize = Math::Ceil(size().x * (size().x / m_contentSize.x));
+      const s32 pageSize = Math::Ceil(size().x * (size().x / m_contentSize.x));
 
       Vector2f topLeft(m_physics.position().x + (size().x - pageSize) * (m_scrollOffset.x / m_scrollRange.x), 
                        m_physics.position().y + size().y - scrollbarSize);
@@ -612,6 +625,13 @@ Vector2f ScrollableArea::contentSize()
 /*! Recalculates content size. */
 void ScrollableArea::recaluclateContentSize()
 {
+  // check if no AUTO content size calculations
+  if (!m_autoContentSize)
+  {
+    // do nothing
+    return;
+  }
+
   // reset content size
   m_contentSize = Vector2f::ZERO;
 
@@ -739,6 +759,37 @@ void ScrollableArea::setAlpha(float32 alpha)
 ScrollableArea::ObjectsList ScrollableArea::objects() const
 {
   return m_objects;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets content size. 
+    @note This disables auto content size generation.
+  */
+void ScrollableArea::setContentSize(const Vector2f& size)
+{
+  // update content size
+  m_contentSize = Vector2f::ZERO;
+
+  Rectf rect(0, 0, size.x, size.y);
+  updateContent(rect);
+  
+  // diable content size automatic determination
+  m_autoContentSize = false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Enables/disables auto calculation of contect size. */
+void ScrollableArea::setAutoContentSize(bool enable)
+{
+  if (m_autoContentSize != enable)
+  {
+    m_autoContentSize = enable;
+
+    // if enabled make sure it is updated
+    if (enable)
+    {
+      // invalidate content
+      m_dirtyContent = true;
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

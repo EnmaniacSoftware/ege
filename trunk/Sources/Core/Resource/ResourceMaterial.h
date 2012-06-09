@@ -18,14 +18,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
 EGE_DECLARE_SMART_CLASS(TextureImage, PTextureImage)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceMaterial : public IResource
 {
   private:
@@ -34,20 +31,14 @@ class ResourceMaterial : public IResource
 
   private:
 
-    /*! Small class containing information for TextureImage. */
-    class TextureImageData
+    /*! Small structure containing information for TextureImage. */
+    struct TextureImageData
     {
-      public:
-
-        TextureImageData(const String& name, const Rectf& rect, EGETexture::EnvironmentMode envMode, bool manual) : m_name(name), m_rect(rect), 
-                                                                                                                    m_envMode(envMode), m_manual(manual) {}
-
-      public:
-
-        String m_name;                                /*!< Texture name. */
-        Rectf m_rect;                                 /*!< Texture rectangle (in normalized local coords). */
-        EGETexture::EnvironmentMode m_envMode;        /*!< Texture environment mode. */
-        bool m_manual;                                /*!< Manual flag. */
+        String name;                                /*!< Texture name. */
+        Rectf rect;                                 /*!< Texture rectangle (in normalized local coords). */
+        EGETexture::EnvironmentMode envMode;        /*!< Texture environment mode. */
+        bool manual;                                /*!< Manual flag. */
+        Angle rotationAngle;                        /*!< Texture rotation angle. */
     };
         
     typedef List<TextureImageData> TextureImageDataList;
@@ -141,7 +132,6 @@ class ResourceMaterial : public IResource
     /*! Load flag. */
     bool m_loaded;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

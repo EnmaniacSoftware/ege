@@ -44,9 +44,15 @@ EGEResult ResourceTextureImage::create(const String& path, const PXmlElement& ta
   bool error = false;
 
   // get data
-  m_name        = tag->attribute("name");
-  m_textureName = tag->attribute("texture");
-  m_rect        = tag->attribute("rect", "0 0 0 0").toRectf(&error);
+  m_name          = tag->attribute("name");
+  m_textureName   = tag->attribute("texture");
+  m_rect          = tag->attribute("rect", "0 0 0 0").toRectf(&error);
+  m_rotationAngle = tag->attribute("rotation", "0").toAngle(&error);
+
+  if (m_name == "stats-icon-scroll-arrow-right")
+  {
+    int a = 1;
+  }
 
   // check if obligatory data is wrong
   if (error || m_name.empty() || m_textureName.empty())
@@ -141,6 +147,7 @@ EGEResult ResourceTextureImage::setInstance(const PTextureImage& instance)
   instance->setTexture(m_texture);
   instance->setRect(m_rect);
   instance->setName(name());
+  instance->setRotationAngle(m_rotationAngle);
 
   return EGE_SUCCESS;
 }

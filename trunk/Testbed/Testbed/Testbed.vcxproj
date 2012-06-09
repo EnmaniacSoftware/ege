@@ -101,6 +101,7 @@
     <ClCompile Include="Threads\TestThread.cpp" />
     <ClCompile Include="Threads\ThreadsTest.cpp" />
     <ClCompile Include="Timeline\TimeLineTest.cpp" />
+    <ClCompile Include="UIScrollablePageView\UIScrollablePageViewTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -125,6 +126,7 @@
     <ClInclude Include="Threads\TestThread.h" />
     <ClInclude Include="Threads\ThreadsTest.h" />
     <ClInclude Include="Timeline\TimeLineTest.h" />
+    <ClInclude Include="UIScrollablePageView\UIScrollablePageViewTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Projects\Windows\EGE.vcxproj">

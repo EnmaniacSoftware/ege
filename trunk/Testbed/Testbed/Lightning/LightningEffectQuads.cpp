@@ -144,7 +144,7 @@ void LightningEffectQuads::update(const Time& time)
       *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
     }
 
-    m_renderData->vertexBuffer()->unlock();
+    m_renderData->vertexBuffer()->unlock(data - 1);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -420,8 +420,8 @@ void LightningEffectQuads::generateRenderData()
     *data++ = segment->intensity;
   }
 
-  m_renderData->vertexBuffer()->unlock();
-  m_renderData->indexBuffer()->unlock();
+  m_renderData->vertexBuffer()->unlock(data - 1);
+  m_renderData->indexBuffer()->unlock(index - 1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Set offshot angle. */

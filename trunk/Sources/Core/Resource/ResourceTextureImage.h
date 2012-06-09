@@ -13,15 +13,12 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceTextureImage, PResourceTextureImage)
 EGE_DECLARE_SMART_CLASS(TextureImage, PTextureImage)
 EGE_DECLARE_SMART_CLASS(Object, PObject)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceTextureImage : public IResource
 {
   public:
@@ -70,10 +67,11 @@ class ResourceTextureImage : public IResource
     String m_textureName;
     /*! Rectangle area refered by this object. */
     Rectf m_rect;
+    /*! Rotation angle. */
+    Angle m_rotationAngle;
 	  /*! Texture object. NULL if not loaded yet. */
 	  PObject m_texture;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

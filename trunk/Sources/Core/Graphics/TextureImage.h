@@ -11,12 +11,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(TextureImage, PTextureImage)
 EGE_DECLARE_SMART_CLASS(Object, PObject)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class TextureImage : public Object
 {
   public:
@@ -54,6 +51,11 @@ class TextureImage : public Object
     /*! Returns environment mode. */
     inline EGETexture::EnvironmentMode environmentMode() const { return m_envMode; }
 
+    /* Sets rotation angle. */
+    void setRotationAngle(const Angle& angle);
+    /*! Returns rotation angle. */
+    inline const Angle& rotationAngle() const { return m_rotationAngle; }
+
     /* Makes a copy of given texture image. */
     void copy(const TextureImage* other);
 
@@ -72,8 +74,9 @@ class TextureImage : public Object
     Rectf m_rect;
     /*! Environment mode. */
     EGETexture::EnvironmentMode m_envMode;
+    /*! Rotation angle. */
+    Angle m_rotationAngle;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

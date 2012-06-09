@@ -678,6 +678,24 @@
     <ClCompile Include="..\..\Sources\Core\Math\Tweeners\PowerTweener.cpp">
       <Filter>Core\Math\Tweeners</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\UI\UIScrollablePageView.cpp">
+      <Filter>Core\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\UI\UIVerticalScrollbar.cpp">
+      <Filter>Core\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\UI\UIHorizontalScrollbar.cpp">
+      <Filter>Core\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\UI\UIAbstractScrollbar.cpp">
+      <Filter>Core\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\UI\UIScrollView.cpp">
+      <Filter>Core\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\UI\UIPageIndicator.cpp">
+      <Filter>Core\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1323,6 +1341,24 @@
     <ClInclude Include="..\..\Sources\Core\Math\Tweeners\PowerTweener.h">
       <Filter>Core\Math\Tweeners</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\UI\UIScrollablePageView.h">
+      <Filter>Core\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\UI\UIScrollView.h">
+      <Filter>Core\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\UI\UIVerticalScrollbar.h">
+      <Filter>Core\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\UI\UIHorizontalScrollbar.h">
+      <Filter>Core\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\UI\UIAbstractScrollbar.h">
+      <Filter>Core\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\UI\UIPageIndicator.h">
+      <Filter>Core\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">
@@ -1331,5 +1367,6 @@
     <None Include="..\..\Sources\README.txt" />
     <None Include="..\..\Sources\Rendering Pipe.txt" />
     <None Include="..\..\Sources\TODO.txt" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

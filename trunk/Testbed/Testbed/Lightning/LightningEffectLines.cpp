@@ -68,7 +68,7 @@ void LightningEffectLines::update(const Time& time)
     *data++;
     *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
   }
-  m_renderData->vertexBuffer()->unlock();
+  m_renderData->vertexBuffer()->unlock(data - 1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pointer event receiver. */
@@ -100,7 +100,7 @@ void LightningEffectLines::pointerEvent(PPointerData data)
       *data++ = (*it).intensity;
     }
 
-    m_renderData->vertexBuffer()->unlock();
+    m_renderData->vertexBuffer()->unlock(data - 1);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

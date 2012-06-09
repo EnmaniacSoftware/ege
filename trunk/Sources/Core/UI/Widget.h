@@ -16,15 +16,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Renderer;
 class Viewport;
-
 EGE_DECLARE_SMART_CLASS(Widget, PWidget)
 EGE_DECLARE_SMART_CLASS(ScrollableArea, PScrollableArea)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Widget : public Object
 {
   public: 
@@ -33,6 +29,13 @@ class Widget : public Object
     
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  signals:
+
+    /*! Signal emitted when size of the widget changes. */
+    Signal1<const Vector2f&> sizeChanged;
+    /*! Signal emitted when position of the widget changes. */
+    Signal1<const Vector4f&> positionChanged;
 
   public:
 
@@ -79,6 +82,8 @@ class Widget : public Object
     virtual Vector2f contentSize();
     /* Sets size. */
     void setSize(const Vector2f& size);
+    /* Determines size of widget (in pixels). */
+    virtual Vector2f size() const;
     /* Sets position. */
     void setPosition(const Vector4f& position);
 
@@ -95,10 +100,10 @@ class Widget : public Object
     Widget(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
     /* Generates render data. */
     virtual void generateRenderData();
-    /* Determines size of widget (in pixels). */
-    virtual Vector2f size();
     /* Returns global transformation matrix. */
     const Matrix4f& globalTransformationMatrix() const;
+    /* Constructs object. */
+    virtual EGEResult construct();
 
   private:
 
@@ -135,7 +140,7 @@ class Widget : public Object
     /*! Visibility flag. */
     bool m_visible;
     /*! Widget size (in pixels). */
-    Vector2f m_size;
+    mutable Vector2f m_size;
     /*! Widget frame. */
     WidgetFrame* m_widgetFrame;
     /*! Pointer to parent widget. */
@@ -146,7 +151,6 @@ class Widget : public Object
     // TAGE - currently not in use
     Alignment m_alignment;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

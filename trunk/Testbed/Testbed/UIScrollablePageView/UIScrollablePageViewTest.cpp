@@ -1,5 +1,5 @@
 #include "App.h"
-#include "LocalizationTest.h"
+#include "UIScrollablePageViewTest.h"
 #include <EGESignal.h>
 #include <EGEResources.h>
 #include <EGEOverlay.h>
@@ -7,52 +7,26 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #define ORTHO
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-LocalizationTest::LocalizationTest(App* app) : Test(app)
+UIScrollablePageViewTest::UIScrollablePageViewTest(App* app) : Test(app), 
+                                                                m_area(NULL)
 {
-  app->eventManager()->addListener(this);
-
-  PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
-  if (fontResource)
-  {
-    PTextOverlay overlay = ege_new TextOverlay(app, "lang");
-    overlay->setFont(fontResource->font());
-    app->overlayManager()->add(overlay);
-    overlay->physics()->setPosition(Vector4f(0, 80, 0));
-
-    overlay = ege_new TextOverlay(app, "text-1");
-    overlay->setFont(fontResource->font());
-    app->overlayManager()->add(overlay);
-    overlay->physics()->setPosition(Vector4f(40, 120, 0));
-
-    overlay = ege_new TextOverlay(app, "text-2");
-    overlay->setFont(fontResource->font());
-    app->overlayManager()->add(overlay);
-    overlay->physics()->setPosition(Vector4f(40, 140, 0));
-
-    overlay = ege_new TextOverlay(app, "text-3");
-    overlay->setFont(fontResource->font());
-    app->overlayManager()->add(overlay);
-    overlay->physics()->setPosition(Vector4f(40, 160, 0));
-  }
+  ege_connect(app->graphics(), preRender, this, UIScrollablePageViewTest::preRender);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-LocalizationTest::~LocalizationTest()
+UIScrollablePageViewTest::~UIScrollablePageViewTest()
 {
-  app()->eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Returns test name. */
-String LocalizationTest::name() const
+String UIScrollablePageViewTest::name() const
 {
-  return "Localization";
+  return "UIScrollablePageView";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Initializes test. */
-bool LocalizationTest::initialize()
+bool UIScrollablePageViewTest::initialize()
 {
   // get window render target (created thru config options)
   PRenderWindow window = app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
@@ -80,54 +54,90 @@ bool LocalizationTest::initialize()
   viewport->setClearColor(Color::BLUE);
 
   // load resources
-  if (EGE_SUCCESS != app()->resourceManager()->loadGroup("localization-test"))
+  if (EGE_SUCCESS != app()->resourceManager()->loadGroup("ui-scrollable-page-view-test"))
   {
     // error!
     return false;
   }
 
-  updateTexts();
-
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Updates test. */
-void LocalizationTest::update(const Time& time)
+void UIScrollablePageViewTest::update(const Time& time)
 {
+  if (m_area)
+  {
+    m_area->update(time);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Pointer event receiver. */
-void LocalizationTest::pointerEvent(PPointerData data)
+void UIScrollablePageViewTest::pointerEvent(PPointerData data)
 {
-  if (EGEInput::ACTION_BUTTON_UP == data->action())
+  if (m_area)
   {
-    if ("en" == app()->language())
-    {
-      app()->setLanguage("pl");
-    }
-    else
-    {
-      app()->setLanguage("en");
-    }
+    m_area->pointerEvent(data);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IEventListener override. Event reciever. */
-void LocalizationTest::onEventRecieved(PEvent event)
+/*! Slot called before target is rendered. */
+void UIScrollablePageViewTest::preRender(PRenderTarget target)
 {
-  if (EGE_EVENT_ID_CORE_LANGUAGE_CHANGED == event->uid())
-  {
-    updateTexts();
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates texts. */
-void LocalizationTest::updateTexts()
-{
-  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("lang"))->setText(Text::Format("Language: %s", app()->language().toAscii()));
+  EGE_UNUSED(target);
 
-  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("text-1"))->setText(TR(app(), "text-1"));
-  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("text-2"))->setText(TR(app(), "text-2"));
-  ege_cast<TextOverlay*>(app()->overlayManager()->overlay("text-3"))->setText(TRN(app(), "text-3", 2));
+  if (m_areaBackground)
+  {
+    app()->graphics()->renderer()->addForRendering(m_areaBackground);
+  }
+
+  if (m_area)
+  {
+    m_area->addForRendering(app()->graphics()->renderer());
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Test override. Slot called when resource group has been loaded. */
+void UIScrollablePageViewTest::groupLoadComplete(const String& name)
+{
+  if ("ui-scrollable-page-view-test" == name)
+  {
+    const u32 pageCount = 3;
+    Vector4f position(50, 50, 0);
+    Vector2f size(400, 500);
+
+    // create scrollable area
+    m_area = UIScrollablePageView::Create(app(), "my-scrollable-page-view");
+    m_area->setPosition(position);
+    m_area->setSize(size);
+    m_area->setPageCount(pageCount);
+//    m_area->setPageIndicatorEnabled(false);
+
+    // create scrollable area background object 
+    m_areaBackground = RenderObjectFactory::CreateQuadXY(app(), "background", position, size, 
+                                                         ALIGN_TOP_LEFT, EGEVertexBuffer::ST_V2, 1, EGEGraphics::RPT_TRIANGLE_STRIPS, 
+                                                         EGEVertexBuffer::UT_STATIC_WRITE);
+
+    // get material resource
+    PResourceMaterial resource = app()->resourceManager()->resource(RESOURCE_NAME_MATERIAL, "background", "ui-scrollable-page-view-test");
+    m_areaBackground->setMaterial(resource->createInstance());
+
+    PResourceFont fontResource = app()->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
+    if (fontResource)
+    {
+      for (u32 page = 0; page < pageCount; ++page)
+      {
+        // add scroll area content
+        for (s32 i = 0; i < 30; ++i)
+        {
+          PTextOverlay text = ege_new TextOverlay(app(), "text");
+          text->setFont(fontResource->font());
+          text->setText(Text::Format("Text. Page: %d Line %d", page + 1, i + 1));
+          text->physics()->setPosition(Vector4f(0, i * 50.0f, 0));
+          m_area->addObject(text, page);
+        }
+      }
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

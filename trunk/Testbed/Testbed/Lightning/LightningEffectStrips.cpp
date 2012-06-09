@@ -139,7 +139,7 @@ void LightningEffectStrips::update(const Time& time)
         *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
       }
 
-      beam.renderData->vertexBuffer()->unlock();
+      beam.renderData->vertexBuffer()->unlock(data - 1);
     }
   }
 }
@@ -425,7 +425,7 @@ void LightningEffectStrips::generateRenderData()
       segment.randomization = 0.0f;
     }
 
-    beam.renderData->vertexBuffer()->unlock();
+    beam.renderData->vertexBuffer()->unlock(data - 1);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

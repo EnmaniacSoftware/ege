@@ -104,19 +104,19 @@ void Texture2D::setMinFilter(EGETexture::Filter filter)
   m_minFilter = filter;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Sets magnification function filter. */
+/*! Sets magnification function filter. */
 void Texture2D::setMagFilter(EGETexture::Filter filter)
 {
   m_magFilter = filter;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Sets wrap parameter for S coordinate. */
+/*! Sets wrap parameter for S coordinate. */
 void Texture2D::setTextureAddressingModeS(EGETexture::AddressingMode mode)
 {
   m_addressingModeS = mode;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Sets wrap parameter for T coordinate. */
+/*! Sets wrap parameter for T coordinate. */
 void Texture2D::setTextureAddressingModeT(EGETexture::AddressingMode mode)
 {
   m_addressingModeT = mode;

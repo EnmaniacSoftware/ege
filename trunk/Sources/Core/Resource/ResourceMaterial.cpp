@@ -259,11 +259,11 @@ EGEResult ResourceMaterial::load()
         const TextureImageData& textureImageData = *it;
 
         // check if manual texture
-        if (textureImageData.m_manual)
+        if (textureImageData.manual)
         {
           // add placeholder only
           PTextureImage manual = ege_new TextureImage(app());
-          manual->setName(textureImageData.m_name);
+          manual->setName(textureImageData.name);
           pass.m_textureImages.push_back(manual);
           continue;
         }
@@ -276,7 +276,7 @@ EGEResult ResourceMaterial::load()
         // NOTE: Material can refer to Texture or TextureImage (ie. from atlas)
 
         // try to find TextureImage of a given name
-        PResourceTextureImage textureImageRes = manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureImageData.m_name);
+        PResourceTextureImage textureImageRes = manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureImageData.name);
         if (textureImageRes)
         {
           // load texture image
@@ -303,7 +303,7 @@ EGEResult ResourceMaterial::load()
         else
         {
           // try to find Texture of a given name
-          PResourceTexture textureRes = manager()->resource(RESOURCE_NAME_TEXTURE, textureImageData.m_name);
+          PResourceTexture textureRes = manager()->resource(RESOURCE_NAME_TEXTURE, textureImageData.name);
           if (textureRes)
           {
             // load texture
@@ -322,12 +322,12 @@ EGEResult ResourceMaterial::load()
         if (NULL == texture)
         {
           // texture not found
-          EGE_WARNING("Material texture not found: %s", textureImageData.m_name.toAscii());
+          EGE_WARNING("Material texture not found: %s", textureImageData.name.toAscii());
           return EGE_ERROR;
         }
 
         // calculate final referred rectangle
-        Rectf finalRect = texRect.combine(textureImageData.m_rect);
+        Rectf finalRect = texRect.combine(textureImageData.rect);
 
         PTextureImage textureImage = ege_new TextureImage(app(), texture, finalRect);
         if (NULL == textureImage || !textureImage->isValid())
@@ -337,7 +337,8 @@ EGEResult ResourceMaterial::load()
         }
 
         // set texture data
-        textureImage->setEnvironmentMode(textureImageData.m_envMode);
+        textureImage->setEnvironmentMode(textureImageData.envMode);
+        textureImage->setRotationAngle(textureImageData.rotationAngle);
 
         // add to pool
         pass.m_textureImages.push_back(textureImage);
@@ -373,16 +374,19 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag, PassData& pass)
 {
   EGEResult result = EGE_SUCCESS;
 
+  TextureImageData textureData;
+
   bool error = false;
 
   // get data
-  String name                          = tag->attribute("name");
-  Rectf rect                           = tag->attribute("rect", "0 0 1 1").toRectf(&error);
-  EGETexture::EnvironmentMode envMode  = MapTextureEnvironmentMode(tag->attribute("env-mode", "modulate"), EGETexture::EM_MODULATE);
-  bool manual                          = tag->attribute("manual", "false").toBool(&error);
+  textureData.name          = tag->attribute("name");
+  textureData.rect          = tag->attribute("rect", "0 0 1 1").toRectf(&error);
+  textureData.envMode       = MapTextureEnvironmentMode(tag->attribute("env-mode", "modulate"), EGETexture::EM_MODULATE);
+  textureData.manual        = tag->attribute("manual", "false").toBool(&error);
+  textureData.rotationAngle = tag->attribute("rotation", "0").toAngle(&error);
 
   // check if obligatory data is wrong
-  if (error || name.empty())
+  if (error || textureData.name.empty())
   {
     // error!
     EGE_PRINT("ERROR: Failed for name: %s", this->name().toAscii());
@@ -390,7 +394,7 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag, PassData& pass)
   }
 
   // add into pool
-  pass.m_textureImageData.push_back(TextureImageData(name, rect, envMode, manual));
+  pass.m_textureImageData.push_back(textureData);
 
   return result;
 }

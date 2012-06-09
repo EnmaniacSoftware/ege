@@ -12,11 +12,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(ScrollableArea, PScrollableArea)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ScrollableArea : public Widget
 {
   public:
@@ -34,18 +31,6 @@ class ScrollableArea : public Widget
 
   public:
 
-    /*! Available directions. */
-    enum DirectionFlags
-    {
-      DIRECTION_NONE        = 0x00,
-      DIRECTION_VERTICAL    = 0x01,
-      DIRECTION_HORIZONTAL  = 0x02,
-
-      DIRECTION_BOTH = DIRECTION_VERTICAL | DIRECTION_HORIZONTAL
-    };
-
-    EGE_DECLARE_FLAGS(Direction, DirectionFlags)
-
     typedef List<PObject> ObjectsList;
 
   public:
@@ -57,12 +42,12 @@ class ScrollableArea : public Widget
     /* Widget override. Renders object. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
     /* Adds object. */
-    EGE::EGEResult addObject(PObject object);
+    EGEResult addObject(PObject object);
     /* Removes object. */
     void removeObject(PObject object);
     /* Returns object with a given name. */
     PObject object(const String& name) const;
-    /* Reutrns list of all objects. */
+    /* Returns list of all objects. */
     ObjectsList objects() const;
     /* Removes all objects. */
     void removeAll();
@@ -83,6 +68,12 @@ class ScrollableArea : public Widget
     void setScrollbarsFadeDuration(const Time& duration);
     /* Returns size of content (in pixels). */
     Vector2f contentSize();
+    /* Sets content size. 
+       @note This disables auto content size generation.
+     */
+    void setContentSize(const Vector2f& size);
+    /* Enables/disables auto calculation of contect size. */
+    void setAutoContentSize(bool enable);
 
     /* Widget override. Sets transparency level. */
     void setAlpha(float32 alpha) override;
@@ -171,8 +162,9 @@ class ScrollableArea : public Widget
     bool m_dirtyContent;
     /*! Render component. */
     PRenderComponent m_renderData;
+    /*! Auto content size flag. */
+    bool m_autoContentSize;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

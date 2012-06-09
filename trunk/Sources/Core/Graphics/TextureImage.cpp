@@ -79,10 +79,11 @@ void TextureImage::copy(const TextureImage* other)
 {
   EGE_ASSERT(other);
 
-  m_name    = other->name();
-  m_rect    = other->m_rect;
-  m_texture = other->m_texture;
-  m_envMode = other->m_envMode;
+  m_name          = other->name();
+  m_rect          = other->m_rect;
+  m_texture       = other->m_texture;
+  m_envMode       = other->m_envMode;
+  m_rotationAngle = other->m_rotationAngle;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns width (in texels). */
@@ -121,6 +122,12 @@ s32 TextureImage::height() const
   }
 
   return height;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets rotation angle. */
+void TextureImage::setRotationAngle(const Angle& angle)
+{
+  m_rotationAngle = angle;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

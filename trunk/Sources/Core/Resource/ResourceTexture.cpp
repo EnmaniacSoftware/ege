@@ -92,6 +92,8 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
 
+  bool error = false;
+
   // get data
   m_name            = tag->attribute("name");
   m_path            = tag->attribute("path");
@@ -100,9 +102,10 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   m_magFilter       = MapFilterName(tag->attribute("mag-filter").toLower(), EGETexture::BILINEAR);
   m_addressingModeS = MapTextureAddressingName(tag->attribute("mode-s").toLower(), EGETexture::AM_REPEAT);
   m_addressingModeT = MapTextureAddressingName(tag->attribute("mode-t").toLower(), EGETexture::AM_REPEAT);
+  m_rotation        = tag->attribute("rotation", "0").toAngle(&error);
 
   // check if obligatory data is wrong
-  if (m_name.empty() || m_path.empty() || m_type.empty())
+  if (m_name.empty() || m_path.empty() || m_type.empty() || error)
   {
     // error!
     EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
@@ -125,7 +128,7 @@ EGEResult ResourceTexture::load()
     // create according to type
     if ("2d" == type())
     {
-      EGE_PRINT("%s, 2D", name().toAscii());
+  //    EGE_PRINT("%s, 2D", name().toAscii());
       result = create2D();
     }
   }

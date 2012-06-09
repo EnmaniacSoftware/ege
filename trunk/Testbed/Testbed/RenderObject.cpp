@@ -120,7 +120,7 @@ RenderObject* RenderObject::CreateTriangle(Application* app, const String& name,
       *data++ = 1.0f;
     }
 
-    object->m_renderData->vertexBuffer()->unlock();
+    object->m_renderData->vertexBuffer()->unlock(data - 1);
   }
 
   return object;
@@ -286,7 +286,7 @@ RenderObject* RenderObject::CreateRectangle(Application* app, const String& name
       uvPos.y += uvPosIncrement.y;
     }
 
-    object->m_renderData->vertexBuffer()->unlock();
+    object->m_renderData->vertexBuffer()->unlock(data - 1);
   }
 
   return object;

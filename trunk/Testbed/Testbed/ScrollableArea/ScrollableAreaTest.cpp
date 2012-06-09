@@ -44,9 +44,6 @@ bool ScrollableAreaTest::initialize()
   camera->setFarPlaneDistance(1);
 #endif
 
-  camera->setLookAt(Vector3f(0, 0, 0));
-  camera->physics()->setPosition(Vector4f(0, 0, -50));
-
   // create new viewport for render window
   PViewport viewport = window->addViewport("mainview", camera);
   if (NULL == viewport)
@@ -107,14 +104,17 @@ void ScrollableAreaTest::groupLoadComplete(const String& name)
 {
   if ("scrollable-area-test" == name)
   {
+    Vector4f position(50, 50, 0);
+    Vector2f size(400, 500);
+
     // create scrollable area
     m_area = ege_new ScrollableArea(app(), "my-scrollable-area");
-    m_area->setDirection(ScrollableArea::DIRECTION_BOTH);
-    m_area->physics().setPosition(Vector4f(50, 50, 0));
-    m_area->physics().setScale(Vector4f(400, 500, 0));
+    m_area->setDirection(DIRECTION_BOTH);
+    m_area->setPosition(position);
+    m_area->setSize(size);
 
     // create scrollable area background object
-    m_areaBackground = RenderObjectFactory::CreateQuadXY(app(), "background", m_area->physics().position(), m_area->physics().scale().xy(), 
+    m_areaBackground = RenderObjectFactory::CreateQuadXY(app(), "background",position, size, 
                                                          ALIGN_TOP_LEFT, EGEVertexBuffer::ST_V2, 1, EGEGraphics::RPT_TRIANGLE_STRIPS, 
                                                          EGEVertexBuffer::UT_STATIC_WRITE);
 

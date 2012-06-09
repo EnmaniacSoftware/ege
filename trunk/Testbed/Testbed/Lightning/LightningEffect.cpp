@@ -82,7 +82,7 @@ void LightningEffect::update(const Time& time)
     *data++;
     *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
   }
-  m_renderData->vertexBuffer()->unlock();
+  m_renderData->vertexBuffer()->unlock(data - 1);
 
   data = (float32*) m_renderDataQuad->vertexBuffer()->lock(0, m_segments.size() * 8);
 
@@ -163,7 +163,7 @@ void LightningEffect::update(const Time& time)
     *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
   }
 
-  m_renderDataQuad->vertexBuffer()->unlock();
+  m_renderDataQuad->vertexBuffer()->unlock(data - 1);
 
   data = (float32*) m_renderDataQuad2->vertexBuffer()->lock(0, m_segments2.size() * 8);
 
@@ -244,7 +244,7 @@ void LightningEffect::update(const Time& time)
     *data++ = segment.intensity * (1.0f - m_fadeTime.seconds());
   }
 
-  m_renderDataQuad2->vertexBuffer()->unlock();
+  m_renderDataQuad2->vertexBuffer()->unlock(data - 1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pointer event receiver. */
@@ -277,7 +277,7 @@ void LightningEffect::pointerEvent(PPointerData data)
       *data++ = (*it).intensity;
     }
 
-    m_renderData->vertexBuffer()->unlock();
+    m_renderData->vertexBuffer()->unlock(data - 1);
 
     {
       float32* data = (float32*) m_renderDataQuad->vertexBuffer()->lock(0, m_segments.size() * 8);
@@ -392,8 +392,8 @@ void LightningEffect::pointerEvent(PPointerData data)
         *data++ = segment.intensity;
       }
 
-      m_renderDataQuad->vertexBuffer()->unlock();
-      m_renderDataQuad->indexBuffer()->unlock();
+      m_renderDataQuad->vertexBuffer()->unlock(data - 1);
+      m_renderDataQuad->indexBuffer()->unlock(index - 1);
     }
 
     {
@@ -530,8 +530,8 @@ void LightningEffect::pointerEvent(PPointerData data)
         *data++ = segment.intensity;
       }
 
-      m_renderDataQuad2->vertexBuffer()->unlock();
-      m_renderDataQuad2->indexBuffer()->unlock();
+      m_renderDataQuad2->vertexBuffer()->unlock(data - 1);
+      m_renderDataQuad2->indexBuffer()->unlock(index - 1);
     }
   }
 }

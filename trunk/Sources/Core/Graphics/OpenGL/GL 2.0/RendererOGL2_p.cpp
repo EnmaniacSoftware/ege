@@ -440,6 +440,16 @@ void RendererPrivate::applyPassParams(const PRenderComponent& component, const P
 
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
+
+        float32 degrees = texImg->rotationAngle().degrees();
+
+        if (0.0f != degrees)
+        {
+          glTranslatef(texImg->rect().x + texImg->rect().width * 0.5f, texImg->rect().y + texImg->rect().height * 0.5f, 0.0f);
+          glRotatef(degrees, 0.0f, 0.0f, 1.0f);
+          glTranslatef(-(texImg->rect().x + texImg->rect().width * 0.5f), -(texImg->rect().y + texImg->rect().height * 0.5f), 0.0f);
+        }
+
         glTranslatef(texImg->rect().x, texImg->rect().y, 0.0f);
         glScalef(texImg->rect().width, texImg->rect().height, 1.0f);
       }

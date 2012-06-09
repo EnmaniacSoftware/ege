@@ -140,6 +140,13 @@
 
   </group>
 
+  <!-- UI Scrollable Page View resources -->
+  <group name='ui-scrollable-page-view-test'>
+
+    <material name='background' diffuse-color='0.75 0.75 0.75 1' />
+
+  </group>
+
   <!-- Dialogs test resources -->
   <group name='dialogs-test'>
 

@@ -540,6 +540,18 @@ files
   PushButton.h
   ScrollableArea.cpp
   ScrollableArea.h
+  UIAbstractScrollbar.cpp
+  UIAbstractScrollbar.h
+  UIHorizontalScrollbar.cpp
+  UIHorizontalScrollbar.h
+  UIPageIndicator.cpp
+  UIPageIndicator.h
+  UIScrollablePageView.cpp
+  UIScrollablePageView.h
+  UIScrollView.cpp
+  UIScrollView.h
+  UIVerticalScrollbar.cpp
+  UIVerticalScrollbar.h
   Widget.cpp
   Widget.h
   WidgetFactory.cpp

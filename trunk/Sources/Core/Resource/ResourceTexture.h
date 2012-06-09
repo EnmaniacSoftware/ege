@@ -14,14 +14,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceTexture, PResourceTexture)
 EGE_DECLARE_SMART_CLASS(Object, PObject)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceTexture : public IResource
 {
   public:
@@ -90,8 +87,9 @@ class ResourceTexture : public IResource
     EGETexture::AddressingMode m_addressingModeT;
     /*! Texture object created from resource. NULL if not created yet. */
     PObject m_texture;
+    /*! Rotation angle. */
+    Angle m_rotation;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

@@ -19,6 +19,7 @@
 #include "Dialogs/DialogTest.h"
 #include "Threads/ThreadsTest.h"
 #include "ImagedAnimation/ImagedAnimationTest.h"
+#include "UIScrollablePageView/UIScrollablePageViewTest.h"
 
 //#include <gl/gl.h>
 //#include <gl/glu.h>
@@ -94,14 +95,15 @@ bool App::start()
   m_tests.push_back(new RipplesTest(this));
   m_tests.push_back(new ParticleTest(this));
   m_tests.push_back(new SoundTest(this));
-  m_tests.push_back(new CurvesTest(this));
   m_tests.push_back(new FontsTest(this));
-  m_tests.push_back(new ScrollableAreaTest(this));
-  m_tests.push_back(new LocalizationTest(this));
   m_tests.push_back(new DialogTest(this));
   m_tests.push_back(new LightningTest(this));
   m_tests.push_back(new ThreadsTest(this));
   m_tests.push_back(new ImagedAnimationTest(this));
+  m_tests.push_back(new LocalizationTest(this));
+  m_tests.push_back(new CurvesTest(this));
+  m_tests.push_back(new ScrollableAreaTest(this));
+  m_tests.push_back(new UIScrollablePageViewTest(this));
 
   // select test to run
   selectTest();

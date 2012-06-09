@@ -55,6 +55,9 @@
     <Filter Include="Tests\ImagedAnimation">
       <UniqueIdentifier>{d59ff2b7-0aec-4682-85bb-61416f27989c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\UIScrollablePageView">
+      <UniqueIdentifier>{7cc25639-18e0-4c1b-ba93-7caad99713ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -126,6 +129,9 @@
     <ClCompile Include="ImagedAnimation\ImagedAnimationTest.cpp">
       <Filter>Tests\ImagedAnimation</Filter>
     </ClCompile>
+    <ClCompile Include="UIScrollablePageView\UIScrollablePageViewTest.cpp">
+      <Filter>Tests\UIScrollablePageView</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -193,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="ImagedAnimation\ImagedAnimationTest.h">
       <Filter>Tests\ImagedAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="UIScrollablePageView\UIScrollablePageViewTest.h">
+      <Filter>Tests\UIScrollablePageView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

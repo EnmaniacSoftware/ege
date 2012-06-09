@@ -235,7 +235,7 @@ void Widget::generateRenderData()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Determines size of the widget (in pixels). */
-Vector2f Widget::size()
+Vector2f Widget::size() const
 {
   //static const float32 hugeSize = 10000.0f;
 
@@ -328,19 +328,31 @@ Vector2f Widget::contentSize()
 /*! Sets size. */
 void Widget::setSize(const Vector2f& size)
 {
-  m_size = size;
-
-  // pass to frame if present
-  if (m_widgetFrame)
+  if (m_size != size)
   {
-    m_widgetFrame->setSize(size);
+    m_size = size;
+
+    // pass to frame if present
+    if (m_widgetFrame)
+    {
+      m_widgetFrame->setSize(size);
+    }
+
+    // emit
+    emit sizeChanged(size);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets position. */
 void Widget::setPosition(const Vector4f& position)
 {
-  m_physics.setPosition(position);
+  if (m_physics.position() != position)
+  {
+    m_physics.setPosition(position);
+
+    // emit
+    emit positionChanged(position);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets transparency level. */
@@ -404,6 +416,12 @@ const Matrix4f& Widget::globalTransformationMatrix() const
   }
 
   return m_globalTransformation;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Constructs object. */
+EGEResult Widget::construct()
+{
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

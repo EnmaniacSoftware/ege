@@ -42,9 +42,6 @@ bool DialogTest::initialize()
   camera->setFarPlaneDistance(1);
 #endif
 
-  camera->setLookAt(Vector3f(0, 0, 0));
-  camera->physics()->setPosition(Vector4f(0, 0, -50));
-
   // create new viewport for render window
   PViewport viewport = window->addViewport("mainview", camera);
   if (NULL == viewport)

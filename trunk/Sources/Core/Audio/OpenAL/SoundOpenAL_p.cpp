@@ -184,9 +184,6 @@ void SoundPrivate::updateBuffers()
     s32 samplesDecoded = 0;
     bool endOfData = codec->decode(data, codec->frequency() >> 2, samplesDecoded);
 
-    if (d_func()->name().startsWith("icon"))
-     EGE_PRINT("Processing %d %d", index, samplesDecoded);
-
     if (0 < samplesDecoded)
     {
       // copy data into buffer
@@ -236,8 +233,6 @@ EGEResult SoundPrivate::play(ALuint channel)
   // store channel
   m_channel = channel;
 
-  EGE_PRINT("Playing %s at channel %d", d_func()->name().toAscii(), channel);
-
   // initially update all buffers
   updateBuffers();
 
@@ -263,7 +258,6 @@ EGEResult SoundPrivate::play(ALuint channel)
     // error!
     EGE_PRINT("ERROR (%d): Could not retrieve channel state.", l_result);
   }
-    EGE_PRINT("STATE : %d %d", state, m_channel);
 
   // connect for sound volume changes and set initial volume
   ege_connect(d_func(), volumeChanged, this, SoundPrivate::onSoundVolumeChanged);
@@ -272,7 +266,7 @@ EGEResult SoundPrivate::play(ALuint channel)
   // reset flag
   m_stopped = false;
 
-  EGE_PRINT("%s", d_func()->name().toAscii());
+ // EGE_PRINT("%s", d_func()->name().toAscii());
 
   return EGE_SUCCESS;
 }
