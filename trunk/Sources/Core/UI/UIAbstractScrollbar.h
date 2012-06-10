@@ -39,6 +39,9 @@ class UIAbstractScrollbar : public Widget
 
     /* Widget override. Updates object. */
     void update(const Time& time) override;
+    /* Widget override. Renders object. */
+    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
+
     /* Sets range. */
     void setRange(s32 from, s32 to);
     /* Sets page size. */
@@ -58,8 +61,6 @@ class UIAbstractScrollbar : public Widget
     bool isFrameless() const override;
     /* Widget override. Initializes widget from dictionary. */
     bool initialize(const Dictionary& params) override;
-    /* Widget override. Renders object. */
-    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
     /*! Updates render data. */
     virtual void updateRenderData() = 0;
 

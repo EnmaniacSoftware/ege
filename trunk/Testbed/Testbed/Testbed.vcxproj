@@ -95,13 +95,13 @@
     <ClCompile Include="RenderToTexture\RenderToTextureTest.cpp" />
     <ClCompile Include="Ripples\RippleEffect.cpp" />
     <ClCompile Include="Ripples\RipplesTest.cpp" />
-    <ClCompile Include="ScrollableArea\ScrollableAreaTest.cpp" />
     <ClCompile Include="Sound\SoundTest.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="Threads\TestThread.cpp" />
     <ClCompile Include="Threads\ThreadsTest.cpp" />
     <ClCompile Include="Timeline\TimeLineTest.cpp" />
     <ClCompile Include="UIScrollablePageView\UIScrollablePageViewTest.cpp" />
+    <ClCompile Include="UIScrollableView\UIScrollableViewTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -120,13 +120,13 @@
     <ClInclude Include="RenderToTexture\RenderToTextureTest.h" />
     <ClInclude Include="Ripples\RippleEffect.h" />
     <ClInclude Include="Ripples\RipplesTest.h" />
-    <ClInclude Include="ScrollableArea\ScrollableAreaTest.h" />
     <ClInclude Include="Sound\SoundTest.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="Threads\TestThread.h" />
     <ClInclude Include="Threads\ThreadsTest.h" />
     <ClInclude Include="Timeline\TimeLineTest.h" />
     <ClInclude Include="UIScrollablePageView\UIScrollablePageViewTest.h" />
+    <ClInclude Include="UIScrollableView\UIScrollableViewTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Projects\Windows\EGE.vcxproj">

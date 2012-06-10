@@ -1,5 +1,4 @@
 #include "Core/UI/Label.h"
-#include "Core/UI/ScrollableArea.h"
 #include <EGEApplication.h>
 #include <EGEResources.h>
 

@@ -3,7 +3,7 @@
 
 #include "Core/UI/WidgetFrame.h"
 #include "Core/UI/Widget.h"
-#include "Core/UI/ScrollableArea.h"
+#include "Core/UI/UIScrollableView.h"
 #include "Core/UI/UIScrollablePageView.h"
 #include "Core/UI/Dialog.h"
 #include "Core/UI/PushButton.h"

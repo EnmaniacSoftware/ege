@@ -43,9 +43,6 @@
     <Filter Include="Tests\Fonts">
       <UniqueIdentifier>{cf4dc2be-a6ed-4d98-a87c-44a21081d18b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tests\ScrollableArea">
-      <UniqueIdentifier>{d7432585-7289-4b60-bc9f-f8815fbd3c15}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tests\Dialogs">
       <UniqueIdentifier>{ecadea8f-aaa0-463f-a632-1bc4fe6a4aea}</UniqueIdentifier>
     </Filter>
@@ -57,6 +54,9 @@
     </Filter>
     <Filter Include="Tests\UIScrollablePageView">
       <UniqueIdentifier>{7cc25639-18e0-4c1b-ba93-7caad99713ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\UIScrollableView">
+      <UniqueIdentifier>{27202e9b-41f3-4ed1-b7b2-a0741aa2818c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -105,9 +105,6 @@
     <ClCompile Include="Test.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="ScrollableArea\ScrollableAreaTest.cpp">
-      <Filter>Tests\ScrollableArea</Filter>
-    </ClCompile>
     <ClCompile Include="Lightning\LightningEffectLines.cpp">
       <Filter>Tests\Lightning</Filter>
     </ClCompile>
@@ -131,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="UIScrollablePageView\UIScrollablePageViewTest.cpp">
       <Filter>Tests\UIScrollablePageView</Filter>
+    </ClCompile>
+    <ClCompile Include="UIScrollableView\UIScrollableViewTest.cpp">
+      <Filter>Tests\UIScrollableView</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -176,9 +176,6 @@
     <ClInclude Include="Fonts\FontsTest.h">
       <Filter>Tests\Fonts</Filter>
     </ClInclude>
-    <ClInclude Include="ScrollableArea\ScrollableAreaTest.h">
-      <Filter>Tests\ScrollableArea</Filter>
-    </ClInclude>
     <ClInclude Include="Lightning\LightningEffectLines.h">
       <Filter>Tests\Lightning</Filter>
     </ClInclude>
@@ -202,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="UIScrollablePageView\UIScrollablePageViewTest.h">
       <Filter>Tests\UIScrollablePageView</Filter>
+    </ClInclude>
+    <ClInclude Include="UIScrollableView\UIScrollableViewTest.h">
+      <Filter>Tests\UIScrollableView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

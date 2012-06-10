@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_SCROLLVIEW_H
 #define EGE_CORE_SCROLLVIEW_H
 
-/** Class supporting displaying of the content larger than size of a window.
+/** Base class supporting displaying of the content larger than size of a window. It is intended to be subclassed.
  */
 
 #include <EGETime.h>
@@ -31,16 +31,17 @@ class UIScrollView : public Widget
   public:
     
     /* Sets content size. */
-    void setContentSize(const Vector2f& size);
+    virtual void setContentSize(const Vector2f& size);
     /* Returns current offset vector. */
     const Vector2f& offset() const;
     /* Sets current offset vector. */
     void setOffset(const Vector2f& offset, bool animate);
     /* Sets scroll direction. */
     void setDirection(Direction direction);
-
     /* Sets deceleration rate. */
     void setDecelerationRate(float32 rate);
+    /* Enables/disables scroll bars. */
+    void setScrollbarsEnabled(bool set);
 
   protected:
 
@@ -56,6 +57,8 @@ class UIScrollView : public Widget
     EGEResult construct() override;
     /* Widget override. Returns TRUE if widget is frameless. */
     bool isFrameless() const override;
+    /* Widget override. Renders object. */
+    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
 
     /* Begins move. */
     virtual void beginMove(s32 x, s32 y);
@@ -66,6 +69,18 @@ class UIScrollView : public Widget
     const Vector2f& scrollVelocity() const;
     /* Returns throw coefficient. */
     float32 throwCoefficient() const;
+
+  protected slots:
+
+    /* Slot called when size of widget changes. */
+    virtual void onSizeChanged(const Vector2f& size);
+    /* Slot called when position of widget changes. */
+    virtual void onPositionChanged(const Vector4f& position);
+
+  private:
+
+    /* Updates scrollbars. */
+    void updateScrollbars();
 
   protected:
 
@@ -81,12 +96,12 @@ class UIScrollView : public Widget
 
     /*! Current state. */
     State m_state;
+    /*! Content size (in pixels). */
+    Vector2f m_contentSize;
 
   private:
 
-    /*! Content size (in pixels). */
-    Vector2f m_contentSize;
-    /*! Max offset range. */
+    /*! Max offset range (in pixels). */
     Vector2f m_maxOffset;
     /*! Allowed scroll directions. */
     Direction m_scrollDirections;
@@ -114,6 +129,8 @@ class UIScrollView : public Widget
     Time m_animationTime;
     /*! Throw coefficient. This is how fast the scrolling initially is when pointer is released. */
     float32 m_throwCoefficient;
+    /*! Scrollbars need update flag. */
+    bool m_scrollbarsNeedUpdate;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

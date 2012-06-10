@@ -573,9 +573,6 @@
     <ClCompile Include="..\..\Sources\Core\UI\Dialog.cpp">
       <Filter>Core\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\UI\ScrollableArea.cpp">
-      <Filter>Core\UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\UI\WidgetFrame.cpp">
       <Filter>Core\UI</Filter>
     </ClCompile>
@@ -694,6 +691,9 @@
       <Filter>Core\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\UI\UIPageIndicator.cpp">
+      <Filter>Core\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\UI\UIScrollableView.cpp">
       <Filter>Core\UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1215,9 +1215,6 @@
       <Filter>Core\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEUI.h" />
-    <ClInclude Include="..\..\Sources\Core\UI\ScrollableArea.h">
-      <Filter>Core\UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\UI\WidgetFrame.h">
       <Filter>Core\UI</Filter>
     </ClInclude>
@@ -1357,6 +1354,9 @@
       <Filter>Core\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\UI\UIPageIndicator.h">
+      <Filter>Core\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\UI\UIScrollableView.h">
       <Filter>Core\UI</Filter>
     </ClInclude>
   </ItemGroup>

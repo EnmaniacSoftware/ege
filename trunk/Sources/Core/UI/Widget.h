@@ -19,7 +19,6 @@ EGE_NAMESPACE_BEGIN
 class Renderer;
 class Viewport;
 EGE_DECLARE_SMART_CLASS(Widget, PWidget)
-EGE_DECLARE_SMART_CLASS(ScrollableArea, PScrollableArea)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Widget : public Object
 {

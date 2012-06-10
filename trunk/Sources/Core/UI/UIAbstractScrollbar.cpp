@@ -9,15 +9,14 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(UIAbstractScrollbar)
 EGE_DEFINE_DELETE_OPERATORS(UIAbstractScrollbar)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-UIAbstractScrollbar::UIAbstractScrollbar(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) 
-: Widget(app, name, uid, deleteFunc),
-  m_rangeStart(0),
-  m_rangeEnd(100),
-  m_pageSize(10),
-  m_offset(0),
-  m_state(STATE_HIDDEN),
-  m_fadeDuration(1.0f),
-  m_renderDataInvalid(true)
+UIAbstractScrollbar::UIAbstractScrollbar(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) : Widget(app, name, uid, deleteFunc),
+                                                                                                                          m_rangeStart(0),
+                                                                                                                          m_rangeEnd(100),
+                                                                                                                          m_pageSize(10),
+                                                                                                                          m_offset(0),
+                                                                                                                          m_state(STATE_HIDDEN),
+                                                                                                                          m_fadeDuration(1.0f),
+                                                                                                                          m_renderDataInvalid(true)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -149,6 +148,8 @@ EGEResult UIAbstractScrollbar::construct()
 /*! Sets range. */
 void UIAbstractScrollbar::setRange(s32 from, s32 to)
 {
+  EGE_ASSERT(from < to);
+
   if ((m_rangeStart != from) || (m_rangeEnd != to))
   {
     m_rangeStart = from;
@@ -174,7 +175,10 @@ void UIAbstractScrollbar::setOffset(s32 offset)
   if (m_offset != offset)
   {
     // make sure offset is in range
-    m_offset = Math::Bound(offset, m_rangeStart, m_rangeEnd - m_pageSize + 1);
+    m_offset = Math::Bound(offset, m_rangeStart, m_rangeEnd - m_pageSize);
+
+    // invalidate render data
+    m_renderDataInvalid = true;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

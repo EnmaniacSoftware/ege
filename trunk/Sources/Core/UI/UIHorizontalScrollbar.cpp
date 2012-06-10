@@ -39,35 +39,38 @@ PWidget UIHorizontalScrollbar::Create(Application* app, const String& name)
 /*! UIAbstractScrollbar override. Updates render data. */
 void UIHorizontalScrollbar::updateRenderData()
 {
+  const float32 rangeRep = (m_rangeEnd == m_rangeStart) ? 0.0f : (1.0f / (m_rangeEnd - m_rangeStart));
+
   // update render data
   float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, 6));
   if (data)
   {
-    Vector2f thumbSize(static_cast<float32>(Math::Floor((static_cast<float32>(m_pageSize) / (m_rangeEnd - m_rangeStart + 1)) * size().x)), size().y);
+    Vector2f thumbSize(static_cast<float32>(Math::Floor(m_pageSize * rangeRep * size().x)), size().y);
+    Vector2f startPos((m_offset - m_rangeStart) * rangeRep * size().x, 0);
 
     // top left
-    *data++ = static_cast<float32>(m_offset);
-    *data++ = 0;
+    *data++ = startPos.x;
+    *data++ = startPos.y;
 
     // bottom left
-    *data++ = static_cast<float32>(m_offset);
-    *data++ = thumbSize.y;
+    *data++ = startPos.x;
+    *data++ = startPos.y + thumbSize.y;
 
     // bottom right
-    *data++ = m_offset + thumbSize.x;
-    *data++ = thumbSize.y;
+    *data++ = startPos.x + thumbSize.x;
+    *data++ = startPos.y + thumbSize.y;
 
     // top left
-    *data++ = static_cast<float32>(m_offset);
-    *data++ = 0;
+    *data++ = startPos.x;
+    *data++ = startPos.y;
 
     // bottom right
-    *data++ = m_offset + thumbSize.x;
-    *data++ = thumbSize.y;
+    *data++ = startPos.x + thumbSize.x;
+    *data++ = startPos.y + thumbSize.y;
 
     // top right
-    *data++ = m_offset + thumbSize.x;
-    *data++ = 0;
+    *data++ = startPos.x + thumbSize.x;
+    *data++ = startPos.y;
   }
 
   m_renderData->vertexBuffer()->unlock(data - 1);

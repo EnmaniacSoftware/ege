@@ -15,8 +15,6 @@ EGE_DEFINE_DELETE_OPERATORS(UIScrollablePageView)
 UIScrollablePageView::UIScrollablePageView(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) 
 : UIScrollView(app, name, EGE_OBJECT_UID_UI_SCROLLABLE_PAGE_VIEW, deleteFunc)
 {
-  ege_connect(this, sizeChanged, this, UIScrollablePageView::onSizeChanged);
-  ege_connect(this, positionChanged, this, UIScrollablePageView::onPositionChanged);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 UIScrollablePageView::~UIScrollablePageView()
@@ -41,7 +39,7 @@ PWidget UIScrollablePageView::Create(Application* app, const String& name)
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Constructs object. */
+/*! UIScrollView override. Constructs object. */
 EGEResult UIScrollablePageView::construct()
 {
   EGEResult result;
@@ -64,6 +62,9 @@ EGEResult UIScrollablePageView::construct()
   // setup view
   setDirection(DIRECTION_HORIZONTAL);
 
+  // hide scrollbars
+  setScrollbarsEnabled(false);
+
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -76,7 +77,7 @@ bool UIScrollablePageView::initialize(const Dictionary& params)
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Renders object. */
+/*! UIScrollView override. Renders object. */
 void UIScrollablePageView::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (!isVisible())
@@ -137,10 +138,10 @@ void UIScrollablePageView::addForRendering(Renderer* renderer, const Matrix4f& t
   m_pageIndicator->addForRendering(renderer, transform);
 
   // call base class
-  Widget::addForRendering(renderer, transform);
+  UIScrollView::addForRendering(renderer, transform);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Updates object. */
+/*! UIScrollView override. Updates object. */
 void UIScrollablePageView::update(const Time& time)
 {
   // update objects
@@ -176,7 +177,7 @@ void UIScrollablePageView::update(const Time& time)
   UIScrollView::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Pointer event processor. */
+/*! UIScrollView override. Pointer event processor. */
 void UIScrollablePageView::pointerEvent(PPointerData data)
 {
   if (!isVisible())
@@ -369,7 +370,7 @@ void UIScrollablePageView::recalculateContentArea()
   setContentSize(contentSize);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when size of widget changes. */
+/*! UIScrollView override. Slot called when size of widget changes. */
 void UIScrollablePageView::onSizeChanged(const Vector2f& size)
 {
   // set page indicator size
@@ -380,13 +381,19 @@ void UIScrollablePageView::onSizeChanged(const Vector2f& size)
 
   // recalculate content area
   recalculateContentArea();
+
+  // call base class
+  UIScrollView::onSizeChanged(size);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when position of widget changes. */
+/*! UIScrollView override. Slot called when position of widget changes. */
 void UIScrollablePageView::onPositionChanged(const Vector4f& position)
 {
   // position page indicator
   m_pageIndicator->setPosition(Vector4f(position.x, position.y + size().y, 0));
+
+  // call base class
+  UIScrollView::onPositionChanged(position);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns page size. */

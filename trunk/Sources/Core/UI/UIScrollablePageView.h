@@ -1,5 +1,8 @@
-#ifndef EGE_CORE_PAGEDSCROLLABLEAREA_H
-#define EGE_CORE_PAGEDSCROLLABLEAREA_H
+#ifndef EGE_CORE_UI_SCROLLABLEPAGEVIEW_H
+#define EGE_CORE_UI_SCROLLABLEPAGEVIEW_H
+
+/** Specialization of UIScrollView. Allows adding content to a set of pages and controls the scrolling between pages.
+ */
 
 #include <EGETime.h>
 #include <EGEGraphics.h>
@@ -37,13 +40,13 @@ class UIScrollablePageView : public UIScrollView
 
   public:
 
-    /* Widget override. Updates object. */
+    /* UIScrollView override. Updates object. */
     void update(const Time& time) override;
-    /* Widget override. Pointer event processor. */
+    /* UIScrollView override. Pointer event processor. */
     void pointerEvent(PPointerData data) override;
-    /* Widget override. Renders object. */
+    /* UIScrollView override. Renders object. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
-    /* Widget override. Constructs object. */
+    /* UIScrollView override. Constructs object. */
     EGEResult construct() override;
 
     /* Enables/disables page indicator. */
@@ -73,10 +76,10 @@ class UIScrollablePageView : public UIScrollView
 
   private slots:
 
-    /* Slot called when size of widget changes. */
-    void onSizeChanged(const Vector2f& size);
-    /* Slot called when position of widget changes. */
-    void onPositionChanged(const Vector4f& position);
+    /* UIScrollView override. Slot called when size of widget changes. */
+    void onSizeChanged(const Vector2f& size) override;
+    /* UIScrollView override. Slot called when position of widget changes. */
+    void onPositionChanged(const Vector4f& position) override;
 
   private:
 
@@ -106,4 +109,4 @@ class UIScrollablePageView : public UIScrollView
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_PAGEDSCROLLABLEAREA_H
+#endif // EGE_CORE_UI_SCROLLABLEPAGEVIEW_H

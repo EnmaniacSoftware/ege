@@ -15,7 +15,7 @@
 #include "Localization/LocalizationTest.h"
 #include "Sound/SoundTest.h"
 #include "Fonts/FontsTest.h"
-#include "ScrollableArea/ScrollableAreaTest.h"
+#include "UIScrollableView/UIScrollableViewTest.h"
 #include "Dialogs/DialogTest.h"
 #include "Threads/ThreadsTest.h"
 #include "ImagedAnimation/ImagedAnimationTest.h"
@@ -102,8 +102,8 @@ bool App::start()
   m_tests.push_back(new ImagedAnimationTest(this));
   m_tests.push_back(new LocalizationTest(this));
   m_tests.push_back(new CurvesTest(this));
-  m_tests.push_back(new ScrollableAreaTest(this));
   m_tests.push_back(new UIScrollablePageViewTest(this));
+  m_tests.push_back(new UIScrollableViewTest(this));
 
   // select test to run
   selectTest();

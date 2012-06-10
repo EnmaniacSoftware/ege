@@ -11,12 +11,12 @@ class RenderObject;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class ScrollableAreaTest : public Test
+class UIScrollableViewTest : public Test
 {
   public:
 
-    ScrollableAreaTest(App* app);
-    virtual ~ScrollableAreaTest();
+    UIScrollableViewTest(App* app);
+    virtual ~UIScrollableViewTest();
 
     /* Test override. Returns test name. */
     EGE::String name() const override;
@@ -40,7 +40,7 @@ class ScrollableAreaTest : public Test
   private:
 
     /*! Scrollable area object. */
-    EGE::ScrollableArea* m_area;
+    EGE::PUIScrollableView m_area;
     /*! Scrollable area background object. */
     EGE::PRenderComponent m_areaBackground;
 };

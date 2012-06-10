@@ -153,12 +153,12 @@
     <ClCompile Include="..\..\Sources\Core\UI\Dialog.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\Label.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\UIPageIndicator.cpp" />
+    <ClCompile Include="..\..\Sources\Core\UI\UIScrollableView.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\UIScrollView.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\UIAbstractScrollbar.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\UIHorizontalScrollbar.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\UIScrollablePageView.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\PushButton.cpp" />
-    <ClCompile Include="..\..\Sources\Core\UI\ScrollableArea.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\UIVerticalScrollbar.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\Widget.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\WidgetFactory.cpp" />
@@ -262,7 +262,7 @@
     <ClInclude Include="..\..\Sources\Core\UI\UIPageIndicator.h" />
     <ClInclude Include="..\..\Sources\Core\UI\UIScrollablePageView.h" />
     <ClInclude Include="..\..\Sources\Core\UI\PushButton.h" />
-    <ClInclude Include="..\..\Sources\Core\UI\ScrollableArea.h" />
+    <ClInclude Include="..\..\Sources\Core\UI\UIScrollableView.h" />
     <ClInclude Include="..\..\Sources\Core\UI\UIScrollView.h" />
     <ClInclude Include="..\..\Sources\Core\UI\UIVerticalScrollbar.h" />
     <ClInclude Include="..\..\Sources\Core\UI\Widget.h" />

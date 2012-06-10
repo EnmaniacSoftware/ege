@@ -538,8 +538,6 @@ files
   Label.h
   PushButton.cpp
   PushButton.h
-  ScrollableArea.cpp
-  ScrollableArea.h
   UIAbstractScrollbar.cpp
   UIAbstractScrollbar.h
   UIHorizontalScrollbar.cpp
@@ -548,6 +546,8 @@ files
   UIPageIndicator.h
   UIScrollablePageView.cpp
   UIScrollablePageView.h
+  UIScrollableView.cpp
+  UIScrollableView.h
   UIScrollView.cpp
   UIScrollView.h
   UIVerticalScrollbar.cpp

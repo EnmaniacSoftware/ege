@@ -9,6 +9,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define DEFAULT_SCROLLBAR_SIZE 5
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(UIScrollView)
 EGE_DEFINE_DELETE_OPERATORS(UIScrollView)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -20,8 +22,11 @@ UIScrollView::UIScrollView(Application* app, const String& name, u32 uid, egeObj
                                                                                                             m_offset(Vector2f::ZERO),
                                                                                                             m_decelerationRate(0.95f),
                                                                                                             m_animationDuration(0.75f),
-                                                                                                            m_throwCoefficient(10.0f)
+                                                                                                            m_throwCoefficient(10.0f),
+                                                                                                            m_scrollbarsNeedUpdate(true)
 {
+  ege_connect(this, sizeChanged, this, UIScrollView::onSizeChanged);
+  ege_connect(this, positionChanged, this, UIScrollView::onPositionChanged);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 UIScrollView::~UIScrollView()
@@ -88,6 +93,9 @@ void UIScrollView::setContentSize(const Vector2f& size)
     // make sure current offset is in range
     m_offset.x = Math::Min(m_offset.x, m_maxOffset.x);
     m_offset.y = Math::Min(m_offset.y, m_maxOffset.y);
+
+    // invalidate scrollbars
+    m_scrollbarsNeedUpdate = true;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -178,6 +186,14 @@ void UIScrollView::update(const Time& time)
       {
         m_scrollVelocity.y = 0.0f;
       }
+
+      // check if scrollbars should be hidden
+      if (Vector2f::ZERO == m_scrollVelocity)
+      {
+        // hide scrollbars
+        m_verticalScroll->startHiding();
+        m_horizontalScroll->startHiding();
+      }
     }
   
     //EGE_PRINT("Off: %.2f %.2f %d", m_offset.x, m_offset.y, m_state);
@@ -203,6 +219,15 @@ void UIScrollView::update(const Time& time)
     //  }
     //}
   }
+
+  // update scrollbars
+  m_verticalScroll->setOffset(m_offset.y);
+
+  EGE_PRINT("%.2f", m_offset.x);
+  m_horizontalScroll->setOffset(static_cast<s32>(m_offset.x));
+
+  m_verticalScroll->update(time);
+  m_horizontalScroll->update(time);
 
   // call base class
   Widget::update(time);
@@ -342,6 +367,69 @@ const Vector2f& UIScrollView::scrollVelocity() const
 float32 UIScrollView::throwCoefficient() const
 {
   return m_throwCoefficient;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Widget override. Renders object. */
+void UIScrollView::addForRendering(Renderer* renderer, const Matrix4f& transform)
+{
+  if (!isVisible())
+  {
+    // do nothing
+    return;
+  }
+
+  // check if scrollbars needs update
+  if (m_scrollbarsNeedUpdate)
+  {
+    updateScrollbars();
+    m_scrollbarsNeedUpdate = false;
+  }
+
+  // render scrollbars
+  m_verticalScroll->addForRendering(renderer, transform);
+  m_horizontalScroll->addForRendering(renderer, transform);
+
+  // call base class
+  Widget::addForRendering(renderer, transform);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when size of widget changes. */
+void UIScrollView::onSizeChanged(const Vector2f& size)
+{
+  EGE_UNUSED(size);
+
+  // invalidate scrollbars
+  m_scrollbarsNeedUpdate = true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when position of widget changes. */
+void UIScrollView::onPositionChanged(const Vector4f& position)
+{
+  EGE_UNUSED(position);
+
+  // invalidate scrollbars
+  m_scrollbarsNeedUpdate = true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Updates scrollbars. */
+void UIScrollView::updateScrollbars()
+{
+  m_verticalScroll->setPosition(Vector4f(m_physics.position().x + size().x - DEFAULT_SCROLLBAR_SIZE, m_physics.position().y, 0));
+  m_verticalScroll->setSize(Vector2f(DEFAULT_SCROLLBAR_SIZE, size().y));
+  m_verticalScroll->setRange(0, static_cast<s32>(m_contentSize.y));
+  m_verticalScroll->setPageSize(static_cast<s32>(size().y));
+  
+  m_horizontalScroll->setPosition(Vector4f(m_physics.position().x, m_physics.position().y + size().y - DEFAULT_SCROLLBAR_SIZE, 0));
+  m_horizontalScroll->setSize(Vector2f(size().x, DEFAULT_SCROLLBAR_SIZE));
+  m_horizontalScroll->setRange(0, static_cast<s32>(m_contentSize.x));
+  m_horizontalScroll->setPageSize(static_cast<s32>(size().x));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Enables/disables scroll bars. */
+void UIScrollView::setScrollbarsEnabled(bool set)
+{
+  m_verticalScroll->setVisible(set);
+  m_horizontalScroll->setVisible(set);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

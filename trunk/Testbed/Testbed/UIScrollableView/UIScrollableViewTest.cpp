@@ -1,5 +1,5 @@
 #include "App.h"
-#include "ScrollableAreaTest.h"
+#include "UIScrollableViewTest.h"
 #include <EGESignal.h>
 #include <EGEResources.h>
 #include <EGEOverlay.h>
@@ -11,24 +11,23 @@ EGE_NAMESPACE
 #define ORTHO
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ScrollableAreaTest::ScrollableAreaTest(App* app) : Test(app), 
-                                                   m_area(NULL)
+UIScrollableViewTest::UIScrollableViewTest(App* app) : Test(app)
 {
-  ege_connect(app->graphics(), preRender, this, ScrollableAreaTest::preRender);
+  ege_connect(app->graphics(), preRender, this, UIScrollableViewTest::preRender);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ScrollableAreaTest::~ScrollableAreaTest()
+UIScrollableViewTest::~UIScrollableViewTest()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Returns test name. */
-String ScrollableAreaTest::name() const
+String UIScrollableViewTest::name() const
 {
-  return "ScrollableArea";
+  return "UIScrollableView";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Initializes test. */
-bool ScrollableAreaTest::initialize()
+bool UIScrollableViewTest::initialize()
 {
   // get window render target (created thru config options)
   PRenderWindow window = app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
@@ -66,7 +65,7 @@ bool ScrollableAreaTest::initialize()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Updates test. */
-void ScrollableAreaTest::update(const Time& time)
+void UIScrollableViewTest::update(const Time& time)
 {
   if (m_area)
   {
@@ -75,7 +74,7 @@ void ScrollableAreaTest::update(const Time& time)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Pointer event receiver. */
-void ScrollableAreaTest::pointerEvent(PPointerData data)
+void UIScrollableViewTest::pointerEvent(PPointerData data)
 {
   if (m_area)
   {
@@ -84,7 +83,7 @@ void ScrollableAreaTest::pointerEvent(PPointerData data)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called before target is rendered. */
-void ScrollableAreaTest::preRender(PRenderTarget target)
+void UIScrollableViewTest::preRender(PRenderTarget target)
 {
   EGE_UNUSED(target);
 
@@ -100,7 +99,7 @@ void ScrollableAreaTest::preRender(PRenderTarget target)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Slot called when resource group has been loaded. */
-void ScrollableAreaTest::groupLoadComplete(const String& name)
+void UIScrollableViewTest::groupLoadComplete(const String& name)
 {
   if ("scrollable-area-test" == name)
   {
@@ -108,7 +107,7 @@ void ScrollableAreaTest::groupLoadComplete(const String& name)
     Vector2f size(400, 500);
 
     // create scrollable area
-    m_area = ege_new ScrollableArea(app(), "my-scrollable-area");
+    m_area = UIScrollableView::Create(app(), "my-scrollable-area");
     m_area->setDirection(DIRECTION_BOTH);
     m_area->setPosition(position);
     m_area->setSize(size);
