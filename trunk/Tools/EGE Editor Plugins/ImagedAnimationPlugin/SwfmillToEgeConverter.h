@@ -8,6 +8,7 @@
 #include <QMap>
 #include <QRectF>
 #include <QImage>
+#include <QColor>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class SwfMillToEgeConverter
@@ -43,6 +44,7 @@ class SwfMillToEgeConverter
       QVector2D translate;
       QVector2D scale;
       QVector2D skew;
+      QColor color;
     };
 
     /*! Object data structure. */
@@ -94,6 +96,8 @@ class SwfMillToEgeConverter
     bool processShowFrameTag(QXmlStreamReader& input);
     /* Processes SWFMILL Transform tag. */
     bool processTransformTag(QXmlStreamReader& input, QVector2D& translate, QVector2D& scale, QVector2D& skew) const;
+    /* Processes SWFMILL ColorTransform2 tag. */
+    bool processColorTransform2Tag(QXmlStreamReader& input, QColor& color) const;
     /* Processes SWFMILL Rectangle tag. */
     bool processRectangleTag(QXmlStreamReader& input, QRectF& rect) const;
     /* Generates EGE compilant XML. */

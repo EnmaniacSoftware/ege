@@ -33,7 +33,7 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
   //list << "plum_lvl1_blink";
   //list << "plum_lvl1_idle";
   //list << "plum_lvl1_dance";
-  list << "plum_lvl1_chomp";
+  //list << "plum_lvl1_chomp";
   //list << "plum_lvl2_blink";
   //list << "plum_lvl2_idle";
   //list << "plum_lvl2_dance";
@@ -112,6 +112,9 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
   //list << "Neutral_body_test_TWEENED";
 
   //list << "lvl1_idle";
+
+  list << "dancing_notes1";
+  list << "dancing_notes2";
 
 //  float scales[] = { 1.0f };//, 0.5f, 0.25f };
   float scales[] = { 0.25f, 0.5f };

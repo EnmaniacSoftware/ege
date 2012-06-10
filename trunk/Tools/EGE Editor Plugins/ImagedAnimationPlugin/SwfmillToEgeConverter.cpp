@@ -492,6 +492,7 @@ bool SwfMillToEgeConverter::processPlaceObject2Tag(QXmlStreamReader& input)
   frameData.translate = QVector2D(0, 0);
   frameData.scale     = QVector2D(1, 1);
   frameData.skew      = QVector2D(0, 0);
+  frameData.color     = Qt::white;
 
   // process children
   bool done = false;
@@ -505,6 +506,11 @@ bool SwfMillToEgeConverter::processPlaceObject2Tag(QXmlStreamReader& input)
         if ("Transform" == input.name())
         {
           ok = processTransformTag(input, frameData.translate, frameData.scale, frameData.skew);
+          RETURN_FALSE_IF_ERROR(ok);
+        }
+        else if ("ColorTransform2" == input.name())
+        {
+          ok = processColorTransform2Tag(input, frameData.color);
           RETURN_FALSE_IF_ERROR(ok);
         }
         break;
@@ -610,6 +616,41 @@ bool SwfMillToEgeConverter::processTransformTag(QXmlStreamReader& input, QVector
   if (input.attributes().hasAttribute("skewY") && ok)
   {
     skew.setY(input.attributes().value("skewY").toString().toFloat(&ok));
+    RETURN_FALSE_IF_ERROR(ok);
+  }
+
+  return !input.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Processes SWFMILL ColorTransform tag. */
+bool SwfMillToEgeConverter::processColorTransform2Tag(QXmlStreamReader& input, QColor& color) const
+{
+  bool ok = true;
+
+  // reset color
+  color = Qt::white;
+
+  if (input.attributes().hasAttribute("factorRed"))
+  {
+    color.setRedF(input.attributes().value("factorRed").toString().toInt(&ok) / 256.0);
+    RETURN_FALSE_IF_ERROR(ok);
+  }
+
+  if (input.attributes().hasAttribute("factorGreen"))
+  {
+    color.setGreenF(input.attributes().value("factorGreen").toString().toInt(&ok) / 256.0);
+    RETURN_FALSE_IF_ERROR(ok);
+  }
+
+  if (input.attributes().hasAttribute("factorBlue"))
+  {
+    color.setBlueF(input.attributes().value("factorBlue").toString().toInt(&ok) / 256.0);
+    RETURN_FALSE_IF_ERROR(ok);
+  }
+
+  if (input.attributes().hasAttribute("factorAlpha"))
+  {
+    color.setAlphaF(input.attributes().value("factorAlpha").toString().toInt(&ok) / 256.0);
     RETURN_FALSE_IF_ERROR(ok);
   }
 
@@ -808,11 +849,12 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
 
             QVector2D translation = shapeObject.translate + actionDef.actionData.translate;
             QVector2D scale       = shapeObject.scale ;
-            QVector2D skew        = shapeObject.skew / 10.0f;
+            QVector2D skew        = shapeObject.skew / 10.0f; // / 10 ????
 
             output.writeAttribute("translate", QString("%1 %2").arg(translation.x()).arg(translation.y()));
             output.writeAttribute("scale", QString("%1 %2").arg(scale.x()).arg(scale.y()));
             output.writeAttribute("skew", QString("%1 %2").arg(skew.x()).arg(skew.y()));
+            output.writeAttribute("color", QString("%1 %2 %3 %4").arg(actionDef.actionData.color.redF()).arg(actionDef.actionData.color.greenF()).arg(actionDef.actionData.color.blueF()).arg(actionDef.actionData.color.alphaF()));
 
             //output.writeAttribute("translate", QString("%1 %2").arg(actionDef.actionData.translate.x()).arg(actionDef.actionData.translate.y()));
             //output.writeAttribute("scale", QString("%1 %2").arg(actionDef.actionData.scale.x()).arg(actionDef.actionData.scale.y()));
