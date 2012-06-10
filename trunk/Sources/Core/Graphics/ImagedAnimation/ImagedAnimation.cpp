@@ -174,11 +174,15 @@ void ImagedAnimation::update(const Time& time)
       ObjectData& objectData = m_objects.at(action.objectId);
       
       Math::Lerp(&objectData.baseFrameMatrix, &objectData.fromMatrix, &objectData.toMatrix, dt);
-
+      
       // apply alignment
       Vector4f translation = objectData.baseFrameMatrix.translation();
       Math::Align(&translation, &m_displaySize, m_baseAlignment, ALIGN_TOP_LEFT);
       objectData.baseFrameMatrix.setTranslation(translation.x, translation.y, translation.z);
+
+      Color color;
+      Math::Lerp(&color, &objectData.fromColor, &objectData.toColor, dt);
+      objectData.renderData->material()->setDiffuseColor(color);
 
      // EGE_PRINT("%f %f", objectData.baseFrameMatrix.translation().x, objectData.baseFrameMatrix.translation().y);
     }
@@ -364,21 +368,24 @@ void ImagedAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
 
     ObjectData& objectData = m_objects.at(action.objectId);
 
-    // update matrix
+    // update matrix and color
     objectData.fromMatrix = action.matrix * objectData.baseMatrix;
     objectData.toMatrix   = action.matrix * objectData.baseMatrix;
-    
+    objectData.fromColor  = action.color;
+    objectData.toColor    = action.color;
+
     // TAGE - change this to matrix as this is current interpolation matrix between from and to matrices
     objectData.baseFrameMatrix = objectData.fromMatrix;
 
-    // find object in next frame and store matrix transformation
+    // find object in next frame
     for (List<EGEImagedAnimation::ActionData>::const_iterator itNext = nextFrameData.actions.begin(); itNext != nextFrameData.actions.end(); ++itNext)
     {
       const EGEImagedAnimation::ActionData& actionNext = *itNext;
       if (actionNext.objectId == action.objectId)
       {
-        // found, store transformation
+        // found, store transformation and color
         objectData.toMatrix = actionNext.matrix * objectData.baseMatrix;
+        objectData.toColor  = actionNext.color;
         break;
       }
     }

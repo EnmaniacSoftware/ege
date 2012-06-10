@@ -125,6 +125,8 @@ class ImagedAnimation : public Object, public IAnimation
       Matrix4f baseFrameMatrix;                               /*!< Combined base and frame transformations matrix. */
       Matrix4f fromMatrix;                                    /*!< Combined base and frame transformations matrix. */
       Matrix4f toMatrix;                                      /*!< Combined base and frame transformations matrix. */
+      Color fromColor;
+      Color toColor;
     };
 
     /*! Frame data struct. */

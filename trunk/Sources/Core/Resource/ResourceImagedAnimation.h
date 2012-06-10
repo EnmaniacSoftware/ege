@@ -95,6 +95,7 @@ class ResourceImagedAnimation : public IResource
       Vector2f translate;
       Vector2f scale;
       Vector2f skew;
+      Color color;
     };
 
     /*! Frame data structure. */

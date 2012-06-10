@@ -248,6 +248,7 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
       actionData.matrix.setScale(action.scale.x, action.scale.y, 1);
       actionData.matrix[0][1] = action.skew.x;
       actionData.matrix[1][0] = action.skew.y;
+      actionData.color    = action.color;
 
       // add to pool
       actions.push_back(actionData);
@@ -361,6 +362,7 @@ EGEResult ResourceImagedAnimation::addAction(const PXmlElement& tag, FrameData* 
   action.translate  = tag->attribute("translate", "0 0").toVector2f(&error);
   action.scale      = tag->attribute("scale", "1 1").toVector2f(&error);
   action.skew       = tag->attribute("skew", "0 0").toVector2f(&error);
+  action.color      = tag->attribute("color", "1 1 1 1").toColor(&error);
 
   if (error)
   {

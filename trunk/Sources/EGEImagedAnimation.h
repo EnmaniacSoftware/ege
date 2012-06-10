@@ -15,6 +15,7 @@ namespace EGEImagedAnimation
     s32 objectId;                             /*!< Object ID for which action is to be performed. */
     s32 queue;                                /*!< Render queue offset. */
     Matrix4f matrix;                          /*!< Transformation matrix. */
+    Color color;                              /*!< Color to be used. */
   };
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
