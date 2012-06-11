@@ -9,17 +9,15 @@
 #include <EGEVertexBuffer.h>
 #include <EGEGraphics.h>
 #include <EGEAlignment.h>
+#include <EGEList.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class CubicSpline;
 
 EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class RenderObjectFactory
 {
   public:
@@ -39,6 +37,9 @@ class RenderObjectFactory
     static PRenderComponent CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, 
                                          EGEVertexBuffer::SemanticType semantics, s32 priority, EGEGraphics::RenderPrimitiveType primitive,
                                          EGEVertexBuffer::UsageType vertexUsage);
+    static PRenderComponent CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, 
+                                         const List<EGEVertexBuffer::ArrayType>& semantics, s32 priority, EGEGraphics::RenderPrimitiveType primitive,
+                                         EGEVertexBuffer::UsageType vertexUsage);
 
     /* Creates render component for given curve. 
      * @param spline    Pointer to spline for which render component is to be generated.
@@ -51,8 +52,11 @@ class RenderObjectFactory
      */
     static PRenderComponent Create(const CubicSpline* spline, Application* app, const String& name, Vector4f offset, EGEVertexBuffer::SemanticType semantics, 
                                    s32 priority);
-};
 
+  private:
+
+    static bool DoCreateQuadXY(PRenderComponent& component, Vector4f position, Vector2f size, Alignment origin, EGEGraphics::RenderPrimitiveType primitive);
+};
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

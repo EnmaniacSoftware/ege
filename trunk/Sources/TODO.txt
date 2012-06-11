@@ -5,13 +5,13 @@ FEATURES:
 - OpenGL highest version detection and fallback mechanism for renderers
 - RenderQueue:
   - seperate solid and transparent objects (based on material?) and depth-sort transparent ones
-- Easing functions support
 
 * Resources
   - Physical textures should be defined by 'texture' resources. All references should be done to 'texture-image' resources.
   - Resource loading/unloading should not be synchronous but more like request-wait-for-affirmation type
   - Resource loading in sperate thead
   - Rethink loading/unloading of resources and their dependencies (when to unload dependency ?)
+  - Add ability to specify fix/variable rotation to textures etc (look into Ogre3D possibilities)
 
 OPTIMIZATIONS:
 

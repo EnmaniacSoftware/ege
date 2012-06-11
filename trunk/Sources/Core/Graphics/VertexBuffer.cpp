@@ -64,9 +64,9 @@ bool VertexBuffer::addArray(EGEVertexBuffer::ArrayType type)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns number of arrays of given type in semantics. */
-u32 VertexBuffer::arrayCount(EGEVertexBuffer::ArrayType type) const
+s32 VertexBuffer::arrayCount(EGEVertexBuffer::ArrayType type) const
 {
-  u32 count = 0;
+  s32 count = 0;
   for (EGEVertexBuffer::SemanticArray::const_iterator iter = m_semantics.begin(); iter != m_semantics.end(); ++iter)
   {
     if (iter->type == type)
@@ -180,8 +180,15 @@ bool VertexBuffer::setSemantics(EGEVertexBuffer::SemanticType type)
       EGE_ASSERT(false && "Implement?");
   }
 
+  // set semantics
+  return setSemantics(arrayList);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets semantics to a given set of array types. */
+bool VertexBuffer::setSemantics(const List<EGEVertexBuffer::ArrayType>& types)
+{
   // add all array types in order
-  for (List<EGEVertexBuffer::ArrayType>::const_iterator it = arrayList.begin(); it != arrayList.end(); ++it)
+  for (List<EGEVertexBuffer::ArrayType>::const_iterator it = types.begin(); it != types.end(); ++it)
   {
     // add current array type
     if (!addArray(*it))

@@ -221,9 +221,7 @@ void UIScrollView::update(const Time& time)
   }
 
   // update scrollbars
-  m_verticalScroll->setOffset(m_offset.y);
-
-  EGE_PRINT("%.2f", m_offset.x);
+  m_verticalScroll->setOffset(static_cast<s32>(m_offset.y));
   m_horizontalScroll->setOffset(static_cast<s32>(m_offset.x));
 
   m_verticalScroll->update(time);

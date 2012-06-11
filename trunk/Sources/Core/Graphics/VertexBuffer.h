@@ -7,6 +7,7 @@
  */
 
 #include <EGE.h>
+#include <EGEList.h>
 #include "Core/Graphics/VertexBufferTypes.h"
 
 EGE_NAMESPACE_BEGIN
@@ -41,8 +42,10 @@ class VertexBuffer : public Object
     bool addArray(EGEVertexBuffer::ArrayType type);
     /* Sets semantics to given type. */
     bool setSemantics(EGEVertexBuffer::SemanticType type);
+    /* Sets semantics to a given set of array types. */
+    bool setSemantics(const List<EGEVertexBuffer::ArrayType>& types);
     /* Returns number of arrays of given type in semantics. */
-    u32 arrayCount(EGEVertexBuffer::ArrayType type) const;
+    s32 arrayCount(EGEVertexBuffer::ArrayType type) const;
 
     /* Returns current array semantics. */
     const EGEVertexBuffer::SemanticArray& semantics() const;

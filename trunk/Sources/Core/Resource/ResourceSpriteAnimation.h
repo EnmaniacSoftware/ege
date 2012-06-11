@@ -19,7 +19,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManager;
 
-EGE_DECLARE_SMART_CLASS(ResourceSpriteAnimation, PResourceSprite)
+EGE_DECLARE_SMART_CLASS(ResourceSpriteAnimation, PResourceSpriteAnimation)
 EGE_DECLARE_SMART_CLASS(ResourceSpritesheet, PResourceSpritesheet)
 EGE_DECLARE_SMART_CLASS(SpriteAnimation, PSpriteAnimation)
 EGE_DECLARE_SMART_CLASS(ResourceSequencer, PResourceSequencer)

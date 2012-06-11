@@ -246,6 +246,11 @@ EGEResult ResourceMaterial::load()
 {
   EGEResult result = EGE_SUCCESS;
 
+  //if (name() == "achievement-unlock-background")
+  //{
+  //  int a = 1;
+  //}
+
   if (!isLoaded())
   {
     // load textures (for all passes)
