@@ -89,6 +89,7 @@ void TextOverlay::updateRenderData()
     }
 
     // go thru all lines of text
+    float32 startPosX = pos.x;
     for (TextLineDataList::const_iterator it = m_textLines.begin(); it != m_textLines.end(); ++it)
     {
       const TextLineData& lineData = *it;
@@ -162,6 +163,7 @@ void TextOverlay::updateRenderData()
 
       // next line of text
       pos.y += height;
+      pos.x = startPosX;
     }
   }
 

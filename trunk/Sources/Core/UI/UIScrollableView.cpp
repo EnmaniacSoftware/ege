@@ -164,6 +164,13 @@ EGEResult UIScrollableView::addObject(PObject object)
 {
   EGEResult result = EGE_ERROR_NOT_SUPPORTED;
 
+  // sanity check
+  if (NULL == object)
+  {
+    // error!
+    return EGE_ERROR;
+  }
+
   // process according to object id
   switch (object->uid())
   {
@@ -175,6 +182,8 @@ EGEResult UIScrollableView::addObject(PObject object)
 
       // invalidate content
       m_dirtyContent = true;
+
+      result = EGE_SUCCESS;
       break;
   }
 

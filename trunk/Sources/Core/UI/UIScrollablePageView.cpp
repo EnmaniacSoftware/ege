@@ -225,10 +225,12 @@ EGEResult UIScrollablePageView::addObject(PObject object, u32 pageIdx)
 
       // add to pool
       m_objects[pageIdx].push_back(object);
+
+      result = EGE_SUCCESS;
       break;
   }
 
-  return EGE_SUCCESS;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Removes object. */
