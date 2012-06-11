@@ -189,10 +189,10 @@ void RendererPrivate::flush()
     {
       const RenderQueue::SRENDERDATA& data = it->second;
 
-      if (data.component->name() == "achievement-frame")
-      {
-        int a = 1;
-      }
+      //if (data.component->name() == "achievement-frame")
+      //{
+      //  int a = 1;
+      //}
 
       PVertexBuffer& vertexBuffer = data.component->vertexBuffer();
       PIndexBuffer& indexBuffer   = data.component->indexBuffer();
@@ -332,17 +332,6 @@ void RendererPrivate::flush()
                     ++textureUnitsActivated;
                   }
                 }
-
-                //for (s32 i = 0; i < textureCount; ++i)
-                //{
-                //  if (glClientActiveTexture)
-                //  {
-                //    glClientActiveTexture(GL_TEXTURE0 + i);
-                //  }
-
-                //  glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                //  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-                //}
                 break;
 
               //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:

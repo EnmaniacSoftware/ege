@@ -188,14 +188,17 @@ void RendererPrivate::flush()
     {
       const RenderQueue::SRENDERDATA& data = it->second;
 
-      if (data.component->name() == "mode-selection-screen-chimney-smoke")
-      {
-        int a = 1;
-      }
+      //if (data.component->name() == "mode-selection-screen-chimney-smoke")
+      //{
+      //  int a = 1;
+      //}
 
       PVertexBuffer vertexBuffer = data.component->vertexBuffer();
       PIndexBuffer indexBuffer   = data.component->indexBuffer();
       PMaterial material         = data.component->material();
+
+      // determine number of texture arrays
+      s32 textureArraysCount = vertexBuffer->arrayCount(EGEVertexBuffer::AT_TEXTURE_UV);
 
       // bind vertex and index buffers
       void* vertexData = bindVertexBuffer(vertexBuffer);
@@ -232,6 +235,7 @@ void RendererPrivate::flush()
           d_func()->m_batchCount++;
 
           // go thru all buffers
+          s32 textureUnitsActivated = 0;
           for (EGEVertexBuffer::SemanticArray::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
           {
             // set according to buffer type
@@ -263,12 +267,69 @@ void RendererPrivate::flush()
       
               case EGEVertexBuffer::AT_TEXTURE_UV:
 
-                for (s32 i = 0; i < textureCount; ++i)
+                // check if number of texture arrays is exactly the same as texture units in a current pass
+                if (textureArraysCount == textureCount)
                 {
-                  glClientActiveTexture(GL_TEXTURE0 + i);
+                  if (glClientActiveTexture)
+                  {
+                    glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                  }
 
                   glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
                   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+                  ++textureUnitsActivated;
+                }
+                // check if there is more texture arrays than texture units
+                else if (textureArraysCount > textureCount)
+                {
+                  // check if still some texture unit is to be set
+                  if (textureUnitsActivated < textureCount)
+                  {
+                    if (glClientActiveTexture)
+                    {
+                      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                    }
+
+                    glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+                    ++textureUnitsActivated;
+                  }
+                }
+                // check if there are more texture units than texture arrays
+                else if (textureArraysCount < textureCount)
+                {
+                  // check if this is last texture array
+                  if ((textureUnitsActivated + 1) == textureArraysCount)
+                  {
+                    // set current texture array to all remaining texture units
+                    while (textureUnitsActivated != textureCount)
+                    {
+                      if (glClientActiveTexture)
+                      {
+                        glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                      }
+
+                      glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                      glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+                      ++textureUnitsActivated;
+                    }
+                  }
+                  else
+                  {
+                    // set current texture array to corresponding texture unit
+                    if (glClientActiveTexture)
+                    {
+                      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                    }
+
+                    glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+                    ++textureUnitsActivated;
+                  }
                 }
                 break;
 
