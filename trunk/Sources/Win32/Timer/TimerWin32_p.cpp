@@ -67,7 +67,7 @@ s64 TimerPrivate::GetMiliseconds()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns number of microseconds since system start-up.
     @note If less resolution is available only, it is upscaled to microseconds.
-  */
+ */
 s64 TimerPrivate::GetMicroseconds()
 {
   // check if no performace counter is available

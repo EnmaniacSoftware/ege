@@ -61,6 +61,8 @@ class Graphics : public Object
     PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const;
     /* Creates index buffer obejct. */
     PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const;
+    /* Enables/disables rendering. */
+    void setRenderingEnabled(bool set);
 
   private:
 
@@ -85,6 +87,8 @@ class Graphics : public Object
     ParticleFactory* m_particleFactory;
     /*! Widgets factory. */
     WidgetFactory* m_widgetFactory;
+    /*! Rendering enabled flag. */
+    bool m_renderingEnabled;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

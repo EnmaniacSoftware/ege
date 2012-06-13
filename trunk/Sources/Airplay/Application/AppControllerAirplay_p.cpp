@@ -44,7 +44,7 @@ EGEResult AppControllerPrivate::run()
   while (!s3eDeviceCheckQuitRequest() && AppController::STATE_QUIT != d_func()->state())
   {
     // store this loop start time
-    startTime.fromMicroseconds(d_func()->timer()->microseconds());
+    startTime.fromMicroseconds(Timer::GetMicroseconds());
 
     // update pointer
     s3ePointerUpdate();
@@ -56,7 +56,7 @@ EGEResult AppControllerPrivate::run()
     d_func()->render();
 
     // stat this loop end time
-    endTime.fromMicroseconds(d_func()->timer()->microseconds());
+    endTime.fromMicroseconds(Timer::GetMicroseconds());
 
     // give some time for OS
     yieldTime = d_func()->m_renderInterval - (endTime - startTime);

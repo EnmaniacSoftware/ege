@@ -270,10 +270,7 @@ void RendererPrivate::flush()
                 // check if number of texture arrays is exactly the same as texture units in a current pass
                 if (textureArraysCount == textureCount)
                 {
-                  if (glClientActiveTexture)
-                  {
-                    glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                  }
+                  glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
 
                   glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
                   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -286,10 +283,7 @@ void RendererPrivate::flush()
                   // check if still some texture unit is to be set
                   if (textureUnitsActivated < textureCount)
                   {
-                    if (glClientActiveTexture)
-                    {
-                      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                    }
+                    glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
 
                     glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
                     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -306,10 +300,7 @@ void RendererPrivate::flush()
                     // set current texture array to all remaining texture units
                     while (textureUnitsActivated != textureCount)
                     {
-                      if (glClientActiveTexture)
-                      {
-                        glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                      }
+                      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
 
                       glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
                       glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -320,10 +311,7 @@ void RendererPrivate::flush()
                   else
                   {
                     // set current texture array to corresponding texture unit
-                    if (glClientActiveTexture)
-                    {
-                      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                    }
+                    glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
 
                     glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
                     glEnableClientState(GL_TEXTURE_COORD_ARRAY);

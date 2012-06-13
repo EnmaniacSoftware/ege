@@ -23,7 +23,8 @@ EGE_DEFINE_DELETE_OPERATORS(Graphics)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Graphics::Graphics(Application* app, const Dictionary& params) : Object(app), 
                                                                  m_particleFactory(NULL),
-                                                                 m_widgetFactory(NULL)
+                                                                 m_widgetFactory(NULL),
+                                                                 m_renderingEnabled(true)
 {
   m_p = ege_new GraphicsPrivate(this, params);
   if (m_p)
@@ -62,6 +63,12 @@ Graphics::~Graphics()
 /*! Renders all registered targets. */
 void Graphics::render()
 {
+  if (!m_renderingEnabled)
+  {
+    // error!
+    return;
+  }
+
   // go thru all elements
   for (RenderTargetMap::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
   {
@@ -192,6 +199,12 @@ PIndexBuffer Graphics::createIndexBuffer(EGEIndexBuffer::UsageType usage) const
   }
 
   return NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Enables/disables rendering. */
+void Graphics::setRenderingEnabled(bool set)
+{
+  m_renderingEnabled = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
