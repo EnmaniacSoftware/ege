@@ -40,3 +40,8 @@ CODING:
    entries at the begining or sth.
  - Re-design PhysicsManager. Add NULL physics
  - Re-design AudioManager. Add NULL audio.
+
+ISSUES:
+
+ - ImagedAnimation - it seems that obejct's and action's translation add'up which causes doubled values...(ie. loading anim)
+ - Game loop - accumulated updates should be applied to physicsmanager ONLY!!!!

@@ -10,13 +10,14 @@ EGE_NAMESPACE_BEGIN
 enum EGEResult
 {
   EGE_SUCCESS = 0,        // all is ok
+  EGE_WAIT,               // opertation still in progress, check later
   EGE_ERROR,              // general failure
   EGE_ERROR_NO_MEMORY,
   EGE_ERROR_BAD_PARAM,
   EGE_ERROR_NOT_SUPPORTED,
   EGE_ERROR_IO,
   EGE_ERROR_ALREADY_EXISTS,
-  EGE_ERROR_NOT_FOUND
+  EGE_ERROR_NOT_FOUND,
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

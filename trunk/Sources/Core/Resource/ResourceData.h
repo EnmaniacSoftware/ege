@@ -14,13 +14,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceData, PResourceData)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceData : public IResource
 {
   public:
@@ -45,14 +42,14 @@ class ResourceData : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
     /*! Gets instance of data object defined by resource. */
     inline PDataBuffer data() const { return m_data; }
 
   private:
 
     ResourceData(Application* app, ResourceManager* manager);
-    /*! Returns TRUE if material is loaded. */
-    inline bool isLoaded() const { return NULL != m_data; }
     /*! Gets path to texture file. */
     inline const String& path() const { return m_path; } 
     /*! Returns whether data is NULL terminated.*/
@@ -69,7 +66,6 @@ class ResourceData : public IResource
     /*! Data object created from resource. NULL if not created yet. */
     PDataBuffer m_data;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

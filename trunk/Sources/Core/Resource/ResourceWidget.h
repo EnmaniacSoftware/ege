@@ -17,13 +17,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceWidget, PResourceWidget)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceWidget : public IResource
 {
   public:
@@ -48,6 +45,8 @@ class ResourceWidget : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
 
     /* Creates instance of widget object defined by resource. */
     PWidget createInstance();
@@ -55,8 +54,6 @@ class ResourceWidget : public IResource
   private:
 
     ResourceWidget(Application* app, ResourceManager* manager);
-    /*! Returns TRUE if material is loaded. */
-    inline bool isLoaded() const { return m_loaded; }
     /* Processes child data. */
     EGEResult processChild(const PXmlElement& tag);
     /* Processes frame data. */
@@ -101,7 +98,6 @@ class ResourceWidget : public IResource
     /*! Load flag. */
     bool m_loaded;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

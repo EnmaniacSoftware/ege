@@ -170,5 +170,11 @@ EGEResult ResourceCurve::setInstance(CubicSpline& instance) const
   return instance.isValid() ? EGE_SUCCESS : EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! IResource override. Returns TRUE if object is loaded. */
+bool ResourceCurve::isLoaded() const
+{
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

@@ -96,7 +96,7 @@ EGEResult ResourceImagedAnimation::create(const String& path, const PXmlElement&
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is loaded. */
+/*! IResource override. Returns TRUE if object is loaded. */
 bool ResourceImagedAnimation::isLoaded() const
 {
   // check if all materials are loaded

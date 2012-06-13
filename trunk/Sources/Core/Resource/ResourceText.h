@@ -14,13 +14,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceText, PResourceText)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceText : public IResource
 {
   public:
@@ -45,14 +42,15 @@ class ResourceText : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
+
     /* Returns text translation. */
     Text text(s32 numerous = -1) const;
 
   private:
 
     ResourceText(Application* app, ResourceManager* manager);
-    /*! Returns TRUE if object is loaded. */
-    inline bool isLoaded() const { return true; }
     /* Adds text localization. */
     EGEResult addLocalization(const PXmlElement& tag);
     /* Returns index of translation for given numerous. */
@@ -67,7 +65,6 @@ class ResourceText : public IResource
      */
     Map<String, TextArray> m_translations;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

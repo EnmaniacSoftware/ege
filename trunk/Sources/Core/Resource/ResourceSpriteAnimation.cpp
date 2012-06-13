@@ -87,7 +87,7 @@ EGEResult ResourceSpriteAnimation::create(const String& path, const PXmlElement&
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is loaded. */
+/*! IResource override. Returns TRUE if object is loaded. */
 bool ResourceSpriteAnimation::isLoaded() const 
 { 
   if (NULL == m_sheet)

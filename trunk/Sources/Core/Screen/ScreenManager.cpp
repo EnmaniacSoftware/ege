@@ -47,16 +47,7 @@ void ScreenManager::show(PScreen screen)
   // check if some screen is being shown
   if (!m_screens.empty())
   {
-    // if current screen has no transparency, previous one can leave immediatly
-    if (!screen->hasTransparency())
-    {
-      m_screens.back()->leave();
-    }
-    else
-    {
-      // just cover it
-      m_screens.back()->cover();
-    }
+    m_screens.back()->cover();
   }
 
   // add to pool
@@ -86,8 +77,8 @@ void ScreenManager::hide()
   // check if any screen present
   if (!m_screens.empty())
   {
-    // enter top screen
-    m_screens.back()->enter();
+    // uncover top screen
+    m_screens.back()->uncover();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -126,10 +117,25 @@ void ScreenManager::render(Viewport* viewport, Renderer* renderer)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes given screen from stack. */
+/*! Removes given screen from stack. 
+    @note This does not call leave on screen being removed.
+ */
 void ScreenManager::remove(PScreen screen)
 {
-  m_screens.remove(screen);
+  // check if it is top screen
+  if (top() == screen)
+  {
+    // remove it
+    m_screens.remove(screen);
+
+    // uncover current top
+    top()->uncover();
+  }
+  else
+  {
+    // remove
+    m_screens.remove(screen);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pointer event receiver. */

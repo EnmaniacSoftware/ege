@@ -8,8 +8,8 @@ EGE_DEFINE_DELETE_OPERATORS(Screen)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Screen::Screen(Application* app, const String& name) : Object(app), 
                                                        m_name(name), 
-                                                       m_disabled(false),
-                                                       m_covered(false)
+                                                       m_disabled(false)//,
+                                                       //m_covered(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -46,7 +46,12 @@ void Screen::render(const Viewport* viewport, Renderer* renderer)
 void Screen::cover()
 {
   // set flag
-  m_covered = true;
+  //m_covered = true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Screen is about to be uncovered. */
+void Screen::uncover()
+{
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Enables/disables screen. */
@@ -55,11 +60,11 @@ void Screen::setEnable(bool enable)
   m_disabled = !enable;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Screen is about to be shown either from complete hideout or uncovery. */
+/*! Screen is about to be shown for the first time. */
 void Screen::enter()
 {
   // clear cover flag
-  m_covered = false;
+//  m_covered = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Screen is about to be hidden. */

@@ -18,7 +18,6 @@ class Application;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(IResource, PResource)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class IResource : public Object
 {
   public:
@@ -39,6 +38,8 @@ class IResource : public Object
     virtual void unload() = 0;
     /* Returns name of resource. */
     virtual const String& name() const = 0;
+    /* Returns TRUE if resource is already loaded. */
+    virtual bool isLoaded() const = 0;
     /*! Returns resource type name. */
     inline const String& typeName() const { return m_typeName; }
     /*! Returns TRUE if resource is manual. */
@@ -61,7 +62,6 @@ class IResource : public Object
     /*! Type name. */
     String m_typeName;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

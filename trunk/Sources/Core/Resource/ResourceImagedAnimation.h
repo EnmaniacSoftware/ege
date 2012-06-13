@@ -51,6 +51,8 @@ class ResourceImagedAnimation : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
 
     /* Creates instance of imaged animation object defined by resource. */
     PImagedAnimation createInstance();
@@ -60,8 +62,6 @@ class ResourceImagedAnimation : public IResource
   private:
 
     ResourceImagedAnimation(Application* app, ResourceManager* manager);
-    /* Returns TRUE if object is loaded. */
-    bool isLoaded() const;
     /* Adds object. */
     EGEResult addObject(const PXmlElement& tag);
     /* Adds frame. */

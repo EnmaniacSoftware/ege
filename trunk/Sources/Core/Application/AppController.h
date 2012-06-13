@@ -10,11 +10,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(AppController, PAppController)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AppController : public Object, public IEventListener
 {
   public:
@@ -51,7 +48,7 @@ class AppController : public Object, public IEventListener
     /*! Returns FPS indication. */
     inline s32 fps() const { return m_fps; }
     /*! Returns controller timer. */
-    inline const PTimer& timer() const { return m_timer; }
+    inline const Timer& timer() const { return m_timer; }
     /*! Returns current state. */
     inline State state() const { return m_state; }
     /*! Returns last frame update duration. */
@@ -85,13 +82,12 @@ class AppController : public Object, public IEventListener
     /*! Time at which last FPS count started. */
     Time m_fpsCountStartTime;
     /*! Timer. */
-    PTimer m_timer;
+    Timer m_timer;
     /*! Last frame update duration. */
     Time m_lastFrameUpdateDuration;
     /*! Last frame render duration. */
     Time m_lastFrameRenderDuration;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

@@ -152,5 +152,11 @@ EGEResult ResourceTextureImage::setInstance(const PTextureImage& instance)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! IResource override. Returns TRUE if texture image is loaded. */
+bool ResourceTextureImage::isLoaded() const 
+{ 
+  return NULL != m_texture; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

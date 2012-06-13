@@ -99,5 +99,11 @@ PParticleAffector ResourceParticleAffector::createInstance()
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! IResource override. Returns TRUE if object is loaded. */
+bool ResourceParticleAffector::isLoaded() const 
+{ 
+  return true; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

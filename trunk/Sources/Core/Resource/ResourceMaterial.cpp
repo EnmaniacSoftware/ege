@@ -577,5 +577,11 @@ float32 ResourceMaterial::shininess(u32 pass) const
   return (pass < passCount()) ? m_passes[pass].m_shininess : 0.0f; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if material is loaded. */
+bool ResourceMaterial::isLoaded() const 
+{ 
+  return m_loaded; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

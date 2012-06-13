@@ -35,14 +35,16 @@ class Screen : public Object
     virtual void pointerEvent(PPointerData data);
     /* Renders object. */
     virtual void render(const Viewport* viewport, Renderer* renderer);
-    /* Screen is about to be shown either from complete hideout or uncovery. */
+    /* Screen is about to be shown for the first time. */
     virtual void enter();
     /* Screen is about to be hidden. */
     virtual void leave();
-    /* Screen is about to be partially covered by another one. */
+    /* Screen is about to be covered by another one. */
     virtual void cover();
+    /* Screen is about to be uncovered. */
+    virtual void uncover();
     /*! Returns TRUE if screen is partially covered by another one. */
-    inline bool isCovered() const { return m_covered; }
+  //  inline bool isCovered() const { return m_covered; }
     /*! Returns TRUE if screen has transparent regions. */
     virtual bool hasTransparency() const = 0;
     /* Enables/disables screen. */
@@ -59,7 +61,7 @@ class Screen : public Object
     /*! Disabled flag. */
     bool m_disabled;
     /*! Cover flag. */
-    bool m_covered;
+    //bool m_covered;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

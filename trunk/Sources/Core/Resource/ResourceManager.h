@@ -106,6 +106,9 @@ class ResourceManager : public Object, public IEventListener
     /* Creates instance of resource of the type given by name. */
     PResource createResource(const String& typeName);
 
+    /* Returns TRUE if resource manager uses threading. */
+    bool isThreading() const;
+
   private:
     
     /** Processes the RESOURCES tag.

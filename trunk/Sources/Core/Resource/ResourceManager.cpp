@@ -691,20 +691,33 @@ void ResourceManager::update(const Time& time)
         {
           // find group
           PResourceGroup groupResource = group(*it);
-
-          // load group
-          if ((NULL == groupResource) || (EGE_SUCCESS != groupResource->load()))
+          if (NULL == groupResource)
           {
-            // error!
             // NOTE: emit error for main group
             emit groupLoadError(commandData.groupNames.front());
           }
           else
           {
-            // emit completion if this is main group
-            if (*it == commandData.groupNames.front())
+            // load group
+            EGEResult result = groupResource->load();
+            if (EGE_SUCCESS == result)
             {
-              emit groupLoadComplete(*it);
+              // emit completion if this is main group
+              if (*it == commandData.groupNames.front())
+              {
+                emit groupLoadComplete(*it);
+              }
+            }
+            else if (EGE_WAIT == result)
+            {
+              // stop for the time being
+              return;
+            }
+            else
+            {
+              // error!
+              // NOTE: emit error for main group
+              emit groupLoadError(commandData.groupNames.front());
             }
           }
         }
@@ -811,6 +824,12 @@ void ResourceManager::shutDown()
 
   // make sure all threads starts work
   m_commandsToProcess->wakeAll();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if resource manager uses threading. */
+bool ResourceManager::isThreading() const
+{
+  return m_workThread->isRunning();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

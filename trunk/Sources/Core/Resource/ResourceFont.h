@@ -15,14 +15,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceFont, PResourceFont)
 EGE_DECLARE_SMART_CLASS(Font, PFont)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class GlyphData
 {
   public:
@@ -32,9 +29,7 @@ class GlyphData
     /*! Screen width (in pixels) of glyph. */
     s32 m_width;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceFont : public IResource
 {
   public:
@@ -61,14 +56,14 @@ class ResourceFont : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
     /*! Returns font. */
     inline PFont font() const { return m_font; }
 
   private:
 
     ResourceFont(Application* app, ResourceManager* manager);
-    /* Returns TRUE if resource is loaded. */
-    bool isLoaded() const;
     /*! Returns material name. */
     inline const String& materialName() const { return m_materialName; } 
     /*! Returns height of the font (in pixels) */
@@ -88,7 +83,6 @@ class ResourceFont : public IResource
     /*! Font object. NULL if not created yet. */
     PFont m_font;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

@@ -16,13 +16,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceCurve, PResourceCurve)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceCurve : public IResource
 {
   public:
@@ -47,6 +44,8 @@ class ResourceCurve : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
 
     /* Creates instance of curve object defined by resource. */
     CubicSpline createInstance() const;
@@ -67,8 +66,6 @@ class ResourceCurve : public IResource
   private:
 
     ResourceCurve(Application* app, ResourceManager* manager);
-    /* Returns TRUE if object is loaded. */
-    inline bool isLoaded() const { return true; }
     /*! Returns curve type. */
     inline EGESpline::Type type() const { return m_type; }
     
@@ -85,7 +82,6 @@ class ResourceCurve : public IResource
     /*! List of curve points. */
     PointDataList m_points;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

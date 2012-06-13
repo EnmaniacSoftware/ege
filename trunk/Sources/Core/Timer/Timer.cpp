@@ -9,50 +9,29 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(Timer)
-EGE_DEFINE_DELETE_OPERATORS(Timer)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Timer::Timer(Application* app) : Object(app)
+Timer::Timer()
 {
-  m_p = ege_new TimerPrivate(this);
+  TimerPrivate::Reset();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Timer::~Timer()
+/*! Returns number of miliseconds passed since system start-up. */
+s64 Timer::GetMiliseconds()
 {
-  EGE_DELETE(m_p);
+  return TimerPrivate::GetMiliseconds();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Resets timer. */
-void Timer::reset()
+/*! Returns number of microseconds since system start-up.
+    @note If less resolution is available only, it is upscaled to microseconds.
+ */
+s64 Timer::GetMicroseconds()
 {
-  p_func()->reset();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns number of miliseconds passed so far. */
-s64 Timer::milliseconds()
-{
-  return p_func()->milliseconds();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/** Returns number of microseconds passed so far.
-*
-*   If less resolution is available only, it is upscaled to microseconds.
-*/
-s64 Timer::microseconds()
-{
-  return p_func()->microseconds();
+  return TimerPrivate::GetMicroseconds();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if timer is high performace timer. */
-bool Timer::isHighResolution() const
+bool Timer::IsHighResolution()
 {
-  return p_func()->isHighResolution();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool Timer::isValid() const
-{
-  return NULL != m_p;
+  return TimerPrivate::IsHighResolution();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

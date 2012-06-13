@@ -14,6 +14,8 @@ class IAnimation
 {
   public:
 
+    virtual ~IAnimation() {}
+
     /*! Starts playback with a given sequencer. 
      *  @param sequencerName  Name of the sequencer to use for playback.
      *  @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.

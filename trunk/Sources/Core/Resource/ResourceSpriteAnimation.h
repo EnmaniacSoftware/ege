@@ -48,6 +48,8 @@ class ResourceSpriteAnimation : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
 
     /* Creates instance of sprite object defined by resource. */
     PSpriteAnimation createInstance();
@@ -57,8 +59,6 @@ class ResourceSpriteAnimation : public IResource
   private:
 
     ResourceSpriteAnimation(Application* app, ResourceManager* manager);
-    /* Returns TRUE if object is loaded. */
-    bool isLoaded() const;
     /*! Returns sprite sheet name. */
     inline const String& sheetName() const { return m_sheetName; } 
     /* Invalidates frame data. */

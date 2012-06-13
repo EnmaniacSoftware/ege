@@ -42,9 +42,6 @@ AppController::AppController(Application* app, const Dictionary& params) : Objec
   {
     m_p = ege_new AppControllerPrivate(this);
   }
-
-  // create timer
-  m_timer = ege_new Timer(app);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AppController::~AppController()
@@ -56,7 +53,7 @@ AppController::~AppController()
 EGEResult AppController::run()
 {
   // initialize update timer (to smooth out first update)
-  m_lastUpdateTime.fromMicroseconds(m_timer->microseconds());
+  m_lastUpdateTime.fromMicroseconds(Timer::GetMicroseconds());
 
   return p_func()->run();
 }
@@ -95,10 +92,16 @@ void AppController::onEventRecieved(PEvent pEvent)
 void AppController::update()
 {
   // get current time
-  Time time(m_timer->microseconds());
+  Time time(Timer::GetMicroseconds());
 
   // calculate time passed
   Time timeInterval = time - m_lastUpdateTime;
+
+  // dont allow to long changes
+  if (0.25f < timeInterval.seconds())
+  {
+    timeInterval = 0.25f;
+  }
 
   // store frame current time
   m_lastUpdateTime = time;
@@ -124,37 +127,32 @@ void AppController::update()
     m_updateAccumulator += timeInterval;
 
     // update as much as requested
-    //EGE_PRINT("BEGINING");
-    //int a = 0;
     while (m_updateAccumulator > m_updateInterval)
     {
       m_updateAccumulator -= m_updateInterval;
-
-      // update physics etc
-      app()->resourceManager()->update(m_updateInterval);
-      app()->audioManager()->update(m_updateInterval);
-      app()->screenManager()->update(m_updateInterval);
       app()->physicsManager()->update(m_updateInterval);
-      app()->sceneManager()->update(m_updateInterval);
-      app()->overlayManager()->update(m_updateInterval);
-      app()->update(m_updateInterval);
-      //a++;
     }
-    //EGE_PRINT("ENDING %d", a);
+
+    app()->resourceManager()->update(timeInterval);
+    app()->audioManager()->update(timeInterval);
+    app()->screenManager()->update(timeInterval);
+    app()->sceneManager()->update(timeInterval);
+    app()->overlayManager()->update(timeInterval);
+    app()->update(timeInterval);
 
     // interpolate physics by remaining value
     // ..
   }
 
   // store update duration
-  m_lastFrameUpdateDuration.fromMicroseconds(m_timer->microseconds() - m_lastUpdateTime.microseconds());
+  m_lastFrameUpdateDuration.fromMicroseconds(Timer::GetMicroseconds() - m_lastUpdateTime.microseconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders application. */
 void AppController::render()
 {
   // get current time
-  Time time(m_timer->microseconds());
+  Time time(Timer::GetMicroseconds());
 
   // check if 1 second hasnt passed yet
   if (time - m_fpsCountStartTime < Time(1.0f))
@@ -181,13 +179,13 @@ void AppController::render()
   }
 
   // store render duration
-  m_lastFrameRenderDuration.fromMicroseconds(m_timer->microseconds() - time.microseconds());
+  m_lastFrameRenderDuration.fromMicroseconds(Timer::GetMicroseconds() - time.microseconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
 bool AppController::isValid() const
 {
-  return (NULL != m_p) && (NULL != m_timer) && m_timer->isValid();
+  return (NULL != m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

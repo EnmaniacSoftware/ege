@@ -113,8 +113,10 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
 
   //list << "lvl1_idle";
 
-  list << "dancing_notes1";
-  list << "dancing_notes2";
+  //list << "dancing_notes1";
+  //list << "dancing_notes2";
+
+  list << "loading_anim";
 
 //  float scales[] = { 1.0f };//, 0.5f, 0.25f };
   float scales[] = { 0.25f, 0.5f };

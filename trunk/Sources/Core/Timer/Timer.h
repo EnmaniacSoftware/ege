@@ -7,45 +7,25 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(Timer, PTimer)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Timer : public Object
+class Timer
 {
   public:
 
-    Timer(Application* app);
-   ~Timer();
-
-    EGE_DECLARE_NEW_OPERATORS
-    EGE_DECLARE_DELETE_OPERATORS
-
-  signals:
-
-    /*! Signal called when timer expires. */
-    Signal0<> timeout;
+    Timer();
 
   public:
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
+    /* Returns number of miliseconds passed since system start-up. */
+    static s64 GetMiliseconds();
+    /* Returns number of microseconds since system start-up.
+       @note If less resolution is available only, it is upscaled to microseconds.
+     */
+    static s64 GetMicroseconds();
     /* Returns TRUE if timer is high performace timer. */
-    bool isHighResolution() const;
-    /* Returns number of miliseconds passed so far. */
-    s64 milliseconds();
-    /** Returns number of microseconds passed so far.
-    *
-    *   If less resolution is available only, it is upscaled to microseconds.
-    */
-    s64 microseconds();
-    /* Resets timer. */
-    void reset(); 
-
-  private:
-
-    EGE_DECLARE_PRIVATE_IMPLEMENTATION(Timer);
+    static bool IsHighResolution();
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 EGE_NAMESPACE_END
 
 #endif // EGE_CORE_TIMER_H

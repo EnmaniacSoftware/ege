@@ -45,7 +45,7 @@ const String& ResourceFont::name() const
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if resource is loaded. */
+/*! IResource override. Returns TRUE if resource is loaded. */
 bool ResourceFont::isLoaded() const
 {
   return NULL != m_font;

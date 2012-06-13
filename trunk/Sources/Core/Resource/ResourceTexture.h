@@ -45,6 +45,8 @@ class ResourceTexture : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
 
     /*! Gets instance of texture object defined by resource. */
     inline PObject texture() const { return m_texture; }
@@ -56,8 +58,6 @@ class ResourceTexture : public IResource
     EGEResult create2D();
     /*! Gets texture type. */
     inline const String& type() const { return m_type; }
-    /* Returns TRUE if texture is loaded. */
-    inline bool isLoaded() const { return NULL != m_texture; }
     /*! Gets minifying function. */
     inline EGETexture::Filter minFilter() const { return m_minFilter; }
     /*! Gets magnification function. */

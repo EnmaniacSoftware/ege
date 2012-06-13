@@ -109,5 +109,11 @@ PSequencer ResourceSequencer::createInstance()
   return sequencer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! IResource override. Returns TRUE if material is loaded. */
+bool ResourceSequencer::isLoaded() const 
+{ 
+  return true; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

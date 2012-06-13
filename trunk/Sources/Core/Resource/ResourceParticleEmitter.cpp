@@ -200,5 +200,11 @@ EGEResult ResourceParticleEmitter::addAffector(const PXmlElement& tag)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! IResource override. Returns TRUE if object is loaded. */
+bool ResourceParticleEmitter::isLoaded() const 
+{ 
+  return (NULL != m_materialResource); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

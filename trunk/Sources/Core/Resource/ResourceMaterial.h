@@ -86,6 +86,8 @@ class ResourceMaterial : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
 
     /* Creates instance of material object defined by resource. */
     PMaterial createInstance() const;
@@ -116,8 +118,6 @@ class ResourceMaterial : public IResource
     EGEResult addTexture(const PXmlElement& tag, PassData& pass);
     /* Adds pass. */
     EGEResult addPass(const PXmlElement& tag);
-    /*! Returns TRUE if material is loaded. */
-    inline bool isLoaded() const { return m_loaded; }
 
   private:
 

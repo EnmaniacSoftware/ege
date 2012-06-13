@@ -1,34 +1,25 @@
 #include "Core/Timer/Timer.h"
 #include "Win32/Timer/TimerWin32_p.h"
-#include "EGEMath.h"
+#include <EGEMath.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(TimerPrivate)
-EGE_DEFINE_DELETE_OPERATORS(TimerPrivate)
+bool TimerPrivate::m_isPerformance      = false;
+u32 TimerPrivate::m_startTick           = 0;
+u32 TimerPrivate::m_procMask            = 0;
+u32 TimerPrivate::m_sysMask             = 0;
+u32 TimerPrivate::m_queryCount          = 0;
+LONGLONG TimerPrivate::m_lastTime       = 0;
+HANDLE TimerPrivate::m_thread           = NULL;
+LARGE_INTEGER TimerPrivate::m_startTime;
+LARGE_INTEGER TimerPrivate::m_frequency;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define FREQUENCY_RESAMPLE_RATE 200
 #define DISCRAPANCY_THRESHOLD   500
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TimerPrivate::TimerPrivate(Timer* base) : m_base(base), 
-                                          m_isPerformance(false), 
-                                          m_startTick(0), 
-                                          m_procMask(0), 
-                                          m_sysMask(0), 
-                                          m_queryCount(0), 
-                                          m_lastTime(0), 
-                                          m_thread(NULL)
-{
-  reset();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TimerPrivate::~TimerPrivate()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Resets timer. */
-void TimerPrivate::reset()
+void TimerPrivate::Reset()
 {
   m_isPerformance = true;
 
@@ -58,49 +49,42 @@ void TimerPrivate::reset()
   m_thread = GetCurrentThread();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns number of miliseconds passed so far. */
-s64 TimerPrivate::milliseconds()
+/*! Returns number of miliseconds passed since system start-up. */
+s64 TimerPrivate::GetMiliseconds()
 {
   // check if no performace counter is available
-  if (!isHighResolution())
+  if (!IsHighResolution())
   {
     return (s64) GetTickCount();
   }
 
   // get number of ticks
-  LONGLONG llTicks = updatePerformanceTimer();
+  LONGLONG llTicks = UpdatePerformanceTimer();
 
   // convert to milliseconds
   return static_cast<s64>(1000 * llTicks / m_frequency.QuadPart);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/** Returns number of microseconds passed so far.
-*
-*   If less resolution is available only, it is upscaled to microseconds.
-*/
-s64 TimerPrivate::microseconds()
+/*! Returns number of microseconds since system start-up.
+    @note If less resolution is available only, it is upscaled to microseconds.
+  */
+s64 TimerPrivate::GetMicroseconds()
 {
   // check if no performace counter is available
-  if (!isHighResolution())
+  if (!IsHighResolution())
   {
     return (s64) GetTickCount() * 1000;
   }
 
   // get number of ticks
-  LONGLONG llTicks = updatePerformanceTimer();
+  LONGLONG llTicks = UpdatePerformanceTimer();
 
   // convert to microseconds
   return static_cast<s64>(1000000 * llTicks / m_frequency.QuadPart);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if timer is high performace timer. */
-bool TimerPrivate::isHighResolution() const
-{
-  return m_isPerformance;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates performance counter. */
-LONGLONG TimerPrivate::updatePerformanceTimer()
+LONGLONG TimerPrivate::UpdatePerformanceTimer()
 {
   LARGE_INTEGER sCurTime;
 
@@ -140,6 +124,12 @@ LONGLONG TimerPrivate::updatePerformanceTimer()
   m_lastTime = llNewTime;
 
   return llNewTime;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if timer is high performace timer. */
+bool TimerPrivate::IsHighResolution()
+{
+  return m_isPerformance;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

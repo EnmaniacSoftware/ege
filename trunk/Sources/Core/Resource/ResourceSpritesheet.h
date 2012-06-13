@@ -14,14 +14,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceSpritesheet, PResourceSpritesheet)
 EGE_DECLARE_SMART_CLASS(ResourceTextureImage, PResourceTextureImage)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceSpritesheet : public IResource
 {
   public:
@@ -46,6 +43,9 @@ class ResourceSpritesheet : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
+
     /*! Returns number of frames. */
     inline s32 frameCount() const { return m_frameCount; }
     /*! Returns frame width (in texels). */
@@ -60,8 +60,6 @@ class ResourceSpritesheet : public IResource
   private:
 
     ResourceSpritesheet(Application* app, ResourceManager* manager);
-    /* Returns TRUE if object is loaded. */
-    inline bool isLoaded() const { return NULL != m_texture; }
     /*! Returns texture name. */
     inline const String& textureName() const { return m_textureName; } 
 
@@ -82,7 +80,6 @@ class ResourceSpritesheet : public IResource
     /*! Loaded texture. If NULL resource has not been loaded yet. */
     PResourceTextureImage m_texture;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

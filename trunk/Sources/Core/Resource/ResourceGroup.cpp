@@ -1,5 +1,6 @@
 #include "Core/Resource/ResourceGroup.h"
 #include "Core/Resource/ResourceManager.h"
+#include <EGETimer.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
@@ -90,7 +91,7 @@ EGEResult ResourceGroup::load()
   // check if NOT already loaded
   if (!isLoaded())
   {
-    //if (name() == "main-menu-screen")
+    //if (name() == "common")
     //{
     //  int a = 1;
     //}
@@ -100,13 +101,13 @@ EGEResult ResourceGroup::load()
     {
       PResource resource = it->second;
 
-      // check if non-manual
-      if (!resource->isManual())
+      // check if non-manual and needs to be loaded
+      if (!resource->isManual() && !resource->isLoaded())
       {
-        if (resource->name() == "sprite-ripples")
-        {
-          int a = 1;
-        }
+        //if (resource->name() == "sprite-ripples")
+        //{
+        //  int a = 1;
+        //}
 
         // load resource
         if (EGE_SUCCESS != (result = resource->load()))
@@ -114,6 +115,12 @@ EGEResult ResourceGroup::load()
           // error!
           EGE_WARNING("Load failed: %s", resource->name().toAscii());
           break;
+        }
+
+        // terminate for the time being if  single-threaded loading
+        if (!manager()->isThreading())
+        {
+          return EGE_WAIT;
         }
       }
     }

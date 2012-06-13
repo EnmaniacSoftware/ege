@@ -15,13 +15,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceParticleAffector, PResourceParticleAffector)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceParticleAffector : public IResource
 {
   public:
@@ -46,6 +43,8 @@ class ResourceParticleAffector : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
 
     /* Creates instance of particle affector object defined by resource. */
     PParticleAffector createInstance();
@@ -53,10 +52,6 @@ class ResourceParticleAffector : public IResource
   private:
 
     ResourceParticleAffector(Application* app, ResourceManager* manager);
-    /* Returns TRUE if object is loaded. */
-    inline bool isLoaded() const { return true; }
-
-  private:
 
   private:
 
@@ -65,7 +60,6 @@ class ResourceParticleAffector : public IResource
     /*! Dictionary with defined parameters. */
     Dictionary m_parameters;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

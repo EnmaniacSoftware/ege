@@ -41,14 +41,13 @@ class ResourceSequencer : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
 
     /* Creates instance of sequencer object defined by resource. */
     PSequencer createInstance();
     /* Set given instance of sequencer object to what is defined by resource. */
     EGEResult setInstance(PSequencer& instance);
-
-    /*! Returns TRUE if material is loaded. */
-    inline bool isLoaded() const { return true; }
 
   private:
 

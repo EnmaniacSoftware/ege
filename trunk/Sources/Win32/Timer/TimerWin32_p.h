@@ -1,63 +1,53 @@
 #ifndef EGE_WIN32_TIMER_PRIVATE_H
 #define EGE_WIN32_TIMER_PRIVATE_H
 
-#include "EGE.h"
+#include <EGE.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class TimerPrivate
 {
   public:
 
-    TimerPrivate(Timer* base);
-   ~TimerPrivate();
-
-    EGE_DECLARE_NEW_OPERATORS
-    EGE_DECLARE_DELETE_OPERATORS
-
+    /* Returns number of miliseconds passed since system start-up. */
+    static s64 GetMiliseconds();
+    /* Returns number of microseconds since system start-up.
+       @note If less resolution is available only, it is upscaled to microseconds.
+     */
+    static s64 GetMicroseconds();
     /* Returns TRUE if timer is high performace timer. */
-    bool isHighResolution() const;
-    /* Returns number of miliseconds passed so far. */
-    s64 milliseconds();
-    /** Returns number of microseconds passed so far.
-    *
-    *   If less resolution is available only, it is upscaled to microseconds.
-    */
-    s64 microseconds();
+    static bool IsHighResolution();
+
     /* Resets timer. */
-    void reset(); 
+    static void Reset(); 
 
   private:
 
     /* Updates performance counter. */
-    LONGLONG updatePerformanceTimer();
+    static LONGLONG UpdatePerformanceTimer();
 
   private:
 
-    /*! Pointer to base object. */
-    Timer* m_base;
     /*! TRUE if timer is capable of microsecs. */
-    bool m_isPerformance;
+    static bool m_isPerformance;
     /*! Reference time for GetTickCount. */
-    u32 m_startTick;
+    static u32 m_startTick;
     /*! Process affinity mask. */
-    u32 m_procMask;
+    static u32 m_procMask;
     /*! System affinity mask. */
-    u32 m_sysMask;
+    static u32 m_sysMask;
     /*! Number of times performance timer was used. */
-    u32 m_queryCount;
+    static u32 m_queryCount;
     /*! Performance counter last time. */
-    LONGLONG m_lastTime;
+    static LONGLONG m_lastTime;
     /*! Reference time for performace counter. */
-    LARGE_INTEGER m_startTime;
+    static LARGE_INTEGER m_startTime;
     /*! Performance counter frequency. */
-    LARGE_INTEGER m_frequency;
+    static LARGE_INTEGER m_frequency;
     /*! Handle to thread timer is running on. */
-    HANDLE m_thread;
+    static HANDLE m_thread;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

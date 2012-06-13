@@ -15,14 +15,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceParticleEmitter, PResourceParticleEmitter)
 EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceParticleEmitter : public IResource
 {
   public:
@@ -47,6 +44,8 @@ class ResourceParticleEmitter : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
 
     /* Creates instance of particle emitter object defined by resource. */
     PParticleEmitter createInstance();
@@ -54,8 +53,6 @@ class ResourceParticleEmitter : public IResource
   private:
 
     ResourceParticleEmitter(Application* app, ResourceManager* manager);
-    /* Returns TRUE if object is loaded. */
-    inline bool isLoaded() const { return (NULL != m_materialResource); }
     /* Adds affector. */
     EGEResult addAffector(const PXmlElement& tag);
 
@@ -70,7 +67,6 @@ class ResourceParticleEmitter : public IResource
     /*! List of affectors. */
     StringList m_affectors;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

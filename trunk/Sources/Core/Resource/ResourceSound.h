@@ -14,13 +14,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceSound, PResourceSound)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceSound : public IResource
 {
   public:
@@ -45,6 +42,8 @@ class ResourceSound : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
 
     /* Creates instance of sound object defined by resource. */
     PSound createInstance();
@@ -52,8 +51,6 @@ class ResourceSound : public IResource
   private:
 
     ResourceSound(Application* app, ResourceManager* manager);
-    /* Returns TRUE if object is loaded. */
-    inline bool isLoaded() const { return true; }
 
   private:
 
@@ -64,7 +61,6 @@ class ResourceSound : public IResource
     /*! Pitch value. */
     float32 m_pitch;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

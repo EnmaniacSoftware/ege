@@ -251,5 +251,11 @@ EGEResult ResourceWidget::processFrame(const PXmlElement& tag)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! IResource override. Returns TRUE if material is loaded. */
+bool ResourceWidget::isLoaded() const 
+{ 
+  return m_loaded; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

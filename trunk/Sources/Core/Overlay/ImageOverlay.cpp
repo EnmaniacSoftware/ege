@@ -37,19 +37,6 @@ void ImageOverlay::update(const Time& time)
 {
   // call base class
   Overlay::update(time);
-
-  if (visible())
-  {
-    // check if update is needed
-    if (isUpdateNeeded())
-    {
-      // update render data
-      updateRenderData();
-
-      // validate
-      validate();
-    }
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates render data. */
@@ -69,6 +56,16 @@ void ImageOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform
 {
   if (visible())
   {
+    // check if update is needed
+    if (isUpdateNeeded())
+    {
+      // update render data
+      updateRenderData();
+
+      // validate
+      validate();
+    }
+
     Matrix4f worldMatrix;
     Quaternionf orientation = physics()->orientation();
     Vector4f position = physics()->position() - m_alignmentOffset;

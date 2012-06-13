@@ -43,6 +43,8 @@ class ResourceTextureImage : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
+    /* IResource override. Returns TRUE if object is loaded. */
+    bool isLoaded() const override;
 
     /* Creates instance of texture image object defined by resource. 
      * @note  Loads resource if it is not loaded yet.
@@ -56,8 +58,6 @@ class ResourceTextureImage : public IResource
   private:
 
     ResourceTextureImage(Application* app, ResourceManager* manager);
-    /* Returns TRUE if texture image is loaded. */
-    inline bool isLoaded() const { return NULL != m_texture; }
 
   private:
 

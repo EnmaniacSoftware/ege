@@ -13,14 +13,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Renderer;
 class Viewport;
 
 EGE_DECLARE_SMART_CLASS(Screen, PScreen)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ScreenManager : public Object
 {
   public:
@@ -39,7 +36,9 @@ class ScreenManager : public Object
     void show(PScreen screen);
     /* Hides current (top) screen. */
     void hide();
-    /* Removes given screen from stack. */
+    /* Removes given screen from stack. 
+       @note This does not call leave on screen being removed.
+     */
     void remove(PScreen screen);
     /* Returns first screen with given name. */
     PScreen screen(const String& name) const;
@@ -60,7 +59,6 @@ class ScreenManager : public Object
     /*! List of screens. Sorted from the bottom one to top one (currently visible). */
     ScreenList m_screens;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
