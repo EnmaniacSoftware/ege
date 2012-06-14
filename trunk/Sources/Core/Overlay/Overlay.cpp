@@ -83,7 +83,10 @@ void Overlay::setAlignment(Alignment align)
 /* Sets transparency level. */
 void Overlay::setAlpha(float32 alpha)
 {
-  m_renderData->material()->setDiffuseAlpha(alpha);
+  if (m_renderData->material())
+  {
+    m_renderData->material()->setDiffuseAlpha(alpha);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
