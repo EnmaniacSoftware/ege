@@ -430,5 +430,12 @@ void UIScrollView::setScrollbarsEnabled(bool set)
   m_horizontalScroll->setVisible(set);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets base render priority. */
+void UIScrollView::setBaseRenderPriority(s32 priority)
+{
+  m_verticalScroll->renderData()->setPriority(priority + 1);
+  m_horizontalScroll->renderData()->setPriority(priority + 1);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

@@ -4,6 +4,7 @@
 #include <EGE.h>
 #include <EGEGraphics.h>
 #include <EGEVertexBuffer.h>
+#include <EGESignal.h>
 #include "Core/Components/Component.h"
 
 EGE_NAMESPACE_BEGIN
@@ -26,6 +27,13 @@ class RenderComponent : public IComponent
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  signals:
+
+    /*! Signal emitted when render priority changes.
+        @param  Sender Sender object.
+     */
+    Signal1<PRenderComponent> renderPriorityChanged;
 
   public:
 

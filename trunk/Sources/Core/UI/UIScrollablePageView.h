@@ -74,6 +74,9 @@ class UIScrollablePageView : public UIScrollView
     /* Removes all objects. */
     void removeAllObjects();
 
+    /* UIScrollView override. Sets base render priority. */
+    void setBaseRenderPriority(s32 priority) override;
+
   private slots:
 
     /* UIScrollView override. Slot called when size of widget changes. */

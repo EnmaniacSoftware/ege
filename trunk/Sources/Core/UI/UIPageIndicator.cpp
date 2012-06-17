@@ -204,7 +204,7 @@ void UIPageIndicator::updateRenderData()
     }
   }
 
-  m_renderData->vertexBuffer()->unlock(data - 1);
+  m_renderData->vertexBuffer()->unlock((data) ? data - 1 : NULL);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns current page. */

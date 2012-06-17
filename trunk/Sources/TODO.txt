@@ -13,6 +13,9 @@ FEATURES:
   - Rethink loading/unloading of resources and their dependencies (when to unload dependency ?)
   - Add ability to specify fix/variable rotation to textures etc (look into Ogre3D possibilities)
 
+* Overlays/UI
+  - Layouts
+
 OPTIMIZATIONS:
 
 - SceneNodeObject:

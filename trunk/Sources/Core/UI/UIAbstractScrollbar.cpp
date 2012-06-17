@@ -148,7 +148,7 @@ EGEResult UIAbstractScrollbar::construct()
 /*! Sets range. */
 void UIAbstractScrollbar::setRange(s32 from, s32 to)
 {
-  EGE_ASSERT(from < to);
+  EGE_ASSERT(from <= to);
 
   if ((m_rangeStart != from) || (m_rangeEnd != to))
   {

@@ -42,6 +42,8 @@ class UIScrollView : public Widget
     void setDecelerationRate(float32 rate);
     /* Enables/disables scroll bars. */
     void setScrollbarsEnabled(bool set);
+    /* Sets base render priority. */
+    virtual void setBaseRenderPriority(s32 priority);
 
   protected:
 

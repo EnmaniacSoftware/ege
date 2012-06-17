@@ -38,6 +38,8 @@ class UIPageIndicator : public Widget
     void setCurrentPage(s32 pageIdx);
     /* Returns current page. */
     s32 page() const;
+    /*! Returns render data component. */
+    inline PRenderComponent& renderData() { return m_renderData; }
 
   private:
 

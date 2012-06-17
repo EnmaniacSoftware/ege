@@ -53,7 +53,13 @@ bool RenderComponent::isValid() const
 /*! Sets render priority. */
 void RenderComponent::setPriority(s32 priority)
 {
-  m_priority = priority;
+  if (m_priority != priority)
+  {
+    m_priority = priority;
+
+    // emit
+    emit renderPriorityChanged(this);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Invalidates hash value. */
