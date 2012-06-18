@@ -27,7 +27,7 @@ void ScreenManager::update(const Time& time)
     ScreenList localCopy;
     localCopy.copy(m_screens);
 
-    // go thru all screens from top to bottom and update first enabled one
+    // go thru all screens from top to bottom and update all enabled ones untill end is reached or some non-transparent is found
     // NOTE: no const_reverse_iterator due to GCC incompatibility of operator== and operator!=
     for (ScreenList::reverse_iterator it = localCopy.rbegin(); it != localCopy.rend(); ++it)
     {
@@ -35,7 +35,13 @@ void ScreenManager::update(const Time& time)
       if (screen->isEnabled())
       {
         screen->update(time);
-        return;
+
+        // check if screen in not transparent
+        if (!screen->hasTransparency())
+        {
+          // no need to update the rest
+          return;
+        }
       }
     }
   }
@@ -60,7 +66,7 @@ void ScreenManager::show(PScreen screen)
 /*! Hides current (top) screen. */
 void ScreenManager::hide()
 {
-  bool wasTransparent = false;
+ // bool wasTransparent = false;
 
   // check if some screen is being shown
   if (!m_screens.empty())
