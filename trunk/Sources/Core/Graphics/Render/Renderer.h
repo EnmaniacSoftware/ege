@@ -48,6 +48,9 @@ class Renderer : public Object
     /*! Returns number of vertices rendered last frame. */
     inline u32 vertexCount() const { return m_vertexCount; }
 
+    /*! Returns current render target. */
+    PRenderTarget currentRenderTarget() const { return m_renderTarget; }
+
     //PRenderComponent addComponent(const String& name = "");
 
 //    void setViewport(PViewport pViewport);
