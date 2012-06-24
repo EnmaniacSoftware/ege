@@ -78,13 +78,13 @@ void PushButton::pointerEvent(PPointerData data)
   {
     switch (data->action())
     {
-      case EGEInput::ACTION_BUTTON_DOWN:
+      case ACTION_BUTTON_DOWN:
 
         // store flag
         m_clicked = true;
         break;
 
-      case EGEInput::ACTION_BUTTON_UP:
+      case ACTION_BUTTON_UP:
 
         // check if was clicked
         if (m_clicked)
@@ -97,7 +97,7 @@ void PushButton::pointerEvent(PPointerData data)
   }
 
   // reset click flag if released
-  if (EGEInput::ACTION_BUTTON_UP == data->action())
+  if (ACTION_BUTTON_UP == data->action())
   {
     m_clicked = false;
   }

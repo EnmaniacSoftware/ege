@@ -57,10 +57,10 @@ void PointerPrivate::MultiTouchButtonCB(s3ePointerTouchEvent* event, void* data)
   PointerPrivate* me = (PointerPrivate*) data;
 
   // report as left button
-  EGEInput::EButton button = EGEInput::BUTTON_LEFT;
+  Button button = BUTTON_LEFT;
 
   // map action
-  EGEInput::EAction action = (0 != event->m_Pressed) ? EGEInput::ACTION_BUTTON_DOWN : EGEInput::ACTION_BUTTON_UP;
+  Action action = (0 != event->m_Pressed) ? ACTION_BUTTON_DOWN : ACTION_BUTTON_UP;
 
   //PTextOverlay overlay = me->m_base->app()->overlayManager()->overlay("pointer");
   //if (NULL == overlay)
@@ -83,7 +83,7 @@ void PointerPrivate::MultiTouchButtonCB(s3ePointerTouchEvent* event, void* data)
   }
 
   // send event
-  emit me->base()->eventSignal(ege_new PointerData(action, button, x, y, event->m_TouchID));
+  emit me->base()->eventSignal(ege_new PointerData(action, button, KM_NONE, x, y, event->m_TouchID));
   //me->base()->app()->eventManager()->send(EGE_EVENT_ID_CORE_POINTER_DATA, ege_new PointerData(action, button, x, y, event->m_TouchID));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ void PointerPrivate::MultiTouchMotionCB(s3ePointerTouchMotionEvent* event, void*
   }
 
   // send event
-  emit me->base()->eventSignal(ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, event->m_TouchID));
+  emit me->base()->eventSignal(ege_new PointerData(ACTION_MOVE, BUTTON_NONE, KM_NONE, x, y, event->m_TouchID));
   //me->base()->app()->eventManager()->send(EGE_EVENT_ID_CORE_POINTER_DATA, 
   //                                        ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, event->m_TouchID));
 }
@@ -114,17 +114,17 @@ void PointerPrivate::SingleTouchButtonCB(s3ePointerEvent* event, void* data)
   PointerPrivate* me = (PointerPrivate*) data;
 
   // map button
-  EGEInput::EButton button;
+  Button button;
   switch (event->m_Button)
   {
-    case S3E_POINTER_BUTTON_LEFTMOUSE:      button = EGEInput::BUTTON_LEFT; break;
-    case S3E_POINTER_BUTTON_RIGHTMOUSE:     button = EGEInput::BUTTON_RIGHT; break;
-    case S3E_POINTER_BUTTON_MOUSEWHEELUP:   button = EGEInput::BUTTON_WHEEL_UP; break;
-    case S3E_POINTER_BUTTON_MOUSEWHEELDOWN: button = EGEInput::BUTTON_WHEEL_DOWN; break;
+    case S3E_POINTER_BUTTON_LEFTMOUSE:      button = BUTTON_LEFT; break;
+    case S3E_POINTER_BUTTON_RIGHTMOUSE:     button = BUTTON_RIGHT; break;
+    case S3E_POINTER_BUTTON_MOUSEWHEELUP:   button = BUTTON_WHEEL_UP; break;
+    case S3E_POINTER_BUTTON_MOUSEWHEELDOWN: button = BUTTON_WHEEL_DOWN; break;
 
     default:
 
-      button = EGEInput::BUTTON_LEFT;
+      button = BUTTON_LEFT;
       break;
   }
 
@@ -139,7 +139,7 @@ void PointerPrivate::SingleTouchButtonCB(s3ePointerEvent* event, void* data)
   //overlay->setText(EGEText::Format("X: %d Y: %d", event->m_x, event->m_y));
 
   // map action
-  EGEInput::EAction action = (0 != event->m_Pressed) ? EGEInput::ACTION_BUTTON_DOWN : EGEInput::ACTION_BUTTON_UP;
+  Action action = (0 != event->m_Pressed) ? ACTION_BUTTON_DOWN : ACTION_BUTTON_UP;
 
   s32 x = event->m_x;
   s32 y = event->m_y;
@@ -152,7 +152,7 @@ void PointerPrivate::SingleTouchButtonCB(s3ePointerEvent* event, void* data)
   }
 
   // send event
-  emit me->base()->eventSignal(ege_new PointerData(action, button, x, y, 0));
+  emit me->base()->eventSignal(ege_new PointerData(action, button, KM_NONE, x, y, 0));
 
   //me->base()->app()->eventManager()->send(EGE_EVENT_ID_CORE_POINTER_DATA, ege_new PointerData(action, button, x, y, 0));
 }
@@ -173,7 +173,7 @@ void PointerPrivate::SingleTouchMotionCB(s3ePointerMotionEvent* event, void* dat
   }
 
   // send event
-  emit me->base()->eventSignal(ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, 0));
+  emit me->base()->eventSignal(ege_new PointerData(ACTION_MOVE, BUTTON_NONE, KM_NONE, x, y, 0));
   //me->base()->app()->eventManager()->send(EGE_EVENT_ID_CORE_POINTER_DATA, 
   //                                        ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, 0));
 }

@@ -32,8 +32,8 @@ class Pointer : public Object
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(Pointer)
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 EGE_NAMESPACE_END
 
 #endif // EGE_CORE_POINTER_H

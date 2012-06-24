@@ -201,37 +201,54 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
 {
   RenderWindowOGLWin32* me = (RenderWindowOGLWin32*) GetWindowLongPtr(hWnd, 0);
 
+  // detrmine current keyboard modifiers
+  KeyboardModifiers keyboardModifiers = KM_NONE;
+  if (GetAsyncKeyState(VK_MENU) & 0x8000)
+  {
+    keyboardModifiers |= KM_ALT;
+  }
+
+  if (GetAsyncKeyState(VK_CONTROL) & 0x8000)
+  {
+    keyboardModifiers |= KM_CTRL;
+  }
+
+  if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+  {
+    keyboardModifiers |= KM_SHIFT;
+  }
+
   // process according to message
   switch (msg)
   {
     case WM_LBUTTONDOWN:
 
       me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(EGEInput::ACTION_BUTTON_DOWN, EGEInput::BUTTON_LEFT, LOWORD(lParam), HIWORD(lParam), 0));
+                                      ege_new PointerData(ACTION_BUTTON_DOWN, BUTTON_LEFT, keyboardModifiers, LOWORD(lParam), HIWORD(lParam), 0));
       return 0;
 
     case WM_LBUTTONUP:
 
       me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(EGEInput::ACTION_BUTTON_UP, EGEInput::BUTTON_LEFT, LOWORD(lParam), HIWORD(lParam), 0));
+                                      ege_new PointerData(ACTION_BUTTON_UP, BUTTON_LEFT, keyboardModifiers, LOWORD(lParam), HIWORD(lParam), 0));
       return 0;
 
     case WM_RBUTTONDOWN:
 
       me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(EGEInput::ACTION_BUTTON_DOWN, EGEInput::BUTTON_RIGHT, LOWORD(lParam), HIWORD(lParam), 0));
+                                      ege_new PointerData(ACTION_BUTTON_DOWN, BUTTON_RIGHT, keyboardModifiers, LOWORD(lParam), HIWORD(lParam), 0));
       return 0;
 
     case WM_RBUTTONUP:
 
       me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(EGEInput::ACTION_BUTTON_UP, EGEInput::BUTTON_RIGHT, LOWORD(lParam), HIWORD(lParam), 0));
+                                      ege_new PointerData(ACTION_BUTTON_UP, BUTTON_RIGHT, keyboardModifiers, LOWORD(lParam), HIWORD(lParam), 0));
       return 0;
 
     case WM_MOUSEMOVE:
 
       me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, LOWORD(lParam), HIWORD(lParam), 0));
+                                      ege_new PointerData(ACTION_MOVE, BUTTON_NONE, keyboardModifiers, LOWORD(lParam), HIWORD(lParam), 0));
       return 0;
 
     case WM_SIZE:
