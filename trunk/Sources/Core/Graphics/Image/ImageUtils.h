@@ -8,11 +8,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(Image, PImage)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ImageUtils
 {
   public:
@@ -38,7 +35,7 @@ class ImageUtils
     static void FastCopy(PImage& dst, const Vector2i& dstPoint, const PImage& src, Recti srcRect = Recti::INVALID);
 
     /* Returns given format pixel size (in bytes). */
-    static u32 PixelSize(EGEImage::Format format);
+    static u32 PixelSize(PixelFormat format);
 
     /* Fills region of image with given color. */
     static void Fill(PImage& dst, const Recti& dstRect, const Color& color);
@@ -52,7 +49,6 @@ class ImageUtils
     /* Performs fill blit on RGBA8888 surface. */
     static void FillLineBltRGBA8888(void* dst, u32 color, s32 length);
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

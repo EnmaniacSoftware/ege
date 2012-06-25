@@ -14,7 +14,7 @@ EGE_DEFINE_NEW_OPERATORS(Texture2D)
 EGE_DEFINE_DELETE_OPERATORS(Texture2D)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates render texture. */
-PTexture2D Texture2D::CreateRenderTexture(Application* app, const String& name, s32 width, s32 height, EGEImage::Format format)
+PTexture2D Texture2D::CreateRenderTexture(Application* app, const String& name, s32 width, s32 height, PixelFormat format)
 {
   // create empty texture of given size and format
   PTexture2D texture = ege_new Texture2D(app, name);
@@ -51,9 +51,16 @@ PTexture2D Texture2D::CreateRenderTexture(Application* app, const String& name, 
   return texture;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Texture2D::Texture2D(Application* app, const String& name) : Object(app, EGE_OBJECT_UID_TEXTURE_2D), m_name(name), m_minFilter(EGETexture::BILINEAR), 
-                                                             m_magFilter(EGETexture::BILINEAR), m_addressingModeS(EGETexture::AM_REPEAT), 
-                                                             m_addressingModeT(EGETexture::AM_REPEAT), m_width(0), m_height(0), m_format(EGEImage::NONE)
+Texture2D::Texture2D(Application* app, const String& name) : Object(app, EGE_OBJECT_UID_TEXTURE_2D), 
+                                                             m_name(name), 
+                                                             m_minFilter(EGETexture::BILINEAR), 
+                                                             m_magFilter(EGETexture::BILINEAR), 
+                                                             m_addressingModeS(EGETexture::AM_REPEAT), 
+                                                             m_addressingModeT(EGETexture::AM_REPEAT), 
+                                                             m_width(0), 
+                                                             m_height(0), 
+                                                             m_format(PF_UNKNOWN),
+                                                             m_compression(false)
 {
   m_p = ege_new Texture2DPrivate(this);
 }
@@ -120,6 +127,12 @@ void Texture2D::setTextureAddressingModeS(EGETexture::AddressingMode mode)
 void Texture2D::setTextureAddressingModeT(EGETexture::AddressingMode mode)
 {
   m_addressingModeT = mode;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Enables/disables compression. */
+void Texture2D::setCompressionEnabled(bool set)
+{
+  m_compression = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

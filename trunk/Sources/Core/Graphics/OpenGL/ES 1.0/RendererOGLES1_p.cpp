@@ -640,6 +640,17 @@ void RendererPrivate::detectCapabilities()
 
   // Vertex Buffer Objects is supported by default
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VBO, true);
+
+  // check for texture compressions support
+  if (isExtensionSupported("GL_IMG_texture_compression_pvrtc"))
+  {
+    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC, true);
+  }
+
+  if (isExtensionSupported("GL_EXT_texture_compression_s3tc"))
+  {
+    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_S3TC, true);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Checks if given extension is supported. */

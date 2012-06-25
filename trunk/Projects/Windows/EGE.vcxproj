@@ -52,6 +52,8 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Graphics.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\ImagedAnimation\ImagedAnimation.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\Image.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageHandlerJPG.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPNG.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageUtils.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\IndexBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.cpp" />
@@ -192,6 +194,8 @@
     <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\ImagedAnimation\ImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\Image.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageHandlerJPG.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPNG.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\IndexBufferTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.h" />

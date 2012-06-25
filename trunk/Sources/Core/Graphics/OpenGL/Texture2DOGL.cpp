@@ -29,7 +29,9 @@ EGE_DEFINE_DELETE_OPERATORS(Texture2DPrivate)
         //}
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Texture2DPrivate::Texture2DPrivate(Texture2D* base) : m_d(base), m_id(0), m_internalFormat(0)
+Texture2DPrivate::Texture2DPrivate(Texture2D* base) : m_d(base), 
+                                                      m_id(0), 
+                                                      m_internalFormat(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,17 +45,17 @@ EGEResult Texture2DPrivate::create(const String& path)
   EGEResult result = EGE_SUCCESS;
 
   // load image
-  Image image(d_func()->app());
-  if (EGE_SUCCESS != (result = image.load(path)))
+  PImage image = Image::Load(path);
+  if (NULL == image)
   {
     // error!
-    return result;
+    return EGE_ERROR;
   }
 
   // set texture data
-  d_func()->m_width  = image.width();
-  d_func()->m_height = image.height();
-  d_func()->m_format = image.format();
+  d_func()->m_width  = image->width();
+  d_func()->m_height = image->height();
+  d_func()->m_format = image->format();
 
   // create empty texture
   if (EGE_SUCCESS != (result = create()))
@@ -63,7 +65,15 @@ EGEResult Texture2DPrivate::create(const String& path)
   }
 
   // copy pixel data
-  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d_func()->width(), d_func()->height(), m_internalFormat, GL_UNSIGNED_BYTE, image.data()->data());
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d_func()->width(), d_func()->height(), m_internalFormat, GL_UNSIGNED_BYTE, image->data()->data());
+
+  // check for error
+  GLenum error;
+  if (GL_NO_ERROR != (error = glGetError()))
+  {
+    // error!
+    return EGE_ERROR;
+  }
 
   return EGE_SUCCESS;
 }
@@ -74,17 +84,17 @@ EGEResult Texture2DPrivate::create(const PDataBuffer& buffer)
   EGEResult result = EGE_SUCCESS;
 
   // load image
-  Image image(d_func()->app());
-  if (EGE_SUCCESS != (result = image.create(buffer)))
+  PImage image = Image::Load(buffer);
+  if (NULL == image)
   {
     // error!
-    return result;
+    return EGE_ERROR;
   }
 
   // set texture data
-  d_func()->m_width  = image.width();
-  d_func()->m_height = image.height();
-  d_func()->m_format = image.format();
+  d_func()->m_width  = image->width();
+  d_func()->m_height = image->height();
+  d_func()->m_format = image->format();
 
   // create empty texture
   if (EGE_SUCCESS != (result = create()))
@@ -94,7 +104,15 @@ EGEResult Texture2DPrivate::create(const PDataBuffer& buffer)
   }
 
   // copy pixel data
-  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d_func()->width(), d_func()->height(), m_internalFormat, GL_UNSIGNED_BYTE, image.data()->data());
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d_func()->width(), d_func()->height(), m_internalFormat, GL_UNSIGNED_BYTE, image->data()->data());
+  
+  // check for error
+  GLenum error;
+  if (GL_NO_ERROR != (error = glGetError()))
+  {
+    // error!
+    return EGE_ERROR;
+  }
 
   return EGE_SUCCESS;
 }
@@ -122,37 +140,62 @@ EGEResult Texture2DPrivate::create()
   // get input image and texture format
   GLint internalFormat = 0;
   GLenum imageFormat = 0;
-  switch (d_func()->format())
+
+  if (true)//!d_func()->isCompressionEnabled())
   {
-    case EGEImage::RGBA_8888: imageFormat = GL_RGBA; internalFormat = GL_RGBA; break;
-    case EGEImage::RGB_888:   imageFormat = GL_RGB; internalFormat = GL_RGB; break;
-    //case CImage::RGB:  eImageFormat = RGB; break;  
-    //case CImage::BGR: 
-    //  
-    //  if ( glExt::EXT_bgra == false )
-    //  {
-    //    // not supported
-    //    return false;
-    //  }
+    switch (d_func()->format())
+    {
+      case PF_RGBA_8888: imageFormat = GL_RGBA; internalFormat = GL_RGBA; break;
+      case PF_RGB_888:   imageFormat = GL_RGB; internalFormat = GL_RGB; break;
+      //case CImage::RGB:  eImageFormat = RGB; break;  
+      //case CImage::BGR: 
+      //  
+      //  if ( glExt::EXT_bgra == false )
+      //  {
+      //    // not supported
+      //    return false;
+      //  }
 
-    //  eImageFormat = BGR; 
-    //  break;
+      //  eImageFormat = BGR; 
+      //  break;
 
-    //case CImage::BGRA: 
-    //  
-    //  if ( glExt::EXT_bgra == false )
-    //  {
-    //    // not supported
-    //    return false;
-    //  }
+      //case CImage::BGRA: 
+      //  
+      //  if ( glExt::EXT_bgra == false )
+      //  {
+      //    // not supported
+      //    return false;
+      //  }
 
-    //  eImageFormat = BGRA; 
-    //  break;
+      //  eImageFormat = BGRA; 
+      //  break;
     
-    default:
+      default:
 
-      EGE_ASSERT(false && "Invalid format");
-      return EGE_ERROR_NOT_SUPPORTED;
+        EGE_ASSERT(false && "Invalid format");
+        return EGE_ERROR_NOT_SUPPORTED;
+    }
+  }
+  else
+  {
+    // S3TC compression
+    if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_S3TC))
+    {
+      switch (d_func()->format())
+      {
+        case PF_RGB_888:   imageFormat = GL_RGB; internalFormat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT; break;
+        case PF_RGBA_8888: imageFormat = GL_RGBA; internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT; break;
+      }
+    }
+    // PVRTC
+    else if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC))
+    {
+      switch (d_func()->format())
+      {
+        case PF_RGB_888:   imageFormat = GL_RGB; internalFormat = GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG; break;
+        case PF_RGBA_8888: imageFormat = GL_RGBA; internalFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG; break;
+      }
+    }
   }
 
   // determine texture format
@@ -188,18 +231,6 @@ EGEResult Texture2DPrivate::create()
   //    assert( "implement mipmapping via gluBuild2DMipmaps and make sure glTexImage2D is not called!!!" );
   //  }
   //}
-
-  // check if compression enabled
-  //if ( m_bCompression == true && glExt::EXT_texture_compression_s3tc == true )
-  //{
-  //  switch( eFormat )
-  //  {
-  //    case CTexture::RGB:  eFormat = RGB_DXT1; break;
-  //    case CTexture::RGBA: eFormat = RGBA_DXT5; break;
-  //  }
-  //}
-
-  GLenum error2 = glGetError();
 
   // create texture
   // NOTE: for compatibility with OpenGLES 'internalFormat' MUST be the same as 'imageFormat'

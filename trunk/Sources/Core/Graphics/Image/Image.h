@@ -9,77 +9,74 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(Image, PImage)
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 EGE_DECLARE_SMART_CLASS(Object, PObject)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Image : public Object
 {
   friend class ImageUtils;
-
+  
   public:
 
     Image(Application* app);
-    Image(Application* app, s32 width, s32 height, EGEImage::Format format);
+    Image(Application* app, s32 width, s32 height, PixelFormat format);
    ~Image();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  public:
+
+    /* Loads image from given file converting it's pixel format to requested one if possible. 
+       @param fileName  File name to load image from.
+       @param format    Pixel format loaded image should be converted to.
+       @return Loaded image on success. NULL otherwise.
+       @note If requested pixel format is PF_UNKNOWN no conversion is done.
+     */
+    static PImage Load(const String& fileName, PixelFormat format = PF_UNKNOWN);
+    /* Loads image from given buffer converting it's pixel format to requested one if possible. 
+       @param buffer  Buffer containing data to load image from.
+       @param format  Pixel format loaded image should be converted to.
+       @return Loaded image on success. NULL otherwise.
+       @note If requested pixel format is PF_UNKNOWN no conversion is done.
+     */
+    static PImage Load(const PDataBuffer& buffer, PixelFormat format = PF_UNKNOWN);
+    /* Saves image into a given file with specified pixel format. 
+       @param image     Image to save.
+       @param fileName  File name to which the file should be saved.
+       @param format    Pixel format of the saved image.
+       @return EGE_SUCCESS on success.
+       @note If requested pixel format is PF_UNKNOWN image will be saved with current image pixel format.
+     */
+    static EGEResult Save(PImage image, const String& fileName, PixelFormat format = PF_UNKNOWN);
+
+  public:
+
     /* Returns TRUE if object is valid. */
     bool isValid() const;
-    /* Loads image from file converting it's format to requested one. */
-    EGEResult load(const String& fileName, EGEImage::Format format = EGEImage::NONE);
-    /* Creates image from buffer converting it's format to requested one. */
-    EGEResult create(const PDataBuffer& buffer, EGEImage::Format format = EGEImage::NONE);
-    /* Saves image into a given file with specified format. */
-    EGEResult save(const String& fileName, EGEImage::Format format = EGEImage::NONE);
     /*! Gets image width (in pixels) */
     inline s32 width() const { return m_width; }
     /*! Gets image height (in pixels) */
     inline s32 height() const { return m_height; }
     /*! Gets image format */
-    inline EGEImage::Format format() const { return m_format; }
+    inline PixelFormat format() const { return m_format; }
     /*! Gets image pixel data buffer */
     inline PDataBuffer data() const { return m_data; }
     /*! Returns TRUE if image contains alpha channel. */
-    inline bool hasAlpha() const { return EGEImage::RGBA_8888 == m_format; }
-    
-  protected:
-
-    /*! Available stream types. */
-    enum StreamType
-    {
-      STREAM_TYPE_UNKNOWN = -1,
-      STREAM_TYPE_PNG,
-      STREAM_TYPE_JPG
-    };
-
-    /* Determines file stream type. */
-    StreamType determineStreamType(File& file) const;
-    /* Determines file stream type. */
-    StreamType determineStreamType(const PDataBuffer& data) const;
+    inline bool hasAlpha() const { return PF_RGBA_8888 == m_format; }
+    /*! Returns row length (in bytes). */
+    inline u32 rowLength() const { return m_rowLength; }
 
   private:
 
-    /* Decompresses PNG data from given source and converts it into requested format. */
-    EGEResult decompressPng(PObject source, EGEImage::Format format);
-    /* Decompresses JPG data from given source and converts it into requested format. */
-    EGEResult decompressJpg(PObject source, EGEImage::Format format);
-    /* Saves PNG file and converts it into requested format. */
-    EGEResult savePng(File& file, EGEImage::Format format);
-    /* Saves JPG file and converts it into requested format. */
-    EGEResult saveJpg(File& file, EGEImage::Format format);
     /* Allocated internal data buffer to be able to hold image of a given size and format. */
-    EGEResult allocateData(s32 width, s32 height, EGEImage::Format format);
+    EGEResult allocateData(s32 width, s32 height, PixelFormat format);
 
   private:
 
     /*! Image pixel format. */
-    EGEImage::Format m_format;
+    PixelFormat m_format;
     /*! Pixel data. */
     PDataBuffer m_data;
     /*! Row length (in bytes) */
@@ -89,7 +86,6 @@ class Image : public Object
     /*! Image height (in pixels) */
     s32 m_height;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

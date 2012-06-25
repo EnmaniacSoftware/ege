@@ -48,7 +48,8 @@ static EGETexture::AddressingMode MapTextureAddressingName(const String& name, E
   return defaultValue; //EGETexture::AM_REPEAT;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceTexture::ResourceTexture(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_TEXTURE)
+ResourceTexture::ResourceTexture(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_TEXTURE),
+                                                                               m_compression(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -69,9 +70,9 @@ PResource ResourceTexture::Create(Application* app, ResourceManager* manager, co
   PResourceTexture resource = Create(app, manager);
   if (resource)
   {
-    resource->m_name    = name;
-    resource->m_texture = texture;
-    resource->m_manual  = true;
+    resource->m_name        = name;
+    resource->m_texture     = texture;
+    resource->m_manual      = true;
   }
 
   return resource;
@@ -103,6 +104,7 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   m_addressingModeS = MapTextureAddressingName(tag->attribute("mode-s").toLower(), EGETexture::AM_REPEAT);
   m_addressingModeT = MapTextureAddressingName(tag->attribute("mode-t").toLower(), EGETexture::AM_REPEAT);
   m_rotation        = tag->attribute("rotation", "0").toAngle(&error);
+  m_compression     = tag->attribute("compress", "false").toBool(&error);
 
   // check if obligatory data is wrong
   if (m_name.empty() || m_path.empty() || m_type.empty() || error)
@@ -153,6 +155,7 @@ EGEResult ResourceTexture::create2D()
   texture->setMagFilter(magFilter());
   texture->setTextureAddressingModeS(adressingModeS());
   texture->setTextureAddressingModeT(adressingModeT());
+  texture->setCompressionEnabled(m_compression);
 
   // create it
   result = texture->create(path());

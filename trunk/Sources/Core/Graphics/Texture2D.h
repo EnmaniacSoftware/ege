@@ -31,7 +31,7 @@ class Texture2D : public Object
   public:
 
     /* Creates render texture. */
-    static PTexture2D CreateRenderTexture(Application* app, const String& name, s32 width, s32 height, EGEImage::Format format);
+    static PTexture2D CreateRenderTexture(Application* app, const String& name, s32 width, s32 height, PixelFormat format);
 
   public:
 
@@ -58,7 +58,11 @@ class Texture2D : public Object
     /*! Returns height. */
     inline s32 height() const { return m_height; }
     /*! Returns pixel format. */
-    inline EGEImage::Format format() const { return m_format; }
+    inline PixelFormat format() const { return m_format; }
+    /* Enables/disables compression. */
+    void setCompressionEnabled(bool set);
+    /*! Returns compression flag. */
+    inline bool isCompressionEnabled() const { return m_compression; }
 
   private:
 
@@ -81,7 +85,9 @@ class Texture2D : public Object
     /*! Texture height. */
     s32 m_height;
     /*! Pixel format. */
-    EGEImage::Format m_format;
+    PixelFormat m_format;
+    /*! Compression flag. */
+    bool m_compression;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

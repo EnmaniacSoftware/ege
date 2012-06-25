@@ -706,6 +706,17 @@ void RendererPrivate::detectCapabilities()
     glBlendFuncSeparate = (PFNGLBLENDFUNCSEPARATEPROC) wglGetProcAddress("glBlendFuncSeparateEXT");
   }
 
+  // check for texture compressions support
+  if (isExtensionSupported("GL_IMG_texture_compression_pvrtc"))
+  {
+    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC, true);
+  }
+
+  if (isExtensionSupported("GL_EXT_texture_compression_s3tc"))
+  {
+    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_S3TC, true);
+  }
+
   // Point sprite size array is not supported by default
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE_SIZE, false);
 }

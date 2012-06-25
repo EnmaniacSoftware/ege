@@ -246,6 +246,10 @@ files
  	(../../Sources/Core/Graphics/Image)
 	Image.cpp
 	Image.h
+  ImageHandlerJPG.cpp
+  ImageHandlerJPG.h
+  ImageHandlerPNG.cpp
+  ImageHandlerPNG.h
 	ImageUtils.cpp
 	ImageUtils.h
 

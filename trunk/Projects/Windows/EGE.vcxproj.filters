@@ -696,6 +696,12 @@
     <ClCompile Include="..\..\Sources\Core\UI\UIScrollableView.cpp">
       <Filter>Core\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPNG.cpp">
+      <Filter>Core\Graphics\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageHandlerJPG.cpp">
+      <Filter>Core\Graphics\Image</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1358,6 +1364,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\UI\UIScrollableView.h">
       <Filter>Core\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPNG.h">
+      <Filter>Core\Graphics\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageHandlerJPG.h">
+      <Filter>Core\Graphics\Image</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

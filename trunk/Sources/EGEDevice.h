@@ -46,6 +46,8 @@ namespace EGEDevice
     RENDER_CAPS_POINT_SPRITE_SIZE,                        /*!< Point sprite size array supported (ie. glPointSizePointerOES). */
     RENDER_CAPS_BLEND_MINMAX,                             /*!< Min and Max blending functions supported (thru glBlendEquation). */
     RENDER_CAPS_MAP_BUFFER,                               /*!< Mapping of VBO starage in client memory space (thru glMapBuffer etc). */
+    RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC,                /*!< Tetxure compression using PVRTC (GL_IMG_texture_compression_pvrtc). */
+    RENDER_CAPS_TEXTURE_COMPRESSION_S3TC,                 /*!< Tetxure compression using S3TC (GL_EXT_texture_compression_s3tc). */
     RENDER_CAPS_COUNT
   };
 }

@@ -89,6 +89,8 @@ class ResourceTexture : public IResource
     PObject m_texture;
     /*! Rotation angle. */
     Angle m_rotation;
+    /*! Compression flag. */
+    bool m_compression;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

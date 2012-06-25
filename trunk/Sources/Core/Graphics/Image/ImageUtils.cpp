@@ -10,23 +10,23 @@ typedef void (*PFNFILLLINEBLTFUNC) (void* dst, u32 color, s32 length);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct ScanLineEntry
 {
-  EGEImage::Format dstFormat;
-  EGEImage::Format srcFormat;
+  PixelFormat dstFormat;
+  PixelFormat srcFormat;
 
   PFNSCANLINEBLTFUNC scanline;
 };
 
-static struct ScanLineEntry ScanLines[] = { {EGEImage::RGBA_8888, EGEImage::RGBA_8888, ImageUtils::ScanLineBltRGBA8888ToRGBA8888},
-                                            {EGEImage::RGB_888, EGEImage::RGBA_8888, ImageUtils::ScanLineBltRGBA8888ToRGB888}
+static struct ScanLineEntry ScanLines[] = { {PF_RGBA_8888, PF_RGBA_8888, ImageUtils::ScanLineBltRGBA8888ToRGBA8888},
+                                            {PF_RGB_888, PF_RGBA_8888, ImageUtils::ScanLineBltRGBA8888ToRGB888}
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns given format pixel size (in bytes). */
-u32 ImageUtils::PixelSize(EGEImage::Format format)
+u32 ImageUtils::PixelSize(PixelFormat format)
 {
   switch (format)
   {
-    case EGEImage::RGB_888:   return 3;
-    case EGEImage::RGBA_8888: return 4;
+    case PF_RGB_888:   return 3;
+    case PF_RGBA_8888: return 4;
   }
 
   return 0;
@@ -158,7 +158,7 @@ void ImageUtils::Fill(PImage& dst, const Recti& dstRect, const Color& color)
   PFNFILLLINEBLTFUNC filline = NULL;
   switch (dst->format())
   {
-    case EGEImage::RGBA_8888: 
+    case PF_RGBA_8888: 
       
       filline = FillLineBltRGBA8888; 
       nativeColor = color.packed();

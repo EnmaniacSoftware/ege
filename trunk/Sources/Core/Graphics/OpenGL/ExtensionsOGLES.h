@@ -30,6 +30,12 @@ extern PFNGLFRAMEBUFFERTEXTURE2DOESPROC glFramebufferTexture2D;
 extern PFNGLMAPBUFFEROESPROC glMapBuffer;
 extern PFNGLUNMAPBUFFEROESPROC glUnmapBuffer;
 
+// Texture Compression S3TC
+#define GL_COMPRESSED_RGB_S3TC_DXT1_EXT   0x83F0
+#define GL_COMPRESSED_RGBA_S3TC_DXT1_EXT  0x83F1
+#define GL_COMPRESSED_RGBA_S3TC_DXT3_EXT  0x83F2
+#define GL_COMPRESSED_RGBA_S3TC_DXT5_EXT  0x83F3
+
 #define GL_WRITE_ONLY GL_WRITE_ONLY_OES
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
