@@ -31,7 +31,8 @@ EGE_DEFINE_DELETE_OPERATORS(Texture2DPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Texture2DPrivate::Texture2DPrivate(Texture2D* base) : m_d(base), 
                                                       m_id(0), 
-                                                      m_internalFormat(0)
+                                                      m_internalFormat(0),
+                                                      m_typeFormat(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -65,7 +66,7 @@ EGEResult Texture2DPrivate::create(const String& path)
   }
 
   // copy pixel data
-  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d_func()->width(), d_func()->height(), m_internalFormat, GL_UNSIGNED_BYTE, image->data()->data());
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d_func()->width(), d_func()->height(), m_internalFormat, m_typeFormat, image->data()->data());
 
   // check for error
   GLenum error;
@@ -104,7 +105,7 @@ EGEResult Texture2DPrivate::create(const PDataBuffer& buffer)
   }
 
   // copy pixel data
-  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d_func()->width(), d_func()->height(), m_internalFormat, GL_UNSIGNED_BYTE, image->data()->data());
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d_func()->width(), d_func()->height(), m_internalFormat, m_typeFormat, image->data()->data());
   
   // check for error
   GLenum error;
@@ -138,15 +139,20 @@ EGEResult Texture2DPrivate::create()
   //}
 
   // get input image and texture format
-  GLint internalFormat = 0;
-  GLenum imageFormat = 0;
+  GLint internalFormat  = 0;
+  GLenum imageFormat    = 0;
+  GLenum type           = GL_UNSIGNED_BYTE;
 
   if (true)//!d_func()->isCompressionEnabled())
   {
     switch (d_func()->format())
     {
-      case PF_RGBA_8888: imageFormat = GL_RGBA; internalFormat = GL_RGBA; break;
-      case PF_RGB_888:   imageFormat = GL_RGB; internalFormat = GL_RGB; break;
+      case PF_RGBA_8888: imageFormat = GL_RGBA; internalFormat = GL_RGBA; type = GL_UNSIGNED_BYTE; break;
+      case PF_RGB_888:   imageFormat = GL_RGB;  internalFormat = GL_RGB; type = GL_UNSIGNED_BYTE; break;
+      case PF_RGBA_5551: imageFormat = GL_RGBA; internalFormat = GL_RGBA; type = GL_UNSIGNED_SHORT_5_5_5_1; break;
+      case PF_RGBA_4444: imageFormat = GL_RGBA; internalFormat = GL_RGBA; type = GL_UNSIGNED_SHORT_4_4_4_4; break;
+      case PF_RGB_565:   imageFormat = GL_RGB;  internalFormat = GL_RGB; type = GL_UNSIGNED_SHORT_5_6_5; break;
+
       //case CImage::RGB:  eImageFormat = RGB; break;  
       //case CImage::BGR: 
       //  
@@ -234,10 +240,11 @@ EGEResult Texture2DPrivate::create()
 
   // create texture
   // NOTE: for compatibility with OpenGLES 'internalFormat' MUST be the same as 'imageFormat'
-  glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, d_func()->width(), d_func()->height(), 0, imageFormat, GL_UNSIGNED_BYTE, NULL);
+  glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, d_func()->width(), d_func()->height(), 0, imageFormat, type, NULL);
  
-  // store internal format
+  // store data
   m_internalFormat = internalFormat;
+  m_typeFormat     = type;
 
   // check for error
   GLenum error;

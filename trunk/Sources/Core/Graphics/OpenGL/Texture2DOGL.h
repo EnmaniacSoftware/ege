@@ -8,7 +8,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Texture2DPrivate
 {
   public:
@@ -45,8 +44,9 @@ class Texture2DPrivate
     GLuint m_id;
     /*! Texture internal format. */
     GLenum m_internalFormat;
+    /*! Texture type format. */
+    GLenum m_typeFormat;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

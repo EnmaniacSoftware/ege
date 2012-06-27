@@ -66,9 +66,9 @@ class DataBuffer : public Object
     inline s64 readOffset() const { return m_readOffset; }
     
     /* Sets byte ordering. */
-    void setByteOrdering(EGEByteOrder::Ordering ordering);
+    void setByteOrdering(Endianness ordering);
     /*! Returns current byte ordering. */
-    inline EGEByteOrder::Ordering byteOrdering() const { return m_byteOrdering; }
+    inline Endianness byteOrdering() const { return m_byteOrdering; }
 
     DataBuffer& operator << (u8 value);
     DataBuffer& operator << (s8 value);
@@ -108,7 +108,7 @@ class DataBuffer : public Object
     /*! TRUE if internal data can be changed, ie. realloc, free etc. */
     bool m_mutable;
     /*! Current byte ordering. */
-    EGEByteOrder::Ordering m_byteOrdering;
+    Endianness m_byteOrdering;
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

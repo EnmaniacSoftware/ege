@@ -283,7 +283,7 @@ bool AudioCodecOgg::reset()
 
   // preallocate memory for 512 samples
   m_overflousDecodedSamples.setCapacity(512 * (m_channels * (m_bitsPerSample >> 3)));
-  m_overflousDecodedSamples.setByteOrdering(EGEByteOrder::LITTLE_ENDIAN);
+  m_overflousDecodedSamples.setByteOrdering(LITTLE_ENDIAN);
 
   return true;
 }

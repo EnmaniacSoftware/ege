@@ -15,7 +15,7 @@ DataBuffer::DataBuffer() : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER),
                            m_readOffset(0), 
                            m_writeOffset(0), 
                            m_mutable(true),
-                           m_byteOrdering(EGEByteOrder::LITTLE_ENDIAN)
+                           m_byteOrdering(LITTLE_ENDIAN)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ DataBuffer::DataBuffer(void* data, s64 size) : Object(NULL, EGE_OBJECT_UID_DATA_
                                                m_readOffset(0), 
                                                m_writeOffset(0), 
                                                m_mutable(false),
-                                               m_byteOrdering(EGEByteOrder::LITTLE_ENDIAN)
+                                               m_byteOrdering(LITTLE_ENDIAN)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -191,7 +191,7 @@ s64 DataBuffer::setReadOffset(s64 offset)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets byte ordering. */
-void DataBuffer::setByteOrdering(EGEByteOrder::Ordering ordering)
+void DataBuffer::setByteOrdering(Endianness ordering)
 {
   m_byteOrdering = ordering;
 }

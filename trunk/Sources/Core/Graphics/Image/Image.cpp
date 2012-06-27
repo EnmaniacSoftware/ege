@@ -2,6 +2,7 @@
 #include "Core/Data/DataBuffer.h"
 #include "Core/Graphics/Image/ImageHandlerPNG.h"
 #include "Core/Graphics/Image/ImageHandlerJPG.h"
+#include "Core/Graphics/Image/ImageHandlerPVR.h"
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
@@ -14,11 +15,13 @@ Image::Image(Application* app) : Object(app, EGE_OBJECT_UID_IMAGE),
                                  m_format(PF_UNKNOWN), 
                                  m_rowLength(0), 
                                  m_width(0), 
-                                 m_height(0)
+                                 m_height(0),
+                                 m_premultiplied(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Image::Image(Application* app, s32 width, s32 height, PixelFormat format) : Object(app, EGE_OBJECT_UID_IMAGE)
+Image::Image(Application* app, s32 width, s32 height, PixelFormat format) : Object(app, EGE_OBJECT_UID_IMAGE),
+                                                                            m_premultiplied(false)
 {
   // allocate empty image
   allocateData(width, height, format);
@@ -67,6 +70,15 @@ PImage Image::Load(const String& fileName, PixelFormat format)
     {
       // load it
       image = ImageHandlerPNG::Load(file, format);
+    }
+  }
+  // check if PVR
+  else if (ImageHandlerPVR::IsValidFormat(file))
+  {
+    if (-1 != file.seek(0L, EGEFile::SEEK_MODE_BEGIN))
+    {
+      // load it
+      image = ImageHandlerPVR::Load(file, format);
     }
   }
 
@@ -187,6 +199,12 @@ EGEResult Image::allocateData(s32 width, s32 height, PixelFormat format)
   m_height = height;
 
   return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets alpha premultiply flag. */
+void Image::setAlphaPremultiply(bool set)
+{
+  m_premultiplied = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

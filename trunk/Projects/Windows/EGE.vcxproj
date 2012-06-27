@@ -54,6 +54,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\Image.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageHandlerJPG.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPNG.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPVR.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageUtils.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\IndexBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\Image.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageHandlerJPG.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPNG.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPVR.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\IndexBufferTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.h" />

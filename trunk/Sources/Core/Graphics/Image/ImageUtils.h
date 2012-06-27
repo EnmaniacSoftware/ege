@@ -40,6 +40,17 @@ class ImageUtils
     /* Fills region of image with given color. */
     static void Fill(PImage& dst, const Recti& dstRect, const Color& color);
 
+    /* Creates image from given data.
+     * @param width         Image width (in pixels).
+     * @param height        Image height (in pixels).
+     * @param format        Pixel format (in pixells).
+     * @param premultiplied TRUE if alpha premultiplication is applied.
+     * @param rowLength     Length of single row (in bytes).
+     * @param data          Pixel data buffer.
+     * @return  On success newly created image. NULL otherwise.
+     */
+    static PImage CreateImage(s32 width, s32 height, PixelFormat format, bool premultiplied, s32 rowLength, const PDataBuffer& data);
+
   public:
 
     /* Performs scan line bit blit from RGBA8888 format onto RGBA8888 format. */

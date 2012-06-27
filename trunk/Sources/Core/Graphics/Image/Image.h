@@ -16,7 +16,7 @@ EGE_DECLARE_SMART_CLASS(Object, PObject)
 class Image : public Object
 {
   friend class ImageUtils;
-  
+
   public:
 
     Image(Application* app);
@@ -67,6 +67,10 @@ class Image : public Object
     inline bool hasAlpha() const { return PF_RGBA_8888 == m_format; }
     /*! Returns row length (in bytes). */
     inline u32 rowLength() const { return m_rowLength; }
+    /* Sets alpha premultiply flag. */
+    void setAlphaPremultiply(bool set);
+    /*! Returns TRUE if image is alpha premultiplied. */
+    inline bool isAlphaPremultiplied() const { return m_premultiplied; }
 
   private:
 
@@ -85,6 +89,8 @@ class Image : public Object
     s32 m_width;
     /*! Image height (in pixels) */
     s32 m_height;
+    /*! Alpha pre-multiplied flag. */
+    bool m_premultiplied;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
