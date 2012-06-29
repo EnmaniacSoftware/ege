@@ -17,7 +17,12 @@ enum PixelFormat
   PF_PVRTC_RGB_2BPP,      /*!< PVRTC 2 bits per pixel compressed RGB image. */
   PF_PVRTC_RGB_4BPP,      /*!< PVRTC 4 bits per pixel compressed RGB image. */
   PF_PVRTC_RGBA_2BPP,     /*!< PVRTC 2 bits per pixel compressed RGBA image. */
-  PF_PVRTC_RGBA_4BPP      /*!< PVRTC 4 bits per pixel compressed RGBA image. */
+  PF_PVRTC_RGBA_4BPP,     /*!< PVRTC 4 bits per pixel compressed RGBA image. */
+  PF_DXT1,                /*!< DXT1 4 bits per pixel compressed RGB image. */
+  PF_DXT2,                /*!< DXT2 8 bits per pixel compressed RGBA image (alpha pre-mulitplied). Sharp alpha. */
+  PF_DXT3,                /*!< DXT3 8 bits per pixel compressed RGBA image. Sharp alpha. */
+  PF_DXT4,                /*!< DXT4 8 bits per pixel compressed RGBA image (alpha pre-multiplied). Smooth alpha. */
+  PF_DXT5                 /*!< DXT5 8 bits per pixel compressed RGBA image. Smooth alpha. */
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

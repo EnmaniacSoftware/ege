@@ -198,10 +198,15 @@ PImage ImageHandlerPVR::Load(PObject buffer, PixelFormat format)
   {
     switch (pixelFormatLow)
     {
-      case 0: format = PF_PVRTC_RGB_2BPP; break;
-      case 1: format = PF_PVRTC_RGBA_2BPP; break;
-      case 2: format = PF_PVRTC_RGB_4BPP; break;
-      case 3: format = PF_PVRTC_RGBA_4BPP; break;
+      case 0:   format = PF_PVRTC_RGB_2BPP; break;
+      case 1:   format = PF_PVRTC_RGBA_2BPP; break;
+      case 2:   format = PF_PVRTC_RGB_4BPP; break;
+      case 3:   format = PF_PVRTC_RGBA_4BPP; break;
+      case 7:   format = PF_DXT1; break;
+      case 8:   format = PF_DXT2; break;
+      case 9:   format = PF_DXT3; break;
+      case 10:  format = PF_DXT4; break;
+      case 11:  format = PF_DXT5; break;
     }
   }
   else

@@ -207,5 +207,26 @@ void Image::setAlphaPremultiply(bool set)
   m_premultiplied = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if image is compressed. */
+bool Image::isCompressed() const
+{
+  switch (m_format)
+  {
+    case PF_PVRTC_RGB_2BPP:
+    case PF_PVRTC_RGB_4BPP:
+    case PF_PVRTC_RGBA_2BPP:
+    case PF_PVRTC_RGBA_4BPP:
+    case PF_DXT1:
+    case PF_DXT2:
+    case PF_DXT3:
+    case PF_DXT4:
+    case PF_DXT5:
+
+      return true;
+  }
+
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

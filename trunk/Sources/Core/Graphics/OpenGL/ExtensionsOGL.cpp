@@ -32,4 +32,7 @@ PFNGLPOINTPARAMETERFVARBPROC glPointParameterfv = NULL;
 PFNGLBLENDEQUATIONPROC glBlendEquation = NULL;
 PFNGLBLENDFUNCSEPARATEPROC glBlendFuncSeparate = NULL;
 
+// texture compression
+PFNGLCOMPRESSEDTEXIMAGE2DPROC glCompressedTexImage2D = NULL;
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

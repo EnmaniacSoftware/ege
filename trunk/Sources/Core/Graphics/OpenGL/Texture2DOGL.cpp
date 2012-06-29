@@ -53,27 +53,11 @@ EGEResult Texture2DPrivate::create(const String& path)
     return EGE_ERROR;
   }
 
-  // set texture data
-  d_func()->m_width  = image->width();
-  d_func()->m_height = image->height();
-  d_func()->m_format = image->format();
-
-  // create empty texture
-  if (EGE_SUCCESS != (result = create()))
+  // create texture
+  if (EGE_SUCCESS != (result = create(image)))
   {
     // error!
     return result;
-  }
-
-  // copy pixel data
-  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d_func()->width(), d_func()->height(), m_internalFormat, m_typeFormat, image->data()->data());
-
-  // check for error
-  GLenum error;
-  if (GL_NO_ERROR != (error = glGetError()))
-  {
-    // error!
-    return EGE_ERROR;
   }
 
   return EGE_SUCCESS;
@@ -92,35 +76,24 @@ EGEResult Texture2DPrivate::create(const PDataBuffer& buffer)
     return EGE_ERROR;
   }
 
-  // set texture data
-  d_func()->m_width  = image->width();
-  d_func()->m_height = image->height();
-  d_func()->m_format = image->format();
-
-  // create empty texture
-  if (EGE_SUCCESS != (result = create()))
+  // create texture
+  if (EGE_SUCCESS != (result = create(image)))
   {
     // error!
     return result;
   }
 
-  // copy pixel data
-  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, d_func()->width(), d_func()->height(), m_internalFormat, m_typeFormat, image->data()->data());
-  
-  // check for error
-  GLenum error;
-  if (GL_NO_ERROR != (error = glGetError()))
-  {
-    // error!
-    return EGE_ERROR;
-  }
-
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates texture empty from current data. */
-EGEResult Texture2DPrivate::create()
+/*! Creates texture from given image data. */
+EGEResult Texture2DPrivate::create(const PImage& image)
 {
+  // set texture data
+  d_func()->m_width  = image->width();
+  d_func()->m_height = image->height();
+  d_func()->m_format = image->format();
+
   // setup 4 byte alignment
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
@@ -143,66 +116,74 @@ EGEResult Texture2DPrivate::create()
   GLenum imageFormat    = 0;
   GLenum type           = GL_UNSIGNED_BYTE;
 
-  if (true)//!d_func()->isCompressionEnabled())
+  switch (d_func()->format())
   {
-    switch (d_func()->format())
-    {
-      case PF_RGBA_8888: imageFormat = GL_RGBA; internalFormat = GL_RGBA; type = GL_UNSIGNED_BYTE; break;
-      case PF_RGB_888:   imageFormat = GL_RGB;  internalFormat = GL_RGB; type = GL_UNSIGNED_BYTE; break;
-      case PF_RGBA_5551: imageFormat = GL_RGBA; internalFormat = GL_RGBA; type = GL_UNSIGNED_SHORT_5_5_5_1; break;
-      case PF_RGBA_4444: imageFormat = GL_RGBA; internalFormat = GL_RGBA; type = GL_UNSIGNED_SHORT_4_4_4_4; break;
-      case PF_RGB_565:   imageFormat = GL_RGB;  internalFormat = GL_RGB; type = GL_UNSIGNED_SHORT_5_6_5; break;
+    case PF_RGBA_8888:        imageFormat = GL_RGBA;  internalFormat = GL_RGBA; type = GL_UNSIGNED_BYTE; break;
+    case PF_RGB_888:          imageFormat = GL_RGB;   internalFormat = GL_RGB;  type = GL_UNSIGNED_BYTE; break;
+    case PF_RGBA_5551:        imageFormat = GL_RGBA;  internalFormat = GL_RGBA; type = GL_UNSIGNED_SHORT_5_5_5_1; break;
+    case PF_RGBA_4444:        imageFormat = GL_RGBA;  internalFormat = GL_RGBA; type = GL_UNSIGNED_SHORT_4_4_4_4; break;
+    case PF_RGB_565:          imageFormat = GL_RGB;   internalFormat = GL_RGB;  type = GL_UNSIGNED_SHORT_5_6_5; break;
+    case PF_PVRTC_RGB_2BPP:   imageFormat = GL_RGB;   internalFormat = GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG; break;
+    case PF_PVRTC_RGB_4BPP:   imageFormat = GL_RGB;   internalFormat = GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG; break;
+    case PF_PVRTC_RGBA_2BPP:  imageFormat = GL_RGBA;  internalFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG; break;
+    case PF_PVRTC_RGBA_4BPP:  imageFormat = GL_RGBA;  internalFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG; break;
+    case PF_DXT1:             imageFormat = GL_RGB;   internalFormat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT; break;
+    case PF_DXT2:             imageFormat = GL_RGBA;  internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT; break;
+    case PF_DXT3:             imageFormat = GL_RGBA;  internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT; break;
+    case PF_DXT5:             imageFormat = GL_RGBA;  internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT; break;
 
-      //case CImage::RGB:  eImageFormat = RGB; break;  
-      //case CImage::BGR: 
-      //  
-      //  if ( glExt::EXT_bgra == false )
-      //  {
-      //    // not supported
-      //    return false;
-      //  }
+    //case CImage::RGB:  eImageFormat = RGB; break;  
+    //case CImage::BGR: 
+    //  
+    //  if ( glExt::EXT_bgra == false )
+    //  {
+    //    // not supported
+    //    return false;
+    //  }
 
-      //  eImageFormat = BGR; 
-      //  break;
+    //  eImageFormat = BGR; 
+    //  break;
 
-      //case CImage::BGRA: 
-      //  
-      //  if ( glExt::EXT_bgra == false )
-      //  {
-      //    // not supported
-      //    return false;
-      //  }
+    //case CImage::BGRA: 
+    //  
+    //  if ( glExt::EXT_bgra == false )
+    //  {
+    //    // not supported
+    //    return false;
+    //  }
 
-      //  eImageFormat = BGRA; 
-      //  break;
+    //  eImageFormat = BGRA; 
+    //  break;
     
-      default:
+    default:
 
-        EGE_ASSERT(false && "Invalid format");
-        return EGE_ERROR_NOT_SUPPORTED;
-    }
+      EGE_ASSERT(false && "Invalid format");
+      return EGE_ERROR_NOT_SUPPORTED;
   }
-  else
-  {
-    // S3TC compression
-    if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_S3TC))
-    {
-      switch (d_func()->format())
-      {
-        case PF_RGB_888:   imageFormat = GL_RGB; internalFormat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT; break;
-        case PF_RGBA_8888: imageFormat = GL_RGBA; internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT; break;
-      }
-    }
-    // PVRTC
-    else if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC))
-    {
-      switch (d_func()->format())
-      {
-        case PF_RGB_888:   imageFormat = GL_RGB; internalFormat = GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG; break;
-        case PF_RGBA_8888: imageFormat = GL_RGBA; internalFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG; break;
-      }
-    }
-  }
+ // }
+  //else
+  //{
+  //  // S3TC compression
+  //  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_S3TC))
+  //  {
+  //    switch (d_func()->format())
+  //    {
+  //      case PF_RGB_888:   imageFormat = GL_RGB; internalFormat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT; break;
+  //      case PF_RGBA_8888: imageFormat = GL_RGBA; internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT; break;
+  //    }
+  //  }
+  //  // PVRTC
+  //  else if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC))
+  //  {
+  //    switch (d_func()->format())
+  //    {
+  //      case PF_PVRTC_RGB_2BPP:  imageFormat = GL_RGB; internalFormat = GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG; break;
+  //      case PF_PVRTC_RGB_4BPP:  imageFormat = GL_RGB; internalFormat = GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG; break;
+  //      case PF_PVRTC_RGBA_2BPP: imageFormat = GL_RGBA; internalFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG; break;
+  //      case PF_PVRTC_RGBA_4BPP: imageFormat = GL_RGBA; internalFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG; break;
+  //    }
+  //  }
+  //}
 
   // determine texture format
   //if ( eFormat == CTexture::UNKNOWN )
@@ -238,10 +219,20 @@ EGEResult Texture2DPrivate::create()
   //  }
   //}
 
-  // create texture
-  // NOTE: for compatibility with OpenGLES 'internalFormat' MUST be the same as 'imageFormat'
-  glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, d_func()->width(), d_func()->height(), 0, imageFormat, type, NULL);
- 
+  // check if compressed image data
+  if (image->isCompressed())
+  {
+    // create compressed texture
+		glCompressedTexImage2D(GL_TEXTURE_2D, 0, internalFormat, image->width(), image->height(), 0, static_cast<GLsizei>(image->data()->size()), 
+                           image->data()->data());
+  }
+  else
+  {
+    // create texture
+    // NOTE: for compatibility with OpenGLES 'internalFormat' MUST be the same as 'imageFormat'
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, d_func()->width(), d_func()->height(), 0, imageFormat, type, image->data() ? image->data()->data() : NULL);
+  }
+
   // store data
   m_internalFormat = internalFormat;
   m_typeFormat     = type;

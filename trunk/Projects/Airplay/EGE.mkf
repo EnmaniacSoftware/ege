@@ -250,6 +250,8 @@ files
   ImageHandlerJPG.h
   ImageHandlerPNG.cpp
   ImageHandlerPNG.h
+  ImageHandlerPVR.cpp
+  ImageHandlerPVR.h
 	ImageUtils.cpp
 	ImageUtils.h
 

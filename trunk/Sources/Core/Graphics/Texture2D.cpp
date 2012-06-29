@@ -20,16 +20,19 @@ PTexture2D Texture2D::CreateRenderTexture(Application* app, const String& name, 
   PTexture2D texture = ege_new Texture2D(app, name);
   if (texture && texture->isValid())
   {
-    // set data
-    texture->m_width  = width;
-    texture->m_height = height;
-    texture->m_format = format;
-
     // TAGE - for the time being set to CLAMP so we non-power of 2 render textures can be created for iOS
     texture->setTextureAddressingModeS(EGETexture::AM_CLAMP);
     texture->setTextureAddressingModeT(EGETexture::AM_CLAMP);
 
-    if (EGE_SUCCESS != texture->p_func()->create())
+    // create empty image from which empty texture is to be created
+    PImage image = ImageUtils::CreateImage(width, height, format, false, 0, NULL);
+    if (NULL == image)
+    {
+      // error!
+      return NULL;
+    }
+
+    if (EGE_SUCCESS != texture->p_func()->create(image))
     {
       // error!
       return NULL;
@@ -59,8 +62,7 @@ Texture2D::Texture2D(Application* app, const String& name) : Object(app, EGE_OBJ
                                                              m_addressingModeT(EGETexture::AM_REPEAT), 
                                                              m_width(0), 
                                                              m_height(0), 
-                                                             m_format(PF_UNKNOWN),
-                                                             m_compression(false)
+                                                             m_format(PF_UNKNOWN)
 {
   m_p = ege_new Texture2DPrivate(this);
 }
@@ -127,12 +129,6 @@ void Texture2D::setTextureAddressingModeS(EGETexture::AddressingMode mode)
 void Texture2D::setTextureAddressingModeT(EGETexture::AddressingMode mode)
 {
   m_addressingModeT = mode;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Enables/disables compression. */
-void Texture2D::setCompressionEnabled(bool set)
-{
-  m_compression = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

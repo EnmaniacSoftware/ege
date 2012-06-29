@@ -20,8 +20,6 @@ class Texture2DPrivate
 
     /* Creates texture from given file. */
     EGEResult create(const String& path);
-    /* Creates texture empty from current data. */
-    EGEResult create();
     /* Creates texture from given buffer. */
     EGEResult create(const PDataBuffer& buffer);
     /*! Returns texture ID. */
@@ -35,6 +33,8 @@ class Texture2DPrivate
     GLint mapFilter(EGETexture::Filter filter) const;
     /* Maps texture addressing mode into OpenGL equivalent. */
     GLint mapAddressingMode(EGETexture::AddressingMode mode) const;
+    /* Creates texture from given image data. */
+    EGEResult create(const PImage& image);
 
   private:
 

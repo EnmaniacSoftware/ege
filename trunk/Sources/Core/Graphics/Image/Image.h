@@ -71,6 +71,8 @@ class Image : public Object
     void setAlphaPremultiply(bool set);
     /*! Returns TRUE if image is alpha premultiplied. */
     inline bool isAlphaPremultiplied() const { return m_premultiplied; }
+    /* Returns TRUE if image is compressed. */
+    bool isCompressed() const;
 
   private:
 

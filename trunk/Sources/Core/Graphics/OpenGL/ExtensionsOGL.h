@@ -35,7 +35,10 @@ extern PFNGLPOINTPARAMETERFVARBPROC glPointParameterfv;
 extern PFNGLBLENDEQUATIONPROC glBlendEquation;
 extern PFNGLBLENDFUNCSEPARATEPROC glBlendFuncSeparate;
 
-// Texture compression PVRTC
+// texture compression
+extern PFNGLCOMPRESSEDTEXIMAGE2DPROC glCompressedTexImage2D;
+
+// texture compression PVRTC
 #define GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG			0x8C00
 #define GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG			0x8C01
 #define GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG			0x8C02

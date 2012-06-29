@@ -706,6 +706,9 @@ void RendererPrivate::detectCapabilities()
     glBlendFuncSeparate = (PFNGLBLENDFUNCSEPARATEPROC) wglGetProcAddress("glBlendFuncSeparateEXT");
   }
 
+  // texture compression
+  glCompressedTexImage2D = (PFNGLCOMPRESSEDTEXIMAGE2DPROC) wglGetProcAddress("glCompressedTexImage2D");
+
   // check for texture compressions support
   if (isExtensionSupported("GL_IMG_texture_compression_pvrtc"))
   {

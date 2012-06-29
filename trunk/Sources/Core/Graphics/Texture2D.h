@@ -59,10 +59,6 @@ class Texture2D : public Object
     inline s32 height() const { return m_height; }
     /*! Returns pixel format. */
     inline PixelFormat format() const { return m_format; }
-    /* Enables/disables compression. */
-    void setCompressionEnabled(bool set);
-    /*! Returns compression flag. */
-    inline bool isCompressionEnabled() const { return m_compression; }
 
   private:
 
@@ -86,8 +82,6 @@ class Texture2D : public Object
     s32 m_height;
     /*! Pixel format. */
     PixelFormat m_format;
-    /*! Compression flag. */
-    bool m_compression;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
