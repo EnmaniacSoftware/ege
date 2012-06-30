@@ -1,47 +1,71 @@
-#ifndef FONT_DATA_GENERATOR_H
-#define FONT_DATA_GENERATOR_H
+#ifndef FONT_GENERATOR_H
+#define FONT_GENERATOR_H
 
-#include <EGEImage.h>
-#include <EGEXml.h>
-#include <EGEList.h>
+#include <QtGui/QApplication>
+#include <QString>
+#include <QColor>
+#include <QRect>
+#include <QList>
+#include <QBitArray>
+#include <QImage>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class FontDataGenerator
+class FontDataGenerator : public QApplication
 {
-	 public:
+  Q_OBJECT
 
-		FontDataGenerator(int argc, char** argv);
-	 ~FontDataGenerator();
+  public:
+  
+    FontDataGenerator(int argc, char *argv[]);
+    ~FontDataGenerator();
+    
+  private:
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
-    /* Prints syntax. */
-    void printSyntax() const;
-    /* Processes all data. */
+    /* Starts process. */
     bool process();
+    /* Processes the region.
+       @param   startX          Left position of the region to process within font image (in pixels).
+       @param   startY          Top position of the region to process within font image (in pixels).
+       @param   image           Image on which region is to be processed.
+       @param   processedPixels Bit array containing bits already processed.
+       @note    Method determines the extent of the region based on boarder color. Region is then added into glyphs list.
+     */
+    void processRegion(int startX, int startY, const QImage& image, QBitArray& processedPixels);
+    /* Prints syntax to standard output. */
+    void printSyntax();
+    /* Prints header to standard output. */
+    void printHeader();
+
+  private slots:
+
+    /* Slot called to begin processing. */
+    void onStart();
 
   private:
 
-    /* Prints application info header. */
-    void printHeader() const;
-    /*! Returns output XML file path. */
-    inline const EGE::String& outputXmlPath() const { return m_outputXmlPath; }
-    /* Generates atlases. */
-    bool generateAll();
-    
-	private:
+    /*! Region data struct. */
+    struct RegionData
+    {
+        QRect rect;            /*!< Distinct rectangular area within the image (in pixels). */
+    };
 
-    /*! Input data file path. */
-    EGE::String m_inputDataFilePath;
-    /*! Input texture file path. */
-    EGE::String m_inputTextureFilePath;
-    /*! Output XML data file path. */
-    EGE::String m_outputXmlPath;
-    /*! XML document with atlas generated data. */
-    EGE::PXmlDocument m_atlasData;
+  private:
+
+    /*! Input image file name. */
+    QString m_imageFileName;
+    /*! Input characters data file name. */
+    QString m_charsFileName;
+    /*! Output data file name. */
+    QString m_outputFileName;
+    /*! Font name. */
+    QString m_fontName;
+    /*! Material name. */
+    QString m_materialName;
+    /*! Border color used to seperate characters within input image. */
+    QColor m_borderColor;
+    /*!< List of all regions in the order of appearance. */
+    QList<RegionData> m_regionList;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // TEXTURE_ATLAS_GENERATOR_H
+#endif // FONT_GENERATOR_H

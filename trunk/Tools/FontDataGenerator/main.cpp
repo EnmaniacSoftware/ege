@@ -1,28 +1,14 @@
+#include <QStringList>
+#include <QColor>
+#include <QByteArray>
 #include "FontDataGenerator.h"
-#include <iostream>
+#include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-int main(int argc, char** argv)
-{ 
-  FontDataGenerator generator(argc, argv);
-
-  // check if NOT valid
-  if (!generator.isValid())
-  {
-    // show syntax
-    generator.printSyntax();
-    return 1;
-  }
-
-  // process data
-  if (!generator.process())
-  {
-    // error!
-    std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl << "FAILURE!" << std::endl << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-    return 2;
-  }
-
-  std::cout << "SUCCESS!" << std::endl;
-  return 0;
+int main(int argc, char *argv[])
+{
+  FontDataGenerator a(argc, argv);
+    
+  return a.exec();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

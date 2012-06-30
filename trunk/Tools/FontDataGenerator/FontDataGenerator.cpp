@@ -1,201 +1,289 @@
+#include <QImage>
+#include <QXmlStreamWriter>
+#include <QFile>
+#include <QTextStream>
+#include <QRegExp>
+#include <QTimer>
+#include <QDebug>
 #include "FontDataGenerator.h"
-#include <iostream>
-#include <algorithm>
-#include <EGEDebug.h>
-
-EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define VERSION_MAJOR 0
-#define VERSION_MINOR 1
+#define VERSION 0.1
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FontDataGenerator::FontDataGenerator(int argc, char** argv)
+FontDataGenerator::FontDataGenerator(int argc, char *argv[]) : QApplication(argc, argv),
+                                                               m_fontName("dummy-font-name"),
+                                                               m_materialName("dummy-material-name"),
+                                                               m_borderColor(QColor(255, 0, 255, 255))
 {
-  // go thru all parameters
-  for (s32 i = 0; i < argc;)
+  // process command-line
+  QStringList args = QCoreApplication::arguments();
+  for (int i = 0; i < args.size(); )
   {
-    String opt = argv[i++];
-    String val = (i < argc) ? argv[i] : "";
+    // check if input image file switch
+    if (("--ifile" == args[i]) && (i + 1 < args.size()))
+    {
+      m_imageFileName = args[i + 1];
+      i += 2;
+    }
+    // check if input character data file switch
+    else if (("--cfile" == args[i]) && (i + 1 < args.size()))
+    {
+      m_charsFileName = args[i + 1];
+      i += 2;
+    }
+    // check if output file switch
+    else if (("--o" == args[i]) && (i + 1 < args.size()))
+    {
+      m_outputFileName = args[i + 1];
+      i += 2;
+    }
+    // check if border color switch
+    else if (("--bcolor" == args[i]) && (i + 1 < args.size()))
+    {
+      QString colorString = args[i + 1];
 
-    // check if INPUT DATA switch
-    if ("--input-data" == opt)
-    {
-      if (!val.empty())
+      bool ok;
+      uint colorValue = colorString.toUInt(&ok, 16);
+      if (ok)
       {
-        m_inputDataFilePath = val;
-        ++i;
+        m_borderColor = QColor(colorValue >> 24, (colorValue & 0x00ff0000) >> 16, (colorValue & 0x0000ff00) >> 8, colorValue & 0x000000ff);
       }
+
+      i += 2;
     }
-    // check if INPUT texture switch
-    else if ("--input-textire" == opt)
+    // check if font name switch
+    else if (("--name" == args[i]) && (i + 1 < args.size()))
     {
-      if (!val.empty())
-      {
-        m_inputTextureFilePath = val;
-        ++i;
-      }
+      m_fontName = args[i + 1];
+      i += 2;
     }
-    // check if OUTPUT switch
-    else if ("--output" == opt)
+    // check if material name switch
+    else if (("--material" == args[i]) && (i + 1 < args.size()))
     {
-      if (!val.empty())
-      {
-        m_outputXmlPath = val;
-        ++i;
-      }
+      m_materialName = args[i + 1];
+      i += 2;
     }
-  }
+    else
+    {
+      // go to next
+      ++i;
+    }
+  }          
+
+  // schedule processing
+  QTimer::singleShot(100, this, SLOT(onStart()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 FontDataGenerator::~FontDataGenerator()
 {
-  m_atlasData = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool FontDataGenerator::isValid() const
-{
-  return !m_inputDataFilePath.empty() && !m_outputXmlPath.empty() && !m_inputTextureFilePath.empty();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Prints syntax. */
-void FontDataGenerator::printSyntax() const
-{
-  printHeader();
-
-  std::cout << "Usage syntax:" << std::endl;
-  std::cout << "fntdatagen.exe --input-data [filepath] --input-texture [filepath] --output [filepath]" << std::endl;
-  std::cout << std::endl;
-  std::cout << "--input-data    path to font XML data file." << std::endl;
-  std::cout << "--input-texture path to font texture file." << std::endl;
-  std::cout << "--output        output XML file path" << std::endl;
-  std::cout << std::endl;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Prints application info header. */
-void FontDataGenerator::printHeader() const
-{
-  std::cout << std::endl;
-  std::cout << "Font Data Generator, version " << VERSION_MAJOR << "." << VERSION_MINOR << std::endl;
-  std::cout << "Albert Banaszkiewicz, Little Bee Studios Ltd., 2012" << std::endl;
-  std::cout << std::endl;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Processes all data. */
+/*! Starts process. */
 bool FontDataGenerator::process()
 {
-  // print header
-  printHeader();
+  qDebug() << "Processing" << m_fontName << "...";
 
-  XmlDocument doc;
-  /*
-  // load input data file
-  if (EGE_SUCCESS != doc.load(inputDataFilePath()))
+  // load font image
+  QImage image(m_imageFileName);
+  if (image.isNull())
   {
     // error!
-    std::cout << "ERROR: Could not load data file!" << std::endl;
+    qDebug() << "ERROR: Could not open image file:" << m_imageFileName;
     return false;
   }
 
-  // get root element
-  PXmlElement root = doc.firstChild("resources");
-  if (NULL == root || !root->isValid())
+  QFile charsFile(m_charsFileName);
+  if ( ! charsFile.open(QIODevice::ReadOnly | QIODevice::Text))
   {
     // error!
-    std::cout << "ERROR: Could not locate root element (resources)!" << std::endl;
+    qDebug() << "ERROR: Could not open characters definition file:" << m_charsFileName;
     return false;
   }
 
-  // go thru all atlas groups
-  PXmlElement groupElement = root->firstChild("atlas-group");
-  while (groupElement && groupElement->isValid() && groupElement->hasAttribute("name") && groupElement->hasAttribute("texture-size") && 
-         groupElement->hasAttribute("root") && groupElement->hasAttribute("texture-image"))
-  {
-    AtlasGroup* group = new AtlasGroup(groupElement->attribute("name"), groupElement->attribute("root"), groupElement->attribute("texture-image"), 
-                                       groupElement->attribute("texture-filters", "bilinear"), groupElement->attribute("texture-size").toVector2i(), outputFormat());
-    if (!group || !group->isValid())
-    {
-      // error!
-      EGE_DELETE(group);
-      std::cout << "ERROR: Could not create atlas group: " << groupElement->attribute("name") << std::endl;
-      return false;
-    }
-    
-    // add into pool
-    m_groups.push_back(group);
+  QTextStream in(&charsFile);
+  QString chars = in.readAll();
+  chars.remove(QRegExp("[\n\a]"));
 
-    // go thru all IMAGE entries in current group
-    PXmlElement imageElement = groupElement->firstChild("image");
-    while (imageElement && imageElement->isValid())
+  // create the bit array for fast lookup for processed pixels
+  QBitArray processedPixelArray(image.width() * image.height());
+
+  // scan the image
+  for (int y = 0; y < image.height(); ++y)
+  {
+    for (int x = 0; x < image.width(); ++x)
     {
-      AtlasGroupEntry* entry = new AtlasGroupEntry(imageElement->attribute("name"), imageElement->attribute("path"), imageElement->attribute("spacing").toVector4i());
-      if ((NULL == entry) || !entry->isValid())
+      // check if border color
+      QRgb pixelColor = image.pixel(x, y);
+      if (pixelColor != m_borderColor.rgba())
       {
-        // error!
-        std::cout << "ERROR: Invalid image! Name: " << imageElement->attribute("name").toAscii() << " Path: " << imageElement->attribute("path").toAscii() << " Group: " 
-                  << groupElement->attribute("name").toAscii() << std::endl;
-        return false;
+        // check if NOT already processed
+        if ( ! processedPixelArray.at(x + y * image.width()))
+        {
+          // process region
+          processRegion(x, y, image, processedPixelArray);
+        }
       }
-
-      // add to group
-      group->addEntry(entry);
-
-      // go to next child
-      imageElement = imageElement->nextChild("image");
     }
-
-    // go to next child
-    groupElement = groupElement->nextChild("atlas-group");
   }
 
-  std::cout << "DONE!" << std::endl << std::endl;
-  */
-  // generate atlases
-  return generateAll();
+  // open XML output stream
+  QString output;
+  QXmlStreamWriter stream(&output);
+  stream.setAutoFormatting(true);
+  stream.setAutoFormattingIndent(2);
+
+  // generate XML output
+  stream.writeStartDocument();
+  stream.writeStartElement("font");
+  stream.writeAttribute("name", m_fontName);
+  stream.writeAttribute("material", m_materialName);
+
+  int i = 0;
+  foreach(const RegionData& regionData, m_regionList)
+  {
+    stream.writeStartElement("glyph");
+
+    int character = (i < chars.length()) ? chars.at(i).unicode() : -1;
+    if (-1 == character)
+    {
+      qDebug() << "WARNING: No definition for character at index" << i << "found!";
+    }
+
+    stream.writeAttribute("value", QString::number(character));
+    stream.writeAttribute("width", QString::number(regionData.rect.width()));
+    stream.writeAttribute("image-x", QString::number(static_cast<qreal>(regionData.rect.x()) / image.width()));
+    stream.writeAttribute("image-y", QString::number(static_cast<qreal>(regionData.rect.y()) / image.height()));
+    stream.writeAttribute("image-width", QString::number(static_cast<qreal>(regionData.rect.width()) / image.width()));
+    stream.writeAttribute("image-height", QString::number(static_cast<qreal>(regionData.rect.height()) / image.height()));
+
+    stream.writeEndElement();
+
+    ++i;
+  }
+
+  stream.writeEndElement();
+  stream.writeEndDocument();
+
+  // check for errors
+  if (stream.hasError())
+  {
+    // error!
+    qDebug() << "ERROR: XML generation error!!";
+    return false;
+  }
+
+  // store output to the file
+  QFile outputFile(m_outputFileName);
+  if ( ! outputFile.open(QIODevice::WriteOnly))
+  {
+    // error!
+    qDebug() << "ERROR: Could not open output file:" << m_outputFileName;
+    return false;
+  }
+
+  QTextStream out(&outputFile);
+  out << output;
+  outputFile.close();
+
+  qDebug() << "SUCCESS";
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Generates atlases. */
-bool FontDataGenerator::generateAll()
+/*! Processes the region.
+    @param   startX          Left position of the region to process within font image (in pixels).
+    @param   startY          Top position of the region to process within font image (in pixels).
+    @param   image           Image on which region is to be processed.
+    @param   processedPixels Bit array containing bits already processed.
+    @note    Method determines the extent of the region based on boarder color. Region is then added into glyphs list.
+ */
+void FontDataGenerator::processRegion(int startX, int startY, const QImage& image, QBitArray& processedPixels)
 {
-/*  // create XML document
-  m_atlasData = ege_new XmlDocument();
-  if (NULL == m_atlasData || !m_atlasData->isValid())
+  RegionData regionData;
+  regionData.rect = QRect(startX, startY, 1, 1);
+
+  // scan the image
+  for (int y = startY; y < image.height(); ++y)
+  {
+    // check if we are below the region already
+    QRgb pixelColor = image.pixel(startX, y);
+    if (pixelColor == m_borderColor.rgba())
+    {
+      // done
+      break;
+    }
+
+    for (int x = startX; x < image.width(); ++x)
+    {
+      // check if border color
+      QRgb pixelColor = image.pixel(x, y);
+      if (pixelColor != m_borderColor.rgba())
+      {
+        // mark processed
+        processedPixels.setBit(x + y * image.width());
+
+        regionData.rect.setWidth(x - startX + 1);
+        regionData.rect.setHeight(y - startY + 1);
+      }
+      else
+      {
+        // end of region reached
+        break;
+      }
+    }
+  }
+
+  // add to pool
+  m_regionList.append(regionData);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called to begin processing. */
+void FontDataGenerator::onStart()
+{
+  // show header
+  printHeader();
+
+  // check if required data is missing
+  if (m_imageFileName.isEmpty() || m_outputFileName.isEmpty())
   {
     // error!
-    std::cout << "ERROR: Could not create XML document!" << std::endl;
-    return false;
+    printSyntax();
+    exit(1);
+    return;
   }
-
-  // add root element
-  XmlElement rootElement("resources");
-  m_atlasData->appendElement(rootElement);
-
-  // process all groups one by one
-  for (List<AtlasGroup*>::iterator it = m_groups.begin(); it != m_groups.end();)
+  
+  // process data
+  if (!process())
   {
-    AtlasGroup* group = *it;
-    std::cout << "PROCESSING GROUP " << group->name() << std::endl;
-
-    // reset sort mode
-    m_sortMethod = SM_NONE;
-
-    // generate atlas for current group
-    if (!generate(group))
-    {
-      std::cout << "ERROR: Could not generate atlas for group: " << group->name() << ". Skipping!" << std::endl << std::endl;
-    }
-    else
-    {
-      std::cout << "SUCCESS" << std::endl << std::endl;
-    }
-
-    // remove group
-    m_groups.erase(it++);
+    // error!
+    exit(2);
+    return;
   }
 
-  // save XML data
-  return EGE_SUCCESS == m_atlasData->save(outputXmlPath());
-  */
-  return true;
+  // done
+  exit(0);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Prints syntax to standard output. */
+void FontDataGenerator::printSyntax()
+{
+  qDebug() << "Usage syntax:";
+  qDebug() << "fontgen --ifile <filename> [--cfile <filename>] --o <filename> [--bcolor RRGGBBAA] [--name <name>] [--material <name>]";
+  qDebug() << "";
+  qDebug() << "--ifile      Full path to font image file.";
+  qDebug() << "--cfile      [Optional] Full path to text file containing font characters sequence represented by image.";
+  qDebug() << "--o          Full path to output XML file.";
+  qDebug() << "--bcolor     [Optional] RGBA border color. This is color which seperates characters within image. Default: Magenta FF00FFFF.";
+  qDebug() << "--name       [Optional] Font name.";
+  qDebug() << "--material   [Optional] Material name.";
+  qDebug() << "";
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Prints header to standard output. */
+void FontDataGenerator::printHeader()
+{
+  qDebug() << "";
+  qDebug() << "Font Data Generator, version" << VERSION;
+  qDebug() << "Albert Banaszkiewicz, Little Bee Studios Ltd., 2011-2012";
+  qDebug() << "";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
