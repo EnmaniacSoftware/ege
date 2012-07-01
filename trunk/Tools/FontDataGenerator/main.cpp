@@ -1,14 +1,9 @@
-#include <QStringList>
-#include <QColor>
-#include <QByteArray>
 #include "FontDataGenerator.h"
-#include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   FontDataGenerator a(argc, argv);
-    
   return a.exec();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

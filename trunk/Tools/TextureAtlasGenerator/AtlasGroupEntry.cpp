@@ -1,30 +1,21 @@
 #include "AtlasGroupEntry.h"
 
-EGE_NAMESPACE
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AtlasGroupEntry::AtlasGroupEntry(const String& name, const String& path, const Vector4i& spacing) : m_name(name), m_path(path), m_spacing(spacing)
+AtlasGroupEntry::AtlasGroupEntry(const QString& name, const QString& path, const QVector4D& spacing) : m_name(name), 
+                                                                                                       m_path(path), 
+                                                                                                       m_spacing(spacing)
 {
-  m_image = ege_new EGE::Image(NULL);
-  if (m_image)
-  {
-    // load image 
-    if (EGE::EGE_SUCCESS != m_image->load(m_path, EGE::EGEImage::RGBA_8888))
-    {
-      // error!
-      m_image = NULL;
-    }
-  }
+  m_image.load(m_path);
+  //QImage::Format_ARGB32
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AtlasGroupEntry::~AtlasGroupEntry()
 {
-  m_image = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
 bool AtlasGroupEntry::isValid() const 
 { 
-  return (NULL != m_image) && (EGE::EGEImage::NONE != m_image->format()) && !m_name.empty() && !m_path.empty(); 
+  return !m_image.isNull() && !m_name.isEmpty(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

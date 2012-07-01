@@ -32,9 +32,9 @@ class FontDataGenerator : public QApplication
      */
     void processRegion(int startX, int startY, const QImage& image, QBitArray& processedPixels);
     /* Prints syntax to standard output. */
-    void printSyntax();
+    void printSyntax() const;
     /* Prints header to standard output. */
-    void printHeader();
+    void printHeader() const;
 
   private slots:
 

@@ -264,7 +264,7 @@ void FontDataGenerator::onStart()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Prints syntax to standard output. */
-void FontDataGenerator::printSyntax()
+void FontDataGenerator::printSyntax() const
 {
   qDebug() << "Usage syntax:";
   qDebug() << "fontgen --ifile <filename> [--cfile <filename>] --o <filename> [--bcolor RRGGBBAA] [--name <name>] [--material <name>]";
@@ -279,10 +279,14 @@ void FontDataGenerator::printSyntax()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Prints header to standard output. */
-void FontDataGenerator::printHeader()
+void FontDataGenerator::printHeader() const
 {
+  QString version;
+  version.setNum(VERSION, 'f', 2);
+  QByteArray versionData = version.toAscii();
+
   qDebug() << "";
-  qDebug() << "Font Data Generator, version" << VERSION;
+  qDebug() << "Font Data Generator, version" << version.toAscii();
   qDebug() << "Albert Banaszkiewicz, Little Bee Studios Ltd., 2011-2012";
   qDebug() << "";
 }

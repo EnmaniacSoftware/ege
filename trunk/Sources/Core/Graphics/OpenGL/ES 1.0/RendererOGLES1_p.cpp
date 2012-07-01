@@ -409,6 +409,12 @@ void RendererPrivate::applyPassParams(const PRenderComponent& component, const P
     if ((EGEGraphics::BF_ONE != pass->srcBlendFactor()) || (EGEGraphics::BF_ZERO != pass->dstBlendFactor()))
     {
       glEnable(GL_BLEND);
+     
+      //if (pass->srcBlendFactor() == EGEGraphics::BF_SRC_ALPHA && pass->dstBlendFactor() == EGEGraphics::BF_ONE_MINUS_SRC_ALPHA)
+      //{
+      //  glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+      //}
+      //else
       glBlendFunc(MapBlendFactor(pass->srcBlendFactor()), MapBlendFactor(pass->dstBlendFactor()));
     }
 

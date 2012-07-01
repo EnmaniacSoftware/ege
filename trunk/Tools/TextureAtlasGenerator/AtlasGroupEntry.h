@@ -1,42 +1,40 @@
 #ifndef ATLAS_GROUP_ENTRY_H
 #define ATLAS_GROUP_ENTRY_H
 
-#include <EGEString.h>
-#include <EGEImage.h>
-#include <EGEVector.h>
+#include <QString>
+#include <QImage>
+#include <QVector4D>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AtlasGroupEntry
 {
   public:
 
-    AtlasGroupEntry(const EGE::String& name, const EGE::String& path, const EGE::Vector4i& spacing);
+    AtlasGroupEntry(const QString& name, const QString& path, const QVector4D& spacing);
    ~AtlasGroupEntry();
 
     /* Returns TRUE if object is valid. */
     bool isValid() const;
     /*! Returns image object. */
-    inline EGE::PImage image() const { return m_image; }
+    inline QImage image() const { return m_image; }
     /*! Returns image path. */
-    inline const EGE::String& path() const { return m_path; }
+    inline const QString& path() const { return m_path; }
     /*! Returns image name. */
-    inline const EGE::String& name() const { return m_name; }
+    inline const QString& name() const { return m_name; }
     /*! Returns spacing. */
-    inline const EGE::Vector4i& spacing() const { return m_spacing; }
+    inline const QVector4D& spacing() const { return m_spacing; }
 
   private:
 
     /*! Image name. */
-    EGE::String m_name;
+    QString m_name;
     /*! Path to image. */
-    EGE::String m_path;
+    QString m_path;
     /*! Spacing (left, top, right, bottom). */
-    EGE::Vector4i m_spacing;
+    QVector4D m_spacing;
     /*! Image. */
-    EGE::PImage m_image;
+    QImage m_image;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // ATLAS_GROUP_ENTRY_H

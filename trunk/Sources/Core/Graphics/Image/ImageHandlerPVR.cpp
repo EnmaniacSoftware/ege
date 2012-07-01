@@ -244,6 +244,12 @@ PImage ImageHandlerPVR::Load(PObject buffer, PixelFormat format)
         rowLength += 4;
       }
     }
+    else
+    {
+      // Unsupported format
+      EGE_ASSERT(false && "Unsupported format");
+      return NULL;
+    }
   }
 
   EGE_ASSERT(1 == header.numFaces);

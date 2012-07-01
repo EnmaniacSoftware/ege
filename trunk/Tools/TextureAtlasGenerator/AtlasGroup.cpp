@@ -1,38 +1,42 @@
 #include "AtlasGroup.h"
 #include "AtlasGroupEntry.h"
-
-EGE_NAMESPACE
+#include <QColor>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AtlasGroup::AtlasGroup(const String& name, const String& root, const String& textureImageName, const String& textureFiltersName, 
-                       const Vector2i& textureImageSize, EGEImage::Format imageFormat) 
+AtlasGroup::AtlasGroup(const QString& name, const QString& root, const QString& textureImageName, const QString& textureFormatName, 
+                       const QString& textureFiltersName, const QSize& textureImageSize, bool alphaPremultiply) 
 : m_name(name), 
   m_root(root), 
   m_textureImageName(textureImageName), 
+  m_textureFormatName(textureFormatName),
   m_textureFiltersName(textureFiltersName), 
-  m_textureImageSize(textureImageSize)
+  m_textureImageSize(textureImageSize),
+  m_alphaPremultiply(alphaPremultiply)
 {
-  m_image = ege_new EGE::Image(NULL, textureImageSize.x, textureImageSize.y, imageFormat);
+  m_image = QImage(textureImageSize.width(), textureImageSize.height(), QImage::Format_ARGB32);
   clearImage();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AtlasGroup::~AtlasGroup()
 {
-  for (List<AtlasGroupEntry*>::iterator it = m_entries.begin(); it != m_entries.end();)
+  for (QList<AtlasGroupEntry*>::iterator it = m_entries.begin(); it != m_entries.end();)
   {
-    EGE_DELETE(*it);
+    AtlasGroupEntry* entry = *it;
+
+    if (NULL != entry)
+    {
+      delete entry;
+    }
 
     m_entries.erase(it++);
   }
-
-  m_image = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if object is valid. */
 bool AtlasGroup::isValid() const 
 { 
-  return (NULL != m_image) && (EGE::EGEImage::NONE != m_image->format()) && !m_root.empty() && !m_name.empty() && !m_textureImageName.empty() && 
-         !m_textureFiltersName.empty(); 
+  return !m_image.isNull() && !m_root.isEmpty() && !m_name.isEmpty() && !m_textureImageName.isEmpty() && !m_textureFiltersName.isEmpty() &&
+         !m_textureFormatName.isEmpty(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds entry to pool. */
@@ -44,6 +48,6 @@ void AtlasGroup::addEntry(AtlasGroupEntry* entry)
 /*! Clears image. */
 void AtlasGroup::clearImage()
 {
-  ImageUtils::Fill(m_image, Recti(0, 0, m_image->width(), m_image->height()), Color::BLACK);
+  m_image.fill(QColor(0, 0, 0, 0));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
