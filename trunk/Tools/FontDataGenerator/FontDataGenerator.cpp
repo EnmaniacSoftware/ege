@@ -31,10 +31,16 @@ FontDataGenerator::FontDataGenerator(int argc, char *argv[]) : QApplication(argc
       m_charsFileName = args[i + 1];
       i += 2;
     }
-    // check if output file switch
-    else if (("--o" == args[i]) && (i + 1 < args.size()))
+    // check if output data file switch
+    else if (("--oxml" == args[i]) && (i + 1 < args.size()))
     {
-      m_outputFileName = args[i + 1];
+      m_outputXmlFileName = args[i + 1];
+      i += 2;
+    }
+    // check if output image file switch
+    else if (("--oimage" == args[i]) && (i + 1 < args.size()))
+    {
+      m_outputImageFileName = args[i + 1];
       i += 2;
     }
     // check if border color switch
@@ -88,7 +94,7 @@ bool FontDataGenerator::process()
   if (image.isNull())
   {
     // error!
-    qDebug() << "ERROR: Could not open image file:" << m_imageFileName;
+    qCritical() << "Could not open image file:" << m_imageFileName;
     return false;
   }
 
@@ -96,7 +102,7 @@ bool FontDataGenerator::process()
   if ( ! charsFile.open(QIODevice::ReadOnly | QIODevice::Text))
   {
     // error!
-    qDebug() << "ERROR: Could not open characters definition file:" << m_charsFileName;
+    qCritical() << "Could not open characters definition file:" << m_charsFileName;
     return false;
   }
 
@@ -123,7 +129,36 @@ bool FontDataGenerator::process()
           processRegion(x, y, image, processedPixelArray);
         }
       }
+      else
+      {
+        // make border color transparent
+        image.setPixel(x, y, qRgba(qRed(pixelColor), qGreen(pixelColor), qBlue(pixelColor), 0));
+      }
     }
+  }
+
+  // determine font height
+  QList<int> heights;
+  foreach (const RegionData& regionData, m_regionList)
+  {
+    if ( ! heights.contains(regionData.rect.height()))
+    {
+      heights.append(regionData.rect.height());
+    }
+  }
+
+  // check if unconsistent heights
+  if (1 < heights.count())
+  {
+    qWarning() << "Multiple heights for glyphs detected!!!";
+  }
+
+  // save image
+  if ( ! image.save(m_outputImageFileName))
+  {
+    // error!
+    qWarning() << "Could not save image:" << m_outputImageFileName;
+    return false;
   }
 
   // open XML output stream
@@ -137,6 +172,7 @@ bool FontDataGenerator::process()
   stream.writeStartElement("font");
   stream.writeAttribute("name", m_fontName);
   stream.writeAttribute("material", m_materialName);
+  stream.writeAttribute("height", QString::number(heights[0]));
 
   int i = 0;
   foreach(const RegionData& regionData, m_regionList)
@@ -146,7 +182,7 @@ bool FontDataGenerator::process()
     int character = (i < chars.length()) ? chars.at(i).unicode() : -1;
     if (-1 == character)
     {
-      qDebug() << "WARNING: No definition for character at index" << i << "found!";
+      qWarning() << "No definition for character at index" << i << "found!";
     }
 
     stream.writeAttribute("value", QString::number(character));
@@ -155,6 +191,10 @@ bool FontDataGenerator::process()
     stream.writeAttribute("image-y", QString::number(static_cast<qreal>(regionData.rect.y()) / image.height()));
     stream.writeAttribute("image-width", QString::number(static_cast<qreal>(regionData.rect.width()) / image.width()));
     stream.writeAttribute("image-height", QString::number(static_cast<qreal>(regionData.rect.height()) / image.height()));
+
+#if 0
+    stream.writeAttribute("image-x-px", QString::number(regionData.rect.x()));
+#endif
 
     stream.writeEndElement();
 
@@ -168,16 +208,16 @@ bool FontDataGenerator::process()
   if (stream.hasError())
   {
     // error!
-    qDebug() << "ERROR: XML generation error!!";
+    qCritical() << "XML generation error!!";
     return false;
   }
 
   // store output to the file
-  QFile outputFile(m_outputFileName);
+  QFile outputFile(m_outputXmlFileName);
   if ( ! outputFile.open(QIODevice::WriteOnly))
   {
     // error!
-    qDebug() << "ERROR: Could not open output file:" << m_outputFileName;
+    qCritical() << "Could not open output file:" << m_outputXmlFileName;
     return false;
   }
 
@@ -243,7 +283,7 @@ void FontDataGenerator::onStart()
   printHeader();
 
   // check if required data is missing
-  if (m_imageFileName.isEmpty() || m_outputFileName.isEmpty())
+  if (m_imageFileName.isEmpty() || m_outputXmlFileName.isEmpty() || m_outputImageFileName.isEmpty())
   {
     // error!
     printSyntax();
@@ -267,11 +307,12 @@ void FontDataGenerator::onStart()
 void FontDataGenerator::printSyntax() const
 {
   qDebug() << "Usage syntax:";
-  qDebug() << "fontgen --ifile <filename> [--cfile <filename>] --o <filename> [--bcolor RRGGBBAA] [--name <name>] [--material <name>]";
+  qDebug() << "fontgen --ifile <filename> [--cfile <filename>] --oxml <filename> --oimage <filename> [--bcolor RRGGBBAA] [--name <name>] [--material <name>]";
   qDebug() << "";
   qDebug() << "--ifile      Full path to font image file.";
   qDebug() << "--cfile      [Optional] Full path to text file containing font characters sequence represented by image.";
-  qDebug() << "--o          Full path to output XML file.";
+  qDebug() << "--oxml       Full path to output XML file.";
+  qDebug() << "--oimage     Full path to output image file.";
   qDebug() << "--bcolor     [Optional] RGBA border color. This is color which seperates characters within image. Default: Magenta FF00FFFF.";
   qDebug() << "--name       [Optional] Font name.";
   qDebug() << "--material   [Optional] Material name.";

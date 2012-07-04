@@ -55,8 +55,10 @@ class FontDataGenerator : public QApplication
     QString m_imageFileName;
     /*! Input characters data file name. */
     QString m_charsFileName;
-    /*! Output data file name. */
-    QString m_outputFileName;
+    /*! Output XML data file name. */
+    QString m_outputXmlFileName;
+    /*! Output image data file name. */
+    QString m_outputImageFileName;
     /*! Font name. */
     QString m_fontName;
     /*! Material name. */
