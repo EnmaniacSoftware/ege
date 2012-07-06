@@ -29,8 +29,11 @@ class Screen : public Object
 
     /* Constructs object. */
     virtual EGEResult construct();
-    /* Updates object. */
-    virtual void update(const Time& time);
+    /* Updates object. 
+       @param time Time increment for which update should be performed.
+       @return  Returns TRUE to consume the event. When consumed no underlying screens will be updated. 
+     */
+    virtual bool update(const Time& time);
     /* Pointer event. */
     virtual void pointerEvent(PPointerData data);
     /* Renders object. */

@@ -34,7 +34,12 @@ void ScreenManager::update(const Time& time)
       PScreen& screen = *it;      
       if (screen->isEnabled())
       {
-        screen->update(time);
+        // update screen
+        if (screen->update(time))
+        {
+          // done, consumed
+          return;
+        }
 
         // check if screen in not transparent
         if (!screen->hasTransparency())

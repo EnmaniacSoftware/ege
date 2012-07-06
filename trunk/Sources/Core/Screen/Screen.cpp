@@ -23,10 +23,14 @@ EGEResult Screen::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates object. */
-void Screen::update(const Time& time)
+/*! Updates object. 
+    @param time Time increment for which update should be performed.
+    @return  Returns TRUE to consume the event. When consumed no underlying screens will be updated. 
+ */
+bool Screen::update(const Time& time)
 {
   EGE_UNUSED(time);
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pointer event. */
