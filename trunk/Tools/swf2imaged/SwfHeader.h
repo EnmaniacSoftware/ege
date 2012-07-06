@@ -1,0 +1,34 @@
+#ifndef SWFHEADER_H
+#define SWFHEADER_H
+
+#include <QRect>
+#include <QFile>
+#include "SwfDataStream.h"
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class SwfHeader
+{
+  public:
+
+    SwfHeader();
+   ~SwfHeader();
+
+    /* Reads data from file. */
+    bool read(SwfDataStream& data);
+
+  private:
+
+    /*! Version. */
+    quint8 m_version;
+    /*! File size (in bytes). */
+    quint32 m_fileSize;
+    /*! Frame size (in twips). */
+    QSize m_frameSize;
+    /*! Frame rate. */
+    fp8 m_fps;
+    /*! Frame count. */
+    quint16 m_frameCount;
+};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#endif // SWFHEADER_H
