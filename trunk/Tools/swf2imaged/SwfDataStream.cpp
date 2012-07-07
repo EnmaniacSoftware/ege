@@ -411,6 +411,8 @@ FillStyle SwfDataStream::readFillStyle(int version)
  */
 LineStyle SwfDataStream::readLineStyle(int version)
 {
+  Q_UNUSED(version);
+
   LineStyle style;
 
   Q_ASSERT(false);

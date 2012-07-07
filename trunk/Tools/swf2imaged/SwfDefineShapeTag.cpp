@@ -19,8 +19,8 @@ bool SwfDefineShapeTag::read(SwfDataStream& data)
   m_shape.fillStyles = data.readFillStyleArray(1);
   m_shape.lineStyles = data.readLineStyleArray(1);
 
-  qint8 numFillBits = data.readBits(4, false);
-  qint8 numLineBits = data.readBits(4, false);
+  m_shape.numFillBits = data.readBits(4, false);
+  m_shape.numLineBits = data.readBits(4, false);
 
   while (true)
   {
@@ -60,19 +60,19 @@ bool SwfDefineShapeTag::read(SwfDataStream& data)
 
       if (fillStyle0ChangeFlag)
       {
-        quint32 bits = data.readBits(numFillBits, false);
+        quint32 bits = data.readBits(m_shape.numFillBits, false);
         Q_UNUSED(bits);
       }
 
       if (fillStyle1ChangeFlag)
       {
-        quint32 bits = data.readBits(numFillBits, false);
+        quint32 bits = data.readBits(m_shape.numFillBits, false);
         Q_UNUSED(bits);
       }
 
       if (lineStyleChangeFlag)
       {
-        quint32 bits = data.readBits(numLineBits, false);
+        quint32 bits = data.readBits(m_shape.numLineBits, false);
         Q_UNUSED(bits);
       }
 
@@ -81,13 +81,13 @@ bool SwfDefineShapeTag::read(SwfDataStream& data)
         QList<FillStyle> fillStyles = data.readFillStyleArray(1);
         QList<LineStyle> lineStyles = data.readLineStyleArray(1);
 
-        qint8 newNumFillBits = data.readBits(4, false);
-        qint8 newNumLineBits = data.readBits(4, false);
+        qint8 numFillBits = data.readBits(4, false);
+        qint8 numLineBits = data.readBits(4, false);
 
         Q_UNUSED(fillStyles);
         Q_UNUSED(lineStyles);
-        Q_UNUSED(newNumFillBits);
-        Q_UNUSED(newNumLineBits);
+        Q_UNUSED(numFillBits);
+        Q_UNUSED(numLineBits);
       }
     }
     else

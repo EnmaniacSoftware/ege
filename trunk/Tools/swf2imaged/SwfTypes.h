@@ -97,8 +97,9 @@ struct ShapeWithStyle
 {
   QList<FillStyle> fillStyles;      /*!< List of fill styles. */
   QList<LineStyle> lineStyles;      /*!< List of line styles. */
-//  QList<
 
+  qint8 numFillBits;                /*!< Number of fill index bits. */
+  qint8 numLineBits;                /*!< Number of line index bits. */
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
