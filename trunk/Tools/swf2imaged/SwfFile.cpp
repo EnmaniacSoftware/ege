@@ -1,5 +1,6 @@
 #include "SwfFile.h"
 #include "SwfHeader.h"
+#include "SwfTag.h"
 #include <QFile>
 #include <QDataStream>
 #include <QDebug>
@@ -11,6 +12,8 @@ SwfFile::SwfFile(QObject* parent) : QObject(parent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SwfFile::~SwfFile()
 {
+  qDeleteAll(m_tags);
+  m_tags.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Process the file with a given name. */
@@ -28,9 +31,6 @@ bool SwfFile::process(const QString &fileName)
   // prepare data steam
   SwfDataStream input(&file);
 
-  // set proper byte ordering
-  input.setByteOrder(QDataStream::LittleEndian);
-
   // create and read header
   m_header = new SwfHeader();
   if ( ! m_header->read(input))
@@ -38,6 +38,19 @@ bool SwfFile::process(const QString &fileName)
     // error!
     return false;
   }
+
+  // read rest of the file (tags)
+  do
+  {
+    // process tag
+    SwfTag* tag = SwfTag::ProcessTag(input);
+    if (tag)
+    {
+      // add to pool
+      m_tags.append(tag);
+    }
+
+  } while (QDataStream::Ok == input.status());
 
   return true;
 }

@@ -1,0 +1,150 @@
+#include "SwfDefineShapeTag.h"
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+SwfDefineShapeTag::SwfDefineShapeTag() : SwfTag(),
+                                         m_characterId(0)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+SwfDefineShapeTag::~SwfDefineShapeTag()
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! SwfTag override. Reads data from file. */
+bool SwfDefineShapeTag::read(SwfDataStream& data)
+{
+  data >> m_characterId;
+  data >> m_bounds;
+
+  m_shape.fillStyles = data.readFillStyleArray(1);
+  m_shape.lineStyles = data.readLineStyleArray(1);
+
+  qint8 numFillBits = data.readBits(4, false);
+  qint8 numLineBits = data.readBits(4, false);
+
+  while (true)
+  {
+    quint8 type = data.readBits(1, false);
+    if (0 == type)
+    {
+      // non-edge shape record
+      // NOTE: possible records:
+      //       - ENDSHAPERECORD
+      //       - STYLECHANGERECORD
+      
+      // read 5 control bits
+      bool newStateFlag         = (1 == data.readBits(1, false));
+      bool lineStyleChangeFlag  = (1 == data.readBits(1, false));
+      bool fillStyle1ChangeFlag = (1 == data.readBits(1, false));
+      bool fillStyle0ChangeFlag = (1 == data.readBits(1, false));
+      bool moveToFlag           = (1 == data.readBits(1, false));
+
+      // check if STYLECHANGERECORD
+      if (!newStateFlag && !lineStyleChangeFlag && !fillStyle1ChangeFlag && !fillStyle0ChangeFlag && !moveToFlag)
+      {
+        // done
+        break;
+      }
+
+      // process STYLECHANGERECORD
+      if (moveToFlag)
+      {
+        qint8 bits        = data.readBits(5, false);
+        qint32 moveDeltaX = data.readBits(bits, true);
+        qint32 moveDeltaY = data.readBits(bits, true);
+
+        Q_UNUSED(bits);
+        Q_UNUSED(moveDeltaX);
+        Q_UNUSED(moveDeltaY);
+      }
+
+      if (fillStyle0ChangeFlag)
+      {
+        quint32 bits = data.readBits(numFillBits, false);
+        Q_UNUSED(bits);
+      }
+
+      if (fillStyle1ChangeFlag)
+      {
+        quint32 bits = data.readBits(numFillBits, false);
+        Q_UNUSED(bits);
+      }
+
+      if (lineStyleChangeFlag)
+      {
+        quint32 bits = data.readBits(numLineBits, false);
+        Q_UNUSED(bits);
+      }
+
+      if (newStateFlag)
+      {
+        QList<FillStyle> fillStyles = data.readFillStyleArray(1);
+        QList<LineStyle> lineStyles = data.readLineStyleArray(1);
+
+        qint8 newNumFillBits = data.readBits(4, false);
+        qint8 newNumLineBits = data.readBits(4, false);
+
+        Q_UNUSED(fillStyles);
+        Q_UNUSED(lineStyles);
+        Q_UNUSED(newNumFillBits);
+        Q_UNUSED(newNumLineBits);
+      }
+    }
+    else
+    {
+      // edge shape record
+      // NOTE: possible records:
+      //       - STRAIGHTEDGERECORD
+      //       - CURVEDEDGERECORD
+
+      // NOTE: There seems to be documentation issue in SWF 10 file specification when describing STRAIGHTEDGERECORD.
+      //       Difference definitions are found on page 273 and 138. 
+      //       Description on page 138 seems to be correct, though, as long as my test samples are considered.
+
+      bool straightFlag = (1 == data.readBits(1, false));
+
+      quint8 numBits = data.readBits(4, false);
+
+      if (straightFlag)
+      {
+        // process STRAIGHTEDGERECORD
+        bool generalLineFlag = (1 == data.readBits(1, false));
+        bool vertLineFlag = false;
+        if (!generalLineFlag)
+        {
+          vertLineFlag = (1 == data.readBits(1, false));
+        }
+
+        if (generalLineFlag || !vertLineFlag)
+        {
+          qint32 deltaX = data.readBits(numBits + 2, true);
+
+          Q_UNUSED(deltaX);
+        }
+
+        if (generalLineFlag || vertLineFlag)
+        {
+          qint32 deltaY = data.readBits(numBits + 2, true);
+
+          Q_UNUSED(deltaY);
+        }
+      }
+      else
+      {
+        // process CURVEDEDGERECORD
+        qint32 controlDeltaX = data.readBits(numBits + 2, true);
+        qint32 controlDeltaY = data.readBits(numBits + 2, true);
+        qint32 anchorDeltaX  = data.readBits(numBits + 2, true);
+        qint32 anchorDeltaY  = data.readBits(numBits + 2, true);
+
+        Q_UNUSED(controlDeltaX);
+        Q_UNUSED(controlDeltaY);
+        Q_UNUSED(anchorDeltaX);
+        Q_UNUSED(anchorDeltaY);
+      }
+    }
+  }
+
+  return QDataStream::Ok == data.status();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

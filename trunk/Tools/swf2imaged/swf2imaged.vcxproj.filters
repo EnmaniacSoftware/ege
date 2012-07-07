@@ -64,6 +64,21 @@
     <ClCompile Include="Release\moc_SwfParser.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="SwfTag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SwfFileAttributeTag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SwfSetBackgroundColorTag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SwfDefineBitsJpeg3Tag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SwfDefineShapeTag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SwfDataStream.h">
@@ -79,6 +94,21 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <ClInclude Include="SwfTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SwfTag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SwfFileAttributeTag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SwfSetBackgroundColorTag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SwfDefineBitsJpeg3Tag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SwfDefineShapeTag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

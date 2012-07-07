@@ -3,6 +3,8 @@
 
 #include <QDataStream>
 #include <QRect>
+#include <QColor>
+#include <QByteArray>
 #include "SwfTypes.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -18,6 +20,20 @@ class SwfDataStream : public QDataStream
     qint32 readBits(int bitCount, bool signedValue);
     /* Align to byte boundary. */
     void byteAlign();
+    /* Reads RGB value. */
+    QColor readRGB();
+    /* Reads RGBA value. */
+    QColor readRGBA();
+    /* Reads fill style array. 
+       @param version Version of DefineShape for which loading is supposed to be done.
+       @return  Returns list of defined fill styles.
+     */
+    QList<FillStyle> readFillStyleArray(int version);
+    /* Reads line style array. 
+       @param version Version of DefineShape for which loading is supposed to be done.
+       @return  Returns list of defined line styles.
+     */
+    QList<LineStyle> readLineStyleArray(int version);
 
     SwfDataStream& operator>>(qint8 &i);
     SwfDataStream& operator>>(quint8 &i);
@@ -29,6 +45,21 @@ class SwfDataStream : public QDataStream
     SwfDataStream& operator>>(qint64 &i);
     SwfDataStream& operator>>(quint64 &i);
     SwfDataStream& operator>>(QRect &i);
+    SwfDataStream& operator>>(QByteArray &i);
+    SwfDataStream& operator>>(Matrix &i);
+
+  private:
+
+    /* Reads fill style record.
+       @param version Version of DefineShape for which loading is supposed to be done.
+       @return  Returns fill style.
+     */
+    FillStyle readFillStyle(int version);
+    /* Reads line style record.
+       @param version Version of DefineShape for which loading is supposed to be done.
+       @return  Returns line style.
+     */
+    LineStyle readLineStyle(int version);
 
   private:
 

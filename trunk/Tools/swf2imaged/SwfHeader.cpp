@@ -48,6 +48,6 @@ bool SwfHeader::read(SwfDataStream& data)
   data >> m_fps;
   data >> m_frameCount;
 
-  return true;
+  return QDataStream::Ok == data.status();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
