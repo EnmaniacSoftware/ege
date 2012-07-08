@@ -79,6 +79,15 @@
     <ClCompile Include="SwfDefineShapeTag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SwfPlaceObject2Tag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SwfShowFrameTag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SwfEndTag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SwfDataStream.h">
@@ -109,6 +118,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SwfDefineShapeTag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SwfPlaceObject2Tag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SwfShowFrameTag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SwfEndTag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

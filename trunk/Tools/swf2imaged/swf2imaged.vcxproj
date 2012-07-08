@@ -150,12 +150,15 @@
     <ClCompile Include="SwfDataStream.cpp" />
     <ClCompile Include="SwfDefineBitsJpeg3Tag.cpp" />
     <ClCompile Include="SwfDefineShapeTag.cpp" />
+    <ClCompile Include="SwfEndTag.cpp" />
     <ClCompile Include="SwfFile.cpp" />
     <ClCompile Include="SwfFileAttributeTag.cpp" />
     <ClCompile Include="SwfHeader.cpp" />
     <ClCompile Include="SwfParser.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SwfPlaceObject2Tag.cpp" />
     <ClCompile Include="SwfSetBackgroundColorTag.cpp" />
+    <ClCompile Include="SwfShowFrameTag.cpp" />
     <ClCompile Include="SwfTag.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +175,7 @@
     </CustomBuild>
     <ClInclude Include="SwfDefineBitsJpeg3Tag.h" />
     <ClInclude Include="SwfDefineShapeTag.h" />
+    <ClInclude Include="SwfEndTag.h" />
     <ClInclude Include="SwfFileAttributeTag.h" />
     <ClInclude Include="SwfHeader.h" />
     <CustomBuild Include="SwfParser.h">
@@ -184,7 +188,9 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing SwfParser.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp;%(Outputs)</Outputs>
     </CustomBuild>
+    <ClInclude Include="SwfPlaceObject2Tag.h" />
     <ClInclude Include="SwfSetBackgroundColorTag.h" />
+    <ClInclude Include="SwfShowFrameTag.h" />
     <ClInclude Include="SwfTag.h" />
     <ClInclude Include="SwfTypes.h" />
   </ItemGroup>

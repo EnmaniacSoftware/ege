@@ -50,7 +50,7 @@ bool SwfFile::process(const QString &fileName)
       m_tags.append(tag);
     }
 
-  } while (QDataStream::Ok == input.status());
+  } while ((QDataStream::Ok == input.status()) && !input.atEnd());
 
   return true;
 }
