@@ -2,6 +2,7 @@ CONFIG += qt
 QT += xml
 
 SOURCES = main.cpp \
+    ResourceManager.cpp \
     SwfDataStream.cpp \
     SwfDefineBitsJpeg3Tag.cpp \
     SwfDefineShapeTag.cpp \
@@ -18,6 +19,7 @@ SOURCES = main.cpp \
     SwfTag.cpp
 
 HEADERS = \
+    ResourceManager.h \
     SwfDataStream.h \
     SwfDefineBitsJpeg3Tag.h \
     SwfDefineShapeTag.h \
