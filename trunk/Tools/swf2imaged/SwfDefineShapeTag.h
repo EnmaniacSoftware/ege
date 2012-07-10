@@ -15,6 +15,9 @@ class SwfDefineShapeTag : public SwfTag
     SwfDefineShapeTag();
    ~SwfDefineShapeTag();
 
+    /* Returns character ID. */
+    quint16 characterId() const;
+
   private:
 
     /* SwfTag override. Reads data from file. */

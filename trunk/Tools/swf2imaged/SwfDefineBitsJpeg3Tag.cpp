@@ -60,6 +60,7 @@ bool SwfDefineBitsJpeg3Tag::read(SwfDataStream& data)
   }
 
   // add to dictionary
+  Q_ASSERT( ! file()->dictionary().contains(m_characterId));
   file()->dictionary().insert(m_characterId, this);
 
   // add image to resource manager

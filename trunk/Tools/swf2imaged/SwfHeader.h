@@ -19,7 +19,9 @@ class SwfHeader
     float fps() const;
     /* Returns frame size. */
     const QSize& frameSize() const;
-
+    /* Returns frame count. */
+    quint16 frameCount() const;
+    
   private:
 
     /*! Version. */

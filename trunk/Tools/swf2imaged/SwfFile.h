@@ -17,7 +17,7 @@ class SwfFile : public QObject
 
   public:
 
-    SwfFile(QObject* parent = NULL);
+    SwfFile(float scale, QObject* parent = NULL);
    ~SwfFile();
 
     /* Process the file with a given name. */
@@ -29,12 +29,21 @@ class SwfFile : public QObject
 
   private:
 
+    /* Serializes objects section into EGE XML. */
+    bool serializeObjectsSection(QXmlStreamWriter& stream);
+    /* Serializes sequences section into EGE XML. */
+    bool serializeSequencesSection(QXmlStreamWriter& stream);
+
+  private:
+
     /*! File header. */
     SwfHeader* m_header;
     /*! List of all valid tags. */
     QList<SwfTag*> m_tags;
     /*! Dictionary. */
     Dictionary m_dictionary;
+    /*! Scale factor. */
+    float m_scale;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

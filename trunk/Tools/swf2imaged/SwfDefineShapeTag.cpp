@@ -1,4 +1,5 @@
 #include "SwfDefineShapeTag.h"
+#include "SwfFile.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SwfDefineShapeTag::SwfDefineShapeTag() : SwfTag(),
@@ -145,6 +146,16 @@ bool SwfDefineShapeTag::read(SwfDataStream& data)
     }
   }
 
+  // add to dictionary
+  Q_ASSERT( ! file()->dictionary().contains(m_characterId));
+  file()->dictionary().insert(m_characterId, this);
+
   return QDataStream::Ok == data.status();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns character ID. */
+quint16 SwfDefineShapeTag::characterId() const
+{
+  return m_characterId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

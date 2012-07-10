@@ -4,6 +4,7 @@
 #include <QImage>
 #include <QList>
 #include <QXmlStreamWriter>
+#include <QString>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! @brief Resource manager object. */
@@ -13,7 +14,7 @@ class ResourceManager : public QObject
 
   public:
 
-    ResourceManager(QObject* parent = NULL);
+    ResourceManager(const QString& baseName, float scale, QObject* parent = NULL);
    ~ResourceManager();
 
     /* Adds image into pool. 
@@ -28,6 +29,10 @@ class ResourceManager : public QObject
 
     /*! Image pool. */
     QList<QImage> m_images;
+    /*! Base name for materials and images. */
+    QString m_baseName;
+    /*! Scale factor. */
+    float m_scale;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

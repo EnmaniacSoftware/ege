@@ -7,7 +7,8 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SwfFile::SwfFile(QObject* parent) : QObject(parent)
+SwfFile::SwfFile(float scale, QObject* parent) : QObject(parent),
+                                                 m_scale(scale)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -76,7 +77,22 @@ bool SwfFile::serialize(QXmlStreamWriter& stream)
   stream.writeAttribute("fps", QString::number(m_header->fps()));
   stream.writeAttribute("size", QString("%1 %2").arg(m_header->frameSize().width()).arg(m_header->frameSize().height()));
 
+  // serialize objects section
+  if ( ! serializeObjectsSection(stream))
+  {
+    // error!
+    return false;
+  }
+
+  // serialize sequences section
+  if ( ! serializeSequencesSection(stream))
+  {
+    // error!
+    return false;
+  }
+
   // go thru all tags
+  quint16 frameCount = 0;
   foreach (const SwfTag* tag, m_tags)
   {
     if (SWF_TAG_ID_PLACE_OBJECT_2 == tag->id())
@@ -122,10 +138,21 @@ bool SwfFile::serialize(QXmlStreamWriter& stream)
       }
 
       stream.writeEndElement();
+
+      // increment frame count
+      ++frameCount;
     }
   }
 
   stream.writeEndElement();
+
+  // check if processed correct number of frames
+  if (frameCount != m_header->frameCount())
+  {
+    // error!
+    qCritical() << "Frame count does not match!";
+    return false;
+  }
 
   return ! stream.hasError();
 }
@@ -134,5 +161,29 @@ bool SwfFile::serialize(QXmlStreamWriter& stream)
 Dictionary& SwfFile::dictionary()
 {
   return m_dictionary;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Serializes objects section into EGE XML. */
+bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
+{
+  return ! stream.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Serializes sequences section into EGE XML. */
+bool SwfFile::serializeSequencesSection(QXmlStreamWriter& stream)
+{
+  // add default playback sequence
+  stream.writeStartElement("sequence");
+  stream.writeAttribute("name", "all");
+
+  QString sequencerFrames;
+  for (int i = 0; i < m_header->frameCount(); ++i)
+  {
+    sequencerFrames += QString::number(i) + " ";
+  }
+  stream.writeAttribute("frames", sequencerFrames.trimmed());
+  stream.writeEndElement();
+
+  return ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

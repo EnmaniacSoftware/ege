@@ -1,7 +1,9 @@
 #include "ResourceManager.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManager::ResourceManager(QObject* parent ) : QObject(parent)
+ResourceManager::ResourceManager(const QString& baseName, float scale, QObject* parent ) : QObject(parent),
+                                                                                           m_baseName(baseName),
+                                                                                           m_scale(scale)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -36,12 +38,12 @@ bool ResourceManager::serialize(QXmlStreamWriter& stream)
   {
     stream.writeStartElement("material");
 
-    stream.writeAttribute("name", "some-name-a");
+    stream.writeAttribute("name", m_baseName + QString("-%1").arg(i));
     stream.writeAttribute("src-blend", "src-alpha");
     stream.writeAttribute("dst-blend", "one-minus-src-alpha");
 
     stream.writeStartElement("texture");
-    stream.writeAttribute("name", "some-texture-name");
+    stream.writeAttribute("name", m_baseName + QString("-%1").arg(i));
     stream.writeEndElement();
 
     stream.writeEndElement();
