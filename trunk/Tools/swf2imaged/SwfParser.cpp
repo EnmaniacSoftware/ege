@@ -1,10 +1,14 @@
 #include "SwfParser.h"
 #include "SwfFile.h"
+#include "ResourceManager.h"
 #include <QTimer>
+#include <QXmlStreamWriter>
+#include <QFile>
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SwfParser::SwfParser(int argc, char *argv[]) : QApplication(argc, argv)
+SwfParser::SwfParser(int argc, char *argv[]) : QApplication(argc, argv),
+                                               m_resourceManager(NULL)
 {
   // process command-line
   QStringList args = QCoreApplication::arguments();
@@ -40,6 +44,16 @@ SwfParser::~SwfParser()
 /*! Starts processing. */
 void SwfParser::onStart()
 {
+  // create resource manager
+  m_resourceManager = new ResourceManager(this);
+  if (NULL == m_resourceManager)
+  {
+    // error!
+    qCritical() << "Could not create resource manager!";
+    exit(3);
+    return;
+  }
+
   // go thru all input files
   foreach(const QString& inputFileName, m_inputFileNames)
   {
@@ -54,7 +68,52 @@ void SwfParser::onStart()
     }
   }
 
+  // serialize
+  QString outputXml;
+  QXmlStreamWriter output(&outputXml);
+  output.setAutoFormatting(true);
+
+  // resource manager
+  if ( ! m_resourceManager->serialize(output))
+  {
+    // error!
+    qCritical() << "Could not serialize resource manager!";
+    exit(1);
+    return;
+  }
+
+  foreach (SwfFile* file, m_parsedFiles)
+  {
+    // serialize
+    if ( ! file->serialize(output))
+    {
+      // error!
+      qCritical() << "Could not serialize file!";
+      exit(1);
+      return;
+    }
+  }
+
+  // save
+  QFile outputFile(m_outputFileName);
+  if (!outputFile.open(QIODevice::WriteOnly | QIODevice::Text))
+  {
+    // error!
+    qCritical() << "Could not open file for writting" << m_outputFileName;
+    exit(2);
+    return;
+  }
+
+  QTextStream out(&outputFile);
+  out << outputXml;
+
   // done
   exit(0);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns resource manager. */
+ResourceManager* SwfParser::resourceManager() const
+{
+  return m_resourceManager;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

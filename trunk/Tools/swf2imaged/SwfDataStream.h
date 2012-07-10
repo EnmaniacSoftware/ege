@@ -24,6 +24,8 @@ class SwfDataStream : public QDataStream
     QColor readRGB();
     /* Reads RGBA value. */
     QColor readRGBA();
+    /* Reads fix point 8.8 value. */
+    float readFP8();
     /* Reads fill style array. 
        @param version Version of DefineShape for which loading is supposed to be done.
        @return  Returns list of defined fill styles.
@@ -41,7 +43,6 @@ class SwfDataStream : public QDataStream
     SwfDataStream& operator>>(quint16 &i);
     SwfDataStream& operator>>(qint32 &i);
     SwfDataStream& operator>>(quint32 &i);
-    SwfDataStream& operator>>(fp8 &i);
     SwfDataStream& operator>>(qint64 &i);
     SwfDataStream& operator>>(quint64 &i);
     SwfDataStream& operator>>(QRect &i);

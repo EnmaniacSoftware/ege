@@ -15,6 +15,10 @@ class SwfHeader
 
     /* Reads data from file. */
     bool read(SwfDataStream& data);
+    /* Returns FPS. */
+    float fps() const;
+    /* Returns frame size. */
+    const QSize& frameSize() const;
 
   private:
 
@@ -25,7 +29,7 @@ class SwfHeader
     /*! Frame size (in twips). */
     QSize m_frameSize;
     /*! Frame rate. */
-    fp8 m_fps;
+    float m_fps;
     /*! Frame count. */
     quint16 m_frameCount;
 };

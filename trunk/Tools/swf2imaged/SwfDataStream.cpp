@@ -119,18 +119,6 @@ SwfDataStream &SwfDataStream::operator >>(quint32 &i)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SwfDataStream &SwfDataStream::operator >>(fp8 &i)
-{
-  byteAlign();
-
-  qint16 val;
-  *this >> val;
-
-  i = (fp8) val / 256.0f;
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SwfDataStream &SwfDataStream::operator >>(qint64 &i)
 {
   byteAlign();
@@ -268,6 +256,17 @@ QColor SwfDataStream::readRGBA()
   return color;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Reads fix point 8.8 value. */
+float SwfDataStream::readFP8()
+{
+  byteAlign();
+
+  qint16 val;
+  *this >> val;
+
+  return val / 256.0f;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Reads fill style array. 
     @param version Version of DefineShape for which loading is supposed to be done.
     @return  Returns list of defined fill styles.
@@ -379,6 +378,7 @@ FillStyle SwfDataStream::readFillStyle(int version)
   // gradient matrix
   if ((FST_LINEAR_GRADIENT == style.type) || (FST_RADIAL_GRADIENT == style.type) || (FST_FOCAL_RADIAL_GRADIENT == style.type))
   {
+    // NOTE: it is possible that there is the same issue with as for bitmap matrix!!
     *this >> style.gradientMatrix;
   }
 
@@ -400,6 +400,10 @@ FillStyle SwfDataStream::readFillStyle(int version)
   {
     *this >> style.bitmapCharacterId;
     *this >> style.bitmapMatrix;
+
+    // NOTE: it seems for FillStyle matrix scale (and rotation ?) is in twips ?!
+    style.bitmapMatrix.scaleX *= 0.05f;
+    style.bitmapMatrix.scaleY *= 0.05f;
   }
 
   return style;

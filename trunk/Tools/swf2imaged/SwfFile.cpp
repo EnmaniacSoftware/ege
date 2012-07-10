@@ -1,6 +1,7 @@
 #include "SwfFile.h"
 #include "SwfHeader.h"
 #include "SwfTag.h"
+#include "SwfPlaceObject2Tag.h"
 #include <QFile>
 #include <QDataStream>
 #include <QDebug>
@@ -43,7 +44,7 @@ bool SwfFile::process(const QString &fileName)
   do
   {
     // process tag
-    SwfTag* tag = SwfTag::ProcessTag(input);
+    SwfTag* tag = SwfTag::ProcessTag(input, this);
     if (tag)
     {
       // add to pool
@@ -53,5 +54,85 @@ bool SwfFile::process(const QString &fileName)
   } while ((QDataStream::Ok == input.status()) && !input.atEnd());
 
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Serializes into EGE XML. */
+bool SwfFile::serialize(QXmlStreamWriter& stream)
+{
+  struct DisplayData
+  {
+    DisplayData() : characterId(0), color(Qt::white) {}
+
+    quint16 characterId;
+    Matrix matrix;
+    QColor color;
+  };
+
+  // display list accessed by depth
+  QMap<quint16, DisplayData> displayList;
+
+  stream.writeStartElement("imaged-animation");
+  stream.writeAttribute("name", "some-name");
+  stream.writeAttribute("fps", QString::number(m_header->fps()));
+  stream.writeAttribute("size", QString("%1 %2").arg(m_header->frameSize().width()).arg(m_header->frameSize().height()));
+
+  // go thru all tags
+  foreach (const SwfTag* tag, m_tags)
+  {
+    if (SWF_TAG_ID_PLACE_OBJECT_2 == tag->id())
+    {
+      const SwfPlaceObject2Tag* placeTag = qobject_cast<const SwfPlaceObject2Tag*>(tag);
+
+      // add or modify character at given depth
+      DisplayData& data = displayList[placeTag->depth()];
+      if (placeTag->hasCharacterId())
+      {
+        data.characterId = placeTag->characterId();
+      }
+
+      if (placeTag->hasMatrix())
+      {
+        data.matrix = placeTag->matrix();
+      }
+
+      if (placeTag->hasColorTransformation())
+      {
+        Q_ASSERT("Implement!");
+      }
+    }
+    else if (SWF_TAG_ID_SHOW_FRAME == tag->id())
+    {
+      stream.writeStartElement("frame");
+
+      for (QMap<quint16, DisplayData>::iterator it = displayList.constBegin(); it != displayList.constEnd(); ++it)
+      {
+        const quint16& depth = it.key();
+        const DisplayData& data = it.value();
+
+        stream.writeStartElement("action");
+       
+        stream.writeAttribute("object-id", QString::number(data.characterId));
+        stream.writeAttribute("queue", QString::number(depth));
+        stream.writeAttribute("translate", QString("%1 %2").arg(data.matrix.translateX).arg(data.matrix.translateY));
+        stream.writeAttribute("scale", QString("%1 %2").arg(data.matrix.scaleX).arg(data.matrix.scaleY));
+        stream.writeAttribute("skew", QString("%1 %2").arg(data.matrix.rotX).arg(data.matrix.rotY));
+        stream.writeAttribute("color", QString("%1 %2 %3 %4").arg(data.color.redF()).arg(data.color.greenF()).arg(data.color.blueF()).arg(data.color.alphaF()));
+
+        stream.writeEndElement();
+      }
+
+      stream.writeEndElement();
+    }
+  }
+
+  stream.writeEndElement();
+
+  return ! stream.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns dictionary. */
+Dictionary& SwfFile::dictionary()
+{
+  return m_dictionary;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

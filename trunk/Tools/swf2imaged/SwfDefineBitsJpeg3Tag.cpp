@@ -1,10 +1,14 @@
 #include "SwfDefineBitsJpeg3Tag.h"
+#include "SwfFile.h"
+#include "ResourceManager.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SwfDefineBitsJpeg3Tag::SwfDefineBitsJpeg3Tag() : SwfTag(),
                                                  m_characterId(0),
-                                                 m_alphaOffset(0)
+                                                 m_alphaOffset(0),
+                                                 m_imageId(-1)
 {
+  //qRegisterMetaType<SwfDefineBitsJpeg3Tag>("SwfDefineBitsJpeg3Tag");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SwfDefineBitsJpeg3Tag::~SwfDefineBitsJpeg3Tag()
@@ -41,18 +45,29 @@ bool SwfDefineBitsJpeg3Tag::read(SwfDataStream& data)
   m_alphaData = qUncompress(m_alphaData);
 
   // create ARGBA image from pixel data image
-  m_image = image.convertToFormat(QImage::Format_ARGB32);
+  image = image.convertToFormat(QImage::Format_ARGB32);
       
   // TAGE - optimize
 
   // add alpha channel
-  for (int y = 0; y < m_image.height(); ++y)
+  for (int y = 0; y < image.height(); ++y)
   {
-    for (int x = 0; x < m_image.width(); ++x)
+    for (int x = 0; x < image.width(); ++x)
     {
-      QRgb color = m_image.pixel(x, y);
-      m_image.setPixel(x, y, qRgba(qRed(color), qGreen(color), qBlue(color), m_alphaData[x + y * m_image.width()]));
+      QRgb color = image.pixel(x, y);
+      image.setPixel(x, y, qRgba(qRed(color), qGreen(color), qBlue(color), m_alphaData[x + y * image.width()]));
     }
+  }
+
+  // add to dictionary
+  file()->dictionary().insert(m_characterId, this);
+
+  // add image to resource manager
+  m_imageId = resourceManager()->addImage(image);
+  if (0 > m_imageId)
+  {
+    // error!
+    return false;
   }
 
   //m_image.save("jpeg3.png", "png");

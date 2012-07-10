@@ -88,6 +88,63 @@
     <ClCompile Include="SwfEndTag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Debug\moc_SwfDefineBitsJpeg3Tag.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_SwfDefineBitsJpeg3Tag.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_SwfDefineShapeTag.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_SwfDefineShapeTag.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_SwfEndTag.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_SwfEndTag.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_SwfFileAttributeTag.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_SwfFileAttributeTag.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_SwfPlaceObject2Tag.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_SwfPlaceObject2Tag.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_SwfSetBackgroundColorTag.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_SwfSetBackgroundColorTag.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_SwfShowFrameTag.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_SwfShowFrameTag.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_SwfTag.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_SwfTag.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_ResourceManager.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_ResourceManager.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SwfDataStream.h">
@@ -105,29 +162,34 @@
     <ClInclude Include="SwfTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SwfTag.h">
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="SwfDefineBitsJpeg3Tag.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwfFileAttributeTag.h">
+    </CustomBuild>
+    <CustomBuild Include="SwfDefineShapeTag.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwfSetBackgroundColorTag.h">
+    </CustomBuild>
+    <CustomBuild Include="SwfEndTag.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwfDefineBitsJpeg3Tag.h">
+    </CustomBuild>
+    <CustomBuild Include="SwfFileAttributeTag.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwfDefineShapeTag.h">
+    </CustomBuild>
+    <CustomBuild Include="SwfPlaceObject2Tag.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwfPlaceObject2Tag.h">
+    </CustomBuild>
+    <CustomBuild Include="SwfSetBackgroundColorTag.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwfShowFrameTag.h">
+    </CustomBuild>
+    <CustomBuild Include="SwfShowFrameTag.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwfEndTag.h">
+    </CustomBuild>
+    <CustomBuild Include="SwfTag.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
+    </CustomBuild>
+    <CustomBuild Include="ResourceManager.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

@@ -8,6 +8,8 @@
 /*! @brief Class representing DefineShape SWF tag. */
 class SwfDefineShapeTag : public SwfTag
 {
+  Q_OBJECT
+
   public:
 
     SwfDefineShapeTag();

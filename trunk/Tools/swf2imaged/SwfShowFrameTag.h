@@ -7,6 +7,8 @@
 /*! @brief Class representing ShowFrame SWF tag. */
 class SwfShowFrameTag : public SwfTag
 {
+  Q_OBJECT
+
   public:
 
     SwfShowFrameTag();

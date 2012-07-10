@@ -3,13 +3,15 @@
 
 #include <QObject>
 #include <QList>
+#include <QXmlStreamWriter>
+#include "SwfTypes.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class SwfHeader;
 class SwfTag;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! @brief This class represents entire SWF file with all its content. */
-class SwfFile : QObject
+class SwfFile : public QObject
 {
   Q_OBJECT
 
@@ -20,6 +22,10 @@ class SwfFile : QObject
 
     /* Process the file with a given name. */
     bool process(const QString& fileName);
+    /* Serializes into EGE XML. */
+    bool serialize(QXmlStreamWriter& stream);
+    /* Returns dictionary. */
+    Dictionary& dictionary();
 
   private:
 
@@ -27,6 +33,8 @@ class SwfFile : QObject
     SwfHeader* m_header;
     /*! List of all valid tags. */
     QList<SwfTag*> m_tags;
+    /*! Dictionary. */
+    Dictionary m_dictionary;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

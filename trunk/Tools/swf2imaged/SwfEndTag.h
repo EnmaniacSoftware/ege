@@ -7,6 +7,8 @@
 /*! @brief Class representing End SWF tag. */
 class SwfEndTag : public SwfTag
 {
+  Q_OBJECT
+
   public:
 
     SwfEndTag();

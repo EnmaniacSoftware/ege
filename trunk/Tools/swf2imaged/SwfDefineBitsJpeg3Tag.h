@@ -9,6 +9,8 @@
 /*! @brief Class representing DefineBitsJpeg3 SWF tag. */
 class SwfDefineBitsJpeg3Tag : public SwfTag
 {
+  Q_OBJECT
+
   public:
 
     SwfDefineBitsJpeg3Tag();
@@ -29,8 +31,8 @@ class SwfDefineBitsJpeg3Tag : public SwfTag
     QByteArray m_imageData;
     /*! Alpha data buffer. */
     QByteArray m_alphaData;
-    /*! Composes image. */
-    QImage m_image;
+    /*! Image id. */
+    int m_imageId;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

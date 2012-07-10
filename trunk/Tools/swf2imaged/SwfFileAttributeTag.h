@@ -7,6 +7,8 @@
 /*! @brief Class representing FileAttribute SWF tag. */
 class SwfFileAttributeTag : public SwfTag
 {
+  Q_OBJECT
+
   public:
 
     SwfFileAttributeTag();

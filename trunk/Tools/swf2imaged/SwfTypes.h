@@ -2,9 +2,12 @@
 #define SWFTYPES_H
 
 #include <QList>
+#include <QMap>
+#include <QVariant>
+#include <QColor>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef float fp8;
+typedef QMap<quint16, QObject*> Dictionary;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Available fill style types. */
 enum FillStyleTypes
@@ -55,7 +58,7 @@ struct FocalGradient
   quint8 spreadMode;                      /*!< Spread mode (GradientSpreadMode). */
   quint8 interpolationMode;               /*!< Interpolation mode (GradientInterpolationMode). */
   QList<GradientRecord> gradientPoints;   /*!< List of all gradients control points. */
-  fp8 focalPoint;                         /*!< Focal point location. */
+  float focalPoint;                       /*!< Focal point location (FP8). */
 };
 
 /*! Data struct representing 2D Matrix. */

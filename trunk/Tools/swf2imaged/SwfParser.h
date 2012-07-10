@@ -8,7 +8,9 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class SwfFile;
+class ResourceManager;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! @brief Swf parser object. */
 class SwfParser : public QApplication
 {
   Q_OBJECT
@@ -18,8 +20,8 @@ class SwfParser : public QApplication
     SwfParser(int argc, char *argv[]);
    ~SwfParser();
 
-  private:
-
+    /* Returns resource manager. */
+    ResourceManager* resourceManager() const;
 
   private slots:
 
@@ -34,6 +36,8 @@ class SwfParser : public QApplication
     QString m_outputFileName;
     /*! List of parsed SWF files. */
     QList<SwfFile*> m_parsedFiles;
+    /*! Resource manager. */
+    ResourceManager* m_resourceManager;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

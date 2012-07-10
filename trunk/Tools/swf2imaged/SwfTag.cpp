@@ -6,18 +6,13 @@
 #include "SwfPlaceObject2Tag.h"
 #include "SwfShowFrameTag.h"
 #include "SwfEndTag.h"
+#include "ResourceManager.h"
+#include "SwfFile.h"
+#include "SwfParser.h"
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define TAGID_END                   (0)
-#define TAGID_SHOW_FRAME            (1)
-#define TAGID_DEFINE_SHAPE          (2)
-#define TAGID_SET_BACKGROUND_COLOR  (9)
-#define TAGID_PLACE_OBJECT_2        (26)
-#define TAGID_DEFINE_BITS_JPEG3     (35)
-#define TAGID_FILE_ATTRIBUTE        (69)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SwfTag::SwfTag()
+SwfTag::SwfTag() : QObject()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,7 +21,7 @@ SwfTag::~SwfTag()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates SWFTag of a proper type. */
-SwfTag* SwfTag::ProcessTag(SwfDataStream& data)
+SwfTag* SwfTag::ProcessTag(SwfDataStream& data, SwfFile* file)
 {
   SwfTag* tag = NULL;
 
@@ -50,13 +45,13 @@ SwfTag* SwfTag::ProcessTag(SwfDataStream& data)
   // create tag according to ID
   switch (tagId)
   {
-    case TAGID_END:                   tag = new SwfEndTag(); break;
-    case TAGID_SHOW_FRAME:            tag = new SwfShowFrameTag(); break;
-    case TAGID_DEFINE_SHAPE:          tag = new SwfDefineShapeTag(); break;
-    case TAGID_SET_BACKGROUND_COLOR:  tag = new SwfSetBackgroundColorTag(); break;
-    case TAGID_PLACE_OBJECT_2:        tag = new SwfPlaceObject2Tag(); break;
-    case TAGID_DEFINE_BITS_JPEG3:     tag = new SwfDefineBitsJpeg3Tag(); break;
-    case TAGID_FILE_ATTRIBUTE:        tag = new SwfFileAttributeTag(); break;
+    case SWF_TAG_ID_END:                   tag = new SwfEndTag(); break;
+    case SWF_TAG_ID_SHOW_FRAME:            tag = new SwfShowFrameTag(); break;
+    case SWF_TAG_ID_DEFINE_SHAPE:          tag = new SwfDefineShapeTag(); break;
+    case SWF_TAG_ID_SET_BACKGROUND_COLOR:  tag = new SwfSetBackgroundColorTag(); break;
+    case SWF_TAG_ID_PLACE_OBJECT_2:        tag = new SwfPlaceObject2Tag(); break;
+    case SWF_TAG_ID_DEFINE_BITS_JPEG3:     tag = new SwfDefineBitsJpeg3Tag(); break;
+    case SWF_TAG_ID_FILE_ATTRIBUTE:        tag = new SwfFileAttributeTag(); break;
 
     default:
 
@@ -77,6 +72,7 @@ SwfTag* SwfTag::ProcessTag(SwfDataStream& data)
     // set data
     tag->m_id     = tagId;
     tag->m_length = tagLength;
+    tag->m_file   = file;
     
     // read tag data
     if (!tag->read(data))
@@ -88,5 +84,11 @@ SwfTag* SwfTag::ProcessTag(SwfDataStream& data)
   }
 
   return tag;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns resource manager. */
+ResourceManager* SwfTag::resourceManager() const
+{
+  return qobject_cast<SwfParser*>(file()->parent())->resourceManager();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -8,6 +8,8 @@
 /*! @brief Class representing SetBackgroundColor tag. */
 class SwfSetBackgroundColorTag : public SwfTag
 {
+  Q_OBJECT
+
   public:
 
     SwfSetBackgroundColorTag();
