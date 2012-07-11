@@ -166,8 +166,8 @@ SwfDataStream& SwfDataStream::operator>>(Matrix &i)
   byteAlign();
 
   quint8 bits;
-  quint32 val1;
-  quint32 val2;
+  qint32 val1;
+  qint32 val2;
 
   // scale
   bool flag = (1 == readBits(1, false));
@@ -182,8 +182,8 @@ SwfDataStream& SwfDataStream::operator>>(Matrix &i)
   }
   else
   {
-    i.scaleX = 0.0f;
-    i.scaleY = 0.0f;
+    i.scaleX = 1.0f;
+    i.scaleY = 1.0f;
   }
 
   // rotation

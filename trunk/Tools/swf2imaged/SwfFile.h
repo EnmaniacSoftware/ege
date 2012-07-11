@@ -33,6 +33,8 @@ class SwfFile : public QObject
     bool serializeObjectsSection(QXmlStreamWriter& stream);
     /* Serializes sequences section into EGE XML. */
     bool serializeSequencesSection(QXmlStreamWriter& stream);
+    /* Serializes frames into EGE XML. */
+    bool serializeFrames(QXmlStreamWriter& stream);
 
   private:
 
@@ -44,6 +46,8 @@ class SwfFile : public QObject
     Dictionary m_dictionary;
     /*! Scale factor. */
     float m_scale;
+    /*! File name. */
+    QString m_name;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

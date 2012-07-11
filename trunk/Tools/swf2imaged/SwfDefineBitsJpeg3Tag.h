@@ -16,6 +16,9 @@ class SwfDefineBitsJpeg3Tag : public SwfTag
     SwfDefineBitsJpeg3Tag();
    ~SwfDefineBitsJpeg3Tag();
 
+    /* Returns character ID. */
+    quint16 characterId() const;
+
   private:
 
     /* SwfTag override. Reads data from file. */

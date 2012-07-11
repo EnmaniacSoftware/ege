@@ -2,10 +2,22 @@
 #include "SwfHeader.h"
 #include "SwfTag.h"
 #include "SwfPlaceObject2Tag.h"
+#include "SwfDefineShapeTag.h"
+#include "SwfParser.h"
+#include "ResourceManager.h"
 #include <QFile>
 #include <QDataStream>
 #include <QDebug>
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+struct DisplayData
+{
+  DisplayData() : characterId(0), color(Qt::white) {}
+
+  quint16 characterId;
+  Matrix matrix;
+  QColor color;
+};
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SwfFile::SwfFile(float scale, QObject* parent) : QObject(parent),
                                                  m_scale(scale)
@@ -21,6 +33,12 @@ SwfFile::~SwfFile()
 /*! Process the file with a given name. */
 bool SwfFile::process(const QString &fileName)
 {
+  qDebug() << "Processing" << fileName << "...";
+
+  // store file name (without extension)
+  m_name = fileName.section("/", -1);
+  m_name = m_name.section(".", 0, 0);
+
   // open input file
   QFile file(fileName);
   if ( ! file.open(QIODevice::ReadOnly))
@@ -60,20 +78,8 @@ bool SwfFile::process(const QString &fileName)
 /*! Serializes into EGE XML. */
 bool SwfFile::serialize(QXmlStreamWriter& stream)
 {
-  struct DisplayData
-  {
-    DisplayData() : characterId(0), color(Qt::white) {}
-
-    quint16 characterId;
-    Matrix matrix;
-    QColor color;
-  };
-
-  // display list accessed by depth
-  QMap<quint16, DisplayData> displayList;
-
   stream.writeStartElement("imaged-animation");
-  stream.writeAttribute("name", "some-name");
+  stream.writeAttribute("name", m_name);
   stream.writeAttribute("fps", QString::number(m_header->fps()));
   stream.writeAttribute("size", QString("%1 %2").arg(m_header->frameSize().width()).arg(m_header->frameSize().height()));
 
@@ -90,6 +96,92 @@ bool SwfFile::serialize(QXmlStreamWriter& stream)
     // error!
     return false;
   }
+
+  // serialize frames
+  if ( ! serializeFrames(stream))
+  {
+    // error!
+    return false;
+  }
+
+  return ! stream.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns dictionary. */
+Dictionary& SwfFile::dictionary()
+{
+  return m_dictionary;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Serializes objects section into EGE XML. */
+bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
+{
+  ResourceManager* resourceManager = qobject_cast<SwfParser*>(parent())->resourceManager();
+
+  // find all shapes (objects referred by frames)
+  foreach (const SwfTag* tag, m_tags)
+  {
+    if (SWF_TAG_ID_DEFINE_SHAPE == tag->id())
+    {
+      const SwfDefineShapeTag* shapeTag = qobject_cast<const SwfDefineShapeTag*>(tag);
+
+      // go thru all fill styles
+      foreach (const FillStyle& style, shapeTag->shapeStyle().fillStyles)
+      {
+        // check if bitmap-based style
+        if (((FST_REPEAT_BITMAP == style.type) || (FST_CLIPPED_BITMAP == style.type) || (FST_NONSMOOTHED_REPEAT_BITMAP == style.type) ||
+            (FST_NONSMOOTHED_CLIPPED_BITMAP == style.type)) && (0xffff != style.bitmapCharacterId))
+        {
+          const QImage image = resourceManager->image(style.bitmapCharacterId);
+          if (image.isNull())
+          {
+            // error!
+            qCritical() << "Could not find image referenced by characterID" << style.bitmapCharacterId;
+            return false;
+          }
+
+          stream.writeStartElement("object");
+
+          stream.writeAttribute("id", QString::number(shapeTag->characterId()));
+          stream.writeAttribute("material", resourceManager->generateNameFromCharacterId(style.bitmapCharacterId));
+//          stream.writeAttribute("translate", QString("%1 %2").arg(data.matrix.translateX).arg(data.matrix.translateY));
+//          stream.writeAttribute("scale", QString("%1 %2").arg(data.matrix.scaleX).arg(data.matrix.scaleY));
+//          stream.writeAttribute("skew", QString("%1 %2").arg(data.matrix.rotX).arg(data.matrix.rotY));
+//          stream.writeAttribute("color", QString("%1 %2 %3 %4").arg(data.color.redF()).arg(data.color.greenF()).arg(data.color.blueF()).arg(data.color.alphaF()));
+          stream.writeAttribute("size", QString("%1 %2").arg(image.width()).arg(image.height()));
+
+          stream.writeEndElement();
+        }
+      }
+    }
+  }
+
+  return ! stream.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Serializes sequences section into EGE XML. */
+bool SwfFile::serializeSequencesSection(QXmlStreamWriter& stream)
+{
+  // add default playback sequence
+  stream.writeStartElement("sequence");
+  stream.writeAttribute("name", "all");
+
+  QString sequencerFrames;
+  for (int i = 0; i < m_header->frameCount(); ++i)
+  {
+    sequencerFrames += QString::number(i) + " ";
+  }
+  stream.writeAttribute("frames", sequencerFrames.trimmed());
+  stream.writeEndElement();
+
+  return ! stream.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Serializes frames into EGE XML. */
+bool SwfFile::serializeFrames(QXmlStreamWriter& stream)
+{
+  // display list accessed by depth
+  QMap<quint16, DisplayData> displayList;
 
   // go thru all tags
   quint16 frameCount = 0;
@@ -120,13 +212,13 @@ bool SwfFile::serialize(QXmlStreamWriter& stream)
     {
       stream.writeStartElement("frame");
 
-      for (QMap<quint16, DisplayData>::iterator it = displayList.constBegin(); it != displayList.constEnd(); ++it)
+      for (QMap<quint16, DisplayData>::const_iterator it = displayList.constBegin(); it != displayList.constEnd(); ++it)
       {
         const quint16& depth = it.key();
         const DisplayData& data = it.value();
 
         stream.writeStartElement("action");
-       
+
         stream.writeAttribute("object-id", QString::number(data.characterId));
         stream.writeAttribute("queue", QString::number(depth));
         stream.writeAttribute("translate", QString("%1 %2").arg(data.matrix.translateX).arg(data.matrix.translateY));
@@ -153,36 +245,6 @@ bool SwfFile::serialize(QXmlStreamWriter& stream)
     qCritical() << "Frame count does not match!";
     return false;
   }
-
-  return ! stream.hasError();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns dictionary. */
-Dictionary& SwfFile::dictionary()
-{
-  return m_dictionary;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Serializes objects section into EGE XML. */
-bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
-{
-  return ! stream.hasError();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Serializes sequences section into EGE XML. */
-bool SwfFile::serializeSequencesSection(QXmlStreamWriter& stream)
-{
-  // add default playback sequence
-  stream.writeStartElement("sequence");
-  stream.writeAttribute("name", "all");
-
-  QString sequencerFrames;
-  for (int i = 0; i < m_header->frameCount(); ++i)
-  {
-    sequencerFrames += QString::number(i) + " ";
-  }
-  stream.writeAttribute("frames", sequencerFrames.trimmed());
-  stream.writeEndElement();
 
   return ! stream.hasError();
 }

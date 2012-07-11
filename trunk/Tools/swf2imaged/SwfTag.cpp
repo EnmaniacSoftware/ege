@@ -53,12 +53,24 @@ SwfTag* SwfTag::ProcessTag(SwfDataStream& data, SwfFile* file)
     case SWF_TAG_ID_DEFINE_BITS_JPEG3:     tag = new SwfDefineBitsJpeg3Tag(); break;
     case SWF_TAG_ID_FILE_ATTRIBUTE:        tag = new SwfFileAttributeTag(); break;
 
+    case SWF_TAG_ID_META_DATA:
+    case SWF_TAG_ID_DEFINE_SCENE_AND_LABEL_DATA:
+
+      // silently skip
+      if (tagLength != static_cast<quint32>(data.skipRawData(static_cast<int>(tagLength))))
+      {
+        // error!
+        return NULL;
+      }
+      break;
+
     default:
 
+      // loudly skip
       qDebug() << "Skipping tag" << tagId << "length" << tagLength;
 
       // skip
-      if (tagLength != data.skipRawData(tagLength))
+      if (tagLength != static_cast<quint32>(data.skipRawData(static_cast<int>(tagLength))))
       {
         // error!
         return NULL;

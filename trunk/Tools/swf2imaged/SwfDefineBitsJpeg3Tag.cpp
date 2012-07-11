@@ -1,6 +1,7 @@
 #include "SwfDefineBitsJpeg3Tag.h"
 #include "SwfFile.h"
 #include "ResourceManager.h"
+#include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SwfDefineBitsJpeg3Tag::SwfDefineBitsJpeg3Tag() : SwfTag(),
@@ -46,7 +47,7 @@ bool SwfDefineBitsJpeg3Tag::read(SwfDataStream& data)
 
   // create ARGBA image from pixel data image
   image = image.convertToFormat(QImage::Format_ARGB32);
-      
+
   // TAGE - optimize
 
   // add alpha channel
@@ -64,15 +65,21 @@ bool SwfDefineBitsJpeg3Tag::read(SwfDataStream& data)
   file()->dictionary().insert(m_characterId, this);
 
   // add image to resource manager
-  m_imageId = resourceManager()->addImage(image);
+  m_imageId = resourceManager()->addImage(image, m_characterId);
   if (0 > m_imageId)
   {
     // error!
     return false;
   }
 
-  //m_image.save("jpeg3.png", "png");
+  image.save(QString("jpeg3-%1-%2.png").arg(m_characterId).arg(m_imageId), "PNG");
 
   return QDataStream::Ok == data.status();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns character ID. */
+quint16 SwfDefineBitsJpeg3Tag::characterId() const
+{
+  return m_characterId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

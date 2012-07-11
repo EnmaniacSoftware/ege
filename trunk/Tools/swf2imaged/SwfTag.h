@@ -4,13 +4,15 @@
 #include "SwfDataStream.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define SWF_TAG_ID_END                   (0)
-#define SWF_TAG_ID_SHOW_FRAME            (1)
-#define SWF_TAG_ID_DEFINE_SHAPE          (2)
-#define SWF_TAG_ID_SET_BACKGROUND_COLOR  (9)
-#define SWF_TAG_ID_PLACE_OBJECT_2        (26)
-#define SWF_TAG_ID_DEFINE_BITS_JPEG3     (35)
-#define SWF_TAG_ID_FILE_ATTRIBUTE        (69)
+#define SWF_TAG_ID_END                          (0)
+#define SWF_TAG_ID_SHOW_FRAME                   (1)
+#define SWF_TAG_ID_DEFINE_SHAPE                 (2)
+#define SWF_TAG_ID_SET_BACKGROUND_COLOR         (9)
+#define SWF_TAG_ID_PLACE_OBJECT_2               (26)
+#define SWF_TAG_ID_DEFINE_BITS_JPEG3            (35)
+#define SWF_TAG_ID_FILE_ATTRIBUTE               (69)
+#define SWF_TAG_ID_META_DATA                    (77)
+#define SWF_TAG_ID_DEFINE_SCENE_AND_LABEL_DATA  (86)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class SwfFile;
 class ResourceManager;

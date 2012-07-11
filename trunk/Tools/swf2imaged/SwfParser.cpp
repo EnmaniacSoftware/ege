@@ -4,6 +4,7 @@
 #include <QTimer>
 #include <QXmlStreamWriter>
 #include <QFile>
+#include <QDir>
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -20,13 +21,13 @@ SwfParser::SwfParser(int argc, char *argv[]) : QApplication(argc, argv),
     // check if input image file switch
     if (("--i" == args[i]) && (i + 1 < args.size()))
     {
-      m_inputFileNames.append(args[i + 1]);
+      m_inputFileNames.append(QDir::fromNativeSeparators(args[i + 1]));
       i += 2;
     }
     // check if output file switch
     else if (("--o" == args[i]) && (i + 1 < args.size()))
     {
-      m_outputFileName = args[i + 1];
+      m_outputFileName = QDir::fromNativeSeparators(args[i + 1]);
       i += 2;
     }
     // check if material/image base name switch
@@ -71,8 +72,11 @@ void SwfParser::onStart()
     return;
   }
 
+  // retrieve output dir
+  QString outputDir = m_outputFileName.section("/", 0, -2);
+
   // create resource manager
-  m_resourceManager = new ResourceManager(m_materialImageBaseName, m_globalScaleFactor, this);
+  m_resourceManager = new ResourceManager(m_materialImageBaseName, outputDir, m_globalScaleFactor, this);
   if (NULL == m_resourceManager)
   {
     // error!
@@ -122,6 +126,13 @@ void SwfParser::onStart()
   }
 
   // save
+  if ( ! m_resourceManager->saveAssets())
+  {
+    // error!
+    exit(2);
+    return;
+  }
+
   QFile outputFile(m_outputFileName);
   if (!outputFile.open(QIODevice::WriteOnly | QIODevice::Text))
   {

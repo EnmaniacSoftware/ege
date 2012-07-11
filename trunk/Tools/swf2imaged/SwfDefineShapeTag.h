@@ -17,6 +17,8 @@ class SwfDefineShapeTag : public SwfTag
 
     /* Returns character ID. */
     quint16 characterId() const;
+    /* Returns shape style data. */
+    const ShapeWithStyle& shapeStyle() const;
 
   private:
 
