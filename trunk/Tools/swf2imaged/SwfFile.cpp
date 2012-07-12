@@ -121,7 +121,7 @@ bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
   // find all shapes (objects referred by frames)
   foreach (const SwfTag* tag, m_tags)
   {
-    if (SWF_TAG_ID_DEFINE_SHAPE == tag->id())
+    if ((SWF_TAG_ID_DEFINE_SHAPE == tag->id()) || (SWF_TAG_ID_DEFINE_SHAPE_2 == tag->id()))
     {
       const SwfDefineShapeTag* shapeTag = qobject_cast<const SwfDefineShapeTag*>(tag);
 
@@ -144,7 +144,7 @@ bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
 
           stream.writeAttribute("id", QString::number(shapeTag->characterId()));
           stream.writeAttribute("material", resourceManager->generateNameFromCharacterId(style.bitmapCharacterId));
-//          stream.writeAttribute("translate", QString("%1 %2").arg(data.matrix.translateX).arg(data.matrix.translateY));
+          stream.writeAttribute("translate", QString("%1 %2").arg(style.bitmapMatrix.translateX).arg(style.bitmapMatrix.translateY));
 //          stream.writeAttribute("scale", QString("%1 %2").arg(data.matrix.scaleX).arg(data.matrix.scaleY));
 //          stream.writeAttribute("skew", QString("%1 %2").arg(data.matrix.rotX).arg(data.matrix.rotY));
 //          stream.writeAttribute("color", QString("%1 %2 %3 %4").arg(data.color.redF()).arg(data.color.greenF()).arg(data.color.blueF()).arg(data.color.alphaF()));

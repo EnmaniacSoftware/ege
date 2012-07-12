@@ -1,6 +1,7 @@
 #include "SwfDefineBitsJpeg3Tag.h"
 #include "SwfFile.h"
 #include "ResourceManager.h"
+#include <QImage>
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -72,7 +73,7 @@ bool SwfDefineBitsJpeg3Tag::read(SwfDataStream& data)
     return false;
   }
 
-  image.save(QString("jpeg3-%1-%2.png").arg(m_characterId).arg(m_imageId), "PNG");
+  //image.save(QString("jpeg3-%1-%2.png").arg(m_characterId).arg(m_imageId), "PNG");
 
   return QDataStream::Ok == data.status();
 }

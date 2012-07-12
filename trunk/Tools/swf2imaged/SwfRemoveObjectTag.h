@@ -1,24 +1,21 @@
-#ifndef SWF_DEFINESHAPE_TAG_H
-#define SWF_DEFINESHAPE_TAG_H
+#ifndef SWF_REMOVEOBJECT_TAG_H
+#define SWF_REMOVEOBJECT_TAG_H
 
 #include "SwfTag.h"
-#include <QRect>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! @brief Class representing DefineShape SWF tag. */
-class SwfDefineShapeTag : public SwfTag
+/*! @brief Class representing RemoveObject SWF tag. */
+class SwfRemoveObjectTag : public SwfTag
 {
   Q_OBJECT
 
   public:
 
-    SwfDefineShapeTag();
-   ~SwfDefineShapeTag();
+    SwfRemoveObjectTag();
+   ~SwfRemoveObjectTag();
 
     /* Returns character ID. */
     quint16 characterId() const;
-    /* Returns shape style data. */
-    const ShapeWithStyle& shapeStyle() const;
 
   private:
 
@@ -29,11 +26,9 @@ class SwfDefineShapeTag : public SwfTag
 
     /*! Character Id. */
     quint16 m_characterId;
-    /*! Bounds. */
-    QRect m_bounds;
-    /*! Shape. */
-    ShapeWithStyle m_shape;
+    /*! Depth. */
+    quint16 m_depth;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // SWF_DEFINESHAPE_TAG_H
+#endif // SWF_REMOVEOBJECT_TAG_H

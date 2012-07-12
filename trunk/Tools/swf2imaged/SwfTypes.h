@@ -86,6 +86,7 @@ struct FillStyle
                                      If type == FST_REPEAT_BITMAP, FST_CLIPPED_BITMAP, FST_NONSMOOTHED_REPEAT_BITMAP or FST_NONSMOOTHED_CLIPPED_BITMAP. */
   Matrix bitmapMatrix;          /*!< Matrix for bitmap fill.
                                      If type == FST_REPEAT_BITMAP, FST_CLIPPED_BITMAP, FST_NONSMOOTHED_REPEAT_BITMAP or FST_NONSMOOTHED_CLIPPED_BITMAP. */
+  // NOTE: it seems translation needs to be applied to object matrix
 };
 
 /*! Data struct representing line style. */

@@ -3,9 +3,14 @@
 #include "SwfSetBackgroundColorTag.h"
 #include "SwfDefineBitsJpeg3Tag.h"
 #include "SwfDefineShapeTag.h"
+#include "SwfDefineShape2Tag.h"
 #include "SwfPlaceObject2Tag.h"
 #include "SwfShowFrameTag.h"
 #include "SwfEndTag.h"
+#include "SwfDefineBitsLosslessTag.h"
+#include "SwfDefineBitsLossless2Tag.h"
+#include "SwfRemoveObjectTag.h"
+#include "SwfRemoveObject2Tag.h"
 #include "ResourceManager.h"
 #include "SwfFile.h"
 #include "SwfParser.h"
@@ -45,13 +50,18 @@ SwfTag* SwfTag::ProcessTag(SwfDataStream& data, SwfFile* file)
   // create tag according to ID
   switch (tagId)
   {
-    case SWF_TAG_ID_END:                   tag = new SwfEndTag(); break;
-    case SWF_TAG_ID_SHOW_FRAME:            tag = new SwfShowFrameTag(); break;
-    case SWF_TAG_ID_DEFINE_SHAPE:          tag = new SwfDefineShapeTag(); break;
-    case SWF_TAG_ID_SET_BACKGROUND_COLOR:  tag = new SwfSetBackgroundColorTag(); break;
-    case SWF_TAG_ID_PLACE_OBJECT_2:        tag = new SwfPlaceObject2Tag(); break;
-    case SWF_TAG_ID_DEFINE_BITS_JPEG3:     tag = new SwfDefineBitsJpeg3Tag(); break;
-    case SWF_TAG_ID_FILE_ATTRIBUTE:        tag = new SwfFileAttributeTag(); break;
+    case SWF_TAG_ID_END:                    tag = new SwfEndTag(); break;
+    case SWF_TAG_ID_SHOW_FRAME:             tag = new SwfShowFrameTag(); break;
+    case SWF_TAG_ID_DEFINE_SHAPE:           tag = new SwfDefineShapeTag(); break;
+    case SWF_TAG_ID_REMOVE_OBJECT:          tag = new SwfRemoveObjectTag(); break;
+    case SWF_TAG_ID_SET_BACKGROUND_COLOR:   tag = new SwfSetBackgroundColorTag(); break;
+    case SWF_TAG_ID_DEFINE_BITS_LOSSLESS:   tag = new SwfDefineBitsLosslessTag(); break;
+    case SWF_TAG_ID_DEFINE_SHAPE_2:         tag = new SwfDefineShape2Tag(); break;
+    case SWF_TAG_ID_PLACE_OBJECT_2:         tag = new SwfPlaceObject2Tag(); break;
+    case SWF_TAG_ID_REMOVE_OBJECT_2:        tag = new SwfRemoveObject2Tag(); break;
+    case SWF_TAG_ID_DEFINE_BITS_JPEG3:      tag = new SwfDefineBitsJpeg3Tag(); break;
+    case SWF_TAG_ID_DEFINE_BITS_LOSSLESS_2: tag = new SwfDefineBitsLossless2Tag(); break;
+    case SWF_TAG_ID_FILE_ATTRIBUTE:         tag = new SwfFileAttributeTag(); break;
 
     case SWF_TAG_ID_META_DATA:
     case SWF_TAG_ID_DEFINE_SCENE_AND_LABEL_DATA:

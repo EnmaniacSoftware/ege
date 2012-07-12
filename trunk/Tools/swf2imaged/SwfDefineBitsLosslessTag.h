@@ -1,39 +1,34 @@
-#ifndef SWF_DEFINESHAPE_TAG_H
-#define SWF_DEFINESHAPE_TAG_H
+#ifndef SWF_DEFINEBITSLOSSLESS_TAG_H
+#define SWF_DEFINEBITSLOSSLESS_TAG_H
 
 #include "SwfTag.h"
-#include <QRect>
+#include <QByteArray>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! @brief Class representing DefineShape SWF tag. */
-class SwfDefineShapeTag : public SwfTag
+/*! @brief Class representing DefineBitsLossless SWF tag. */
+class SwfDefineBitsLosslessTag : public SwfTag
 {
   Q_OBJECT
 
   public:
 
-    SwfDefineShapeTag();
-   ~SwfDefineShapeTag();
-
-    /* Returns character ID. */
-    quint16 characterId() const;
-    /* Returns shape style data. */
-    const ShapeWithStyle& shapeStyle() const;
+    SwfDefineBitsLosslessTag();
+   ~SwfDefineBitsLosslessTag();
 
   private:
 
     /* SwfTag override. Reads data from file. */
     bool read(SwfDataStream& data) override;
 
-  protected:
+  private:
 
     /*! Character Id. */
     quint16 m_characterId;
-    /*! Bounds. */
-    QRect m_bounds;
-    /*! Shape. */
-    ShapeWithStyle m_shape;
+    /*! Compressed image data buffer. */
+    QByteArray m_imageData;
+   /*! Image id. */
+    int m_imageId;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // SWF_DEFINESHAPE_TAG_H
+#endif // SWF_DEFINEBITSLOSSLESS_TAG_H
