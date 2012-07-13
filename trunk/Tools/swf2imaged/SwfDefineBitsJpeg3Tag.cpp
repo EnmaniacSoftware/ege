@@ -66,7 +66,7 @@ bool SwfDefineBitsJpeg3Tag::read(SwfDataStream& data)
   file()->dictionary().insert(m_characterId, this);
 
   // add image to resource manager
-  m_imageId = resourceManager()->addImage(image, m_characterId);
+  m_imageId = resourceManager()->addImage(image);
   if (0 > m_imageId)
   {
     // error!
@@ -82,5 +82,11 @@ bool SwfDefineBitsJpeg3Tag::read(SwfDataStream& data)
 quint16 SwfDefineBitsJpeg3Tag::characterId() const
 {
   return m_characterId;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns image ID. */
+int SwfDefineBitsJpeg3Tag::imageId() const
+{
+  return m_imageId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

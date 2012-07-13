@@ -16,6 +16,8 @@ class SwfRemoveObjectTag : public SwfTag
 
     /* Returns character ID. */
     quint16 characterId() const;
+    /* Returns depth. */
+    quint16 depth() const;
 
   private:
 

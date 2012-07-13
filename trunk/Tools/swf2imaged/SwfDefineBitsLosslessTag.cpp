@@ -80,7 +80,7 @@ bool SwfDefineBitsLosslessTag::read(SwfDataStream& data)
   file()->dictionary().insert(m_characterId, this);
 
   // add image to resource manager
-  m_imageId = resourceManager()->addImage(image, m_characterId);
+  m_imageId = resourceManager()->addImage(image);
   if (0 > m_imageId)
   {
     // error!
@@ -90,5 +90,11 @@ bool SwfDefineBitsLosslessTag::read(SwfDataStream& data)
   //image.save(QString("jpeg3-%1-%2.png").arg(m_characterId).arg(m_imageId), "PNG");
 
   return QDataStream::Ok == data.status();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns image ID. */
+int SwfDefineBitsLosslessTag::imageId() const
+{
+  return m_imageId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -3,6 +3,10 @@
 #include "SwfTag.h"
 #include "SwfPlaceObject2Tag.h"
 #include "SwfDefineShapeTag.h"
+#include "SwfRemoveObjectTag.h"
+#include "SwfRemoveObject2Tag.h"
+#include "SwfDefineBitsJpeg3Tag.h"
+#include "SwfDefineBitsLosslessTag.h"
 #include "SwfParser.h"
 #include "ResourceManager.h"
 #include <QFile>
@@ -132,7 +136,32 @@ bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
         if (((FST_REPEAT_BITMAP == style.type) || (FST_CLIPPED_BITMAP == style.type) || (FST_NONSMOOTHED_REPEAT_BITMAP == style.type) ||
             (FST_NONSMOOTHED_CLIPPED_BITMAP == style.type)) && (0xffff != style.bitmapCharacterId))
         {
-          const QImage image = resourceManager->image(style.bitmapCharacterId);
+          QImage image;
+
+          // locate bitmap object in dictionary
+          QObject* bitmapObject = m_dictionary.value(style.bitmapCharacterId, NULL);
+          if (NULL == bitmapObject)
+          {
+            // error!
+            qCritical() << "Could not locate bitmap tag in dictionary!";
+            return false;
+          }
+
+          SwfDefineBitsJpeg3Tag* jpeg3        = qobject_cast<SwfDefineBitsJpeg3Tag*>(bitmapObject);
+          SwfDefineBitsLosslessTag* lossless  = qobject_cast<SwfDefineBitsLosslessTag*>(bitmapObject);
+
+          int imageId = -1;
+
+          if (NULL != jpeg3)
+          {
+            imageId = jpeg3->imageId();
+          }
+          else if (NULL != lossless)
+          {
+            imageId = lossless->imageId();
+          }
+
+          image = resourceManager->image(imageId);
           if (image.isNull())
           {
             // error!
@@ -143,7 +172,7 @@ bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
           stream.writeStartElement("object");
 
           stream.writeAttribute("id", QString::number(shapeTag->characterId()));
-          stream.writeAttribute("material", resourceManager->generateNameFromCharacterId(style.bitmapCharacterId));
+          stream.writeAttribute("material", resourceManager->generateNameFromImageId(imageId));
           stream.writeAttribute("translate", QString("%1 %2").arg(style.bitmapMatrix.translateX).arg(style.bitmapMatrix.translateY));
 //          stream.writeAttribute("scale", QString("%1 %2").arg(data.matrix.scaleX).arg(data.matrix.scaleY));
 //          stream.writeAttribute("skew", QString("%1 %2").arg(data.matrix.rotX).arg(data.matrix.rotY));
@@ -207,6 +236,28 @@ bool SwfFile::serializeFrames(QXmlStreamWriter& stream)
       {
         Q_ASSERT("Implement!");
       }
+    }
+    else if (SWF_TAG_ID_REMOVE_OBJECT == tag->id())
+    {
+      const SwfRemoveObjectTag* removeTag = qobject_cast<const SwfRemoveObjectTag*>(tag);
+
+      // remove given character at given depth
+      if (displayList.contains(removeTag->depth()) && displayList[removeTag->depth()].characterId == removeTag->characterId())
+      {
+        // remove character at given depth
+        displayList.remove(removeTag->depth());
+      }
+      else
+      {
+        qWarning() << "Could not remove character" << removeTag->characterId() << "at depth" << removeTag->depth() << "No such character and/or depth!";
+      }
+    }
+    else if (SWF_TAG_ID_REMOVE_OBJECT_2 == tag->id())
+    {
+      const SwfRemoveObject2Tag* removeTag = qobject_cast<const SwfRemoveObject2Tag*>(tag);
+
+      // remove character at given depth
+      displayList.remove(removeTag->depth());
     }
     else if (SWF_TAG_ID_SHOW_FRAME == tag->id())
     {

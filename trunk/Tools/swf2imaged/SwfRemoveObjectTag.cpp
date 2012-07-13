@@ -11,6 +11,18 @@ SwfRemoveObjectTag::~SwfRemoveObjectTag()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns character ID. */
+quint16 SwfRemoveObjectTag::characterId() const
+{
+  return m_characterId;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns depth. */
+quint16 SwfRemoveObjectTag::depth() const
+{
+  return m_depth;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! SwfTag override. Reads data from file. */
 bool SwfRemoveObjectTag::read(SwfDataStream& data)
 {

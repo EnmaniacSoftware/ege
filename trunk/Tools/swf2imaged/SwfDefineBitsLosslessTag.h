@@ -15,6 +15,9 @@ class SwfDefineBitsLosslessTag : public SwfTag
     SwfDefineBitsLosslessTag();
    ~SwfDefineBitsLosslessTag();
 
+    /* Returns image ID. */
+    int imageId() const;
+
   private:
 
     /* SwfTag override. Reads data from file. */

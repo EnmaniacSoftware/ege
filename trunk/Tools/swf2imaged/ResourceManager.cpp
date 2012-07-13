@@ -15,18 +15,15 @@ ResourceManager::~ResourceManager()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds image into pool.
-    @param image       Image to be added.
-    @param characterId SWF character id for an image.
+    @param image  Image to be added.
     @return  On success, non-negative unique image identifier assigned to given image. Otherwise, negative.
  */
-int ResourceManager::addImage(const QImage& image, quint16 characterId)
+int ResourceManager::addImage(const QImage& image)
 {
   // add only if unique
   for (int i = 0; i < m_images.count(); ++i)
   {
-    const ImageData& data = m_images[i];
-
-    if (data.image == image)
+    if (m_images[i] == image)
     {
       // found, return reference
       return i;
@@ -34,10 +31,7 @@ int ResourceManager::addImage(const QImage& image, quint16 characterId)
   }
 
   // add to pool
-  ImageData data;
-  data.image        = image;
-  data.characterId  = characterId;
-  m_images.append(data);
+  m_images.append(image);
 
   return m_images.count() - 1;
 }
@@ -47,11 +41,9 @@ bool ResourceManager::serialize(QXmlStreamWriter& stream)
 {
   for (int i = 0; i < m_images.count(); ++i)
   {
-    const ImageData& data = m_images[i];
-
     stream.writeStartElement("material");
 
-    QString name = generateNameFromCharacterId(data.characterId);
+    QString name = generateNameFromImageId(i);
 
     stream.writeAttribute("name", name);
     stream.writeAttribute("src-blend", "src-alpha");
@@ -67,10 +59,10 @@ bool ResourceManager::serialize(QXmlStreamWriter& stream)
   return ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Generates asset's name from character Id. */
-QString ResourceManager::generateNameFromCharacterId(quint16 characterId) const
+/*! Generates asset's name from image Id. */
+QString ResourceManager::generateNameFromImageId(quint16 id) const
 {
-  return m_baseName + QString("-object-%1").arg(characterId);
+  return m_baseName + QString("-object-%1").arg(id);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Saves assets. */
@@ -88,12 +80,10 @@ bool ResourceManager::saveAssets()
   // save assets
   for (int i = 0; i < m_images.count(); ++i)
   {
-    const ImageData& data = m_images[i];
-
-    QString fullPath = m_outputLocation + QDir::separator() + generateNameFromCharacterId(data.characterId) + ".png";
+    QString fullPath = m_outputLocation + QDir::separator() + generateNameFromImageId(i) + ".png";
     
     // rescale
-    QImage image = data.image.scaled(QSize(data.image.width() * m_scale, data.image.height() * m_scale), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    QImage image = m_images[i].scaled(QSize(m_images[i].width() * m_scale, m_images[i].height() * m_scale), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     if (image.isNull())
     {
       // error!
@@ -113,20 +103,9 @@ bool ResourceManager::saveAssets()
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns image references by given character ID. */
-QImage ResourceManager::image(quint16 characterId) const
+/*! Returns image references by given id. */
+QImage ResourceManager::image(int id) const
 {
-  for (int i = 0; i < m_images.count(); ++i)
-  {
-    const ImageData& data = m_images[i];
-    if (data.characterId == characterId)
-    {
-      // found
-      return data.image;
-    }
-  }
-
-  // not found
-  return QImage();
+  return m_images.value(id, QImage());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

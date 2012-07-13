@@ -18,6 +18,8 @@ class SwfDefineBitsJpeg3Tag : public SwfTag
 
     /* Returns character ID. */
     quint16 characterId() const;
+    /* Returns image ID. */
+    int imageId() const;
 
   private:
 
