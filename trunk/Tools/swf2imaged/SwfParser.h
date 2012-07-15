@@ -39,6 +39,8 @@ class SwfParser : public QApplication
 
     /*! Input SWF file names. */
     QStringList m_inputFileNames;
+    /*! Input data filenames. */
+    QStringList m_inputDataFileNames;
     /*! Output XML file name. */
     QString m_outputFileName;
     /*! Base name for materials and images. */

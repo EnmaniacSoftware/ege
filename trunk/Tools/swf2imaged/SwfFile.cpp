@@ -37,27 +37,17 @@ SwfFile::~SwfFile()
 /*! Process the file with a given name. */
 bool SwfFile::process(const QString &fileName)
 {
+  SwfDataStream* stream;
+
   qDebug() << "Processing" << fileName << "...";
 
   // store file name (without extension)
   m_name = fileName.section("/", -1);
   m_name = m_name.section(".", 0, 0);
 
-  // open input file
-  QFile file(fileName);
-  if ( ! file.open(QIODevice::ReadOnly))
-  {
-    // error!
-    qCritical() << "Unable to open file" << fileName;
-    return false;
-  }
-
-  // prepare data steam
-  SwfDataStream input(&file);
-
   // create and read header
   m_header = new SwfHeader();
-  if ( ! m_header->read(input))
+  if (NULL == (stream = m_header->process(fileName)))
   {
     // error!
     return false;
@@ -67,14 +57,14 @@ bool SwfFile::process(const QString &fileName)
   do
   {
     // process tag
-    SwfTag* tag = SwfTag::ProcessTag(input, this);
+    SwfTag* tag = SwfTag::ProcessTag(*stream, this);
     if (tag)
     {
       // add to pool
       m_tags.append(tag);
     }
 
-  } while ((QDataStream::Ok == input.status()) && !input.atEnd());
+  } while ((QDataStream::Ok == stream->status()) && ! stream->atEnd());
 
   return true;
 }
@@ -129,6 +119,9 @@ bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
     {
       const SwfDefineShapeTag* shapeTag = qobject_cast<const SwfDefineShapeTag*>(tag);
 
+      stream.writeStartElement("object");
+      stream.writeAttribute("id", QString::number(shapeTag->characterId()));
+
       // go thru all fill styles
       foreach (const FillStyle& style, shapeTag->shapeStyle().fillStyles)
       {
@@ -169,19 +162,20 @@ bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
             return false;
           }
 
-          stream.writeStartElement("object");
+          stream.writeStartElement("child");
 
-          stream.writeAttribute("id", QString::number(shapeTag->characterId()));
           stream.writeAttribute("material", resourceManager->generateNameFromImageId(imageId));
           stream.writeAttribute("translate", QString("%1 %2").arg(style.bitmapMatrix.translateX).arg(style.bitmapMatrix.translateY));
-//          stream.writeAttribute("scale", QString("%1 %2").arg(data.matrix.scaleX).arg(data.matrix.scaleY));
-//          stream.writeAttribute("skew", QString("%1 %2").arg(data.matrix.rotX).arg(data.matrix.rotY));
-//          stream.writeAttribute("color", QString("%1 %2 %3 %4").arg(data.color.redF()).arg(data.color.greenF()).arg(data.color.blueF()).arg(data.color.alphaF()));
+          stream.writeAttribute("scale", QString("%1 %2").arg(style.bitmapMatrix.scaleX).arg(style.bitmapMatrix.scaleY));
+          stream.writeAttribute("skew", QString("%1 %2").arg(style.bitmapMatrix.rotX).arg(style.bitmapMatrix.rotY));
+       //   stream.writeAttribute("color", QString("%1 %2 %3 %4").arg(data.color.redF()).arg(data.color.greenF()).arg(data.color.blueF()).arg(data.color.alphaF()));
           stream.writeAttribute("size", QString("%1 %2").arg(image.width()).arg(image.height()));
 
           stream.writeEndElement();
         }
       }
+
+      stream.writeEndElement();
     }
   }
 

@@ -14,6 +14,13 @@ SwfDataStream::SwfDataStream(QIODevice* d) : QDataStream(d),
   setByteOrder(QDataStream::LittleEndian);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+SwfDataStream::SwfDataStream(const QByteArray& a) : QDataStream(a),
+                                                    m_bitOffset(BITS_PER_BYTE)
+{
+  // set proper byte ordering
+  setByteOrder(QDataStream::LittleEndian);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Reads given number of bits. */
 qint32 SwfDataStream::readBits(int bitCount, bool signedValue)
 {
@@ -157,6 +164,7 @@ SwfDataStream& SwfDataStream::operator>>(QByteArray &i)
 
   int read = readRawData(i.data(), i.size());
   Q_ASSERT(read == i.size());
+  Q_UNUSED(read);
 
   return *this;
 }
@@ -398,12 +406,51 @@ FillStyle SwfDataStream::readFillStyle(int version)
   if ((FST_REPEAT_BITMAP == style.type) || (FST_CLIPPED_BITMAP == style.type) || (FST_NONSMOOTHED_REPEAT_BITMAP == style.type) || 
       (FST_NONSMOOTHED_CLIPPED_BITMAP == style.type))
   {
+    Matrix matrix;
+
     *this >> style.bitmapCharacterId;
-    *this >> style.bitmapMatrix;
+    *this >> matrix;
+
+		// Invert the rotation part.
+		float	det = matrix.scaleX * matrix.scaleY - matrix.rotX * matrix.rotY;
+		if (0.0f == det)
+		{
+			// Not invertible.
+		  Q_ASSERT("Invertible!"); // castano: this happens sometimes! (ie. sample6.swf)
+
+			// Arbitrary fallback.
+			style.bitmapMatrix.scaleX     = 1.0f;
+			style.bitmapMatrix.scaleY     = 1.0f;
+			style.bitmapMatrix.rotX       = 0.0f;
+			style.bitmapMatrix.rotY       = 0.0f;
+			style.bitmapMatrix.translateX = -matrix.translateX;
+			style.bitmapMatrix.translateY = -matrix.translateY;
+		}
+		else
+		{
+			float	inv_det = 1.0f / det;
+      
+      style.bitmapMatrix.scaleX = matrix.scaleY * inv_det;
+      style.bitmapMatrix.scaleY = matrix.scaleX * inv_det;
+      style.bitmapMatrix.rotX   = -matrix.rotY * inv_det;
+      style.bitmapMatrix.rotY   = -matrix.rotX * inv_det;
+			//style.bitmapMatrix.translateX = -(style.bitmapMatrix.scaleX * matrix.translateX + style.bitmapMatrix.rotX   * matrix.translateY);
+			//style.bitmapMatrix.translateY = -(style.bitmapMatrix.rotY   * matrix.translateX + style.bitmapMatrix.scaleY * matrix.translateY);
+      style.bitmapMatrix.translateX = matrix.translateX;
+      style.bitmapMatrix.translateY = matrix.translateY;
+
+      style.bitmapMatrix.scaleX *= 20.0f;
+      style.bitmapMatrix.scaleY *= 20.0f;
+
+		}
+
+    style.bitmapMatrix = matrix;
 
     // NOTE: it seems for FillStyle matrix scale (and rotation ?) is in twips ?!
     style.bitmapMatrix.scaleX *= 0.05f;
     style.bitmapMatrix.scaleY *= 0.05f;
+    style.bitmapMatrix.rotX *= 0.05f;
+    style.bitmapMatrix.rotY *= 0.05f;
   }
 
   return style;
@@ -415,11 +462,18 @@ FillStyle SwfDataStream::readFillStyle(int version)
  */
 LineStyle SwfDataStream::readLineStyle(int version)
 {
-  Q_UNUSED(version);
-
   LineStyle style;
 
-  Q_ASSERT(false);
+  *this >> style.width;
+
+  if (3 > version)
+  {
+    style.color = readRGB();
+  }
+  else
+  {
+    style.color = readRGBA();
+  }
 
   return style;
 }

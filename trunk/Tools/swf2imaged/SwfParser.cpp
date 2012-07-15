@@ -24,6 +24,12 @@ SwfParser::SwfParser(int argc, char *argv[]) : QApplication(argc, argv),
       m_inputFileNames.append(QDir::fromNativeSeparators(args[i + 1]));
       i += 2;
     }
+    // check if input file switch
+    else if (("--ifile" == args[i]) && (i + 1 < args.size()))
+    {
+      m_inputDataFileNames.append(QDir::fromNativeSeparators(args[i + 1]));
+      i += 2;
+    }
     // check if output file switch
     else if (("--o" == args[i]) && (i + 1 < args.size()))
     {
@@ -83,6 +89,25 @@ void SwfParser::onStart()
     qCritical() << "Could not create resource manager!";
     exit(3);
     return;
+  }
+
+  // parse all input data files first
+  foreach(const QString& inputDataFileName, m_inputDataFileNames)
+  {
+    // open file for reading
+    QFile file(inputDataFileName);
+    if ( ! file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+      // error!
+      qCritical() << "Could not open input data file" << inputDataFileName;
+      exit(3);
+      return;
+    }
+
+    QTextStream in(&file);
+
+    QString files = in.readAll();
+    m_inputFileNames << files.split(QRegExp("\\s+"), QString::SkipEmptyParts);
   }
 
   // go thru all input files
@@ -159,12 +184,15 @@ ResourceManager* SwfParser::resourceManager() const
 void SwfParser::printSyntax() const
 {
   qDebug() << "Usage syntax:";
-  qDebug() << "swf2imaged --i <filename> --o <filename> --base-name <string> [--scale <value>]";
+  qDebug() << "swf2imaged --i <filename> [--ifile <filename>] --o <filename> --base-name <string> [--scale <value>]";
   qDebug() << "";
   qDebug() << "--i          Full path to input SWF file. It is allowed to specify multiple input files.";
+  qDebug() << "--ifile      [Optional] Full path to input data file. It is allowed to specify multiple input files.";
   qDebug() << "--o          Full path to output XML file.";
   qDebug() << "--base-name  Base name for auto-generated material and image names.";
   qDebug() << "--scale      [Optional] Global scale factor. Default 1.0.";
+  qDebug() << "";
+  qDebug() << "NOTE: Input data file contain white-space seperated list of SWF file to process.";
   qDebug() << "";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

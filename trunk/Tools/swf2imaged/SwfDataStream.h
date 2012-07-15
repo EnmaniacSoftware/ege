@@ -15,6 +15,7 @@ class SwfDataStream : public QDataStream
   public:
 
     SwfDataStream(QIODevice* d);
+    SwfDataStream(const QByteArray& a);
 
     /* Reads given number of bits. */
     qint32 readBits(int bitCount, bool signedValue);

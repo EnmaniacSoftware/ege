@@ -85,8 +85,10 @@ bool SwfDefineShapeTag::read(SwfDataStream& data)
         qint8 numFillBits = data.readBits(4, false);
         qint8 numLineBits = data.readBits(4, false);
 
-        Q_UNUSED(fillStyles);
-        Q_UNUSED(lineStyles);
+        // add to existing pools
+        m_shape.fillStyles << fillStyles;
+        m_shape.lineStyles << lineStyles;
+
         Q_UNUSED(numFillBits);
         Q_UNUSED(numLineBits);
       }

@@ -13,8 +13,11 @@ class SwfHeader
     SwfHeader();
    ~SwfHeader();
 
-    /* Reads data from file. */
-    bool read(SwfDataStream& data);
+    /* Processes header of a given file. 
+       @param fileName  Path to SWF file to process.
+       @return  Returns SWF data stream if given file is valid. Otherwise, NULL.
+     */
+    SwfDataStream* process(const QString &fileName);
     /* Returns FPS. */
     float fps() const;
     /* Returns frame size. */
@@ -34,6 +37,8 @@ class SwfHeader
     float m_fps;
     /*! Frame count. */
     quint16 m_frameCount;
+    /*! SWF data stream. */
+    SwfDataStream* m_stream;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
