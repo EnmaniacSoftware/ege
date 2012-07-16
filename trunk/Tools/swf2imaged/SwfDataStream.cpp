@@ -393,13 +393,11 @@ FillStyle SwfDataStream::readFillStyle(int version)
   // gradient
   if ((FST_LINEAR_GRADIENT == style.type) || (FST_RADIAL_GRADIENT == style.type))
   {
-    // TAGE - implement
-    Q_ASSERT(false);
+    style.gradient = readGradient(version);
   }
   else if (FST_FOCAL_RADIAL_GRADIENT == style.type)
   {
-    // TAGE - implement
-    Q_ASSERT(false);
+    style.focalGradient = readFocalGradient(version);
   }
 
   // bitmap ID and matrix
@@ -476,5 +474,72 @@ LineStyle SwfDataStream::readLineStyle(int version)
   }
 
   return style;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Reads gradient record. 
+    @param version Version of DefineShape for which loading is supposed to be done.
+    @return  Returns gradient record read.
+ */
+GradientRecord SwfDataStream::readGradientRecord(int version)
+{
+  GradientRecord data;
+
+  *this >> data.ratio;
+
+  if (3 > version)
+  {
+    data.color = readRGB();
+  }
+  else
+  {
+    data.color = readRGBA();
+  }
+
+  return data;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Reads gradient. 
+    @param version Version of DefineShape for which loading is supposed to be done.
+    @return  Returns gradient read.
+ */
+Gradient SwfDataStream::readGradient(int version)
+{
+  Gradient gradient;
+
+  byteAlign();
+
+  gradient.spreadMode        = readBits(2, false);
+  gradient.interpolationMode = readBits(2, false);
+  
+  quint32 count = readBits(4, false);
+  for (quint32 i = 0; i < count; ++i)
+  {
+    gradient.gradientPoints << readGradientRecord(version);
+  }
+
+  return gradient;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Reads focal gradient. 
+    @param version Version of DefineShape for which loading is supposed to be done.
+    @return  Returns focal gradient read.
+ */
+FocalGradient SwfDataStream::readFocalGradient(int version)
+{
+  FocalGradient gradient;
+
+  byteAlign();
+
+  gradient.spreadMode        = readBits(2, false);
+  gradient.interpolationMode = readBits(2, false);
+  
+  quint32 count = readBits(4, false);
+  for (quint32 i = 0; i < count; ++i)
+  {
+    gradient.gradientPoints << readGradientRecord(version);
+  }
+
+  gradient.focalPoint = readFP8();
+  return gradient;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

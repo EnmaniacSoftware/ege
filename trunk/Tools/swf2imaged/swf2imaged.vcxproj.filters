@@ -190,6 +190,15 @@
     <ClCompile Include="Release\moc_SwfRemoveObject2Tag.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="SwfDefineBitsTag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_SwfDefineBitsTag.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_SwfDefineBitsTag.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SwfDataStream.h">
@@ -249,6 +258,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="SwfRemoveObject2Tag.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SwfDefineBitsTag.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

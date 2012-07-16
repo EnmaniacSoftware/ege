@@ -37,8 +37,11 @@ SwfDataStream* SwfHeader::process(const QString &fileName)
     return NULL;
   }
 
+  // read all
+  QByteArray data = file.readAll();
+
   // prepare data steam
-  m_stream = new SwfDataStream(&file);
+  m_stream = new SwfDataStream(data);
   if (NULL == m_stream)
   {
     // error!

@@ -37,6 +37,21 @@ class SwfDataStream : public QDataStream
        @return  Returns list of defined line styles.
      */
     QList<LineStyle> readLineStyleArray(int version);
+    /* Reads gradient. 
+       @param version Version of DefineShape for which loading is supposed to be done.
+       @return  Returns gradient read.
+     */
+    Gradient readGradient(int version);
+    /* Reads focal gradient. 
+       @param version Version of DefineShape for which loading is supposed to be done.
+       @return  Returns focal gradient read.
+     */
+    FocalGradient readFocalGradient(int version);
+    /* Reads gradient record. 
+       @param version Version of DefineShape for which loading is supposed to be done.
+       @return  Returns gradient record read.
+     */
+    GradientRecord readGradientRecord(int version);
 
     SwfDataStream& operator>>(qint8 &i);
     SwfDataStream& operator>>(quint8 &i);

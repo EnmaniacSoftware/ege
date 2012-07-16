@@ -7,6 +7,7 @@ SOURCES = main.cpp \
     SwfDefineBitsJpeg3Tag.cpp \
     SwfDefineBitsLossless2Tag.cpp \
     SwfDefineBitsLosslessTag.cpp \
+    SwfDefineBitsTag.cpp \
     SwfDefineShape2Tag.cpp \
     SwfDefineShapeTag.cpp \
     SwfEndTag.cpp \
@@ -14,8 +15,6 @@ SOURCES = main.cpp \
     SwfFileAttributeTag.cpp \
     SwfHeader.cpp \
     SwfParser.cpp \
-    SwfDataStream.cpp \
-    SwfFileAttributeTag.cpp \
     SwfPlaceObject2Tag.cpp \
     SwfRemoveObject2Tag.cpp \
     SwfRemoveObjectTag.cpp \
@@ -29,6 +28,7 @@ HEADERS = \
     SwfDefineBitsJpeg3Tag.h \
     SwfDefineBitsLossless2Tag.h \
     SwfDefineBitsLosslessTag.h \
+    SwfDefineBitsTag.h \
     SwfDefineShape2Tag.h \
     SwfDefineShapeTag.h \
     SwfEndTag.h \

@@ -13,6 +13,11 @@ class SwfDefineShape2Tag : public SwfDefineShapeTag
 
     SwfDefineShape2Tag();
    ~SwfDefineShape2Tag();
+
+  private:
+
+    /* SwfDefineShapeTag override. Returns tag version. */
+    int version() const override;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

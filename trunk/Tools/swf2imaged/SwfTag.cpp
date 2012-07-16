@@ -11,6 +11,7 @@
 #include "SwfDefineBitsLossless2Tag.h"
 #include "SwfRemoveObjectTag.h"
 #include "SwfRemoveObject2Tag.h"
+#include "SwfDefineBitsTag.h"
 #include "ResourceManager.h"
 #include "SwfFile.h"
 #include "SwfParser.h"
@@ -47,6 +48,8 @@ SwfTag* SwfTag::ProcessTag(SwfDataStream& data, SwfFile* file)
     data >> tagLength;
   }
 
+  //qDebug() << "Tag" << tagId << "length" << tagLength;
+
   // create tag according to ID
   switch (tagId)
   {
@@ -54,6 +57,7 @@ SwfTag* SwfTag::ProcessTag(SwfDataStream& data, SwfFile* file)
     case SWF_TAG_ID_SHOW_FRAME:             tag = new SwfShowFrameTag(); break;
     case SWF_TAG_ID_DEFINE_SHAPE:           tag = new SwfDefineShapeTag(); break;
     case SWF_TAG_ID_REMOVE_OBJECT:          tag = new SwfRemoveObjectTag(); break;
+    case SWF_TAG_ID_DEFINE_BITS:            tag = new SwfDefineBitsTag(); break;
     case SWF_TAG_ID_SET_BACKGROUND_COLOR:   tag = new SwfSetBackgroundColorTag(); break;
     case SWF_TAG_ID_DEFINE_BITS_LOSSLESS:   tag = new SwfDefineBitsLosslessTag(); break;
     case SWF_TAG_ID_DEFINE_SHAPE_2:         tag = new SwfDefineShape2Tag(); break;
@@ -63,8 +67,9 @@ SwfTag* SwfTag::ProcessTag(SwfDataStream& data, SwfFile* file)
     case SWF_TAG_ID_DEFINE_BITS_LOSSLESS_2: tag = new SwfDefineBitsLossless2Tag(); break;
     case SWF_TAG_ID_FILE_ATTRIBUTE:         tag = new SwfFileAttributeTag(); break;
 
-    case SWF_TAG_ID_META_DATA:
+    case SWF_TAG_ID_JPEG_TABLES:
     case SWF_TAG_ID_DEFINE_SCENE_AND_LABEL_DATA:
+    case SWF_TAG_ID_META_DATA:
 
       // silently skip
       if (tagLength != static_cast<quint32>(data.skipRawData(static_cast<int>(tagLength))))

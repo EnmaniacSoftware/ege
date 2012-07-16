@@ -17,8 +17,8 @@ bool SwfDefineShapeTag::read(SwfDataStream& data)
   data >> m_characterId;
   data >> m_bounds;
 
-  m_shape.fillStyles = data.readFillStyleArray(1);
-  m_shape.lineStyles = data.readLineStyleArray(1);
+  m_shape.fillStyles = data.readFillStyleArray(version());
+  m_shape.lineStyles = data.readLineStyleArray(version());
 
   m_shape.numFillBits = data.readBits(4, false);
   m_shape.numLineBits = data.readBits(4, false);
@@ -79,8 +79,8 @@ bool SwfDefineShapeTag::read(SwfDataStream& data)
 
       if (newStateFlag)
       {
-        QList<FillStyle> fillStyles = data.readFillStyleArray(1);
-        QList<LineStyle> lineStyles = data.readLineStyleArray(1);
+        QList<FillStyle> fillStyles = data.readFillStyleArray(version());
+        QList<LineStyle> lineStyles = data.readLineStyleArray(version());
 
         qint8 numFillBits = data.readBits(4, false);
         qint8 numLineBits = data.readBits(4, false);
@@ -165,5 +165,11 @@ quint16 SwfDefineShapeTag::characterId() const
 const ShapeWithStyle& SwfDefineShapeTag::shapeStyle() const
 {
   return m_shape;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns tag version. */
+int SwfDefineShapeTag::version() const
+{
+  return 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

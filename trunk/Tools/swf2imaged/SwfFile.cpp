@@ -23,8 +23,9 @@ struct DisplayData
   QColor color;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SwfFile::SwfFile(float scale, QObject* parent) : QObject(parent),
-                                                 m_scale(scale)
+SwfFile::SwfFile(float scale, const QMap<QString, QString>& sequences, QObject* parent) : QObject(parent),
+                                                                                          m_scale(scale),
+                                                                                          m_sequences(sequences)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -196,6 +197,15 @@ bool SwfFile::serializeSequencesSection(QXmlStreamWriter& stream)
   }
   stream.writeAttribute("frames", sequencerFrames.trimmed());
   stream.writeEndElement();
+  
+  // store external sequences
+  for (QMap<QString, QString>::const_iterator it = m_sequences.begin(); it != m_sequences.end(); ++it)
+  {
+    stream.writeStartElement("sequence");
+    stream.writeAttribute("name", it.key());
+    stream.writeAttribute("frames", it.value());
+    stream.writeEndElement();
+  }
 
   return ! stream.hasError();
 }
@@ -287,7 +297,7 @@ bool SwfFile::serializeFrames(QXmlStreamWriter& stream)
   if (frameCount != m_header->frameCount())
   {
     // error!
-    qCritical() << "Frame count does not match!";
+    qCritical() << "Frame count does not match!" << m_name << "Found" << frameCount << "expected" << m_header->frameCount();
     return false;
   }
 

@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QList>
 #include <QXmlStreamWriter>
+#include <QMap>
+#include <QString>
 #include "SwfTypes.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -17,7 +19,7 @@ class SwfFile : public QObject
 
   public:
 
-    SwfFile(float scale, QObject* parent = NULL);
+    SwfFile(float scale, const QMap<QString, QString>& sequences, QObject* parent = NULL);
    ~SwfFile();
 
     /* Process the file with a given name. */
@@ -48,6 +50,8 @@ class SwfFile : public QObject
     float m_scale;
     /*! File name. */
     QString m_name;
+    /*! External sequences to store. */
+    QMap<QString, QString> m_sequences;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

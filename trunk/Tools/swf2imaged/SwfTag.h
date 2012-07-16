@@ -8,6 +8,8 @@
 #define SWF_TAG_ID_SHOW_FRAME                   (1)
 #define SWF_TAG_ID_DEFINE_SHAPE                 (2)
 #define SWF_TAG_ID_REMOVE_OBJECT                (5)
+#define SWF_TAG_ID_DEFINE_BITS                  (6)
+#define SWF_TAG_ID_JPEG_TABLES                  (8)
 #define SWF_TAG_ID_SET_BACKGROUND_COLOR         (9)
 #define SWF_TAG_ID_DEFINE_BITS_LOSSLESS         (20)
 #define SWF_TAG_ID_DEFINE_SHAPE_2               (22)

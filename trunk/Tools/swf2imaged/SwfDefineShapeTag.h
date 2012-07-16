@@ -27,6 +27,11 @@ class SwfDefineShapeTag : public SwfTag
 
   protected:
 
+    /* Returns tag version. */
+    virtual int version() const;
+
+  protected:
+
     /*! Character Id. */
     quint16 m_characterId;
     /*! Bounds. */
