@@ -17,6 +17,7 @@ bool SwfDefineShapeTag::read(SwfDataStream& data)
   data >> m_characterId;
   data >> m_bounds;
 
+  // read shape (with style)
   m_shape.fillStyles = data.readFillStyleArray(version());
   m_shape.lineStyles = data.readLineStyleArray(version());
 
@@ -79,18 +80,17 @@ bool SwfDefineShapeTag::read(SwfDataStream& data)
 
       if (newStateFlag)
       {
+        // TAGE - does this start new shape ?
+
         QList<FillStyle> fillStyles = data.readFillStyleArray(version());
         QList<LineStyle> lineStyles = data.readLineStyleArray(version());
 
-        qint8 numFillBits = data.readBits(4, false);
-        qint8 numLineBits = data.readBits(4, false);
+        m_shape.numFillBits = data.readBits(4, false);
+        m_shape.numLineBits = data.readBits(4, false);
 
         // add to existing pools
         m_shape.fillStyles << fillStyles;
         m_shape.lineStyles << lineStyles;
-
-        Q_UNUSED(numFillBits);
-        Q_UNUSED(numLineBits);
       }
     }
     else
@@ -112,24 +112,27 @@ bool SwfDefineShapeTag::read(SwfDataStream& data)
       {
         // process STRAIGHTEDGERECORD
         bool generalLineFlag = (1 == data.readBits(1, false));
-        bool vertLineFlag = false;
-        if (!generalLineFlag)
-        {
-          vertLineFlag = (1 == data.readBits(1, false));
-        }
-
-        if (generalLineFlag || !vertLineFlag)
+        if (generalLineFlag)
         {
           qint32 deltaX = data.readBits(numBits + 2, true);
-
-          Q_UNUSED(deltaX);
-        }
-
-        if (generalLineFlag || vertLineFlag)
-        {
           qint32 deltaY = data.readBits(numBits + 2, true);
 
+          Q_UNUSED(deltaX);
           Q_UNUSED(deltaY);
+        }
+        else
+        {
+          bool vertLineFlag = (1 == data.readBits(1, false));
+          if ( ! vertLineFlag)
+          {
+            qint32 deltaX = data.readBits(numBits + 2, true);
+            Q_UNUSED(deltaX);
+          }
+          else
+          {
+            qint32 deltaY = data.readBits(numBits + 2, true);
+            Q_UNUSED(deltaY);
+          }
         }
       }
       else
@@ -146,6 +149,8 @@ bool SwfDefineShapeTag::read(SwfDataStream& data)
         Q_UNUSED(anchorDeltaY);
       }
     }
+
+//    data.byteAlign();
   }
 
   // add to dictionary

@@ -543,3 +543,61 @@ FocalGradient SwfDataStream::readFocalGradient(int version)
   return gradient;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Reads color transformation data.
+    @param version Version of PlaceObject for which loading is supposed to be done.
+    @return  Returns color transformation data read.
+ */
+ColorTransform SwfDataStream::readColorTransformation(int version)
+{
+  ColorTransform transform;
+
+  byteAlign();
+
+  bool hasAddTerms  = (1 == readBits(1, false));
+  bool hasMultTerms = (1 == readBits(1, false));
+
+  qint32 numBits = readBits(4, false);
+
+  // mult terms
+  transform.multTerms = QColor(255, 255, 255, 255);
+  if (hasMultTerms)
+  {
+    int term = readBits(numBits, true);
+    transform.multTerms.setRedF(term / 256.0);
+
+    term = readBits(numBits, true);
+    transform.multTerms.setGreenF(term / 256.0);
+
+    term = readBits(numBits, true);
+    transform.multTerms.setBlueF(term / 256.0);
+
+    if (1 < version)
+    {
+      term = readBits(numBits, true);
+      transform.multTerms.setAlphaF(term / 256.0);
+    }
+  }
+
+  // add terms
+  transform.addTerms = QColor(0, 0, 0, 0);
+  if (hasAddTerms)
+  {
+    int term = readBits(numBits, true);
+    transform.addTerms.setRed(term);
+
+    term = readBits(numBits, true);
+    transform.addTerms.setGreen(term);
+
+    term = readBits(numBits, true);
+    transform.addTerms.setBlue(term);
+
+    if (1 < version)
+    {
+      term = readBits(numBits, true);
+      transform.addTerms.setAlpha(term);
+    }
+  }
+
+  return transform;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

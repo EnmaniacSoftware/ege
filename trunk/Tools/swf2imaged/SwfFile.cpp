@@ -7,6 +7,7 @@
 #include "SwfRemoveObject2Tag.h"
 #include "SwfDefineBitsJpeg3Tag.h"
 #include "SwfDefineBitsLosslessTag.h"
+#include "SwfDefineBitsTag.h"
 #include "SwfParser.h"
 #include "ResourceManager.h"
 #include <QFile>
@@ -76,7 +77,7 @@ bool SwfFile::serialize(QXmlStreamWriter& stream)
   stream.writeStartElement("imaged-animation");
   stream.writeAttribute("name", m_name);
   stream.writeAttribute("fps", QString::number(m_header->fps()));
-  stream.writeAttribute("size", QString("%1 %2").arg(m_header->frameSize().width()).arg(m_header->frameSize().height()));
+  stream.writeAttribute("size", QString("%1 %2").arg(m_header->frameSize().width() * m_scale).arg(m_header->frameSize().height() * m_scale));
 
   // serialize objects section
   if ( ! serializeObjectsSection(stream))
@@ -143,6 +144,7 @@ bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
 
           SwfDefineBitsJpeg3Tag* jpeg3        = qobject_cast<SwfDefineBitsJpeg3Tag*>(bitmapObject);
           SwfDefineBitsLosslessTag* lossless  = qobject_cast<SwfDefineBitsLosslessTag*>(bitmapObject);
+          SwfDefineBitsTag* jpeg              = qobject_cast<SwfDefineBitsTag*>(bitmapObject);
 
           int imageId = -1;
 
@@ -154,23 +156,27 @@ bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
           {
             imageId = lossless->imageId();
           }
+          else if (NULL != jpeg)
+          {
+            imageId = jpeg->imageId();
+          }
 
           image = resourceManager->image(imageId);
           if (image.isNull())
           {
             // error!
-            qCritical() << "Could not find image referenced by characterID" << style.bitmapCharacterId;
+            qCritical() << "Could not find image referenced by characterID" << style.bitmapCharacterId << "for animation" << m_name;
             return false;
           }
 
           stream.writeStartElement("child");
 
           stream.writeAttribute("material", resourceManager->generateNameFromImageId(imageId));
-          stream.writeAttribute("translate", QString("%1 %2").arg(style.bitmapMatrix.translateX).arg(style.bitmapMatrix.translateY));
+          stream.writeAttribute("translate", QString("%1 %2").arg(style.bitmapMatrix.translateX * m_scale).arg(style.bitmapMatrix.translateY * m_scale));
           stream.writeAttribute("scale", QString("%1 %2").arg(style.bitmapMatrix.scaleX).arg(style.bitmapMatrix.scaleY));
           stream.writeAttribute("skew", QString("%1 %2").arg(style.bitmapMatrix.rotX).arg(style.bitmapMatrix.rotY));
        //   stream.writeAttribute("color", QString("%1 %2 %3 %4").arg(data.color.redF()).arg(data.color.greenF()).arg(data.color.blueF()).arg(data.color.alphaF()));
-          stream.writeAttribute("size", QString("%1 %2").arg(image.width()).arg(image.height()));
+          stream.writeAttribute("size", QString("%1 %2").arg(image.width() * m_scale).arg(image.height() * m_scale));
 
           stream.writeEndElement();
         }
@@ -238,7 +244,15 @@ bool SwfFile::serializeFrames(QXmlStreamWriter& stream)
 
       if (placeTag->hasColorTransformation())
       {
-        Q_ASSERT("Implement!");
+        // TAGE - possibly this should be taken from object
+        const QColor baseColor(Qt::white);
+        const QColor& addColor  = placeTag->colorTransformation().addTerms;
+        const QColor& multColor = placeTag->colorTransformation().multTerms;
+
+        data.color.setRed(qMax(0, qMin(static_cast<int>((baseColor.red() * multColor.redF()) + addColor.red()), 255)));
+        data.color.setGreen(qMax(0, qMin(static_cast<int>((baseColor.green() * multColor.greenF()) + addColor.green()), 255)));
+        data.color.setBlue(qMax(0, qMin(static_cast<int>((baseColor.blue() * multColor.blueF()) + addColor.blue()), 255)));
+        data.color.setAlpha(qMax(0, qMin(static_cast<int>((baseColor.alpha() * multColor.alphaF()) + addColor.alpha()), 255)));
       }
     }
     else if (SWF_TAG_ID_REMOVE_OBJECT == tag->id())
@@ -276,7 +290,7 @@ bool SwfFile::serializeFrames(QXmlStreamWriter& stream)
 
         stream.writeAttribute("object-id", QString::number(data.characterId));
         stream.writeAttribute("queue", QString::number(depth));
-        stream.writeAttribute("translate", QString("%1 %2").arg(data.matrix.translateX).arg(data.matrix.translateY));
+        stream.writeAttribute("translate", QString("%1 %2").arg(data.matrix.translateX * m_scale).arg(data.matrix.translateY * m_scale));
         stream.writeAttribute("scale", QString("%1 %2").arg(data.matrix.scaleX).arg(data.matrix.scaleY));
         stream.writeAttribute("skew", QString("%1 %2").arg(data.matrix.rotX).arg(data.matrix.rotY));
         stream.writeAttribute("color", QString("%1 %2 %3 %4").arg(data.color.redF()).arg(data.color.greenF()).arg(data.color.blueF()).arg(data.color.alphaF()));

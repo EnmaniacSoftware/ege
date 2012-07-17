@@ -46,7 +46,7 @@ bool SwfPlaceObject2Tag::read(SwfDataStream& data)
 
   if (m_hasColorTransform)
   {
-    Q_ASSERT("Implement");
+    m_colorTransformation = data.readColorTransformation(2);
   }
 
   if (m_hasRatio)
@@ -56,7 +56,7 @@ bool SwfPlaceObject2Tag::read(SwfDataStream& data)
 
   if (m_hasName)
   {
-    Q_ASSERT("Implement");
+    Q_ASSERT(false && "Implement");
   }
 
   if (m_hasClipDepth)
@@ -66,7 +66,7 @@ bool SwfPlaceObject2Tag::read(SwfDataStream& data)
 
   if (m_hasClipActions)
   {
-    Q_ASSERT("Implement");
+    Q_ASSERT(false && "Implement");
   }
 
   return QDataStream::Ok == data.status();
@@ -88,6 +88,12 @@ quint16 SwfPlaceObject2Tag::characterId() const
 const Matrix& SwfPlaceObject2Tag::matrix() const
 {
   return m_matrix;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns color transformation. */
+const ColorTransform &SwfPlaceObject2Tag::colorTransformation() const
+{
+  return m_colorTransformation;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if transformation matrix is defined. */

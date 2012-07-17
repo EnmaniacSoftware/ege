@@ -52,6 +52,11 @@ class SwfDataStream : public QDataStream
        @return  Returns gradient record read.
      */
     GradientRecord readGradientRecord(int version);
+    /* Reads color transformation data.
+       @param version Version of PlaceObject for which loading is supposed to be done.
+       @return  Returns color transformation data read.
+     */
+    ColorTransform readColorTransformation(int version);
 
     SwfDataStream& operator>>(qint8 &i);
     SwfDataStream& operator>>(quint8 &i);

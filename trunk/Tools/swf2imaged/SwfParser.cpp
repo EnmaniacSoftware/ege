@@ -325,7 +325,6 @@ bool SwfParser::generateData()
       AnimationData& animData = group.animationDataList[j];
 
       // create SWF file parser
-      // TAGE - SCALE ?
       animData.parsedFile = new SwfFile(group.scale, animData.sequences, this);
       if (NULL == animData.parsedFile)
       {

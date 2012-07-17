@@ -21,6 +21,8 @@ class SwfPlaceObject2Tag : public SwfTag
     quint16 characterId() const;
     /* Returns transformation matrix. */
     const Matrix& matrix() const;
+    /* Returns color transformation. */
+    const ColorTransform& colorTransformation() const;
     /* Returns TRUE if transformation matrix is defined. */
     bool hasMatrix() const;
     /* Returns TRUE if transformation matrix is defined. */
@@ -47,6 +49,8 @@ class SwfPlaceObject2Tag : public SwfTag
     quint16 m_ratio;
     /*! Clip depth. */
     quint16 m_clipDepth;
+    /*! Color transformation. */
+    ColorTransform m_colorTransformation;
     /*! TRUE if clip action are defined. */
     bool m_hasClipActions;
     /*! TRUE if clip depth is defined. */

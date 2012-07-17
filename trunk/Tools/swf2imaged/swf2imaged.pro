@@ -1,6 +1,10 @@
 CONFIG += qt
 QT += xml
 
+unix {
+DEFINES += override=
+}
+
 SOURCES = main.cpp \
     ResourceManager.cpp \
     SwfDataStream.cpp \

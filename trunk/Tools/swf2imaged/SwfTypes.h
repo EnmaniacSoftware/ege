@@ -105,6 +105,13 @@ struct ShapeWithStyle
   qint8 numFillBits;                /*!< Number of fill index bits. */
   qint8 numLineBits;                /*!< Number of line index bits. */
 };
+
+/*! Color tranformation data struct. */
+struct ColorTransform
+{
+  QColor addTerms;
+  QColor multTerms;
+};
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // SWFTYPES_H

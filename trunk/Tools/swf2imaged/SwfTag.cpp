@@ -48,7 +48,7 @@ SwfTag* SwfTag::ProcessTag(SwfDataStream& data, SwfFile* file)
     data >> tagLength;
   }
 
-  //qDebug() << "Tag" << tagId << "length" << tagLength;
+//  qDebug() << "Tag" << tagId << "length" << tagLength;
 
   // create tag according to ID
   switch (tagId)
@@ -101,12 +101,21 @@ SwfTag* SwfTag::ProcessTag(SwfDataStream& data, SwfFile* file)
     tag->m_length = tagLength;
     tag->m_file   = file;
     
+    qint64 beginPos = data.device()->pos();
+
     // read tag data
     if (!tag->read(data))
     {
       // error!
       delete tag;
       tag = NULL;
+    }
+
+    qint64 endPos = data.device()->pos();
+    if ((beginPos + tagLength) != endPos)
+    {
+      // error!
+      qCritical() << "Integrity check failed for tag" << tagId;
     }
   }
 
