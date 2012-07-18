@@ -30,7 +30,7 @@ bool RippleEffect::initialize(s32 width, s32 height, const Vector2i& gridSize, P
   m_defaultTextureCoords.resize(m_gridSize.x * m_gridSize.y);
 
   // create render texture
-  m_texture = Texture2D::CreateRenderTexture(m_app, "RippleEffect::rttTex", width, height, EGEImage::RGB_888);
+  m_texture = Texture2D::CreateRenderTexture(m_app, "RippleEffect::rttTex", width, height, PF_RGB_888);
 
   // setup render texture
   PRenderTarget renderTarget = m_texture->renderTarget();
@@ -277,7 +277,7 @@ s32 RippleEffect::rippleMaxDistance(const Vector2i& pos) const
 /*! Pointer event receiver. */
 void RippleEffect::pointerEvent(PPointerData data)
 {
-  if (EGEInput::ACTION_BUTTON_UP == data->action())
+  if (ACTION_BUTTON_UP == data->action())
   {
     s32 index = 0;
     while (m_times[index] < m_maxTimes[index] && (RIPPLE_COUNT > index))

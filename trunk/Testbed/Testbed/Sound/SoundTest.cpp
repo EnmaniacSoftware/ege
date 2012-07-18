@@ -96,7 +96,7 @@ void SoundTest::update(const Time& time)
 /*! Test override. Pointer event receiver. */
 void SoundTest::pointerEvent(PPointerData data)
 {
-  if (EGEInput::ACTION_BUTTON_DOWN == data->action() && EGEInput::BUTTON_LEFT == data->button())
+  if (ACTION_BUTTON_DOWN == data->action() && BUTTON_LEFT == data->button())
   {
     // get window render target (created thru config options)
     PRenderWindow window = app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);

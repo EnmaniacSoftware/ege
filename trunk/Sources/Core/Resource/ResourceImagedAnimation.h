@@ -72,11 +72,10 @@ class ResourceImagedAnimation : public IResource
     EGEResult addSequence(const PXmlElement& tag);
 
   private:
-
-    /*! Object data structure. */
-    struct ObjectData
+    
+    /*! Object child data struct. */
+    struct ObjectChildData
     {
-      s32 id;
       String materialName;
       Vector2f translate;
       Vector2f scale;
@@ -87,11 +86,21 @@ class ResourceImagedAnimation : public IResource
       PResourceMaterial materialResource;
     };
 
+    typedef List<ObjectChildData> ObjectChildDataList;
+
+    /*! Object data structure. */
+    struct ObjectData
+    {
+      s32 id;
+
+      ObjectChildDataList children;
+    };
+
     /*! Frame action data struct. */
     struct FrameActionData
     {
       s32 objectId;
-      s32 queue;
+   //   s32 queue;
       Vector2f translate;
       Vector2f scale;
       Vector2f skew;

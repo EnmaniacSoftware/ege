@@ -93,7 +93,7 @@ void ThreadsTest::update(const Time& time)
 /*! Test override. Pointer event receiver. */
 void ThreadsTest::pointerEvent(PPointerData data)
 {
-  if (EGEInput::ACTION_BUTTON_UP == data->action())
+  if (ACTION_BUTTON_UP == data->action())
   {
     for (s32 i = 0; i < THREADS_COUNT; ++i)
     {

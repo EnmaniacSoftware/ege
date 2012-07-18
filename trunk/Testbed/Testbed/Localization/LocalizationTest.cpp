@@ -99,7 +99,7 @@ void LocalizationTest::update(const Time& time)
 /*! Test override. Pointer event receiver. */
 void LocalizationTest::pointerEvent(PPointerData data)
 {
-  if (EGEInput::ACTION_BUTTON_UP == data->action())
+  if (ACTION_BUTTON_UP == data->action())
   {
     if ("en" == app()->language())
     {

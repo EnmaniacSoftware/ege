@@ -350,7 +350,23 @@ void RendererPrivate::flush()
 	        //  glClientActiveTexture(GL_TEXTURE0);
 
           // set model-view matrix
-          glLoadMatrixf(d_func()->m_viewMatrix.multiply(data.worldMatrix).data);
+          Matrix4f out = d_func()->m_viewMatrix.multiply(data.worldMatrix);
+
+          glLoadIdentity();
+          Matrix4f outGl;
+          glLoadMatrixf(d_func()->m_viewMatrix.data);
+          glMultMatrixf(data.worldMatrix.data);
+
+          glGetFloatv(GL_MODELVIEW_MATRIX, outGl.data);
+          for (int i = 0; i < 16; i++)
+          {
+            if (Math::Abs(outGl.data[i] - out.data[i]) > Math::EPSILON)
+            {
+              int a = 1;
+            }
+          }
+
+          //glLoadMatrixf(d_func()->m_viewMatrix.multiply(data.worldMatrix).data);
 
           // check if INDICIES are to be used
           if (0 < indexBuffer->indexCount())

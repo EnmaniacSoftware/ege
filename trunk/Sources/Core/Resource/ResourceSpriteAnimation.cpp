@@ -132,7 +132,7 @@ EGEResult ResourceSpriteAnimation::load()
     else
     {
       // material not found
-      result = EGE_ERROR_NOT_FOUND;
+      return EGE_ERROR_NOT_FOUND;
     }
 
     // load all sequencers

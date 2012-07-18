@@ -90,7 +90,7 @@ void LightningTest::pointerEvent(PPointerData data)
   m_effect->pointerEvent(data);
   //m_effectLines->pointerEvent(data);
 
-  if (EGEInput::ACTION_BUTTON_DOWN == data->action())
+  if (ACTION_BUTTON_DOWN == data->action())
   {
     if (m_effectQuads)
     {

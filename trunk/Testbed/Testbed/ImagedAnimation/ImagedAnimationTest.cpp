@@ -101,7 +101,7 @@ void ImagedAnimationTest::update(const Time& time)
 /*! Test override. Pointer event receiver. */
 void ImagedAnimationTest::pointerEvent(PPointerData data)
 {
-  if (EGEInput::ACTION_BUTTON_UP == data->action())
+  if (ACTION_BUTTON_UP == data->action())
   {
     for (List<PImagedAnimation>::iterator it = m_anims.begin(); it != m_anims.end(); ++it)
     {
@@ -129,11 +129,7 @@ void ImagedAnimationTest::groupLoadComplete(const String& name)
   {
     PResourceImagedAnimation animRes;
 
-    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "static_banana");
-    //EGE_ASSERT(animRes);
-    //m_anims.push_back(animRes->createInstance());
-
-    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "translate_scale_banana");
+    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "lvl1_idle");
     //EGE_ASSERT(animRes);
     //m_anims.push_back(animRes->createInstance());
 
@@ -141,18 +137,18 @@ void ImagedAnimationTest::groupLoadComplete(const String& name)
     //EGE_ASSERT(animRes);
     //m_anims.push_back(animRes->createInstance());
 
-    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "blink");
-    //EGE_ASSERT(animRes);
-    //m_anims.push_back(animRes->createInstance());
-
-    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "idle");
-    //EGE_ASSERT(animRes);
-    //m_anims.push_back(animRes->createInstance());
-
-    animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "lvl1_idle");
+    animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "003_translate_scale_rotate_banana");
     EGE_ASSERT(animRes);
     m_anims.push_back(animRes->createInstance());
-    ege_connect(m_anims.back(), frameChanged, this, ImagedAnimationTest::onFrameChanged);
+
+    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "002_translate_scale_banana");
+    //EGE_ASSERT(animRes);
+    //m_anims.push_back(animRes->createInstance());
+
+    //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "001_static_banana");
+    //EGE_ASSERT(animRes);
+    //m_anims.push_back(animRes->createInstance());
+    //ege_connect(m_anims.back(), frameChanged, this, ImagedAnimationTest::onFrameChanged);
 
     //animRes = app()->resourceManager()->resource(RESOURCE_NAME_IMAGED_ANIMATION, "chomp");
     //EGE_ASSERT(animRes);

@@ -90,13 +90,9 @@ class ImagedAnimation : public Object, public IAnimation
     void setName(const String& name);
 
     /* Adds object with a given id to animation. 
-     * @param objectId    Object Id which is being added.
-     * @param size        Object size (in pixels).
-     * @param material    Material used by the object.
-     * @param baseMatrix  Object's base transformation matrix.
-     * @param actions     Array of animation actions of the object. Each entry corresponds to a given frame.
+     * @param object    Object to be added.
      */
-    EGEResult addObject(s32 objectId, const Vector2f& size, PMaterial material, const Matrix4f& baseMatrix);
+    EGEResult addObject(const EGEImagedAnimation::Object& object);
     /* Adds frame data.
      * @param action  List of action to be processed at given frame.
      * @note  This creates new frame and appends it into existing ones.
@@ -117,8 +113,8 @@ class ImagedAnimation : public Object, public IAnimation
 
   private:
 
-    /*! Object data structure. */
-    struct ObjectData
+    /*! Child object data structure. */
+    struct ChildObjectData
     {
       PRenderComponent renderData;                            /*!< Render data. */
       Matrix4f baseMatrix;                                    /*!< Base transformation matrix. */
@@ -127,6 +123,12 @@ class ImagedAnimation : public Object, public IAnimation
       Matrix4f toMatrix;                                      /*!< Combined base and frame transformations matrix. */
       Color fromColor;
       Color toColor;
+    };
+
+    /*! Object data structure. */
+    struct ObjectData
+    {
+      List<ChildObjectData> children;
     };
 
     /*! Frame data struct. */

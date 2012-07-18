@@ -849,7 +849,7 @@ bool SwfMillToEgeConverter::generateEgeXML(QXmlStreamWriter& output)
 
             QVector2D translation = shapeObject.translate + actionDef.actionData.translate;
             QVector2D scale       = shapeObject.scale ;
-            QVector2D skew        = shapeObject.skew / 10.0f; // / 10 ????
+            QVector2D skew        = shapeObject.skew; // / 10 ????
 
             output.writeAttribute("translate", QString("%1 %2").arg(translation.x()).arg(translation.y()));
             output.writeAttribute("scale", QString("%1 %2").arg(scale.x()).arg(scale.y()));

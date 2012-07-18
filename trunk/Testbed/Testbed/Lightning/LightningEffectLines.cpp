@@ -76,7 +76,7 @@ void LightningEffectLines::pointerEvent(PPointerData data)
 {
   bool color = false;
 
-  if (EGEInput::ACTION_BUTTON_DOWN == data->action())
+  if (ACTION_BUTTON_DOWN == data->action())
   {
     m_fadeTime = 0.0f;
 

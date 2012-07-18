@@ -187,7 +187,7 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
 
     // get main node
     PXmlElement resourcesNode = xml.firstChild(NODE_RESOURCES);
-    if (!resourcesNode->isValid())
+    if ((NULL == resourcesNode) || ! resourcesNode->isValid())
     {
       // error!
       EGE_PRINT("ERROR: Resource file %s has no %s tag", fullPath.toAscii(), NODE_RESOURCES);

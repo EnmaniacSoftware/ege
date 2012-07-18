@@ -4,7 +4,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 namespace EGEGraphics
 {
     /*! Common predefined render priorites. */
@@ -75,13 +74,11 @@ namespace EGEGraphics
     //  SO_ROT_270
     //};
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include "Core/Memory/Memory.h"
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/IndexBuffer.h"
@@ -93,7 +90,6 @@ EGE_NAMESPACE_END
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Graphics/Render/Renderer.h"
 #include "Core/Graphics/RenderObjectFactory.h"
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_GRAPHICS_H

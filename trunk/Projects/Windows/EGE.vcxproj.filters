@@ -1377,6 +1377,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPVR.h">
       <Filter>Core\Graphics\Image</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEMaterial.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

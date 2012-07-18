@@ -71,7 +71,7 @@ bool RenderToTextureTest::initialize()
   node->physics()->setPosition(Vector4f(window->width() - RENDER_TEXTURE_WINDOW_SIZE / 2.0f, window->height() - RENDER_TEXTURE_WINDOW_SIZE / 2.0f, 0));
 
   // create render texture
-  m_texture = Texture2D::CreateRenderTexture(app(), "rttTex", 512, 512, EGEImage::RGB_888);
+  m_texture = Texture2D::CreateRenderTexture(app(), "rttTex", 512, 512, PF_RGB_888);
   
   // create material with render texture for render texture object
   PMaterial material = ege_new Material(app());

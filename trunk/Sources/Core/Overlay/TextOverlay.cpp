@@ -39,13 +39,13 @@ void TextOverlay::setText(const Text& text)
 /*! Sets font. */
 void TextOverlay::setFont(PFont font)
 {
-  if ((font != m_font) && font->isValid())
+  if (font != m_font)
   {
     // store font
     m_font = font;
 
     // clone font material so we can locally change it without propagation
-    m_renderData->setMaterial(m_font->material()->clone());
+    m_renderData->setMaterial(m_font ? m_font->material()->clone() : NULL);
 
     // invalidate text data
     m_textDataValid = false;

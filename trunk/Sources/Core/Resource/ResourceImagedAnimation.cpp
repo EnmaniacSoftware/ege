@@ -13,6 +13,7 @@ EGE_NAMESPACE_BEGIN
 #define NODE_FRAME    "frame"
 #define NODE_ACTION   "action"
 #define NODE_SEQUENCE "sequence"
+#define NODE_CHILD    "child"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceImagedAnimation)
 EGE_DEFINE_DELETE_OPERATORS(ResourceImagedAnimation)
@@ -100,12 +101,19 @@ EGEResult ResourceImagedAnimation::create(const String& path, const PXmlElement&
 bool ResourceImagedAnimation::isLoaded() const
 {
   // check if all materials are loaded
-  for (s32 i = 0; i < static_cast<s32>(m_objects.size()); ++i)
+  for (ObjectDataArray::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
-    if (NULL == m_objects[i].materialResource)
+    const ObjectData& dataObject = *it;
+
+    for (ObjectChildDataList::const_iterator itChild = dataObject.children.begin(); itChild != dataObject.children.end(); ++itChild)
     {
-      // not loaded
-      return false;
+      const ObjectChildData& childData = *itChild;
+
+      if (NULL == childData.materialResource)
+      {
+        // not loaded
+        return false;
+      }
     }
   }
 
@@ -131,25 +139,30 @@ EGEResult ResourceImagedAnimation::load()
   if (!isLoaded())
   {
     // load all objects materials
-    for (s32 i = 0; i < static_cast<s32>(m_objects.size()); ++i)
+    for (ObjectDataArray::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
     {
-      ObjectData& objectData = m_objects[i];
+      ObjectData& dataObject = *it;
 
-      objectData.materialResource = manager()->resource(RESOURCE_NAME_MATERIAL, objectData.materialName);
-      if (objectData.materialResource)
+      for (ObjectChildDataList::iterator itChild = dataObject.children.begin(); itChild != dataObject.children.end(); ++itChild)
       {
-        // load material
-        if (EGE_SUCCESS != (result = objectData.materialResource->load()))
+        ObjectChildData& childData = *itChild;
+
+        childData.materialResource = manager()->resource(RESOURCE_NAME_MATERIAL, childData.materialName);
+        if (childData.materialResource)
         {
-          // error!
-          objectData.materialResource = NULL;
-          return result;
+          // load material
+          if (EGE_SUCCESS != (result = childData.materialResource->load()))
+          {
+            // error!
+            childData.materialResource = NULL;
+            return result;
+          }
         }
-      }
-      else
-      {
-        // material not found
-        result = EGE_ERROR_NOT_FOUND;
+        else
+        {
+          // material not found
+          return EGE_ERROR_NOT_FOUND;
+        }
       }
     }
 
@@ -174,11 +187,16 @@ void ResourceImagedAnimation::unload()
   EGE_PRINT("%s", name().toAscii());
 
   // unload all objects materials
-  for (s32 i = 0; i < static_cast<s32>(m_objects.size()); ++i)
+  for (ObjectDataArray::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
-    ObjectData& objectData = m_objects[i];
+    ObjectData& dataObject = *it;
 
-    objectData.materialResource = NULL;
+    for (ObjectChildDataList::iterator itChild = dataObject.children.begin(); itChild != dataObject.children.end(); ++itChild)
+    {
+      ObjectChildData& childData = *itChild;
+
+      childData.materialResource = NULL;
+    }
   }
 
   //m_sequenceResources.clear();
@@ -217,13 +235,29 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
   {
     const ObjectData& data = *it;
 
-    Matrix4f matrix = Matrix4f::IDENTITY;
-    matrix.setTranslation(data.translate.x, data.translate.y, 0);
-    matrix.setScale(data.scale.x, data.scale.y, 1);
-    matrix[0][1] = data.skew.x;
-    matrix[1][0] = data.skew.y;
+    EGEImagedAnimation::Object object;
+    object.id = data.id;
+
+    // go thru all children
+    for (ObjectChildDataList::const_iterator itChild = data.children.begin(); itChild != data.children.end(); ++itChild)
+    {
+      const ObjectChildData& childData = *itChild;
+
+      EGEImagedAnimation::ChildObject child;
+
+      child.matrix = Matrix4f::IDENTITY;
+      child.matrix.setTranslation(childData.translate.x, childData.translate.y, 0);
+      child.matrix.setScale(childData.scale.x, childData.scale.y, 1);
+      child.matrix[0][1] = childData.skew.x;
+      child.matrix[1][0] = childData.skew.y;
+      child.size = childData.size;
+      child.material = childData.materialResource->createInstance();
     
-    if (EGE_SUCCESS != instance->addObject(data.id, data.size, data.materialResource->createInstance(), matrix))
+      object.children << child;
+    }
+
+    // add object to instance
+    if (EGE_SUCCESS != instance->addObject(object))
     {
       // error!
       return EGE_ERROR;
@@ -241,7 +275,7 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
 
       EGEImagedAnimation::ActionData actionData;
           
-      actionData.queue    = action.queue;
+//      actionData.queue    = action.queue;
       actionData.objectId = action.objectId;
       actionData.matrix   = Matrix4f::IDENTITY;
       actionData.matrix.setTranslation(action.translate.x, action.translate.y, 0);
@@ -296,18 +330,44 @@ EGEResult ResourceImagedAnimation::addObject(const PXmlElement& tag)
   bool error = false;
 
   // get data
-  data.id           = tag->attribute("id").toInt(&error);
-  data.materialName = tag->attribute("material");
-  data.translate    = tag->attribute("translate", "0 0").toVector2f(&error);
-  data.scale        = tag->attribute("scale", "1 1").toVector2f(&error);
-  data.skew         = tag->attribute("skew", "0 0").toVector2f(&error);
-  data.rect         = tag->attribute("rect", "0 0 0 0").toRectf(&error);
-  data.size         = tag->attribute("size", "0 0").toVector2f(&error);
+  data.id = tag->attribute("id").toInt(&error);
 
   if (error)
   {
     // error!
     return EGE_ERROR;
+  }
+
+  // go thru all sub nodes
+  PXmlElement child = tag->firstChild();
+  while (child->isValid())
+  {
+    error = false;
+
+    // check child
+    if (NODE_CHILD == child->name())
+    {
+      ObjectChildData childData;
+
+      childData.materialName = child->attribute("material");
+      childData.translate    = child->attribute("translate", "0 0").toVector2f(&error);
+      childData.scale        = child->attribute("scale", "1 1").toVector2f(&error);
+      childData.skew         = child->attribute("skew", "0 0").toVector2f(&error);
+      childData.rect         = child->attribute("rect", "0 0 0 0").toRectf(&error);
+      childData.size         = child->attribute("size", "0 0").toVector2f(&error);
+
+      if (error)
+      {
+        // error!
+        return EGE_ERROR;
+      }
+
+      // add to pool
+      data.children << childData;
+    }
+
+    // go to next child
+    child = child->nextChild();
   }
 
   m_objects.push_back(data);
@@ -358,7 +418,7 @@ EGEResult ResourceImagedAnimation::addAction(const PXmlElement& tag, FrameData* 
 
   // get data
   action.objectId   = tag->attribute("object-id").toInt(&error);
-  action.queue      = tag->attribute("queue").toInt(&error);
+ // action.queue      = tag->attribute("queue").toInt(&error);
   action.translate  = tag->attribute("translate", "0 0").toVector2f(&error);
   action.scale      = tag->attribute("scale", "1 1").toVector2f(&error);
   action.skew       = tag->attribute("skew", "0 0").toVector2f(&error);

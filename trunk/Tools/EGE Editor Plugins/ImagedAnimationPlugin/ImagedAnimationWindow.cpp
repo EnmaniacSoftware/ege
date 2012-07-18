@@ -70,7 +70,7 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
   //list << "sick_chomp";
   //list << "sick_chained";
   //list << "cherry_lvl1_blink";
-  //list << "cherry_lvl1_idle";
+  list << "cherry_lvl1_idle";
   //list << "cherry_lvl1_dance";
   //list << "cherry_lvl1_chomp";
   //list << "cherry_lvl2_blink";
@@ -116,10 +116,18 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
   //list << "dancing_notes1";
   //list << "dancing_notes2";
 
-  list << "loading_anim";
+  //list << "loading_anim";
 
-//  float scales[] = { 1.0f };//, 0.5f, 0.25f };
-  float scales[] = { 0.25f, 0.5f };
+ // list << "type_0_juiceblast";
+  //list << "type_1_juiceblast";
+  //list << "type_2_juiceblast";
+  //list << "type_3_juiceblast";
+  //list << "type_4_juiceblast";
+  //list << "type_5_juiceblast";
+  //list << "type_6_juiceblast";
+
+  float scales[] = { 1.0f };//, 0.5f, 0.25f };
+//  float scales[] = { 0.25f, 0.5f };
 
   for (int i = 0; i < sizeof (scales) / sizeof (scales[0]); ++i)
   {
