@@ -24,9 +24,10 @@ struct DisplayData
   QColor color;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SwfFile::SwfFile(float scale, const QMap<QString, QString>& sequences, QObject* parent) : QObject(parent),
-                                                                                          m_scale(scale),
-                                                                                          m_sequences(sequences)
+SwfFile::SwfFile(const QString& animationName, float scale, const QMap<QString, QString>& sequences, QObject* parent) : QObject(parent),
+                                                                                                                        m_scale(scale),
+                                                                                                                        m_animationName(animationName),
+                                                                                                                        m_sequences(sequences)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -42,10 +43,6 @@ bool SwfFile::process(const QString &fileName)
   SwfDataStream* stream;
 
   qDebug() << "Processing" << fileName << "...";
-
-  // store file name (without extension)
-  m_name = fileName.section("/", -1);
-  m_name = m_name.section(".", 0, 0);
 
   // create and read header
   m_header = new SwfHeader();
@@ -75,7 +72,7 @@ bool SwfFile::process(const QString &fileName)
 bool SwfFile::serialize(QXmlStreamWriter& stream)
 {
   stream.writeStartElement("imaged-animation");
-  stream.writeAttribute("name", m_name);
+  stream.writeAttribute("name", m_animationName);
   stream.writeAttribute("fps", QString::number(m_header->fps()));
   stream.writeAttribute("size", QString("%1 %2").arg(m_header->frameSize().width() * m_scale).arg(m_header->frameSize().height() * m_scale));
 
@@ -165,7 +162,7 @@ bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
           if (image.isNull())
           {
             // error!
-            qCritical() << "Could not find image referenced by characterID" << style.bitmapCharacterId << "for animation" << m_name;
+            qCritical() << "Could not find image referenced by characterID" << style.bitmapCharacterId << "for animation" << m_animationName;
             return false;
           }
 
@@ -283,13 +280,13 @@ bool SwfFile::serializeFrames(QXmlStreamWriter& stream)
 
       for (QMap<quint16, DisplayData>::const_iterator it = displayList.constBegin(); it != displayList.constEnd(); ++it)
       {
-        const quint16& depth = it.key();
+      //  const quint16& depth = it.key();
         const DisplayData& data = it.value();
 
         stream.writeStartElement("action");
 
         stream.writeAttribute("object-id", QString::number(data.characterId));
-        stream.writeAttribute("queue", QString::number(depth));
+      //  stream.writeAttribute("queue", QString::number(depth));
         stream.writeAttribute("translate", QString("%1 %2").arg(data.matrix.translateX * m_scale).arg(data.matrix.translateY * m_scale));
         stream.writeAttribute("scale", QString("%1 %2").arg(data.matrix.scaleX).arg(data.matrix.scaleY));
         stream.writeAttribute("skew", QString("%1 %2").arg(data.matrix.rotX).arg(data.matrix.rotY));
@@ -311,7 +308,7 @@ bool SwfFile::serializeFrames(QXmlStreamWriter& stream)
   if (frameCount != m_header->frameCount())
   {
     // error!
-    qCritical() << "Frame count does not match!" << m_name << "Found" << frameCount << "expected" << m_header->frameCount();
+    qCritical() << "Frame count does not match!" << m_animationName << "Found" << frameCount << "expected" << m_header->frameCount();
     return false;
   }
 

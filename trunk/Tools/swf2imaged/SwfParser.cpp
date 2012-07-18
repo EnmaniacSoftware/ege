@@ -325,7 +325,7 @@ bool SwfParser::generateData()
       AnimationData& animData = group.animationDataList[j];
 
       // create SWF file parser
-      animData.parsedFile = new SwfFile(group.scale, animData.sequences, this);
+      animData.parsedFile = new SwfFile(animData.name, group.scale, animData.sequences, this);
       if (NULL == animData.parsedFile)
       {
         // error!

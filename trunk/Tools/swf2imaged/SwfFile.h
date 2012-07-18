@@ -19,7 +19,7 @@ class SwfFile : public QObject
 
   public:
 
-    SwfFile(float scale, const QMap<QString, QString>& sequences, QObject* parent = NULL);
+    SwfFile(const QString& animationName, float scale, const QMap<QString, QString>& sequences, QObject* parent = NULL);
    ~SwfFile();
 
     /* Process the file with a given name. */
@@ -48,8 +48,8 @@ class SwfFile : public QObject
     Dictionary m_dictionary;
     /*! Scale factor. */
     float m_scale;
-    /*! File name. */
-    QString m_name;
+    /*! Animation name. */
+    QString m_animationName;
     /*! External sequences to store. */
     QMap<QString, QString> m_sequences;
 };
