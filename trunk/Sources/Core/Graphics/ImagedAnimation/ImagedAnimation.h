@@ -119,10 +119,6 @@ class ImagedAnimation : public Object, public IAnimation
       PRenderComponent renderData;                            /*!< Render data. */
       Matrix4f baseMatrix;                                    /*!< Base transformation matrix. */
       Matrix4f baseFrameMatrix;                               /*!< Combined base and frame transformations matrix. */
-      Matrix4f fromMatrix;                                    /*!< Combined base and frame transformations matrix. */
-      Matrix4f toMatrix;                                      /*!< Combined base and frame transformations matrix. */
-      Color fromColor;
-      Color toColor;
     };
 
     /*! Object data structure. */

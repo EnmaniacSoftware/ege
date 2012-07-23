@@ -158,36 +158,6 @@ void ImagedAnimation::update(const Time& time)
   {
     // update sequencer
     m_currentSequencer->update(time);
-
-    float32 dt = m_currentSequencer->normalizedFrameTime();
-    
-    // TAGE
-    dt = 0;
-
-    FrameData& frameData = m_frames[m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex())];
-    for (List<EGEImagedAnimation::ActionData>::iterator it = frameData.actions.begin(); it != frameData.actions.end(); ++it)
-    {
-      EGEImagedAnimation::ActionData& action = *it;
-
-      ObjectData& objectData = m_objects.at(action.objectId);
-      for (List<ChildObjectData>::iterator itChild = objectData.children.begin(); itChild != objectData.children.end(); ++itChild)
-      {
-        ChildObjectData& childData = *itChild;
-
-        Math::Lerp(&childData.baseFrameMatrix, &childData.fromMatrix, &childData.toMatrix, dt);
-      
-        // apply alignment
-        Vector4f translation = childData.baseFrameMatrix.translation();
-        translation.x *= 0.05f;
-        translation.y *= 0.05f;
-        Math::Align(&translation, &m_displaySize, m_baseAlignment, ALIGN_TOP_LEFT);
-        childData.baseFrameMatrix.setTranslation(translation.x * 20.0f, translation.y * 20.0f, translation.z);
-
-        Color color;
-        Math::Lerp(&color, &childData.fromColor, &childData.toColor, dt);
-        childData.renderData->material()->setDiffuseColor(color);
-      }
-    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -278,6 +248,8 @@ void ImagedAnimation::addForRendering(Renderer* renderer, const Matrix4f& transf
     return;
   }
 
+  EGE_ASSERT(m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex()) < static_cast<s32>(m_frames.size()));
+
   u32 count = 0;
 
   const FrameData& frameData = m_frames[m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex())];
@@ -292,18 +264,10 @@ void ImagedAnimation::addForRendering(Renderer* renderer, const Matrix4f& transf
     {
       const ChildObjectData& childData = *itChild;
 
-      // TAGE - testing
-      Matrix4f mat = childData.baseFrameMatrix;
-      mat[3][0] *= 0.05f;
-      mat[3][1] *= 0.05f;
-      mat[3][2] *= 0.05f;
-
-      mat = transform * mat;
-
       // update priority
-      childData.renderData->setPriority(m_baseRenderPriority + /*action.queue + */count);
+      childData.renderData->setPriority(m_baseRenderPriority + count);
  
-      renderer->addForRendering(childData.renderData, mat);
+      renderer->addForRendering(childData.renderData, transform * childData.baseFrameMatrix);
 
       ++count;
       //  EGE_PRINT("%f %f", objectData.baseFrameMatrix.translation().x, objectData.baseFrameMatrix.translation().y);
@@ -320,8 +284,7 @@ void ImagedAnimation::setBaseRenderPriority(s32 priority)
 /*! Sets display size. */
 void ImagedAnimation::setDisplaySize(const Vector2f& size)
 {
-  // TAGE - 0.05 testing
-  m_displaySize = size * 0.05f;
+  m_displaySize = size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets base display alignment. 
@@ -402,35 +365,13 @@ void ImagedAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
     {
       ChildObjectData& childData = *itChild;
 
-      // update matrix and color
-      childData.fromMatrix = action.matrix * childData.baseMatrix;
-      childData.toMatrix   = action.matrix * childData.baseMatrix;
-      childData.fromColor  = action.color;
-      childData.toColor    = action.color;
-
-      // TAGE - change this to matrix as this is current interpolation matrix between from and to matrices
-      childData.baseFrameMatrix = childData.fromMatrix;
-
-      // find object in next frame
-      for (List<EGEImagedAnimation::ActionData>::const_iterator itNext = nextFrameData.actions.begin(); itNext != nextFrameData.actions.end(); ++itNext)
-      {
-        const EGEImagedAnimation::ActionData& actionNext = *itNext;
-        if (actionNext.objectId == action.objectId)
-        {
-          // found, store transformation and color
-          childData.toMatrix = actionNext.matrix * childData.baseMatrix;
-          childData.toColor  = actionNext.color;
-          break;
-        }
-      }
+      // update matrix
+      childData.baseFrameMatrix = action.matrix * childData.baseMatrix;
 
       // apply alignment
       Vector4f translation = childData.baseFrameMatrix.translation();
       Math::Align(&translation, &m_displaySize, m_baseAlignment, ALIGN_TOP_LEFT);
       childData.baseFrameMatrix.setTranslation(translation.x, translation.y, translation.z);
-
-      //// update priority
-      //objectData.renderData->setPriority(m_baseRenderPriority + action.queue);
   
       // set clipping rect
      // objectData.renderData->setClipRect(Rectf(translation.x, translation.y, m_displaySize.x, m_displaySize.y));

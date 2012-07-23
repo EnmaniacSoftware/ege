@@ -48,7 +48,7 @@ class SwfFile : public QObject
     Dictionary m_dictionary;
     /*! Scale factor. */
     float m_scale;
-    /*! Animation name. */
+    /*! Animation name.   */
     QString m_animationName;
     /*! External sequences to store. */
     QMap<QString, QString> m_sequences;

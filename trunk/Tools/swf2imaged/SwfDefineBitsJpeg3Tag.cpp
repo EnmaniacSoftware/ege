@@ -33,6 +33,12 @@ bool SwfDefineBitsJpeg3Tag::read(SwfDataStream& data)
 
   // create image from pixel data
   QImage image = QImage::fromData(m_imageData);
+  if (image.isNull())
+  {
+    // error!
+    qCritical() << Q_FUNC_INFO << "Could not create image from data! Character Id" << m_characterId;
+    return false;
+  }
 
   // prepend alpha data block with uncompressed size so qUncompress can be used
   // NOTE: alpha block format is 8-bit per pixel
@@ -48,6 +54,12 @@ bool SwfDefineBitsJpeg3Tag::read(SwfDataStream& data)
 
   // create ARGBA image from pixel data image
   image = image.convertToFormat(QImage::Format_ARGB32);
+  if (image.isNull())
+  {
+    // error!
+    qCritical() << Q_FUNC_INFO << "Could not convert image into RGBA32! Character Id" << m_characterId;
+    return false;
+  }
 
   // TAGE - optimize
 

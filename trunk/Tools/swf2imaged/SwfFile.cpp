@@ -15,6 +15,8 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define T2P(twips) ((twips) / 20.0f)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct DisplayData
 {
   DisplayData() : characterId(0), color(Qt::white) {}
@@ -74,7 +76,7 @@ bool SwfFile::serialize(QXmlStreamWriter& stream)
   stream.writeStartElement("imaged-animation");
   stream.writeAttribute("name", m_animationName);
   stream.writeAttribute("fps", QString::number(m_header->fps()));
-  stream.writeAttribute("size", QString("%1 %2").arg(m_header->frameSize().width() * m_scale).arg(m_header->frameSize().height() * m_scale));
+  stream.writeAttribute("size", QString("%1 %2").arg(T2P(m_header->frameSize().width() * m_scale)).arg(T2P(m_header->frameSize().height() * m_scale)));
 
   // serialize objects section
   if ( ! serializeObjectsSection(stream))
@@ -169,7 +171,7 @@ bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
           stream.writeStartElement("child");
 
           stream.writeAttribute("material", resourceManager->generateNameFromImageId(imageId));
-          stream.writeAttribute("translate", QString("%1 %2").arg(style.bitmapMatrix.translateX * m_scale).arg(style.bitmapMatrix.translateY * m_scale));
+          stream.writeAttribute("translate", QString("%1 %2").arg(T2P(style.bitmapMatrix.translateX * m_scale)).arg(T2P(style.bitmapMatrix.translateY * m_scale)));
           stream.writeAttribute("scale", QString("%1 %2").arg(style.bitmapMatrix.scaleX).arg(style.bitmapMatrix.scaleY));
           stream.writeAttribute("skew", QString("%1 %2").arg(style.bitmapMatrix.rotX).arg(style.bitmapMatrix.rotY));
        //   stream.writeAttribute("color", QString("%1 %2 %3 %4").arg(data.color.redF()).arg(data.color.greenF()).arg(data.color.blueF()).arg(data.color.alphaF()));
@@ -287,7 +289,7 @@ bool SwfFile::serializeFrames(QXmlStreamWriter& stream)
 
         stream.writeAttribute("object-id", QString::number(data.characterId));
       //  stream.writeAttribute("queue", QString::number(depth));
-        stream.writeAttribute("translate", QString("%1 %2").arg(data.matrix.translateX * m_scale).arg(data.matrix.translateY * m_scale));
+        stream.writeAttribute("translate", QString("%1 %2").arg(T2P(data.matrix.translateX * m_scale)).arg(T2P(data.matrix.translateY * m_scale)));
         stream.writeAttribute("scale", QString("%1 %2").arg(data.matrix.scaleX).arg(data.matrix.scaleY));
         stream.writeAttribute("skew", QString("%1 %2").arg(data.matrix.rotX).arg(data.matrix.rotY));
         stream.writeAttribute("color", QString("%1 %2 %3 %4").arg(data.color.redF()).arg(data.color.greenF()).arg(data.color.blueF()).arg(data.color.alphaF()));

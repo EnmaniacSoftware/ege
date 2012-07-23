@@ -50,6 +50,7 @@ files
   EGEInput.h
   EGEList.h
   EGEMap.h
+  EGEMaterial.h
 	EGEMath.h
   EGEMatrix.h
   EGEMutex.h

@@ -62,6 +62,12 @@ bool SwfDefineBitsLosslessTag::read(SwfDataStream& data)
 
   // create empty ARGB image
   QImage image = QImage(width, height, QImage::Format_ARGB32);
+  if (image.isNull())
+  {
+    // error!
+    qCritical() << Q_FUNC_INFO << "Could not create image from data! Character Id" << m_characterId;
+    return false;
+  }
 
   // TAGE - optimize
 
