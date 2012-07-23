@@ -266,7 +266,7 @@ void ImagedAnimation::addForRendering(Renderer* renderer, const Matrix4f& transf
 
       // update priority
       childData.renderData->setPriority(m_baseRenderPriority + count);
- 
+
       renderer->addForRendering(childData.renderData, transform * childData.baseFrameMatrix);
 
       ++count;
@@ -367,6 +367,9 @@ void ImagedAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
 
       // update matrix
       childData.baseFrameMatrix = action.matrix * childData.baseMatrix;
+
+      // update color
+      childData.renderData->material()->setDiffuseColor(action.color);
 
       // apply alignment
       Vector4f translation = childData.baseFrameMatrix.translation();
