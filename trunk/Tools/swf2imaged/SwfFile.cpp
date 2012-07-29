@@ -170,7 +170,7 @@ bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
 
           stream.writeStartElement("child");
 
-          stream.writeAttribute("material", resourceManager->generateNameFromImageId(imageId));
+          stream.writeAttribute("material", resourceManager->generateNameFromImageId(resourceManager->imageIndex(imageId)));
           stream.writeAttribute("translate", QString("%1 %2").arg(T2P(style.bitmapMatrix.translateX * m_scale)).arg(T2P(style.bitmapMatrix.translateY * m_scale)));
           stream.writeAttribute("scale", QString("%1 %2").arg(style.bitmapMatrix.scaleX).arg(style.bitmapMatrix.scaleY));
           stream.writeAttribute("skew", QString("%1 %2").arg(style.bitmapMatrix.rotX).arg(style.bitmapMatrix.rotY));

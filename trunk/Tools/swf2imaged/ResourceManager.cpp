@@ -53,7 +53,7 @@ bool ResourceManager::serialize(QXmlStreamWriter& stream)
 {
   Q_ASSERT(NULL != m_currentSession);
 
-  for (int i = 0; i < m_images.count(); ++i)
+  for (int i = 0; i < m_currentSession->imageList.count(); ++i)
   {
     stream.writeStartElement("material");
 
@@ -101,8 +101,9 @@ bool ResourceManager::saveAssets()
     QString fullPath = m_currentSession->outputLocation + QDir::separator() + generateNameFromImageId(i) + ".png";
     
     // rescale
-    QImage image = m_images[i].scaled(QSize(m_images[i].width() * m_currentSession->scale, m_images[i].height() * m_currentSession->scale), Qt::KeepAspectRatio, 
-                                      Qt::SmoothTransformation);
+    QImage image = m_images[m_currentSession->imageList[i]].scaled(QSize(m_images[i].width() * m_currentSession->scale, 
+                                                                         m_images[i].height() * m_currentSession->scale), Qt::KeepAspectRatio, 
+                                                                         Qt::SmoothTransformation);
     if (image.isNull())
     {
       // error!
@@ -235,12 +236,12 @@ bool ResourceManager::generateAtlasTextureXML()
     output.writeAttribute(it.key(), it.value());
   }
 
-  foreach (int imageId, m_currentSession->imageList)
+  for (int i = 0; i < m_currentSession->imageList.count(); ++i)
   {
-    QString fullPath = m_currentSession->outputLocation + "/" + generateNameFromImageId(imageId) + ".png";
+    QString fullPath = m_currentSession->outputLocation + "/" + generateNameFromImageId(i) + ".png";
 
     output.writeStartElement("image");
-    output.writeAttribute("name", generateNameFromImageId(imageId));
+    output.writeAttribute("name", generateNameFromImageId(i));
     output.writeAttribute("path", QDir::fromNativeSeparators(fullPath));
     output.writeAttribute("spacing", "1 1 1 1");
     output.writeEndElement();
@@ -262,5 +263,22 @@ bool ResourceManager::generateAtlasTextureXML()
   out << outputXml;
 
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns image index within current session from global image id. */
+int ResourceManager::imageIndex(int id) const
+{
+  Q_ASSERT(NULL != m_currentSession);
+  
+  for (int i = 0; m_currentSession->imageList.count(); ++i)
+  {
+    if (m_currentSession->imageList[i] == id)
+    {
+      // found
+      return i;
+    }
+  }
+
+  return -1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

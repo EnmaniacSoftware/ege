@@ -38,6 +38,9 @@ class ResourceManager : public QObject
     /* Begins new resource session. */
     bool beginSession(const QString& baseName, float scale, const QString& outputLocation, const QString& atlasTexture);
 
+    /* Returns image index within current session from global image id. */
+    int imageIndex(int id) const;
+
   private:
     
     /* Generates atlas texture XML. */

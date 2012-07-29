@@ -8,7 +8,7 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define VERSION 0.11
+#define VERSION 0.12
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SwfParser::SwfParser(int argc, char *argv[]) : QApplication(argc, argv),
                                                m_resourceManager(NULL)
@@ -342,15 +342,15 @@ bool SwfParser::generateData()
     }
   }
 
-  // serialize
-  QString outputXml;
-  QXmlStreamWriter output(&outputXml);
-  output.setAutoFormatting(true);
-
   // go thru all animation groups data
   for (int i = 0; i < m_animationGroupDataList.count(); ++i)
   {
     AnimationGroupData& group = m_animationGroupDataList[i];
+
+    // serialize
+    QString outputXml;
+    QXmlStreamWriter output(&outputXml);
+    output.setAutoFormatting(true);
 
     // start resource session for current group
     if ( ! m_resourceManager->beginSession(group.resourcesBaseName, group.scale, group.outputLocation, group.atlasTexture))
