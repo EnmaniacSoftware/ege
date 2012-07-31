@@ -34,6 +34,8 @@ class ImageOverlay : public Overlay
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
     /* Overlay override. Updates overlay. */
     void update(const Time& time) override;
+    /* Overlay override. Sets transparency level. */
+    void setAlpha(float32 alpha) override;
 
   private:
 

@@ -122,5 +122,22 @@ void ImageOverlay::initialize()
                                                     EGEVertexBuffer::UT_STATIC_WRITE);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Overlay override. Sets transparency level. */
+void ImageOverlay::setAlpha(float32 alpha)
+{
+  // check if update is needed
+  if (isUpdateNeeded())
+  {
+    // update render data
+    updateRenderData();
+
+    // validate
+    validate();
+  }
+
+  // call base class
+  Overlay::setAlpha(alpha);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
