@@ -23,7 +23,7 @@ static TextureFormatData l_textureFormatData[] = {  { "rgba", ".png", TextureAtl
                                                     { "4bpp_pvrtc", ".pvr", TextureAtlasGenerator::TF_PVRTC_4BPP },
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define VERSION 1.0f
+#define VERSION 1.01f
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function for sorting object from greatest area to smallest. */
 static bool SortGreaterArea(AtlasGroupEntry* left, AtlasGroupEntry* right)
@@ -222,7 +222,8 @@ bool TextureAtlasGenerator::generateAll()
     // generate atlas for current group
     if ( ! generate(doc, root, group))
     {
-      qDebug() << "ERROR: Could not generate atlas for group: " << group->name() << ". Skipping!";
+      qCritical() << "ERROR: Could not generate atlas for group: " << group->name();
+      return false;
     }
 
     // remove group
