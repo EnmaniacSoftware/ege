@@ -28,6 +28,8 @@ class SwfFile : public QObject
     bool serialize(QXmlStreamWriter& stream);
     /* Returns dictionary. */
     Dictionary& dictionary();
+    /* Returns scale factory. */
+    float scale() const;
 
   private:
 

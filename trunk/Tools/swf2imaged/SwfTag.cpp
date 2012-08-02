@@ -12,6 +12,7 @@
 #include "SwfRemoveObjectTag.h"
 #include "SwfRemoveObject2Tag.h"
 #include "SwfDefineBitsTag.h"
+#include "SwfDefineSpriteTag.h"
 #include "ResourceManager.h"
 #include "SwfFile.h"
 #include "SwfParser.h"
@@ -65,6 +66,7 @@ SwfTag* SwfTag::ProcessTag(SwfDataStream& data, SwfFile* file)
     case SWF_TAG_ID_REMOVE_OBJECT_2:        tag = new SwfRemoveObject2Tag(); break;
     case SWF_TAG_ID_DEFINE_BITS_JPEG3:      tag = new SwfDefineBitsJpeg3Tag(); break;
     case SWF_TAG_ID_DEFINE_BITS_LOSSLESS_2: tag = new SwfDefineBitsLossless2Tag(); break;
+    case SWF_TAG_ID_DEFINE_SPRITE:          tag = new SwfDefineSpriteTag(); break;
     case SWF_TAG_ID_FILE_ATTRIBUTE:         tag = new SwfFileAttributeTag(); break;
 
     case SWF_TAG_ID_JPEG_TABLES:

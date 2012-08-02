@@ -24,7 +24,9 @@ SOURCES = main.cpp \
     SwfRemoveObjectTag.cpp \
     SwfSetBackgroundColorTag.cpp \
     SwfShowFrameTag.cpp \
-    SwfTag.cpp
+    SwfTag.cpp \
+    SwfDefineSpriteTag.cpp \
+    DisplayList.cpp
 
 HEADERS = \
     ResourceManager.h \
@@ -46,4 +48,6 @@ HEADERS = \
     SwfSetBackgroundColorTag.h \
     SwfShowFrameTag.h \
     SwfTag.h \
-    SwfTypes.h
+    SwfTypes.h \
+    SwfDefineSpriteTag.h \
+    DisplayList.h

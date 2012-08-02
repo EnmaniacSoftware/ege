@@ -8,23 +8,14 @@
 #include "SwfDefineBitsJpeg3Tag.h"
 #include "SwfDefineBitsLosslessTag.h"
 #include "SwfDefineBitsTag.h"
+#include "SwfDefineSpriteTag.h"
 #include "SwfParser.h"
 #include "ResourceManager.h"
+#include "DisplayList.h"
 #include <QFile>
 #include <QDataStream>
 #include <QDebug>
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define T2P(twips) ((twips) / 20.0f)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-struct DisplayData
-{
-  DisplayData() : characterId(0), color(Qt::white) {}
-
-  quint16 characterId;
-  Matrix matrix;
-  QColor color;
-};
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SwfFile::SwfFile(const QString& animationName, float scale, const QMap<QString, QString>& sequences, QObject* parent) : QObject(parent),
                                                                                                                         m_scale(scale),
@@ -59,7 +50,7 @@ bool SwfFile::process(const QString &fileName)
   {
     // process tag
     SwfTag* tag = SwfTag::ProcessTag(*stream, this);
-    if (tag)
+    if (NULL != tag)
     {
       // add to pool
       m_tags.append(tag);
@@ -106,6 +97,12 @@ bool SwfFile::serialize(QXmlStreamWriter& stream)
 Dictionary& SwfFile::dictionary()
 {
   return m_dictionary;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns scale factory. */
+float SwfFile::scale() const
+{
+  return m_scale;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Serializes objects section into EGE XML. */
@@ -191,18 +188,24 @@ bool SwfFile::serializeObjectsSection(QXmlStreamWriter& stream)
 /*! Serializes sequences section into EGE XML. */
 bool SwfFile::serializeSequencesSection(QXmlStreamWriter& stream)
 {
-  // add default playback sequence
-  stream.writeStartElement("sequence");
-  stream.writeAttribute("name", "all");
-
+  // add default playback sequences
   QString sequencerFrames;
   for (int i = 0; i < m_header->frameCount(); ++i)
   {
     sequencerFrames += QString::number(i) + " ";
   }
+
+  stream.writeStartElement("sequence");
+  stream.writeAttribute("name", "all");
   stream.writeAttribute("frames", sequencerFrames.trimmed());
   stream.writeEndElement();
   
+  stream.writeStartElement("sequence");
+  stream.writeAttribute("name", "all-repeat");
+  stream.writeAttribute("frames", sequencerFrames.trimmed());
+  stream.writeAttribute("repeat", "true");
+  stream.writeEndElement();
+
   // store external sequences
   for (QMap<QString, QString>::const_iterator it = m_sequences.begin(); it != m_sequences.end(); ++it)
   {
@@ -218,8 +221,7 @@ bool SwfFile::serializeSequencesSection(QXmlStreamWriter& stream)
 /*! Serializes frames into EGE XML. */
 bool SwfFile::serializeFrames(QXmlStreamWriter& stream)
 {
-  // display list accessed by depth
-  QMap<quint16, DisplayData> displayList;
+  DisplayList displayList(this);
 
   // go thru all tags
   quint16 frameCount = 0;
@@ -229,73 +231,32 @@ bool SwfFile::serializeFrames(QXmlStreamWriter& stream)
     {
       const SwfPlaceObject2Tag* placeTag = qobject_cast<const SwfPlaceObject2Tag*>(tag);
 
-      // add or modify character at given depth
-      DisplayData& data = displayList[placeTag->depth()];
-      if (placeTag->hasCharacterId())
-      {
-        data.characterId = placeTag->characterId();
-      }
+      quint16 characterId = placeTag->characterId();
 
-      if (placeTag->hasMatrix())
-      {
-        data.matrix = placeTag->matrix();
-      }
-
-      if (placeTag->hasColorTransformation())
-      {
-        // TAGE - possibly this should be taken from object
-        const QColor baseColor(Qt::white);
-        const QColor& addColor  = placeTag->colorTransformation().addTerms;
-        const QColor& multColor = placeTag->colorTransformation().multTerms;
-
-        data.color.setRed(qMax(0, qMin(static_cast<int>((baseColor.red() * multColor.redF()) + addColor.red()), 255)));
-        data.color.setGreen(qMax(0, qMin(static_cast<int>((baseColor.green() * multColor.greenF()) + addColor.green()), 255)));
-        data.color.setBlue(qMax(0, qMin(static_cast<int>((baseColor.blue() * multColor.blueF()) + addColor.blue()), 255)));
-        data.color.setAlpha(qMax(0, qMin(static_cast<int>((baseColor.alpha() * multColor.alphaF()) + addColor.alpha()), 255)));
-      }
+      displayList.placeObject(placeTag->depth(), placeTag->hasCharacterId() ? &characterId : NULL,
+                              placeTag->hasMatrix() ? &placeTag->matrix() : NULL,
+                              placeTag->hasColorTransformation() ? &placeTag->colorTransformation() : NULL);
     }
     else if (SWF_TAG_ID_REMOVE_OBJECT == tag->id())
     {
       const SwfRemoveObjectTag* removeTag = qobject_cast<const SwfRemoveObjectTag*>(tag);
 
-      // remove given character at given depth
-      if (displayList.contains(removeTag->depth()) && displayList[removeTag->depth()].characterId == removeTag->characterId())
-      {
-        // remove character at given depth
-        displayList.remove(removeTag->depth());
-      }
-      else
-      {
-        qWarning() << "Could not remove character" << removeTag->characterId() << "at depth" << removeTag->depth() << "No such character and/or depth!";
-      }
+      displayList.removeObject(removeTag->depth(), removeTag->characterId());
     }
     else if (SWF_TAG_ID_REMOVE_OBJECT_2 == tag->id())
     {
       const SwfRemoveObject2Tag* removeTag = qobject_cast<const SwfRemoveObject2Tag*>(tag);
 
       // remove character at given depth
-      displayList.remove(removeTag->depth());
+      displayList.removeObject(removeTag->depth());
     }
     else if (SWF_TAG_ID_SHOW_FRAME == tag->id())
     {
       stream.writeStartElement("frame");
 
-      for (QMap<quint16, DisplayData>::const_iterator it = displayList.constBegin(); it != displayList.constEnd(); ++it)
-      {
-      //  const quint16& depth = it.key();
-        const DisplayData& data = it.value();
+      Matrix identity = Matrix::Identity();
 
-        stream.writeStartElement("action");
-
-        stream.writeAttribute("object-id", QString::number(data.characterId));
-      //  stream.writeAttribute("queue", QString::number(depth));
-        stream.writeAttribute("translate", QString("%1 %2").arg(T2P(data.matrix.translateX * m_scale)).arg(T2P(data.matrix.translateY * m_scale)));
-        stream.writeAttribute("scale", QString("%1 %2").arg(data.matrix.scaleX).arg(data.matrix.scaleY));
-        stream.writeAttribute("skew", QString("%1 %2").arg(data.matrix.rotX).arg(data.matrix.rotY));
-        stream.writeAttribute("color", QString("%1 %2 %3 %4").arg(data.color.redF()).arg(data.color.greenF()).arg(data.color.blueF()).arg(data.color.alphaF()));
-
-        stream.writeEndElement();
-      }
+      displayList.serialize(identity, stream);
 
       stream.writeEndElement();
 

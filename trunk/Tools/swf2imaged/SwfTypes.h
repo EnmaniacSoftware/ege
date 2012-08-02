@@ -7,6 +7,8 @@
 #include <QColor>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define T2P(twips) ((twips) / 20.0f)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef QMap<quint16, QObject*> Dictionary;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Available fill style types. */
@@ -70,6 +72,58 @@ struct Matrix
   float rotY;
   qint32 translateX;            /*!< in twips. */
   qint32 translateY;            /*!< in twips. */
+
+  static Matrix Identity()
+  {
+    Matrix t;
+    t.scaleX = 1;
+    t.scaleY = 1;
+    t.rotX = 0;
+    t.rotY = 0;
+    t.translateX = 0;
+    t.translateY = 0;
+
+    return t;
+  }
+
+  static Matrix Concatenate(const Matrix& m1, const Matrix& m2)
+  {
+    Matrix t;
+
+    float	matrix1[2][3];
+    float	matrix2[2][3];
+    float	out[2][3];
+
+    matrix1[0][0] = m1.scaleX;
+    matrix1[1][1] = m1.scaleY;
+    matrix1[1][0] = m1.rotX;
+    matrix1[0][1] = m1.rotY;
+    matrix1[0][2] = m1.translateX;
+    matrix1[1][2] = m1.translateY;
+
+    matrix2[0][0] = m2.scaleX;
+    matrix2[1][1] = m2.scaleY;
+    matrix2[1][0] = m2.rotX;
+    matrix2[0][1] = m2.rotY;
+    matrix2[0][2] = m2.translateX;
+    matrix2[1][2] = m2.translateY;
+
+    out[0][0] = matrix1[0][0] * matrix2[0][0] + matrix1[0][1] * matrix2[1][0];
+    out[1][0] = matrix1[1][0] * matrix2[0][0] + matrix1[1][1] * matrix2[1][0];
+    out[0][1] = matrix1[0][0] * matrix2[0][1] + matrix1[0][1] * matrix2[1][1];
+    out[1][1] = matrix1[1][0] * matrix2[0][1] + matrix1[1][1] * matrix2[1][1];
+    out[0][2] = matrix1[0][0] * matrix2[0][2] + matrix1[0][1] * matrix2[1][2] + matrix1[0][2];
+    out[1][2] = matrix1[1][0] * matrix2[0][2] + matrix1[1][1] * matrix2[1][2] + matrix1[1][2];
+
+    t.scaleX      = out[0][0];
+    t.scaleY      = out[1][1];
+    t.rotX        = out[1][0];
+    t.rotY        = out[0][1];
+    t.translateX  = out[0][2];
+    t.translateY  = out[1][2];
+
+    return t;
+  }
 };
 
 /*! Data struct representing fill style. */

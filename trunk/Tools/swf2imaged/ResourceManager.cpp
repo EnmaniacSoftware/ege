@@ -101,9 +101,9 @@ bool ResourceManager::saveAssets()
     QString fullPath = m_currentSession->outputLocation + QDir::separator() + generateNameFromImageId(i) + ".png";
     
     // rescale
-    QImage image = m_images[m_currentSession->imageList[i]].scaled(QSize(m_images[i].width() * m_currentSession->scale, 
-                                                                         m_images[i].height() * m_currentSession->scale), Qt::KeepAspectRatio, 
-                                                                         Qt::SmoothTransformation);
+    const int imageId = m_currentSession->imageList[i];
+    QImage image = m_images[imageId].scaled(QSize(m_images[imageId].width() * m_currentSession->scale, m_images[imageId].height() * m_currentSession->scale), 
+                                            Qt::KeepAspectRatio, Qt::SmoothTransformation);
     if (image.isNull())
     {
       // error!

@@ -17,6 +17,7 @@
 #define SWF_TAG_ID_REMOVE_OBJECT_2              (28)
 #define SWF_TAG_ID_DEFINE_BITS_JPEG3            (35)
 #define SWF_TAG_ID_DEFINE_BITS_LOSSLESS_2       (36)
+#define SWF_TAG_ID_DEFINE_SPRITE                (39)
 #define SWF_TAG_ID_FILE_ATTRIBUTE               (69)
 #define SWF_TAG_ID_META_DATA                    (77)
 #define SWF_TAG_ID_DEFINE_SCENE_AND_LABEL_DATA  (86)
