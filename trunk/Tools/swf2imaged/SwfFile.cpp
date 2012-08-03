@@ -196,12 +196,12 @@ bool SwfFile::serializeSequencesSection(QXmlStreamWriter& stream)
   }
 
   stream.writeStartElement("sequence");
-  stream.writeAttribute("name", "all");
+  stream.writeAttribute("name", "auto:all");
   stream.writeAttribute("frames", sequencerFrames.trimmed());
   stream.writeEndElement();
   
   stream.writeStartElement("sequence");
-  stream.writeAttribute("name", "all-repeat");
+  stream.writeAttribute("name", "auto:all-repeat");
   stream.writeAttribute("frames", sequencerFrames.trimmed());
   stream.writeAttribute("repeat", "true");
   stream.writeEndElement();
