@@ -165,6 +165,52 @@ struct ColorTransform
 {
   QColor addTerms;
   QColor multTerms;
+
+  static ColorTransform Identity()
+  {
+    ColorTransform t;
+
+    t.addTerms.setRed(0);
+    t.addTerms.setGreen(0);
+    t.addTerms.setBlue(0);
+    t.addTerms.setAlpha(0);
+
+    t.multTerms.setRed(255);
+    t.multTerms.setGreen(255);
+    t.multTerms.setBlue(255);
+    t.multTerms.setAlpha(255);
+
+    return t;
+  }
+
+  static ColorTransform Concatenate(const ColorTransform& ct1, const ColorTransform& ct2)
+  {
+    ColorTransform out = Identity();
+
+		out.addTerms.setRedF(ct1.multTerms.redF() * ct2.addTerms.redF());
+		out.addTerms.setGreenF(ct1.multTerms.greenF() * ct2.addTerms.greenF());
+		out.addTerms.setBlueF(ct1.multTerms.blueF() * ct2.addTerms.blueF());
+		out.addTerms.setAlphaF(ct1.multTerms.alphaF() * ct2.addTerms.alphaF());
+
+    out.multTerms.setRedF(ct1.multTerms.redF() * ct2.multTerms.redF());
+    out.multTerms.setGreenF(ct1.multTerms.greenF() * ct2.multTerms.greenF());
+    out.multTerms.setBlueF(ct1.multTerms.blueF() * ct2.multTerms.blueF());
+    out.multTerms.setAlphaF(ct1.multTerms.alphaF() * ct2.multTerms.alphaF());
+
+    return out;
+  }
+
+  QColor transform(const QColor& color) const
+  {
+    QColor out;
+    
+    out.setRed(qMax(0, qMin(static_cast<int>((color.red() * multTerms.redF()) + addTerms.red()), 255)));
+    out.setGreen(qMax(0, qMin(static_cast<int>((color.green() * multTerms.greenF()) + addTerms.green()), 255)));
+    out.setBlue(qMax(0, qMin(static_cast<int>((color.blue() * multTerms.blueF()) + addTerms.blue()), 255)));
+    out.setAlpha(qMax(0, qMin(static_cast<int>((color.alpha() * multTerms.alphaF()) + addTerms.alpha()), 255)));
+
+    return out;
+  }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -23,12 +23,6 @@ void DisplayList::placeObject(quint16 depth, const quint16* characterId, const M
   // add or modify character at given depth
   DisplayList::Data& data = m_displayList[depth];
 
-  // TAGE - debug
-  SwfDefineSpriteTag* sprite = NULL;
-  if (characterId)
-    sprite = qobject_cast<SwfDefineSpriteTag*>(m_file->dictionary().value(*characterId, NULL));
-  // TAGE - end
-
   // create local display list if necessary
   if (NULL == data.displayList)
   {
@@ -51,15 +45,7 @@ void DisplayList::placeObject(quint16 depth, const quint16* characterId, const M
 
   if (NULL != colorTransform)
   {
-    // TAGE - possibly this should be taken from object
-    const QColor baseColor(Qt::white);
-    const QColor& addColor  = colorTransform->addTerms;
-    const QColor& multColor = colorTransform->multTerms;
-
-    data.color.setRed(qMax(0, qMin(static_cast<int>((baseColor.red() * multColor.redF()) + addColor.red()), 255)));
-    data.color.setGreen(qMax(0, qMin(static_cast<int>((baseColor.green() * multColor.greenF()) + addColor.green()), 255)));
-    data.color.setBlue(qMax(0, qMin(static_cast<int>((baseColor.blue() * multColor.blueF()) + addColor.blue()), 255)));
-    data.color.setAlpha(qMax(0, qMin(static_cast<int>((baseColor.alpha() * multColor.alphaF()) + addColor.alpha()), 255)));
+    data.colorTransform = *colorTransform;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -90,7 +76,7 @@ void DisplayList::removeObject(quint16 depth, quint16 characterId)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Serializes current display list state. */
-void DisplayList::serialize(const Matrix& transform, QXmlStreamWriter& stream)
+void DisplayList::serialize(const Matrix& transform, const ColorTransform& colorTransform, QXmlStreamWriter& stream)
 {
   for (QMap<quint16, Data>::iterator it = m_displayList.begin(); it != m_displayList.end(); ++it)
   {
@@ -98,7 +84,10 @@ void DisplayList::serialize(const Matrix& transform, QXmlStreamWriter& stream)
     Data& data = it.value();
 
     // calculate final transform matrix
-    Matrix out = Matrix::Concatenate(transform, data.matrix);
+    Matrix finalMT = Matrix::Concatenate(transform, data.matrix);
+
+    // calculate final color transform
+    ColorTransform finalCT = ColorTransform::Concatenate(colorTransform, data.colorTransform);
 
     // get tag corresponding to a character to be placed
     QObject* characterTag = m_file->dictionary().value(data.characterId, NULL);
@@ -112,19 +101,23 @@ void DisplayList::serialize(const Matrix& transform, QXmlStreamWriter& stream)
       defineSpriteTag->update(data);
 
       // serialize sprite display list
-      data.displayList->serialize(out, stream);
+      data.displayList->serialize(finalMT, finalCT, stream);
     }
     else
     {
       // normal element
       stream.writeStartElement("action");
 
+      // TAGE - probably should be taken from some object ?!
+      QColor color = Qt::white;
+      color = finalCT.transform(color);
+
       stream.writeAttribute("object-id", QString::number(data.characterId));
     //  stream.writeAttribute("queue", QString::number(depth));
-      stream.writeAttribute("translate", QString("%1 %2").arg(T2P(out.translateX * m_file->scale())).arg(T2P(out.translateY * m_file->scale())));
-      stream.writeAttribute("scale", QString("%1 %2").arg(out.scaleX).arg(out.scaleY));
-      stream.writeAttribute("skew", QString("%1 %2").arg(out.rotX).arg(out.rotY));
-      stream.writeAttribute("color", QString("%1 %2 %3 %4").arg(data.color.redF()).arg(data.color.greenF()).arg(data.color.blueF()).arg(data.color.alphaF()));
+      stream.writeAttribute("translate", QString("%1 %2").arg(T2P(finalMT.translateX * m_file->scale())).arg(T2P(finalMT.translateY * m_file->scale())));
+      stream.writeAttribute("scale", QString("%1 %2").arg(finalMT.scaleX).arg(finalMT.scaleY));
+      stream.writeAttribute("skew", QString("%1 %2").arg(finalMT.rotX).arg(finalMT.rotY));
+      stream.writeAttribute("color", QString("%1 %2 %3 %4").arg(color.redF()).arg(color.greenF()).arg(color.blueF()).arg(color.alphaF()));
 
       stream.writeEndElement();
     }

@@ -254,9 +254,10 @@ bool SwfFile::serializeFrames(QXmlStreamWriter& stream)
     {
       stream.writeStartElement("frame");
 
-      Matrix identity = Matrix::Identity();
+      Matrix transform = Matrix::Identity();
+      ColorTransform colorTransform = ColorTransform::Identity();
 
-      displayList.serialize(identity, stream);
+      displayList.serialize(transform, colorTransform, stream);
 
       stream.writeEndElement();
 

@@ -21,14 +21,14 @@ class DisplayList
     /*! Display data struct. */
     struct Data
     {
-      Data() : characterId(0), color(Qt::white), spriteFrameIndex(0), displayList(NULL) {}
+      Data() : characterId(0), colorTransform(ColorTransform::Identity()), spriteFrameIndex(0), displayList(NULL) {}
      ~Data() { if (NULL != displayList) delete displayList; displayList = NULL; }
 
-      quint16 characterId;        /*!< Character id. */
-      Matrix matrix;              /*!< Transformation matrix. */
-      QColor color;               /*!< Color. */
-      int spriteFrameIndex;       /*!< Current sprite frame index. Only used if current character is sprite. */
-      DisplayList* displayList;   /*!< Pointer to local display list if any. Used by sprites. */
+      quint16 characterId;              /*!< Character id. */
+      Matrix matrix;                    /*!< Transformation matrix. */
+      ColorTransform colorTransform;    /*!< Color transformation. */
+      int spriteFrameIndex;             /*!< Current sprite frame index. Only used if current character is sprite. */
+      DisplayList* displayList;         /*!< Pointer to local display list if any. Used by sprites. */
     };
 
   public:
@@ -46,7 +46,7 @@ class DisplayList
      */
     void removeObject(quint16 depth, quint16 characterId = 0);
     /* Serializes current display list state. */
-    void serialize(const Matrix& transform, QXmlStreamWriter& stream);
+    void serialize(const Matrix& transform, const ColorTransform& colorTransform, QXmlStreamWriter& stream);
 
   private:
 
