@@ -178,6 +178,8 @@ void RendererPrivate::flush()
   glRotatef(-d_func()->m_renderTarget->orientationRotation().degrees(), 0, 0, 1);
   glMultMatrixf(d_func()->m_projectionMatrix.data);
 
+ // EGE_LOG("---------------------- Render Flush begin ----------------------");
+
   // go thru all render queues
   for (Map<s32, PRenderQueue>::const_iterator itQueue = d_func()->m_renderQueues.begin(); itQueue != d_func()->m_renderQueues.end(); ++itQueue)
   {
@@ -188,6 +190,8 @@ void RendererPrivate::flush()
     for (MultiMap<u32, RenderQueue::SRENDERDATA>::const_iterator it = renderData.begin(); it != renderData.end(); ++it)
     {
       const RenderQueue::SRENDERDATA& data = it->second;
+      
+    //  EGE_LOG("Q: %d, name: %s", itQueue->first, data.component->name().toAscii());
 
       //if (data.component->name() == "achievement-frame")
       //{
@@ -423,6 +427,8 @@ void RendererPrivate::flush()
     // clear render queue
     queue->clear();
   }
+
+  //EGE_LOG("---------------------- Render Flush end ----------------------");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Applies parameters for given pass. */

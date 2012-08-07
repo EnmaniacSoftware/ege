@@ -77,8 +77,12 @@ class ImagedAnimation : public Object, public IAnimation
 
     /* Sets FPS playback value. */
     void setFPS(float32 fps);
-    /* Sets display size. */
+    
+    /* Sets display size (in pixels). */
     void setDisplaySize(const Vector2f& size);
+    /* Returns display size (in pixels). */
+    const Vector2f& displaySize() const;
+
     /* Sets base display alignment. 
      * @param alignment Alignment animation is originally created for.
      * @note  Animation if always aligned to TOP_LEFT anchor from its base alignment.
@@ -165,7 +169,7 @@ class ImagedAnimation : public Object, public IAnimation
     s32 m_baseRenderPriority; 
     /*! Array of frame data. */
     FrameDataArray m_frames;
-    /*! Display size. */
+    /*! Display size (in pixels). */
     Vector2f m_displaySize;
     /*! Base display alignment. */
     Alignment m_baseAlignment;

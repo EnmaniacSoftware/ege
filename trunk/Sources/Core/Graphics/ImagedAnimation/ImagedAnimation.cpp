@@ -281,10 +281,16 @@ void ImagedAnimation::setBaseRenderPriority(s32 priority)
   m_baseRenderPriority = priority;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets display size. */
+/*! Sets display size (in pixels). */
 void ImagedAnimation::setDisplaySize(const Vector2f& size)
 {
   m_displaySize = size;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns display size (in pixels). */
+const Vector2f& ImagedAnimation::displaySize() const
+{
+  return m_displaySize;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets base display alignment. 

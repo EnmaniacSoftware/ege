@@ -57,6 +57,7 @@ template <typename T, typename U>
 U& Map<T, U>::at(const T& key)
 {
   typename Map<T, U>::iterator it = this->find(key);
+  // TAGE - check if failed
   return it->second;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -65,6 +66,7 @@ template <typename T, typename U>
 const U& Map<T, U>::at(const T& key) const
 {
   typename Map<T, U>::const_iterator it = this->find(key);
+  // TAGE - check if failed
   return it->second;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
