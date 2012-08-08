@@ -156,7 +156,7 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
   if (error || m_name.empty())
   {
     // error!
-    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
+    egeWarning() << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -327,7 +327,7 @@ EGEResult ResourceMaterial::load()
         if (NULL == texture)
         {
           // texture not found
-          EGE_WARNING("Material texture not found: %s", textureImageData.name.toAscii());
+          egeWarning() << "Material texture not found:" << textureImageData.name;
           return EGE_ERROR;
         }
 
@@ -394,7 +394,7 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag, PassData& pass)
   if (error || textureData.name.empty())
   {
     // error!
-    EGE_PRINT("ERROR: Failed for name: %s", this->name().toAscii());
+    egeWarning() << "Failed for name:" << name();
     return EGE_ERROR_BAD_PARAM;
   }
 

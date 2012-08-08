@@ -1,4 +1,5 @@
 #include "Core/Graphics/Color.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -23,6 +24,12 @@ u32 Color::packed() const
   u32 a = static_cast<u32>(alpha * 255.0f);
 
   return (r << 24) | (g << 16) | (b << 8) | a;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& operator << (Debug& debug, const Color& obj)
+{
+  debug.nospace() << "Color(" << obj.red << "," << obj.green << "," << obj.blue << "," << obj.alpha << ")";
+  return debug.space();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

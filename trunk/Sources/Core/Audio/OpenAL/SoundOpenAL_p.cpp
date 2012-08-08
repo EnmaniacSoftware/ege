@@ -29,7 +29,7 @@ SoundPrivate::~SoundPrivate()
   if (IS_AL_ERROR())
   {
     // error!
-    EGE_PRINT("ERROR (%d): Could not delete audio buffers.", l_result);
+    egeCritical() << l_result << "Could not delete audio buffers.";
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ EGEResult SoundPrivate::construct()
   if (IS_AL_ERROR())
   {
     // error!
-    EGE_PRINT("ERROR (%d): Could not generate audio buffers.", l_result);
+    egeCritical() << l_result << "Could not generate audio buffers.";
     EGE_MEMSET(m_buffers, 0, sizeof (m_buffers));
     return EGE_ERROR;
   }
@@ -83,7 +83,7 @@ void SoundPrivate::update(const Time& time)
     if (IS_AL_ERROR())
     {
       // error!
-      EGE_PRINT("ERROR (%d): Could not retrieve state.", l_result);
+      egeCritical() << l_result << "Could not retrieve state.";
       return;
     }
 
@@ -98,7 +98,7 @@ void SoundPrivate::update(const Time& time)
         if (IS_AL_ERROR())
         {
           // error!
-          EGE_PRINT("ERROR (%d): Could not query queued buffers.", l_result);
+          egeCritical() << l_result << "Could not query queued buffers.";
           return;
         }
 
@@ -109,7 +109,7 @@ void SoundPrivate::update(const Time& time)
           if (IS_AL_ERROR())
           {
             // error!
-            EGE_PRINT("ERROR (%d): Could not start channel.", l_result);
+            egeCritical() << l_result << "Could not start channel.";
           }
 		    }
 		    else
@@ -138,7 +138,7 @@ void SoundPrivate::updateBuffers()
   if (IS_AL_ERROR())
   {
     // error!
-    EGE_PRINT("ERROR (%d): Could not retrive channel type.", l_result);
+    egeCritical() << l_result << "Could not retrive channel type.";
     return;
   }
 
@@ -155,7 +155,7 @@ void SoundPrivate::updateBuffers()
     if (IS_AL_ERROR())
     {
       // error!
-      EGE_PRINT("ERROR (%d): Could not retrive number of processed buffers.", l_result);
+      egeCritical() << l_result << "Could not retrive number of processed buffers.";
       return;
     }
   }
@@ -175,7 +175,7 @@ void SoundPrivate::updateBuffers()
       if (IS_AL_ERROR())
       {
         // error!
-        EGE_PRINT("ERROR (%d): Could not get processed buffers.", l_result);
+        egeCritical() << l_result << "Could not get processed buffers.";
       }
     }
 
@@ -191,7 +191,7 @@ void SoundPrivate::updateBuffers()
       if (IS_AL_ERROR())
       {
         // error!
-        EGE_PRINT("ERROR (%d): Could not bind data to buffer.", l_result);
+        egeCritical() << l_result << "Could not bind data to buffer.";
       }
 
 			// add buffer to channel
@@ -199,7 +199,7 @@ void SoundPrivate::updateBuffers()
       if (IS_AL_ERROR())
       {
         // error!
-        EGE_PRINT("ERROR (%d): Could not queue buffer to channel.", l_result);
+        egeCritical() << l_result << "Could not queue buffer to channel.";
       }
     }
   
@@ -247,7 +247,7 @@ EGEResult SoundPrivate::play(ALuint channel)
 	if (IS_AL_ERROR())
   {
     // error!
-    EGE_PRINT("ERROR (%d): Could not start playback!", l_result);
+    egeCritical() << l_result << "Could not start playback!";
     return EGE_ERROR;
 	}
 
@@ -256,7 +256,7 @@ EGEResult SoundPrivate::play(ALuint channel)
   if (IS_AL_ERROR())
   {
     // error!
-    EGE_PRINT("ERROR (%d): Could not retrieve channel state.", l_result);
+    egeCritical() << l_result << "Could not retrieve channel state.";
   }
 
   // connect for sound volume changes and set initial volume
@@ -276,7 +276,7 @@ EGEResult SoundPrivate::resume()
 {
   if (AL_TRUE == alIsSource(m_channel))
   {
-    EGE_PRINT("Resuming %s", d_func()->name().toAscii());
+    egeDebug() << "Resuming" << d_func()->name();
     return play(m_channel);
   }
 
@@ -302,11 +302,11 @@ EGEResult SoundPrivate::stop()
 	if (IS_AL_ERROR())
   {
     // error!
-    EGE_PRINT("ERROR (%d): Could not stop playback.", l_result);
+    egeCritical() << l_result << "Could not stop playback.";
     return EGE_ERROR;
 	}
 
-  EGE_PRINT("Stopped %s", d_func()->name().toAscii());
+  egeDebug() << "Stopped" << d_func()->name();
 
   // notify stopped
   d_func()->notifyStopped();
@@ -327,7 +327,7 @@ bool SoundPrivate::isPlaying() const
     if (IS_AL_ERROR())
     {
       // error!
-      EGE_PRINT("ERROR (%d): Could not retrieve channel state.", l_result);
+      egeCritical() << l_result << "Could not retrieve channel state.";
       return false;
     }
 
@@ -349,7 +349,7 @@ void SoundPrivate::onSoundVolumeChanged(PSound sound, float32 oldVolume)
 	if (IS_AL_ERROR())
   {
     // error!
-    EGE_PRINT("ERROR (%d): Could not set volume!", l_result);
+    egeCritical() << l_result << "Could not set volume!";
 	}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -361,7 +361,7 @@ EGEResult SoundPrivate::pause()
 	if (IS_AL_ERROR())
   {
     // error!
-    EGE_PRINT("ERROR (%d): Could not pause playback!", l_result);
+    egeCritical() << l_result << "Could not pause playback!";
     return EGE_ERROR;
 	}
 
@@ -378,7 +378,7 @@ bool SoundPrivate::isPaused() const
     if (IS_AL_ERROR())
     {
       // error!
-      EGE_PRINT("ERROR (%d): Could not retrieve channel state!", l_result);
+      egeCritical() << l_result << "Could not retrieve channel state!";
       return false;
     }
 

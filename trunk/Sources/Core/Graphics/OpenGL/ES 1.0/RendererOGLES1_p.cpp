@@ -566,7 +566,7 @@ void RendererPrivate::detectCapabilities()
 
   for (StringArray::const_iterator it = m_extensionArray.begin(); it != m_extensionArray.end(); ++it)
   {
-    EGE_PRINT("Available OGL extension: %s", (*it).toAscii());
+    egeDebug() << "Available OGL extension: %s", *it;
   }
 
 	GLint value;
@@ -608,16 +608,12 @@ void RendererPrivate::detectCapabilities()
     glMapBuffer   = (PFNGLMAPBUFFEROESPROC) eglGetProcAddress("glMapBufferOES");
     glUnmapBuffer = (PFNGLUNMAPBUFFEROESPROC) eglGetProcAddress("glUnmapBufferOES");
 
-    EGE_PRINT("GL_OES_mapbuffer %p %p", eglGetProcAddress("glMapBufferOES"), eglGetProcAddress("glMapBuffer"));
+//    EGE_PRINT("GL_OES_mapbuffer %p %p", eglGetProcAddress("glMapBufferOES"), eglGetProcAddress("glMapBuffer"));
 
     if (glMapBuffer && glUnmapBuffer)
     {
       Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER, true);
     }
-  }
-  else
-  {
-    EGE_PRINT("GL_OES_mapbuffer NOT SUPORTED");
   }
 
   // check if min and max blending functions are supported
@@ -734,7 +730,7 @@ void* RendererPrivate::bindVertexBuffer(PVertexBuffer& buffer) const
         // bind VBO
         if (!((VertexBufferVBO*) buffer.object())->bind())
         {
-          EGE_PRINT("RendererPrivate::flush - could not bind buffer");
+          egeWarning() << "RendererPrivate::flush - could not bind buffer";
         }
 
         // set vertex data base to 0 as for VBO we use offsets
@@ -768,7 +764,7 @@ void RendererPrivate::unbindVertexBuffer(PVertexBuffer& buffer) const
       // unbind VBO
       if (!((VertexBufferVBO*) buffer.object())->unbind())
       {
-        EGE_PRINT("RendererPrivate::flush - could not unbind buffer");
+        egeWarning() << "RendererPrivate::flush - could not unbind buffer";
       }
       break;
 
@@ -804,7 +800,7 @@ void* RendererPrivate::bindIndexBuffer(PIndexBuffer& buffer) const
         // bind VBO
         if (!((IndexBufferVBO*) buffer.object())->bind())
         {
-          EGE_PRINT("RendererPrivate::flush - could not bind buffer");
+          egeWarning() << "RendererPrivate::flush - could not bind buffer";
         }
 
         // set index data base to 0 as for VBO we use offsets
@@ -838,7 +834,7 @@ void RendererPrivate::unbindIndexBuffer(PIndexBuffer& buffer) const
       // unbind VBO
       if (!((IndexBufferVBO*) buffer.object())->unbind())
       {
-        EGE_PRINT("RendererPrivate::flush - could not unbind buffer");
+        egeWarning() << "RendererPrivate::flush - could not unbind buffer";
       }
       break;
 

@@ -3,17 +3,17 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Asserts with given description. */
-void Debug::Assert(const char* description, const char* fileName, s32 lineNumber)
+/*! Performs assertion. */
+void Debug::Assert(const char* assertion, const char* file, int line)
 {
 #ifdef EGE_FEATURE_DEBUG
-  _CrtDbgReport(_CRT_ASSERT, fileName, lineNumber, NULL, description);
+  _CrtDbgReport(_CRT_ASSERT, file, line, NULL, assertion);
   _CrtDbgBreak();
 #endif // EGE_FEATURE_DEBUG
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Prints given c-string to output. */
-void Debug::PrintRaw(const char* text)
+void Debug::Print(const char* text)
 {
   OutputDebugStringA(text);
   OutputDebugStringA("\n");

@@ -31,7 +31,7 @@ AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base),
     alGenSources(CHANNELS_COUNT, m_channels);
     if (IS_AL_ERROR())
     {
-      EGE_PRINT("ERROR (5d): Could not generate sources.", l_result);
+      egeCritical() << l_result << "Could not generate sources.";
       EGE_MEMSET(m_channels, 0, sizeof (m_channels));
     }
   }
@@ -124,7 +124,7 @@ ALuint AudioManagerPrivate::availableChannel() const
     if (IS_AL_ERROR())
     {
       // error!
-      EGE_PRINT("ERROR (%d): Could not retrieve channel state: %d at index %d.", l_result, m_channels[i], i);
+      egeCritical() << l_result << "Could not retrieve channel state:" << m_channels[i] << "at index" << i;
       continue;
     }
 

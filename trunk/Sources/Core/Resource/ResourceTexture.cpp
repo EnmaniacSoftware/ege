@@ -108,7 +108,7 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   if (m_name.empty() || m_path.empty() || m_type.empty() || error)
   {
     // error!
-    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
+    egeWarning() << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -166,7 +166,7 @@ EGEResult ResourceTexture::create2D()
 /*! IResource override. Unloads resource. */
 void ResourceTexture::unload() 
 { 
-  EGE_PRINT("%s", name().toAscii());
+  egeDebug() << name();
 
   m_texture = NULL; 
 }

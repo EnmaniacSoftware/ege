@@ -48,7 +48,7 @@ EGEResult ResourceData::create(const String& path, const PXmlElement& tag)
   if (m_name.empty() || m_path.empty() || error)
   {
     // error!
-    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
+    egeWarning() << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 

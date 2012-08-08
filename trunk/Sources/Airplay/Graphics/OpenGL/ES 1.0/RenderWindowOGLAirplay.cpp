@@ -21,7 +21,7 @@ RenderWindowOGLAirplay::RenderWindowOGLAirplay(Application* app, const Dictionar
   if (S3E_RESULT_SUCCESS != s3eSurfaceRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB, this))
   {
     // error!
-    EGE_WARNING("Count not register surface orientation change callback.");
+    egeWarning() << "Count not register surface orientation change callback.";
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -80,11 +80,11 @@ void RenderWindowOGLAirplay::create(const Dictionary& params)
 
     default:
 
-      EGE_WARNING("Unknown blit direction!");
+      egeWarning() << "Unknown blit direction!";
       break;
   }
 
-  EGE_PRINT("Pwidth: %d Pheight: %d width: %d height: %d orient: %f", m_physicalWidth, m_physicalHeight, m_width, m_height, m_orientationRotation.degrees());
+  //EGE_PRINT("Pwidth: %d Pheight: %d width: %d height: %d orient: %f", m_physicalWidth, m_physicalHeight, m_width, m_height, m_orientationRotation.degrees());
 
   // apply dimensions according to landscape requirement
   //if (landscape)
@@ -272,14 +272,14 @@ int32 RenderWindowOGLAirplay::OrientationChangeCB(void* systemData, void* userDa
 
     default:
 
-      EGE_WARNING("Unknown blit direction!");
+      egeWarning() << "Unknown blit direction!";
       break;
   }
 
   int32 bd = s3eSurfaceGetInt(S3E_SURFACE_BLIT_DIRECTION);
   int32 dbd = s3eSurfaceGetInt(S3E_SURFACE_DEVICE_BLIT_DIRECTION);
 
-  EGE_PRINT("ORIENTATION %d %f   bd: %d dbd: %d w: %d h: %d", so->m_DeviceBlitDirection, me->m_orientationRotation.degrees(), bd, dbd, s3eSurfaceGetInt(S3E_SURFACE_WIDTH), s3eSurfaceGetInt(S3E_SURFACE_HEIGHT));
+//  EGE_PRINT("ORIENTATION %d %f   bd: %d dbd: %d w: %d h: %d", so->m_DeviceBlitDirection, me->m_orientationRotation.degrees(), bd, dbd, s3eSurfaceGetInt(S3E_SURFACE_WIDTH), s3eSurfaceGetInt(S3E_SURFACE_HEIGHT));
 
   return 0;
 }

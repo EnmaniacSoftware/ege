@@ -27,7 +27,7 @@ void TimeLine::setDuration(const Time& time)
 {
   if (0 >= time.microseconds())
   {
-    EGE_WARNING("TimeLine::setDuration - Invalid value");
+    egeWarning() << "TimeLine::setDuration - Invalid value";
     return;
   }
 

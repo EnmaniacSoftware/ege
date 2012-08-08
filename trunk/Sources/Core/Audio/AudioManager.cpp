@@ -109,7 +109,7 @@ void AudioManager::update(const Time& time)
     // check if sound is not being played anymore
     if (p_func()->isStopped(sound))
     {
-      EGE_PRINT("%s removed.", sound->name().toAscii());
+      egeDebug() << sound->name() << "removed.";
 
       // remove it
       m_sounds.erase(it++);
@@ -178,7 +178,7 @@ EGEResult AudioManager::play(const PSound& sound)
       return EGE_SUCCESS;
     }
 
-    EGE_PRINT("%s", sound->name().toAscii());
+    egeDebug() << sound->name();
 
     // play
     if (EGE_SUCCESS == (result = p_func()->play(sound)))

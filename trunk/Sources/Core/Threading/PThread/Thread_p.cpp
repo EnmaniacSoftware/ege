@@ -98,7 +98,7 @@ void ThreadPrivate::cancel()
 {
   int result = pthread_cancel(m_thread);
   EGE_MEMSET(&m_thread, 0, sizeof (m_thread));
-  EGE_PRINT("Canceling : %p, result code: %d", this, result);
+  egeDebug() << "Canceling:" << this << "result code:" << result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

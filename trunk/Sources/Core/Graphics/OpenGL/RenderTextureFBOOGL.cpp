@@ -30,7 +30,7 @@ RenderTextureFBOOGL::RenderTextureFBOOGL(Application* app, const Dictionary& par
     GLuint state = glCheckFramebufferStatus(GL_FRAMEBUFFER_EXT);
     if (GL_FRAMEBUFFER_COMPLETE_EXT != state)
     {
-      EGE_WARNING("RenderTextureFBOOGL::RenderTextureFBOOGL Failed with error %d!", state);
+      egeWarning() << "RenderTextureFBOOGL::RenderTextureFBOOGL Failed with error" << state;
     }
 
     // unbind for the time being
@@ -45,7 +45,7 @@ RenderTextureFBOOGL::RenderTextureFBOOGL(Application* app, const Dictionary& par
   m_physicalWidth  = (iterWidth != params.end()) ? iterWidth->second.toInt() : 0;
   m_physicalHeight = (iterHeight != params.end()) ? iterHeight->second.toInt() : 0;
 
-  EGE_PRINT("Creating FBO: %d, %d %d %d", m_physicalWidth, m_physicalHeight, m_defaultFBOId, m_frameBufferObjectId);
+  egeDebug() << "Creating FBO:" << m_physicalWidth << m_physicalHeight << m_defaultFBOId << m_frameBufferObjectId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderTextureFBOOGL::~RenderTextureFBOOGL()
@@ -84,7 +84,7 @@ void RenderTextureFBOOGL::bind()
 
   if (GL_NO_ERROR != glGetError())
   {
-    EGE_PRINT("ERROR: Could not bind framebuffer!");
+    egeWarning() << "Could not bind framebuffer!";
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ void RenderTextureFBOOGL::unbind()
 
   if (GL_NO_ERROR != glGetError())
   {
-    EGE_PRINT("ERROR: Could not unbind framebuffer!");
+    egeWarning() << "Could not unbind framebuffer!";
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

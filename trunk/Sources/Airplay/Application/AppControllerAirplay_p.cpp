@@ -17,12 +17,12 @@ AppControllerPrivate::AppControllerPrivate(AppController* base) : m_d(base)
   // register for pause/resume notifications
   if (S3E_RESULT_SUCCESS != s3eDeviceRegister(S3E_DEVICE_PAUSE, AppControllerPrivate::PauseCB, this))
   {
-    EGE_WARNING("Could not install PAUSE callback!");
+    egeWarning() << "Could not install PAUSE callback!";
   }
 
   if (S3E_RESULT_SUCCESS != s3eDeviceRegister(S3E_DEVICE_UNPAUSE, AppControllerPrivate::ResumeCB, this))
   {
-    EGE_WARNING("Could not install RESUME callback!");
+    egeWarning() << "Could not install RESUME callback!";
   }
 }
 //------------------------------------------------------------------------  --------------------------------------------------------------------------------------
@@ -72,8 +72,6 @@ int32 AppControllerPrivate::PauseCB(void* data, void* userData)
 {
   AppControllerPrivate* me = static_cast<AppControllerPrivate*>(userData);
 
-  EGE_PRINT("PAUSING APP");
-
   // send event
   me->d_func()->app()->eventManager()->send(EGE_EVENT_ID_CORE_APP_PAUSE);
 
@@ -84,8 +82,6 @@ int32 AppControllerPrivate::PauseCB(void* data, void* userData)
 int32 AppControllerPrivate::ResumeCB(void* data, void* userData)
 {
   AppControllerPrivate* me = static_cast<AppControllerPrivate*>(userData);
-
-  EGE_PRINT("RESUMING APP");
 
   // send event
   me->d_func()->app()->eventManager()->send(EGE_EVENT_ID_CORE_APP_RESUME);

@@ -170,7 +170,7 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
   // convert separators
   filePath = Dir::FromNativeSeparators(filePath);
 
-  EGE_PRINT("%s", filePath.toAscii());
+  egeDebug() << filePath;
 
   // try to locate resource file in each data location
   // NOTE: if no AUTO-DETECTION is set we do exactly one search with a given filePath
@@ -190,7 +190,7 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
     if ((NULL == resourcesNode) || ! resourcesNode->isValid())
     {
       // error!
-      EGE_PRINT("ERROR: Resource file %s has no %s tag", fullPath.toAscii(), NODE_RESOURCES);
+      egeWarning() << "Resource file" << fullPath << "has no" << NODE_RESOURCES << "tag";
       result = EGE_ERROR;
       break;
     }
@@ -308,7 +308,7 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
   result = newGroup->create(tag);
   if (EGE_SUCCESS == result)
   {
-    EGE_PRINT("%s", newGroup->name().toAscii());
+    egeDebug() << newGroup->name();
 
     // check if such group DOES NOT exists
     // NOTE: we quitely omit group duplicates so it is valid to ie. INCLUDE the same group multiple times
@@ -319,7 +319,7 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
     }
     else
     {
-      EGE_WARNING("Group %s already exists.", newGroup->name().toAscii());
+      egeWarning() << "Group" << newGroup->name() << "already exists.";
     }
   }
 
@@ -382,7 +382,7 @@ EGEResult ResourceManager::loadGroup(const String& name)
       }
 
       // cannot be loaded
-      EGE_PRINT("%s is already loaded.", name.toAscii());
+      egeWarning() << name << "already loaded.";
       return EGE_ERROR_ALREADY_EXISTS;
     }
     
@@ -390,7 +390,7 @@ EGEResult ResourceManager::loadGroup(const String& name)
     if ((it != m_commands.end()) && (COMMAND_LOAD_GROUP == (*it).command))
     {
       // do nothing
-      EGE_PRINT("Group %s already scheduled. Skipping.", name.toAscii());
+      egeWarning() << "Group" << name << "already scheduled. Skipping.";
       return EGE_SUCCESS;
     }
 
@@ -412,11 +412,11 @@ EGEResult ResourceManager::loadGroup(const String& name)
       return EGE_ERROR;
     }
 
-    EGE_PRINT("%s scheduled for loading.", name.toAscii());
+    egeDebug() << name << "scheduled for loading.";
     return EGE_SUCCESS;
   }
 
-  EGE_PRINT("ERROR: %s not found!", name.toAscii());
+  egeWarning() << name << "not found!";
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -480,11 +480,11 @@ void ResourceManager::unloadGroup(const String& name)
       return;
     }
 
-    EGE_PRINT("%s scheduled for unloading.", name.toAscii());
+    egeDebug() << name << "scheduled for unloading.";
     return;
   }
 
-  EGE_PRINT("%s not found!", name.toAscii());
+  egeWarning() << name << "not found!";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns resource of a given type and name. Optionally, from given group only. */
@@ -631,7 +631,7 @@ EGEResult ResourceManager::processInclude(const String& filePath, const PXmlElem
     return EGE_ERROR;
   }
 
-  EGE_PRINT("Including %s", path.toAscii());
+  egeDebug() << "Including" << path;
 
   // check if not autodetecting
   // NOTE: in this case we assume path is with respect to current directory
@@ -756,7 +756,7 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
   if (NULL == groupResource)
   {
     // error!
-    EGE_PRINT("ERROR: Could not find group: %s", groupName.toAscii());
+    egeWarning() << "Could not find group:" << groupName;
     return false;
   }
 
@@ -767,7 +767,7 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
     if (NULL == groupResourceDependancy)
     {
       // error!
-      EGE_PRINT("ERROR: Could not find dependancy group: %s", (*it).toAscii());
+      egeWarning() << "Could not find dependancy group:" << (*it);
       return false;
     }
 
@@ -779,7 +779,7 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
     }
     else
     {
-      EGE_PRINT("Dependancy group already in list: %s. Circular dependancy possible.", (*it).toAscii());
+      egeWarning() << "Dependancy group already in list:" << *it << "Circular dependancy possible.";
       continue;
     }
 

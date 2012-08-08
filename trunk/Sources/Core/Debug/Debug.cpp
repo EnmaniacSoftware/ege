@@ -1,61 +1,125 @@
-#include "Core/Debug/Debug.h"
-#include "Core/Debug/Logger.h"
-#include "Core/Debug/Console.h"
-
-EGE_NAMESPACE_BEGIN
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(Debug)
-EGE_DEFINE_DELETE_OPERATORS(Debug)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Logger* Debug::m_log = NULL;
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Debug::Debug(Application* app) : Object(app)
-{
-  m_console = ege_new Console(app);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Debug::~Debug()
-{
-  EGE_DELETE(m_console);
-  EGE_DELETE(m_log);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Logs given text to file. */
-void Debug::Log(const String& text)
-{
-  // check if no logger created yet
-  if (NULL == Debug::m_log)
-  {
-    // create logger
-    m_log = ege_new Logger("engine.log", true);
-  }
-
-  if (m_log)
-  {
-    m_log->write(text);
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Prints given string to output including function name. */
-void Debug::PrintWithFunction(const char* functionName, const String& text)
-{
-  String finalText = functionName;
-  finalText += " ";
-  finalText += text;
-
-  PrintRaw(finalText.toAscii());
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Prints given text to output as a warning including function name. */
-void Debug::WarningWithFunction(const char* functionName, const String& text)
-{
-  String finalText = functionName;
-  finalText += " WARNING: ";
-  finalText += text;
-
-  PrintRaw(finalText.toAscii());
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END
+//#include "Core/Debug/Debug.h"
+//#include <EGEString.h>
+//
+//EGE_NAMESPACE_BEGIN
+//
+//Debug::Debug(DebugMsgType type) : m_referenceCounter(1), m_consoleOutput(true), m_spaceSeperated(true), m_type(type) 
+//{
+//  switch (m_type)
+//  {
+//    case DMT_WARNING:   m_buffer = "WARNING: "; break;
+//    case DMT_CRITICAL:  m_buffer = "CRITICAL: "; break;
+//  }
+//}
+//
+//Debug::Debug(const Debug& other) : m_consoleOutput(other.m_consoleOutput), m_spaceSeperated(other.m_spaceSeperated), m_type(other.m_type)
+//{
+//  m_buffer = other.m_buffer;
+//  m_referenceCounter = other.m_referenceCounter + 1;
+//}
+//
+//Debug::~Debug()
+//{
+//  if (0 == (--m_referenceCounter))
+//  {
+//    if (m_consoleOutput)
+//    {
+//      Print(m_buffer.toAscii());
+//    }
+//  }
+//}
+//
+//Debug& Debug::operator << (bool t)
+//{ 
+//  m_buffer += String::Format("%s", t ? "true" : "false"); 
+//  return maybeSpace(); 
+//}
+//
+//Debug& Debug::operator << (char t)
+//{ 
+//  m_buffer += String::Format("%c", t); 
+//  return maybeSpace(); 
+//}
+//
+//Debug& Debug::operator << (Char t) 
+//{ 
+//  m_buffer += String::Format("%C", t); 
+//  return maybeSpace(); 
+//}
+//
+//Debug& Debug::operator << (s16 t) 
+//{ 
+//  m_buffer += String::Format("%d", t); 
+//  return maybeSpace(); 
+//}
+//
+//Debug& Debug::operator << (u16 t) 
+//{ 
+//  m_buffer += String::Format("%d", t); 
+//  return maybeSpace(); 
+//}
+//
+//Debug& Debug::operator << (s32 t) 
+//{ 
+//  m_buffer += String::Format("%d", t); 
+//  return maybeSpace(); 
+//}
+//
+//Debug& Debug::operator << (u32 t) 
+//{ 
+//  m_buffer += String::Format("%d", t); 
+//  return maybeSpace(); 
+//}
+//
+//Debug& Debug::operator << (s64 t) 
+//{ 
+//  m_buffer += String::Format("%ld", t); 
+//  return maybeSpace(); 
+//}
+//
+//Debug& Debug::operator << (u64 t) 
+//{ 
+//  m_buffer += String::Format("%ld", t); 
+//  return maybeSpace(); 
+//}
+//
+//Debug& Debug::operator << (float32 t) 
+//{ 
+//  m_buffer += String::Format("%f", t); 
+//  return maybeSpace(); 
+//}
+//
+//Debug& Debug::operator << (const char* t) 
+//{ 
+//  m_buffer += t; return maybeSpace(); 
+//}
+//
+//Debug& Debug::operator << (const void* t) 
+//{ 
+//  m_buffer += String::Format("%p", t); 
+//  return maybeSpace(); 
+//}
+//
+//Debug& Debug::space() 
+//{ 
+//  m_spaceSeperated = true; 
+//  return maybeSpace(); 
+//}
+//
+//Debug& Debug::nospace() 
+//{ 
+//  m_spaceSeperated = false; 
+//  return *this; 
+//}
+//
+//Debug& Debug::maybeSpace() 
+//{ 
+//  if (m_spaceSeperated) 
+//  {
+//    m_buffer += " ";
+//  }
+//  
+//  return *this; 
+//}
+//
+//EGE_NAMESPACE_END

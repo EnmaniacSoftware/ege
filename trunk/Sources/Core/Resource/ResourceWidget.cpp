@@ -65,7 +65,7 @@ EGEResult ResourceWidget::create(const String& path, const PXmlElement& tag)
   if (error || !m_parameters.contains("name") || !m_parameters.contains("type") || !m_parameters.contains("size"))
   {
     // error!
-    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
+    egeWarning() << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -128,7 +128,7 @@ PWidget ResourceWidget::createInstance()
     if (!object->initialize(m_parameters))
     {
       // error!
-      EGE_PRINT("ERROR: Could not initialize!");
+      egeWarning() << "Could not initialize!";
       return NULL;
     }
 
@@ -161,21 +161,21 @@ PWidget ResourceWidget::createInstance()
           if (EGE_SUCCESS != object->addChild(childWidget))
           {
             // error!
-            EGE_PRINT("ERROR: Could not add child widget with name %s.", childData.name.toAscii());
+            egeWarning() << "Could not add child widget with name" << childData.name;
             return NULL;
           }
         }
         else
         {
           // error!
-          EGE_PRINT("ERROR: Could not create %s child widget.", childData.widgetName.toAscii());
+          egeWarning() << "Could not create" << childData.widgetName << "child widget.";
           return NULL;
         }
       }
       else
       {
         // error!
-        EGE_PRINT("ERROR: Could not find %s child widget resource", childData.widgetName.toAscii());
+        egeWarning() << "Could not find" << childData.widgetName << "child widget resource";
         return NULL;
       }
     }
@@ -202,7 +202,7 @@ EGEResult ResourceWidget::processChild(const PXmlElement& tag)
   if (childData.name.empty() || childData.widgetName.empty() || error)
   {
     // error!
-    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
+    egeWarning() << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -244,7 +244,7 @@ EGEResult ResourceWidget::processFrame(const PXmlElement& tag)
   if (error)
   {
     // error!
-    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
+    egeWarning() << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 

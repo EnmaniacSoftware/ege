@@ -58,7 +58,7 @@ EGEResult ResourceParticleEmitter::create(const String& path, const PXmlElement&
   if (!m_parameters.contains("name") || !m_parameters.contains("type") || !m_parameters.contains("material"))
   {
     // error!
-    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
+    egeWarning() << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -126,7 +126,7 @@ EGEResult ResourceParticleEmitter::load()
         if (EGE_SUCCESS != (result = affectorResource->load()))
         {
           // error!
-          EGE_PRINT("ERROR: Could not load!");
+          egeWarning() << "Could not load!";
           return result;
         }
       }
@@ -144,7 +144,7 @@ EGEResult ResourceParticleEmitter::load()
 /*! IResource override. Unloads resource. */
 void ResourceParticleEmitter::unload() 
 { 
-  EGE_PRINT("%s", name().toAscii());
+  egeDebug() << name();
 
   m_materialResource = NULL;
 }
@@ -160,7 +160,7 @@ PParticleEmitter ResourceParticleEmitter::createInstance()
     if (!object->initialize(m_parameters))
     {
       // error!
-      EGE_PRINT("ERROR: Could not initialize!");
+      egeWarning() << "Could not initialize!";
       object = NULL;
     }
 

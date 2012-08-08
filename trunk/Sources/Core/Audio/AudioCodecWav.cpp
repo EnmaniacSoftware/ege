@@ -41,7 +41,7 @@ bool AudioCodecWav::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
     if (out->write(stream, samplesDecoded * sampleSize) != samplesDecoded * sampleSize)
     {
       // error!
-      EGE_PRINT("ERROR: error decoding!");
+      egeCritical() << "Error decoding!";
     }
   }
   else
@@ -68,7 +68,7 @@ bool AudioCodecWav::reset()
   }
   else
   {
-      EGE_ASSERT("Not supported");
+    EGE_ASSERT("Not supported");
   }
 
   // store data

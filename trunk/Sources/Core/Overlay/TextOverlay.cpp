@@ -245,7 +245,7 @@ void TextOverlay::updateTextData()
     }
     else
     {
-      EGE_WARNING("Undefined character found: %C", *it);
+      egeWarning() << "Undefined character found:" << *it;
     }
 
     // update renderable characters counter

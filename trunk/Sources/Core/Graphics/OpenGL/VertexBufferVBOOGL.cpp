@@ -48,7 +48,7 @@ VertexBufferVBO::VertexBufferVBO(Application* app, EGEVertexBuffer::UsageType us
   if (GL_NO_ERROR != glGetError())
   {
     // error!
-    EGE_PRINT("ERROR: Could not generate buffer!");
+    egeWarning() << "Could not generate buffer!";
     m_id = 0;
   }
 
@@ -153,7 +153,7 @@ void* VertexBufferVBO::lock(u32 offset, u32 count)
     }
     else
     {
-      EGE_PRINT("ERROR: Mapping failed!");
+      egeWarning() << "Mapping failed!";
     }
   }
 
@@ -178,7 +178,7 @@ void VertexBufferVBO::unlock(void* data)
   if (GL_NO_ERROR != glGetError())
   {
     // error!
-    EGE_PRINT("ERROR: Could not bind buffer.");
+    egeWarning() << "Could not bind buffer.";
     return;
   }
 
@@ -192,7 +192,7 @@ void VertexBufferVBO::unlock(void* data)
       glBufferData(GL_ARRAY_BUFFER, static_cast<u32>(m_shadowBuffer->size()), m_shadowBuffer->data(), MapUsageType(m_usage));
       if (GL_NO_ERROR != glGetError())
       {
-        EGE_PRINT("ERROR: Could not update entire buffer.");
+        egeWarning() << "Could not update entire buffer.";
       }
     }
     else
@@ -209,7 +209,7 @@ void VertexBufferVBO::unlock(void* data)
       if (GL_NO_ERROR != glGetError())
       {
         // error!
-        EGE_PRINT("ERROR: Could not update buffer.");
+        egeWarning() << "Could not update buffer.";
       }
     }
 
@@ -226,7 +226,7 @@ void VertexBufferVBO::unlock(void* data)
     if (GL_NO_ERROR != glGetError())
     {
       // error!
-      EGE_PRINT("ERROR: Could not unmap buffer.");
+      egeWarning() << "Could not unmap buffer.";
     }
 
     // reset data

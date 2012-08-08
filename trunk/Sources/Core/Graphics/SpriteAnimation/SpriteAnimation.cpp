@@ -249,7 +249,7 @@ void SpriteAnimation::addSequencer(const PSequencer& sequencer)
   if (NULL != this->sequencer(sequencer->name()))
   {
     // cannot add
-    EGE_WARNING("Sequencer with name: %s already exists", sequencer->name().toAscii());
+    egeWarning() << "Sequencer with name:" << sequencer->name() << "already exists";
     return;
   }
 

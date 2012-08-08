@@ -2,30 +2,41 @@
 #define EGE_DEBUG_H
 
 #include "Core/Platform.h"
-#include "Core/Debug/Debug.h"
 #include "Core/Debug/Console.h"
+
+EGE_NAMESPACE_BEGIN
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Available debug message types. */
+enum DebugMsgType
+{
+  DMT_NORMAL,               /*!< Normal debug message. Usually, informative. */
+  DMT_WARNING,              /*!< Warning debug message. Usually, for recoverable issues. */
+  DMT_CRITICAL              /*!< Critical debug message. Usually, for unrecoverable issues. */
+};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #ifdef EGE_FEATURE_DEBUG
 
 #define EGE_ASSERT(cond) ((!(cond)) ? Debug::Assert(#cond, __FILE__, __LINE__) : ege_noop())
-#define EGE_PRINT(text, ...) Debug::PrintWithFunction(__FUNCTION__, String::Format(#text, ##__VA_ARGS__))
-#define EGE_WARNING(text, ...) Debug::WarningWithFunction(__FUNCTION__, String::Format(#text, ##__VA_ARGS__))
-#define EGE_LOG(text, ...) Debug::Log(String::Format(#text, ##__VA_ARGS__))
+#define EGE_LOG(text, ...) ege_noop()
 
-#define CHECK_GL_ERROR() if (GL_NO_ERROR == glGetError()) { EGE_PRINT("%s @ line %d - OpenGL error!", __FUNCTION__, __LINE__); }
+#define CHECK_GL_ERROR() if (GL_NO_ERROR == glGetError()) { egeWarning() << "OpenGL error!"; }
 
 #else
 
 #define EGE_ASSERT(cond) ege_noop()
-#define EGE_PRINT(text, ...) ege_noop()
-#define EGE_WARNING(text, ...) ege_noop()
 #define EGE_LOG(text, ...) ege_noop()
 #define CHECK_GL_ERROR() ege_noop()
 
 #endif // EGE_FEATURE_DEBUG
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#include "Core/Debug/Debug.h"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_DEBUG_H

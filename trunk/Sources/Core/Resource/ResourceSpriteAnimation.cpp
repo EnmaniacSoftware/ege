@@ -56,7 +56,7 @@ EGEResult ResourceSpriteAnimation::create(const String& path, const PXmlElement&
   if (error || m_name.empty() || m_sheetName.empty())
   {
     // error!
-    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
+    egeWarning() << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -153,7 +153,7 @@ EGEResult ResourceSpriteAnimation::load()
 /*! IResource override. Unloads resource. */
 void ResourceSpriteAnimation::unload() 
 { 
-  EGE_PRINT("%s", name().toAscii());
+  egeDebug() << name();
 
   // unload texture
   m_sheet = NULL;

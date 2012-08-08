@@ -67,7 +67,12 @@ inline void ege_noop() {}
 // Compiler specific
 #ifdef __GNUC__
 #define override
+#define EGE_FUNC_INFO __PRETTY_FUNCTION__
 #endif // __GNUC__
+
+#ifdef _MSC_VER
+#define EGE_FUNC_INFO __FUNCSIG__
+#endif // _MSC_VER
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_CORE_PLATFORM_H

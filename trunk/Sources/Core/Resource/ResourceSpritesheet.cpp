@@ -54,7 +54,7 @@ EGEResult ResourceSpritesheet::create(const String& path, const PXmlElement& tag
   if (error || m_name.empty() || m_textureName.empty())
   {
     // error!
-    EGE_PRINT("ERROR: Failed for name: %s", m_name.toAscii());
+    egeWarning() << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -98,7 +98,7 @@ EGEResult ResourceSpritesheet::load()
 /*! IResource override. Unloads resource. */
 void ResourceSpritesheet::unload() 
 { 
-  EGE_PRINT("%s", name().toAscii());
+  egeDebug() << name();
 
   // unload texture
   m_texture = NULL;

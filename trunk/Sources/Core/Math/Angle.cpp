@@ -1,5 +1,6 @@
 #include "Core/Math/Angle.h"
 #include "Core/Math/Math.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -113,6 +114,12 @@ Angle Angle::distanceTo(const Angle& angle, EGEAngle::Direction direction)
   }
 
   return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& operator << (Debug& debug, const Angle& obj)
+{
+  debug.nospace() << "Angle(" << obj.degrees() << ")";
+  return debug.space();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -52,7 +52,7 @@ Application::~Application()
   EGE_DELETE(m_eventManager);
   EGE_DELETE(m_physicsManager);
   EGE_DELETE(m_desktopServices);
-  EGE_DELETE(m_debug);
+  //EGE_DELETE(m_debug);
 
   MemoryManager::Deinit();
 }
@@ -78,12 +78,12 @@ EGEResult Application::initialize(const Dictionary& params)
   // create debug object
   EGE_LOG("Application::initialize - creating Debug");
 
-  m_debug = ege_new Debug(this);
-  if (NULL == m_debug)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
+  //m_debug = ege_new Debug(this);
+  //if (NULL == m_debug)
+  //{
+  //  // error!
+  //  return EGE_ERROR_NO_MEMORY;
+  //}
 
   // create desktop services
   EGE_LOG("Application::initialize - creating DesktopServices");

@@ -160,7 +160,7 @@ Rectf Renderer::applyRotation(const Rectf& rect, const Angle& angle) const
   }
   else
   {
-    EGE_WARNING("Unsupported angle: %.2f", angle.degrees());
+    egeWarning() << "Unsupported angle:" << angle.degrees();
   }
 
   return out;

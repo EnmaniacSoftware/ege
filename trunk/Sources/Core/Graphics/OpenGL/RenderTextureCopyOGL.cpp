@@ -55,7 +55,7 @@ void RenderTextureCopyOGL::unbind()
   glBindTexture(textureTarget(), textureId());
   if (GL_NO_ERROR != glGetError())
   {
-    EGE_PRINT("ERROR: Could not bind texture");
+    egeWarning() << "Could not bind texture";
   }
   
   switch (m_textureTarget)
@@ -66,7 +66,7 @@ void RenderTextureCopyOGL::unbind()
       glCopyTexSubImage2D(faceTarget(), 0, 0, 0, 0, 0, width(), height());
       if (GL_NO_ERROR != glGetError())
       {
-        EGE_PRINT("ERROR: glCopyTexSubImage2D failed");
+        egeWarning() << "glCopyTexSubImage2D failed";
       }
       break;
   }
