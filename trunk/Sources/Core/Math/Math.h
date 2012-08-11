@@ -140,9 +140,9 @@ class Math
     static bool LineLineIntersectPoint(Vector2f* out, const Vector2f* line1PointA, const Vector2f* line1PointB, 
                                        const Vector2f* line2PointA, const Vector2f* line2PointB);
 
-    /* Aligns point. 
-     * @param point            Point to align. This point is realigned.
-     * @param size             Area within each point is aligned.
+    /* Aligns anchor point with respect to given virtual size. 
+     * @param point            Virtual object anchor point. This point is realigned.
+     * @param size             Virtual obeject size.
      * @param currentAlignment Current point alignment within given area.
      * @param newAlignment     New point alignment within given area.
      */
@@ -153,18 +153,18 @@ class Math
      * @param newAlignment     New rectangle alignment.
      */
     static void Align(Rectf* rect, Alignment currentAlignment, Alignment newAlignment);
-    /* Aligns point. 
-     * @param point            Point to align. This point is realigned.
-     * @param size             Area within each point is aligned.
-     * @param currentAlignment Current point alignment within given area.
-     * @param newAlignment     New point alignment within given area.
+    /* Aligns anchor point with respect to given virtual size. 
+     *  @param point            Virtual object anchor point. This point is realigned.
+     *  @param size             Virtual obeject size.
+     *  @param currentAlignment Current point alignment within given area.
+     *  @param newAlignment     New point alignment within given area.
      */
     static void Align(Vector4f* point, const Vector2f* size, Alignment currentAlignment, Alignment newAlignment);
-    /* Aligns point. 
-     * @param point            Point to align. This point is realigned.
-     * @param size             Area within each point is aligned.
-     * @param currentAlignment Current point alignment within given area.
-     * @param newAlignment     New point alignment within given area.
+    /* Aligns anchor point with respect to given virtual size. 
+     *  @param point            Virtual object anchor point. This point is realigned.
+     *  @param size             Virtual obeject size.
+     *  @param currentAlignment Current point alignment within given area.
+     *  @param newAlignment     New point alignment within given area.
      */
     static void Align(Vector4f* point, const Vector4f* size, Alignment currentAlignment, Alignment newAlignment);
     /* Aligns rectangle with respect to another rectangle. 

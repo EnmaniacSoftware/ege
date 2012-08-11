@@ -133,7 +133,7 @@ EGEResult ResourceGroup::load()
     }
     else
     {
-      egeWarning() << name() << "loaded.";
+      egeDebug() << name() << "loaded.";
 
       // set flag
       m_loaded = true;

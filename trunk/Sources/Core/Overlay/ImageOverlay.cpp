@@ -11,14 +11,11 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ImageOverlay)
 EGE_DEFINE_DELETE_OPERATORS(ImageOverlay)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImageOverlay::ImageOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Overlay(app, name, EGE_OBJECT_UID_OVERLAY_IMAGE, deleteFunc), 
-                                                                                                   m_alignmentOffset(Vector4f::ZERO)
+ImageOverlay::ImageOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Overlay(app, name, EGE_OBJECT_UID_OVERLAY_IMAGE, deleteFunc)
 {
   initialize();
 
   m_material = ege_new Material(app);
-
-  ege_connect(physics(), transformationChanged, this, ImageOverlay::transformationChanged);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ImageOverlay::~ImageOverlay()
@@ -66,14 +63,16 @@ void ImageOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform
       validate();
     }
 
-    Matrix4f worldMatrix;
-    Quaternionf orientation = physics()->orientation();
-    Vector4f position = physics()->position() - m_alignmentOffset;
-    Vector4f scale = physics()->scale();
+    Matrix4f matrix = Matrix4f::IDENTITY;
+    Vector4f pos = physics()->position();
+    Vector4f size(size().x, size().y, 0, 1);
+    Math::Align(&pos, &size, ALIGN_TOP_LEFT, alignment());
 
-    Math::CreateMatrix(&worldMatrix, &position, &scale, &orientation);
+    size.x *= physics()->scale().x;
+    size.y *= physics()->scale().y;
+    Math::CreateMatrix(&matrix, &pos, &size, &Quaternionf::IDENTITY);
 
-    renderer->addForRendering(m_renderData, transform * worldMatrix);
+    renderer->addForRendering(m_renderData, transform * matrix);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -92,23 +91,9 @@ void ImageOverlay::setAlignment(Alignment align)
 {
   if (align != alignment())
   {
-    // force alignment update
-    transformationChanged();
-
     // call base class
     Overlay::setAlignment(align);
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when physics data has been updated. */
-void ImageOverlay::transformationChanged()
-{
-  // update alignment offset
-  Vector2f size(physics()->scale().x, physics()->scale().y);
-
-  m_alignmentOffset.x = 0;
-  m_alignmentOffset.y = 0;
-  Math::Align(&m_alignmentOffset, &size, ALIGN_TOP_LEFT, alignment());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Overlay override. Initializes object. */

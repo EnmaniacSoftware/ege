@@ -10,11 +10,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(TextOverlay, PTextOverlay)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+/*! \brief TextOverlay is an overlay containing raw text. Text dimensions will define final size of overlay. */
 class TextOverlay : public Overlay
 {
   public: 
@@ -33,12 +31,15 @@ class TextOverlay : public Overlay
     void setFont(PFont font);
     /*! Returns font. */
     inline PFont font() const { return m_font; }
-    /* Returns text size (in pixels). */
-    Vector2f textSize();
-    /* Overlay override. Renders overlay. */
-    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
     /* Sets text alignment. */
     void setTextAlignment(Alignment alignment);
+    /*! Returns text alignment. */
+    inline Alignment textAlignment() const { return m_textAlignment; }
+
+    /* Overlay override. Renders overlay. */
+    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
+    /* Overlay override. Returns size. */
+    const Vector2f& size() const override;
 
   private:
 
@@ -68,20 +69,15 @@ class TextOverlay : public Overlay
     Text m_text;
     /*! Font. */
     PFont m_font;
-    /*! Text size. */
-    Vector2f m_textSize;
     /*! List of text lines. */
     TextLineDataList m_textLines;
     /*! Text data validity flag. */
     bool m_textDataValid;
     /*! Renderable characters count. */
     u32 m_renderableCharactersCount;
-    /*! Text alignment. 
-     *  @note Only horizontal alignment makes sense as it is bound to its own region only. 
-     */
+    /*! Text (content) alignment. */
     Alignment m_textAlignment;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

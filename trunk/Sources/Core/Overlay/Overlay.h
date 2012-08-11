@@ -10,14 +10,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Renderer;
 class Viewport;
 
 EGE_DECLARE_SMART_CLASS(Overlay, POverlay)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Overlay : public Object
 {
   public: 
@@ -50,6 +47,11 @@ class Overlay : public Object
     virtual void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) = 0;
     /* Sets transparency level. */
     virtual void setAlpha(float32 alpha);
+
+    /* Returns size. */
+    virtual const Vector2f& size() const;
+    /* Sets size. */
+    void setSize(const Vector2f& size);
 
     /* Returns rectangle containing the overlay. */
 
@@ -108,6 +110,8 @@ class Overlay : public Object
     bool m_visible;
     /*! Alignment. */
     Alignment m_alignment;
+    /*! Size. */
+    Vector2f m_size;
 
     //string m_strText;               // text (multipurpose)
 
@@ -130,7 +134,6 @@ class Overlay : public Object
     //// update related methods
     //void updateFromParent( void );
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

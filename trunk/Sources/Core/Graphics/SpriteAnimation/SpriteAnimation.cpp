@@ -311,7 +311,7 @@ void SpriteAnimation::addForRendering(Renderer* renderer, const Matrix4f& transf
   Vector4f translation  = m_physicsData->position();
   Vector4f scale        = m_physicsData->scale();
 
-  Math::Align(&translation, &scale, m_baseAlignment, ALIGN_TOP_LEFT);
+  Math::Align(&translation, &scale, ALIGN_TOP_LEFT, m_baseAlignment);
   Math::CreateMatrix(&matrix, &translation, &scale, &Quaternionf::IDENTITY);
 
   renderer->addForRendering(m_renderData, transform * matrix);

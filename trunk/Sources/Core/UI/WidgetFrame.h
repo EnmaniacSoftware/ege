@@ -3,6 +3,7 @@
 
 /** Widget frame class represents renderable (stretchable) visual base for widgets. 
  *  Each frame is divided into 9 seperate rectangular regions. Middle regions are stretched to match the required size.
+ *  \note On its own widget frame should never exists. It should always be a part of defined widget.
  */
 
 #include <EGEMath.h>
@@ -12,7 +13,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class WidgetFrame
 {
   public: 
@@ -74,7 +74,6 @@ class WidgetFrame
     /*! Bottom-right rectangle part (in pixels). This also defines texture coordinates. */
     Recti m_bottomRightRect;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

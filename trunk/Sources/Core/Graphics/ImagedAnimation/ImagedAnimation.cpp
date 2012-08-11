@@ -379,7 +379,7 @@ void ImagedAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
 
       // apply alignment
       Vector4f translation = childData.baseFrameMatrix.translation();
-      Math::Align(&translation, &m_displaySize, m_baseAlignment, ALIGN_TOP_LEFT);
+      Math::Align(&translation, &m_displaySize, ALIGN_TOP_LEFT, m_baseAlignment);
       childData.baseFrameMatrix.setTranslation(translation.x, translation.y, translation.z);
   
       // set clipping rect

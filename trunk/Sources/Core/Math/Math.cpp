@@ -482,9 +482,9 @@ float32 Math::ACos(float32 radians)
   return EGEMath::PI; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Aligns point. 
- *  @param point            Point to align. This point is realigned.
- *  @param size             Area within each point is aligned.
+/*! Aligns anchor point with respect to given virtual size. 
+ *  @param point            Virtual object anchor point. This point is realigned.
+ *  @param size             Virtual obeject size.
  *  @param currentAlignment Current point alignment within given area.
  *  @param newAlignment     New point alignment within given area.
  */
@@ -493,42 +493,74 @@ void Math::Align(Vector2f* point, const Vector2f* size, Alignment currentAlignme
   EGE_ASSERT(point);
   EGE_ASSERT(size);
 
-  // align back to TOP-LEFT
-  if (currentAlignment & ALIGN_RIGHT)
+  // horizontal alignment
+  if (currentAlignment & ALIGN_LEFT)
   {
-    point->x -= size->x;
+    if (newAlignment & ALIGN_HCENTER)
+    {
+      point->x -= size->x * 0.5f;
+    }
+    else if (newAlignment & ALIGN_RIGHT)
+    {
+      point->x -= size->x;
+    }
   }
   else if (currentAlignment & ALIGN_HCENTER)
   {
-    point->x -= size->x * 0.5f;
+    if (newAlignment & ALIGN_LEFT)
+    {
+      point->x += size->x * 0.5f;
+    }
+    else if (newAlignment & ALIGN_RIGHT)
+    {
+      point->x -= size->x * 0.5f;
+    }
+  }
+  else if (currentAlignment & ALIGN_RIGHT)
+  {
+    if (newAlignment & ALIGN_LEFT)
+    {
+      point->x += size->x;
+    }
+    else if (newAlignment & ALIGN_HCENTER)
+    {
+      point->x += size->x * 0.5f;
+    }
   }
 
-  if (currentAlignment & ALIGN_BOTTOM)
+  // vertical alignment
+  if (currentAlignment & ALIGN_TOP)
   {
-    point->y -= size->y;
+    if (newAlignment & ALIGN_VCENTER)
+    {
+      point->y -= size->y * 0.5f;
+    }
+    else if (newAlignment & ALIGN_BOTTOM)
+    {
+      point->y -= size->y;
+    }
   }
   else if (currentAlignment & ALIGN_VCENTER)
   {
-    point->y -= size->y * 0.5f;
+    if (newAlignment & ALIGN_TOP)
+    {
+      point->y += size->y * 0.5f;
+    }
+    else if (newAlignment & ALIGN_BOTTOM)
+    {
+      point->y -= size->y * 0.5f;
+    }
   }
-
-  // do new alignment
-  if (newAlignment & ALIGN_RIGHT)
+  else if (currentAlignment & ALIGN_BOTTOM)
   {
-    point->x += size->x;
-  }
-  else if (newAlignment & ALIGN_HCENTER)
-  {
-    point->x += size->x * 0.5f;
-  }
-
-  if (newAlignment & ALIGN_BOTTOM)
-  {
-    point->y += size->y;
-  }
-  else if (newAlignment & ALIGN_VCENTER)
-  {
-    point->y += size->y * 0.5f;
+    if (newAlignment & ALIGN_TOP)
+    {
+      point->y += size->y;
+    }
+    else if (newAlignment & ALIGN_VCENTER)
+    {
+      point->y += size->y * 0.5f;
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

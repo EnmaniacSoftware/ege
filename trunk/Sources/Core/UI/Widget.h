@@ -80,7 +80,7 @@ class Widget : public Object
     /* Detrmines widget's content size (in pixels). */
     virtual Vector2f contentSize();
     /* Sets size. */
-    void setSize(const Vector2f& size);
+    virtual void setSize(const Vector2f& size);
     /* Determines size of widget (in pixels). */
     virtual Vector2f size() const;
     /* Sets position. */
@@ -147,7 +147,6 @@ class Widget : public Object
     /*! Children data map. */
     ChildrenDataMap m_children;
     /*! Widget alignment. */
-    // TAGE - currently not in use
     Alignment m_alignment;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

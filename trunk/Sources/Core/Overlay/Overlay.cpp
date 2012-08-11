@@ -9,14 +9,16 @@ EGE_DEFINE_DELETE_OPERATORS(Overlay)
 Overlay::Overlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Object(app, EGE_OBJECT_UID_OVERLAY, deleteFunc), 
                                                                                          m_name(name), 
                                                                                          m_updateNeeded(false), 
-                                                                                         m_visible(true)
+                                                                                         m_visible(true),
+                                                                                         m_size(Vector2f::ZERO)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Overlay::Overlay(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) : Object(app, uid, deleteFunc), 
                                                                                                   m_name(name), 
                                                                                                   m_updateNeeded(false), 
-                                                                                                  m_visible(true)
+                                                                                                  m_visible(true),
+                                                                                                  m_size(Vector2f::ZERO)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -86,6 +88,22 @@ void Overlay::setAlpha(float32 alpha)
   if (m_renderData->material())
   {
     m_renderData->material()->setDiffuseAlpha(alpha);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns size. */
+const Vector2f& Overlay::size() const
+{
+  return m_size;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets size. */
+void Overlay::setSize(const Vector2f& size)
+{
+  if (m_size != size)
+  {
+    m_size = size;
+    invalidate();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

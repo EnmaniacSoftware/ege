@@ -242,8 +242,8 @@ void UIScrollableView::recaluclateContentSize()
           TextOverlay* overlay = ege_cast<TextOverlay*>((*it).object());
 
           // update content size
-          newContentSize.x = Math::Max(newContentSize.x, overlay->physics()->position().x + overlay->textSize().x);
-          newContentSize.y = Math::Max(newContentSize.y, overlay->physics()->position().y + overlay->textSize().y);
+          newContentSize.x = Math::Max(newContentSize.x, overlay->physics()->position().x + overlay->size().x);
+          newContentSize.y = Math::Max(newContentSize.y, overlay->physics()->position().y + overlay->size().y);
         }
         break;
 

@@ -36,7 +36,7 @@ OPTIMIZATIONS:
 
 - UI
   - Dialogs (or widgets?) instead of tail should have some sort of decoration ?
-
+  
 CODING:
 
  - VertexBuffer/IndexBuffer sizes are determined by create method ONLY. Locks should not internally redefine size but return errror. Thats for when we want to update only several 
@@ -46,5 +46,6 @@ CODING:
 
 ISSUES:
 
- - ImagedAnimation - it seems that obejct's and action's translation add'up which causes doubled values...(ie. loading anim)
  - Game loop - accumulated updates should be applied to physicsmanager ONLY!!!!
+ - PhysicsComponent -> TransformComponent
+ - When getting positions the alignment (if present, make it always present ?) should be taken into considereation

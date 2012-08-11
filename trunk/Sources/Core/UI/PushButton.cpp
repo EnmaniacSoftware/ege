@@ -199,13 +199,30 @@ void PushButton::setFont(PFont font)
   {
     // title label
     PLabel label = child("text");
-    if (label)
+    if (NULL != label)
     {
       EGE_ASSERT(EGE_OBJECT_UID_UI_LABEL == label->uid());
 
-      label->setFont(m_font);
+      label->setFont(font);
     }
+
+    m_font = font;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Widget override. Sets size. */
+void PushButton::setSize(const Vector2f& size)
+{
+  PLabel label = child("text");
+  if (NULL != label)
+  {
+    EGE_ASSERT(EGE_OBJECT_UID_UI_LABEL == label->uid());
+
+    label->setSize(size);
+  }
+  
+  // call base class
+  Widget::setSize(size);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

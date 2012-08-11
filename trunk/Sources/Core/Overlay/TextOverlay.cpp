@@ -63,30 +63,11 @@ void TextOverlay::updateRenderData()
 
   // update vertex data
   float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_renderableCharactersCount * 6));
-  if (data)
+  if (NULL != data)
   {
     float32 spacing = 0.0f;
 
     Vector2f pos(0, 0);
-
-    // apply widget alignment
-    if (alignment() & ALIGN_RIGHT)
-    {
-      pos.x = -textSize().x;
-    }
-    else if (alignment() & ALIGN_HCENTER)
-    {
-      pos.x = -textSize().x * 0.5f;
-    }
-
-    if (alignment() & ALIGN_BOTTOM)
-    {
-      pos.y = -textSize().y;
-    }
-    else if (alignment() & ALIGN_VCENTER)
-    {
-      pos.y = -textSize().y * 0.5f;
-    }
 
     // go thru all lines of text
     float32 startPosX = pos.x;
@@ -95,13 +76,14 @@ void TextOverlay::updateRenderData()
       const TextLineData& lineData = *it;
 
       // apply text alignment
+      // NOTE: text is aligned with respect to overall size.
       if (m_textAlignment & ALIGN_RIGHT)
       {
-        pos.x += (m_textSize.x - lineData.width);
+        pos.x += (size().x - lineData.width);
       }
       else if (m_textAlignment & ALIGN_HCENTER)
       {
-        pos.x += (m_textSize.x - lineData.width) * 0.5f;
+        pos.x += (size().x - lineData.width) * 0.5f;
       }
 
       // go thru all characters in current line
@@ -170,20 +152,22 @@ void TextOverlay::updateRenderData()
   m_renderData->vertexBuffer()->unlock(data - 1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns text size (in pixels). */
-Vector2f TextOverlay::textSize()
+/*! Overlay override. Returns text size (in pixels). */
+const Vector2f& TextOverlay::size() const
 {
   // check if text data is invalid
   if (!m_textDataValid)
   {
+    // NOTE: nasty, but find it less obscure than mutabling everything around
+
     // update text data
-    updateTextData();
+    const_cast<TextOverlay*>(this)->updateTextData();
 
     // validate text data
-    m_textDataValid = true;
+    const_cast<TextOverlay*>(this)->m_textDataValid = true;
   }
 
-  return m_textSize;
+  return Overlay::size();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Overlay override. Initializes object. */
@@ -202,9 +186,10 @@ void TextOverlay::updateTextData()
 {
   const float32 spacing = 0.0f;
 
+  Vector2f textSize = Vector2f::ZERO;
+
   // clear data
   m_textLines.clear();
-  m_textSize.set(0, 0);
   m_renderableCharactersCount = 0;
 
   PFont currentFont = font();
@@ -228,7 +213,7 @@ void TextOverlay::updateTextData()
       m_textLines.push_back(lineData);
 
       // update text width
-      m_textSize.x = Math::Max(m_textSize.x, lineData.width);
+      textSize.x = Math::Max(textSize.x, lineData.width);
 
       // prepare data for next line
       lineData.start = it + 1;
@@ -259,11 +244,14 @@ void TextOverlay::updateTextData()
     m_textLines.push_back(lineData);
 
     // update text width
-    m_textSize.x = Math::Max(m_textSize.x, lineData.width);
+    textSize.x = Math::Max(textSize.x, lineData.width);
   }
 
   // set text total height
-  m_textSize.y = static_cast<float32>(m_textLines.size() * currentFont->height());
+  textSize.y = static_cast<float32>(m_textLines.size() * currentFont->height());
+
+  // update overlay size
+  setSize(textSize);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Overlay override. Renders overlay. */
@@ -294,7 +282,15 @@ void TextOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform)
       validate();
     }
 
-    renderer->addForRendering(m_renderData, transform * physics()->transformationMatrix());
+    Matrix4f matrix = Matrix4f::IDENTITY;
+    Vector4f pos = physics()->position();
+    Vector4f size(size().x, size().y, 0);
+    Math::Align(&pos, &size, ALIGN_TOP_LEFT, alignment());
+
+    size = physics()->scale();
+    Math::CreateMatrix(&matrix, &pos, &size, &Quaternionf::IDENTITY);
+
+    renderer->addForRendering(m_renderData, transform * matrix);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

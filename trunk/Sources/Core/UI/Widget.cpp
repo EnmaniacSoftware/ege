@@ -55,6 +55,12 @@ bool Widget::initialize(const Dictionary& params)
   }
   setSize(size);
 
+  if (params.contains("alignment"))
+  {
+    Alignment alignment = params.at("alignment").toAlignment(&error);
+    setAlignment(alignment);
+  }
+
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -70,7 +76,7 @@ void Widget::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Renders dialog. */
+/*! Renders widget. */
 void Widget::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (isVisible())
@@ -84,10 +90,19 @@ void Widget::addForRendering(Renderer* renderer, const Matrix4f& transform)
       m_renderDataInvalid = false;
     }
 
+    // apply alignment
+    Vector4f pos  = m_physics.position();
+    Vector2f size = this->size();
+    Math::Align(&pos, &size, ALIGN_TOP_LEFT, alignment());
+
+    // update translation
+    Matrix4f matrix = m_physics.transformationMatrix();
+    matrix.setTranslation(pos.x, pos.y, 0);
+
     // render frame
     if (NULL != m_widgetFrame)
     {
-      m_widgetFrame->addForRendering(renderer, transform * m_physics.transformationMatrix());
+      m_widgetFrame->addForRendering(renderer, transform * matrix);
     }
 
     // render children
@@ -95,7 +110,7 @@ void Widget::addForRendering(Renderer* renderer, const Matrix4f& transform)
     {
       const ChildData& childData = it->second;
 
-      childData.widget->addForRendering(renderer, transform * m_physics.transformationMatrix());
+      childData.widget->addForRendering(renderer, transform * matrix);
     }
   }
 }
@@ -375,7 +390,10 @@ void Widget::setAlpha(float32 alpha)
 /*! Sets widget alignment. */
 void Widget::setAlignment(Alignment alignment)
 {
-  m_alignment = alignment;
+  if (m_alignment != alignment)
+  {
+    m_alignment = alignment;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when own transformation has been changed. */

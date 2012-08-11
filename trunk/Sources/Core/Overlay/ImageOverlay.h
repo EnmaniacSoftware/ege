@@ -9,11 +9,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(ImageOverlay, PImageOverlay)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ImageOverlay : public Overlay
 {
   public: 
@@ -46,21 +43,13 @@ class ImageOverlay : public Overlay
     /*! Returns material name. */
     inline const String& materialName() const { return m_materialName; }
 
-  private slots:
-
-    /* Slot called when physics data has been updated. */
-    void transformationChanged();
-
   private:
 
     /*! Material name. */
     String m_materialName;
     /*! Local material. */
     PMaterial m_material;
-    /*! Aligment position offset. */
-    Vector4f m_alignmentOffset;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

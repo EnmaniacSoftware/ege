@@ -54,17 +54,24 @@ void Label::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (isVisible())
   {
-    // apply alignment to text overlay
-    Vector4f overlayPos(0, 0, 0);
-    Math::Align(&overlayPos, &m_size, ALIGN_TOP_LEFT, m_textOverlay->alignment());
+    // TAGE - probably not right, what if scale is non identity ?
 
-    Matrix4f matrix;
-    Vector4f pos(m_physics.position().x + overlayPos.x, m_physics.position().y + overlayPos.y, 0, 1);
-    Math::CreateMatrix(&matrix, &pos, &Vector4f::ONE, &Quaternionf::IDENTITY);
+    // align text overlay within label
+    Vector2f textSize   = m_textOverlay->size();
+    Vector2f labelSize  = size();
 
-    // setup clipping region so text overlay does not exceed to label size
-    pos = transform * m_physics.position();
-    m_textOverlay->renderData()->setClipRect(Rectf(pos.x, pos.y, size().x, size().y));
+    Rectf textRect(0, 0, textSize.x, textSize.y);
+    Rectf labelRect(0, 0, labelSize.x, labelSize.y);
+
+    Math::Align(&textRect, &labelRect, ALIGN_TOP_LEFT, m_textOverlay->textAlignment());
+
+    Matrix4f matrix = physics().transformationMatrix();
+    Vector4f pos = matrix.translation();
+    pos.x += textRect.x;
+    pos.y += textRect.y;
+    matrix.setTranslation(pos.x, pos.y, 0);
+
+   // m_textOverlay->renderData()->setClipRect(Rectf(pos.x, pos.y, size().x, size().y));
     m_textOverlay->addForRendering(renderer, transform * matrix);
 
     // call base class
@@ -130,7 +137,7 @@ void Label::setFont(PFont font)
 /*! Detrmines widget's content size (in pixels). */
 Vector2f Label::contentSize()
 {
-  return m_textOverlay->textSize();
+  return m_textOverlay->size();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Widget override. Sets transparency level. */
@@ -147,7 +154,7 @@ void Label::setAlpha(float32 alpha)
 void Label::setTextAlignment(Alignment alignment)
 {
   m_textOverlay->setTextAlignment(alignment);
-  m_textOverlay->setAlignment(alignment);
+  //m_textOverlay->setAlignment(alignment);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

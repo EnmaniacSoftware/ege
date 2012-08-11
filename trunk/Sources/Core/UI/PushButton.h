@@ -17,13 +17,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Renderer;
 
 EGE_DECLARE_SMART_CLASS(PushButton, PPushButton)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class PushButton : public Widget
 {
   public: 
@@ -50,8 +47,10 @@ class PushButton : public Widget
     bool isValid() const;
     /* Widget override. Updates overlay. */
     void update(const Time& time) override;
-    /* Widget override. Renders dialog. */
+    /* Widget override. Renders button. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
+    /* Widget override. Sets size. */
+    void setSize(const Vector2f& size) override;
     /* Sets alignment. */
     void setAlignment(Alignment align);
     /* Pointer event processor. */
@@ -87,7 +86,6 @@ class PushButton : public Widget
     /*! Font in use. */
     PFont m_font;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
