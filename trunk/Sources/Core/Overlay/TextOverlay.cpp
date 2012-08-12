@@ -230,7 +230,8 @@ void TextOverlay::updateTextData()
     }
     else
     {
-      egeWarning() << "Undefined character found:" << *it;
+      egeWarning() << "Undefined character found:" << (s32) *it;
+      continue;
     }
 
     // update renderable characters counter
