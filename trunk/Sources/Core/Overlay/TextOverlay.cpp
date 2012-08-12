@@ -285,13 +285,13 @@ void TextOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform)
 
     Matrix4f matrix = Matrix4f::IDENTITY;
     Vector4f pos = physics()->position();
-    Vector4f size(size().x, size().y, 0);
-    size.x *= physics()->scale().x;
-    size.y *= physics()->scale().y;
-    Math::Align(&pos, &size, ALIGN_TOP_LEFT, alignment());
+    Vector4f finalSize(size().x, size().y, 0, 1);
+    finalSize.x *= physics()->scale().x;
+    finalSize.y *= physics()->scale().y;
+    Math::Align(&pos, &finalSize, ALIGN_TOP_LEFT, alignment());
 
-    size = physics()->scale();
-    Math::CreateMatrix(&matrix, &pos, &size, &Quaternionf::IDENTITY);
+    finalSize = physics()->scale();
+    Math::CreateMatrix(&matrix, &pos, &finalSize, &Quaternionf::IDENTITY);
 
     renderer->addForRendering(m_renderData, transform * matrix);
   }
