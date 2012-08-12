@@ -14,38 +14,10 @@ EGE_DEFINE_DELETE_OPERATORS(ImageOverlay)
 ImageOverlay::ImageOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Overlay(app, name, EGE_OBJECT_UID_OVERLAY_IMAGE, deleteFunc)
 {
   initialize();
-
-  m_material = ege_new Material(app);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ImageOverlay::~ImageOverlay()
 {
-  m_material = NULL;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Overlay override. Returns TRUE if object is valid. */
-bool ImageOverlay::isValid() const
-{
-  return Overlay::isValid() && (NULL != m_material);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Overlay override. Updates overlay. */
-void ImageOverlay::update(const Time& time)
-{
-  // call base class
-  Overlay::update(time);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates render data. */
-void ImageOverlay::updateRenderData()
-{
-  PResourceMaterial resource = app()->resourceManager()->resource(RESOURCE_NAME_MATERIAL, materialName());
-  if (resource)
-  {
-    resource->setInstance(m_material);
-  }
-
-  m_renderData->setMaterial(m_material);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Overlay override. Renders overlay. */
@@ -53,16 +25,6 @@ void ImageOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform
 {
   if (visible())
   {
-    // check if update is needed
-    if (isUpdateNeeded())
-    {
-      // update render data
-      updateRenderData();
-
-      // validate
-      validate();
-    }
-
     Matrix4f matrix = Matrix4f::IDENTITY;
     Vector4f pos = physics()->position();
     Vector4f size(size().x, size().y, 0, 1);
@@ -76,26 +38,6 @@ void ImageOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets material. */
-void ImageOverlay::setMaterialName(const String& name)
-{
-  if (name != m_materialName)
-  {
-    m_materialName = name;
-    invalidate();
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Overlay override. Sets alignment. */
-void ImageOverlay::setAlignment(Alignment align)
-{
-  if (align != alignment())
-  {
-    // call base class
-    Overlay::setAlignment(align);
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Overlay override. Initializes object. */
 void ImageOverlay::initialize()
 {
@@ -105,23 +47,6 @@ void ImageOverlay::initialize()
   m_renderData  = RenderObjectFactory::CreateQuadXY(app(), "overlay_" + name(), Vector4f::ZERO, Vector2f::ONE, ALIGN_TOP_LEFT, 
                                                     EGEVertexBuffer::ST_V2_T2, EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLE_STRIPS,
                                                     EGEVertexBuffer::UT_STATIC_WRITE);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Overlay override. Sets transparency level. */
-void ImageOverlay::setAlpha(float32 alpha)
-{
-  // check if update is needed
-  if (isUpdateNeeded())
-  {
-    // update render data
-    updateRenderData();
-
-    // validate
-    validate();
-  }
-
-  // call base class
-  Overlay::setAlpha(alpha);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -74,16 +74,9 @@ void UIScrollableView::update(const Time& time)
     switch ((*it)->uid())
     {
       case EGE_OBJECT_UID_OVERLAY_TEXT:
-        {
-          TextOverlay* overlay = ege_cast<TextOverlay*>(*it);
-
-          overlay->update(time);
-        }
-        break;
-
       case EGE_OBJECT_UID_OVERLAY_IMAGE:
         {
-          ImageOverlay* overlay = ege_cast<ImageOverlay*>(*it);
+          Overlay* overlay = ege_cast<Overlay*>(*it);
 
           overlay->update(time);
         }
@@ -136,19 +129,11 @@ void UIScrollableView::addForRendering(Renderer* renderer, const Matrix4f& trans
     switch ((*it)->uid())
     {
       case EGE_OBJECT_UID_OVERLAY_TEXT:
-        {
-          TextOverlay* overlay = ege_cast<TextOverlay*>(*it);
-
-          overlay->renderData()->setClipRect(Rectf(pos.x, pos.y, m_size.x, m_size.y));
-          overlay->addForRendering(renderer, contentMatrix);
-        }
-        break;
-
       case EGE_OBJECT_UID_OVERLAY_IMAGE:
         {
-          ImageOverlay* overlay = ege_cast<ImageOverlay*>(*it);
+          Overlay* overlay = ege_cast<Overlay*>(*it);
 
-          overlay->renderData()->setClipRect(Rectf(pos.x, pos.y, m_size.x, m_size.y));
+          overlay->renderData()->setClipRect(Rectf(pos.x, pos.y, m_size.x, m_size.y));          
           overlay->addForRendering(renderer, contentMatrix);
         }
         break;
@@ -238,22 +223,13 @@ void UIScrollableView::recaluclateContentSize()
     switch ((*it)->uid())
     {
       case EGE_OBJECT_UID_OVERLAY_TEXT:
+      case EGE_OBJECT_UID_OVERLAY_IMAGE:
         {
-          TextOverlay* overlay = ege_cast<TextOverlay*>((*it).object());
+          Overlay* overlay = ege_cast<Overlay*>((*it).object());
 
           // update content size
           newContentSize.x = Math::Max(newContentSize.x, overlay->physics()->position().x + overlay->size().x);
           newContentSize.y = Math::Max(newContentSize.y, overlay->physics()->position().y + overlay->size().y);
-        }
-        break;
-
-      case EGE_OBJECT_UID_OVERLAY_IMAGE:
-        {
-          ImageOverlay* overlay = ege_cast<ImageOverlay*>(*it);
-
-          // update content size
-          newContentSize.x = Math::Max(newContentSize.x, overlay->physics()->position().x + overlay->physics()->scale().x);
-          newContentSize.y = Math::Max(newContentSize.y, overlay->physics()->position().y + overlay->physics()->scale().y);
         }
         break;
     }
@@ -295,21 +271,9 @@ PObject UIScrollableView::object(const String& name) const
     switch ((*it)->uid())
     {
       case EGE_OBJECT_UID_OVERLAY_TEXT:
-        {
-          TextOverlay* overlay = ege_cast<TextOverlay*>((*it).object());
-          
-          // check if found
-          if (overlay->name() == name)
-          {
-            // found
-            return (*it);
-          }
-        }
-        break;
-
       case EGE_OBJECT_UID_OVERLAY_IMAGE:
         {
-          ImageOverlay* overlay = ege_cast<ImageOverlay*>((*it).object());
+          Overlay* overlay = ege_cast<Overlay*>((*it).object());
           
           // check if found
           if (overlay->name() == name)
