@@ -286,6 +286,8 @@ void TextOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform)
     Matrix4f matrix = Matrix4f::IDENTITY;
     Vector4f pos = physics()->position();
     Vector4f size(size().x, size().y, 0);
+    size.x *= physics()->scale().x;
+    size.y *= physics()->scale().y;
     Math::Align(&pos, &size, ALIGN_TOP_LEFT, alignment());
 
     size = physics()->scale();
