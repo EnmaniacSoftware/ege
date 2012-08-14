@@ -134,7 +134,7 @@ void AppController::update()
     }
 
     app()->resourceManager()->update(timeInterval);
-    app()->audioManager()->update(timeInterval);
+   // app()->audioManager()->update(timeInterval);
     app()->screenManager()->update(timeInterval);
     app()->sceneManager()->update(timeInterval);
     app()->overlayManager()->update(timeInterval);

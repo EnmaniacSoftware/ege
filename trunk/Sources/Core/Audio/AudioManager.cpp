@@ -62,11 +62,11 @@ EGEResult AudioManager::construct()
   }
 
   // start thread
-  //if (!m_thread->start())
-  //{
-  //  // error!
-  //  return EGE_ERROR;
-  //}
+  if (!m_thread->start())
+  {
+    // error!
+    return EGE_ERROR;
+  }
 
   // subscribe for event notifications
   if (!app()->eventManager()->addListener(this))
