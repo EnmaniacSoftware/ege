@@ -65,40 +65,55 @@ EGEResult ResourceSound::create(const String& path, const PXmlElement& tag)
 /*! IResource override. Loads resource. */
 EGEResult ResourceSound::load()
 {
-  // nothing to do
+  // allocate data buffer
+  m_data = ege_new DataBuffer();
+  if (NULL == m_data)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // open sound file for reading
+  File file(m_path);
+  if (EGE_SUCCESS != file.open(EGEFile::MODE_READ_ONLY))
+  {
+    // error!
+    return EGE_ERROR_IO;
+  }
+
+  // find whats file size
+  s64 fileSize = file.size();
+
+  // read data into buffer
+  if (file.read(m_data, fileSize) != fileSize)
+  {
+    // error!
+    return EGE_ERROR_IO;
+  }
+
+ // egeDebug() << "Loaded sound resource" << name();
+
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Unloads resource. */
 void ResourceSound::unload() 
 { 
-  egeDebug() << name();
+  //egeDebug() << "Unloading sound resource" << name();
+  m_data = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of sound object defined by resource. */
 PSound ResourceSound::createInstance()
 {
-  // open sound file for reading
-  File file(m_path);
-  if (EGE_SUCCESS != file.open(EGEFile::MODE_READ_ONLY))
-  {
-    // error!
-    return NULL;
-  }
-
-  // find whats file size
-  s64 fileSize = file.size();
-
-  // read file data
-  PDataBuffer data = ege_new DataBuffer();
-  if (file.read(data, fileSize) != fileSize)
+  if (!isLoaded())
   {
     // error!
     return NULL;
   }
 
   // create sound object from data
-  PSound object = ege_new Sound(name(), data);
+  PSound object = ege_new Sound(name(), m_data);
   if ((NULL == object) || (EGE_SUCCESS != object->construct()))
   {
     // error!
@@ -114,7 +129,7 @@ PSound ResourceSound::createInstance()
 /*! IResource override. Returns TRUE if object is loaded. */
 bool ResourceSound::isLoaded() const 
 { 
-  return true; 
+  return (NULL != m_data); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

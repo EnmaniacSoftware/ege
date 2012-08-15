@@ -60,6 +60,8 @@ class ResourceSound : public IResource
     String m_path;
     /*! Pitch value. */
     float32 m_pitch;
+    /* Sound data buffer. */
+    PDataBuffer m_data;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

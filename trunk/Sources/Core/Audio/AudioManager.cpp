@@ -81,7 +81,7 @@ EGEResult AudioManager::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates manager. */
+/*! Updates manager. The audio thread guards the entrance. */
 void AudioManager::update(const Time& time)
 {
   if (STATE_CLOSING == m_state)
@@ -103,22 +103,39 @@ void AudioManager::update(const Time& time)
   {
     const PSound& sound = *it;
 
-    // update sound
-    sound->update(time);
+    //egeDebug()  << "Updating sound" << sound->name();
 
-    // check if sound is not being played anymore
+    // check if sound is stopped
     if (p_func()->isStopped(sound))
     {
-      egeDebug() << sound->name() << "removed.";
-
-      // remove it
       m_sounds.erase(it++);
+      continue;
     }
-    else
+
+    // update sound
+    sound->update(time);
+    ++it;
+  }
+
+  // start pending playbacks
+  for (SoundList::iterator it = m_soundsToPlay.begin(); it != m_soundsToPlay.end(); ++it)
+  {
+    const PSound& sound = *it;
+
+    egeDebug() << "Starting sound" << sound->name();
+
+    // play
+    if (EGE_SUCCESS == p_func()->play(sound))
     {
-      ++it;
+      // connect
+      ege_connect(sound, stopped, this, AudioManager::onStopped);
+
+      // add to pool
+      m_sounds.push_back(sound);
     }
   }
+
+  m_soundsToPlay.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Plays sound with given name. 
@@ -166,10 +183,8 @@ EGEResult AudioManager::play(const String& soundName, s32 repeatCount)
 EGEResult AudioManager::play(const PSound& sound)
 {
   EGEResult result = EGE_ERROR;
-
-  MutexLocker locker(m_mutex);
   
-  if (sound)
+  if (NULL != sound)
   {
     // check if disabled
     if (!isEnabled())
@@ -178,14 +193,9 @@ EGEResult AudioManager::play(const PSound& sound)
       return EGE_SUCCESS;
     }
 
-    egeDebug() << sound->name();
-
-    // play
-    if (EGE_SUCCESS == (result = p_func()->play(sound)))
-    {
-      // add to pool
-      m_sounds.push_back(sound);
-    }
+    // add to pool for later playback
+    MutexLocker locker(m_mutex);
+    m_soundsToPlay.push_back(sound);
   }
 
   return result;
@@ -236,7 +246,7 @@ void AudioManager::stop(const String& soundName)
 /*! Stops playback of the given sound. */
 void AudioManager::stop(PSound sound)
 {
-  if (sound)
+  if (NULL != sound)
   {
     // check if disabled
     if (!isEnabled())
@@ -245,6 +255,8 @@ void AudioManager::stop(PSound sound)
       return;
     }
 
+    // add to pool
+//    MutexLocker locker(m_mutex);
     p_func()->stop(sound);
   }
 }
@@ -388,6 +400,12 @@ void AudioManager::shutDown()
 
   // request work thread stop
   m_thread->stop(0);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when given sound stopped playback (due to finish or otherwise). */
+void AudioManager::onStopped(PSound sound)
+{
+  ege_disconnect(sound, stopped, this, AudioManager::onStopped);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

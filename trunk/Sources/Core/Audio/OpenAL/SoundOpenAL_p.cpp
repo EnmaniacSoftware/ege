@@ -342,7 +342,7 @@ void SoundPrivate::onSoundVolumeChanged(PSound sound, float32 oldVolume)
 {
   EGE_ASSERT(sound->p_func() == this);
 
-//  EGE_PRINT("%s %.2f -> %.2f", sound->name().toAscii(), oldVolume, sound->volume());
+  egeDebug() << "Volume changed [" << sound->name() << "] " << oldVolume << "to" << sound->volume();
 
   // set new volume
   alSourcef(m_channel, AL_GAIN, sound->volume());

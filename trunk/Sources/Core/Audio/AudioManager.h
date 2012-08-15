@@ -92,10 +92,13 @@ class AudioManager : public Object, public IEventListener
     /*! Returns TRUE if manager is enabled. */
     inline bool isEnabled() const { return m_enabled; }
 
-  public slots:
-
     /* Stops playback of the given sound. */
     void stop(PSound sound);
+
+  private slots:
+
+    /* Slot called when given sound stopped playback. */
+    void onStopped(PSound sound);
 
   private:
 
@@ -114,6 +117,8 @@ class AudioManager : public Object, public IEventListener
 
     /*! List of sounds being played. */
     SoundList m_sounds;
+    /*! List of sounds to start playing. */
+    SoundList m_soundsToPlay;
     /*! Enable flag. */
     bool m_enabled;
     /*! Audio thread. */
