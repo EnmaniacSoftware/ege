@@ -162,5 +162,21 @@ void Sound::notifyVolumeChanged(float32 oldVolume)
   emit volumeChanged(this, oldVolume);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns list of sound effects of a given type. */
+SoundEffectList Sound::effects(u32 uid) const
+{
+  SoundEffectList list;
+  for (SoundEffectList::const_iterator it = m_effects.begin(); it != m_effects.end(); ++it)
+  {
+    const PSoundEffect& effect = *it;
+    if (effect->uid() == uid)
+    {
+      list << effect;
+    }
+  }
+
+  return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

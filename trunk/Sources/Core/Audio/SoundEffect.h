@@ -7,21 +7,18 @@
 #include <EGE.h>
 #include <EGESignal.h>
 #include <EGETime.h>
+#include <EGEList.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(SoundEffect, PSoundEffect)
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class SoundEffect : public Object
 {
   public:
 
-    SoundEffect() : Object(NULL) {}
     virtual ~SoundEffect() {}
 
   signals:
@@ -44,8 +41,13 @@ class SoundEffect : public Object
     virtual bool update(const Time& time, PSound sound) = 0;
     /*! Resets effect. */
     virtual void reset() = 0;
-};
 
+  protected:
+
+    SoundEffect(u32 uid) : Object(NULL, uid) {}
+};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+typedef List<PSoundEffect> SoundEffectList;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

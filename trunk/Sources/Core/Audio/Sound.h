@@ -10,13 +10,12 @@
 #include <EGEString.h>
 #include <EGESignal.h>
 #include <EGETime.h>
+#include "Core/Audio/SoundEffect.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AudioCodec;
-
-EGE_DECLARE_SMART_CLASS(SoundEffect, PSoundEffect)
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Sound : public Object
@@ -69,6 +68,8 @@ class Sound : public Object
      * @note Effect is removed when finished.
      */
     bool addEffect(PSoundEffect effect);
+    /* Returns list of sound effects of a given type. */
+    SoundEffectList effects(u32 uid) const;
 
   private:
 
@@ -78,10 +79,6 @@ class Sound : public Object
     void notifyStopped();
     /* Notifies sound volume has changed. */
     void notifyVolumeChanged(float32 oldVolume);
-
-  private:
-
-    typedef List<PSoundEffect> SoundEffectList;
 
   private:
 

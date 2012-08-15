@@ -7,7 +7,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(SoundEffectFadeOut)
 EGE_DEFINE_DELETE_OPERATORS(SoundEffectFadeOut)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SoundEffectFadeOut::SoundEffectFadeOut(const Time& duration) : SoundEffect(),
+SoundEffectFadeOut::SoundEffectFadeOut(const Time& duration) : SoundEffect(EGE_OBJECT_UID_SOUND_EFFECT_FADE_OUT),
                                                                m_duration(duration),
                                                                m_time(0.0f)
 {
