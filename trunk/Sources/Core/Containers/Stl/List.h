@@ -74,7 +74,7 @@ void List<T>::removeAt(s32 index)
 template <typename T>
 const T List<T>::last(const T& defaultValue) const
 {
-  return (0 == this->size()) ? defaultValue : this->at(this->size() - 1);
+  return (0 == this->size()) ? defaultValue : this->back();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given object is present. */
