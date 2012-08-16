@@ -4,8 +4,6 @@
 /** Class representing complex number in the following form: x + i*y.
 */
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include <EGETypes.h>
 #include "Core/Math/Math.h"
 #include "Core/Math/Angle.h"
@@ -13,7 +11,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-  
 template <typename T>
 class TComplex
 {
@@ -21,7 +18,7 @@ class TComplex
 
     TComplex();
     TComplex(T x, T y);
-    TComplex(const Angle& cAngle);
+    TComplex(const Angle& angle);
     TComplex(const TComplex& other);
 
     TComplex& operator*=(const TComplex& other);
@@ -66,6 +63,12 @@ TComplex<T>::TComplex()
 template <typename T>
 TComplex<T>::TComplex(T x, T y) : x(x), y(y)
 {
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TComplex<T>::TComplex(const Angle& angle)
+{
+  create(angle);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
