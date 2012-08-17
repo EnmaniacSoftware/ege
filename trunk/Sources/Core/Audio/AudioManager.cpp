@@ -141,10 +141,11 @@ void AudioManager::update(const Time& time)
 /*! Plays sound with given name. 
  * @param soundName   Name of the sound to play.
  * @param repeatCount Number of times sound should be repeated.
+ * @param resourceGroup Resource group containing the sound.
  * @note  When repeatCount is set to zero the sound is going to be played exactly once. For negative values sound will be played forever.
  * @return  Returns EGE_SUCCESS if sound is sucessfully started, EGE_ERROR_NOT_FOUND if sound could not be found or EGE_ERROR if sound could not be started.
  */
-EGEResult AudioManager::play(const String& soundName, s32 repeatCount)
+EGEResult AudioManager::play(const String& soundName, s32 repeatCount, const String& resourceGroup)
 {
   // check if disabled
   if (!isEnabled())
@@ -154,8 +155,8 @@ EGEResult AudioManager::play(const String& soundName, s32 repeatCount)
   }
 
   // find sound resource
-  PResourceSound soundResource = app()->resourceManager()->soundResource(soundName);
-  if (soundResource)
+  PResourceSound soundResource = app()->resourceManager()->soundResource(soundName, resourceGroup);
+  if (NULL != soundResource)
   {
     // create sound instance
     PSound sound = soundResource->createInstance();

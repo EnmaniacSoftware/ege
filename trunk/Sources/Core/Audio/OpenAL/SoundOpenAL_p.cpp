@@ -72,6 +72,8 @@ EGEResult SoundPrivate::construct()
 /*! Updates object. */
 void SoundPrivate::update(const Time& time)
 {
+  EGE_UNUSED(time);
+
   if (!m_stopped)
   {
     // updates buffers for given channel
@@ -102,7 +104,7 @@ void SoundPrivate::update(const Time& time)
           return;
         }
 
-		    if (value)
+		    if (0 < value)
 		    {
           // resume playback
 			    alSourcePlay(m_channel);
@@ -286,7 +288,10 @@ EGEResult SoundPrivate::resume()
 /*! Stops playback. */
 EGEResult SoundPrivate::stop()
 {
-	alSourceStop(m_channel);
+  // set flag to prevent this sound from being updated
+  m_stopped = true;
+
+  alSourceStop(m_channel);
   alSourcei(m_channel, AL_BUFFER, 0);
 
   // unqueue all buffers
@@ -310,9 +315,6 @@ EGEResult SoundPrivate::stop()
 
   // notify stopped
   d_func()->notifyStopped();
-
-  // set flag to prevent this sound from being updated
-  m_stopped = true;
 
   return EGE_SUCCESS;
 }
