@@ -33,6 +33,10 @@ bool AudioCodecWav::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
   {
     stream = m_stream;
 
+    // apply current stream offset
+    // NOTE: multiple codecs can re-use same stream
+    stream->setReadOffset(m_streamOffset);
+
     // calculate number of samples we can read
     samplesDecoded = Math::Min(samplesCount, m_streamSizeLeft / sampleSize);
 
@@ -43,6 +47,9 @@ bool AudioCodecWav::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
       // error!
       egeCritical() << "Error decoding!";
     }
+
+    // update stream offset
+    m_streamOffset = stream->readOffset();
   }
   else
   {

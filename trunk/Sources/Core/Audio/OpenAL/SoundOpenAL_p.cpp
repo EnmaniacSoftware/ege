@@ -264,11 +264,11 @@ EGEResult SoundPrivate::play(ALuint channel)
   // connect for sound volume changes and set initial volume
   ege_connect(d_func(), volumeChanged, this, SoundPrivate::onSoundVolumeChanged);
   d_func()->setVolume(d_func()->volume());
-
+  
   // reset flag
   m_stopped = false;
 
- // EGE_PRINT("%s", d_func()->name().toAscii());
+  egeDebug() << "Starting sound" << d_func()->name() << "at channel" << channel;
 
   return EGE_SUCCESS;
 }
@@ -311,7 +311,7 @@ EGEResult SoundPrivate::stop()
     return EGE_ERROR;
 	}
 
-  egeDebug() << "Stopped" << d_func()->name();
+  egeDebug() << "Stopped" << d_func()->name() << "at channel" << m_channel;
 
   // notify stopped
   d_func()->notifyStopped();
@@ -344,7 +344,7 @@ void SoundPrivate::onSoundVolumeChanged(PSound sound, float32 oldVolume)
 {
   EGE_ASSERT(sound->p_func() == this);
 
-  egeDebug() << "Volume changed [" << sound->name() << "] " << oldVolume << "to" << sound->volume();
+  //egeDebug() << "Volume changed [" << sound->name() << "] " << oldVolume << "to" << sound->volume();
 
   // set new volume
   alSourcef(m_channel, AL_GAIN, sound->volume());

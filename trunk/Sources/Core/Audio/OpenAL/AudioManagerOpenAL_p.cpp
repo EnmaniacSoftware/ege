@@ -22,7 +22,7 @@ AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base),
   EGE_MEMSET(m_channels, 0, sizeof (m_channels));
 
   m_device = alcOpenDevice(NULL);
-  if (m_device)
+  if (NULL != m_device)
   {
     m_context = alcCreateContext(m_device, NULL);
     alcMakeContextCurrent(m_context);

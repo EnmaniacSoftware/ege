@@ -122,8 +122,6 @@ void AudioManager::update(const Time& time)
   {
     const PSound& sound = *it;
 
-    egeDebug() << "Starting sound" << sound->name();
-
     // play
     if (EGE_SUCCESS == p_func()->play(sound))
     {

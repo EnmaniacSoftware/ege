@@ -10,16 +10,14 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(Object, PObject)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AudioCodec : public Object
 {
   public:
 
-    AudioCodec(u32 uid, const PDataBuffer& stream) : Object(NULL, uid), m_stream(stream), m_channels(0), m_frequency(0), m_bitsPerSample(0) {}
+    AudioCodec(u32 uid, const PDataBuffer& stream) : Object(NULL, uid), m_stream(stream), m_streamOffset(0), m_channels(0), m_frequency(0), m_bitsPerSample(0)
+    {}
     virtual ~AudioCodec() {}
 
     /*! Decodes up to given number of samples. 
@@ -45,6 +43,8 @@ class AudioCodec : public Object
 
     /*! Data stream. */
     PObject m_stream;
+    /*! Position within stream. */
+    s64 m_streamOffset;
     /*! Number of channels. */
     s32 m_channels;
     /*! Playback frequency (sample rate) (in Hz). */
@@ -52,7 +52,6 @@ class AudioCodec : public Object
     /*! Number of bits per sample (for single channel). */
     s32 m_bitsPerSample;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

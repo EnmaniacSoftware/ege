@@ -93,6 +93,10 @@ bool AudioCodecOgg::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
       }
     }
 
+    // apply current stream offset
+    // NOTE: multiple codecs can re-use same stream
+    stream->setReadOffset(m_streamOffset);
+
     // further decompression is needed
     unsigned char* data = reinterpret_cast<unsigned char*>(stream->data(stream->readOffset()));
     s32 offset = 0;
@@ -154,6 +158,9 @@ bool AudioCodecOgg::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
       // update number of decoded samples which ended up into output buffer
       samplesDecoded += count;
     }
+
+    // update stream offset
+    m_streamOffset = stream->readOffset();
   }
   else
   {
