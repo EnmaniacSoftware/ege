@@ -243,7 +243,7 @@ EGEResult SoundPrivate::play(ALuint channel)
 	
 	// disable looping
 	alSourcei(m_channel, AL_LOOPING, AL_FALSE);
-		
+	
 	// play the sound
 	alSourcePlay(m_channel);
 	if (IS_AL_ERROR())
@@ -344,15 +344,18 @@ void SoundPrivate::onSoundVolumeChanged(PSound sound, float32 oldVolume)
 {
   EGE_ASSERT(sound->p_func() == this);
 
-  //egeDebug() << "Volume changed [" << sound->name() << "] " << oldVolume << "to" << sound->volume();
+  egeDebug() << "Volume changed [" << sound->name() << "] " << oldVolume << "to" << sound->volume();
 
   // set new volume
-  alSourcef(m_channel, AL_GAIN, sound->volume());
-	if (IS_AL_ERROR())
+  if (isPlaying() || isPaused())
   {
-    // error!
-    egeCritical() << l_result << "Could not set volume!";
-	}
+    alSourcef(m_channel, AL_GAIN, sound->volume());
+	  if (IS_AL_ERROR())
+    {
+      // error!
+      egeCritical() << l_result << "Could not set volume!";
+	  }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pauses playback. */

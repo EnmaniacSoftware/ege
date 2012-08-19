@@ -79,6 +79,8 @@ class Sound : public Object
     void notifyStopped();
     /* Notifies sound volume has changed. */
     void notifyVolumeChanged(float32 oldVolume);
+    /* Updates sound effects. */
+    void updateSoundEffects(const Time& time);
 
   private:
 

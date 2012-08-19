@@ -87,22 +87,9 @@ EGEResult Sound::construct()
 void Sound::update(const Time& time)
 {
   // update effects
-  for (SoundEffectList::iterator it = m_effects.begin(); it != m_effects.end(); )
-  {
-    PSoundEffect& effect = *it;
+  updateSoundEffects(time);
 
-    // update
-    if (effect->update(time, this))
-    {
-      // effect is over, remove
-      m_effects.erase(it++);
-    }
-    else
-    {
-      ++it;
-    }
-  }
-
+  // update implementation
   p_func()->update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -138,6 +125,9 @@ bool Sound::addEffect(PSoundEffect effect)
   if ((NULL != effect) && effect->isValid())
   {
     m_effects.push_back(effect);
+
+    // do initial update
+    effect->update(0LL, this);
     return true;
   }
 
@@ -176,6 +166,26 @@ SoundEffectList Sound::effects(u32 uid) const
   }
 
   return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Updates sound effects. */
+void Sound::updateSoundEffects(const Time& time)
+{
+  for (SoundEffectList::iterator it = m_effects.begin(); it != m_effects.end(); )
+  {
+    PSoundEffect& effect = *it;
+
+    // update
+    if (effect->update(time, this))
+    {
+      // effect is over, remove
+      m_effects.erase(it++);
+    }
+    else
+    {
+      ++it;
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
