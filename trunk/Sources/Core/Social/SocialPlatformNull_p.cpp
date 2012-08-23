@@ -27,5 +27,18 @@ EGEResult SocialPlatformPrivate::startAuthentication()
   return EGE_ERROR_NOT_SUPPORTED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Loads achievements. */
+EGEResult SocialPlatformPrivate::loadAchievements()
+{
+  return EGE_ERROR_NOT_SUPPORTED;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Save achievements. */
+EGEResult SocialPlatformPrivate::saveAchievements(const AchievementDataList& achievements)
+{
+  EGE_UNUSED(achievements);
+  return EGE_ERROR_NOT_SUPPORTED;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

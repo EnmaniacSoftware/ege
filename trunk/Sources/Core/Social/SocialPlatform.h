@@ -2,6 +2,7 @@
 #define EGE_CORE_SOCIALPLATFORM_H
 
 #include <EGE.h>
+#include <EGESocial.h>
 #include <EGESignal.h>
 
 EGE_NAMESPACE_BEGIN
@@ -26,17 +27,33 @@ class SocialPlatform : public Object
         @param result Result code of authentication.
      */
     Signal1<EGEResult> authenticated;
-    
+    /*! Signal emitted when achievement list retrieval is done.
+        @param result Result code.
+        @param list   List of achievements.
+     */
+    Signal2<EGEResult, const AchievementDataList&> achievementsLoaded;
+    /*! Signal emitted when submission of achievements is done. 
+        @param result Result code of submission.
+     */
+    Signal1<EGEResult> achievementsSaved;
+
   public:
 
     /* Constructs object. */
     EGEResult construct();
     /* Starts authentication. */
     EGEResult startAuthentication();
+    /* Loads achievements. */
+    EGEResult loadAchievements();
+    /* Save achievements. */
+    EGEResult saveAchievements(const AchievementDataList& achievements);
 
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(SocialPlatform)
+
+    /*! Flag indicating whether logged into platform. */
+    bool m_authenticated;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

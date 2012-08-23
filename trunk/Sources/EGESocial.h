@@ -1,10 +1,25 @@
 #ifndef EGE_SOCIAL_H
 #define EGE_SOCIAL_H
 
-#include "Core/Platform.h"
-#include "Core/Social/SocialPlatform.h"
-//#include "Core/Social/SocialFactory.h"
+#include <EGEString.h>
+#include <EGEList.h>
 
+EGE_NAMESPACE_BEGIN
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+struct AchievementData
+{
+  String name;                /*!< Achievement identifier. */
+  s32 percentageComplete;     /*!< Percentage complete. */
+};
+
+typedef List<AchievementData> AchievementDataList;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#include "Core/Social/SocialPlatform.h"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_SOCIAL_H

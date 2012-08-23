@@ -19,7 +19,8 @@ EGE_DEFINE_NEW_OPERATORS(SocialPlatform)
 EGE_DEFINE_DELETE_OPERATORS(SocialPlatform)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SocialPlatform::SocialPlatform(Application* app) : Object(app),
-                                                   m_p(NULL)
+                                                   m_p(NULL),
+                                                   m_authenticated(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -57,6 +58,28 @@ EGEResult SocialPlatform::startAuthentication()
   if (NULL != m_p)
   {
     return m_p->startAuthentication();
+  }
+
+  return EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Loads achievements. */
+EGEResult SocialPlatform::loadAchievements()
+{
+  if (NULL != m_p)
+  {
+    return m_p->loadAchievements();
+  }
+
+  return EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Save achievements. */
+EGEResult SocialPlatform::saveAchievements(const AchievementDataList& achievements)
+{
+  if (NULL != m_p)
+  {
+    return m_p->saveAchievements(achievements);
   }
 
   return EGE_ERROR;

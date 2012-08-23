@@ -27,6 +27,10 @@ class SocialPlatformPrivate
     EGEResult construct();
     /* Starts authentication. */
     EGEResult startAuthentication();
+    /* Loads achievements. */
+    EGEResult loadAchievements();
+    /* Save achievements. */
+    EGEResult saveAchievements(const AchievementDataList& achievements);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

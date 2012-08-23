@@ -2,6 +2,7 @@
 #define EGE_CORE_SOCIALPLATFORM_PRIVATE_H
 
 #include <EGE.h>
+#include <EGEList.h>
 #include <s3eIOSGameCenter.h>
 
 EGE_NAMESPACE_BEGIN
@@ -28,11 +29,29 @@ class SocialPlatformPrivate
     EGEResult construct();
     /* Starts authentication. */
     EGEResult startAuthentication();
+    /* Loads achievements. */
+    EGEResult loadAchievements();
+    /* Saves achievements. */
+    EGEResult saveAchievements(const AchievementDataList& achievements);
 
   private:
 
     /* Authentication callback. */
     static void AuthenticationCallback(s3eIOSGameCenterError* error, void* userData);
+    /* Achievement list load callback. */
+    static void LoadAchievementsCallback(s3eIOSGameCenterAchievementList* list);
+    /* Achievement save callback. */
+    static void AchievementSaveCallback(s3eIOSGameCenterError* error);
+
+  private:
+
+    /* Saves next achievement from first session. */
+    EGEResult saveNextAchievement();
+
+  private:
+
+    /*! List of pending achievement save sessions. */
+    List<AchievementDataList> m_achievementSaveSessions;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
