@@ -11,6 +11,7 @@ define EGE_PHYSICS_NULL
 define EGE_XML_TINYXML
 define EGE_RANDOM_STDC
 define EGE_THREAD_PTHREAD
+define EGE_SOCIAL_PLATFORM_GAMECENTER
 
 #define EGE_AIRPLAY_AUDIO_SOFTWARE
 
@@ -68,6 +69,7 @@ files
   EGEScreen.h
   EGESequencer.h
   EGESignal.h
+  EGESocial.h
   EGESpline.h
   EGESpriteAnimation.h
   EGEString.h
@@ -491,6 +493,11 @@ files
   Delegate.h
   Signal.h
 
+	["Core/Social"]
+  (../../Sources/Core/Social)
+  SocialPlatform.cpp
+  SocialPlatform.h
+
 	["Core/Threading"]
   (../../Sources/Core/Threading)
   Mutex.cpp
@@ -641,6 +648,11 @@ files
 	PointerAirplay_p.cpp
 	PointerAirplay_p.h
 
+	["Airplay/Social"]
+  (../../Sources/Airplay/Social)
+  SocialPlatformGameCenterAirplay_p.cpp
+  SocialPlatformGameCenterAirplay_p.h
+
 	["Airplay/String"]
   (../../Sources/Airplay/String)
   StringUtilsAirplay.cpp
@@ -668,4 +680,9 @@ subprojects
 	libjpeg
   box2d
   tinyxmlstl
+}
+
+if {{defined EGE_SOCIAL_PLATFORM_GAMECENTER}}
+{
+  subproject s3eIOSGameCenter
 }

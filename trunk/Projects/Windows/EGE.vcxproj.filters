@@ -196,6 +196,9 @@
     <Filter Include="Core\Math\Tweeners">
       <UniqueIdentifier>{bafdcfb4-1648-43bf-9ce1-fa7db79a2489}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Social">
+      <UniqueIdentifier>{31b4e833-8e99-4ad0-b9bc-0fb99e5d6845}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -704,6 +707,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPVR.cpp">
       <Filter>Core\Graphics\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Social\SocialPlatformNull_p.cpp">
+      <Filter>Core\Social</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Social\SocialPlatform.cpp">
+      <Filter>Core\Social</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1378,6 +1387,13 @@
       <Filter>Core\Graphics\Image</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEMaterial.h" />
+    <ClInclude Include="..\..\Sources\EGESocial.h" />
+    <ClInclude Include="..\..\Sources\Core\Social\SocialPlatform.h">
+      <Filter>Core\Social</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Social\SocialPlatformNull_p.h">
+      <Filter>Core\Social</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

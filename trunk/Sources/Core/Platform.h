@@ -20,6 +20,9 @@ inline void ege_noop() {}
 // Availaable threading APIs
 // EGE_THREAD_PTHREAD
 
+// Available social platforms
+// EGE_SOCIAL_PLATFORM_GAMECENTER
+
 #if WIN32
 #define EGE_PLATFORM_WIN32 1
 #endif // WIN32
