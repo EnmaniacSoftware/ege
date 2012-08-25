@@ -40,5 +40,13 @@ EGEResult SocialPlatformPrivate::saveAchievements(const AchievementDataList& ach
   return EGE_ERROR_NOT_SUPPORTED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Save score. */
+EGEResult SocialPlatformPrivate::saveScore(const String& scoreTable, s32 score)
+{
+  EGE_UNUSED(scoreTable);
+  EGE_UNUSED(score);
+  return EGE_ERROR_NOT_SUPPORTED;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

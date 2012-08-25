@@ -31,6 +31,8 @@ class SocialPlatformPrivate
     EGEResult loadAchievements();
     /* Save achievements. */
     EGEResult saveAchievements(const AchievementDataList& achievements);
+    /* Saves score. */
+    EGEResult saveScore(const String& scoreTable, s32 score);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

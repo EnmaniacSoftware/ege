@@ -36,6 +36,10 @@ class SocialPlatform : public Object
         @param result Result code of submission.
      */
     Signal1<EGEResult> achievementsSaved;
+    /*! Signal emitted when submission of score is done. 
+        @param result Result code of submission.
+     */
+    Signal1<EGEResult> scoreSaved;
 
   public:
 
@@ -47,6 +51,8 @@ class SocialPlatform : public Object
     EGEResult loadAchievements();
     /* Save achievements. */
     EGEResult saveAchievements(const AchievementDataList& achievements);
+    /* Saves score. */
+    EGEResult saveScore(const String& scoreTable, s32 score);
 
   private:
 

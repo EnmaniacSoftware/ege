@@ -1,4 +1,5 @@
 #include "Core/Social/SocialPlatform.h"
+#include <EGEDebug.h>
 
 #ifdef EGE_SOCIAL_PLATFORM_GAMECENTER
 
@@ -80,6 +81,17 @@ EGEResult SocialPlatform::saveAchievements(const AchievementDataList& achievemen
   if (NULL != m_p)
   {
     return m_p->saveAchievements(achievements);
+  }
+
+  return EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Save score. */
+EGEResult SocialPlatform::saveScore(const String& scoreTable, s32 score)
+{
+  if (NULL != m_p)
+  {
+    return m_p->saveScore(scoreTable, score);
   }
 
   return EGE_ERROR;

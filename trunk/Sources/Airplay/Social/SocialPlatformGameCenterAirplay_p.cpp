@@ -1,14 +1,20 @@
 #include "Core/Social/SocialPlatform.h"
 #include "Airplay/Social/SocialPlatformGameCenterAirplay_p.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static SocialPlatformPrivate* l_instance = NULL;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(SocialPlatformPrivate)
 EGE_DEFINE_DELETE_OPERATORS(SocialPlatformPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SocialPlatformPrivate::SocialPlatformPrivate(SocialPlatform* base) : m_d(base)
 {
+  // NOTE: this is due to Airplay API limitation where it is not possible to add user data to callbacks
+  //       Do not create more that one instance of this class
+  l_instance = this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SocialPlatformPrivate::~SocialPlatformPrivate()
@@ -40,14 +46,12 @@ EGEResult SocialPlatformPrivate::startAuthentication()
   }
 
   // start authentication
-  return (S3E_RESULT_SUCCESS == s3eIOSGameCenterAuthenticate(AuthenticationCallback, this)) ? EGE_SUCCESS : EGE_ERROR;
+  return (S3E_RESULT_SUCCESS == s3eIOSGameCenterAuthenticate(AuthenticationCallback, NULL)) ? EGE_SUCCESS : EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Authentication callback. */
 void SocialPlatformPrivate::AuthenticationCallback(s3eIOSGameCenterError* error, void* userData)
 {
-  SocialPlatformPrivate* me = (SocialPlatformPrivate*) userData;
-
   EGEResult result = EGE_ERROR;
 
   // map error code to framework values
@@ -58,10 +62,10 @@ void SocialPlatformPrivate::AuthenticationCallback(s3eIOSGameCenterError* error,
   }
 
   // store flag
-  me->d_func()->m_authenticated = (EGE_SUCCESS == result);
+  l_instance->d_func()->m_authenticated = (EGE_SUCCESS == result);
 
   // emit
-  emit me->d_func()->authenticated(result);
+  emit l_instance->d_func()->authenticated(result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Loads achievements. */
@@ -74,39 +78,52 @@ EGEResult SocialPlatformPrivate::loadAchievements()
 /*! Achievement list load callback. */
 void SocialPlatformPrivate::LoadAchievementsCallback(s3eIOSGameCenterAchievementList* list)
 {
+  EGEResult result = EGE_ERROR;
+
+  AchievementDataList achievementsList;
+
+  // map error code to framework values
+  switch (list->m_Error)
+  {
+    case S3E_IOSGAMECENTER_ERR_NONE: result = EGE_SUCCESS; break;
+  }
+
+  // process achievements if successful
+  if (EGE_SUCCESS == result)
+  {
+    for (int i = 0; i < list->m_AchievementCount; ++i)
+    {
+      AchievementData achievementData;
+      achievementData.name               = list->m_Achievements[i].m_Identifier;
+      achievementData.percentageComplete = list->m_Achievements[i].m_PercentComplete;
+
+      achievementsList.push_back(achievementData);
+    }
+  }
+
+  // emit
+  emit l_instance->d_func()->achievementsLoaded(result, achievementsList);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Save achievements. */
 EGEResult SocialPlatformPrivate::saveAchievements(const AchievementDataList& achievements)
 {
-  bool empty = m_achievementSaveSessions.empty();
-  
-  // add to session pool
-  m_achievementSaveSessions.push_back(achievements);
+  egeDebug() << "Adding" << achievements.size() << "achievements for submission";
+
+  // append
+  m_pendingAchievementSaveList << achievements;
 
   // process next achievement
-  return (empty) ? saveNextAchievement() : EGE_SUCCESS;
+  return ((m_pendingAchievementSaveList.size() == achievements.size()) && ! achievements.empty()) ? saveNextAchievement() : EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Saves next achievement from first session. */
 EGEResult SocialPlatformPrivate::saveNextAchievement()
 {
-  AchievementDataList& list = m_achievementSaveSessions.front();
+  AchievementData achievementData = m_pendingAchievementSaveList.front();
+  m_pendingAchievementSaveList.pop_front();
 
-  // check if anything to be saved from current list
-  if (list.empty())
-  {
-    // remove list from pool
-    m_achievementSaveSessions.removeAt(0);
-  }
-
-  AchievementData achievementData;
-
-  //char name[255];
-  //const char* tmp = s3eOSReadStringUTF8("Enter achievement name:");
-  //strcpy(name, tmp);
-  //const char* valueStr = s3eOSReadStringUTF8("Percent Complete:", S3E_OSREADSTRING_FLAG_NUMBER);
-  //int value = atoi(valueStr);
+  egeDebug() << "Submitting achievement" << achievementData.name << "completion" << achievementData.percentageComplete;
 
   // submit achievement
   s3eResult result = s3eIOSGameCenterReportAchievement(achievementData.name.toAscii(), achievementData.percentageComplete, AchievementSaveCallback);
@@ -124,6 +141,59 @@ void SocialPlatformPrivate::AchievementSaveCallback(s3eIOSGameCenterError* error
     case S3E_IOSGAMECENTER_ERR_NONE: result = EGE_SUCCESS; break;
   }
 
+  // check if error
+  if (EGE_SUCCESS != result)
+  {
+    // clean up pending queue
+    l_instance->m_pendingAchievementSaveList.clear();
+
+    // emit
+    emit l_instance->d_func()->achievementsSaved(result);
+  }
+  else
+  {
+    // check if any achievement still in queue
+    if ( ! l_instance->m_pendingAchievementSaveList.empty())
+    {
+      // proceed
+      if (EGE_SUCCESS != (result = l_instance->saveNextAchievement()))
+      {
+        // clean up pending queue
+        l_instance->m_pendingAchievementSaveList.clear();
+
+        // emit
+        emit l_instance->d_func()->achievementsSaved(result);
+      }
+    }
+    else
+    {
+      // done, emit
+      emit l_instance->d_func()->achievementsSaved(result);
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Save score. */
+EGEResult SocialPlatformPrivate::saveScore(const String& scoreTable, s32 score)
+{
+  // submit achievement
+  s3eResult result = s3eIOSGameCenterReportScore(score, scoreTable.toAscii(), ScoreSaveCallback);
+  return (S3E_RESULT_SUCCESS == result) ? EGE_SUCCESS : EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Score save callback. */
+void SocialPlatformPrivate::ScoreSaveCallback(s3eIOSGameCenterError* error)
+{
+  EGEResult result = EGE_ERROR;
+
+  // map error code to framework values
+  switch (*error)
+  {
+    case S3E_IOSGAMECENTER_ERR_NONE: result = EGE_SUCCESS; break;
+  }
+
+  // emit
+  emit l_instance->d_func()->scoreSaved(result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

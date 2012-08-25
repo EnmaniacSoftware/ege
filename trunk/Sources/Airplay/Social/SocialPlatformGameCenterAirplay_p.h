@@ -33,6 +33,8 @@ class SocialPlatformPrivate
     EGEResult loadAchievements();
     /* Saves achievements. */
     EGEResult saveAchievements(const AchievementDataList& achievements);
+    /* Saves score. */
+    EGEResult saveScore(const String& scoreTable, s32 score);
 
   private:
 
@@ -42,6 +44,8 @@ class SocialPlatformPrivate
     static void LoadAchievementsCallback(s3eIOSGameCenterAchievementList* list);
     /* Achievement save callback. */
     static void AchievementSaveCallback(s3eIOSGameCenterError* error);
+    /* Score save callback. */
+    static void ScoreSaveCallback(s3eIOSGameCenterError* error);
 
   private:
 
@@ -50,8 +54,8 @@ class SocialPlatformPrivate
 
   private:
 
-    /*! List of pending achievement save sessions. */
-    List<AchievementDataList> m_achievementSaveSessions;
+    /*! List of pending achievements to be saved. */
+    AchievementDataList m_pendingAchievementSaveList;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
