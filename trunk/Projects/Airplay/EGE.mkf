@@ -12,6 +12,7 @@ define EGE_XML_TINYXML
 define EGE_RANDOM_STDC
 define EGE_THREAD_PTHREAD
 define EGE_SOCIAL_PLATFORM_GAMECENTER
+define EGE_PURCHASES_APPSTORE
 
 #define EGE_AIRPLAY_AUDIO_SOFTWARE
 
@@ -417,6 +418,11 @@ files
 	PhysicsManagerNull_p.cpp
 	PhysicsManagerNull_p.h
 
+	["Core/Purchases"]
+  (../../Sources/Core/Purchases)
+  Purchases.cpp
+  Purchases.h
+
   ["Core/Random"]
   (../../Sources/Core/Random)
   RandomGenerator.cpp
@@ -648,6 +654,11 @@ files
 	PointerAirplay_p.cpp
 	PointerAirplay_p.h
 
+	["Airplay/Purchases"]
+  (../../Sources/Airplay/Purchases)
+  PurchasesAppStoreAirplay_p.cpp
+  PurchasesAppStoreAirplay_p.h
+
 	["Airplay/Social"]
   (../../Sources/Airplay/Social)
   SocialPlatformGameCenterAirplay_p.cpp
@@ -685,4 +696,9 @@ subprojects
 if {{defined EGE_SOCIAL_PLATFORM_GAMECENTER}}
 {
   subproject s3eIOSGameCenter
+}
+
+if {{defined EGE_PURCHASES_APPSTORE}}
+{
+  subproject s3eIOSAppStoreBilling
 }

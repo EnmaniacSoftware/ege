@@ -114,6 +114,8 @@
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJointDistance.cpp" />
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJointPulley.cpp" />
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsManager.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Purchases\Purchases.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Purchases\PurchasesNull_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Random\RandomGenerator.cpp" />
     <ClCompile Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceCurve.cpp" />
@@ -237,6 +239,8 @@
     <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsJointPulleyNull_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsManagerNull_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointPulley.h" />
+    <ClInclude Include="..\..\Sources\Core\Purchases\Purchases.h" />
+    <ClInclude Include="..\..\Sources\Core\Purchases\PurchasesNull_p.h" />
     <ClInclude Include="..\..\Sources\Core\Random\RandomGenerator.h" />
     <ClInclude Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceCurve.h" />
@@ -299,6 +303,7 @@
     <ClInclude Include="..\..\Sources\EGEOpenGL.h" />
     <ClInclude Include="..\..\Sources\EGEParticle.h" />
     <ClInclude Include="..\..\Sources\EGEPlane.h" />
+    <ClInclude Include="..\..\Sources\EGEPurchases.h" />
     <ClInclude Include="..\..\Sources\EGEQuaternion.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
     <ClCompile Include="..\..\Sources\Win32\Application\AppControllerWin32_p.cpp" />

@@ -24,6 +24,13 @@ SocialPlatformPrivate::~SocialPlatformPrivate()
 /*! Constructs object. */
 EGEResult SocialPlatformPrivate::construct()
 {
+  // check if supported
+  if ( ! s3eIOSGameCenterAvailable())
+  {
+    // error!
+    return EGE_ERROR_NOT_SUPPORTED;
+  }
+
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -71,6 +78,13 @@ void SocialPlatformPrivate::AuthenticationCallback(s3eIOSGameCenterError* error,
 /*! Loads achievements. */
 EGEResult SocialPlatformPrivate::loadAchievements()
 {
+  // check if supported
+  if ( ! s3eIOSGameCenterAvailable())
+  {
+    // error!
+    return EGE_ERROR_NOT_SUPPORTED;
+  }
+
   // request achievement list
   return (S3E_RESULT_SUCCESS == s3eIOSGameCenterLoadAchievements(LoadAchievementsCallback)) ? EGE_SUCCESS : EGE_ERROR;
 }
@@ -108,6 +122,13 @@ void SocialPlatformPrivate::LoadAchievementsCallback(s3eIOSGameCenterAchievement
 /*! Save achievements. */
 EGEResult SocialPlatformPrivate::saveAchievements(const AchievementDataList& achievements)
 {
+  // check if supported
+  if ( ! s3eIOSGameCenterAvailable())
+  {
+    // error!
+    return EGE_ERROR_NOT_SUPPORTED;
+  }
+
   egeDebug() << "Adding" << achievements.size() << "achievements for submission";
 
   // append
@@ -176,6 +197,13 @@ void SocialPlatformPrivate::AchievementSaveCallback(s3eIOSGameCenterError* error
 /*! Save score. */
 EGEResult SocialPlatformPrivate::saveScore(const String& scoreTable, s32 score)
 {
+  // check if supported
+  if ( ! s3eIOSGameCenterAvailable())
+  {
+    // error!
+    return EGE_ERROR_NOT_SUPPORTED;
+  }
+
   // submit achievement
   s3eResult result = s3eIOSGameCenterReportScore(score, scoreTable.toAscii(), ScoreSaveCallback);
   return (S3E_RESULT_SUCCESS == result) ? EGE_SUCCESS : EGE_ERROR;

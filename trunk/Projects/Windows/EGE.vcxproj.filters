@@ -199,6 +199,9 @@
     <Filter Include="Core\Social">
       <UniqueIdentifier>{31b4e833-8e99-4ad0-b9bc-0fb99e5d6845}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Purchases">
+      <UniqueIdentifier>{4cdab25f-fe11-41dc-8e27-9a05c4a9d516}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -713,6 +716,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Social\SocialPlatform.cpp">
       <Filter>Core\Social</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Purchases\Purchases.cpp">
+      <Filter>Core\Purchases</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Purchases\PurchasesNull_p.cpp">
+      <Filter>Core\Purchases</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1394,6 +1403,13 @@
     <ClInclude Include="..\..\Sources\Core\Social\SocialPlatformNull_p.h">
       <Filter>Core\Social</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Purchases\Purchases.h">
+      <Filter>Core\Purchases</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Purchases\PurchasesNull_p.h">
+      <Filter>Core\Purchases</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEPurchases.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

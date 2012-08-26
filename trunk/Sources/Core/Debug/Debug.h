@@ -103,7 +103,7 @@ class NoDebug
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define QT_NO_QDEBUG_MACRO while (false) egeDebug
 
-#ifdef EGE_FEATURE_DEBUG
+#ifndef EGE_FEATURE_DEBUG
 
 inline Debug egeDebug() { return Debug(DMT_NORMAL); }
 inline Debug egeWarning() { return Debug(DMT_WARNING); }

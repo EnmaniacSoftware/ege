@@ -16,7 +16,7 @@ enum EGEResult
   EGE_ERROR_NOT_SUPPORTED,
   EGE_ERROR_IO,
   EGE_ERROR_ALREADY_EXISTS,
-  EGE_ERROR_NOT_FOUND,
+  EGE_ERROR_NOT_FOUND
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #if EGE_PLATFORM_WIN32
