@@ -96,6 +96,7 @@
     <ClCompile Include="..\..\Sources\Core\Math\Tweeners\PowerTweener.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tweeners\SineTweener.cpp" />
     <ClCompile Include="..\..\Sources\Core\Memory\MemoryManager.cpp" />
+    <ClCompile Include="..\..\Sources\Core\NativeUI\MessageBox.cpp" />
     <ClCompile Include="..\..\Sources\Core\Overlay\ImageOverlay.cpp" />
     <ClCompile Include="..\..\Sources\Core\Overlay\Overlay.cpp" />
     <ClCompile Include="..\..\Sources\Core\Overlay\OverlayManager.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlAttribute.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.cpp" />
     <ClInclude Include="..\..\Sources\Core\Animation\IAnimation.h" />
@@ -232,6 +234,7 @@
     <ClInclude Include="..\..\Sources\Core\Math\Tweeners\LinearTweener.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tweeners\PowerTweener.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tweeners\SineTweener.h" />
+    <ClInclude Include="..\..\Sources\Core\NativeUI\MessageBox.h" />
     <ClInclude Include="..\..\Sources\Core\Overlay\ImageOverlay.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsJointAttractNull_p.h" />
@@ -300,6 +303,7 @@
     <ClInclude Include="..\..\Sources\EGEMaterial.h" />
     <ClInclude Include="..\..\Sources\EGEMatrix.h" />
     <ClInclude Include="..\..\Sources\EGEMutex.h" />
+    <ClInclude Include="..\..\Sources\EGENativeUI.h" />
     <ClInclude Include="..\..\Sources\EGEOpenGL.h" />
     <ClInclude Include="..\..\Sources\EGEParticle.h" />
     <ClInclude Include="..\..\Sources\EGEPlane.h" />
@@ -457,6 +461,7 @@
     <ClInclude Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\GL 2.0\RenderWindowOGLWin32.h" />
     <ClInclude Include="..\..\Sources\Win32\Input\PointerWin32_p.h" />
+    <ClInclude Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\Timer\TimerWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\TypesWin32.h" />
@@ -550,6 +555,7 @@
       <BrowseInformation>true</BrowseInformation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

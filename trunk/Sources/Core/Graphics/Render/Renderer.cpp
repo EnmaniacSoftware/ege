@@ -9,8 +9,10 @@
 #include "Core/Graphics/Render/RenderQueue.h"
 
 #if EGE_RENDERING_OPENGLES_1
+#include <EGEOpenGL.h>
 #include "Core/Graphics/OpenGL/ES 1.0/RendererOGLES1_p.h"
 #elif EGE_RENDERING_OPENGL_2
+#include <EGEOpenGL.h>
 #include "Core/Graphics/OpenGL/GL 2.0/RendererOGL2_p.h"
 #endif // EGE_RENDERING_OPENGLES_1
 

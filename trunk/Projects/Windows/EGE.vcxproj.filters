@@ -202,6 +202,12 @@
     <Filter Include="Core\Purchases">
       <UniqueIdentifier>{4cdab25f-fe11-41dc-8e27-9a05c4a9d516}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\NativeUI">
+      <UniqueIdentifier>{4e9f0d99-bcd1-41c8-8d86-18a5d71ca68a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\NativeUI">
+      <UniqueIdentifier>{d4765eae-b506-4d5e-a245-231de9637e02}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -722,6 +728,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Purchases\PurchasesNull_p.cpp">
       <Filter>Core\Purchases</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.cpp">
+      <Filter>Win32\NativeUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\NativeUI\MessageBox.cpp">
+      <Filter>Core\NativeUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1410,6 +1422,13 @@
       <Filter>Core\Purchases</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEPurchases.h" />
+    <ClInclude Include="..\..\Sources\Core\NativeUI\MessageBox.h">
+      <Filter>Core\NativeUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGENativeUI.h" />
+    <ClInclude Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.h">
+      <Filter>Win32\NativeUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

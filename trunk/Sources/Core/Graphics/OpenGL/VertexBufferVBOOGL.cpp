@@ -1,5 +1,6 @@
 #include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
 #include "Core/Data/DataBuffer.h"
+#include <EGEOpenGL.h>
 #include <EGEDebug.h>
 #include <EGEDevice.h>
 

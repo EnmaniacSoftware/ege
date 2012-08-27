@@ -1,11 +1,10 @@
 #ifndef EGE_OPENGL_H
 #define EGE_OPENGL_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include "Core/Platform.h"
 
 #ifdef EGE_PLATFORM_WIN32
+#include <windows.h>
 #include <gl/GL.h>
 #else
 #include <GLES/gl.h>

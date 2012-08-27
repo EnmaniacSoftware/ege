@@ -1,6 +1,7 @@
 #ifndef EGE_TYPES_H
 #define EGE_TYPES_H
 
+#include <stdlib.h>             // for NULL
 #include "Core/Platform.h"
 
 EGE_NAMESPACE_BEGIN

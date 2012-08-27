@@ -3,6 +3,7 @@
 #include <sstream>
 #include <algorithm>
 #include <cctype>
+#include <stdarg.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN

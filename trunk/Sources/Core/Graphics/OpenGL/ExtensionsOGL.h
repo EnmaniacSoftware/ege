@@ -2,7 +2,7 @@
 #define EGE_CORE_EXTENSIONSOGL_H
 
 #include <EGE.h>
-#include <gl/GL.h>
+#include <EGEOpenGL.h>
 #include "Core/Graphics/OpenGL/GL 2.0/glext.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

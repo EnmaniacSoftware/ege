@@ -56,6 +56,7 @@ files
 	EGEMath.h
   EGEMatrix.h
   EGEMutex.h
+  EGENativeUI.h
 	EGEMemory.h
   EGEOpenGL.h
   EGEOverlay.h
@@ -370,6 +371,11 @@ files
 	Object.h
 	SmartPointer.h
 
+	["Core/NativeUI"]
+	(../../Sources/Core/NativeUI)
+	MessageBox.cpp
+	MessageBox.h
+
 	["Core/Overlay"]
   (../../Sources/Core/Overlay)
   ImageOverlay.cpp
@@ -648,6 +654,11 @@ files
 	["Airplay/Memory"]
 	(../../Sources/Airplay/Memory)
 	MemoryAirplay.cpp
+
+	["Airplay/NativeUI"]
+	(../../Sources/Airplay/NativeUI)
+	MessageBoxAirplay_p.cpp
+	MessageBoxAirplay_p.h
 
 	["Airplay/Input"]
 	(../../Sources/Airplay/Input)

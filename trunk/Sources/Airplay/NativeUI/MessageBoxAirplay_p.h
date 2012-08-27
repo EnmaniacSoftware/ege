@@ -1,0 +1,35 @@
+#ifndef EGE_AIRPLAY_MESSAGEBOX_PRIVATE_H
+#define EGE_AIRPLAY_MESSAGEBOX_PRIVATE_H
+
+#include <EGEString.h>
+
+EGE_NAMESPACE_BEGIN
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class MessageBox;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! @brief Private implementation for native message box for Airplay. */
+class MessageBoxPrivate
+{
+  public: 
+
+    MessageBoxPrivate(MessageBox* base);
+   ~MessageBoxPrivate();
+    
+    EGE_DECLARE_NEW_OPERATORS
+    EGE_DECLARE_DELETE_OPERATORS
+
+    EGE_DECLARE_PUBLIC_IMPLEMENTATION(MessageBox)
+
+  public:
+
+    /* Constructs object. */
+    EGEResult construct();
+    /* Shows message box. */
+    void show();
+};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
+
+#endif // EGE_AIRPLAY_MESSAGEBOX_PRIVATE_H

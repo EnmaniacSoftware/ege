@@ -2,12 +2,12 @@
 #define EGE_WIN32_RENDERWINDOWOGL_H
 
 #include <EGE.h>
+#include <windows.h>
 #include "Core/Graphics/Render/RenderWindow.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class RenderWindowOGLWin32 : public RenderWindow
 {
   public:
@@ -52,7 +52,6 @@ class RenderWindowOGLWin32 : public RenderWindow
     /*! Work thread OpenGL rendering context. */
     HGLRC m_hRCWorkThread;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

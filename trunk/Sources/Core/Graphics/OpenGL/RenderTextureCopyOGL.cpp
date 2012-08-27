@@ -1,4 +1,5 @@
 #include "Core/Graphics/OpenGL/RenderTextureCopyOGL.h"
+#include <EGEOpenGL.h>
 #include <EGETexture.h>
 #include <EGEDebug.h>
 

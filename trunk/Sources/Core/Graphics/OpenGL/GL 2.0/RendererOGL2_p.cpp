@@ -1,4 +1,5 @@
 #include <EGEApplication.h>
+#include <EGEOpenGL.h>
 #include "Core/Graphics/OpenGL/GL 2.0/RendererOGL2_p.h"
 #include "Core/Graphics/OpenGL/ExtensionsOGL.h"
 #include "Core/Components/Render/RenderComponent.h"
