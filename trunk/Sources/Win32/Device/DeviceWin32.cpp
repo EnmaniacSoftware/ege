@@ -1,4 +1,5 @@
 #include "Core/Device/Device.h"
+#include <windows.h>
 
 EGE_NAMESPACE_BEGIN
 

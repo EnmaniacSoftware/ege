@@ -1,0 +1,10 @@
+App Store testing:
+
+1. iTunnesConnect - create test app store account (Manage Users -> Test User)
+2. Device: Settings -> AppStore -> Logout
+3. Start game. Initiate in-app purchase. Set test credentials.
+
+Game Center testing:
+
+1. Device: logout of current GameCenter account
+2. Start game. Create new account for particlar game and always log into it while testing.

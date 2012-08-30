@@ -2,6 +2,7 @@
 #define EGE_WIN32_TIMER_PRIVATE_H
 
 #include <EGE.h>
+#include <windows.h>
 
 EGE_NAMESPACE_BEGIN
 

@@ -12,10 +12,11 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(MessageBox)
 EGE_DEFINE_DELETE_OPERATORS(MessageBox)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-MessageBox::MessageBox(const Text& title, const Text& content) : Object(NULL),
-                                                                 m_p(NULL),
-                                                                 m_title(title),
-                                                                 m_content(content)
+MessageBox::MessageBox(const Text& title, const Text& content, MessageBoxButtons buttons) : Object(NULL),
+                                                                                            m_p(NULL),
+                                                                                            m_title(title),
+                                                                                            m_content(content),
+                                                                                            m_buttons(buttons)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -48,22 +49,26 @@ EGEResult MessageBox::construct()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Shows message box. */
-void MessageBox::show()
+s32 MessageBox::show()
 {
   if (NULL != m_p)
   {
-    m_p->show();
+    return m_p->show();
   }
+
+  return -1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Convinience method. Shows message box with given title and content. */
-void MessageBox::Show(const Text& title, const Text& content)
+s32 MessageBox::Show(const Text& title, const Text& content, MessageBoxButtons buttons)
 {
-  MessageBox msg(title, content);
+  MessageBox msg(title, content, buttons);
   if (EGE_SUCCESS == msg.construct())
   {
-    msg.show();
+    return msg.show();
   }
+
+  return -1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

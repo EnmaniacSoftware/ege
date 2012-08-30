@@ -2,6 +2,7 @@
 #include <sstream>
 #include <algorithm>
 #include <cctype>
+#include <stdarg.h>
 #include <EGEDynamicArray.h>
 
 EGE_NAMESPACE_BEGIN

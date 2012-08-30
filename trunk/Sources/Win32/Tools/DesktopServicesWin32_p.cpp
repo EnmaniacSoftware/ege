@@ -1,4 +1,5 @@
 #include "Win32/Tools/DesktopServicesWin32_p.h"
+#include <windows.h>
 
 EGE_NAMESPACE_BEGIN
 

@@ -2,6 +2,7 @@
 #define EGE_CORE_MESSAGEBOX_H
 
 #include <EGEString.h>
+#include <EGENativeUI.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -13,7 +14,7 @@ class MessageBox : public Object
 {
   public: 
 
-    MessageBox(const Text& title, const Text& content);
+    MessageBox(const Text& title, const Text& content, MessageBoxButtons buttons);
     virtual ~MessageBox();
     
     EGE_DECLARE_NEW_OPERATORS
@@ -22,14 +23,14 @@ class MessageBox : public Object
   public:
 
     /* Convinience method. Shows message box with given title and content. */
-    static void Show(const Text& title, const Text& content);
+    static s32 Show(const Text& title, const Text& content, MessageBoxButtons buttons);
 
   public:
 
     /* Constructs object. */
     EGEResult construct();
     /* Shows message box. */
-    void show();
+    s32 show();
 
   private:
 
@@ -39,6 +40,8 @@ class MessageBox : public Object
     Text m_title;
     /*! Content text. */
     Text m_content;
+    /*! Buttons. */
+    MessageBoxButtons m_buttons;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

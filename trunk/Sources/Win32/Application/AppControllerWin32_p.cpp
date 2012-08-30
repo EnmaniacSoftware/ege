@@ -1,6 +1,7 @@
 #include "Core/Application/AppController.h"
 #include "Win32/Application/AppControllerWin32_p.h"
 #include <EGEDebug.h>
+#include <windows.h>
 
 EGE_NAMESPACE_BEGIN
 

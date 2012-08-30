@@ -27,9 +27,11 @@ EGEResult MessageBoxPrivate::construct()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Shows message box. */
-void MessageBoxPrivate::show()
+s32 MessageBoxPrivate::show()
 {
-  MessageBoxW(NULL, d_func()->m_content.data(), d_func()->m_title.data(), 0);
+  int result = MessageBoxW(NULL, d_func()->m_content.data(), d_func()->m_title.data(), 0);
+
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

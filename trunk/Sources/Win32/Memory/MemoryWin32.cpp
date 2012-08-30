@@ -1,4 +1,5 @@
 #include "Core/Memory/MemoryManager.h"
+#include <windows.h>
 
 EGE_NAMESPACE_BEGIN
 
