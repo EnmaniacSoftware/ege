@@ -97,5 +97,16 @@ EGEResult SocialPlatform::saveScore(const String& scoreTable, s32 score)
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Shows scores. */
+EGEResult SocialPlatform::showScores(const String& scoreTable)
+{
+  if (NULL != m_p)
+  {
+    return m_p->showScores(scoreTable);
+  }
+
+  return EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

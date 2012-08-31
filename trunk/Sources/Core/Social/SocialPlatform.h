@@ -53,6 +53,8 @@ class SocialPlatform : public Object
     EGEResult saveAchievements(const AchievementDataList& achievements);
     /* Saves score. */
     EGEResult saveScore(const String& scoreTable, s32 score);
+    /* Shows scores. */
+    EGEResult showScores(const String& scoreTable);
 
   private:
 

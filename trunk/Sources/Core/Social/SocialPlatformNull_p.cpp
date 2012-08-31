@@ -48,5 +48,12 @@ EGEResult SocialPlatformPrivate::saveScore(const String& scoreTable, s32 score)
   return EGE_ERROR_NOT_SUPPORTED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Shows scores. */
+EGEResult SocialPlatformPrivate::showScores(const String& scoreTable)
+{
+  EGE_UNUSED(scoreTable);
+  return EGE_ERROR_NOT_SUPPORTED;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

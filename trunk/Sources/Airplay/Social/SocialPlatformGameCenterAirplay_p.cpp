@@ -224,5 +224,12 @@ void SocialPlatformPrivate::ScoreSaveCallback(s3eIOSGameCenterError* error)
   emit l_instance->d_func()->scoreSaved(result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Shows scores. */
+EGEResult SocialPlatformPrivate::showScores(const String& scoreTable)
+{
+  s3eResult result = s3eIOSGameCenterLeaderboardShowGUI(scoreTable.toAscii(), S3E_IOSGAMECENTER_PLAYER_SCOPE_ALL_TIME);
+  return (S3E_RESULT_SUCCESS == result) ? EGE_SUCCESS : EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
