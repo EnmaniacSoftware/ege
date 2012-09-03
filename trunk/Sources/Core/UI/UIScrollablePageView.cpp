@@ -444,10 +444,16 @@ void UIScrollablePageView::endMove()
 /*! UIScrollView override. Sets base render priority. */
 void UIScrollablePageView::setBaseRenderPriority(s32 priority)
 {
-  m_pageIndicator->renderData()->setPriority(priority + 1);
+  m_pageIndicator->setRenderPriority(priority + 1);
 
   // call base class
   UIScrollView::setBaseRenderPriority(priority);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns page indicator. */
+PUIPageIndicator UIScrollablePageView::pageIndicator() const
+{
+  return m_pageIndicator;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

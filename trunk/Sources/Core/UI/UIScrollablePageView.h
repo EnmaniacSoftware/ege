@@ -60,6 +60,8 @@ class UIScrollablePageView : public UIScrollView
     void setPage(s32 page, bool animate);
     /* Returns current page. */
     s32 page() const;
+    /* Returns page indicator. */
+    PUIPageIndicator pageIndicator() const;
 
     /* Adds object to a given page. */
     EGEResult addObject(PObject object, u32 pageIdx);

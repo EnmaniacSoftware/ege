@@ -38,8 +38,12 @@ class UIPageIndicator : public Widget
     void setCurrentPage(s32 pageIdx);
     /* Returns current page. */
     s32 page() const;
-    /*! Returns render data component. */
-    inline PRenderComponent& renderData() { return m_renderData; }
+    /* Sets materials for page indicators. */
+    void setMaterials(DynamicArray<PMaterial> on, DynamicArray<PMaterial> off);
+    /* Sets render priority. */
+    void setRenderPriority(s32 priority);
+    /* Sets single page indicator size. */
+    void setIndicatorSize(s32 size);
 
   private:
 
@@ -54,14 +58,22 @@ class UIPageIndicator : public Widget
 
   private:
 
-    /*! Render component. */
-    PRenderComponent m_renderData;
+    /*! Render components for all pages. */
+    DynamicArray<PRenderComponent> m_renderData;
     /*! Render data validity flag. */
     bool m_renderDataInvalid;
     /*! Number of pages. */
     s32 m_pageCount;
     /*! Current page. */
     s32 m_page;
+    /*! ON indicator materials. */
+    DynamicArray<PMaterial> m_onMaterials;
+    /*! OFF indicator materials. */
+    DynamicArray<PMaterial> m_offMaterials;
+    /*! Render priority. */
+    s32 m_renderPriority;
+    /*! Single page indicator size. */
+    s32 m_indicatorSize;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

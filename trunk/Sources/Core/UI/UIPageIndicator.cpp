@@ -6,7 +6,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define INDICATOR_SIZE    10.0f
+#define INDICATOR_SIZE    10
 #define INDICATOR_SPACING 5.0f
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(UIPageIndicator)
@@ -15,7 +15,9 @@ EGE_DEFINE_DELETE_OPERATORS(UIPageIndicator)
 UIPageIndicator::UIPageIndicator(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) 
 : Widget(app, name, EGE_OBJECT_UID_UI_PAGE_INDICATOR, deleteFunc),
   m_pageCount(0),
-  m_page(0)
+  m_page(0),
+  m_renderPriority(EGEGraphics::RP_MAIN + 1),
+  m_indicatorSize(INDICATOR_SIZE)
 {
   setSize(Vector2f(INDICATOR_SIZE, INDICATOR_SIZE));
 }
@@ -52,40 +54,6 @@ EGEResult UIPageIndicator::construct()
   {
     // error!
     return result;
-  }
-
-  // create render data
-  PMaterial material = ege_new Material(app());
-  if (NULL == material)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  PRenderPass renderPass = material->addPass(NULL);
-  if (NULL == renderPass)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  // setup material
-  //material->setSrcBlendFactor(EGEGraphics::BF_SRC_ALPHA);
-  //material->setDstBlendFactor(EGEGraphics::BF_ONE_MINUS_SRC_ALPHA);
-    
-  // create render data
-  m_renderData = ege_new RenderComponent(app(), "page-indicator", EGEGraphics::RP_MAIN + 1, EGEGraphics::RPT_TRIANGLES);
-  if (NULL == m_renderData)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  m_renderData->setMaterial(material);
-  if (!m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_C4))
-  {
-    // error!
-    return EGE_ERROR;
   }
 
   return EGE_SUCCESS;
@@ -139,72 +107,30 @@ void UIPageIndicator::setCurrentPage(s32 pageIdx)
 /*! Widget override. Updates render data. */
 void UIPageIndicator::updateRenderData()
 {
-  Vector2f indicatorSize(INDICATOR_SIZE * pageCount() + INDICATOR_SPACING * (pageCount() - 1), INDICATOR_SIZE);
-  Vector2f offset = (size() - indicatorSize) * 0.5f;
+  // clean up
+  m_renderData.clear();
 
   // update render data
-  float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, pageCount() * 6));
-  if (data)
+  for (s32 i = 0; i < pageCount(); ++i)
   {
-    for (s32 i = 0; i < pageCount(); ++i)
+    // create render data
+    PRenderComponent renderData = RenderObjectFactory::CreateQuadXY(app(), String::Format("page-indicator-%d-%s", i, name()), Vector4f::ZERO, 
+                                                                    Vector2f(static_cast<float32>(m_indicatorSize), static_cast<float32>(m_indicatorSize)), 
+                                                                    ALIGN_TOP_LEFT, EGEVertexBuffer::ST_V2_T2, m_renderPriority, 
+                                                                    EGEGraphics::RPT_TRIANGLE_STRIPS, EGEVertexBuffer::UT_STATIC_WRITE);
+
+    if (NULL == renderData)
     {
-      Color color = Color::GRAY;
-      if (i == page())
-      {
-        color = Color::WHITE;
-      }
-
-      // top left
-      *data++ = offset.x + i * (INDICATOR_SIZE + INDICATOR_SPACING);
-      *data++ = offset.y;
-      *data++ = color.red;
-      *data++ = color.green;
-      *data++ = color.blue;
-      *data++ = color.alpha;
-
-      // bottom left
-      *data++ = offset.x + i * (INDICATOR_SIZE + INDICATOR_SPACING);
-      *data++ = offset.y + INDICATOR_SIZE;
-      *data++ = color.red;
-      *data++ = color.green;
-      *data++ = color.blue;
-      *data++ = color.alpha;
-
-      // bottom right
-      *data++ = offset.x + i * (INDICATOR_SIZE + INDICATOR_SPACING) + INDICATOR_SIZE;
-      *data++ = offset.y + INDICATOR_SIZE;
-      *data++ = color.red;
-      *data++ = color.green;
-      *data++ = color.blue;
-      *data++ = color.alpha;
-
-      // top left
-      *data++ = offset.x + i * (INDICATOR_SIZE + INDICATOR_SPACING);
-      *data++ = offset.y;
-      *data++ = color.red;
-      *data++ = color.green;
-      *data++ = color.blue;
-      *data++ = color.alpha;
-
-      // bottom right
-      *data++ = offset.x + i * (INDICATOR_SIZE + INDICATOR_SPACING) + INDICATOR_SIZE;
-      *data++ = offset.y + INDICATOR_SIZE;
-      *data++ = color.red;
-      *data++ = color.green;
-      *data++ = color.blue;
-      *data++ = color.alpha;
-
-      // top right
-      *data++ = offset.x + i * (INDICATOR_SIZE + INDICATOR_SPACING) + INDICATOR_SIZE;
-      *data++ = offset.y;
-      *data++ = color.red;
-      *data++ = color.green;
-      *data++ = color.blue;
-      *data++ = color.alpha;
+      egeWarning() << "Could not create render data!";
+      continue;
     }
-  }
 
-  m_renderData->vertexBuffer()->unlock((data) ? data - 1 : NULL);
+    // set material
+    renderData->setMaterial((page() == i) ? m_onMaterials.at(i, NULL) : m_offMaterials.at(i, NULL));
+
+    // add to pool
+    m_renderData.push_back(renderData);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns current page. */
@@ -232,10 +158,51 @@ void UIPageIndicator::addForRendering(Renderer* renderer, const Matrix4f& transf
   }
 
   // render
-  renderer->addForRendering(m_renderData, transform.multiply(m_physics.transformationMatrix()));
+  const Vector2f indicatorSize(m_indicatorSize * pageCount() + INDICATOR_SPACING * (pageCount() - 1), static_cast<float32>(m_indicatorSize));
+  const Vector2f offset = (size() - indicatorSize) * 0.5f;
+  for (s32 i = 0; i < static_cast<s32>(m_renderData.size()); ++i)
+  {
+    Matrix4f matrix = Matrix4f::IDENTITY;
+    Vector4f pos = Vector4f(offset.x + i * (m_indicatorSize + INDICATOR_SPACING), offset.y, 0);
+    Math::CreateMatrix(&matrix, &pos, &Vector4f::ONE, &Quaternionf::IDENTITY);
+
+    // update render priority
+    m_renderData[i]->setPriority(m_renderPriority);
+
+    // render
+    renderer->addForRendering(m_renderData[i], transform.multiply(m_physics.transformationMatrix()).multiply(matrix));
+  }
 
   // call base class
   Widget::addForRendering(renderer, transform);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets materials for page indicators. */
+void UIPageIndicator::setMaterials(DynamicArray<PMaterial> on, DynamicArray<PMaterial> off)
+{
+  m_onMaterials   = on;
+  m_offMaterials  = off;
+
+  // invalidate render data
+  m_renderDataInvalid = true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets render priority. */
+void UIPageIndicator::setRenderPriority(s32 priority)
+{
+  m_renderPriority = priority;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Sets single page indicator size. */
+void UIPageIndicator::setIndicatorSize(s32 size)
+{
+  if (m_indicatorSize != size)
+  {
+    m_indicatorSize = size;
+
+    // invalidate render data
+    m_renderDataInvalid = true;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -36,7 +36,9 @@ OPTIMIZATIONS:
 
 - UI
   - Dialogs (or widgets?) instead of tail should have some sort of decoration ?
-  
+  - Widgets subclassable (ie. to have custom rendering etc)
+  - Widgets should have base render priority (same interface at base class)
+
 CODING:
 
  - VertexBuffer/IndexBuffer sizes are determined by create method ONLY. Locks should not internally redefine size but return errror. Thats for when we want to update only several 
