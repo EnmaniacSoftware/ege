@@ -83,7 +83,7 @@ void TextOverlay::updateRenderData()
       }
       else if (m_textAlignment & ALIGN_HCENTER)
       {
-        pos.x += (size().x - lineData.width) * 0.5f;
+        pos.x += Math::Floor((size().x - lineData.width) * 0.5f);
       }
 
       // go thru all characters in current line
