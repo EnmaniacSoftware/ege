@@ -1,5 +1,6 @@
 #include "Core/Device/Device.h"
 #include "s3e.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -39,6 +40,12 @@ EGEDevice::Device Device::GetDevice()
         case 1494190912: return EGEDevice::DEVICE_IPOD_TOUCH_2;
         case 1477586929: return EGEDevice::DEVICE_IPAD;
         case 1477588018: return EGEDevice::DEVICE_IPAD_2;
+        case 1477589107: return EGEDevice::DEVICE_IPAD_3;
+
+        default:
+
+          egeWarning() << "Unknown iOS device" << deviceId;
+          break;
       }      
       break;
 
@@ -48,6 +55,11 @@ EGEDevice::Device Device::GetDevice()
       switch (deviceId)
       {
         case 1: return EGEDevice::DEVICE_EMULATOR;
+
+        default:
+
+          egeWarning() << "Unknown Windows device" << deviceId;
+          break;
       }
       break;
   }
@@ -77,6 +89,18 @@ s32 Device::AudioOutputFrequency()
 void Device::Sleep(u32 ms)
 {
   s3eDeviceYield(ms);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns free RAM memory (in bytes). */
+u64 Device::AvailableMemory()
+{
+  return static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_FREE_RAM));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns total RAM memory (in bytes). */
+u64 Device::TotalMemory()
+{
+  return static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_TOTAL_RAM));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

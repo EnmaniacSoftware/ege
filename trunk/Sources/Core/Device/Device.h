@@ -11,7 +11,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Device
 {
   public:
@@ -41,6 +40,10 @@ class Device
     static void SetSurfaceAlphaChannelBitsCount(u32 count);
     /* Returns surface alpha channel bits count. */
     static u32 SurfaceAlphaChannelBitsCount();
+    /* Returns free RAM memory (in bytes). */
+    static u64 AvailableMemory();
+    /* Returns total RAM memory (in bytes). */
+    static u64 TotalMemory();
 
     /* Returns TRUE if given render capability is present. */
     static bool HasRenderCapability(EGEDevice::RenderCapability cap);
@@ -78,7 +81,6 @@ class Device
     /*! Surface alpha channel bits count. */
     static u32 m_surfaceAlphaChannelBitsCount;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
