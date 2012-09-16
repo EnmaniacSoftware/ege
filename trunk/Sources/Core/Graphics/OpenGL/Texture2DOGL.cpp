@@ -89,6 +89,8 @@ EGEResult Texture2DPrivate::create(const PDataBuffer& buffer)
 /*! Creates texture from given image data. */
 EGEResult Texture2DPrivate::create(const PImage& image)
 {
+  egeWarning() << "Creating texture" << image->width() << image->height() << image->format();
+
   // set texture data
   d_func()->m_width  = image->width();
   d_func()->m_height = image->height();
@@ -237,6 +239,8 @@ EGEResult Texture2DPrivate::create(const PImage& image)
   m_internalFormat = internalFormat;
   m_typeFormat     = type;
 
+  egeWarning() << "Creating texture done" << image->width() << image->height() << image->format();
+
   // check for error
   GLenum error;
   if (GL_NO_ERROR != (error = glGetError()))
@@ -281,6 +285,8 @@ GLint Texture2DPrivate::mapAddressingMode(EGETexture::AddressingMode mode) const
 /*! Creates associated render target. */
 EGEResult Texture2DPrivate::createRenderTarget()
 {
+  egeWarning() << "Creating render target!";
+
   Dictionary params;
   params[EGE_RENDER_TARGET_PARAM_NAME]    = d_func()->name();
   params[EGE_RENDER_TARGET_PARAM_WIDTH]   = String::FromNumber(d_func()->width());
@@ -295,6 +301,8 @@ EGEResult Texture2DPrivate::createRenderTarget()
   {
     d_func()->m_target = ege_new RenderTextureCopyOGL(d_func()->app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, id());
   }
+
+  egeWarning() << "Creating render target done" << d_func()->m_target;
 
   // check if could not be allocated
   if (NULL == d_func()->m_target)

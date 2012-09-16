@@ -566,7 +566,7 @@ void RendererPrivate::detectCapabilities()
 
   for (StringArray::const_iterator it = m_extensionArray.begin(); it != m_extensionArray.end(); ++it)
   {
-    egeDebug() << "Available OGL extension: %s", *it;
+    egeDebug() << "Available OGL extension:" << *it;
   }
 
 	GLint value;

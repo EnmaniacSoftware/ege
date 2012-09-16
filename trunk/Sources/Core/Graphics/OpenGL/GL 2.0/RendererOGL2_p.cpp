@@ -644,6 +644,11 @@ void RendererPrivate::detectCapabilities()
   String extensionString(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
   m_extensionArray = extensionString.split(" ");
 
+  for (StringArray::const_iterator it = m_extensionArray.begin(); it != m_extensionArray.end(); ++it)
+  {
+    egeDebug() << "Available OGL extension:" << *it;
+  }
+
 	GLint value;
 
   // get number of texture units

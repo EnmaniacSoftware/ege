@@ -170,7 +170,7 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
   // convert separators
   filePath = Dir::FromNativeSeparators(filePath);
 
-  egeDebug() << filePath;
+  egeDebug() << "Adding resources:" << filePath;
 
   // try to locate resource file in each data location
   // NOTE: if no AUTO-DETECTION is set we do exactly one search with a given filePath
