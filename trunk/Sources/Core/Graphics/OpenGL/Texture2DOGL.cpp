@@ -89,7 +89,7 @@ EGEResult Texture2DPrivate::create(const PDataBuffer& buffer)
 /*! Creates texture from given image data. */
 EGEResult Texture2DPrivate::create(const PImage& image)
 {
-  egeWarning() << "Creating texture" << image->width() << image->height() << image->format();
+  egeDebug() << "Creating texture" << image->width() << image->height() << image->format();
 
   // set texture data
   d_func()->m_width  = image->width();
@@ -239,7 +239,7 @@ EGEResult Texture2DPrivate::create(const PImage& image)
   m_internalFormat = internalFormat;
   m_typeFormat     = type;
 
-  egeWarning() << "Creating texture done" << image->width() << image->height() << image->format();
+  egeDebug() << "Creating texture done" << image->width() << image->height() << image->format();
 
   // check for error
   GLenum error;
