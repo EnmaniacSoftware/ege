@@ -71,6 +71,9 @@ bool AudioCodecWav::reset()
     stream = m_stream;
 
     stream->setReadOffset(0);
+
+    m_streamOffset = 0;
+
     AudioUtils::ReadWavHeaders(stream, m_riffHeader, m_fmtHeader, m_dataHeader);
   }
   else

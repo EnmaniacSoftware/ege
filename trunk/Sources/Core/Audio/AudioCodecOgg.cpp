@@ -32,18 +32,15 @@ static s16 ClipToS16(s32 value)
   return (s16) value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioCodecOgg::AudioCodecOgg(const PDataBuffer& stream) : AudioCodec(EGE_OBJECT_UID_AUDIO_CODEC_OGG, stream)
+AudioCodecOgg::AudioCodecOgg(const PDataBuffer& stream) : AudioCodec(EGE_OBJECT_UID_AUDIO_CODEC_OGG, stream), 
+                                                          m_codecStream(NULL)
 {
   reset();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioCodecOgg::~AudioCodecOgg()
 {
-  if (m_codecStream)
-  {
-    stb_vorbis_close(m_codecStream);
-    m_codecStream = NULL;
-  }
+  close();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* AudioCodec override. Decodes up to given number of samples. 
@@ -233,11 +230,18 @@ bool AudioCodecOgg::reset()
   int error;
   int streamDataUsed;
 
+  // close any opened stream
+  // TAGE - perhaps there is a way to reset if it is too expensive to close/reopen
+  close();
+
   PDataBuffer stream;
   if (EGE_OBJECT_UID_DATA_BUFFER == m_stream->uid())
   {
     stream = m_stream;
-
+    
+    // reset offset
+    stream->setReadOffset(0);
+    
     // initially supply up to 1024 bytes
     s32 dataLength = Math::Min(static_cast<s32>(1024), static_cast<s32>(stream->size()));
     do
@@ -293,6 +297,18 @@ bool AudioCodecOgg::reset()
   m_overflousDecodedSamples.setByteOrdering(LITTLE_ENDIAN);
 
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Closes stream. */
+void AudioCodecOgg::close()
+{
+  if (m_codecStream)
+  {
+    stb_vorbis_close(m_codecStream);
+    m_codecStream = NULL;
+  }
+
+  m_streamOffset = 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -8,15 +8,12 @@
 #include "Core/Audio/AudioCodec.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 struct stb_vorbis;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AudioCodecOgg : public AudioCodec
 {
   public:
@@ -62,6 +59,11 @@ class AudioCodecOgg : public AudioCodec
 
   private:
 
+    /* Closes stream. */
+    void close();
+
+  private:
+
     /*! STB vorbis stream object. */
     stb_vorbis* m_codecStream;
     /*! Buffer containing all samples which were decoded but were over the samples count requested. These will be used next time samples are requested before
@@ -69,7 +71,6 @@ class AudioCodecOgg : public AudioCodec
      */
     DataBuffer m_overflousDecodedSamples;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
