@@ -48,8 +48,8 @@ class Debug
     inline Debug& operator << (u16 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
     inline Debug& operator << (s32 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
     inline Debug& operator << (u32 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
-    inline Debug& operator << (s64 t) { m_buffer += String::Format("%ld", t); return maybeSpace(); }
-    inline Debug& operator << (u64 t) { m_buffer += String::Format("%ld", t); return maybeSpace(); }
+    inline Debug& operator << (s64 t) { m_buffer += String::Format("%d", (s32)t); return maybeSpace(); }
+    inline Debug& operator << (u64 t) { m_buffer += String::Format("%d", (u64)t); return maybeSpace(); }
     inline Debug& operator << (float32 t) { m_buffer += String::Format("%f", t); return maybeSpace(); }
     inline Debug& operator << (const char* t) { m_buffer += t; return maybeSpace(); }
     inline Debug& operator << (const String& t) { m_buffer += t; return maybeSpace(); }
@@ -103,7 +103,7 @@ class NoDebug
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define QT_NO_QDEBUG_MACRO while (false) egeDebug
 
-#ifndef EGE_FEATURE_DEBUG
+#ifdef EGE_FEATURE_DEBUG
 
 inline Debug egeDebug() { return Debug(DMT_NORMAL); }
 inline Debug egeWarning() { return Debug(DMT_WARNING); }

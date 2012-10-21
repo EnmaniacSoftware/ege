@@ -13,7 +13,7 @@ EGE_NAMESPACE_BEGIN
 #define EGE_DELETE(ptr) if (ptr) { delete ptr; ptr = NULL; }
 #define EGE_DELETE_ARR(ptr) if (ptr) { delete [] ptr; ptr = NULL; }
 
-#ifdef EGE_FEATURE_DEBUG
+#ifdef EGE_FEATURE_MEMORY_DEBUG
 
   #define EGE_REALLOC(data, size) MemoryManager::Realloc(data, size, __FILE__, __LINE__)
   #define EGE_MALLOC(size) MemoryManager::Malloc(size, __FILE__, __LINE__)
@@ -72,7 +72,7 @@ EGE_NAMESPACE_BEGIN
 
   #define ege_new new
 
-#endif // EGE_FEATURE_DEBUG
+#endif // EGE_FEATURE_MEMORY_DEBUG
 
 #define EGE_MEMCPY(dst, src, size) MemoryManager::MemCpy(dst, src, size)
 #define EGE_MEMSET(dst, c, size) MemoryManager::MemSet(dst, c, size)
