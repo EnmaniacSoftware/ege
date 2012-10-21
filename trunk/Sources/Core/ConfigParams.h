@@ -17,6 +17,7 @@ EGE_NAMESPACE_BEGIN
 #define EGE_RENDER_TARGET_PARAM_NAME       "name"
 #define EGE_RENDER_TARGET_PARAM_WIDTH      "width"
 #define EGE_RENDER_TARGET_PARAM_HEIGHT     "height"
+#define EGE_RENDER_TARGET_PARAM_ZOOM       "zoom"
 
 // render window specific
 #define EGE_RENDER_WINDOW_PARAM_DEPTH_BITS      "depth-bits"

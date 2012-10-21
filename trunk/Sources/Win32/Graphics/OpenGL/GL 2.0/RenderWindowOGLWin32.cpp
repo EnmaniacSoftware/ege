@@ -63,6 +63,10 @@ void RenderWindowOGLWin32::create(const Dictionary& params)
   m_physicalWidth  = m_width;
   m_physicalHeight = m_height;
 
+  // apply zoom to physical size
+  m_physicalWidth  = static_cast<s32>(m_physicalWidth * zoom());
+  m_physicalHeight = static_cast<s32>(m_physicalHeight * zoom());
+
   // setup wndclass
 	sWndclass.style         = CS_HREDRAW | CS_VREDRAW;	
   sWndclass.cbWndExtra    = 4;
@@ -103,9 +107,9 @@ void RenderWindowOGLWin32::create(const Dictionary& params)
 	RECT rcWindow;
 
 	rcWindow.left	  = 0;
-	rcWindow.right	= m_width;
+	rcWindow.right	= m_physicalWidth;
 	rcWindow.top	  = 0;		
-	rcWindow.bottom = m_height;
+	rcWindow.bottom = m_physicalHeight;
 
 	AdjustWindowRect(&rcWindow, dwStyles, false);
 
@@ -218,37 +222,55 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
     keyboardModifiers |= KM_SHIFT;
   }
 
+  s32 x;
+  s32 y;
+
   // process according to message
   switch (msg)
   {
     case WM_LBUTTONDOWN:
 
+      x = static_cast<s32>(LOWORD(lParam) / me->zoom());
+      y = static_cast<s32>(HIWORD(lParam) / me->zoom());
+
       me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(ACTION_BUTTON_DOWN, BUTTON_LEFT, keyboardModifiers, LOWORD(lParam), HIWORD(lParam), 0));
+                                      ege_new PointerData(ACTION_BUTTON_DOWN, BUTTON_LEFT, keyboardModifiers, x, y, 0));
       return 0;
 
     case WM_LBUTTONUP:
 
+      x = static_cast<s32>(LOWORD(lParam) / me->zoom());
+      y = static_cast<s32>(HIWORD(lParam) / me->zoom());
+
       me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(ACTION_BUTTON_UP, BUTTON_LEFT, keyboardModifiers, LOWORD(lParam), HIWORD(lParam), 0));
+                                      ege_new PointerData(ACTION_BUTTON_UP, BUTTON_LEFT, keyboardModifiers, x, y, 0));
       return 0;
 
     case WM_RBUTTONDOWN:
 
+      x = static_cast<s32>(LOWORD(lParam) / me->zoom());
+      y = static_cast<s32>(HIWORD(lParam) / me->zoom());
+
       me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(ACTION_BUTTON_DOWN, BUTTON_RIGHT, keyboardModifiers, LOWORD(lParam), HIWORD(lParam), 0));
+                                      ege_new PointerData(ACTION_BUTTON_DOWN, BUTTON_RIGHT, keyboardModifiers, x, y, 0));
       return 0;
 
     case WM_RBUTTONUP:
 
+      x = static_cast<s32>(LOWORD(lParam) / me->zoom());
+      y = static_cast<s32>(HIWORD(lParam) / me->zoom());
+
       me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(ACTION_BUTTON_UP, BUTTON_RIGHT, keyboardModifiers, LOWORD(lParam), HIWORD(lParam), 0));
+                                      ege_new PointerData(ACTION_BUTTON_UP, BUTTON_RIGHT, keyboardModifiers, x, y, 0));
       return 0;
 
     case WM_MOUSEMOVE:
 
+      x = static_cast<s32>(LOWORD(lParam) / me->zoom());
+      y = static_cast<s32>(HIWORD(lParam) / me->zoom());
+
       me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(ACTION_MOVE, BUTTON_NONE, keyboardModifiers, LOWORD(lParam), HIWORD(lParam), 0));
+                                      ege_new PointerData(ACTION_MOVE, BUTTON_NONE, keyboardModifiers, x, y, 0));
       return 0;
 
     case WM_SIZE:

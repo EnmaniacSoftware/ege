@@ -9,13 +9,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
 EGE_DECLARE_SMART_CLASS(Camera, PCamera)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class RenderTarget : public Object
 {
   public:
@@ -50,7 +47,7 @@ class RenderTarget : public Object
 		virtual bool requiresTextureFlipping() const = 0;
 
     /*! Returns target name. */
-    inline const String& name() const { return m_name; } 
+    const String& name() const { return m_name; } 
     /* Adds new viewport for target associated with given camera. */
     PViewport addViewport(const String& name, PCamera camera);
     /* Removes viewport with the given name from target. */
@@ -60,15 +57,17 @@ class RenderTarget : public Object
     /* Performs rendering for target. */
     void render();
     /*! Returns target logical width (in pixels). */
-    inline s32 width() const { return m_width; }
+    s32 width() const { return m_width; }
     /*! Returns target logical height (in pixels). */
-    inline s32 height() const { return m_height; }
+    s32 height() const { return m_height; }
     /*! Returns target physical width (in pixels). */
-    inline s32 physicalWidth() const { return m_physicalWidth; }
+    s32 physicalWidth() const { return m_physicalWidth; }
     /*! Returns target physical height (in pixels). */
-    inline s32 physicalHeight() const { return m_physicalHeight; }
+    s32 physicalHeight() const { return m_physicalHeight; }
+    /*! Returns zoom factor. */
+    float32 zoom() const { return m_zoom; }
     /*! Returns TRUE if target is enabled. */
-    inline bool isEnabled() const { return m_enabled; }
+     bool isEnabled() const { return m_enabled; }
     /* Enables/disables render target. */
     void setEnable(bool enable);
     /*! Returns orientation rotation. */
@@ -96,6 +95,8 @@ class RenderTarget : public Object
     s32 m_height;
     /*! Orientation rotation angle. */
     Angle m_orientationRotation;
+    /*! Zoom factor. */
+    float32 m_zoom;
 
   private:
 
@@ -110,7 +111,6 @@ class RenderTarget : public Object
     /*! Enable flag. */
     bool m_enabled;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

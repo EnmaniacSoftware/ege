@@ -16,16 +16,19 @@ RenderTarget::RenderTarget(Application* app, const Dictionary& params) : Object(
                                                                          m_width(0), 
                                                                          m_height(0), 
                                                                          m_orientationRotation(0.0f),
+                                                                         m_zoom(1.0f),
                                                                          m_enabled(true)
 {
   // decompose param list
   Dictionary::const_iterator iterName   = params.find(EGE_RENDER_TARGET_PARAM_NAME);
   Dictionary::const_iterator iterWidth  = params.find(EGE_RENDER_TARGET_PARAM_WIDTH);
   Dictionary::const_iterator iterHeight = params.find(EGE_RENDER_TARGET_PARAM_HEIGHT);
+  Dictionary::const_iterator iterZoom   = params.find(EGE_RENDER_TARGET_PARAM_ZOOM);
 
   m_name   = (iterName != params.end()) ? iterName->second : "";
   m_width  = (iterWidth != params.end()) ? iterWidth->second.toInt() : 0;
   m_height = (iterHeight != params.end()) ? iterHeight->second.toInt() : 0;
+  m_zoom   = (iterZoom != params.end()) ? iterZoom->second.toFloat() : 1.0f;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderTarget::~RenderTarget()

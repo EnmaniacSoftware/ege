@@ -4,8 +4,6 @@
 /** This class is intended to be a part of Camera class rather then stand alone instance.
  */
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include <EGE.h>
 #include <EGEMatrix.h>
 #include <EGERect.h>
@@ -15,7 +13,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Frustum : public Object
 {
   public:
@@ -131,7 +128,6 @@ class Frustum : public Object
     //virtual void invalidateView( void );                                                      // invalidates view
     //virtual void updateView( void );                                                          // updates view
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
