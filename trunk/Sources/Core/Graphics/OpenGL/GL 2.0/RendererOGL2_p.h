@@ -11,11 +11,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Renderer;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class RendererPrivate
 {
   public:
@@ -42,11 +39,11 @@ class RendererPrivate
     /* Detects rendering capabilities. */
     void detectCapabilities();
     /* Activates given texture unit. */
-    bool activateTextureUnit(u32 unit);
+    void activateTextureUnit(u32 unit);
     /* Checks if given extension is supported. */
     bool isExtensionSupported(const char* extension) const;
     /* Binds texture to target. */
-    bool bindTexture(GLenum target, GLuint textureId);
+    void bindTexture(GLenum target, GLuint textureId);
     /* Sets render target. */
     void setRenderTarget(const PRenderTarget& renderTarget);
     /* Applies general parameters. 
@@ -80,7 +77,6 @@ class RendererPrivate
     /*! Array of all extensions. */
     StringArray m_extensionArray;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

@@ -488,7 +488,7 @@ void RendererPrivate::applyPassParams(const PRenderComponent& component, const P
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Activates given texture unit. */
-bool RendererPrivate::activateTextureUnit(u32 unit)
+void RendererPrivate::activateTextureUnit(u32 unit)
 {
   // check if unit available
   if (unit < Device::TextureUnitsCount())
@@ -508,27 +508,17 @@ bool RendererPrivate::activateTextureUnit(u32 unit)
       glActiveTexture(GL_TEXTURE0 + unit);
       m_activeTextureUnit = unit;
 
-      return GL_NO_ERROR == glGetError();
+      OGL_CHECK();
     }
-
-    // same as current one
-    return true;
   }
-
-  // out of range
-  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Binds texture to target. */
-bool RendererPrivate::bindTexture(GLenum target, GLuint textureId)
+void RendererPrivate::bindTexture(GLenum target, GLuint textureId)
 {
   // enable target first
   glEnable(target);
-  if (GL_NO_ERROR != glGetError())
-  {
-    // error!
-    return false;
-  }
+  OGL_CHECK();
 
   // map texture target into texture binding query value
   GLenum textureBinding;
@@ -550,11 +540,8 @@ bool RendererPrivate::bindTexture(GLenum target, GLuint textureId)
   {
     // bind new texture to target
     glBindTexture(target, textureId);
-
-    return GL_NO_ERROR == glGetError();
+    OGL_CHECK();
   }
-
-  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Detects rendering capabilities. */
@@ -689,6 +676,14 @@ void RendererPrivate::applyGeneralParams(const PRenderComponent& component)
 
     clipRect = d_func()->applyRotation(clipRect, d_func()->m_renderTarget->orientationRotation());
 
+    // apply zoom
+    float32 zoom = d_func()->m_renderTarget->zoom();
+
+    clipRect.x      *= zoom;
+    clipRect.y      *= zoom;
+    clipRect.width  *= zoom;
+    clipRect.height *= zoom;
+
     glScissor(static_cast<GLint>(clipRect.x), static_cast<GLint>(clipRect.y), static_cast<GLsizei>(clipRect.width), static_cast<GLsizei>(clipRect.height));
   }
 
@@ -728,10 +723,8 @@ void* RendererPrivate::bindVertexBuffer(PVertexBuffer& buffer) const
       case EGE_OBJECT_UID_VERTEX_BUFFER_VBO:
 
         // bind VBO
-        if (!((VertexBufferVBO*) buffer.object())->bind())
-        {
-          egeWarning() << "RendererPrivate::flush - could not bind buffer";
-        }
+        // TAGE - why casting ?
+        ((VertexBufferVBO*) buffer.object())->bind();
 
         // set vertex data base to 0 as for VBO we use offsets
         data = 0;
@@ -762,10 +755,8 @@ void RendererPrivate::unbindVertexBuffer(PVertexBuffer& buffer) const
     case EGE_OBJECT_UID_VERTEX_BUFFER_VBO:
 
       // unbind VBO
-      if (!((VertexBufferVBO*) buffer.object())->unbind())
-      {
-        egeWarning() << "RendererPrivate::flush - could not unbind buffer";
-      }
+      // TAGE - why casting ?
+      ((VertexBufferVBO*) buffer.object())->unbind();
       break;
 
     default:
@@ -798,10 +789,8 @@ void* RendererPrivate::bindIndexBuffer(PIndexBuffer& buffer) const
       case EGE_OBJECT_UID_INDEX_BUFFER_VBO:
 
         // bind VBO
-        if (!((IndexBufferVBO*) buffer.object())->bind())
-        {
-          egeWarning() << "RendererPrivate::flush - could not bind buffer";
-        }
+        // TAGE - why casting ?
+        ((IndexBufferVBO*) buffer.object())->bind();
 
         // set index data base to 0 as for VBO we use offsets
         data = 0;
@@ -832,10 +821,8 @@ void RendererPrivate::unbindIndexBuffer(PIndexBuffer& buffer) const
     case EGE_OBJECT_UID_INDEX_BUFFER_VBO:
 
       // unbind VBO
-      if (!((IndexBufferVBO*) buffer.object())->unbind())
-      {
-        egeWarning() << "RendererPrivate::flush - could not unbind buffer";
-      }
+      // TAGE - why casting ?
+      ((IndexBufferVBO*) buffer.object())->unbind();
       break;
 
     default:

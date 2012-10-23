@@ -54,10 +54,7 @@ void RenderTextureCopyOGL::bind()
 void RenderTextureCopyOGL::unbind()
 {
   glBindTexture(textureTarget(), textureId());
-  if (GL_NO_ERROR != glGetError())
-  {
-    egeWarning() << "Could not bind texture";
-  }
+  OGL_CHECK();
   
   switch (m_textureTarget)
   {
@@ -65,12 +62,10 @@ void RenderTextureCopyOGL::unbind()
     //case GL_TEXTURE_CUBE_MAP:
 
       glCopyTexSubImage2D(faceTarget(), 0, 0, 0, 0, 0, width(), height());
-      if (GL_NO_ERROR != glGetError())
-      {
-        egeWarning() << "glCopyTexSubImage2D failed";
-      }
       break;
   }
+
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! RenderTarget override. Returns TRUE if texture flipping is required for this render target. */

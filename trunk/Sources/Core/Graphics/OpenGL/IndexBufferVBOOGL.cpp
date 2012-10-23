@@ -45,12 +45,7 @@ IndexBufferVBO::IndexBufferVBO(Application* app, EGEIndexBuffer::UsageType usage
                                                                                     m_mapping(NULL)
 {
   glGenBuffers(1, &m_id);
-  if (GL_NO_ERROR != glGetError())
-  {
-    // error!
-    egeWarning() << "Could not generate buffer!";
-    m_id = 0;
-  }
+  OGL_CHECK();
 
   // allocate shadow buffer
   m_shadowBuffer = ege_new DataBuffer();
@@ -121,11 +116,7 @@ void* IndexBufferVBO::lock(u32 offset, u32 count)
   else
   {
 	  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
-    if (GL_NO_ERROR != glGetError())
-    {
-      // error!
-      return NULL;
-    }
+    OGL_CHECK();
 
     // check if content is discardable
 	  if (m_usage & EGEIndexBuffer::UT_DISCARDABLE)
@@ -168,12 +159,7 @@ void IndexBufferVBO::unlock(void* data)
   EGE_UNUSED(data);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
-  if (GL_NO_ERROR != glGetError())
-  {
-    // error!
-    egeWarning() << "Could not bind buffer.";
-    return;
-  }
+  OGL_CHECK();
 
   // check if locked on shadow buffer
   if (m_shadowBufferLock)
@@ -183,10 +169,7 @@ void IndexBufferVBO::unlock(void* data)
     {
       // update buffer at once
       glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<u32>(m_shadowBuffer->size()), m_shadowBuffer->data(), MapUsageType(m_usage));
-      if (GL_NO_ERROR != glGetError())
-      {
-        egeWarning() << "Could not update entire buffer.";
-      }
+      OGL_CHECK();
     }
     else
     {
@@ -199,11 +182,7 @@ void IndexBufferVBO::unlock(void* data)
 
       glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, m_lockOffset * indexSize(), m_lockLength * indexSize(), 
                       m_shadowBuffer->data(static_cast<s64>(m_lockOffset) * indexSize()));
-      if (GL_NO_ERROR != glGetError())
-      {
-        // error!
-        egeWarning() << "Could not update buffer.";
-      }
+      OGL_CHECK();
     }
 
     // reset flag
@@ -216,11 +195,7 @@ void IndexBufferVBO::unlock(void* data)
 
     // unmap
     glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
-    if (GL_NO_ERROR != glGetError())
-    {
-      // error!
-      egeWarning() << "Could not unmap buffer.";
-    }
+    OGL_CHECK();
 
     // reset data
     m_mapping = NULL;
@@ -238,19 +213,11 @@ bool IndexBufferVBO::reallocateBuffer(u32 count)
   {
     // bind buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
-    if (GL_NO_ERROR != glGetError())
-    {
-      // error!
-      return false;
-    }
+    OGL_CHECK();
 
     // allocate enough space
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * indexSize(), NULL, MapUsageType(m_usage));
-    if (GL_NO_ERROR != glGetError())
-    {
-      // error!
-      return false;
-    }
+    OGL_CHECK();
 
     // allocate shadow buffer
     if (EGE_SUCCESS != m_shadowBuffer->setSize(static_cast<s64>(count) * indexSize()))
@@ -267,17 +234,17 @@ bool IndexBufferVBO::reallocateBuffer(u32 count)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Binds buffer. */
-bool IndexBufferVBO::bind()
+void IndexBufferVBO::bind()
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
-  return (GL_NO_ERROR == glGetError());
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Unbinds buffer. */
-bool IndexBufferVBO::unbind()
+void IndexBufferVBO::unbind()
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-  return (GL_NO_ERROR == glGetError());
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! VertexBuffer override. Destroys buffer. */

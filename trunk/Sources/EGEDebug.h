@@ -25,8 +25,6 @@ EGE_NAMESPACE_END
 #define EGE_ASSERT(cond) ((!(cond)) ? Debug::Assert(#cond, __FILE__, __LINE__) : ege_noop())
 #define EGE_LOG(text, ...) ege_noop()
 
-#define CHECK_GL_ERROR() if (GL_NO_ERROR == glGetError()) { egeWarning() << "OpenGL error!"; }
-
 #else
 
 #define EGE_ASSERT(cond) ege_noop()

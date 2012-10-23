@@ -42,11 +42,11 @@ class RendererPrivate
     /* Detects rendering capabilities. */
     void detectCapabilities();
     /* Activates given texture unit. */
-    bool activateTextureUnit(u32 unit);
+    void activateTextureUnit(u32 unit);
     /* Checks if given extension is supported. */
     bool isExtensionSupported(const char* extension) const;
     /* Binds texture to target. */
-    bool bindTexture(GLenum target, GLuint textureId);
+    void bindTexture(GLenum target, GLuint textureId);
     /* Sets render target. */
     void setRenderTarget(const PRenderTarget& renderTarget);
     /* Applies general parameters. 

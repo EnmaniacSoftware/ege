@@ -242,12 +242,7 @@ EGEResult Texture2DPrivate::create(const PImage& image)
   egeDebug() << "Creating texture done" << image->width() << image->height() << image->format();
 
   // check for error
-  GLenum error;
-  if (GL_NO_ERROR != (error = glGetError()))
-  {
-    // error!
-    return EGE_ERROR;
-  }
+  OGL_CHECK();
 
   return EGE_SUCCESS;
 }

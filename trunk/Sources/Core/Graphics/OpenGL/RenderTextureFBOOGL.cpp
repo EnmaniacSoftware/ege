@@ -81,11 +81,7 @@ void RenderTextureFBOOGL::bind()
 {
   // bind to FBO
   glBindFramebuffer(GL_FRAMEBUFFER_EXT, frameBufferObjectId());
-
-  if (GL_NO_ERROR != glGetError())
-  {
-    egeWarning() << "Could not bind framebuffer!";
-  }
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! RenderTarget override. Unbinds render target. */
@@ -93,11 +89,7 @@ void RenderTextureFBOOGL::unbind()
 {
   // bind default
   glBindFramebuffer(GL_FRAMEBUFFER_EXT, m_defaultFBOId);
-
-  if (GL_NO_ERROR != glGetError())
-  {
-    egeWarning() << "Could not unbind framebuffer!";
-  }
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! RenderTarget override. Returns TRUE if texture flipping is required for this render target. */

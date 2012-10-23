@@ -47,9 +47,9 @@ class VertexBufferVBO : public VertexBuffer
     u32 vertexCapacity() const override { return m_vertexCapacity; }
 
     /* Binds buffer. */
-    bool bind();
+    void bind();
     /* Unbinds buffer. */
-    bool unbind();
+    void unbind();
 
   private:
 

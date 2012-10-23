@@ -48,9 +48,9 @@ class IndexBufferVBO : public IndexBuffer
     u32 indexCapacity() const override { return m_indexCapacity; }
 
     /* Binds buffer. */
-    bool bind();
+    void bind();
     /* Unbinds buffer. */
-    bool unbind();
+    void unbind();
 
   private:
 
