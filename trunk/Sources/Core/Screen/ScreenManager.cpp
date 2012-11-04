@@ -139,8 +139,13 @@ void ScreenManager::remove(PScreen screen)
     // remove it
     m_screens.remove(screen);
 
-    // uncover current top
-    top()->uncover();
+    PScreen currentTop = top();
+
+    // uncover current top if any
+    if (NULL != currentTop)
+    {
+      currentTop->uncover();
+    }
   }
   else
   {
