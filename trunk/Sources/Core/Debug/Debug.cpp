@@ -1,125 +1,136 @@
-//#include "Core/Debug/Debug.h"
-//#include <EGEString.h>
-//
-//EGE_NAMESPACE_BEGIN
-//
-//Debug::Debug(DebugMsgType type) : m_referenceCounter(1), m_consoleOutput(true), m_spaceSeperated(true), m_type(type) 
-//{
-//  switch (m_type)
-//  {
-//    case DMT_WARNING:   m_buffer = "WARNING: "; break;
-//    case DMT_CRITICAL:  m_buffer = "CRITICAL: "; break;
-//  }
-//}
-//
-//Debug::Debug(const Debug& other) : m_consoleOutput(other.m_consoleOutput), m_spaceSeperated(other.m_spaceSeperated), m_type(other.m_type)
-//{
-//  m_buffer = other.m_buffer;
-//  m_referenceCounter = other.m_referenceCounter + 1;
-//}
-//
-//Debug::~Debug()
-//{
-//  if (0 == (--m_referenceCounter))
-//  {
-//    if (m_consoleOutput)
-//    {
-//      Print(m_buffer.toAscii());
-//    }
-//  }
-//}
-//
-//Debug& Debug::operator << (bool t)
-//{ 
-//  m_buffer += String::Format("%s", t ? "true" : "false"); 
-//  return maybeSpace(); 
-//}
-//
-//Debug& Debug::operator << (char t)
-//{ 
-//  m_buffer += String::Format("%c", t); 
-//  return maybeSpace(); 
-//}
-//
-//Debug& Debug::operator << (Char t) 
-//{ 
-//  m_buffer += String::Format("%C", t); 
-//  return maybeSpace(); 
-//}
-//
-//Debug& Debug::operator << (s16 t) 
-//{ 
-//  m_buffer += String::Format("%d", t); 
-//  return maybeSpace(); 
-//}
-//
-//Debug& Debug::operator << (u16 t) 
-//{ 
-//  m_buffer += String::Format("%d", t); 
-//  return maybeSpace(); 
-//}
-//
-//Debug& Debug::operator << (s32 t) 
-//{ 
-//  m_buffer += String::Format("%d", t); 
-//  return maybeSpace(); 
-//}
-//
-//Debug& Debug::operator << (u32 t) 
-//{ 
-//  m_buffer += String::Format("%d", t); 
-//  return maybeSpace(); 
-//}
-//
-//Debug& Debug::operator << (s64 t) 
-//{ 
-//  m_buffer += String::Format("%ld", t); 
-//  return maybeSpace(); 
-//}
-//
-//Debug& Debug::operator << (u64 t) 
-//{ 
-//  m_buffer += String::Format("%ld", t); 
-//  return maybeSpace(); 
-//}
-//
-//Debug& Debug::operator << (float32 t) 
-//{ 
-//  m_buffer += String::Format("%f", t); 
-//  return maybeSpace(); 
-//}
-//
-//Debug& Debug::operator << (const char* t) 
-//{ 
-//  m_buffer += t; return maybeSpace(); 
-//}
-//
-//Debug& Debug::operator << (const void* t) 
-//{ 
-//  m_buffer += String::Format("%p", t); 
-//  return maybeSpace(); 
-//}
-//
-//Debug& Debug::space() 
-//{ 
-//  m_spaceSeperated = true; 
-//  return maybeSpace(); 
-//}
-//
-//Debug& Debug::nospace() 
-//{ 
-//  m_spaceSeperated = false; 
-//  return *this; 
-//}
-//
-//Debug& Debug::maybeSpace() 
-//{ 
-//  if (m_spaceSeperated) 
-//  {
-//    m_buffer += " ";
-//  }
-//  
-//  return *this; 
-//}
-//
-//EGE_NAMESPACE_END
+#include "Core/Debug/Debug.h"
+
+EGE_NAMESPACE_BEGIN
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug::Debug(DebugMsgType type) : m_referenceCounter(1), m_consoleOutput(true), m_spaceSeperated(true), m_type(type) 
+{
+  switch (m_type)
+  {
+    case DMT_WARNING:   m_buffer = "WARNING: "; break;
+    case DMT_CRITICAL:  m_buffer = "CRITICAL: "; break;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug::Debug(const Debug& other) : m_consoleOutput(other.m_consoleOutput), m_spaceSeperated(other.m_spaceSeperated), m_type(other.m_type)
+{
+  m_buffer = other.m_buffer;
+  m_referenceCounter = other.m_referenceCounter + 1;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug::~Debug()
+{
+  if (0 == (--m_referenceCounter))
+  {
+    if (m_consoleOutput)
+    {
+      Print(m_buffer.toAscii());
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& Debug::operator << (bool t)
+{ 
+  m_buffer += String::Format("%s", t ? "true" : "false"); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& Debug::operator << (char t)
+{ 
+  m_buffer += String::Format("%c", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& Debug::operator << (Char t) 
+{ 
+  m_buffer += String::Format("%C", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& Debug::operator << (s16 t) 
+{ 
+  m_buffer += String::Format("%d", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& Debug::operator << (u16 t) 
+{ 
+  m_buffer += String::Format("%d", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& Debug::operator << (s32 t) 
+{ 
+  m_buffer += String::Format("%d", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& Debug::operator << (u32 t) 
+{ 
+  m_buffer += String::Format("%d", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& Debug::operator << (s64 t) 
+{ 
+  m_buffer += String::Format("%ld", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& Debug::operator << (u64 t) 
+{ 
+  m_buffer += String::Format("%ld", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& Debug::operator << (float32 t) 
+{ 
+  m_buffer += String::Format("%f", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& Debug::operator << (const char* t) 
+{ 
+  m_buffer += t; 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& Debug::operator << (const String& t)
+{
+  m_buffer += t; 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug& Debug::operator << (const void* t) 
+{ 
+  m_buffer += String::Format("%p", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Enables spaces insertions after each logged message. */
+Debug& Debug::space()
+{ 
+  m_spaceSeperated = true; 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Disables spaces insertions after each logged message. */    
+Debug& Debug::nospace() 
+{ 
+  m_spaceSeperated = false; 
+  return *this; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Inserts space into the stream if required. */
+Debug& Debug::maybeSpace() 
+{ 
+  if (m_spaceSeperated)
+  {
+    m_buffer += " ";
+  }
+  
+  return *this; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

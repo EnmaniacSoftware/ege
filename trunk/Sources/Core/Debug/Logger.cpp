@@ -4,21 +4,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Writes current buffer to file. */
-void Logger::write()
-{
-  File file(m_fileName);
-  
-  // open file
-  if (EGE_SUCCESS == file.open(EGEFile::MODE_APPEND))
-  {
-    // store data  
-    DataBuffer buf((void*) m_buffer.toAscii(), m_buffer.length());    
-    file.write(buf, buf.size());   
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger::Logger(const String& logFileName, bool timeStamp) : m_referenceCounter(1), m_spaceSeperated(true), m_timeStampEnabled(timeStamp)
 {
   m_fileName = logFileName;
@@ -139,6 +124,22 @@ Logger& Logger::operator << (const void* t)
   m_buffer += String::Format("%p", t); 
   return maybeSpace(); 
 }
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Writes current buffer to file. */
+void Logger::write()
+{
+  File file(m_fileName);
+  
+  // open file
+  if (EGE_SUCCESS == file.open(EGEFile::MODE_APPEND))
+  {
+    // store data  
+    DataBuffer buf((void*) m_buffer.toAscii(), m_buffer.length());    
+    file.write(buf, buf.size());   
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 /////////////////////////////////////////////////////////////
 // PUBLICS
 

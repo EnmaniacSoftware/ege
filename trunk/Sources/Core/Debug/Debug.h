@@ -15,48 +15,28 @@ class Debug
 {
   public:
 
-    Debug(DebugMsgType type) : m_referenceCounter(1), m_consoleOutput(true), m_spaceSeperated(true), m_type(type) 
-    {
-      switch (m_type)
-      {
-        case DMT_WARNING:   m_buffer = "WARNING: "; break;
-        case DMT_CRITICAL:  m_buffer = "CRITICAL: "; break;
-      }
-    }
+    Debug(DebugMsgType type);
+    Debug(const Debug& other);
+   ~Debug();
 
-    Debug(const Debug& other) : m_consoleOutput(other.m_consoleOutput), m_spaceSeperated(other.m_spaceSeperated), m_type(other.m_type)
-    {
-      m_buffer = other.m_buffer;
-      m_referenceCounter = other.m_referenceCounter + 1;
-    }
+    Debug& operator << (bool t);
+    Debug& operator << (char t);
+    Debug& operator << (Char t);
+    Debug& operator << (s16 t);
+    Debug& operator << (u16 t);
+    Debug& operator << (s32 t);
+    Debug& operator << (u32 t);
+    Debug& operator << (s64 t);
+    Debug& operator << (u64 t);
+    Debug& operator << (float32 t);
+    Debug& operator << (const char* t);
+    Debug& operator << (const String& t);
+    Debug& operator << (const void* t);
 
-    ~Debug()
-    {
-      if (0 == (--m_referenceCounter))
-      {
-        if (m_consoleOutput)
-        {
-          Print(m_buffer.toAscii());
-        }
-      }
-    }
-
-    Debug& operator << (bool t) { m_buffer += String::Format("%s", t ? "true" : "false"); return maybeSpace(); }
-    Debug& operator << (char t) { m_buffer += String::Format("%c", t); return maybeSpace(); }
-    Debug& operator << (Char t) { m_buffer += String::Format("%C", t); return maybeSpace(); }
-    Debug& operator << (s16 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
-    Debug& operator << (u16 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
-    Debug& operator << (s32 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
-    Debug& operator << (u32 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
-    Debug& operator << (s64 t) { m_buffer += String::Format("%d", (s32)t); return maybeSpace(); }
-    Debug& operator << (u64 t) { m_buffer += String::Format("%d", (u64)t); return maybeSpace(); }
-    Debug& operator << (float32 t) { m_buffer += String::Format("%f", t); return maybeSpace(); }
-    Debug& operator << (const char* t) { m_buffer += t; return maybeSpace(); }
-    Debug& operator << (const String& t) { m_buffer += t; return maybeSpace(); }
-    Debug& operator << (const void* t) { m_buffer += String::Format("%p", t); return maybeSpace(); }
-
-    Debug& space() { m_spaceSeperated = true; return maybeSpace(); }
-    Debug& nospace() { m_spaceSeperated = false; return *this; }
+    /* Enables spaces insertions after each logged message. */
+    Debug& space();
+    /* Disables spaces insertions after each logged message. */    
+    Debug& nospace();
 
   public:
 
@@ -70,7 +50,8 @@ class Debug
 
   private:
 
-    Debug& maybeSpace() { if (m_spaceSeperated) m_buffer += " "; return *this; }
+    /* Inserts space into the stream if required. */
+    Debug& maybeSpace();
 
   private:
 

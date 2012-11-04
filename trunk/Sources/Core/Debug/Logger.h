@@ -28,16 +28,14 @@ class Logger
     Logger& operator << (const String& t);
     Logger& operator << (const void* t);
 
-    /*! Enables spaces insertions after each logged message. */
+    /* Enables spaces insertions after each logged message. */
     Logger& space();
-    /*! Disables spaces insertions after each logged message. */    
+    /* Disables spaces insertions after each logged message. */    
     Logger& nospace();
-
-    //void enableTimeStamps( bool bEnable );
 
   private:
 
-    /*! Inserts space into the stream if required. */
+    /* Inserts space into the stream if required. */
     Logger& maybeSpace();
     /* Writes current buffer to file. */
     void write();
