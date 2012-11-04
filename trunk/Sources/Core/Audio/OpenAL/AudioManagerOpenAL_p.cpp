@@ -37,7 +37,7 @@ AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base),
   }
   else
   {
-    EGE_LOG("Could not open device");
+    egeCritical() << "Could not open device";
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

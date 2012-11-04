@@ -65,8 +65,6 @@ EGEResult Application::initialize(const Dictionary& params)
 {
   EGEResult result;
 
-  EGE_LOG("Application::initialize");
-
   // check landscape mode
   m_landscapeMode = false;
   Dictionary::const_iterator iterLandscape = params.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
@@ -75,18 +73,7 @@ EGEResult Application::initialize(const Dictionary& params)
     m_landscapeMode = iterLandscape->second.toBool();
   }
   
-  // create debug object
-  EGE_LOG("Application::initialize - creating Debug");
-
-  //m_debug = ege_new Debug(this);
-  //if (NULL == m_debug)
-  //{
-  //  // error!
-  //  return EGE_ERROR_NO_MEMORY;
-  //}
-
   // create desktop services
-  EGE_LOG("Application::initialize - creating DesktopServices");
   m_desktopServices = ege_new DesktopServices();
   if (NULL == m_desktopServices || !m_desktopServices->isValid())
   {
@@ -95,7 +82,6 @@ EGEResult Application::initialize(const Dictionary& params)
   }
 
   // create event manager
-  EGE_LOG("Application::initialize - creating EventManager");
   m_eventManager = ege_new EventManager(this);
   if (NULL == m_eventManager)
   {
@@ -104,7 +90,6 @@ EGEResult Application::initialize(const Dictionary& params)
   }
 
   // create graphics
-  EGE_LOG("Application::initialize - creating Graphics");
   // NOTE: must be before ResourceManager
   m_graphics = ege_new Graphics(this, params);
   if (NULL == m_graphics || !m_graphics->isValid())
@@ -114,7 +99,6 @@ EGEResult Application::initialize(const Dictionary& params)
   }
 
   // create resource manager
-  EGE_LOG("Application::initialize - creating ResourceManager");
   m_resourceManager = ege_new ResourceManager(this);
   if (NULL == m_resourceManager || !m_resourceManager->isValid())
   {
@@ -123,7 +107,6 @@ EGEResult Application::initialize(const Dictionary& params)
   }
 
   // create physics manager
-  EGE_LOG("Application::initialize - creating PhysicsManager");
   m_physicsManager = ege_new PhysicsManager(this, params);
   if (NULL == m_physicsManager || !m_physicsManager->isValid())
   {
@@ -132,7 +115,6 @@ EGEResult Application::initialize(const Dictionary& params)
   }
 
   // create scene manager
-  EGE_LOG("Application::initialize - creating SceneManager");
   m_sceneManager = ege_new SceneManager(this);
   if (NULL == m_sceneManager || !m_sceneManager->isValid())
   {
@@ -141,7 +123,6 @@ EGEResult Application::initialize(const Dictionary& params)
   }
 
   // create overlay manager
-  EGE_LOG("Application::initialize - creating OverlayManager");
   m_overlayManager = ege_new OverlayManager(this);
   if (NULL == m_overlayManager)
   {
@@ -150,7 +131,6 @@ EGEResult Application::initialize(const Dictionary& params)
   }
 
   // create application controller
-  EGE_LOG("Application::initialize - creating AppController");
   m_appController = ege_new AppController(this, params);
   if (NULL == m_appController || !m_appController->isValid())
   {
@@ -159,7 +139,6 @@ EGEResult Application::initialize(const Dictionary& params)
   }
 
   // create pointer input
-  EGE_LOG("Application::initialize - creating Pointer");
   m_pointer = ege_new Pointer(this);
   if (NULL == m_pointer || !m_pointer->isValid())
   {
@@ -168,7 +147,6 @@ EGEResult Application::initialize(const Dictionary& params)
   }
 
   // create screen manager
-  EGE_LOG("Application::initialize - creating ScreenManager");
   m_screenManager = ege_new ScreenManager(this);
   if (NULL == m_screenManager)
   {
@@ -177,7 +155,6 @@ EGEResult Application::initialize(const Dictionary& params)
   }
 
   // create audio manager
-  EGE_LOG("Application::initialize - creating AudioManager");
   m_audioManager = ege_new AudioManager(this);
   if (NULL == m_audioManager)
   {

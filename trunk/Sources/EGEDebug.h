@@ -23,13 +23,10 @@ EGE_NAMESPACE_END
 #ifdef EGE_FEATURE_DEBUG
 
 #define EGE_ASSERT(cond) ((!(cond)) ? Debug::Assert(#cond, __FILE__, __LINE__) : ege_noop())
-#define EGE_LOG(text, ...) ege_noop()
 
 #else
 
 #define EGE_ASSERT(cond) ege_noop()
-#define EGE_LOG(text, ...) ege_noop()
-#define CHECK_GL_ERROR() ege_noop()
 
 #endif // EGE_FEATURE_DEBUG
 

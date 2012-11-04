@@ -15,7 +15,7 @@ class Debug
 {
   public:
 
-    inline Debug(DebugMsgType type) : m_referenceCounter(1), m_consoleOutput(true), m_spaceSeperated(true), m_type(type) 
+    Debug(DebugMsgType type) : m_referenceCounter(1), m_consoleOutput(true), m_spaceSeperated(true), m_type(type) 
     {
       switch (m_type)
       {
@@ -24,13 +24,13 @@ class Debug
       }
     }
 
-    inline Debug(const Debug& other) : m_consoleOutput(other.m_consoleOutput), m_spaceSeperated(other.m_spaceSeperated), m_type(other.m_type)
+    Debug(const Debug& other) : m_consoleOutput(other.m_consoleOutput), m_spaceSeperated(other.m_spaceSeperated), m_type(other.m_type)
     {
       m_buffer = other.m_buffer;
       m_referenceCounter = other.m_referenceCounter + 1;
     }
 
-    inline ~Debug()
+    ~Debug()
     {
       if (0 == (--m_referenceCounter))
       {
@@ -41,22 +41,22 @@ class Debug
       }
     }
 
-    inline Debug& operator << (bool t) { m_buffer += String::Format("%s", t ? "true" : "false"); return maybeSpace(); }
-    inline Debug& operator << (char t) { m_buffer += String::Format("%c", t); return maybeSpace(); }
-    inline Debug& operator << (Char t) { m_buffer += String::Format("%C", t); return maybeSpace(); }
-    inline Debug& operator << (s16 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
-    inline Debug& operator << (u16 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
-    inline Debug& operator << (s32 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
-    inline Debug& operator << (u32 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
-    inline Debug& operator << (s64 t) { m_buffer += String::Format("%d", (s32)t); return maybeSpace(); }
-    inline Debug& operator << (u64 t) { m_buffer += String::Format("%d", (u64)t); return maybeSpace(); }
-    inline Debug& operator << (float32 t) { m_buffer += String::Format("%f", t); return maybeSpace(); }
-    inline Debug& operator << (const char* t) { m_buffer += t; return maybeSpace(); }
-    inline Debug& operator << (const String& t) { m_buffer += t; return maybeSpace(); }
-    inline Debug& operator << (const void* t) { m_buffer += String::Format("%p", t); return maybeSpace(); }
+    Debug& operator << (bool t) { m_buffer += String::Format("%s", t ? "true" : "false"); return maybeSpace(); }
+    Debug& operator << (char t) { m_buffer += String::Format("%c", t); return maybeSpace(); }
+    Debug& operator << (Char t) { m_buffer += String::Format("%C", t); return maybeSpace(); }
+    Debug& operator << (s16 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
+    Debug& operator << (u16 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
+    Debug& operator << (s32 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
+    Debug& operator << (u32 t) { m_buffer += String::Format("%d", t); return maybeSpace(); }
+    Debug& operator << (s64 t) { m_buffer += String::Format("%d", (s32)t); return maybeSpace(); }
+    Debug& operator << (u64 t) { m_buffer += String::Format("%d", (u64)t); return maybeSpace(); }
+    Debug& operator << (float32 t) { m_buffer += String::Format("%f", t); return maybeSpace(); }
+    Debug& operator << (const char* t) { m_buffer += t; return maybeSpace(); }
+    Debug& operator << (const String& t) { m_buffer += t; return maybeSpace(); }
+    Debug& operator << (const void* t) { m_buffer += String::Format("%p", t); return maybeSpace(); }
 
-    inline Debug& space() { m_spaceSeperated = true; return maybeSpace(); }
-    inline Debug& nospace() { m_spaceSeperated = false; return *this; }
+    Debug& space() { m_spaceSeperated = true; return maybeSpace(); }
+    Debug& nospace() { m_spaceSeperated = false; return *this; }
 
   public:
 
@@ -70,7 +70,7 @@ class Debug
 
   private:
 
-    inline Debug& maybeSpace() { if (m_spaceSeperated) m_buffer += " "; return *this; }
+    Debug& maybeSpace() { if (m_spaceSeperated) m_buffer += " "; return *this; }
 
   private:
 
@@ -101,7 +101,7 @@ class NoDebug
     inline NoDebug& operator << (const T&) { return *this; }
 }; 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define QT_NO_QDEBUG_MACRO while (false) egeDebug
+#define EGE_NO_DEBUG_MACRO while (false) egeDebug
 
 #ifdef EGE_FEATURE_DEBUG
 
@@ -115,7 +115,7 @@ inline Debug egeCritical() { return Debug(DMT_CRITICAL); }
 inline EGE::NoDebug egeDebug() { return EGE::NoDebug(); }
 inline EGE::NoDebug egeWarning() { return EGE::NoDebug(); }
 inline EGE::NoDebug egeCritical() { return EGE::NoDebug(); }
-#define egeDebug QT_NO_QDEBUG_MACRO
+#define egeDebug EGE_NO_DEBUG_MACRO
 
 #endif // EGE_FEATURE_DEBUG
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

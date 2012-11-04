@@ -51,6 +51,7 @@ files
   EGEIndexBuffer.h
   EGEInput.h
   EGEList.h
+  EGELog.h
   EGEMap.h
   EGEMaterial.h
 	EGEMath.h

@@ -1,71 +1,144 @@
 #include "Core/Debug/Logger.h"
-#include "Core/Data/DataBuffer.h"
+#include <EGEFile.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(Logger)
-EGE_DEFINE_DELETE_OPERATORS(Logger)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Logger::Logger(const String& filePath, bool timeStampEnabled) : m_file(filePath), 
-                                                                m_timeStampEnabled(timeStampEnabled)
+/*! Writes current buffer to file. */
+void Logger::write()
 {
-  write("----------------- Logger session opened -----------------\n");
+  File file(m_fileName);
+  
+  // open file
+  if (EGE_SUCCESS == file.open(EGEFile::MODE_APPEND))
+  {
+    // store data  
+    DataBuffer buf((void*) m_buffer.toAscii(), m_buffer.length());    
+    file.write(buf, buf.size());   
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger::Logger(const String& logFileName, bool timeStamp) : m_referenceCounter(1), m_spaceSeperated(true), m_timeStampEnabled(timeStamp)
+{
+  m_fileName = logFileName;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger::Logger(const Logger& other) : m_spaceSeperated(other.m_spaceSeperated), m_timeStampEnabled(other.m_timeStampEnabled)
+{
+  m_fileName          = other.m_fileName;
+  m_buffer            = other.m_buffer;
+  m_referenceCounter  = other.m_referenceCounter + 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger::~Logger()
 {
-  write("\n--------------- Logger session ended --------------------\n");
-  m_file.close();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool Logger::isValid() const
-{
-  return true;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Opens logger. */
-EGEResult Logger::open()
-{
-  if (isValid())
+  if (0 == (--m_referenceCounter))
   {
-    return m_file.open(EGEFile::MODE_APPEND);
-  }
-
-  return EGE_ERROR;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Closes logger. */
-void Logger::close()
-{
-  if (isValid())
-  {
-    m_file.close();
+    // write log
+    write();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Writes text. */
-EGEResult Logger::write(const String& text)
-{
-  s64 written = 0;
-
-  if (isValid())
-  {
-    if (EGE_SUCCESS == open())
-    {
-      DataBuffer buf((void*) text.toAscii(), text.length() + 1);
-      *reinterpret_cast<s8*>(buf.data(text.length())) = 0xA;
-      written = m_file.write(buf, buf.size());
-      
-      close();
-    }
-  }
-
-  return (written >= (s64) text.length()) ? EGE_SUCCESS : EGE_ERROR;
+Logger& Logger::space() 
+{ 
+  m_spaceSeperated = true; 
+  return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+Logger& Logger::nospace() 
+{ 
+  m_spaceSeperated = false; 
+  return *this; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger& Logger::maybeSpace() 
+{ 
+  if (m_spaceSeperated)
+  {
+    m_buffer += " ";
+  }
+  
+  return *this; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger& Logger::operator << (bool t)
+{ 
+  m_buffer += String::Format("%s", t ? "true" : "false"); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger& Logger::operator << (char t) 
+{ 
+  m_buffer += String::Format("%c", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger& Logger::operator << (Char t) 
+{ 
+  m_buffer += String::Format("%C", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger& Logger::operator << (s16 t) 
+{ 
+  m_buffer += String::Format("%d", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger& Logger::operator << (u16 t) 
+{ 
+  m_buffer += String::Format("%d", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger& Logger::operator << (s32 t) 
+{ 
+  m_buffer += String::Format("%d", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger& Logger::operator << (u32 t) 
+{ 
+  m_buffer += String::Format("%d", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger& Logger::operator << (s64 t) 
+{ 
+  m_buffer += String::Format("%d", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger& Logger::operator << (u64 t) 
+{ 
+  m_buffer += String::Format("%d", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger& Logger::operator << (float32 t) 
+{ 
+  m_buffer += String::Format("%f", t); 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger& Logger::operator << (const char* t) 
+{ 
+  m_buffer += t; 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger& Logger::operator << (const String& t) 
+{ 
+  m_buffer += t; 
+  return maybeSpace(); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Logger& Logger::operator << (const void* t) 
+{ 
+  m_buffer += String::Format("%p", t); 
+  return maybeSpace(); 
+}
 /////////////////////////////////////////////////////////////
 // PUBLICS
 

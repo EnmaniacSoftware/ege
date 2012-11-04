@@ -1429,6 +1429,7 @@
     <ClInclude Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.h">
       <Filter>Win32\NativeUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\EGELog.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">
