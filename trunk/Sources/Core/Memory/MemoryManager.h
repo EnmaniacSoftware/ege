@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_MEMORYMANAGER_H
 #define EGE_CORE_MEMORYMANAGER_H
 
-#include "Core/Platform.h"
+#include <EGE.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -27,9 +27,12 @@ class MemoryManager
     static void* MemMove(void* dst, const void* src, size_t size);
     static void* MemSet(void* dst, int c, size_t size);
 
+    static u64 BytesAllocated();
+
   private:
 
     bool addAlloc(void* data, size_t size, const char* fileName, int line);
+    bool doRealloc(void* data, void* newData, size_t size);
     void removeAlloc(void* data);
     void finalize();
     bool internalRealloc(int newSize);
@@ -41,14 +44,15 @@ class MemoryManager
       void* pData;
       size_t size;
       const char* pszFileName;
-      int iLine;
-      int iCount;
+      s32 iLine;
+      s32 iCount;
     };
 
     SALLOCDATA* m_psAllocs;
 
-    int m_iAllocCount;
-    int m_iAllocUsed;
+    s32 m_allocCount;
+    s32 m_allocUsed;
+    u64 m_bytesAllocated;
 
     static MemoryManager* m_instance;
 };
