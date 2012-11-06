@@ -139,9 +139,6 @@
     <Filter Include="Core\Graphics\Particle">
       <UniqueIdentifier>{4b87de33-b883-48cb-9822-856766c15071}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Tools">
-      <UniqueIdentifier>{f5c8dafe-d484-49e1-8244-af8492ad3398}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Win32\Tools">
       <UniqueIdentifier>{456ea8d8-688c-4555-a9e6-bfb22637b52c}</UniqueIdentifier>
     </Filter>
@@ -207,6 +204,9 @@
     </Filter>
     <Filter Include="Win32\NativeUI">
       <UniqueIdentifier>{d4765eae-b506-4d5e-a245-231de9637e02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Timer\Tools">
+      <UniqueIdentifier>{f5c8dafe-d484-49e1-8244-af8492ad3398}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -526,7 +526,7 @@
       <Filter>Core\Resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Tools\DesktopServices.cpp">
-      <Filter>Core\Tools</Filter>
+      <Filter>Core\Timer\Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.cpp">
       <Filter>Win32\Tools</Filter>
@@ -553,7 +553,7 @@
       <Filter>Core\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Tools\ByteOrder.cpp">
-      <Filter>Core\Tools</Filter>
+      <Filter>Core\Timer\Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecWav.cpp">
       <Filter>Core\Audio</Filter>
@@ -1181,7 +1181,7 @@
       <Filter>Core\Resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Tools\DesktopServices.h">
-      <Filter>Core\Tools</Filter>
+      <Filter>Core\Timer\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEDesktopServices.h" />
     <ClInclude Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.h">
@@ -1210,7 +1210,7 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEAudio.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\ByteOrder.h">
-      <Filter>Core\Tools</Filter>
+      <Filter>Core\Timer\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEByteOrder.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodec.h">
