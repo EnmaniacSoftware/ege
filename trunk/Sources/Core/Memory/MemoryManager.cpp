@@ -62,13 +62,26 @@ void* MemoryManager::Malloc(size_t size, const char* pszFileName, int iLine)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void* MemoryManager::Realloc(void* pData, size_t size, const char* pszFileName, int iLine)
 {
-  void* pNewData = MemoryManager::DoRealloc(pData, size);
-  if (pNewData)
+  void* pNewData = NULL;
+
+  // check if first allocation
+  if (NULL == pData)
   {
-    MemoryManager::GetInstance()->doRealloc(pData, pNewData, size);
+    // allocate as normal
+    pNewData = MemoryManager::Malloc(size, pszFileName, iLine);
   }
-#ifdef EGE_FEATURE_MEMORY_DEBUG
   else
+  {
+    // reallocate
+    pNewData = MemoryManager::DoRealloc(pData, size);
+    if (NULL != pNewData)
+    {
+      MemoryManager::GetInstance()->doRealloc(pData, pNewData, size);
+    }
+  }
+
+#ifdef EGE_FEATURE_MEMORY_DEBUG
+  if (NULL == pNewData)
   {
     egeWarning() << "Could not reallocate memory:" << size << pszFileName << iLine;
   }
