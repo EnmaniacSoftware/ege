@@ -4,7 +4,7 @@
 /** Sound class used with software mixing. 
  */
 
-#ifdef EGE_AIRPLAY_AUDIO_SOFTWARE
+#if EGE_AUDIO_AIRPLAY && EGE_AIRPLAY_AUDIO_SOFTWARE
 
 #include <EGE.h>
 #include <EGEDataBuffer.h>
@@ -91,6 +91,6 @@ public:
 
 EGE_NAMESPACE_END
 
-#endif // EGE_AIRPLAY_AUDIO_SOFTWARE
+#endif // EGE_AUDIO_AIRPLAY && EGE_AIRPLAY_AUDIO_SOFTWARE
 
 #endif // EGE_AIRPLAY_SOUNDSOFTWARE_PRIVATE_H

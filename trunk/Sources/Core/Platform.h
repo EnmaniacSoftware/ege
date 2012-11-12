@@ -23,6 +23,11 @@ inline void ege_noop() {}
 // Available social platforms
 // EGE_SOCIAL_PLATFORM_GAMECENTER
 
+// Available sound APIs
+// EGE_AUDIO_NULL
+// EGE_AUDIO_OPENAL
+// EGE_AUDIO_AIRPLAY
+
 #if WIN32
 #define EGE_PLATFORM_WIN32 1
 #endif // WIN32

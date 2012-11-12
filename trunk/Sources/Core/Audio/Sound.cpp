@@ -6,12 +6,18 @@
 #include <EGEDebug.h>
 
 #ifdef EGE_PLATFORM_WIN32
-  #ifdef EGE_AUDIO_OPENAL
+  #if EGE_AUDIO_OPENAL
     #include "Core/Audio/OpenAL/SoundOpenAL_p.h"
+  #elif EGE_AUDIO_NULL
+    #include "Core/Audio/Null/SoundNull_p.h"    
   #endif // EGE_AUDIO_OPENAL
 #elif EGE_PLATFORM_AIRPLAY
-  #include "Airplay/Audio/SoundAirplay_p.h"
-  #include "Airplay/Audio/SoundSoftwareAirplay_p.h"
+  #if EGE_AUDIO_AIRPLAY
+    #include "Airplay/Audio/SoundAirplay_p.h"
+    #include "Airplay/Audio/SoundSoftwareAirplay_p.h"
+  #elif EGE_AUDIO_NULL
+    #include "Core/Audio/Null/SoundNull_p.h"    
+  #endif // EGE_AUDIO_AIRPLAY
 #endif // EGE_PLATFORM_WIN32
 
 EGE_NAMESPACE_BEGIN

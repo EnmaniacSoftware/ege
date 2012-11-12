@@ -201,7 +201,10 @@ EGEResult ResourceSpriteAnimation::setInstance(const PSpriteAnimation& instance)
   // setup data
   instance->setFPS(m_fps);
   instance->setFrameData(m_frameData);
-  instance->setTexture(m_sheet->textureImage()->createInstance());
+
+  PTextureImage textureImage = ege_new TextureImage(app());
+  textureImage->copy(m_sheet->textureImage());
+  instance->setTexture(textureImage);
 
   // add sequencers
   for (SequenceResourceList::iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
@@ -236,17 +239,14 @@ void ResourceSpriteAnimation::calculateFrameData()
 
   if (m_frameDataInvalid)
   {
-    TextureImage textureImage(app());
-    m_sheet->textureImage()->setInstance(textureImage);
-
     // create new data for each frame
     m_frameData.clear();
     for (s32 i = 0; i < sheet()->frameCount(); ++i)
     {
       EGESprite::FrameData data;
   
-      data.m_rect = textureImage.rect().combine(Rectf(i % sheet()->framesPerRow() * cellWidth, 
-                                                      i / sheet()->framesPerRow() * cellHeight, cellWidth, cellHeight));
+      data.m_rect = m_sheet->textureImage()->rect().combine(Rectf(i % sheet()->framesPerRow() * cellWidth, 
+                                                                  i / sheet()->framesPerRow() * cellHeight, cellWidth, cellHeight));
 
       // add to pool
       m_frameData.push_back(data);

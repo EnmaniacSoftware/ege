@@ -5,6 +5,7 @@ FEATURES:
 - OpenGL highest version detection and fallback mechanism for renderers
 - RenderQueue:
   - seperate solid and transparent objects (based on material?) and depth-sort transparent ones
+- Atlas generator should determine smallest possible size from the content on its own
 
 * Resources
   - Physical textures should be defined by 'texture' resources. All references should be done to 'texture-image' resources.

@@ -71,8 +71,8 @@ EGEResult ResourceSpritesheet::load()
 
   if (!isLoaded())
   {
-    // get texture
-    PResourceTextureImage textureImageResource = manager()->resource("texture-image", textureName());
+    // get texture image...
+    PResourceTextureImage textureImageResource = manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureName());
     if (textureImageResource)
     {
       // load texture
@@ -83,12 +83,29 @@ EGEResult ResourceSpritesheet::load()
       }
 
       // store texture
-      m_texture = textureImageResource;
+      m_texture = textureImageResource->createInstance();
     }
     else
     {
-      // material not found
-      result = EGE_ERROR_NOT_FOUND;
+      // try texture...
+      PResourceTexture textureResource = manager()->resource(RESOURCE_NAME_TEXTURE, textureName());
+      if (NULL != textureResource)
+      {
+        // load texture
+        if (EGE_SUCCESS != (result = textureResource->load()))
+        {
+          // error!
+          return result;
+        }
+
+        // store texture
+        m_texture = ege_new TextureImage(app(), textureResource->texture(), Rectf(0, 0, 1.0f, 1.0f));
+      }
+      else
+      {
+        // material not found
+        result = EGE_ERROR_NOT_FOUND;
+      }
     }
   }
 

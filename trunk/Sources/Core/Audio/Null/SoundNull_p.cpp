@@ -1,41 +1,33 @@
-#include "Core/Application/Application.h"
-#include "Core/Audio/AudioThread.h"
-#include "Core/Audio/AudioManager.h"
-#include <EGEDevice.h>
-#include <EGETime.h>
-#include <EGEDebug.h>
+#ifdef EGE_AUDIO_NULL
 
-EGE_NAMESPACE_BEGIN
+#include "Core/Audio/Null/SoundNull_p.h"
+
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define UPDATE_PERIOD (20)
+EGE_DEFINE_NEW_OPERATORS(SoundPrivate)
+EGE_DEFINE_DELETE_OPERATORS(SoundPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioThread::AudioThread(Application* app) : Thread(app)
+SoundPrivate::SoundPrivate(Sound* base)
+{
+  EGE_UNUSED(base)
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+SoundPrivate::~SoundPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioThread::~AudioThread()
+/*! Constructs object. */
+EGEResult SoundPrivate::construct()
 {
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Thread override. Work method. */
-s32 AudioThread::run()
+/*! Updates object. */
+void SoundPrivate::update(const Time& time)
 {
-  AudioManager* manager = app()->audioManager();
-
-  Time updateTime;
-  updateTime.fromMiliseconds(UPDATE_PERIOD);
-
-  while (!isStopping())
-  {   
-    manager->update(updateTime);
-    
-    // yield
-    Device::Sleep(UPDATE_PERIOD);
-  }
-
-  return 0;
+  EGE_UNUSED(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_NAMESPACE_END
+#endif // EGE_AUDIO_NULL

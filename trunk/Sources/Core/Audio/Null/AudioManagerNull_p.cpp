@@ -1,52 +1,35 @@
-#if EGE_AUDIO_AIRPLAY && !EGE_AIRPLAY_AUDIO_SOFTWARE
+#ifdef EGE_AUDIO_NULL
 
 #include "Core/Application/Application.h"
-#include "Airplay/Audio/AudioManagerAirplay_p.h"
-#include "Airplay/Audio/SoundAirplay_p.h"
-#include <s3eSound.h>
-#include <s3eAudio.h>
-#include <s3e.h>
-#include <EGEAudio.h>
+#include "Core/Audio/Null/AudioManagerNull_p.h"
+#include "Core/Audio/AudioManager.h"
 #include <EGEDebug.h>
-#include <EGEMath.h>
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static s16 l_emptySoundSampleData[1];
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(AudioManagerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(AudioManagerPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base)
 {
-  // NOTE: we set an empty sound to be played here so Airplay sound system gets initialized
-  l_emptySoundSampleData[0] = 0;
-
-  // get free channel
-  s32 channel = s3eSoundGetFreeChannel();
-  if (-1 != channel)
-  {
-    s3eSoundChannelSetInt(channel, S3E_CHANNEL_RATE, 22050);
-    s3eSoundChannelPlay(channel, l_emptySoundSampleData, 1, 1, 0);
-  }
+  EGE_UNUSED(base)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerPrivate::~AudioManagerPrivate()
 {
-  // give some time to sound thread
-  s3eDeviceYield(100);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool AudioManagerPrivate::isValid() const
+/*! Constructs object. */
+EGEResult AudioManagerPrivate::construct()
 {
-  return true;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates manager. */
 void AudioManagerPrivate::update(const Time& time)
 {
+  EGE_UNUSED(time)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Plays given sound.
@@ -55,19 +38,21 @@ void AudioManagerPrivate::update(const Time& time)
  */
 EGEResult AudioManagerPrivate::play(const PSound& sound)
 {
-  return sound->p_func()->play();
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Stops playback of the given sound. */
 EGEResult AudioManagerPrivate::stop(const PSound& sound)
 {
-  return sound->p_func()->stop();
+  EGE_UNUSED(sound)
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given sound is being played. */
 bool AudioManagerPrivate::isPlaying(const PSound& sound) const
 {
-  return sound->p_func()->isPlaying();
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pauses given sound.
@@ -76,22 +61,32 @@ bool AudioManagerPrivate::isPlaying(const PSound& sound) const
  */
 EGEResult AudioManagerPrivate::pause(const PSound& sound)
 {
-  return sound->p_func()->pause();
+  EGE_UNUSED(sound)
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given sound is paused. */
 bool AudioManagerPrivate::isPaused(const PSound& sound) const
 {
-  return sound->p_func()->isPaused();
+  EGE_UNUSED(sound)
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given sound is stopped. */
 bool AudioManagerPrivate::isStopped(const PSound& sound) const
 {
-  return sound->p_func()->isStopped();
+  EGE_UNUSED(sound)
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Shuts manager down. */
+void AudioManagerPrivate::shutDown() 
+{
+  d_func()->m_state = AudioManager::STATE_CLOSED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_NAMESPACE_END
-
-#endif // EGE_AUDIO_AIRPLAY && !EGE_AIRPLAY_AUDIO_SOFTWARE
+#endif // EGE_AUDIO_NULL

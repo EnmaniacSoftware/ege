@@ -4,7 +4,7 @@
 /** Audio manager class responsible for software sound mixing. 
  */
 
-#ifdef EGE_AIRPLAY_AUDIO_SOFTWARE
+#if EGE_AUDIO_AIRPLAY && EGE_AIRPLAY_AUDIO_SOFTWARE
 
 #include <EGE.h>
 #include <EGETime.h>
@@ -88,6 +88,6 @@ class AudioManagerPrivate
 
 EGE_NAMESPACE_END
 
-#endif // EGE_AIRPLAY_AUDIOMANAGERSOFTWARE_PRIVATE_H
+#endif // EGE_AUDIO_AIRPLAY && EGE_AIRPLAY_AUDIO_SOFTWARE
 
 #endif // EGE_AIRPLAY_AUDIOMANAGER_PRIVATE_H

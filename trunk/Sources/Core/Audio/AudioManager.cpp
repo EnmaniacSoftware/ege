@@ -1,18 +1,23 @@
 #include "Core/Application/Application.h"
 #include "Core/Audio/AudioManager.h"
-#include "Core/Audio/AudioThread.h"
 #include "Core/Event/Event.h"
 #include "Core/Event/EventIDs.h"
 #include "Core/Event/EventManager.h"
 #include <EGEResources.h>
 
 #ifdef EGE_PLATFORM_WIN32
-  #ifdef EGE_AUDIO_OPENAL
+  #if EGE_AUDIO_OPENAL
     #include "Core/Audio/OpenAL/AudioManagerOpenAL_p.h"
+  #elif EGE_AUDIO_NULL
+    #include "Core/Audio/Null/AudioManagerNull_p.h"    
   #endif // EGE_AUDIO_OPENAL
 #elif EGE_PLATFORM_AIRPLAY
-  #include "Airplay/Audio/AudioManagerAirplay_p.h"
-  #include "Airplay/Audio/AudioManagerSoftwareAirplay_p.h"
+  #if EGE_AUDIO_AIRPLAY
+    #include "Airplay/Audio/AudioManagerAirplay_p.h"
+    #include "Airplay/Audio/AudioManagerSoftwareAirplay_p.h"
+  #elif EGE_AUDIO_NULL
+    #include "Core/Audio/Null/AudioManagerNull_p.h"    
+  #endif // EGE_AUDIO_AIRPLAY
 #endif // EGE_PLATFORM_WIN32
 
 EGE_NAMESPACE_BEGIN
@@ -30,14 +35,15 @@ AudioManager::AudioManager(Application* app) : Object(app),
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManager::~AudioManager()
 {
-  m_thread->stop();
-
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates object. */
 EGEResult AudioManager::construct()
 {
+  EGEResult result = EGE_SUCCESS;
+
+  // allocate private
   m_p = ege_new AudioManagerPrivate(this);
   if (NULL == m_p)
   {
@@ -45,27 +51,11 @@ EGEResult AudioManager::construct()
     return EGE_ERROR_NO_MEMORY;
   }
 
-  // create thread
-  m_thread = ege_new AudioThread(app());
-  if (NULL == m_thread)
+  // construct private
+  if (EGE_SUCCESS != (result = m_p->construct()))
   {
     // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  // create access mutex
-  m_mutex = ege_new Mutex(app());
-  if (NULL == m_mutex)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  // start thread
-  if (!m_thread->start())
-  {
-    // error!
-    return EGE_ERROR;
+    return result;
   }
 
   // subscribe for event notifications
@@ -84,56 +74,14 @@ EGEResult AudioManager::construct()
 /*! Updates manager. The audio thread guards the entrance. */
 void AudioManager::update(const Time& time)
 {
-  if (STATE_CLOSING == m_state)
+  if (STATE_CLOSED == m_state)
   {
-    if (m_thread->isFinished() || !m_thread->isRunning())
-    {
-      // set state
-      m_state = STATE_CLOSED;
-      return;
-    }
+    // do nothing
+    return;
   }
-
+  
   // update private implementation
   p_func()->update(time);
-
-  // go thru all sounds
-  // NOTE: no const iterator due to GCC compiler complaints
-  for (SoundList::iterator it = m_sounds.begin(); it != m_sounds.end();)
-  {
-    const PSound& sound = *it;
-
-    //egeDebug()  << "Updating sound" << sound->name();
-
-    // check if sound is stopped
-    if (p_func()->isStopped(sound))
-    {
-      m_sounds.erase(it++);
-      continue;
-    }
-
-    // update sound
-    sound->update(time);
-    ++it;
-  }
-
-  // start pending playbacks
-  for (SoundList::iterator it = m_soundsToPlay.begin(); it != m_soundsToPlay.end(); ++it)
-  {
-    const PSound& sound = *it;
-
-    // play
-    if (EGE_SUCCESS == p_func()->play(sound))
-    {
-      // connect
-      ege_connect(sound, stopped, this, AudioManager::onStopped);
-
-      // add to pool
-      m_sounds.push_back(sound);
-    }
-  }
-
-  m_soundsToPlay.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Plays sound with given name. 
@@ -192,9 +140,7 @@ EGEResult AudioManager::play(const PSound& sound)
       return EGE_SUCCESS;
     }
 
-    // add to pool for later playback
-    MutexLocker locker(m_mutex);
-    m_soundsToPlay.push_back(sound);
+    result = p_func()->play(sound);
   }
 
   return result;
@@ -398,7 +344,7 @@ void AudioManager::shutDown()
   m_state = STATE_CLOSING;
 
   // request work thread stop
-  m_thread->stop(0);
+  p_func()->shutDown();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when given sound stopped playback (due to finish or otherwise). */

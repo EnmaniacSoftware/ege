@@ -1,28 +1,18 @@
-#ifndef EGE_AIRPLAY_AUDIOMANAGER_PRIVATE_H
-#define EGE_AIRPLAY_AUDIOMANAGER_PRIVATE_H
+#ifndef EGE_CORE_AUDIOMANAGER_NULL_PRIVATE_H
+#define EGE_CORE_AUDIOMANAGER_NULL_PRIVATE_H
 
-/** Audio manager class responsible for non-software sound mixing. 
- *  @note Due to Airplay (or underlying hardware) limitations it is only possible to play one compressed audio at any given time. It is possible, however,
- *        to play multiple uncompressed samples.
- */
-
-#if EGE_AUDIO_AIRPLAY && !EGE_AIRPLAY_AUDIO_SOFTWARE
+#ifdef EGE_AUDIO_NULL
 
 #include <EGE.h>
 #include <EGETime.h>
-#include <EGEList.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AudioManager;
-class SoundPrivate;
 
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AudioManagerPrivate
 {
   public:
@@ -35,8 +25,8 @@ class AudioManagerPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(AudioManager)
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
+    /* Constructs object. */
+    EGEResult construct();
     /* Updates manager. */
     void update(const Time& time);
     /* Plays given sound.
@@ -58,22 +48,13 @@ class AudioManagerPrivate
     /* Returns TRUE if given sound is stopped. */
     bool isStopped(const PSound& sound) const;
 
-  private:
-
-    typedef List<PSound> SoundsList;
-
-  private:
-
-    /*! Currently played compressed audio. */
-//    PSound m_compessedAudio;
-    /*! Currently played uncompressed audio samples. */
-  //  SoundsList m_uncompressedAudio;
- };
-
+    /* Shuts manager down. */
+    void shutDown();
+};
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_AUDIO_AIRPLAY && !EGE_AIRPLAY_AUDIO_SOFTWARE
+#endif // EGE_AUDIO_NULL
 
-#endif // EGE_AIRPLAY_AUDIOMANAGER_PRIVATE_H
+#endif // EGE_CORE_AUDIOMANAGER_NULL_PRIVATE_H

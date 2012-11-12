@@ -7,8 +7,6 @@
 #include <EGE.h>
 #include <EGETime.h>
 #include <EGEList.h>
-#include <EGEThread.h>
-#include <EGEMutex.h>
 #include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN
@@ -18,9 +16,6 @@ EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AudioManager : public Object, public IEventListener
 {
-  /*! For accessing private data. */
-  friend class AudioThread;
-
   public:
 
     AudioManager(Application* app);
@@ -118,14 +113,8 @@ class AudioManager : public Object, public IEventListener
 
     /*! List of sounds being played. */
     SoundList m_sounds;
-    /*! List of sounds to start playing. */
-    SoundList m_soundsToPlay;
     /*! Enable flag. */
     bool m_enabled;
-    /*! Audio thread. */
-    PThread m_thread;
-    /*! Data access mutex. */
-    PMutex m_mutex;
     /*! Current state. */
     State m_state;
 };

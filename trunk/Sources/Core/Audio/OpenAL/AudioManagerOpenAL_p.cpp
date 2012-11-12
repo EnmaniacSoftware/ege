@@ -2,6 +2,7 @@
 #include "Core/Application/Application.h"
 #include "Core/Audio/OpenAL/AudioManagerOpenAL_p.h"
 #include "Core/Audio/OpenAL/SoundOpenAL_p.h"
+#include "Core/Audio/AudioThread.h"
 #include <EGEAudio.h>
 #include <EGEDebug.h>
 
@@ -20,36 +21,16 @@ AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base),
                                                                m_context(NULL)
 {
   EGE_MEMSET(m_channels, 0, sizeof (m_channels));
-
-  m_device = alcOpenDevice(NULL);
-  if (NULL != m_device)
-  {
-    m_context = alcCreateContext(m_device, NULL);
-    alcMakeContextCurrent(m_context);
-
-    // preallocate channels
-    alGenSources(CHANNELS_COUNT, m_channels);
-    if (IS_AL_ERROR())
-    {
-      egeCritical() << l_result << "Could not generate sources.";
-      EGE_MEMSET(m_channels, 0, sizeof (m_channels));
-    }
-  }
-  else
-  {
-    egeCritical() << "Could not open device";
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerPrivate::~AudioManagerPrivate()
 {
+  m_thread->stop();
+
   alcMakeContextCurrent(NULL);
   
-  if (isValid())
-  {
-    alDeleteSources(CHANNELS_COUNT, m_channels);
-    EGE_MEMSET(m_channels, 0, sizeof (m_channels));
-  }
+  alDeleteSources(CHANNELS_COUNT, m_channels);
+  EGE_MEMSET(m_channels, 0, sizeof (m_channels));
 
   // destroy context
   if (m_context)
@@ -66,25 +47,109 @@ AudioManagerPrivate::~AudioManagerPrivate()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool AudioManagerPrivate::isValid() const
+/*! Constructs object. */
+EGEResult AudioManagerPrivate::construct()
 {
-  // check all channels
-  for (s32 i = 0; i < CHANNELS_COUNT; ++i)
+  // create thread
+  m_thread = ege_new AudioThread(d_func()->app());
+  if (NULL == m_thread)
   {
-    if (0 == m_channels[i])
-    {
-      // not valid
-      return false;
-    }
+    // error!
+    return EGE_ERROR_NO_MEMORY;
   }
 
-  return (NULL != m_device) && (NULL != m_context);
+  // create access mutex
+  m_mutex = ege_new Mutex(d_func()->app());
+  if (NULL == m_mutex)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+  
+  // create audio device
+  m_device = alcOpenDevice(NULL);
+  if (NULL == m_device)
+  {
+    // error!
+    return EGE_ERROR;
+  }
+
+  // create context
+  m_context = alcCreateContext(m_device, NULL);
+  alcMakeContextCurrent(m_context);
+
+  // preallocate channels
+  alGenSources(CHANNELS_COUNT, m_channels);
+  if (IS_AL_ERROR())
+  {
+    egeCritical() << l_result << "Could not generate sources.";
+    EGE_MEMSET(m_channels, 0, sizeof (m_channels));
+
+    return EGE_ERROR;
+  }
+
+  // start thread
+  if ( ! m_thread->start())
+  {
+    // error!
+    return EGE_ERROR;
+  }
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates manager. */
 void AudioManagerPrivate::update(const Time& time)
 {
+  if (AudioManager::STATE_CLOSING == d_func()->state())
+  {
+    if (m_thread->isFinished() || !m_thread->isRunning())
+    {
+      // set state
+      d_func()->m_state = AudioManager::STATE_CLOSED;
+      return;
+    }
+  }
+
+  MutexLocker locker(m_mutex);
+
+  // go thru all sounds
+  // NOTE: no const iterator due to GCC compiler complaints
+  for (AudioManager::SoundList::iterator it = d_func()->m_sounds.begin(); it != d_func()->m_sounds.end();)
+  {
+    const PSound& sound = *it;
+
+    //egeDebug()  << "Updating sound" << sound->name();
+
+    // check if sound is stopped
+    if (isStopped(sound))
+    {
+      d_func()->m_sounds.erase(it++);
+      continue;
+    }
+
+    // update sound
+    sound->update(time);
+    ++it;
+  }
+
+  // start pending playbacks
+  for (AudioManager::SoundList::iterator it = m_soundsToPlay.begin(); it != m_soundsToPlay.end(); ++it)
+  {
+    const PSound& sound = *it;
+
+    // play
+    if (EGE_SUCCESS == doPlay(sound))
+    {
+      // connect
+      ege_connect(sound, stopped, d_func(), AudioManager::onStopped);
+
+      // add to pool
+      d_func()->m_sounds.push_back(sound);
+    }
+  }
+
+  m_soundsToPlay.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Plays given sound.
@@ -93,24 +158,11 @@ void AudioManagerPrivate::update(const Time& time)
  */
 EGEResult AudioManagerPrivate::play(const PSound& sound)
 {
-  // check if paused
-  if (isPaused(sound))
-  {
-    // resume playback
-    return sound->p_func()->resume();
-  }
+  // add to pool for later playback
+  MutexLocker locker(m_mutex);
+  m_soundsToPlay.push_back(sound);
 
-  // try to find available channel
-  ALuint channel = availableChannel();
-  if (0 < channel)
-  {
-    SoundPrivate* soundPrivate = sound->p_func();
-
-    // start playback
-    return soundPrivate->play(channel);
-  }
-
-  return EGE_ERROR;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns first available channel. */
@@ -169,6 +221,38 @@ bool AudioManagerPrivate::isPaused(const PSound& sound) const
 bool AudioManagerPrivate::isStopped(const PSound& sound) const
 {
   return sound->p_func()->isStopped();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* */
+EGEResult AudioManagerPrivate::doPlay(const PSound& sound)
+{
+  // check if paused
+  if (isPaused(sound))
+  {
+    // resume playback
+    return sound->p_func()->resume();
+  }
+
+  // try to find available channel
+  ALuint channel = availableChannel();
+  if (0 < channel)
+  {
+    SoundPrivate* soundPrivate = sound->p_func();
+
+    // start playback
+    return soundPrivate->play(channel);
+  }
+
+  return EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Shuts manager down. */
+void AudioManagerPrivate::shutDown() 
+{ 
+  if (m_thread != NULL)
+  {
+    m_thread->stop(0); 
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

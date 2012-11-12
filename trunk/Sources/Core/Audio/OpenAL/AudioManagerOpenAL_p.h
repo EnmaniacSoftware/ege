@@ -5,8 +5,9 @@
 
 #include <EGE.h>
 #include <EGETime.h>
-#include <EGEDynamicArray.h>
-#include <EGEMap.h>
+#include <EGEThread.h>
+#include <EGEMutex.h>
+#include "Core/Audio/AudioManager.h"
 #include <al.h>
 #include <alc.h>
 
@@ -15,15 +16,15 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define CHANNELS_COUNT 24
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AudioManager;
 
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AudioManagerPrivate
 {
+  /*! For accessing private data. */
+  friend class AudioThread;
+
   public:
 
     AudioManagerPrivate(AudioManager* base);
@@ -34,8 +35,8 @@ class AudioManagerPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(AudioManager)
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
+    /* Constructs object. */
+    EGEResult construct();
     /* Updates manager. */
     void update(const Time& time);
     /* Plays given sound.
@@ -57,10 +58,15 @@ class AudioManagerPrivate
     /* Returns TRUE if given sound is stopped. */
     bool isStopped(const PSound& sound) const;
 
+    /* Shuts manager down. */
+    void shutDown();
+
   private:
 
     /* Returns first available channel. */
     ALuint availableChannel() const;
+    /* */
+    EGEResult doPlay(const PSound& sound);
 
   private:
 
@@ -70,8 +76,13 @@ class AudioManagerPrivate
     ALCcontext* m_context;
     /*! Available channels. */
     ALuint m_channels[CHANNELS_COUNT];
+    /*! List of sounds to start playing. */
+    AudioManager::SoundList m_soundsToPlay;
+    /*! Audio thread. */
+    PThread m_thread;
+    /*! Data access mutex. */
+    PMutex m_mutex;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

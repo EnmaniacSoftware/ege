@@ -208,6 +208,9 @@
     <Filter Include="Core\Timer\Tools">
       <UniqueIdentifier>{f5c8dafe-d484-49e1-8244-af8492ad3398}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Audio\Null">
+      <UniqueIdentifier>{2941d0a1-a693-4e6e-8470-3cbc0ed0ca64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -734,6 +737,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\NativeUI\MessageBox.cpp">
       <Filter>Core\NativeUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Null\AudioManagerNull_p.cpp">
+      <Filter>Core\Audio\Null</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Null\SoundNull_p.cpp">
+      <Filter>Core\Audio\Null</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1430,6 +1439,12 @@
       <Filter>Win32\NativeUI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGELog.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Null\AudioManagerNull_p.h">
+      <Filter>Core\Audio\Null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Null\SoundNull_p.h">
+      <Filter>Core\Audio\Null</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

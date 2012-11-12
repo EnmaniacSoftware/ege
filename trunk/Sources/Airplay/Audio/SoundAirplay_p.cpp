@@ -1,4 +1,5 @@
-#ifndef EGE_AIRPLAY_AUDIO_SOFTWARE
+#if EGE_AUDIO_AIRPLAY && !EGE_AIRPLAY_AUDIO_SOFTWARE
+
 #include "Core/Application/Application.h"
 #include "Airplay/Audio/SoundAirplay_p.h"
 #include "Core/Audio/AudioCodecWav.h"
@@ -213,4 +214,4 @@ bool SoundPrivate::isStopped() const
 
 EGE_NAMESPACE_END
 
-#endif // !EGE_AIRPLAY_AUDIO_SOFTWARE
+#endif // EGE_AUDIO_AIRPLAY && !EGE_AIRPLAY_AUDIO_SOFTWARE

@@ -17,7 +17,7 @@ EGE_NAMESPACE_BEGIN
 class ResourceManager;
 
 EGE_DECLARE_SMART_CLASS(ResourceSpritesheet, PResourceSpritesheet)
-EGE_DECLARE_SMART_CLASS(ResourceTextureImage, PResourceTextureImage)
+EGE_DECLARE_SMART_CLASS(TextureImage, PTextureImage)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceSpritesheet : public IResource
 {
@@ -55,7 +55,7 @@ class ResourceSpritesheet : public IResource
     /*! Returns number of frames in a row. */
     inline s32 framesPerRow() const { return m_framesPerRow; }
     /*! Returns texture image containing sheet pixel data. */
-    inline PResourceTextureImage textureImage() const { return m_texture; }
+    inline PTextureImage textureImage() const { return m_texture; }
 
   private:
 
@@ -78,7 +78,7 @@ class ResourceSpritesheet : public IResource
     /*! Number of frames in a single row. */
     s32 m_framesPerRow;
     /*! Loaded texture. If NULL resource has not been loaded yet. */
-    PResourceTextureImage m_texture;
+    PTextureImage m_texture;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -1,4 +1,5 @@
-#ifdef EGE_AIRPLAY_AUDIO_SOFTWARE
+#if EGE_AUDIO_AIRPLAY && EGE_AIRPLAY_AUDIO_SOFTWARE
+
 #include "Core/Application/Application.h"
 #include "Airplay/Audio/AudioManagerSoftwareAirplay_p.h"
 #include "Airplay/Audio/SoundSoftwareAirplay_p.h"
@@ -445,4 +446,4 @@ bool AudioManagerPrivate::isPlaying(const String& soundName) const
 
 EGE_NAMESPACE_END
 
-#endif // EGE_AIRPLAY_AUDIO_SOFTWARE
+#endif // EGE_AUDIO_AIRPLAY && EGE_AIRPLAY_AUDIO_SOFTWARE
