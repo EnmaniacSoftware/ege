@@ -15,14 +15,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AudioManager;
 class SoundPrivate;
 
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AudioManagerPrivate
 {
   public:
@@ -35,8 +32,8 @@ class AudioManagerPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(AudioManager)
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
+    /* Constructs object. */
+    EGEResult construct();
     /* Updates manager. */
     void update(const Time& time);
     /* Plays given sound.
@@ -58,18 +55,9 @@ class AudioManagerPrivate
     /* Returns TRUE if given sound is stopped. */
     bool isStopped(const PSound& sound) const;
 
-  private:
-
-    typedef List<PSound> SoundsList;
-
-  private:
-
-    /*! Currently played compressed audio. */
-//    PSound m_compessedAudio;
-    /*! Currently played uncompressed audio samples. */
-  //  SoundsList m_uncompressedAudio;
+    /* Shuts manager down. */
+    void shutDown();
  };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

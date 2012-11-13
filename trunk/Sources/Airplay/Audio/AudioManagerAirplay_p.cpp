@@ -34,19 +34,36 @@ AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerPrivate::~AudioManagerPrivate()
 {
-  // give some time to sound thread
-  s3eDeviceYield(100);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool AudioManagerPrivate::isValid() const
+/*! Constructs object. */
+EGEResult AudioManagerPrivate::construct()
 {
-  return true;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates manager. */
 void AudioManagerPrivate::update(const Time& time)
 {
+  // go thru all sounds
+  // NOTE: no const iterator due to GCC compiler complaints
+  for (AudioManager::SoundList::iterator it = d_func()->m_sounds.begin(); it != d_func()->m_sounds.end();)
+  {
+    const PSound& sound = *it;
+
+    //egeDebug()  << "Updating sound" << sound->name();
+
+    // check if sound is stopped
+    if (isStopped(sound))
+    {
+      d_func()->m_sounds.erase(it++);
+      continue;
+    }
+
+    // update sound
+    sound->update(time);
+    ++it;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Plays given sound.
@@ -55,7 +72,19 @@ void AudioManagerPrivate::update(const Time& time)
  */
 EGEResult AudioManagerPrivate::play(const PSound& sound)
 {
-  return sound->p_func()->play();
+  EGEResult result = EGE_ERROR;
+
+  // try to start
+  if (EGE_SUCCESS == (result = sound->p_func()->play()))
+  {
+    // connect
+    ege_connect(sound, stopped, d_func(), AudioManager::onStopped);
+
+    // add to pool
+    d_func()->m_sounds.push_back(sound);
+  }
+
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Stops playback of the given sound. */
@@ -89,6 +118,12 @@ bool AudioManagerPrivate::isPaused(const PSound& sound) const
 bool AudioManagerPrivate::isStopped(const PSound& sound) const
 {
   return sound->p_func()->isStopped();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Shuts manager down. */
+void AudioManagerPrivate::shutDown() 
+{ 
+  d_func()->m_state = AudioManager::STATE_CLOSED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

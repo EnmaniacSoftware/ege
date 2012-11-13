@@ -36,6 +36,7 @@ EGEResult SoundPrivate::construct()
 /*! Updates object. */
 void SoundPrivate::update(const Time& time)
 {
+  EGE_UNUSED(time)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Starts playback. */

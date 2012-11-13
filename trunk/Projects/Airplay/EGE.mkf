@@ -13,7 +13,6 @@ define EGE_RANDOM_STDC
 define EGE_THREAD_PTHREAD
 define EGE_SOCIAL_PLATFORM_GAMECENTER
 define EGE_PURCHASES_APPSTORE
-define EGE_AUDIO_NULL
 
 #define EGE_AIRPLAY_AUDIO_SOFTWARE
 
@@ -139,8 +138,8 @@ files
 	(../../Sources/Core/Audio/NUll)
   AudioManagerNull_p.cpp
   AudioManagerNull_p.h
-  AudioSoundNull_p.cpp
-  AudioSoundNull_p.h
+  SoundNull_p.cpp
+  SoundNull_p.h
 
 	["Core/Components"]
  	(../../Sources/Core/Components)

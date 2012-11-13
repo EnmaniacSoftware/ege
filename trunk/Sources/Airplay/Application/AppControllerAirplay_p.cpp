@@ -51,7 +51,7 @@ EGEResult AppControllerPrivate::run()
 
     // update
     d_func()->update();
-
+   
     // render
     d_func()->render();
 
