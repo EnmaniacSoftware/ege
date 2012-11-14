@@ -22,9 +22,6 @@ EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AudioManagerPrivate
 {
-  /*! For accessing private data. */
-  friend class AudioThread;
-
   public:
 
     AudioManagerPrivate(AudioManager* base);
@@ -39,6 +36,9 @@ class AudioManagerPrivate
     EGEResult construct();
     /* Updates manager. */
     void update(const Time& time);
+    /* Updates manager. Meant to be used from another thread. */
+    void threadUpdate(const Time& time);
+
     /* Plays given sound.
      * @param sound Sound to play.
      * @return  Returns EGE_SUCCESS if sound is sucessfully started or EGE_ERROR if sound could not be started.
@@ -60,6 +60,11 @@ class AudioManagerPrivate
 
     /* Shuts manager down. */
     void shutDown();
+
+  private slots:
+
+    /* Slot called when audio thread is finished. */
+    void onThreadFinished(const PThread& thread);
 
   private:
 

@@ -25,9 +25,9 @@ class Thread : public Object
   signals:
 
     /*! Signal emitted when thread finished its work. Signal is emitted from finished thread. */
-    Signal1<const Thread*> finished;
+    Signal1<const PThread&> finished;
     /*! Signal emitted when thread started its work. Signal is emitted from finished thread. */
-    Signal1<const Thread*> started;
+    Signal1<const PThread&> started;
 
   public:
 

@@ -660,9 +660,6 @@
     <ClCompile Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.cpp">
       <Filter>Core\Random\StdC</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\AudioThread.cpp">
-      <Filter>Core\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Physics\Null\PhysicsJointAttractNull_p.cpp">
       <Filter>Core\Physics\Null</Filter>
     </ClCompile>
@@ -743,6 +740,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Audio\Null\SoundNull_p.cpp">
       <Filter>Core\Audio\Null</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioThreadOpenAL.cpp">
+      <Filter>Core\Audio\OpenAL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1352,9 +1352,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\IRenderable.h">
       <Filter>Core\Graphics\Render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioThread.h">
-      <Filter>Core\Audio</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsJointAttractNull_p.h">
       <Filter>Core\Physics\Null</Filter>
     </ClInclude>
@@ -1444,6 +1441,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Audio\Null\SoundNull_p.h">
       <Filter>Core\Audio\Null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioThreadOpenAL.h">
+      <Filter>Core\Audio\OpenAL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -121,8 +121,6 @@ files
   AudioCodecWav.h
   AudioManager.cpp
   AudioManager.h
-  AudioThread.cpp
-  AudioThread.h
   AudioUtils.cpp
   AudioUtils.h
   Sound.cpp

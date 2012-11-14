@@ -1,8 +1,9 @@
 #ifdef EGE_AUDIO_OPENAL
+
 #include "Core/Application/Application.h"
 #include "Core/Audio/OpenAL/AudioManagerOpenAL_p.h"
 #include "Core/Audio/OpenAL/SoundOpenAL_p.h"
-#include "Core/Audio/AudioThread.h"
+#include "Core/Audio/OpenAL/AudioThreadOpenAL.h"
 #include <EGEAudio.h>
 #include <EGEDebug.h>
 
@@ -51,12 +52,14 @@ AudioManagerPrivate::~AudioManagerPrivate()
 EGEResult AudioManagerPrivate::construct()
 {
   // create thread
-  m_thread = ege_new AudioThread(d_func()->app());
+  m_thread = ege_new AudioThreadOpenAL(d_func()->app(), this);
   if (NULL == m_thread)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
   }
+
+  ege_connect(m_thread, finished, this, AudioManagerPrivate::onThreadFinished);
 
   // create access mutex
   m_mutex = ege_new Mutex(d_func()->app());
@@ -100,6 +103,12 @@ EGEResult AudioManagerPrivate::construct()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Updates manager. */
 void AudioManagerPrivate::update(const Time& time)
+{
+  // do nothing, updated from another thread
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Updates manager. Meant to be used from another thread. */
+void AudioManagerPrivate::threadUpdate(const Time& time)
 {
   if (AudioManager::STATE_CLOSING == d_func()->state())
   {
@@ -253,6 +262,14 @@ void AudioManagerPrivate::shutDown()
   {
     m_thread->stop(0); 
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Slot called when audio thread is finished. */
+void AudioManagerPrivate::onThreadFinished(const PThread& thread)
+{
+  EGE_UNUSED(thread);
+
+  d_func()->m_state = AudioManager::STATE_CLOSED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

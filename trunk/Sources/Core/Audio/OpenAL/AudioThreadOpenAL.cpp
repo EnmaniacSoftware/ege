@@ -1,6 +1,6 @@
 #include "Core/Application/Application.h"
-#include "Core/Audio/AudioThread.h"
-#include "Core/Audio/AudioManager.h"
+#include "Core/Audio/OpenAL/AudioThreadOpenAL.h"
+#include "Core/Audio/OpenAL/AudioManagerOpenAL_p.h"
 #include <EGEDevice.h>
 #include <EGETime.h>
 #include <EGEDebug.h>
@@ -10,25 +10,25 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define UPDATE_PERIOD (20)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioThread::AudioThread(Application* app) : Thread(app)
+AudioThreadOpenAL::AudioThreadOpenAL(Application* app, AudioManagerPrivate* manager) : Thread(app), 
+                                                                                       m_manager(manager)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioThread::~AudioThread()
+AudioThreadOpenAL::~AudioThreadOpenAL()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Thread override. Work method. */
-s32 AudioThread::run()
+s32 AudioThreadOpenAL::run()
 {
-  AudioManager* manager = app()->audioManager();
-
   Time updateTime;
   updateTime.fromMiliseconds(UPDATE_PERIOD);
 
   while (!isStopping())
   {   
-    manager->update(updateTime);
+    // update manager
+    m_manager->threadUpdate(updateTime);
     
     // yield
     Device::Sleep(UPDATE_PERIOD);

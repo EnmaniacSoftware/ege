@@ -135,12 +135,7 @@ void AppController::update()
 
     app()->resourceManager()->update(timeInterval);
 
-    // TAGE - fix required! If manager is multithreaded it should be possible to leave this code always open
-    //        and proper update to be done on another thread.
-    //        Need to rethink this...
-#ifndef EGE_AUDIO_OPENAL
     app()->audioManager()->update(timeInterval);
-#endif //EGE_AUDIO_OPENAL
     app()->screenManager()->update(timeInterval);
     app()->sceneManager()->update(timeInterval);
     app()->overlayManager()->update(timeInterval);
