@@ -15,7 +15,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManager;
+class ResourceGroup;
 
 EGE_DECLARE_SMART_CLASS(ResourceParticleEmitter, PResourceParticleEmitter)
 EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
@@ -30,7 +30,7 @@ class ResourceParticleEmitter : public IResource
     EGE_DECLARE_DELETE_OPERATORS
 
     /* Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Application* app, ResourceManager* manager);
+    static PResource Create(Application* app, ResourceGroup* group);
 
     /* IResource override. Returns name of resource. */
     const String& name() const override;
@@ -44,15 +44,13 @@ class ResourceParticleEmitter : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
-    /* IResource override. Returns TRUE if object is loaded. */
-    bool isLoaded() const override;
 
     /* Creates instance of particle emitter object defined by resource. */
     PParticleEmitter createInstance();
 
   private:
 
-    ResourceParticleEmitter(Application* app, ResourceManager* manager);
+    ResourceParticleEmitter(Application* app, ResourceGroup* group);
     /* Adds affector. */
     EGEResult addAffector(const PXmlElement& tag);
 

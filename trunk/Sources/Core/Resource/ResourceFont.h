@@ -15,7 +15,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManager;
+class ResourceGroup;
 
 EGE_DECLARE_SMART_CLASS(ResourceFont, PResourceFont)
 EGE_DECLARE_SMART_CLASS(Font, PFont)
@@ -40,9 +40,9 @@ class ResourceFont : public IResource
     EGE_DECLARE_DELETE_OPERATORS
 
     /* Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Application* app, ResourceManager* manager);
+    static PResource Create(Application* app, ResourceGroup* group);
     /* Creates instance of resource embedding given font object. This is helper method for manual font adding. */
-    static PResource Create(Application* app, ResourceManager* manager, const String& name, PFont font);
+    static PResource Create(Application* app, ResourceGroup* group, const String& name, PFont font);
 
     /* IResource override. Returns name of resource. */
     const String& name() const override;
@@ -56,14 +56,12 @@ class ResourceFont : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
-    /* IResource override. Returns TRUE if object is loaded. */
-    bool isLoaded() const override;
     /*! Returns font. */
     inline PFont font() const { return m_font; }
 
   private:
 
-    ResourceFont(Application* app, ResourceManager* manager);
+    ResourceFont(Application* app, ResourceGroup* group);
     /*! Returns material name. */
     inline const String& materialName() const { return m_materialName; } 
     /*! Returns height of the font (in pixels) */

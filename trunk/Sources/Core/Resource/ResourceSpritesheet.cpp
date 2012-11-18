@@ -11,7 +11,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ResourceSpritesheet)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSpritesheet)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSpritesheet::ResourceSpritesheet(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_SPRITE_SHEET)
+ResourceSpritesheet::ResourceSpritesheet(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_SPRITE_SHEET)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -20,9 +20,9 @@ ResourceSpritesheet::~ResourceSpritesheet()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceSpritesheet::Create(Application* app, ResourceManager* manager)
+PResource ResourceSpritesheet::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceSpritesheet(app, manager);
+  return ege_new ResourceSpritesheet(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
@@ -69,10 +69,10 @@ EGEResult ResourceSpritesheet::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if (!isLoaded())
+  if ( ! isLoaded())
   {
     // get texture image...
-    PResourceTextureImage textureImageResource = manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureName());
+    PResourceTextureImage textureImageResource = group()->manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureName());
     if (textureImageResource)
     {
       // load texture
@@ -88,7 +88,7 @@ EGEResult ResourceSpritesheet::load()
     else
     {
       // try texture...
-      PResourceTexture textureResource = manager()->resource(RESOURCE_NAME_TEXTURE, textureName());
+      PResourceTexture textureResource = group()->manager()->resource(RESOURCE_NAME_TEXTURE, textureName());
       if (NULL != textureResource)
       {
         // load texture
@@ -107,6 +107,12 @@ EGEResult ResourceSpritesheet::load()
         result = EGE_ERROR_NOT_FOUND;
       }
     }
+
+    if (EGE_SUCCESS == result)
+    {
+      // set flag
+      m_loaded = true;
+    }
   }
 
   return result;
@@ -115,16 +121,11 @@ EGEResult ResourceSpritesheet::load()
 /*! IResource override. Unloads resource. */
 void ResourceSpritesheet::unload() 
 { 
-  egeDebug() << name();
-
   // unload texture
   m_texture = NULL;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns TRUE if object is loaded. */
-bool ResourceSpritesheet::isLoaded() const 
-{ 
-  return NULL != m_texture; 
+
+  // reset flag
+  m_loaded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

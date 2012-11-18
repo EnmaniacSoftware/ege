@@ -18,7 +18,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ResourceImagedAnimation)
 EGE_DEFINE_DELETE_OPERATORS(ResourceImagedAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceImagedAnimation::ResourceImagedAnimation(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_IMAGED_ANIMATION)
+ResourceImagedAnimation::ResourceImagedAnimation(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_IMAGED_ANIMATION)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -27,9 +27,9 @@ ResourceImagedAnimation::~ResourceImagedAnimation()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceImagedAnimation::Create(Application* app, ResourceManager* manager)
+PResource ResourceImagedAnimation::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceImagedAnimation(app, manager);
+  return ege_new ResourceImagedAnimation(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
@@ -97,40 +97,6 @@ EGEResult ResourceImagedAnimation::create(const String& path, const PXmlElement&
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns TRUE if object is loaded. */
-bool ResourceImagedAnimation::isLoaded() const
-{
-  // check if all materials are loaded
-  for (ObjectDataArray::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
-  {
-    const ObjectData& dataObject = *it;
-
-    for (ObjectChildDataList::const_iterator itChild = dataObject.children.begin(); itChild != dataObject.children.end(); ++itChild)
-    {
-      const ObjectChildData& childData = *itChild;
-
-      if (NULL == childData.materialResource)
-      {
-        // not loaded
-        return false;
-      }
-    }
-  }
-
-  // check if all sequencers are loaded
-  for (SequenceResourceList::const_iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
-  {
-    PResourceSequencer seqResource = *it;
-    if (!seqResource->isLoaded())
-    {
-      // error!
-      return false;
-    }
-  }
-
-  return true;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Loads resource. */
 EGEResult ResourceImagedAnimation::load()
 {
@@ -147,7 +113,7 @@ EGEResult ResourceImagedAnimation::load()
       {
         ObjectChildData& childData = *itChild;
 
-        childData.materialResource = manager()->resource(RESOURCE_NAME_MATERIAL, childData.materialName);
+        childData.materialResource = group()->manager()->resource(RESOURCE_NAME_MATERIAL, childData.materialName);
         if (childData.materialResource)
         {
           // load material
@@ -176,6 +142,9 @@ EGEResult ResourceImagedAnimation::load()
         return result;
       }
     }
+
+    // set flag
+    m_loaded = true;
   }
 
   return result;
@@ -184,8 +153,6 @@ EGEResult ResourceImagedAnimation::load()
 /*! IResource override. Unloads resource. */
 void ResourceImagedAnimation::unload() 
 { 
-  egeDebug() << name();
-
   // unload all objects materials
   for (ObjectDataArray::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
@@ -200,6 +167,9 @@ void ResourceImagedAnimation::unload()
   }
 
   //m_sequenceResources.clear();
+
+  // reset flag
+  m_loaded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of imaged animation object defined by resource. */
@@ -442,7 +412,7 @@ EGEResult ResourceImagedAnimation::addSequence(const PXmlElement& tag)
   EGEResult result = EGE_SUCCESS;
 
   // create sequence resource manually
-  PResourceSequencer seqRes = ResourceSequencer::Create(app(), manager());
+  PResourceSequencer seqRes = ResourceSequencer::Create(app(), group());
   if (NULL == seqRes)
   {
     // error!

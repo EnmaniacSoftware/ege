@@ -10,7 +10,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ResourceFont)
 EGE_DEFINE_DELETE_OPERATORS(ResourceFont)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceFont::ResourceFont(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_FONT)
+ResourceFont::ResourceFont(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_FONT)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -19,16 +19,16 @@ ResourceFont::~ResourceFont()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceFont::Create(Application* app, ResourceManager* manager)
+PResource ResourceFont::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceFont(app, manager);
+  return ege_new ResourceFont(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource embedding given font object. This is helper method for manual font adding. */
-PResource ResourceFont::Create(Application* app, ResourceManager* manager, const String& name, PFont font)
+PResource ResourceFont::Create(Application* app, ResourceGroup* group, const String& name, PFont font)
 {
   // create empty resource
-  PResourceFont resource = Create(app, manager);
+  PResourceFont resource = Create(app, group);
   if (resource)
   {
     resource->m_name    = name;
@@ -43,12 +43,6 @@ PResource ResourceFont::Create(Application* app, ResourceManager* manager, const
 const String& ResourceFont::name() const
 {
   return m_name;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns TRUE if resource is loaded. */
-bool ResourceFont::isLoaded() const
-{
-  return NULL != m_font;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Initializes resource from XML. 
@@ -125,7 +119,7 @@ EGEResult ResourceFont::load()
     }
 
     // get material
-    PResourceMaterial materialResource = manager()->resource("material", materialName());
+    PResourceMaterial materialResource = group()->manager()->resource(RESOURCE_NAME_MATERIAL, materialName());
     if (materialResource)
     {
       // load material
@@ -147,6 +141,9 @@ EGEResult ResourceFont::load()
 
       // store font
       m_font = font;
+    
+      // set flag
+      m_loaded = true;
     }
     else
     {
@@ -162,6 +159,9 @@ EGEResult ResourceFont::load()
 void ResourceFont::unload()
 {
   m_font = NULL;
+  
+  // reset flag
+  m_loaded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

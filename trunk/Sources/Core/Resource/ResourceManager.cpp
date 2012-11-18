@@ -141,7 +141,7 @@ bool ResourceManager::isResourceRegistered(const String& typeName) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource of the type given by name. */
-PResource ResourceManager::createResource(const String& name)
+PResource ResourceManager::createResource(const String& name, ResourceGroup* group)
 {
   PResource resource;
 
@@ -150,7 +150,7 @@ PResource ResourceManager::createResource(const String& name)
   if (it != m_registeredResources.end())
   {
     // create resource
-    resource = it->second.m_createFunc(app(), this);
+    resource = it->second.m_createFunc(app(), group);
   }
 
   return resource;
@@ -528,7 +528,7 @@ void ResourceManager::createDefaultResources()
   if (texture)
   {
     // create texture resource and manually assign texture to it
-    PResourceTexture textureResource = ResourceTexture::Create(app(), this, texture->name(), texture);
+    PResourceTexture textureResource = ResourceTexture::Create(app(), group, texture->name(), texture);
     if (textureResource)
     {
       group->addResource(textureResource);
@@ -571,7 +571,7 @@ void ResourceManager::createDefaultResources()
             font->setMaterial(material);
 
             // create font resource and manually assign font to it
-            PResourceFont fontResource = ResourceFont::Create(app(), this, texture->name(), font);
+            PResourceFont fontResource = ResourceFont::Create(app(), group, texture->name(), font);
             if (fontResource)
             {
               group->addResource(fontResource);
@@ -724,6 +724,11 @@ void ResourceManager::update(const Time& time)
       }
       else if (COMMAND_UNLOAD_GROUP == commandData.command)
       {
+        //if (commandData.groupNames.front() == "about-screen")
+        //{
+        //  int a = 1;
+        //}
+
         // process groups in back to front order
         for (StringList::reverse_iterator it = commandData.groupNames.rbegin(); it != commandData.groupNames.rend(); ++it)
         {
@@ -744,6 +749,14 @@ void ResourceManager::update(const Time& time)
 
       // remove from pool
       it = m_commands.erase(it);
+    }
+
+    // TAGE - temp, should be better designed
+    // find out which resources can be unloaded as they are not refered anymore
+    for (GroupList::iterator it = m_groups.begin(); it != m_groups.end(); ++it)
+    {
+      PResourceGroup& group = *it;
+
     }
   }
 }

@@ -13,7 +13,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ResourceText)
 EGE_DEFINE_DELETE_OPERATORS(ResourceText)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceText::ResourceText(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_TEXT)
+ResourceText::ResourceText(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_TEXT)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -22,9 +22,9 @@ ResourceText::~ResourceText()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceText::Create(Application* app, ResourceManager* manager)
+PResource ResourceText::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceText(app, manager);
+  return ege_new ResourceText(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
@@ -80,14 +80,17 @@ EGEResult ResourceText::create(const String& path, const PXmlElement& tag)
 /*! IResource override. Loads resource. */
 EGEResult ResourceText::load()
 {
-  // nothing to load
+  // set flag
+  m_loaded = true;
+
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Unloads resource. */
 void ResourceText::unload()
 {
-  // nothing to unload
+  // reset flag
+  m_loaded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds text localization. */
@@ -206,12 +209,6 @@ s32 ResourceText::translationIndex(s32 numerous) const
   }
 
   return index;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns TRUE if object is loaded. */
-bool ResourceText::isLoaded() const 
-{ 
-  return true; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

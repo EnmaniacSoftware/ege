@@ -9,7 +9,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ResourceData)
 EGE_DEFINE_DELETE_OPERATORS(ResourceData)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceData::ResourceData(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_DATA), m_nulled(false)
+ResourceData::ResourceData(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_DATA), 
+                                                                     m_nulled(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -18,9 +19,9 @@ ResourceData::~ResourceData()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceData::Create(Application* app, ResourceManager* manager)
+PResource ResourceData::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceData(app, manager);
+  return ege_new ResourceData(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
@@ -105,6 +106,9 @@ EGEResult ResourceData::load()
 
     // success
     m_data = buffer;
+
+    // set flag
+    m_loaded = true;
   }
 
   return result;
@@ -114,12 +118,9 @@ EGEResult ResourceData::load()
 void ResourceData::unload()
 {
   m_data = NULL;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns TRUE if material is loaded. */
-bool ResourceData::isLoaded() const 
-{ 
-  return NULL != m_data; 
+
+  // reset flag
+  m_loaded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

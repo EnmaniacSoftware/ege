@@ -38,6 +38,8 @@ Texture2DPrivate::Texture2DPrivate(Texture2D* base) : m_d(base),
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Texture2DPrivate::~Texture2DPrivate()
 {
+  egeDebug() << "Destroying texture" << m_id;
+
   if (0 != m_id)
   {
     glDeleteTextures(1, &m_id);
@@ -244,7 +246,7 @@ EGEResult Texture2DPrivate::create(const PImage& image)
   m_internalFormat = internalFormat;
   m_typeFormat     = type;
 
-  egeDebug() << "Creating texture done" << image->width() << image->height() << image->format();
+  egeDebug() << "Creating texture done" << m_id;
 
   // check for error
   OGL_CHECK();

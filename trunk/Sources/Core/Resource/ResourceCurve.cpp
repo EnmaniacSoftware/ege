@@ -38,7 +38,7 @@ static EGESpline::Type MapCurveTypeName(const String& name, EGESpline::Type defa
   return defaultValue;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceCurve::ResourceCurve(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_CURVE)
+ResourceCurve::ResourceCurve(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_CURVE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -47,9 +47,9 @@ ResourceCurve::~ResourceCurve()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceCurve::Create(Application* app, ResourceManager* manager)
+PResource ResourceCurve::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceCurve(app, manager);
+  return ege_new ResourceCurve(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
@@ -127,16 +127,17 @@ EGEResult ResourceCurve::create(const String& path, const PXmlElement& tag)
 /*! IResource override. Loads resource. */
 EGEResult ResourceCurve::load()
 {
-  // nothing to do
+  // set flag
+  m_loaded = true;
+
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Unloads resource. */
 void ResourceCurve::unload() 
 { 
-  egeDebug() << name();
-
-  // nothing to do
+  // unset flag
+  m_loaded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of curve object defined by resource. */
@@ -168,12 +169,6 @@ EGEResult ResourceCurve::setInstance(CubicSpline& instance) const
 {
   instance = createInstance();
   return instance.isValid() ? EGE_SUCCESS : EGE_ERROR;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns TRUE if object is loaded. */
-bool ResourceCurve::isLoaded() const
-{
-  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

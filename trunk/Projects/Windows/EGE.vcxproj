@@ -121,6 +121,7 @@
     <ClCompile Include="..\..\Sources\Core\Purchases\PurchasesNull_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Random\RandomGenerator.cpp" />
     <ClCompile Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\Resource.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceCurve.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceData.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceFont.cpp" />

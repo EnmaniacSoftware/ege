@@ -13,7 +13,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManager;
+class ResourceGroup;
 
 EGE_DECLARE_SMART_CLASS(ResourceTextureImage, PResourceTextureImage)
 EGE_DECLARE_SMART_CLASS(TextureImage, PTextureImage)
@@ -29,7 +29,7 @@ class ResourceTextureImage : public IResource
     EGE_DECLARE_DELETE_OPERATORS
 
     /* Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Application* app, ResourceManager* manager);
+    static PResource Create(Application* app, ResourceGroup* group);
 
     /* IResource override. Returns name of resource. */
     const String& name() const override;
@@ -43,8 +43,6 @@ class ResourceTextureImage : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
-    /* IResource override. Returns TRUE if object is loaded. */
-    bool isLoaded() const override;
 
     /* Creates instance of texture image object defined by resource. 
      * @note  Loads resource if it is not loaded yet.
@@ -57,7 +55,7 @@ class ResourceTextureImage : public IResource
 
   private:
 
-    ResourceTextureImage(Application* app, ResourceManager* manager);
+    ResourceTextureImage(Application* app, ResourceGroup* group);
 
   private:
 

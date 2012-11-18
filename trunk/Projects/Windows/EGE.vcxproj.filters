@@ -744,6 +744,9 @@
     <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioThreadOpenAL.cpp">
       <Filter>Core\Audio\OpenAL</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Resource.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">

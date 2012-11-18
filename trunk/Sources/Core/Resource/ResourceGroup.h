@@ -47,11 +47,11 @@ class ResourceGroup : public Object
     inline bool isLoaded() const { return m_loaded; }
     /*! Returns list of dependancy group names. */
     inline const StringList& dependancies() const { return m_dependancies; }
+    /*! Gets owning manager */
+    inline ResourceManager* manager() const { return m_manager; }
 
   private:
 
-    /*! Gets owning manager */
-    inline ResourceManager* manager() const { return m_manager; }
     /* Destroys group. */
     void destroy();
     /* Adds dependancy. */

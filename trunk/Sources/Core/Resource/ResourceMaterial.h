@@ -18,7 +18,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManager;
+class ResourceGroup;
 
 EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
 EGE_DECLARE_SMART_CLASS(TextureImage, PTextureImage)
@@ -72,7 +72,7 @@ class ResourceMaterial : public IResource
     EGE_DECLARE_DELETE_OPERATORS
 
     /* Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Application* app, ResourceManager* manager);
+    static PResource Create(Application* app, ResourceGroup* group);
 
     /* IResource override. Returns name of resource. */
     const String& name() const override;
@@ -86,8 +86,6 @@ class ResourceMaterial : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
-    /* IResource override. Returns TRUE if object is loaded. */
-    bool isLoaded() const override;
 
     /* Creates instance of material object defined by resource. */
     PMaterial createInstance() const;
@@ -113,7 +111,7 @@ class ResourceMaterial : public IResource
 
   private:
 
-    ResourceMaterial(Application* app, ResourceManager* manager);
+    ResourceMaterial(Application* app, ResourceGroup* group);
     /* Adds texture dependancy to given pass. */
     EGEResult addTexture(const PXmlElement& tag, PassData& pass);
     /* Adds pass. */
@@ -129,8 +127,6 @@ class ResourceMaterial : public IResource
     String m_name;
     /*! List of all passes. */
     PassDataArray m_passes;
-    /*! Load flag. */
-    bool m_loaded;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

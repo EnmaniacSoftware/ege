@@ -44,7 +44,6 @@ Application::~Application()
   EGE_DELETE(m_sceneManager);
   EGE_DELETE(m_graphics);
   EGE_DELETE(m_appController);
-  EGE_DELETE(m_resourceManager);
   EGE_DELETE(m_screenManager);
   EGE_DELETE(m_audioManager);
   EGE_DELETE(m_overlayManager);
@@ -52,6 +51,7 @@ Application::~Application()
   EGE_DELETE(m_eventManager);
   EGE_DELETE(m_physicsManager);
   EGE_DELETE(m_desktopServices);
+  EGE_DELETE(m_resourceManager);
   //EGE_DELETE(m_debug);
 
   MemoryManager::Deinit();

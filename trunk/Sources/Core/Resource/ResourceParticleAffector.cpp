@@ -12,7 +12,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ResourceParticleAffector)
 EGE_DEFINE_DELETE_OPERATORS(ResourceParticleAffector)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceParticleAffector::ResourceParticleAffector(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_PARTICLE_AFFECTOR)
+ResourceParticleAffector::ResourceParticleAffector(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_PARTICLE_AFFECTOR)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,9 +21,9 @@ ResourceParticleAffector::~ResourceParticleAffector()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceParticleAffector::Create(Application* app, ResourceManager* manager)
+PResource ResourceParticleAffector::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceParticleAffector(app, manager);
+  return ege_new ResourceParticleAffector(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
@@ -69,15 +69,17 @@ EGEResult ResourceParticleAffector::create(const String& path, const PXmlElement
 /*! IResource override. Loads resource. */
 EGEResult ResourceParticleAffector::load()
 {
-  EGEResult result = EGE_SUCCESS;
+  // set flag
+  m_loaded = true;
 
-  return result;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Unloads resource. */
 void ResourceParticleAffector::unload() 
 { 
-  egeDebug() << name();
+  // reset flag
+  m_loaded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of particle affector object defined by resource. */
@@ -97,12 +99,6 @@ PParticleAffector ResourceParticleAffector::createInstance()
   }
 
   return object;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns TRUE if object is loaded. */
-bool ResourceParticleAffector::isLoaded() const 
-{ 
-  return true; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

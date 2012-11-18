@@ -48,7 +48,7 @@ static EGETexture::AddressingMode MapTextureAddressingName(const String& name, E
   return defaultValue; //EGETexture::AM_REPEAT;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceTexture::ResourceTexture(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_TEXTURE)
+ResourceTexture::ResourceTexture(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_TEXTURE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -57,16 +57,16 @@ ResourceTexture::~ResourceTexture()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceTexture::Create(Application* app, ResourceManager* manager)
+PResource ResourceTexture::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceTexture(app, manager);
+  return ege_new ResourceTexture(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource embedding given texture object. This is helper method for manual texture adding. */
-PResource ResourceTexture::Create(Application* app, ResourceManager* manager, const String& name, PObject texture)
+PResource ResourceTexture::Create(Application* app, ResourceGroup* group, const String& name, PObject texture)
 {
   // create empty resource
-  PResourceTexture resource = Create(app, manager);
+  PResourceTexture resource = Create(app, group);
   if (resource)
   {
     resource->m_name        = name;
@@ -131,6 +131,12 @@ EGEResult ResourceTexture::load()
   //    EGE_PRINT("%s, 2D", name().toAscii());
       result = create2D();
     }
+
+    if (EGE_SUCCESS == result)
+    {
+      // set flag
+      m_loaded = true;
+    }
   }
 
   return result;
@@ -166,15 +172,10 @@ EGEResult ResourceTexture::create2D()
 /*! IResource override. Unloads resource. */
 void ResourceTexture::unload() 
 { 
-  egeDebug() << name();
-
   m_texture = NULL; 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns TRUE if texture is loaded. */
-bool ResourceTexture::isLoaded() const 
-{ 
-  return NULL != m_texture; 
+
+  // reset flag
+  m_loaded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -14,7 +14,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ResourceParticleEmitter)
 EGE_DEFINE_DELETE_OPERATORS(ResourceParticleEmitter)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceParticleEmitter::ResourceParticleEmitter(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_PARTICLE_EMITTER)
+ResourceParticleEmitter::ResourceParticleEmitter(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_PARTICLE_EMITTER)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -23,9 +23,9 @@ ResourceParticleEmitter::~ResourceParticleEmitter()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceParticleEmitter::Create(Application* app, ResourceManager* manager)
+PResource ResourceParticleEmitter::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceParticleEmitter(app, manager);
+  return ege_new ResourceParticleEmitter(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
@@ -98,7 +98,7 @@ EGEResult ResourceParticleEmitter::load()
   if (!isLoaded())
   {
     // get material resource
-    m_materialResource = manager()->resource(RESOURCE_NAME_MATERIAL, m_parameters["material"]);
+    m_materialResource = group()->manager()->resource(RESOURCE_NAME_MATERIAL, m_parameters["material"]);
     if (m_materialResource)
     {
       // load material
@@ -119,7 +119,7 @@ EGEResult ResourceParticleEmitter::load()
     for (StringList::const_iterator it = m_affectors.begin(); it != m_affectors.end(); ++it)
     {
       // get affector resource
-      PResourceParticleAffector affectorResource = manager()->resource(RESOURCE_NAME_PARTICLE_AFFECTOR, *it);
+      PResourceParticleAffector affectorResource = group()->manager()->resource(RESOURCE_NAME_PARTICLE_AFFECTOR, *it);
       if (affectorResource)
       {
         // load it
@@ -136,6 +136,9 @@ EGEResult ResourceParticleEmitter::load()
         result = EGE_ERROR_NOT_FOUND;
       }
     }
+
+    // set flag
+    m_loaded = true;
   }
 
   return result;
@@ -144,9 +147,10 @@ EGEResult ResourceParticleEmitter::load()
 /*! IResource override. Unloads resource. */
 void ResourceParticleEmitter::unload() 
 { 
-  egeDebug() << name();
-
   m_materialResource = NULL;
+
+  // reset flag
+  m_loaded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of particle emitter object defined by resource. */
@@ -168,7 +172,7 @@ PParticleEmitter ResourceParticleEmitter::createInstance()
     for (StringList::const_iterator it = m_affectors.begin(); it != m_affectors.end(); ++it)
     {
       // get affector resource
-      PResourceParticleAffector affectorResource = manager()->resource(RESOURCE_NAME_PARTICLE_AFFECTOR, *it);
+      PResourceParticleAffector affectorResource = group()->manager()->resource(RESOURCE_NAME_PARTICLE_AFFECTOR, *it);
       EGE_ASSERT(affectorResource);
 
       // create instance
@@ -198,12 +202,6 @@ EGEResult ResourceParticleEmitter::addAffector(const PXmlElement& tag)
 
   m_affectors.push_back(name);
   return EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns TRUE if object is loaded. */
-bool ResourceParticleEmitter::isLoaded() const 
-{ 
-  return (NULL != m_materialResource); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

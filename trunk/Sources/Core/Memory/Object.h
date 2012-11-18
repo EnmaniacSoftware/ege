@@ -20,13 +20,15 @@ class Object
     virtual ~Object() {}
     
     /*! Returns object Unique Identifier. */
-    inline u32 uid() const { return m_uid; }
+    u32 uid() const;
     /*! Increases reference count for the object */
-    inline void addReference() { ++m_references; }
+    void addReference();
     /*! Decreses reference count for the object. If no more references are present deallocates object. */
-    inline void release() { if (0 < m_references) { if (--m_references == 0) { if (m_deleteFunc) m_deleteFunc(this); else delete this; } } }
+    void release();
+    /*! Returns reference count. */
+    u32 referenceCount();
     /*! Returns pointer to engine. */
-    inline Application* app() const { return m_app; }
+    Application* app() const;
 
   private:
 
@@ -39,6 +41,45 @@ class Object
     /*! Delete function pointer. If NULL standard delete operator will be used for object deletion. */
     egeObjectDeleteFunc m_deleteFunc;
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline u32 Object::uid() const 
+{ 
+  return m_uid; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline void Object::addReference() 
+{ 
+  ++m_references; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline void Object::release() 
+{ 
+  if (0 < m_references) 
+  { 
+    if (--m_references == 0) 
+    { 
+      if (m_deleteFunc) 
+      {
+        m_deleteFunc(this); 
+      }
+      else 
+      {
+        delete this; 
+      } 
+    } 
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline Application* Object::app() const 
+{ 
+  return m_app; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Returns reference count. */
+inline u32 Object::referenceCount()
+{
+  return m_references;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

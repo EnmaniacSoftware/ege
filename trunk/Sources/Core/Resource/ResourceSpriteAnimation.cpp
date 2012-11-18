@@ -15,8 +15,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ResourceSpriteAnimation)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSpriteAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSpriteAnimation::ResourceSpriteAnimation(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_SPRITE_ANIMATION), 
-                                                                                               m_frameDataInvalid(false)
+ResourceSpriteAnimation::ResourceSpriteAnimation(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_SPRITE_ANIMATION), 
+                                                                                           m_frameDataInvalid(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -25,9 +25,9 @@ ResourceSpriteAnimation::~ResourceSpriteAnimation()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceSpriteAnimation::Create(Application* app, ResourceManager* manager)
+PResource ResourceSpriteAnimation::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceSpriteAnimation(app, manager);
+  return ege_new ResourceSpriteAnimation(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
@@ -87,38 +87,15 @@ EGEResult ResourceSpriteAnimation::create(const String& path, const PXmlElement&
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns TRUE if object is loaded. */
-bool ResourceSpriteAnimation::isLoaded() const 
-{ 
-  if (NULL == m_sheet)
-  {
-    // error!
-    return false;
-  }
-
-  // check if all sequencers are loaded
-  for (SequenceResourceList::const_iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
-  {
-    PResourceSequencer seqResource = *it;
-    if (!seqResource->isLoaded())
-    {
-      // error!
-      return false;
-    }
-  }
-
-  return true; 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Loads resource. */
 EGEResult ResourceSpriteAnimation::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if (!isLoaded())
+  if ( ! isLoaded())
   {
     // get sheet resource
-    m_sheet = manager()->resource(RESOURCE_NAME_SPRITE_SHEET, sheetName());
+    m_sheet = group()->manager()->resource(RESOURCE_NAME_SPRITE_SHEET, sheetName());
     if (m_sheet)
     {
       // load sheet
@@ -145,6 +122,9 @@ EGEResult ResourceSpriteAnimation::load()
         return result;
       }
     }
+
+    // set flag
+    m_loaded = true;
   }
 
   return result;
@@ -153,10 +133,11 @@ EGEResult ResourceSpriteAnimation::load()
 /*! IResource override. Unloads resource. */
 void ResourceSpriteAnimation::unload() 
 { 
-  egeDebug() << name();
-
   // unload texture
   m_sheet = NULL;
+
+  // reset flag
+  m_loaded = false;
 
  // m_sequenceResources.clear();
 }
@@ -263,7 +244,7 @@ EGEResult ResourceSpriteAnimation::addSequence(const PXmlElement& tag)
   EGEResult result = EGE_SUCCESS;
 
   // create sequence resource manually
-  PResourceSequencer seqRes = ResourceSequencer::Create(app(), manager());
+  PResourceSequencer seqRes = ResourceSequencer::Create(app(), group());
   if (NULL == seqRes)
   {
     // error!

@@ -44,6 +44,8 @@ class ScreenManager : public Object
     PScreen screen(const String& name) const;
     /* Returns top screen. */
     PScreen top() const;
+    /* Returns TRUE if given screen is visible. */
+    bool isVisible(const PScreen& screen) const;
 
   private slots:
 

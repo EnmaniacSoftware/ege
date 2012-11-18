@@ -57,7 +57,7 @@ EGEResult ResourceGroup::create(const PXmlElement& tag)
     else
     {
       // create resource instance
-      PResource resource = manager()->createResource(child->name());
+      PResource resource = manager()->createResource(child->name(), this);
       if (resource)
       {
         // initialize from XML
@@ -91,7 +91,7 @@ EGEResult ResourceGroup::load()
   // check if NOT already loaded
   if (!isLoaded())
   {
-    //if (name() == "common")
+    //if (name() == "about-screen")
     //{
     //  int a = 1;
     //}
@@ -149,13 +149,18 @@ void ResourceGroup::unload()
   // check if loaded
   if (isLoaded())
   {
+    //if (name() == "about-screen")
+    //{
+    //  int a = 1;
+    //}
+
     // go thru all resources
     for (ResourcesMap::const_iterator it = m_resources.begin(); it != m_resources.end(); ++it)
     {
       PResource resource = it->second;
 
       // check if non-manual
-      if (!resource->isManual())
+      if ( ! resource->isManual())
       {
         // unload it
         resource->unload();

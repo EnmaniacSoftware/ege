@@ -39,7 +39,7 @@ class PhysicsComponent : public IComponent
     PhysicsComponent();
     /* Constructor used to create managable component. */
     PhysicsComponent(Application* app, const String& name, EGEPhysics::ComponentType type = EGEPhysics::COMPONENT_DYNAMIC);
-   ~PhysicsComponent();
+    virtual ~PhysicsComponent();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS

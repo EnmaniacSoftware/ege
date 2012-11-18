@@ -18,7 +18,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManager;
+class ResourceGroup;
 EGE_DECLARE_SMART_CLASS(ResourceImagedAnimation, PResourceImagedAnimation)
 EGE_DECLARE_SMART_CLASS(ImagedAnimation, PImagedAnimation)
 EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
@@ -36,7 +36,7 @@ class ResourceImagedAnimation : public IResource
     EGE_DECLARE_DELETE_OPERATORS
 
     /* Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Application* app, ResourceManager* manager);
+    static PResource Create(Application* app, ResourceGroup* group);
 
     /* IResource override. Returns name of resource. */
   
@@ -51,8 +51,6 @@ class ResourceImagedAnimation : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
-    /* IResource override. Returns TRUE if object is loaded. */
-    bool isLoaded() const override;
 
     /* Creates instance of imaged animation object defined by resource. */
     PImagedAnimation createInstance();
@@ -61,7 +59,7 @@ class ResourceImagedAnimation : public IResource
 
   private:
 
-    ResourceImagedAnimation(Application* app, ResourceManager* manager);
+    ResourceImagedAnimation(Application* app, ResourceGroup* group);
     /* Adds object. */
     EGEResult addObject(const PXmlElement& tag);
     /* Adds frame. */

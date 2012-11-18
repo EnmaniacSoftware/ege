@@ -14,7 +14,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManager;
+class ResourceGroup;
 
 EGE_DECLARE_SMART_CLASS(ResourceText, PResourceText)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ class ResourceText : public IResource
     EGE_DECLARE_DELETE_OPERATORS
 
     /* Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Application* app, ResourceManager* manager);
+    static PResource Create(Application* app, ResourceGroup* group);
 
     /* IResource override. Returns name of resource. */
     const String& name() const override;
@@ -42,15 +42,13 @@ class ResourceText : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
-    /* IResource override. Returns TRUE if object is loaded. */
-    bool isLoaded() const override;
 
     /* Returns text translation. */
     Text text(s32 numerous = -1) const;
 
   private:
 
-    ResourceText(Application* app, ResourceManager* manager);
+    ResourceText(Application* app, ResourceGroup* group);
     /* Adds text localization. */
     EGEResult addLocalization(const PXmlElement& tag);
     /* Returns index of translation for given numerous. */

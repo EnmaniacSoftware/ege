@@ -104,7 +104,7 @@ EGEGraphics::BlendFactor MapBlendFactor(const String& name, EGEGraphics::BlendFa
 EGE_DEFINE_NEW_OPERATORS(ResourceMaterial)
 EGE_DEFINE_DELETE_OPERATORS(ResourceMaterial)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceMaterial::ResourceMaterial(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_MATERIAL), m_loaded(false)
+ResourceMaterial::ResourceMaterial(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_MATERIAL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -113,9 +113,9 @@ ResourceMaterial::~ResourceMaterial()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceMaterial::Create(Application* app, ResourceManager* manager)
+PResource ResourceMaterial::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceMaterial(app, manager);
+  return ege_new ResourceMaterial(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
@@ -246,10 +246,10 @@ EGEResult ResourceMaterial::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  //if (name() == "achievement-unlock-background")
-  //{
-  //  int a = 1;
-  //}
+  if (name() == "main-menu-screen")
+  {
+    int a = 1;
+  }
 
   if (!isLoaded())
   {
@@ -277,11 +277,11 @@ EGEResult ResourceMaterial::load()
 
         // material referred texture space in use
         Rectf texRect(0, 0, 1, 1);
-      
+
         // NOTE: Material can refer to Texture or TextureImage (ie. from atlas)
 
         // try to find TextureImage of a given name
-        PResourceTextureImage textureImageRes = manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureImageData.name);
+        PResourceTextureImage textureImageRes = group()->manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureImageData.name);
         if (textureImageRes)
         {
           // load texture image
@@ -308,7 +308,7 @@ EGEResult ResourceMaterial::load()
         else
         {
           // try to find Texture of a given name
-          PResourceTexture textureRes = manager()->resource(RESOURCE_NAME_TEXTURE, textureImageData.name);
+          PResourceTexture textureRes = group()->manager()->resource(RESOURCE_NAME_TEXTURE, textureImageData.name);
           if (textureRes)
           {
             // load texture
@@ -360,18 +360,42 @@ EGEResult ResourceMaterial::load()
 /*! IResource override. Unloads resource. */
 void ResourceMaterial::unload()
 {
-  for (PassDataArray::iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
+  if (isLoaded())
   {
-    PassData& pass = *passIt;
-
-    for (TextureImageList::iterator it = pass.m_textureImages.begin(); it != pass.m_textureImages.end(); ++it)
+    for (PassDataArray::iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
     {
-      *it = NULL;
-    }
-    pass.m_textureImages.clear();
-  }
+      PassData& pass = *passIt;
 
-  m_loaded = false;
+      for (TextureImageList::iterator it = pass.m_textureImages.begin(); it != pass.m_textureImages.end(); ++it)
+      {
+        *it = NULL;
+      }
+      pass.m_textureImages.clear();
+
+      // unload all textures for current pass
+      for (TextureImageDataList::iterator it = pass.m_textureImageData.begin(); it != pass.m_textureImageData.end(); ++it)
+      {
+        TextureImageData& textureImageData = *it;
+
+        PResourceTextureImage textureImageRes = group()->manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureImageData.name);
+        if (textureImageRes)
+        {
+          textureImageRes->unload();
+        }
+        else
+        {
+          PResourceTexture textureRes = group()->manager()->resource(RESOURCE_NAME_TEXTURE, textureImageData.name);
+          if (textureRes)
+          {
+            textureRes->unload();
+          }
+        }
+      }
+    }
+
+    // reset flag
+    m_loaded = false;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Adds texture dependancy. */
@@ -575,12 +599,6 @@ const Color& ResourceMaterial::emissionColor(u32 pass) const
 float32 ResourceMaterial::shininess(u32 pass) const 
 { 
   return (pass < passCount()) ? m_passes[pass].m_shininess : 0.0f; 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if material is loaded. */
-bool ResourceMaterial::isLoaded() const 
-{ 
-  return m_loaded; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -15,8 +15,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ResourceWidget)
 EGE_DEFINE_DELETE_OPERATORS(ResourceWidget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceWidget::ResourceWidget(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_WIDGET),
-                                                                             m_loaded(false)
+ResourceWidget::ResourceWidget(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_WIDGET)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -25,9 +24,9 @@ ResourceWidget::~ResourceWidget()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceWidget::Create(Application* app, ResourceManager* manager)
+PResource ResourceWidget::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceWidget(app, manager);
+  return ege_new ResourceWidget(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
@@ -249,12 +248,6 @@ EGEResult ResourceWidget::processFrame(const PXmlElement& tag)
   }
 
   return result;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns TRUE if material is loaded. */
-bool ResourceWidget::isLoaded() const 
-{ 
-  return m_loaded; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

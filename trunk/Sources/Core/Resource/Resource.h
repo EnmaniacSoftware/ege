@@ -13,7 +13,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManager;
+class ResourceGroup;
 class Application;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(IResource, PResource)
@@ -22,9 +22,8 @@ class IResource : public Object
 {
   public:
 
-    IResource(Application* app, ResourceManager* manager, const String& typeName, egeObjectDeleteFunc deleteFunc = NULL) 
-    : Object(app, EGE_OBJECT_UID_RESOURCE, deleteFunc), m_manager(manager), m_typeName(typeName), m_manual(false) {}
-    virtual ~IResource() {}
+    IResource(Application* app, ResourceGroup* group, const String& typeName, egeObjectDeleteFunc deleteFunc = NULL);
+    virtual ~IResource();
 
     /* Initializes resource from XML. 
     * 
@@ -38,29 +37,32 @@ class IResource : public Object
     virtual void unload() = 0;
     /* Returns name of resource. */
     virtual const String& name() const = 0;
+
     /* Returns TRUE if resource is already loaded. */
-    virtual bool isLoaded() const = 0;
-    /*! Returns resource type name. */
-    inline const String& typeName() const { return m_typeName; }
-    /*! Returns TRUE if resource is manual. */
-    inline bool isManual() const { return m_manual; }
+    bool isLoaded() const;
+    /* Returns resource type name. */
+    const String& typeName() const;
+    /* Returns TRUE if resource is manual. */
+    bool isManual() const;
 
   protected:
 
-    /*! Gets owning manager. */
-    inline ResourceManager* manager() const { return m_manager; }
+    /* Returns pointer to owning group. */
+    ResourceGroup* group() const;
 
   protected:
 
     /*! Manual flag. Manual resources wont be automatically handled by framework (ie. loaded/unloaded). */
     bool m_manual;
+    /*! Load flag. */ 
+    bool m_loaded;
 
   private:
 
-    /*! Pointer to owning manager */
-    ResourceManager* m_manager;
     /*! Type name. */
     String m_typeName;
+    /*! Pointer to owning resource group. */
+    ResourceGroup* m_group;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

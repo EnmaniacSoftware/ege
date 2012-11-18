@@ -17,7 +17,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManager;
+class ResourceGroup;
 
 EGE_DECLARE_SMART_CLASS(ResourceSpriteAnimation, PResourceSpriteAnimation)
 EGE_DECLARE_SMART_CLASS(ResourceSpritesheet, PResourceSpritesheet)
@@ -34,7 +34,7 @@ class ResourceSpriteAnimation : public IResource
     EGE_DECLARE_DELETE_OPERATORS
 
     /* Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Application* app, ResourceManager* manager);
+    static PResource Create(Application* app, ResourceGroup* group);
 
     /* IResource override. Returns name of resource. */
     const String& name() const override;
@@ -48,8 +48,6 @@ class ResourceSpriteAnimation : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
-    /* IResource override. Returns TRUE if object is loaded. */
-    bool isLoaded() const override;
 
     /* Creates instance of sprite object defined by resource. */
     PSpriteAnimation createInstance();
@@ -58,7 +56,7 @@ class ResourceSpriteAnimation : public IResource
 
   private:
 
-    ResourceSpriteAnimation(Application* app, ResourceManager* manager);
+    ResourceSpriteAnimation(Application* app, ResourceGroup* group);
     /*! Returns sprite sheet name. */
     inline const String& sheetName() const { return m_sheetName; } 
     /* Invalidates frame data. */

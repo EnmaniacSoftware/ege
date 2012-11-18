@@ -14,7 +14,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManager;
+class ResourceGroup;
 
 EGE_DECLARE_SMART_CLASS(ResourceTexture, PResourceTexture)
 EGE_DECLARE_SMART_CLASS(Object, PObject)
@@ -29,9 +29,9 @@ class ResourceTexture : public IResource
     EGE_DECLARE_DELETE_OPERATORS
 
     /* Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Application* app, ResourceManager* manager);
+    static PResource Create(Application* app, ResourceGroup* group);
     /* Creates instance of resource embedding given texture object. This is helper method for manual texture adding. */
-    static PResource Create(Application* app, ResourceManager* manager, const String& name, PObject texture);
+    static PResource Create(Application* app, ResourceGroup* group, const String& name, PObject texture);
 
     /* IResource override. Returns name of resource. */
     const String& name() const override;
@@ -45,15 +45,13 @@ class ResourceTexture : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
-    /* IResource override. Returns TRUE if object is loaded. */
-    bool isLoaded() const override;
 
     /*! Gets instance of texture object defined by resource. */
     inline PObject texture() const { return m_texture; }
 
   private:
 
-    ResourceTexture(Application* app, ResourceManager* manager);
+    ResourceTexture(Application* app, ResourceGroup* group);
     /* Creates 2D texture. */
     EGEResult create2D();
     /*! Gets texture type. */

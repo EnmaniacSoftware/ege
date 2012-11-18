@@ -27,7 +27,7 @@ EGE_DECLARE_SMART_CLASS(ResourceText, PResourceText)
 EGE_DECLARE_SMART_CLASS(ResourceSound, PResourceSound)
 EGE_DECLARE_SMART_CLASS(Event, PEvent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef PResource (*egeResourceCreateFunc)(Application* app, ResourceManager* manager);
+typedef PResource (*egeResourceCreateFunc)(Application* app, ResourceGroup* group);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManager : public Object, public IEventListener
 {
@@ -104,7 +104,7 @@ class ResourceManager : public Object, public IEventListener
     /* Returns TRUE if given resource type is registered. */
     bool isResourceRegistered(const String& typeName) const;
     /* Creates instance of resource of the type given by name. */
-    PResource createResource(const String& typeName);
+    PResource createResource(const String& typeName, ResourceGroup* group);
 
     /* Returns TRUE if resource manager uses threading. */
     bool isThreading() const;

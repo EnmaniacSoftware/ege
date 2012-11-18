@@ -52,44 +52,105 @@ void ScreenManager::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Shows given screen adding it on top of the rest ones. */
+/*! Shows given screen adding it on top of the rest ones. 
+ *  @note: new screen should be added (always) (to ensure other can query visibility correctly)
+ *         current top screen should be COVERED (always)
+ *         if new and top screen are BOTH transparent do nothing (visibility does not change)
+ *         if new and top screens are BOTH opaque do nothing (visibility does not change)
+ *         if new screen is transparent and top screen is opaque do nothing (visibility does not change)
+ *         if new screen is opaque and top screen is transparent then cover all transparent ones going from top to bottom
+ *         ENTER new
+ */
 void ScreenManager::show(PScreen screen)
 {
-  // check if some screen is being shown
-  if (!m_screens.empty())
+  PScreen topScreen = top();
+
+  // add to pool first
+  m_screens.push_back(screen);
+
+  // cover top screen if any
+  if (NULL != topScreen)
   {
-    m_screens.back()->cover();
+    topScreen->cover();
   }
 
-  // add to pool
-  m_screens.push_back(screen);
+  // check if visibility changed
+  if ( ! screen->hasTransparency() && (NULL != topScreen) && topScreen->hasTransparency())
+  {
+    // NOTE: no const_reverse_iterator due to GCC incompatibility of operator== and operator!=
+    ScreenList::reverse_iterator it  = m_screens.rbegin();
+    ++it;
+    ++it;
+    ScreenList::reverse_iterator end = m_screens.rend();
+
+    for (; it != end; ++it)
+    {
+      PScreen& currentScreen = *it;      
+      if (currentScreen->hasTransparency())
+      {
+        currentScreen->cover();
+      }
+      else
+      {
+        // we are done
+        break;
+      }
+    }
+  }
 
   // enter new screen
   screen->enter();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Hides current (top) screen. */
+/*! Hides current (top) screen. 
+ *  @note: Current top screen should be LEAVED (always)
+ *         Top screen should be removed (always)
+ *         Below screen should always be ENTERED
+ *         If popped and top screens are BOTH transparent do nothing (visibility does not change)
+ *         If popped and top screens are BOTH opaque do nothing (visibility does not change)
+ *         If popped screen is transparent and top screen is opaque do nothing (visibility does not change)
+ *         If popped screen is opaque and top screen is transparent then cover all transparent ones going from top to bottom
+ */
 void ScreenManager::hide()
 {
- // bool wasTransparent = false;
+  PScreen topScreen = top();
 
-  // check if some screen is being shown
-  if (!m_screens.empty())
+  // leave top screen if any
+  if (NULL != topScreen)
   {
-    PScreen screen = m_screens.back();
-    
-    // leave currently shown screen
-    screen->leave();
+    topScreen->leave();
 
-    // remove it
-    m_screens.remove(screen);
+    // remove from pool
+    m_screens.pop_back();
   }
 
-  // check if any screen present
-  if (!m_screens.empty())
+  // enter screen below the one we just removed
+  if (NULL != top())
   {
-    // uncover top screen
-    m_screens.back()->uncover();
+    top()->enter();
+  }
+
+  // check if visibility changed and more than 2 screens
+  if ( ! topScreen->hasTransparency() && (NULL != top()) && top()->hasTransparency())
+  {
+    // NOTE: no const_reverse_iterator due to GCC incompatibility of operator== and operator!=
+    ScreenList::reverse_iterator it  = m_screens.rbegin();
+    ++it;
+    ScreenList::reverse_iterator end = m_screens.rend();
+
+    for (; it != end; ++it)
+    {
+      PScreen& currentScreen = *it;      
+      if (currentScreen->hasTransparency())
+      {
+        currentScreen->cover();
+      }
+      else
+      {
+        // we are done
+        break;
+      }
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -196,6 +257,36 @@ PScreen ScreenManager::screen(const String& name) const
 PScreen ScreenManager::top() const
 {
   return m_screens.empty() ? NULL : m_screens.back();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if given screen is visible. */
+bool ScreenManager::isVisible(const PScreen& screen) const
+{
+  bool visibility = true;
+
+  // go thru all screens from top to bottom
+  // NOTE: no const_reverse_iterator due to GCC incompatibility of operator== and operator!=
+  for (ScreenList::const_reverse_iterator it = m_screens.rbegin(); it != m_screens.rend(); ++it)
+  {
+    const PScreen& currentScreen = *it;     
+
+    // check if reached the desired screen
+    if (screen == currentScreen)
+    {
+      // visible
+      return true;
+    }
+
+    // check if current screen has no transparency
+    if (currentScreen->isEnabled() && ! currentScreen->hasTransparency())
+    {
+      // not visible
+      return false;
+    }
+  }
+
+  // not found, not visible
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

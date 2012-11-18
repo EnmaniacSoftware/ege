@@ -30,7 +30,7 @@ class ResourceCurve : public IResource
     EGE_DECLARE_DELETE_OPERATORS
 
     /* Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Application* app, ResourceManager* manager);
+    static PResource Create(Application* app, ResourceGroup* group);
 
     /* IResource override. Returns name of resource. */
     const String& name() const override;
@@ -44,8 +44,6 @@ class ResourceCurve : public IResource
     EGEResult load() override;
     /* IResource override. Unloads resource. */
     void unload() override;
-    /* IResource override. Returns TRUE if object is loaded. */
-    bool isLoaded() const override;
 
     /* Creates instance of curve object defined by resource. */
     CubicSpline createInstance() const;
@@ -65,7 +63,7 @@ class ResourceCurve : public IResource
 
   private:
 
-    ResourceCurve(Application* app, ResourceManager* manager);
+    ResourceCurve(Application* app, ResourceGroup* group);
     /*! Returns curve type. */
     inline EGESpline::Type type() const { return m_type; }
     

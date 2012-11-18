@@ -9,8 +9,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ResourceSequencer)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSequencer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSequencer::ResourceSequencer(Application* app, ResourceManager* manager) :  IResource(app, manager, RESOURCE_NAME_SEQUENCE), 
-                                                                                  m_repeatable(false)
+ResourceSequencer::ResourceSequencer(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_SEQUENCE), 
+                                                                               m_repeatable(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -19,9 +19,9 @@ ResourceSequencer::~ResourceSequencer()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceSequencer::Create(Application* app, ResourceManager* manager)
+PResource ResourceSequencer::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceSequencer(app, manager);
+  return ege_new ResourceSequencer(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
@@ -66,14 +66,17 @@ EGEResult ResourceSequencer::create(const String& path, const PXmlElement& tag)
 /*! IResource override. Loads resource. */
 EGEResult ResourceSequencer::load()
 {
-  // nothing to do
+  // set flag
+  m_loaded = true;
+
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Unloads resource. */
 void ResourceSequencer::unload()
 {
-  // nothing to do
+  // reset flag
+  m_loaded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Set given instance of sequencer object to what is defined by resource. */
@@ -107,12 +110,6 @@ PSequencer ResourceSequencer::createInstance()
   }
 
   return sequencer;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns TRUE if material is loaded. */
-bool ResourceSequencer::isLoaded() const 
-{ 
-  return true; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

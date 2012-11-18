@@ -12,7 +12,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ResourceTextureImage)
 EGE_DEFINE_DELETE_OPERATORS(ResourceTextureImage)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceTextureImage::ResourceTextureImage(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_TEXTURE_IMAGE)
+ResourceTextureImage::ResourceTextureImage(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_TEXTURE_IMAGE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,9 +21,9 @@ ResourceTextureImage::~ResourceTextureImage()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceTextureImage::Create(Application* app, ResourceManager* manager)
+PResource ResourceTextureImage::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceTextureImage(app, manager);
+  return ege_new ResourceTextureImage(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
@@ -73,7 +73,7 @@ EGEResult ResourceTextureImage::load()
   if (!isLoaded())
   {
     // load texture
-    PResourceTexture textureResource = manager()->resource("texture", m_textureName);
+    PResourceTexture textureResource = group()->manager()->resource(RESOURCE_NAME_TEXTURE, m_textureName);
     if (textureResource)
     {
       // load texture
@@ -85,6 +85,9 @@ EGEResult ResourceTextureImage::load()
 
       // store texture object
       m_texture = textureResource->texture();
+
+      // set flag
+      m_loaded = true;
     }
     else
     {
@@ -99,6 +102,9 @@ EGEResult ResourceTextureImage::load()
 void ResourceTextureImage::unload() 
 { 
   m_texture = NULL; 
+
+  // reset flag
+  m_loaded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns instance of texture image object defined by resource. 
@@ -150,12 +156,6 @@ EGEResult ResourceTextureImage::setInstance(const PTextureImage& instance)
   instance->setRotationAngle(m_rotationAngle);
 
   return EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns TRUE if texture image is loaded. */
-bool ResourceTextureImage::isLoaded() const 
-{ 
-  return NULL != m_texture; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

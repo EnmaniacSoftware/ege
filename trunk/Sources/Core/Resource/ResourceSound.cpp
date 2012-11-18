@@ -12,7 +12,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ResourceSound)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSound::ResourceSound(Application* app, ResourceManager* manager) : IResource(app, manager, RESOURCE_NAME_SOUND)
+ResourceSound::ResourceSound(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_SOUND)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,9 +21,9 @@ ResourceSound::~ResourceSound()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of resource. This method is a registration method for manager. */
-PResource ResourceSound::Create(Application* app, ResourceManager* manager)
+PResource ResourceSound::Create(Application* app, ResourceGroup* group)
 {
-  return ege_new ResourceSound(app, manager);
+  return ege_new ResourceSound(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! IResource override. Returns name of resource. */
@@ -65,33 +65,37 @@ EGEResult ResourceSound::create(const String& path, const PXmlElement& tag)
 /*! IResource override. Loads resource. */
 EGEResult ResourceSound::load()
 {
-  // allocate data buffer
-  m_data = ege_new DataBuffer();
-  if (NULL == m_data)
+  if ( ! isLoaded())
   {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
+    // allocate data buffer
+    m_data = ege_new DataBuffer();
+    if (NULL == m_data)
+    {
+      // error!
+      return EGE_ERROR_NO_MEMORY;
+    }
+
+    // open sound file for reading
+    File file(m_path);
+    if (EGE_SUCCESS != file.open(EGEFile::MODE_READ_ONLY))
+    {
+      // error!
+      return EGE_ERROR_IO;
+    }
+
+    // find whats file size
+    s64 fileSize = file.size();
+
+    // read data into buffer
+    if (file.read(m_data, fileSize) != fileSize)
+    {
+      // error!
+      return EGE_ERROR_IO;
+    }
+
+    // set flag
+    m_loaded = true;
   }
-
-  // open sound file for reading
-  File file(m_path);
-  if (EGE_SUCCESS != file.open(EGEFile::MODE_READ_ONLY))
-  {
-    // error!
-    return EGE_ERROR_IO;
-  }
-
-  // find whats file size
-  s64 fileSize = file.size();
-
-  // read data into buffer
-  if (file.read(m_data, fileSize) != fileSize)
-  {
-    // error!
-    return EGE_ERROR_IO;
-  }
-
- // egeDebug() << "Loaded sound resource" << name();
 
   return EGE_SUCCESS;
 }
@@ -99,8 +103,10 @@ EGEResult ResourceSound::load()
 /*! IResource override. Unloads resource. */
 void ResourceSound::unload() 
 { 
-  //egeDebug() << "Unloading sound resource" << name();
   m_data = NULL;
+
+  // reset flag
+  m_loaded = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of sound object defined by resource. */
@@ -124,12 +130,6 @@ PSound ResourceSound::createInstance()
   object->setPitch(m_pitch);
 
   return object;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns TRUE if object is loaded. */
-bool ResourceSound::isLoaded() const 
-{ 
-  return (NULL != m_data); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
