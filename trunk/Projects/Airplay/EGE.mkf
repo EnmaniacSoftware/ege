@@ -447,6 +447,7 @@ files
 
 	["Core/Resource"]
   (../../Sources/Core/Resource)
+  Resource.cpp
   Resource.h
   ResourceCurve.cpp
   ResourceCurve.h
