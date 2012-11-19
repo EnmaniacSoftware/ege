@@ -31,6 +31,7 @@ RenderComponent::~RenderComponent()
 {
   m_indexBuffer  = NULL;
   m_vertexBuffer = NULL;
+  m_material     = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sets render material. */

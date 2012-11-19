@@ -724,7 +724,7 @@ void ResourceManager::update(const Time& time)
       }
       else if (COMMAND_UNLOAD_GROUP == commandData.command)
       {
-        //if (commandData.groupNames.front() == "about-screen")
+        //if (commandData.groupNames.front() == "mode-selection-screen")
         //{
         //  int a = 1;
         //}

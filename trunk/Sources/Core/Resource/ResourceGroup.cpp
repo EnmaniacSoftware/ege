@@ -149,10 +149,10 @@ void ResourceGroup::unload()
   // check if loaded
   if (isLoaded())
   {
-    //if (name() == "about-screen")
-    //{
-    //  int a = 1;
-    //}
+    if (name() == "mode-selection-screen")
+    {
+      int a = 1;
+    }
 
     // go thru all resources
     for (ResourcesMap::const_iterator it = m_resources.begin(); it != m_resources.end(); ++it)

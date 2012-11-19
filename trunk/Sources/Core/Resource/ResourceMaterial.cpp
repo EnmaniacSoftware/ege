@@ -360,6 +360,11 @@ EGEResult ResourceMaterial::load()
 /*! IResource override. Unloads resource. */
 void ResourceMaterial::unload()
 {
+  //if ("cherry-blossom" == m_name)
+  //{
+  //  int a =1;
+  //}
+
   if (isLoaded())
   {
     for (PassDataArray::iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
