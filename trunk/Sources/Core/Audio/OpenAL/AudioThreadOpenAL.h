@@ -4,6 +4,8 @@
 /*! Audio thread for OpenAL implementation
  */
 
+#ifdef EGE_AUDIO_OPENAL
+
 #include <EGEThread.h>
 
 EGE_NAMESPACE_BEGIN
@@ -31,5 +33,7 @@ class AudioThreadOpenAL : public Thread
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // EGE_AUDIO_OPENAL
 
 #endif // EGE_CORE_AUDIO_THREAD_OPENAL_H

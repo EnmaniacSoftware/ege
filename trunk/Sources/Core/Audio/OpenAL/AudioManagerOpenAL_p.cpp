@@ -248,6 +248,11 @@ EGEResult AudioManagerPrivate::doPlay(const PSound& sound)
   {
     SoundPrivate* soundPrivate = sound->p_func();
 
+    if (sound->name() == "menu-theme")
+    {
+      int a = 1;
+    }
+
     // start playback
     return soundPrivate->play(channel);
   }

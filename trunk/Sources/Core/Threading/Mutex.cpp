@@ -36,7 +36,7 @@ bool Mutex::lock()
   EGE_ASSERT(isValid());
 
   bool result = false;
-  if (m_p)
+  if (NULL != m_p)
   {
     result = m_p->lock();
     if (result)

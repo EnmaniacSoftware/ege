@@ -101,5 +101,15 @@ void ThreadPrivate::cancel()
   egeDebug() << "Canceling:" << this << "result code:" << result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns current tread identifier. */
+void* Thread::CurrentId()
+{
+#ifdef EGE_PLATFORM_AIRPLAY
+  return reinterpret_cast<void*>(pthread_self());
+#else
+  return pthread_self().p;
+#endif EGE_PLATFORM_AIRPLAY;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

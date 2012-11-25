@@ -149,7 +149,7 @@ void ResourceGroup::unload()
   // check if loaded
   if (isLoaded())
   {
-    if (name() == "mode-selection-screen")
+    if (name() == "game-over-screen")
     {
       int a = 1;
     }

@@ -31,6 +31,11 @@ class Thread : public Object
 
   public:
 
+    /* Returns current tread identifier. */
+    static void* CurrentId();
+
+  public:
+
     /* Returns TRUE if object is valid. */
     bool isValid() const;
 
