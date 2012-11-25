@@ -8,7 +8,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static char l_buffer[2048];
+#define WORK_BUFFER_LENGTH (512)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Text::Text() : std::wstring()
 {
@@ -69,25 +69,29 @@ Text& Text::operator+=(const Text& string)
 /*! Creates formatted text. */
 void Text::format(const char* text, ...)
 {
+  char buffer[WORK_BUFFER_LENGTH];
+
 	va_list arg;
 	va_start(arg, text);
-	vsprintf(l_buffer, text, arg);
+	vsprintf(buffer, text, arg);
 	va_end(arg);
 
-  *this = l_buffer;
+  *this = buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Create new object from formatted text. */
 Text Text::Format(const char* text, ...)
 {
+  char buffer[WORK_BUFFER_LENGTH];
+
   Text out;
 
 	va_list arg;
 	va_start(arg, text);
-	vsprintf(l_buffer, text, arg);
+	vsprintf(buffer, text, arg);
 	va_end(arg);
 
-  out = l_buffer;
+  out = buffer;
 
   return out;
 }

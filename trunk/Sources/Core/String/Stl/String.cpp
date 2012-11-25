@@ -9,7 +9,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static char l_buffer[2048];
+#define WORK_BUFFER_LENGTH (512)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function detrmining if given character is a white space. */
 bool IsWhiteSpace(char c)
@@ -194,12 +194,14 @@ String String::FromNumber(s32 value)
 /*! Creates formatted text. */
 void String::format(const char* text, ...)
 {
+  char buffer[WORK_BUFFER_LENGTH];
+
 	va_list arg;
 	va_start(arg, text);
-	vsprintf(l_buffer, text, arg);
+	vsprintf(buffer, text, arg);
 	va_end(arg);
 
-  *this = l_buffer;
+  *this = buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Create new object from formatted text. */
@@ -207,12 +209,14 @@ String String::Format(const char* text, ...)
 {
   String out;
 
+  char buffer[WORK_BUFFER_LENGTH];
+
 	va_list arg;
 	va_start(arg, text);
-	vsprintf(l_buffer, text, arg);
+	vsprintf(buffer, text, arg);
 	va_end(arg);
 
-  out = l_buffer;
+  out = buffer;
 
   return out;
 }
