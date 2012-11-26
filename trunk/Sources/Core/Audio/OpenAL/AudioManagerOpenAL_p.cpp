@@ -174,6 +174,22 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Returns TRUE if sound of a given name is being played. */
+bool AudioManagerPrivate::isPlaying(const String& soundName) const
+{
+  // look for the sounds-to-be-played pool
+  for (AudioManager::SoundList::const_iterator it = m_soundsToPlay.begin(); it != m_soundsToPlay.end(); ++it)
+  {
+    const PSound& sound = *it;
+    if (sound->name() == soundName)
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns first available channel. */
 ALuint AudioManagerPrivate::availableChannel() const
 {
@@ -208,7 +224,7 @@ EGEResult AudioManagerPrivate::stop(const PSound& sound)
 /*! Returns TRUE if given sound is being played. */
 bool AudioManagerPrivate::isPlaying(const PSound& sound) const
 {
-  return sound->p_func()->isPlaying();
+  return m_soundsToPlay.contains(sound) || sound->p_func()->isPlaying();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Pauses given sound.
@@ -232,7 +248,7 @@ bool AudioManagerPrivate::isStopped(const PSound& sound) const
   return sound->p_func()->isStopped();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* */
+/*! Starts playback of a given sound. */
 EGEResult AudioManagerPrivate::doPlay(const PSound& sound)
 {
   // check if paused
@@ -247,11 +263,6 @@ EGEResult AudioManagerPrivate::doPlay(const PSound& sound)
   if (0 < channel)
   {
     SoundPrivate* soundPrivate = sound->p_func();
-
-    if (sound->name() == "menu-theme")
-    {
-      int a = 1;
-    }
 
     // start playback
     return soundPrivate->play(channel);

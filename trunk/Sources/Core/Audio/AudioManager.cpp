@@ -159,7 +159,8 @@ bool AudioManager::isPlaying(const String& soundName) const
     }
   }
 
-  return false;
+  // propagate to implementation
+  return p_func()->isPlaying(soundName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if given sound is being played. */

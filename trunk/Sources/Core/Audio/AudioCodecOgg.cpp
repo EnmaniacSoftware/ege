@@ -90,19 +90,15 @@ bool AudioCodecOgg::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
       }
     }
 
-    // apply current stream offset
-    // NOTE: multiple codecs can re-use same stream
-    stream->setReadOffset(m_streamOffset);
-
     // further decompression is needed
-    unsigned char* data = reinterpret_cast<unsigned char*>(stream->data(stream->readOffset()));
+    unsigned char* data = reinterpret_cast<unsigned char*>(stream->data(m_streamOffset));
     s32 offset = 0;
     int n;
     float* left;
     float* right;
     float** outputs;
     int num_c;
-    int dataLength = Math::Min(128, static_cast<int>(stream->size() - stream->readOffset()));
+    int dataLength = Math::Min(128, static_cast<int>(stream->size() - m_streamOffset));
     while (samplesDecoded != samplesCount)
     {
       // try to decode frame
@@ -115,7 +111,7 @@ bool AudioCodecOgg::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
         dataLength = Math::Max(128, dataLength);
 
         // try to get some additional data length
-        int newDataLength = Math::Min(dataLength << 1, static_cast<int>(stream->size() - stream->readOffset()));
+        int newDataLength = Math::Min(dataLength << 1, static_cast<int>(stream->size() - m_streamOffset));
 
         // check if no more data available
         if (0 == newDataLength)
@@ -131,7 +127,7 @@ bool AudioCodecOgg::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
 
       // update offset
       offset += used;
-      stream->setReadOffset(stream->readOffset() + used);
+      m_streamOffset += used;
 
       if (0 == n)
       {
@@ -155,9 +151,6 @@ bool AudioCodecOgg::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
       // update number of decoded samples which ended up into output buffer
       samplesDecoded += count;
     }
-
-    // update stream offset
-    m_streamOffset = stream->readOffset();
   }
   else
   {
@@ -238,10 +231,7 @@ bool AudioCodecOgg::reset()
   if (EGE_OBJECT_UID_DATA_BUFFER == m_stream->uid())
   {
     stream = m_stream;
-    
-    // reset offset
-    stream->setReadOffset(0);
-    
+        
     // initially supply up to 1024 bytes
     s32 dataLength = Math::Min(static_cast<s32>(1024), static_cast<s32>(stream->size()));
     do
@@ -277,7 +267,7 @@ bool AudioCodecOgg::reset()
     while (NULL == m_codecStream);
 
     // set stream read offset to exactly what was used
-    stream->setReadOffset(streamDataUsed);  
+    m_streamOffset = streamDataUsed;  
   }
   else
   {

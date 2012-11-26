@@ -36,6 +36,8 @@ class AudioManagerPrivate
     EGEResult play(const PSound& sound);
     /* Returns TRUE if given sound is being played. */
     bool isPlaying(const PSound& sound) const;
+    /* Returns TRUE if sound of a given name is being played. */
+    bool isPlaying(const String& soundName) const;
     /* Stops playback of the given sound. */
     EGEResult stop(const PSound& sound);
     /* Pauses given sound.
