@@ -5,6 +5,24 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function determining device from string value. */
+static EGEDevice::Device GetDeviceFromString()
+{
+  const char* stringId = s3eDeviceGetString(S3E_DEVICE_ID);
+
+  if (0 == strcmp(stringId, "iPad2,5"))
+  {
+    return EGEDevice::DEVICE_IPAD_MINI;
+  }
+  else if (0 == strcmp(stringId, "iPhone5,1"))
+  {
+    return EGEDevice::DEVICE_IPHONE_5;
+  }
+  
+
+  return EGEDevice::DEVICE_GENERIC;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns current Operating System ID. */
 EGEDevice::OS Device::GetOS()
 {
@@ -21,7 +39,9 @@ EGEDevice::OS Device::GetOS()
 /*! Returns current device ID. */
 EGEDevice::Device Device::GetDevice()
 {
-  int32 deviceId = s3eDeviceGetInt(S3E_DEVICE_ID);
+  int32 deviceIdentifier = s3eDeviceGetInt(S3E_DEVICE_ID);
+
+  EGEDevice::Device deviceId = EGEDevice::DEVICE_GENERIC;
 
   // get OS ID
   EGEDevice::OS osId = Device::GetOS();
@@ -30,21 +50,22 @@ EGEDevice::Device Device::GetDevice()
     // for iOS
     case EGEDevice::OS_IPHONE:
 
-      switch (deviceId)
+      switch (deviceIdentifier)
       {
-        case -565348713: return EGEDevice::DEVICE_IPHONE_3G;
-        case -565347625: return EGEDevice::DEVICE_IPHONE_3GS;
-        case -565346536: return EGEDevice::DEVICE_IPHONE_4;
-        case -565345447: return EGEDevice::DEVICE_IPHONE_4S;
-        case 1494189823: return EGEDevice::DEVICE_IPOD_TOUCH_1;
-        case 1494190912: return EGEDevice::DEVICE_IPOD_TOUCH_2;
-        case 1477586929: return EGEDevice::DEVICE_IPAD;
-        case 1477588018: return EGEDevice::DEVICE_IPAD_2;
-        case 1477589107: return EGEDevice::DEVICE_IPAD_3;
+        case -565348713: deviceId = EGEDevice::DEVICE_IPHONE_3G; break;
+        case -565347625: deviceId = EGEDevice::DEVICE_IPHONE_3GS; break;
+        case -565346536: deviceId = EGEDevice::DEVICE_IPHONE_4; break;
+        case -565345447: deviceId = EGEDevice::DEVICE_IPHONE_4S; break;
+        case 1494189823: deviceId = EGEDevice::DEVICE_IPOD_TOUCH_1; break;
+        case 1494190912: deviceId = EGEDevice::DEVICE_IPOD_TOUCH_2; break;
+        case 1477586929: deviceId = EGEDevice::DEVICE_IPAD; break;
+        case 1477588018: deviceId = EGEDevice::DEVICE_IPAD_2; break;
+        case 1477589107: deviceId = EGEDevice::DEVICE_IPAD_3; break;
 
         default:
 
-          egeWarning() << "Unknown iOS device" << deviceId;
+          // try to get it from string representation
+          deviceId = GetDeviceFromString();
           break;
       }      
       break;
@@ -52,19 +73,24 @@ EGEDevice::Device Device::GetDevice()
     // for Windows
     case EGEDevice::OS_WINDOWS:
 
-      switch (deviceId)
+      switch (deviceIdentifier)
       {
-        case 1: return EGEDevice::DEVICE_EMULATOR;
-
-        default:
-
-          egeWarning() << "Unknown Windows device" << deviceId;
-          break;
+        case 1: deviceId = EGEDevice::DEVICE_EMULATOR; break;
       }
       break;
   }
 
-  return EGEDevice::DEVICE_GENERIC;
+  // check if not found
+  if (EGEDevice::DEVICE_GENERIC == deviceId)
+  {
+    egeWarning() << "Unknown device" << deviceIdentifier;
+  }
+  else
+  {
+    egeWarning() << "Device identified" << deviceId;
+  }
+
+  return deviceId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns physical surface width. */
