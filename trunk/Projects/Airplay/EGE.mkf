@@ -13,23 +13,24 @@ define EGE_RANDOM_STDC
 define EGE_THREAD_PTHREAD
 define EGE_SOCIAL_PLATFORM_GAMECENTER
 define EGE_PURCHASES_APPSTORE
+define EGE_RESOURCE_MANAGER_SINGLE_THREAD
 
 #define EGE_AIRPLAY_AUDIO_SOFTWARE
 
 includepath ../../Sources
 
-options
-{
-	module_path="$MARMALADE_ROOT/modules/third_party"
-}
+#options
+#{
+#	module_path="$MARMALADE_ROOT/modules/third_party"
+#}
 
 files
 {
 	(../../Sources)
-	EGE.h
+  EGE.h
   EGEAngle.h
   EGEAnimation.h
-	EGEApplication.h
+  EGEApplication.h
   EGEAudio.h
   EGEByteOrder.h
   EGECircle.h
@@ -41,9 +42,9 @@ files
   EGEDevice.h
   EGEDir.h
   EGEDynamicArray.h
-	EGEEvent.h
-	EGEFile.h
-	EGEFlags.h
+  EGEEvent.h
+  EGEFile.h
+  EGEFlags.h
   EGEGraphics.h
   EGEHash.h
   EGEImage.h
@@ -54,11 +55,11 @@ files
   EGELog.h
   EGEMap.h
   EGEMaterial.h
-	EGEMath.h
+  EGEMath.h
   EGEMatrix.h
   EGEMutex.h
   EGENativeUI.h
-	EGEMemory.h
+  EGEMemory.h
   EGEOpenGL.h
   EGEOverlay.h
   EGEParticle.h
@@ -68,7 +69,7 @@ files
   EGERandom.h
   EGERect.h
   EGEResources.h
-	EGEScene.h
+  EGEScene.h
   EGEScreen.h
   EGESequencer.h
   EGESignal.h
@@ -82,22 +83,22 @@ files
   EGETimer.h
   EGETree.h
   EGETweener.h
-	EGETypes.h
+  EGETypes.h
   EGEUI.h
   EGEVector.h
   EGEVertexBuffer.h
   EGEWaitCondition.h
-	EGEXml.h
+  EGEXml.h
 
-	["Core"]
-	(../../Sources/Core)
-	ComplexTypes.cpp
-	ComplexTypes.h
-	ConfigParams.h
+  ["Core"]
+  (../../Sources/Core)
+  ComplexTypes.cpp
+  ComplexTypes.h
+  ConfigParams.h
   Flags.h
-	ListenerContainer.h
-	ObjectUIDs.h
-	Platform.h
+  ListenerContainer.h
+  ObjectUIDs.h
+  Platform.h
 
 	["Core/Animation"]
 	(../../Sources/Core/Animation)
@@ -461,8 +462,6 @@ files
   ResourceImagedAnimation.h
 	ResourceManager.cpp
 	ResourceManager.h
-  ResourceManagerWorkThread.cpp
-  ResourceManagerWorkThread.h
   ResourceMaterial.cpp
   ResourceMaterial.h
   ResourceParticleAffector.cpp
@@ -485,6 +484,18 @@ files
   ResourceTextureImage.h
   ResourceWidget.cpp
   ResourceWidget.h
+
+	["Core/Resource/Single Thread"]
+  (../../Sources/Core/Resource/SingleThread)
+  ResourceManagerST_p.cpp
+  ResourceManagerST_p.h
+
+	["Core/Resource/Multi Thread"]
+  (../../Sources/Core/Resource/MultiThread)
+  ResourceManagerMT_p.cpp
+  ResourceManagerMT_p.h
+  ResourceManagerWorkThread.cpp
+  ResourceManagerWorkThread.h
 
 	["Core/Scene"]
   (../../Sources/Core/Scene)
@@ -700,13 +711,13 @@ files
 packages
 {
   libpng
-	libjpeg
+  libjpeg
 }
 
 subprojects
 {
-	libpng
-	libjpeg
+  libpng
+  libjpeg
   box2d
   tinyxmlstl
 }

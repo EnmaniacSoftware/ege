@@ -100,10 +100,16 @@ EGEResult Application::initialize(const Dictionary& params)
 
   // create resource manager
   m_resourceManager = ege_new ResourceManager(this);
-  if (NULL == m_resourceManager || !m_resourceManager->isValid())
+  if (NULL == m_resourceManager)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
+  }
+
+  if (EGE_SUCCESS != (result = m_resourceManager->construct()))
+  {
+    // error!
+    return result;
   }
 
   // create physics manager

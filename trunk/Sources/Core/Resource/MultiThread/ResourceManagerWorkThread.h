@@ -1,6 +1,8 @@
 #ifndef EGE_CORE_RESOURCEMANAGER_WORKTHREAD_H
 #define EGE_CORE_RESOURCEMANAGER_WORKTHREAD_H
 
+#ifdef EGE_RESOURCE_MANAGER_MULTI_THREAD
+
 /*! Resource manager's working thread responsible for processing of loading/unloading queues. 
  */
 
@@ -35,5 +37,7 @@ class ResourceManagerWorkThread : public Thread
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // #ifdef EGE_RESOURCE_MANAGER_MULTI_THREAD
 
 #endif // EGE_CORE_RESOURCEMANAGER_WORKTHREAD_H

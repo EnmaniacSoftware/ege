@@ -68,6 +68,8 @@ void SocialPlatformPrivate::AuthenticationCallback(s3eIOSGameCenterError* error,
     case S3E_IOSGAMECENTER_ERR_UNSUPPORTED: result = EGE_ERROR_NOT_SUPPORTED; break;
   }
 
+  egeWarning() << EGE_FUNC_INFO << *error;
+
   // store flag
   l_instance->d_func()->m_authenticated = (EGE_SUCCESS == result);
 

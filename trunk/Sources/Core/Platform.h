@@ -28,6 +28,10 @@ inline void ege_noop() {}
 // EGE_AUDIO_OPENAL
 // EGE_AUDIO_AIRPLAY
 
+// Available resource managers
+// EGE_RESOURCE_MANAGER_SINGLE_THREAD
+// EGE_RESOURCE_MANAGER_MULTI_THREAD
+
 #if WIN32
 #define EGE_PLATFORM_WIN32 1
 #endif // WIN32

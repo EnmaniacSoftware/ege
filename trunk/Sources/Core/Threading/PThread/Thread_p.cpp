@@ -108,7 +108,7 @@ void* Thread::CurrentId()
   return reinterpret_cast<void*>(pthread_self());
 #else
   return pthread_self().p;
-#endif EGE_PLATFORM_AIRPLAY;
+#endif // EGE_PLATFORM_AIRPLAY
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

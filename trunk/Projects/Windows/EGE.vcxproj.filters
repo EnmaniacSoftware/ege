@@ -211,6 +211,12 @@
     <Filter Include="Core\Audio\Null">
       <UniqueIdentifier>{2941d0a1-a693-4e6e-8470-3cbc0ed0ca64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Resource\Single Thread">
+      <UniqueIdentifier>{d4663b92-9c1f-45ae-adc1-154ee2074414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Resource\Multi Thread">
+      <UniqueIdentifier>{7872545c-3eee-4d33-8860-5a88f20a5b51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -609,9 +615,6 @@
     <ClCompile Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.cpp">
       <Filter>Core\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceManagerWorkThread.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Threading\Mutex.cpp">
       <Filter>Core\Threading</Filter>
     </ClCompile>
@@ -746,6 +749,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\Resource.cpp">
       <Filter>Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\SingleThread\ResourceManagerST_p.cpp">
+      <Filter>Core\Resource\Single Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\MultiThread\ResourceManagerMT_p.cpp">
+      <Filter>Core\Resource\Multi Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\MultiThread\ResourceManagerWorkThread.cpp">
+      <Filter>Core\Resource\Multi Thread</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1293,9 +1305,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEThread.h" />
     <ClInclude Include="..\..\Sources\EGEMutex.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceManagerWorkThread.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEWaitCondition.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\Mutex.h">
       <Filter>Core\Threading</Filter>
@@ -1447,6 +1456,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioThreadOpenAL.h">
       <Filter>Core\Audio\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\SingleThread\ResourceManagerST_p.h">
+      <Filter>Core\Resource\Single Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\MultiThread\ResourceManagerMT_p.h">
+      <Filter>Core\Resource\Multi Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\MultiThread\ResourceManagerWorkThread.h">
+      <Filter>Core\Resource\Multi Thread</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

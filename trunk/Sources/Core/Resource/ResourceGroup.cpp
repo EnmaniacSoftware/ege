@@ -118,7 +118,9 @@ EGEResult ResourceGroup::load()
         }
 
         // terminate for the time being if  single-threaded loading
-        if (!manager()->isThreading())
+       
+        // TAGE - FIX
+        // if (!manager()->isThreading())
         {
           return EGE_WAIT;
         }

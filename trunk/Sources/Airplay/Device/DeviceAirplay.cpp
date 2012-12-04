@@ -43,6 +43,8 @@ EGEDevice::Device Device::GetDevice()
 
   EGEDevice::Device deviceId = EGEDevice::DEVICE_GENERIC;
 
+  egeDebug() << "Device ID:" << s3eDeviceGetInt(S3E_DEVICE_OS) << s3eDeviceGetString(S3E_DEVICE_ID);
+
   // get OS ID
   EGEDevice::OS osId = Device::GetOS();
   switch (osId)

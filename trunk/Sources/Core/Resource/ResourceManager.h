@@ -67,8 +67,8 @@ class ResourceManager : public Object, public IEventListener
 
   public:
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
+    /* Creates object. */
+    EGEResult construct();
     /*! Returns current state. */
     inline State state() const { return m_state; }
     /* Updates object. */
@@ -107,7 +107,7 @@ class ResourceManager : public Object, public IEventListener
     PResource createResource(const String& typeName, ResourceGroup* group);
 
     /* Returns TRUE if resource manager uses threading. */
-    bool isThreading() const;
+    //bool isThreading() const;
 
   private:
     
@@ -126,7 +126,7 @@ class ResourceManager : public Object, public IEventListener
     /* Removes all groups. */
     void removeGroups();
     /* Creates default resources. */
-    void createDefaultResources();
+    bool createDefaultResources();
     /* Processes include command from XML data. 
      *  
      *   @param  filePath  relative (with respect to resource root directory) path to resouce file containing the group definition.
@@ -140,6 +140,7 @@ class ResourceManager : public Object, public IEventListener
     void onEventRecieved(PEvent event) override;
     /* Shuts down. */
     void shutDown();
+    /* Adds command to pool. */
 
   private:
 
@@ -169,6 +170,8 @@ class ResourceManager : public Object, public IEventListener
 
   private:
 
+    EGE_DECLARE_PRIVATE_IMPLEMENTATION(ResourceManager)
+
     /*! List of resource data directories. */
     StringList m_dataDirs;
     /*! Resource groups defined */
@@ -178,11 +181,11 @@ class ResourceManager : public Object, public IEventListener
     /*! List of all pending commands to process. */
     CommandDataList m_commands;
     /*! Resource loading/unloading thread. */
-    PThread m_workThread;
+    //PThread m_workThread;
     /*! Resource data access mutex. */
-    PMutex m_mutex;
+    //PMutex m_mutex;
     /*! Wait condition signaled when any commands are to be processed. */
-    PWaitCondition m_commandsToProcess;
+    //PWaitCondition m_commandsToProcess;
     /*! Current state. */
     State m_state;
 };

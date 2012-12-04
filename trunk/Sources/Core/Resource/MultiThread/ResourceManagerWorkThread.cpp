@@ -1,3 +1,5 @@
+#ifdef EGE_RESOURCE_MANAGER_MULTI_THREAD
+
 #include "Core/Application/Application.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceGroup.h"
@@ -22,21 +24,21 @@ s32 ResourceManagerWorkThread::run()
 
   while (!isStopping())
   {
-    resourceManager->m_mutex->lock();
-    updateList();
-    resourceManager->m_mutex->unlock();
+    //resourceManager->m_mutex->lock();
+    //updateList();
+    //resourceManager->m_mutex->unlock();
 
-    // process list
-    processList();
+    //// process list
+    //processList();
 
-    // wait till more data is in
-    resourceManager->m_mutex->lock();
-    if (resourceManager->m_commands.empty())
-    {
-      // wait for any commands
-      resourceManager->m_commandsToProcess->wait(resourceManager->m_mutex);
-    }
-    resourceManager->m_mutex->unlock();
+    //// wait till more data is in
+    //resourceManager->m_mutex->lock();
+    //if (resourceManager->m_commands.empty())
+    //{
+    //  // wait for any commands
+    //  resourceManager->m_commandsToProcess->wait(resourceManager->m_mutex);
+    //}
+    //resourceManager->m_mutex->unlock();
   }
 
   return 0;
@@ -135,3 +137,5 @@ void ResourceManagerWorkThread::updateList()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // EGE_RESOURCE_MANAGER_MULTI_THREAD

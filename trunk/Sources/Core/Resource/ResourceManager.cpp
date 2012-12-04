@@ -15,7 +15,6 @@
 #include "Core/Resource/ResourceSound.h"
 #include "Core/Resource/ResourceWidget.h"
 #include "Core/Resource/ResourceImagedAnimation.h"
-#include "Core/Resource/ResourceManagerWorkThread.h"
 #include "Core/Resource/ResourceSequencer.h"
 #include "Core/Graphics/Font.h"
 #include "Core/Debug/DebugFont.h"
@@ -26,6 +25,12 @@
 #include <EGEXml.h>
 #include <EGEDir.h>
 #include <EGEMutex.h>
+
+#if EGE_RESOURCE_MANAGER_SINGLE_THREAD
+#include "Core/Resource/SingleThread/ResourceManagerST_p.h"
+#elif EGE_RESOURCE_MANAGER_MULTI_THREAD
+#include "Core/Resource/MultiThread/ResourceManagerMT_p.h"
+#endif // EGE_RESOURCE_MANAGER_SINGLE_THREAD
 
 EGE_NAMESPACE_BEGIN
 
@@ -61,53 +66,75 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::ResourceManager(Application* app) : Object(app),
+                                                     m_p(NULL),
                                                      m_state(STATE_INITIALIZING)
 {
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceManager::~ResourceManager()
+{
+  EGE_DELETE(m_p);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Creates object. */
+EGEResult ResourceManager::construct()
+{
+  EGEResult result = EGE_SUCCESS;
+
+  // allocate private
+  m_p = ege_new ResourceManagerPrivate(this);
+  if (NULL == m_p)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // construct private
+  if (EGE_SUCCESS != (result = m_p->construct()))
+  {
+    // error!
+    return result;
+  }
+
   // register build-in resource types
   for (u32 i = 0; i < sizeof (l_resourcesToRegister) / sizeof (BuiltInResource); ++i)
   {
     const BuiltInResource& resource = l_resourcesToRegister[i];
 
-    registerResource(resource.name, resource.pfCreateFunc);
-  }
-
-  // create work thread
-  m_workThread = ege_new ResourceManagerWorkThread(app);
-
-  // create access mutex
-  m_mutex = ege_new Mutex(app);
-
-  // create wait condition
-  m_commandsToProcess = ege_new WaitCondition(app);
-
-  // create default resources
-  createDefaultResources();
-
-  // subscribe for event notifications
-  app->eventManager()->addListener(this);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManager::~ResourceManager()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool ResourceManager::isValid() const
-{
-  // check if built-in resources are registered correctly
-  for (u32 i = 0; i < sizeof (l_resourcesToRegister) / sizeof (BuiltInResource); ++i)
-  {
-    const BuiltInResource& resource = l_resourcesToRegister[i];
-
-    if (!isResourceRegistered(resource.name))
+    if (EGE_SUCCESS != (result = registerResource(resource.name, resource.pfCreateFunc)))
     {
       // error!
-      return false;
+      egeCritical() << EGE_FUNC_INFO << "Could not register resource";
+      return result;
     }
   }
 
-  return (NULL != group(DEFAULT_GROUP_NAME)) && (NULL != m_workThread) && m_workThread->isValid() && (NULL != m_mutex) && m_mutex->isValid() && 
-         (NULL != m_commandsToProcess) && m_commandsToProcess->isValid() && app()->eventManager()->isListening(this);
+  // create work thread
+  //m_workThread = ege_new ResourceManagerWorkThread(app);
+
+  // create access mutex
+  //m_mutex = ege_new Mutex(app);
+
+  // create wait condition
+ // m_commandsToProcess = ege_new WaitCondition(app);
+
+  // create default resources
+  if ( ! createDefaultResources())
+  {
+    // error!
+    egeCritical() << EGE_FUNC_INFO << "Could not create default resources!";
+    return EGE_ERROR;
+  }
+
+  // subscribe for event notifications
+  if ( ! app()->eventManager()->addListener(this))
+  {
+    // error!
+    egeCritical() << EGE_FUNC_INFO << "Could not register for notifications!";
+    return EGE_ERROR;
+  }
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Registeres custom resource type. */
@@ -353,12 +380,13 @@ PResourceGroup ResourceManager::group(const String& name) const
  */
 EGEResult ResourceManager::loadGroup(const String& name)
 {
+  // lock resources
+  p_func()->lockResources();
+
   // find group of given name
   PResourceGroup theGroup = group(name);
   if (NULL != theGroup)
   {
-   // MutexLocker locker(m_mutex);
-
     // check if given group is scheduled for unloading/loading already
     CommandDataList::iterator it;
     for (it = m_commands.begin(); it != m_commands.end(); ++it)
@@ -383,6 +411,10 @@ EGEResult ResourceManager::loadGroup(const String& name)
 
       // cannot be loaded
       egeWarning() << name << "already loaded.";
+
+      // unlock resources
+      p_func()->unlockResources();
+
       return EGE_ERROR_ALREADY_EXISTS;
     }
     
@@ -391,6 +423,9 @@ EGEResult ResourceManager::loadGroup(const String& name)
     {
       // do nothing
       egeWarning() << "Group" << name << "already scheduled. Skipping.";
+
+      // unlock resources
+      p_func()->unlockResources();
       return EGE_SUCCESS;
     }
 
@@ -409,14 +444,25 @@ EGEResult ResourceManager::loadGroup(const String& name)
     else
     {
       // error!
+
+      // unlock resources
+      p_func()->unlockResources();
+
       return EGE_ERROR;
     }
+
+    // unlock resources
+    p_func()->unlockResources();
 
     egeDebug() << name << "scheduled for loading.";
     return EGE_SUCCESS;
   }
+ 
+  // unlock resources
+  p_func()->unlockResources();
 
   egeWarning() << name << "not found!";
+
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -517,70 +563,112 @@ PResource ResourceManager::resource(const String& typeName, const String& name, 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates default resources. */
-void ResourceManager::createDefaultResources()
+bool ResourceManager::createDefaultResources()
 {
   // create and add default resource group
   PResourceGroup group = ege_new ResourceGroup(app(), this, "", DEFAULT_GROUP_NAME);
+  if (NULL == group)
+  {
+    // error!
+    return false;
+  }
+
   m_groups.push_back(group);
 
   // create debug font texture
   PTexture2D texture = ege_new Texture2D(app(), "debug-font");
-  if (texture)
+  if (NULL == texture)
   {
-    // create texture resource and manually assign texture to it
-    PResourceTexture textureResource = ResourceTexture::Create(app(), group, texture->name(), texture);
-    if (textureResource)
-    {
-      group->addResource(textureResource);
-    }
-
-    // wrap texture data into buffer and create texture from it
-    DataBuffer textureData(DebugFontData, DEBUG_FONT_LEN);
-    if (EGE_SUCCESS == texture->create(textureData))
-    {
-      // create font material and assign texture to it
-      PMaterial material = ege_new Material(app());
-      if (material)
-      {
-        // add empty render pass
-        RenderPass* renderPass = material->addPass(NULL);
-        if (renderPass)
-        {
-          renderPass->addTexture(texture);
-          renderPass->setSrcBlendFactor(EGEGraphics::BF_ONE);
-          renderPass->setDstBlendFactor(EGEGraphics::BF_ONE);
-
-          // setup glyphs data (all 256)
-          Map<Char, GlyphData> glyphs;
-          const float32 cellSize = 1.0f / 16.0f;
-          for (s32 i = 0; i < 256; i++)
-          {
-            GlyphData data;
-
-            data.m_textureRect = Rectf((i % 16) * cellSize, (i / 16) * cellSize, cellSize, cellSize);
-            data.m_width       = 16;
-
-            glyphs.insert((Char) i, data);
-          }
-
-          // create font from glyphs
-          PFont font = ege_new Font(app(), 16, glyphs);
-          if (font)
-          {
-            // assign font material
-            font->setMaterial(material);
-
-            // create font resource and manually assign font to it
-            PResourceFont fontResource = ResourceFont::Create(app(), group, texture->name(), font);
-            if (fontResource)
-            {
-              group->addResource(fontResource);
-            }
-          }
-        }
-      }
-    }
+    // error!
+    return false;
   }
+
+  // create texture resource and manually assign texture to it
+  PResourceTexture textureResource = ResourceTexture::Create(app(), group, texture->name(), texture);
+  if (NULL == textureResource)
+  {
+    // error!
+    return false;
+  }
+
+  if (EGE_SUCCESS != group->addResource(textureResource))
+  {
+    // error!
+    return false;
+  }
+
+  // wrap texture data into buffer and create texture from it
+  DataBuffer textureData(DebugFontData, DEBUG_FONT_LEN);
+  if (EGE_SUCCESS != texture->create(textureData))
+  {
+    // error!
+    return false;
+  }
+
+  // create font material and assign texture to it
+  PMaterial material = ege_new Material(app());
+  if (NULL == material)
+  {
+    // error!
+    return false;
+  }
+
+  // add empty render pass
+  RenderPass* renderPass = material->addPass(NULL);
+  if (NULL == renderPass)
+  {
+    // error!
+    return false;
+  }
+
+  if (EGE_SUCCESS != renderPass->addTexture(texture))
+  {
+    // error!
+    return false;
+  }
+
+  renderPass->setSrcBlendFactor(EGEGraphics::BF_ONE);
+  renderPass->setDstBlendFactor(EGEGraphics::BF_ONE);
+
+  // setup glyphs data (all 256)
+  Map<Char, GlyphData> glyphs;
+  const float32 cellSize = 1.0f / 16.0f;
+  for (s32 i = 0; i < 256; i++)
+  {
+    GlyphData data;
+
+    data.m_textureRect = Rectf((i % 16) * cellSize, (i / 16) * cellSize, cellSize, cellSize);
+    data.m_width       = 16;
+
+    glyphs.insert(static_cast<Char>(i), data);
+  }
+
+  // create font from glyphs
+  PFont font = ege_new Font(app(), 16, glyphs);
+  if (NULL == font)
+  {
+    // error!
+    return false;
+  }
+
+  // assign font material
+  font->setMaterial(material);
+
+  // create font resource and manually assign font to it
+  PResourceFont fontResource = ResourceFont::Create(app(), group, texture->name(), font);
+  if (NULL == fontResource)
+  {
+    // error!
+    return false;
+  }
+
+  if (EGE_SUCCESS != group->addResource(fontResource))
+  {
+    // error!
+    return false;
+  }
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Removes all groups. */
@@ -651,7 +739,7 @@ void ResourceManager::update(const Time& time)
   // check if initialization is done
   if (STATE_INITIALIZING == m_state)
   {
-    if (isValid())
+    //if (isValid())
     {
       // start work thread
       //m_workThread->start();
@@ -665,15 +753,15 @@ void ResourceManager::update(const Time& time)
   }
   else if (STATE_CLOSING == m_state)
   {
-    if (m_workThread && (m_workThread->isFinished() || !m_workThread->isRunning()))
-    {
-      m_workThread        = NULL;
-      m_commandsToProcess = NULL;
-      m_mutex             = NULL;
+    //if (m_workThread && (m_workThread->isFinished() || !m_workThread->isRunning()))
+    //{
+    //  m_workThread        = NULL;
+    //  m_commandsToProcess = NULL;
+    //  m_mutex             = NULL;
 
       // set state
       m_state = STATE_CLOSED;
-    }
+//    }
   }
 
   if (!app()->isQuitting())
@@ -833,17 +921,17 @@ void ResourceManager::shutDown()
   removeGroups();
 
   // request work thread stop
-  m_workThread->stop(0);
+//  m_workThread->stop(0);
 
   // make sure all threads starts work
-  m_commandsToProcess->wakeAll();
+  //m_commandsToProcess->wakeAll();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns TRUE if resource manager uses threading. */
-bool ResourceManager::isThreading() const
-{
-  return m_workThread->isRunning();
-}
+//bool ResourceManager::isThreading() const
+//{
+//  return m_workThread->isRunning();
+//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
