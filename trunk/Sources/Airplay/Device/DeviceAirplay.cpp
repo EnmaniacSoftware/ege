@@ -5,20 +5,56 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Local function determining device from string value. */
-static EGEDevice::Device GetDeviceFromString()
+struct DeviceInfo
 {
-  const char* stringId = s3eDeviceGetString(S3E_DEVICE_ID);
-
-  if (0 == strcmp(stringId, "iPad2,5"))
-  {
-    return EGEDevice::DEVICE_IPAD_MINI;
-  }
-  else if (0 == strcmp(stringId, "iPhone5,1"))
-  {
-    return EGEDevice::DEVICE_IPHONE_5;
-  }
+  const char* marmaladeDeviceId;
   
+  EGEDevice::Device egeDevice;
+};
+
+static DeviceInfo l_iOSDeviceInfoMap[] = { 
+  { "iPhone1,1",  EGEDevice::DEVICE_IPHONE },
+  { "iPhone1,2",  EGEDevice::DEVICE_IPHONE_3G },
+  { "iPhone2,1",  EGEDevice::DEVICE_IPHONE_3GS },
+  { "iPhone3,1",  EGEDevice::DEVICE_IPHONE_4 },
+  { "iPhone3,2",  EGEDevice::DEVICE_IPHONE_4 },
+  { "iPhone3,3",  EGEDevice::DEVICE_IPHONE_4 },
+  { "iPhone4,1",  EGEDevice::DEVICE_IPHONE_4S },
+  { "iPhone5,1",  EGEDevice::DEVICE_IPHONE_5 },
+  { "iPhone5,2",  EGEDevice::DEVICE_IPHONE_5 },
+  { "iPod1,1",    EGEDevice::DEVICE_IPOD_TOUCH_1 },
+  { "iPod2,1",    EGEDevice::DEVICE_IPOD_TOUCH_2 },
+  { "iPod3,1",    EGEDevice::DEVICE_IPOD_TOUCH_3 },
+  { "iPod4,1",    EGEDevice::DEVICE_IPOD_TOUCH_4 },
+  { "iPod5,1",    EGEDevice::DEVICE_IPOD_TOUCH_5 },
+  { "iPad1,1",    EGEDevice::DEVICE_IPAD },
+  { "iPad2,1",    EGEDevice::DEVICE_IPAD_2 },
+  { "iPad2,2",    EGEDevice::DEVICE_IPAD_2 },
+  { "iPad2,3",    EGEDevice::DEVICE_IPAD_2 },
+  { "iPad2,4",    EGEDevice::DEVICE_IPAD_2 },
+  { "iPad2,5",    EGEDevice::DEVICE_IPAD_MINI },
+  { "iPad3,1",    EGEDevice::DEVICE_IPAD_3 },
+  { "iPad3,2",    EGEDevice::DEVICE_IPAD_3 },
+  { "iPad3,3",    EGEDevice::DEVICE_IPAD_3 },
+  { "iPad3,4",    EGEDevice::DEVICE_IPAD_4 }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function determining iOS device from string value. */
+static EGEDevice::Device GetIOSDevice(const String& deviceId)
+{  
+  // go thru all iOS devices
+  for (s32 i = 0; i < sizeof (l_iOSDeviceInfoMap) / sizeof (l_iOSDeviceInfoMap[0]); ++i)
+  {
+    const DeviceInfo& deviceInfo = l_iOSDeviceInfoMap[i];
+
+    // check if found
+    if (deviceInfo.marmaladeDeviceId == deviceId)
+    {
+      // found
+      return deviceInfo.egeDevice;
+    }
+  }
 
   return EGEDevice::DEVICE_GENERIC;
 }
@@ -29,7 +65,7 @@ EGEDevice::OS Device::GetOS()
   int32 osId = s3eDeviceGetInt(S3E_DEVICE_OS);
   switch (osId)
   {
-    case S3E_OS_ID_IPHONE:  return EGEDevice::OS_IPHONE;
+    case S3E_OS_ID_IPHONE:  return EGEDevice::OS_IOS;
     case S3E_OS_ID_WINDOWS: return EGEDevice::OS_WINDOWS;
   }
 
@@ -39,57 +75,32 @@ EGEDevice::OS Device::GetOS()
 /*! Returns current device ID. */
 EGEDevice::Device Device::GetDevice()
 {
-  int32 deviceIdentifier = s3eDeviceGetInt(S3E_DEVICE_ID);
+  const String deviceName = s3eDeviceGetString(S3E_DEVICE_ID);
 
   EGEDevice::Device deviceId = EGEDevice::DEVICE_GENERIC;
 
-  egeDebug() << "Device ID:" << s3eDeviceGetInt(S3E_DEVICE_OS) << s3eDeviceGetString(S3E_DEVICE_ID);
+  egeDebug() << "Device ID:" << deviceName << s3eDeviceGetInt(S3E_DEVICE_OS);
 
   // get OS ID
   EGEDevice::OS osId = Device::GetOS();
   switch (osId)
   {
     // for iOS
-    case EGEDevice::OS_IPHONE:
+    case EGEDevice::OS_IOS:
 
-      switch (deviceIdentifier)
-      {
-        case -565348713: deviceId = EGEDevice::DEVICE_IPHONE_3G; break;
-        case -565347625: deviceId = EGEDevice::DEVICE_IPHONE_3GS; break;
-        case -565346536: deviceId = EGEDevice::DEVICE_IPHONE_4; break;
-        case -565345447: deviceId = EGEDevice::DEVICE_IPHONE_4S; break;
-        case 1494189823: deviceId = EGEDevice::DEVICE_IPOD_TOUCH_1; break;
-        case 1494190912: deviceId = EGEDevice::DEVICE_IPOD_TOUCH_2; break;
-        case 1477586929: deviceId = EGEDevice::DEVICE_IPAD; break;
-        case 1477588018: deviceId = EGEDevice::DEVICE_IPAD_2; break;
-        case 1477589107: deviceId = EGEDevice::DEVICE_IPAD_3; break;
-
-        default:
-
-          // try to get it from string representation
-          deviceId = GetDeviceFromString();
-          break;
-      }      
+      // try to get it from string representation
+      deviceId = GetIOSDevice(deviceName);
       break;
 
     // for Windows
     case EGEDevice::OS_WINDOWS:
 
-      switch (deviceIdentifier)
-      {
-        case 1: deviceId = EGEDevice::DEVICE_EMULATOR; break;
-      }
+      deviceId = EGEDevice::DEVICE_EMULATOR;
       break;
-  }
 
-  // check if not found
-  if (EGEDevice::DEVICE_GENERIC == deviceId)
-  {
-    egeWarning() << "Unknown device" << deviceIdentifier;
-  }
-  else
-  {
-    egeWarning() << "Device identified" << deviceId;
+    default:
+
+      egeWarning() << "Unknown OS" << osId;
   }
 
   return deviceId;

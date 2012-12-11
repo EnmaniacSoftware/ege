@@ -13,7 +13,7 @@ namespace EGEDevice
   enum OS
   {
     OS_UNKOWN = 0,
-    OS_IPHONE,
+    OS_IOS,
     OS_WINDOWS
   };
 
@@ -22,6 +22,7 @@ namespace EGEDevice
   {
     DEVICE_GENERIC = 0,
     DEVICE_EMULATOR,
+    DEVICE_IPHONE,
     DEVICE_IPHONE_3G,
     DEVICE_IPHONE_3GS,
     DEVICE_IPHONE_4,
@@ -30,11 +31,13 @@ namespace EGEDevice
     DEVICE_IPAD,
     DEVICE_IPAD_2,
     DEVICE_IPAD_3,
+    DEVICE_IPAD_4,
     DEVICE_IPAD_MINI,
     DEVICE_IPOD_TOUCH_1,
     DEVICE_IPOD_TOUCH_2,
     DEVICE_IPOD_TOUCH_3,
-    DEVICE_IPOD_TOUCH_4
+    DEVICE_IPOD_TOUCH_4,
+    DEVICE_IPOD_TOUCH_5
   };
 
   /*! Rendering capability flags. */
