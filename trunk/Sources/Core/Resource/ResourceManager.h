@@ -52,6 +52,11 @@ class ResourceManager : public Object, public IEventListener
      *  @param name Name of a group which failed to load.
      */
     Signal1<const String&> groupLoadError;
+    /*! Signal emitted when resource has been processed.
+     * @param processed Number of already processed resources
+     * @param total     Total number resources to process
+     */
+    Signal2<u32, u32> processingStatusUpdated;
 
   public:
 
@@ -106,9 +111,6 @@ class ResourceManager : public Object, public IEventListener
     /* Creates instance of resource of the type given by name. */
     PResource createResource(const String& typeName, ResourceGroup* group);
 
-    /* Returns TRUE if resource manager uses threading. */
-    //bool isThreading() const;
-
   private:
     
     /** Processes the RESOURCES tag.
@@ -140,24 +142,10 @@ class ResourceManager : public Object, public IEventListener
     void onEventRecieved(PEvent event) override;
     /* Shuts down. */
     void shutDown();
-    /* Adds command to pool. */
+    /* Processes commands. */
+    void processCommands();
 
   private:
-
-    /*! Available commands. */
-    enum Command
-    {
-      COMMAND_LOAD_GROUP,
-      COMMAND_UNLOAD_GROUP
-    };
-
-    /*! Data struct containing information regarding group to load. */
-    struct CommandData
-    {
-      Command command;                          /*!< Command to perform. */
-      StringList groupNames;                    /*!< List of group names (main and dependancies) to be loaded/unloade.
-                                                     NOTE: This should be processed in end -> begin order. Frist entry is always the original (top) group. */
-    };
 
     /*! Data struct containing registration information for resource. */
     struct ResourceRegistryEntry
@@ -166,7 +154,6 @@ class ResourceManager : public Object, public IEventListener
     };
 
     typedef List<PResourceGroup> GroupList;
-    typedef List<CommandData> CommandDataList;
 
   private:
 
@@ -178,16 +165,12 @@ class ResourceManager : public Object, public IEventListener
     GroupList m_groups;
     /*! Registered resources sorted by type name. */
     Map<String, ResourceRegistryEntry> m_registeredResources;
-    /*! List of all pending commands to process. */
-    CommandDataList m_commands;
-    /*! Resource loading/unloading thread. */
-    //PThread m_workThread;
-    /*! Resource data access mutex. */
-    //PMutex m_mutex;
-    /*! Wait condition signaled when any commands are to be processed. */
-    //PWaitCondition m_commandsToProcess;
     /*! Current state. */
     State m_state;
+    /*! Total number of resources to process yet. */
+    u32 m_totalResourcesToProcess;
+    /*! Number of resources processed so far. */
+    u32 m_processedResourcesCount;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

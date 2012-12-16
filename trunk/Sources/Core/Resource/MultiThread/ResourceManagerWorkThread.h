@@ -22,17 +22,17 @@ class ResourceManagerWorkThread : public Thread
 
     /* Thread override. Work method. */
     EGE::s32 run() override;
-    /* Adds command to list of pending actions. */
-    void addCommand(const ResourceManager::CommandData& command);
-    /* Processes the current active list of commands. */
-    void processList();
-    /* Updates command list. */
-    void updateList();
+    ///* Adds command to list of pending actions. */
+    //void addCommand(const ResourceManager::CommandData& command);
+    ///* Processes the current active list of commands. */
+    //void processList();
+    ///* Updates command list. */
+    //void updateList();
 
   private:
 
     /*! Command list to process. */
-    ResourceManager::CommandDataList m_list;
+//    ResourceManager::CommandDataList m_list;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

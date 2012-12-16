@@ -32,6 +32,11 @@ EGEResult ResourceGroup::create(const PXmlElement& tag)
   // get data
   m_name = tag->attribute("name");
 
+  if (m_name == "theme:default")
+  {
+    int a = 1;
+  }
+
   // check if wrong data
   if (m_name.empty())
   {
@@ -199,19 +204,34 @@ PResource ResourceGroup::resource(const String& typeName, const String& name) co
   return resource;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns list of all resources of the given type. */
+/*! Returns list of all resources of the given type. 
+    @param Type of the resource to be requested. If empty all resource will be returned.
+ */
 List<PResource> ResourceGroup::resources(const String& typeName) const
 {
   List<PResource> list;
 
-  // get all resources of a given type
-  std::pair<ResourcesMap::const_iterator, ResourcesMap::const_iterator> range = m_resources.equal_range(typeName);
-
-  // go thru all resources of a given type
-  for (ResourcesMap::const_iterator it = range.first; it != range.second; ++it)
+  // check if any type requested
+  if ( ! typeName.empty())
   {
-    // add to list
-    list.push_back(it->second);
+    // get all resources of a given type
+    std::pair<ResourcesMap::const_iterator, ResourcesMap::const_iterator> range = m_resources.equal_range(typeName);
+
+    // go thru all resources of a given type
+    for (ResourcesMap::const_iterator it = range.first; it != range.second; ++it)
+    {
+      // add to list
+      list.push_back(it->second);
+    }
+  }
+  else
+  {
+    // add all resources
+    for (ResourcesMap::const_iterator it = m_resources.begin(); it != m_resources.end(); ++it)
+    {
+      // add to list
+      list.push_back(it->second);
+    }
   }
 
   return list;

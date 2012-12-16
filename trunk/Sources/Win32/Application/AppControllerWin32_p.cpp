@@ -1,5 +1,7 @@
 #include "Core/Application/AppController.h"
 #include "Win32/Application/AppControllerWin32_p.h"
+#include <EGEApplication.h>
+#include <EGEEvent.h>
 #include <EGEDebug.h>
 #include <windows.h>
 
@@ -45,6 +47,9 @@ EGEResult AppControllerPrivate::run()
 
     // render
     d_func()->render();
+
+    // send end of frame event
+    d_func()->app()->eventManager()->send(EGE_EVENT_ID_CORE_FRAME_END);
 
     // stat this loop end time
     endTime.fromMicroseconds(Timer::GetMicroseconds());

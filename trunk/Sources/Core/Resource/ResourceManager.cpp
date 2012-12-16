@@ -67,7 +67,9 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::ResourceManager(Application* app) : Object(app),
                                                      m_p(NULL),
-                                                     m_state(STATE_INITIALIZING)
+                                                     m_state(STATE_INITIALIZING),
+                                                     m_totalResourcesToProcess(0),
+                                                     m_processedResourcesCount(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -108,15 +110,6 @@ EGEResult ResourceManager::construct()
       return result;
     }
   }
-
-  // create work thread
-  //m_workThread = ege_new ResourceManagerWorkThread(app);
-
-  // create access mutex
-  //m_mutex = ege_new Mutex(app);
-
-  // create wait condition
- // m_commandsToProcess = ege_new WaitCondition(app);
 
   // create default resources
   if ( ! createDefaultResources())
@@ -338,15 +331,24 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
     egeDebug() << newGroup->name();
 
     // check if such group DOES NOT exists
-    // NOTE: we quitely omit group duplicates so it is valid to ie. INCLUDE the same group multiple times
-    if (NULL == group(newGroup->name()))
+    PResourceGroup existingGroup = group(newGroup->name());
+    if (NULL == existingGroup)
     {
       // add into pool
       m_groups.push_back(newGroup);
     }
     else
     {
-      egeWarning() << "Group" << newGroup->name() << "already exists.";
+      // check if group with different path
+      if (existingGroup->path() != newGroup->path())
+      {
+        // ...
+      }
+      else
+      {
+        // NOTE: we quitely omit group duplicates so it is valid to ie. INCLUDE the same group multiple times
+        egeWarning() << "Group" << newGroup->name() << "already exists.";
+      }
     }
   }
 
@@ -380,157 +382,13 @@ PResourceGroup ResourceManager::group(const String& name) const
  */
 EGEResult ResourceManager::loadGroup(const String& name)
 {
-  // lock resources
-  p_func()->lockResources();
-
-  // find group of given name
-  PResourceGroup theGroup = group(name);
-  if (NULL != theGroup)
-  {
-    // check if given group is scheduled for unloading/loading already
-    CommandDataList::iterator it;
-    for (it = m_commands.begin(); it != m_commands.end(); ++it)
-    {
-      CommandData& commandData = *it;
-      if (((COMMAND_UNLOAD_GROUP == commandData.command) || (COMMAND_LOAD_GROUP == commandData.command)) && (commandData.groupNames.front() == name))
-      {
-        // found, done
-        break;
-      }
-    }
-
-    // check if loaded already
-    if (theGroup->isLoaded())
-    {
-      // check if it awaits unloading
-      if ((it != m_commands.end()) && (COMMAND_UNLOAD_GROUP == (*it).command))
-      {
-        // remove it from command list
-        m_commands.erase(it);
-      }
-
-      // cannot be loaded
-      egeWarning() << name << "already loaded.";
-
-      // unlock resources
-      p_func()->unlockResources();
-
-      return EGE_ERROR_ALREADY_EXISTS;
-    }
-    
-    // check if it is awaiting loading already
-    if ((it != m_commands.end()) && (COMMAND_LOAD_GROUP == (*it).command))
-    {
-      // do nothing
-      egeWarning() << "Group" << name << "already scheduled. Skipping.";
-
-      // unlock resources
-      p_func()->unlockResources();
-      return EGE_SUCCESS;
-    }
-
-    // add group for loading
-    CommandData commandData;
-
-    commandData.command = COMMAND_LOAD_GROUP;
-    commandData.groupNames.push_back(name);
-
-    // add dependancies
-    if (buildDependacyList(commandData.groupNames, name))
-    {
-      // add to pool
-      m_commands.push_back(commandData);
-    }
-    else
-    {
-      // error!
-
-      // unlock resources
-      p_func()->unlockResources();
-
-      return EGE_ERROR;
-    }
-
-    // unlock resources
-    p_func()->unlockResources();
-
-    egeDebug() << name << "scheduled for loading.";
-    return EGE_SUCCESS;
-  }
- 
-  // unlock resources
-  p_func()->unlockResources();
-
-  egeWarning() << name << "not found!";
-
-  return EGE_ERROR;
+  return p_func()->loadGroup(name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Unloads group with given name. */
 void ResourceManager::unloadGroup(const String& name)
 {
-  // find group of given name
-  PResourceGroup theGroup = group(name);
-  if (NULL != theGroup)
-  {
-    //MutexLocker locker(m_mutex);
-
-    // check if given group is scheduled for unloading/loading already
-    CommandDataList::iterator it;
-    for (it = m_commands.begin(); it != m_commands.end(); ++it)
-    {
-      CommandData& commandData = *it;
-      if (((COMMAND_UNLOAD_GROUP == commandData.command) || (COMMAND_LOAD_GROUP == commandData.command)) && (commandData.groupNames.front() == name))
-      {
-        // found, done
-        break;
-      }
-    }
-
-    // check if unloaded already
-    if (!theGroup->isLoaded())
-    {
-      // check if it awaits loading
-      if ((it != m_commands.end()) && (COMMAND_LOAD_GROUP == (*it).command))
-      {
-        // remove it from command list
-        m_commands.erase(it);
-      }
-
-      // done
-      return;
-    }
-    
-    // check if it is awaiting unloading already
-    if ((it != m_commands.end()) && (COMMAND_UNLOAD_GROUP == (*it).command))
-    {
-      // do nothing
-      return;
-    }
-
-    // add group for unloading
-    CommandData commandData;
-
-    commandData.command = COMMAND_UNLOAD_GROUP;
-    commandData.groupNames.push_back(name);
-
-    // add dependancies
-    if (buildDependacyList(commandData.groupNames, name))
-    {
-      // add to pool
-      m_commands.push_back(commandData);
-    }
-    else
-    {
-      // error!
-      return;
-    }
-
-    egeDebug() << name << "scheduled for unloading.";
-    return;
-  }
-
-  egeWarning() << name << "not found!";
+  p_func()->unloadGroup(name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Returns resource of a given type and name. Optionally, from given group only. */
@@ -766,86 +624,87 @@ void ResourceManager::update(const Time& time)
 
   if (!app()->isQuitting())
   {
-    // go thru all groups to be loaded
-    for (CommandDataList::iterator it = m_commands.begin(); it != m_commands.end(); )
-    {
-      CommandData& commandData = *it;
+    p_func()->update(time);
+    //// go thru all groups to be loaded
+    //for (CommandDataList::iterator it = m_commands.begin(); it != m_commands.end(); )
+    //{
+    //  CommandData& commandData = *it;
 
-      // process according to command type
-      if (COMMAND_LOAD_GROUP == commandData.command)
-      {
-        // process groups in back to front order
-        for (StringList::reverse_iterator it = commandData.groupNames.rbegin(); it != commandData.groupNames.rend(); ++it)
-        {
-          // find group
-          PResourceGroup groupResource = group(*it);
-          if (NULL == groupResource)
-          {
-            // NOTE: emit error for main group
-            emit groupLoadError(commandData.groupNames.front());
-          }
-          else
-          {
-            // load group
-            EGEResult result = groupResource->load();
-            if (EGE_SUCCESS == result)
-            {
-              // emit completion if this is main group
-              if (*it == commandData.groupNames.front())
-              {
-                emit groupLoadComplete(*it);
-              }
-            }
-            else if (EGE_WAIT == result)
-            {
-              // stop for the time being
-              return;
-            }
-            else
-            {
-              // error!
-              // NOTE: emit error for main group
-              emit groupLoadError(commandData.groupNames.front());
-            }
-          }
-        }
-      }
-      else if (COMMAND_UNLOAD_GROUP == commandData.command)
-      {
-        //if (commandData.groupNames.front() == "mode-selection-screen")
-        //{
-        //  int a = 1;
-        //}
+    //  // process according to command type
+    //  if (COMMAND_LOAD_GROUP == commandData.command)
+    //  {
+    //    // process groups in back to front order
+    //    for (StringList::reverse_iterator it = commandData.groupNames.rbegin(); it != commandData.groupNames.rend(); ++it)
+    //    {
+    //      // find group
+    //      PResourceGroup groupResource = group(*it);
+    //      if (NULL == groupResource)
+    //      {
+    //        // NOTE: emit error for main group
+    //        emit groupLoadError(commandData.groupNames.front());
+    //      }
+    //      else
+    //      {
+    //        // load group
+    //        EGEResult result = groupResource->load();
+    //        if (EGE_SUCCESS == result)
+    //        {
+    //          // emit completion if this is main group
+    //          if (*it == commandData.groupNames.front())
+    //          {
+    //            emit groupLoadComplete(*it);
+    //          }
+    //        }
+    //        else if (EGE_WAIT == result)
+    //        {
+    //          // stop for the time being
+    //          return;
+    //        }
+    //        else
+    //        {
+    //          // error!
+    //          // NOTE: emit error for main group
+    //          emit groupLoadError(commandData.groupNames.front());
+    //        }
+    //      }
+    //    }
+    //  }
+    //  else if (COMMAND_UNLOAD_GROUP == commandData.command)
+    //  {
+    //    //if (commandData.groupNames.front() == "mode-selection-screen")
+    //    //{
+    //    //  int a = 1;
+    //    //}
 
-        // process groups in back to front order
-        for (StringList::reverse_iterator it = commandData.groupNames.rbegin(); it != commandData.groupNames.rend(); ++it)
-        {
-          // find group
-          PResourceGroup groupResource = group(*it);
+    //    // process groups in back to front order
+    //    for (StringList::reverse_iterator it = commandData.groupNames.rbegin(); it != commandData.groupNames.rend(); ++it)
+    //    {
+    //      // find group
+    //      PResourceGroup groupResource = group(*it);
 
-          // unload group
-          if (NULL != groupResource)
-          {
-            groupResource->unload();
-          }
-        }
-      }
-      else
-      {
-        EGE_ASSERT("Invalid command!");
-      }
+    //      // unload group
+    //      if (NULL != groupResource)
+    //      {
+    //        groupResource->unload();
+    //      }
+    //    }
+    //  }
+    //  else
+    //  {
+    //    EGE_ASSERT("Invalid command!");
+    //  }
 
-      // remove from pool
-      it = m_commands.erase(it);
-    }
+    //  // remove from pool
+    //  it = m_commands.erase(it);
+    //}
 
-    // TAGE - temp, should be better designed
-    // find out which resources can be unloaded as they are not refered anymore
-    for (GroupList::iterator it = m_groups.begin(); it != m_groups.end(); ++it)
-    {
-      PResourceGroup& group = *it;
+    //// TAGE - temp, should be better designed
+    //// find out which resources can be unloaded as they are not refered anymore
+    //for (GroupList::iterator it = m_groups.begin(); it != m_groups.end(); ++it)
+    //{
+    //  PResourceGroup& group = *it;
 
-    }
+    //}
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -908,6 +767,14 @@ void ResourceManager::onEventRecieved(PEvent event)
         shutDown();
       }
       break;
+
+    case EGE_EVENT_ID_CORE_FRAME_END:
+
+      if (STATE_READY == m_state)
+      {
+        processCommands();
+      }
+      break;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -927,11 +794,11 @@ void ResourceManager::shutDown()
   //m_commandsToProcess->wakeAll();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if resource manager uses threading. */
-//bool ResourceManager::isThreading() const
-//{
-//  return m_workThread->isRunning();
-//}
+/*! Processes commands. */
+void ResourceManager::processCommands()
+{
+  p_func()->processCommands();
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

@@ -39,16 +39,20 @@ class ResourceGroup : public Object
     inline const String& name() const { return m_name; }
     /* Returns resource of a given type and name. */
     PResource resource(const String& typeName, const String& name) const;
-    /* Returns list of all resources of the given type. */
+    /* Returns list of all resources of the given type. 
+       @param Type of the resource to be requested. If empty all resource will be returned.
+     */
     List<PResource> resources(const String& typeName) const;
     /* Adds given resource to group. */
     EGEResult addResource(const PResource& resource);
     /*! Is group loaded. */
-    inline bool isLoaded() const { return m_loaded; }
+    bool isLoaded() const { return m_loaded; }
     /*! Returns list of dependancy group names. */
-    inline const StringList& dependancies() const { return m_dependancies; }
+    const StringList& dependancies() const { return m_dependancies; }
     /*! Gets owning manager */
-    inline ResourceManager* manager() const { return m_manager; }
+    ResourceManager* manager() const { return m_manager; }
+    /*! Returns path. */
+    const String& path() const { return m_dirPath; }
 
   private:
 

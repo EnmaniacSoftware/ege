@@ -17,6 +17,7 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManager;
+EGE_DECLARE_SMART_CLASS(IResource, PResource)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManagerPrivate
 {
@@ -36,29 +37,33 @@ class ResourceManagerPrivate
     EGEResult construct();
     /* Updates object. */
     void update(const Time& time);
-    /* Locks resources. */
-    void lockResources();
-    /* Unlocks resources. */
-    void unlockResources();
+    /* Processes commands. */
+    void processCommands();
+    /* Loads group with given name. 
+     * @param name  Group name to be loaded.
+     * @return  Returns EGE_SUCCESS if group has been scheduled for loading. EGE_ERROR_ALREADY_EXISTS if group is already loaded. Otherwise, EGE_ERROR.
+     * @note  Given group, when found, is scheduled for loading rather than loaded immediately.
+     */
+    EGEResult loadGroup(const String& name);
+    /* Unloads group with given name. */
+    void unloadGroup(const String& name);
 
   private:
 
-    /*! List of resource data directories. */
-    //StringList m_dataDirs;
-    ///*! Resource groups defined */
-    //GroupList m_groups;
-    ///*! Registered resources sorted by type name. */
-    //Map<String, ResourceRegistryEntry> m_registeredResources;
-    ///*! List of all pending commands to process. */
-    //CommandDataList m_commands;
-    ///*! Resource loading/unloading thread. */
-    //PThread m_workThread;
-    ///*! Resource data access mutex. */
-    //PMutex m_mutex;
-    ///*! Wait condition signaled when any commands are to be processed. */
-    //PWaitCondition m_commandsToProcess;
-    ///*! Current state. */
-    //State m_state;
+    /*! Data struct containing information regarding resources to process. */
+    struct ProcessingBatch
+    {
+      bool load;                    /*!< Should resource be loaded. If FALSE resource is to be unloaded. */
+      String groupName;             /*!< Name of the owning resource group. */
+      List<PResource> resources;    /*!< Resources left to be handled. */
+    };
+
+    typedef List<ProcessingBatch> ProcessingBatchList;
+
+  private:
+
+    /*! List of all pending batches to load/unload. */
+    ProcessingBatchList m_processList;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

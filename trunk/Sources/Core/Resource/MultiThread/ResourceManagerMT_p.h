@@ -17,6 +17,7 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManager;
+EGE_DECLARE_SMART_CLASS(IResource, PResource)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManagerPrivate
 {
@@ -36,12 +37,23 @@ class ResourceManagerPrivate
     EGEResult construct();
     /* Updates object. */
     void update(const Time& time);
+    /* Processes commands. */
+    void processCommands();
+    /* Loads group with given name. 
+     * @param name  Group name to be loaded.
+     * @return  Returns EGE_SUCCESS if group has been scheduled for loading. EGE_ERROR_ALREADY_EXISTS if group is already loaded. Otherwise, EGE_ERROR.
+     * @note  Given group, when found, is scheduled for loading rather than loaded immediately.
+     */
+    EGEResult loadGroup(const String& name);
+    /* Unloads group with given name. */
+    void unloadGroup(const String& name);
+
+  private:
+
     /* Locks resources. */
     void lockResources();
     /* Unlocks resources. */
     void unlockResources();
-
-  private:
 
     /*! List of resource data directories. */
     //StringList m_dataDirs;

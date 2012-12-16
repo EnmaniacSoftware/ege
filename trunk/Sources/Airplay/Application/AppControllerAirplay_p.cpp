@@ -1,10 +1,10 @@
 #include "Core/Application/AppController.h"
 #include "Airplay/Application/AppControllerAirplay_p.h"
+#include <EGEApplication.h>
+#include <EGEEvent.h>
+#include <EGEDebug.h>
 #include <s3e.h>
 #include <s3eDevice.h>
-#include <EGEDebug.h>
-#include <EGEEvent.h>
-#include <EGEApplication.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -54,6 +54,9 @@ EGEResult AppControllerPrivate::run()
    
     // render
     d_func()->render();
+
+    // send end of frame event
+    d_func()->app()->eventManager()->send(EGE_EVENT_ID_CORE_FRAME_END);
 
     // stat this loop end time
     endTime.fromMicroseconds(Timer::GetMicroseconds());
