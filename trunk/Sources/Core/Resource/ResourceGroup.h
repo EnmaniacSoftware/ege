@@ -71,7 +71,7 @@ class ResourceGroup : public Object
   private:
 
     /*! Container holding all group resources sorted by type name. */
-    typedef Map<String, PResource> ResourcesMap;
+    typedef MultiMap<String, PResource> ResourcesMap;
 
   private:
 

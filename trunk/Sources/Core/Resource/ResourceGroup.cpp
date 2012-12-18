@@ -231,9 +231,6 @@ void ResourceGroup::destroy()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceGroup::addResource(const PResource& resource)
 {
-  // TAGE - debug, we should not have multiple resources of the same name
-  EGE_ASSERT(m_resources.contains(resource->typeName()));
-  
   // add to pool
   m_resources.insert(resource->typeName(), resource);
 
@@ -287,8 +284,34 @@ EGEResult ResourceGroup::overrideBy(const PResourceGroup& group)
   {
     const PResource& incomingResource = it->second;
 
-    // replace old or add new resource
-    m_resources.insert(incomingResource->name(), incomingResource);
+    // look for the resource of the same type and name
+    PResource resource;
+    for (ResourcesMap::iterator itRes = m_resources.begin(); itRes != m_resources.end(); ++itRes)
+    {
+      resource = itRes->second;
+      if ((resource->name() == incomingResource->name()) && (resource->typeName() == incomingResource->typeName()))
+      {
+        // override
+        egeWarning() << "Overriding resource" << incomingResource->name();
+        itRes->second = incomingResource;
+        break;
+      }
+      else
+      {
+        resource = NULL;
+      }
+    }
+
+    // add new resource
+    if (NULL == resource)
+    {
+      EGEResult result;
+      if (EGE_SUCCESS != (result = addResource(incomingResource)))
+      {
+        // error!
+        return result;
+      }
+    }
   }
 
   return EGE_SUCCESS;
