@@ -31,36 +31,36 @@ class Thread : public Object
 
   public:
 
-    /* Returns current tread identifier. */
+    /*! Returns current tread identifier. */
     static void* CurrentId();
 
   public:
 
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     bool isValid() const;
 
-    /* Starts thread. */
+    /*! Starts thread. */
     bool start();
-    /* Stops thread. */
+    /*! Stops thread. */
     void stop(s32 exitCode = 0);
-    /* Cancels tread. 
-     * @note This forcilbly stops the thread. Use with caution.
+    /*! Cancels tread. 
+     *  @note This forcilbly stops the thread. Use with caution.
      */
     void cancel();
     
-    /* Waits for thread to be finished. */
+    /*! Waits for thread to be finished. */
     bool wait();
 
-    /* Returns TRUE if thread is currently running. */
+    /*! Returns TRUE if thread is currently running. */
     bool isRunning() const;
-    /* Returns TRUE if thread has finished its work. */
+    /*! Returns TRUE if thread has finished its work. */
     bool isFinished() const;
-    /* Returns TRUE if thread has been requested to terminate. */
+    /*! Returns TRUE if thread has been requested to terminate. */
     bool isStopping() const;
 
   protected:
 
-    /* Work method. */
+    /*! Work method. */
     virtual s32 run() = 0;
 
   private:

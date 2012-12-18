@@ -1,6 +1,7 @@
 #include <EGEMutex.h>
 #include "Core/Threading/PThread/WaitCondition_p.h"
 #include "Core/Threading/PThread/Mutex_p.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -24,16 +25,21 @@ WaitConditionPrivate::~WaitConditionPrivate()
  */
 bool WaitConditionPrivate::wait(Mutex* mutex)
 {
+  EGE_ASSERT(mutex->m_locked);
+
+  if ( ! mutex->m_locked)
+  {
+    // do nothing
+    return false;
+  }
+
   // NOTE: pthread_cond_wait releases the mutex
   mutex->m_locked = false;
 
   int result = pthread_cond_wait(&m_condition, &mutex->p_func()->m_mutex);
 
-  // if error occured, mutex is expected to be still locked
-  if (0 != result)
-  {
-    mutex->m_locked = true;
-  }
+  // mutex is locked on pthread_cond_wait return
+  mutex->m_locked = true;
 
   return 0 == result;
 }

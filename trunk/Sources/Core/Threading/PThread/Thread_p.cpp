@@ -19,7 +19,6 @@ ThreadPrivate::~ThreadPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Thread function. */
 void* ThreadPrivate::ThreadFunc(void* userData)
 {
   ThreadPrivate* me = reinterpret_cast<ThreadPrivate*>(userData);
@@ -56,7 +55,6 @@ void* ThreadPrivate::ThreadFunc(void* userData)
   return reinterpret_cast<void*>(result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts thread. */
 bool ThreadPrivate::start()
 {
   pthread_attr_t attr;
@@ -72,28 +70,22 @@ bool ThreadPrivate::start()
   return 0 == pthread_create(&m_thread, &attr, &ThreadPrivate::ThreadFunc, this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if thread is currently running. */
 bool ThreadPrivate::isRunning() const
 {
   return m_running;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if thread has finished its work. */
 bool ThreadPrivate::isFinished() const
 {
   return m_finished;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Waits for thread to be finished. */
 bool ThreadPrivate::wait()
 {
   void* status;
   return 0 == pthread_join(m_thread, &status);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Cancels tread. 
- *  @note This forcilbly stops the thread. Use with caution.
- */
 void ThreadPrivate::cancel()
 {
   int result = pthread_cancel(m_thread);
@@ -101,7 +93,6 @@ void ThreadPrivate::cancel()
   egeDebug() << "Canceling:" << this << "result code:" << result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current tread identifier. */
 void* Thread::CurrentId()
 {
 #ifdef EGE_PLATFORM_AIRPLAY

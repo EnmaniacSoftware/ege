@@ -43,22 +43,18 @@ class ResourceData : public IResource
     /* IResource override. Unloads resource. */
     void unload() override;
     /*! Gets instance of data object defined by resource. */
-    inline PDataBuffer data() const { return m_data; }
+    PDataBuffer data() const { return m_data; }
 
   private:
 
     ResourceData(Application* app, ResourceGroup* group);
-    /*! Gets path to texture file. */
-    inline const String& path() const { return m_path; } 
     /*! Returns whether data is NULL terminated.*/
-    inline bool isNulled() const { return m_nulled; } 
+    bool isNulled() const { return m_nulled; }
 
   private:
 
     /*! Name. */
     String m_name;
-    /*! Full path to data file. */
-    String m_path;
     /*! Flag indicating if data should be NULL terminated upon loading. */
     bool m_nulled;
     /*! Data object created from resource. NULL if not created yet. */

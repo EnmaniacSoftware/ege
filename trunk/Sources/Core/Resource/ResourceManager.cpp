@@ -67,7 +67,6 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::ResourceManager(Application* app) : Object(app),
                                                      m_p(NULL),
-                                                     m_state(STATE_INITIALIZING),
                                                      m_totalResourcesToProcess(0),
                                                      m_processedResourcesCount(0)
 {
@@ -78,7 +77,6 @@ ResourceManager::~ResourceManager()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates object. */
 EGEResult ResourceManager::construct()
 {
   EGEResult result = EGE_SUCCESS;
@@ -130,7 +128,6 @@ EGEResult ResourceManager::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Registeres custom resource type. */
 EGEResult ResourceManager::registerResource(const String& typeName, egeResourceCreateFunc createFunc)
 {
   EGEResult result = EGE_SUCCESS;
@@ -152,7 +149,6 @@ EGEResult ResourceManager::registerResource(const String& typeName, egeResourceC
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given resource type is registered. */
 bool ResourceManager::isResourceRegistered(const String& typeName) const
 {
   // check if resource with such a name exists already
@@ -160,7 +156,6 @@ bool ResourceManager::isResourceRegistered(const String& typeName) const
   return it != m_registeredResources.end();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource of the type given by name. */
 PResource ResourceManager::createResource(const String& name, ResourceGroup* group)
 {
   PResource resource;
@@ -176,11 +171,6 @@ PResource ResourceManager::createResource(const String& name, ResourceGroup* gro
   return resource;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds resources from given file to repository. 
- * @param filePath    Path to resource definition file which is to be added into resources.
- * @param autoDetect  If TRUE file given by filePath will be looked for within currently registered data paths. Otherwise, filePath will be treated as
- *                    absolute path.
- */
 EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
 {
   EGEResult result = EGE_SUCCESS;
@@ -258,7 +248,6 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
 //  return result;
 //}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds data directory. */
 void ResourceManager::addDataDirectory(const String& path)
 {
   if (!m_dataDirs.contains(path))
@@ -267,11 +256,6 @@ void ResourceManager::addDataDirectory(const String& path)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/** Processes the RESOURCES tag.
-*  
-*   \param  filePath  relative (with respect to resource root directory) path to resouce file.
-*   \param  tag       resource element to process. 
-*/
 EGEResult ResourceManager::processResourcesTag(const String& filePath, const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
@@ -308,16 +292,11 @@ EGEResult ResourceManager::processResourcesTag(const String& filePath, const PXm
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/** Add new group from XML data.
-*  
-*   \param  filePath  relative (with respect to resource root directory) path to resouce file containing the group definition.
-*   \param  tag       group element to process. 
-*/
 EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
 
-  PResourceGroup newGroup = ege_new ResourceGroup(app(), this, filePath);
+  PResourceGroup newGroup = ege_new ResourceGroup(app(), this);
   if (NULL == newGroup)
   {
     // error!
@@ -325,7 +304,7 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
   }
   
   // create from XML
-  result = newGroup->create(tag);
+  result = newGroup->create(filePath, tag);
   if (EGE_SUCCESS == result)
   {
     egeDebug() << newGroup->name();
@@ -339,15 +318,18 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
     }
     else
     {
-      // check if group with different path
-      if (existingGroup->path() != newGroup->path())
+      // try to override
+      result = existingGroup->overrideBy(newGroup);
+      if (EGE_ERROR_NOT_SUPPORTED == result)
       {
-        // ...
+        // error!
+        egeWarning() << "Attempt to override non-overridable group" << existingGroup->name();
       }
-      else
+      else if (EGE_ERROR_ALREADY_EXISTS == result)
       {
         // NOTE: we quitely omit group duplicates so it is valid to ie. INCLUDE the same group multiple times
-        egeWarning() << "Group" << newGroup->name() << "already exists.";
+        egeWarning() << "Group" << newGroup->name() << "already exists. Skipping.";
+        result = EGE_SUCCESS;
       }
     }
   }
@@ -355,7 +337,6 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Gets group of the given name. */
 PResourceGroup ResourceManager::group(const String& name) const
 {
   PResourceGroup group;
@@ -375,23 +356,16 @@ PResourceGroup ResourceManager::group(const String& name) const
   return group;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads group with given name. 
- * @param name  Group name to be loaded.
- * @return  Returns EGE_SUCCESS if group has been scheduled for loading. EGE_ERROR_ALREADY_EXISTS if group is already loaded. Otherwise, EGE_ERROR.  
- * @note  Given group, when found, is scheduled for loading rather than loaded immediately.
- */
 EGEResult ResourceManager::loadGroup(const String& name)
 {
   return p_func()->loadGroup(name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unloads group with given name. */
 void ResourceManager::unloadGroup(const String& name)
 {
   p_func()->unloadGroup(name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns resource of a given type and name. Optionally, from given group only. */
 PResource ResourceManager::resource(const String& typeName, const String& name, const String& groupName) const
 {
   // check if search is to be done exactly in the given group
@@ -420,11 +394,10 @@ PResource ResourceManager::resource(const String& typeName, const String& name, 
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates default resources. */
 bool ResourceManager::createDefaultResources()
 {
   // create and add default resource group
-  PResourceGroup group = ege_new ResourceGroup(app(), this, "", DEFAULT_GROUP_NAME);
+  PResourceGroup group = ege_new ResourceGroup(app(), this, DEFAULT_GROUP_NAME);
   if (NULL == group)
   {
     // error!
@@ -529,7 +502,6 @@ bool ResourceManager::createDefaultResources()
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes all groups. */
 void ResourceManager::removeGroups()
 {
   // remove all groups
@@ -539,29 +511,21 @@ void ResourceManager::removeGroups()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns material resource of a given name. Optionally, from given group only. */
 PResourceMaterial ResourceManager::materialResource(const String& name, const String& groupName) const
 {
   return resource(RESOURCE_NAME_MATERIAL, name, groupName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns text resource of a given name. Optionally, from given group only. */
 PResourceText ResourceManager::textResource(const String& name, const String& groupName) const
 {
   return resource(RESOURCE_NAME_TEXT, name, groupName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns sound resource of a given name. Optionally, from given group only. */
 PResourceSound ResourceManager::soundResource(const String& name, const String& groupName) const
 {
   return resource(RESOURCE_NAME_SOUND, name, groupName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Processes include command from XML data. 
- *  
- *   @param  filePath  relative (with respect to resource root directory) path to resouce file containing the group definition.
- *   @param  tag       include element to process. 
- */
 EGEResult ResourceManager::processInclude(const String& filePath, const PXmlElement& tag)
 {
   bool error = false;
@@ -591,124 +555,15 @@ EGEResult ResourceManager::processInclude(const String& filePath, const PXmlElem
   return addResources(path, autoDetect);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates object. */
 void ResourceManager::update(const Time& time)
 {
-  // check if initialization is done
-  if (STATE_INITIALIZING == m_state)
-  {
-    //if (isValid())
-    {
-      // start work thread
-      //m_workThread->start();
-
-      // change state
-      m_state = STATE_READY;
-    }
-  }
-  else if (STATE_READY == m_state)
-  {
-  }
-  else if (STATE_CLOSING == m_state)
-  {
-    //if (m_workThread && (m_workThread->isFinished() || !m_workThread->isRunning()))
-    //{
-    //  m_workThread        = NULL;
-    //  m_commandsToProcess = NULL;
-    //  m_mutex             = NULL;
-
-      // set state
-      m_state = STATE_CLOSED;
-//    }
-  }
-
-  if (!app()->isQuitting())
+  // update when app is running only
+  if ( ! app()->isQuitting())
   {
     p_func()->update(time);
-    //// go thru all groups to be loaded
-    //for (CommandDataList::iterator it = m_commands.begin(); it != m_commands.end(); )
-    //{
-    //  CommandData& commandData = *it;
-
-    //  // process according to command type
-    //  if (COMMAND_LOAD_GROUP == commandData.command)
-    //  {
-    //    // process groups in back to front order
-    //    for (StringList::reverse_iterator it = commandData.groupNames.rbegin(); it != commandData.groupNames.rend(); ++it)
-    //    {
-    //      // find group
-    //      PResourceGroup groupResource = group(*it);
-    //      if (NULL == groupResource)
-    //      {
-    //        // NOTE: emit error for main group
-    //        emit groupLoadError(commandData.groupNames.front());
-    //      }
-    //      else
-    //      {
-    //        // load group
-    //        EGEResult result = groupResource->load();
-    //        if (EGE_SUCCESS == result)
-    //        {
-    //          // emit completion if this is main group
-    //          if (*it == commandData.groupNames.front())
-    //          {
-    //            emit groupLoadComplete(*it);
-    //          }
-    //        }
-    //        else if (EGE_WAIT == result)
-    //        {
-    //          // stop for the time being
-    //          return;
-    //        }
-    //        else
-    //        {
-    //          // error!
-    //          // NOTE: emit error for main group
-    //          emit groupLoadError(commandData.groupNames.front());
-    //        }
-    //      }
-    //    }
-    //  }
-    //  else if (COMMAND_UNLOAD_GROUP == commandData.command)
-    //  {
-    //    //if (commandData.groupNames.front() == "mode-selection-screen")
-    //    //{
-    //    //  int a = 1;
-    //    //}
-
-    //    // process groups in back to front order
-    //    for (StringList::reverse_iterator it = commandData.groupNames.rbegin(); it != commandData.groupNames.rend(); ++it)
-    //    {
-    //      // find group
-    //      PResourceGroup groupResource = group(*it);
-
-    //      // unload group
-    //      if (NULL != groupResource)
-    //      {
-    //        groupResource->unload();
-    //      }
-    //    }
-    //  }
-    //  else
-    //  {
-    //    EGE_ASSERT("Invalid command!");
-    //  }
-
-    //  // remove from pool
-    //  it = m_commands.erase(it);
-    //}
-
-    //// TAGE - temp, should be better designed
-    //// find out which resources can be unloaded as they are not refered anymore
-    //for (GroupList::iterator it = m_groups.begin(); it != m_groups.end(); ++it)
-    //{
-    //  PResourceGroup& group = *it;
-
-    //}
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Builds dependancy list for a given group. */
 bool ResourceManager::buildDependacyList(StringList& list, const String& groupName) const
 {
   // find group
@@ -754,14 +609,13 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! EventListener override. Event reciever. */
 void ResourceManager::onEventRecieved(PEvent event)
 {
   switch (event->id())
   {
     case EGE_EVENT_ID_CORE_QUIT_REQUEST:
 
-      if ((STATE_CLOSING != m_state) && (STATE_CLOSED != m_state))
+      if ((STATE_CLOSING != p_func()->state()) && (STATE_CLOSED != p_func()->state()))
       {
         // do shouting down
         shutDown();
@@ -770,7 +624,7 @@ void ResourceManager::onEventRecieved(PEvent event)
 
     case EGE_EVENT_ID_CORE_FRAME_END:
 
-      if (STATE_READY == m_state)
+      if (STATE_READY == p_func()->state())
       {
         processCommands();
       }
@@ -778,26 +632,24 @@ void ResourceManager::onEventRecieved(PEvent event)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Shuts down. */
 void ResourceManager::shutDown()
 {
-  // change state
-  m_state = STATE_CLOSING;
-
-  // remove all groups
-  removeGroups();
-
-  // request work thread stop
-//  m_workThread->stop(0);
-
-  // make sure all threads starts work
-  //m_commandsToProcess->wakeAll();
+  p_func()->shutDown();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Processes commands. */
 void ResourceManager::processCommands()
 {
   p_func()->processCommands();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceManager::ResourceProcessPolicy ResourceManager::resourceProcessPolicy() const
+{
+  return p_func()->resourceProcessPolicy();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceManager::State ResourceManager::state() const
+{
+  return p_func()->state();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

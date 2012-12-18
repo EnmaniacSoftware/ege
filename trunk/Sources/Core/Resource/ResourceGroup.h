@@ -16,27 +16,29 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManager;
-
 EGE_DECLARE_SMART_CLASS(ResourceGroup, PResourceGroup)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup : public Object
 {
   public:
 
-    ResourceGroup(Application* app, ResourceManager* manager, const String& dirPath, const String& name = "");
+    ResourceGroup(Application* app, ResourceManager* manager, const String& name = "");
    ~ResourceGroup();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Initializes group from XML. */
-    EGEResult create(const PXmlElement& tag);
+    /* Initializes resource from XML. 
+     * @param  path  full path to resource definition file.
+     * @param  tag   xml element with resource definition. 
+     */
+    EGEResult create(const String& path,  const PXmlElement& tag);
     /* Loads the group resources. */
     EGEResult load();
     /* Unloads the group resources. */
     void unload();
     /*! Returns group name. */
-    inline const String& name() const { return m_name; }
+    const String& name() const { return m_name; }
     /* Returns resource of a given type and name. */
     PResource resource(const String& typeName, const String& name) const;
     /* Returns list of all resources of the given type. 
@@ -51,8 +53,13 @@ class ResourceGroup : public Object
     const StringList& dependancies() const { return m_dependancies; }
     /*! Gets owning manager */
     ResourceManager* manager() const { return m_manager; }
-    /*! Returns path. */
-    const String& path() const { return m_dirPath; }
+
+    /* Overrides resources by another group ones. 
+     * @param group Group which resources should override current ones.
+     * @note  If current group is not overridable EGE_ERROR_NOT_SUPPORTED is retured. If both groups are the same (same paths)
+     *        EGE_ERROR_ALREADY_EXISTS is returned.
+     */
+    EGEResult overrideBy(const PResourceGroup& group);
 
   private:
 
@@ -64,7 +71,7 @@ class ResourceGroup : public Object
   private:
 
     /*! Container holding all group resources sorted by type name. */
-    typedef MultiMap<String, PResource> ResourcesMap;
+    typedef Map<String, PResource> ResourcesMap;
 
   private:
 
@@ -72,14 +79,16 @@ class ResourceGroup : public Object
     ResourceManager* m_manager;
     /*! Group name. */
     String m_name;
+    /*! Path to definition file. */
+    String m_path;
     /*! Resources map. */
     ResourcesMap m_resources;
     /*! Is group loaded. */
     bool m_loaded;
-    /*! Path to directory containing definition file. */
-    String m_dirPath;
     /*! Dependancy list. */
     StringList m_dependancies;
+    /*! Overridable flag. */
+    bool m_overridable;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

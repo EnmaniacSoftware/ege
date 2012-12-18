@@ -15,24 +15,18 @@ class ResourceManagerWorkThread : public Thread
 {
   public:
 
-    ResourceManagerWorkThread(Application* app);
+    ResourceManagerWorkThread(Application* app, ResourceManagerPrivate* manager);
    ~ResourceManagerWorkThread();
 
   private:
 
-    /* Thread override. Work method. */
+    /*! @see Thread::run */
     EGE::s32 run() override;
-    ///* Adds command to list of pending actions. */
-    //void addCommand(const ResourceManager::CommandData& command);
-    ///* Processes the current active list of commands. */
-    //void processList();
-    ///* Updates command list. */
-    //void updateList();
 
   private:
 
-    /*! Command list to process. */
-//    ResourceManager::CommandDataList m_list;
+    /*! Resource manager instance. */
+    ResourceManagerPrivate* m_manager;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

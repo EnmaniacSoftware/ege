@@ -40,6 +40,8 @@ const String& ResourceText::name() const
 */
 EGEResult ResourceText::create(const String& path, const PXmlElement& tag)
 {
+  EGE_UNUSED(path);
+
   EGEResult result = EGE_SUCCESS;
 
   // get data

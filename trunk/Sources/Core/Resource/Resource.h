@@ -26,10 +26,9 @@ class IResource : public Object
     virtual ~IResource();
 
     /* Initializes resource from XML. 
-    * 
-    *  \param  path  full path to resource definition file.
-    *  \param  tag   xml element with resource definition. 
-    */
+     * @param  path  full path to resource definition file.
+     * @param  tag   xml element with resource definition. 
+     */
     virtual EGEResult create(const String& path, const PXmlElement& tag) = 0;
     /*! Loads resource. */
     virtual EGEResult load() = 0;
@@ -49,6 +48,8 @@ class IResource : public Object
 
     /* Returns pointer to owning group. */
     ResourceGroup* group() const;
+    /* Returns path to resource. */
+    const String& path() const;
 
   protected:
 
@@ -56,6 +57,8 @@ class IResource : public Object
     bool m_manual;
     /*! Load flag. */ 
     bool m_loaded;
+    /*! Path to resource. Can be empty if not required. */
+    String m_path;
 
   private:
 

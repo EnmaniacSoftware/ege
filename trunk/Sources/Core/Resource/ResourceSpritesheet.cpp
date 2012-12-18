@@ -38,6 +38,8 @@ const String& ResourceSpritesheet::name() const
 */
 EGEResult ResourceSpritesheet::create(const String& path, const PXmlElement& tag)
 {
+  EGE_UNUSED(path);
+
   EGEResult result = EGE_SUCCESS;
 
   bool error = false;
@@ -57,9 +59,6 @@ EGEResult ResourceSpritesheet::create(const String& path, const PXmlElement& tag
     egeWarning() << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
-
-  // compose absolute path
- // m_path = path + "/" + m_path;
 
   return result;
 }

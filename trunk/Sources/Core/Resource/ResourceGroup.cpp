@@ -11,11 +11,11 @@ EGE_DEFINE_DELETE_OPERATORS(ResourceGroup)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_DEPENDANCY "dependancy"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceGroup::ResourceGroup(Application* app, ResourceManager* manager, const String& dirPath, const String& name) : Object(app), 
-                                                                                                                      m_manager(manager), 
-                                                                                                                      m_name(name), 
-                                                                                                                      m_loaded(false), 
-                                                                                                                      m_dirPath(dirPath)
+ResourceGroup::ResourceGroup(Application* app, ResourceManager* manager, const String& name) : Object(app), 
+                                                                                               m_manager(manager), 
+                                                                                               m_name(name), 
+                                                                                               m_loaded(false), 
+                                                                                               m_overridable(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -24,21 +24,19 @@ ResourceGroup::~ResourceGroup()
   destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Initializes group from XML. */
-EGEResult ResourceGroup::create(const PXmlElement& tag)
+EGEResult ResourceGroup::create(const String& path,  const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
 
-  // get data
-  m_name = tag->attribute("name");
+  bool error = false;
 
-  if (m_name == "theme:default")
-  {
-    int a = 1;
-  }
+  // get data
+  m_name        = tag->attribute("name");
+  m_overridable = tag->attribute("overridable", false);
+  m_path        = path;
 
   // check if wrong data
-  if (m_name.empty())
+  if (m_name.empty() || error)
   {
     // error!
     egeWarning() << "Failed for name:" << m_name;
@@ -66,7 +64,7 @@ EGEResult ResourceGroup::create(const PXmlElement& tag)
       if (resource)
       {
         // initialize from XML
-        if (EGE_SUCCESS != (result = resource->create(m_dirPath, child)))
+        if (EGE_SUCCESS != (result = resource->create(path, child)))
         {
           // error!
           break;
@@ -88,32 +86,21 @@ EGEResult ResourceGroup::create(const PXmlElement& tag)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads the group resources. */
 EGEResult ResourceGroup::load()
 {
   EGEResult result = EGE_SUCCESS;
 
   // check if NOT already loaded
-  if (!isLoaded())
+  if ( ! isLoaded())
   {
-    //if (name() == "about-screen")
-    //{
-    //  int a = 1;
-    //}
-
     // go thru all resources
     for (ResourcesMap::iterator it = m_resources.begin(); it != m_resources.end(); ++it)
     {
       PResource resource = it->second;
 
       // check if non-manual and needs to be loaded
-      if (!resource->isManual() && !resource->isLoaded())
+      if ( ! resource->isManual() && ! resource->isLoaded())
       {
-        //if (resource->name() == "sprite-ripples")
-        //{
-        //  int a = 1;
-        //}
-
         // load resource
         if (EGE_SUCCESS != (result = resource->load()))
         {
@@ -122,11 +109,10 @@ EGEResult ResourceGroup::load()
           break;
         }
 
-        // terminate for the time being if  single-threaded loading
-       
-        // TAGE - FIX
-        // if (!manager()->isThreading())
+        // check processing policy
+        if (ResourceManager::RLP_RESOURCE == m_manager->resourceProcessPolicy())
         {
+          // yield for now
           return EGE_WAIT;
         }
       }
@@ -150,17 +136,11 @@ EGEResult ResourceGroup::load()
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unloads the group resources */
 void ResourceGroup::unload()
 {
   // check if loaded
   if (isLoaded())
   {
-    if (name() == "game-over-screen")
-    {
-      int a = 1;
-    }
-
     // go thru all resources
     for (ResourcesMap::const_iterator it = m_resources.begin(); it != m_resources.end(); ++it)
     {
@@ -181,7 +161,6 @@ void ResourceGroup::unload()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns resource of a given type and name. */
 PResource ResourceGroup::resource(const String& typeName, const String& name) const
 {
   PResource resource;
@@ -204,9 +183,6 @@ PResource ResourceGroup::resource(const String& typeName, const String& name) co
   return resource;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns list of all resources of the given type. 
-    @param Type of the resource to be requested. If empty all resource will be returned.
- */
 List<PResource> ResourceGroup::resources(const String& typeName) const
 {
   List<PResource> list;
@@ -237,7 +213,6 @@ List<PResource> ResourceGroup::resources(const String& typeName) const
   return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Destroys group. */
 void ResourceGroup::destroy()
 {
   // unload first
@@ -254,15 +229,17 @@ void ResourceGroup::destroy()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds given resource to group. */
 EGEResult ResourceGroup::addResource(const PResource& resource)
 {
+  // TAGE - debug, we should not have multiple resources of the same name
+  EGE_ASSERT(m_resources.contains(resource->typeName()));
+  
+  // add to pool
   m_resources.insert(resource->typeName(), resource);
 
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds dependancy. */
 EGEResult ResourceGroup::addDependancy(const PXmlElement& tag)
 {
   // get data
@@ -284,6 +261,34 @@ EGEResult ResourceGroup::addDependancy(const PXmlElement& tag)
   {
     // add dependancy
     m_dependancies << name;
+  }
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult ResourceGroup::overrideBy(const PResourceGroup& group)
+{
+  // check if not overridable
+  if ( ! m_overridable)
+  {
+    // cannot proceed
+    return EGE_ERROR_NOT_SUPPORTED;
+  }
+
+  // check if groups point to the same resource file
+  if (m_path == group->m_path)
+  {
+    // cannot proceed
+    return EGE_ERROR_ALREADY_EXISTS;
+  }
+
+  // process resources
+  for (ResourcesMap::const_iterator it = group->m_resources.begin(); it != group->m_resources.end(); ++it)
+  {
+    const PResource& incomingResource = it->second;
+
+    // replace old or add new resource
+    m_resources.insert(incomingResource->name(), incomingResource);
   }
 
   return EGE_SUCCESS;

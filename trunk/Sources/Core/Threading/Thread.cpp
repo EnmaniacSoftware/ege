@@ -26,13 +26,11 @@ Thread::~Thread()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool Thread::isValid() const
 {
   return (NULL != m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts thread. */
 bool Thread::start()
 {
   EGE_ASSERT(isValid());
@@ -50,7 +48,6 @@ bool Thread::start()
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if thread is currently running. */
 bool Thread::isRunning() const
 {
   EGE_ASSERT(isValid());
@@ -62,7 +59,6 @@ bool Thread::isRunning() const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if thread has finished its work. */
 bool Thread::isFinished() const
 {
   EGE_ASSERT(isValid());
@@ -74,7 +70,6 @@ bool Thread::isFinished() const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Stops thread. */
 void Thread::stop(s32 exitCode)
 {
   EGE_ASSERT(isValid());
@@ -85,13 +80,11 @@ void Thread::stop(s32 exitCode)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if thread has been requested to terminate. */
 bool Thread::isStopping() const
 {
   return m_stopping;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Waits for thread to be finished. */
 bool Thread::wait()
 {
   EGE_ASSERT(isValid());
@@ -103,9 +96,6 @@ bool Thread::wait()
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Cancels tread. 
- *  @note This forcilbly stops the thread. Use with caution.
- */
 void Thread::cancel()
 {
   EGE_ASSERT(isValid());

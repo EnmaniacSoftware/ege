@@ -52,6 +52,8 @@ const String& ResourceFont::name() const
 */
 EGEResult ResourceFont::create(const String& path, const PXmlElement& tag)
 {
+  EGE_UNUSED(path);
+
   EGEResult result = EGE_SUCCESS;
 
   bool error = false;

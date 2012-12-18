@@ -1,7 +1,6 @@
 #ifdef EGE_RESOURCE_MANAGER_SINGLE_THREAD
 
 #include "Core/Resource/SingleThread/ResourceManagerST_p.h"
-#include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceGroup.h"
 #include <EGEDebug.h>
 
@@ -11,7 +10,8 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(ResourceManagerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(ResourceManagerPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManagerPrivate::ResourceManagerPrivate(ResourceManager* base) : m_d(base)
+ResourceManagerPrivate::ResourceManagerPrivate(ResourceManager* base) : m_d(base),
+                                                                        m_state(ResourceManager::STATE_NONE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -19,13 +19,14 @@ ResourceManagerPrivate::~ResourceManagerPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
 EGEResult ResourceManagerPrivate::construct()
 {
+  // set state
+  m_state = ResourceManager::STATE_READY;
+
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates manager. */
 void ResourceManagerPrivate::update(const Time& time)
 {
   EGE_UNUSED(time)
@@ -57,6 +58,14 @@ void ResourceManagerPrivate::update(const Time& time)
         // check if no more resources to load
         if (data.resources.empty())
         {
+          // TAGE - hmm, better solution needed ? as we process all resources individually here
+          // call ResourceGroup::load so it marks itself as loaded
+          PResourceGroup group = d_func()->group(data.groupName);
+          if (NULL != group)
+          {
+            group->load();
+          }
+
           // emit completion
           emit d_func()->groupLoadComplete(data.groupName);
         }
@@ -97,6 +106,18 @@ void ResourceManagerPrivate::update(const Time& time)
       emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
 
       egeCritical() << "Processed" << d_func()->m_processedResourcesCount << "out of" << d_func()->m_totalResourcesToProcess;
+
+      // check if no more resources to load
+      if (data.resources.empty())
+      {
+        // TAGE - hmm, better solution needed ? as we process all resources individually here
+        // call ResourceGroup::unload so it marks itself as unloaded
+        PResourceGroup group = d_func()->group(data.groupName);
+        if (NULL != group)
+        {
+          group->unload();
+        }
+      }
     }
 
     // check if no more resources to load in a group
@@ -116,16 +137,10 @@ void ResourceManagerPrivate::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Processes commands. */
 void ResourceManagerPrivate::processCommands()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads group with given name. 
- *  @param name  Group name to be loaded.
- *  @return  Returns EGE_SUCCESS if group has been scheduled for loading. EGE_ERROR_ALREADY_EXISTS if group is already loaded. Otherwise, EGE_ERROR.
- *  @note  Given group, when found, is scheduled for loading rather than loaded immediately.
- */
 EGEResult ResourceManagerPrivate::loadGroup(const String& name)
 {
   // check if already scheduled for processing
@@ -192,87 +207,9 @@ EGEResult ResourceManagerPrivate::loadGroup(const String& name)
   // update statistics
   d_func()->m_totalResourcesToProcess += batch.resources.size();
 
-  //// find group of given name
-  //PResourceGroup theGroup = d_func()->group(name);
-  //if (NULL != theGroup)
-  //{
-  //  // check if given group is scheduled for unloading/loading already
-  //  CommandDataList::iterator it;
-  //  for (it = m_commands.begin(); it != m_commands.end(); ++it)
-  //  {
-  //    CommandData& commandData = *it;
-  //    if (((COMMAND_UNLOAD_GROUP == commandData.command) || (COMMAND_LOAD_GROUP == commandData.command)) && (commandData.groupNames.front() == name))
-  //    {
-  //      // found, done
-  //      break;
-  //    }
-  //  }
-
-  //  // check if loaded already
-  //  if (theGroup->isLoaded())
-  //  {
-  //    // check if it awaits unloading
-  //    if ((it != m_commands.end()) && (COMMAND_UNLOAD_GROUP == (*it).command))
-  //    {
-  //      // remove it from command list
-  //      m_commands.erase(it);
-  //    }
-
-  //    // cannot be loaded
-  //    egeWarning() << name << "already loaded.";
-
-  //    // unlock resources
-  //    p_func()->unlockResources();
-
-  //    return EGE_ERROR_ALREADY_EXISTS;
-  //  }
-  //  
-  //  // check if it is awaiting loading already
-  //  if ((it != m_commands.end()) && (COMMAND_LOAD_GROUP == (*it).command))
-  //  {
-  //    // do nothing
-  //    egeWarning() << "Group" << name << "already scheduled. Skipping.";
-
-  //    // unlock resources
-  //    p_func()->unlockResources();
-  //    return EGE_SUCCESS;
-  //  }
-
-  //  // add group for loading
-  //  CommandData commandData;
-
-  //  commandData.command = COMMAND_LOAD_GROUP;
-  //  commandData.groupNames.push_back(name);
-
-  //  // add dependancies
-  //  if (buildDependacyList(commandData.groupNames, name))
-  //  {
-  //    // add to pool
-  //    m_commands.push_back(commandData);
-  //  }
-  //  else
-  //  {
-  //    // error!
-
-  //    // unlock resources
-  //    p_func()->unlockResources();
-
-  //    return EGE_ERROR;
-  //  }
-
-  //  // unlock resources
-  //  p_func()->unlockResources();
-
-  //  egeDebug() << name << "scheduled for loading.";
-  //  return EGE_SUCCESS;
-  //}
- 
-  //egeWarning() << name << "not found!";
-
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Unloads group with given name. */
 void ResourceManagerPrivate::unloadGroup(const String& name)
 {
   // check if already scheduled for processing
@@ -320,6 +257,25 @@ void ResourceManagerPrivate::unloadGroup(const String& name)
 
   // update statistics
   d_func()->m_totalResourcesToProcess += batch.resources.size();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceManager::ResourceProcessPolicy ResourceManagerPrivate::resourceProcessPolicy() const
+{
+  return ResourceManager::RLP_RESOURCE;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerPrivate::shutDown()
+{
+  // remove all data
+  d_func()->removeGroups();
+
+  // we are done
+  m_state = ResourceManager::STATE_CLOSED;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceManager::State ResourceManagerPrivate::state() const
+{
+  return m_state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

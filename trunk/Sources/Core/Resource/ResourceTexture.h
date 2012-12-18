@@ -64,15 +64,11 @@ class ResourceTexture : public IResource
     inline EGETexture::AddressingMode adressingModeS() const { return m_addressingModeS; }
     /*! Gets texture addressing mode for T coordinate. */
     inline EGETexture::AddressingMode adressingModeT() const { return m_addressingModeT; }
-    /*! Gets path to texture file */
-    inline const String& path() const { return m_path; } 
 
   private:
 
     /*! Texture name. */
     String m_name;
-    /*! Texture path. */
-    String m_path;
     /*! Texture type. */
     String m_type;
     /*! Texture minifying function. */

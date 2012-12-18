@@ -54,8 +54,6 @@ class ResourceSound : public IResource
 
     /*! Name. */
     String m_name;
-    /*! Sound path. */
-    String m_path;
     /*! Pitch value. */
     float32 m_pitch;
     /* Sound data buffer. */

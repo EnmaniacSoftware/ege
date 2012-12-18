@@ -37,6 +37,8 @@ const String& ResourceSequencer::name() const
 */
 EGEResult ResourceSequencer::create(const String& path, const PXmlElement& tag)
 {
+  EGE_UNUSED(path);
+
   EGEResult result = EGE_SUCCESS;
 
   // get data

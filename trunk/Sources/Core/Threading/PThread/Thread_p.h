@@ -25,24 +25,24 @@ class ThreadPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(Thread)
 
-    /* Starts thread. */
+    /*! Starts thread. */
     bool start();
-    /* Cancels tread. 
-     * @note This forcilbly stops the thread. Use with caution.
+    /*! Cancels tread. 
+     *  @note This forcilbly stops the thread. Use with caution.
      */
     void cancel();
 
-    /* Waits for thread to be finished. */
+    /*! Waits for thread to be finished. */
     bool wait();
 
-    /* Returns TRUE if thread is currently running. */
+    /*! Returns TRUE if thread is currently running. */
     bool isRunning() const;
-    /* Returns TRUE if thread has finished its work. */
+    /*! Returns TRUE if thread has finished its work. */
     bool isFinished() const;
 
   private:
 
-    /* Thread function. */
+    /*! Thread function. */
     static void* ThreadFunc(void* userData);
 
   private:

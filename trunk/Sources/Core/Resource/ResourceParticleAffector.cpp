@@ -39,6 +39,8 @@ const String& ResourceParticleAffector::name() const
 */
 EGEResult ResourceParticleAffector::create(const String& path, const PXmlElement& tag)
 {
+  EGE_UNUSED(path);
+
   EGEResult result = EGE_SUCCESS;
 
   // parse all attributes

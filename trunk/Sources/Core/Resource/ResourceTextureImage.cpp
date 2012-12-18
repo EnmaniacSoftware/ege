@@ -39,6 +39,8 @@ const String& ResourceTextureImage::name() const
 */
 EGEResult ResourceTextureImage::create(const String& path, const PXmlElement& tag)
 {
+  EGE_UNUSED(path);
+
   EGEResult result = EGE_SUCCESS;
 
   bool error = false;
