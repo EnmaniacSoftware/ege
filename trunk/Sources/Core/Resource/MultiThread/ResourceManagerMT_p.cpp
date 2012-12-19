@@ -39,6 +39,14 @@ EGEResult ResourceManagerPrivate::construct()
     return EGE_ERROR_NO_MEMORY;
   }
 
+  // create group emit resource mutex
+  m_emitRequstsMutex = ege_new Mutex(d_func()->app());
+  if (NULL == m_emitRequstsMutex)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
   // create wait condition
   m_commandsToProcess = ege_new WaitCondition(d_func()->app());
   if (NULL == m_commandsToProcess)
@@ -63,6 +71,45 @@ EGEResult ResourceManagerPrivate::construct()
 void ResourceManagerPrivate::update(const Time& time)
 {
   EGE_UNUSED(time)
+
+  // check if any signals are to be emitted
+  if ( ! m_emissionRequests.empty())
+  {
+    MutexLocker lock(m_emitRequstsMutex);
+
+    // emit one by one
+    for (EmissionRequestList::const_iterator it = m_emissionRequests.begin(); it != m_emissionRequests.end(); ++it)
+    {
+      const EmissionRequest& request = *it;
+
+      switch (request.type)
+      {
+        case RT_GROUP_LOADED:
+      
+          emit d_func()->groupLoadComplete(request.groupName);
+          break;
+
+        case RT_GROUP_LOAD_ERROR:
+
+          emit d_func()->groupLoadError(request.groupName);
+          break;
+
+        case RT_PROGRESS:
+
+          egeCritical() << "Processed" << request.count << "out of" << request.total;
+
+          emit d_func()->processingStatusUpdated(request.count, request.total);
+          break;
+
+        default:
+
+          egeWarning() << "Unknown request type. Skipping.";
+          break;
+      }
+    }
+
+    m_emissionRequests.clear();
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerPrivate::processCommands()
@@ -171,6 +218,13 @@ void ResourceManagerPrivate::threadUpdate()
       m_mutex->lock();
     }
 
+    // check if thread is requested to stop
+    if (m_workThread->isStopping())
+    {
+      // done
+      return;
+    }
+
     // copy scheduled data
     ProcessingBatchList newScheduledData(m_scheduledList);
 
@@ -233,7 +287,7 @@ void ResourceManagerPrivate::appendBatchesForProcessing(ProcessingBatchList& bat
 void ResourceManagerPrivate::processBatches()
 {
   // add new data to processing list
-  for (ProcessingBatchList::iterator it = m_pendingList.begin(); it != m_pendingList.end(); ++it)
+  for (ProcessingBatchList::iterator it = m_pendingList.begin(); it != m_pendingList.end(); )
   {
     ProcessingBatch& data = *it;
 
@@ -251,10 +305,8 @@ void ResourceManagerPrivate::processBatches()
         // update statistics
         d_func()->m_processedResourcesCount++;
 
-        // emit
-        emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
-
-        egeCritical() << "Processed" << d_func()->m_processedResourcesCount << "out of" << d_func()->m_totalResourcesToProcess;
+        // schedule progess request
+        addProgressRequest(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
 
         // check if no more resources to load
         if (data.resources.empty())
@@ -267,8 +319,8 @@ void ResourceManagerPrivate::processBatches()
             group->load();
           }
 
-          // emit completion
-          emit d_func()->groupLoadComplete(data.groupName);
+          // schedule completion
+          addGroupLoadedRequest(data.groupName);
         }
       }
       else if (EGE_WAIT == result)
@@ -283,18 +335,16 @@ void ResourceManagerPrivate::processBatches()
         // update statistics
         d_func()->m_processedResourcesCount++;
 
-        // emit
-        emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
+        // schedule progess request
+        addProgressRequest(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
 
-        egeCritical() << "Processed" << d_func()->m_processedResourcesCount << "out of" << d_func()->m_totalResourcesToProcess;
-
-        // error!
-        emit d_func()->groupLoadError(data.groupName);
+        // schedule group load error request
+        addGroupLoadErrorRequest(data.groupName);
       }
     }
     else
     {
-      // load resource
+      // unload resource
       resource->unload();
 
       // remove resource from pool
@@ -303,10 +353,8 @@ void ResourceManagerPrivate::processBatches()
       // update statistics
       d_func()->m_processedResourcesCount++;
 
-      // emit
-      emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
-
-      egeCritical() << "Processed" << d_func()->m_processedResourcesCount << "out of" << d_func()->m_totalResourcesToProcess;
+      // schedule progress request
+      addProgressRequest(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
 
       // check if no more resources to load
       if (data.resources.empty())
@@ -325,7 +373,7 @@ void ResourceManagerPrivate::processBatches()
     if (data.resources.empty())
     {
       // remove batch
-      m_pendingList.pop_front();
+      it = m_pendingList.erase(it);
     
       // check if nothing to be processed
       if (m_pendingList.empty())
@@ -350,6 +398,9 @@ void ResourceManagerPrivate::shutDown()
 
   // request stop
   m_workThread->stop(0);
+
+  // wake up any awaiters
+  m_commandsToProcess->wakeOne();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::State ResourceManagerPrivate::state() const
@@ -366,6 +417,40 @@ void ResourceManagerPrivate::onWorkThreadFinished(const PThread& thread)
 
   // clean up
   d_func()->removeGroups();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerPrivate::addProgressRequest(u32 count, u32 total)
+{
+  EmissionRequest request;
+
+  request.type  = RT_PROGRESS;
+  request.count = count;
+  request.total = total;
+
+  MutexLocker lock(m_emitRequstsMutex);
+  m_emissionRequests.push_back(request);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerPrivate::addGroupLoadedRequest(const String& groupName)
+{
+  EmissionRequest request;
+
+  request.type  = RT_GROUP_LOADED;
+  request.groupName = groupName;
+
+  MutexLocker lock(m_emitRequstsMutex);
+  m_emissionRequests.push_back(request);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerPrivate::addGroupLoadErrorRequest(const String& groupName)
+{
+  EmissionRequest request;
+
+  request.type  = RT_GROUP_LOAD_ERROR;
+  request.groupName = groupName;
+
+  MutexLocker lock(m_emitRequstsMutex);
+  m_emissionRequests.push_back(request);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -42,11 +42,6 @@ class GraphicsPrivate
      *  @note This method needs to be called from worker thread.
      */
     void deinitializeWorkThreadRenderingContext();
-
-  private:
-
-    /*! Pointer to base object. */
-    Graphics* m_base;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

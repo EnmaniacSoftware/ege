@@ -16,7 +16,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(GraphicsPrivate)
 EGE_DEFINE_DELETE_OPERATORS(GraphicsPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-GraphicsPrivate::GraphicsPrivate(Graphics* base) : m_base(base)
+GraphicsPrivate::GraphicsPrivate(Graphics* base) : m_d(base)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ GraphicsPrivate::~GraphicsPrivate()
 EGEResult GraphicsPrivate::construct()
 {
   // create render window
-  RenderWindowOGLWin32* renderWindow = ege_new RenderWindowOGLWin32(m_base->app(), m_base->m_params);
+  RenderWindowOGLWin32* renderWindow = ege_new RenderWindowOGLWin32(d_func()->app(), d_func()->m_params);
   if (NULL == renderWindow)
   {
     // error!
@@ -35,7 +35,7 @@ EGEResult GraphicsPrivate::construct()
   }
 
   // add to render targets pool
-  m_base->registerRenderTarget(renderWindow);
+  d_func()->registerRenderTarget(renderWindow);
 
   return EGE_SUCCESS;
 }
@@ -46,11 +46,11 @@ PVertexBuffer GraphicsPrivate::createVertexBuffer(EGEVertexBuffer::UsageType usa
 
   if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
-    buffer = ege_new VertexBufferVBO(m_base->app(), usage);
+    buffer = ege_new VertexBufferVBO(d_func()->app(), usage);
   }
   else
   {
-    buffer = ege_new VertexBufferVA(m_base->app(), usage);
+    buffer = ege_new VertexBufferVA(d_func()->app(), usage);
   }
 
   return buffer;
@@ -62,11 +62,11 @@ PIndexBuffer GraphicsPrivate::createIndexBuffer(EGEIndexBuffer::UsageType usage)
 
   if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
-    buffer = ege_new IndexBufferVBO(m_base->app(), usage);
+    buffer = ege_new IndexBufferVBO(d_func()->app(), usage);
   }
   else
   {
-    buffer = ege_new IndexBufferVA(m_base->app(), usage);
+    buffer = ege_new IndexBufferVA(d_func()->app(), usage);
   }
 
   return buffer;

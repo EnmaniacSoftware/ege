@@ -24,8 +24,6 @@ EGE_DECLARE_SMART_CLASS(IResource, PResource)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManagerPrivate
 {
-  friend class ResourceManagerWorkThread;
-
   private:
 
     /*! Data struct containing information regarding resources to process. */
@@ -36,7 +34,33 @@ class ResourceManagerPrivate
       List<PResource> resources;    /*!< Resources left to be handled. */
     };
 
+    /*! Available request types. */
+    enum RequestType
+    {
+      RT_GROUP_LOADED = 0,          /*!< Group has been loaded request. */
+      RT_GROUP_LOAD_ERROR,          /*!< Group load error request. */
+      RT_PROGRESS                   /*!< Resource processing progress request. */
+    };
+
+    /*! Data struct for emission request. */
+    struct EmissionRequest
+    {
+      RequestType type;             /*!< Request type. */
+
+      String groupName;             /*!< Group name. Applies to ET_GROUP_LOADED and ET_GROUP_LOAD_ERROR. */
+      u32 count;                    /*!< Number of processed resources. Applies to ET_PROGRESS. */
+      u32 total;                    /*!< Number of total resources to process. Applies to ET_PROGRESS. */
+    };
+
+    /*! Data struct for processing progress emission request. */
+    struct ProcessingProgressRequest
+    {
+      u32 processed;                /*!< Number of processed resources. */
+      u32 total;                    /*!< Total number of resources to process. */
+    };
+
     typedef List<ProcessingBatch> ProcessingBatchList;
+    typedef List<EmissionRequest> EmissionRequestList;
 
   public:
 
@@ -50,25 +74,25 @@ class ResourceManagerPrivate
 
   public:
 
-    /* Creates object. */
+    /*! Creates object. */
     EGEResult construct();
-    /* Updates object. */
+    /*! Updates object. */
     void update(const Time& time);
-    /* Updates manager. 
-     * @note This is called from worker thread.
+    /*! Updates manager. 
+     *  @note This is called from worker thread.
      */
     void threadUpdate();
-    /* Processes commands. */
+    /*! Processes commands. */
     void processCommands();
-    /* Loads group with given name. 
-     * @param name  Group name to be loaded.
-     * @return  Returns EGE_SUCCESS if group has been scheduled for loading. EGE_ERROR_ALREADY_EXISTS if group is already loaded. Otherwise, EGE_ERROR.
-     * @note  Given group, when found, is scheduled for loading rather than loaded immediately.
+    /*! Loads group with given name. 
+     *  @param name  Group name to be loaded.
+     *  @return  Returns EGE_SUCCESS if group has been scheduled for loading. EGE_ERROR_ALREADY_EXISTS if group is already loaded. Otherwise, EGE_ERROR.
+     *  @note  Given group, when found, is scheduled for loading rather than loaded immediately.
      */
     EGEResult loadGroup(const String& name);
-    /* Unloads group with given name. */
+    /*! Unloads group with given name. */
     void unloadGroup(const String& name);
-    /* Returns resource processing policy. */
+    /*! Returns resource processing policy. */
     ResourceManager::ResourceProcessPolicy resourceProcessPolicy() const;
     /*! Shuts down. */
     void shutDown();
@@ -77,10 +101,16 @@ class ResourceManagerPrivate
 
   private:
 
-    /* Appends given batches for processing. */
+    /*! Appends given batches for processing. */
     void appendBatchesForProcessing(ProcessingBatchList& batches);
-    /* Processes current batches. */
+    /*! Processes current batches. */
     void processBatches();
+    /*! Adds progress requests for later emission. */
+    void addProgressRequest(u32 count, u32 total);
+    /*! Adds group loaded request for later emission. */
+    void addGroupLoadedRequest(const String& groupName);
+    /*! Adds group load error request for later emission. */
+    void addGroupLoadErrorRequest(const String& groupName);
 
   private slots:
 
@@ -103,6 +133,10 @@ class ResourceManagerPrivate
     PWaitCondition m_commandsToProcess;
     /*! Current state. */
     ResourceManager::State m_state;
+    /*! Emit requests pool mutex. */
+    PMutex m_emitRequstsMutex;
+    /*! Pool of emission requests to send. */
+    EmissionRequestList m_emissionRequests;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

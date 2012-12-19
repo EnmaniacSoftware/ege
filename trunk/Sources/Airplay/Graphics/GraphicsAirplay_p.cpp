@@ -16,7 +16,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(GraphicsPrivate)
 EGE_DEFINE_DELETE_OPERATORS(GraphicsPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-GraphicsPrivate::GraphicsPrivate(Graphics* base) : m_base(base)
+GraphicsPrivate::GraphicsPrivate(Graphics* base) : m_d(base)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ GraphicsPrivate::~GraphicsPrivate()
 EGEResult GraphicsPrivate::construct()
 {
   // create render window
-  RenderWindowOGLAirplay* renderWindow = ege_new RenderWindowOGLAirplay(m_base->app(), m_base->m_params);
+  RenderWindowOGLAirplay* renderWindow = ege_new RenderWindowOGLAirplay(d_func()->app(), d_func()->m_params);
   if (NULL == renderWindow)
   {
     // error!
@@ -46,12 +46,12 @@ PVertexBuffer GraphicsPrivate::createVertexBuffer(EGEVertexBuffer::UsageType usa
 
   if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
-    buffer = ege_new VertexBufferVBO(m_base->app(), usage);
+    buffer = ege_new VertexBufferVBO(d_func()->app(), usage);
 //    EGE_PRINT("GraphicsPrivate::createVertexBuffer - VBO %p", buffer.object());
   }
   else
   {
-    buffer = ege_new VertexBufferVA(m_base->app(), usage);
+    buffer = ege_new VertexBufferVA(d_func()->app(), usage);
   //  EGE_PRINT("GraphicsPrivate::createVertexBuffer - VA %p", buffer.object());
   }
 
@@ -64,12 +64,12 @@ PIndexBuffer GraphicsPrivate::createIndexBuffer(EGEIndexBuffer::UsageType usage)
 
   if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
-    buffer = ege_new IndexBufferVBO(m_base->app(), usage);
+    buffer = ege_new IndexBufferVBO(d_func()->app(), usage);
    // EGE_PRINT("GraphicsPrivate::createIndexBuffer - VBO %p", buffer.object());
   }
   else
   {
-    buffer = ege_new IndexBufferVA(m_base->app(), usage);
+    buffer = ege_new IndexBufferVA(d_func()->app(), usage);
     //EGE_PRINT("GraphicsPrivate::createIndexBuffer - VA %p", buffer.object());
   }
 

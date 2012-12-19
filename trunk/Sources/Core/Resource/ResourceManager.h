@@ -43,15 +43,18 @@ class ResourceManager : public Object, public IEventListener
 
     /*! Signal emitted when group has been loaded. 
      *  @param name Name of a group which has been loaded.
+     *  @note Signal is emitted in manager's thread. 
      */
     Signal1<const String&> groupLoadComplete;
     /*! Signal emitted when group could not be loaded. 
      *  @param name Name of a group which failed to load.
+     *  @note Signal is emitted in manager's thread. 
      */
     Signal1<const String&> groupLoadError;
     /*! Signal emitted when resource has been processed.
-     * @param processed Number of already processed resources
-     * @param total     Total number resources to process
+     *  @param processed Number of already processed resources
+     *  @param total     Total number resources to process
+     *  @note Signal is emitted in manager's thread. 
      */
     Signal2<u32, u32> processingStatusUpdated;
 
