@@ -17,22 +17,22 @@ class RenderWindow : public RenderTarget
     virtual ~RenderWindow();
 
     /*! Returns window title. */
-    inline const String title() const { return m_title; }
+    const String title() const { return m_title; }
     /*! Shows frame buffer. */
     virtual void showFrameBuffer() = 0;
-
+    
   private:
 
-    /* RenderTarget override. Returns target priority. */
+    /*! RenderTarget override. Returns target priority. */
     Priority priority() const override;
-    /* RenderTarget override. Binds render target. */
+    /*! RenderTarget override. Binds render target. */
     void bind() override;
-    /* RenderTarget override. Unbinds render target. */
+    /*! RenderTarget override. Unbinds render target. */
     void unbind() override;
 
   protected:
 
-    /* Enables/Disables fullscreen mode. */
+    /*! Enables/Disables fullscreen mode. */
     virtual EGEResult enableFullScreen(s32 width, s32 height, bool enable) = 0;
     
   protected:
@@ -42,8 +42,8 @@ class RenderWindow : public RenderTarget
     /*! Title. */
     String m_title;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 EGE_NAMESPACE_END
 
 #endif // EGE_CORE_RENDERWINDOW_H

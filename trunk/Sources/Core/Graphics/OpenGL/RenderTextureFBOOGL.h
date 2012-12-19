@@ -8,7 +8,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class RenderTextureFBOOGL : public RenderTarget
 {
   public:
@@ -18,27 +17,23 @@ class RenderTextureFBOOGL : public RenderTarget
 
   private:
 
-    /* RenderTarget override. Returns target priority. */
+    /*! RenderTarget override. Returns target priority. */
     Priority priority() const override;
-    /* RenderTarget override. Makes itself current rendering context. */
-    EGEResult makeCurrentContext() override;
-    /* RenderTarget override. Releases itself from being current rendering context. */
-    void releaseCurrentContext() override;
-    /* RenderTarget override. Binds render target. */
+    /*! RenderTarget override. Binds render target. */
     void bind() override;
-    /* RenderTarget override. Unbinds render target. */
+    /*! RenderTarget override. Unbinds render target. */
     void unbind() override;
-    /* RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
+    /*! RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
 		bool requiresTextureFlipping() const override;
 
     /*! Returns associated texture id. */
-    inline GLuint textureId() const { return m_textureId; }
+    GLuint textureId() const { return m_textureId; }
     /*! Returns FBO id. */
-    inline GLuint frameBufferObjectId() const { return m_frameBufferObjectId; }
+    GLuint frameBufferObjectId() const { return m_frameBufferObjectId; }
     /*! Returns texture target. */
-    inline GLenum textureTarget() const { return m_textureTarget; }
+    GLenum textureTarget() const { return m_textureTarget; }
     /*! Returns texture face where data should be rendered to. */
-    inline GLenum faceTarget() const { return m_faceTarget; }
+    GLenum faceTarget() const { return m_faceTarget; }
 
   private:
 
@@ -53,7 +48,6 @@ class RenderTextureFBOOGL : public RenderTarget
     /*! Default frame buffer object id. */
     GLint m_defaultFBOId;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

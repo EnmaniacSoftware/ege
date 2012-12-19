@@ -18,13 +18,11 @@ ResourceFont::~ResourceFont()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceFont::Create(Application* app, ResourceGroup* group)
 {
   return ege_new ResourceFont(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource embedding given font object. This is helper method for manual font adding. */
 PResource ResourceFont::Create(Application* app, ResourceGroup* group, const String& name, PFont font)
 {
   // create empty resource
@@ -39,17 +37,11 @@ PResource ResourceFont::Create(Application* app, ResourceGroup* group, const Str
   return resource;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
 const String& ResourceFont::name() const
 {
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
 EGEResult ResourceFont::create(const String& path, const PXmlElement& tag)
 {
   EGE_UNUSED(path);
@@ -103,15 +95,21 @@ EGEResult ResourceFont::create(const String& path, const PXmlElement& tag)
     child = child->nextChild();
   }
 
+  // check if success
+  if (EGE_SUCCESS == result)
+  {
+    // set state
+    m_state = STATE_UNLOADED;
+  }
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
 EGEResult ResourceFont::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if (!isLoaded())
+  if (STATE_LOADED != m_state)
   {
     PFont font = ege_new Font(app(), height(), m_glyphs);
     if (NULL == font)
@@ -145,7 +143,7 @@ EGEResult ResourceFont::load()
       m_font = font;
     
       // set flag
-      m_loaded = true;
+      m_state = STATE_LOADED;
     }
     else
     {
@@ -157,13 +155,13 @@ EGEResult ResourceFont::load()
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
 void ResourceFont::unload()
 {
+  // clean up
   m_font = NULL;
   
   // reset flag
-  m_loaded = false;
+  m_state = STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

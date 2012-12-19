@@ -47,7 +47,6 @@ Texture2DPrivate::~Texture2DPrivate()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates texture from given file. */
 EGEResult Texture2DPrivate::create(const String& path)
 {
   EGEResult result = EGE_SUCCESS;
@@ -70,7 +69,6 @@ EGEResult Texture2DPrivate::create(const String& path)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates texture from given buffer. */
 EGEResult Texture2DPrivate::create(const PDataBuffer& buffer)
 {
   EGEResult result = EGE_SUCCESS;
@@ -93,7 +91,6 @@ EGEResult Texture2DPrivate::create(const PDataBuffer& buffer)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates texture from given image data. */
 EGEResult Texture2DPrivate::create(const PImage& image)
 {
   egeDebug() << "Creating texture" << image->width() << image->height() << image->format();
@@ -254,7 +251,6 @@ EGEResult Texture2DPrivate::create(const PImage& image)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Maps filter to OpenGL equivalent. */
 GLint Texture2DPrivate::mapFilter(EGETexture::Filter filter) const
 {
   switch (filter)
@@ -268,7 +264,6 @@ GLint Texture2DPrivate::mapFilter(EGETexture::Filter filter) const
   return GL_NEAREST;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Maps texture addressing mode into OpenGL equivalent. */
 GLint Texture2DPrivate::mapAddressingMode(EGETexture::AddressingMode mode) const
 {
   switch (mode)
@@ -284,7 +279,6 @@ GLint Texture2DPrivate::mapAddressingMode(EGETexture::AddressingMode mode) const
   return GL_REPEAT;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates associated render target. */
 EGEResult Texture2DPrivate::createRenderTarget()
 {
   egeWarning() << "Creating render target!";

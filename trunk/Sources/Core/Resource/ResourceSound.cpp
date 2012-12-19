@@ -20,23 +20,16 @@ ResourceSound::~ResourceSound()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceSound::Create(Application* app, ResourceGroup* group)
 {
   return ege_new ResourceSound(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
 const String& ResourceSound::name() const
 {
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
 EGEResult ResourceSound::create(const String& path, const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
@@ -59,13 +52,19 @@ EGEResult ResourceSound::create(const String& path, const PXmlElement& tag)
   // compose full path
   m_path = path + "/" + m_path;
 
+  // check if success
+  if (EGE_SUCCESS == result)
+  {
+    // set state
+    m_state = STATE_UNLOADED;
+  }
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
 EGEResult ResourceSound::load()
 {
-  if ( ! isLoaded())
+  if ((STATE_LOADED != m_state))
   {
     // allocate data buffer
     m_data = ege_new DataBuffer();
@@ -94,25 +93,24 @@ EGEResult ResourceSound::load()
     }
 
     // set flag
-    m_loaded = true;
+    m_state = STATE_LOADED;
   }
 
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
 void ResourceSound::unload() 
 { 
+  // clean up
   m_data = NULL;
 
   // reset flag
-  m_loaded = false;
+  m_state = STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of sound object defined by resource. */
 PSound ResourceSound::createInstance()
 {
-  if (!isLoaded())
+  if (STATE_LOADED != m_state)
   {
     // error!
     return NULL;

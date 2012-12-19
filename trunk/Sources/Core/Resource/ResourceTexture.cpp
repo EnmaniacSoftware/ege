@@ -56,13 +56,11 @@ ResourceTexture::~ResourceTexture()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceTexture::Create(Application* app, ResourceGroup* group)
 {
   return ege_new ResourceTexture(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource embedding given texture object. This is helper method for manual texture adding. */
 PResource ResourceTexture::Create(Application* app, ResourceGroup* group, const String& name, PObject texture)
 {
   // create empty resource
@@ -77,17 +75,11 @@ PResource ResourceTexture::Create(Application* app, ResourceGroup* group, const 
   return resource;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
 const String& ResourceTexture::name() const
 {
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
 EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
@@ -115,15 +107,17 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   // compose absolute path
   m_path = path + "/" + m_path;
 
+  // set state
+  m_state = STATE_UNLOADED;
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
 EGEResult ResourceTexture::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if (!isLoaded())
+  if (STATE_LOADED != m_state)
   {
     // create according to type
     if ("2d" == type())
@@ -135,14 +129,13 @@ EGEResult ResourceTexture::load()
     if (EGE_SUCCESS == result)
     {
       // set flag
-      m_loaded = true;
+      m_state = STATE_LOADED;
     }
   }
 
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates 2D texture. */
 EGEResult ResourceTexture::create2D()
 {
   EGEResult result = EGE_SUCCESS;
@@ -169,13 +162,13 @@ EGEResult ResourceTexture::create2D()
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
 void ResourceTexture::unload() 
 { 
+  // clean up
   m_texture = NULL; 
 
   // reset flag
-  m_loaded = false;
+  m_state = STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

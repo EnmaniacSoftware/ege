@@ -8,7 +8,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class RenderWindowOGLAirplay : public RenderWindow
 {
   public:
@@ -16,28 +15,37 @@ class RenderWindowOGLAirplay : public RenderWindow
     RenderWindowOGLAirplay(Application* app, const Dictionary& params);
     virtual ~RenderWindowOGLAirplay();
 
+    /*! Initializes rendering context for worker thread. 
+     *  @note This method needs to be called from worker thread.
+     */
+    void initializeWorkThreadRenderingContext();
+    /*! Deinitializes rendering context for worker thread. 
+     *  @note This method needs to be called from worker thread.
+     */
+    void deinitializeWorkThreadRenderingContext();
+
   private:
 
-    /* Creates Airplay OpenGL window. */
+    /*! Creates Airplay OpenGL window. */
     void create(const Dictionary& params);
-    /* Destorys Airplay OpenGL window. */
+    /*! Destorys Airplay OpenGL window. */
     void destroy();
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     bool isValid() const override;
-    /* RenderWindow override. Makes rendering context calling thread's current rendering context. */
+    /*! RenderWindow override. Makes rendering context calling thread's current rendering context. */
     EGEResult makeCurrentContext() override;
-    /* RenderWindow override. Removes calling thread's current rendering context. */
+    /*! RenderWindow override. Removes calling thread's current rendering context. */
     void releaseCurrentContext() override;
-    /* RenderWindow override. Enables/Disables fullscreen mode. */
+    /*! RenderWindow override. Enables/Disables fullscreen mode. */
     EGEResult enableFullScreen(s32 width, s32 height, bool enable) override;
-    /* RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
+    /*! RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
 		bool requiresTextureFlipping() const override;
-    /* RenderWindow override. Shows frame buffer. */
+    /*! RenderWindow override. Shows frame buffer. */
     virtual void showFrameBuffer() override;
 
   private:
 
-    /* Orientation change callback. */
+    /*! Orientation change callback. */
     static int32 OrientationChangeCB(void* systemData, void* data);
 
   private:
@@ -46,10 +54,11 @@ class RenderWindowOGLAirplay : public RenderWindow
     EGLDisplay m_eglDisplay;
     /*! OpengGLES context. */
     EGLContext m_eglContext;
+    /*! OpengGLES context for worker thread. */
+    EGLContext m_eglWorkerThreadContext;
     /*! OpenGLES display surface. */
     EGLSurface m_eglSurface;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

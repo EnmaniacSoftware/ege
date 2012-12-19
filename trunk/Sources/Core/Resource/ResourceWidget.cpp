@@ -23,23 +23,16 @@ ResourceWidget::~ResourceWidget()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceWidget::Create(Application* app, ResourceGroup* group)
 {
   return ege_new ResourceWidget(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
 const String& ResourceWidget::name() const
 {
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
 EGEResult ResourceWidget::create(const String& path, const PXmlElement& tag)
 {
   EGE_UNUSED(path);
@@ -95,36 +88,38 @@ EGEResult ResourceWidget::create(const String& path, const PXmlElement& tag)
     child = child->nextChild();
   }
 
+  // check if success
+  if (EGE_SUCCESS == result)
+  {
+    // set state
+    m_state = STATE_UNLOADED;
+  }
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
 EGEResult ResourceWidget::load()
 {
-  EGEResult result = EGE_SUCCESS;
-
   // set flag
-  m_loaded = true;
+  m_state = STATE_LOADED;
 
-  return result;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
 void ResourceWidget::unload()
 {
   // reset flag
-  m_loaded = false;
+  m_state = STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of widget object defined by resource. */
 PWidget ResourceWidget::createInstance()
 {
   // create instance of widget of a correct type and with given name
   PWidget object = app()->graphics()->widgetFactory()->createWidget(m_parameters["type"], m_name);
-  if (object)
+  if (NULL != object)
   {
     // initialize with dictionary
-    if (!object->initialize(m_parameters))
+    if ( ! object->initialize(m_parameters))
     {
       // error!
       egeWarning() << "Could not initialize!";
@@ -183,7 +178,6 @@ PWidget ResourceWidget::createInstance()
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Processes child data. */
 EGEResult ResourceWidget::processChild(const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
@@ -221,7 +215,6 @@ EGEResult ResourceWidget::processChild(const PXmlElement& tag)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Processes widget frame data. */
 EGEResult ResourceWidget::processFrame(const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;

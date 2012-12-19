@@ -24,23 +24,16 @@ ResourceSpriteAnimation::~ResourceSpriteAnimation()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceSpriteAnimation::Create(Application* app, ResourceGroup* group)
 {
   return ege_new ResourceSpriteAnimation(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
 const String& ResourceSpriteAnimation::name() const
 {
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
 EGEResult ResourceSpriteAnimation::create(const String& path, const PXmlElement& tag)
 {
   EGE_UNUSED(path);
@@ -86,19 +79,25 @@ EGEResult ResourceSpriteAnimation::create(const String& path, const PXmlElement&
   // invalidate frame data
   invalidateFrameData();
 
+  // check if success
+  if (EGE_SUCCESS == result)
+  {
+    // set state
+    m_state = STATE_UNLOADED;
+  }
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
 EGEResult ResourceSpriteAnimation::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if ( ! isLoaded())
+  if (STATE_LOADED != m_state)
   {
     // get sheet resource
     m_sheet = group()->manager()->resource(RESOURCE_NAME_SPRITE_SHEET, sheetName());
-    if (m_sheet)
+    if (NULL != m_sheet)
     {
       // load sheet
       if (EGE_SUCCESS != (result = m_sheet->load()))
@@ -126,29 +125,27 @@ EGEResult ResourceSpriteAnimation::load()
     }
 
     // set flag
-    m_loaded = true;
+    m_state = STATE_LOADED;
   }
 
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
 void ResourceSpriteAnimation::unload() 
 { 
   // unload texture
   m_sheet = NULL;
 
   // reset flag
-  m_loaded = false;
+  m_state = STATE_UNLOADED;
 
  // m_sequenceResources.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of sprite object defined by resource. */
 PSpriteAnimation ResourceSpriteAnimation::createInstance()
 {
 	PSpriteAnimation object = ege_new SpriteAnimation(app(), name());
-  if (object)
+  if (NULL != object)
   {
     // set new data
     if (EGE_SUCCESS != setInstance(object))
@@ -160,13 +157,12 @@ PSpriteAnimation ResourceSpriteAnimation::createInstance()
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Set given instance of sprite object to what is defined by resource. */
 EGEResult ResourceSpriteAnimation::setInstance(const PSpriteAnimation& instance)
 {
   EGEResult result;
 
   // sanity check
-  if (NULL == instance || !isLoaded())
+  if ((NULL == instance) || (STATE_LOADED != m_state))
   {
     return EGE_ERROR;
   }
@@ -208,13 +204,11 @@ EGEResult ResourceSpriteAnimation::setInstance(const PSpriteAnimation& instance)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Invalidates frame data. */
 void ResourceSpriteAnimation::invalidateFrameData()
 {
   m_frameDataInvalid = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Calculates frame data. */
 void ResourceSpriteAnimation::calculateFrameData()
 {
   const float32 cellWidth  = 1.0f / sheet()->framesPerRow();
@@ -240,7 +234,6 @@ void ResourceSpriteAnimation::calculateFrameData()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds sequence. */
 EGEResult ResourceSpriteAnimation::addSequence(const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;

@@ -92,10 +92,16 @@ EGEResult Application::initialize(const Dictionary& params)
   // create graphics
   // NOTE: must be before ResourceManager
   m_graphics = ege_new Graphics(this, params);
-  if (NULL == m_graphics || !m_graphics->isValid())
+  if (NULL == m_graphics)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
+  }
+
+  if (EGE_SUCCESS != (result = m_graphics->construct()))
+  {
+    // error!
+    return result;
   }
 
   // create resource manager

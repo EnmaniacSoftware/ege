@@ -27,21 +27,18 @@ class ResourceData : public IResource
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Creates instance of resource. This method is a registration method for manager. */
+    /*! Creates instance of resource. This method is a registration method for manager. */
     static PResource Create(Application* app, ResourceGroup* group);
 
-    /* IResource override. Returns name of resource. */
+    /*! @see IResource::name. */
     const String& name() const override;
-    /* Initializes resource from XML. 
-    * 
-    *  \param  path  full path to resource definition file.
-    *  \param  tag   xml element with resource definition. 
-    */
+    /*! @see IResource::create. */ 
     EGEResult create(const String& path, const PXmlElement& tag) override;
-    /* IResource override. Loads resource. */
+    /*! @see IResource::load. */
     EGEResult load() override;
-    /* IResource override. Unloads resource. */
+    /*! @see IResource::unload. */
     void unload() override;
+
     /*! Gets instance of data object defined by resource. */
     PDataBuffer data() const { return m_data; }
 

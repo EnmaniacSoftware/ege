@@ -29,25 +29,21 @@ class ResourceCurve : public IResource
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Creates instance of resource. This method is a registration method for manager. */
+    /*! Creates instance of resource. This method is a registration method for manager. */
     static PResource Create(Application* app, ResourceGroup* group);
 
-    /* IResource override. Returns name of resource. */
+    /*! @see IResource::name. */
     const String& name() const override;
-    /* Initializes resource from XML. 
-    * 
-    *  \param  path  full path to resource definition file.
-    *  \param  tag   xml element with resource definition. 
-    */
+    /*! @see IResource::create. */ 
     EGEResult create(const String& path, const PXmlElement& tag) override;
-    /* IResource override. Loads resource. */
+    /*! @see IResource::load. */
     EGEResult load() override;
-    /* IResource override. Unloads resource. */
+    /*! @see IResource::unload. */
     void unload() override;
 
-    /* Creates instance of curve object defined by resource. */
+    /*! Creates instance of curve object defined by resource. */
     CubicSpline createInstance() const;
-    /* Set given instance of curve object to what is defined by resource. */
+    /*! Set given instance of curve object to what is defined by resource. */
     EGEResult setInstance(CubicSpline& instance) const;
 
   private:
@@ -65,7 +61,7 @@ class ResourceCurve : public IResource
 
     ResourceCurve(Application* app, ResourceGroup* group);
     /*! Returns curve type. */
-    inline EGESpline::Type type() const { return m_type; }
+    EGESpline::Type type() const { return m_type; }
     
   private:
 

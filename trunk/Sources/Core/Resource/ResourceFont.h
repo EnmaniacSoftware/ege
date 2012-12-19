@@ -39,33 +39,30 @@ class ResourceFont : public IResource
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Creates instance of resource. This method is a registration method for manager. */
+    /*! Creates instance of resource. This method is a registration method for manager. */
     static PResource Create(Application* app, ResourceGroup* group);
-    /* Creates instance of resource embedding given font object. This is helper method for manual font adding. */
+    /*! Creates instance of resource embedding given font object. This is helper method for manual font adding. */
     static PResource Create(Application* app, ResourceGroup* group, const String& name, PFont font);
 
-    /* IResource override. Returns name of resource. */
+    /*! @see IResource::name. */
     const String& name() const override;
-    /* Initializes resource from XML. 
-    * 
-    *  \param  path  full path to resource definition file.
-    *  \param  tag   xml element with resource definition. 
-    */
+    /*! @see IResource::create. */ 
     EGEResult create(const String& path, const PXmlElement& tag) override;
-    /* IResource override. Loads resource. */
+    /*! @see IResource::load. */
     EGEResult load() override;
-    /* IResource override. Unloads resource. */
+    /*! @see IResource::unload. */
     void unload() override;
+
     /*! Returns font. */
-    inline PFont font() const { return m_font; }
+    PFont font() const { return m_font; }
 
   private:
 
     ResourceFont(Application* app, ResourceGroup* group);
     /*! Returns material name. */
-    inline const String& materialName() const { return m_materialName; } 
+    const String& materialName() const { return m_materialName; } 
     /*! Returns height of the font (in pixels) */
-    inline s32 height() const { return m_height; }
+    s32 height() const { return m_height; }
 
   private:
 
@@ -77,7 +74,6 @@ class ResourceFont : public IResource
     s32 m_height;
     /*! Map of glyphs sorted by UTF-16 value. */
     Map<Char, GlyphData> m_glyphs;
-
     /*! Font object. NULL if not created yet. */
     PFont m_font;
 };

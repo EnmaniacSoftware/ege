@@ -13,7 +13,6 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Texture2D)
 EGE_DEFINE_DELETE_OPERATORS(Texture2D)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates render texture. */
 PTexture2D Texture2D::CreateRenderTexture(Application* app, const String& name, s32 width, s32 height, PixelFormat format)
 {
   // create empty texture of given size and format
@@ -80,7 +79,6 @@ Texture2D::~Texture2D()
   m_target = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool Texture2D::isValid() const
 {
   return NULL != m_p;
@@ -96,7 +94,6 @@ EGEResult Texture2D::create(const String& path)
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates texture from given buffer. */
 EGEResult Texture2D::create(const PDataBuffer& buffer)
 {
   if (isValid())
@@ -107,25 +104,31 @@ EGEResult Texture2D::create(const PDataBuffer& buffer)
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets minifying function filter. */
+EGEResult Texture2D::create(const PImage& image)
+{
+  if (isValid())
+  {
+    return p_func()->create(image);
+  }
+
+  return EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Texture2D::setMinFilter(EGETexture::Filter filter)
 {
   m_minFilter = filter;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets magnification function filter. */
 void Texture2D::setMagFilter(EGETexture::Filter filter)
 {
   m_magFilter = filter;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets wrap parameter for S coordinate. */
 void Texture2D::setTextureAddressingModeS(EGETexture::AddressingMode mode)
 {
   m_addressingModeS = mode;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets wrap parameter for T coordinate. */
 void Texture2D::setTextureAddressingModeT(EGETexture::AddressingMode mode)
 {
   m_addressingModeT = mode;

@@ -18,23 +18,16 @@ ResourceData::~ResourceData()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceData::Create(Application* app, ResourceGroup* group)
 {
   return ege_new ResourceData(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
 const String& ResourceData::name() const
 {
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
 EGEResult ResourceData::create(const String& path, const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
@@ -56,15 +49,17 @@ EGEResult ResourceData::create(const String& path, const PXmlElement& tag)
   // compose full path
   m_path = path + "/" + m_path;
 
+  // set state
+  m_state = STATE_UNLOADED;
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
 EGEResult ResourceData::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if (!isLoaded())
+  if (STATE_LOADED != m_state)
   {
     PDataBuffer buffer = ege_new DataBuffer();
     if (NULL == buffer)
@@ -108,19 +103,19 @@ EGEResult ResourceData::load()
     m_data = buffer;
 
     // set flag
-    m_loaded = true;
+    m_state = STATE_LOADED;
   }
 
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
 void ResourceData::unload()
 {
+  // clean up
   m_data = NULL;
 
   // reset flag
-  m_loaded = false;
+  m_state = STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

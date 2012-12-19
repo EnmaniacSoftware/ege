@@ -22,26 +22,37 @@ class IResource : public Object
 {
   public:
 
+    /*! Available states. */
+    enum State
+    {
+      STATE_INVALID = 0,    /*!< Resource is not initialized. */
+      STATE_UNLOADED,       /*!< Resource is initialized but not loaded yet. */
+      STATE_LOADING,        /*!< Resource is being loaded. */
+      STATE_LOADED          /*!< Resource is loaded and ready to use. */
+    };
+
+  public:
+
     IResource(Application* app, ResourceGroup* group, const String& typeName, egeObjectDeleteFunc deleteFunc = NULL);
     virtual ~IResource();
 
-    /* Initializes resource from XML. 
-     * @param  path  full path to resource definition file.
-     * @param  tag   xml element with resource definition. 
+    /*! Initializes resource from XML. 
+     *  @param  path  full path to resource definition file.
+     *  @param  tag   xml element with resource definition. 
      */
     virtual EGEResult create(const String& path, const PXmlElement& tag) = 0;
     /*! Loads resource. */
     virtual EGEResult load() = 0;
-    /* Unloads resource. */
+    /*! Unloads resource. */
     virtual void unload() = 0;
-    /* Returns name of resource. */
+    /*! Returns name of resource. */
     virtual const String& name() const = 0;
 
-    /* Returns TRUE if resource is already loaded. */
-    bool isLoaded() const;
-    /* Returns resource type name. */
+    /*! Returns current state. */
+    State state() const;
+    /*! Returns resource type name. */
     const String& typeName() const;
-    /* Returns TRUE if resource is manual. */
+    /*! Returns TRUE if resource is manual. */
     bool isManual() const;
 
   protected:
@@ -55,10 +66,10 @@ class IResource : public Object
 
     /*! Manual flag. Manual resources wont be automatically handled by framework (ie. loaded/unloaded). */
     bool m_manual;
-    /*! Load flag. */ 
-    bool m_loaded;
     /*! Path to resource. Can be empty if not required. */
     String m_path;
+    /*! Current state. */
+    State m_state;
 
   private:
 

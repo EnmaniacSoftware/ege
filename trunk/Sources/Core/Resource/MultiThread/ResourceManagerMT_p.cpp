@@ -155,12 +155,21 @@ void ResourceManagerPrivate::unloadGroup(const String& name)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerPrivate::threadUpdate()
 {
-  // check if nothing to process
-  while (m_scheduledList.empty() && m_pendingList.empty())
+  // check if nothing left to process
+  while (m_pendingList.empty())
   {
-    // wait for data
-    m_mutex->lock();
-    m_commandsToProcess->wait(m_mutex);
+    // check if no more data to process
+    if (m_scheduledList.empty())
+    {
+      // wait for data
+      m_mutex->lock();
+      m_commandsToProcess->wait(m_mutex);
+    }
+    else
+    {
+      // just lock and retrieve data
+      m_mutex->lock();
+    }
 
     // copy scheduled data
     ProcessingBatchList newScheduledData(m_scheduledList);
@@ -226,7 +235,106 @@ void ResourceManagerPrivate::processBatches()
   // add new data to processing list
   for (ProcessingBatchList::iterator it = m_pendingList.begin(); it != m_pendingList.end(); ++it)
   {
-    ProcessingBatch& batch = *it;
+    ProcessingBatch& data = *it;
+
+    PResource resource = data.resources.front();
+
+    if (data.load)
+    {
+      // load resource
+      EGEResult result = resource->load();
+      if (EGE_SUCCESS == result)
+      {
+        // remove resource from pool
+        data.resources.pop_front();
+
+        // update statistics
+        d_func()->m_processedResourcesCount++;
+
+        // emit
+        emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
+
+        egeCritical() << "Processed" << d_func()->m_processedResourcesCount << "out of" << d_func()->m_totalResourcesToProcess;
+
+        // check if no more resources to load
+        if (data.resources.empty())
+        {
+          // TAGE - hmm, better solution needed ? as we process all resources individually here
+          // call ResourceGroup::load so it marks itself as loaded
+          PResourceGroup group = d_func()->group(data.groupName);
+          if (NULL != group)
+          {
+            group->load();
+          }
+
+          // emit completion
+          emit d_func()->groupLoadComplete(data.groupName);
+        }
+      }
+      else if (EGE_WAIT == result)
+      {
+        // still processing, do nothing
+      }
+      else
+      {
+        // remove resource from pool
+        data.resources.pop_front();
+
+        // update statistics
+        d_func()->m_processedResourcesCount++;
+
+        // emit
+        emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
+
+        egeCritical() << "Processed" << d_func()->m_processedResourcesCount << "out of" << d_func()->m_totalResourcesToProcess;
+
+        // error!
+        emit d_func()->groupLoadError(data.groupName);
+      }
+    }
+    else
+    {
+      // load resource
+      resource->unload();
+
+      // remove resource from pool
+      data.resources.pop_front();
+
+      // update statistics
+      d_func()->m_processedResourcesCount++;
+
+      // emit
+      emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
+
+      egeCritical() << "Processed" << d_func()->m_processedResourcesCount << "out of" << d_func()->m_totalResourcesToProcess;
+
+      // check if no more resources to load
+      if (data.resources.empty())
+      {
+        // TAGE - hmm, better solution needed ? as we process all resources individually here
+        // call ResourceGroup::unload so it marks itself as unloaded
+        PResourceGroup group = d_func()->group(data.groupName);
+        if (NULL != group)
+        {
+          group->unload();
+        }
+      }
+    }
+
+    // check if no more resources to load in a group
+    if (data.resources.empty())
+    {
+      // remove batch
+      m_pendingList.pop_front();
+    
+      // check if nothing to be processed
+      if (m_pendingList.empty())
+      {
+        // clean up statistics
+        d_func()->m_totalResourcesToProcess = 0;
+        d_func()->m_processedResourcesCount = 0;
+      }
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

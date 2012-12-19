@@ -20,23 +20,16 @@ ResourceTextureImage::~ResourceTextureImage()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceTextureImage::Create(Application* app, ResourceGroup* group)
 {
   return ege_new ResourceTextureImage(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
 const String& ResourceTextureImage::name() const
 {
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
 EGEResult ResourceTextureImage::create(const String& path, const PXmlElement& tag)
 {
   EGE_UNUSED(path);
@@ -51,11 +44,6 @@ EGEResult ResourceTextureImage::create(const String& path, const PXmlElement& ta
   m_rect          = tag->attribute("rect", "0 0 0 0").toRectf(&error);
   m_rotationAngle = tag->attribute("rotation", "0").toAngle(&error);
 
-  if (m_name == "stats-icon-scroll-arrow-right")
-  {
-    int a = 1;
-  }
-
   // check if obligatory data is wrong
   if (error || m_name.empty() || m_textureName.empty())
   {
@@ -64,19 +52,21 @@ EGEResult ResourceTextureImage::create(const String& path, const PXmlElement& ta
     return EGE_ERROR_BAD_PARAM;
   }
 
+  // set state
+  m_state = STATE_UNLOADED;
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
 EGEResult ResourceTextureImage::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if (!isLoaded())
+  if (STATE_LOADED != m_state)
   {
     // load texture
     PResourceTexture textureResource = group()->manager()->resource(RESOURCE_NAME_TEXTURE, m_textureName);
-    if (textureResource)
+    if (NULL != textureResource)
     {
       // load texture
       if (EGE_SUCCESS != (result = textureResource->load()))
@@ -89,7 +79,7 @@ EGEResult ResourceTextureImage::load()
       m_texture = textureResource->texture();
 
       // set flag
-      m_loaded = true;
+      m_state = STATE_LOADED;
     }
     else
     {
@@ -100,18 +90,15 @@ EGEResult ResourceTextureImage::load()
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
 void ResourceTextureImage::unload() 
 { 
+  // clean up
   m_texture = NULL; 
 
   // reset flag
-  m_loaded = false;
+  m_state = STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns instance of texture image object defined by resource. 
- * @note  Loads resource if it is not loaded yet.
- */
 PTextureImage ResourceTextureImage::createInstance()
 {
 	PTextureImage object = ege_new TextureImage(app());
@@ -127,9 +114,6 @@ PTextureImage ResourceTextureImage::createInstance()
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Set given instance of texture image object to what is defined by resource. 
- * @note  Loads resource if it is not loaded yet.
- */
 EGEResult ResourceTextureImage::setInstance(const PTextureImage& instance)
 {
   // sanity check
@@ -140,7 +124,8 @@ EGEResult ResourceTextureImage::setInstance(const PTextureImage& instance)
   }
 
   // check if not loaded yet
-  if (!isLoaded())
+  // TAGE - setInstance should fail if not loaded, check it out and correct
+  if (STATE_LOADED != m_state)
   {
     // load
     EGEResult result;

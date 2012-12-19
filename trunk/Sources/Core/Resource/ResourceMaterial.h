@@ -71,50 +71,46 @@ class ResourceMaterial : public IResource
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Creates instance of resource. This method is a registration method for manager. */
+    /*! Creates instance of resource. This method is a registration method for manager. */
     static PResource Create(Application* app, ResourceGroup* group);
 
-    /* IResource override. Returns name of resource. */
+    /*! @see IResource::name. */
     const String& name() const override;
-    /* Initializes resource from XML. 
-    * 
-    *  \param  path  full path to resource definition file.
-    *  \param  tag   xml element with resource definition. 
-    */
+    /*! @see IResource::create. */ 
     EGEResult create(const String& path, const PXmlElement& tag) override;
-    /* IResource override. Loads resource. */
+    /*! @see IResource::load. */
     EGEResult load() override;
-    /* IResource override. Unloads resource. */
+    /*! @see IResource::unload. */
     void unload() override;
 
-    /* Creates instance of material object defined by resource. */
+    /*! Creates instance of material object defined by resource. */
     PMaterial createInstance() const;
-    /* Set given instance of material object to what is defined by resource. */
+    /*! Set given instance of material object to what is defined by resource. */
     EGEResult setInstance(const PMaterial& instance) const;
 
-    /* Returns source pixel factor function for a given pass. */
+    /*! Returns source pixel factor function for a given pass. */
     EGEGraphics::BlendFactor srcBlendFactor(u32 pass) const;
-    /* Returns destination pixel factor function for a given pass. */
+    /*! Returns destination pixel factor function for a given pass. */
     EGEGraphics::BlendFactor dstBlendFactor(u32 pass) const;
-    /* Returns ambient color for a given pass. */
+    /*! Returns ambient color for a given pass. */
     const Color& ambientColor(u32 pass) const;
-    /* Returns diffuse color for a given pass. */
+    /*! Returns diffuse color for a given pass. */
     const Color& diffuseColor(u32 pass) const;
-    /* Returns specular color for a given pass. */
+    /*! Returns specular color for a given pass. */
     const Color& specularColor(u32 pass) const;
-    /* Returns emission color for a given pass. */
+    /*! Returns emission color for a given pass. */
     const Color& emissionColor(u32 pass) const;
-    /* Returns shinness value for a given pass. */
+    /*! Returns shinness value for a given pass. */
     float32 shininess(u32 pass) const;
     /*! Returns number of passes. */
-    inline const u32 passCount() const { return static_cast<u32>(m_passes.size()); }
+    const u32 passCount() const { return static_cast<u32>(m_passes.size()); }
 
   private:
 
     ResourceMaterial(Application* app, ResourceGroup* group);
-    /* Adds texture dependancy to given pass. */
+    /*! Adds texture dependancy to given pass. */
     EGEResult addTexture(const PXmlElement& tag, PassData& pass);
-    /* Adds pass. */
+    /*! Adds pass. */
     EGEResult addPass(const PXmlElement& tag);
 
   private:

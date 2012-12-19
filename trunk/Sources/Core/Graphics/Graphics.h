@@ -32,41 +32,51 @@ class Graphics : public Object
 
   signals:
 
-    /*! Signal emitted just before target is rendered. */
+    /*! Signal emitted just before target is rendered. 
+     *  @param renderTarget Render target for which the rendering will be done.
+     */
     Signal1<PRenderTarget> preRender;
-    /*! Signal emitted just after target has been rendered. */
+    /*! Signal emitted just after target has been rendered. 
+     *  @param renderTarget Render target for which the rendering was done.
+     */
     Signal1<PRenderTarget> postRender;
 
   public:
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
-    /* Renders all registered targets. */
+    /*! Creates object. */
+    EGEResult construct();
+    /*! Renders all registered targets. */
     void render();
-    /* Sets current rendering context. */
-    EGEResult setCurrentRenderingContext(PRenderTarget target);
     /*! Returns renderer. */
-    inline PRenderer renderer() const { return m_renderer; }
-    /* Registers render target for use. */
+    PRenderer renderer() const { return m_renderer; }
+    /*! Registers render target for use. */
     void registerRenderTarget(PRenderTarget target);
-    /* Returns render target with the given name from registered pool. */
+    /*! Returns render target with the given name from registered pool. */
     PRenderTarget renderTarget(const String& name) const;
-    /* Removes render target with the given name from registered pool. */
+    /*! Removes render target with the given name from registered pool. */
     void removeRenderTarget(const String& name);
     /*! Returns pointer to particle factory. */
-    inline ParticleFactory* particleFactory() const { return m_particleFactory; }
+    ParticleFactory* particleFactory() const { return m_particleFactory; }
     /*! Returns pointer to widget factory. */
-    inline WidgetFactory* widgetFactory() const { return m_widgetFactory; }
-    /* Creates vertex buffer obejct. */
+    WidgetFactory* widgetFactory() const { return m_widgetFactory; }
+    /*! Creates vertex buffer obejct. */
     PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const;
-    /* Creates index buffer obejct. */
+    /*! Creates index buffer obejct. */
     PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const;
-    /* Enables/disables rendering. */
+    /*! Enables/disables rendering. */
     void setRenderingEnabled(bool set);
+    /*! Initializes rendering context for worker thread. 
+     *  @note This method needs to be called from worker thread.
+     */
+    void initializeWorkThreadRenderingContext();
+    /*! Deinitializes rendering context for worker thread. 
+     *  @note This method needs to be called from worker thread.
+     */
+    void deinitializeWorkThreadRenderingContext();
 
   private:
 
-    /* Unregisteres all render targets. */
+    /*! Unregisteres all render targets. */
     void unregisterAllRenderTargets();
 
   private:
@@ -79,8 +89,6 @@ class Graphics : public Object
 
     /*! Renderer. */
     PRenderer m_renderer;
-    /*! Current rendering context. NULL if none is set. */
-    PRenderTarget m_currentRenderingContext;
     /*! Render targets sorted by priority. */
     RenderTargetMap m_renderTargets; 
     /*! Particles factory. */
@@ -89,6 +97,8 @@ class Graphics : public Object
     WidgetFactory* m_widgetFactory;
     /*! Rendering enabled flag. */
     bool m_renderingEnabled;
+    /*! Creation parameters. */
+    Dictionary m_params;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

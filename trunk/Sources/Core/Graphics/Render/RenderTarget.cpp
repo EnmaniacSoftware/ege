@@ -36,13 +36,11 @@ RenderTarget::~RenderTarget()
   removeAllViewports();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Returns TRUE if object is valid. */
 bool RenderTarget::isValid() const
 {
   return !m_name.empty() && (0 < m_width) && (0 < m_height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds new viewport for target associated with given camera. */
 PViewport RenderTarget::addViewport(const String& name, PCamera camera)
 {
   // check if such viewport is there already
@@ -62,7 +60,6 @@ PViewport RenderTarget::addViewport(const String& name, PCamera camera)
   return viewport;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes viewport with the given name from target. */
 void RenderTarget::removeViewport(const String& name)
 {
   for (DynamicArray<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
@@ -79,7 +76,6 @@ void RenderTarget::removeViewport(const String& name)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns viewport with the given name associated with target. */
 PViewport RenderTarget::viewport(const String& name) const
 {
   for (DynamicArray<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
@@ -95,7 +91,6 @@ PViewport RenderTarget::viewport(const String& name) const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes all viewport associated with target. */
 void RenderTarget::removeAllViewports()
 {
   for (DynamicArray<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end();)
@@ -106,7 +101,6 @@ void RenderTarget::removeAllViewports()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Performs rendering for target. */
 void RenderTarget::render()
 {
   // reset stats
@@ -127,7 +121,6 @@ void RenderTarget::render()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Enables/disables render target. */
 void RenderTarget::setEnable(bool enable)
 {
   m_enabled = enable;

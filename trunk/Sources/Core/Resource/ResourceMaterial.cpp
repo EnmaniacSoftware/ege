@@ -112,23 +112,16 @@ ResourceMaterial::~ResourceMaterial()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceMaterial::Create(Application* app, ResourceGroup* group)
 {
   return ege_new ResourceMaterial(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
 const String& ResourceMaterial::name() const
 {
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
 EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
 {
   EGE_UNUSED(path);
@@ -238,20 +231,21 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
     }
   }
 
+  // check if success
+  if (EGE_SUCCESS == result)
+  {
+    // set state
+    m_state = STATE_UNLOADED;
+  }
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
 EGEResult ResourceMaterial::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if (name() == "main-menu-screen")
-  {
-    int a = 1;
-  }
-
-  if (!isLoaded())
+  if (STATE_LOADED != m_state)
   {
     // load textures (for all passes)
     for (PassDataArray::iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
@@ -351,7 +345,7 @@ EGEResult ResourceMaterial::load()
     }
 
     // set loaded
-    m_loaded = true;
+    m_state = STATE_LOADED;
   }
 
   return result;
@@ -360,12 +354,7 @@ EGEResult ResourceMaterial::load()
 /*! IResource override. Unloads resource. */
 void ResourceMaterial::unload()
 {
-  //if ("cherry-blossom" == m_name)
-  //{
-  //  int a =1;
-  //}
-
-  if (isLoaded())
+  if (STATE_LOADED == m_state)
   {
     for (PassDataArray::iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
     {
@@ -399,11 +388,10 @@ void ResourceMaterial::unload()
     }
 
     // reset flag
-    m_loaded = false;
+    m_state = STATE_UNLOADED;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds texture dependancy. */
 EGEResult ResourceMaterial::addTexture(const PXmlElement& tag, PassData& pass)
 {
   EGEResult result = EGE_SUCCESS;
@@ -433,7 +421,6 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag, PassData& pass)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds pass. */
 EGEResult ResourceMaterial::addPass(const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
@@ -485,7 +472,6 @@ EGEResult ResourceMaterial::addPass(const PXmlElement& tag)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of material object defined by resource. */
 PMaterial ResourceMaterial::createInstance() const
 {
 	PMaterial object = ege_new Material(app());
@@ -501,12 +487,12 @@ PMaterial ResourceMaterial::createInstance() const
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Set given instance of material object to what is defined by resource. */
 EGEResult ResourceMaterial::setInstance(const PMaterial& instance) const
 {
   // sanity check
-  if (NULL == instance || !isLoaded())
+  if ((NULL == instance) || (STATE_LOADED != m_state))
   {
+    // error!
     return EGE_ERROR;
   }
 
@@ -564,43 +550,36 @@ EGEResult ResourceMaterial::setInstance(const PMaterial& instance) const
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns source pixel factor function for a given pass. */
 EGEGraphics::BlendFactor ResourceMaterial::srcBlendFactor(u32 pass) const 
 { 
   return (pass < passCount()) ? m_passes[pass].m_srcBlend : EGEGraphics::BF_ONE; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns destination pixel factor function for a given pass. */
 EGEGraphics::BlendFactor ResourceMaterial::dstBlendFactor(u32 pass) const 
 { 
   return (pass < passCount()) ? m_passes[pass].m_dstBlend : EGEGraphics::BF_ZERO; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns ambient color for a given pass. */
 const Color& ResourceMaterial::ambientColor(u32 pass) const
 { 
   return (pass < passCount()) ? m_passes[pass].m_ambientColor : Color::WHITE; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns diffuse color for a given pass. */
 const Color& ResourceMaterial::diffuseColor(u32 pass) const 
 { 
   return (pass < passCount()) ? m_passes[pass].m_diffuseColor : Color::WHITE; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns specular color. */
 const Color& ResourceMaterial::specularColor(u32 pass) const 
 {
   return (pass < passCount()) ? m_passes[pass].m_specularColor : Color::BLACK; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns emission color for a given pass. */
 const Color& ResourceMaterial::emissionColor(u32 pass) const
 { 
   return (pass < passCount()) ? m_passes[pass].m_emissionColor : Color::BLACK; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns shinness value for a given pass. */
 float32 ResourceMaterial::shininess(u32 pass) const 
 { 
   return (pass < passCount()) ? m_passes[pass].m_shininess : 0.0f; 

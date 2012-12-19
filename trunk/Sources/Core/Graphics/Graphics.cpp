@@ -22,36 +22,17 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Graphics)
 EGE_DEFINE_DELETE_OPERATORS(Graphics)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Graphics::Graphics(Application* app, const Dictionary& params) : Object(app), 
+Graphics::Graphics(Application* app, const Dictionary& params) : Object(app),
+                                                                 m_p(NULL),
                                                                  m_particleFactory(NULL),
                                                                  m_widgetFactory(NULL),
                                                                  m_renderingEnabled(true)
 {
-  m_p = ege_new GraphicsPrivate(this, params);
-  if (m_p)
-  {
-    // find primary render surface
-    PRenderWindow window = renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
-
-    // make primary render target currently selected
-    setCurrentRenderingContext(window);
-
-    // create renderer
-    m_renderer = ege_new Renderer(app);
-
-    // create particle factory
-    m_particleFactory = ege_new ParticleFactory(app);
-
-    // create widget factory
-    m_widgetFactory = ege_new WidgetFactory(app);
-  }
+  m_params = params;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Graphics::~Graphics()
 {
-  // release any rendering context
-  setCurrentRenderingContext(NULL);
-
   unregisterAllRenderTargets();
 
   m_renderer = NULL;
@@ -61,12 +42,58 @@ Graphics::~Graphics()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Renders all registered targets. */
-void Graphics::render()
+EGEResult Graphics::construct()
 {
-  if (!m_renderingEnabled)
+  EGEResult result;
+
+  // create private implementation
+  m_p = ege_new GraphicsPrivate(this);
+  if (NULL == m_p)
   {
     // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // construct private implementation
+  if (EGE_SUCCESS != (result = m_p->construct()))
+  {
+    // error!
+    return result;
+  }
+
+  // create renderer
+  m_renderer = ege_new Renderer(app());
+  if (NULL == m_renderer)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // create particle factory
+  m_particleFactory = ege_new ParticleFactory(app());
+  if (NULL == m_particleFactory)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // create widget factory
+  m_widgetFactory = ege_new WidgetFactory(app());
+  if (NULL == m_widgetFactory)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Graphics::render()
+{
+  // check if rendering is disabled
+  if ( ! m_renderingEnabled)
+  {
+    // do not render
     return;
   }
 
@@ -95,43 +122,11 @@ void Graphics::render()
   window->showFrameBuffer();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets current rendering context. */
-EGEResult Graphics::setCurrentRenderingContext(PRenderTarget target)
-{
-  EGEResult result = EGE_SUCCESS;
-
-  // check if there is any rendering context in use atm
-  if (m_currentRenderingContext)
-  {
-    // release it
-    m_currentRenderingContext->releaseCurrentContext();
-  }
-
-  // set new rendering context
-  m_currentRenderingContext = target;
-
-  // make it current if valid
-  if (m_currentRenderingContext)
-  {
-    result = m_currentRenderingContext->makeCurrentContext();
-  }
-
-  return result;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool Graphics::isValid() const
-{
-  return (NULL != m_p) && (NULL != m_renderer) && (NULL != m_particleFactory);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Registers render target for use. */
 void Graphics::registerRenderTarget(PRenderTarget target)
 {
   m_renderTargets.insert(target->priority(), target);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes render target with the given name from registered pool. */
 void Graphics::removeRenderTarget(const String& name)
 {
   // go thru all elements
@@ -150,7 +145,6 @@ void Graphics::removeRenderTarget(const String& name)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns render target with the given name from registered pool. */
 PRenderTarget Graphics::renderTarget(const String& name) const
 {
   // go thru all elements
@@ -166,7 +160,6 @@ PRenderTarget Graphics::renderTarget(const String& name) const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unregisteres all render targets. */
 void Graphics::unregisterAllRenderTargets()
 {
   // go thru all elements
@@ -180,32 +173,29 @@ void Graphics::unregisterAllRenderTargets()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates vertex buffer obejct. */
 PVertexBuffer Graphics::createVertexBuffer(EGEVertexBuffer::UsageType usage) const
 {
-  if (isValid())
-  {
-    return p_func()->createVertexBuffer(usage);
-  }
-
-  return NULL;
+  return p_func()->createVertexBuffer(usage);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates index buffer obejct. */
 PIndexBuffer Graphics::createIndexBuffer(EGEIndexBuffer::UsageType usage) const
 {
-  if (isValid())
-  {
-    return p_func()->createIndexBuffer(usage);
-  }
-
-  return NULL;
+  return p_func()->createIndexBuffer(usage);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Enables/disables rendering. */
 void Graphics::setRenderingEnabled(bool set)
 {
   m_renderingEnabled = set;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Graphics::initializeWorkThreadRenderingContext()
+{
+  p_func()->initializeWorkThreadRenderingContext();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Graphics::deinitializeWorkThreadRenderingContext()
+{
+  p_func()->deinitializeWorkThreadRenderingContext();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

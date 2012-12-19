@@ -22,23 +22,16 @@ ResourceParticleEmitter::~ResourceParticleEmitter()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceParticleEmitter::Create(Application* app, ResourceGroup* group)
 {
   return ege_new ResourceParticleEmitter(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
 const String& ResourceParticleEmitter::name() const
 {
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
 EGEResult ResourceParticleEmitter::create(const String& path, const PXmlElement& tag)
 {
   EGE_UNUSED(path);
@@ -89,15 +82,21 @@ EGEResult ResourceParticleEmitter::create(const String& path, const PXmlElement&
     child = child->nextChild();
   }
 
+  // check if success
+  if (EGE_SUCCESS == result)
+  {
+    // set state
+    m_state = STATE_UNLOADED;
+  }
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
 EGEResult ResourceParticleEmitter::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if (!isLoaded())
+  if (STATE_LOADED != m_state)
   {
     // get material resource
     m_materialResource = group()->manager()->resource(RESOURCE_NAME_MATERIAL, m_parameters["material"]);
@@ -140,22 +139,21 @@ EGEResult ResourceParticleEmitter::load()
     }
 
     // set flag
-    m_loaded = true;
+    m_state = STATE_LOADED;
   }
 
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
 void ResourceParticleEmitter::unload() 
 { 
+  // clean up
   m_materialResource = NULL;
 
   // reset flag
-  m_loaded = false;
+  m_state = STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of particle emitter object defined by resource. */
 PParticleEmitter ResourceParticleEmitter::createInstance()
 {
   // create instance of particle emitter of a correct type and with given name
@@ -191,7 +189,6 @@ PParticleEmitter ResourceParticleEmitter::createInstance()
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds affector. */
 EGEResult ResourceParticleEmitter::addAffector(const PXmlElement& tag)
 {
   // get obligatory data

@@ -4,6 +4,7 @@
 #include <EGEInput.h>
 #include <EGEMath.h>
 #include <EGEDevice.h>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -22,7 +23,6 @@ RenderWindowOGLWin32::~RenderWindowOGLWin32()
   destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates Windows OS OpenGL window. */
 void RenderWindowOGLWin32::create(const Dictionary& params)
 {
   WNDCLASS sWndclass = { 0 };
@@ -153,6 +153,14 @@ void RenderWindowOGLWin32::create(const Dictionary& params)
     return;
   }
 
+  // assign rendering context to current thread
+  if (FALSE == wglMakeCurrent(m_hDC, m_hRC))
+  {
+    // error!
+    destroy();
+    return;
+  }
+
   // set pointer to this control in extra wnd data
   SetWindowLongPtr(m_hWnd, 0, (LONG) this);
 
@@ -164,7 +172,6 @@ void RenderWindowOGLWin32::create(const Dictionary& params)
 	UpdateWindow(m_hWnd);					
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Destorys Windows OS OpenGL window. */
 void RenderWindowOGLWin32::destroy()
 {
   // check if main window is created
@@ -176,6 +183,9 @@ void RenderWindowOGLWin32::destroy()
       // check if there is any RC 
       if (NULL != m_hRC)
       {
+        // remove rendering context from current thread
+        wglMakeCurrent(NULL, NULL);
+
         // disconnect it from window
         wglDeleteContext(m_hRC);
         m_hRC = NULL;
@@ -200,7 +210,6 @@ void RenderWindowOGLWin32::destroy()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Window procedure. */
 LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
   RenderWindowOGLWin32* me = (RenderWindowOGLWin32*) GetWindowLongPtr(hWnd, 0);
@@ -308,7 +317,6 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
   return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Selects best pixel format for given parameters. */
 EGEResult RenderWindowOGLWin32::setupPixelFormat(const Dictionary& params)
 {
   PIXELFORMATDESCRIPTOR sPFD; 
@@ -393,19 +401,6 @@ EGEResult RenderWindowOGLWin32::setupPixelFormat(const Dictionary& params)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderWindow override. Makes rendering context calling thread's current rendering context. */
-EGEResult RenderWindowOGLWin32::makeCurrentContext()
-{
-  return (FALSE == wglMakeCurrent(m_hDC, m_hRC)) ? EGE_ERROR : EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderWindow override. Removes calling thread's current rendering context. */
-void RenderWindowOGLWin32::releaseCurrentContext()
-{
-  wglMakeCurrent(NULL, NULL);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderWindow override. Enables/Disables fullscreen mode. */
 EGEResult RenderWindowOGLWin32::enableFullScreen(s32 width, s32 height, bool enable)
 {
 	DEVMODE sDMSettings;
@@ -440,13 +435,11 @@ EGEResult RenderWindowOGLWin32::enableFullScreen(s32 width, s32 height, bool ena
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderWindow override. Shows frame buffer. */
 void RenderWindowOGLWin32::showFrameBuffer()
 {
   SwapBuffers(m_hDC);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Returns TRUE if object is valid. */
 bool RenderWindowOGLWin32::isValid() const
 {
   if (!RenderWindow::isValid())
@@ -458,10 +451,23 @@ bool RenderWindowOGLWin32::isValid() const
   return (NULL != m_hWnd) && (NULL != m_hDC) && (NULL != m_hRC);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
 bool RenderWindowOGLWin32::requiresTextureFlipping() const
 {
   return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderWindowOGLWin32::initializeWorkThreadRenderingContext()
+{
+  // assign rendering context to current thread
+  if (FALSE == wglMakeCurrent(m_hDC, m_hRCWorkThread))
+  {
+    egeWarning() << "Could not initialize worker thread rendering context";
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderWindowOGLWin32::deinitializeWorkThreadRenderingContext()
+{
+  wglMakeCurrent(NULL, NULL);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

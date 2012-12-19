@@ -162,9 +162,6 @@ void RendererPrivate::setRenderTarget(const PRenderTarget& renderTarget)
 
   d_func()->m_renderTarget = renderTarget;
 
-  // switch context
-  EGE_ASSERT(EGE_SUCCESS == renderTarget->makeCurrentContext());
-
   // bind new target
   d_func()->m_renderTarget->bind();
 }

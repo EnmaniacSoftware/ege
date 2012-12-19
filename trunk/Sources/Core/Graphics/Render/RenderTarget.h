@@ -23,6 +23,8 @@ class RenderTarget : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  public:
+
     /*! Available priorities. */
     enum Priority
     {
@@ -30,31 +32,29 @@ class RenderTarget : public Object
       PRIORITY_RENDER_WINDOW
     };
 
-    /* Returns TRUE if object is valid. */
+  public:
+
+    /*! Returns TRUE if object is valid. */
     virtual bool isValid() const;
 
     /*! Returns target priority. */
     virtual Priority priority() const = 0;
-    /*! Makes itself current rendering context. */
-    virtual EGEResult makeCurrentContext() = 0;
-    /*! Releases itself from being current rendering context. */
-    virtual void releaseCurrentContext() = 0;
-    /* Binds render target. */
+    /*! Binds render target. */
     virtual void bind() = 0;
-    /* Unbinds render target. */
+    /*! Unbinds render target. */
     virtual void unbind() = 0;
-    /* Returns TRUE if texture flipping is required for this render target. */
+    /*! Returns TRUE if texture flipping is required for this render target. */
 		virtual bool requiresTextureFlipping() const = 0;
 
     /*! Returns target name. */
     const String& name() const { return m_name; } 
-    /* Adds new viewport for target associated with given camera. */
+    /*! Adds new viewport for target associated with given camera. */
     PViewport addViewport(const String& name, PCamera camera);
-    /* Removes viewport with the given name from target. */
+    /*! Removes viewport with the given name from target. */
     void removeViewport(const String& name);
-    /* Returns viewport with the given name associated with target. */
+    /*! Returns viewport with the given name associated with target. */
     PViewport viewport(const String& name) const;
-    /* Performs rendering for target. */
+    /*! Performs rendering for target. */
     void render();
     /*! Returns target logical width (in pixels). */
     s32 width() const { return m_width; }
@@ -67,15 +67,15 @@ class RenderTarget : public Object
     /*! Returns zoom factor. */
     float32 zoom() const { return m_zoom; }
     /*! Returns TRUE if target is enabled. */
-     bool isEnabled() const { return m_enabled; }
-    /* Enables/disables render target. */
+    bool isEnabled() const { return m_enabled; }
+    /*! Enables/disables render target. */
     void setEnable(bool enable);
     /*! Returns orientation rotation. */
     const Angle& orientationRotation() const { return m_orientationRotation; }
 
   private:
 
-    /* Removes all viewport associated with target. */
+    /*! Removes all viewport associated with target. */
     void removeAllViewports();
 
   protected:

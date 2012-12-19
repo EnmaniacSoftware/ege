@@ -26,23 +26,16 @@ ResourceImagedAnimation::~ResourceImagedAnimation()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceImagedAnimation::Create(Application* app, ResourceGroup* group)
 {
   return ege_new ResourceImagedAnimation(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
 const String& ResourceImagedAnimation::name() const
 {
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
 EGEResult ResourceImagedAnimation::create(const String& path, const PXmlElement& tag)
 {
   EGE_UNUSED(path);
@@ -96,15 +89,21 @@ EGEResult ResourceImagedAnimation::create(const String& path, const PXmlElement&
     child = child->nextChild();
   }
 
+  // check if success
+  if (EGE_SUCCESS == result)
+  {
+    // set state
+    m_state = STATE_UNLOADED;
+  }
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
 EGEResult ResourceImagedAnimation::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if (!isLoaded())
+  if (STATE_LOADED != m_state)
   {
     // load all objects materials
     for (ObjectDataArray::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
@@ -146,13 +145,12 @@ EGEResult ResourceImagedAnimation::load()
     }
 
     // set flag
-    m_loaded = true;
+    m_state = STATE_LOADED;
   }
 
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
 void ResourceImagedAnimation::unload() 
 { 
   // unload all objects materials
@@ -171,10 +169,9 @@ void ResourceImagedAnimation::unload()
   //m_sequenceResources.clear();
 
   // reset flag
-  m_loaded = false;
+  m_state = STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of imaged animation object defined by resource. */
 PImagedAnimation ResourceImagedAnimation::createInstance()
 {
 	PImagedAnimation object = ege_new ImagedAnimation(app(), name());
@@ -190,12 +187,12 @@ PImagedAnimation ResourceImagedAnimation::createInstance()
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Set given instance of imaged animation object to what is defined by resource. */
 EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
 {
   // sanity check
-  if ((NULL == instance) || !isLoaded())
+  if ((NULL == instance) || (STATE_LOADED != m_state))
   {
+    // error!
     return EGE_ERROR;
   }
 
@@ -294,7 +291,6 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds object. */
 EGEResult ResourceImagedAnimation::addObject(const PXmlElement& tag)
 {
   ObjectData data;
@@ -346,7 +342,6 @@ EGEResult ResourceImagedAnimation::addObject(const PXmlElement& tag)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds frame. */
 EGEResult ResourceImagedAnimation::addFrame(const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
@@ -381,7 +376,6 @@ EGEResult ResourceImagedAnimation::addFrame(const PXmlElement& tag)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds action to the given frame. */
 EGEResult ResourceImagedAnimation::addAction(const PXmlElement& tag, FrameData* frameData) const
 {
   bool error = false;
@@ -408,7 +402,6 @@ EGEResult ResourceImagedAnimation::addAction(const PXmlElement& tag, FrameData* 
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds sequence. */
 EGEResult ResourceImagedAnimation::addSequence(const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;

@@ -19,23 +19,16 @@ ResourceSpritesheet::~ResourceSpritesheet()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceSpritesheet::Create(Application* app, ResourceGroup* group)
 {
   return ege_new ResourceSpritesheet(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
 const String& ResourceSpritesheet::name() const
 {
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
 EGEResult ResourceSpritesheet::create(const String& path, const PXmlElement& tag)
 {
   EGE_UNUSED(path);
@@ -60,15 +53,17 @@ EGEResult ResourceSpritesheet::create(const String& path, const PXmlElement& tag
     return EGE_ERROR_BAD_PARAM;
   }
 
+  // set state
+  m_state = STATE_UNLOADED;
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
 EGEResult ResourceSpritesheet::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if ( ! isLoaded())
+  if (STATE_LOADED != m_state)
   {
     // get texture image...
     PResourceTextureImage textureImageResource = group()->manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureName());
@@ -107,24 +102,24 @@ EGEResult ResourceSpritesheet::load()
       }
     }
 
+    // check if successful
     if (EGE_SUCCESS == result)
     {
       // set flag
-      m_loaded = true;
+      m_state = STATE_LOADED;
     }
   }
 
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
 void ResourceSpritesheet::unload() 
 { 
   // unload texture
   m_texture = NULL;
 
   // reset flag
-  m_loaded = false;
+  m_state = STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

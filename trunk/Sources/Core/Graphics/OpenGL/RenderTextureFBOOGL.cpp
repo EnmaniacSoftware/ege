@@ -57,26 +57,11 @@ RenderTextureFBOOGL::~RenderTextureFBOOGL()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderTarget override. Makes itself current rendering context. */
-EGEResult RenderTextureFBOOGL::makeCurrentContext()
-{
-  // do nothing, this does not change context
-  return EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderTarget override. Releases itself from being current rendering context. */
-void RenderTextureFBOOGL::releaseCurrentContext()
-{
-  // do nothing, this does not change context
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderTarget override. Returns target priority. */
 RenderTarget::Priority RenderTextureFBOOGL::priority() const
 {
   return PRIORITY_RENDER_TEXTURE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderTarget override. Binds render target. */
 void RenderTextureFBOOGL::bind()
 {
   // bind to FBO
@@ -84,7 +69,6 @@ void RenderTextureFBOOGL::bind()
   OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderTarget override. Unbinds render target. */
 void RenderTextureFBOOGL::unbind()
 {
   // bind default
@@ -92,7 +76,6 @@ void RenderTextureFBOOGL::unbind()
   OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
 bool RenderTextureFBOOGL::requiresTextureFlipping() const
 {
   return true;

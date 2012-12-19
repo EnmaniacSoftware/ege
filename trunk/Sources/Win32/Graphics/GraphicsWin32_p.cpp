@@ -16,21 +16,35 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(GraphicsPrivate)
 EGE_DEFINE_DELETE_OPERATORS(GraphicsPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-GraphicsPrivate::GraphicsPrivate(Graphics* base, const Dictionary& params) : m_base(base)
+GraphicsPrivate::GraphicsPrivate(Graphics* base) : m_base(base)
 {
-  m_base->registerRenderTarget(ege_new RenderWindowOGLWin32(m_base->app(), params));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 GraphicsPrivate::~GraphicsPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates vertex buffer obejct. */
+EGEResult GraphicsPrivate::construct()
+{
+  // create render window
+  RenderWindowOGLWin32* renderWindow = ege_new RenderWindowOGLWin32(m_base->app(), m_base->m_params);
+  if (NULL == renderWindow)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // add to render targets pool
+  m_base->registerRenderTarget(renderWindow);
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PVertexBuffer GraphicsPrivate::createVertexBuffer(EGEVertexBuffer::UsageType usage) const
 {
   PVertexBuffer buffer;
 
-  if (!Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     buffer = ege_new VertexBufferVBO(m_base->app(), usage);
   }
@@ -42,12 +56,11 @@ PVertexBuffer GraphicsPrivate::createVertexBuffer(EGEVertexBuffer::UsageType usa
   return buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates index buffer obejct. */
 PIndexBuffer GraphicsPrivate::createIndexBuffer(EGEIndexBuffer::UsageType usage) const
 {
   PIndexBuffer buffer;
 
-  if (!Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     buffer = ege_new IndexBufferVBO(m_base->app(), usage);
   }
@@ -57,6 +70,24 @@ PIndexBuffer GraphicsPrivate::createIndexBuffer(EGEIndexBuffer::UsageType usage)
   }
 
   return buffer;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void GraphicsPrivate::initializeWorkThreadRenderingContext()
+{
+  PRenderWindow renderWindow = d_func()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
+  if (NULL != renderWindow)
+  {
+    ege_cast<RenderWindowOGLWin32*>(renderWindow)->initializeWorkThreadRenderingContext();
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void GraphicsPrivate::deinitializeWorkThreadRenderingContext()
+{
+  PRenderWindow renderWindow = d_func()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
+  if (NULL != renderWindow)
+  {
+    ege_cast<RenderWindowOGLWin32*>(renderWindow)->deinitializeWorkThreadRenderingContext();
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -8,7 +8,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class RenderTextureCopyOGL : public RenderTarget
 {
   public:
@@ -18,25 +17,21 @@ class RenderTextureCopyOGL : public RenderTarget
 
   private:
 
-    /* RenderTarget override. Returns target priority. */
+    /*! RenderTarget override. Returns target priority. */
     Priority priority() const override;
-    /* RenderTarget override. Makes itself current rendering context. */
-    EGEResult makeCurrentContext() override;
-    /* RenderTarget override. Releases itself from being current rendering context. */
-    void releaseCurrentContext() override;
-    /* RenderTarget override. Binds render target. */
+    /*! RenderTarget override. Binds render target. */
     void bind() override;
-    /* RenderTarget override. Unbinds render target. */
+    /*! RenderTarget override. Unbinds render target. */
     void unbind() override;
-    /* RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
+    /*! RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
 		bool requiresTextureFlipping() const override;
 
     /*! Returns associated texture id. */
-    inline GLuint textureId() const { return m_textureId; }
+    GLuint textureId() const { return m_textureId; }
     /*! Returns texture target. */
-    inline GLenum textureTarget() const { return m_textureTarget; }
+    GLenum textureTarget() const { return m_textureTarget; }
     /*! Returns texture face where data should be rendered to. */
-    inline GLenum faceTarget() const { return m_faceTarget; }
+    GLenum faceTarget() const { return m_faceTarget; }
 
   private:
 
@@ -47,7 +42,6 @@ class RenderTextureCopyOGL : public RenderTarget
     /*! Texture face type data should be rendered to. */
     GLenum m_faceTarget;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

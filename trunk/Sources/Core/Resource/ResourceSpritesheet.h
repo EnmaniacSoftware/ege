@@ -28,38 +28,34 @@ class ResourceSpritesheet : public IResource
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Creates instance of resource. This method is a registration method for manager. */
+    /*! Creates instance of resource. This method is a registration method for manager. */
     static PResource Create(Application* app, ResourceGroup* group);
 
-    /* IResource override. Returns name of resource. */
+    /*! @see IResource::name. */
     const String& name() const override;
-    /* Initializes resource from XML. 
-    * 
-    *  \param  path  full path to resource definition file.
-    *  \param  tag   xml element with resource definition. 
-    */
+    /*! @see IResource::create. */ 
     EGEResult create(const String& path, const PXmlElement& tag) override;
-    /* IResource override. Loads resource. */
+    /*! @see IResource::load. */
     EGEResult load() override;
-    /* IResource override. Unloads resource. */
+    /*! @see IResource::unload. */
     void unload() override;
 
     /*! Returns number of frames. */
-    inline s32 frameCount() const { return m_frameCount; }
+    s32 frameCount() const { return m_frameCount; }
     /*! Returns frame width (in texels). */
-    inline s32 frameWidth() const { return m_frameWidth; }
+    s32 frameWidth() const { return m_frameWidth; }
     /*! Returns frame height (in texels). */
-    inline s32 frameHeight() const { return m_frameHeight; }
+    s32 frameHeight() const { return m_frameHeight; }
     /*! Returns number of frames in a row. */
-    inline s32 framesPerRow() const { return m_framesPerRow; }
+    s32 framesPerRow() const { return m_framesPerRow; }
     /*! Returns texture image containing sheet pixel data. */
-    inline PTextureImage textureImage() const { return m_texture; }
+    PTextureImage textureImage() const { return m_texture; }
 
   private:
 
     ResourceSpritesheet(Application* app, ResourceGroup* group);
     /*! Returns texture name. */
-    inline const String& textureName() const { return m_textureName; } 
+    const String& textureName() const { return m_textureName; } 
 
   private:
 

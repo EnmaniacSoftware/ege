@@ -21,23 +21,16 @@ ResourceText::~ResourceText()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceText::Create(Application* app, ResourceGroup* group)
 {
   return ege_new ResourceText(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
 const String& ResourceText::name() const
 {
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
 EGEResult ResourceText::create(const String& path, const PXmlElement& tag)
 {
   EGE_UNUSED(path);
@@ -76,26 +69,30 @@ EGEResult ResourceText::create(const String& path, const PXmlElement& tag)
     child = child->nextChild();
   }
 
+  // check if success
+  if (EGE_SUCCESS == result)
+  {
+    // set state
+    m_state = STATE_UNLOADED;
+  }
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
 EGEResult ResourceText::load()
 {
   // set flag
-  m_loaded = true;
+  m_state = STATE_LOADED;
 
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
 void ResourceText::unload()
 {
   // reset flag
-  m_loaded = false;
+  m_state = STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds text localization. */
 EGEResult ResourceText::addLocalization(const PXmlElement& tag)
 {
   // get data
@@ -115,7 +112,6 @@ EGEResult ResourceText::addLocalization(const PXmlElement& tag)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns text translation. */
 Text ResourceText::text(s32 numerous) const
 {
   Text outText;
@@ -161,7 +157,6 @@ Text ResourceText::text(s32 numerous) const
   return outText;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns index of translation for given numerous. */
 s32 ResourceText::translationIndex(s32 numerous) const
 {
   s32 index = 0;

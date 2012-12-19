@@ -12,7 +12,8 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderWindowOGLAirplay::RenderWindowOGLAirplay(Application* app, const Dictionary& params) : RenderWindow(app, params), 
                                                                                              m_eglDisplay(EGL_NO_DISPLAY), 
-                                                                                             m_eglContext(EGL_NO_CONTEXT), 
+                                                                                             m_eglContext(EGL_NO_CONTEXT),
+                                                                                             m_eglWorkerThreadContext(EGL_NO_CONTEXT),
                                                                                              m_eglSurface(EGL_NO_SURFACE)
 {
   create(params);
@@ -160,7 +161,16 @@ void RenderWindowOGLAirplay::create(const Dictionary& params)
       success = EGL_FALSE;
     }
   }
-  
+
+  if (EGL_FALSE != success)
+  {
+    m_eglWorkerThreadContext = eglCreateContext(m_eglDisplay, sEglConfig, m_eglContext, NULL);
+    if (m_eglWorkerThreadContext == EGL_NO_CONTEXT)
+    {
+      success = EGL_FALSE;
+    }
+  }
+
   if (EGL_FALSE != success)
   {
     success = eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext);
@@ -200,26 +210,17 @@ void RenderWindowOGLAirplay::create(const Dictionary& params)
 /*! Destorys Airplay OpenGL window. */
 void RenderWindowOGLAirplay::destroy()
 {
-  releaseCurrentContext();
+  eglMakeCurrent(m_eglDisplay, NULL, NULL, NULL);
+
+  eglDestroyContext(m_eglDisplay, m_eglWorkerThreadContext);
   eglDestroyContext(m_eglDisplay, m_eglContext);
   eglDestroySurface(m_eglDisplay, m_eglSurface);
   eglTerminate(m_eglDisplay);
 
-  m_eglDisplay = EGL_NO_DISPLAY;
-  m_eglContext = EGL_NO_CONTEXT;
-  m_eglSurface = EGL_NO_SURFACE;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderWindow override. Makes rendering context calling thread's current rendering context. */
-EGEResult RenderWindowOGLAirplay::makeCurrentContext()
-{
-  return (EGL_FALSE == eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext)) ? EGE_ERROR : EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderWindow override. Removes calling thread's current rendering context. */
-void RenderWindowOGLAirplay::releaseCurrentContext()
-{
-  eglMakeCurrent(m_eglDisplay, NULL, NULL, NULL);
+  m_eglDisplay              = EGL_NO_DISPLAY;
+  m_eglContext              = EGL_NO_CONTEXT;
+  m_eglWorkerThreadContext  = EGL_NO_CONTEXT;
+  m_eglSurface              = EGL_NO_SURFACE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! RenderWindow override. Shows frame buffer. */
@@ -282,6 +283,19 @@ int32 RenderWindowOGLAirplay::OrientationChangeCB(void* systemData, void* userDa
 //  EGE_PRINT("ORIENTATION %d %f   bd: %d dbd: %d w: %d h: %d", so->m_DeviceBlitDirection, me->m_orientationRotation.degrees(), bd, dbd, s3eSurfaceGetInt(S3E_SURFACE_WIDTH), s3eSurfaceGetInt(S3E_SURFACE_HEIGHT));
 
   return 0;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderWindowOGLAirplay::initializeWorkThreadRenderingContext()
+{
+  if (EGL_FALSE == eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglWorkerThreadContext))
+  {
+    egeWarning() << "Could not initialize worker thread rendering context";
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderWindowOGLAirplay::deinitializeWorkThreadRenderingContext()
+{
+  eglMakeCurrent(m_eglDisplay, NULL, NULL, NULL);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

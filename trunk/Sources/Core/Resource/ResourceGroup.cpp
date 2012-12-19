@@ -99,7 +99,7 @@ EGEResult ResourceGroup::load()
       PResource resource = it->second;
 
       // check if non-manual and needs to be loaded
-      if ( ! resource->isManual() && ! resource->isLoaded())
+      if ( ! resource->isManual() && (IResource::STATE_LOADED != resource->state()))
       {
         // load resource
         if (EGE_SUCCESS != (result = resource->load()))

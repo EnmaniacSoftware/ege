@@ -33,39 +33,35 @@ class ResourceSpriteAnimation : public IResource
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Creates instance of resource. This method is a registration method for manager. */
+    /*! Creates instance of resource. This method is a registration method for manager. */
     static PResource Create(Application* app, ResourceGroup* group);
 
-    /* IResource override. Returns name of resource. */
+    /*! @see IResource::name. */
     const String& name() const override;
-    /* Initializes resource from XML. 
-    * 
-    *  \param  path  full path to resource definition file.
-    *  \param  tag   xml element with resource definition. 
-    */
+    /*! @see IResource::create. */ 
     EGEResult create(const String& path, const PXmlElement& tag) override;
-    /* IResource override. Loads resource. */
+    /*! @see IResource::load. */
     EGEResult load() override;
-    /* IResource override. Unloads resource. */
+    /*! @see IResource::unload. */
     void unload() override;
 
-    /* Creates instance of sprite object defined by resource. */
+    /*! Creates instance of sprite object defined by resource. */
     PSpriteAnimation createInstance();
-    /* Set given instance of sprite object to what is defined by resource. */
+    /*! Set given instance of sprite object to what is defined by resource. */
     EGEResult setInstance(const PSpriteAnimation& instance);
 
   private:
 
     ResourceSpriteAnimation(Application* app, ResourceGroup* group);
     /*! Returns sprite sheet name. */
-    inline const String& sheetName() const { return m_sheetName; } 
-    /* Invalidates frame data. */
+    const String& sheetName() const { return m_sheetName; } 
+    /*! Invalidates frame data. */
     void invalidateFrameData();
-    /* Calculates frame data. */
+    /*! Calculates frame data. */
     void calculateFrameData();
     /*! Returns spritesheet object containing sprite. */
-    inline PResourceSpritesheet sheet() const { return m_sheet; }
-    /* Adds sequence. */
+     PResourceSpritesheet sheet() const { return m_sheet; }
+    /*! Adds sequence. */
     EGEResult addSequence(const PXmlElement& tag);
 
   private:

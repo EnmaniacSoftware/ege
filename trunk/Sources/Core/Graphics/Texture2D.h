@@ -30,35 +30,43 @@ class Texture2D : public Object
 
   public:
 
-    /* Creates render texture. */
+    /*! Creates render texture. */
     static PTexture2D CreateRenderTexture(Application* app, const String& name, s32 width, s32 height, PixelFormat format);
 
   public:
 
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     bool isValid() const;
     /*! Returns name. */
-    inline const String& name() const { return m_name; }
-    /* Creates texture from given file. */
+    const String& name() const { return m_name; }
+    /*! Creates texture from given file. 
+     *  @note Calling thread must be able to issue underlying 3D API commands.
+     */
     EGEResult create(const String& path);
-    /* Creates texture from given buffer. */
+    /*! Creates texture from given buffer. 
+     *  @note Calling thread must be able to issue underlying 3D API commands.
+     */
     EGEResult create(const PDataBuffer& buffer);
-    /* Sets minifying function filter. */
+    /*! Creates texture from given image. 
+     *  @note Calling thread must be able to issue underlying 3D API commands.
+     */
+    EGEResult create(const PImage& image);
+    /*! Sets minifying function filter. */
     void setMinFilter(EGETexture::Filter filter);
-    /* Sets magnification function filter. */
+    /*! Sets magnification function filter. */
     void setMagFilter(EGETexture::Filter filter);
-    /* Sets texture addressing mode for S texture coordinate. */
+    /*! Sets texture addressing mode for S texture coordinate. */
     void setTextureAddressingModeS(EGETexture::AddressingMode mode);
-    /* Sets texture addressing mode for T texture coordinate. */
+    /*! Sets texture addressing mode for T texture coordinate. */
     void setTextureAddressingModeT(EGETexture::AddressingMode mode);
     /*! Returns render target. */
-    inline PRenderTarget renderTarget() const { return m_target; }
+    PRenderTarget renderTarget() const { return m_target; }
     /*! Returns width. */
-    inline s32 width() const { return m_width; }
+    s32 width() const { return m_width; }
     /*! Returns height. */
-    inline s32 height() const { return m_height; }
+    s32 height() const { return m_height; }
     /*! Returns pixel format. */
-    inline PixelFormat format() const { return m_format; }
+    PixelFormat format() const { return m_format; }
 
   private:
 

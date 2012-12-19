@@ -18,23 +18,16 @@ ResourceSequencer::~ResourceSequencer()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceSequencer::Create(Application* app, ResourceGroup* group)
 {
   return ege_new ResourceSequencer(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
 const String& ResourceSequencer::name() const
 {
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
 EGEResult ResourceSequencer::create(const String& path, const PXmlElement& tag)
 {
   EGE_UNUSED(path);
@@ -62,29 +55,33 @@ EGEResult ResourceSequencer::create(const String& path, const PXmlElement& tag)
     return EGE_ERROR_BAD_PARAM;
   }
 
+  // check if success
+  if (EGE_SUCCESS == result)
+  {
+    // set state
+    m_state = STATE_UNLOADED;
+  }
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
 EGEResult ResourceSequencer::load()
 {
   // set flag
-  m_loaded = true;
+  m_state = STATE_LOADED;
 
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
 void ResourceSequencer::unload()
 {
   // reset flag
-  m_loaded = false;
+  m_state = STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Set given instance of sequencer object to what is defined by resource. */
 EGEResult ResourceSequencer::setInstance(PSequencer& instance)
 {
-  if ((NULL == instance) || !isLoaded())
+  if ((NULL == instance) || (STATE_LOADED != m_state))
   {
     // error!
     return EGE_ERROR;
@@ -97,7 +94,6 @@ EGEResult ResourceSequencer::setInstance(PSequencer& instance)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of sequencer object defined by resource. */
 PSequencer ResourceSequencer::createInstance()
 {
   PSequencer sequencer = ege_new Sequencer();

@@ -20,23 +20,16 @@ ResourceParticleAffector::~ResourceParticleAffector()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource. This method is a registration method for manager. */
 PResource ResourceParticleAffector::Create(Application* app, ResourceGroup* group)
 {
   return ege_new ResourceParticleAffector(app, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Returns name of resource. */
 const String& ResourceParticleAffector::name() const
 {
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Initializes resource from XML. 
-* 
-*  \param  path  full path to resource definition file.
-*  \param  tag   xml element with resource definition. 
-*/
 EGEResult ResourceParticleAffector::create(const String& path, const PXmlElement& tag)
 {
   EGE_UNUSED(path);
@@ -65,26 +58,30 @@ EGEResult ResourceParticleAffector::create(const String& path, const PXmlElement
   // store name separately for further use
   m_name = m_parameters["name"];
 
+  // check if success
+  if (EGE_SUCCESS == result)
+  {
+    // set state
+    m_state = STATE_UNLOADED;
+  }
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Loads resource. */
 EGEResult ResourceParticleAffector::load()
 {
   // set flag
-  m_loaded = true;
+  m_state = STATE_LOADED;
 
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
 void ResourceParticleAffector::unload() 
 { 
   // reset flag
-  m_loaded = false;
+  m_state = STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of particle affector object defined by resource. */
 PParticleAffector ResourceParticleAffector::createInstance()
 {
   // create instance of particle emitter of a correct type and with given name
