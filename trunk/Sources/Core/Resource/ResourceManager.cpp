@@ -557,11 +557,7 @@ EGEResult ResourceManager::processInclude(const String& filePath, const PXmlElem
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::update(const Time& time)
 {
-  // update when app is running only
-  if ( ! app()->isQuitting())
-  {
-    p_func()->update(time);
-  }
+  p_func()->update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceManager::buildDependacyList(StringList& list, const String& groupName) const

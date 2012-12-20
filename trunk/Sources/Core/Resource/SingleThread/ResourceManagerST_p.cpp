@@ -32,7 +32,8 @@ void ResourceManagerPrivate::update(const Time& time)
   EGE_UNUSED(time)
 
   // process pending list
-  if ( ! m_processList.empty())
+  // NOTE: only process when ready (ie not closing)
+  if ( ! m_processList.empty() && (ResourceManager::STATE_READY == m_state))
   {
     ProcessingBatch& data = m_processList.front();
 

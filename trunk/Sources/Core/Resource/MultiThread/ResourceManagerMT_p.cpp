@@ -72,43 +72,56 @@ void ResourceManagerPrivate::update(const Time& time)
 {
   EGE_UNUSED(time)
 
-  // check if any signals are to be emitted
-  if ( ! m_emissionRequests.empty())
+  if (ResourceManager::STATE_READY == m_state)
   {
-    MutexLocker lock(m_emitRequstsMutex);
-
-    // emit one by one
-    for (EmissionRequestList::const_iterator it = m_emissionRequests.begin(); it != m_emissionRequests.end(); ++it)
+    // check if any signals are to be emitted
+    if ( ! m_emissionRequests.empty())
     {
-      const EmissionRequest& request = *it;
+      MutexLocker lock(m_emitRequstsMutex);
 
-      switch (request.type)
+      // emit one by one
+      for (EmissionRequestList::const_iterator it = m_emissionRequests.begin(); it != m_emissionRequests.end(); ++it)
       {
-        case RT_GROUP_LOADED:
+        const EmissionRequest& request = *it;
+
+        switch (request.type)
+        {
+          case RT_GROUP_LOADED:
       
-          emit d_func()->groupLoadComplete(request.groupName);
-          break;
+            emit d_func()->groupLoadComplete(request.groupName);
+            break;
 
-        case RT_GROUP_LOAD_ERROR:
+          case RT_GROUP_LOAD_ERROR:
 
-          emit d_func()->groupLoadError(request.groupName);
-          break;
+            emit d_func()->groupLoadError(request.groupName);
+            break;
 
-        case RT_PROGRESS:
+          case RT_PROGRESS:
 
-          egeCritical() << "Processed" << request.count << "out of" << request.total;
+            egeCritical() << "Processed" << request.count << "out of" << request.total;
 
-          emit d_func()->processingStatusUpdated(request.count, request.total);
-          break;
+           // emit d_func()->processingStatusUpdated(request.count, request.total);
+            break;
 
-        default:
+          default:
 
-          egeWarning() << "Unknown request type. Skipping.";
-          break;
+            egeWarning() << "Unknown request type. Skipping.";
+            break;
+        }
       }
-    }
 
-    m_emissionRequests.clear();
+      m_emissionRequests.clear();
+    }
+  }
+  else if ((ResourceManager::STATE_CLOSING == m_state) && m_workThread->isFinished())
+  {
+    // clean up
+
+    // set state
+    m_state = ResourceManager::STATE_CLOSED;
+
+    // clean up
+    d_func()->removeGroups();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -203,7 +216,8 @@ void ResourceManagerPrivate::unloadGroup(const String& name)
 void ResourceManagerPrivate::threadUpdate()
 {
   // check if nothing left to process
-  while (m_pendingList.empty())
+  // NOTE: stop processing when not ready (ie closing)
+  while (m_pendingList.empty() && (ResourceManager::STATE_READY == m_state))
   {
     // check if no more data to process
     if (m_scheduledList.empty())
@@ -216,13 +230,6 @@ void ResourceManagerPrivate::threadUpdate()
     {
       // just lock and retrieve data
       m_mutex->lock();
-    }
-
-    // check if thread is requested to stop
-    if (m_workThread->isStopping())
-    {
-      // done
-      return;
     }
 
     // copy scheduled data
@@ -274,10 +281,10 @@ void ResourceManagerPrivate::appendBatchesForProcessing(ProcessingBatchList& bat
 
       // add resources to pool
       batch.resources << group->resources("");
-
-      // update statistics
-      d_func()->m_totalResourcesToProcess += batch.resources.size();
     }
+
+    // update statistics
+    d_func()->m_totalResourcesToProcess += batch.resources.size();
 
     // add to pending list
     m_pendingList.push_back(batch);
@@ -287,7 +294,8 @@ void ResourceManagerPrivate::appendBatchesForProcessing(ProcessingBatchList& bat
 void ResourceManagerPrivate::processBatches()
 {
   // add new data to processing list
-  for (ProcessingBatchList::iterator it = m_pendingList.begin(); it != m_pendingList.end(); )
+  // NOTE: stop processing if not ready anymore (ie closing)
+  for (ProcessingBatchList::iterator it = m_pendingList.begin(); (it != m_pendingList.end()) && (ResourceManager::STATE_READY == m_state); )
   {
     ProcessingBatch& data = *it;
 
@@ -411,12 +419,6 @@ ResourceManager::State ResourceManagerPrivate::state() const
 void ResourceManagerPrivate::onWorkThreadFinished(const PThread& thread)
 {
   EGE_UNUSED(thread);
-
-  // set state
-  m_state = ResourceManager::STATE_CLOSED;
-
-  // clean up
-  d_func()->removeGroups();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerPrivate::addProgressRequest(u32 count, u32 total)

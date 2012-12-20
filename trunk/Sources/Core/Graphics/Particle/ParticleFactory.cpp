@@ -37,15 +37,17 @@ ParticleFactory::~ParticleFactory()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ParticleFactory::construct()
 {
+  EGEResult result;
+
   // register build-in emitter types
   for (u32 i = 0; i < sizeof (l_emittersToRegister) / sizeof (BuiltInEmitter); ++i)
   {
     const BuiltInEmitter& emitter = l_emittersToRegister[i];
 
-    if ( ! registerEmitter(emitter.name, emitter.pfCreateFunc))
+    if (EGE_SUCCESS != (result = registerEmitter(emitter.name, emitter.pfCreateFunc)))
     {
       // error!
-      return EGE_ERROR;
+      return result;
     }
   }
 
@@ -54,10 +56,10 @@ EGEResult ParticleFactory::construct()
   {
     const BuiltInAffector& affector = l_affectorsToRegister[i];
 
-    if ( ! registerAffector(affector.name, affector.pfCreateFunc))
+    if (EGE_SUCCESS != (result = registerAffector(affector.name, affector.pfCreateFunc)))
     {
       // error!
-      return EGE_ERROR;
+      return result;
     }
   }
 
