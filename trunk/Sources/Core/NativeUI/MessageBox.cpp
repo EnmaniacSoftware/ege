@@ -25,7 +25,6 @@ MessageBox::~MessageBox()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
 EGEResult MessageBox::construct()
 {
   EGEResult result = EGE_SUCCESS;
@@ -48,7 +47,6 @@ EGEResult MessageBox::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Shows message box. */
 s32 MessageBox::show()
 {
   if (NULL != m_p)
@@ -59,7 +57,6 @@ s32 MessageBox::show()
   return -1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Convinience method. Shows message box with given title and content. */
 s32 MessageBox::Show(const Text& title, const Text& content, MessageBoxButtons buttons)
 {
   MessageBox msg(title, content, buttons);

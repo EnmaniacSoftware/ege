@@ -24,7 +24,7 @@ ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNo
   // create render data
   m_renderData = ege_new RenderComponent(app, name, EGEGraphics::RP_MAIN, pointSprite ? EGEGraphics::RPT_POINTS : EGEGraphics::RPT_TRIANGLES, 
                                          EGEVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
-  if (m_renderData)
+  if (NULL != m_renderData)
   {
     if (pointSprite)
     {
@@ -32,8 +32,8 @@ ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNo
       // - position
       // - color
       // - size (optionally, 1 float)
-      if (!m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4) || 
-          !m_renderData->vertexBuffer()->addArray(EGEVertexBuffer::AT_POINT_SPRITE_SIZE))
+      if ( ! m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4) || 
+           ! m_renderData->vertexBuffer()->addArray(EGEVertexBuffer::AT_POINT_SPRITE_SIZE))
       {
         // error!
         m_renderData = NULL;
@@ -41,7 +41,7 @@ ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNo
     }
     else
     {
-      if (!m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_T2_C4))
+      if ( ! m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_T2_C4))
       {
         // error!
         m_renderData = NULL;
@@ -54,13 +54,6 @@ ParticleEmitter::~ParticleEmitter()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool ParticleEmitter::isValid() const
-{
-  return (NULL != m_renderData) && m_renderData->isValid();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Initializes emitter from dictionary. */
 bool ParticleEmitter::initialize(const Dictionary& params)
 {
   bool error = false;
@@ -86,9 +79,6 @@ bool ParticleEmitter::initialize(const Dictionary& params)
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts system. 
- *  @note This resets all data. 
- */
 void ParticleEmitter::start()
 {
   // reset data
@@ -102,13 +92,11 @@ void ParticleEmitter::start()
   m_active = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Stops system. */
 void ParticleEmitter::stop()
 {
   m_active = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates object. */
 void ParticleEmitter::update(const Time& time)
 {
   // store time passed in seconds for optimization purposes
@@ -202,20 +190,17 @@ void ParticleEmitter::update(const Time& time)
   applyAffectors(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets system life span. */
 void ParticleEmitter::setLifeSpan(const Time& time)
 {
   m_lifeSpan = time;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets emission rate. */
 void ParticleEmitter::setEmissionRate(s32 rate)
 {
   EGE_ASSERT(0 <= rate);
   m_emissionRate = rate;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets maximum number of particles. */
 void ParticleEmitter::setParticleMaxCount(s32 count)
 {
   EGE_ASSERT(0 <= count);
@@ -224,79 +209,66 @@ void ParticleEmitter::setParticleMaxCount(s32 count)
   m_particleMaxCount = count;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle start size. */
 void ParticleEmitter::setParticleStartSize(const Vector2f& size)
 {
   m_particleStartSize = size; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle start size variance. */
 void ParticleEmitter::setParticleStartSizeVariance(const Vector2f& variance)
 {
   m_particleStartSizeVariance = variance; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle end size. */
 void ParticleEmitter::setParticleEndSize(const Vector2f& size)
 {
   m_particleEndSize = size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle end size variance. */
 void ParticleEmitter::setParticleStartEndVariance(const Vector2f& variance)
 {
   m_particleEndSizeVariance = variance;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle life span. */
 void ParticleEmitter::setParticleLifeSpan(const Time& duration)
 {
   m_particleLifeSpan = duration;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle life span variance. */
 void ParticleEmitter::setParticleLifeSpanVariance(const Time& variance)
 {
   m_particleLifeSpanVariance = variance;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle start color. */
 void ParticleEmitter::setParticleStartColor(const Color& color)
 {
   m_particleStartColor = color;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle start color variance. */
 void ParticleEmitter::setParticleStartColorVariance(const Color& variance)
 {
   m_particleStartColorVariance = variance;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle end color. */
 void ParticleEmitter::setParticleEndColor(const Color& color)
 {
   m_particleEndColor = color;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle end color variance. */
 void ParticleEmitter::setParticleEndColorVariance(const Color& variance)
 {
   m_particleEndColorVariance = variance;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle spin speed (degs/sec). */
 void ParticleEmitter::setParticleSpinSpeed(float32 speed)
 {
   m_particleSpinSpeed = speed;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle spin speed variance (degs/sec). */
 void ParticleEmitter::setParticleSpinSpeedVariance(float32 variance)
 {
   m_particleSpinSpeedVariance = variance;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Allocates particles data. */
 bool ParticleEmitter::allocateParticlesData()
 {
   // resize array
@@ -315,7 +287,6 @@ bool ParticleEmitter::allocateParticlesData()
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds object render data for rendering with given renderer. */
 bool ParticleEmitter::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   // update vertex data
@@ -481,13 +452,11 @@ bool ParticleEmitter::addForRendering(Renderer* renderer, const Matrix4f& transf
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets material. */
 void ParticleEmitter::setMaterial(const PMaterial& material)
 {
   m_renderData->setMaterial(material);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Applies affectors. */
 void ParticleEmitter::applyAffectors(const Time& time)
 {
   // go thru all affectors
@@ -499,7 +468,6 @@ void ParticleEmitter::applyAffectors(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds affector. */
 void ParticleEmitter::addAffector(PParticleAffector& affector)
 {
   affector->m_emitter = this;
@@ -513,7 +481,6 @@ void ParticleEmitter::addAffector(PParticleAffector& affector)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes given affector. */
 void ParticleEmitter::removeAffector(PParticleAffector& affector)
 {
   if (m_affectors.contains(affector))

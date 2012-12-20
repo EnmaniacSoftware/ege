@@ -3,7 +3,11 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CurveSegment::CurveSegment() : m_begin(Vector4f::ZERO), m_end(Vector4f::ZERO), m_beginTangent(Vector4f::ZERO), m_endTangent(Vector4f::ZERO), m_length(0.0f)
+CurveSegment::CurveSegment() : m_begin(Vector4f::ZERO), 
+                               m_end(Vector4f::ZERO), 
+                               m_beginTangent(Vector4f::ZERO), 
+                               m_endTangent(Vector4f::ZERO), 
+                               m_length(0.0f)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -11,13 +15,6 @@ CurveSegment::~CurveSegment()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Returns TRUE if object is valid. */
-bool CurveSegment::isValid() const
-{
-  return true;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets begin point. */
 void CurveSegment::setBegin(const Vector4f& point)
 {
   if (m_begin != point)
@@ -29,7 +26,6 @@ void CurveSegment::setBegin(const Vector4f& point)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets begin point tangent vector. */
 void CurveSegment::setBeginTangent(const Vector4f& tangent)
 {
   if (m_beginTangent != tangent)
@@ -41,7 +37,6 @@ void CurveSegment::setBeginTangent(const Vector4f& tangent)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets end point. */
 void CurveSegment::setEnd(const Vector4f& point)
 {
   if (m_end != point)
@@ -53,7 +48,6 @@ void CurveSegment::setEnd(const Vector4f& point)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets end point tangent vector. */
 void CurveSegment::setEndTangent(const Vector4f& tangent)
 {
   if (m_endTangent != tangent)
@@ -65,7 +59,6 @@ void CurveSegment::setEndTangent(const Vector4f& tangent)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets length. */
 void CurveSegment::setLength(float32 length)
 {
   m_length = length;

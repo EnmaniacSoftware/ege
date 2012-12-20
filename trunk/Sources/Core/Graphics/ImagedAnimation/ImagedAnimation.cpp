@@ -34,10 +34,6 @@ ImagedAnimation::~ImagedAnimation()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IAnimation override. Starts playback with a given sequencer. 
- *  @param sequencerName  Name of the sequencer to use for playback.
- *  @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
- */
 EGEResult ImagedAnimation::play(const String& sequencerName)
 {
   // check if resumed
@@ -83,10 +79,6 @@ EGEResult ImagedAnimation::play(const String& sequencerName)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IAnimation override. Starts playback with a given sequencer. 
- *  @param sequencerIndex Index of the sequencer to use for playback. Negative value replays last sequence if available.
- *  @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
- */
 EGEResult ImagedAnimation::play(s32 sequencerIndex)
 {
   // check if replay requested
@@ -112,7 +104,6 @@ EGEResult ImagedAnimation::play(s32 sequencerIndex)
   return play(seq->name());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* IAnimation override. Stops playback. */
 void ImagedAnimation::stop()
 {
   if (isPlaying())
@@ -126,32 +117,27 @@ void ImagedAnimation::stop()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* IAnimation override. Pauses playback. */
 void ImagedAnimation::pause()
 {
   // change state
   m_state = STATE_PAUSED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IAnimation override. Returns TRUE if animation is being played. */
 bool ImagedAnimation::isPlaying() const
 {
   return STATE_PLAYING == m_state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IAnimation override. Returns TRUE if animation is paused. */
 bool ImagedAnimation::isPaused() const
 {
   return STATE_PAUSED == m_state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IAnimation override. Returns TRUE if animation is stopped. */
 bool ImagedAnimation::isStopped() const
 {
   return STATE_STOPPED == m_state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IAnimation override. Updates animation. */
 void ImagedAnimation::update(const Time& time)
 {
   if (isPlaying())
@@ -161,21 +147,16 @@ void ImagedAnimation::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets FPS playback value. */
 void ImagedAnimation::setFPS(float32 fps)
 {
   m_frameDuration = (0.0f < fps) ? (1.0f / fps) : 0.0f;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets name. */
 void ImagedAnimation::setName(const String& name)
 {
   m_name = name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds object with a given id to animation. 
- *  @param object      Object to be added.
- */
 EGEResult ImagedAnimation::addObject(const EGEImagedAnimation::Object& object)
 {
   ObjectData data;
@@ -218,10 +199,6 @@ EGEResult ImagedAnimation::addObject(const EGEImagedAnimation::Object& object)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds frame data.
- *  @param action  List of action to be processed at given frame.
- *  @note  This creates new frame and appends it into existing ones.
- */
 EGEResult ImagedAnimation::addFrameData(const List<EGEImagedAnimation:: ActionData>& actions)
 {
   FrameData frameData;
@@ -238,7 +215,6 @@ EGEResult ImagedAnimation::addFrameData(const List<EGEImagedAnimation:: ActionDa
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Renders animation. */
 void ImagedAnimation::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   // check if no sequencer
@@ -275,34 +251,26 @@ void ImagedAnimation::addForRendering(Renderer* renderer, const Matrix4f& transf
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets base render priority. */
 void ImagedAnimation::setBaseRenderPriority(s32 priority)
 {
   m_baseRenderPriority = priority;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets display size (in pixels). */
 void ImagedAnimation::setDisplaySize(const Vector2f& size)
 {
   m_displaySize = size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns display size (in pixels). */
 const Vector2f& ImagedAnimation::displaySize() const
 {
   return m_displaySize;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets base display alignment. 
- *  @param alignment Alignment animation is originally created for.
- *  @note  Animation if always aligned to TOP_LEFT anchor from its base alignment.
- */
 void ImagedAnimation::setBaseAlignment(Alignment alignment)
 {
   m_baseAlignment = alignment;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Clears object. */
 void ImagedAnimation::clear()
 {
   m_objects.clear();
@@ -320,7 +288,6 @@ void ImagedAnimation::clear()
   m_state            = STATE_STOPPED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds sequencer. */
 void ImagedAnimation::addSequencer(const PSequencer& sequencer)
 {
   // check if sequencer with such name exists
@@ -335,7 +302,6 @@ void ImagedAnimation::addSequencer(const PSequencer& sequencer)
   m_sequencers.push_back(sequencer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns sequencer of a given name. */
 PSequencer ImagedAnimation::sequencer(const String& name) const
 {
   // go thru all sequencers
@@ -353,7 +319,6 @@ PSequencer ImagedAnimation::sequencer(const String& name) const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when sequencer animated into new frame. */
 void ImagedAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
 {
   s32 nextFrameId = sequencer->frameId(Math::Min(sequencer->currentFrameIndex() + 1, sequencer->frameCount() - 1));
@@ -391,7 +356,6 @@ void ImagedAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
   emit frameChanged(this, frameId);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when sequencer finished animation .*/
 void ImagedAnimation::onSequencerFinished(PSequencer sequencer)
 {
   // stop
@@ -401,7 +365,6 @@ void ImagedAnimation::onSequencerFinished(PSequencer sequencer)
   emit finished(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current sequencer. */
 PSequencer ImagedAnimation::currentSequencer() const 
 { 
   return m_currentSequencer; 

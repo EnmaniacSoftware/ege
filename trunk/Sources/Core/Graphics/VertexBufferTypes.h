@@ -1,15 +1,12 @@
 #ifndef EGE_CORE_VERTEXBUFFERTYPES_H
 #define EGE_CORE_VERTEXBUFFERTYPES_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include "Core/Platform.h"
 #include <EGEDynamicArray.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 namespace EGEVertexBuffer
 {
   /*! Vertex array types. */
@@ -62,7 +59,6 @@ namespace EGEVertexBuffer
 
   typedef DynamicArray<SARRAYSEMANTIC> SemanticArray;
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

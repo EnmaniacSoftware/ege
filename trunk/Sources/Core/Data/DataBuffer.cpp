@@ -36,13 +36,11 @@ DataBuffer::~DataBuffer()
   clear(true);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Gets pointer to data at given byte offset. */
 void* DataBuffer::data(s64 offset) const
 {
   return (offset < capacity()) ? (static_cast<u8*>(m_data) + offset) : NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Clears buffer. If FULL flag is set deallocates internal buffers as well. */
 void DataBuffer::clear(bool full)
 {
   // reset size
@@ -63,7 +61,6 @@ void DataBuffer::clear(bool full)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets buffer capacity in bytes. */
 EGEResult DataBuffer::setCapacity(s64 newCapacity)
 {
   // check if data cannot be changed
@@ -93,7 +90,6 @@ EGEResult DataBuffer::setCapacity(s64 newCapacity)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Writes given data at provided offset to buffer. Returns number of data written. */
 s64 DataBuffer::write(void* data, s64 size)
 {
   EGE_ASSERT(0 <= size && data);
@@ -122,7 +118,6 @@ s64 DataBuffer::write(void* data, s64 size)
   return size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Reads given amount of data from buffer. Returns number of data read. */
 s64 DataBuffer::read(void* data, s64 size)
 {
   EGE_ASSERT(0 <= size && data);
@@ -139,7 +134,6 @@ s64 DataBuffer::read(void* data, s64 size)
   return size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets buffer size in bytes. */
 EGEResult DataBuffer::setSize(s64 size)
 {
   // check if there is NO enough capacity for new size
@@ -162,8 +156,6 @@ EGEResult DataBuffer::setSize(s64 size)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets write offset. Does nothing if offset out of range [0, capacity]. */
-/// @return Returns old write offset.
 s64 DataBuffer::setWriteOffset(s64 offset)
 {
   s64 oldOffset = writeOffset();
@@ -176,8 +168,6 @@ s64 DataBuffer::setWriteOffset(s64 offset)
   return oldOffset;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets read offset. Does nothing if offset out of range [0, size]. */
-/// @return Returns old read offset.
 s64 DataBuffer::setReadOffset(s64 offset)
 {
   s64 oldOffset = readOffset();
@@ -190,7 +180,6 @@ s64 DataBuffer::setReadOffset(s64 offset)
   return oldOffset;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets byte ordering. */
 void DataBuffer::setByteOrdering(Endianness ordering)
 {
   m_byteOrdering = ordering;
@@ -378,10 +367,6 @@ DataBuffer& DataBuffer::operator >> (float64& value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Reads given amount of data into destination buffer.
- * @note   Destination buffer write offset will be updated accordingly.
- * @return Returns number of bytes read.
- */
 s64 DataBuffer::read(const PDataBuffer& dst, s64 size)
 {
   EGE_ASSERT(0 <= size);
@@ -399,10 +384,6 @@ s64 DataBuffer::read(const PDataBuffer& dst, s64 size)
   return size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Writes given amount of data from destination buffer.
- * @note   Source buffer read offset will be updated accordingly.
- * @return Returns number of bytes written.
- */
 s64 DataBuffer::write(const PDataBuffer& src, s64 size)
 {
   EGE_ASSERT(0 <= size);

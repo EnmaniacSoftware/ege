@@ -12,7 +12,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(TextOverlay, PTextOverlay)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! \brief TextOverlay is an overlay containing raw text. Text dimensions will define final size of overlay. */
+/*! @brief TextOverlay is an overlay containing raw text. Text dimensions will define final size of overlay. */
 class TextOverlay : public Overlay
 {
   public: 
@@ -23,31 +23,31 @@ class TextOverlay : public Overlay
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Sets text. */
+    /*! Sets text. */
     void setText(const Text& text);
     /*! Returns text. */
     const Text& text() const { return m_text; }
-    /* Sets font. */
+    /*! Sets font. */
     void setFont(PFont font);
     /*! Returns font. */
-    inline PFont font() const { return m_font; }
-    /* Sets text alignment. */
+    PFont font() const { return m_font; }
+    /*! Sets text alignment. */
     void setTextAlignment(Alignment alignment);
     /*! Returns text alignment. */
-    inline Alignment textAlignment() const { return m_textAlignment; }
+    Alignment textAlignment() const { return m_textAlignment; }
 
-    /* Overlay override. Renders overlay. */
+    /*! @see Overlay::addForRendering. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
-    /* Overlay override. Returns size. */
+    /*! @see Overlay::size. */
     const Vector2f& size() const override;
 
   private:
 
-    /* Overlay override. Initializes object. */
+    /*! @see Overlay::initialize. */
     void initialize() override;
-    /* Updates render data. */
+    /*! Updates render data. */
     void updateRenderData();
-    /* Update text data. */
+    /*! Update text data. */
     void updateTextData();
 
   private:

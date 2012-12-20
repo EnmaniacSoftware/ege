@@ -33,24 +33,24 @@ class Debug
     Debug& operator << (const String& t);
     Debug& operator << (const void* t);
 
-    /* Enables spaces insertions after each logged message. */
+    /*! Enables spaces insertions after each logged message. */
     Debug& space();
-    /* Disables spaces insertions after each logged message. */    
+    /*! Disables spaces insertions after each logged message. */    
     Debug& nospace();
 
   public:
 
-    /* Performs assertion. */
+    /*! Performs assertion. */
     static void Assert(const char* assertion, const char* file, int line);
 
   private:
 
-    /* Prints given c-string to output. */
+    /*! Prints given c-string to output. */
     static void Print(const char* string);
 
   private:
 
-    /* Inserts space into the stream if required. */
+    /*! Inserts space into the stream if required. */
     Debug& maybeSpace();
 
   private:

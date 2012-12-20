@@ -21,9 +21,9 @@ class SoundPrivate
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Constructs object. */
+    /*! Constructs object. */
     EGEResult construct();
-    /* Updates object. */
+    /*! Updates object. */
     void update(const Time& time);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

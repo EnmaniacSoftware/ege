@@ -25,47 +25,45 @@ class RendererPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(Renderer)
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
-    /* Sets given viewport. */
+    /*! Sets given viewport. */
     void setViewport(const PViewport& viewport);
-    /* Clears given viewport. */
+    /*! Clears given viewport. */
     void clearViewport(const PViewport& viewport);
-    /* Sends all geometry through the geometry pipeline to hardware. */
+    /*! Sends all geometry through the geometry pipeline to hardware. */
     void flush();
 
   private:
 
-    /* Detects rendering capabilities. */
+    /*! Detects rendering capabilities. */
     void detectCapabilities();
-    /* Activates given texture unit. */
+    /*! Activates given texture unit. */
     void activateTextureUnit(u32 unit);
-    /* Checks if given extension is supported. */
+    /*! Checks if given extension is supported. */
     bool isExtensionSupported(const char* extension) const;
-    /* Binds texture to target. */
+    /*! Binds texture to target. */
     void bindTexture(GLenum target, GLuint textureId);
-    /* Sets render target. */
+    /*! Sets render target. */
     void setRenderTarget(const PRenderTarget& renderTarget);
-    /* Applies general parameters. 
+    /*! Applies general parameters. 
      *  @note General parameters are the ones that require only one setup before component is rendered. 
      */
     void applyGeneralParams(const PRenderComponent& component);
-    /* Applies parameters for given pass. */
+    /*! Applies parameters for given pass. */
     void applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass* pass);
 
-    /* Binds given vertex buffer.
-     * @param buffer  Vertex buffer to bind.
-     * @return Returns base value pointing to begining of buffer data.
+    /*! Binds given vertex buffer.
+     *  @param buffer  Vertex buffer to bind.
+     *  @return Returns base value pointing to begining of buffer data.
      */
     void* bindVertexBuffer(PVertexBuffer& buffer) const;
-    /* Unbinds given vertex buffer. */
+    /*! Unbinds given vertex buffer. */
     void unbindVertexBuffer(PVertexBuffer& buffer) const;
-    /* Binds given index buffer.
-     * @param buffer  Index buffer to bind.
-     * @return Returns base value pointing to begining of buffer data.
+    /*! Binds given index buffer.
+     *  @param buffer  Index buffer to bind.
+     *  @return Returns base value pointing to begining of buffer data.
      */
     void* bindIndexBuffer(PIndexBuffer& buffer) const;
-    /* Unbinds given index buffer. */
+    /*! Unbinds given index buffer. */
     void unbindIndexBuffer(PIndexBuffer& buffer) const;
 
   private:

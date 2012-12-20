@@ -20,13 +20,17 @@ class Pointer : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
-
   signals:
 
-    /*! Signal emited on any pointer event. */
+    /*! Signal emited on any pointer event. 
+     *  @param pointerData Data describing pointer event.
+     */
     Signal1<PPointerData> eventSignal; 
+
+  public:
+
+    /*! Creates object. */
+    EGEResult construct();
 
   private:
 

@@ -9,7 +9,6 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Application;
-
 EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderQueue : public Object
@@ -36,9 +35,9 @@ class RenderQueue : public Object
 
     /*! Adds given data for rendering. */
     bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY);
-    /* Clears (empties) queue. */
+    /*! Clears (empties) queue. */
     void clear();
-    /* Returns map of render data structures. */
+    /*! Returns map of render data structures. */
     const MultiMap<u32, SRENDERDATA>& renderData() const;
 
   private:

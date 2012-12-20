@@ -17,13 +17,13 @@ class RenderTextureCopyOGL : public RenderTarget
 
   private:
 
-    /*! RenderTarget override. Returns target priority. */
+    /*! @see RenderTarget::priority. */
     Priority priority() const override;
-    /*! RenderTarget override. Binds render target. */
+    /*! @see RenderTarget::bind. */
     void bind() override;
-    /*! RenderTarget override. Unbinds render target. */
+    /*! @see RenderTarget::unbind. */
     void unbind() override;
-    /*! RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
+    /*! @see RenderTarget::requiresTextureFlipping. */
 		bool requiresTextureFlipping() const override;
 
     /*! Returns associated texture id. */

@@ -8,7 +8,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T>
 class DynamicArray : public std::vector<T>
 {
@@ -17,26 +16,25 @@ class DynamicArray : public std::vector<T>
     DynamicArray();
     DynamicArray(const T& object);
 
-    /* Removes given object from list. */
+    /*! Removes given object from list. */
     void remove(const T object);
-    /* Removes object at given index. */
+    /*! Removes object at given index. */
     void removeAt(s32 index);
-    /* Returns last element. If list is empty, default value is returned. */
+    /*! Returns last element. If list is empty, default value is returned. */
     const T last(const T& defaultValue) const;
-    /* Returns TRUE if given object is present. */
-    inline bool contains(const T object) const;
-    /* Copies all data from given list. */
+    /*! Returns TRUE if given object is present. */
+    bool contains(const T object) const;
+    /*! Copies all data from given list. */
     void copy(const DynamicArray& other);
-    /* Appends given list. */
+    /*! Appends given list. */
     DynamicArray& operator << (const DynamicArray& other);
-    /* Appends given element. */
+    /*! Appends given element. */
     DynamicArray& operator << (const T& value);
-    /* Returns object at given position. If not found, returns default object. */
+    /*! Returns object at given position. If not found, returns default object. */
     const T at(s32 index, const T& defaultValue) const;
-    /* Returns index of occurence of a given object. Negative if not found. */
+    /*! Returns index of occurence of a given object. Negative if not found. */
     s32 indexOf(const T& object) const;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 DynamicArray<T>::DynamicArray()
@@ -49,7 +47,6 @@ DynamicArray<T>::DynamicArray(const T& object)
   push_back(object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes given object from list. */
 template <typename T>
 void DynamicArray<T>::remove(const T object)
 {
@@ -60,7 +57,6 @@ void DynamicArray<T>::remove(const T object)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes object at given index. */
 template <typename T>
 void DynamicArray<T>::removeAt(s32 index)
 {
@@ -71,14 +67,12 @@ void DynamicArray<T>::removeAt(s32 index)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns last element. If list is empty, default value is returned. */
 template <typename T>
 const T DynamicArray<T>::last(const T& defaultValue) const
 {
   return this->at(this->size() - 1, defaultValue);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given object is present. */
 template <typename T>
 bool DynamicArray<T>::contains(const T object) const
 {
@@ -86,7 +80,6 @@ bool DynamicArray<T>::contains(const T object) const
   return (it != this->end());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Copies all data from given list. */
 template <typename T>
 void DynamicArray<T>::copy(const DynamicArray<T>& other)
 {
@@ -94,7 +87,6 @@ void DynamicArray<T>::copy(const DynamicArray<T>& other)
   this->insert(this->begin(), other.begin(), other.end());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Appends given list. */
 template <typename T>
 DynamicArray<T>& DynamicArray<T>::operator << (const DynamicArray<T>& other)
 {
@@ -102,7 +94,6 @@ DynamicArray<T>& DynamicArray<T>::operator << (const DynamicArray<T>& other)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Appends given element. */
 template <typename T>
 DynamicArray<T>& DynamicArray<T>::operator << (const T& value)
 {
@@ -110,14 +101,12 @@ DynamicArray<T>& DynamicArray<T>::operator << (const T& value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns object at given position. If not found, returns default object. */
 template <typename T>
 const T DynamicArray<T>::at(s32 index, const T& defaultValue) const
 {
   return ((0 <= index) && (index < static_cast<s32>(this->size()))) ? this->operator[](static_cast<size_t>(index)) : defaultValue;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns index of occurence of a given object. Negative if not found. */
 template <typename T>
 s32 DynamicArray<T>::indexOf(const T& object) const
 {

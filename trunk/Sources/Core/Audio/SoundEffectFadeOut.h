@@ -24,17 +24,11 @@ class SoundEffectFadeOut : public SoundEffect
 
   public:
 
-    /* SoundEffect override. Returns TRUE if object is valid. */
-    bool isValid() const override;
-    /* SoundEffect override. Updates object. 
-     * @param time  Time frame for which update should be done.
-     * @param sound Sound object for which effect is being run.
-     * @return  Returns TRUE if effect came to completion. Otherwise, returns FALSE.
-     */
+    /*! @see SoundEffect::update. */
     bool update(const Time& time, PSound sound) override;
-    /* SoundEffect override. Resets effect. */
+    /*! @see SoundEffect::reset. */
     void reset() override;
-    /* Sets fade duration. */
+    /*! Sets fade duration. */
     void setDuration(const Time& time);
 
   private:

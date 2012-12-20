@@ -43,7 +43,6 @@ Sound::~Sound()
   EGE_DELETE(m_codec);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
 EGEResult Sound::construct()
 {
   // detect stream type
@@ -89,7 +88,6 @@ EGEResult Sound::construct()
   return m_p->construct();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates object. */
 void Sound::update(const Time& time)
 {
   // update effects
@@ -99,19 +97,16 @@ void Sound::update(const Time& time)
   p_func()->update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets pitch value. */
 void Sound::setPitch(float32 value)
 {
   m_pitch = value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets repeat count. */
 void Sound::setRepeatCount(s32 count)
 {
   m_repeatsLeft = count;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets volume. */
 void Sound::setVolume(float32 volume)
 {
   float32 old = m_volume;
@@ -123,12 +118,9 @@ void Sound::setVolume(float32 volume)
   notifyVolumeChanged(old);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds sound effect. 
- *  @note Effect is removed when finished.
- */
 bool Sound::addEffect(PSoundEffect effect)
 {
-  if ((NULL != effect) && effect->isValid())
+  if (NULL != effect)
   {
     m_effects.push_back(effect);
 
@@ -140,25 +132,21 @@ bool Sound::addEffect(PSoundEffect effect)
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Notifies sound has finished playback. */
 void Sound::notifyFinished()
 {
   emit finished(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Notifies sound has stopped playback. */
 void Sound::notifyStopped()
 {
   emit stopped(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Notifies sound volume has changed. */
 void Sound::notifyVolumeChanged(float32 oldVolume)
 {
   emit volumeChanged(this, oldVolume);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns list of sound effects of a given type. */
 SoundEffectList Sound::effects(u32 uid) const
 {
   SoundEffectList list;
@@ -174,7 +162,6 @@ SoundEffectList Sound::effects(u32 uid) const
   return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates sound effects. */
 void Sound::updateSoundEffects(const Time& time)
 {
   for (SoundEffectList::iterator it = m_effects.begin(); it != m_effects.end(); )

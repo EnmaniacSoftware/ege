@@ -19,23 +19,14 @@ class BackTweener : public ITweener
     BackTweener();
    ~BackTweener();
    
-    /* Sets amplitude. */
+    /*! Sets amplitude. */
     void setAmplitude(float32 amplitude);
 
-    /* Calculates eased-in value for a given normalized time. 
-       @param time  Normalized time for which ease value is to be computed.
-       @return  Returns calculated ease value.
-     */
+    /*! @see ITweener::easeIn. */
     float32 easeIn(float32 time) override;
-    /* Calculates eased-out value for a given normalized time. 
-       @param time  Normalized time for which ease value is to be computed.
-       @return  Returns calculated ease value.
-     */
+    /*! @see ITweener::easeOut. */
     float32 easeOut(float32 time) override;
-    /* Calculates eased-in-out value for a given normalized time. 
-       @param time  Normalized time for which ease value is to be computed.
-       @return  Returns calculated ease value.
-     */
+    /*! @see ITweener::easeInOut. */
     float32 easeInOut(float32 time) override;
 
   private:

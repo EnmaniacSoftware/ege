@@ -16,13 +16,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ParticleEmitter;
-
 EGE_DECLARE_SMART_CLASS(ParticleAffector, PParticleAffector)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ParticleAffector : public Object
 {
   friend class ParticleEmitter;
@@ -37,7 +33,7 @@ class ParticleAffector : public Object
 
   public:
 
-    /* Initializes affector from dictionary. */
+    /*! Initializes affector from dictionary. */
     virtual bool initialize(const Dictionary& params);
     /*! Applies logic to given particles. 
      *  @param  time        Time increment for which calculations should be performed.
@@ -49,18 +45,18 @@ class ParticleAffector : public Object
   protected:
 
     /*! Returns pointer to parent emitter. */
-    inline ParticleEmitter* emitter() const { return m_emitter; }
+    ParticleEmitter* emitter() const { return m_emitter; }
 
   private:
 
-    /* Returns TRUE if detailed particle information is required like notification about particle spawns/deaths. */
+    /*! Returns TRUE if detailed particle information is required like notification about particle spawns/deaths. */
     virtual bool detailedParticleInfoRequired() const;
 
   private slots:
 
-    /* Slot called when new particle has been spawned. */
+    /*! Slot called when new particle has been spawned. */
     virtual void onNewParticleSpawned(const EGEParticle::ParticleData& particle);
-    /* Slot called when particle dies. */
+    /*! Slot called when particle dies. */
     virtual void onParticleDied(const EGEParticle::ParticleData& particle, s32 index);
 
   protected:
@@ -73,7 +69,6 @@ class ParticleAffector : public Object
     /*! Emitter affector is attached to. NULL if not attached to any emitter. Only settable by ParticleEmitter. */
     ParticleEmitter* m_emitter;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

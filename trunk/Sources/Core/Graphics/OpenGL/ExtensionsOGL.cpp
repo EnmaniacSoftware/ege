@@ -3,7 +3,6 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 // multitexturing
 PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTexture = NULL;
 PFNGLACTIVETEXTUREARBPROC glActiveTexture = NULL;
@@ -34,5 +33,4 @@ PFNGLBLENDFUNCSEPARATEPROC glBlendFuncSeparate = NULL;
 
 // texture compression
 PFNGLCOMPRESSEDTEXIMAGE2DPROC glCompressedTexImage2D = NULL;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -30,7 +30,6 @@ Math::~Math()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts quaternion to matrix representation. */
 void Math::Convert(Matrix4f* matrix, const Quaternionf* quaternion)
 {
   EGE_ASSERT(matrix);
@@ -61,7 +60,6 @@ void Math::Convert(Matrix4f* matrix, const Quaternionf* quaternion)
 	matrix->data[15] = 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Transforms (pre-multiples) vector by matrix. */
 void Math::Transform(Vector4f* vector, const Matrix4f* matrix)
 {
   EGE_ASSERT(matrix);
@@ -77,7 +75,6 @@ void Math::Transform(Vector4f* vector, const Matrix4f* matrix)
   *vector = result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates matrix from translation, scale vectors and quaternion. */
 void Math::CreateMatrix(Matrix4f* matrix, const Vector4f* translation, const Vector4f* scale, const Quaternionf* orientation)
 {
   EGE_ASSERT(matrix);
@@ -103,7 +100,6 @@ void Math::CreateMatrix(Matrix4f* matrix, const Vector4f* translation, const Vec
   matrix->setTranslation(translation->x, translation->y, translation->z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns angle between positive X axis and given point around origin. */
 void Math::GetAngle(Angle* angle, const Vector2f* origin, const Vector2f* point)
 {
   EGE_ASSERT(angle);
@@ -126,13 +122,6 @@ void Math::GetAngle(Angle* angle, const Vector2f* origin, const Vector2f* point)
   //}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*  Performs spherical linear interpolation between given quaternions. 
-  *  @param  out           Resulting quaternion.
-  *  @param  from          First (start) quaternion.
-  *  @param  to            Second (end) quaternion.
-  *  @param  time          Scalar in range [0..1] describing relative distance between quaternion for which interpolation is to be calculated.
-  *  @param  shortestPath  TRUE if shortest path (if possible) is to be used for interpolation.
-  */
 void Math::Slerp(Quaternionf* out, const Quaternionf* from, const Quaternionf* to, float32 time, bool shortestPath)
 {
   EGE_ASSERT(out);
@@ -195,12 +184,6 @@ void Math::Slerp(Quaternionf* out, const Quaternionf* from, const Quaternionf* t
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*  Performs spherical linear interpolation between given complex numbers. 
-  *  @param  out  Resulting complex number.
-  *  @param  from First (start) complex number.
-  *  @param  to   Second (end) complex number.
-  *  @param  time Scalar in range [0..1] describing relative distance between numbers for which interpolation is to be calculated.
-  */
 void Math::Slerp(Complexf* out, const Complexf* from, const Complexf* to, float32 time)
 {
   EGE_ASSERT(out);
@@ -253,12 +236,6 @@ void Math::Slerp(Complexf* out, const Complexf* from, const Complexf* to, float3
   out->normalize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*  Performs linear interpolation between given vectors. 
- *  @param  out   Resulting vector.
- *  @param  from  First (start) vector.
- *  @param  to    Second (end) vector.
- *  @param  time  Scalar in range [0..1] describing relative distance between vectors for which interpolation is to be calculated.
- */
 void Math::Lerp(Vector2f* out, const Vector2f* from, const Vector2f* to, float32 time)
 {
   EGE_ASSERT(out);
@@ -312,23 +289,11 @@ void Math::Lerp(Matrix4f* out, const Matrix4f* from, const Matrix4f* to, float32
   out->data[15] = oneMinusTime * from->data[15] + time * to->data[15];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*  Performs linear interpolation between given scalars. 
- *  @param  from First (start) scalar.
- *  @param  to   Second (end) scalar.
- *  @param  time Scalar in range [0..1] describing relative distance between input scalar for which interpolation is to be calculated.
- *  @return Resulting scalar.
- */
 float32 Math::Lerp(float32 from, float32 to, float32 time)
 {
   return (1.0f - time) * from + time * to;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*  Performs linear interpolation between given colors. 
- *  @param  out  Resulting color.
- *  @param  from First (start) color.
- *  @param  to   Second (end) color.
- *  @param  time Scalar in range [0..1] describing relative distance between input colors for which interpolation is to be calculated.
- */
 void Math::Lerp(Color* out, const Color* from, const Color* to, float32 time)
 {
   EGE_ASSERT(out);
@@ -343,13 +308,6 @@ void Math::Lerp(Color* out, const Color* from, const Color* to, float32 time)
   out->alpha  = oneMinusTime * from->alpha + time * to->alpha;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*  Calculates point on the segment lying closest to given point.
- *  @param  out         Calculated point on the segment lying closest to given point.
- *  @param  linePointA  First point defining line segment.
- *  @param  linePointB  Second point defining line segment.
- *  @param  point       Point for which minimum distance between it and line is to be found.
- *  @note Resulting point always lies on the line segment defined by linePointA and linePointB.
- */
 void Math::ClosestSegmentPoint(Vector3f* out, const Vector3f* linePointA, const Vector3f* linePointB, const Vector3f* point)
 {
   EGE_ASSERT(out);
@@ -412,15 +370,6 @@ void Math::ClosestSegmentPoint(Vector2f* out, const Vector2f* linePointA, const 
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*  Calculates point on intersection of two lines.
- *  @param  out           Calculated point of intersection.
- *  @param  line1PointA   First point defining line 1.
- *  @param  line1PointB   Second point defining line 1.
- *  @param  line2PointA   First point defining line 2.
- *  @param  line2PointB   Second point defining line 2.
- *  @note   If return value is FALSE, out value is undefined.
- *  @return Returns TRUE if point of intersection was found. Otherwise FALSE.
- */
 bool Math::LineLineIntersectPoint(Vector2f* out, const Vector2f* line1PointA, const Vector2f* line1PointB, const Vector2f* line2PointA, 
                                   const Vector2f* line2PointB)
 {
@@ -482,12 +431,6 @@ float32 Math::ACos(float32 radians)
   return EGEMath::PI; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Aligns anchor point with respect to given virtual size. 
- *  @param point            Virtual object anchor point. This point is realigned.
- *  @param size             Virtual obeject size.
- *  @param currentAlignment Current point alignment within given area.
- *  @param newAlignment     New point alignment within given area.
- */
 void Math::Align(Vector2f* point, const Vector2f* size, Alignment currentAlignment, Alignment newAlignment)
 {
   EGE_ASSERT(point);
@@ -564,11 +507,6 @@ void Math::Align(Vector2f* point, const Vector2f* size, Alignment currentAlignme
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Aligns rectangle. 
- *  @param rect             Rectangle to align.
- *  @param currentAlignment Current rectangle alignment.
- *  @param newAlignment     New rectangle alignment.
- */
 void Math::Align(Rectf* rect, Alignment currentAlignment, Alignment newAlignment)
 {
   EGE_ASSERT(rect);
@@ -582,12 +520,6 @@ void Math::Align(Rectf* rect, Alignment currentAlignment, Alignment newAlignment
   rect->y = point.y;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Aligns point. 
- *  @param point            Point to align. This point is realigned.
- *  @param size             Area within each point is aligned.
- *  @param currentAlignment Current point alignment within given area.
- *  @param newAlignment     New point alignment within given area.
- */
 void Math::Align(Vector4f* point, const Vector2f* size, Alignment currentAlignment, Alignment newAlignment)
 {
   EGE_ASSERT(point);
@@ -600,12 +532,6 @@ void Math::Align(Vector4f* point, const Vector2f* size, Alignment currentAlignme
   point->y = newPoint.y;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Aligns point. 
- *  @param point            Point to align. This point is realigned.
- *  @param size             Area within each point is aligned.
- *  @param currentAlignment Current point alignment within given area.
- *  @param newAlignment     New point alignment within given area.
- */
 void Math::Align(Vector4f* point, const Vector4f* size, Alignment currentAlignment, Alignment newAlignment)
 {
   EGE_ASSERT(point);
@@ -619,12 +545,6 @@ void Math::Align(Vector4f* point, const Vector4f* size, Alignment currentAlignme
   point->y = newPoint.y;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Aligns rectangle with respect to another rectangle. 
- *  @param rect             Rectangle to align.
- *  @param otherRect        Another rectangle with respect to which first rectangle is to be aligned.
- *  @param currentAlignment Current rectangle alignment.
- *  @param newAlignment     New rectangle alignment.
- */
 void Math::Align(Rectf* rect, const Rectf* otherRect, Alignment currentAlignment, Alignment newAlignment)
 {
   EGE_ASSERT(rect);
@@ -669,7 +589,6 @@ void Math::Align(Rectf* rect, const Rectf* otherRect, Alignment currentAlignment
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Calculates unit direction vector from given angle. This is relative to positive X axis. */
 void Math::GetDirection(Vector2f* vector, const Angle* angle)
 {
   EGE_ASSERT(vector);
@@ -679,12 +598,6 @@ void Math::GetDirection(Vector2f* vector, const Angle* angle)
   vector->y = Math::Sin(angle->radians());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Generates a new random vector which deviates from given vector by a given angle in a random direction.
- *  @param  angle   The angle at which to deviate.
- *  @param  vector  Vector from which deviation should be generated.
- *  @param  up      Any vector perpendicular to this one. If not given the function will derive one. 
- *  @returns  A random vector which deviates from this vector by angle. This vector will not be normalized.
- */
 Vector3f Math::RandomDeviant(const Angle* angle, const Vector3f* vector, const Vector3f* up)
 {
   EGE_ASSERT(angle);
@@ -712,11 +625,6 @@ Vector3f Math::RandomDeviant(const Angle* angle, const Vector3f* vector, const V
   return q * (*vector);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Generates a new random vector which deviates from given vector by a given angle in a random direction.
- *  @param  angle   The angle at which to deviate.
- *  @param  vector  Vector from which deviation should be generated.
- *  @returns  A random vector which deviates from this vector by angle. This vector will not be normalized.
- */
 Vector2f Math::RandomDeviant(const Angle* angle, const Vector2f* vector)
 {
   EGE_ASSERT(angle);
@@ -730,7 +638,6 @@ Vector2f Math::RandomDeviant(const Angle* angle, const Vector2f* vector)
   return Vector2f(vector->x * cos - vector->y * sin, vector->x * sin + vector->y * cos);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Calculates greatest common divisor. */
 s32 Math::GreatestCommonDivisor(s32 a, s32 b)
 {
   while (true)
@@ -750,13 +657,11 @@ s32 Math::GreatestCommonDivisor(s32 a, s32 b)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Rounds to zero given value if less than default epsilon. */
 float32 Math::ZeroRoundOff(float32 value)
 {
   return (Math::EPSILON > Math::Abs(value)) ? 0.0f : value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns random generator. */
 RandomGenerator& Math::Random()
 {
   return l_random;

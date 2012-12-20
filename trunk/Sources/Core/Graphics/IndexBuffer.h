@@ -23,14 +23,14 @@ class IndexBuffer : public Object
     /*! Returns TRUE if object is valid. */
     virtual bool isValid() const = 0;
     /*! Sets buffer to given size. 
-     * @param count Number of indicies buffer should contain.
-     * @return Returns TRUE if success. Otherwise, FALSE.
+     *  @param count Number of indicies buffer should contain.
+     *  @return Returns TRUE if success. Otherwise, FALSE.
      */
     virtual bool setSize(u32 count) = 0;
 
     /*! Locks buffer's given part of the buffer for read/write operations. 
-     * @param offset  0-based index offset from which locking should be done. 
-     * @param count   Number of indicies to lock.
+     *  @param offset  0-based index offset from which locking should be done. 
+     *  @param count   Number of indicies to lock.
      */
     virtual void* lock(u32 offset, u32 count) = 0;
     /*! Unlocks buffer. */
@@ -41,17 +41,17 @@ class IndexBuffer : public Object
     /*! Returns maximal number of available indicies. */
     virtual u32 indexCapacity() const = 0;
 
-    /* Returns index size (in bytes). */
+    /*! Returns index size (in bytes). */
     u8 indexSize() const;
 
-    /* Sets index size. */
+    /*! Sets index size. */
     void setIndexSize(EGEIndexBuffer::IndexSize size);
     /*! Returns size type. */
-    inline EGEIndexBuffer::IndexSize size() const { return m_indexSize; }
+    EGEIndexBuffer::IndexSize size() const { return m_indexSize; }
  
   protected:
 
-    /* Destroys buffer. */
+    /*! Destroys buffer. */
     virtual void destroy();
 
   protected:

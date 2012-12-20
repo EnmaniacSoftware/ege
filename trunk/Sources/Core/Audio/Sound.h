@@ -44,42 +44,42 @@ class Sound : public Object
 
   public:
 
-    /* Constructs object. */
+    /*! Constructs object. */
     EGEResult construct();
-    /* Updates object. */
+    /*! Updates object. */
     void update(const Time& time);
     /*! Returns name. */
     const String& name() const { return m_name; }
-    /* Sets pitch value. */
+    /*! Sets pitch value. */
     void setPitch(float32 value);
     /*! Returns pitch value. */
     inline float32 pitch() const { return m_pitch; }
-    /* Sets repeat count. */
+    /*! Sets repeat count. */
     void setRepeatCount(s32 count);
     /*! Returns number of repeats left. */
     s32 repeatsLeft() const { return m_repeatsLeft; }
     /*! Returns codec. */
     inline AudioCodec* codec() const { return m_codec; }
-    /* Sets volume. */
+    /*! Sets volume. */
     void setVolume(float32 volume);
     /*! Returns current volume. */
     inline float32 volume() const { return m_volume; }
-    /* Adds sound effect. 
-     * @note Effect is removed when finished.
+    /*! Adds sound effect. 
+     *  @note Effect is removed when finished.
      */
     bool addEffect(PSoundEffect effect);
-    /* Returns list of sound effects of a given type. */
+    /*! Returns list of sound effects of a given type. */
     SoundEffectList effects(u32 uid) const;
 
   private:
 
-    /* Notifies sound has finished playback. */
+    /*! Notifies sound has finished playback. */
     void notifyFinished();
-    /* Notifies sound has stopped playback. */
+    /*! Notifies sound has stopped playback. */
     void notifyStopped();
-    /* Notifies sound volume has changed. */
+    /*! Notifies sound volume has changed. */
     void notifyVolumeChanged(float32 oldVolume);
-    /* Updates sound effects. */
+    /*! Updates sound effects. */
     void updateSoundEffects(const Time& time);
 
   private:

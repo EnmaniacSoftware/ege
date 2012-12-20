@@ -22,14 +22,14 @@ class MessageBox : public Object
 
   public:
 
-    /* Convinience method. Shows message box with given title and content. */
+    /*! Convinience method. Shows message box with given title and content. */
     static s32 Show(const Text& title, const Text& content, MessageBoxButtons buttons);
 
   public:
 
-    /* Constructs object. */
+    /*! Constructs object. */
     EGEResult construct();
-    /* Shows message box. */
+    /*! Shows message box. */
     s32 show();
 
   private:

@@ -20,7 +20,6 @@ ImageOverlay::~ImageOverlay()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Overlay override. Renders overlay. */
 void ImageOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (visible())
@@ -40,7 +39,6 @@ void ImageOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Overlay override. Initializes object. */
 void ImageOverlay::initialize()
 {
   // call base class

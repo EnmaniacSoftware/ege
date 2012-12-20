@@ -49,67 +49,65 @@ class PhysicsComponent : public IComponent
     /*! Signal emitted when any of transformation values have been changed (position, scale or orientation). */
     Signal0<> transformationChanged;
 
-    /* IComponent override. Returns TRUE if component is valid. */
+    /*! @see IComponent::isValid. */
     bool isValid() const override;
     /*! Returns component type. */
-    inline EGEPhysics::ComponentType type() const { return m_type; }
-    /* Sets position vector. */
+    EGEPhysics::ComponentType type() const { return m_type; }
+    /*! Sets position vector. */
     void setPosition(const Vector4f& position);
-    /* Returns position vector. */
+    /*! Returns position vector. */
     Vector4f position() const;
-    /* Sets linear velocity vector. */
+    /*! Sets linear velocity vector. */
     void setLinearVelocity(const Vector4f& velocity);
-    /* Returns velocity vector. */
+    /*! Returns velocity vector. */
     Vector4f linearVelocity() const;
-    /* Applies a force vector.
-    * 
-    *  @param  force    force vector to apply.
-    *  @param  worldPos world position where force is to be applied. 
-    */
+    /*! Applies a force vector.
+     *  @param  force    force vector to apply.
+     *  @param  worldPos world position where force is to be applied. 
+     */
     void applyForce(const Vector4f& force, const Vector4f& worldPos);
-    /* Applies an impulse at the giveb point.
-    * 
-    *  @param  force    impulse vector to apply.
-    *  @param  worldPos world position where impulse is to be applied. 
-    *  @note   This immediatly affects linear velocity.
-    */
+    /*! Applies an impulse at the giveb point.
+     *  @param  force    impulse vector to apply.
+     *  @param  worldPos world position where impulse is to be applied. 
+     *  @note   This immediatly affects linear velocity.
+     */
     void applyLinearImpulse(const Vector4f& impulse, const Vector4f& worldPos);
-    /* Returns force vector. */
+    /*! Returns force vector. */
     Vector4f force() const;
-    /* Sets orientation quaternion. */
+    /*! Sets orientation quaternion. */
     void setOrientation(const Quaternionf& orientation);
     /*! Returns orientation quaternion. */
     Quaternionf orientation() const;
-    /* Sets mass. */
+    /*! Sets mass. */
     void setMass(float32 mass);
-    /* Returns mass. */
+    /*! Returns mass. */
     float32 mass() const;
-    /* Sets scale vector. */
+    /*! Sets scale vector. */
     void setScale(const Vector4f& scale);
-    /* Returns scale vector. */
+    /*! Returns scale vector. */
     Vector4f scale() const;
-    /* Returns TRUE if component is 'awaken'. Awaken components are the ones processed by solver. */
+    /*! Returns TRUE if component is 'awaken'. Awaken components are the ones processed by solver. */
     bool isAwake() const;
-    /* Sets 'awake' state. */
+    /*! Sets 'awake' state. */
     void setAwake(bool set);
-    /* Sets whether object is allowed to sleep. */
+    /*! Sets whether object is allowed to sleep. */
     void setAllowSleep(bool set);
 
-    /* Adds circular shape. */
+    /*! Adds circular shape. */
     bool addCircleShape(float32 radius, float32 density, EGEPhysics::CollisionData colissionData = EGEPhysics::CollisionData());
-    /* Adds polygonal shape. 
-    *  @param points  vertices of polygon shape.
-    *  @param density shape density. Affects mass.
-    */
+    /*! Adds polygonal shape. 
+     *  @param points  vertices of polygon shape.
+     *  @param density shape density. Affects mass.
+     */
     bool addPolygonShape(const DynamicArray<Vector4f>& points, float32 density, EGEPhysics::CollisionData colissionData = EGEPhysics::CollisionData());
 
-    /* Returns transformation matrix. */
+    /*! Returns transformation matrix. */
     const Matrix4f& transformationMatrix() const;
 
   private:
 
     /*! Returns pointer to physics manager. */
-    inline PhysicsManager* manager() const { return m_manager; }
+    PhysicsManager* manager() const { return m_manager; }
 
   private:
 

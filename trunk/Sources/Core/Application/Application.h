@@ -29,58 +29,60 @@ class Application
     Application();
     virtual ~Application();
 
-    /* Initializes engine.
-     * @param params    List of parameters to initialize engine with.
-     * @param listener  Listener object which is to be notified with engine events. 
+    /*! Initializes engine.
+     *  @param params    List of parameters to initialize engine with.
+     *  @param listener  Listener object which is to be notified with engine events. 
      */
     virtual EGEResult initialize(const Dictionary& params);
-    /* Starts engine work. */
+    /*! Starts engine work. */
     virtual EGEResult run();
-    /* Application updater. */
+    /*! Application updater. */
     virtual void update(const Time& time);
-    /* Requests quit. */
+    /*! Requests quit. */
     void quit();
-    /* Returns TRUE if application is quitting. */
+    /*! Returns TRUE if application is quitting. */
     bool isQuitting() const;
+
     /*! Returns graphics subsystem object. */
-    inline Graphics* graphics() const { return m_graphics; }
+    Graphics* graphics() const { return m_graphics; }
     /*! Returns event manager. */
-    inline EventManager* eventManager() const { return m_eventManager; }
+    EventManager* eventManager() const { return m_eventManager; }
     /*! Returns physics manager. */
-    inline PhysicsManager* physicsManager() const { return m_physicsManager; }
+    PhysicsManager* physicsManager() const { return m_physicsManager; }
     /*! Returns scene manager. */
-    inline SceneManager* sceneManager() const { return m_sceneManager; }
+    SceneManager* sceneManager() const { return m_sceneManager; }
     /*! Returns resource manager. */
-    inline ResourceManager* resourceManager() const { return m_resourceManager; }
+    ResourceManager* resourceManager() const { return m_resourceManager; }
     /*! Returns pointer input. */
-    inline Pointer* pointer() const { return m_pointer; }
+    Pointer* pointer() const { return m_pointer; }
     /*! Returns overlay manager. */
-    inline OverlayManager* overlayManager() const { return m_overlayManager; }
+    OverlayManager* overlayManager() const { return m_overlayManager; }
     /*! Returns screen manager. */
-    inline ScreenManager* screenManager() const { return m_screenManager; }
+    ScreenManager* screenManager() const { return m_screenManager; }
     /*! Returns audio manager. */
-    inline AudioManager* audioManager() const { return m_audioManager; }
+    AudioManager* audioManager() const { return m_audioManager; }
     /*! Returns debug object. */
-    inline Debug* debug() const { return m_debug; }
+    Debug* debug() const { return m_debug; }
     /*! Returns dektop services object. */
-    inline DesktopServices* desktopServices() const { return m_desktopServices; }
+    DesktopServices* desktopServices() const { return m_desktopServices; }
+
     /*! Returns TRUE if landscape mode is enabled. */
-    inline bool isLandscape() const { return m_landscapeMode; }
-    /* Returns current FPS indication. */
+    bool isLandscape() const { return m_landscapeMode; }
+    /*! Returns current FPS indication. */
     s32 fps() const;
-    /* Sets new language. */
+    /*! Sets new language. */
     void setLanguage(const String& language);
     /*! Returns current language. */
-    inline const String& language() const { return m_language; }
-    /* Returns last frame update duration. */
+    const String& language() const { return m_language; }
+    /*! Returns last frame update duration. */
     const Time& lastFrameUpdateDuration() const;
-    /* Returns last frame render duration. */
+    /*! Returns last frame render duration. */
     const Time& lastFrameRenderDuration() const;
 
   private:
 
     /*! Returns application controller. */
-    inline AppController* controller() const { return m_appController; }
+    AppController* controller() const { return m_appController; }
 
   private:
 

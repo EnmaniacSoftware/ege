@@ -125,7 +125,6 @@ Logger& Logger::operator << (const void* t)
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Writes current buffer to file. */
 void Logger::write()
 {
   File file(m_fileName);

@@ -42,39 +42,31 @@ TextureImage::~TextureImage()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool TextureImage::isValid() const
 {
   return (NULL != m_texture) && !m_rect.isEmpty() && !m_rect.isNull();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets environment mode. */
 void TextureImage::setEnvironmentMode(EGETexture::EnvironmentMode mode)
 {
   m_envMode = mode;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets texture which obejct refers to. */
 void TextureImage::setTexture(const PObject& texture)
 {
   m_texture = texture;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Sets rectangle within texture this object refers to. 
- * @param rect  Rectangle within texture (in normalized local space).
- */
 void TextureImage::setRect(const Rectf& rect)
 {
   m_rect = rect;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets name. */
 void TextureImage::setName(const String& name)
 {
   m_name = name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Makes a copy of given texture image. */
 void TextureImage::copy(const TextureImage* other)
 {
   EGE_ASSERT(other);
@@ -86,7 +78,6 @@ void TextureImage::copy(const TextureImage* other)
   m_rotationAngle = other->m_rotationAngle;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns width (in texels). */
 s32 TextureImage::width() const
 {
   s32 width = 0;
@@ -105,7 +96,6 @@ s32 TextureImage::width() const
   return width;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns height (in texels). */
 s32 TextureImage::height() const
 {
   s32 height = 0;
@@ -124,7 +114,6 @@ s32 TextureImage::height() const
   return height;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets rotation angle. */
 void TextureImage::setRotationAngle(const Angle& angle)
 {
   m_rotationAngle = angle;

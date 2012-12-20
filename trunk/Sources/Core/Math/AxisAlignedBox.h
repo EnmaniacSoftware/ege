@@ -1,15 +1,12 @@
 #ifndef EGE_CORE_AXISALIGNEDBOX_H
 #define EGE_CORE_AXISALIGNEDBOX_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include <EGETypes.h>
 #include "Core/Math/Vector4.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AxisAlignedBox
 {
   public:
@@ -19,6 +16,7 @@ class AxisAlignedBox
 	  AxisAlignedBox(const Vector4f& cMin, const Vector4f& cMax);
 	 ~AxisAlignedBox();
 
+    /*! Available extends. */
     enum Extent
 	  {
 		  EXTENT_NULL,
@@ -155,7 +153,6 @@ class AxisAlignedBox
     /*! Box extent. */
     Extent m_extent;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

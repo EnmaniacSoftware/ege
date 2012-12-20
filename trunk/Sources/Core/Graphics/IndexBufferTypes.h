@@ -1,15 +1,12 @@
 #ifndef EGE_CORE_INDEXBUFFERTYPES_H
 #define EGE_CORE_INDEXBUFFERTYPES_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include "Core/Platform.h"
 #include <EGEDynamicArray.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 namespace EGEIndexBuffer
 {
   /*! Available index sizes. */
@@ -30,7 +27,6 @@ namespace EGEIndexBuffer
                                                  This allows for some optimization. Makes sense with UT_DYNAMIC_WRITE. */                  
   };
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

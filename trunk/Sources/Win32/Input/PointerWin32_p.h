@@ -7,11 +7,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Pointer;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class PointerPrivate : public IEventListener
 {
   public:
@@ -22,22 +19,18 @@ class PointerPrivate : public IEventListener
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
+    EGE_DECLARE_PUBLIC_IMPLEMENTATION(Pointer)
+
+  public:
+
+    /*! Creates object. */
+    EGEResult construct();
 
   private:
 
-    /* IEventListener override. Event reciever. */
+    /*! @see IEventListener::onEventRecieved. */
     void onEventRecieved(PEvent event) override;
-    /*! Returns pointer to base object. */
-    inline Pointer* base() const { return m_base; }
-
-  private:
-
-    /*! Pointer to base object. */
-    Pointer* m_base;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

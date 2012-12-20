@@ -31,13 +31,13 @@ class AudioCodec : public Object
     /*! Resets codec. */
     virtual bool reset() = 0;
     /*! Returns number of channels. */
-    inline s32 channels() const { return m_channels; }
+    s32 channels() const { return m_channels; }
     /*! Returns playback frequency (in Hz). */
-    inline s32 frequency() const { return m_frequency; }
+    s32 frequency() const { return m_frequency; }
     /*! Returns number of bits per sample (for single channel). */
-    inline s32 bitsPerSample() const { return m_bitsPerSample; }
+    s32 bitsPerSample() const { return m_bitsPerSample; }
     /*! Returns data stream. */
-    inline const PObject& stream() const { return m_stream; }
+    const PObject& stream() const { return m_stream; }
 
   protected:
 

@@ -18,16 +18,11 @@ IndexBufferVA::~IndexBufferVA()
   destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool IndexBufferVA::isValid() const
 {
   return (NULL != m_buffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IndexBuffer override. Sets buffer to given size. 
- * @param count Number of indicies buffer should contain.
- * @return Returns TRUE if success. Otherwise, FALSE.
- */
 bool IndexBufferVA::setSize(u32 count)
 {
   EGE_ASSERT(!m_locked);
@@ -43,7 +38,6 @@ bool IndexBufferVA::setSize(u32 count)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IndexBuffer override. Destroys buffer. */
 void IndexBufferVA::destroy()
 {
   m_buffer = NULL;
@@ -52,7 +46,6 @@ void IndexBufferVA::destroy()
   IndexBuffer::destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IndexBuffer override. Locks buffer given part of the buffer for read/write operations. */
 void* IndexBufferVA::lock(u32 offset, u32 count)
 {
   EGE_ASSERT(!m_locked);
@@ -84,7 +77,6 @@ void* IndexBufferVA::lock(u32 offset, u32 count)
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IndexBuffer override. Unlocks buffer. */
 void IndexBufferVA::unlock(void* data)
 {
   if (data)
@@ -95,13 +87,11 @@ void IndexBufferVA::unlock(void* data)
   m_locked = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IndexBuffer override. Returns number of allocated indicies. */
 u32 IndexBufferVA::indexCount() const
 {
   return (m_buffer && (0 < indexSize())) ? static_cast<u32>(m_buffer->size() / indexSize()) : 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Reallocates internal buffer to accomodate given number of indicies. */
 bool IndexBufferVA::reallocateBuffer(u32 count)
 {
   // allocate buffer for requested indicies
@@ -114,7 +104,6 @@ bool IndexBufferVA::reallocateBuffer(u32 count)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IndexBuffer override. Returns maximal number of available indicies. */
 u32 IndexBufferVA::indexCapacity() const
 {
   return (m_buffer) ? static_cast<u32>(m_buffer->capacity() / indexSize()) : 0;

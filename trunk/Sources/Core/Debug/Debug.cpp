@@ -107,21 +107,18 @@ Debug& Debug::operator << (const void* t)
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Enables spaces insertions after each logged message. */
 Debug& Debug::space()
 { 
   m_spaceSeperated = true; 
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Disables spaces insertions after each logged message. */    
 Debug& Debug::nospace() 
 { 
   m_spaceSeperated = false; 
   return *this; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Inserts space into the stream if required. */
 Debug& Debug::maybeSpace() 
 { 
   if (m_spaceSeperated)

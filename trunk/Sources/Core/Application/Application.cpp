@@ -57,10 +57,6 @@ Application::~Application()
   MemoryManager::Deinit();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Initializes engine.
- * @param params    List of parameters to initialize engine with.
- * @param listener  Listener object which is to be notified with engine events. 
- */
 EGEResult Application::initialize(const Dictionary& params)
 {
   EGEResult result;
@@ -144,18 +140,30 @@ EGEResult Application::initialize(const Dictionary& params)
 
   // create application controller
   m_appController = ege_new AppController(this, params);
-  if (NULL == m_appController || !m_appController->isValid())
+  if (NULL == m_appController)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
   }
 
+  if (EGE_SUCCESS != (result = m_appController->construct()))
+  {
+    // error!
+    return result;
+  }
+
   // create pointer input
   m_pointer = ege_new Pointer(this);
-  if (NULL == m_pointer || !m_pointer->isValid())
+  if (NULL == m_pointer)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
+  }
+
+  if (EGE_SUCCESS != (result = m_pointer->construct()))
+  {
+    // error!
+    return result;
   }
 
   // create screen manager
@@ -183,24 +191,20 @@ EGEResult Application::initialize(const Dictionary& params)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts engine work. */
 EGEResult Application::run()
 {
   return controller()->run();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Application updater. */
 void Application::update(const Time& time)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current FPS indication. */
 s32 Application::fps() const
 {
   return controller()->fps();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets new language. */
 void Application::setLanguage(const String& language)
 {
   if (language != m_language)
@@ -212,25 +216,21 @@ void Application::setLanguage(const String& language)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Requests quit. */
 void Application::quit()
 {
   eventManager()->send(EGE_EVENT_ID_CORE_QUIT_REQUEST);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if application is quitting. */
 bool Application::isQuitting() const
 {
   return (AppController::STATE_QUIT == controller()->state()) || (AppController::STATE_QUITTING == controller()->state());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns last frame update duration. */
 const Time& Application::lastFrameUpdateDuration() const
 {
   return controller()->lastFrameUpdateDuration();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns last frame render duration. */
 const Time& Application::lastFrameRenderDuration() const
 {
   return controller()->lastFrameRenderDuration();

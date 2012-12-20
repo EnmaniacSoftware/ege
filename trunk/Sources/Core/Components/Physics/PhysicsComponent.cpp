@@ -58,7 +58,6 @@ PhysicsComponent::~PhysicsComponent()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets position vector. */
 void PhysicsComponent::setPosition(const Vector4f& position)
 {
   EGE_ASSERT(isValid());
@@ -75,7 +74,6 @@ void PhysicsComponent::setPosition(const Vector4f& position)
   emit transformationChanged();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns position vector. */
 Vector4f PhysicsComponent::position() const
 {
   EGE_ASSERT(isValid());
@@ -87,7 +85,6 @@ Vector4f PhysicsComponent::position() const
   return m_position;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets orientation quaternion. */
 void PhysicsComponent::setOrientation(const Quaternionf& orientation)
 {
   EGE_ASSERT(isValid());
@@ -104,7 +101,6 @@ void PhysicsComponent::setOrientation(const Quaternionf& orientation)
   emit transformationChanged();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns orientation quaternion. */
 Quaternionf PhysicsComponent::orientation() const
 {
   EGE_ASSERT(isValid());
@@ -116,11 +112,6 @@ Quaternionf PhysicsComponent::orientation() const
   return m_orientation;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Applies a force vector.
-* 
-*  @param  force    force vector to apply.
-*  @param  worldPos world position where force is to be applied. 
-*/
 void PhysicsComponent::applyForce(const Vector4f& force, const Vector4f& worldPos)
 {
   EGE_ASSERT(isValid());
@@ -132,12 +123,6 @@ void PhysicsComponent::applyForce(const Vector4f& force, const Vector4f& worldPo
   m_force += force;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Applies an impulse at the giveb point.
-* 
-*  @param  force    impulse vector to apply.
-*  @param  worldPos world position where impulse is to be applied. 
-*  @note   This immediatly affects linear velocity.
-*/
 void PhysicsComponent::applyLinearImpulse(const Vector4f& impulse, const Vector4f& worldPos)
 {
   EGE_ASSERT(isValid());
@@ -149,7 +134,6 @@ void PhysicsComponent::applyLinearImpulse(const Vector4f& impulse, const Vector4
   m_linearVelocity += impulse * (1.0f / mass());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns force vector. */
 Vector4f PhysicsComponent::force() const
 {
   EGE_ASSERT(isValid());
@@ -161,7 +145,6 @@ Vector4f PhysicsComponent::force() const
   return m_force;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets mass. */
 void PhysicsComponent::setMass(EGE::float32 mass)
 {
   EGE_ASSERT(isValid());
@@ -185,7 +168,6 @@ void PhysicsComponent::setMass(EGE::float32 mass)
   m_mass = mass;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns mass. */
 EGE::float32 PhysicsComponent::mass() const
 {
   EGE_ASSERT(isValid());
@@ -197,7 +179,6 @@ EGE::float32 PhysicsComponent::mass() const
   return m_mass;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets linear velocity vector. */
 void PhysicsComponent::setLinearVelocity(const Vector4f& velocity)
 {
   EGE_ASSERT(isValid());
@@ -209,7 +190,6 @@ void PhysicsComponent::setLinearVelocity(const Vector4f& velocity)
   m_linearVelocity = velocity;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns linear velocity vector. */
 Vector4f PhysicsComponent::linearVelocity() const
 {
   EGE_ASSERT(isValid());
@@ -221,13 +201,11 @@ Vector4f PhysicsComponent::linearVelocity() const
   return m_linearVelocity;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IComponent override. Returns TRUE if component is valid. */
 bool PhysicsComponent::isValid() const
 {
   return ((NULL != m_manager) && (NULL != m_p) && p_func()->isValid()) || (NULL == m_manager);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds circular shape. */
 bool PhysicsComponent::addCircleShape(EGE::float32 radius, EGE::float32 density, EGEPhysics::CollisionData colissionData)
 {
   EGE_ASSERT(isValid());
@@ -239,10 +217,6 @@ bool PhysicsComponent::addCircleShape(EGE::float32 radius, EGE::float32 density,
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Adds polygonal shape. 
-*  @param points  vertices of polygon shape.
-*  @param density shape density. Affects mass.
-*/
 bool PhysicsComponent::addPolygonShape(const DynamicArray<Vector4f>& points, EGE::float32 density, EGEPhysics::CollisionData colissionData)
 {
   EGE_ASSERT(isValid());
@@ -254,7 +228,6 @@ bool PhysicsComponent::addPolygonShape(const DynamicArray<Vector4f>& points, EGE
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets scale vector. */
 void PhysicsComponent::setScale(const Vector4f& scale)
 {
   EGE_ASSERT(isValid());
@@ -271,7 +244,6 @@ void PhysicsComponent::setScale(const Vector4f& scale)
   emit transformationChanged();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns scale vector. */
 Vector4f PhysicsComponent::scale() const
 {
   EGE_ASSERT(isValid());
@@ -283,7 +255,6 @@ Vector4f PhysicsComponent::scale() const
   return m_scale;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if component is 'awaken'. Awaken components are the ones processed by solver. */
 bool PhysicsComponent::isAwake() const
 {
   EGE_ASSERT(isValid());
@@ -295,7 +266,6 @@ bool PhysicsComponent::isAwake() const
   return m_awake;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets 'awake' state. */
 void PhysicsComponent::setAwake(bool set)
 {
   EGE_ASSERT(isValid());
@@ -307,7 +277,6 @@ void PhysicsComponent::setAwake(bool set)
   m_awake = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets whether object is allowed to sleep. */
 void PhysicsComponent::setAllowSleep(bool set)
 {
   EGE_ASSERT(isValid());
@@ -319,7 +288,6 @@ void PhysicsComponent::setAllowSleep(bool set)
   m_allowSleep = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns transformation matrix. */
 const Matrix4f& PhysicsComponent::transformationMatrix() const
 {
   if (!m_transformationMatrixValid)

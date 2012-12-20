@@ -31,18 +31,11 @@ Image::~Image()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool Image::isValid() const
 {
   return (0 < m_width) && (0 < m_height) && (PF_UNKNOWN != m_format) && (NULL != m_data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads image from given file converting it's pixel format to requested one if possible. 
-    @param fileName  File name to load image from.
-    @param format    Pixel format loaded image should be converted to.
-    @return Loaded image on success. NULL otherwise.
-    @note If requested pixel format is PF_UNKNOWN no conversion is done.
- */
 PImage Image::Load(const String& fileName, PixelFormat format)
 {
   PImage image;
@@ -85,12 +78,6 @@ PImage Image::Load(const String& fileName, PixelFormat format)
   return image;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads image from given buffer converting it's pixel format to requested one if possible. 
-    @param buffer  Buffer containing data to load image from.
-    @param format  Pixel format loaded image should be converted to.
-    @return Loaded image on success. NULL otherwise.
-    @note If requested pixel format is PF_UNKNOWN no conversion is done.
- */
 PImage Image::Load(const PDataBuffer& buffer, PixelFormat format)
 {
   PImage image;
@@ -115,13 +102,6 @@ PImage Image::Load(const PDataBuffer& buffer, PixelFormat format)
   return image;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Saves image into a given file with specified pixel format. 
-    @param image     Image to save.
-    @param fileName  File name to which the file should be saved.
-    @param format    Pixel format of the saved image.
-    @return EGE_SUCCESS on success.
-    @note If requested pixel format is PF_UNKNOWN image will be saved with current image pixel format.
- */
 EGEResult Image::Save(PImage image, const String& fileName, PixelFormat format)
 {
   EGEResult result = EGE_SUCCESS;
@@ -153,7 +133,6 @@ EGEResult Image::Save(PImage image, const String& fileName, PixelFormat format)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Allocated internal data buffer to be able to hold image of a given size and format. */
 EGEResult Image::allocateData(s32 width, s32 height, PixelFormat format)
 {
   EGEResult result = EGE_SUCCESS;
@@ -201,13 +180,11 @@ EGEResult Image::allocateData(s32 width, s32 height, PixelFormat format)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets alpha premultiply flag. */
 void Image::setAlphaPremultiply(bool set)
 {
   m_premultiplied = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if image is compressed. */
 bool Image::isCompressed() const
 {
   switch (m_format)

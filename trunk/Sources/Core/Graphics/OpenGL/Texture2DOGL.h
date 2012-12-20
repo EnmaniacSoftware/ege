@@ -37,9 +37,9 @@ class Texture2DPrivate
 
   private:
 
-    /* Maps filter to OpenGL equivalent. */
+    /*! Maps filter to OpenGL equivalent. */
     GLint mapFilter(EGETexture::Filter filter) const;
-    /* Maps texture addressing mode into OpenGL equivalent. */
+    /*! Maps texture addressing mode into OpenGL equivalent. */
     GLint mapAddressingMode(EGETexture::AddressingMode mode) const;
 
   private:

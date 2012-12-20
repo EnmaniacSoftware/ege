@@ -22,9 +22,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Renderer)
 EGE_DEFINE_DELETE_OPERATORS(Renderer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Renderer::Renderer(Application* app) : Object(app)
+Renderer::Renderer(Application* app) : Object(app),
+                                       m_p(NULL)
 {
-  m_p = ege_new RendererPrivate(this);
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------
 Renderer::~Renderer()
@@ -32,40 +32,37 @@ Renderer::~Renderer()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool Renderer::isValid() const
+EGEResult Renderer::construct()
 {
-  return NULL != m_p;
+  // create private implementation
+  m_p = ege_new RendererPrivate(this);
+  if (NULL == m_p)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sends all geometry through the geometry pipeline to hardware. */
 void Renderer::flush()
 {
-  if (isValid())
-  {
-    p_func()->flush();
-  }
+  EGE_ASSERT(NULL != m_p);
+  p_func()->flush();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Clears given viewport. */
 void Renderer::clearViewport(const PViewport& viewport)
 {
-  if (isValid())
-  {
-    p_func()->clearViewport(viewport);
-  }
+  EGE_ASSERT(NULL != m_p);
+  p_func()->clearViewport(viewport);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets given viewport. */
 void Renderer::setViewport(const PViewport& viewport)
 {
-  if (isValid())
-  {
-    p_func()->setViewport(viewport);
-  }
+  EGE_ASSERT(NULL != m_p);
+  p_func()->setViewport(viewport);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds given data for rendering. */
 bool Renderer::addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix)
 {
   EGE_ASSERT(component);
@@ -89,7 +86,6 @@ bool Renderer::addForRendering(const PRenderComponent& component, const Matrix4f
   return m_renderQueues[component->priority()]->addForRendering(component, worldMatrix);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets projection matrix. */
 void Renderer::setProjectionMatrix(const Matrix4f& matrix)
 {
   m_projectionMatrix = matrix;
@@ -104,20 +100,17 @@ void Renderer::setProjectionMatrix(const Matrix4f& matrix)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets view matrix. */
 void Renderer::setViewMatrix(const Matrix4f& matrix)
 {
   m_viewMatrix = matrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Resets statistics. */
 void Renderer::resetStats()
 {
   m_batchCount  = 0;
   m_vertexCount = 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates rectangle coordinates by given angle. */
 Rectf Renderer::applyRotation(const Rectf& rect, const Angle& angle) const
 {
   Rectf out;

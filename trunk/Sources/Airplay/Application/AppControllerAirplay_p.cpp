@@ -33,7 +33,6 @@ AppControllerPrivate::~AppControllerPrivate()
   s3eDeviceUnRegister(S3E_DEVICE_UNPAUSE, AppControllerPrivate::ResumeCB);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Enters main loop. */
 EGEResult AppControllerPrivate::run()
 {
   Time startTime;
@@ -41,7 +40,7 @@ EGEResult AppControllerPrivate::run()
   Time yieldTime;
 
   // app loop
-  while (!s3eDeviceCheckQuitRequest() && AppController::STATE_QUIT != d_func()->state())
+  while ( ! s3eDeviceCheckQuitRequest() && (AppController::STATE_QUIT != d_func()->state()))
   {
     // store this loop start time
     startTime.fromMicroseconds(Timer::GetMicroseconds());
@@ -63,14 +62,12 @@ EGEResult AppControllerPrivate::run()
 
     // give some time for OS
     yieldTime = d_func()->m_renderInterval - (endTime - startTime);
-    //EGE_PRINT("%d", yieldTime.miliseconds());
     s3eDeviceYield(Math::Max((s32) 0, static_cast<s32>(yieldTime.miliseconds())));
   }
 
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Pause callback. */
 int32 AppControllerPrivate::PauseCB(void* data, void* userData)
 {
   AppControllerPrivate* me = static_cast<AppControllerPrivate*>(userData);
@@ -81,7 +78,6 @@ int32 AppControllerPrivate::PauseCB(void* data, void* userData)
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Resume callback. */
 int32 AppControllerPrivate::ResumeCB(void* data, void* userData)
 {
   AppControllerPrivate* me = static_cast<AppControllerPrivate*>(userData);

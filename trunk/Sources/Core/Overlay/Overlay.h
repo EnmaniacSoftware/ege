@@ -12,7 +12,6 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Renderer;
 class Viewport;
-
 EGE_DECLARE_SMART_CLASS(Overlay, POverlay)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Overlay : public Object
@@ -25,35 +24,35 @@ class Overlay : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     virtual bool isValid() const;
-    /* Updates overlay. */
+    /*! Updates overlay. */
     virtual void update(const Time& time);
-    /* Sets alignment. */
+    /*! Sets alignment. */
     virtual void setAlignment(Alignment align);
     /*! Returns name. */
-    inline const String& name() const { return m_name; }
+    const String& name() const { return m_name; }
     /*! Returns physics component. */
-    inline PPhysicsComponent physics() const { return m_physics; }
+    PPhysicsComponent physics() const { return m_physics; }
     /*! Returns TRUE if overlay is visible. */
-    inline bool visible() const { return m_visible; }
-    /* Sets visibility. */
+    bool visible() const { return m_visible; }
+    /*! Sets visibility. */
     void setVisible(bool set);
     /*! Returns render component. */
-    inline PRenderComponent renderData() const { return m_renderData; }
+    PRenderComponent renderData() const { return m_renderData; }
     /*! Returns current alignment. */
     const Alignment& alignment() const { return m_alignment; }
     /*! Renders overlay. */
     virtual void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) = 0;
-    /* Sets transparency level. */
+    /*! Sets transparency level. */
     virtual void setAlpha(float32 alpha);
 
-    /* Returns size. */
+    /*! Returns size. */
     virtual const Vector2f& size() const;
-    /* Sets size. */
+    /*! Sets size. */
     void setSize(const Vector2f& size);
 
-    /* Returns rectangle containing the overlay. */
+    /*! Returns rectangle containing the overlay. */
 
     //// position and dimensions related methods
     //float getX( void ) const { return m_fX; }                                                                 // gets X relative position [0,1]
@@ -84,13 +83,13 @@ class Overlay : public Object
   protected:
 
     Overlay(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
-    /* Invalidates object forcing it to be updated next time it's possible. */
+    /*! Invalidates object forcing it to be updated next time it's possible. */
     void invalidate();
-    /* Validates object. */
+    /*! Validates object. */
     void validate();
     /*! Returns TRUE if update is needed. */
-    inline bool isUpdateNeeded() const { return m_updateNeeded; }
-    /* Initializes object. */
+    bool isUpdateNeeded() const { return m_updateNeeded; }
+    /*! Initializes object. */
     virtual void initialize();
 
   protected:

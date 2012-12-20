@@ -34,7 +34,6 @@ RenderComponent::~RenderComponent()
   m_material     = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets render material. */
 void RenderComponent::setMaterial(const PMaterial& material) 
 { 
   if (m_material != material)
@@ -45,13 +44,11 @@ void RenderComponent::setMaterial(const PMaterial& material)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IComponent override. Returns TRUE if component is valid. */
 bool RenderComponent::isValid() const
 {
   return (NULL != m_indexBuffer) && m_indexBuffer->isValid() && (NULL != m_vertexBuffer) && m_vertexBuffer->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets render priority. */
 void RenderComponent::setPriority(s32 priority)
 {
   if (m_priority != priority)
@@ -63,19 +60,16 @@ void RenderComponent::setPriority(s32 priority)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Invalidates hash value. */
 void RenderComponent::invalidateHash()
 {
   m_hashInvalid = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Validates hash value. */
 void RenderComponent::validateHash()
 {
   m_hashInvalid = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns hash. */
 u32 RenderComponent::hash()
 {
   if (isHashInvalid())
@@ -87,7 +81,6 @@ u32 RenderComponent::hash()
   return m_hash;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Calculates hash. */
 void RenderComponent::calculateHash()
 {
   u32 hash = 0;
@@ -139,20 +132,17 @@ void RenderComponent::calculateHash()
   m_hash = hash;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets clipping rectangle. */
 void RenderComponent::setClipRect(const Rectf& rect)
 {
   m_clipRect = rect;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets point size. */
 void RenderComponent::setPointSize(float32 size)
 {
   EGE_ASSERT(0 <= size);
   m_pointSize = size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets line width. */
 void RenderComponent::setLineWidth(float32 width)
 {
   EGE_ASSERT(0 <= width);

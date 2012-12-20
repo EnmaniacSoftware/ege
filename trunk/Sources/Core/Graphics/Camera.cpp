@@ -26,13 +26,11 @@ Camera::~Camera()
   m_sceneManager = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets look-at vector. */
 void Camera::setLookAt(const Vector3f& point)
 {
   m_lookAt = point;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Renders associated scene from camera's point of view onto given viewport. */
 void Camera::render(PViewport viewport)
 {
   if (m_sceneManager)
@@ -41,7 +39,6 @@ void Camera::render(PViewport viewport)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns camera's view matrix. */
 const Matrix4f& Camera::viewMatrix()
 {
 	// View matrix is:
@@ -85,13 +82,11 @@ const Matrix4f& Camera::viewMatrix()
   return m_viewMatrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Invalidates view matrix. */
 void Camera::invalidateViewMatrix()
 {
   m_viewMatrixNeedsUpdate = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid(). */
 bool Camera::isValid() const
 {
   return NULL != m_physics || !m_physics->isValid();

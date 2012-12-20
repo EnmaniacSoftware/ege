@@ -27,6 +27,7 @@ class AppController : public Object, public IEventListener
     /*! Available states. */
     enum State
     {
+      STATE_INVALID = 0,
       STATE_RUNNING,
       STATE_PAUSED,
       STATE_QUITTING,
@@ -35,30 +36,30 @@ class AppController : public Object, public IEventListener
 
   public:
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
-    /* Initializes controller with given parameters. */
+    /*! Creates object. */
+    EGEResult construct();
+    /*! Initializes controller with given parameters. */
     EGEResult initialize(const Dictionary& mParams);
-    /* Enters main loop. */
+    /*! Enters main loop. */
     EGEResult run();
-    /* Updates application. */
+    /*! Updates application. */
     void update();
-    /* Renders application. */
+    /*! Renders application. */
     void render();
     /*! Returns FPS indication. */
-    inline s32 fps() const { return m_fps; }
+    s32 fps() const { return m_fps; }
     /*! Returns controller timer. */
-    inline const Timer& timer() const { return m_timer; }
+    const Timer& timer() const { return m_timer; }
     /*! Returns current state. */
-    inline State state() const { return m_state; }
+    State state() const { return m_state; }
     /*! Returns last frame update duration. */
-    inline const Time& lastFrameUpdateDuration() const { return m_lastFrameUpdateDuration; }
+    const Time& lastFrameUpdateDuration() const { return m_lastFrameUpdateDuration; }
     /*! Returns last frame render duration. */
-    inline const Time& lastFrameRenderDuration() const { return m_lastFrameRenderDuration; }
+    const Time& lastFrameRenderDuration() const { return m_lastFrameRenderDuration; }
 
   private:
 
-    /* IEventListener override. Event reciever. */
+    /*! IEventListener override. Event reciever. */
     void onEventRecieved(PEvent pEvent) override;
    
   private:

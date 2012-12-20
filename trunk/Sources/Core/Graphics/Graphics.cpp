@@ -77,6 +77,12 @@ EGEResult Graphics::construct()
     return EGE_ERROR_NO_MEMORY;
   }
 
+  if (EGE_SUCCESS != (result = m_particleFactory->construct()))
+  {
+    // error!
+    return result;
+  }
+
   // create widget factory
   m_widgetFactory = ege_new WidgetFactory(app());
   if (NULL == m_widgetFactory)

@@ -75,7 +75,6 @@ inline Application* Object::app() const
   return m_app; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Returns reference count. */
 inline u32 Object::referenceCount()
 {
   return m_references;

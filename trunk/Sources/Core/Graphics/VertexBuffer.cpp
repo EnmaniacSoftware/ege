@@ -18,7 +18,6 @@ VertexBuffer::~VertexBuffer()
   destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds given array type to overall semantics. */
 bool VertexBuffer::addArray(EGEVertexBuffer::ArrayType type)
 {
   u32 offset = 0;
@@ -63,7 +62,6 @@ bool VertexBuffer::addArray(EGEVertexBuffer::ArrayType type)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns number of arrays of given type in semantics. */
 s32 VertexBuffer::arrayCount(EGEVertexBuffer::ArrayType type) const
 {
   s32 count = 0;
@@ -78,13 +76,11 @@ s32 VertexBuffer::arrayCount(EGEVertexBuffer::ArrayType type) const
   return count;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Destroys buffer. */
 void VertexBuffer::destroy()
 {
   clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns vertex size for current semantics (in bytes). */
 u32 VertexBuffer::vertexSize() const
 {
   // check if need to calculate
@@ -111,13 +107,11 @@ u32 VertexBuffer::vertexSize() const
   return m_vertexSize;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current buffer semantics. */
 const EGEVertexBuffer::SemanticArray& VertexBuffer::semantics() const
 {
   return m_semantics; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets semantics to given type. */
 bool VertexBuffer::setSemantics(EGEVertexBuffer::SemanticType type)
 {
   // clear any previous semantics
@@ -184,14 +178,13 @@ bool VertexBuffer::setSemantics(EGEVertexBuffer::SemanticType type)
   return setSemantics(arrayList);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets semantics to a given set of array types. */
 bool VertexBuffer::setSemantics(const List<EGEVertexBuffer::ArrayType>& types)
 {
   // add all array types in order
   for (List<EGEVertexBuffer::ArrayType>::const_iterator it = types.begin(); it != types.end(); ++it)
   {
     // add current array type
-    if (!addArray(*it))
+    if ( ! addArray(*it))
     {
       // error!
       return false;
@@ -201,7 +194,6 @@ bool VertexBuffer::setSemantics(const List<EGEVertexBuffer::ArrayType>& types)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Clears vertex data. */
 void VertexBuffer::clear()
 {
   m_locked = false;

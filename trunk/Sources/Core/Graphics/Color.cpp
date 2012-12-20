@@ -15,7 +15,10 @@ const Color Color::GRAY       = Color(0.5f, 0.5f, 0.5f, 1);
 const Color Color::DARK_GRAY  = Color(0.66f, 0.66f, 0.66f, 1);
 const Color Color::LIGHT_GRAY = Color(0.82f, 0.82f, 0.82f, 1);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns packed 32-bit RGBA color representation. */
+Color::Color(float32 red, float32 green, float32 blue, float32 alpha) : red(red), green(green), blue(blue), alpha(alpha)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 Color::packed() const
 {
   u32 r = static_cast<u32>(red * 255.0f);

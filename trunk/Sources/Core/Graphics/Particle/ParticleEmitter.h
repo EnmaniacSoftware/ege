@@ -20,12 +20,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(ParticleEmitter, PParticleEmitter)
 EGE_DECLARE_SMART_CLASS(ParticleAffector, PParticleAffector)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ParticleEmitter : public SceneNodeObject
 {
   public:
@@ -38,13 +35,13 @@ class ParticleEmitter : public SceneNodeObject
 
   public:
 
-    /* Signal emitted when new particle has been spawned. 
+    /*! Signal emitted when new particle has been spawned. 
      *  @param  particleData  Data of particle which has been just spawned.
      *  @note   Signal is emitted just after particle has been added into particle pool. Thus, it is guaranteed it will be found at the position of last active 
      *          particle.
      */
     Signal1<const EGEParticle::ParticleData&> particleSpawned;
-    /* Signal emitted when particle dies.
+    /*! Signal emitted when particle dies.
      *  @param  particleData  Data of particle which has just died.
      *  @param  index         Index of particle within particle pool.
      *  @note   Signal is emitted just before particle is removed from pool. Thus, it is guaranteed index will point to proper entry in the pool.
@@ -53,76 +50,74 @@ class ParticleEmitter : public SceneNodeObject
 
   public:
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
-    /* Initializes emitter from dictionary. */
+    /*! Initializes emitter from dictionary. */
     virtual bool initialize(const Dictionary& params);
-    /*  Starts system. 
+    /*! Starts system. 
      *  @note This resets all data. 
      */
     void start();
-    /* Stops system. */
+    /*! Stops system. */
     void stop();
-    /* Updates object. */
+    /*! Updates object. */
     void update(const Time& time);
     /*! Returns TRUE if emitter is working. */
-    inline bool isRunning() const { return m_active; }
+    bool isRunning() const { return m_active; }
 
-    /* Sets system life span. Negative time causes emitter to live infinitely. */
+    /*! Sets system life span. Negative time causes emitter to live infinitely. */
     void setLifeSpan(const Time& time);
-    /* Sets maximum number of particles. */
+    /*! Sets maximum number of particles. */
     void setParticleMaxCount(s32 count);
-    /* Sets emission rate. */
+    /*! Sets emission rate. */
     void setEmissionRate(s32 rate);
     /*! Returns number of active particles. */
-    inline s32 activeParticlesCount() const { return m_activeParticlesCount; }
+    s32 activeParticlesCount() const { return m_activeParticlesCount; }
 
-    /* Sets particle start size. */
+    /*! Sets particle start size. */
     void setParticleStartSize(const Vector2f& size);
-    /* Sets particle start size variance. */
+    /*! Sets particle start size variance. */
     void setParticleStartSizeVariance(const Vector2f& variance);
-    /* Sets particle end size. */
+    /*! Sets particle end size. */
     void setParticleEndSize(const Vector2f& size);
-    /* Sets particle end size variance. */
+    /*! Sets particle end size variance. */
     void setParticleStartEndVariance(const Vector2f& variance);
-    /* Sets particle life span. */
+    /*! Sets particle life span. */
     void setParticleLifeSpan(const Time& duration);
-    /* Sets particle life span variance. */
+    /*! Sets particle life span variance. */
     void setParticleLifeSpanVariance(const Time& variance);
-    /* Sets particle start color. */
+    /*! Sets particle start color. */
     void setParticleStartColor(const Color& color);
-    /* Sets particle start color variance. */
+    /*! Sets particle start color variance. */
     void setParticleStartColorVariance(const Color& variance);
-    /* Sets particle end color. */
+    /*! Sets particle end color. */
     void setParticleEndColor(const Color& color);
-    /* Sets particle end color variance. */
+    /*! Sets particle end color variance. */
     void setParticleEndColorVariance(const Color& variance);
-    /* Sets particle spin speed (degs/sec). */
+    /*! Sets particle spin speed (degs/sec). */
     void setParticleSpinSpeed(float32 speed);
-    /* Sets particle spin speed variance (degs/sec). */
+    /*! Sets particle spin speed variance (degs/sec). */
     void setParticleSpinSpeedVariance(float32 variance);
    
-    /* Sets material. */
+    /*! Sets material. */
     void setMaterial(const PMaterial& material);
 
-    /* Adds affector. */
+    /*! Adds affector. */
     void addAffector(PParticleAffector& affector);
-    /* Removes given affector. */
+    /*! Removes given affector. */
     void removeAffector(PParticleAffector& affector);
 
     /*! Returns render component. */
-    inline const PRenderComponent& renderComponent() const { return m_renderData; }
+    const PRenderComponent& renderComponent() const { return m_renderData; }
 
-    /* Adds object render data for rendering with given renderer. */
+    /*! Adds object render data for rendering with given renderer. */
     bool addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
 
   private:
 
     /*! Returns TRUE if there is no available space for new particle. */
-    inline bool isFull() const { return m_activeParticlesCount == m_particleMaxCount; }
-    /* Allocates particles data. */
+    bool isFull() const { return m_activeParticlesCount == m_particleMaxCount; }
+    /*! Allocates particles data. */
     bool allocateParticlesData();
-    /* Applies affectors. */
+    /*! Applies affectors. */
     void applyAffectors(const Time& time);
     /*! Initializes particle at given index. */
     virtual void initializeParticle(s32 index) = 0;
@@ -180,7 +175,6 @@ class ParticleEmitter : public SceneNodeObject
     /*! List of affectors. */
     ParticleAffectorList m_affectors;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

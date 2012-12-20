@@ -11,11 +11,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(ParticleAffectorForce, PParticleAffectorForce)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ParticleAffectorForce : public ParticleAffector
 {
   public:
@@ -28,18 +25,14 @@ class ParticleAffectorForce : public ParticleAffector
 
   public:
 
-    /* Creates instance of affector. This method is a registration method for factory. */
+    /*! Creates instance of affector. This method is a registration method for factory. */
     static PParticleAffector Create(Application* app, const String& name);
 
   public:
 
-    /* ParticleAffector override. Initializes affector from dictionary. */
+    /*! @see ParticleAffector::initialize. */
     bool initialize(const Dictionary& params) override;
-    /*  ParticleAffector override. Applies logic to given particles. 
-     *  @param  time        Time increment for which calculations should be performed.
-     *  @param  particles   Array of particles to apply data to.
-     *  @param  count       Number of particles, counted from the first entry in array, for which calculations are to be done.
-     */
+    /*! @see ParticleAffector::apply. */
     void apply(const Time& time, ParticleDataArray& particles, u32 count) override;
 
   private:
@@ -47,7 +40,6 @@ class ParticleAffectorForce : public ParticleAffector
     /*! Force vector. */
     Vector3f m_force;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

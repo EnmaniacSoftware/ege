@@ -20,33 +20,29 @@ Font::~Font()
   m_material = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if material is valid. */
 bool Font::isValid() const
 {
-  return NULL != m_material && m_material->isValid();
+  return (NULL != m_material) && m_material->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets material. */
 void Font::setMaterial(PMaterial material)
 {
   m_material = material;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns pointer to data for a given glyph. NULL if glyph is not defined. */
 const GlyphData* Font::glyphData(Char c) const
 {
   Map<Char, GlyphData>::const_iterator it = m_glyphs.find(c);
   return (it != m_glyphs.end()) ? &it->second : NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns metrics of the given text. */
 Vector2i Font::metrics(const Text& text) const
 {
   Vector2i metrics(0, height());
   for (Text::const_iterator it = text.begin(); it != text.end(); ++it)
   {
     const GlyphData* data = glyphData(*it);
-    if (data)
+    if (NULL != data)
     {
       metrics.x += data->m_width;
     }

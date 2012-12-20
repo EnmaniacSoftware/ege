@@ -29,30 +29,30 @@ class Angle
 
   public:
 
-    /* Returns angle object from degrees. */
+    /*! Returns angle object from degrees. */
     static Angle FromDegrees(float32 degrees);
-    /* Returns angle object from radians. */
+    /*! Returns angle object from radians. */
     static Angle FromRadians(float32 radians);
 
   public:
 
-    /* Sets angle from degrees. */
+    /*! Sets angle from degrees. */
     void fromDegrees(float32 degrees);
-    /* Returns angle in degrees. */
+    /*! Returns angle in degrees. */
     float32 degrees() const;
-    /* Sets angle from radians. */
-    inline void fromRadians(float32 radians) { m_radians = radians; }
+    /*! Sets angle from radians. */
+    void fromRadians(float32 radians) { m_radians = radians; }
     /*! Returns angle in radians. */
-    inline float32 radians() const { return m_radians; }
-    /* Normalizes angle to 2PI interval around center. 
-     * @param center  Center point around around which angle is spread. If 0 result interval after normalization will be [-PI..+PI].
-     * @note  For normalization resulting in [0..2PI] interval use PI as center point.
-     * @note  Due to numerical inaccuracies intervals are closed on both sides rather than only at one.
+    float32 radians() const { return m_radians; }
+    /*! Normalizes angle to 2PI interval around center. 
+     *  @param center  Center point around around which angle is spread. If 0 result interval after normalization will be [-PI..+PI].
+     *  @note  For normalization resulting in [0..2PI] interval use PI as center point.
+     *  @note  Due to numerical inaccuracies intervals are closed on both sides rather than only at one.
      */
     void normalize(float32 center = EGEMath::PI);
-    /* Returns normalized angle in [0-2PI) degrees interval. */
+    /*! Returns normalized angle in [0-2PI) degrees interval. */
     Angle normalized() const;
-    /* Returns angle distance from current angle to given one. */
+    /*! Returns angle distance from current angle to given one. */
     Angle distanceTo(const Angle& angle, EGEAngle::Direction direction);
 
   private:

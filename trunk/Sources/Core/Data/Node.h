@@ -30,35 +30,35 @@ class Node
     Node(Application* app, const String& name, Node* parent, EGEPhysics::ComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
     virtual ~Node();
 
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     bool isValid() const;
     /*! Returns node name. */
-    inline const String& name() const { return m_name; }
+    const String& name() const { return m_name; }
     /*! Returns node's parent. NULL if this is root node. */
-    inline Node* parent() const { return m_parent; }
+    Node* parent() const { return m_parent; }
 
-    /* Deletes child node with a given name and detaches it. */
+    /*! Deletes child node with a given name and detaches it. */
     void deleteChildNode(const String& name);
-    /* Deletes and detaches all child nodes. */
+    /*! Deletes and detaches all child nodes. */
     void deleteAllChildNodes();
-    /* Returns number of child nodes. */
+    /*! Returns number of child nodes. */
     u32 childNodeCount() const;
-    /* Returns child node with a given name. Returns NULL if no such node exists. */
+    /*! Returns child node with a given name. Returns NULL if no such node exists. */
     Node* childNode(const String& name) const;
 
     /*! Returns local physics component. */
-    inline PPhysicsComponent physics() const { return m_physics; }
+    PPhysicsComponent physics() const { return m_physics; }
     /*! Returns cached combined world matrix. */
     const Matrix4f& worldMatrix() const;
 
     /*! Returns TRUE if object is visible. */
-    inline bool isVisible() const { return m_visible; }
-    /* Sets visibility flag. */
+    bool isVisible() const { return m_visible; }
+    /*! Sets visibility flag. */
     void setVisible(bool set);
 
   protected:
 
-    /* Creates child node with a given name and attaches it. */
+    /*! Creates child node with a given name and attaches it. */
     Node* createChildNode(const String& name, EGEPhysics::ComponentType componentType);
     /*! Creates child node with a given name. MUST be overriden by subclass. */
     virtual Node* createChildNodeImpl(const String& name, EGEPhysics::ComponentType componentType) = 0;
@@ -80,7 +80,7 @@ class Node
 
   private slots:
 
-    /* Called when one of transformation values has beeen changed. */
+    /*! Called when one of transformation values has beeen changed. */
     void transformationChanged();
 
   private:

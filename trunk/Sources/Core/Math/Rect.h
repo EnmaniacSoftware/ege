@@ -8,6 +8,7 @@
 
 #include <EGETypes.h>
 #include <EGEVector.h>
+//#include "Core/Debug/Debug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -20,38 +21,37 @@ class TRect
     TRect(T x = 0, T y = 0, T w = 0, T h = 0);
     TRect(const TRect<T>& rect);
 
-    inline TRect<T>& operator=(const TRect<T>& rect);
+    TRect<T>& operator =(const TRect<T>& rect);
+    bool      operator==(const TRect<T>& rect) const;
+    bool      operator!=(const TRect<T>& rect) const;
 
-    inline bool operator==(const TRect<T>& rect) const;
-    inline bool operator!=(const TRect<T>& rect) const;
-
-    /* Returns TRUE if rectangle is empty (has no dimensions). */
-    inline bool isEmpty() const;
-    /* Returns TRUE if rectangle is invalid (negative dimenions). */
-    inline bool isNull() const;
-    /* Returns coordinate of right edge. */
-    inline T right() const;
-    /* Returns coordinate of left edge. */
-    inline T left() const;
-    /* Returns coordinate of top edge. */
-    inline T top() const;
-    /* Returns coordinate of bottom edge. */
-    inline T bottom() const;
-    /* Returns TRUE if given point is within rectangle. */
-    inline bool contains(T x, T y) const;
-    /* Returns TRUE if given point is within rectangle. */
-    inline bool contains(const TVector2<T>& point) const;
-    /* Returns TRUE if given rectangle is within current one. */
-    inline bool contains(const TRect<T>& rect) const;
-    /* Calculates intersection rectangle between current and given rectangle. If there is no intersection resulting rectangle is nulled. */
-    inline TRect<T> intersect(const TRect<T>& rect) const;
-    /* Calculates union rectangle between current and given rectangle. */
-    inline TRect<T> unite(const TRect<T>& rect) const;
-    /* Calculates combined rectangle between current and given rectangle.
-     * @param  rect  Rectangle to combine self with.
-     * @note Combined rectangle is the a new rectangle in local space of current one. This is useful to calculate part of current rectangle defined by other.
+    /*! Returns TRUE if rectangle is empty (has no dimensions). */
+    bool isEmpty() const;
+    /*! Returns TRUE if rectangle is invalid (negative dimenions). */
+    bool isNull() const;
+    /*! Returns coordinate of right edge. */
+    T right() const;
+    /*! Returns coordinate of left edge. */
+    T left() const;
+    /*! Returns coordinate of top edge. */
+    T top() const;
+    /*! Returns coordinate of bottom edge. */
+    T bottom() const;
+    /*! Returns TRUE if given point is within rectangle. */
+    bool contains(T x, T y) const;
+    /*! Returns TRUE if given point is within rectangle. */
+    bool contains(const TVector2<T>& point) const;
+    /*! Returns TRUE if given rectangle is within current one. */
+    bool contains(const TRect<T>& rect) const;
+    /*! Calculates intersection rectangle between current and given rectangle. If there is no intersection resulting rectangle is nulled. */
+    TRect<T> intersect(const TRect<T>& rect) const;
+    /*! Calculates union rectangle between current and given rectangle. */
+    TRect<T> unite(const TRect<T>& rect) const;
+    /*! Calculates combined rectangle between current and given rectangle.
+     *  @param  rect  Rectangle to combine self with.
+     *  @note Combined rectangle is the a new rectangle in local space of current one. This is useful to calculate part of current rectangle defined by other.
      */
-    inline TRect<T> combine(const TRect<T>& rect) const;
+    TRect<T> combine(const TRect<T>& rect) const;
 
   public:
 
@@ -83,7 +83,7 @@ TRect<T>::TRect(const TRect<T>& rect) : x(rect.x), y(rect.y), width(rect.width),
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TRect<T>& TRect<T>::operator=(const TRect<T>& rect)
+inline TRect<T>& TRect<T>::operator=(const TRect<T>& rect)
 {
   x      = rect.x;
   y      = rect.y;
@@ -94,76 +94,67 @@ TRect<T>& TRect<T>::operator=(const TRect<T>& rect)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TRect<T>::operator==(const TRect<T>& rect) const
+inline bool TRect<T>::operator==(const TRect<T>& rect) const
 {
   return x == rect.x && y == rect.y && width == rect.width && height == rect.height;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TRect<T>::operator!=(const TRect<T>& rect) const
+inline bool TRect<T>::operator!=(const TRect<T>& rect) const
 {
   return !(*this == rect);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if rectangle is empty (has no dimensions). */
 template <typename T>
-bool TRect<T>::isEmpty() const
+inline bool TRect<T>::isEmpty() const
 {
   return (0 == width) || (0 == height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns coordinate of right edge. */
 template <typename T>
-T TRect<T>::right() const
+inline T TRect<T>::right() const
 {
   return x + width - 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns coordinate of bottom edge. */
 template <typename T>
-T TRect<T>::bottom() const
+inline T TRect<T>::bottom() const
 {
   return y + height - 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns coordinate of left edge. */
 template <typename T>
-T TRect<T>::left() const
+inline T TRect<T>::left() const
 {
   return x;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns coordinate of top edge. */
 template <typename T>
-T TRect<T>::top() const
+inline T TRect<T>::top() const
 {
   return y;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if rectangle is invalid (negative dimensions). */
 template <typename T>
-bool TRect<T>::isNull() const
+inline bool TRect<T>::isNull() const
 {
   return (0 > width) || (0 > height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given point is within rectangle. */
 template <typename T>
-bool TRect<T>::contains(T x, T y) const
+inline bool TRect<T>::contains(T x, T y) const
 {
   return (x >= left()) && (y >= top()) && (x < right()) && (y < bottom());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given point is within rectangle. */
 template <typename T>
-bool TRect<T>::contains(const TVector2<T>& point) const
+inline bool TRect<T>::contains(const TVector2<T>& point) const
 {
   return contains(point.x, point.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Calculates intersection rectangle between current and given rectangle. If there is no intersection resulting rectangle is nulled. */
 template <typename T>
-TRect<T> TRect<T>::intersect(const TRect<T>& rect) const
+inline TRect<T> TRect<T>::intersect(const TRect<T>& rect) const
 {
   TRect<T> out;
 
@@ -175,9 +166,8 @@ TRect<T> TRect<T>::intersect(const TRect<T>& rect) const
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Calculates union rectangle between current and given rectangle. */
 template <typename T>
-TRect<T> TRect<T>::unite(const TRect<T>& rect) const
+inline TRect<T> TRect<T>::unite(const TRect<T>& rect) const
 {
   TRect<T> out;
 
@@ -189,12 +179,8 @@ TRect<T> TRect<T>::unite(const TRect<T>& rect) const
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Calculates combined rectangle between current and given rectangle. 
- *  @param  rect  Rectangle to combine self with.
- *  @note Combined rectangle is the a new rectangle in local space of current one. This is useful to calculate part of current rectangle defined by other.
- */
 template <typename T>
-TRect<T> TRect<T>::combine(const TRect<T>& rect) const
+inline TRect<T> TRect<T>::combine(const TRect<T>& rect) const
 {
   TRect<T> out;
 
@@ -206,9 +192,8 @@ TRect<T> TRect<T>::combine(const TRect<T>& rect) const
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given rectangle is within current one. */
 template <typename T>
-bool TRect<T>::contains(const TRect<T>& rect) const
+inline bool TRect<T>::contains(const TRect<T>& rect) const
 {
   // sanity checks
   if (rect.isNull() || rect.isEmpty() || isNull() || isEmpty())
@@ -226,7 +211,7 @@ bool TRect<T>::contains(const TRect<T>& rect) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //template <typename T>
-//Debug& operator << (Debug& debug, const TRect<T>& obj)
+//inline Debug& operator << (Debug& debug, const TRect<T>& rect)
 //{
 //  debug.nospace() << "Rect(" << obj.x << "," << obj.y << " - " << obj.width << "," obj.height << ")";
 //  return debug.space();

@@ -2,14 +2,12 @@
 #define EGE_AIRPLAY_APPCONTROLLER_PRIVATE_H
 
 #include <EGE.h>
-#include "Core/Event/EventListener.h"
-#include "Core/ConfigParams.h"
 #include <EGETime.h>
+#include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AppControllerPrivate
 {
   public:
@@ -22,17 +20,16 @@ class AppControllerPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(AppController)
 
-    /* Enters main loop. */
+    /*! Enters main loop. */
     EGEResult run();
 
   private:
 
-    /* Pause callback. */
+    /*! Pause callback. */
     static int32 PauseCB(void* data, void* userData);
-    /* Resume callback. */
+    /*! Resume callback. */
     static int32 ResumeCB(void* data, void* userData);
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

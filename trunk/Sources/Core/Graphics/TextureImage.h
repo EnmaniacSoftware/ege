@@ -26,42 +26,42 @@ class TextureImage : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     bool isValid() const;
 
     /*! Return name. */
-    inline const String& name() const { return m_name; }
-    /* Sets name. */
+    const String& name() const { return m_name; }
+    /*! Sets name. */
     void setName(const String& name);
 
-    /* Sets texture which obejct refers to. */
+    /*! Sets texture which obejct refers to. */
     void setTexture(const PObject& texture);
     /*! Returns texture object refers to. */
-    inline PObject texture() const { return m_texture; }
+    PObject texture() const { return m_texture; }
 
-    /* Sets rectangle within texture this object refers to. 
-     * @param rect  Rectangle within texture (in normalized local space).
+    /*! Sets rectangle within texture this object refers to. 
+     *  @param rect  Rectangle within texture (in normalized local space).
      */
     void setRect(const Rectf& rect);
     /*! Returns rectangle (in normalized local space) object refers to. */
-    inline const Rectf& rect() const { return m_rect; }
+    const Rectf& rect() const { return m_rect; }
 
-    /* Sets environment mode. */
+    /*! Sets environment mode. */
     void setEnvironmentMode(EGETexture::EnvironmentMode mode);
     /*! Returns environment mode. */
-    inline EGETexture::EnvironmentMode environmentMode() const { return m_envMode; }
+    EGETexture::EnvironmentMode environmentMode() const { return m_envMode; }
 
-    /* Sets rotation angle. */
+    /*! Sets rotation angle. */
     void setRotationAngle(const Angle& angle);
     /*! Returns rotation angle. */
-    inline const Angle& rotationAngle() const { return m_rotationAngle; }
+    const Angle& rotationAngle() const { return m_rotationAngle; }
 
-    /* Makes a copy of given texture image. */
+    /*! Makes a copy of given texture image. */
     void copy(const TextureImage* other);
 
-    /* Returns width (in texels). */
+    /*! Returns width (in texels). */
     s32 width() const;
-    /* Returns height (in texels). */
+    /*! Returns height (in texels). */
     s32 height() const;
 
   private:

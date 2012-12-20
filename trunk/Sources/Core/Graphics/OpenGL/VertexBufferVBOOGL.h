@@ -26,36 +26,30 @@ class VertexBufferVBO : public VertexBuffer
 
   public:
 
-    /* VertexBuffer override. Returns TRUE if object is valid. */
+    /*! @see VertexBuffer::isValid. */
     bool isValid() const override;
-    /* VertexBuffer override. Sets buffer to given size. 
-     * @param count Number of vertices buffer should contain.
-     * @return Returns TRUE if success. Otherwise, FALSE.
-     */
+    /*! @see VertexBuffer::setSize. */
     bool setSize(u32 count) override;
-    /* VertexBuffer override. Locks buffer's given part of the buffer for read/write operations. 
-     * @param offset  0-based vertex offset from which locking should be done. 
-     * @param count   Number of vertices to lock.
-     */
+    /*! @see VertexBuffer::lock. */
     void* lock(u32 offset, u32 count) override;
-    /* VertexBuffer override. Unlocks buffer. */
+    /*! @see VertexBuffer::unlock. */
     void unlock(void* data) override;
 
-    /*! VertexBuffer override. Returns number of allocated vertices. */
+    /*! @see VertexBuffer::vertexCount. */
     u32 vertexCount() const override { return m_vertexCount; }
-    /* VertexBuffer override. Returns maximal number of available vertices. */
+    /*! @see VertexBuffer::vertexCapacity. */
     u32 vertexCapacity() const override { return m_vertexCapacity; }
 
-    /* Binds buffer. */
+    /*! Binds buffer. */
     void bind();
-    /* Unbinds buffer. */
+    /*! Unbinds buffer. */
     void unbind();
 
   private:
 
-    /* VertexBuffer override. Destroys buffer. */
+    /*! @see VertexBuffer::destroy. */
     void destroy() override;
-    /* Reallocates internal buffer to accomodate given number of vertices. */
+    /*! Reallocates internal buffer to accomodate given number of vertices. */
     bool reallocateBuffer(u32 count);
 
   private:

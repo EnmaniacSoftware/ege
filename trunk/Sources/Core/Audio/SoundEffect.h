@@ -31,12 +31,10 @@ class SoundEffect : public Object
 
   public:
 
-    /*! Returns TRUE if object is valid. */
-    virtual bool isValid() const = 0;
     /*! Updates object. 
-     * @param time  Time frame for which update should be done.
-     * @param sound Sound object for which effect is being run.
-     * @return  Returns TRUE if effect came to completion. Otherwise, returns FALSE.
+     *  @param time  Time frame for which update should be done.
+     *  @param sound Sound object for which effect is being run.
+     *  @return  Returns TRUE if effect came to completion. Otherwise, returns FALSE.
      */
     virtual bool update(const Time& time, PSound sound) = 0;
     /*! Resets effect. */

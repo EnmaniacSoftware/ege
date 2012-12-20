@@ -33,13 +33,11 @@ EGEResult SoundPrivate::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates object. */
 void SoundPrivate::update(const Time& time)
 {
   EGE_UNUSED(time)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts playback. */
 EGEResult SoundPrivate::play()
 {
   AudioCodec* codec = d_func()->codec();
@@ -113,7 +111,6 @@ EGEResult SoundPrivate::play()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Stops playback. */
 EGEResult SoundPrivate::stop()
 {
   // check if compressed sound
@@ -140,7 +137,6 @@ EGEResult SoundPrivate::stop()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if sound is being played. */
 bool SoundPrivate::isPlaying() const
 {
   // check if compressed sound
@@ -157,7 +153,6 @@ bool SoundPrivate::isPlaying() const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called on sound volume change. */
 void SoundPrivate::onSoundVolumeChanged(PSound sound, float32 oldVolume)
 {
   EGE_ASSERT(sound->p_func() == this);
@@ -176,7 +171,6 @@ void SoundPrivate::onSoundVolumeChanged(PSound sound, float32 oldVolume)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Pauses playback. */
 EGEResult SoundPrivate::pause()
 {
   // check if compressed sound
@@ -188,7 +182,6 @@ EGEResult SoundPrivate::pause()
   return (S3E_TRUE == s3eSoundChannelPause(m_channel)) ? EGE_SUCCESS : EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if sound is paused. */
 bool SoundPrivate::isPaused() const
 {
   // check if compressed sound
@@ -200,7 +193,6 @@ bool SoundPrivate::isPaused() const
   return (1 == s3eSoundChannelGetInt(m_channel, S3E_CHANNEL_PAUSED));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if sound is stopped. */
 bool SoundPrivate::isStopped() const
 {
   // check if compressed sound

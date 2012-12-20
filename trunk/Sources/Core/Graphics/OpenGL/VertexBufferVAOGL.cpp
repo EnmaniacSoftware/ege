@@ -18,16 +18,11 @@ VertexBufferVA::~VertexBufferVA()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Returns TRUE if object is valid. */
 bool VertexBufferVA::isValid() const
 {
   return (NULL != m_buffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Sets buffer to given size. 
- * @param count Number of vertices buffer should contain.
- * @return Returns TRUE if success. Otherwise, FALSE.
- */
 bool VertexBufferVA::setSize(u32 count)
 {
   EGE_ASSERT(!m_locked);
@@ -49,7 +44,6 @@ bool VertexBufferVA::setSize(u32 count)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Destroys buffer. */
 void VertexBufferVA::destroy()
 {
   m_buffer = NULL;
@@ -58,10 +52,6 @@ void VertexBufferVA::destroy()
   VertexBuffer::destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Locks buffer's given part of the buffer for read/write operations. 
- *  @param offset  0-based vertex offset from which locking should be done. 
- *  @param count   Number of vertices to lock.
- */
 void* VertexBufferVA::lock(u32 offset, u32 count)
 {
   EGE_ASSERT(!m_locked);
@@ -93,7 +83,6 @@ void* VertexBufferVA::lock(u32 offset, u32 count)
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Unlocks buffer. */
 void VertexBufferVA::unlock(void* data)
 {
   if (data)
@@ -104,13 +93,11 @@ void VertexBufferVA::unlock(void* data)
   m_locked = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Returns number of allocated vertices. */
 u32 VertexBufferVA::vertexCount() const
 {
   return (m_buffer) ? static_cast<u32>(m_buffer->size() / vertexSize()) : 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Reallocates internal buffer to accomodate given number of indicies. */
 bool VertexBufferVA::reallocateBuffer(u32 count)
 {
   // allocate buffer for requested indicies
@@ -123,7 +110,6 @@ bool VertexBufferVA::reallocateBuffer(u32 count)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Returns maximal number of available vertices. */
 u32 VertexBufferVA::vertexCapacity() const
 {
   return (m_buffer) ? static_cast<u32>(m_buffer->capacity() / vertexSize()) : 0;

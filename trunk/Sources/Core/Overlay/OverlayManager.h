@@ -10,12 +10,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Renderer;
 class Viewport;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class OverlayManager : public Object
 {
   public: 
@@ -26,22 +23,22 @@ class OverlayManager : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Renders all elements. */
+    /*! Renders all elements. */
     void render(Viewport* viewport, Renderer* renderer);
-    /* Updates manager. */
+    /*! Updates manager. */
     void update(const Time& time);
-    /* Adds overlay. 
-     * @param overlay Overlay to be added.
-     * @return  EGE_SUCCESS if operation succeeds. EGE_ERROR_ALREADY_EXISTS if overlay with such name already exists. Otherwise, EGE_ERROR.
+    /*! Adds overlay. 
+     *  @param overlay Overlay to be added.
+     *  @return  EGE_SUCCESS if operation succeeds. EGE_ERROR_ALREADY_EXISTS if overlay with such name already exists. Otherwise, EGE_ERROR.
      */
     EGEResult add(const POverlay& overlay);
-    /* Removes overlay of the given name. */
+    /*! Removes overlay of the given name. */
     void remove(const String& name);
-    /* Removes givem overlay. */
+    /*! Removes givem overlay. */
     void remove(const POverlay& overlay);
-    /* Removes all overlays. */
+    /*! Removes all overlays. */
     void removeAll();
-    /* Returns overlay of the given name. */
+    /*! Returns overlay of the given name. */
     POverlay overlay(const String& name) const;
 
   private:
@@ -53,7 +50,6 @@ class OverlayManager : public Object
     /*! Pool of overlays. */
     OverlayList m_overlays;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

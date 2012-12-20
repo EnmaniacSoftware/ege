@@ -23,12 +23,16 @@ class Frustum : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  public:
+
+    /*! Available projection types. */
     enum ProjectionType
     {
       ORTHOGRAPHIC,
       PERSPECTIVE
     };
 
+    /*! Available planes. */
     enum Plane
     {
       PLANE_NEAR = 0,
@@ -40,35 +44,37 @@ class Frustum : public Object
       PLANE_COUNT
     };
 
-    /* Updates frustum. */
+  public:
+
+    /*! Updates frustum. */
     void update();
     /*! Returns projection type. */
-    inline ProjectionType projectionType() const { return m_projectionType; }
-    /* Sets projection type. */
+    ProjectionType projectionType() const { return m_projectionType; }
+    /*! Sets projection type. */
     void setProjectionType(ProjectionType projection);
     /*! Returns near plane distance. */
-    inline float32 nearPlaneDistance() const { return m_nearPlaneDistance; }
-    /* Sets near plane distance. */
+    float32 nearPlaneDistance() const { return m_nearPlaneDistance; }
+    /*! Sets near plane distance. */
     void setNearPlaneDistance(float32 distance);
     /*! Returns far plane distance. */
-    inline float32 farPlaneDistance() const { return m_farPlaneDistance; }
-    /* Sets far plane distance. */
+    float32 farPlaneDistance() const { return m_farPlaneDistance; }
+    /*! Sets far plane distance. */
     void setFarPlaneDistance(float32 distance);
     /*! Returns aspect ratio. */
-    inline float32 aspectRatio() const { return m_aspectRatio; }
-    /* Sets aspect ratio. */
+    float32 aspectRatio() const { return m_aspectRatio; }
+    /*! Sets aspect ratio. */
     void setAspectRatio(float32 aspectRatio);
     /*! Returns Field-Of-View along Y-axis. */
-    inline const Angle& FOVy() const { return m_FOVy; }
-    /* Sets Field-Of-View. */
+    const Angle& FOVy() const { return m_FOVy; }
+    /*! Sets Field-Of-View. */
     void setFOVy(const Angle& angle);
-    /* Returns projection matrix. */
+    /*! Returns projection matrix. */
     const Matrix4f& projectionMatrix();
-    /* Sets orthographic view settings. */
+    /*! Sets orthographic view settings. */
     void setOrthoSettings(const Rectf& rect);
 //    bool isVisible( const CAxisAlignedBox& cBox );                                   // returns TRUE if given AABB is visible
 //    bool isVisible( const CSphere& cSphere );                                        // returns TRUE if given sphere is visible
-    /* Returns TRUE if point is within vfrustum. */
+    /*! Returns TRUE if point is within vfrustum. */
     bool isVisible(const Vector4f& point);
 
     // projection related methods
@@ -110,13 +116,13 @@ class Frustum : public Object
 
   private:
 
-    /* Invalidates frustum planes. */
+    /*! Invalidates frustum planes. */
     void invalidateFrustumPlanes();
-    /* Calculates frustum planes. */
+    /*! Calculates frustum planes. */
     void calculateFrustumPlanes();
-    /* Invalidates projection matrix. */
+    /*! Invalidates projection matrix. */
     void invalidateProjectionMatrix();
-    /* Calculates projetction matrix. */
+    /*! Calculates projetction matrix. */
     void calculateProjectionMatrix();
     //void invalidateFrustumPlanes( void );                                                     // invalidates frustum planes
     //void updateFrustumPlanes( void );                                                         // updates frustum planes

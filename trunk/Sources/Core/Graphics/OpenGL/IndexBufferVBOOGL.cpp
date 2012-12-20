@@ -55,16 +55,11 @@ IndexBufferVBO::~IndexBufferVBO()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Returns TRUE if object is valid. */
 bool IndexBufferVBO::isValid() const
 {
   return (0 < m_id) && (NULL != m_shadowBuffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IndexBuffer override. Sets buffer to given size. 
- * @param count Number of indicies buffer should contain.
- * @return Returns TRUE if success. Otherwise, FALSE.
- */
 bool IndexBufferVBO::setSize(u32 count)
 {
   EGE_ASSERT(!m_locked);
@@ -83,10 +78,6 @@ bool IndexBufferVBO::setSize(u32 count)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Locks buffer's given part of the buffer for read/write operations. 
- * @param offset  0-based vertex offset from which locking should be done. 
- * @param count   Number of vertices to lock.
- */
 void* IndexBufferVBO::lock(u32 offset, u32 count)
 {
   EGE_ASSERT(!m_locked);
@@ -153,7 +144,6 @@ void* IndexBufferVBO::lock(u32 offset, u32 count)
   return buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unlocks buffer. */
 void IndexBufferVBO::unlock(void* data)
 {
   EGE_UNUSED(data);
@@ -205,7 +195,6 @@ void IndexBufferVBO::unlock(void* data)
   m_locked = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Reallocates internal buffer to accomodate given number of vertices. */
 bool IndexBufferVBO::reallocateBuffer(u32 count)
 {
   // check if requested count is NOT within capacity
@@ -233,21 +222,18 @@ bool IndexBufferVBO::reallocateBuffer(u32 count)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Binds buffer. */
 void IndexBufferVBO::bind()
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
   OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unbinds buffer. */
 void IndexBufferVBO::unbind()
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
   OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Destroys buffer. */
 void IndexBufferVBO::destroy()
 {
   if (0 < m_id)

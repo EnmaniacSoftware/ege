@@ -43,13 +43,6 @@ AudioCodecOgg::~AudioCodecOgg()
   close();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* AudioCodec override. Decodes up to given number of samples. 
- * @param  out             Data buffer containing decoded samples.
- * @param  samplesCount    Number of samples to be decoded.
- * @param  samplesDecoded  Number of actual samples decoded. May be different than requested.
- * @return Returns TRUE if end of data has been reached. Otherwise, false.
- * @note Number of actually decoded samples may be less than requested if end of data is reached. Otherwise it should match the requested value.
- */
 bool AudioCodecOgg::decode(const PDataBuffer& out, s32 samplesCount, s32& samplesDecoded)
 {
   // check if no codec stream
@@ -160,14 +153,6 @@ bool AudioCodecOgg::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Uploads mono channel into data buffers. 
- * @param out         Primary output buffer data in being uploaded into.
- * @param outCount    Number of samples to be uploaded to primary buffer.
- * @param totalCount  Total number of samples to be uploaded.
- * @param channel     Samples data to be uploaded into the buffer.
- * @note  Only outCount number of samples will be uploaded into primary buffer. Any exceeding samples will be appended into overflous buffer. Sample data
- *        is mapped into 16-bit integer samples before uploading.
- */
 void AudioCodecOgg::uploadMonoChannel(const PDataBuffer& out, s32 outCount, s32 totalCount, float* channel)
 {
   // process data which should end up directly in output buffer
@@ -186,15 +171,6 @@ void AudioCodecOgg::uploadMonoChannel(const PDataBuffer& out, s32 outCount, s32 
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Uploads stereo channels into data buffers.
- * @param out             Primary output buffer data in being uploaded into.
- * @param outCount        Number of samples to be uploaded to primary buffer.
- * @param totalCount      Total number of samples to be uploaded.
- * @param leftChannel     Samples data of left channel to be uploaded into the buffer.
- * @param rightChannel    Samples data of right channel to be uploaded into the buffer.
- * @note  Only outCount number of samples will be uploaded into primary buffer. Any exceeding samples will be appended into overflous buffer. Sample data
- *        is mapped into 16-bit integer samples before uploading.
- */
 void AudioCodecOgg::uploadStereoChannels(const PDataBuffer& out, s32 outCount, s32 totalCount, float* leftChannel, float* rightChannel)
 {
   // process data which should end up directly in output buffer
@@ -217,7 +193,6 @@ void AudioCodecOgg::uploadStereoChannels(const PDataBuffer& out, s32 outCount, s
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Resets codec. */
 bool AudioCodecOgg::reset()
 {
   int error;
@@ -289,7 +264,6 @@ bool AudioCodecOgg::reset()
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Closes stream. */
 void AudioCodecOgg::close()
 {
   if (m_codecStream)

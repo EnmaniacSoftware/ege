@@ -9,27 +9,31 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(PointerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(PointerPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PointerPrivate::PointerPrivate(Pointer* base) : m_base(base)
+PointerPrivate::PointerPrivate(Pointer* base) : m_d(base)
 {
-  base->app()->eventManager()->addListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PointerPrivate::~PointerPrivate()
 {
-  base()->app()->eventManager()->removeListener(this);
+  d_func()->app()->eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool PointerPrivate::isValid() const
+EGEResult PointerPrivate::construct()
 {
-  return base()->app()->eventManager()->isListening(this);
+  // subscribe for notifications
+  if ( ! d_func()->app()->eventManager()->addListener(this))
+  {
+    // error!
+    return EGE_ERROR;
+  }
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Event reciever. */
 void PointerPrivate::onEventRecieved(PEvent event)
 {
   // check if quitting already
-  if (base()->app()->isQuitting())
+  if (d_func()->app()->isQuitting())
   {
     // do not propagate
     return;
@@ -40,7 +44,7 @@ void PointerPrivate::onEventRecieved(PEvent event)
     case EGE_EVENT_ID_INTERNAL_POINTER_DATA:
 
       // emit signal
-      emit base()->eventSignal(event->data());
+      emit d_func()->eventSignal(event->data());
       break;
   }
 }

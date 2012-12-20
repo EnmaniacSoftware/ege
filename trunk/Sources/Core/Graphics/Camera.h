@@ -1,8 +1,6 @@
 #ifndef EGE_CORE_CAMERA_H
 #define EGE_CORE_CAMERA_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include <EGEString.h>
 #include <EGEVector.h>
 #include "Core/Graphics/Frustum.h"
@@ -11,15 +9,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class SceneManager;
-
 EGE_DECLARE_SMART_CLASS(Camera, PCamera)
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Camera : public Frustum
 {
   public:
@@ -30,24 +24,24 @@ class Camera : public Frustum
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if object is valid(). */
+    /*! Returns TRUE if object is valid(). */
     bool isValid() const;
     /*! Returns camera's name. */
-    inline const String& name() const { return m_name; }
+    const String& name() const { return m_name; }
     /*! Returns camera's physics component. */
-    inline PPhysicsComponent& physics() { return m_physics; }
-    /* Sets look-at vector. */
+    PPhysicsComponent& physics() { return m_physics; }
+    /*! Sets look-at vector. */
     void setLookAt(const Vector3f& point);
     /*! Returns look-at vector. */
-    inline const Vector3f& getLookAt() const { return m_lookAt; }
-    /* Returns camera's view matrix. */
+    const Vector3f& getLookAt() const { return m_lookAt; }
+    /*! Returns camera's view matrix. */
     const Matrix4f& viewMatrix();
-    /* Renders associated scene from camera's point of view onto given viewport. */
+    /*! Renders associated scene from camera's point of view onto given viewport. */
     void render(PViewport viewport);
 
   protected:
 
-    /* Invalidates view matrix. */
+    /*! Invalidates view matrix. */
     void invalidateViewMatrix();
 
   protected:
@@ -68,7 +62,6 @@ class Camera : public Frustum
     /*! Name. */
     String m_name;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

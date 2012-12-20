@@ -48,7 +48,6 @@ AudioManagerPrivate::~AudioManagerPrivate()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
 EGEResult AudioManagerPrivate::construct()
 {
   // create thread
@@ -101,13 +100,11 @@ EGEResult AudioManagerPrivate::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates manager. */
 void AudioManagerPrivate::update(const Time& time)
 {
   // do nothing, updated from another thread
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates manager. Meant to be used from another thread. */
 void AudioManagerPrivate::threadUpdate(const Time& time)
 {
   if (AudioManager::STATE_CLOSING == d_func()->state())
@@ -161,10 +158,6 @@ void AudioManagerPrivate::threadUpdate(const Time& time)
   m_soundsToPlay.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Plays given sound.
- * @param sound Sound to play.
- * @return  Returns EGE_SUCCESS if sound is sucessfully started or EGE_ERROR if sound could not be started.
- */
 EGEResult AudioManagerPrivate::play(const PSound& sound)
 {
   // add to pool for later playback
@@ -174,7 +167,6 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if sound of a given name is being played. */
 bool AudioManagerPrivate::isPlaying(const String& soundName) const
 {
   // look for the sounds-to-be-played pool
@@ -190,7 +182,6 @@ bool AudioManagerPrivate::isPlaying(const String& soundName) const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns first available channel. */
 ALuint AudioManagerPrivate::availableChannel() const
 {
   // go thru all channels
@@ -215,40 +206,31 @@ ALuint AudioManagerPrivate::availableChannel() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Stops playback of the given sound. */
 EGEResult AudioManagerPrivate::stop(const PSound& sound)
 {
   return sound->p_func()->stop();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given sound is being played. */
 bool AudioManagerPrivate::isPlaying(const PSound& sound) const
 {
   return m_soundsToPlay.contains(sound) || sound->p_func()->isPlaying();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Pauses given sound.
- *  @param sound Sound to pause.
- *  @return  Returns EGE_SUCCESS if sound is sucessfully paused or EGE_ERROR if sound could not be paused.
- */
 EGEResult AudioManagerPrivate::pause(const PSound& sound)
 {
   return sound->p_func()->pause();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given sound is paused. */
 bool AudioManagerPrivate::isPaused(const PSound& sound) const
 {
   return sound->p_func()->isPaused();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given sound is stopped. */
 bool AudioManagerPrivate::isStopped(const PSound& sound) const
 {
   return sound->p_func()->isStopped();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts playback of a given sound. */
 EGEResult AudioManagerPrivate::doPlay(const PSound& sound)
 {
   // check if paused
@@ -271,7 +253,6 @@ EGEResult AudioManagerPrivate::doPlay(const PSound& sound)
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Shuts manager down. */
 void AudioManagerPrivate::shutDown() 
 { 
   if (m_thread != NULL)
@@ -280,7 +261,6 @@ void AudioManagerPrivate::shutDown()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when audio thread is finished. */
 void AudioManagerPrivate::onThreadFinished(const PThread& thread)
 {
   EGE_UNUSED(thread);

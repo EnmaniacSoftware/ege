@@ -10,7 +10,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-  
 template <typename T>
 class TCircle
 {
@@ -21,10 +20,10 @@ class TCircle
     TCircle(const TVector2<T>& center, T radius);
     TCircle(const TCircle& other);
 
-    /* Returns TRUE if given point is contained within circle. */
-    inline bool contains(T pointX, T pointY) const;
-    /* Returns TRUE if given point is contained within circle. */
-    inline bool contains(const TVector2<T>& point) const;
+    /*! Returns TRUE if given point is contained within circle. */
+    bool contains(T pointX, T pointY) const;
+    /*! Returns TRUE if given point is contained within circle. */
+    bool contains(const TVector2<T>& point) const;
 
   public:
 
@@ -32,7 +31,6 @@ class TCircle
     T y;        /*!< Center Y position. */
     T r;        /*!< Radius. */
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 TCircle<T>::TCircle()
@@ -54,16 +52,14 @@ TCircle<T>::TCircle(const TVector2<T>& center, T radius) : x(center.x), y(center
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given point is contained within circle. */
 template <typename T>
-bool TCircle<T>::contains(T pointX, T pointY) const
+inline bool TCircle<T>::contains(T pointX, T pointY) const
 {
   return (pointX >= (x - r)) && (pointX <= (x + r)) && (pointY >= (y - r)) && (pointY <= (y + r));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given point is contained within circle. */
 template <typename T>
-bool TCircle<T>::contains(const TVector2<T>& point) const
+inline bool TCircle<T>::contains(const TVector2<T>& point) const
 {
   return (point.x >= (x - r)) && (point.x <= (x + r)) && (point.y >= (y - r)) && (point.y <= (y + r));
 }

@@ -7,18 +7,15 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T>
 class Tree : public std::set<T>
 {
   public:
 
-    /* Removes given object from set. */
+    /*! Removes given object from set. */
     void remove(const T object);
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes given object from set. */
 template <typename T>
 void Tree<T>::remove(const T object)
 {

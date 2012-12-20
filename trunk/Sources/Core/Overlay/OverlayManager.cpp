@@ -15,7 +15,6 @@ OverlayManager::~OverlayManager()
   removeAll();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates manager. */
 void OverlayManager::update(const Time& time)
 {
   // update all overlays
@@ -27,7 +26,6 @@ void OverlayManager::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Adds text overlay of the given name. */
 EGEResult OverlayManager::add(const POverlay& overlay)
 {
   // check if overlay with given name exists
@@ -43,7 +41,6 @@ EGEResult OverlayManager::add(const POverlay& overlay)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Removes overlay of the given name. */
 void OverlayManager::remove(const String& name)
 {
   // go thru all overlays
@@ -61,19 +58,16 @@ void OverlayManager::remove(const String& name)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes givem overlay. */
 void OverlayManager::remove(const POverlay& overlay)
 {
   m_overlays.remove(overlay);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Removes all overlays. */
 void OverlayManager::removeAll()
 {
   m_overlays.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Returns overlay of the given name. */
 POverlay OverlayManager::overlay(const String& name) const
 {
   // go thru all overlays
@@ -92,7 +86,6 @@ POverlay OverlayManager::overlay(const String& name) const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Renders all elements. */
 void OverlayManager::render(Viewport* viewport, Renderer* renderer)
 {
   // go thru all overlays

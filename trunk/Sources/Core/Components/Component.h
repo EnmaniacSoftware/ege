@@ -22,7 +22,7 @@ class IComponent : public Object
     /*! Returns TRUE if component is valid. */
     virtual bool isValid() const = 0;
     /*! Gets component name. */
-    inline const String& name() const { return m_name; }
+    const String& name() const { return m_name; }
 
   private:
 

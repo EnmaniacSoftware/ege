@@ -18,7 +18,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-  
 template <typename T>
 class TQuaternion
 {
@@ -30,42 +29,38 @@ class TQuaternion
     TQuaternion(const TVector3<T>& axis, const Angle& angle);
     TQuaternion(const TMatrix4<T>& matrix);
 
-  public:
-
     bool        operator == (const TQuaternion& quaternion) const;
     TQuaternion operator - () const;
     TVector3<T> operator * (const TVector3<T>& vector) const;
 
-  public:
-
-    /* Creates quaternion from rotation along arbitrary axis. */
+    /*! Creates quaternion from rotation along arbitrary axis. */
     void create(const TVector3<T>& axis, const Angle& angle);
 
-    /* Converts into rotation axis and angle. */
+    /*! Converts into rotation axis and angle. */
     void convertTo(TVector3<T>& axis, Angle& angle) const;
-    /* Converts into rotation matrix. */
+    /*! Converts into rotation matrix. */
     void convertTo(TMatrix4<T>& matrix) const;
 
-    /* Returns length. */
-    inline T length() const;
-    /* Returns sequared length. */
-    inline T lengthSquared() const;
+    /*! Returns length. */
+    T length() const;
+    /*! Returns sequared length. */
+    T lengthSquared() const;
 
-    /* Normalizes quaternion. */
-    inline void normalize();
+    /*! Normalizes quaternion. */
+    void normalize();
 
-    /* Returns quaternion angle representation. */
-    inline Angle angle() const;
+    /*! Returns quaternion angle representation. */
+    Angle angle() const;
 
-    /* Multiplies current quaternion by given one. */
+    /*! Multiplies current quaternion by given one. */
 		TQuaternion multiply(const TQuaternion& quat) const;
-    /* Returns dot product between this and given quaternion. */
-    inline T dotProduct(const TQuaternion& quat) const;
+    /*! Returns dot product between this and given quaternion. */
+    T dotProduct(const TQuaternion& quat) const;
 
-    /* Returns quaternion representing conjugate of this one. */ 
-    inline TQuaternion conjugated() const;
-    /* Conjugates (inverses) self. */ 
-    inline void conjugate();
+    /*! Returns quaternion representing conjugate of this one. */ 
+    TQuaternion conjugated() const;
+    /*! Conjugates (inverses) self. */ 
+    void conjugate();
 
   public:
 
@@ -118,50 +113,50 @@ TQuaternion<T>::TQuaternion(const TMatrix4<T>& matrix)
 
   if ( fTrace > 0.0 )
   {
-      // |w| > 1/2, may as well choose w > 1/2
-      fRoot = Math::Sqrt(fTrace + 1.0f);  // 2w
-      w = 0.5f*fRoot;
-      fRoot = 0.5f/fRoot;  // 1/(4w)
-      x = (matrix[2][1]-matrix[1][2])*fRoot;
-      y = (matrix[0][2]-matrix[2][0])*fRoot;
-      z = (matrix[1][0]-matrix[0][1])*fRoot;
+    // |w| > 1/2, may as well choose w > 1/2
+    fRoot = Math::Sqrt(fTrace + 1.0f);  // 2w
+    w = 0.5f*fRoot;
+    fRoot = 0.5f/fRoot;  // 1/(4w)
+    x = (matrix[2][1]-matrix[1][2])*fRoot;
+    y = (matrix[0][2]-matrix[2][0])*fRoot;
+    z = (matrix[1][0]-matrix[0][1])*fRoot;
   }
   else
   {
-      // |w| <= 1/2
-      static size_t s_iNext[3] = { 1, 2, 0 };
-      size_t i = 0;
-      if ( matrix[1][1] > matrix[0][0] )
-          i = 1;
-      if ( matrix[2][2] > matrix[i][i] )
-          i = 2;
-      size_t j = s_iNext[i];
-      size_t k = s_iNext[j];
+    // |w| <= 1/2
+    static size_t s_iNext[3] = { 1, 2, 0 };
+    size_t i = 0;
+    if ( matrix[1][1] > matrix[0][0] )
+        i = 1;
+    if ( matrix[2][2] > matrix[i][i] )
+        i = 2;
+    size_t j = s_iNext[i];
+    size_t k = s_iNext[j];
 
-      fRoot = Math::Sqrt(matrix[i][i]-matrix[j][j]-matrix[k][k] + 1.0f);
-      float32* apkQuat[3] = { &x, &y, &z };
-      *apkQuat[i] = 0.5f*fRoot;
-      fRoot = 0.5f/fRoot;
-      w = (matrix[k][j]-matrix[j][k])*fRoot;
-      *apkQuat[j] = (matrix[j][i]+matrix[i][j])*fRoot;
-      *apkQuat[k] = (matrix[k][i]+matrix[i][k])*fRoot;
+    fRoot = Math::Sqrt(matrix[i][i]-matrix[j][j]-matrix[k][k] + 1.0f);
+    float32* apkQuat[3] = { &x, &y, &z };
+    *apkQuat[i] = 0.5f*fRoot;
+    fRoot = 0.5f/fRoot;
+    w = (matrix[k][j]-matrix[j][k])*fRoot;
+    *apkQuat[j] = (matrix[j][i]+matrix[i][j])*fRoot;
+    *apkQuat[k] = (matrix[k][i]+matrix[i][k])*fRoot;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TQuaternion<T>::operator == (const TQuaternion<T>& quaternion) const
+inline bool TQuaternion<T>::operator == (const TQuaternion<T>& quaternion) const
 {
   return (x == quaternion.x) && (y == quaternion.y) && (z == quaternion.z) && (w == quaternion.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TQuaternion<T> TQuaternion<T>::operator - () const
+inline TQuaternion<T> TQuaternion<T>::operator - () const
 {
   return TQuaternion(-x, -y, -z, -w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector3<T> TQuaternion<T>::operator * (const TVector3<T>& vector) const
+inline TVector3<T> TQuaternion<T>::operator * (const TVector3<T>& vector) const
 {
   // nVidia SDK implementation
   TVector3<T> uv;
@@ -176,9 +171,8 @@ TVector3<T> TQuaternion<T>::operator * (const TVector3<T>& vector) const
   return vector + uv + uuv;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates quaternion from rotation along arbitrary axis. */
 template <typename T>
-void TQuaternion<T>::create(const TVector3<T>& axis, const Angle& angle)
+inline void TQuaternion<T>::create(const TVector3<T>& axis, const Angle& angle)
 {
   // axis is unit length
   // angle = A
@@ -198,9 +192,8 @@ void TQuaternion<T>::create(const TVector3<T>& axis, const Angle& angle)
 	w = Math::Cos(halfAngle);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts into rotation axis and angle. */
 template <typename T>
-void TQuaternion<T>::convertTo(TVector3<T>& axis, Angle& angle) const
+inline void TQuaternion<T>::convertTo(TVector3<T>& axis, Angle& angle) const
 {
   // calculate inverse length of imaginary axes
   T invLength = 1.0f / (x * x + y * y + z * z);
@@ -226,9 +219,8 @@ void TQuaternion<T>::convertTo(TVector3<T>& axis, Angle& angle) const
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts into rotation matrix. */
 template <typename T>
-void TQuaternion<T>::convertTo(TMatrix4<T>& matrix) const
+inline void TQuaternion<T>::convertTo(TMatrix4<T>& matrix) const
 {
   // first column
 	matrix[0][0] = 1.0f - 2.0f * (y * y + z * z); 
@@ -246,61 +238,53 @@ void TQuaternion<T>::convertTo(TMatrix4<T>& matrix) const
 	matrix[2][2] = 1.0f - 2.0f * (x * x + y * y);  
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Multiplies current quaternion by given one. */
 template <typename T>
-TQuaternion<T> TQuaternion<T>::multiply(const TQuaternion<T>& quat) const
+inline TQuaternion<T> TQuaternion<T>::multiply(const TQuaternion<T>& quat) const
 {
   return TQuaternion(w * quat.x + x * quat.w + y * quat.z - z * quat.y, w * quat.y + y * quat.w + z * quat.x - x * quat.z,
                      w * quat.z + z * quat.w + x * quat.y - y * quat.x, w * quat.w - x * quat.x - y * quat.y - z * quat.z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns quaternion angle representation. */
 template <typename T>
-Angle TQuaternion<T>::angle() const 
+inline Angle TQuaternion<T>::angle() const 
 { 
   return Angle::FromRadians(2.0f * Math::ACos(w)); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns dot product between this and given quaternion. */
 template <typename T>
-T TQuaternion<T>::dotProduct(const TQuaternion<T>& quat) const
+inline T TQuaternion<T>::dotProduct(const TQuaternion<T>& quat) const
 {
   return (x * quat.x) + (y * quat.y) + (z * quat.z) + (w * quat.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Normalizes quaternion. */
 template <typename T>
-void TQuaternion<T>::normalize()
+inline void TQuaternion<T>::normalize()
 {
   T factor = 1.0f / length();
   *this = *this * factor;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns length. */
 template <typename T>
-T TQuaternion<T>::length() const
+inline T TQuaternion<T>::length() const
 {
   return Math::Sqrt((x * x) + (y * y) + (z * z) + (w * w));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns sequared length. */
 template <typename T>
-T TQuaternion<T>::lengthSquared() const
+inline T TQuaternion<T>::lengthSquared() const
 {
   return (x * x) + (y * y) + (z * z) + (w * w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns quaternion representing conjugate of this one. */
 template <typename T>
-TQuaternion<T> TQuaternion<T>::conjugated() const
+inline TQuaternion<T> TQuaternion<T>::conjugated() const
 {
   // NOTE: must be normalized
   return TQuaternion<T>(-x, -y, -z, w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Conjugates self. */ 
 template <typename T>
-void TQuaternion<T>::conjugate()
+inline void TQuaternion<T>::conjugate()
 {
   x = -x;
   y = -y;

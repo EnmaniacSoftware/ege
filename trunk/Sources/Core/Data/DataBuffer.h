@@ -21,51 +21,51 @@ class DataBuffer : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Sets buffer size in bytes. */
+    /*! Sets buffer size in bytes. */
     EGEResult setSize(s64 size);
     /*! Gets buffer size in bytes. */
-    inline s64 size() const { return m_size; }
+    s64 size() const { return m_size; }
 
-    /* Sets buffer capacity in bytes. */
+    /*1 Sets buffer capacity in bytes. */
     EGEResult setCapacity(s64 capacity);
     /*! Gets buffer capacity in bytes. */
-    inline s64 capacity() const { return m_capacity; }
+    s64 capacity() const { return m_capacity; }
 
-    /* Gets pointer to data at given byte offset. */
+    /*! Gets pointer to data at given byte offset. */
     void* data(s64 offset = 0) const;
-    /* Writes given amount of data into buffer. Returns number of data written. */
+    /*! Writes given amount of data into buffer. Returns number of data written. */
     s64 write(void* data, s64 size);
-    /* Reads given amount of data from buffer. Returns number of data read. */
+    /*! Reads given amount of data from buffer. Returns number of data read. */
     s64 read(void* data, s64 size);
-    /* Reads given amount of data into destination buffer.
-     * @note   Destination buffer write offset will be updated accordingly.
-     * @return Returns number of bytes read.
+    /*! Reads given amount of data into destination buffer.
+     *  @note   Destination buffer write offset will be updated accordingly.
+     *  @return Returns number of bytes read.
      */
     s64 read(const PDataBuffer& dst, s64 size);
-    /* Writes given amount of data from destination buffer.
-     * @note   Source buffer read offset will be updated accordingly.
-     * @return Returns number of bytes written.
+    /*! Writes given amount of data from destination buffer.
+     *  @note   Source buffer read offset will be updated accordingly.
+     *  @return Returns number of bytes written.
      */
     s64 write(const PDataBuffer& src, s64 size = -1);
-    /* Clears buffer. If FULL flag is set deallocates internal buffers as well. */
+    /*! Clears buffer. If FULL flag is set deallocates internal buffers as well. */
     void clear(bool full = false);
-    /* Sets write offset. Does nothing if offset out of range [0, capacity].
-     * @return Returns old write offset.
+    /*! Sets write offset. Does nothing if offset out of range [0, capacity].
+     *  @return Returns old write offset.
      */
     s64 setWriteOffset(s64 offset);
     /*! Returns write offset. */
-    inline s64 writeOffset() const { return m_writeOffset; }
-    /* Sets read offset. Does nothing if offset out of range [0, size].
-     * @return Returns old read offset.
+    s64 writeOffset() const { return m_writeOffset; }
+    /*! Sets read offset. Does nothing if offset out of range [0, size].
+     *  @return Returns old read offset.
      */
     s64 setReadOffset(s64 offset);
     /*! Returns read offset. */
-    inline s64 readOffset() const { return m_readOffset; }
+    s64 readOffset() const { return m_readOffset; }
     
-    /* Sets byte ordering. */
+    /*! Sets byte ordering. */
     void setByteOrdering(Endianness ordering);
     /*! Returns current byte ordering. */
-    inline Endianness byteOrdering() const { return m_byteOrdering; }
+    Endianness byteOrdering() const { return m_byteOrdering; }
 
     DataBuffer& operator << (u8 value);
     DataBuffer& operator << (s8 value);

@@ -7,18 +7,15 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T, typename U>
 class MultiMap : public std::multimap<T, U>
 {
   public:
 
-    /* Inserts value with given key to map. */
-    inline void insert(const T& key, const U& value);
+    /*! Inserts value with given key to map. */
+    void insert(const T& key, const U& value);
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Inserts value with given key to map. */
 template <typename T, typename U>
 void MultiMap<T, U>::insert(const T& key, const U& value)
 {

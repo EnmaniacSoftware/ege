@@ -21,12 +21,12 @@ class ImageOverlay : public Overlay
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
   
-    /* Overlay override. Renders overlay. */
+    /*! @see Overlay::addForRendering. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
 
   private:
 
-    /* Overlay override. Initializes object. */
+    /*! @see Overlay::initialize. */
     void initialize() override;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

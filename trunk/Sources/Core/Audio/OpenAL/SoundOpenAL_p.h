@@ -27,33 +27,33 @@ class SoundPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(Sound)
 
-    /* Constructs object. */
+    /*! Constructs object. */
     EGEResult construct();
-    /* Updates object. */
+    /*! Updates object. */
     void update(const Time& time);
-    /* Starts playback on given channel. */
+    /*! Starts playback on given channel. */
     EGEResult play(ALuint channel);
-    /* Resumes playback. */
+    /*! Resumes playback. */
     EGEResult resume();
-    /* Stops playback. */
+    /*! Stops playback. */
     EGEResult stop();
-    /* Returns TRUE if sound is being played. */
+    /*! Returns TRUE if sound is being played. */
     bool isPlaying() const;
-    /* Pauses playback. */
+    /*! Pauses playback. */
     EGEResult pause();
-    /* Returns TRUE if sound is paused. */
+    /*! Returns TRUE if sound is paused. */
     bool isPaused() const;
-    /* Returns TRUE if sound is stopped. */
+    /*! Returns TRUE if sound is stopped. */
     bool isStopped() const;
 
   private:
 
-    /* Updates sound buffers. */
+    /*! Updates sound buffers. */
     void updateBuffers();
 
   private slots:
 
-    /* Slot called on sound volume change. */
+    /*! Slot called on sound volume change. */
     void onSoundVolumeChanged(PSound sound, float32 oldVolume);
 
   private:

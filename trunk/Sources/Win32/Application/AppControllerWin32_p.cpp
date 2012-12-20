@@ -19,7 +19,6 @@ AppControllerPrivate::~AppControllerPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Enters main loop. */
 EGEResult AppControllerPrivate::run()
 {
   Time startTime;
@@ -56,7 +55,6 @@ EGEResult AppControllerPrivate::run()
 
     // give some time for OS
     yieldTime = d_func()->m_renderInterval - (endTime - startTime);
-    //EGE_PRINT("%d", yieldTime.miliseconds());
     Sleep(Math::Max((s32) 0, static_cast<s32>(yieldTime.miliseconds())));
   }
 

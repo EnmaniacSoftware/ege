@@ -20,7 +20,6 @@ struct PVRHeader
   u32 metaDataSize;     /*!< Meta-date size. */
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given buffer contains image data in correct format. */
 bool ImageHandlerPVR::IsValidFormat(PObject buffer)
 {
   // sanity check
@@ -71,12 +70,6 @@ bool ImageHandlerPVR::IsValidFormat(PObject buffer)
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads image from given buffer converting it's pixel format to requested one if possible. 
-    @param buffer  Buffer containing data to load image from.
-    @param format  Pixel format loaded image should be converted to.
-    @return Loaded image on success. NULL otherwise.
-    @note If requested pixel format is PF_UNKNOWN no conversion is done.
- */
 PImage ImageHandlerPVR::Load(PObject buffer, PixelFormat format)
 {
   EGEResult result = EGE_SUCCESS;
@@ -262,13 +255,6 @@ PImage ImageHandlerPVR::Load(PObject buffer, PixelFormat format)
   return ImageUtils::CreateImage(header.width, header.height, format, premultiplied, rowLength, pixelData);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Saves image into a given file with specified pixel format. 
-    @param image     Image to save.
-    @param fileName  File name to which the file should be saved.
-    @param format    Pixel format of the saved image.
-    @return EGE_SUCCESS on success.
-    @note If requested pixel format is PF_UNKNOWN image will be saved with current image pixel format.
- */
 EGEResult ImageHandlerPVR::Save(PImage image, const String& fileName, PixelFormat format)
 {
   EGE_UNUSED(image);

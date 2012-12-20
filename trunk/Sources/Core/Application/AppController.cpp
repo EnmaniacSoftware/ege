@@ -26,7 +26,8 @@ EGE_DEFINE_NEW_OPERATORS(AppController)
 EGE_DEFINE_DELETE_OPERATORS(AppController)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AppController::AppController(Application* app, const Dictionary& params) : Object(app), 
-                                                                           m_state(STATE_RUNNING), 
+                                                                           m_p(NULL),
+                                                                           m_state(STATE_INVALID), 
                                                                            m_fps(0), 
                                                                            m_rendersCount(0)
 {
@@ -36,12 +37,6 @@ AppController::AppController(Application* app, const Dictionary& params) : Objec
 
   m_updateInterval.fromMiliseconds((iterUPS != params.end()) ? 1000 / iterUPS->second.toInt() : 0);
   m_renderInterval.fromMiliseconds((iterFPS != params.end()) ? 1000 / iterFPS->second.toInt() : 0);
-
-  // subscribe for event notifications
-  if (app->eventManager()->addListener(this))
-  {
-    m_p = ege_new AppControllerPrivate(this);
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AppController::~AppController()
@@ -49,7 +44,29 @@ AppController::~AppController()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Enters main loop. */
+EGEResult AppController::construct()
+{
+  // create private implementation
+  m_p = ege_new AppControllerPrivate(this);
+  if (NULL == m_p)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // subscribe for event notifications
+  if ( ! app()->eventManager()->addListener(this))
+  {
+    // error!
+    return EGE_ERROR;
+  }
+
+  // set state
+  m_state = STATE_RUNNING;
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult AppController::run()
 {
   // initialize update timer (to smooth out first update)
@@ -58,7 +75,6 @@ EGEResult AppController::run()
   return p_func()->run();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IEventListener override. Event reciever. */
 void AppController::onEventRecieved(PEvent pEvent)
 {
   switch (pEvent->id())
@@ -88,7 +104,6 @@ void AppController::onEventRecieved(PEvent pEvent)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates application. */
 void AppController::update()
 {
   // get current time
@@ -149,7 +164,6 @@ void AppController::update()
   m_lastFrameUpdateDuration.fromMicroseconds(Timer::GetMicroseconds() - m_lastUpdateTime.microseconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Renders application. */
 void AppController::render()
 {
   // get current time
@@ -181,12 +195,6 @@ void AppController::render()
 
   // store render duration
   m_lastFrameRenderDuration.fromMicroseconds(Timer::GetMicroseconds() - time.microseconds());
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool AppController::isValid() const
-{
-  return (NULL != m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -24,22 +24,22 @@ class TComplex
     TComplex& operator*=(const TComplex& other);
     TComplex& operator=(const TComplex& other);
 
-    /* Creates number from given angle. */
+    /*! Creates number from given angle. */
     void create(const Angle& angle);
 
-    /* Returns length. */
-    inline T length() const;
-    /* Returns sequared length. */
-    inline T lengthSquared() const;
+    /*! Returns length. */
+    T length() const;
+    /*! Returns sequared length. */
+    T lengthSquared() const;
 
-    /* Normalizes number. */
-    inline void normalize();
+    /*! Normalizes number. */
+    void normalize();
 
-    /* Returns dot product between current and given number. */
-    inline T dotProduct(const TComplex& other) const;
+    /*! Returns dot product between current and given number. */
+    T dotProduct(const TComplex& other) const;
 
-    /* Returns angle representation. */
-    inline Angle angle() const;
+    /*! Returns angle representation. */
+    Angle angle() const;
 
   public:
 
@@ -77,7 +77,7 @@ TComplex<T>::TComplex(const TComplex& other) : x(other.x), y(other.y)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TComplex<T>& TComplex<T>::operator*=(const TComplex& other)
+inline TComplex<T>& TComplex<T>::operator*=(const TComplex& other)
 {
   T newX = x * other.x + y * other.y;
   T newY = y * other.x + x * other.y;
@@ -89,7 +89,7 @@ TComplex<T>& TComplex<T>::operator*=(const TComplex& other)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TComplex<T>& TComplex<T>::operator=(const TComplex& other)
+inline TComplex<T>& TComplex<T>::operator=(const TComplex& other)
 {
   x = other.x;
   y = other.y;
@@ -97,23 +97,20 @@ TComplex<T>& TComplex<T>::operator=(const TComplex& other)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns length. */
 template <typename T>
-T TComplex<T>::length() const
+inline T TComplex<T>::length() const
 {
   return Math::Sqrt((x * x) + (y * y)); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns sequared length. */
 template <typename T>
-T TComplex<T>::lengthSquared() const
+inline T TComplex<T>::lengthSquared() const
 {
   return (x * x) + (y * y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Normalizes number. */
 template <typename T>
-void TComplex<T>::normalize()
+inline void TComplex<T>::normalize()
 {
   T length = this->length();
 
@@ -129,24 +126,21 @@ void TComplex<T>::normalize()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns dot product between current and given number. */
 template <typename T>
-T TComplex<T>::dotProduct(const TComplex<T>& other) const
+inline T TComplex<T>::dotProduct(const TComplex<T>& other) const
 {
   return (x * other.x) + (y * other.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates number from given angle. */
 template <typename T>
-void TComplex<T>::create(const Angle& angle)
+inline void TComplex<T>::create(const Angle& angle)
 {
   x = Math::Cos(angle.radians());
   y = Math::Sin(angle.radians());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns angle representation. */
 template <typename T>
-Angle TComplex<T>::angle() const
+inline Angle TComplex<T>::angle() const
 {
   return Angle(Math::ATan2(y, x));
 }

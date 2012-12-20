@@ -38,7 +38,6 @@ AudioManager::~AudioManager()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates object. */
 EGEResult AudioManager::construct()
 {
   EGEResult result = EGE_SUCCESS;
@@ -71,7 +70,6 @@ EGEResult AudioManager::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates manager. The audio thread guards the entrance. */
 void AudioManager::update(const Time& time)
 {
   if (STATE_CLOSED == m_state)
@@ -84,13 +82,6 @@ void AudioManager::update(const Time& time)
   p_func()->update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Plays sound with given name. 
- * @param soundName   Name of the sound to play.
- * @param repeatCount Number of times sound should be repeated.
- * @param resourceGroup Resource group containing the sound.
- * @note  When repeatCount is set to zero the sound is going to be played exactly once. For negative values sound will be played forever.
- * @return  Returns EGE_SUCCESS if sound is sucessfully started, EGE_ERROR_NOT_FOUND if sound could not be found or EGE_ERROR if sound could not be started.
- */
 EGEResult AudioManager::play(const String& soundName, s32 repeatCount, const String& resourceGroup)
 {
   // check if disabled
@@ -123,10 +114,6 @@ EGEResult AudioManager::play(const String& soundName, s32 repeatCount, const Str
   return EGE_ERROR_NOT_FOUND;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Plays given sound.
- * @param sound Sound to play.
- * @return  Returns EGE_SUCCESS if sound is sucessfully started or EGE_ERROR if sound could not be started.
- */
 EGEResult AudioManager::play(const PSound& sound)
 {
   EGEResult result = EGE_ERROR;
@@ -146,7 +133,6 @@ EGEResult AudioManager::play(const PSound& sound)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if sound of a given name is being played. */
 bool AudioManager::isPlaying(const String& soundName) const
 {
   // look for the sound in the active pool
@@ -163,7 +149,6 @@ bool AudioManager::isPlaying(const String& soundName) const
   return p_func()->isPlaying(soundName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given sound is being played. */
 bool AudioManager::isPlaying(const PSound& sound) const
 {
   if (sound)
@@ -174,7 +159,6 @@ bool AudioManager::isPlaying(const PSound& sound) const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Stops playback of all sounds with a given name. */
 void AudioManager::stop(const String& soundName)
 {
   // look for the sound in the active pool
@@ -189,7 +173,6 @@ void AudioManager::stop(const String& soundName)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Stops playback of the given sound. */
 void AudioManager::stop(PSound sound)
 {
   if (NULL != sound)
@@ -207,7 +190,6 @@ void AudioManager::stop(PSound sound)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns list of sounds being played with the given name. */
 List<PSound> AudioManager::sounds(const String& soundName) const
 {
   List<PSound> list;
@@ -226,10 +208,6 @@ List<PSound> AudioManager::sounds(const String& soundName) const
   return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Enables/disables manager. 
- * @note Disabling manager stops all currently played sounds and prevents any sound from being played. Enabling manager will allow sound to be played.
- *       However, it will not resume playback of any sounds stopped during last disabling request.
- */
 void AudioManager::setEnable(bool set)
 {
   if (set != m_enabled)
@@ -252,10 +230,6 @@ void AudioManager::setEnable(bool set)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Pauses sound with given name. 
- *  @param soundName   Name of the sound to pause.
- *  @return  Returns EGE_SUCCESS if sound is sucessfully paused, EGE_ERROR_NOT_FOUND if sound could not be found or EGE_ERROR if sound could not be paused.
- */
 EGEResult AudioManager::pause(const String& soundName)
 {
   // look for the sound in the active pool
@@ -276,10 +250,6 @@ EGEResult AudioManager::pause(const String& soundName)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Pauses given sound.
- *  @param sound Sound to pause.
- *  @return  Returns EGE_SUCCESS if sound is sucessfully paused or EGE_ERROR if sound could not be paused.
- */
 EGEResult AudioManager::pause(const PSound& sound)
 {
   EGEResult result = EGE_ERROR;
@@ -300,7 +270,6 @@ EGEResult AudioManager::pause(const PSound& sound)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if sound of a given name is paused. */
 bool AudioManager::isPaused(const String& soundName) const
 {
   // look for the sound in the active pool
@@ -316,13 +285,11 @@ bool AudioManager::isPaused(const String& soundName) const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given sound is paused. */
 bool AudioManager::isPaused(const PSound& sound) const
 {
   return p_func()->isPaused(sound);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! EventListener override. Event reciever. */
 void AudioManager::onEventRecieved(PEvent event)
 {
   switch (event->id())
@@ -338,7 +305,6 @@ void AudioManager::onEventRecieved(PEvent event)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Shuts down. */
 void AudioManager::shutDown()
 {
   // change state
@@ -348,7 +314,6 @@ void AudioManager::shutDown()
   p_func()->shutDown();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when given sound stopped playback (due to finish or otherwise). */
 void AudioManager::onStopped(PSound sound)
 {
   ege_disconnect(sound, stopped, this, AudioManager::onStopped);

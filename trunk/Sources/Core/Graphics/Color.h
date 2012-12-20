@@ -11,17 +11,15 @@ class Color
 {
   public:
 
-    Color(float32 red = 1.0f, float32 green = 1.0f, float32 blue = 1.0f, float32 alpha = 1.0f) : red(red), green(green), blue(blue), alpha(alpha) {}
+    Color(float32 red = 1.0f, float32 green = 1.0f, float32 blue = 1.0f, float32 alpha = 1.0f);
 
-    inline Color& operator =(const Color& color) { red = color.red; green = color.green; blue = color.blue; alpha = color.alpha; return *this; }
-    inline bool   operator==(const Color& color) const { return !(red != color.red || green != color.green || blue != color.blue || alpha != color.alpha); }
-    inline bool   operator!=(const Color& color) const { return !operator==(color); }
+    Color& operator =(const Color& color);
+    bool   operator==(const Color& color) const;
+    bool   operator!=(const Color& color) const;
 
   public:
 
-    /*! Returns TRUE if color is invalid. */
-    inline bool isNull() const { return (0.0f == red) && (0.0f == green) && (0.0f == blue) && (0.0f == alpha); }
-    /* Returns packed 32-bit RGBA color representation. */
+    /*! Returns packed 32-bit RGBA color representation. */
     u32 packed() const;
 
   public:
@@ -48,6 +46,26 @@ class Color
     static const Color DARK_GRAY;
     static const Color LIGHT_GRAY;
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline Color& Color::operator=(const Color& color) 
+{ 
+  red   = color.red; 
+  green = color.green; 
+  blue  = color.blue; 
+  alpha = color.alpha; 
+  
+  return *this; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline bool Color::operator==(const Color& color) const 
+{ 
+  return ! (red != color.red || green != color.green || blue != color.blue || alpha != color.alpha); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline bool Color::operator!=(const Color& color) const 
+{ 
+  return ! operator==(color); 
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& operator << (Debug& debug, const Color& obj);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -31,52 +31,52 @@ class RenderComponent : public IComponent
   signals:
 
     /*! Signal emitted when render priority changes.
-        @param  Sender Sender object.
+     *  @param  Sender Sender object.
      */
     Signal1<PRenderComponent> renderPriorityChanged;
 
   public:
 
-    /* IComponent override. Returns TRUE if component is valid. */
+    /*! @see IComponent::isValid. */
     bool isValid() const override;
     /*! Returns index buffer. */
-    inline PIndexBuffer indexBuffer() const { return m_indexBuffer; }
+    PIndexBuffer indexBuffer() const { return m_indexBuffer; }
     /*! Returns vertex buffer. */  
-    inline PVertexBuffer vertexBuffer() const { return m_vertexBuffer; }
-    /* Sets render priority. */
+    PVertexBuffer vertexBuffer() const { return m_vertexBuffer; }
+    /*! Sets render priority. */
     void setPriority(s32 priority);
     /*! Returns render priority. */
-    inline s32 priority() const { return m_priority; }
+    s32 priority() const { return m_priority; }
     /*! Returns render primitive type. */
-    inline EGEGraphics::RenderPrimitiveType primitiveType() const { return m_primitiveType; }
+    EGEGraphics::RenderPrimitiveType primitiveType() const { return m_primitiveType; }
     /*! Returns render material. */
-    inline PMaterial material() const { return m_material; }
-    /* Sets render material. */
+    PMaterial material() const { return m_material; }
+    /*! Sets render material. */
     void setMaterial(const PMaterial& material);
-    /* Returns hash. */
+    /*! Returns hash. */
     u32 hash();
-    /* Sets clipping rectangle. */
+    /*! Sets clipping rectangle. */
     void setClipRect(const Rectf& rect);
     /*! Returns clipping rectangle. */
-    inline const Rectf& clipRect() const { return m_clipRect; }
-    /* Sets point size. */
+    const Rectf& clipRect() const { return m_clipRect; }
+    /*! Sets point size. */
     void setPointSize(float32 size);
     /*! Returns point size. */
-    inline float32 pointSize() const { return m_pointSize; }
-    /* Sets line width. */
+    float32 pointSize() const { return m_pointSize; }
+    /*! Sets line width. */
     void setLineWidth(float32 width);
     /*! Returns line width. */
-    inline float32 lineWidth() const { return m_lineWidth; }
+    float32 lineWidth() const { return m_lineWidth; }
 
   private:
 
-    /* Invalidates hash value. */
+    /*! Invalidates hash value. */
     void invalidateHash();
-    /* Validates hash value. */
+    /*! Validates hash value. */
     void validateHash();
     /*! Returns TRUE if hash value needs to be recalulated. */
-    inline bool isHashInvalid() const { return m_hashInvalid; }
-    /* Calculates hash. */
+    bool isHashInvalid() const { return m_hashInvalid; }
+    /*! Calculates hash. */
     void calculateHash();
 
   private:

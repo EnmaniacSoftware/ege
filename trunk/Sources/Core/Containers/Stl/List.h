@@ -8,7 +8,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T>
 class List : public std::list<T>
 {
@@ -18,20 +17,19 @@ class List : public std::list<T>
     List(const T& object);
     List(const List& list, s32 count);
 
-    /* Removes object at given index. */
+    /*! Removes object at given index. */
     void removeAt(s32 index);
-    /* Returns last element. If list is empty, default value is returned. */
+    /*! Returns last element. If list is empty, default value is returned. */
     const T last(const T& defaultValue) const;
-    /* Returns TRUE if given object is present. */
-    inline bool contains(const T object) const;
-    /* Copies all data from given list. */
+    /*! Returns TRUE if given object is present. */
+    bool contains(const T object) const;
+    /*! Copies all data from given list. */
     void copy(const List& other);
-    /* Appends given list. */
+    /*! Appends given list. */
     List& operator << (const List& other);
-    /* Appends given element. */
+    /*! Appends given element. */
     List& operator << (const T& value);
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 List<T>::List()
@@ -54,7 +52,6 @@ List<T>::List(const List<T>& list, s32 count)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes object at given index. */
 template <typename T>
 void List<T>::removeAt(s32 index)
 {
@@ -70,14 +67,12 @@ void List<T>::removeAt(s32 index)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns last element. If list is empty, default value is returned. */
 template <typename T>
 const T List<T>::last(const T& defaultValue) const
 {
   return (0 == this->size()) ? defaultValue : this->back();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given object is present. */
 template <typename T>
 bool List<T>::contains(const T object) const
 {
@@ -85,7 +80,6 @@ bool List<T>::contains(const T object) const
   return (it != this->end());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Copies all data from given list. */
 template <typename T>
 void List<T>::copy(const List<T>& other)
 {
@@ -93,7 +87,6 @@ void List<T>::copy(const List<T>& other)
   this->insert(this->begin(), other.begin(), other.end());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Appends given list. */
 template <typename T>
 List<T>& List<T>::operator << (const List<T>& other)
 {
@@ -101,7 +94,6 @@ List<T>& List<T>::operator << (const List<T>& other)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Appends given element. */
 template <typename T>
 List<T>& List<T>::operator << (const T& value)
 {

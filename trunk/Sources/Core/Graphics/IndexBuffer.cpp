@@ -17,14 +17,12 @@ IndexBuffer::~IndexBuffer()
   destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Destroys buffer. */
 void IndexBuffer::destroy()
 {
   // clear data
   m_locked = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns index size (in bytes). */
 u8 IndexBuffer::indexSize() const
 {
   switch (m_indexSize)
@@ -37,7 +35,6 @@ u8 IndexBuffer::indexSize() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets index size. */
 void IndexBuffer::setIndexSize(EGEIndexBuffer::IndexSize size)
 {
   m_indexSize = size;

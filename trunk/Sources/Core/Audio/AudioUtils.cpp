@@ -11,7 +11,6 @@ EGE_NAMESPACE_BEGIN
 #define MP3_ID3_HEADER_ID   0x49443300
 #define MP3_ENC_HEADER_ID   0xfffb0000
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Retrieves WAV stream headers. */
 void AudioUtils::ReadWavHeaders(const PDataBuffer& data, EGEAudio::WaveRiffHeader& riffHeader, EGEAudio::WaveFmtHeader& fmtHeader, 
                                 EGEAudio::WaveDataHeader& dataHeader)
 {
@@ -82,7 +81,6 @@ void AudioUtils::ReadWavHeaders(const PDataBuffer& data, EGEAudio::WaveRiffHeade
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Detects stream type of given data. */
 EGEAudio::StreamType AudioUtils::DetectStreamType(const PDataBuffer& data)
 {
   // check if WAVE stream

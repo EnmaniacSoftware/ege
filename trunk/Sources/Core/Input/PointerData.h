@@ -20,17 +20,17 @@ class PointerData : public Object
     EGE_DECLARE_DELETE_OPERATORS
 
     /*! Returns button type. */
-    inline Button button() const { return m_button; }
+    Button button() const { return m_button; }
     /*! Returns action type. */
-    inline Action action() const { return m_action; }
+    Action action() const { return m_action; }
     /*! Returns X position. */
-    inline s32 x() const { return m_x; }
+    s32 x() const { return m_x; }
     /*! Returns Y position. */
-    inline s32 y() const { return m_y; }
+    s32 y() const { return m_y; }
     /*! Returns pointer index. */
-    inline s32 index() const { return m_index; }
+    s32 index() const { return m_index; }
     /*! Returns keyboard modifiers. */
-    inline const KeyboardModifiers& modifiers() const { return m_modifiers; }
+    const KeyboardModifiers& modifiers() const { return m_modifiers; }
 
   private:
 

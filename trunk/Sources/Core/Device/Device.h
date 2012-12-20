@@ -15,53 +15,53 @@ class Device
 {
   public:
 
-    /* Returns current Operating System ID. */
+    /*! Returns current Operating System ID. */
     static EGEDevice::OS GetOS();
-    /* Returns current device ID. */
+    /*! Returns current device ID. */
     static EGEDevice::Device GetDevice();
 
-    /* Returns physical surface width. */
+    /*! Returns physical surface width. */
     static s32 SurfaceWidth();
-    /* Returns physical surface height. */
+    /*! Returns physical surface height. */
     static s32 SurfaceHeight();
-    /* Sets surface red channel bits count. */
+    /*! Sets surface red channel bits count. */
     static void SetSurfaceRedChannelBitsCount(u32 count);
-    /* Returns surface red channel bits count. */
+    /*! Returns surface red channel bits count. */
     static u32 SurfaceRedChannelBitsCount();
-    /* Sets surface green channel bits count. */
+    /*! Sets surface green channel bits count. */
     static void SetSurfaceGreenChannelBitsCount(u32 count);
-    /* Returns surface green channel bits count. */
+    /*! Returns surface green channel bits count. */
     static u32 SurfaceGreenChannelBitsCount();
-    /* Sets surface blue channel bits count. */
+    /*! Sets surface blue channel bits count. */
     static void SetSurfaceBlueChannelBitsCount(u32 count);
-    /* Returns surface blue channel bits count. */
+    /*! Returns surface blue channel bits count. */
     static u32 SurfaceBlueChannelBitsCount();
-    /* Sets surface alpha channel bits count. */
+    /*! Sets surface alpha channel bits count. */
     static void SetSurfaceAlphaChannelBitsCount(u32 count);
-    /* Returns surface alpha channel bits count. */
+    /*! Returns surface alpha channel bits count. */
     static u32 SurfaceAlphaChannelBitsCount();
-    /* Returns free RAM memory (in bytes). */
+    /*! Returns free RAM memory (in bytes). */
     static u64 AvailableMemory();
-    /* Returns total RAM memory (in bytes). */
+    /*! Returns total RAM memory (in bytes). */
     static u64 TotalMemory();
 
-    /* Returns TRUE if given render capability is present. */
+    /*! Returns TRUE if given render capability is present. */
     static bool HasRenderCapability(EGEDevice::RenderCapability cap);
-    /* Sets/Unsets given render capability. */
+    /*! Sets/Unsets given render capability. */
     static void SetRenderCapability(EGEDevice::RenderCapability cap, bool set);
-    /* Sets number of available texture units.*/
+    /*! Sets number of available texture units.*/
     static void SetTextureUnitsCount(u32 count);
-    /* Returns number of available texture units. */
+    /*! Returns number of available texture units. */
     static u32 TextureUnitsCount();
-    /* Sets maximal texture size (in texels).*/
+    /*! Sets maximal texture size (in texels).*/
     static void SetTextureMaxSize(u32 size);
-    /* Returns maximal texture size (in texels). */
+    /*! Returns maximal texture size (in texels). */
     static u32 TextureMaxSize();
 
-    /* Returns audio output device frequency (in Hz). */
+    /*! Returns audio output device frequency (in Hz). */
     static s32 AudioOutputFrequency();
 
-    /* Sleeps current thread for a specified number of miliseconds. */
+    /*! Sleeps current thread for a specified number of miliseconds. */
     static void Sleep(u32 ms);
 
   private:

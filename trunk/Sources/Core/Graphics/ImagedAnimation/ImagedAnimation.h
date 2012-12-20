@@ -52,67 +52,61 @@ class ImagedAnimation : public Object, public IAnimation
 
   public:
 
-    /* IAnimation override. Starts playback with a given sequencer. 
-     * @param sequencerName  Name of the sequencer to use for playback.
-     * @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
-     */
+    /*! @see IAnimation::play. */
     EGEResult play(const String& sequencerName) override;
-    /* IAnimation override. Starts playback with a given sequencer. 
-     * @param sequencerIndex Index of the sequencer to use for playback. Negative value replays last sequence if available.
-     * @note If animation for given sequencer is was paused it will be resumed. Otherwise, animation will be started from the begining.
-     */
+    /*! @see IAnimation::play. */
     EGEResult play(s32 sequencerIndex = 0) override;
-    /* IAnimation override. Stops playback. */
+    /*! @see IAnimation::stop. */
     void stop() override;
-    /* IAnimation override. Pauses playback. */
+    /*! @see IAnimation::pause. */
     void pause() override;
-    /* IAnimation override. Returns TRUE if animation is being played. */
+    /*! @see IAnimation::isPlaying. */
     bool isPlaying() const override;
-    /* IAnimation override. Returns TRUE if animation is paused. */
+    /*! @see IAnimation::isPaused. */
     bool isPaused() const override;
-    /* IAnimation override. Returns TRUE if animation is stopped. */
+    /*! @see IAnimation::isStopped. */
     bool isStopped() const override;
-    /* IAnimation override. Updates animation. */
+    /*! @see IAnimation::update. */
     void update(const Time& time) override;
 
-    /* Sets FPS playback value. */
+    /*! Sets FPS playback value. */
     void setFPS(float32 fps);
     
-    /* Sets display size (in pixels). */
+    /*! Sets display size (in pixels). */
     void setDisplaySize(const Vector2f& size);
-    /* Returns display size (in pixels). */
+    /*! Returns display size (in pixels). */
     const Vector2f& displaySize() const;
 
-    /* Sets base display alignment. 
-     * @param alignment Alignment animation is originally created for.
-     * @note  Animation if always aligned to TOP_LEFT anchor from its base alignment.
+    /*! Sets base display alignment. 
+     *  @param alignment Alignment animation is originally created for.
+     *  @note  Animation if always aligned to TOP_LEFT anchor from its base alignment.
      */
     void setBaseAlignment(Alignment alignment);
     /*! Returns name. */
-    inline const String& name() const { return m_name; }
-    /* Sets name. */
+    const String& name() const { return m_name; }
+    /*! Sets name. */
     void setName(const String& name);
 
-    /* Adds object with a given id to animation. 
-     * @param object    Object to be added.
+    /*! Adds object with a given id to animation. 
+     *  @param object    Object to be added.
      */
     EGEResult addObject(const EGEImagedAnimation::Object& object);
-    /* Adds frame data.
-     * @param action  List of action to be processed at given frame.
-     * @note  This creates new frame and appends it into existing ones.
+    /*! Adds frame data.
+     *  @param action  List of action to be processed at given frame.
+     *  @note  This creates new frame and appends it into existing ones.
      */
     EGEResult addFrameData(const List<EGEImagedAnimation::ActionData>& actions);
     
-    /* Adds sequencer. */
+    /*! Adds sequencer. */
     void addSequencer(const PSequencer& sequencer);
-    /* Returns current sequencer. */
+    /*! Returns current sequencer. */
     PSequencer currentSequencer() const;
 
-    /* Renders animation. */
+    /*! Renders animation. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
-    /* Sets base render priority. */
+    /*! Sets base render priority. */
     void setBaseRenderPriority(s32 priority);
-    /* Clears object. */
+    /*! Clears object. */
     void clear();
 
   private:
@@ -144,15 +138,15 @@ class ImagedAnimation : public Object, public IAnimation
   private:
 
     /*! Returns current state. */
-    inline State state() const { return m_state; }
-    /* Returns sequencer of a given name. */
+    State state() const { return m_state; }
+    /*! Returns sequencer of a given name. */
     PSequencer sequencer(const String& name) const;
     
   private slots:
 
-    /* Slot called when sequencer animated into new frame. */
+    /*! Slot called when sequencer animated into new frame. */
     void onSequencerFrameChanged(PSequencer sequencer, s32 frameId);
-    /* Slot called when sequencer finished animation .*/
+    /*! Slot called when sequencer finished animation .*/
     void onSequencerFinished(PSequencer sequencer);
 
   private:

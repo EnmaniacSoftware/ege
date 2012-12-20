@@ -12,9 +12,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Pointer)
 EGE_DEFINE_DELETE_OPERATORS(Pointer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Pointer::Pointer(Application* app) : Object(app)
+Pointer::Pointer(Application* app) : Object(app),
+                                     m_p(NULL)
 {
-  m_p = ege_new PointerPrivate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Pointer::~Pointer()
@@ -22,10 +22,26 @@ Pointer::~Pointer()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool Pointer::isValid() const
+EGEResult Pointer::construct()
 {
-  return (NULL != m_p) && (m_p->isValid());
+  EGEResult result;
+
+  // create private implementation
+  m_p = ege_new PointerPrivate(this);
+  if (NULL == m_p)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // construct private implementation
+  if (EGE_SUCCESS != (result = m_p->construct()))
+  {
+    // error!
+    return result;
+  }
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

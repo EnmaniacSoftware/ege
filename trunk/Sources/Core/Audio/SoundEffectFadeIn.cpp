@@ -17,17 +17,6 @@ SoundEffectFadeIn::~SoundEffectFadeIn()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! SoundEffect override. Returns TRUE if object is valid. */
-bool SoundEffectFadeIn::isValid() const
-{
-  return true;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! SoundEffect override. Updates object. 
- * @param time  Time frame for which update should be done.
- * @param sound Sound object for which effect is being run.
- * @return  Returns TRUE if effect came to completion. Otherwise, returns FALSE.
- */
 bool SoundEffectFadeIn::update(const Time& time, PSound sound)
 {
   bool done = false;
@@ -56,13 +45,11 @@ bool SoundEffectFadeIn::update(const Time& time, PSound sound)
   return done;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets fade duration. */
 void SoundEffectFadeIn::setDuration(const Time& time)
 {
   m_duration = time;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! SoundEffect override. Resets effect. */
 void SoundEffectFadeIn::reset()
 {
   m_time = 0.0f;

@@ -19,7 +19,6 @@ ParticleAffector::~ParticleAffector()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Initializes affector from dictionary. */
 bool ParticleAffector::initialize(const Dictionary& params)
 {
   bool error = false;
@@ -27,7 +26,6 @@ bool ParticleAffector::initialize(const Dictionary& params)
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when new particle has been spawned. */
 void ParticleAffector::onNewParticleSpawned(const EGEParticle::ParticleData& particle)
 {
   EGE_UNUSED(particle);
@@ -35,7 +33,6 @@ void ParticleAffector::onNewParticleSpawned(const EGEParticle::ParticleData& par
   // do nothing here
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when particle dies. */
 void ParticleAffector::onParticleDied(const EGEParticle::ParticleData& particle, s32 index)
 {
   EGE_UNUSED(particle);
@@ -43,7 +40,6 @@ void ParticleAffector::onParticleDied(const EGEParticle::ParticleData& particle,
   // do nothing here
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if detailed particle information is required like notification about particle spawns/deaths. */
 bool ParticleAffector::detailedParticleInfoRequired() const
 {
   // by default, affectors dont expect this info

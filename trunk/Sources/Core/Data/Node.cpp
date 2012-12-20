@@ -22,13 +22,11 @@ Node::~Node()
   m_physics = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool Node::isValid() const
 {
   return (NULL != m_physics) && m_physics->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates child node with a given name and attaches it. */
 Node* Node::createChildNode(const String& name, EGEPhysics::ComponentType componentType)
 {
   Node* node;
@@ -56,7 +54,6 @@ Node* Node::createChildNode(const String& name, EGEPhysics::ComponentType compon
   return node;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Deletes child node with a given name and detaches it. */
 void Node::deleteChildNode(const String& name)
 {
   // go thru all child nodes
@@ -79,13 +76,11 @@ void Node::deleteChildNode(const String& name)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns number of child nodes. */
 u32 Node::childNodeCount() const
 {
   return static_cast<u32>(m_children.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns child node with a given name. Returns NULL if no such node exists. */
 Node* Node::childNode(const String& name) const
 {
   // go thru all child nodes
@@ -118,7 +113,6 @@ Node* Node::childNode(const String& name) const
 //  return m_children[index];
 //}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Deletes and detaches all child nodes. */
 void Node::deleteAllChildNodes()
 {
   for (List<Node*>::iterator iter = m_children.begin(); iter != m_children.end();)
@@ -131,7 +125,6 @@ void Node::deleteAllChildNodes()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns cached combined world matrix. */
 const Matrix4f& Node::worldMatrix() const 
 { 
   if (m_worldMatrixInvalid)
@@ -154,14 +147,12 @@ const Matrix4f& Node::worldMatrix() const
   return m_worldMatrix; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Called when one of transformation values has beeen changed. */
 void Node::transformationChanged()
 {
   // invalidate world matrix
   m_worldMatrixInvalid = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets visibility flag. */
 void Node::setVisible(bool set)
 {
   if (isVisible() != set)

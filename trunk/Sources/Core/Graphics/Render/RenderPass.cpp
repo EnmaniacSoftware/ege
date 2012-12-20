@@ -23,7 +23,6 @@ RenderPass::~RenderPass()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds new texture. */
 EGEResult RenderPass::addTexture(PTextureImage texture)
 {
   m_textures.push_back(texture);
@@ -31,7 +30,6 @@ EGEResult RenderPass::addTexture(PTextureImage texture)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets new texture at given index. Can only succeed when setting texture within range. */
 EGEResult RenderPass::setTexture(u32 index, PTextureImage texture)
 {
   // check if index out of range
@@ -46,7 +44,6 @@ EGEResult RenderPass::setTexture(u32 index, PTextureImage texture)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets new texture at the place of the one with given name. If no such texture exists it is added. */
 EGEResult RenderPass::setTexture(const String& name, PTextureImage texture)
 {
   // find texture with given name
@@ -75,10 +72,6 @@ EGEResult RenderPass::setTexture(const String& name, PTextureImage texture)
   return addTexture(texture);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Remove texture at given index. 
- *  @param index Index of texture to be removed.
- *  @note  if index is -1 all textures are removed.
- */
 void RenderPass::removeTexture(s32 index)
 {
   if (0 > index)
@@ -91,65 +84,55 @@ void RenderPass::removeTexture(s32 index)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns number of textures used. */
 u32 RenderPass::textureCount() const
 {
   return (u32) m_textures.size();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Retrives texture at given index. */
 PTextureImage RenderPass::texture(u32 index) const
 {
   return (index < textureCount()) ? m_textures[index] : NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets source pixel scale factor. */
 void RenderPass::setSrcBlendFactor(EGEGraphics::BlendFactor factor)
 {
   m_srcBlendFactor = factor;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets destination pixel scale factor. */
 void RenderPass::setDstBlendFactor(EGEGraphics::BlendFactor factor)
 {
   m_dstBlendFactor = factor;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets diffuse color. */
 void RenderPass::setDiffuseColor(const Color& color)
 {
   m_diffuseColor = color;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets ambient color. */
 void RenderPass::setAmbientColor(const Color& color)
 {
   m_ambientColor = color;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets specular color. */
 void RenderPass::setSpecularColor(const Color& color)
 {
   m_specularColor = color;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets shininess. */
 void RenderPass::setShininess(float32 shininess)
 {
   m_shininess = Math::Bound(shininess, 0.0f, 1.0f);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets emission color. */
 void RenderPass::setEmissionColor(const Color& color)
 {
   m_emissionColor = color;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns cloned instance of this object. */
 RenderPass* RenderPass::clone() const
 {
   RenderPass* pass = ege_new RenderPass(app());
-  if (pass)
+  if (NULL != pass)
   {
     // TAGE - probably there is no need to clone textures too unless we need to modify textures as well
     for (TextureImageArray::const_iterator it = m_textures.begin(); it != m_textures.end(); ++it)

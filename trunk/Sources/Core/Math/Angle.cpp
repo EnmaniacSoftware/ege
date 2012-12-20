@@ -17,7 +17,6 @@ Angle::Angle(float32 radians) : m_radians(radians)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns angle object from degrees. */
 Angle Angle::FromDegrees(float32 degrees)
 {
   Angle angle;
@@ -25,7 +24,6 @@ Angle Angle::FromDegrees(float32 degrees)
   return angle;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns angle object from radians. */
 Angle Angle::FromRadians(float32 radians)
 {
   Angle angle;
@@ -33,29 +31,21 @@ Angle Angle::FromRadians(float32 radians)
   return angle;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets angle from degrees. */
 void Angle::fromDegrees(float32 degrees) 
 { 
   m_radians = Math::DegreesToRadians(degrees); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns angle in degrees. */
 float32 Angle::degrees() const 
 { 
   return Math::RadiansToDegrees(m_radians); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Normalizes angle to 2PI interval around center. 
- * @param center  Center point around around which angle is spread. If 0 result interval after normalization will be [-PI..+PI].
- * @note  For normalization resulting in [0..2PI] interval use PI as center point.
- * @note  Due to numerical inaccuracies intervals are closed on both sides rather than only at one.
- */
 void Angle::normalize(float32 center)
 {
   m_radians = m_radians - EGEMath::TWO_PI * Math::Floor((m_radians + EGEMath::PI - center) / EGEMath::TWO_PI);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns normalized angle in [0-2PI) degrees interval. */
 Angle Angle::normalized() const
 {
   Angle angle = *this;
@@ -63,7 +53,6 @@ Angle Angle::normalized() const
   return angle;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns angle distance from current angle to given one. */
 Angle Angle::distanceTo(const Angle& angle, EGEAngle::Direction direction)
 {
   Angle out;

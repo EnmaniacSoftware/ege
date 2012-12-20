@@ -28,25 +28,25 @@ class Renderer : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
-    /* Sends all geometry through the geometry pipeline to hardware. */
+    /*! Creates object. */
+    EGEResult construct();
+    /*! Sends all geometry through the geometry pipeline to hardware. */
     void flush();
-    /* Sets given viewport. */
+    /*! Sets given viewport. */
     void setViewport(const PViewport& viewport);
-    /* Clears given viewport. */
+    /*! Clears given viewport. */
     void clearViewport(const PViewport& viewport);
-    /* Applies material for given pass. */
+    /*! Applies material for given pass. */
     void applyMaterial(const PMaterial& material, const RenderPass* pass);
-    /* Adds given data for rendering. */
+    /*! Adds given data for rendering. */
     bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY);
 
-    /* Resets statistics. */
+    /*! Resets statistics. */
     void resetStats();
     /*! Returns number of batches rendered last frame. */
-    inline u32 batchCount() const { return m_batchCount; }
+    u32 batchCount() const { return m_batchCount; }
     /*! Returns number of vertices rendered last frame. */
-    inline u32 vertexCount() const { return m_vertexCount; }
+    u32 vertexCount() const { return m_vertexCount; }
 
     /*! Returns current render target. */
     PRenderTarget currentRenderTarget() const { return m_renderTarget; }
@@ -54,12 +54,12 @@ class Renderer : public Object
     //PRenderComponent addComponent(const String& name = "");
 
 //    void setViewport(PViewport pViewport);
-    /* Sets projection matrix. */
+    /*! Sets projection matrix. */
     void setProjectionMatrix(const Matrix4f& matrix);
-    /* Sets view matrix. */
+    /*! Sets view matrix. */
     void setViewMatrix(const Matrix4f& matrix);
     /*! Returns view matrix. */
-    inline const Matrix4f& viewMatrix() const { return m_viewMatrix; }
+    const Matrix4f& viewMatrix() const { return m_viewMatrix; }
 
     // scene manager related method
 //    void setSceneManager( const SceneManager* pcSceneManager );                              // sets scene manager which is in use
@@ -125,7 +125,7 @@ class Renderer : public Object
 
   private:
 
-    /* Updates rectangle coordinates by given angle. */
+    /*! Updates rectangle coordinates by given angle. */
     Rectf applyRotation(const Rectf& rect, const Angle& angle) const;
 
   private:

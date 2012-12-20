@@ -6,24 +6,12 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates render component with 2D quad on XY plane. 
- * @param app         Pointer to application.
- * @param name        Name of render component.
- * @param position    Quad position (local-space).
- * @param size        Size of quad.
- * @param origin      Quad's origin alignment.
- * @param semantics   Render component's vertex buffer semantics.
- * @param priority    Render priority.
- * @param primitive   Render primitive type.
- * @param vertexUsage Vertex buffer usage.
- * @return Returns render component. NULL if failed.
- */
 PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, 
                                                    EGEVertexBuffer::SemanticType semantics, s32 priority, EGEGraphics::RenderPrimitiveType primitive,
                                                    EGEVertexBuffer::UsageType vertexUsage)
 {
   PRenderComponent object = ege_new RenderComponent(app, name, priority, primitive, vertexUsage);
-  if (object)
+  if (NULL != object)
   {
     // setup vertex buffer semantics
     if (!object->isValid() || !object->vertexBuffer()->setSemantics(semantics))
@@ -32,7 +20,7 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
       return NULL;
     }
 
-    if (!DoCreateQuadXY(object, position, size, origin, primitive))
+    if ( ! DoCreateQuadXY(object, position, size, origin, primitive))
     {
       // error!
       return NULL;
@@ -48,7 +36,7 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
 
 {
   PRenderComponent object = ege_new RenderComponent(app, name, priority, primitive, vertexUsage);
-  if (object)
+  if (NULL != object)
   {
     // setup vertex buffer semantics
     if (!object->isValid() || !object->vertexBuffer()->setSemantics(semantics))
@@ -57,7 +45,7 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
       return NULL;
     }
 
-    if (!DoCreateQuadXY(object, position, size, origin, primitive))
+    if ( ! DoCreateQuadXY(object, position, size, origin, primitive))
     {
       // error!
       return NULL;
@@ -206,15 +194,6 @@ bool RenderObjectFactory::DoCreateQuadXY(PRenderComponent& component, Vector4f p
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates render component for given curve. 
- * @param spline    Pointer to spline for which render component is to be generated.
- * @param app       Pointer to application.
- * @param name      Name of render component.
- * @param offset    Curve position offset (local-space).
- * @param semantics Render component's vertex buffer semantics.
- * @param priority  Render priority.
- * @return Returns render component. NULL if failed.
- */
 PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Application* app, const String& name, Vector4f offset, 
                                              EGEVertexBuffer::SemanticType semantics, s32 priority)
 {

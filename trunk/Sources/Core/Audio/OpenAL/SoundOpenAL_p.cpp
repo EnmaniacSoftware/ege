@@ -33,7 +33,6 @@ SoundPrivate::~SoundPrivate()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
 EGEResult SoundPrivate::construct()
 {
   // generate buffers
@@ -69,7 +68,6 @@ EGEResult SoundPrivate::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates object. */
 void SoundPrivate::update(const Time& time)
 {
   EGE_UNUSED(time);
@@ -127,7 +125,6 @@ void SoundPrivate::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates sound buffers. */
 void SoundPrivate::updateBuffers()
 {
   AudioCodec* codec = d_func()->codec();
@@ -229,7 +226,6 @@ void SoundPrivate::updateBuffers()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts playback on given channel. */
 EGEResult SoundPrivate::play(ALuint channel)
 {
   // store channel
@@ -273,7 +269,6 @@ EGEResult SoundPrivate::play(ALuint channel)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Resumes playback. */
 EGEResult SoundPrivate::resume()
 {
   if (AL_TRUE == alIsSource(m_channel))
@@ -285,7 +280,6 @@ EGEResult SoundPrivate::resume()
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Stops playback. */
 EGEResult SoundPrivate::stop()
 {
   // set flag to prevent this sound from being updated
@@ -319,7 +313,6 @@ EGEResult SoundPrivate::stop()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if sound is being played. */
 bool SoundPrivate::isPlaying() const
 {
   if (AL_TRUE == alIsSource(m_channel))
@@ -339,7 +332,6 @@ bool SoundPrivate::isPlaying() const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called on sound volume change. */
 void SoundPrivate::onSoundVolumeChanged(PSound sound, float32 oldVolume)
 {
   EGE_ASSERT(sound->p_func() == this);
@@ -358,7 +350,6 @@ void SoundPrivate::onSoundVolumeChanged(PSound sound, float32 oldVolume)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Pauses playback. */
 EGEResult SoundPrivate::pause()
 {
   // pause channel
@@ -373,7 +364,6 @@ EGEResult SoundPrivate::pause()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if sound is paused. */
 bool SoundPrivate::isPaused() const
 {
   if (AL_TRUE == alIsSource(m_channel))
@@ -393,7 +383,6 @@ bool SoundPrivate::isPaused() const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if sound is stopped. */
 bool SoundPrivate::isStopped() const
 {
   return m_stopped;

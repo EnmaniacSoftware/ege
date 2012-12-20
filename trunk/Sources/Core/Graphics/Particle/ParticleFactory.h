@@ -29,21 +29,20 @@ class ParticleFactory : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
-
-    /* Registeres custom particle emitter type. */
+    /*! Creates object. */
+    EGEResult construct();
+    /*! Registeres custom particle emitter type. */
     EGEResult registerEmitter(const String& typeName, egeParticleEmitterCreateFunc createFunc);
-    /* Creates instance of particle emitter of the type given by name. */
+    /*! Creates instance of particle emitter of the type given by name. */
     PParticleEmitter createEmitter(const String& typeName, const String& name) const;
-    /* Returns TRUE if given emitter type is registered. */
+    /*! Returns TRUE if given emitter type is registered. */
     bool isEmitterRegistered(const String& typeName) const;
 
-    /* Registeres custom particle affector type. */
+    /*! Registeres custom particle affector type. */
     EGEResult registerAffector(const String& typeName, egeParticleAffectorCreateFunc createFunc);
-    /* Creates instance of particle affector of the type given by name. */
+    /*! Creates instance of particle affector of the type given by name. */
     PParticleAffector createAffector(const String& typeName, const String& name) const;
-    /* Returns TRUE if given affector type is registered. */
+    /*! Returns TRUE if given affector type is registered. */
     bool isAffectorRegistered(const String& typeName) const;
 
   private:

@@ -46,7 +46,6 @@ PhysicsComponentPrivate::~PhysicsComponentPrivate()
   m_body = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets position vector. */
 void PhysicsComponentPrivate::setPosition(const Vector4f& position)
 {
   if (isValid())
@@ -57,7 +56,6 @@ void PhysicsComponentPrivate::setPosition(const Vector4f& position)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns position vector. */
 Vector4f PhysicsComponentPrivate::position() const
 {
   Vector4f vec;
@@ -77,7 +75,6 @@ Vector4f PhysicsComponentPrivate::position() const
   return vec;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets orientation quaternion. */
 void PhysicsComponentPrivate::setOrientation(const Quaternionf& orientation)
 {
   if (isValid())
@@ -86,7 +83,6 @@ void PhysicsComponentPrivate::setOrientation(const Quaternionf& orientation)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns orientation quaternion. */
 Quaternionf PhysicsComponentPrivate::orientation() const
 {
   Quaternionf orient;
@@ -101,11 +97,6 @@ Quaternionf PhysicsComponentPrivate::orientation() const
   return orient;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Applies a force vector.
-* 
-*  @param  force    force vector to apply.
-*  @param  worldPos world position where force is to be applied. 
-*/
 void PhysicsComponentPrivate::applyForce(const Vector4f& force, const Vector4f& worldPos)
 {
   if (isValid())
@@ -116,12 +107,6 @@ void PhysicsComponentPrivate::applyForce(const Vector4f& force, const Vector4f& 
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Applies an impulse at the giveb point.
-* 
-*  @param  force    impulse vector to apply.
-*  @param  worldPos world position where impulse is to be applied. 
-*  @note   This immediatly affects linear velocity.
-*/
 void PhysicsComponentPrivate::applyLinearImpulse(const Vector4f& impulse, const Vector4f& worldPos)
 {
   if (isValid())
@@ -132,7 +117,6 @@ void PhysicsComponentPrivate::applyLinearImpulse(const Vector4f& impulse, const 
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns force vector. */
 Vector4f PhysicsComponentPrivate::force() const
 {
   Vector4f vec;
@@ -144,7 +128,6 @@ Vector4f PhysicsComponentPrivate::force() const
   return vec;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets mass. */
 void PhysicsComponentPrivate::setMass(EGE::float32 mass)
 {
   if (isValid())
@@ -158,7 +141,6 @@ void PhysicsComponentPrivate::setMass(EGE::float32 mass)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns mass. */
 EGE::float32 PhysicsComponentPrivate::mass() const
 {
   EGE::float32 mass = 0;
@@ -171,7 +153,6 @@ EGE::float32 PhysicsComponentPrivate::mass() const
   return mass;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets linear velocity vector. */
 void PhysicsComponentPrivate::setLinearVelocity(const Vector4f& velocity)
 {
   if (isValid())
@@ -182,7 +163,6 @@ void PhysicsComponentPrivate::setLinearVelocity(const Vector4f& velocity)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns linear velocity vector. */
 Vector4f PhysicsComponentPrivate::linearVelocity() const
 { 
   Vector4f vec;
@@ -202,13 +182,11 @@ Vector4f PhysicsComponentPrivate::linearVelocity() const
   return vec;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if component is valid. */
 bool PhysicsComponentPrivate::isValid() const
 {
   return NULL != m_body;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds circular shape. */
 bool PhysicsComponentPrivate::addCircleShape(EGE::float32 radius, EGE::float32 density, EGEPhysics::CollisionData colissionData)
 {
   if (isValid())
@@ -235,10 +213,6 @@ bool PhysicsComponentPrivate::addCircleShape(EGE::float32 radius, EGE::float32 d
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Adds polygonal shape. 
-*  @param points  vertices of polygon shape.
-*  @param density shape density. Affects mass.
-*/
 bool PhysicsComponentPrivate::addPolygonShape(const DynamicArray<Vector4f>& points, EGE::float32 density, EGEPhysics::CollisionData colissionData)
 {
   if (isValid())
@@ -274,7 +248,6 @@ bool PhysicsComponentPrivate::addPolygonShape(const DynamicArray<Vector4f>& poin
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets scale vector. */
 void PhysicsComponentPrivate::setScale(const Vector4f& scale)
 {
   EGE_UNUSED(scale);
@@ -282,14 +255,12 @@ void PhysicsComponentPrivate::setScale(const Vector4f& scale)
   // unsupported
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns scale vector. */
 Vector4f PhysicsComponentPrivate::scale() const
 {
   // unsupported, return base value
   return d_func()->m_scale;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if component is 'awaken'. Awaken components are the ones processed by solver. */
 bool PhysicsComponentPrivate::isAwake() const
 {
   if (isValid())
@@ -300,7 +271,6 @@ bool PhysicsComponentPrivate::isAwake() const
   return d_func()->m_awake;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets 'awake' state. */
 void PhysicsComponentPrivate::setAwake(bool set)
 {
   if (isValid())
@@ -309,7 +279,6 @@ void PhysicsComponentPrivate::setAwake(bool set)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets whether object is allowed to sleep. */
 void PhysicsComponentPrivate::setAllowSleep(bool set)
 {
   if (isValid())

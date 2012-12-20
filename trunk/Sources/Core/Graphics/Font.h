@@ -8,15 +8,10 @@
 #include "Core/Resource/ResourceFont.h"
 
 EGE_NAMESPACE_BEGIN
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class GlyphData;
-
 EGE_DECLARE_SMART_CLASS(Font, PFont)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Font : public Object
 {
   public:
@@ -27,17 +22,17 @@ class Font : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if material is valid. */
+    /*! Returns TRUE if material is valid. */
     bool isValid() const;
-    /* Sets material. */
+    /*! Sets material. */
     void setMaterial(PMaterial material);
     /*! Returns material. */
-    inline PMaterial material() const { return m_material; }
+    PMaterial material() const { return m_material; }
     /*! Returns font height (in pixels). */
-    inline s32 height() const { return m_height; }
-    /* Returns pointer to data for a given glyph. NULL if glyph is not defined. */
+    s32 height() const { return m_height; }
+    /*! Returns pointer to data for a given glyph. NULL if glyph is not defined. */
     const GlyphData* glyphData(Char c) const;
-    /* Returns metrics of the given text. */
+    /*! Returns metrics of the given text. */
     Vector2i metrics(const Text& text) const;
 
   private:
@@ -49,7 +44,6 @@ class Font : public Object
     /*! Font screen height. */
     s32 m_height;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

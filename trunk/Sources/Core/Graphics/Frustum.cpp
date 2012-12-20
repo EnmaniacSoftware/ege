@@ -22,7 +22,6 @@ Frustum::~Frustum()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets projection type. */
 void Frustum::setProjectionType(ProjectionType projection)
 {
   m_projectionType = projection;
@@ -31,7 +30,6 @@ void Frustum::setProjectionType(ProjectionType projection)
   invalidateProjectionMatrix();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets near plane distance. */
 void Frustum::setNearPlaneDistance(float32 distance)
 {
   m_nearPlaneDistance = distance;
@@ -40,7 +38,6 @@ void Frustum::setNearPlaneDistance(float32 distance)
   invalidateProjectionMatrix();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets far plane distance. */
 void Frustum::setFarPlaneDistance(float32 distance)
 {
   m_farPlaneDistance = distance;
@@ -49,7 +46,6 @@ void Frustum::setFarPlaneDistance(float32 distance)
   invalidateProjectionMatrix();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets aspect ratio. */
 void Frustum::setAspectRatio(float32 aspectRatio)
 {
   m_aspectRatio = aspectRatio;
@@ -58,7 +54,6 @@ void Frustum::setAspectRatio(float32 aspectRatio)
   invalidateProjectionMatrix();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets Field-Of-View. */
 void Frustum::setFOVy(const Angle& angle)
 {
   m_FOVy = angle;
@@ -67,7 +62,6 @@ void Frustum::setFOVy(const Angle& angle)
   invalidateProjectionMatrix();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates frustum. */
 void Frustum::update()
 {
   calculateProjectionMatrix();
@@ -157,7 +151,6 @@ void Frustum::update()
 //}
 //
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if point is within vfrustum. */
 bool Frustum::isVisible(const Vector4f& point)
 {
   // make sure all is up to date
@@ -170,7 +163,7 @@ bool Frustum::isVisible(const Vector4f& point)
     //if (plane == FRUSTUM_PLANE_FAR && mFarDist == 0)
     //    continue;
 
-    if (Planef::NEGATIVE_SIDE == m_planes[plane].side(point))
+    if (Planef::SIDE_NEGATIVE == m_planes[plane].side(point))
     {
       // ALL corners on negative side therefore out of view
       //if (culledBy)
@@ -182,7 +175,6 @@ bool Frustum::isVisible(const Vector4f& point)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns projection matrix. */
 const Matrix4f& Frustum::projectionMatrix()
 { 
   calculateProjectionMatrix();
@@ -190,7 +182,6 @@ const Matrix4f& Frustum::projectionMatrix()
   return m_projectionMatrix; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Calculates projetction matrix. */
 void Frustum::calculateProjectionMatrix()
 {
   // check if update is needed
@@ -285,7 +276,6 @@ void Frustum::calculateProjectionMatrix()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Calculates frustum planes. */
 void Frustum::calculateFrustumPlanes()
 {
   // check if update is necessary
@@ -350,19 +340,16 @@ void Frustum::calculateFrustumPlanes()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Invalidates projection matrix. */
 void Frustum::invalidateProjectionMatrix()
 {
   m_projectionMatrixNeedsUpdate = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Invalidates frustum planes. */
 void Frustum::invalidateFrustumPlanes()
 {
   m_planesNeedUpdate = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets orthographic view settings. */
 void Frustum::setOrthoSettings(const Rectf& rect)
 {
   // store settings

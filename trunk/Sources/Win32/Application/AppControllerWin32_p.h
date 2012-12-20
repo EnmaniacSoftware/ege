@@ -1,15 +1,13 @@
 #ifndef EGE_WIN32_APPCONTROLLER_PRIVATE_H
 #define EGE_WIN32_APPCONTROLLER_PRIVATE_H
 
-#include "EGE.h"
+#include <EGE.h>
+#include <EGETime.h>
 #include "Core/Event/EventListener.h"
-#include <EGEDictionary.h>
-#include "EGETime.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AppControllerPrivate
 {
   public:
@@ -22,10 +20,9 @@ class AppControllerPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(AppController)
 
-    /* Enters main loop. */
+    /*! Enters main loop. */
     EGEResult run();
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

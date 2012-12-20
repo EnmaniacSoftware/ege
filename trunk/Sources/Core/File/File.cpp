@@ -26,33 +26,28 @@ File::~File()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if file at given path exists. */
 bool File::Exists(const String& filePath)
 {
   File file(filePath);
   return file.exists();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes file at given path is possible. */
 bool File::Remove(const String& filePath)
 {
   File file(filePath);
   return file.remove();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool File::isValid() const
 {
   return NULL != m_p;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns file path. */
 const String& File::filePath() const
 {
   return m_filePath;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Opens the given file with requested mode. */
 EGEResult File::open(EGEFile::EMode mode)
 {
   if (isValid())
@@ -63,7 +58,6 @@ EGEResult File::open(EGEFile::EMode mode)
   return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Closes file. */
 void File::close()
 {
   if (isValid())
@@ -72,8 +66,6 @@ void File::close()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Reads given amount of data into destination buffer. */
-/// @return Returns number of bytes read.
 s64 File::read(const PDataBuffer& dst, s64 size)
 {
   if (isValid())
@@ -84,7 +76,6 @@ s64 File::read(const PDataBuffer& dst, s64 size)
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets new position within file. Returns old position or -1 if error occured. */
 s64 File::seek(s64 offset, EGEFile::ESeekMode mode) 
 {
   if (isValid())
@@ -95,7 +86,6 @@ s64 File::seek(s64 offset, EGEFile::ESeekMode mode)
   return -1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current position in file. Returns -1 if error occured. */
 s64 File::tell()
 {
   if (isValid())
@@ -106,8 +96,6 @@ s64 File::tell()
   return -1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Writes given amount of data from destination buffer. */
-/// @return Returns number of bytes written.
 s64 File::write(const PDataBuffer& src, s64 size)
 {
   if (isValid())
@@ -380,7 +368,6 @@ EGE::File& File::operator >> (float64& value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if file is opened. */
 bool File::isOpen() const
 {
   if (isValid())
@@ -391,7 +378,6 @@ bool File::isOpen() const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns file size. Returns -1 if error occured. */
 s64 File::size()
 {
   if (isValid())
@@ -402,7 +388,6 @@ s64 File::size()
   return -1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if file exists. */
 bool File::exists() const
 {
   if (isValid())
@@ -413,7 +398,6 @@ bool File::exists() const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes file if possible. */
 bool File::remove()
 {
   if (isValid())

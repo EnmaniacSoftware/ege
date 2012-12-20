@@ -8,18 +8,16 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class AudioUtils
 {
   public:
 
-    /* Detects stream type of given data. */
+    /*! Detects stream type of given data. */
     static EGEAudio::StreamType DetectStreamType(const PDataBuffer& data);
-    /* Retrieves WAV stream headers. */
+    /*! Retrieves WAV stream headers. */
     static void ReadWavHeaders(const PDataBuffer& data, EGEAudio::WaveRiffHeader& riffHeader, EGEAudio::WaveFmtHeader& fmtHeader, 
                                EGEAudio::WaveDataHeader& dataHeader);
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

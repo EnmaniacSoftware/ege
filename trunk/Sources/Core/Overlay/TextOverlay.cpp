@@ -20,7 +20,6 @@ TextOverlay::~TextOverlay()
   m_font = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets text. */
 void TextOverlay::setText(const Text& text)
 {
   if (m_text != text)
@@ -36,7 +35,6 @@ void TextOverlay::setText(const Text& text)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets font. */
 void TextOverlay::setFont(PFont font)
 {
   if (font != m_font)
@@ -55,7 +53,6 @@ void TextOverlay::setFont(PFont font)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates render data. */
 void TextOverlay::updateRenderData()
 {
   // cache font height
@@ -152,7 +149,6 @@ void TextOverlay::updateRenderData()
   m_renderData->vertexBuffer()->unlock(data - 1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Overlay override. Returns text size (in pixels). */
 const Vector2f& TextOverlay::size() const
 {
   // check if text data is invalid
@@ -170,7 +166,6 @@ const Vector2f& TextOverlay::size() const
   return Overlay::size();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Overlay override. Initializes object. */
 void TextOverlay::initialize()
 {
   // call base class
@@ -181,7 +176,6 @@ void TextOverlay::initialize()
                                                     EGEVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Update text data. */
 void TextOverlay::updateTextData()
 {
   const float32 spacing = 0.0f;
@@ -255,7 +249,6 @@ void TextOverlay::updateTextData()
   setSize(textSize);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Overlay override. Renders overlay. */
 void TextOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (visible())
@@ -297,7 +290,6 @@ void TextOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets text alignment. */
 void TextOverlay::setTextAlignment(Alignment alignment)
 {
   m_textAlignment = alignment;

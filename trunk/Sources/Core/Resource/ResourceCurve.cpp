@@ -166,7 +166,7 @@ CubicSpline ResourceCurve::createInstance() const
 EGEResult ResourceCurve::setInstance(CubicSpline& instance) const
 {
   instance = createInstance();
-  return instance.isValid() ? EGE_SUCCESS : EGE_ERROR;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

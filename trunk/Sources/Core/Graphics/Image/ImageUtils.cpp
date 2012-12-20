@@ -20,7 +20,6 @@ static struct ScanLineEntry ScanLines[] = { {PF_RGBA_8888, PF_RGBA_8888, ImageUt
                                             {PF_RGB_888, PF_RGBA_8888, ImageUtils::ScanLineBltRGBA8888ToRGB888}
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns given format pixel size (in bytes). */
 u32 ImageUtils::PixelSize(PixelFormat format)
 {
   switch (format)
@@ -32,15 +31,6 @@ u32 ImageUtils::PixelSize(PixelFormat format)
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Copies region from input image onto region of destination image. 
- * @param dst     Destination image to which copying operation will be performed
- * @param dstRect Region in destination image where data is to be copied
- * @param src     Source image from which copy data will be taken
- * @param srcRect Region in source image which is to be copied
- *
- * @note  srcRect can be NULL if entire source image is to be copied
- * @note  If srcRect and dstRect sizes are not equal stretching is applied
- */
 void ImageUtils::Copy(PImage& dst, const Recti& dstRect, const PImage& src, Recti srcRect)
 {
   // check if entire source should be copied
@@ -54,14 +44,6 @@ void ImageUtils::Copy(PImage& dst, const Recti& dstRect, const PImage& src, Rect
   FastCopy(dst, point, src, srcRect);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Copies region from input image onto region of destination image starting at given point. 
- * @param dst       Destination image to which copying operation will be performed
- * @param dstPoint  Point in destination image where data is to be copied
- * @param src       Source image from which copy data will be taken
- * @param srcRect   Region in source image which is to be copied.
- *
- * @note  srcRect can be NULL if entire source image is to be copied
- */
 void ImageUtils::FastCopy(PImage& dst, const Vector2i& dstPoint, const PImage& src, Recti srcRect)
 {
   // check if entire source should be copied
@@ -113,13 +95,11 @@ void ImageUtils::FastCopy(PImage& dst, const Vector2i& dstPoint, const PImage& s
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Performs scan line bit blit from RGBA8888 format onto RGBA8888 format. */
 void ImageUtils::ScanLineBltRGBA8888ToRGBA8888(void* dst, const void* src, s32 length)
 {
   EGE_MEMCPY(dst, src, length * 4);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Performs scan line bit blit from RGBA8888 format onto RGB888 format. */
 void ImageUtils::ScanLineBltRGBA8888ToRGB888(void* dst, const void* src, s32 length)
 {
   u8* dest = reinterpret_cast<u8*>(dst);
@@ -137,7 +117,6 @@ void ImageUtils::ScanLineBltRGBA8888ToRGB888(void* dst, const void* src, s32 len
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Performs fill blit on RGBA8888 surface. */
 void ImageUtils::FillLineBltRGBA8888(void* dst, u32 color, s32 length)
 {
   u32* dest = reinterpret_cast<u32*>(dst);
@@ -150,7 +129,6 @@ void ImageUtils::FillLineBltRGBA8888(void* dst, u32 color, s32 length)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Fills region of image with given color. */
 void ImageUtils::Fill(PImage& dst, const Recti& dstRect, const Color& color)
 {
   u32 nativeColor = 0;
@@ -187,15 +165,6 @@ void ImageUtils::Fill(PImage& dst, const Recti& dstRect, const Color& color)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates image from given data.
- *  @param width         Image width (in pixels).
- *  @param height        Image height (in pixels).
- *  @param format        Pixel format (in pixells).
- *  @param premultiplied TRUE if alpha premultiplication is applied.
- *  @param rowLength     Length of single row (in bytes).
- *  @param data          Pixel data buffer.
- *  @return  On success newly created image. NULL otherwise.
- */
 PImage ImageUtils::CreateImage(s32 width, s32 height, PixelFormat format, bool premultiplied, s32 rowLength, const PDataBuffer& data)
 {
   // allocate image

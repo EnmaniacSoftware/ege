@@ -28,55 +28,55 @@ class Image : public Object
 
   public:
 
-    /* Loads image from given file converting it's pixel format to requested one if possible. 
-       @param fileName  File name to load image from.
-       @param format    Pixel format loaded image should be converted to.
-       @return Loaded image on success. NULL otherwise.
-       @note If requested pixel format is PF_UNKNOWN no conversion is done.
+    /*! Loads image from given file converting it's pixel format to requested one if possible. 
+     *  @param fileName  File name to load image from.
+     *  @param format    Pixel format loaded image should be converted to.
+     *  @return Loaded image on success. NULL otherwise.
+     *  @note If requested pixel format is PF_UNKNOWN no conversion is done.
      */
     static PImage Load(const String& fileName, PixelFormat format = PF_UNKNOWN);
-    /* Loads image from given buffer converting it's pixel format to requested one if possible. 
-       @param buffer  Buffer containing data to load image from.
-       @param format  Pixel format loaded image should be converted to.
-       @return Loaded image on success. NULL otherwise.
-       @note If requested pixel format is PF_UNKNOWN no conversion is done.
+    /*! Loads image from given buffer converting it's pixel format to requested one if possible. 
+     *  @param buffer  Buffer containing data to load image from.
+     *  @param format  Pixel format loaded image should be converted to.
+     *  @return Loaded image on success. NULL otherwise.
+     *  @note If requested pixel format is PF_UNKNOWN no conversion is done.
      */
     static PImage Load(const PDataBuffer& buffer, PixelFormat format = PF_UNKNOWN);
-    /* Saves image into a given file with specified pixel format. 
-       @param image     Image to save.
-       @param fileName  File name to which the file should be saved.
-       @param format    Pixel format of the saved image.
-       @return EGE_SUCCESS on success.
-       @note If requested pixel format is PF_UNKNOWN image will be saved with current image pixel format.
+    /*! Saves image into a given file with specified pixel format. 
+     *  @param image     Image to save.
+     *  @param fileName  File name to which the file should be saved.
+     *  @param format    Pixel format of the saved image.
+     *  @return EGE_SUCCESS on success.
+     *  @note If requested pixel format is PF_UNKNOWN image will be saved with current image pixel format.
      */
     static EGEResult Save(PImage image, const String& fileName, PixelFormat format = PF_UNKNOWN);
 
   public:
 
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     bool isValid() const;
     /*! Gets image width (in pixels) */
-    inline s32 width() const { return m_width; }
+    s32 width() const { return m_width; }
     /*! Gets image height (in pixels) */
-    inline s32 height() const { return m_height; }
+    s32 height() const { return m_height; }
     /*! Gets image format */
-    inline PixelFormat format() const { return m_format; }
+    PixelFormat format() const { return m_format; }
     /*! Gets image pixel data buffer */
-    inline PDataBuffer data() const { return m_data; }
+    PDataBuffer data() const { return m_data; }
     /*! Returns TRUE if image contains alpha channel. */
-    inline bool hasAlpha() const { return PF_RGBA_8888 == m_format; }
+    bool hasAlpha() const { return PF_RGBA_8888 == m_format; }
     /*! Returns row length (in bytes). */
-    inline u32 rowLength() const { return m_rowLength; }
-    /* Sets alpha premultiply flag. */
+    u32 rowLength() const { return m_rowLength; }
+    /*! Sets alpha premultiply flag. */
     void setAlphaPremultiply(bool set);
     /*! Returns TRUE if image is alpha premultiplied. */
-    inline bool isAlphaPremultiplied() const { return m_premultiplied; }
-    /* Returns TRUE if image is compressed. */
+    bool isAlphaPremultiplied() const { return m_premultiplied; }
+    /*! Returns TRUE if image is compressed. */
     bool isCompressed() const;
 
   private:
 
-    /* Allocated internal data buffer to be able to hold image of a given size and format. */
+    /*! Allocated internal data buffer to be able to hold image of a given size and format. */
     EGEResult allocateData(s32 width, s32 height, PixelFormat format);
 
   private:

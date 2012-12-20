@@ -25,7 +25,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class CubicSpline
 {
   public:
@@ -39,42 +38,40 @@ class CubicSpline
 
   public:
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
     /*! Returns spline type. */
-    inline EGESpline::Type type() const { return m_type; }
-    /* Sets spline type. */
+    EGESpline::Type type() const { return m_type; }
+    /*! Sets spline type. */
     void setType(EGESpline::Type type);
-    /* Adds point to spline.
-     * @param point   Point to be added.
-     * @param tangent Tangent vector for added point.
-     * @return Retrurns curve segment point belogns to.
+    /*! Adds point to spline.
+     *  @param point   Point to be added.
+     *  @param tangent Tangent vector for added point.
+     *  @return Retrurns curve segment point belogns to.
      */
     CurveSegment& addPoint(const Vector4f& point, const Vector4f& tangent);
-    /* Calculates value on spline at given position
-     * @param pos Calculated position on spline at given position.
-     * @param t   Parametrized distance on a spline at which calculations are done. Typicially in [0-1] interval.
+    /*! Calculates value on spline at given position
+     *  @param pos Calculated position on spline at given position.
+     *  @param t   Parametrized distance on a spline at which calculations are done. Typicially in [0-1] interval.
      */
     void value(Vector4f& pos, float32 t) const;
-    /* Returns segment of the spline at given position
-     * @param t                 Parametrized distance on a spline at which calculations are done. Typicially in [0-1] interval.
-     * @param distanceToSegment Distance to returned segment (sum of distances of all previous segments).
-     * @note    Parameter t is clamped to [0-1] interval.
-     * @return  Curve segment at given position.
+    /*! Returns segment of the spline at given position
+     *  @param t                 Parametrized distance on a spline at which calculations are done. Typicially in [0-1] interval.
+     *  @param distanceToSegment Distance to returned segment (sum of distances of all previous segments).
+     *  @note    Parameter t is clamped to [0-1] interval.
+     *  @return  Curve segment at given position.
      */
     const CurveSegment* segment(float32 t, float32& distanceToSegment) const;
 
     /*! Returns spline length. */
-    inline float32 length() const { return m_length; }
+    float32 length() const { return m_length; }
 
   private:
 
-    /* Calculates segement length. */
+    /*! Calculates segement length. */
     void calculateSegmentLength(CurveSegment& segment);
 
   private slots:
 
-    /* Called when one of the segments point has been changed. */
+    /*! Called when one of the segments point has been changed. */
     void segmentPointChanged(CurveSegment& segment);
 
   private:
@@ -92,7 +89,6 @@ class CubicSpline
     /*! Spline length. */
     float32 m_length;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

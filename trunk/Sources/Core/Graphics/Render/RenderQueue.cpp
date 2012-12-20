@@ -14,7 +14,6 @@ RenderQueue::~RenderQueue()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds given data for rendering. */
 bool RenderQueue::addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix)
 {
   SRENDERDATA data;
@@ -27,13 +26,11 @@ bool RenderQueue::addForRendering(const PRenderComponent& component, const Matri
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Clears (empties) queue. */
 void RenderQueue::clear()
 {
   m_renderData.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns map of render data structures. */
 const MultiMap<u32, RenderQueue::SRENDERDATA>& RenderQueue::renderData() const
 {
   return m_renderData;

@@ -17,7 +17,6 @@ EventManager::~EventManager()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Sends event with given ID. */
 EGEResult EventManager::send(s32 id)
 {
   PEvent event = ege_new Event(app(), id);
@@ -33,7 +32,6 @@ EGEResult EventManager::send(s32 id)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sends event with given ID and associates integral value. */
 EGEResult EventManager::send(s32 id, s32 data)
 {
   PEvent event = ege_new Event(app(), id);
@@ -58,7 +56,6 @@ EGEResult EventManager::send(s32 id, s32 data)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sends event with given ID and associates floating value. */
 EGEResult EventManager::send(s32 id, float32 data)
 {
   PEvent event = ege_new Event(app(), id);
@@ -83,7 +80,6 @@ EGEResult EventManager::send(s32 id, float32 data)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sends event with given ID and associates arbitrary data. */
 EGEResult EventManager::send(s32 id, PObject data)
 {
   PEvent event = ege_new Event(app(), id);
@@ -101,7 +97,6 @@ EGEResult EventManager::send(s32 id, PObject data)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sends event. */
 void EventManager::notify(PEvent event)
 {
   const ListenersContainer& objects = listeners();

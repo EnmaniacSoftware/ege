@@ -1,15 +1,12 @@
 #ifndef EGE_CORE_PLANE_H
 #define EGE_CORE_PLANE_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include <EGETypes.h>
 #include "Core/Math/Vector4.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T>
 class TPlane
 {
@@ -19,28 +16,32 @@ class TPlane
     TPlane(const TPlane& plane);
     TPlane(const TVector4<T>& normal, T d);
 
-    enum ESide
+  public:
+
+    /*! Available sides. */
+    enum Side
     {
-      NO_SIDE,
-      POSITIVE_SIDE,
-      NEGATIVE_SIDE,
-      BOTH_SIDE
+      SIDE_NONE = 0,
+      SIDE_POSITIVE,
+      SIDE_NEGATIVE,
+      SIDE_BOTH
     };
 
-    inline TPlane<T>& operator=(const TPlane<T>& plane);
+  public:
 
-    inline bool operator==(const TPlane<T>& plane) const;
+    TPlane<T>&  operator=(const TPlane<T>& plane);
+    bool        operator==(const TPlane<T>& plane) const;
 
-    inline void create(const TVector4<T>& normal, T d);
-    inline void create(const TPlane<T>& plane);
+    void create(const TVector4<T>& normal, T d);
+    void create(const TPlane<T>& plane);
     
-    inline ESide side(const TVector4<T>& point) const;
+    Side side(const TVector4<T>& point) const;
     //ESide getSide ( const CAxisAlignedBox* pcBox ) const;                         // gets plane side where given AAB lies
     //ESide getSide( const CVector3* pcCentre, const CVector3* pcHalfSize ) const;  // gets plane side where given AAB lies (given by center and half size)
     
-    inline T distance(const TVector4<T>& point) const;
+    T distance(const TVector4<T>& point) const;
 
-    inline void normalize();
+    void normalize();
 
   public:
 
@@ -66,33 +67,33 @@ TPlane<T>::TPlane(const TVector4<T>& normal, T d) : m_normal(normal), m_d(d)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TPlane<T>::operator==(const TPlane<T>& plane) const
+inline bool TPlane<T>::operator==(const TPlane<T>& plane) const
 {
-  return !(m_d != plane.m_d || m_normal != plane.m_normal);
+  return ! ((m_d != plane.m_d) || (m_normal != plane.m_normal));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TPlane<T>& TPlane<T>::operator=(const TPlane<T>& plane)
+inline TPlane<T>& TPlane<T>::operator=(const TPlane<T>& plane)
 {
   create(plane);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TPlane<T>::create(const TVector4<T>& normal, T d)
+inline void TPlane<T>::create(const TVector4<T>& normal, T d)
 {
   m_normal = normal;
   m_d = d;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TPlane<T>::create(const TPlane<T>& plane)
+inline void TPlane<T>::create(const TPlane<T>& plane)
 {
   create(plane.m_normal, plane.m_d);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TPlane<T>::normalize()
+inline void TPlane<T>::normalize()
 {
   // get normal magnitude
   T mag = m_normal.length();
@@ -105,28 +106,28 @@ void TPlane<T>::normalize()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-T TPlane<T>::distance(const TVector4<T>& point) const
+inline T TPlane<T>::distance(const TVector4<T>& point) const
 {
   return m_normal.dotProduct(point) + m_d;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-typename TPlane<T>::ESide TPlane<T>::side(const TVector4<T>& point) const
+inline typename TPlane<T>::Side TPlane<T>::side(const TVector4<T>& point) const
 {
   // get distance from plane
   T curDistance = distance(point);
 
-  if (curDistance > 0)
+  if (0 < curDistance)
   {
-    return POSITIVE_SIDE;
+    return SIDE_POSITIVE;
   }
-  else if (curDistance < 0)
+  else if (0 > curDistance)
   {
-    return NEGATIVE_SIDE;
+    return SIDE_NEGATIVE;
   }
 
   // on plane
-  return NO_SIDE;
+  return SIDE_NONE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef TPlane<float32> Planef;

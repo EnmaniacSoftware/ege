@@ -11,11 +11,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(ParticleEmitterPoint, PParticleEmitterPoint)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ParticleEmitterPoint : public ParticleEmitter
 {
   public:
@@ -28,37 +25,37 @@ class ParticleEmitterPoint : public ParticleEmitter
 
   public:
 
-    /* Creates instance of emitter. This method is a registration method for factory. */
+    /*! Creates instance of emitter. This method is a registration method for factory. */
     static PParticleEmitter Create(Application* app, const String& name);
 
   public:
 
-    /* ParticleEmitter override. Initializes emitter from dictionary. */
+    /*! @see ParticleEmitter::initialize. */
     bool initialize(const Dictionary& params) override;
 
-    /* Sets emission angle. */
+    /*! Sets emission angle. */
     void setEmissionAngle(const Angle& angle);
-    /* Sets emission angle variance. */
+    /*! Sets emission angle variance. */
     void setEmissionAngleVariance(const Angle& variance);
-    /* Sets emitter direction. */
+    /*! Sets emitter direction. */
     void setEmissionDirection(const Vector3f& direction);
-    /* Sets emitter direction mask. */
+    /*! Sets emitter direction mask. */
     void setEmissionDirectionMask(const Vector3f& directionMask);
 
-    /* Sets particle speed. */
+    /*! Sets particle speed. */
     void setParticleSpeed(float32 speed);
-    /* Sets particle speed variance. */
+    /*! Sets particle speed variance. */
     void setParticleSpeedVariance(float32 variance);
-    /* Sets particle start position variance. */
+    /*! Sets particle start position variance. */
     void setParticleStartPositionVariance(const Vector3f& variance);
-    /* Sets emission acceleration. */
+    /*! Sets emission acceleration. */
     void setParticleAcceleration(const Vector3f& acceleration);
-    /* Sets emission acceleration variance. */
+    /*! Sets emission acceleration variance. */
     void setParticleAccelerationVariance(const Vector3f& variance);
 
   private:
 
-    /* ParticleEmitter override. Initializes particle at given index. */
+    /*! @see ParticleEmitter::initializeParticle. */
     void initializeParticle(s32 index) override;
 
   private:
@@ -82,7 +79,6 @@ class ParticleEmitterPoint : public ParticleEmitter
     /*! Emission acceleration vector variance. */
     Vector3f m_emissionAccelerationVariance;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

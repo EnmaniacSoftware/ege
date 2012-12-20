@@ -101,13 +101,6 @@ RendererPrivate::~RendererPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool RendererPrivate::isValid() const
-{
-  return true;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Clears given viewport. */
 void RendererPrivate::clearViewport(const PViewport& viewport)
 {
   GLbitfield bits = 0;
@@ -128,7 +121,6 @@ void RendererPrivate::clearViewport(const PViewport& viewport)
   glClear(bits);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets given viewport. */
 void RendererPrivate::setViewport(const PViewport& viewport)
 {
   // set render target
@@ -151,7 +143,6 @@ void RendererPrivate::setViewport(const PViewport& viewport)
   glScissor((GLint) actualRect.x, (GLint) actualRect.y, (GLsizei) actualRect.width, (GLsizei) actualRect.height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets render target. */
 void RendererPrivate::setRenderTarget(const PRenderTarget& renderTarget)
 {
   // unbind current render target
@@ -166,7 +157,6 @@ void RendererPrivate::setRenderTarget(const PRenderTarget& renderTarget)
   d_func()->m_renderTarget->bind();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sends all geometry through the geometry pipeline to hardware. */
 void RendererPrivate::flush()
 {
   glMatrixMode(GL_PROJECTION);
@@ -416,7 +406,6 @@ void RendererPrivate::flush()
   //EGE_LOG("---------------------- Render Flush end ----------------------");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Applies parameters for given pass. */
 void RendererPrivate::applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass* pass)
 {
   // disable blending by default
@@ -540,7 +529,6 @@ void RendererPrivate::applyPassParams(const PRenderComponent& component, const P
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Activates given texture unit. */
 void RendererPrivate::activateTextureUnit(u32 unit)
 {
   // check if unit available
@@ -574,7 +562,6 @@ void RendererPrivate::activateTextureUnit(u32 unit)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Binds texture to target. */
 void RendererPrivate::bindTexture(GLenum target, GLuint textureId)
 {
   // enable target first
@@ -607,7 +594,6 @@ void RendererPrivate::bindTexture(GLenum target, GLuint textureId)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Detects rendering capabilities. */
 void RendererPrivate::detectCapabilities()
 {
   // get list of all extensions
@@ -728,15 +714,11 @@ void RendererPrivate::detectCapabilities()
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE_SIZE, false);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Checks if given extension is supported. */
 bool RendererPrivate::isExtensionSupported(const char* extension) const
 {
   return m_extensionArray.contains(extension);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Applies general parameters. 
- *  @note General parameters are the ones that require only one setup before component is rendered. 
- */
 void RendererPrivate::applyGeneralParams(const PRenderComponent& component)
 {
   // apply scissor test
@@ -784,10 +766,6 @@ void RendererPrivate::applyGeneralParams(const PRenderComponent& component)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Binds given vertex buffer.
- * @param buffer  Vertex buffer to bind.
- * @return Returns base value pointing to begining of buffer data.
- */
 void* RendererPrivate::bindVertexBuffer(PVertexBuffer& buffer) const
 {
   void* data = NULL;
@@ -825,7 +803,6 @@ void* RendererPrivate::bindVertexBuffer(PVertexBuffer& buffer) const
   return data;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unbinds given vertex buffer. */
 void RendererPrivate::unbindVertexBuffer(PVertexBuffer& buffer) const
 {
   // process according to buffer type
@@ -851,10 +828,6 @@ void RendererPrivate::unbindVertexBuffer(PVertexBuffer& buffer) const
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Binds given index buffer.
- * @param buffer  Index buffer to bind.
- * @return Returns base value pointing to begining of buffer data.
- */
 void* RendererPrivate::bindIndexBuffer(PIndexBuffer& buffer) const
 {
   void* data = NULL;
@@ -891,7 +864,6 @@ void* RendererPrivate::bindIndexBuffer(PIndexBuffer& buffer) const
   return data;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unbinds given index buffer. */
 void RendererPrivate::unbindIndexBuffer(PIndexBuffer& buffer) const
 {
   // process according to buffer type

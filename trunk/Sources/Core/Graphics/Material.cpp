@@ -18,17 +18,11 @@ Material::~Material()
   clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns pass at given index. */
 PRenderPass Material::pass(u32 index) const
 {
   return (index < passCount()) ? m_passes[index] : NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds render pass to material. 
- *  @param pass RenderPass obejct to be added.
- *  @note If NULL object passed in, new render pass object will be created and added.
- *  @return Return added object. NULL if error occured.
- */
 PRenderPass Material::addPass(const PRenderPass& pass)
 {
   RenderPass* renderPass = pass;
@@ -51,13 +45,11 @@ PRenderPass Material::addPass(const PRenderPass& pass)
   return renderPass;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if material is valid. */
 bool Material::isValid() const
 {
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets source pixel scale factor for all passes. */
 void Material::setSrcBlendFactor(EGEGraphics::BlendFactor factor)
 {
   for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
@@ -68,7 +60,6 @@ void Material::setSrcBlendFactor(EGEGraphics::BlendFactor factor)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets destination pixel scale factor for all passes. */
 void Material::setDstBlendFactor(EGEGraphics::BlendFactor factor)
 {
   for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
@@ -79,7 +70,6 @@ void Material::setDstBlendFactor(EGEGraphics::BlendFactor factor)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets diffuse color for all passes. */
 void Material::setDiffuseColor(const Color& color)
 {
   for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
@@ -90,7 +80,6 @@ void Material::setDiffuseColor(const Color& color)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets diffuse alpha only for all passes. */
 void Material::setDiffuseAlpha(float32 alpha)
 {
   for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
@@ -101,7 +90,6 @@ void Material::setDiffuseAlpha(float32 alpha)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets ambient color for all passes. */
 void Material::setAmbientColor(const Color& color)
 {
   for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
@@ -112,7 +100,6 @@ void Material::setAmbientColor(const Color& color)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets specular color for all passes. */
 void Material::setSpecularColor(const Color& color)
 {
   for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
@@ -123,7 +110,6 @@ void Material::setSpecularColor(const Color& color)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets shininess for all passes. */
 void Material::setShininess(float32 shininess)
 {
   for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
@@ -134,7 +120,6 @@ void Material::setShininess(float32 shininess)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets emission color for all passes. */
 void Material::setEmissionColor(const Color& color)
 {
   for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
@@ -145,17 +130,15 @@ void Material::setEmissionColor(const Color& color)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Clears material. */
 void Material::clear()
 {
   m_passes.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns cloned instance of this object. */
 PMaterial Material::clone() const
 {
   PMaterial material = ege_new Material(app());
-  if (material)
+  if (NULL != material)
   {
     // clone passes
     for (PassArray::const_iterator it = m_passes.begin(); it != m_passes.end(); ++it)

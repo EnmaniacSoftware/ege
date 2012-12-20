@@ -46,23 +46,6 @@ CubicSpline& CubicSpline::operator = (const CubicSpline& other)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool CubicSpline::isValid() const
-{
-  switch (type())
-  {
-    case EGESpline::TYPE_BEZIER:
-    case EGESpline::TYPE_HERMITE:
-    case EGESpline::TYPE_CARDINAL:
-    case EGESpline::TYPE_BSPLINE:
-
-      return !m_segments.empty() && m_segments[0].isValid();
-  }
-
-  return false;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets spline type. */
 void CubicSpline::setType(EGESpline::Type type)
 {
   if (m_type != type)
@@ -81,11 +64,6 @@ void CubicSpline::setType(EGESpline::Type type)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Adds point to spline.
- * @param point   Point to be added.
- * @param tangent Tangent vector for added point.
- * @return Retrurns curve segment point belogns to.
- */
 CurveSegment& CubicSpline::addPoint(const Vector4f& point, const Vector4f& tangent)
 {
   // check if first segment
@@ -148,25 +126,18 @@ CurveSegment& CubicSpline::addPoint(const Vector4f& point, const Vector4f& tange
   return m_segments.back();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Calculates value on spline at given position
- * @param pos Calculated position on spline at given position.
- * @param t   Parametrized distance on a spline at which calculations are done. Typicially in [0-1] interval.
- */
 void CubicSpline::value(Vector4f& pos, float32 t) const
 {
   const CurveSegment* segment = NULL;
 
-  // check if invalid
-  if (!isValid())
+  // get segment and distance to it
+  float32 distanceToSegment = 0;
+  segment = this->segment(t, distanceToSegment);
+  if (NULL == segment)
   {
     // do nothing
     return;
   }
-
-  // get segment and distance to it
-  float32 distanceToSegment = 0;
-  segment = this->segment(t, distanceToSegment);
-  EGE_ASSERT(NULL != segment);
 
   // make sure value is valid
   t = Math::Bound(t, 0.0f, 1.0f);
@@ -201,7 +172,6 @@ void CubicSpline::value(Vector4f& pos, float32 t) const
   pos.w = 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Calculates segement length. */
 void CubicSpline::calculateSegmentLength(CurveSegment& segment)
 {
   const float32 step = 0.01f;
@@ -239,7 +209,6 @@ void CubicSpline::calculateSegmentLength(CurveSegment& segment)
   segment.setLength(length);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Called when one of the segments point has been changed. */
 void CubicSpline::segmentPointChanged(CurveSegment& segment)
 {
   // substract old value
@@ -252,22 +221,9 @@ void CubicSpline::segmentPointChanged(CurveSegment& segment)
   m_length += segment.length();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns segment of the spline at given position
- *  @param t                  Parametrized distance on a spline at which calculations are done. Typicially in [0-1] interval.
- *  @param distanceToSegment  Distance to returned segment (sum of distances of all previous segments).
- *  @note    Parameter t is clamped to [0-1] interval.
- *  @return  Pointer to curve segment at given position. NULL if error occured.
- */
 const CurveSegment* CubicSpline::segment(float32 t, float32& distanceToSegment) const
 {
   const CurveSegment* segment = NULL;
-
-  // check if invalid
-  if (!isValid())
-  {
-    // do nothing
-    return NULL;
-  }
 
   // reset
   distanceToSegment = 0;
@@ -285,7 +241,7 @@ const CurveSegment* CubicSpline::segment(float32 t, float32& distanceToSegment) 
 
     // check if wrong segment
     // NOTE: if this is last segment we assume it is the one no matter what
-    if (t > currentSegment.length() && ((it + 1) != m_segments.end()))
+    if ((t > currentSegment.length()) && ((it + 1) != m_segments.end()))
     {
       // go to next
       t -= currentSegment.length();

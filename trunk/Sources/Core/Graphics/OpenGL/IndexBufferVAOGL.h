@@ -11,11 +11,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class IndexBufferVA : public IndexBuffer
 {
   public:
@@ -26,32 +23,25 @@ class IndexBufferVA : public IndexBuffer
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* IndexBuffer override. Returns TRUE if object is valid. */
+    /*! @see IndexBuffer::isValid. */
     bool isValid() const override;
-    /* IndexBuffer override. Sets buffer to given size. 
-     * @param count Number of indicies buffer should contain.
-     * @return Returns TRUE if success. Otherwise, FALSE.
-     */
+    /*! @see IndexBuffer::setSize. */
     bool setSize(u32 count) override;
-
-    /* IndexBuffer override. Locks buffer's given part of the buffer for read/write operations. 
-     * @param offset  0-based index offset from which locking should be done. 
-     * @param count   Number of indicies to lock.
-     */
+    /*! @see IndexBuffer::lock. */
     void* lock(u32 offset, u32 count) override;
-    /* IndexBuffer override. Unlocks buffer. */
+    /*! @see IndexBuffer::unlock. */
     void unlock(void* data) override;
 
-    /* IndexBuffer override. Returns number of allocated indicies. */
+    /*! @see IndexBuffer::indexCount. */
     u32 indexCount() const override;
-    /* IndexBuffer override. Returns maximal number of available indicies. */
+    /*! @see IndexBuffer::indexCapacity. */
     u32 indexCapacity() const override;
 
   private:
 
-    /* IndexBuffer override. Destroys buffer. */
+    /*! @see IndexBuffer::destroy. */
     void destroy() override;
-    /* Reallocates internal buffer to accomodate given number of indicies. */
+    /*! Reallocates internal buffer to accomodate given number of indicies. */
     bool reallocateBuffer(u32 count);
 
   private:
@@ -59,7 +49,6 @@ class IndexBufferVA : public IndexBuffer
     /*! Data buffser. */
     PDataBuffer m_buffer;         
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

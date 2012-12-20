@@ -10,15 +10,12 @@
  *
  */
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include <EGETypes.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T>
 class TMatrix4
 {
@@ -29,26 +26,26 @@ class TMatrix4
 		TMatrix4(const T column0[4], const T column1[4], const T column2[4], const T column3[4]);
 		TMatrix4(const TMatrix4& matrix);
 
-		inline TMatrix4&   operator+=(const TMatrix4& matrix);
-	  inline TMatrix4&   operator-=(const TMatrix4& matrix);
-    inline const T&    operator()(u32 column, u32 row) const;
-    inline T&          operator()(u32 column, u32 row);
-		inline T*          operator[](u32 column);
-    inline const T*    operator[](u32 column) const;
-		inline TVector4<T> operator *(const TVector4<T>& vector) const;
+		TMatrix4&   operator+=(const TMatrix4& matrix);
+	  TMatrix4&   operator-=(const TMatrix4& matrix);
+    const T&    operator()(u32 column, u32 row) const;
+    T&          operator()(u32 column, u32 row);
+		T*          operator[](u32 column);
+    const T*    operator[](u32 column) const;
+		TVector4<T> operator *(const TVector4<T>& vector) const;
 
-    /* Multiplies current matrix by given one. */
+    /*! Multiplies current matrix by given one. */
     TMatrix4<T> multiply(const TMatrix4<T>& matrix) const;
-    /* Returns transposed matrix. */
-    inline TMatrix4<T> transposed() const;
-    /* Returns TRUE if matrix is affine. */
-    inline bool isAffine() const;
-    /* Sets scale part of the matrix. */
-    inline void setScale(T x, T y, T z);
-    /* Sets translation part of the matrix. */
-    inline void setTranslation(T x, T y, T z);
-    /* Returns translation vector. */
-    inline TVector4<T> translation() const;
+    /*! Returns transposed matrix. */
+    TMatrix4<T> transposed() const;
+    /*! Returns TRUE if matrix is affine. */
+    bool isAffine() const;
+    /*! Sets scale part of the matrix. */
+    void setScale(T x, T y, T z);
+    /*! Sets translation part of the matrix. */
+    void setTranslation(T x, T y, T z);
+    /*! Returns translation vector. */
+    TVector4<T> translation() const;
     
     //  CMatrix4 concatenateAffine( const CMatrix4& cMatrix ) const;                                      // multiplies affine matrices
 
@@ -126,7 +123,7 @@ TMatrix4<T>::TMatrix4(const TMatrix4<T>& matrix)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TMatrix4<T>& TMatrix4<T>::operator+=(const TMatrix4<T>& matrix)
+inline TMatrix4<T>& TMatrix4<T>::operator+=(const TMatrix4<T>& matrix)
 {
   for (register u32 entry = 0; entry < 16; ++entry)
   {
@@ -137,7 +134,7 @@ TMatrix4<T>& TMatrix4<T>::operator+=(const TMatrix4<T>& matrix)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TMatrix4<T>& TMatrix4<T>::operator-=(const TMatrix4<T>& matrix)
+inline TMatrix4<T>& TMatrix4<T>::operator-=(const TMatrix4<T>& matrix)
 {
   for (register u32 entry = 0; entry < 16; ++entry)
   {
@@ -148,35 +145,35 @@ TMatrix4<T>& TMatrix4<T>::operator-=(const TMatrix4<T>& matrix)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-const T& TMatrix4<T>::operator()(u32 column, u32 row) const
+inline const T& TMatrix4<T>::operator()(u32 column, u32 row) const
 {	
   EGE_ASSERT((4 > column) && (0 <= column) && (4 > row) && (0 <= row));
   return data[column * 4 + row]; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-T& TMatrix4<T>::operator()(u32 column, u32 row)
+inline T& TMatrix4<T>::operator()(u32 column, u32 row)
 {	
   EGE_ASSERT((4 > column) && (0 <= column) && (4 > row) && (0 <= row));
   return data[column * 4 + row]; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-T* TMatrix4<T>::operator[](u32 column)
+inline T* TMatrix4<T>::operator[](u32 column)
 {
   EGE_ASSERT((4 > column) && (0 <= column));
   return &data[column * 4];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-const T* TMatrix4<T>::operator[](u32 column) const
+inline const T* TMatrix4<T>::operator[](u32 column) const
 {
   EGE_ASSERT((4 > column) && (0 <= column));
   return &data[column * 4];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector4<T> TMatrix4<T>::operator *(const TVector4<T>& vector) const
+inline TVector4<T> TMatrix4<T>::operator *(const TVector4<T>& vector) const
 {
   return TVector4<T>(data[0] * vector.x + data[4] * vector.y + data[8]  * vector.z + data[12] * vector.w, 
                      data[1] * vector.x + data[5] * vector.y + data[9]  * vector.z + data[13] * vector.w,
@@ -184,17 +181,15 @@ TVector4<T> TMatrix4<T>::operator *(const TVector4<T>& vector) const
                      data[3] * vector.x + data[7] * vector.y + data[11] * vector.z + data[15] * vector.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if matrix is affine. */
 template <typename T>
-bool TMatrix4<T>::isAffine() const
+inline bool TMatrix4<T>::isAffine() const
 {
   // NOTE: last row needs to be 0 0 0 1 for matrix to be affine
   return (0 == data[3]) && (0 == data[7]) && (0 == data[11]) && (1 == data[15]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Multiplies current matrix by given one. */
 template <typename T>
-TMatrix4<T> TMatrix4<T>::multiply(const TMatrix4<T>& matrix) const
+inline TMatrix4<T> TMatrix4<T>::multiply(const TMatrix4<T>& matrix) const
 {
   TMatrix4<T> newMatrix;
 
@@ -225,35 +220,31 @@ TMatrix4<T> TMatrix4<T>::multiply(const TMatrix4<T>& matrix) const
   return newMatrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns transposed matrix. */
 template <typename T>
-TMatrix4<T> TMatrix4<T>::transposed() const
+inline TMatrix4<T> TMatrix4<T>::transposed() const
 {
   return TMatrix4<T>(data[0], data[4], data[8], data[12], data[1], data[5], data[9], data[13], data[2], data[6], data[10], data[14], data[3], data[7], data[11], 
                      data[15]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets scale part of the matrix. */
 template <typename T>
-void TMatrix4<T>::setScale(T x, T y, T z)
+inline void TMatrix4<T>::setScale(T x, T y, T z)
 {
   data[0]  = x;
   data[5]  = y;
   data[10] = z;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets translation part of the matrix. */
 template <typename T>
-void TMatrix4<T>::setTranslation(T x, T y, T z)
+inline void TMatrix4<T>::setTranslation(T x, T y, T z)
 {
   data[12] = x;
   data[13] = y;
   data[14] = z;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns translation vector. */
 template <typename T>
-TVector4<T> TMatrix4<T>::translation() const
+inline TVector4<T> TMatrix4<T>::translation() const
 {
   return TVector4<T>(data[12], data[13], data[14], data[15]);
 }

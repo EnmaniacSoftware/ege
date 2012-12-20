@@ -11,12 +11,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(RenderPass, PRenderPass)
 EGE_DECLARE_SMART_CLASS(Object, PObject)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class RenderPass : public Object
 {
   public:
@@ -29,55 +26,55 @@ class RenderPass : public Object
 
   public:
 
-    /* Adds new texture. */
+    /*! Adds new texture. */
     EGEResult addTexture(PTextureImage texture);
-    /* Sets new texture at given index. Can only succeed when setting texture within range. */
+    /*! Sets new texture at given index. Can only succeed when setting texture within range. */
     EGEResult setTexture(u32 index, PTextureImage texture);
-    /* Sets new texture at the place of the one with given name. If no such texture exists it is added. */
+    /*! Sets new texture at the place of the one with given name. If no such texture exists it is added. */
     EGEResult setTexture(const String& name, PTextureImage texture);
-    /* Returns number of textures used. */
+    /*! Returns number of textures used. */
     u32 textureCount() const;
-    /* Retrives texture at given index. */
+    /*! Retrives texture at given index. */
     PTextureImage texture(u32 index) const;
-    /* Remove texture at given index. 
-     * @param index Index of texture to be removed.
-     * @note  if negative index is passed all textures are removed.
+    /*! Remove texture at given index. 
+     *  @param index Index of texture to be removed.
+     *  @note  if negative index is passed all textures are removed.
      */
     void removeTexture(s32 index);
     
-    /* Sets source pixel blend factor. */
+    /*! Sets source pixel blend factor. */
     void setSrcBlendFactor(EGEGraphics::BlendFactor factor);
     /*! Returns source pixel blend factor. */
-    inline EGEGraphics::BlendFactor srcBlendFactor() const { return m_srcBlendFactor; }
-    /* Sets destination pixel blend factor. */
+    EGEGraphics::BlendFactor srcBlendFactor() const { return m_srcBlendFactor; }
+    /*! Sets destination pixel blend factor. */
     void setDstBlendFactor(EGEGraphics::BlendFactor factor);
     /*! Returns destination pixel blend factor. */
-    inline EGEGraphics::BlendFactor dstBlendFactor() const { return m_dstBlendFactor; }
+    EGEGraphics::BlendFactor dstBlendFactor() const { return m_dstBlendFactor; }
 
-    /* Sets diffuse color. */
+    /*! Sets diffuse color. */
     void setDiffuseColor(const Color& color);
     /*! Returns diffuse color. */
     const Color& diffuseColor() const { return m_diffuseColor; }
     /*! Returns diffuse color. */
     Color& diffuseColor() { return m_diffuseColor; }
-    /* Sets ambient color. */
+    /*! Sets ambient color. */
     void setAmbientColor(const Color& color);
     /*! Returns ambient color. */
     const Color& ambientColor() const { return m_ambientColor; }
-    /* Sets specular color. */
+    /*! Sets specular color. */
     void setSpecularColor(const Color& color);
     /*! Returns specular color. */
     const Color& specularColor() const { return m_specularColor; }
-    /* Sets shininess. */
+    /*! Sets shininess. */
     void setShininess(float32 shininess);
     /*! Returns shininess. */
     float32 shininess() const { return m_shininess; }
-    /* Sets emission color. */
+    /*! Sets emission color. */
     void setEmissionColor(const Color& color);
     /*! Returns emission color. */
     const Color& emissionColor() const { return m_emissionColor; }
 
-    /* Returns cloned instance of this object. */
+    /*! Returns cloned instance of this object. */
     RenderPass* clone() const;
 
   private:
@@ -103,7 +100,6 @@ class RenderPass : public Object
     /*! Shininess value. */
     float32 m_shininess;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

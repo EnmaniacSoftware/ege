@@ -3,20 +3,16 @@
 
 #include <EGE.h>
 #include <EGEColor.h>
-#include "Core/Graphics/Camera.h"
 #include <EGEMath.h>
 #include <EGEFlags.h>
+#include "Core/Graphics/Camera.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class RenderTarget;
-
 EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Viewport : public Object
 {
   public:
@@ -26,7 +22,8 @@ class Viewport : public Object
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
-
+    
+    /*! Available polygon modes. */
     enum PolygonMode
     {
       POLYGON_MODE_POINTS,
@@ -34,6 +31,7 @@ class Viewport : public Object
       POLYGON_MODE_SOLID
     };
 
+    /*! Available buffer types. */
     enum BufferTypeFlags
     {
       BUFFER_TYPE_NONE  = 0x00,
@@ -44,46 +42,46 @@ class Viewport : public Object
 	  EGE_DECLARE_FLAGS(BufferType, BufferTypeFlags)
 
     /*! Returns name. */
-    inline const String& name() const { return m_name; }
-    /* Sets viewport rectangle within render target. */
+    const String& name() const { return m_name; }
+    /*! Sets viewport rectangle within render target. */
     void setRect(Rectf rect);
     /*! Returns viewport rect within render target. */
-    inline const Rectf& rect() const { return m_rect; }
-    /* Returns physical (in pixels) rect within render target. */
+    const Rectf& rect() const { return m_rect; }
+    /*! Returns physical (in pixels) rect within render target. */
     Rectf physicalRect() const;
-    /* Returns logical (in pixels) rect within render target. */
+    /*! Returns logical (in pixels) rect within render target. */
     Rectf logicalRect() const;
     /*! Returns camera associated with viewport. */
     PCamera camera() const { return m_camera; }
-    /* Sets viewport clear color. Can be NULL color if viewport should not be cleared. */
+    /*! Sets viewport clear color. Can be NULL color if viewport should not be cleared. */
     void setClearColor(const Color& color);
     /*! Returns viewport clear color. */
-    inline const Color& clearColor() const { return m_clearColor; }
-    /* Sets polygon mode for rendered data. */
+    const Color& clearColor() const { return m_clearColor; }
+    /*! Sets polygon mode for rendered data. */
     void setPolygonMode(PolygonMode mode);
     /*! Returns polygon mode for rendered data. */
-    inline PolygonMode polygonMode() const { return m_polygonMode; }
-    /* Sets buffer types to clear. */
+    PolygonMode polygonMode() const { return m_polygonMode; }
+    /*! Sets buffer types to clear. */
     void setClearBufferTypes(BufferType mask);
     /*! Returns buffer types to clear. */
-    inline BufferType clearBufferTypes() const { return m_clearBufferTypes; }
-    /* Enables/Disables overlays. */
+    BufferType clearBufferTypes() const { return m_clearBufferTypes; }
+    /*! Enables/Disables overlays. */
     void enableOverlays(bool enable);
     /*! Returns TRUE if overlays are enabled for this view. */
-    inline bool overlaysEnabled() const { return m_overlays; }
+    bool overlaysEnabled() const { return m_overlays; }
 
-    /* Renders viewport from associated camera's point of view. */
+    /*! Renders viewport from associated camera's point of view. */
     void render();
     /*! Returns pointer to render target associated with viewport. */
-    inline RenderTarget* renderTarget() const { return m_renderTarget; }
+    RenderTarget* renderTarget() const { return m_renderTarget; }
 
-    /* Sets vertex count rendered last frame. */
+    /*! Sets vertex count rendered last frame. */
     void setVertexCount(u32 count);
     /*! Returns vertex count rendered last frame. */
-    inline u32 vertexCount() const { return m_vertexCount; }
+    u32 vertexCount() const { return m_vertexCount; }
     /*! Returns batch count rendered last frame. */
-    inline u32 batchCount() const { return m_batchCount; }
-    /* Sets batch count rendered last frame. */
+    u32 batchCount() const { return m_batchCount; }
+    /*! Sets batch count rendered last frame. */
     void setBatchCount(u32 count);
 
   private:
@@ -109,7 +107,6 @@ class Viewport : public Object
     /*! Raw pointer (no need to keep smart one as each viewport is owned by target) to render target, viewport belongs to. */
     RenderTarget* m_renderTarget;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

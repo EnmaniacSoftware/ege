@@ -15,13 +15,11 @@ ParticleEmitterPoint::~ParticleEmitterPoint()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of emitter. This method is a registration method for factory. */
 PParticleEmitter ParticleEmitterPoint::Create(Application* app, const String& name)
 {
   return ege_new ParticleEmitterPoint(app, name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ParticleEmitter override. Initializes emitter from dictionary. */
 bool ParticleEmitterPoint::initialize(const Dictionary& params)
 {
   // initialize base
@@ -41,61 +39,51 @@ bool ParticleEmitterPoint::initialize(const Dictionary& params)
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets emission angle. */
 void ParticleEmitterPoint::setEmissionAngle(const Angle& angle)
 {
   m_emissionAngle = angle;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets emission angle variance. */
 void ParticleEmitterPoint::setEmissionAngleVariance(const Angle& variance)
 {
   m_emissionAngleVariance = variance;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle speed. */
 void ParticleEmitterPoint::setParticleSpeed(float32 speed)
 {
   m_particleSpeed = speed;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle speed variance. */
 void ParticleEmitterPoint::setParticleSpeedVariance(float32 variance)
 {
   m_particleSpeedVariance = variance;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets emitter direction. */
 void ParticleEmitterPoint::setEmissionDirection(const Vector3f& direction)
 {
   m_emissionDirection = direction;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets emitter direction mask. */
 void ParticleEmitterPoint::setEmissionDirectionMask(const Vector3f& directionMask)
 {
   m_emissionDirectionMask = directionMask;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets emission acceleration. */
 void ParticleEmitterPoint::setParticleAcceleration(const Vector3f& acceleration)
 {
   m_emissionAcceleration = acceleration;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets emission acceleration variance. */
 void ParticleEmitterPoint::setParticleAccelerationVariance(const Vector3f& variance)
 {
   m_emissionAccelerationVariance = variance;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets particle start position variance. */
 void ParticleEmitterPoint::setParticleStartPositionVariance(const Vector3f& variance)
 {
   m_particleStartPositionVariance = variance;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Initializes particle at given index. */
 void ParticleEmitterPoint::initializeParticle(s32 index)
 {
   EGE_ASSERT((0 <= index) && (index < static_cast<s32>(m_particles.size())));

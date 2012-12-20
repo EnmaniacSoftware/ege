@@ -5,15 +5,12 @@
   This class represents 3D vector.
 */
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include <EGETypes.h>
 #include "Core/Math/Math.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T>
 class TVector3 
 {
@@ -23,41 +20,41 @@ class TVector3
     TVector3(T x, T y, T z);
     TVector3(const TVector3& vector);
 
-		inline void       operator += (const TVector3& vector);
-		inline void       operator -= (const TVector3& vector);
-    inline bool       operator == (const TVector3& vector) const;
-    inline bool       operator != (const TVector3& vector) const;
-    inline TVector3&  operator *= (const T scalar);
-    inline TVector3   operator - () const;
+		void       operator += (const TVector3& vector);
+		void       operator -= (const TVector3& vector);
+    bool       operator == (const TVector3& vector) const;
+    bool       operator != (const TVector3& vector) const;
+    TVector3&  operator *= (const T scalar);
+    TVector3   operator - () const;
 
-    /* Sets vector data. */
-    inline void set(T x, T y, T z);
+    /*! Sets vector data. */
+    void set(T x, T y, T z);
     
-    /* Returns vector length. */
-    inline T length() const;
-    /* Returns vector sequared length. */
-    inline T lengthSquared() const;
+    /*! Returns vector length. */
+    T length() const;
+    /*! Returns vector sequared length. */
+    T lengthSquared() const;
     
-    /* Normalizes vector. */
- 	  inline void normalize();
-    /* Returns normalized vector. */
- 	  inline TVector3 normalized() const;
+    /*! Normalizes vector. */
+ 	  void normalize();
+    /*! Returns normalized vector. */
+ 	  TVector3 normalized() const;
     
-    /* Returns dot product between current and given vectors. */
-    inline T dotProduct(const TVector3& vector) const;
-    /* Returns cross product between current and given vectors. */
-    inline TVector3 crossProduct(const TVector3& vector) const;
+    /*! Returns dot product between current and given vectors. */
+    T dotProduct(const TVector3& vector) const;
+    /*! Returns cross product between current and given vectors. */
+    TVector3 crossProduct(const TVector3& vector) const;
 
-    /* Returns distance between this and given points. */
-    inline T distanceTo(const TVector3& vector) const;
-    /* Returns squared distance between this and given points. */
-    inline T distanceSquaredTo(const TVector3& vector) const;
+    /*! Returns distance between this and given points. */
+    T distanceTo(const TVector3& vector) const;
+    /*! Returns squared distance between this and given points. */
+    T distanceSquaredTo(const TVector3& vector) const;
 
-    /* Returns 2D vector consisting of X and Y values of current one. */
-    inline TVector2<T> xy() const;
+    /*! Returns 2D vector consisting of X and Y values of current one. */
+    TVector2<T> xy() const;
 
-    /* Returns vector perpendicular to current one. */
-    inline TVector3 perpendicular() const;
+    /*! Returns vector perpendicular to current one. */
+    TVector3 perpendicular() const;
 
   //  // helper methods
   //  CQuaternion getRotationTo( const CVector3& cDest,                                         // gets shortest rotation to given vector
@@ -82,7 +79,6 @@ class TVector3
     static const TVector3<T> NEGATIVE_UNIT_Y;
     static const TVector3<T> NEGATIVE_UNIT_Z;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 const TVector3<T> TVector3<T>::ZERO            = TVector3<T>(0, 0, 0);
@@ -117,7 +113,7 @@ TVector3<T>::TVector3(const TVector3& vector) : x(vector.x), y(vector.y), z(vect
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TVector3<T>::operator += (const TVector3<T>& vector)
+inline void TVector3<T>::operator += (const TVector3<T>& vector)
 {
   x += vector.x;
   y += vector.y;
@@ -125,7 +121,7 @@ void TVector3<T>::operator += (const TVector3<T>& vector)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TVector3<T>::operator -= (const TVector3<T>& vector)
+inline void TVector3<T>::operator -= (const TVector3<T>& vector)
 {
   x -= vector.x;
   y -= vector.y;
@@ -133,19 +129,19 @@ void TVector3<T>::operator -= (const TVector3<T>& vector)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TVector3<T>::operator == (const TVector3& vector) const
+inline bool TVector3<T>::operator == (const TVector3& vector) const
 {
   return (x == vector.x) && (y == vector.y) && (z == vector.z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TVector3<T>::operator != (const TVector3& vector) const
+inline bool TVector3<T>::operator != (const TVector3& vector) const
 {
   return (x != vector.x) || (y != vector.y) || (z != vector.z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector3<T>& TVector3<T>::operator *= (const T scalar)
+inline TVector3<T>& TVector3<T>::operator *= (const T scalar)
 {
   x *= scalar;
   y *= scalar;
@@ -155,37 +151,33 @@ TVector3<T>& TVector3<T>::operator *= (const T scalar)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector3<T> TVector3<T>::operator - () const
+inline TVector3<T> TVector3<T>::operator - () const
 {
   return TVector3<T>(-x, -y, -z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets vector components. */
 template <typename T>
-void TVector3<T>::set(T x, T y, T z) 
+inline void TVector3<T>::set(T x, T y, T z) 
 { 
   this->x = x; 
   this->y = y;
   this->z = z;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns vector length. */
 template <typename T>
-T TVector3<T>::length() const
+inline T TVector3<T>::length() const
 {
   return Math::Sqrt((x * x) + (y * y) + (z * z)); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns vector sequared length. */
 template <typename T>
-T TVector3<T>::lengthSquared() const
+inline T TVector3<T>::lengthSquared() const
 {
   return (x * x) + (y * y) + (z * z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Normalizes vector. */
 template <typename T>
-void TVector3<T>::normalize()
+inline void TVector3<T>::normalize()
 {
   T length = this->length();
 
@@ -202,9 +194,8 @@ void TVector3<T>::normalize()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns normalized vector. */
 template <typename T>
-TVector3<T> TVector3<T>::normalized() const
+inline TVector3<T> TVector3<T>::normalized() const
 {
   TVector3<T> out = *this;
   out.normalize();
@@ -212,37 +203,32 @@ TVector3<T> TVector3<T>::normalized() const
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns cross product between current and given vectors. */
 template <typename T>
-TVector3<T> TVector3<T>::crossProduct(const TVector3<T>& vector) const 
+inline TVector3<T> TVector3<T>::crossProduct(const TVector3<T>& vector) const 
 { 
   return TVector3<T>((y * vector.z) - (z * vector.y), (z * vector.x) - (x * vector.z), (x * vector.y) - (y * vector.x)); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns dot product between current and given vectors. */
 template <typename T>
-T TVector3<T>::dotProduct(const TVector3& vector) const 
+inline T TVector3<T>::dotProduct(const TVector3& vector) const 
 { 
   return (x * vector.x) + (y * vector.y) + (z * vector.z); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns distance between this and given points. */
 template <typename T>
-T TVector3<T>::distanceTo(const TVector3& vector) const
+inline T TVector3<T>::distanceTo(const TVector3& vector) const
 {
   return Math::Sqrt((x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y) + (z - vector.z) * (z - vector.z));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns squared distance between this and given points. */
 template <typename T>
-T TVector3<T>::distanceSquaredTo(const TVector3& vector) const
+inline T TVector3<T>::distanceSquaredTo(const TVector3& vector) const
 {
   return (x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y) + (z - vector.z) * (z - vector.z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns vector perpendicular to current one. */
 template <typename T>
-TVector3<T> TVector3<T>::perpendicular() const
+inline TVector3<T> TVector3<T>::perpendicular() const
 {
   TVector3 perp = crossProduct(TVector3::UNIT_X);
 
@@ -258,9 +244,8 @@ TVector3<T> TVector3<T>::perpendicular() const
   return perp;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns 2D vector consisting of X and Y values of current one. */
 template <typename T>
-TVector2<T> TVector3<T>::xy() const
+inline TVector2<T> TVector3<T>::xy() const
 {
   return TVector2<T>(x, y);
 }

@@ -3,7 +3,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns given path with converted sperators. */
 String Dir::FromNativeSeparators(const String& path)
 {
   String result = path;
@@ -17,7 +16,6 @@ String Dir::FromNativeSeparators(const String& path)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Decomposes full path into seperate path and file name. */
 void Dir::DecomposePath(const String& fullPath, String& path, String& fileName)
 {
   path.clear();

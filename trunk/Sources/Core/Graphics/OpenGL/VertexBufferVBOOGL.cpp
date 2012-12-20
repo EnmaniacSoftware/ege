@@ -56,16 +56,11 @@ VertexBufferVBO::~VertexBufferVBO()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Returns TRUE if object is valid. */
 bool VertexBufferVBO::isValid() const
 {
   return (0 < m_id) && (NULL != m_shadowBuffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Sets buffer to given size. 
- * @param count Number of vertices buffer should contain.
- * @return Returns TRUE if success. Otherwise, FALSE.
- */
 bool VertexBufferVBO::setSize(u32 count)
 {
   EGE_ASSERT(!m_locked);
@@ -90,10 +85,6 @@ bool VertexBufferVBO::setSize(u32 count)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Locks buffer's given part of the buffer for read/write operations. 
- * @param offset  0-based vertex offset from which locking should be done. 
- * @param count   Number of vertices to lock.
- */
 void* VertexBufferVBO::lock(u32 offset, u32 count)
 {
   EGE_ASSERT(!m_locked);
@@ -160,7 +151,6 @@ void* VertexBufferVBO::lock(u32 offset, u32 count)
   return buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unlocks buffer. */
 void VertexBufferVBO::unlock(void* data)
 {
   EGE_UNUSED(data);
@@ -212,7 +202,6 @@ void VertexBufferVBO::unlock(void* data)
   m_locked = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Reallocates internal buffer to accomodate given number of vertices. */
 bool VertexBufferVBO::reallocateBuffer(u32 count)
 {
   // check if requested count is NOT within capacity
@@ -240,21 +229,18 @@ bool VertexBufferVBO::reallocateBuffer(u32 count)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Binds buffer. */
 void VertexBufferVBO::bind()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_id);
   OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unbinds buffer. */
 void VertexBufferVBO::unbind()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
   OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! VertexBuffer override. Destroys buffer. */
 void VertexBufferVBO::destroy()
 {
   if (0 < m_id)
