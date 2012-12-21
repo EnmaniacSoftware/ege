@@ -3,7 +3,7 @@
 
 /** Widget frame class represents renderable (stretchable) visual base for widgets. 
  *  Each frame is divided into 9 seperate rectangular regions. Middle regions are stretched to match the required size.
- *  \note On its own widget frame should never exists. It should always be a part of defined widget.
+ *  @note On its own widget frame should never exists. It should always be a part of defined widget.
  */
 
 #include <EGEMath.h>
@@ -23,28 +23,28 @@ class WidgetFrame
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     bool isValid() const;
-    /* Renders dialog. */
+    /*! Renders frame. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
 
-    /* Sets rectanlges (in pixels). */
+    /*! Sets rectanlges (in pixels). */
     void setRects(const Recti& topLeft, const Recti& topMiddle, const Recti& topRight, const Recti& middleLeft, const Recti& fill, const Recti& middleRight, 
                   const Recti& bottomLeft, const Recti& bottomMiddle, const Recti& bottomRight);
 
-    /* Sets size. */
+    /*! Sets size. */
     void setSize(const Vector2f& size);
-    /* Returns minimal size (in pixels). */
+    /*! Returns minimal size (in pixels). */
     Vector2f minSize() const;
 
-    /* Sets material. */
+    /*! Sets material. */
     void setMaterial(const PMaterial& material);
     /*! Returns render data component. */
-    inline PRenderComponent renderComponent() const { return m_renderData; }
+    PRenderComponent renderComponent() const { return m_renderData; }
 
   private:
 
-    /* Generates render data. */
+    /*! Generates render data. */
     void generateRenderData();
 
   private:

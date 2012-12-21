@@ -9,11 +9,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(TimeLine, PTimeLine)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class TimeLine : public Object
 {
   public:
@@ -44,32 +41,32 @@ class TimeLine : public Object
 
   public:
 
-    /* Resets time line. */
+    /*! Resets time line. */
     void reset();
-    /* Updates objects. */
+    /*! Updates objects. */
     void update(const Time& time);
     /*! Returns current state. */
-    inline State state() const { return m_state; }
+    State state() const { return m_state; }
 
-    /* Sets duration. */
+    /*! Sets duration. */
     void setDuration(const Time& time);
-    /* Sets start frame. */
+    /*! Sets start frame. */
     void setStartFrame(s32 frame);
-    /* Sets end frame. */
+    /*! Sets end frame. */
     void setEndFrame(s32 frame);
-    /* Sets loop count. */
+    /*! Sets loop count. */
     void setLoopCount(s32 count);
 
   public slots:
 
-    /* Starts time line. */
+    /*! Starts time line. */
     void start();
-    /* Stops time line. */
+    /*! Stops time line. */
     void stop();
 
   private:
 
-    /* Returns frame corresponding to given time. */
+    /*! Returns frame corresponding to given time. */
     s32 frameForTime(const Time& time) const;
 
   private:
@@ -93,7 +90,6 @@ class TimeLine : public Object
     /*! Current loop. */
     s32 m_loop;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

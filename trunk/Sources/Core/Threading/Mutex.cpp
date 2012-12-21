@@ -2,7 +2,7 @@
 #include <EGEDebug.h>
 
 #ifdef EGE_THREAD_PTHREAD
-#include "Core/Threading/PThread/Mutex_p.h"
+  #include "Core/Threading/PThread/Mutex_p.h"
 #endif // EGE_THREAD_PTHREAD
 
 EGE_NAMESPACE_BEGIN
@@ -24,13 +24,11 @@ Mutex::~Mutex()
   m_locked = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool Mutex::isValid() const
 {
   return (NULL != m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Locks mutex. */
 bool Mutex::lock()
 {
   EGE_ASSERT(isValid());
@@ -48,7 +46,6 @@ bool Mutex::lock()
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unlocks mutex. */
 bool Mutex::unlock()
 {
   EGE_ASSERT(isValid());

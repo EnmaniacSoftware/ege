@@ -23,14 +23,13 @@ class WidgetFactory : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
-
-    /* Registeres custom particle emitter type. */
+    /*! Creates object. */
+    EGEResult construct();
+    /*! Registeres custom particle emitter type. */
     EGEResult registerWidget(const String& typeName, egeWidgetCreateFunc createFunc);
-    /* Creates instance of particle emitter of the type given by name. */
+    /*! Creates instance of particle emitter of the type given by name. */
     PWidget createWidget(const String& typeName, const String& name) const;
-    /* Returns TRUE if given emitter type is registered. */
+    /*! Returns TRUE if given emitter type is registered. */
     bool isWidgetRegistered(const String& typeName) const;
 
   private:

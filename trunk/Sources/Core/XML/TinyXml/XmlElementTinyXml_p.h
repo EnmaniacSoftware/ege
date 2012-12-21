@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_XMLELEMENT_PRIVATE_H
-#define EGE_CORE_XMLELEMENT_PRIVATE_H
+#ifndef EGE_CORE_XML_XMLELEMENT_PRIVATE_H
+#define EGE_CORE_XML_XMLELEMENT_PRIVATE_H
 
 /**
 * @file  XmlElementTinyXml_p.h
@@ -15,13 +15,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class XmlElement;
-
 EGE_DECLARE_SMART_CLASS(XmlAttribute, PXmlAttribute)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class XmlElementPrivate
 {
    friend class XmlDocument;
@@ -35,35 +31,34 @@ class XmlElementPrivate
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if element is valid object */
+    /*! Returns TRUE if element is valid object */
     bool isValid() const;
 
-    /* Returns value of given attribute if present. Otherwise, returns default value. */
+    /*! Returns value of given attribute if present. Otherwise, returns default value. */
     String attribute(const String& name, const String& defValue) const;
-    /* Sets attribute with a given string value. 
-     * @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
+    /*! Sets attribute with a given string value. 
+     *  @note  Attribute will be created if does not exists. Otherwise, its value is going to be changed.
      */
     bool setAttribute(const String& name, const String& value);
-    /* Returns TRUE if given attribute exists. */
+    /*! Returns TRUE if given attribute exists. */
     bool hasAttribute(const String& name) const;
-    /* Returns first attribute. */
+    /*! Returns first attribute. */
     PXmlAttribute firstAttribute() const;
 
-    /* Returns first child element. If any name is given returned will be first element with given name. */
+    /*! Returns first child element. If any name is given returned will be first element with given name. */
     XmlElementPrivate* firstChild(const String& name) const;
-    /* Returns next child element. If any name is given returned will be next element with given name. */
+    /*! Returns next child element. If any name is given returned will be next element with given name. */
     XmlElementPrivate* nextChild(const String& name) const;
-    /* Appends new child element. */
+    /*! Appends new child element. */
     bool appendChildElement(const XmlElementPrivate* element);
 
-    /* Returns element name. */
+    /*! Returns element name. */
     String name() const;
 
-    /* Sets internal TinyXML element pointer. */
+    /*! Sets internal TinyXML element pointer. */
     void setElement(TiXmlElement* element);
     /*! Returns pointer to TinyXML element object. */
-    inline TiXmlElement* element(bool releaseOwnership) const { if (releaseOwnership) { m_deallocElement = false; } return m_element; }
-
+    TiXmlElement* element(bool releaseOwnership) const { if (releaseOwnership) { m_deallocElement = false; } return m_element; }
 
   private:  
 
@@ -78,9 +73,8 @@ class XmlElementPrivate
     /*! TiXmlElement deallocation flag. If TRUE m_element was allocated by framework and needs to be deallocated. */
     mutable bool m_deallocElement;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_XMLELEMENT_PRIVATE_H
+#endif // EGE_CORE_XML_XMLELEMENT_PRIVATE_H

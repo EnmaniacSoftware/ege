@@ -24,13 +24,11 @@ UIAbstractScrollbar::~UIAbstractScrollbar()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Returns TRUE if widget is frameless. */
 bool UIAbstractScrollbar::isFrameless() const
 {
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Initializes widget from dictionary. */
 bool UIAbstractScrollbar::initialize(const Dictionary& params)
 {
   // initialize base
@@ -39,7 +37,6 @@ bool UIAbstractScrollbar::initialize(const Dictionary& params)
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates object. */
 void UIAbstractScrollbar::update(const Time& time)
 {
   if (!isVisible() || (STATE_HIDDEN == m_state))
@@ -95,7 +92,6 @@ void UIAbstractScrollbar::update(const Time& time)
   Widget::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Constructs object. */
 EGEResult UIAbstractScrollbar::construct()
 {
   EGEResult result;
@@ -145,7 +141,6 @@ EGEResult UIAbstractScrollbar::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets range. */
 void UIAbstractScrollbar::setRange(s32 from, s32 to)
 {
   EGE_ASSERT(from <= to);
@@ -157,7 +152,6 @@ void UIAbstractScrollbar::setRange(s32 from, s32 to)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets page size. */
 void UIAbstractScrollbar::setPageSize(s32 size)
 {
   if ((size != m_pageSize) && (0 < size))
@@ -169,7 +163,6 @@ void UIAbstractScrollbar::setPageSize(s32 size)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets current scroll offset to given value. */
 void UIAbstractScrollbar::setOffset(s32 offset)
 {
   if (m_offset != offset)
@@ -182,7 +175,6 @@ void UIAbstractScrollbar::setOffset(s32 offset)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Renders object. */
 void UIAbstractScrollbar::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (!isVisible() || (STATE_HIDDEN == m_state))
@@ -207,7 +199,6 @@ void UIAbstractScrollbar::addForRendering(Renderer* renderer, const Matrix4f& tr
   Widget::addForRendering(renderer, transform);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts show sequence. */
 void UIAbstractScrollbar::startShowing()
 {
   // process according to state
@@ -239,7 +230,6 @@ void UIAbstractScrollbar::startShowing()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts hide sequence. */
 void UIAbstractScrollbar::startHiding()
 {
   // process according to state

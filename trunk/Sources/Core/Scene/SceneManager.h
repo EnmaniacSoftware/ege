@@ -1,22 +1,18 @@
 #ifndef EGE_CORE_SCENEMANAGER_H
 #define EGE_CORE_SCENEMANAGER_H
 
-#include "EGE.h"
-#include "Core/Timer/Time.h"
+#include <EGE.h>
+#include <EGETime.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Renderer;
 class SceneNode;
-
 EGE_DECLARE_SMART_CLASS(SceneManager, PSceneManager)
 EGE_DECLARE_SMART_CLASS(Camera, PCamera)
 EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class SceneManager : public Object//ISceneNodeListener
 {
   public:
@@ -27,22 +23,27 @@ class SceneManager : public Object//ISceneNodeListener
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if object is valid. */
-    bool isValid() const;
-    /* Updates manager. */
+    /*! Creates object. */
+    EGEResult construct();
+    /*! Updates manager. */
     void update(const Time& time);
-    /* Destroys manager data effectively resetting it. */
+    /*! Destroys manager data effectively resetting it. */
     void destroy();
 
 //    typedef vector<SceneNode*> SceneNodesVector;
  //   typedef vector<CLight*> LightsVector;
 
-    inline SceneNode* rootNode() const { return m_rootNode; }
+    /*! Returns root node. */
+    SceneNode* rootNode() const { return m_rootNode; }
 
     //u32               getVisibleNodeCount( void ) const;                                      // gets number of visible objects
     //SceneNodesVector& getVisibleNodesVector( void );                                          // gets vector of visible nodes
 
-    void render(PCamera pCamera, PViewport pViewport);
+    /*! Renders scene. 
+     *  @param  camera    Camera from which point of view rendering is to be done.
+     *  @param  viewport  Viewport for rendering.
+     */
+    void render(PCamera camera, PViewport viewport);
 
     //// render system related methods
     //void setRenderSystem( CRenderSystem* pcRenderSystem );                                    // sets render system
@@ -83,7 +84,8 @@ class SceneManager : public Object//ISceneNodeListener
     //string m_strName;                                   // name
     //
 
-    SceneNode* m_rootNode;                               // root node
+    /*! Root node. */
+    SceneNode* m_rootNode;
 
     //CRenderSystem* m_pcRenderSystem;                    // pointer to render system
 
@@ -114,7 +116,11 @@ class SceneManager : public Object//ISceneNodeListener
     //// ISceneNodeListener overrides
     //virtual void onSceneNodeVisible( SceneNode* pcNode );          // notifies that given node is visible
 
-    void addForRendering(PCamera& pCamera, Renderer* pcRenderer);    // adds all visible object for rendering
+    /*! Adds all visible object for rendering. 
+     *  @param  camera    Camera from which point of view rendering is being done.
+     *  @param  renderer  Renderer accepting the object to show.
+     */
+    void addForRendering(PCamera& camera, Renderer* renderer);
 
     //// visibility related methods
     //void findLightsAffectingFrustum( void );                        // finds all lights affecting frustum
@@ -129,7 +135,6 @@ class SceneManager : public Object//ISceneNodeListener
     //void useRenderableMatrices( const CRenderable* pcRenderable );  // applies transformation matrices of given renderable
     //void resetMatrices( void );                                     // resets transformation matrices to default ones (of camera)
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

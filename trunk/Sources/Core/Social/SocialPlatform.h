@@ -24,36 +24,36 @@ class SocialPlatform : public Object
   signals:
 
     /*! Signal emitted when authentication is done. 
-        @param result Result code of authentication.
+     *  @param result Result code of authentication.
      */
     Signal1<EGEResult> authenticated;
     /*! Signal emitted when achievement list retrieval is done.
-        @param result Result code.
-        @param list   List of achievements.
+     *  @param result Result code.
+     *  @param list   List of achievements.
      */
     Signal2<EGEResult, const AchievementDataList&> achievementsLoaded;
     /*! Signal emitted when submission of achievements is done. 
-        @param result Result code of submission.
+     *  @param result Result code of submission.
      */
     Signal1<EGEResult> achievementsSaved;
     /*! Signal emitted when submission of score is done. 
-        @param result Result code of submission.
+     *  @param result Result code of submission.
      */
     Signal1<EGEResult> scoreSaved;
 
   public:
 
-    /* Constructs object. */
+    /*! Constructs object. */
     EGEResult construct();
-    /* Starts authentication. */
+    /*! Starts authentication. */
     EGEResult startAuthentication();
-    /* Loads achievements. */
+    /*! Loads achievements. */
     EGEResult loadAchievements();
-    /* Save achievements. */
+    /*! Save achievements. */
     EGEResult saveAchievements(const AchievementDataList& achievements);
-    /* Saves score. */
+    /*! Saves score. */
     EGEResult saveScore(const String& scoreTable, s32 score);
-    /* Shows scores. */
+    /*! Shows scores. */
     EGEResult showScores(const String& scoreTable);
 
   private:

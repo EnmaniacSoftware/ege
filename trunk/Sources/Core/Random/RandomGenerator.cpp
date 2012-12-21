@@ -1,7 +1,7 @@
 #include "Core/Random/RandomGenerator.h"
 
 #ifdef EGE_RANDOM_STDC
-#include "Core/Random/StdC/RandomGeneratorStdC_p.h"
+  #include "Core/Random/StdC/RandomGeneratorStdC_p.h"
 #endif // EGE_RANDOM_STDC
 
 EGE_NAMESPACE_BEGIN
@@ -24,13 +24,11 @@ RandomGenerator::~RandomGenerator()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool RandomGenerator::isValid() const
 {
   return NULL != m_p;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns randomly generated integer. */
 s32 RandomGenerator::operator() ()
 {
   if (isValid())
@@ -41,7 +39,6 @@ s32 RandomGenerator::operator() ()
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets random seed. */
 void RandomGenerator::setSeed(u32 seed)
 {
   if (isValid())
@@ -50,7 +47,6 @@ void RandomGenerator::setSeed(u32 seed)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns randomly generated floating number from given interval. */
 float32 RandomGenerator::operator() (float32 min, float32 max)
 {
   if (isValid())

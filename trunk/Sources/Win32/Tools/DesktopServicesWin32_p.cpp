@@ -15,7 +15,11 @@ DesktopServicesPrivate::~DesktopServicesPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Opens given URL in Web browser. */
+EGEResult DesktopServicesPrivate::construct()
+{
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool DesktopServicesPrivate::openUrl(const String& url)
 {
   return (32 < reinterpret_cast<int>(ShellExecuteA(NULL, "open", url.toAscii(), NULL, NULL, SW_SHOWNORMAL)));

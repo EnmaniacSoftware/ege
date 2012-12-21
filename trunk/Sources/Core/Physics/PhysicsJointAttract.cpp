@@ -24,13 +24,11 @@ PhysicsJointAttract::~PhysicsJointAttract()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool PhysicsJointAttract::isValid() const
 {
   return (NULL != m_p) && m_p->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets target position to attract to. */
 void PhysicsJointAttract::setTarget(const Vector4f& position)
 {
   if (isValid())
@@ -38,11 +36,6 @@ void PhysicsJointAttract::setTarget(const Vector4f& position)
     p_func()->setTarget(position);
   }
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Sets damping ratio.
-*
-*  @param   ration Damping ratio to set. 0 - no damping, 1 - critical damping.
-*/
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PhysicsJointAttract::setDampingRatio(EGE::float32 ratio)
 {
@@ -52,7 +45,6 @@ void PhysicsJointAttract::setDampingRatio(EGE::float32 ratio)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current damping ratio. */
 EGE::float32 PhysicsJointAttract::dampingRatio() const
 {
   if (isValid())
@@ -63,9 +55,6 @@ EGE::float32 PhysicsJointAttract::dampingRatio() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Sets mass-spring-damper frequency (in Hz). 
-*  @note  This describes the speed of response of the system.
-*/
 void PhysicsJointAttract::setFrequency(EGE::float32 frequencyHz)
 {
   if (isValid())
@@ -74,7 +63,6 @@ void PhysicsJointAttract::setFrequency(EGE::float32 frequencyHz)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current mass-spring-damper frequency (in Hz). */
 EGE::float32 PhysicsJointAttract::frequency() const
 {
   if (isValid())

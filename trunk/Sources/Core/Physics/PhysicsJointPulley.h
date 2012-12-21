@@ -8,26 +8,24 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(PhysicsJointPulley, PPhysicsJointPulley)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class PhysicsJointPulley : public PhysicsJoint
 {
   public:
 
-    PhysicsJointPulley(Application* app, PPhysicsComponent bodyA, PPhysicsComponent bodyB, float32 maxLengthA, float32 maxLengthB, const Vector4f& groundAnchorA, const Vector4f& groundAnchorB);
+    PhysicsJointPulley(Application* app, PPhysicsComponent bodyA, PPhysicsComponent bodyB, float32 maxLengthA, float32 maxLengthB, 
+                       const Vector4f& groundAnchorA, const Vector4f& groundAnchorB);
    ~PhysicsJointPulley();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
   
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     bool isValid() const;
-    /* Returns length of segment attached to body A. */
+    /*! Returns length of segment attached to body A. */
     float32 lengthA() const;
-    /* Returns length of segment attached to body B. */
+    /*! Returns length of segment attached to body B. */
     float32 lengthB() const;
 
   private:
@@ -43,7 +41,6 @@ class PhysicsJointPulley : public PhysicsJoint
     /*! Ground point in world coordinates for segment B. For use by private implementation. */
     Vector4f m_groundAnchorB;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

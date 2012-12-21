@@ -1,7 +1,7 @@
 #include "Core/Xml/XmlAttribute.h"
 
 #if EGE_XML_TINYXML
-#include "Core/XML/TinyXml/XMLAttributeTinyXML_p.h"
+  #include "Core/XML/TinyXml/XMLAttributeTinyXML_p.h"
 #endif // EGE_XML_TINYXML
 
 EGE_NAMESPACE_BEGIN
@@ -20,13 +20,11 @@ XmlAttribute::~XmlAttribute()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if element is valid object */
 bool XmlAttribute::isValid() const
 {
   return (NULL != m_p) && m_p->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns name. */
 String XmlAttribute::name() const
 {
   if (isValid())
@@ -37,7 +35,6 @@ String XmlAttribute::name() const
   return String();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns value. */
 String XmlAttribute::value() const
 {
   if (isValid())
@@ -48,7 +45,6 @@ String XmlAttribute::value() const
   return String();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns next attribute. NULL if this is last one. */
 PXmlAttribute XmlAttribute::next() const
 {
   if (isValid())

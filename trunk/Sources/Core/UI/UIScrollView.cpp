@@ -33,7 +33,6 @@ UIScrollView::~UIScrollView()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Constructs object. */
 EGEResult UIScrollView::construct()
 {
   EGEResult result;
@@ -63,13 +62,11 @@ EGEResult UIScrollView::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Returns TRUE if widget is frameless. */
 bool UIScrollView::isFrameless() const
 {
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Initializes widget from dictionary. */
 bool UIScrollView::initialize(const Dictionary& params)
 {
   // initialize base
@@ -78,7 +75,6 @@ bool UIScrollView::initialize(const Dictionary& params)
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets content size. */
 void UIScrollView::setContentSize(const Vector2f& size)
 {
   if (m_contentSize != size)
@@ -99,7 +95,6 @@ void UIScrollView::setContentSize(const Vector2f& size)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Updates object. */
 void UIScrollView::update(const Time& time)
 {
   // check if animating
@@ -231,7 +226,6 @@ void UIScrollView::update(const Time& time)
   Widget::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Pointer event processor. */
 void UIScrollView::pointerEvent(PPointerData data)
 {
   // check if inside widget
@@ -273,7 +267,6 @@ void UIScrollView::pointerEvent(PPointerData data)
   Widget::pointerEvent(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Begins move. */
 void UIScrollView::beginMove(s32 x, s32 y)
 {
   // store current pointer position
@@ -291,7 +284,6 @@ void UIScrollView::beginMove(s32 x, s32 y)
   m_horizontalScroll->startShowing();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Ends move. */
 void UIScrollView::endMove()
 {
   // change state
@@ -305,13 +297,11 @@ void UIScrollView::endMove()
   setOffset(scrollToOffset, true);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current offset vector. */
 const Vector2f& UIScrollView::offset() const
 {
   return m_offset;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets current offset vector. */
 void UIScrollView::setOffset(const Vector2f& offset, bool animate)
 {
   // check if dragging
@@ -343,31 +333,26 @@ void UIScrollView::setOffset(const Vector2f& offset, bool animate)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets scroll direction. */
 void UIScrollView::setDirection(Direction direction)
 {
   m_scrollDirections = direction;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets deceleration rate. */
 void UIScrollView::setDecelerationRate(float32 rate)
 {
   m_decelerationRate = rate;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current scroll velocity. */
 const Vector2f& UIScrollView::scrollVelocity() const
 {
   return m_scrollVelocity;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns throw coefficient. */
 float32 UIScrollView::throwCoefficient() const
 {
   return m_throwCoefficient;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Renders object. */
 void UIScrollView::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (!isVisible())
@@ -391,7 +376,6 @@ void UIScrollView::addForRendering(Renderer* renderer, const Matrix4f& transform
   Widget::addForRendering(renderer, transform);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when size of widget changes. */
 void UIScrollView::onSizeChanged(const Vector2f& size)
 {
   EGE_UNUSED(size);
@@ -400,7 +384,6 @@ void UIScrollView::onSizeChanged(const Vector2f& size)
   m_scrollbarsNeedUpdate = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when position of widget changes. */
 void UIScrollView::onPositionChanged(const Vector4f& position)
 {
   EGE_UNUSED(position);
@@ -409,7 +392,6 @@ void UIScrollView::onPositionChanged(const Vector4f& position)
   m_scrollbarsNeedUpdate = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates scrollbars. */
 void UIScrollView::updateScrollbars()
 {
   m_verticalScroll->setPosition(Vector4f(m_physics.position().x + size().x - DEFAULT_SCROLLBAR_SIZE, m_physics.position().y, 0));
@@ -423,14 +405,12 @@ void UIScrollView::updateScrollbars()
   m_horizontalScroll->setPageSize(static_cast<s32>(size().x));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Enables/disables scroll bars. */
 void UIScrollView::setScrollbarsEnabled(bool set)
 {
   m_verticalScroll->setVisible(set);
   m_horizontalScroll->setVisible(set);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets base render priority. */
 void UIScrollView::setBaseRenderPriority(s32 priority)
 {
   m_verticalScroll->renderData()->setPriority(priority + 1);

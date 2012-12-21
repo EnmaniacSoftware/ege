@@ -27,13 +27,11 @@ Widget::~Widget()
   EGE_DELETE(m_widgetFrame);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool Widget::isValid() const
 {
   return ((!isFrameless() && (NULL != m_widgetFrame)) || (isFrameless() && (NULL == m_widgetFrame)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Initializes emitter from dictionary. */
 bool Widget::initialize(const Dictionary& params)
 {
   if (!isFrameless())
@@ -64,7 +62,6 @@ bool Widget::initialize(const Dictionary& params)
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates overlay. */
 void Widget::update(const Time& time)
 {
   // update children
@@ -76,7 +73,6 @@ void Widget::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Renders widget. */
 void Widget::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (isVisible())
@@ -115,7 +111,6 @@ void Widget::addForRendering(Renderer* renderer, const Matrix4f& transform)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets visibility. */
 void Widget::setVisible(bool set)
 {
   if (m_visible != set)
@@ -124,7 +119,6 @@ void Widget::setVisible(bool set)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets material. */
 void Widget::setMaterial(const PMaterial& material)
 {
   if (NULL != m_widgetFrame)
@@ -136,7 +130,6 @@ void Widget::setMaterial(const PMaterial& material)
   m_renderDataInvalid = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Pointer event processor. */
 void Widget::pointerEvent(PPointerData data)
 {
   const Matrix4f& globalMatrix = globalTransformationMatrix();
@@ -165,7 +158,6 @@ void Widget::pointerEvent(PPointerData data)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds child. */
 EGEResult Widget::addChild(PWidget widget)
 {
   EGE_ASSERT(NULL == widget->parent());
@@ -189,7 +181,6 @@ EGEResult Widget::addChild(PWidget widget)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes given child. */
 void Widget::removeChild(PWidget widget)
 {
   // find proper widget
@@ -207,7 +198,6 @@ void Widget::removeChild(PWidget widget)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes child with a given name. */
 void Widget::removeChild(const String& name)
 {
   // find proper widget
@@ -227,7 +217,6 @@ void Widget::removeChild(const String& name)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes all children. */
 void Widget::removeAllChildren()
 {
   // go thru all children
@@ -242,13 +231,11 @@ void Widget::removeAllChildren()
   m_children.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Generates render data. */
 void Widget::generateRenderData()
 {
   // do nothing
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Determines size of the widget (in pixels). */
 Vector2f Widget::size() const
 {
   //static const float32 hugeSize = 10000.0f;
@@ -293,7 +280,6 @@ Vector2f Widget::size() const
   return m_size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns child with a given name. Optionally, stores child rectangle within parent. */
 PWidget Widget::child(const String& name) const
 {
   // go thru all children
@@ -309,13 +295,11 @@ PWidget Widget::child(const String& name) const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets name. */
 void Widget::setName(const String& name)
 {
   m_name = name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Detrmines widget's content size (in pixels). */
 Vector2f Widget::contentSize()
 {
   Vector2f biggestSize = Vector2f::ZERO;
@@ -339,7 +323,6 @@ Vector2f Widget::contentSize()
   return biggestSize;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets size. */
 void Widget::setSize(const Vector2f& size)
 {
   if (m_size != size)
@@ -357,7 +340,6 @@ void Widget::setSize(const Vector2f& size)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets position. */
 void Widget::setPosition(const Vector4f& position)
 {
   if (m_physics.position() != position)
@@ -369,7 +351,6 @@ void Widget::setPosition(const Vector4f& position)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets transparency level. */
 void Widget::setAlpha(float32 alpha)
 {
   // apply to frame if any
@@ -387,7 +368,6 @@ void Widget::setAlpha(float32 alpha)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets widget alignment. */
 void Widget::setAlignment(Alignment alignment)
 {
   if (m_alignment != alignment)
@@ -396,7 +376,6 @@ void Widget::setAlignment(Alignment alignment)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when own transformation has been changed. */
 void Widget::onTransformationChanged()
 {
   // check if not invalid yet
@@ -413,7 +392,6 @@ void Widget::onTransformationChanged()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns global transformation matrix. */
 const Matrix4f& Widget::globalTransformationMatrix() const
 {
   // check if matrix is invalid
@@ -435,7 +413,6 @@ const Matrix4f& Widget::globalTransformationMatrix() const
   return m_globalTransformation;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
 EGEResult Widget::construct()
 {
   return EGE_SUCCESS;

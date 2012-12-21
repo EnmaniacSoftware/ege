@@ -11,7 +11,6 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Mutex;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class MutexPrivate
 {
   /*! For accessing private data. */
@@ -25,9 +24,9 @@ class MutexPrivate
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Locks mutex. */
+    /*! Locks mutex. */
     bool lock();
-    /* Unlocks mutex. */
+    /*! Unlocks mutex. */
     bool unlock();
 
   private:
@@ -35,7 +34,6 @@ class MutexPrivate
     /*! Mutex object. */
     pthread_mutex_t m_mutex;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

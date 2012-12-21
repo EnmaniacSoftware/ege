@@ -22,7 +22,6 @@ UIScrollableView::~UIScrollableView()
   ege_disconnect(&m_physics, transformationChanged, this, UIScrollableView::transformationChanged);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of widget. This method is a registration method for factory. */
 PWidget UIScrollableView::Create(Application* app, const String& name)
 {
   // allocate object
@@ -40,7 +39,6 @@ PWidget UIScrollableView::Create(Application* app, const String& name)
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! UIScrollView override. Constructs object. */
 EGEResult UIScrollableView::construct()
 {
   EGEResult result;
@@ -55,7 +53,6 @@ EGEResult UIScrollableView::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! UIScrollView override. Updates object. */
 void UIScrollableView::update(const Time& time)
 {
   // check if content needs to be recalculated
@@ -88,7 +85,6 @@ void UIScrollableView::update(const Time& time)
   UIScrollView::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! UIScrollView override. Pointer event processor. */
 void UIScrollableView::pointerEvent(PPointerData data)
 {
   if (!isVisible())
@@ -101,7 +97,6 @@ void UIScrollableView::pointerEvent(PPointerData data)
   UIScrollView::pointerEvent(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! UIScrollView override. Renders object. */
 void UIScrollableView::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (!isVisible())
@@ -144,7 +139,6 @@ void UIScrollableView::addForRendering(Renderer* renderer, const Matrix4f& trans
   UIScrollView::addForRendering(renderer, transform);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds object. */
 EGEResult UIScrollableView::addObject(PObject object)
 {
   EGEResult result = EGE_ERROR_NOT_SUPPORTED;
@@ -175,21 +169,18 @@ EGEResult UIScrollableView::addObject(PObject object)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes object. */
 void UIScrollableView::removeObject(PObject object)
 {
   m_objects.remove(object);
   m_dirtyContent = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes all objects. */
 void UIScrollableView::removeAllObjects()
 {
   m_objects.clear();
   m_dirtyContent = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns size of content (in pixels). */
 Vector2f UIScrollableView::contentSize()
 {
   if (m_dirtyContent)
@@ -204,7 +195,6 @@ Vector2f UIScrollableView::contentSize()
   return m_contentSize;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Recalculates content size. */
 void UIScrollableView::recaluclateContentSize()
 {
   // check if no AUTO content size calculations
@@ -239,20 +229,17 @@ void UIScrollableView::recaluclateContentSize()
   setContentSize(newContentSize);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when internal transformation is changed. */
 void UIScrollableView::transformationChanged()
 {
   // invalidate content
   m_dirtyContent = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Returns TRUE if widget is frameless. */
 bool UIScrollableView::isFrameless() const
 {
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Initializes widget from dictionary. */
 bool UIScrollableView::initialize(const Dictionary& params)
 {
   // initialize base
@@ -261,7 +248,6 @@ bool UIScrollableView::initialize(const Dictionary& params)
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns object with a given name. */
 PObject UIScrollableView::object(const String& name) const
 {
   // go thru all objects
@@ -289,7 +275,6 @@ PObject UIScrollableView::object(const String& name) const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Sets transparency level. */
 void UIScrollableView::setAlpha(float32 alpha)
 {
   // apply to all objects
@@ -300,10 +285,10 @@ void UIScrollableView::setAlpha(float32 alpha)
     {
       case EGE_OBJECT_UID_OVERLAY_TEXT:
       case EGE_OBJECT_UID_OVERLAY_IMAGE:
-      {
-        Overlay* overlay = ege_cast<Overlay*>((*it).object());
-        overlay->renderData()->material()->setDiffuseAlpha(alpha);
-      }
+        {
+          Overlay* overlay = ege_cast<Overlay*>((*it).object());
+          overlay->renderData()->material()->setDiffuseAlpha(alpha);
+        }
         break;
     }
   }
@@ -312,15 +297,11 @@ void UIScrollableView::setAlpha(float32 alpha)
   Widget::setAlpha(alpha);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Reutrns list of all objects. */
 UIScrollableView::ObjectsList UIScrollableView::objects() const
 {
   return m_objects;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! UIScrollView override. Sets content size. 
-    @note This disables auto content size generation.
-  */
 void UIScrollableView::setContentSize(const Vector2f& size)
 {
   // call base class
@@ -330,7 +311,6 @@ void UIScrollableView::setContentSize(const Vector2f& size)
   m_autoContentSize = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Enables/disables auto calculation of contect size. */
 void UIScrollableView::setAutoContentSize(bool enable)
 {
   if (m_autoContentSize != enable)

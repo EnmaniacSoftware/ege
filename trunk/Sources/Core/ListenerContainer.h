@@ -6,7 +6,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template<typename T>
 class ListenerContainer
 {
@@ -20,23 +19,22 @@ class ListenerContainer
     ListenerContainer();
     virtual ~ListenerContainer();
 
-    /* Adds object to listeners pool. */
+    /*! Adds object to listeners pool. */
     virtual bool addListener(T* const object);
-    /* Returns TRUE if given object is in listeners pool. */
+    /*! Returns TRUE if given object is in listeners pool. */
     bool isListening(const T* object) const;
-    /* Removes given pbject from listeners pool. */
+    /*! Removes given pbject from listeners pool. */
     void removeListener(const T* object);
-    /* Removes all objects from listeners pool. */
+    /*! Removes all objects from listeners pool. */
     void removeAllListeners();
     /*! Returns pool of listeners. */
-    inline const ListenersContainer& listeners() const { return m_listeners; }
+    const ListenersContainer& listeners() const { return m_listeners; }
 
   private:
 
     /*! Pool of listeners. */
     ListenersContainer m_listeners;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template<typename T>
 ListenerContainer<T>::ListenerContainer()
@@ -49,7 +47,6 @@ ListenerContainer<T>::~ListenerContainer()
   removeAllListeners();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds object to listeners pool. */
 template<typename T>
 bool ListenerContainer<T>::addListener(T* const object)
 {
@@ -63,7 +60,6 @@ bool ListenerContainer<T>::addListener(T* const object)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes given pbject from listeners pool. */
 template<typename T>
 void ListenerContainer<T>::removeListener(const T* object)
 {
@@ -80,14 +76,12 @@ void ListenerContainer<T>::removeListener(const T* object)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes all objects from listeners pool. */
 template<typename T>
 void ListenerContainer<T>::removeAllListeners()
 {
   m_listeners.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given object is in listeners pool. */
 template<typename T>
 bool ListenerContainer<T>::isListening(const T* object) const
 {

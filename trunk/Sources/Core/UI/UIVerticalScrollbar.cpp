@@ -18,7 +18,6 @@ UIVerticalScrollbar::~UIVerticalScrollbar()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of widget. This method is a registration method for factory. */
 PWidget UIVerticalScrollbar::Create(Application* app, const String& name)
 {
   // allocate object
@@ -36,7 +35,6 @@ PWidget UIVerticalScrollbar::Create(Application* app, const String& name)
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! UIAbstractScrollbar override. Updates render data. */
 void UIVerticalScrollbar::updateRenderData()
 {
   const float32 rangeRep = (m_rangeEnd == m_rangeStart) ? 0.0f : (1.0f / (m_rangeEnd - m_rangeStart));

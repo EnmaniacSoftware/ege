@@ -31,7 +31,7 @@ class UIScrollablePageView : public UIScrollView
 
   public:
 
-    /* Creates instance of widget. This method is a registration method for factory. */
+    /*! Creates instance of widget. This method is a registration method for factory. */
     static PWidget Create(Application* app, const String& name);
 
   public:
@@ -40,63 +40,63 @@ class UIScrollablePageView : public UIScrollView
 
   public:
 
-    /* UIScrollView override. Updates object. */
+    /*! @see UIScrollView::update. */
     void update(const Time& time) override;
-    /* UIScrollView override. Pointer event processor. */
+    /*! @see UIScrollView::pointerEvent. */
     void pointerEvent(PPointerData data) override;
-    /* UIScrollView override. Renders object. */
+    /*! @see UIScrollView::addForRendering. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
-    /* UIScrollView override. Constructs object. */
+    /*! @see UIScrollView::construct. */
     EGEResult construct() override;
 
-    /* Enables/disables page indicator. */
+    /*! Enables/disables page indicator. */
     void setPageIndicatorEnabled(bool set);
-    /* Returns TRUE if page indicator is enabled. */
+    /*! Returns TRUE if page indicator is enabled. */
     bool isPageIndicatorEnabled() const;
 
-    /* Sets number of pages. */
+    /*! Sets number of pages. */
     void setPageCount(s32 count);
-    /* Sets current page. Animates from current position if required. */
+    /*! Sets current page. Animates from current position if required. */
     void setPage(s32 page, bool animate);
-    /* Returns current page. */
+    /*! Returns current page. */
     s32 page() const;
-    /* Returns page indicator. */
+    /*! Returns page indicator. */
     PUIPageIndicator pageIndicator() const;
 
-    /* Adds object to a given page. */
+    /*! Adds object to a given page. */
     EGEResult addObject(PObject object, u32 pageIdx);
-    /* Removes object. */
+    /*! Removes object. */
     void removeObject(PObject object);
-    /* Returns object with a given name. */
+    /*! Returns object with a given name. */
     PObject object(const String& name) const;
-    /* Returns list of all objects for a given page. 
-       @param pageIdx Page index for which objects should be returned. If negative object from all pages will be returned.
+    /*! Returns list of all objects for a given page. 
+     *  @param pageIdx Page index for which objects should be returned. If negative object from all pages will be returned.
      */
     ObjectsList objects(s32 pageIdx = -1) const;
-    /* Removes all objects. */
+    /*! Removes all objects. */
     void removeAllObjects();
 
-    /* UIScrollView override. Sets base render priority. */
+    /*! @see UIScrollView::setBaseRenderPriority. */
     void setBaseRenderPriority(s32 priority) override;
 
   private slots:
 
-    /* UIScrollView override. Slot called when size of widget changes. */
+    /*! @see UIScrollView::onSizeChanged. */
     void onSizeChanged(const Vector2f& size) override;
-    /* UIScrollView override. Slot called when position of widget changes. */
+    /*! @see UIScrollView::onPositionChanged. */
     void onPositionChanged(const Vector4f& position) override;
 
   private:
 
-    /* Widget override. Initializes widget from dictionary. */
+    /*! @see Widget::initialize. */
     bool initialize(const Dictionary& params) override;
     
-    /* Recalculates content area. */
+    /*! Recalculates content area. */
     void recalculateContentArea();
-    /* Returns page size. */
+    /*! Returns page size. */
     Vector2f pageSize() const;
     
-    /* UIScrollView override. Ends move. */
+    /*! @see UIScrollView::endMove. */
     void endMove() override;
   
   private:

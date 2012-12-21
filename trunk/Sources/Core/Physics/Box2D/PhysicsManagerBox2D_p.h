@@ -27,7 +27,7 @@ class PhysicsManagerPrivate : public b2DestructionListener
 {
   public:
 
-    PhysicsManagerPrivate(PhysicsManager* base, const Dictionary& params);
+    PhysicsManagerPrivate(PhysicsManager* base);
    ~PhysicsManagerPrivate();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -35,26 +35,26 @@ class PhysicsManagerPrivate : public b2DestructionListener
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(PhysicsManager)
 
-    /* Returns TRUE if manager is valid. */
-    bool isValid() const;
-    /* Updates manager. */
+    /*! Creates object. */
+    EGEResult construct(const Dictionary& params);
+    /*! Updates manager. */
     void update(const Time& time);
-    /* Renders data. */
+    /*! Renders data. */
     void render();
-    /* Sets gravity. */
+    /*! Sets gravity. */
     void setGravity(const Vector4f& gravity);
     /*! Returns Box2D world. */
-    inline b2World* world() const { return m_world; }
+    b2World* world() const { return m_world; }
     /*! Returns world to simulation world scale coefficient. */
-    inline float32 worldToSimulationScaleFactor() const { return m_scale; }
+    float32 worldToSimulationScaleFactor() const { return m_scale; }
     /*! Returns simulation world to world scale coefficient. */
-    inline float32 simulationToWorldScaleFactor() const { return m_invScale; }
+    float32 simulationToWorldScaleFactor() const { return m_invScale; }
 
   private:
 
-    /* b2DestructionListener override. Box2D fixture is about to be destroyed. */
+    /*! b2DestructionListener override. Box2D fixture is about to be destroyed. */
   	void SayGoodbye(b2Fixture* fixture) override;
-    /* b2DestructionListener override. Box2D joint is about to be destroyed. */
+    /*! b2DestructionListener override. Box2D joint is about to be destroyed. */
   	void SayGoodbye(b2Joint* joint) override;
 
   private:

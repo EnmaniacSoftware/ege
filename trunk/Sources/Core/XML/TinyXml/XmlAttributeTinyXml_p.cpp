@@ -17,13 +17,11 @@ XmlAttributePrivate::~XmlAttributePrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if element is valid object */
 bool XmlAttributePrivate::isValid() const 
 { 
   return (NULL != m_attribute); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns name. */
 String XmlAttributePrivate::name() const
 {
   if (isValid())
@@ -34,7 +32,6 @@ String XmlAttributePrivate::name() const
   return String();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns value. */
 String XmlAttributePrivate::value() const
 {
   if (isValid())
@@ -45,7 +42,6 @@ String XmlAttributePrivate::value() const
   return String();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns next attribute. NULL if this is last one. */
 PXmlAttribute XmlAttributePrivate::next() const
 {
   PXmlAttribute attribute;
@@ -66,7 +62,6 @@ PXmlAttribute XmlAttributePrivate::next() const
   return attribute;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets internal TinyXML attribute pointer. */
 void XmlAttributePrivate::setAttribute(TiXmlAttribute* attribute)
 {
   m_attribute = attribute;

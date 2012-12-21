@@ -9,11 +9,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(SceneNodeObject, PSceneNodeObject)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class SceneNodeObject : public Object
 {
   friend class SceneNode;
@@ -27,21 +24,21 @@ class SceneNodeObject : public Object
     EGE_DECLARE_DELETE_OPERATORS
 
     /*! Returns object name. */
-    inline const String& name() const { return m_name; }
+    const String& name() const { return m_name; }
     /*! Returns parent node. */
-    inline SceneNode* parentNode() const{ return m_parentNode; }
-    /* Adds object render data for rendering with given renderer. */
+    SceneNode* parentNode() const{ return m_parentNode; }
+    /*! Adds object render data for rendering with given renderer. */
     virtual bool addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
     /*! Returns TRUE if object is visible. */
-    inline bool isVisible() const { return m_visible; }
-    /* Sets visibility flag. */
+    bool isVisible() const { return m_visible; }
+    /*! Sets visibility flag. */
     virtual void setVisible(bool set);
     /*! Returns TRUE if object is attached. */
-    inline bool isAttached() const { return (NULL != m_parentNode); }
+    bool isAttached() const { return (NULL != m_parentNode); }
 
   protected:
 
-    /* Called when parent node changes. */
+    /*! Called when parent node changes. */
     virtual void parentChanged(SceneNode* oldNode, SceneNode* newNode);
 
     // bounding box related methods
@@ -86,7 +83,6 @@ class SceneNodeObject : public Object
     /*! Visibility flag. */
     bool m_visible;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

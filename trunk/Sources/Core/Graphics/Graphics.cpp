@@ -97,6 +97,12 @@ EGEResult Graphics::construct()
     return EGE_ERROR_NO_MEMORY;
   }
 
+  if (EGE_SUCCESS != (result = m_widgetFactory->construct()))
+  {
+    // error!
+    return result;
+  }
+
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

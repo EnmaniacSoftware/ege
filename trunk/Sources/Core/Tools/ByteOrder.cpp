@@ -4,7 +4,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts bytes into value with specified byte ordering. */
 void ByteOrder::Convert(s16& value, const u8* bytesData, Endianness ordering)
 {
   EGE_ASSERT(bytesData);
@@ -23,7 +22,6 @@ void ByteOrder::Convert(s16& value, const u8* bytesData, Endianness ordering)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts bytes into value with specified byte ordering. */
 void ByteOrder::Convert(u16& value, const u8* bytesData, Endianness ordering)
 {
   EGE_ASSERT(bytesData);
@@ -42,7 +40,6 @@ void ByteOrder::Convert(u16& value, const u8* bytesData, Endianness ordering)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts bytes into value with specified byte ordering. */
 void ByteOrder::Convert(s32& value, const u8* bytesData, Endianness ordering)
 {
   EGE_ASSERT(bytesData);
@@ -61,7 +58,6 @@ void ByteOrder::Convert(s32& value, const u8* bytesData, Endianness ordering)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts bytes into value with specified byte ordering. */
 void ByteOrder::Convert(u32& value, const u8* bytesData, Endianness ordering)
 {
   EGE_ASSERT(bytesData);
@@ -80,7 +76,6 @@ void ByteOrder::Convert(u32& value, const u8* bytesData, Endianness ordering)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts bytes into value with specified byte ordering. */
 void ByteOrder::Convert(s64& value, const u8* bytesData, Endianness ordering)
 {
   EGE_ASSERT(bytesData);
@@ -101,7 +96,6 @@ void ByteOrder::Convert(s64& value, const u8* bytesData, Endianness ordering)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts bytes into value with specified byte ordering. */
 void ByteOrder::Convert(u64& value, const u8* bytesData, Endianness ordering)
 {
   EGE_ASSERT(bytesData);
@@ -122,7 +116,6 @@ void ByteOrder::Convert(u64& value, const u8* bytesData, Endianness ordering)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts value into stream of bytes with specified byte ordering. */
 void ByteOrder::Convert(u8* bytesData, s16 value, Endianness ordering)
 {
   EGE_ASSERT(bytesData);
@@ -143,7 +136,6 @@ void ByteOrder::Convert(u8* bytesData, s16 value, Endianness ordering)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts value into stream of bytes with specified byte ordering. */
 void ByteOrder::Convert(u8* bytesData, u16 value, Endianness ordering)
 {
   EGE_ASSERT(bytesData);
@@ -164,7 +156,6 @@ void ByteOrder::Convert(u8* bytesData, u16 value, Endianness ordering)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts value into stream of bytes with specified byte ordering. */
 void ByteOrder::Convert(u8* bytesData, s32 value, Endianness ordering)
 {
   EGE_ASSERT(bytesData);
@@ -189,7 +180,6 @@ void ByteOrder::Convert(u8* bytesData, s32 value, Endianness ordering)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts value into stream of bytes with specified byte ordering. */
 void ByteOrder::Convert(u8* bytesData, u32 value, Endianness ordering)
 {
   EGE_ASSERT(bytesData);
@@ -214,7 +204,6 @@ void ByteOrder::Convert(u8* bytesData, u32 value, Endianness ordering)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts value into stream of bytes with specified byte ordering. */
 void ByteOrder::Convert(u8* bytesData, s64 value, Endianness ordering)
 {
   EGE_ASSERT(bytesData);
@@ -247,7 +236,6 @@ void ByteOrder::Convert(u8* bytesData, s64 value, Endianness ordering)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts value into stream of bytes with specified byte ordering. */
 void ByteOrder::Convert(u8* bytesData, u64 value, Endianness ordering)
 {
   EGE_ASSERT(bytesData);

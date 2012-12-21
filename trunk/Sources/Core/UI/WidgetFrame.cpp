@@ -26,13 +26,11 @@ WidgetFrame::~WidgetFrame()
   m_renderData = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool WidgetFrame::isValid() const
 {
   return (NULL != m_renderData);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Renders dialog. */
 void WidgetFrame::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   // regenerate render data if required
@@ -47,7 +45,6 @@ void WidgetFrame::addForRendering(Renderer* renderer, const Matrix4f& transform)
   renderer->addForRendering(m_renderData, transform);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets material. */
 void WidgetFrame::setMaterial(const PMaterial& material)
 {
   EGE_ASSERT(m_renderData);
@@ -57,7 +54,6 @@ void WidgetFrame::setMaterial(const PMaterial& material)
   m_renderDataInvalid = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets rectanlges (in pixels). */
 void WidgetFrame::setRects(const Recti& topLeft, const Recti& topMiddle, const Recti& topRight, const Recti& middleLeft, const Recti& fill, 
                            const Recti& middleRight, const Recti& bottomLeft, const Recti& bottomMiddle, const Recti& bottomRight)
 {
@@ -75,7 +71,6 @@ void WidgetFrame::setRects(const Recti& topLeft, const Recti& topMiddle, const R
   m_renderDataInvalid = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Generates render data. */
 void WidgetFrame::generateRenderData()
 {
   Vector2f frameContentSize = m_size - minSize();
@@ -259,7 +254,6 @@ void WidgetFrame::generateRenderData()
   m_renderData->indexBuffer()->unlock(indexData - 1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets size. */
 void WidgetFrame::setSize(const Vector2f& size)
 {
   if (m_size != size)
@@ -272,7 +266,6 @@ void WidgetFrame::setSize(const Vector2f& size)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns minimal size (in pixels). */
 Vector2f WidgetFrame::minSize() const
 {
   Vector2f frameSize(0, 0);

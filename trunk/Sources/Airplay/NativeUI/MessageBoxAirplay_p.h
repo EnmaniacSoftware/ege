@@ -23,9 +23,9 @@ class MessageBoxPrivate
 
   public:
 
-    /* Constructs object. */
+    /*! Constructs object. */
     EGEResult construct();
-    /* Shows message box. */
+    /*! Shows message box. */
     s32 show();
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

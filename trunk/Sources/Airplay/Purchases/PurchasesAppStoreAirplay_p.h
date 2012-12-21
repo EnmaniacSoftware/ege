@@ -25,16 +25,16 @@ class PurchasesPrivate
 
   public:
 
-    /* Constructs object. */
+    /*! Constructs object. */
     EGEResult construct();
-    /* Purchases the given product. */
+    /*! Purchases the given product. */
     EGEResult purchase(const String& product);
 
   private:
 
-    /* Product information callback. */
+    /*! Product information callback. */
     static void ProductInfoCallback(s3eProductInformation* productInfo, void* userData);
-    /* Transaction update callback. */
+    /*! Transaction update callback. */
     static void TransactionUpdateCallback(s3ePaymentTransaction* transaction, void* userData);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

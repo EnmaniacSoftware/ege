@@ -30,7 +30,6 @@ PhysicsJointPulley::~PhysicsJointPulley()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns length of segment attached to body A. */
 EGE::float32 PhysicsJointPulley::lengthA() const
 {
   EGE_ASSERT(NULL != p_func());
@@ -43,7 +42,6 @@ EGE::float32 PhysicsJointPulley::lengthA() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns length of segment attached to body B. */
 EGE::float32 PhysicsJointPulley::lengthB() const
 {
   EGE_ASSERT(NULL != p_func());
@@ -56,7 +54,6 @@ EGE::float32 PhysicsJointPulley::lengthB() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool PhysicsJointPulley::isValid() const
 {
   return (NULL != m_p) && m_p->isValid();

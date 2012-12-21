@@ -25,17 +25,17 @@ class PhysicsJointPulleyPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(PhysicsJointPulley)
 
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     bool isValid() const;
-    /* Returns length of segment attached to body A. */
+    /*! Returns length of segment attached to body A. */
     float32 lengthA() const;
-    /* Returns length of segment attached to body B. */
+    /*! Returns length of segment attached to body B. */
     float32 lengthB() const;
 
   private:
 
     /*! Returns pointer to Box2D physics manager. */
-    inline PhysicsManagerPrivate* manager() const { return m_managerPrivate; }
+    PhysicsManagerPrivate* manager() const { return m_managerPrivate; }
 
   private:
 

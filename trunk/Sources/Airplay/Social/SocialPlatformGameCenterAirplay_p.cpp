@@ -21,7 +21,6 @@ SocialPlatformPrivate::~SocialPlatformPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
 EGEResult SocialPlatformPrivate::construct()
 {
   // check if supported
@@ -34,7 +33,6 @@ EGEResult SocialPlatformPrivate::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts authentication. */
 EGEResult SocialPlatformPrivate::startAuthentication()
 {
   // check if supported
@@ -56,7 +54,6 @@ EGEResult SocialPlatformPrivate::startAuthentication()
   return (S3E_RESULT_SUCCESS == s3eIOSGameCenterAuthenticate(AuthenticationCallback, NULL)) ? EGE_SUCCESS : EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Authentication callback. */
 void SocialPlatformPrivate::AuthenticationCallback(s3eIOSGameCenterError* error, void* userData)
 {
   EGEResult result = EGE_ERROR;
@@ -77,7 +74,6 @@ void SocialPlatformPrivate::AuthenticationCallback(s3eIOSGameCenterError* error,
   emit l_instance->d_func()->authenticated(result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads achievements. */
 EGEResult SocialPlatformPrivate::loadAchievements()
 {
   // check if supported
@@ -91,7 +87,6 @@ EGEResult SocialPlatformPrivate::loadAchievements()
   return (S3E_RESULT_SUCCESS == s3eIOSGameCenterLoadAchievements(LoadAchievementsCallback)) ? EGE_SUCCESS : EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Achievement list load callback. */
 void SocialPlatformPrivate::LoadAchievementsCallback(s3eIOSGameCenterAchievementList* list)
 {
   EGEResult result = EGE_ERROR;
@@ -121,7 +116,6 @@ void SocialPlatformPrivate::LoadAchievementsCallback(s3eIOSGameCenterAchievement
   emit l_instance->d_func()->achievementsLoaded(result, achievementsList);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Save achievements. */
 EGEResult SocialPlatformPrivate::saveAchievements(const AchievementDataList& achievements)
 {
   // check if supported
@@ -140,7 +134,6 @@ EGEResult SocialPlatformPrivate::saveAchievements(const AchievementDataList& ach
   return ((m_pendingAchievementSaveList.size() == achievements.size()) && ! achievements.empty()) ? saveNextAchievement() : EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Saves next achievement from first session. */
 EGEResult SocialPlatformPrivate::saveNextAchievement()
 {
   AchievementData achievementData = m_pendingAchievementSaveList.front();
@@ -153,7 +146,6 @@ EGEResult SocialPlatformPrivate::saveNextAchievement()
   return (S3E_RESULT_SUCCESS == result) ? EGE_SUCCESS : EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Achievement save callback. */
 void SocialPlatformPrivate::AchievementSaveCallback(s3eIOSGameCenterError* error)
 {
   EGEResult result = EGE_ERROR;
@@ -196,7 +188,6 @@ void SocialPlatformPrivate::AchievementSaveCallback(s3eIOSGameCenterError* error
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Save score. */
 EGEResult SocialPlatformPrivate::saveScore(const String& scoreTable, s32 score)
 {
   // check if supported
@@ -211,7 +202,6 @@ EGEResult SocialPlatformPrivate::saveScore(const String& scoreTable, s32 score)
   return (S3E_RESULT_SUCCESS == result) ? EGE_SUCCESS : EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Score save callback. */
 void SocialPlatformPrivate::ScoreSaveCallback(s3eIOSGameCenterError* error)
 {
   EGEResult result = EGE_ERROR;
@@ -226,7 +216,6 @@ void SocialPlatformPrivate::ScoreSaveCallback(s3eIOSGameCenterError* error)
   emit l_instance->d_func()->scoreSaved(result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Shows scores. */
 EGEResult SocialPlatformPrivate::showScores(const String& scoreTable)
 {
   s3eResult result = s3eIOSGameCenterLeaderboardShowGUI(scoreTable.toAscii(), S3E_IOSGAMECENTER_PLAYER_SCOPE_ALL_TIME);

@@ -23,20 +23,20 @@ class WaitCondition : public Object
 
   public:
 
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     bool isValid() const;
 
-    /* Releases the locked mutex and waits on the wait condition. 
-     * @note The mutex must be initially locked by the calling thread. If mutex is not in a locked state, this function returns immediately.
-     * @note Raw pointer is used here so Mutex referece counter is not increased as this will block.
+    /*! Releases the locked mutex and waits on the wait condition. 
+     *  @note The mutex must be initially locked by the calling thread. If mutex is not in a locked state, this function returns immediately.
+     *  @note Raw pointer is used here so Mutex referece counter is not increased as this will block.
      */
     bool wait(Mutex* mutex);
-    /* Wakes one thread waiting on the wait condition. 
-     * @note The thread that is woken up depends on the operating system's scheduling policies, and cannot be controlled or predicted.
+    /*! Wakes one thread waiting on the wait condition. 
+     *  @note The thread that is woken up depends on the operating system's scheduling policies, and cannot be controlled or predicted.
      */
     void wakeOne();
-    /* Wakes all threads waiting on the wait condition. 
-     * @note The order in which the threads are woken up depends on the operating system's scheduling policies and cannot be controlled or predicted.
+    /*! Wakes all threads waiting on the wait condition. 
+     *  @note The order in which the threads are woken up depends on the operating system's scheduling policies and cannot be controlled or predicted.
      */
     void wakeAll();
 
@@ -44,8 +44,8 @@ class WaitCondition : public Object
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(WaitCondition);
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 EGE_NAMESPACE_END
 
 #endif // EGE_CORE_WAITCONDITION_H

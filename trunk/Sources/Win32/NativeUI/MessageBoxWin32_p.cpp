@@ -20,13 +20,11 @@ MessageBoxPrivate::~MessageBoxPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
 EGEResult MessageBoxPrivate::construct()
 {
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Shows message box. */
 s32 MessageBoxPrivate::show()
 {
   int result = MessageBoxW(NULL, d_func()->m_content.data(), d_func()->m_title.data(), 0);

@@ -48,14 +48,12 @@ String::~String()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts self to lower-case. */
 String& String::toLower()
 {
   std::transform(begin(), end(), begin(), std::tolower);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts self to upper-case. */
 String& String::toUpper()
 {
   std::transform(begin(), end(), begin(), std::toupper);
@@ -90,13 +88,11 @@ String& String::operator+=(const String& string)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns ASCII string. */
 const char* String::toAscii() const
 {
   return c_str();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to integer. If error is valid, it holds TRUE if error occured during the conversion. */
 s32 String::toInt(bool* error) const
 {
   if (empty())
@@ -114,7 +110,6 @@ s32 String::toInt(bool* error) const
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to 64-bit integer. If error is valid, it holds TRUE if error occured during the conversion. */
 s64 String::toInt64(bool* error) const
 {
   if (empty())
@@ -132,7 +127,6 @@ s64 String::toInt64(bool* error) const
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to boolean. If error is valid, it holds TRUE if error occured during the conversion. */
 bool String::toBool(bool* error) const
 {
   if (empty())
@@ -154,7 +148,6 @@ bool String::toBool(bool* error) const
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to float. If error is valid, it holds TRUE if error occured during the conversion. */
 float32 String::toFloat(bool* error) const
 {
   if (empty())
@@ -181,7 +174,6 @@ float32 String::toFloat(bool* error) const
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates new object from given number. */
 String String::FromNumber(s32 value)
 {
   std::stringstream stream;
@@ -191,7 +183,6 @@ String String::FromNumber(s32 value)
   return stream.str();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates formatted text. */
 void String::format(const char* text, ...)
 {
   char buffer[WORK_BUFFER_LENGTH];
@@ -204,7 +195,6 @@ void String::format(const char* text, ...)
   *this = buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Create new object from formatted text. */
 String String::Format(const char* text, ...)
 {
   String out;
@@ -221,7 +211,6 @@ String String::Format(const char* text, ...)
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to color. If error is valid, it holds TRUE if error occured during the conversion. */
 Color String::toColor(bool* error) const
 {
   if (empty())
@@ -246,7 +235,6 @@ Color String::toColor(bool* error) const
   return color;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to rectangle of floats. If error is valid, it holds TRUE if error occured during the conversion. */
 Rectf String::toRectf(bool* error) const
 {
   if (empty())
@@ -268,7 +256,6 @@ Rectf String::toRectf(bool* error) const
   return rect;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to rectangle of integers. If error is valid, it holds TRUE if error occured during the conversion. */
 Recti String::toRecti(bool* error) const
 {
   if (empty())
@@ -290,7 +277,6 @@ Recti String::toRecti(bool* error) const
   return rect;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to 2D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
 Vector2f String::toVector2f(bool* error) const
 {
   if (empty())
@@ -312,7 +298,6 @@ Vector2f String::toVector2f(bool* error) const
   return vec;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to 2D vector of ints. If error is valid, it holds TRUE if error occured during the conversion. */
 Vector2i String::toVector2i(bool* error) const
 {
   if (empty())
@@ -334,7 +319,6 @@ Vector2i String::toVector2i(bool* error) const
   return vec;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to 3D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
 Vector3f String::toVector3f(bool* error) const
 {
   if (empty())
@@ -356,7 +340,6 @@ Vector3f String::toVector3f(bool* error) const
   return vec;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to 4D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
 Vector4f String::toVector4f(bool* error) const
 {
   if (empty())
@@ -378,7 +361,6 @@ Vector4f String::toVector4f(bool* error) const
   return vec;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to 4D vector of signed integers. If error is valid, it holds TRUE if error occured during the conversion. */
 Vector4i String::toVector4i(bool* error) const
 {
   if (empty())
@@ -400,7 +382,6 @@ Vector4i String::toVector4i(bool* error) const
   return vec;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if current string ends with given one. */
 bool String::endsWith(const String& string) const
 {
   // check if current string can contain the one to test
@@ -413,7 +394,6 @@ bool String::endsWith(const String& string) const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if current string starts with given one. */
 bool String::startsWith(const String& string) const
 {
   // check if current string can contain the one to test
@@ -426,7 +406,6 @@ bool String::startsWith(const String& string) const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Finds data about arg escape of the lowest sequence number. */
 String::ArgEscapeData String::findArgEscapes() const
 {
   ArgEscapeData data;
@@ -476,7 +455,6 @@ String::ArgEscapeData String::findArgEscapes() const
   return data;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Replaces args with given string. */
 void String::replaceArgEscapes(String& out, const String& arg, ArgEscapeData& argData) const
 {
   // preallocate enough space
@@ -531,7 +509,6 @@ void String::replaceArgEscapes(String& out, const String& arg, ArgEscapeData& ar
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns copy of the current string with lowest arg marker replaced with a given text. */
 String String::arg(const String& string) const
 {
   ArgEscapeData argEscapes = findArgEscapes();
@@ -542,7 +519,6 @@ String String::arg(const String& string) const
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns copy of the current string with lowest arg marker replaced with a given integer value. */
 String String::arg(s32 value) const
 {
   ArgEscapeData argEscapes = findArgEscapes();
@@ -553,7 +529,6 @@ String String::arg(s32 value) const
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Returns copy of the current string with lowest arg marker replaced with a given float value. */
 String String::arg(float32 value) const
 {
   ArgEscapeData argEscapes = findArgEscapes();
@@ -564,7 +539,6 @@ String String::arg(float32 value) const
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Splits the string into array of substrings whenever seperator occurs. */
 StringArray String::split(const String& separator) const
 {
   StringArray list;
@@ -598,7 +572,6 @@ StringArray String::split(const String& separator) const
   return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to alignments flag. If error is valid, it holds TRUE if error occured during the conversion. */
 Alignment String::toAlignment(bool* error) const
 {
   if (empty())
@@ -656,7 +629,6 @@ Alignment String::toAlignment(bool* error) const
   return alignment;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns a string that has whitespace removed from the start and the end. */
 String String::trimmed() const
 {
   // check if empty string
@@ -694,7 +666,6 @@ String String::trimmed() const
   return String(std::string(startPos, endPos + 1));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to angle. If error is valid, it holds TRUE if error occured during the conversion. */
 Angle String::toAngle(bool* error) const
 {
   Angle angle;
@@ -720,7 +691,6 @@ Angle String::toAngle(bool* error) const
   return angle;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts to time. If error is valid, it holds TRUE if error occured during the conversion. */
 Time String::toTime(bool* error) const
 {
   Time time;

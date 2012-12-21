@@ -15,14 +15,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Renderer;
 class SceneManager;
-
 EGE_DECLARE_SMART_CLASS(SceneNodeObject, PSceneNodeObject)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListener>
 {
   public:
@@ -33,19 +29,19 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Updates node. */
+    /*! Updates node. */
     void update(const Time& time);
 
-    /* Creates child scene node with a given name and attaches it. */
+    /*! Creates child scene node with a given name and attaches it. */
     SceneNode* createChildSceneNode(const String& name, EGEPhysics::ComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
 
-    /* Attaches new object to node. */
+    /*! Attaches new object to node. */
     bool attachObject(PSceneNodeObject object);
-    /* Returns attached object with a given name. Returns NULL if no such object exists. */
+    /*! Returns attached object with a given name. Returns NULL if no such object exists. */
     PSceneNodeObject attachedObject(const String& name) const;
-    /* Removes scene object of a given name. */
+    /*! Removes scene object of a given name. */
     void removeObject(const String& name);
-    /* Removes all objects. */
+    /*! Removes all objects. */
     void removeAllAttachedObjects();
    
 
@@ -80,14 +76,19 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
 
     //// matrix related methods
 
-    bool addForRendering(PCamera& pCamera, Renderer* pcRenderer) const;                              // finds visible objects from given camera point of view, returns TRUE if successful
+    /*! Finds visible objects from given camera point of view.
+     *  @param  camera    Camera from which point of view rendering is being done.
+     *  @param  renderer  Renderer accepting the object to show.
+     *  @return TRUE if successful.
+     */
+    bool addForRendering(PCamera& camera, Renderer* renderer) const;
 
   private:
 
-    /* Node override. Creates child node with a given name. MUST be overriden by subclass. */
+    /*! Node override. Creates child node with a given name. MUST be overriden by subclass. */
     virtual Node* createChildNodeImpl(const String& name, EGEPhysics::ComponentType componentType) override;
     /*! Returns pointer to scene manager. */
-    inline SceneManager* sceneManager() const { return m_manager; }
+    SceneManager* sceneManager() const { return m_manager; }
 
   private:
 
@@ -131,7 +132,6 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
     //void notifyTransformChanged( void );                                              // notifies children nodes and attached object about our transformation change
     //void notifyDestroyed( void );                                                     // notifies attached objects that node is being destroyed
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

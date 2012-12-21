@@ -16,19 +16,16 @@ RandomGeneratorPrivate::~RandomGeneratorPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets random seed. */
 void RandomGeneratorPrivate::setSeed(u32 seed)
 {
   srand(seed);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns randomly generated integer. */
 s32 RandomGeneratorPrivate::rand()
 {
   return ::rand();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns randomly generated floating value from given interval. */
 float32 RandomGeneratorPrivate::rand(float32 min, float32 max)
 {
   // generate value from [0-1]

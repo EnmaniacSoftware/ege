@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_PUSHBUTTON_H
-#define EGE_CORE_PUSHBUTTON_H
+#ifndef EGE_CORE_UI_PUSHBUTTON_H
+#define EGE_CORE_UI_PUSHBUTTON_H
 
 /** Push buttons are specialization of Widgets.
  */
@@ -18,7 +18,6 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Renderer;
-
 EGE_DECLARE_SMART_CLASS(PushButton, PPushButton)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class PushButton : public Widget
@@ -38,41 +37,41 @@ class PushButton : public Widget
 
   public:
 
-    /* Creates instance of widget. This method is a registration method for factory. */
+    /*! Creates instance of widget. This method is a registration method for factory. */
     static PWidget Create(Application* app, const String& name);
 
   public:
 
-    /* Widget override. Returns TRUE if object is valid. */
+    /*! @see Widget::isValid. */
     bool isValid() const;
-    /* Widget override. Updates overlay. */
+    /*! @see Widget::update. */
     void update(const Time& time) override;
-    /* Widget override. Renders button. */
+    /*! @see Widget::addForRendering. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
-    /* Widget override. Sets size. */
+    /*! @see Widget::setSize. */
     void setSize(const Vector2f& size) override;
-    /* Sets alignment. */
+    /*! Sets alignment. */
     void setAlignment(Alignment align);
-    /* Pointer event processor. */
+    /*! Pointer event processor. */
     void pointerEvent(PPointerData data);
     /*! Returns physics component. */
     PhysicsComponent& physics() { return m_physics; }
     /*! Returns current alignment. */
     const Alignment& alignment() const { return m_alignment; }
-    /* Sets content text. */
+    /*! Sets content text. */
     void setText(const Text& text);
-    /* Set font. */
+    /*! Set font. */
     void setFont(PFont font);
 
   private:
 
-    /* Widget override. Generates render data. */
+    /*! @see Widget::generateRenderData. */
     void generateRenderData() override;
-    /* Widget override. Returns TRUE if widget is frameless. */
+    /*! @see Widget::isFrameless. */
     bool isFrameless() const override;
-    /* Widget override. Initializes widget from dictionary. */
+    /*! @see Widget::initialize. */
     bool initialize(const Dictionary& params) override;
-    /* Widget override. Detrmines widget's content size (in pixels). */
+    /*! @see Widget::contentSize. */
     Vector2f contentSize();
 
   private:
@@ -90,4 +89,4 @@ class PushButton : public Widget
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_PUSHBUTTON_H
+#endif // EGE_CORE_UI_PUSHBUTTON_H

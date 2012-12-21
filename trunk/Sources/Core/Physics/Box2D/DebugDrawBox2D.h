@@ -21,25 +21,25 @@ class DebugDraw : public b2DebugDraw
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* b2DebugDraw override. */
+    /*! @see b2DebugDraw::DrawPolygon. */
 	  void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) override;
-    /* b2DebugDraw override. */
+    /*! @see b2DebugDraw::DrawSolidPolygon. */
 	  void DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) override;
-    /* b2DebugDraw override. */
+    /*! @see b2DebugDraw::DrawCircle. */
 	  void DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color) override;
-    /* b2DebugDraw override. */
+    /*! @see b2DebugDraw::DrawSolidCircle. */
 	  void DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color) override;
-    /* b2DebugDraw override. */
+    /*! @see b2DebugDraw::DrawSegment. */
 	  void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) override;
-    /* b2DebugDraw override. */
+    /*! @see b2DebugDraw::DrawTransform. */
 	  void DrawTransform(const b2Transform& xf) override;
 
   private:
 
     /*! Reutns pointer to application. */
-    inline Application* app() const { return m_app; }
+    Application* app() const { return m_app; }
     /*! Returns pointer to Box2D physics manager. */
-    inline PhysicsManagerPrivate* manager() const { return m_managerPrivate; }
+    PhysicsManagerPrivate* manager() const { return m_managerPrivate; }
 
   private:
 

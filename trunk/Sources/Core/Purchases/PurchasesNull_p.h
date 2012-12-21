@@ -23,9 +23,9 @@ class PurchasesPrivate
 
   public:
 
-    /* Constructs object. */
+    /*! Constructs object. */
     EGEResult construct();
-    /* Purchases the given product. */
+    /*! Purchases the given product. */
     EGEResult purchase(const String& product);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

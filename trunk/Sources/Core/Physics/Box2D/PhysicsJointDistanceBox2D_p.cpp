@@ -42,7 +42,6 @@ PhysicsJointDistancePrivate::~PhysicsJointDistancePrivate()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets natural length. */
 void PhysicsJointDistancePrivate::setLength(EGE::float32 length)
 {
   if (m_joint)
@@ -53,7 +52,6 @@ void PhysicsJointDistancePrivate::setLength(EGE::float32 length)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns natural length. */
 float32 PhysicsJointDistancePrivate::length() const
 {
   if (m_joint)
@@ -66,16 +64,10 @@ float32 PhysicsJointDistancePrivate::length() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool PhysicsJointDistancePrivate::isValid() const
 {
   return NULL != m_joint;
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Sets damping ratio.
-*
-*  @param   ration Damping ratio to set. 0 - no damping, 1 - critical damping.
-*/
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PhysicsJointDistancePrivate::setDampingRatio(float32 ratio)
 {
@@ -85,7 +77,6 @@ void PhysicsJointDistancePrivate::setDampingRatio(float32 ratio)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current damping ratio. */
 float32 PhysicsJointDistancePrivate::dampingRatio() const
 {
   if (m_joint)
@@ -96,9 +87,6 @@ float32 PhysicsJointDistancePrivate::dampingRatio() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Sets mass-spring-damper frequency (in Hz). 
-*  @note  This describes the speed of response of the system.
-*/
 void PhysicsJointDistancePrivate::setFrequency(float32 frequencyHz)
 {
   if (m_joint)
@@ -107,7 +95,6 @@ void PhysicsJointDistancePrivate::setFrequency(float32 frequencyHz)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current mass-spring-damper frequency (in Hz). */
 float32 PhysicsJointDistancePrivate::frequency() const
 {
   if (m_joint)

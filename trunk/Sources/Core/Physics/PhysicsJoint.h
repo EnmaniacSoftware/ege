@@ -19,9 +19,9 @@ class PhysicsJoint : public Object
     EGE_DECLARE_DELETE_OPERATORS
   
     /*! Returns first body attached to joint. */
-    inline PPhysicsComponent bodyA() const { return m_bodyA; }
+    PPhysicsComponent bodyA() const { return m_bodyA; }
     /*! Returns second body attached to joint. */
-    inline PPhysicsComponent bodyB() const { return m_bodyB; }
+    PPhysicsComponent bodyB() const { return m_bodyB; }
 
   protected:
 

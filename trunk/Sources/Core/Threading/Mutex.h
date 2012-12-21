@@ -8,11 +8,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(Mutex, PMutex)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Mutex : public Object
 {
   /*! For accessing private implementation. */
@@ -28,12 +25,12 @@ class Mutex : public Object
 
   public:
 
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     bool isValid() const;
 
-    /* Locks mutex. */
+    /*! Locks mutex. */
     bool lock();
-    /* Unlocks mutex. */
+    /*! Unlocks mutex. */
     bool unlock();
 
   private:
@@ -43,7 +40,6 @@ class Mutex : public Object
     /*! Flag indicating wheter mutex if locked. For debugging purposes. */
     bool m_locked;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

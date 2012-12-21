@@ -57,9 +57,9 @@ class IResource : public Object
 
   protected:
 
-    /* Returns pointer to owning group. */
+    /*! Returns pointer to owning group. */
     ResourceGroup* group() const;
-    /* Returns path to resource. */
+    /*! Returns path to resource. */
     const String& path() const;
 
   protected:

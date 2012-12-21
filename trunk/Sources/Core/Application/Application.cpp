@@ -71,10 +71,16 @@ EGEResult Application::initialize(const Dictionary& params)
   
   // create desktop services
   m_desktopServices = ege_new DesktopServices();
-  if (NULL == m_desktopServices || !m_desktopServices->isValid())
+  if (NULL == m_desktopServices)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
+  }
+
+  if (EGE_SUCCESS != (result = m_desktopServices->construct()))
+  {
+    // error!
+    return result;
   }
 
   // create event manager
@@ -115,19 +121,31 @@ EGEResult Application::initialize(const Dictionary& params)
   }
 
   // create physics manager
-  m_physicsManager = ege_new PhysicsManager(this, params);
-  if (NULL == m_physicsManager || !m_physicsManager->isValid())
+  m_physicsManager = ege_new PhysicsManager(this);
+  if (NULL == m_physicsManager)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
   }
 
+  if (EGE_SUCCESS != (result = m_physicsManager->construct(params)))
+  {
+    // error!
+    return result;
+  }
+
   // create scene manager
   m_sceneManager = ege_new SceneManager(this);
-  if (NULL == m_sceneManager || !m_sceneManager->isValid())
+  if (NULL == m_sceneManager)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
+  }
+
+  if (EGE_SUCCESS != (result = m_sceneManager->construct()))
+  {
+    // error!
+    return result;
   }
 
   // create overlay manager
@@ -136,6 +154,12 @@ EGEResult Application::initialize(const Dictionary& params)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
+  }
+
+  if (EGE_SUCCESS != (result = m_overlayManager->construct()))
+  {
+    // error!
+    return result;
   }
 
   // create application controller
@@ -172,6 +196,12 @@ EGEResult Application::initialize(const Dictionary& params)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
+  }
+
+  if (EGE_SUCCESS != (result = m_screenManager->construct()))
+  {
+    // error!
+    return result;
   }
 
   // create audio manager

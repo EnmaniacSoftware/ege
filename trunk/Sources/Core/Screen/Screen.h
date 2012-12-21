@@ -27,33 +27,31 @@ class Screen : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Constructs object. */
+    /*! Constructs object. */
     virtual EGEResult construct();
-    /* Updates object. 
-       @param time Time increment for which update should be performed.
-       @return  Returns TRUE to consume the event. When consumed no underlying screens will be updated. 
+    /*! Updates object. 
+     *  @param time Time increment for which update should be performed.
+     *  @return  Returns TRUE to consume the event. When consumed no underlying screens will be updated. 
      */
     virtual bool update(const Time& time);
-    /* Pointer event. */
+    /*! Pointer event. */
     virtual void pointerEvent(PPointerData data);
-    /* Renders object. */
+    /*! Renders object. */
     virtual void render(const Viewport* viewport, Renderer* renderer);
-    /* Screen is about to be shown for the first time. */
+    /*! Screen is about to be shown for the first time. */
     virtual void enter();
-    /* Screen is about to be hidden. */
+    /*! Screen is about to be hidden. */
     virtual void leave();
-    /* Screen is about to be covered by another one. */
+    /*! Screen is about to be covered by another one. */
     virtual void cover();
-    /* Screen is about to be uncovered. */
+    /*! Screen is about to be uncovered. */
     virtual void uncover();
-    /*! Returns TRUE if screen is partially covered by another one. */
-  //  inline bool isCovered() const { return m_covered; }
     /*! Returns TRUE if screen has transparent regions. */
     virtual bool hasTransparency() const = 0;
-    /* Enables/disables screen. */
+    /*! Enables/disables screen. */
     void setEnable(bool enable);
     /*! Returns TRUE if screen is enabled. */
-    inline bool isEnabled() const { return !m_disabled; }
+    bool isEnabled() const { return !m_disabled; }
     /*! Returns name. */
     const String& name() const { return m_name; }
 
@@ -63,8 +61,6 @@ class Screen : public Object
     String m_name;
     /*! Disabled flag. */
     bool m_disabled;
-    /*! Cover flag. */
-    //bool m_covered;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -25,7 +25,6 @@ PhysicsJointDistance::~PhysicsJointDistance()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets natural length. */
 void PhysicsJointDistance::setLength(EGE::float32 length)
 {
   EGE_ASSERT(NULL != p_func());
@@ -36,7 +35,6 @@ void PhysicsJointDistance::setLength(EGE::float32 length)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns natural length. */
 EGE::float32 PhysicsJointDistance::length() const
 {
   EGE_ASSERT(NULL != p_func());
@@ -49,16 +47,10 @@ EGE::float32 PhysicsJointDistance::length() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool PhysicsJointDistance::isValid() const
 {
   return (NULL != m_p) && m_p->isValid();
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Sets damping ratio.
-*
-*  @param   ration Damping ratio to set. 0 - no damping, 1 - critical damping.
-*/
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PhysicsJointDistance::setDampingRatio(EGE::float32 ratio)
 {
@@ -68,7 +60,6 @@ void PhysicsJointDistance::setDampingRatio(EGE::float32 ratio)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current damping ratio. */
 EGE::float32 PhysicsJointDistance::dampingRatio() const
 {
   if (isValid())
@@ -79,9 +70,6 @@ EGE::float32 PhysicsJointDistance::dampingRatio() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Sets mass-spring-damper frequency (in Hz). 
-*  @note  This describes the speed of response of the system.
-*/
 void PhysicsJointDistance::setFrequency(EGE::float32 frequencyHz)
 {
   if (isValid())
@@ -90,7 +78,6 @@ void PhysicsJointDistance::setFrequency(EGE::float32 frequencyHz)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current mass-spring-damper frequency (in Hz). */
 EGE::float32 PhysicsJointDistance::frequency() const
 {
   if (isValid())

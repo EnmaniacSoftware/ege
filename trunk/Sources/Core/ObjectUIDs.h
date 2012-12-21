@@ -6,7 +6,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #define EGE_CORE_OBJECT_UID_BASE            (0)
 #define EGE_CORE_AUDIO_OBJECT_UID_BASE      (EGE_CORE_OBJECT_UID_BASE + 0x100)
 #define EGE_CORE_PHYSICS_OBJECT_UID_BASE    (EGE_CORE_OBJECT_UID_BASE + 0x200)
@@ -71,7 +70,6 @@ EGE_NAMESPACE_BEGIN
 #define EGE_OBJECT_UID_THREAD                 ((EGE_CORE_THREADING_OBJECT_UID_BASE) + 0)
 #define EGE_OBJECT_UID_MUTEX                  ((EGE_CORE_THREADING_OBJECT_UID_BASE) + 1)
 #define EGE_OBJECT_UID_WAIT_CONDITION         ((EGE_CORE_THREADING_OBJECT_UID_BASE) + 2)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

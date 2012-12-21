@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_HORIZONTAL_SCROLLBAR_H
-#define EGE_CORE_HORIZONTAL_SCROLLBAR_H
+#ifndef EGE_CORE_UI_HORIZONTAL_SCROLLBAR_H
+#define EGE_CORE_UI_HORIZONTAL_SCROLLBAR_H
 
 /** Class representing horizontal scrollbar widget.
  */
@@ -23,16 +23,16 @@ class UIHorizontalScrollbar : public UIAbstractScrollbar
 
   public:
 
-    /* Creates instance of widget. This method is a registration method for factory. */
+    /*! Creates instance of widget. This method is a registration method for factory. */
     static PWidget Create(Application* app, const String& name);
     
   private:
 
-    /* UIAbstractScrollbar override. Updates render data. */
+    /* @see UIAbstractScrollbar::updateRenderData. */
     void updateRenderData() override;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_HORIZONTAL_SCROLLBAR_H
+#endif // EGE_CORE_UI_HORIZONTAL_SCROLLBAR_H

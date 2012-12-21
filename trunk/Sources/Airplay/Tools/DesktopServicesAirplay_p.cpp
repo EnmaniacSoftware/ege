@@ -15,7 +15,11 @@ DesktopServicesPrivate::~DesktopServicesPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Opens given URL in Web browser. */
+EGEResult DesktopServicesPrivate::construct()
+{
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool DesktopServicesPrivate::openUrl(const String& url)
 {
   return S3E_RESULT_SUCCESS == s3eOSExecExecute(url.toAscii(), S3E_FALSE);

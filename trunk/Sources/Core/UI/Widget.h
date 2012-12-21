@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_WIDGET_H
-#define EGE_CORE_WIDGET_H
+#ifndef EGE_CORE_UI_WIDGET_H
+#define EGE_CORE_UI_WIDGET_H
 
 /** Widget class represents a base for all kind of widgets.
  */
@@ -38,70 +38,70 @@ class Widget : public Object
 
   public:
 
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     virtual bool isValid() const;
-    /* Initializes widget from dictionary. */
+    /*! Initializes widget from dictionary. */
     virtual bool initialize(const Dictionary& params);
-    /* Updates overlay. */
+    /*! Updates overlay. */
     virtual void update(const Time& time);
-    /* Renders widget. */
+    /*! Renders widget. */
     virtual void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
-    /* Pointer event processor. */
+    /*! Pointer event processor. */
     virtual void pointerEvent(PPointerData data);
     /*! Returns name. */
     const String& name() const { return m_name; }
-    /* Sets name. */
+    /*! Sets name. */
     void setName(const String& name);
     /*! Returns physics component. */
-    inline PhysicsComponent& physics() { return m_physics; }
-    /* Sets visibility. */
+    PhysicsComponent& physics() { return m_physics; }
+    /*! Sets visibility. */
     void setVisible(bool set);
     /*! Returns visibility flag. */
-    inline bool isVisible() const { return m_visible; }
-    /* Sets material. */
+    bool isVisible() const { return m_visible; }
+    /*! Sets material. */
     void setMaterial(const PMaterial& material);
     /*! Returns widget frame. */
-    inline WidgetFrame* widgetFrame() const { return m_widgetFrame; }
+    WidgetFrame* widgetFrame() const { return m_widgetFrame; }
     
-    /* Adds child. */
+    /*! Adds child. */
     EGEResult addChild(PWidget widget);
-    /* Removes given child. */
+    /*! Removes given child. */
     void removeChild(PWidget widget);
-    /* Removes child with a given name. */
+    /*! Removes child with a given name. */
     void removeChild(const String& name);
-    /* Removes all children. */
+    /*! Removes all children. */
     void removeAllChildren();
-    /* Returns child with a given name. */
+    /*! Returns child with a given name. */
     PWidget child(const String& name) const;
 
     /*! Returns pointer to parent widget. NULL if no parent is set. */
-    inline Widget* parent() const { return m_parent; }
+    Widget* parent() const { return m_parent; }
 
-    /* Detrmines widget's content size (in pixels). */
+    /*! Detrmines widget's content size (in pixels). */
     virtual Vector2f contentSize();
-    /* Sets size. */
+    /*! Sets size. */
     virtual void setSize(const Vector2f& size);
-    /* Determines size of widget (in pixels). */
+    /*! Determines size of widget (in pixels). */
     virtual Vector2f size() const;
-    /* Sets position. */
+    /*! Sets position. */
     void setPosition(const Vector4f& position);
 
-    /* Sets transparency level. */
+    /*! Sets transparency level. */
     virtual void setAlpha(float32 alpha);
 
-    /* Sets widget alignment. */
+    /*! Sets widget alignment. */
     void setAlignment(Alignment alignment);
     /*! Returns current widget alignment. */
-    inline Alignment alignment() const { return m_alignment; }
+    Alignment alignment() const { return m_alignment; }
 
   protected:
 
     Widget(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
-    /* Generates render data. */
+    /*! Generates render data. */
     virtual void generateRenderData();
-    /* Returns global transformation matrix. */
+    /*! Returns global transformation matrix. */
     const Matrix4f& globalTransformationMatrix() const;
-    /* Constructs object. */
+    /*! Constructs object. */
     virtual EGEResult construct();
 
   private:
@@ -111,7 +111,7 @@ class Widget : public Object
 
   private slots:
 
-    /* Slot called when own transformation has been changed. */
+    /*! Slot called when own transformation has been changed. */
     void onTransformationChanged();
 
   protected:
@@ -153,4 +153,4 @@ class Widget : public Object
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_WIDGET_H
+#endif // EGE_CORE_UI_WIDGET_H

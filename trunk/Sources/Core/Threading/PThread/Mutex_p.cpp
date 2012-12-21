@@ -16,13 +16,11 @@ MutexPrivate::~MutexPrivate()
   pthread_mutex_destroy(&m_mutex);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Locks mutex. */
 bool MutexPrivate::lock()
 {
   return 0 == pthread_mutex_lock(&m_mutex);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unlocks mutex. */
 bool MutexPrivate::unlock()
 {
   return 0 == pthread_mutex_unlock(&m_mutex);

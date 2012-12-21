@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_ABSTRACT_SCROLLBAR_H
-#define EGE_CORE_ABSTRACT_SCROLLBAR_H
+#ifndef EGE_CORE_UI_ABSTRACT_SCROLLBAR_H
+#define EGE_CORE_UI_ABSTRACT_SCROLLBAR_H
 
 /** Class representing abstract scrollbar widget.
  */
@@ -28,38 +28,38 @@ class UIAbstractScrollbar : public Widget
     
   public slots:
 
-    /* Sets current scroll offset to given value. */
+    /*! Sets current scroll offset to given value. */
     void setOffset(s32 offset);
-    /* Starts show sequence. */
+    /*! Starts show sequence. */
     void startShowing();
-    /* Starts hide sequence. */
+    /*! Starts hide sequence. */
     void startHiding();
 
   public:
 
-    /* Widget override. Updates object. */
+    /*! @see Widget::update. */
     void update(const Time& time) override;
-    /* Widget override. Renders object. */
+    /*! @see Widget::addForRendering. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
 
-    /* Sets range. */
+    /*! Sets range. */
     void setRange(s32 from, s32 to);
-    /* Sets page size. */
+    /*! Sets page size. */
     void setPageSize(s32 size);
     /*! Returns render data component. */
-    inline const PRenderComponent& renderData() const { return m_renderData; }
+    const PRenderComponent& renderData() const { return m_renderData; }
 
   protected:
 
     UIAbstractScrollbar(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
-    /* Widget override. Constructs object. */
+    /*! Widget override. Constructs object. */
     EGEResult construct() override;
 
   private:
 
-    /* Widget override. Returns TRUE if widget is frameless. */
+    /*! @see Widget::isFrameless. */
     bool isFrameless() const override;
-    /* Widget override. Initializes widget from dictionary. */
+    /*! @see Widget::initialize. */
     bool initialize(const Dictionary& params) override;
     /*! Updates render data. */
     virtual void updateRenderData() = 0;
@@ -100,4 +100,4 @@ class UIAbstractScrollbar : public Widget
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_ABSTRACT_SCROLLBAR_H
+#endif // EGE_CORE_UI_ABSTRACT_SCROLLBAR_H

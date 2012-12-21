@@ -21,7 +21,6 @@ UIScrollablePageView::~UIScrollablePageView()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of widget. This method is a registration method for factory. */
 PWidget UIScrollablePageView::Create(Application* app, const String& name)
 {
   // allocate object
@@ -39,7 +38,6 @@ PWidget UIScrollablePageView::Create(Application* app, const String& name)
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! UIScrollView override. Constructs object. */
 EGEResult UIScrollablePageView::construct()
 {
   EGEResult result;
@@ -68,7 +66,6 @@ EGEResult UIScrollablePageView::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Initializes widget from dictionary. */
 bool UIScrollablePageView::initialize(const Dictionary& params)
 {
   // initialize base
@@ -77,7 +74,6 @@ bool UIScrollablePageView::initialize(const Dictionary& params)
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! UIScrollView override. Renders object. */
 void UIScrollablePageView::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (!isVisible())
@@ -141,7 +137,6 @@ void UIScrollablePageView::addForRendering(Renderer* renderer, const Matrix4f& t
   UIScrollView::addForRendering(renderer, transform);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! UIScrollView override. Updates object. */
 void UIScrollablePageView::update(const Time& time)
 {
   // update objects
@@ -177,7 +172,6 @@ void UIScrollablePageView::update(const Time& time)
   UIScrollView::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! UIScrollView override. Pointer event processor. */
 void UIScrollablePageView::pointerEvent(PPointerData data)
 {
   if (!isVisible())
@@ -190,7 +184,6 @@ void UIScrollablePageView::pointerEvent(PPointerData data)
   UIScrollView::pointerEvent(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Enables/disables page indicator. */
 void UIScrollablePageView::setPageIndicatorEnabled(bool set)
 {
   if (m_pageIndicator->isVisible() != set)
@@ -199,13 +192,11 @@ void UIScrollablePageView::setPageIndicatorEnabled(bool set)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if page indicator is enabled. */
 bool UIScrollablePageView::isPageIndicatorEnabled() const
 {
   return m_pageIndicator->isVisible();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds object to a given page. */
 EGEResult UIScrollablePageView::addObject(PObject object, u32 pageIdx)
 {
   EGEResult result = EGE_ERROR_NOT_SUPPORTED;
@@ -233,7 +224,6 @@ EGEResult UIScrollablePageView::addObject(PObject object, u32 pageIdx)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes object. */
 void UIScrollablePageView::removeObject(PObject object)
 {
   // locate object
@@ -255,7 +245,6 @@ void UIScrollablePageView::removeObject(PObject object)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns object with a given name. */
 PObject UIScrollablePageView::object(const String& name) const
 {
   // locate object
@@ -299,9 +288,6 @@ PObject UIScrollablePageView::object(const String& name) const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns list of all objects for a given page. 
-    @param pageIdx Page index for which objects should be returned. If negative object from all pages will be returned.
- */
 UIScrollablePageView::ObjectsList UIScrollablePageView::objects(s32 pageIdx) const
 {
   ObjectsList list;
@@ -326,13 +312,11 @@ UIScrollablePageView::ObjectsList UIScrollablePageView::objects(s32 pageIdx) con
   return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes all objects. */
 void UIScrollablePageView::removeAllObjects()
 {
   m_objects.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets number of pages. */
 void UIScrollablePageView::setPageCount(s32 count)
 {
   if (count != m_pageIndicator->pageCount())
@@ -345,7 +329,6 @@ void UIScrollablePageView::setPageCount(s32 count)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets current page. Animates from current position if required. */
 void UIScrollablePageView::setPage(s32 page, bool animate)
 {
   // make sure its in range
@@ -359,20 +342,17 @@ void UIScrollablePageView::setPage(s32 page, bool animate)
   m_pageIndicator->setCurrentPage(page);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current page. */
 s32 UIScrollablePageView::page() const
 {
   return m_pageIndicator->page();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Recalculates content area. */
 void UIScrollablePageView::recalculateContentArea()
 {
   Vector2f contentSize(m_pageIndicator->pageCount() * size().x, size().y);
   setContentSize(contentSize);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! UIScrollView override. Slot called when size of widget changes. */
 void UIScrollablePageView::onSizeChanged(const Vector2f& size)
 {
   // set page indicator size
@@ -388,7 +368,6 @@ void UIScrollablePageView::onSizeChanged(const Vector2f& size)
   UIScrollView::onSizeChanged(size);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! UIScrollView override. Slot called when position of widget changes. */
 void UIScrollablePageView::onPositionChanged(const Vector4f& position)
 {
   // position page indicator
@@ -398,13 +377,11 @@ void UIScrollablePageView::onPositionChanged(const Vector4f& position)
   UIScrollView::onPositionChanged(position);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns page size. */
 Vector2f UIScrollablePageView::pageSize() const
 {
   return size();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! UIScrollView override. Ends move. */
 void UIScrollablePageView::endMove()
 {
   s32 page;
@@ -441,7 +418,6 @@ void UIScrollablePageView::endMove()
   m_pageIndicator->setCurrentPage(page);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! UIScrollView override. Sets base render priority. */
 void UIScrollablePageView::setBaseRenderPriority(s32 priority)
 {
   m_pageIndicator->setRenderPriority(priority + 1);
@@ -450,7 +426,6 @@ void UIScrollablePageView::setBaseRenderPriority(s32 priority)
   UIScrollView::setBaseRenderPriority(priority);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns page indicator. */
 PUIPageIndicator UIScrollablePageView::pageIndicator() const
 {
   return m_pageIndicator;

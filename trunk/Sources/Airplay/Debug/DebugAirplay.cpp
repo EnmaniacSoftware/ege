@@ -5,7 +5,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Performs assertion. */
 void Debug::Assert(const char* assertion, const char* file, int line)
 {
   EGE_UNUSED(file);
@@ -14,7 +13,6 @@ void Debug::Assert(const char* assertion, const char* file, int line)
   s3eDebugAssertShow(S3E_MESSAGE_CONTINUE_STOP_IGNORE, assertion);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Prints given c-string to output. */
 void Debug::Print(const char* text)
 {
   s3eDebugOutputString(text);

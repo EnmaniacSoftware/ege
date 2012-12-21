@@ -25,7 +25,7 @@ class PhysicsManagerPrivate
 {
   public:
 
-    PhysicsManagerPrivate(PhysicsManager* base, const Dictionary& params);
+    PhysicsManagerPrivate(PhysicsManager* base);
    ~PhysicsManagerPrivate();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -33,18 +33,18 @@ class PhysicsManagerPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(PhysicsManager)
 
-    /* Returns TRUE if manager is valid. */
-    bool isValid() const;
-    /* Updates manager. */
+    /*! Creates object. */
+    EGEResult construct(const Dictionary& params);
+    /*! Updates manager. */
     void update(const Time& time);
-    /* Renders data. */
+    /*! Renders data. */
     void render();
-    /* Sets gravity. */
+    /*! Sets gravity. */
     void setGravity(const Vector4f& gravity);
     /*! Returns world to simulation world scale coefficient. */
-    inline float32 worldToSimulationScaleFactor() const { return m_scale; }
+    float32 worldToSimulationScaleFactor() const { return m_scale; }
     /*! Returns simulation world to world scale coefficient. */
-    inline float32 simulationToWorldScaleFactor() const { return m_invScale; }
+    float32 simulationToWorldScaleFactor() const { return m_invScale; }
 
   private:
 

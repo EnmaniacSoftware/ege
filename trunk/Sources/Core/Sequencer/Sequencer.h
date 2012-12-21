@@ -59,31 +59,31 @@ class Sequencer : public Object
 
   public:
 
-    /* Starts sequencer. */
+    /*! Starts sequencer. */
     void start();
-    /* Updates sequencer. */
+    /*! Updates sequencer. */
     void update(const Time& time);
 
-    /* Sets frame duration. */
+    /*! Sets frame duration. */
     void setFrameDuration(const Time& time);
-    /* Sets frame data. */
+    /*! Sets frame data. */
     void setFrameData(const IntArray& frameIds);
-    /* Sets repeat flag. */
+    /*! Sets repeat flag. */
     void setRepeatable(bool set);
 
-    /* Returns given frame id. */
+    /*! Returns given frame id. */
     s32 frameId(s32 frameIndex) const;
-    /* Returns current frame index. */
-    inline s32 currentFrameIndex() const { return m_frameIndex; }
-    /* Returns number of frames. */
-    inline s32 frameCount() const { return static_cast<s32>(m_framesIds.size()); }
+    /*! Returns current frame index. */
+    s32 currentFrameIndex() const { return m_frameIndex; }
+    /*! Returns number of frames. */
+    s32 frameCount() const { return static_cast<s32>(m_framesIds.size()); }
 
-    /* Sets name. */
+    /*! Sets name. */
     void setName(const String& name);
     /*! Returns name. */
-    inline const String& name() const { return m_name; }
+    const String& name() const { return m_name; }
 
-    /* Returns normalized position between current and next frame. */
+    /*! Returns normalized position between current and next frame. */
     float32 normalizedFrameTime() const;
 
   private:

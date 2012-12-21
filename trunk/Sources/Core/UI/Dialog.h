@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_DIALOG_H
-#define EGE_CORE_DIALOG_H
+#ifndef EGE_CORE_UI_DIALOG_H
+#define EGE_CORE_UI_DIALOG_H
 
 /** Dialogs are specialization of Widgets. Dialogs typically have title and main content areas.
  */
@@ -16,7 +16,6 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Renderer;
-
 EGE_DECLARE_SMART_CLASS(Dialog, PDialog)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Dialog : public Widget
@@ -31,39 +30,39 @@ class Dialog : public Widget
 
   public:
 
-    /* Creates instance of widget. This method is a registration method for factory. */
+    /*! Creates instance of widget. This method is a registration method for factory. */
     static PWidget Create(Application* app, const String& name);
 
   public:
 
-    /* Widget override. Returns TRUE if object is valid. */
+    /*! @see Widget::isValid. */
     bool isValid() const;
-    /* Widget override. Updates overlay. */
+    /*! @see Widget::update. */
     void update(const Time& time) override;
-    /* Widget override. Renders dialog. */
+    /*! @see Widget::addForRendering. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
-    /* Pointer event processor. */
+    /*! @see Widget::setAlpha. */
+    void setAlpha(float32 alpha) override;
+    /*! Pointer event processor. */
     void pointerEvent(PPointerData data);
     /*! Returns physics component. */
     PhysicsComponent& physics() { return m_physics; }
-    /* Sets title text. */
+    /*! Sets title text. */
     void setTitle(const Text& title);
-    /* Sets content text. */
+    /*! Sets content text. */
     void setText(const Text& text);
-    /* Sets title font. */
+    /*! Sets title font. */
     void setTitleFont(PFont font);
-    /* Sets text font. */
+    /*! Sets text font. */
     void setTextFont(PFont font);
-    /* Widget override. Sets transparency level. */
-    void setAlpha(float32 alpha) override;
 
   private:
 
-    /* Widget override. Generates render data. */
+    /*! @see Widget::generateRenderData. */
     void generateRenderData() override;
-    /* Widget override. Returns TRUE if widget is frameless. */
+    /*! @see Widget::isFrameless. */
     bool isFrameless() const override;
-    /* Widget override. Initializes widget from dictionary. */
+    /*! @see Widget::initialize. */
     bool initialize(const Dictionary& params) override;
 
   private:
@@ -83,4 +82,4 @@ class Dialog : public Widget
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_DIALOG_H
+#endif // EGE_CORE_UI_DIALOG_H

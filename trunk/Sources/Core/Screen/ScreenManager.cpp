@@ -19,7 +19,11 @@ ScreenManager::~ScreenManager()
   ege_disconnect(app()->pointer(), eventSignal, this, ScreenManager::pointerEvent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates manager. */
+EGEResult ScreenManager::construct()
+{
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ScreenManager::update(const Time& time)
 {
   if (!m_screens.empty())
@@ -52,15 +56,6 @@ void ScreenManager::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Shows given screen adding it on top of the rest ones. 
- *  @note: new screen should be added (always) (to ensure other can query visibility correctly)
- *         current top screen should be COVERED (always)
- *         if new and top screen are BOTH transparent do nothing (visibility does not change)
- *         if new and top screens are BOTH opaque do nothing (visibility does not change)
- *         if new screen is transparent and top screen is opaque do nothing (visibility does not change)
- *         if new screen is opaque and top screen is transparent then cover all transparent ones going from top to bottom
- *         ENTER new
- */
 void ScreenManager::show(PScreen screen)
 {
   PScreen topScreen = top();
@@ -102,15 +97,6 @@ void ScreenManager::show(PScreen screen)
   screen->enter();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Hides current (top) screen. 
- *  @note: Current top screen should be LEAVED (always)
- *         Top screen should be removed (always)
- *         Below screen should always be ENTERED
- *         If popped and top screens are BOTH transparent do nothing (visibility does not change)
- *         If popped and top screens are BOTH opaque do nothing (visibility does not change)
- *         If popped screen is transparent and top screen is opaque do nothing (visibility does not change)
- *         If popped screen is opaque and top screen is transparent then cover all transparent ones going from top to bottom
- */
 void ScreenManager::hide()
 {
   PScreen topScreen = top();
@@ -154,7 +140,6 @@ void ScreenManager::hide()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Renders all screens. */
 void ScreenManager::render(Viewport* viewport, Renderer* renderer)
 {
   // go thru all screens from top to bottom
@@ -189,9 +174,6 @@ void ScreenManager::render(Viewport* viewport, Renderer* renderer)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes given screen from stack. 
-    @note This does not call leave on screen being removed.
- */
 void ScreenManager::remove(PScreen screen)
 {
   // check if it is top screen
@@ -215,7 +197,6 @@ void ScreenManager::remove(PScreen screen)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Pointer event receiver. */
 void ScreenManager::pointerEvent(PPointerData data)
 {
   // pass into top-level screen only
@@ -235,7 +216,6 @@ void ScreenManager::pointerEvent(PPointerData data)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns first screen with given name. */
 PScreen ScreenManager::screen(const String& name) const
 {
   // go thru all screens
@@ -253,13 +233,11 @@ PScreen ScreenManager::screen(const String& name) const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns top screen. */
 PScreen ScreenManager::top() const
 {
   return m_screens.empty() ? NULL : m_screens.back();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given screen is visible. */
 bool ScreenManager::isVisible(const PScreen& screen) const
 {
   bool visibility = true;

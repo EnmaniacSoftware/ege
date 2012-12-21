@@ -59,7 +59,6 @@ static EGEDevice::Device GetIOSDevice(const String& deviceId)
   return EGEDevice::DEVICE_GENERIC;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current Operating System ID. */
 EGEDevice::OS Device::GetOS()
 {
   int32 osId = s3eDeviceGetInt(S3E_DEVICE_OS);
@@ -72,7 +71,6 @@ EGEDevice::OS Device::GetOS()
   return EGEDevice::OS_UNKOWN;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current device ID. */
 EGEDevice::Device Device::GetDevice()
 {
   const String deviceName = s3eDeviceGetString(S3E_DEVICE_ID);
@@ -106,37 +104,31 @@ EGEDevice::Device Device::GetDevice()
   return deviceId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns physical surface width. */
 s32 Device::SurfaceWidth()
 {
   return s3eSurfaceGetInt(S3E_SURFACE_DEVICE_WIDTH);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns physical surface height. */
 s32 Device::SurfaceHeight()
 {
  return s3eSurfaceGetInt(S3E_SURFACE_DEVICE_HEIGHT);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns audio output device frequency (in Hz). */
 s32 Device::AudioOutputFrequency()
 {
   return s3eSoundGetInt(S3E_SOUND_OUTPUT_FREQ);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sleeps current thread for a specified number of miliseconds. */
 void Device::Sleep(u32 ms)
 {
   s3eDeviceYield(ms);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns free RAM memory (in bytes). */
 u64 Device::AvailableMemory()
 {
   return static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_FREE_RAM));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns total RAM memory (in bytes). */
 u64 Device::TotalMemory()
 {
   return static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_TOTAL_RAM));

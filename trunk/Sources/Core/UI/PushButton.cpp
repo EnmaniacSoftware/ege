@@ -35,26 +35,22 @@ PushButton::~PushButton()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of widget. This method is a registration method for factory. */
 PWidget PushButton::Create(Application* app, const String& name)
 {
   return ege_new PushButton(app, name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Returns TRUE if object is valid. */
 bool PushButton::isValid() const
 {
   return Widget::isValid() && (NULL != child("text"));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Updates overlay. */
 void PushButton::update(const Time& time)
 {
   // call base class
   Widget::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Renders dialog. */
 void PushButton::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (isVisible())
@@ -64,7 +60,6 @@ void PushButton::addForRendering(Renderer* renderer, const Matrix4f& transform)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Pointer event processor. */
 void PushButton::pointerEvent(PPointerData data)
 {
   const Matrix4f& globalMatrix = globalTransformationMatrix();
@@ -106,18 +101,15 @@ void PushButton::pointerEvent(PPointerData data)
   Widget::pointerEvent(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Generates render data. */
 void PushButton::generateRenderData()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Returns TRUE if widget is frameless. */
 bool PushButton::isFrameless() const
 {
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Initializes widget from dictionary. */
 bool PushButton::initialize(const Dictionary& params)
 {
   // initialize base
@@ -174,7 +166,6 @@ bool PushButton::initialize(const Dictionary& params)
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets content text. */
 void PushButton::setText(const Text& text)
 {
   PLabel label = child("text");
@@ -186,13 +177,11 @@ void PushButton::setText(const Text& text)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Detrmines widget's content size (in pixels). */
 Vector2f PushButton::contentSize()
 {
   return child("text")->contentSize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Set font. */
 void PushButton::setFont(PFont font)
 {
   if (font != m_font)
@@ -210,7 +199,6 @@ void PushButton::setFont(PFont font)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Sets size. */
 void PushButton::setSize(const Vector2f& size)
 {
   PLabel label = child("text");

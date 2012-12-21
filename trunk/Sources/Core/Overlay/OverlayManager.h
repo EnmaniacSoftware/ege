@@ -23,6 +23,8 @@ class OverlayManager : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+    /*! Creates object. */
+    EGEResult construct();
     /*! Renders all elements. */
     void render(Viewport* viewport, Renderer* renderer);
     /*! Updates manager. */

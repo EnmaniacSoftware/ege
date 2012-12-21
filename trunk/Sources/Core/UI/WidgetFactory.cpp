@@ -22,38 +22,31 @@ static BuiltInWidget l_widgetsToRegister[] = {  { "dialog", Dialog::Create },
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 WidgetFactory::WidgetFactory(Application* app) : Object(app)
 {
-  // register build-in widget types
-  for (u32 i = 0; i < sizeof (l_widgetsToRegister) / sizeof (BuiltInWidget); ++i)
-  {
-    const BuiltInWidget& widget = l_widgetsToRegister[i];
-
-    registerWidget(widget.name, widget.pfCreateFunc);
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 WidgetFactory::~WidgetFactory()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
-bool WidgetFactory::isValid() const
+EGEResult WidgetFactory::construct()
 {
-  // check if built-in widgets are registered correctly
+  EGEResult result;
+
+  // register build-in widget types
   for (u32 i = 0; i < sizeof (l_widgetsToRegister) / sizeof (BuiltInWidget); ++i)
   {
     const BuiltInWidget& widget = l_widgetsToRegister[i];
 
-    if (!isWidgetRegistered(widget.name))
+    if (EGE_SUCCESS != (result = registerWidget(widget.name, widget.pfCreateFunc)))
     {
       // error!
-      return false;
+      return result;
     }
   }
 
-  return true;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Registeres custom resource type. */
 EGEResult WidgetFactory::registerWidget(const String& typeName, egeWidgetCreateFunc createFunc)
 {
   EGEResult result = EGE_SUCCESS;
@@ -74,7 +67,6 @@ EGEResult WidgetFactory::registerWidget(const String& typeName, egeWidgetCreateF
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of particle emitter of the type given by name. */
 PWidget WidgetFactory::createWidget(const String& typeName, const String& name) const
 {
   PWidget widget;
@@ -90,7 +82,6 @@ PWidget WidgetFactory::createWidget(const String& typeName, const String& name) 
   return widget;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given widget type is registered. */
 bool WidgetFactory::isWidgetRegistered(const String& typeName) const
 {
   return m_registeredWidgets.contains(typeName);

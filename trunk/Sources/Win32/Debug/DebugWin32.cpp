@@ -4,7 +4,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Performs assertion. */
 void Debug::Assert(const char* assertion, const char* file, int line)
 {
 #ifdef EGE_FEATURE_DEBUG
@@ -13,7 +12,6 @@ void Debug::Assert(const char* assertion, const char* file, int line)
 #endif // EGE_FEATURE_DEBUG
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Prints given c-string to output. */
 void Debug::Print(const char* text)
 {
   OutputDebugStringA(text);

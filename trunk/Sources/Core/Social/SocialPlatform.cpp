@@ -2,15 +2,13 @@
 #include <EGEDebug.h>
 
 #ifdef EGE_SOCIAL_PLATFORM_GAMECENTER
-
-#ifdef EGE_PLATFORM_AIRPLAY
-#include "Airplay/Social/SocialPlatformGameCenterAirplay_p.h"
+  #ifdef EGE_PLATFORM_AIRPLAY
+    #include "Airplay/Social/SocialPlatformGameCenterAirplay_p.h"
+  #else
+    #error NO GAME CENTER IMPLEMENTATION AVAILABLE ?
+  #endif // EGE_PLATFORM_AIRPLAY
 #else
-#error NO GAME CENTER IMPLEMENTATION AVAILABLE ?
-#endif // EGE_PLATFORM_AIRPLAY
-
-#else
-#include "Core/Social/SocialPlatformNull_p.h"
+  #include "Core/Social/SocialPlatformNull_p.h"
 #endif // EGE_SOCIAL_PLATFORM_GAMECENTER
 
 EGE_NAMESPACE_BEGIN
@@ -30,7 +28,6 @@ SocialPlatform::~SocialPlatform()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
 EGEResult SocialPlatform::construct()
 {
   EGEResult result = EGE_SUCCESS;
@@ -53,59 +50,29 @@ EGEResult SocialPlatform::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts authentication. */
 EGEResult SocialPlatform::startAuthentication()
 {
-  if (NULL != m_p)
-  {
-    return m_p->startAuthentication();
-  }
-
-  return EGE_ERROR;
+  return p_func()->startAuthentication();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads achievements. */
 EGEResult SocialPlatform::loadAchievements()
 {
-  if (NULL != m_p)
-  {
-    return m_p->loadAchievements();
-  }
-
-  return EGE_ERROR;
+  return p_func()->loadAchievements();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Save achievements. */
 EGEResult SocialPlatform::saveAchievements(const AchievementDataList& achievements)
 {
-  if (NULL != m_p)
-  {
-    return m_p->saveAchievements(achievements);
-  }
-
-  return EGE_ERROR;
+  return p_func()->saveAchievements(achievements);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Save score. */
 EGEResult SocialPlatform::saveScore(const String& scoreTable, s32 score)
 {
-  if (NULL != m_p)
-  {
-    return m_p->saveScore(scoreTable, score);
-  }
-
-  return EGE_ERROR;
+  return p_func()->saveScore(scoreTable, score);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Shows scores. */
 EGEResult SocialPlatform::showScores(const String& scoreTable)
 {
-  if (NULL != m_p)
-  {
-    return m_p->showScores(scoreTable);
-  }
-
-  return EGE_ERROR;
+  return p_func()->showScores(scoreTable);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

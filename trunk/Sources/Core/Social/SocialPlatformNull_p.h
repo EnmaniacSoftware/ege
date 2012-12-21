@@ -23,17 +23,17 @@ class SocialPlatformPrivate
 
   public:
 
-    /* Constructs object. */
+    /*! Constructs object. */
     EGEResult construct();
-    /* Starts authentication. */
+    /*! Starts authentication. */
     EGEResult startAuthentication();
-    /* Loads achievements. */
+    /*! Loads achievements. */
     EGEResult loadAchievements();
-    /* Save achievements. */
+    /*! Save achievements. */
     EGEResult saveAchievements(const AchievementDataList& achievements);
-    /* Saves score. */
+    /*! Saves score. */
     EGEResult saveScore(const String& scoreTable, s32 score);
-    /* Shows scores. */
+    /*! Shows scores. */
     EGEResult showScores(const String& scoreTable);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

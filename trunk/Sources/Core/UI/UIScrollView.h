@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_SCROLLVIEW_H
-#define EGE_CORE_SCROLLVIEW_H
+#ifndef EGE_CORE_UI_SCROLLVIEW_H
+#define EGE_CORE_UI_SCROLLVIEW_H
 
 /** Base class supporting displaying of the content larger than size of a window. It is intended to be subclassed.
  */
@@ -30,58 +30,58 @@ class UIScrollView : public Widget
 
   public:
     
-    /* Sets content size. */
+    /*! Sets content size. */
     virtual void setContentSize(const Vector2f& size);
-    /* Returns current offset vector. */
+    /*! Returns current offset vector. */
     const Vector2f& offset() const;
-    /* Sets current offset vector. */
+    /*! Sets current offset vector. */
     void setOffset(const Vector2f& offset, bool animate);
-    /* Sets scroll direction. */
+    /*! Sets scroll direction. */
     void setDirection(Direction direction);
-    /* Sets deceleration rate. */
+    /*! Sets deceleration rate. */
     void setDecelerationRate(float32 rate);
-    /* Enables/disables scroll bars. */
+    /*! Enables/disables scroll bars. */
     void setScrollbarsEnabled(bool set);
-    /* Sets base render priority. */
+    /*! Sets base render priority. */
     virtual void setBaseRenderPriority(s32 priority);
 
   protected:
 
     UIScrollView(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
 
-    /* Widget override. Updates object. */
+    /*! @see Widget::update. */
     void update(const Time& time) override;
-    /* Widget override. Pointer event processor. */
+    /*! @see Widget::pointerEvent. */
     void pointerEvent(PPointerData data) override;
-    /* Widget override. Initializes widget from dictionary. */
+    /*! @see Widget::initialize. */
     bool initialize(const Dictionary& params) override;
-    /* Widget override. Constructs object. */
+    /*! @see Widget::construct. */
     EGEResult construct() override;
-    /* Widget override. Returns TRUE if widget is frameless. */
+    /*! @see Widget::isFrameless. */
     bool isFrameless() const override;
-    /* Widget override. Renders object. */
+    /*! @see Widget::addForRendering. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
 
-    /* Begins move. */
+    /*! Begins move. */
     virtual void beginMove(s32 x, s32 y);
-    /* Ends move. */
+    /*! Ends move. */
     virtual void endMove();
 
-    /* Returns current scroll velocity. */
+    /*! Returns current scroll velocity. */
     const Vector2f& scrollVelocity() const;
-    /* Returns throw coefficient. */
+    /*! Returns throw coefficient. */
     float32 throwCoefficient() const;
 
   protected slots:
 
-    /* Slot called when size of widget changes. */
+    /*! Slot called when size of widget changes. */
     virtual void onSizeChanged(const Vector2f& size);
-    /* Slot called when position of widget changes. */
+    /*! Slot called when position of widget changes. */
     virtual void onPositionChanged(const Vector4f& position);
 
   private:
 
-    /* Updates scrollbars. */
+    /*! Updates scrollbars. */
     void updateScrollbars();
 
   protected:
@@ -138,4 +138,4 @@ class UIScrollView : public Widget
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_SCROLLVIEW_H
+#endif // EGE_CORE_UI_SCROLLVIEW_H

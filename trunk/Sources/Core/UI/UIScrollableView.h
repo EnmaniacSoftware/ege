@@ -29,7 +29,7 @@ class UIScrollableView : public UIScrollView
 
   public:
 
-    /* Creates instance of widget. This method is a registration method for factory. */
+    /*! Creates instance of widget. This method is a registration method for factory. */
     static PWidget Create(Application* app, const String& name);
 
   public:
@@ -38,51 +38,50 @@ class UIScrollableView : public UIScrollView
 
   public:
 
-    /* Widget override. Updates object. */
+    /*! @see Widget::update. */
     void update(const Time& time) override;
-    /* Widget override. Pointer event processor. */
+    /*! @see Widget::pointerEvent. */
     void pointerEvent(PPointerData data) override;
-    /* Widget override. Renders object. */
+    /*! @see Widget::addForRendering. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
-    /* Widget override. Constructs object. */
+    /*! @see Widget::construct. */
     EGEResult construct() override;
+    /*! @see Widget::setAlpha. */
+    void setAlpha(float32 alpha) override;
 
-    /* Adds object. */
+    /*! Adds object. */
     EGEResult addObject(PObject object);
-    /* Removes object. */
+    /*! Removes object. */
     void removeObject(PObject object);
-    /* Returns object with a given name. */
+    /*! Returns object with a given name. */
     PObject object(const String& name) const;
-    /* Returns list of all objects. */
+    /*! Returns list of all objects. */
     ObjectsList objects() const;
-    /* Removes all objects. */
+    /*! Removes all objects. */
     void removeAllObjects();
 
-    /* UIScrollView override. Sets content size. 
-       @note This disables auto content size generation.
+    /*! UIScrollView override. Sets content size. 
+     *  @note This disables auto content size generation.
      */
     void setContentSize(const Vector2f& size) override;
-    /* Enables/disables auto calculation of contect size. */
+    /*! Enables/disables auto calculation of contect size. */
     void setAutoContentSize(bool enable);
-
-    /* Widget override. Sets transparency level. */
-    void setAlpha(float32 alpha) override;
 
   private:
 
-    /* Widget override. Returns TRUE if widget is frameless. */
+    /*! @see Widget::isFrameless. */
     bool isFrameless() const override;
-    /* Widget override. Initializes widget from dictionary. */
+    /*! @see Widget::initialize. */
     bool initialize(const Dictionary& params) override;
 
-    /* Recalculates content size. */
+    /*! Recalculates content size. */
     void recaluclateContentSize();
-    /* Returns size of content (in pixels). */
+    /*! Returns size of content (in pixels). */
     Vector2f contentSize();
 
   private slots:
 
-    /* Slot called when internal transformation is changed. */
+    /*! Slot called when internal transformation is changed. */
     void transformationChanged();
 
   private:

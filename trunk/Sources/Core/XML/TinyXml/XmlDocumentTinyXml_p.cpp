@@ -19,11 +19,10 @@ XmlDocumentPrivate::~XmlDocumentPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads document from given file. */
 EGEResult XmlDocumentPrivate::load(const String& fileName)
 {
   // load file
-  if (!m_xml.LoadFile(fileName.toAscii()))
+  if ( ! m_xml.LoadFile(fileName.toAscii()))
   {
     // error!
     return EGE_ERROR;
@@ -32,7 +31,6 @@ EGEResult XmlDocumentPrivate::load(const String& fileName)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads document from given buffer. */
 EGEResult XmlDocumentPrivate::load(const PDataBuffer& buffer)
 {
   // parse data buffer
@@ -46,7 +44,6 @@ EGEResult XmlDocumentPrivate::load(const PDataBuffer& buffer)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns first child with the given name. */
 PXmlElement XmlDocumentPrivate::firstChild(const String& name)
 {
   PXmlElement element;
@@ -69,7 +66,6 @@ PXmlElement XmlDocumentPrivate::firstChild(const String& name)
   return element;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Saves document to a given file. */
 EGEResult XmlDocumentPrivate::save(const String& fileName)
 {
   EGEResult result = EGE_SUCCESS;
@@ -97,7 +93,6 @@ EGEResult XmlDocumentPrivate::save(const String& fileName)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Saves document to a given buffer. */
 EGEResult XmlDocumentPrivate::save(const PDataBuffer& buffer)
 {
   // add declaration to the front
@@ -126,14 +121,12 @@ EGEResult XmlDocumentPrivate::save(const PDataBuffer& buffer)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Appends new element to document. */
 bool XmlDocumentPrivate::appendElement(const PXmlElement& element)
 {
   // NOTE: TiXmlDocument takes ownership of element
   return (NULL != m_xml.LinkEndChild(element->p_func()->element(true)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns root element. */
 PXmlElement XmlDocumentPrivate::rootElement()
 {
   PXmlElement element;

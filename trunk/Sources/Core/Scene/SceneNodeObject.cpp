@@ -28,7 +28,6 @@ SceneNodeObject::~SceneNodeObject()
   //}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds object render data for rendering with given renderer. */
 bool SceneNodeObject::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   EGE_UNUSED(renderer);
@@ -38,7 +37,6 @@ bool SceneNodeObject::addForRendering(Renderer* renderer, const Matrix4f& transf
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets parent node. */
 void SceneNodeObject::setParentNode(SceneNode* parent)
 {
   if (parent != m_parentNode)
@@ -51,13 +49,11 @@ void SceneNodeObject::setParentNode(SceneNode* parent)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets visibility flag. */
 void SceneNodeObject::setVisible(bool set)
 {
   m_visible = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Called when parent node changes. */
 void SceneNodeObject::parentChanged(SceneNode* oldNode, SceneNode* newNode)
 {
   EGE_UNUSED(oldNode);

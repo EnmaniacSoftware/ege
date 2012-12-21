@@ -18,13 +18,11 @@ FilePrivate::~FilePrivate()
   close();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool FilePrivate::isValid() const
 {
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Opens the given file with requested mode. */
 EGEResult FilePrivate::open(EGEFile::EMode mode)
 {
   close();
@@ -52,7 +50,6 @@ EGEResult FilePrivate::open(EGEFile::EMode mode)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Closes file. */
 void FilePrivate::close()
 {
   if (NULL != m_file)
@@ -62,8 +59,6 @@ void FilePrivate::close()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Reads given amount of data into destination buffer. */
-/// @return Returns number of bytes read.
 s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
 {
   EGE_ASSERT(dst && (0 <= size));
@@ -112,8 +107,6 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
   return (s64) readCount;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Writes given amount of data from destination buffer. */
-/// @return Returns number of bytes written.
 s64 FilePrivate::write(const PDataBuffer& src, s64 size)
 {
   EGE_ASSERT(src);
@@ -140,7 +133,6 @@ s64 FilePrivate::write(const PDataBuffer& src, s64 size)
   return (s64) s3eFileWrite(src->data(readOffset), 1, (size_t) size, m_file);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets new position within file. Returns -1 if error occured. */
 s64 FilePrivate::seek(s64 offset, EGEFile::ESeekMode mode) 
 {
   if (!isOpen())
@@ -175,7 +167,6 @@ s64 FilePrivate::seek(s64 offset, EGEFile::ESeekMode mode)
   return curPos;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current position in file. Returns -1 if error occured. */
 s64 FilePrivate::tell()
 {
   if (!isOpen())
@@ -187,13 +178,11 @@ s64 FilePrivate::tell()
   return s3eFileTell(m_file);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if file is opened. */
 bool FilePrivate::isOpen() const
 {
   return NULL != m_file;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns file size. Returns -1 if error occured. */
 s64 FilePrivate::size()
 {
   // store current file position
@@ -215,13 +204,11 @@ s64 FilePrivate::size()
   return -1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if file exists. */
 bool FilePrivate::exists() const
 {
   return S3E_TRUE == s3eFileCheckExists(m_base->filePath().c_str());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes file if possible. */
 bool FilePrivate::remove()
 {
   return (S3E_RESULT_SUCCESS == s3eFileDelete(m_base->filePath().c_str()));

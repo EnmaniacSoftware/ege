@@ -2,15 +2,13 @@
 #include <EGEDebug.h>
 
 #ifdef EGE_PURCHASES_APPSTORE
-
-#ifdef EGE_PLATFORM_AIRPLAY
-#include "Airplay/Purchases/PurchasesAppStoreAirplay_p.h"
+  #ifdef EGE_PLATFORM_AIRPLAY
+    #include "Airplay/Purchases/PurchasesAppStoreAirplay_p.h"
+  #else
+    #error NO APP STORE IMPLEMENTATION AVAILABLE ?
+  #endif // EGE_PLATFORM_AIRPLAY
 #else
-#error NO APP STORE IMPLEMENTATION AVAILABLE ?
-#endif // EGE_PLATFORM_AIRPLAY
-
-#else
-#include "Core/Purchases/PurchasesNull_p.h"
+  #include "Core/Purchases/PurchasesNull_p.h"
 #endif // EGE_SOCIAL_PLATFORM_GAMECENTER
 
 EGE_NAMESPACE_BEGIN
@@ -29,7 +27,6 @@ Purchases::~Purchases()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
 EGEResult Purchases::construct()
 {
   EGEResult result = EGE_SUCCESS;
@@ -52,7 +49,6 @@ EGEResult Purchases::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Purchases the given product. */
 EGEResult Purchases::purchase(const String& product)
 {
   if (NULL != m_p)

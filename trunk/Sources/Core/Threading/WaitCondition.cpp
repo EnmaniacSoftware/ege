@@ -22,16 +22,11 @@ WaitCondition::~WaitCondition()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool WaitCondition::isValid() const
 {
   return (NULL != m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Releases the locked mutex and waits on the wait condition. 
- *  @note The mutex must be initially locked by the calling thread. If mutex is not in a locked state, this function returns immediately. 
- *  @note Raw pointer is used here so Mutex referece counter is not increased as this will block.
- */
 bool WaitCondition::wait(Mutex* mutex)
 {
   EGE_ASSERT(isValid());
@@ -44,9 +39,6 @@ bool WaitCondition::wait(Mutex* mutex)
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Wakes one thread waiting on the wait condition. 
- *  @note The thread that is woken up depends on the operating system's scheduling policies, and cannot be controlled or predicted.
- */
 void WaitCondition::wakeOne()
 {
   EGE_ASSERT(isValid());
@@ -56,9 +48,6 @@ void WaitCondition::wakeOne()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Wakes all threads waiting on the wait condition. 
- *  @note The order in which the threads are woken up depends on the operating system's scheduling policies and cannot be controlled or predicted.
- */
 void WaitCondition::wakeAll()
 {
   EGE_ASSERT(isValid());

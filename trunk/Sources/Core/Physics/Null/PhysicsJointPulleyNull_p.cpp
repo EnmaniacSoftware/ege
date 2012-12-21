@@ -18,19 +18,16 @@ PhysicsJointPulleyPrivate::~PhysicsJointPulleyPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns length of segment attached to body A. */
 float32 PhysicsJointPulleyPrivate::lengthA() const
 {
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns length of segment attached to body B. */
 float32 PhysicsJointPulleyPrivate::lengthB() const
 {
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool PhysicsJointPulleyPrivate::isValid() const
 {
   return true;

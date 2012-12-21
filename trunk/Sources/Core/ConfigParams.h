@@ -6,12 +6,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 /*! Obligatory name for primary render target. */
 #define EGE_PRIMARY_RENDER_TARGET_NAME "PrimaryRenderTarget"
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 // render target specific
 #define EGE_RENDER_TARGET_PARAM_COLOR_BITS "color-bits"
 #define EGE_RENDER_TARGET_PARAM_NAME       "name"
@@ -34,7 +31,6 @@ EGE_NAMESPACE_BEGIN
 
 /*! Real world to physics world scale factor. */
 #define EGE_PHYSICS_PARAM_SCALE_FACTOR "physics:scale-factor"
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

@@ -55,26 +55,22 @@ Dialog::~Dialog()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of widget. This method is a registration method for factory. */
 PWidget Dialog::Create(Application* app, const String& name)
 {
   return ege_new Dialog(app, name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Returns TRUE if object is valid. */
 bool Dialog::isValid() const
 {
   return Widget::isValid() && (NULL != child("title")) && (NULL != child("text"));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Updates overlay. */
 void Dialog::update(const Time& time)
 {
   // call base class
   Widget::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Renders dialog. */
 void Dialog::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (isVisible())
@@ -87,14 +83,12 @@ void Dialog::addForRendering(Renderer* renderer, const Matrix4f& transform)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Pointer event processor. */
 void Dialog::pointerEvent(PPointerData data)
 {
   // call base class
   Widget::pointerEvent(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Generates render data. */
 void Dialog::generateRenderData()
 {
   // TAGE - need to find better way of doing this...
@@ -129,7 +123,6 @@ void Dialog::generateRenderData()
   m_tailRenderData->setPriority(m_widgetFrame->renderComponent()->priority() + 1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets title text. */
 void Dialog::setTitle(const Text& title)
 {
   PLabel label = child("title");
@@ -141,7 +134,6 @@ void Dialog::setTitle(const Text& title)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets content text. */
 void Dialog::setText(const Text& text)
 {
   PLabel label = child("text");
@@ -153,13 +145,11 @@ void Dialog::setText(const Text& text)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Returns TRUE if widget is frameless. */
 bool Dialog::isFrameless() const
 {
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Initializes widget from dictionary. */
 bool Dialog::initialize(const Dictionary& params)
 {
   // initialize base
@@ -274,7 +264,6 @@ bool Dialog::initialize(const Dictionary& params)
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets title font. */
 void Dialog::setTitleFont(PFont font)
 {
   if (font != m_titleFont)
@@ -293,7 +282,6 @@ void Dialog::setTitleFont(PFont font)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets text font. */
 void Dialog::setTextFont(PFont font)
 {
   if (font != m_textFont)
@@ -312,7 +300,6 @@ void Dialog::setTextFont(PFont font)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Sets transparency level. */
 void Dialog::setAlpha(float32 alpha)
 {
   // call base class

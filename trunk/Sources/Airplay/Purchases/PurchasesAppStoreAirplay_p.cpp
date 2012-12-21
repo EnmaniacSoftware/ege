@@ -16,7 +16,6 @@ PurchasesPrivate::~PurchasesPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
 EGEResult PurchasesPrivate::construct()
 {
   // check if supported
@@ -30,13 +29,11 @@ EGEResult PurchasesPrivate::construct()
   return (S3E_RESULT_SUCCESS == s3eIOSAppStoreBillingStart(ProductInfoCallback, TransactionUpdateCallback, this)) ? EGE_SUCCESS : EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Product information callback. */
 void PurchasesPrivate::ProductInfoCallback(s3eProductInformation* productInfo, void* userData)
 {
   PurchasesPrivate* me = static_cast<PurchasesPrivate*>(userData);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Transaction update callback. */
 void PurchasesPrivate::TransactionUpdateCallback(s3ePaymentTransaction* transaction, void* userData)
 {
   PurchasesPrivate* me = static_cast<PurchasesPrivate*>(userData);
@@ -93,7 +90,6 @@ void PurchasesPrivate::TransactionUpdateCallback(s3ePaymentTransaction* transact
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Purchases the given product. */
 EGEResult PurchasesPrivate::purchase(const String& product)
 {
   s3ePaymentRequest paymentRequest;

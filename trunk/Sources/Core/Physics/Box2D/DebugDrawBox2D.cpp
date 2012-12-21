@@ -21,7 +21,6 @@ DebugDraw::~DebugDraw()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! b2DebugDraw override. */
 void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
   PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawPolygon", EGEGraphics::RP_PHYSICS_DEBUG, 
@@ -51,7 +50,6 @@ void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2C
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! b2DebugDraw override. */
 void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
   PRenderComponent component_fill = ege_new RenderComponent(app(), "DebugDraw::DrawSolidPolygon-fill", EGEGraphics::RP_PHYSICS_DEBUG, 
@@ -102,7 +100,6 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! b2DebugDraw override. */
 void DebugDraw::DrawCircle(const b2Vec2& center, EGE::float32 radius, const b2Color& color)
 {
   PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawCircle", EGEGraphics::RP_PHYSICS_DEBUG, 
@@ -140,7 +137,6 @@ void DebugDraw::DrawCircle(const b2Vec2& center, EGE::float32 radius, const b2Co
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! b2DebugDraw override. */
 void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const b2Vec2& axis, const b2Color& color)
 {
   PRenderComponent component_fill = ege_new RenderComponent(app(), "DebugDraw::DrawSolidCircle-fill", EGEGraphics::RP_PHYSICS_DEBUG, 
@@ -205,7 +201,6 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
 	//glEnd();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! b2DebugDraw override. */
 void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
   PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawSegment", EGEGraphics::RP_PHYSICS_DEBUG, 
@@ -240,7 +235,6 @@ void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& c
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! b2DebugDraw override. */
 void DebugDraw::DrawTransform(const b2Transform& xf)
 {
 	//b2Vec2 p1 = xf.position, p2;

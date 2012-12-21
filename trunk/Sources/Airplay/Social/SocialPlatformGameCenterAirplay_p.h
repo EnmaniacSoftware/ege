@@ -25,33 +25,33 @@ class SocialPlatformPrivate
 
   public:
 
-    /* Constructs object. */
+    /*! Constructs object. */
     EGEResult construct();
-    /* Starts authentication. */
+    /*! Starts authentication. */
     EGEResult startAuthentication();
-    /* Loads achievements. */
+    /*! Loads achievements. */
     EGEResult loadAchievements();
-    /* Saves achievements. */
+    /*! Saves achievements. */
     EGEResult saveAchievements(const AchievementDataList& achievements);
-    /* Saves score. */
+    /*! Saves score. */
     EGEResult saveScore(const String& scoreTable, s32 score);
-    /* Shows scores. */
+    /*! Shows scores. */
     EGEResult showScores(const String& scoreTable);
 
   private:
 
-    /* Authentication callback. */
+    /*! Authentication callback. */
     static void AuthenticationCallback(s3eIOSGameCenterError* error, void* userData);
-    /* Achievement list load callback. */
+    /*! Achievement list load callback. */
     static void LoadAchievementsCallback(s3eIOSGameCenterAchievementList* list);
-    /* Achievement save callback. */
+    /*! Achievement save callback. */
     static void AchievementSaveCallback(s3eIOSGameCenterError* error);
-    /* Score save callback. */
+    /*! Score save callback. */
     static void ScoreSaveCallback(s3eIOSGameCenterError* error);
 
   private:
 
-    /* Saves next achievement from first session. */
+    /*! Saves next achievement from first session. */
     EGEResult saveNextAchievement();
 
   private:

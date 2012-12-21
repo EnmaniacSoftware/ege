@@ -8,8 +8,7 @@ EGE_DEFINE_DELETE_OPERATORS(Screen)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Screen::Screen(Application* app, const String& name) : Object(app), 
                                                        m_name(name), 
-                                                       m_disabled(false)//,
-                                                       //m_covered(false)
+                                                       m_disabled(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -17,61 +16,49 @@ Screen::~Screen()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
 EGEResult Screen::construct()
 {
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates object. 
-    @param time Time increment for which update should be performed.
-    @return  Returns TRUE to consume the event. When consumed no underlying screens will be updated. 
- */
 bool Screen::update(const Time& time)
 {
   EGE_UNUSED(time);
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Pointer event. */
 void Screen::pointerEvent(PPointerData data)
 {
   EGE_UNUSED(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Renders object. */
 void Screen::render(const Viewport* viewport, Renderer* renderer)
 {
   EGE_UNUSED(viewport);
   EGE_UNUSED(renderer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Screen is about to be partially covered by another one. */
 void Screen::cover()
 {
   // set flag
   //m_covered = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Screen is about to be uncovered. */
 void Screen::uncover()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Enables/disables screen. */
 void Screen::setEnable(bool enable)
 {
   m_disabled = !enable;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Screen is about to be shown for the first time. */
 void Screen::enter()
 {
   // clear cover flag
 //  m_covered = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Screen is about to be hidden. */
 void Screen::leave()
 {
   // do nothing

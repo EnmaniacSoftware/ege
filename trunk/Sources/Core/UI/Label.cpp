@@ -30,26 +30,22 @@ Label::~Label()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of widget. This method is a registration method for factory. */
 PWidget Label::Create(Application* app, const String& name)
 {
   return ege_new Label(app, name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Returns TRUE if object is valid. */
 bool Label::isValid() const
 {
   return Widget::isValid() && (NULL != m_textOverlay);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Updates widget. */
 void Label::update(const Time& time)
 {
   // call base class
   Widget::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Renders widget. */
 void Label::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (isVisible())
@@ -79,20 +75,17 @@ void Label::addForRendering(Renderer* renderer, const Matrix4f& transform)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Pointer event processor. */
 void Label::pointerEvent(PPointerData data)
 {
   // call base class
   Widget::pointerEvent(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Returns TRUE if widget is frameless. */
 bool Label::isFrameless() const
 {
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Initializes widget from dictionary. */
 bool Label::initialize(const Dictionary& params)
 {
   // initialize base
@@ -122,25 +115,21 @@ bool Label::initialize(const Dictionary& params)
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets content text. */
 void Label::setText(const Text& text)
 {
   m_textOverlay->setText(text);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets font. */
 void Label::setFont(PFont font)
 {
   m_textOverlay->setFont(font);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Detrmines widget's content size (in pixels). */
 Vector2f Label::contentSize()
 {
   return m_textOverlay->size();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Sets transparency level. */
 void Label::setAlpha(float32 alpha)
 {
   // apply to text overlay
@@ -150,7 +139,6 @@ void Label::setAlpha(float32 alpha)
   Widget::setAlpha(alpha);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets text alignment. */
 void Label::setTextAlignment(Alignment alignment)
 {
   m_textOverlay->setTextAlignment(alignment);

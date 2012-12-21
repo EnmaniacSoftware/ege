@@ -16,15 +16,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(SceneManager)
 EGE_DEFINE_DELETE_OPERATORS(SceneManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SceneManager::SceneManager(Application* app) : Object(app), m_rootNode(NULL)
+SceneManager::SceneManager(Application* app) : Object(app), 
+                                               m_rootNode(NULL)
 {
-  // create root node
-  m_rootNode = ege_new SceneNode("root", NULL, this);
-  if (!m_rootNode->isValid())
-  {
-    EGE_DELETE(m_rootNode);
-  }
-
   // initialize
   //if (EGE_SUCCESS != (eResult = m_rootNode->initialize()))
   //{
@@ -49,13 +43,25 @@ SceneManager::~SceneManager()
   EGE_DELETE(m_rootNode);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Returns TRUE if object is valid. */
-bool SceneManager::isValid() const
+EGEResult SceneManager::construct()
 {
-  return NULL != m_rootNode;
+  // create root node
+  m_rootNode = ege_new SceneNode("root", NULL, this);
+  if (NULL == m_rootNode)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  if ( ! m_rootNode->isValid())
+  {
+    EGE_DELETE(m_rootNode);
+    return EGE_ERROR;
+  }
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Renders scene. */
 void SceneManager::render(PCamera camera, PViewport viewport)
 {
   Renderer* renderer = app()->graphics()->renderer();
@@ -113,14 +119,12 @@ void SceneManager::render(PCamera camera, PViewport viewport)
   viewport->setBatchCount(renderer->batchCount());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates manager. */
 void SceneManager::update(const Time& time)
 {
   // update tree nodes
   m_rootNode->update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Destroys manager data effectively resetting it. */
 void SceneManager::destroy()
 {
   m_rootNode->removeAllAttachedObjects();

@@ -7,11 +7,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class DesktopServices;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class DesktopServicesPrivate
 {
   public:
@@ -24,10 +21,11 @@ class DesktopServicesPrivate
     
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(DesktopServices)
 
-    /* Opens given URL in Web browser. */
+    /*! Creates object. */
+    EGEResult construct();
+    /*! Opens given URL in Web browser. */
     bool openUrl(const String& url);
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

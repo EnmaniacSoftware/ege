@@ -15,13 +15,11 @@ PurchasesPrivate::~PurchasesPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
 EGEResult PurchasesPrivate::construct()
 {
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Purchases the given product. */
 EGEResult PurchasesPrivate::purchase(const String& product)
 {
   EGE_UNUSED(product);

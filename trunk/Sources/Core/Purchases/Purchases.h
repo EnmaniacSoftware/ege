@@ -24,16 +24,16 @@ class Purchases : public Object
   signals:
 
     /*! Signal emitted when purchase is done. 
-        @param result   Result code of transcation.
-        @param product  Product name for which purchase was done.
+     *  @param result   Result code of transcation.
+     *  @param product  Product name for which purchase was done.
      */
     Signal2<EGEResult, const String&> purchased;
 
   public:
 
-    /* Constructs object. */
+    /*! Constructs object. */
     EGEResult construct();
-    /* Purchases the given product. */
+    /*! Purchases the given product. */
     EGEResult purchase(const String& product);
 
   private:

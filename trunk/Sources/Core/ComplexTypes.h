@@ -1,17 +1,14 @@
 #ifndef EGE_CORE_COMPLEXTYPES_H
 #define EGE_CORE_COMPLEXTYPES_H
 
-#include "EGE.h"
+#include <EGE.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 EGE_DECLARE_SMART_CLASS(Integer, PInteger)
 EGE_DECLARE_SMART_CLASS(Float, PFloat)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Integer : public Object
 {
   public:
@@ -22,7 +19,7 @@ class Integer : public Object
     EGE_DECLARE_DELETE_OPERATORS
 
     /*! Returns value. */
-    inline s32 value() const { return m_value; }
+    s32 value() const { return m_value; }
     
   private:
 
@@ -40,14 +37,13 @@ class Float : public Object
     EGE_DECLARE_DELETE_OPERATORS
 
     /*! Returns value. */
-    inline float32 value() const { return m_value; }
+    float32 value() const { return m_value; }
 
   private:
 
     /*! Float value. */
     float32 m_value;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

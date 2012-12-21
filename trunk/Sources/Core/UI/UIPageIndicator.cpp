@@ -26,7 +26,6 @@ UIPageIndicator::~UIPageIndicator()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of widget. This method is a registration method for factory. */
 PWidget UIPageIndicator::Create(Application* app, const String& name)
 {
   // allocate object
@@ -44,7 +43,6 @@ PWidget UIPageIndicator::Create(Application* app, const String& name)
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Constructs object. */
 EGEResult UIPageIndicator::construct()
 {
   EGEResult result;
@@ -59,13 +57,11 @@ EGEResult UIPageIndicator::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Returns TRUE if widget is frameless. */
 bool UIPageIndicator::isFrameless() const
 {
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Initializes widget from dictionary. */
 bool UIPageIndicator::initialize(const Dictionary& params)
 {
   // initialize base
@@ -74,7 +70,6 @@ bool UIPageIndicator::initialize(const Dictionary& params)
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets page count. */
 void UIPageIndicator::setPageCount(s32 count)
 {
   if (m_pageCount != count)
@@ -86,13 +81,11 @@ void UIPageIndicator::setPageCount(s32 count)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns number of pages. */
 s32 UIPageIndicator::pageCount() const
 {
   return m_pageCount;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets current page. */
 void UIPageIndicator::setCurrentPage(s32 pageIdx)
 {
   if ((pageIdx != m_page) && (0 < pageCount()))
@@ -104,7 +97,6 @@ void UIPageIndicator::setCurrentPage(s32 pageIdx)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Updates render data. */
 void UIPageIndicator::updateRenderData()
 {
   // clean up
@@ -133,13 +125,11 @@ void UIPageIndicator::updateRenderData()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns current page. */
 s32 UIPageIndicator::page() const
 {
   return m_page;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Widget override. Renders object. */
 void UIPageIndicator::addForRendering(Renderer* renderer, const Matrix4f& transform)
 {
   if (!isVisible())
@@ -177,7 +167,6 @@ void UIPageIndicator::addForRendering(Renderer* renderer, const Matrix4f& transf
   Widget::addForRendering(renderer, transform);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets materials for page indicators. */
 void UIPageIndicator::setMaterials(DynamicArray<PMaterial> on, DynamicArray<PMaterial> off)
 {
   m_onMaterials   = on;
@@ -187,13 +176,11 @@ void UIPageIndicator::setMaterials(DynamicArray<PMaterial> on, DynamicArray<PMat
   m_renderDataInvalid = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets render priority. */
 void UIPageIndicator::setRenderPriority(s32 priority)
 {
   m_renderPriority = priority;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets single page indicator size. */
 void UIPageIndicator::setIndicatorSize(s32 size)
 {
   if (m_indicatorSize != size)

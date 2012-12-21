@@ -17,7 +17,6 @@ Sequencer::~Sequencer()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IAnimation override. Updates animation. */
 void Sequencer::update(const Time& time)
 {
   // update frame time
@@ -59,7 +58,6 @@ void Sequencer::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts sequencer. */
 void Sequencer::start()
 {
   // restart from begining
@@ -70,13 +68,11 @@ void Sequencer::start()
   emit frameChanged(this, m_framesIds[m_frameIndex]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets frame duration. */
 void Sequencer::setFrameDuration(const Time& time)
 {
   m_frameDuration = time;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets frame data. */
 void Sequencer::setFrameData(const IntArray& frameIds)
 {
   m_framesIds = frameIds;
@@ -85,19 +81,16 @@ void Sequencer::setFrameData(const IntArray& frameIds)
   m_frameIndex = 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets repeat flag. */
 void Sequencer::setRepeatable(bool set)
 {
   m_repeatable = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets name. */
 void Sequencer::setName(const String& name)
 {
   m_name = name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns given frame id. */
 s32 Sequencer::frameId(s32 frameIndex) const
 {
   s32 index = Math::Bound(frameIndex, 0, static_cast<s32>(m_framesIds.size() - 1));
@@ -105,7 +98,6 @@ s32 Sequencer::frameId(s32 frameIndex) const
   return m_framesIds[index];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns normalized position between current and next frame. */
 float32 Sequencer::normalizedFrameTime() const
 {
   // sanity check

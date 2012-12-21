@@ -23,37 +23,37 @@ class UIPageIndicator : public Widget
 
   public:
 
-    /* Creates instance of widget. This method is a registration method for factory. */
+    /*! Creates instance of widget. This method is a registration method for factory. */
     static PWidget Create(Application* app, const String& name);
     
   public:
 
-    /* Widget override. Renders object. */
+    /*! @see Widget::addForRendering. */
     void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
-    /* Sets page count. */
+    /*! Sets page count. */
     void setPageCount(s32 count);
-    /* Returns number of pages. */
+    /*! Returns number of pages. */
     s32 pageCount() const;
-    /* Sets current page. */
+    /*! Sets current page. */
     void setCurrentPage(s32 pageIdx);
-    /* Returns current page. */
+    /*! Returns current page. */
     s32 page() const;
-    /* Sets materials for page indicators. */
+    /*! Sets materials for page indicators. */
     void setMaterials(DynamicArray<PMaterial> on, DynamicArray<PMaterial> off);
-    /* Sets render priority. */
+    /*! Sets render priority. */
     void setRenderPriority(s32 priority);
-    /* Sets single page indicator size. */
+    /*! Sets single page indicator size. */
     void setIndicatorSize(s32 size);
 
   private:
 
-    /* Widget override. Returns TRUE if widget is frameless. */
+    /*! @see Widget::isFrameless. */
     bool isFrameless() const override;
-    /* Widget override. Initializes widget from dictionary. */
+    /*! @see Widget::initialize. */
     bool initialize(const Dictionary& params) override;
-    /* Widget override. Constructs object. */
+    /*! @see Widget::construct. */
     EGEResult construct() override;
-    /* Updates render data. */
+    /*! Updates render data. */
     void updateRenderData();
 
   private:

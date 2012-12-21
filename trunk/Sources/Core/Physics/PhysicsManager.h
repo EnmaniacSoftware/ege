@@ -18,7 +18,6 @@ class PhysicsJointPulley;
 class PhysicsJointPulleyPrivate;
 class PhysicsComponent;
 class PhysicsComponentPrivate;
-
 EGE_DECLARE_SMART_CLASS(PhysicsManager, PPhysicsManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class PhysicsManager : public Object
@@ -31,19 +30,19 @@ class PhysicsManager : public Object
 
   public:
 
-    PhysicsManager(Application* app, const Dictionary& params);
+    PhysicsManager(Application* app);
     virtual ~PhysicsManager();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns TRUE if manager is valid. */
-    bool isValid() const;
-    /* Updates manager. */
+    /*! Creates object. */
+    EGEResult construct(const Dictionary& params);
+    /*! Updates manager. */
     void update(const Time& time);
-    /* Renders data. */
+    /*! Renders data. */
     void render();
-    /* Sets gravity. */
+    /*! Sets gravity. */
     void setGravity(const Vector4f& gravity);
 
   private:

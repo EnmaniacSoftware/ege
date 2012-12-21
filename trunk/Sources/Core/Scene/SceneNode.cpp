@@ -25,7 +25,6 @@ SceneNode::~SceneNode()
   removeAllAttachedObjects();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Attaches new object to node. */
 bool SceneNode::attachObject(PSceneNodeObject object)
 {
   // check if object of this name is already present
@@ -44,7 +43,6 @@ bool SceneNode::attachObject(PSceneNodeObject object)
   return true;  
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns attached object with a given name. Returns NULL if no such object exists. */
 PSceneNodeObject SceneNode::attachedObject(const String& name) const
 {
   // go thru all objects
@@ -63,7 +61,6 @@ PSceneNodeObject SceneNode::attachedObject(const String& name) const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes scene object of a given name. */
 void SceneNode::removeObject(const String& name)
 {
   // go thru all objects
@@ -86,7 +83,6 @@ void SceneNode::removeObject(const String& name)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes all objects. */
 void SceneNode::removeAllAttachedObjects()
 {
   // go thru all objects
@@ -103,7 +99,6 @@ void SceneNode::removeAllAttachedObjects()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates node. */
 void SceneNode::update(const Time& time)
 {
   // check if NO update required at all
@@ -146,13 +141,11 @@ void SceneNode::update(const Time& time)
   //m_bNeedUpdate = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Node override. Creates child node with a given name. MUST be overriden by subclass. */
 Node* SceneNode::createChildNodeImpl(const String& name, EGEPhysics::ComponentType componentType)
 {
   return ege_new SceneNode(name, this, sceneManager(), componentType);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates child scene node with a given name and attaches it. */
 SceneNode* SceneNode::createChildSceneNode(const String& name, EGEPhysics::ComponentType componentType)
 {
   return static_cast<SceneNode*>(createChildNode(name, componentType));

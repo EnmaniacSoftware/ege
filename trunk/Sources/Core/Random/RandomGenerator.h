@@ -16,14 +16,14 @@ class RandomGenerator : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Returns randomly generated integer. */
+    /*! Returns randomly generated integer. */
     s32 operator() ();
-    /* Returns randomly generated floating number from given interval. */
+    /*! Returns randomly generated floating number from given interval. */
     float32 operator() (float32 min, float32 max);
 
-    /* Returns TRUE if object is valid. */
+    /*! Returns TRUE if object is valid. */
     bool isValid() const;
-    /* Sets random seed. */
+    /*! Sets random seed. */
     void setSeed(u32 seed);
 
   private:

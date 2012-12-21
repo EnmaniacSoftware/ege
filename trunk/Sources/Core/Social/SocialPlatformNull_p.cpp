@@ -15,32 +15,27 @@ SocialPlatformPrivate::~SocialPlatformPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
 EGEResult SocialPlatformPrivate::construct()
 {
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Starts authentication. */
 EGEResult SocialPlatformPrivate::startAuthentication()
 {
   return EGE_ERROR_NOT_SUPPORTED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads achievements. */
 EGEResult SocialPlatformPrivate::loadAchievements()
 {
   return EGE_ERROR_NOT_SUPPORTED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Save achievements. */
 EGEResult SocialPlatformPrivate::saveAchievements(const AchievementDataList& achievements)
 {
   EGE_UNUSED(achievements);
   return EGE_ERROR_NOT_SUPPORTED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Save score. */
 EGEResult SocialPlatformPrivate::saveScore(const String& scoreTable, s32 score)
 {
   EGE_UNUSED(scoreTable);
@@ -48,7 +43,6 @@ EGEResult SocialPlatformPrivate::saveScore(const String& scoreTable, s32 score)
   return EGE_ERROR_NOT_SUPPORTED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Shows scores. */
 EGEResult SocialPlatformPrivate::showScores(const String& scoreTable)
 {
   EGE_UNUSED(scoreTable);

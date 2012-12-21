@@ -15,7 +15,6 @@ class String;
 template <typename T> class DynamicArray;
 typedef DynamicArray<String> StringArray;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class String : public std::string
 {
   public:
@@ -33,68 +32,68 @@ class String : public std::string
 
   public:
 
-    /* Create new object from formatted text. */
+    /*! Create new object from formatted text. */
     static String Format(const char* text, ...);
-    /* Creates new object from given number. */
+    /*! Creates new object from given number. */
     static String FromNumber(s32 value);
 
   public:
 
-    /* Creates formatted text. */
+    /*! Creates formatted text. */
     void format(const char* text, ...);
 
-    /* Converts self to lower-case. */
+    /*! Converts self to lower-case. */
     String& toLower();
-    /* Converts self to upper-case. */
+    /*! Converts self to upper-case. */
     String& toUpper();
-    /* Returns ASCII string. */
+    /*! Returns ASCII string. */
     const char* toAscii() const;
-    /* Returns TRUE if current string ends with given one. */
+    /*! Returns TRUE if current string ends with given one. */
     bool endsWith(const String& string) const;
-    /* Returns TRUE if current string starts with given one. */
+    /*! Returns TRUE if current string starts with given one. */
     bool startsWith(const String& string) const;
 
-    /* Returns copy of the current string with lowest arg marker replaced with a given string. */
+    /*! Returns copy of the current string with lowest arg marker replaced with a given string. */
     String arg(const String& string) const;
-    /* Returns copy of the current string with lowest arg marker replaced with a given integer value. */
+    /*! Returns copy of the current string with lowest arg marker replaced with a given integer value. */
     String arg(s32 value) const;
-    /* Returns copy of the current string with lowest arg marker replaced with a given float value. */
+    /*! Returns copy of the current string with lowest arg marker replaced with a given float value. */
     String arg(float32 value) const;
 
-    /* Converts to integer. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to integer. If error is valid, it holds TRUE if error occured during the conversion. */
     s32 toInt(bool* error = NULL) const;
-    /* Converts to 64-bit integer. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to 64-bit integer. If error is valid, it holds TRUE if error occured during the conversion. */
     s64 toInt64(bool* error = NULL) const;
-    /* Converts to boolean. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to boolean. If error is valid, it holds TRUE if error occured during the conversion. */
     bool toBool(bool* error = NULL) const;
-    /* Converts to float. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to float. If error is valid, it holds TRUE if error occured during the conversion. */
     float32 toFloat(bool* error = NULL) const;
-    /* Converts to color. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to color. If error is valid, it holds TRUE if error occured during the conversion. */
     Color toColor(bool* error = NULL) const;
-    /* Converts to rectangle of floats. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to rectangle of floats. If error is valid, it holds TRUE if error occured during the conversion. */
     Rectf toRectf(bool* error = NULL) const;
-    /* Converts to rectangle of integers. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to rectangle of integers. If error is valid, it holds TRUE if error occured during the conversion. */
     Recti toRecti(bool* error = NULL) const;
-    /* Converts to 2D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to 2D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
     Vector2f toVector2f(bool* error = NULL) const;
-    /* Converts to 2D vector of ints. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to 2D vector of ints. If error is valid, it holds TRUE if error occured during the conversion. */
     Vector2i toVector2i(bool* error = NULL) const;
-    /* Converts to 3D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to 3D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
     Vector3f toVector3f(bool* error = NULL) const;
-    /* Converts to 4D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to 4D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
     Vector4f toVector4f(bool* error = NULL) const;
-    /* Converts to 4D vector of signed integers. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to 4D vector of signed integers. If error is valid, it holds TRUE if error occured during the conversion. */
     Vector4i toVector4i(bool* error = NULL) const;
-    /* Converts to alignments flag. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to alignments flag. If error is valid, it holds TRUE if error occured during the conversion. */
     Alignment toAlignment(bool* error = NULL) const;
-    /* Converts to angle. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to angle. If error is valid, it holds TRUE if error occured during the conversion. */
     Angle toAngle(bool* error = NULL) const;
-    /* Converts to time. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts to time. If error is valid, it holds TRUE if error occured during the conversion. */
     Time toTime(bool* error = NULL) const;
 
-    /* Splits the string into array of substrings whenever seperator occurs. */
+    /*! Splits the string into array of substrings whenever seperator occurs. */
     StringArray split(const String& separator) const;
-    /* Returns a string that has whitespace removed from the start and the end. */
+    /*! Returns a string that has whitespace removed from the start and the end. */
     String trimmed() const;
 
   private:
@@ -108,12 +107,11 @@ class String : public std::string
 
   private:
 
-    /* Finds data about arg escape of the lowest sequence number. */
+    /*! Finds data about arg escape of the lowest sequence number. */
     ArgEscapeData findArgEscapes() const;
-    /* Replaces args with given string. */
+    /*! Replaces args with given string. */
     void replaceArgEscapes(String& out, const String& arg, ArgEscapeData& argData) const;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline String operator + (const String& left, const char* right)
 {

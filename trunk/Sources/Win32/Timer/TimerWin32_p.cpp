@@ -18,7 +18,6 @@ LARGE_INTEGER TimerPrivate::m_frequency;
 #define FREQUENCY_RESAMPLE_RATE 200
 #define DISCRAPANCY_THRESHOLD   500
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Resets timer. */
 void TimerPrivate::Reset()
 {
   m_isPerformance = true;
@@ -49,7 +48,6 @@ void TimerPrivate::Reset()
   m_thread = GetCurrentThread();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns number of miliseconds passed since system start-up. */
 s64 TimerPrivate::GetMiliseconds()
 {
   // check if no performace counter is available
@@ -65,9 +63,6 @@ s64 TimerPrivate::GetMiliseconds()
   return static_cast<s64>(1000 * llTicks / m_frequency.QuadPart);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns number of microseconds since system start-up.
-    @note If less resolution is available only, it is upscaled to microseconds.
- */
 s64 TimerPrivate::GetMicroseconds()
 {
   // check if no performace counter is available
@@ -83,7 +78,6 @@ s64 TimerPrivate::GetMicroseconds()
   return static_cast<s64>(1000000 * llTicks / m_frequency.QuadPart);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates performance counter. */
 LONGLONG TimerPrivate::UpdatePerformanceTimer()
 {
   LARGE_INTEGER sCurTime;
@@ -126,7 +120,6 @@ LONGLONG TimerPrivate::UpdatePerformanceTimer()
   return llNewTime;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if timer is high performace timer. */
 bool TimerPrivate::IsHighResolution()
 {
   return m_isPerformance;
