@@ -32,6 +32,7 @@ class ResourceManagerPrivate
       bool load;                    /*!< Should resource be loaded. If FALSE resource is to be unloaded. */
       String groupName;             /*!< Name of the owning resource group. */
       List<PResource> resources;    /*!< Resources left to be handled. */
+      Time startTime;               /*!< Start time of batch processing. */
     };
 
     /*! Available request types. */

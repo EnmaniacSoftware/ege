@@ -2,6 +2,7 @@
 
 #include "Core/Resource/SingleThread/ResourceManagerST_p.h"
 #include "Core/Resource/ResourceGroup.h"
+#include <EGETimer.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE
@@ -38,6 +39,12 @@ void ResourceManagerPrivate::update(const Time& time)
     ProcessingBatch& data = m_processList.front();
 
     PResource resource = data.resources.front();
+
+    // check if processing is started
+    if (0L == data.startTime.microseconds())
+    {
+      data.startTime = Timer::GetMicroseconds();
+    }
 
     if (data.load)
     {
@@ -124,6 +131,9 @@ void ResourceManagerPrivate::update(const Time& time)
     // check if no more resources to load in a group
     if (data.resources.empty())
     {
+      Time processingTime = Timer::GetMicroseconds() - data.startTime;
+      egeDebug() << "Processing of" << data.groupName << "took" << processingTime.miliseconds() << "ms";
+
       // remove batch
       m_processList.pop_front();
     
@@ -187,6 +197,7 @@ EGEResult ResourceManagerPrivate::loadGroup(const String& name)
   ProcessingBatch batch;
   batch.groupName = name;
   batch.load      = true;
+  batch.startTime = 0LL;
 
   for (StringList::const_iterator it = groupsToLoad.begin(); it != groupsToLoad.end(); ++it)
   {
@@ -252,6 +263,7 @@ void ResourceManagerPrivate::unloadGroup(const String& name)
   ProcessingBatch batch;
   batch.groupName = name;
   batch.load      = false;
+  batch.startTime = 0LL;
   batch.resources = group->resources("");
 
   m_processList.push_back(batch);

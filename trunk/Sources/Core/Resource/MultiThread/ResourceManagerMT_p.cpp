@@ -3,6 +3,7 @@
 #include "Core/Resource/MultiThread/ResourceManagerMT_p.h"
 #include "Core/Resource/MultiThread/ResourceManagerWorkThread.h"
 #include "Core/Resource/ResourceGroup.h"
+#include <EGETimer.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE
@@ -167,6 +168,7 @@ EGEResult ResourceManagerPrivate::loadGroup(const String& name)
   ProcessingBatch batch;
   batch.groupName = name;
   batch.load      = true;
+  batch.startTime = 0LL;
 
   m_mutex->lock();
   m_scheduledList.push_back(batch);
@@ -207,6 +209,7 @@ void ResourceManagerPrivate::unloadGroup(const String& name)
   ProcessingBatch batch;
   batch.groupName = name;
   batch.load      = false;
+  batch.startTime = 0LL;
 
   m_mutex->lock();
   m_scheduledList.push_back(batch);
@@ -301,6 +304,12 @@ void ResourceManagerPrivate::processBatches()
 
     PResource resource = data.resources.front();
 
+    // check if processing is started
+    if (0L == data.startTime.microseconds())
+    {
+      data.startTime = Timer::GetMicroseconds();
+    }
+
     if (data.load)
     {
       // load resource
@@ -314,7 +323,8 @@ void ResourceManagerPrivate::processBatches()
         d_func()->m_processedResourcesCount++;
 
         // schedule progess request
-        addProgressRequest(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
+//        addProgressRequest(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
+        emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
 
         // check if no more resources to load
         if (data.resources.empty())
@@ -380,6 +390,9 @@ void ResourceManagerPrivate::processBatches()
     // check if no more resources to load in a group
     if (data.resources.empty())
     {
+      Time processingTime = Timer::GetMicroseconds() - data.startTime;
+      egeDebug() << "Processing of" << data.groupName << "took" << processingTime.miliseconds() << "ms";
+
       // remove batch
       it = m_pendingList.erase(it);
     

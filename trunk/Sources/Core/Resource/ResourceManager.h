@@ -54,7 +54,7 @@ class ResourceManager : public Object, public IEventListener
     /*! Signal emitted when resource has been processed.
      *  @param processed Number of already processed resources
      *  @param total     Total number resources to process
-     *  @note Signal is emitted in manager's thread. 
+     *  @note Signal is NOT guaranteed to be emitted in manager's thread. 
      */
     Signal2<u32, u32> processingStatusUpdated;
 

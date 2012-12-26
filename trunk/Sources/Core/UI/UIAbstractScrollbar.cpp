@@ -83,7 +83,7 @@ void UIAbstractScrollbar::update(const Time& time)
       // check if done
       if (m_stateTime == m_fadeDuration)
       {
-        m_fadeDuration = STATE_SHOWN;
+        m_state = STATE_SHOWN;
       }
       break;
   }
@@ -225,7 +225,7 @@ void UIAbstractScrollbar::startShowing()
       m_stateTime = m_fadeDuration - m_stateTime;
 
       // set state
-      m_stateTime = STATE_FADING_IN;
+      m_state = STATE_FADING_IN;
       break;
   }
 }
