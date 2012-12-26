@@ -93,8 +93,6 @@ void ResourceManagerPrivate::update(const Time& time)
         // emit
         emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
 
-        egeCritical() << "Processed" << d_func()->m_processedResourcesCount << "out of" << d_func()->m_totalResourcesToProcess;
-
         // error!
         emit d_func()->groupLoadError(data.groupName);
       }
@@ -229,7 +227,7 @@ void ResourceManagerPrivate::unloadGroup(const String& name)
   {
     ProcessingBatch& batch = *it;
 
-    if ((batch.groupName == name))
+    if (batch.groupName == name)
     {
       // check if scheduled for loading
       if (batch.load)
