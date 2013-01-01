@@ -10,6 +10,7 @@
 #include <EGEString.h>
 #include <EGEList.h>
 #include <EGEMap.h>
+#include <EGESignal.h>
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN
@@ -28,24 +29,47 @@ class ResourceGroup : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /* Initializes resource from XML. 
-     * @param  path  full path to resource definition file.
-     * @param  tag   xml element with resource definition. 
+  signals:
+
+    /*! Signal emitted when resource has been loaded. 
+     *  @param resource Resource which has been loaded.
+     */
+    Signal1<const PResource&> resourceLoaded;
+    /*! Signal emitted when resource has been unloaded. 
+     *  @param resource Resource which has been unloaded.
+     */
+    Signal1<const PResource&> resourceUnloaded;
+    /*! Signal emitted when resource group has been loaded. 
+     *  @param group Resource group which has been loaded.
+     */
+    Signal1<const PResourceGroup&> resourceGroupLoaded;
+    /*! Signal emitted when resource group has been unloaded. 
+     *  @param group Resource group which has been unloaded.
+     */
+    Signal1<const PResourceGroup&> resourceGroupUnloaded;
+
+  public:
+
+    /*! Initializes resource from XML. 
+     *  @param  path  full path to resource definition file.
+     *  @param  tag   xml element with resource definition. 
      */
     EGEResult create(const String& path,  const PXmlElement& tag);
-    /* Loads the group resources. */
+    /*! Loads the group resources. */
     EGEResult load();
-    /* Unloads the group resources. */
+    /*! Unloads the group resources. */
     void unload();
     /*! Returns group name. */
     const String& name() const { return m_name; }
-    /* Returns resource of a given type and name. */
+    /*! Returns resource of a given type and name. */
     PResource resource(const String& typeName, const String& name) const;
-    /* Returns list of all resources of the given type. 
-       @param Type of the resource to be requested. If empty all resource will be returned.
+    /*! Returns list of all resources of the given type. 
+     *  @param Type of the resource to be requested. If empty all resource will be returned.
      */
     List<PResource> resources(const String& typeName) const;
-    /* Adds given resource to group. */
+    /*! Returns number of resources. */
+    u32 resourceCount() const;
+    /*! Adds given resource to group. */
     EGEResult addResource(const PResource& resource);
     /*! Is group loaded. */
     bool isLoaded() const { return m_loaded; }
@@ -54,16 +78,16 @@ class ResourceGroup : public Object
     /*! Gets owning manager */
     ResourceManager* manager() const { return m_manager; }
 
-    /* Overrides resources by another group ones. 
-     * @param group Group which resources should override current ones.
-     * @note  If current group is not overridable EGE_ERROR_NOT_SUPPORTED is retured. If both groups are the same (same paths)
-     *        EGE_ERROR_ALREADY_EXISTS is returned.
+    /*! Overrides resources by another group ones. 
+     *  @param group Group which resources should override current ones.
+     *  @note  If current group is not overridable EGE_ERROR_NOT_SUPPORTED is retured. If both groups are the same (same paths)
+     *         EGE_ERROR_ALREADY_EXISTS is returned.
      */
     EGEResult overrideBy(const PResourceGroup& group);
 
   private:
 
-    /* Destroys group. */
+    /*! Destroys group. */
     void destroy();
     /* Adds dependancy. */
     EGEResult addDependancy(const PXmlElement& tag);

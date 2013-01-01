@@ -32,116 +32,28 @@ void ResourceManagerPrivate::update(const Time& time)
 {
   EGE_UNUSED(time)
 
-  // process pending list
-  // NOTE: only process when ready (ie not closing)
   if ( ! m_processList.empty() && (ResourceManager::STATE_READY == m_state))
   {
     ProcessingBatch& data = m_processList.front();
 
-    PResource resource = data.resources.front();
-
-    // check if processing is started
-    if (0L == data.startTime.microseconds())
-    {
-      data.startTime = Timer::GetMicroseconds();
-    }
+    PResourceGroup group = d_func()->group(data.groups.front());
 
     if (data.load)
     {
-      // load resource
-      EGEResult result = resource->load();
-      if (EGE_SUCCESS == result)
+      // try to load
+      EGEResult result = group->load();
+
+      // check if error
+      if ((EGE_SUCCESS != result) && (EGE_WAIT != result))
       {
-        // remove resource from pool
-        data.resources.pop_front();
-
-        // update statistics
-        d_func()->m_processedResourcesCount++;
-
-        // emit
-        emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
-
-        egeCritical() << "Processed" << d_func()->m_processedResourcesCount << "out of" << d_func()->m_totalResourcesToProcess;
-
-        // check if no more resources to load
-        if (data.resources.empty())
-        {
-          // TAGE - hmm, better solution needed ? as we process all resources individually here
-          // call ResourceGroup::load so it marks itself as loaded
-          PResourceGroup group = d_func()->group(data.groupName);
-          if (NULL != group)
-          {
-            group->load();
-          }
-
-          // emit completion
-          emit d_func()->groupLoadComplete(data.groupName);
-        }
-      }
-      else if (EGE_WAIT == result)
-      {
-        // still processing, do nothing
-      }
-      else
-      {
-        // remove resource from pool
-        data.resources.pop_front();
-
-        // update statistics
-        d_func()->m_processedResourcesCount++;
-
-        // emit
-        emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
-
         // error!
-        emit d_func()->groupLoadError(data.groupName);
+        emit d_func()->groupLoadError(group->name());
       }
     }
     else
     {
-      // load resource
-      resource->unload();
-
-      // remove resource from pool
-      data.resources.pop_front();
-
-      // update statistics
-      d_func()->m_processedResourcesCount++;
-
-      // emit
-      emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
-
-      egeCritical() << "Processed" << d_func()->m_processedResourcesCount << "out of" << d_func()->m_totalResourcesToProcess;
-
-      // check if no more resources to load
-      if (data.resources.empty())
-      {
-        // TAGE - hmm, better solution needed ? as we process all resources individually here
-        // call ResourceGroup::unload so it marks itself as unloaded
-        PResourceGroup group = d_func()->group(data.groupName);
-        if (NULL != group)
-        {
-          group->unload();
-        }
-      }
-    }
-
-    // check if no more resources to load in a group
-    if (data.resources.empty())
-    {
-      Time processingTime = Timer::GetMicroseconds() - data.startTime;
-      egeDebug() << "Processing of" << data.groupName << "took" << processingTime.miliseconds() << "ms";
-
-      // remove batch
-      m_processList.pop_front();
-    
-      // check if nothing to be processed
-      if (m_processList.empty())
-      {
-        // clean up statistics
-        d_func()->m_totalResourcesToProcess = 0;
-        d_func()->m_processedResourcesCount = 0;
-      }
+      // unload
+      group->unload();
     }
   }
 }
@@ -157,17 +69,16 @@ EGEResult ResourceManagerPrivate::loadGroup(const String& name)
   {
     ProcessingBatch& batch = *it;
 
-    if ((batch.groupName == name))
+    if ((batch.groups.back() == name))
     {
       // check if scheduled for unloading
       if ( ! batch.load)
       {
+        // update statistics
+        d_func()->m_totalResourcesToProcess -= batch.resourcesCount;
+
         // remove from pool
         m_processList.erase(it);
-
-        // update statistics
-        d_func()->m_totalResourcesToProcess -= batch.resources.size();
-
         return EGE_SUCCESS;
       }
       else
@@ -179,25 +90,24 @@ EGEResult ResourceManagerPrivate::loadGroup(const String& name)
     }
   }
 
+  ProcessingBatch batch;
+  batch.load            = true;
+  batch.startTime       = 0LL;
+  batch.resourcesCount  = 0;
+
   // build dependencies first
   // NOTE: this contains all dependant groups and itself at the end
-  StringList groupsToLoad;
-  if ( ! d_func()->buildDependacyList(groupsToLoad, name))
+  if ( ! d_func()->buildDependacyList(batch.groups, name))
   {
     // error!
     egeWarning() << "Could not build dependancy list for group" << name;
     return EGE_ERROR;
   }
 
-  groupsToLoad.push_back(name);
+  batch.groups.push_back(name);
 
-  // add to pool
-  ProcessingBatch batch;
-  batch.groupName = name;
-  batch.load      = true;
-  batch.startTime = 0LL;
-
-  for (StringList::const_iterator it = groupsToLoad.begin(); it != groupsToLoad.end(); ++it)
+  // count resources
+  for (StringList::const_iterator it = batch.groups.begin(); it != batch.groups.end(); ++it)
   {
     // find group of given name
     PResourceGroup group = d_func()->group(*it);
@@ -208,14 +118,17 @@ EGEResult ResourceManagerPrivate::loadGroup(const String& name)
       return EGE_ERROR;
     }
 
-    // add to pool
-    batch.resources << group->resources("");
+    // update resource count for batch
+    batch.resourcesCount += group->resourceCount();
   }
 
+  // add to pool
   m_processList.push_back(batch);
 
   // update statistics
-  d_func()->m_totalResourcesToProcess += batch.resources.size();
+  d_func()->m_totalResourcesToProcess += batch.resourcesCount;
+
+  egeDebug() << "Group scheduled for loading:" << name;
 
   return EGE_SUCCESS;
 }
@@ -227,16 +140,16 @@ void ResourceManagerPrivate::unloadGroup(const String& name)
   {
     ProcessingBatch& batch = *it;
 
-    if (batch.groupName == name)
+    if (batch.groups.back() == name)
     {
       // check if scheduled for loading
       if (batch.load)
       {
+        // update statistics
+        d_func()->m_totalResourcesToProcess -= batch.resourcesCount;
+       
         // remove from pool
         m_processList.erase(it);
-
-        // update statistics
-        d_func()->m_totalResourcesToProcess -= batch.resources.size();
         return;
       }
       else
@@ -248,26 +161,45 @@ void ResourceManagerPrivate::unloadGroup(const String& name)
     }
   }
 
-  // find group of given name
-  PResourceGroup group = d_func()->group(name);
-  if (NULL == group)
+  ProcessingBatch batch;
+  batch.load            = false;
+  batch.startTime       = 0LL;
+  batch.resourcesCount  = 0;
+
+  // build dependencies first
+  // NOTE: this contains all dependant groups and itself at the end
+  if ( ! d_func()->buildDependacyList(batch.groups, name))
   {
     // error!
-    egeWarning() << "Group" << name << "not found!";
+    egeWarning() << "Could not build dependancy list for group" << name;
     return;
   }
 
-  // add to pool
-  ProcessingBatch batch;
-  batch.groupName = name;
-  batch.load      = false;
-  batch.startTime = 0LL;
-  batch.resources = group->resources("");
+  batch.groups.push_back(name);
 
+  // count resources
+  for (StringList::const_iterator it = batch.groups.begin(); it != batch.groups.end(); ++it)
+  {
+    // find group of given name
+    PResourceGroup group = d_func()->group(*it);
+    if (NULL == group)
+    {
+      // error!
+      egeWarning() << "Group" << name << "not found!";
+      return;
+    }
+
+    // update resource count for batch
+    batch.resourcesCount += group->resourceCount();
+  }
+
+  // add to pool
   m_processList.push_back(batch);
 
   // update statistics
-  d_func()->m_totalResourcesToProcess += batch.resources.size();
+  d_func()->m_totalResourcesToProcess += batch.resourcesCount;
+
+  egeDebug() << "Group scheduled for unloading:" << name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::ResourceProcessPolicy ResourceManagerPrivate::resourceProcessPolicy() const
@@ -287,6 +219,91 @@ void ResourceManagerPrivate::shutDown()
 ResourceManager::State ResourceManagerPrivate::state() const
 {
   return m_state;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerPrivate::onGroupLoaded(const PResourceGroup& group)
+{
+  ProcessingBatch& data = m_processList.front();
+
+  EGE_ASSERT(group->name() == data.groups.front());
+  
+  // check if expected group has been loaded
+  if (group->name() == data.groups.front())
+  {
+    egeDebug() << "Group loaded:" << group->name();
+
+    // remove it from batch pool
+    data.groups.pop_front();
+
+    // check if no more groups to be processed
+    if (data.groups.empty())
+    {
+      // remove from process list first
+      m_processList.pop_front();
+
+      // signal
+      emit d_func()->groupLoadComplete(group->name());
+
+      // check if not more batches to process
+      if (m_processList.empty())
+      {
+        // clean up statistics
+        d_func()->m_totalResourcesToProcess = 0;
+        d_func()->m_processedResourcesCount = 0;
+      }
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerPrivate::onGroupUnloaded(const PResourceGroup& group)
+{
+  ProcessingBatch& data = m_processList.front();
+
+  EGE_ASSERT(group->name() == data.groups.front());
+
+  // check if expected group has been loaded
+  if (group->name() == data.groups.front())
+  {
+    egeDebug() << "Group unloaded:" << group->name();
+
+    // remove it from batch pool
+    data.groups.pop_front();
+
+    // check if no more groups to be processed
+    if (data.groups.empty())
+    {
+      // remove from process list first
+      m_processList.pop_front();
+
+      // check if not more batches to process
+      if (m_processList.empty())
+      {
+        // clean up statistics
+        d_func()->m_totalResourcesToProcess = 0;
+        d_func()->m_processedResourcesCount = 0;
+      }
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerPrivate::onResourceLoaded(const PResource& resource)
+{
+  EGE_UNUSED(resource);
+
+  // update statistics
+  d_func()->m_processedResourcesCount++;
+
+  egeDebug() << "Progress" << d_func()->m_processedResourcesCount << "/" << d_func()->m_totalResourcesToProcess;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerPrivate::onResourceUnloaded(const PResource& resource)
+{
+  EGE_UNUSED(resource);
+
+  // update statistics
+  d_func()->m_processedResourcesCount++;
+
+  egeDebug() << "Progress" << d_func()->m_processedResourcesCount << "/" << d_func()->m_totalResourcesToProcess;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

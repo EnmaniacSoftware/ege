@@ -74,6 +74,8 @@ ResourceManager::ResourceManager(Application* app) : Object(app),
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::~ResourceManager()
 {
+  removeGroups();
+
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -313,6 +315,12 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
     PResourceGroup existingGroup = group(newGroup->name());
     if (NULL == existingGroup)
     {
+      // connect
+      ege_connect(newGroup, resourceLoaded, p_func(), ResourceManagerPrivate::onResourceLoaded);
+      ege_connect(newGroup, resourceUnloaded, p_func(), ResourceManagerPrivate::onResourceUnloaded);
+      ege_connect(newGroup, resourceGroupLoaded, p_func(), ResourceManagerPrivate::onGroupLoaded);
+      ege_connect(newGroup, resourceGroupUnloaded, p_func(), ResourceManagerPrivate::onGroupUnloaded);
+  
       // add into pool
       m_groups.push_back(newGroup);
     }
@@ -507,6 +515,14 @@ void ResourceManager::removeGroups()
   // remove all groups
   for (GroupList::iterator it = m_groups.begin(); it != m_groups.end();)
   {
+    PResourceGroup& group = *it;
+
+    // disconnect
+    ege_disconnect(group, resourceLoaded, p_func(), ResourceManagerPrivate::onResourceLoaded);
+    ege_disconnect(group, resourceUnloaded, p_func(), ResourceManagerPrivate::onResourceUnloaded);
+    ege_disconnect(group, resourceGroupLoaded, p_func(), ResourceManagerPrivate::onGroupLoaded);
+    ege_disconnect(group, resourceGroupUnloaded, p_func(), ResourceManagerPrivate::onGroupUnloaded);
+
     m_groups.erase(it++);
   }
 }

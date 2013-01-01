@@ -2,6 +2,7 @@
 #include "Core/Resource/ResourceManager.h"
 #include <EGETimer.h>
 #include <EGEDebug.h>
+#include <EGELog.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -109,6 +110,15 @@ EGEResult ResourceGroup::load()
           break;
         }
 
+        // check if loaded
+        if (IResource::STATE_LOADED == resource->state())
+        {
+          egeLog() << resource->name() << "of group" << name();
+
+          // signal
+          emit resourceLoaded(resource);
+        }
+
         // check processing policy
         if (ResourceManager::RLP_RESOURCE == m_manager->resourceProcessPolicy())
         {
@@ -126,7 +136,8 @@ EGEResult ResourceGroup::load()
     }
     else
     {
-      egeDebug() << name() << "loaded.";
+      // signal
+      emit resourceGroupLoaded(*this);
 
       // set flag
       m_loaded = true;
@@ -151,13 +162,21 @@ void ResourceGroup::unload()
       {
         // unload it
         resource->unload();
+
+        // check if loaded
+        if (IResource::STATE_UNLOADED == resource->state())
+        {
+          // signal
+          emit resourceUnloaded(resource);
+        }
       }
     }
 
-    egeDebug() << name() << "unloaded.";
-
     // reset flag
     m_loaded = false;
+
+    // signal
+    emit resourceGroupUnloaded(*this);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -211,6 +230,11 @@ List<PResource> ResourceGroup::resources(const String& typeName) const
   }
 
   return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 ResourceGroup::resourceCount() const
+{
+  return static_cast<u32>(m_resources.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceGroup::destroy()

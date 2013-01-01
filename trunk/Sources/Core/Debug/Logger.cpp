@@ -132,8 +132,11 @@ void Logger::write()
   // open file
   if (EGE_SUCCESS == file.open(EGEFile::MODE_APPEND))
   {
-    // store data  
-    DataBuffer buf((void*) m_buffer.toAscii(), m_buffer.length());    
+    // add new line character
+    m_buffer += "\n";
+
+    // store data
+    DataBuffer buf(const_cast<void*>(reinterpret_cast<const void*>(m_buffer.toAscii())), m_buffer.length());    
     file.write(buf, buf.size());   
   }
 }
