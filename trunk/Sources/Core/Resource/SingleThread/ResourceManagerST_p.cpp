@@ -38,13 +38,26 @@ void ResourceManagerPrivate::update(const Time& time)
 
     PResourceGroup group = d_func()->group(data.groups.front());
 
+    // check if first try to load batch
+    if (0 == data.startTime.microseconds())
+    {
+      // set timestamp
+      data.startTime = Timer::GetMicroseconds();
+    }
+
     if (data.load)
     {
       // try to load
       EGEResult result = group->load();
 
+      // check if loaded already
+      if (EGE_ERROR_ALREADY_EXISTS == result)
+      {
+        // process as loaded
+        onGroupLoaded(group);
+      }
       // check if error
-      if ((EGE_SUCCESS != result) && (EGE_WAIT != result))
+      else if ((EGE_SUCCESS != result) && (EGE_WAIT != result))
       {
         // error!
         emit d_func()->groupLoadError(group->name());
@@ -52,8 +65,15 @@ void ResourceManagerPrivate::update(const Time& time)
     }
     else
     {
-      // unload
-      group->unload();
+      // try to unload
+      EGEResult result = group->unload();
+
+      // check if unloaded already
+      if (EGE_ERROR_ALREADY_EXISTS == result)
+      {
+        // process as unloaded
+        onGroupUnloaded(group);
+      }
     }
   }
 }
@@ -230,7 +250,7 @@ void ResourceManagerPrivate::onGroupLoaded(const PResourceGroup& group)
   // check if expected group has been loaded
   if (group->name() == data.groups.front())
   {
-    egeDebug() << "Group loaded:" << group->name();
+    egeDebug() << "Group loaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
 
     // remove it from batch pool
     data.groups.pop_front();
@@ -264,7 +284,7 @@ void ResourceManagerPrivate::onGroupUnloaded(const PResourceGroup& group)
   // check if expected group has been loaded
   if (group->name() == data.groups.front())
   {
-    egeDebug() << "Group unloaded:" << group->name();
+    egeDebug() << "Group unloaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
 
     // remove it from batch pool
     data.groups.pop_front();

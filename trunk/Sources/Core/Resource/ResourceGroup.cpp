@@ -143,12 +143,19 @@ EGEResult ResourceGroup::load()
       m_loaded = true;
     }
   }
+  else
+  {
+    // already loaded
+    result = EGE_ERROR_ALREADY_EXISTS;
+  }
 
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceGroup::unload()
+EGEResult ResourceGroup::unload()
 {
+  EGEResult result = EGE_SUCCESS;
+
   // check if loaded
   if (isLoaded())
   {
@@ -178,6 +185,13 @@ void ResourceGroup::unload()
     // signal
     emit resourceGroupUnloaded(*this);
   }
+  else
+  {
+    // already loaded
+    result = EGE_ERROR_ALREADY_EXISTS;
+  }
+
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PResource ResourceGroup::resource(const String& typeName, const String& name) const

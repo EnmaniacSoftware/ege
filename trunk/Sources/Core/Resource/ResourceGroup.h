@@ -55,10 +55,16 @@ class ResourceGroup : public Object
      *  @param  tag   xml element with resource definition. 
      */
     EGEResult create(const String& path,  const PXmlElement& tag);
-    /*! Loads the group resources. */
+    /*! Loads the group resources. 
+     *  @note When loading is successfully done resourceGroupLoaded signal is emitted. If group was already loaded no singal is emitted.
+     *  @return When group is successfully loaded EGE_SUCCESS is returned. If group was already loaded, EGE_ERROR_ALREADY_EXISTS is returned.
+     */
     EGEResult load();
-    /*! Unloads the group resources. */
-    void unload();
+    /*! Unloads the group resources. 
+     *  @note When unloading is successfully done resourceGroupUnloaded signal is emitted. If group was already unloaded no singal is emitted.
+     *  @return When group is successfully unloaded EGE_SUCCESS is returned. If group was already unloaded, EGE_ERROR_ALREADY_EXISTS is returned.
+     */
+    EGEResult unload();
     /*! Returns group name. */
     const String& name() const { return m_name; }
     /*! Returns resource of a given type and name. */
