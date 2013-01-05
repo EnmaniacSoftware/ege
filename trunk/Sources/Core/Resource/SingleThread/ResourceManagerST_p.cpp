@@ -134,7 +134,7 @@ EGEResult ResourceManagerPrivate::loadGroup(const String& name)
     if (NULL == group)
     {
       // error!
-      egeWarning() << "Group" << name << "not found!";
+      egeWarning() << "Group" << *it << "not found!";
       return EGE_ERROR;
     }
 
@@ -313,6 +313,9 @@ void ResourceManagerPrivate::onResourceLoaded(const PResource& resource)
   // update statistics
   d_func()->m_processedResourcesCount++;
 
+  // signal
+  emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
+
   egeDebug() << "Progress" << d_func()->m_processedResourcesCount << "/" << d_func()->m_totalResourcesToProcess;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -322,6 +325,9 @@ void ResourceManagerPrivate::onResourceUnloaded(const PResource& resource)
 
   // update statistics
   d_func()->m_processedResourcesCount++;
+
+  // signal
+  emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
 
   egeDebug() << "Progress" << d_func()->m_processedResourcesCount << "/" << d_func()->m_totalResourcesToProcess;
 }
