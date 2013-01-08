@@ -1,0 +1,93 @@
+#include "Core/Application/Application.h"
+#include "Core/Graphics/Image/ImageLoader.h"
+#include "Core/Event/Event.h"
+#include "Core/Event/EventIDs.h"
+#include "Core/Event/EventManager.h"
+#include <EGEDebug.h>
+
+#if EGE_IMAGEMANAGER_SINGLE_THREAD
+#include "Core/Graphics/Image/SingleThread/ImageLoaderST_p.h"
+#elif EGE_IMAGEMANAGER_MULTI_THREAD
+#include "Core/Graphics/Image/MultiThread/ImageLoaderST_p.h"
+#endif // EGE_RESOURCE_MANAGER_SINGLE_THREAD
+
+EGE_NAMESPACE
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGE_DEFINE_NEW_OPERATORS(ImageLoader)
+EGE_DEFINE_DELETE_OPERATORS(ImageLoader)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ImageLoader::ImageLoader(Application* app) : Object(app), 
+                                             m_p(NULL)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ImageLoader::~ImageLoader()
+{
+  EGE_DELETE(m_p);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult ImageLoader::construct()
+{
+  // allocate private implementation
+  m_p = ege_new ImageLoaderPrivate(this);
+  if (NULL == m_p)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // subscribe for event notifications
+  if ( ! app()->eventManager()->addListener(this))
+  {
+    // error!
+    egeCritical() << EGE_FUNC_INFO << "Could not register for notifications!";
+    return EGE_ERROR;
+  }
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ImageLoader::update(const Time& time)
+{
+  EGE_UNUSED(time)
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult ImageLoader::load(const String& fileName, PixelFormat format)
+{
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ImageLoader::shutDown()
+{
+  p_func()->shutDown();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ImageLoader::State ImageLoader::state() const
+{
+  return p_func()->state();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ImageLoader::onEventRecieved(PEvent event)
+{
+  switch (event->id())
+  {
+    case EGE_EVENT_ID_CORE_QUIT_REQUEST:
+
+      if ((STATE_CLOSING != p_func()->state()) && (STATE_CLOSED != p_func()->state()))
+      {
+        // do shouting down
+        shutDown();
+      }
+      break;
+
+    //case EGE_EVENT_ID_CORE_FRAME_END:
+
+    //  if (STATE_READY == p_func()->state())
+    //  {
+    //    processCommands();
+    //  }
+    //  break;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
