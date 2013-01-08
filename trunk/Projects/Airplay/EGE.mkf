@@ -179,8 +179,17 @@ files
 
 	["Core/Crypto"]
  	(../../Sources/Core/Crypto)
+  CryptographicHash.cpp
+  CryptographicHash.h
+  CryptographicHash_p.cpp
+  CryptographicHash_p.h
   Hash.cpp
   Hash.h
+
+	["Core/Crypto/MD5"]
+ 	(../../Sources/Core/Crypto/md5)
+  md5.c
+  md5.h
 
 	["Core/Data"]
  	(../../Sources/Core/Data)

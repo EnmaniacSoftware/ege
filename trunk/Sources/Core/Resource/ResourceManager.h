@@ -143,7 +143,7 @@ class ResourceManager : public Object, public IEventListener
 
     /*! Builds dependancy list for a given group. */
     bool buildDependacyList(StringList& list, const String& groupName) const;
-    /*! EventListener override. Event reciever. */
+    /*! @see IEventListener::onEventRecieved. */
     void onEventRecieved(PEvent event) override;
     /*! Shuts down. */
     void shutDown();

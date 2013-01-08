@@ -15,6 +15,7 @@
 #include "Core/Debug/Debug.h"
 #include "Core/Tools/DesktopServices.h"
 #include "Core/Audio/AudioManager.h"
+#include "Core/Graphics/Image/ImageLoader.h"
 #include <EGETimer.h>
 #include <EGEGraphics.h>
 #include <EGEApplication.h>
@@ -34,6 +35,7 @@ Application::Application() : m_sceneManager(NULL),
                              m_audioManager(NULL),
                              m_debug(NULL), 
                              m_desktopServices(NULL),
+                             m_imageLoader(NULL),
                              m_landscapeMode(false),
                              m_language("en")
 {
@@ -42,6 +44,7 @@ Application::Application() : m_sceneManager(NULL),
 Application::~Application()
 {
   EGE_DELETE(m_sceneManager);
+  EGE_DELETE(m_imageLoader);
   EGE_DELETE(m_graphics);
   EGE_DELETE(m_appController);
   EGE_DELETE(m_screenManager);
@@ -89,6 +92,20 @@ EGEResult Application::initialize(const Dictionary& params)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
+  }
+
+  // create image loader
+  m_imageLoader = ege_new ImageLoader(this);
+  if (NULL == m_imageLoader)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  if (EGE_SUCCESS != (result = m_imageLoader->construct()))
+  {
+    // error!
+    return result;
   }
 
   // create graphics

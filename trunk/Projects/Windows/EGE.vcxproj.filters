@@ -148,9 +148,6 @@
     <Filter Include="Core\Audio\OpenAL">
       <UniqueIdentifier>{2469302f-a215-49ef-82ee-9745942d1421}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Data\Crypto">
-      <UniqueIdentifier>{3abc6d54-baea-4a5a-a348-0d4e4f8df1b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Win32\File">
       <UniqueIdentifier>{37b16d40-4fac-4a87-9902-c1c884e2bccd}</UniqueIdentifier>
     </Filter>
@@ -216,6 +213,15 @@
     </Filter>
     <Filter Include="Core\Tools">
       <UniqueIdentifier>{f5c8dafe-d484-49e1-8244-af8492ad3398}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Crypto">
+      <UniqueIdentifier>{3abc6d54-baea-4a5a-a348-0d4e4f8df1b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Crypto\MD5">
+      <UniqueIdentifier>{1bc7ec11-3ec2-49a1-8a2b-ab5f26ec69db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\Image\Single Thread">
+      <UniqueIdentifier>{3d81d51d-0e70-4bf9-a2d1-7ec995b97a2f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -454,7 +460,7 @@
       <Filter>Core\Debug</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Hash.cpp">
-      <Filter>Core\Data\Crypto</Filter>
+      <Filter>Core\Crypto</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Texture2D.cpp">
       <Filter>Core\Graphics</Filter>
@@ -758,6 +764,21 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\MultiThread\ResourceManagerWorkThread.cpp">
       <Filter>Core\Resource\Multi Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Crypto\CryptographicHash.cpp">
+      <Filter>Core\Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Crypto\CryptographicHash_p.cpp">
+      <Filter>Core\Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Crypto\md5\md5.c">
+      <Filter>Core\Crypto\MD5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageLoader.cpp">
+      <Filter>Core\Graphics\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image\SingleThread\ImageLoaderST_p.cpp">
+      <Filter>Core\Graphics\Image\Single Thread</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1117,7 +1138,7 @@
     <ClInclude Include="..\..\Sources\EGEVertexBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEHash.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Hash.h">
-      <Filter>Core\Data\Crypto</Filter>
+      <Filter>Core\Crypto</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h">
       <Filter>Core\Graphics</Filter>
@@ -1465,6 +1486,21 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\MultiThread\ResourceManagerWorkThread.h">
       <Filter>Core\Resource\Multi Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Crypto\CryptographicHash_p.h">
+      <Filter>Core\Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Crypto\CryptographicHash.h">
+      <Filter>Core\Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Crypto\md5\md5.h">
+      <Filter>Core\Crypto\MD5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageLoader.h">
+      <Filter>Core\Graphics\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image\SingleThread\ImageLoaderST_p.h">
+      <Filter>Core\Graphics\Image\Single Thread</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

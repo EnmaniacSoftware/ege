@@ -21,6 +21,7 @@ class OverlayManager;
 class Debug;
 class DesktopServices;
 class AudioManager;
+class ImageLoader;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Application
 {
@@ -65,6 +66,8 @@ class Application
     Debug* debug() const { return m_debug; }
     /*! Returns dektop services object. */
     DesktopServices* desktopServices() const { return m_desktopServices; }
+    /*! Returns image loader object. */
+    ImageLoader* imageLoader() const { return m_imageLoader; }
 
     /*! Returns TRUE if landscape mode is enabled. */
     bool isLandscape() const { return m_landscapeMode; }
@@ -106,6 +109,8 @@ class Application
     ScreenManager* m_screenManager;
     /*! Audio manager. */
     AudioManager* m_audioManager;
+    /*! Image loader. */
+    ImageLoader* m_imageLoader;
     /*! Debug object. */
     Debug* m_debug;
     /*! Desktop services object. */

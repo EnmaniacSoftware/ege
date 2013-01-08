@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_RESOURCEMANAGER_MULTI_THREAD_PRIVATE_H
 #define EGE_CORE_RESOURCEMANAGER_MULTI_THREAD_PRIVATE_H
 
-#ifdef EGE_RESOURCE_MANAGER_MULTI_THREAD
+#if EGE_RESOURCEMANAGER_MULTI_THREAD
 
 /*! Single threaded implementation for resource manager class.
  */
@@ -30,9 +30,9 @@ class ResourceManagerPrivate
     struct ProcessingBatch
     {
       bool load;                    /*!< Should resource be loaded. If FALSE resource is to be unloaded. */
-      String groupName;             /*!< Name of the owning resource group. */
-      List<PResource> resources;    /*!< Resources left to be handled. */
       Time startTime;               /*!< Start time of batch processing. */
+      StringList groups;            /*!< List of groups to be processed. Last group is the main group. */
+      u32 resourcesCount;           /*!< Total number of resource to be processed. */
     };
 
     /*! Available request types. */
@@ -115,6 +115,22 @@ class ResourceManagerPrivate
 
   private slots:
 
+    /*! Slot called when group has been loaded. 
+     *  @param Group which has been loaded.
+     */
+    void onGroupLoaded(const PResourceGroup& group);
+    /*! Slot called when group has been unloaded. 
+     *  @param Group which has been unloaded.
+     */
+    void onGroupUnloaded(const PResourceGroup& group);
+    /*! Slot called when resource has been loaded. 
+     *  @param Resource which has been loaded.
+     */
+    void onResourceLoaded(const PResource& resource);
+    /*! Slot called when resource has been unloaded. 
+     *  @param Resource which has been unloaded.
+     */
+    void onResourceUnloaded(const PResource& resource);
     /*! Slot called when work thread terminated its work. */
     void onWorkThreadFinished(const PThread& thread);
 
@@ -143,6 +159,6 @@ class ResourceManagerPrivate
 
 EGE_NAMESPACE_END
 
-#endif // EGE_RESOURCE_MANAGER_MULTI_THREAD
+#endif // EGE_RESOURCEMANAGER_MULTI_THREAD
 
 #endif // EGE_CORE_RESOURCEMANAGER_MULTI_THREAD_PRIVATE_H

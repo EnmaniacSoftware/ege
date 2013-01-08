@@ -24,11 +24,10 @@
 #include "Core/Event/EventManager.h"
 #include <EGEXml.h>
 #include <EGEDir.h>
-#include <EGEMutex.h>
 
-#if EGE_RESOURCE_MANAGER_SINGLE_THREAD
+#if EGE_RESOURCEMANAGER_SINGLE_THREAD
 #include "Core/Resource/SingleThread/ResourceManagerST_p.h"
-#elif EGE_RESOURCE_MANAGER_MULTI_THREAD
+#elif EGE_RESOURCEMANAGER_MULTI_THREAD
 #include "Core/Resource/MultiThread/ResourceManagerMT_p.h"
 #endif // EGE_RESOURCE_MANAGER_SINGLE_THREAD
 

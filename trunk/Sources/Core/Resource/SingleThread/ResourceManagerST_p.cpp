@@ -1,4 +1,4 @@
-#ifdef EGE_RESOURCE_MANAGER_SINGLE_THREAD
+#if EGE_RESOURCEMANAGER_SINGLE_THREAD
 
 #include "Core/Resource/SingleThread/ResourceManagerST_p.h"
 #include "Core/Resource/ResourceGroup.h"
@@ -333,4 +333,4 @@ void ResourceManagerPrivate::onResourceUnloaded(const PResource& resource)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // EGE_RESOURCE_MANAGER_SINGLE_THREAD
+#endif // EGE_RESOURCEMANAGER_SINGLE_THREAD

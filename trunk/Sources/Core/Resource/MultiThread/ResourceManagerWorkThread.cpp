@@ -1,4 +1,4 @@
-#ifdef EGE_RESOURCE_MANAGER_MULTI_THREAD
+#if EGE_RESOURCEMANAGER_MULTI_THREAD
 
 #include "Core/Application/Application.h"
 #include "Core/Resource/MultiThread/ResourceManagerMT_p.h"
@@ -37,4 +37,4 @@ s32 ResourceManagerWorkThread::run()
 
 EGE_NAMESPACE_END
 
-#endif // EGE_RESOURCE_MANAGER_MULTI_THREAD
+#endif // EGE_RESOURCEMANAGER_MULTI_THREAD

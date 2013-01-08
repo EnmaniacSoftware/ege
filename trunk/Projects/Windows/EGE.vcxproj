@@ -36,7 +36,10 @@
     <ClCompile Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Render\RenderComponent.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Crypto\CryptographicHash.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Crypto\CryptographicHash_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Hash.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Crypto\md5\md5.c" />
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Node.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Console.cpp" />
@@ -57,7 +60,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageHandlerJPG.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPNG.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPVR.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageLoader.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageUtils.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Image\SingleThread\ImageLoaderST_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\IndexBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Material.cpp" />
@@ -202,7 +207,10 @@
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeOut.h" />
     <ClInclude Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Crypto\CryptographicHash.h" />
+    <ClInclude Include="..\..\Sources\Core\Crypto\CryptographicHash_p.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Hash.h" />
+    <ClInclude Include="..\..\Sources\Core\Crypto\md5\md5.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
@@ -211,7 +219,9 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageHandlerJPG.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPNG.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPVR.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageLoader.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Image\SingleThread\ImageLoaderST_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\IndexBufferTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.h" />
@@ -558,7 +568,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_NULL;EGE_RESOURCE_MANAGER_SINGLE_THREAD;EGE_FEATURE_DEBUG;EGE_FEATURE_MEMORY_DEBUG;EGE_FEATURE_OPENGL_DEBUG;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_DEBUG;EGE_FEATURE_MEMORY_DEBUG;EGE_FEATURE_OPENGL_DEBUG;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>
@@ -584,7 +594,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_NULL;EGE_RESOURCE_MANAGER_SINGLE_THREAD;EGE_XML_TINYXML;EGE_RANDOM_STDC;EGE_AUDIO_OPENAL;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_SINGLE_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_XML_TINYXML;EGE_RANDOM_STDC;EGE_AUDIO_OPENAL;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
