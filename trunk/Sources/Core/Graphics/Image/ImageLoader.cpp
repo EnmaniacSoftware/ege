@@ -53,9 +53,9 @@ void ImageLoader::update(const Time& time)
   p_func()->update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ImageLoader::load(const String& fileName, PixelFormat format)
+EGEResult ImageLoader::load(PObject userData, const String& fileName, PixelFormat format)
 {
-  p_func()->load(fileName, format);
+  p_func()->load(userData, fileName, format);
 
   return EGE_SUCCESS;
 }

@@ -38,7 +38,7 @@ class ImageLoaderPrivate
     /*! @see ImageLoader::state. */
     ImageLoader::State state() const;
     /*! @see ImageLoader::load. */
-    void load(const String& fileName, PixelFormat format);
+    void load(PObject userData, const String& fileName, PixelFormat format);
     /*! @see ImageLoader::shutDown. */
     void shutDown();
 

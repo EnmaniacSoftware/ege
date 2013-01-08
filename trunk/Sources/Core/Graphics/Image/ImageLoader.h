@@ -14,6 +14,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGE_DECLARE_SMART_CLASS(Object, PObject)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ImageLoader : public Object, public IEventListener
 {
   public:
@@ -27,15 +29,17 @@ class ImageLoader : public Object, public IEventListener
   signals:
 
     /*! Signal is emitted when image has been loaded. 
-     *  @param image Instance of the loaded image.
+     *  @param image    Instance of the loaded image.
+     *  @param userData User data given at scheduling time.
      *  @note Signal is emitted in loader's thread. 
      */
-    Signal1<PImage> imageLoadComplete;
+    Signal2<PImage, PObject> imageLoadComplete;
     /*! Signal is emitted when image load failed. 
      *  @param fileName Name of the image which failed to load.
+     *  @param userData User data given at scheduling time.
      *  @note Signal is emitted in loader's thread. 
      */
-    Signal1<const String&> imageLoadError;
+    Signal2<const String&, PObject> imageLoadError;
 
   public:
 
@@ -57,12 +61,13 @@ class ImageLoader : public Object, public IEventListener
     /*! Returns current state. */
     State state() const;
     /*! Loads image from given file converting it's pixel format to requested one if possible. 
+     *  @param userData  User data which can be used to identify image.
      *  @param fileName  File name to load image from.
      *  @param format    Pixel format loaded image should be converted to.
-     *  @return Loaded image on success. NULL otherwise.
+     *  @return EGE_SUCCESS if image was scheduled for loading.
      *  @note If requested pixel format is PF_UNKNOWN no conversion is done.
      */
-    EGEResult load(const String& fileName, PixelFormat format = PF_UNKNOWN);
+    EGEResult load(PObject userData, const String& fileName, PixelFormat format = PF_UNKNOWN);
 
   private:
 
