@@ -42,5 +42,21 @@ ImageLoader::State ImageLoaderPrivate::state() const
   return m_state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ImageLoaderPrivate::load(const String& fileName, PixelFormat format)
+{
+  // load image
+  PImage image = Image::Load(fileName, format);
+
+  // singal result
+  if (image->isValid())
+  {
+    emit d_func()->imageLoadComplete(image);
+  }
+  else
+  {
+    emit d_func()->imageLoadError(fileName);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_IMAGEMANAGER_SINGLE_THREAD

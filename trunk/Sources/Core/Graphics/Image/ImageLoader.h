@@ -8,6 +8,7 @@
 #include <EGEString.h>
 #include <EGETime.h>
 #include <EGEImage.h>
+#include <EGESignal.h>
 #include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN
@@ -22,6 +23,19 @@ class ImageLoader : public Object, public IEventListener
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  signals:
+
+    /*! Signal is emitted when image has been loaded. 
+     *  @param image Instance of the loaded image.
+     *  @note Signal is emitted in loader's thread. 
+     */
+    Signal1<PImage> imageLoadComplete;
+    /*! Signal is emitted when image load failed. 
+     *  @param fileName Name of the image which failed to load.
+     *  @note Signal is emitted in loader's thread. 
+     */
+    Signal1<const String&> imageLoadError;
 
   public:
 

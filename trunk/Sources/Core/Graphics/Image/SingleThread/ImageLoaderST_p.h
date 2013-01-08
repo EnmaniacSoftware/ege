@@ -38,7 +38,7 @@ class ImageLoaderPrivate
     /*! @see ImageLoader::state. */
     ImageLoader::State state() const;
     /*! @see ImageLoader::load. */
-    EGEResult load(const String& fileName, PixelFormat format = PF_UNKNOWN);
+    void load(const String& fileName, PixelFormat format);
     /*! @see ImageLoader::shutDown. */
     void shutDown();
 
