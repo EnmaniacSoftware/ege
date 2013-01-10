@@ -10,7 +10,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Renderer;
+class IRenderer;
 class Viewport;
 EGE_DECLARE_SMART_CLASS(Overlay, POverlay)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ class Overlay : public Object
     /*! Returns current alignment. */
     const Alignment& alignment() const { return m_alignment; }
     /*! Renders overlay. */
-    virtual void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) = 0;
+    virtual void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) = 0;
     /*! Sets transparency level. */
     virtual void setAlpha(float32 alpha);
 

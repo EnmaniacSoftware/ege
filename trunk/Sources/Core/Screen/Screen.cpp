@@ -32,7 +32,7 @@ void Screen::pointerEvent(PPointerData data)
   EGE_UNUSED(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Screen::render(const Viewport* viewport, Renderer* renderer)
+void Screen::render(const Viewport* viewport, IRenderer* renderer)
 {
   EGE_UNUSED(viewport);
   EGE_UNUSED(renderer);

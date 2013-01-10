@@ -4,10 +4,6 @@
 #if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 #include "Win32/Graphics/GraphicsWin32_p.h"
 #include "Win32/Graphics/OpenGL/GL 2.0/RenderWindowOGLWin32.h"
-#include "Core/Graphics/OpenGL/VertexBufferVAOGL.h"
-#include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
-#include "Core/Graphics/OpenGL/IndexBufferVAOGL.h"
-#include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
 #endif // EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 
 EGE_NAMESPACE_BEGIN
@@ -38,38 +34,6 @@ EGEResult GraphicsPrivate::construct()
   d_func()->registerRenderTarget(renderWindow);
 
   return EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PVertexBuffer GraphicsPrivate::createVertexBuffer(EGEVertexBuffer::UsageType usage) const
-{
-  PVertexBuffer buffer;
-
-  if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
-  {
-    buffer = ege_new VertexBufferVBO(d_func()->app(), usage);
-  }
-  else
-  {
-    buffer = ege_new VertexBufferVA(d_func()->app(), usage);
-  }
-
-  return buffer;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PIndexBuffer GraphicsPrivate::createIndexBuffer(EGEIndexBuffer::UsageType usage) const
-{
-  PIndexBuffer buffer;
-
-  if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
-  {
-    buffer = ege_new IndexBufferVBO(d_func()->app(), usage);
-  }
-  else
-  {
-    buffer = ege_new IndexBufferVA(d_func()->app(), usage);
-  }
-
-  return buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void GraphicsPrivate::initializeWorkThreadRenderingContext()

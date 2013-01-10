@@ -353,7 +353,7 @@ float32 UIScrollView::throwCoefficient() const
   return m_throwCoefficient;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void UIScrollView::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void UIScrollView::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   if (!isVisible())
   {

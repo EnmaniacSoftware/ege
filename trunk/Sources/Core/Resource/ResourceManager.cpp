@@ -16,6 +16,8 @@
 #include "Core/Resource/ResourceWidget.h"
 #include "Core/Resource/ResourceImagedAnimation.h"
 #include "Core/Resource/ResourceSequencer.h"
+#include "Core/Graphics/Graphics.h"
+#include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Graphics/Font.h"
 #include "Core/Debug/DebugFont.h"
 #include "Core/Application/Application.h"
@@ -413,8 +415,11 @@ bool ResourceManager::createDefaultResources()
 
   m_groups.push_back(group);
 
+  // wrap texture data into buffer and create texture from it
+  DataBuffer textureData(DebugFontData, DEBUG_FONT_LEN);
+
   // create debug font texture
-  PTexture2D texture = ege_new Texture2D(app(), "debug-font");
+  PTexture2D texture = app()->graphics()->renderSystem()->createTexture2D("debug-font", textureData);
   if (NULL == texture)
   {
     // error!
@@ -430,14 +435,6 @@ bool ResourceManager::createDefaultResources()
   }
 
   if (EGE_SUCCESS != group->addResource(textureResource))
-  {
-    // error!
-    return false;
-  }
-
-  // wrap texture data into buffer and create texture from it
-  DataBuffer textureData(DebugFontData, DEBUG_FONT_LEN);
-  if (EGE_SUCCESS != texture->create(textureData))
   {
     // error!
     return false;

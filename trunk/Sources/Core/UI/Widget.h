@@ -16,7 +16,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Renderer;
+class IRenderer;
 class Viewport;
 EGE_DECLARE_SMART_CLASS(Widget, PWidget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ class Widget : public Object
     /*! Updates overlay. */
     virtual void update(const Time& time);
     /*! Renders widget. */
-    virtual void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
+    virtual void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
     /*! Pointer event processor. */
     virtual void pointerEvent(PPointerData data);
     /*! Returns name. */

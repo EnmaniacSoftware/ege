@@ -26,7 +26,7 @@ class WidgetFrame
     /*! Returns TRUE if object is valid. */
     bool isValid() const;
     /*! Renders frame. */
-    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
+    void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
 
     /*! Sets rectanlges (in pixels). */
     void setRects(const Recti& topLeft, const Recti& topMiddle, const Recti& topRight, const Recti& middleLeft, const Recti& fill, const Recti& middleRight, 

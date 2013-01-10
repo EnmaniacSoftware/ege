@@ -4,6 +4,8 @@
 #include <EGESequencer.h>
 #include <EGEPhysics.h>
 #include <EGEGraphics.h>
+#include <EGERenderComponent.h>
+#include <EGERenderer.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
@@ -215,7 +217,7 @@ EGEResult ImagedAnimation::addFrameData(const List<EGEImagedAnimation:: ActionDa
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ImagedAnimation::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void ImagedAnimation::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   // check if no sequencer
   if (NULL == m_currentSequencer)

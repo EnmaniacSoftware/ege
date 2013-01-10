@@ -1,6 +1,6 @@
 #include "Core/Application/Application.h"
 #include "Core/Scene/SceneManager.h"
-#include "Core/Graphics/Render/Renderer.h"
+#include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Graphics/Camera.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Scene/SceneNode.h"
@@ -64,11 +64,11 @@ EGEResult SceneManager::construct()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void SceneManager::render(PCamera camera, PViewport viewport)
 {
-  Renderer* renderer = app()->graphics()->renderer();
+  RenderSystem* renderSystem = app()->graphics()->renderSystem();
 
-  renderer->setViewport(viewport);
-  renderer->setProjectionMatrix(camera->projectionMatrix());
-  renderer->setViewMatrix(camera->viewMatrix());
+  renderSystem->setViewport(viewport);
+  renderSystem->setProjectionMatrix(camera->projectionMatrix());
+  renderSystem->setViewMatrix(camera->viewMatrix());
 
   //m_pcRenderSystem->setPolygonMode( pcCamera->getPolygonMode() );
   //m_pcRenderSystem->setSceneManager( this );
@@ -83,12 +83,12 @@ void SceneManager::render(PCamera camera, PViewport viewport)
   //findLightsAffectingFrustum();
 
   // traverse the graph and add all visible object for rendering
-  addForRendering(camera, renderer);
+  addForRendering(camera, renderSystem);
 
   // check if overlays are to be rendered
   if (viewport->overlaysEnabled())
   {
-    app()->overlayManager()->render(viewport, renderer);
+    app()->overlayManager()->render(viewport, renderSystem);
 
     //// find visible GUI elements
     //CGUIManager::GetSingletonPtr()->findVisibleElements( pcViewport, m_pcRenderQueue );
@@ -97,7 +97,7 @@ void SceneManager::render(PCamera camera, PViewport viewport)
     //queueMouseCursorForRendering();
   }
 
-  app()->screenManager()->render(viewport, renderer);
+  app()->screenManager()->render(viewport, renderSystem);
 
   //// queue skybox for rendering
   //queueSkyForRendering();
@@ -106,17 +106,17 @@ void SceneManager::render(PCamera camera, PViewport viewport)
   //queueLensFlaresForRendering();
 
   // clear viewport
-  renderer->clearViewport(viewport);
+  renderSystem->clearViewport(viewport);
 
   //// update auto uniform data source
   //m_pcAutoUniformDataSource->setCamera( pcCamera );
   
-  renderer->resetStats();
+  renderSystem->resetStats();
 
-  renderer->flush();
+  renderSystem->flush();
 
-  viewport->setVertexCount(renderer->vertexCount());
-  viewport->setBatchCount(renderer->batchCount());
+  viewport->setVertexCount(renderSystem->vertexCount());
+  viewport->setBatchCount(renderSystem->batchCount());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void SceneManager::update(const Time& time)
@@ -541,7 +541,7 @@ void SceneManager::destroy()
 //  }
 //}
 //
-void SceneManager::addForRendering(PCamera& camera, Renderer* renderer)
+void SceneManager::addForRendering(PCamera& camera, IRenderer* renderer)
 {
   // clear render queue
 //  m_pcRenderQueue->clear();

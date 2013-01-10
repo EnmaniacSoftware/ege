@@ -1,15 +1,16 @@
-#ifndef EGE_CORE_FONT_H
-#define EGE_CORE_FONT_H
+#ifndef EGE_CORE_GRAPHICS_FONT_H
+#define EGE_CORE_GRAPHICS_FONT_H
 
 #include <EGE.h>
 #include <EGEString.h>
 #include <EGEMap.h>
-#include "Core/Graphics/Material.h"
 #include "Core/Resource/ResourceFont.h"
 
 EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class GlyphData;
+
+EGE_DECLARE_SMART_CLASS(Material, PMaterial)
 EGE_DECLARE_SMART_CLASS(Font, PFont)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Font : public Object
@@ -48,4 +49,4 @@ class Font : public Object
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_FONT_H
+#endif // EGE_CORE_GRAPHICS_FONT_H

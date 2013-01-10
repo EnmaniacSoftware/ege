@@ -151,6 +151,7 @@ void AppController::update()
       app()->physicsManager()->update(m_updateInterval);
     }
 
+    app()->graphics()->update();
     app()->imageLoader()->update(m_updateInterval);
     app()->resourceManager()->update(timeInterval);
 

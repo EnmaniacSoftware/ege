@@ -28,7 +28,7 @@ class SceneNodeObject : public Object
     /*! Returns parent node. */
     SceneNode* parentNode() const{ return m_parentNode; }
     /*! Adds object render data for rendering with given renderer. */
-    virtual bool addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
+    virtual bool addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
     /*! Returns TRUE if object is visible. */
     bool isVisible() const { return m_visible; }
     /*! Sets visibility flag. */

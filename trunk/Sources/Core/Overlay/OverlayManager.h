@@ -10,7 +10,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Renderer;
+class IRenderer;
 class Viewport;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class OverlayManager : public Object
@@ -26,7 +26,7 @@ class OverlayManager : public Object
     /*! Creates object. */
     EGEResult construct();
     /*! Renders all elements. */
-    void render(Viewport* viewport, Renderer* renderer);
+    void render(Viewport* viewport, IRenderer* renderer);
     /*! Updates manager. */
     void update(const Time& time);
     /*! Adds overlay. 

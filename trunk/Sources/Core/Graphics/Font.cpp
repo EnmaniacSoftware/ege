@@ -1,4 +1,5 @@
 #include "Core/Graphics/Font.h"
+#include "Core/Graphics/Material.h"
 
 EGE_NAMESPACE_BEGIN
 

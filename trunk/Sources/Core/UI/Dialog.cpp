@@ -71,7 +71,7 @@ void Dialog::update(const Time& time)
   Widget::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Dialog::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void Dialog::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   if (isVisible())
   {

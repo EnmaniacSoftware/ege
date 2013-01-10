@@ -29,7 +29,7 @@ class UIPageIndicator : public Widget
   public:
 
     /*! @see Widget::addForRendering. */
-    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
+    void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
     /*! Sets page count. */
     void setPageCount(s32 count);
     /*! Returns number of pages. */

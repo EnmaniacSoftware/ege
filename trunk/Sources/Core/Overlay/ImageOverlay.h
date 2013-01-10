@@ -22,7 +22,7 @@ class ImageOverlay : public Overlay
     EGE_DECLARE_DELETE_OPERATORS
   
     /*! @see Overlay::addForRendering. */
-    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
+    void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
 
   private:
 

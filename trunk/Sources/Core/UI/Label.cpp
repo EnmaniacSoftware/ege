@@ -46,7 +46,7 @@ void Label::update(const Time& time)
   Widget::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Label::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void Label::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   if (isVisible())
   {

@@ -61,6 +61,11 @@ class ResourceTexture : public IResource
     /*! Gets texture addressing mode for T coordinate. */
     EGETexture::AddressingMode adressingModeT() const { return m_addressingModeT; }
 
+  private slots:
+
+    /*! Slot called when texture has been created. */
+    void onTextureCreated(u32 handle, PTexture2D texture, EGEResult result);
+
   private:
 
     /*! Texture name. */
@@ -79,6 +84,8 @@ class ResourceTexture : public IResource
     PObject m_texture;
     /*! Rotation angle. */
     Angle m_rotation;
+    /*! Texture creation handle. */
+    u32 m_textureCreateHandle;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

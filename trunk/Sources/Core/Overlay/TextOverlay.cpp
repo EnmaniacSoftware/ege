@@ -249,7 +249,7 @@ void TextOverlay::updateTextData()
   setSize(textSize);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void TextOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void TextOverlay::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   if (visible())
   {

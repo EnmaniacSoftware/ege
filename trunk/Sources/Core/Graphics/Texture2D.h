@@ -18,11 +18,10 @@ EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
 class Texture2D : public Object
 {
   /* For accessing private data. */
-  friend class RendererPrivate;
+  friend class RenderSystemPrivate;
   
   public:
 
-    Texture2D(Application* app, const String& name);
     virtual ~Texture2D();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -51,14 +50,6 @@ class Texture2D : public Object
      *  @note Calling thread must be able to issue underlying 3D API commands.
      */
     EGEResult create(const PImage& image);
-    /*! Sets minifying function filter. */
-    void setMinFilter(EGETexture::Filter filter);
-    /*! Sets magnification function filter. */
-    void setMagFilter(EGETexture::Filter filter);
-    /*! Sets texture addressing mode for S texture coordinate. */
-    void setTextureAddressingModeS(EGETexture::AddressingMode mode);
-    /*! Sets texture addressing mode for T texture coordinate. */
-    void setTextureAddressingModeT(EGETexture::AddressingMode mode);
     /*! Returns render target. */
     PRenderTarget renderTarget() const { return m_target; }
     /*! Returns width. */
@@ -68,20 +59,17 @@ class Texture2D : public Object
     /*! Returns pixel format. */
     PixelFormat format() const { return m_format; }
 
+  protected:
+
+    /*! Constructing only via RenderSystem. */
+    Texture2D(Application* app, const String& name);
+
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(Texture2D);
 
     /*! Texture name. */
     String m_name; 
-    /*! Minifying function filter. */
-    EGETexture::Filter m_minFilter;
-    /*! Magnification function filter. */
-    EGETexture::Filter m_magFilter;
-    /*! Texture addressing mode for S texture coordinate. */
-    EGETexture::AddressingMode m_addressingModeS;
-    /*! Texture addressing mode for T texture coordinate. */
-    EGETexture::AddressingMode m_addressingModeT;
     /*! Render target. NULL if texture is not targetable. */
     PRenderTarget m_target;
     /*! Texture width. */

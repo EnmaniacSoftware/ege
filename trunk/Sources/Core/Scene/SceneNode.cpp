@@ -198,7 +198,7 @@ SceneNode* SceneNode::createChildSceneNode(const String& name, EGEPhysics::Compo
 //}
 //
 //
-bool SceneNode::addForRendering(PCamera& camera, Renderer* renderer) const
+bool SceneNode::addForRendering(PCamera& camera, IRenderer* renderer) const
 {  
   // check if we are NOT visible by camera
   if (!isVisible() /*|| pcCamera->isVisible( m_cWorldBS ) == false || pcCamera->isVisible( m_cWorldAABB ) == false */)

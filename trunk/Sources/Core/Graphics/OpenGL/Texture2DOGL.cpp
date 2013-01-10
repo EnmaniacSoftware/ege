@@ -34,6 +34,9 @@ Texture2DPrivate::Texture2DPrivate(Texture2D* base) : m_d(base),
                                                       m_internalFormat(0),
                                                       m_typeFormat(0)
 {
+  // generate OGL texture
+  glGenTextures(1, &m_id);
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Texture2DPrivate::~Texture2DPrivate()
@@ -45,6 +48,11 @@ Texture2DPrivate::~Texture2DPrivate()
     glDeleteTextures(1, &m_id);
     m_id = 0;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Texture2DPrivate::isValid() const
+{
+  return (0 != m_id);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult Texture2DPrivate::create(const String& path)
@@ -103,14 +111,7 @@ EGEResult Texture2DPrivate::create(const PImage& image)
   // setup 4 byte alignment
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-  // generate and bind OGL texture
-  glGenTextures(1, &m_id);
-	glBindTexture(GL_TEXTURE_2D, m_id);
-
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapFilter(d_func()->m_minFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapFilter(d_func()->m_magFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mapAddressingMode(d_func()->m_addressingModeS));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mapAddressingMode(d_func()->m_addressingModeT));
+//	glBindTexture(GL_TEXTURE_2D, m_id);
 
   //if ( glExt::EXT_texture_filter_anisotropic == true )
   //{
@@ -249,34 +250,6 @@ EGEResult Texture2DPrivate::create(const PImage& image)
   OGL_CHECK();
 
   return EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-GLint Texture2DPrivate::mapFilter(EGETexture::Filter filter) const
-{
-  switch (filter)
-  {
-    case EGETexture::BILINEAR:          return GL_NEAREST;
-    case EGETexture::TRILINEAR:         return GL_LINEAR;
-    case EGETexture::MIPMAP_BILINEAR:   return GL_LINEAR_MIPMAP_NEAREST;
-    case EGETexture::MIPMAP_TRILINEAR:  return GL_LINEAR_MIPMAP_LINEAR;
-  }
-
-  return GL_NEAREST;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-GLint Texture2DPrivate::mapAddressingMode(EGETexture::AddressingMode mode) const
-{
-  switch (mode)
-  {
-#ifndef EGE_RENDERING_OPENGLES_1
-    case EGETexture::AM_CLAMP:  return GL_CLAMP;
-#else
-    case EGETexture::AM_CLAMP:  return GL_CLAMP_TO_EDGE;
-#endif
-    case EGETexture::AM_REPEAT: return GL_REPEAT;
-  }
-
-  return GL_REPEAT;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult Texture2DPrivate::createRenderTarget()

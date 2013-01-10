@@ -287,7 +287,7 @@ bool ParticleEmitter::allocateParticlesData()
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ParticleEmitter::addForRendering(Renderer* renderer, const Matrix4f& transform)
+bool ParticleEmitter::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   // update vertex data
   if (m_renderData->vertexBuffer()->setSize(m_activeParticlesCount * ((pointSprite) ? 1 : 6)))

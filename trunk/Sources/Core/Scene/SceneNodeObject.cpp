@@ -28,7 +28,7 @@ SceneNodeObject::~SceneNodeObject()
   //}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool SceneNodeObject::addForRendering(Renderer* renderer, const Matrix4f& transform)
+bool SceneNodeObject::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   EGE_UNUSED(renderer);
   EGE_UNUSED(transform);

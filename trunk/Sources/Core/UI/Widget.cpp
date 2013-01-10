@@ -73,7 +73,7 @@ void Widget::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Widget::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void Widget::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   if (isVisible())
   {

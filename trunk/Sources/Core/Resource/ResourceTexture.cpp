@@ -1,5 +1,7 @@
 #include "Core/Resource/ResourceTexture.h"
 #include "Core/Resource/ResourceManager.h"
+#include <EGEApplication.h>
+#include <EGEGraphics.h>
 #include <EGEXml.h>
 #include <EGEDebug.h>
 #include <EGEResources.h>
@@ -122,8 +124,15 @@ EGEResult ResourceTexture::load()
     // create according to type
     if ("2d" == type())
     {
+      if (NULL == m_texture)
+      {
   //    EGE_PRINT("%s, 2D", name().toAscii());
-      result = create2D();
+        result = create2D();
+      }
+      else
+      {
+        result = EGE_SUCCESS;
+      }
     }
 
     if (EGE_SUCCESS == result)
@@ -140,25 +149,31 @@ EGEResult ResourceTexture::create2D()
 {
   EGEResult result = EGE_SUCCESS;
 
-  PTexture2D texture = ege_new Texture2D(app(), name());
-  if ((NULL == texture) || !texture->isValid())
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
+  PImage image = Image::Load(path());
+
+  m_textureCreateHandle = app()->graphics()->createTexture2D(image);
+
+  ege_connect(app()->graphics(), texture2DCreated, this, ResourceTexture::onTextureCreated);
+
+  //PTexture2D texture = ege_new Texture2D(app(), name());
+  //if ((NULL == texture) || !texture->isValid())
+  //{
+  //  // error!
+  //  return EGE_ERROR_NO_MEMORY;
+  //}
 
   // sets parameters
-  texture->setMinFilter(minFilter());
-  texture->setMagFilter(magFilter());
-  texture->setTextureAddressingModeS(adressingModeS());
-  texture->setTextureAddressingModeT(adressingModeT());
+  //texture->setMinFilter(minFilter());
+  //texture->setMagFilter(magFilter());
+  //texture->setTextureAddressingModeS(adressingModeS());
+  //texture->setTextureAddressingModeT(adressingModeT());
 
   // create it
-  result = texture->create(path());
+ //  result = texture->create(path());
   
   // assign
-  m_texture = texture;
-
+ // m_texture = texture;
+  return EGE_WAIT;
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -169,6 +184,14 @@ void ResourceTexture::unload()
 
   // reset flag
   m_state = STATE_UNLOADED;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceTexture::onTextureCreated(u32 handle, PTexture2D texture, EGEResult result)
+{
+  if (handle == m_textureCreateHandle)
+  {
+    m_texture = texture;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

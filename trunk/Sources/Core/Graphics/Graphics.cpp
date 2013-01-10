@@ -1,7 +1,7 @@
 #include "Core/Application/Application.h"
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Render/RenderTarget.h"
-#include "Core/Graphics/Render/Renderer.h"
+#include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Graphics/Particle/ParticleFactory.h"
@@ -9,6 +9,8 @@
 #include "Core/Data/DataBuffer.h"
 #include <EGEDevice.h>
 #include <EGEDebug.h>
+
+#include <EGEMutex.h>
 
 #ifdef EGE_PLATFORM_WIN32
 #include "Win32/Graphics/GraphicsWin32_p.h"
@@ -24,9 +26,11 @@ EGE_DEFINE_DELETE_OPERATORS(Graphics)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Graphics::Graphics(Application* app, const Dictionary& params) : Object(app),
                                                                  m_p(NULL),
+                                                                 m_renderSystem(NULL),
                                                                  m_particleFactory(NULL),
                                                                  m_widgetFactory(NULL),
-                                                                 m_renderingEnabled(true)
+                                                                 m_renderingEnabled(true),
+                                                                 m_nextHandle(0)
 {
   m_params = params;
 }
@@ -35,8 +39,7 @@ Graphics::~Graphics()
 {
   unregisterAllRenderTargets();
 
-  m_renderer = NULL;
-
+  EGE_DELETE(m_renderSystem);
   EGE_DELETE(m_particleFactory);
   EGE_DELETE(m_widgetFactory);
   EGE_DELETE(m_p);
@@ -61,15 +64,15 @@ EGEResult Graphics::construct()
     return result;
   }
 
-  // create renderer
-  m_renderer = ege_new Renderer(app());
-  if (NULL == m_renderer)
+  // create render system
+  m_renderSystem = ege_new RenderSystem(app());
+  if (NULL == m_renderSystem)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
   }
 
-  if (EGE_SUCCESS != (result = m_renderer->construct()))
+  if (EGE_SUCCESS != (result = m_renderSystem->construct()))
   {
     // error!
     return result;
@@ -101,6 +104,14 @@ EGEResult Graphics::construct()
   {
     // error!
     return result;
+  }
+
+  // create access mutex
+  m_mutex = ege_new Mutex(app());
+  if (NULL == m_mutex)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
   }
 
   return EGE_SUCCESS;
@@ -191,16 +202,6 @@ void Graphics::unregisterAllRenderTargets()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PVertexBuffer Graphics::createVertexBuffer(EGEVertexBuffer::UsageType usage) const
-{
-  return p_func()->createVertexBuffer(usage);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PIndexBuffer Graphics::createIndexBuffer(EGEIndexBuffer::UsageType usage) const
-{
-  return p_func()->createIndexBuffer(usage);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Graphics::setRenderingEnabled(bool set)
 {
   m_renderingEnabled = set;
@@ -214,6 +215,38 @@ void Graphics::initializeWorkThreadRenderingContext()
 void Graphics::deinitializeWorkThreadRenderingContext()
 {
   p_func()->deinitializeWorkThreadRenderingContext();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 Graphics::createTexture2D(const PImage& image)
+{
+  TextureCreateRequest request;
+  request.image  = image;
+  request.handle = m_nextHandle++;
+
+  // add to pool
+  MutexLocker locker(m_mutex);
+  m_texture2DRequests.push_back(request);
+
+  return request.handle;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Graphics::update()
+{
+  MutexLocker locker(m_mutex);
+  for (TextureCreateRequestList::iterator it = m_texture2DRequests.begin(); it != m_texture2DRequests.end(); ++it)
+  {
+    TextureCreateRequest& request = *it;
+
+    PTexture2D texture = renderSystem()->createTexture2D("ala", request.image);
+ 
+    emit texture2DCreated(request.handle, texture, EGE_SUCCESS);
+  }
+  m_texture2DRequests.clear();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+IRenderer* Graphics::renderer()
+{
+  return m_renderSystem;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

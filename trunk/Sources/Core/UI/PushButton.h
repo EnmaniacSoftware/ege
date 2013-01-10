@@ -17,7 +17,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Renderer;
+class IRenderer;
 EGE_DECLARE_SMART_CLASS(PushButton, PPushButton)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class PushButton : public Widget
@@ -47,7 +47,7 @@ class PushButton : public Widget
     /*! @see Widget::update. */
     void update(const Time& time) override;
     /*! @see Widget::addForRendering. */
-    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
+    void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
     /*! @see Widget::setSize. */
     void setSize(const Vector2f& size) override;
     /*! Sets alignment. */

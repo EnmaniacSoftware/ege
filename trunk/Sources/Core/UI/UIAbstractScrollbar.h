@@ -40,7 +40,7 @@ class UIAbstractScrollbar : public Widget
     /*! @see Widget::update. */
     void update(const Time& time) override;
     /*! @see Widget::addForRendering. */
-    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
+    void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
 
     /*! Sets range. */
     void setRange(s32 from, s32 to);

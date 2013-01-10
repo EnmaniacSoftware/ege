@@ -20,7 +20,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Renderer;
+class IRenderer;
 EGE_DECLARE_SMART_CLASS(ImagedAnimation, PImagedAnimation)
 EGE_DECLARE_SMART_CLASS(Material, PMaterial)
 EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
@@ -103,7 +103,7 @@ class ImagedAnimation : public Object, public IAnimation
     PSequencer currentSequencer() const;
 
     /*! Renders animation. */
-    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
+    void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
     /*! Sets base render priority. */
     void setBaseRenderPriority(s32 priority);
     /*! Clears object. */

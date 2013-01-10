@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_MATERIAL_H
-#define EGE_CORE_MATERIAL_H
+#ifndef EGE_CORE_GRAPHICS_MATERIAL_H
+#define EGE_CORE_GRAPHICS_MATERIAL_H
 
 #include <EGE.h>
 #include <EGEString.h>
@@ -10,7 +10,6 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(Material, PMaterial)
-EGE_DECLARE_SMART_CLASS(Object, PObject)
 EGE_DECLARE_SMART_CLASS(RenderPass, PRenderPass)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Material : public Object
@@ -27,7 +26,7 @@ class Material : public Object
     bool isValid() const;
 
     /*! Returns number of passes. */
-    u32 passCount() const { return static_cast<u32>(m_passes.size()); }
+    u32 passCount() const;
     /*! Returns pass at given index. */
     PRenderPass pass(u32 index) const;
     /*! Adds render pass to material. 
@@ -71,7 +70,11 @@ class Material : public Object
     PassArray m_passes;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+inline u32 Material::passCount() const 
+{ 
+  return static_cast<u32>(m_passes.size()); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_MATERIAL_H
+#endif // EGE_CORE_GRAPHICS_MATERIAL_H

@@ -1,29 +1,31 @@
-#ifndef EGE_CORE_RENDERER_PRIVATE_H
-#define EGE_CORE_RENDERER_PRIVATE_H
+#ifndef EGE_CORE_GRAPHICS_OPENGL20_RENDERSYSTEM_PRIVATE_H
+#define EGE_CORE_GRAPHICS_OPENGL20_RENDERSYSTEM_PRIVATE_H
 
 #include <EGE.h>
 #include <EGEMap.h>
 #include <EGEDynamicArray.h>
-#include <gl/gl.h>
-#include "Core/Graphics/Render/Renderer.h"
+#include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Components/Render/RenderComponent.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Renderer;
+class RenderSystem;
+
+EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
+EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RendererPrivate
+class RenderSystemPrivate
 {
   public:
 
-    RendererPrivate(Renderer* base);
-   ~RendererPrivate();
+    RenderSystemPrivate(RenderSystem* base);
+   ~RenderSystemPrivate();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    EGE_DECLARE_PUBLIC_IMPLEMENTATION(Renderer)
+    EGE_DECLARE_PUBLIC_IMPLEMENTATION(RenderSystem)
 
     /*! Sets given viewport. */
     void setViewport(const PViewport& viewport);
@@ -31,6 +33,15 @@ class RendererPrivate
     void clearViewport(const PViewport& viewport);
     /*! Sends all geometry through the geometry pipeline to hardware. */
     void flush();
+
+    /*! @see RenderSystem::createVertexBuffer. */
+    PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const;
+    /*! @see RenderSystem::createIndexBuffer. */
+    PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const;
+    /*! @see RenderSystem::createTexture2D. */
+    PTexture2D createTexture2D(const String& name, const PImage& image);
+    /*! @see RenderSystem::createTexture2D. */
+    PTexture2D createTexture2D(const String& name, const PDataBuffer& data);
 
   private:
 
@@ -79,4 +90,4 @@ class RendererPrivate
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_RENDERER_PRIVATE_H
+#endif // EGE_CORE_GRAPHICS_OPENGL20_RENDERSYSTEM_PRIVATE_H

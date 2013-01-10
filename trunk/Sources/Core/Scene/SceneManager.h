@@ -7,7 +7,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Renderer;
+class IRenderer;
 class SceneNode;
 EGE_DECLARE_SMART_CLASS(SceneManager, PSceneManager)
 EGE_DECLARE_SMART_CLASS(Camera, PCamera)
@@ -120,7 +120,7 @@ class SceneManager : public Object//ISceneNodeListener
      *  @param  camera    Camera from which point of view rendering is being done.
      *  @param  renderer  Renderer accepting the object to show.
      */
-    void addForRendering(PCamera& camera, Renderer* renderer);
+    void addForRendering(PCamera& camera, IRenderer* renderer);
 
     //// visibility related methods
     //void findLightsAffectingFrustum( void );                        // finds all lights affecting frustum

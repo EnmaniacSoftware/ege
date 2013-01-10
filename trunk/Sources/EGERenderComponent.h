@@ -1,9 +1,8 @@
-#ifndef EGE_MUTEX_H
-#define EGE_MUTEX_H
+#ifndef EGE_RENDERCOMPONENT_H
+#define EGE_RENDERCOMPONENT_H
 
-#include "Core/Threading/Mutex.h"
-#include "Core/Threading/MutexLocker.h"
+#include "Core/Components/Render/RenderComponent.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // EGE_MUTEX_H
+#endif // EGE_RENDERCOMPONENT_H

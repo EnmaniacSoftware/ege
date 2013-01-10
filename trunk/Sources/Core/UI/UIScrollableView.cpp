@@ -97,7 +97,7 @@ void UIScrollableView::pointerEvent(PPointerData data)
   UIScrollView::pointerEvent(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void UIScrollableView::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void UIScrollableView::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   if (!isVisible())
   {

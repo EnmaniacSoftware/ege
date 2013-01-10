@@ -17,7 +17,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Renderer;
+class IRenderer;
 EGE_DECLARE_SMART_CLASS(Label, PLabel)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Label : public Widget
@@ -42,7 +42,7 @@ class Label : public Widget
     /*! @see Widget::update. */
     void update(const Time& time) override;
     /*! @see Widget::addForRendering. */
-    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
+    void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
     /*! @see Widget::setAlpha. */
     void setAlpha(float32 alpha) override;
     /*! Pointer event processor. */

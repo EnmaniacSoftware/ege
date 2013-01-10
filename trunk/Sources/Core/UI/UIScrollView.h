@@ -60,7 +60,7 @@ class UIScrollView : public Widget
     /*! @see Widget::isFrameless. */
     bool isFrameless() const override;
     /*! @see Widget::addForRendering. */
-    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
+    void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
 
     /*! Begins move. */
     virtual void beginMove(s32 x, s32 y);

@@ -267,9 +267,6 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.cpp">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\Render\Renderer.cpp">
-      <Filter>Core\Graphics\Render</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderTarget.cpp">
       <Filter>Core\Graphics\Render</Filter>
     </ClCompile>
@@ -386,9 +383,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Device\DeviceWin32.cpp">
       <Filter>Win32\Device</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.cpp">
-      <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Input\Pointer.cpp">
       <Filter>Core\Input</Filter>
@@ -780,6 +774,12 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\SingleThread\ImageLoaderST_p.cpp">
       <Filter>Core\Graphics\Image\Single Thread</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderSystem.cpp">
+      <Filter>Core\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RenderSystemOGL2_p.cpp">
+      <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1021,9 +1021,6 @@
       <Filter>Core\Device</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEDevice.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.h">
-      <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGERandom.h" />
     <ClInclude Include="..\..\Sources\EGEInput.h" />
     <ClInclude Include="..\..\Sources\Core\Input\Pointer.h">
@@ -1502,6 +1499,14 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\SingleThread\ImageLoaderST_p.h">
       <Filter>Core\Graphics\Image\Single Thread</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderSystem.h">
+      <Filter>Core\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RenderSystemOGL2_p.h">
+      <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGERenderComponent.h" />
+    <ClInclude Include="..\..\Sources\EGERenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

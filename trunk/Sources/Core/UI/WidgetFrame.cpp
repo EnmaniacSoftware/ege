@@ -31,7 +31,7 @@ bool WidgetFrame::isValid() const
   return (NULL != m_renderData);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void WidgetFrame::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void WidgetFrame::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   // regenerate render data if required
   if (m_renderDataInvalid)

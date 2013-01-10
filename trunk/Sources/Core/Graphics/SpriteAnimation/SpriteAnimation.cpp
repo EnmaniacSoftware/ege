@@ -1,8 +1,10 @@
 #include "Core/Graphics/SpriteAnimation/SpriteAnimation.h"
 #include "Core/Resource/ResourceSpritesheet.h"
 #include "Core/Resource/ResourceTextureImage.h"
+#include <EGEMaterial.h>
 #include <EGEPhysics.h>
 #include <EGEGraphics.h>
+#include <EGERenderComponent.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
@@ -278,7 +280,7 @@ PSequencer SpriteAnimation::currentSequencer() const
   return m_currentSequencer; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void SpriteAnimation::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void SpriteAnimation::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   // apply alignment
   Matrix4f matrix       = Matrix4f::IDENTITY;

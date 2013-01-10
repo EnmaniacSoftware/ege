@@ -67,7 +67,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Material.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RenderSystemOGL2_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.cpp" />
@@ -81,9 +81,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterPoint.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\RenderObjectFactory.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Graphics\Render\Renderer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderPass.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderQueue.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderSystem.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderTarget.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderWindow.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.cpp" />
@@ -224,6 +224,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\SingleThread\ImageLoaderST_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\IndexBufferTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RenderSystemOGL2_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.h" />
@@ -239,6 +240,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\IRenderable.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderPass.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderSystem.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexBufferTypes.h" />
@@ -329,6 +331,8 @@
     <ClInclude Include="..\..\Sources\EGEPlane.h" />
     <ClInclude Include="..\..\Sources\EGEPurchases.h" />
     <ClInclude Include="..\..\Sources\EGEQuaternion.h" />
+    <ClInclude Include="..\..\Sources\EGERenderComponent.h" />
+    <ClInclude Include="..\..\Sources\EGERenderer.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
     <ClCompile Include="..\..\Sources\Win32\Application\AppControllerWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />
@@ -374,7 +378,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Material.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\glext.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RendererOGL2_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Renderer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderTarget.h" />

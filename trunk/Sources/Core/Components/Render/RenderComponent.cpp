@@ -2,6 +2,7 @@
 #include "Core/Graphics/IndexBuffer.h"
 #include "Core/Graphics/VertexBuffer.h"
 #include "Core/Graphics/Material.h"
+#include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Components/Component.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Crypto/Hash.h"
@@ -23,8 +24,8 @@ RenderComponent::RenderComponent(Application* app, const String& name, s32 prior
   m_pointSize(1.0f),
   m_lineWidth(1.0f)
 {
-  m_indexBuffer  = app->graphics()->createIndexBuffer(indexUsage);
-  m_vertexBuffer = app->graphics()->createVertexBuffer(vertexUsage);
+  m_indexBuffer  = app->graphics()->renderSystem()->createIndexBuffer(indexUsage);
+  m_vertexBuffer = app->graphics()->renderSystem()->createVertexBuffer(vertexUsage);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderComponent::~RenderComponent()

@@ -74,7 +74,7 @@ bool UIScrollablePageView::initialize(const Dictionary& params)
   return !error;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void UIScrollablePageView::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void UIScrollablePageView::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   if (!isVisible())
   {

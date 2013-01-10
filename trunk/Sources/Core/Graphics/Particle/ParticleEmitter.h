@@ -109,7 +109,7 @@ class ParticleEmitter : public SceneNodeObject
     const PRenderComponent& renderComponent() const { return m_renderData; }
 
     /*! Adds object render data for rendering with given renderer. */
-    bool addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
+    bool addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
 
   private:
 

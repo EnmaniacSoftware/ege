@@ -175,7 +175,7 @@ void UIAbstractScrollbar::setOffset(s32 offset)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void UIAbstractScrollbar::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void UIAbstractScrollbar::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   if (!isVisible() || (STATE_HIDDEN == m_state))
   {

@@ -1,4 +1,4 @@
-#include "Core/Graphics/Render/Renderer.h"
+#include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
@@ -10,32 +10,37 @@
 
 #if EGE_RENDERING_OPENGLES_1
 #include <EGEOpenGL.h>
-#include "Core/Graphics/OpenGL/ES 1.0/RendererOGLES1_p.h"
+#include "Core/Graphics/OpenGL/ES 1.0/RenderSystemOGLES1_p.h"
 #elif EGE_RENDERING_OPENGL_2
 #include <EGEOpenGL.h>
-#include "Core/Graphics/OpenGL/GL 2.0/RendererOGL2_p.h"
+#include "Core/Graphics/OpenGL/GL 2.0/RenderSystemOGL2_p.h"
 #endif // EGE_RENDERING_OPENGLES_1
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(Renderer)
-EGE_DEFINE_DELETE_OPERATORS(Renderer)
+EGE_DEFINE_NEW_OPERATORS(RenderSystem)
+EGE_DEFINE_DELETE_OPERATORS(RenderSystem)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Renderer::Renderer(Application* app) : Object(app),
-                                       m_p(NULL)
+RenderSystem::RenderSystem(Application* app) : Object(app),
+                                               IRenderer(),
+                                               m_p(NULL),
+                                               m_textureMinFilter(EGETexture::BILINEAR),
+                                               m_textureMagFilter(EGETexture::BILINEAR),
+                                               m_textureAddressingModeS(EGETexture::AM_CLAMP),
+                                               m_textureAddressingModeT(EGETexture::AM_CLAMP)
 {
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------
-Renderer::~Renderer()
+RenderSystem::~RenderSystem()
 {
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Renderer::construct()
+EGEResult RenderSystem::construct()
 {
   // create private implementation
-  m_p = ege_new RendererPrivate(this);
+  m_p = ege_new RenderSystemPrivate(this);
   if (NULL == m_p)
   {
     // error!
@@ -45,30 +50,30 @@ EGEResult Renderer::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Renderer::flush()
+void RenderSystem::flush()
 {
   EGE_ASSERT(NULL != m_p);
   p_func()->flush();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Renderer::clearViewport(const PViewport& viewport)
+void RenderSystem::clearViewport(const PViewport& viewport)
 {
   EGE_ASSERT(NULL != m_p);
   p_func()->clearViewport(viewport);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Renderer::setViewport(const PViewport& viewport)
+void RenderSystem::setViewport(const PViewport& viewport)
 {
   EGE_ASSERT(NULL != m_p);
   p_func()->setViewport(viewport);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Renderer::addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix)
+bool RenderSystem::addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix)
 {
   EGE_ASSERT(component);
 
   // check if no queue with such priority exists yet
-  if (!m_renderQueues.contains(component->priority()))
+  if ( ! m_renderQueues.contains(component->priority()))
   {
     // create new queue
     PRenderQueue queue = ege_new RenderQueue(app());
@@ -86,7 +91,7 @@ bool Renderer::addForRendering(const PRenderComponent& component, const Matrix4f
   return m_renderQueues[component->priority()]->addForRendering(component, worldMatrix);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Renderer::setProjectionMatrix(const Matrix4f& matrix)
+void RenderSystem::setProjectionMatrix(const Matrix4f& matrix)
 {
   m_projectionMatrix = matrix;
 
@@ -100,18 +105,18 @@ void Renderer::setProjectionMatrix(const Matrix4f& matrix)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Renderer::setViewMatrix(const Matrix4f& matrix)
+void RenderSystem::setViewMatrix(const Matrix4f& matrix)
 {
   m_viewMatrix = matrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Renderer::resetStats()
+void RenderSystem::resetStats()
 {
   m_batchCount  = 0;
   m_vertexCount = 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Rectf Renderer::applyRotation(const Rectf& rect, const Angle& angle) const
+Rectf RenderSystem::applyRotation(const Rectf& rect, const Angle& angle) const
 {
   Rectf out;
 
@@ -159,6 +164,46 @@ Rectf Renderer::applyRotation(const Rectf& rect, const Angle& angle) const
   }
 
   return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PVertexBuffer RenderSystem::createVertexBuffer(EGEVertexBuffer::UsageType usage) const
+{
+  return p_func()->createVertexBuffer(usage);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PIndexBuffer RenderSystem::createIndexBuffer(EGEIndexBuffer::UsageType usage) const
+{
+  return p_func()->createIndexBuffer(usage);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PTexture2D RenderSystem::createTexture2D(const String& name, const PImage& image)
+{
+  return p_func()->createTexture2D(name, image);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PTexture2D RenderSystem::createTexture2D(const String& name, const PDataBuffer& data)
+{
+  return p_func()->createTexture2D(name, data);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystem::setTextureMinFilter(EGETexture::Filter filter)
+{
+  m_textureMinFilter = filter;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystem::setTextureMagFilter(EGETexture::Filter filter)
+{
+  m_textureMagFilter = filter;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystem::setTextureAddressingModeS(EGETexture::AddressingMode mode)
+{
+  m_textureAddressingModeS = mode;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystem::setTextureAddressingModeT(EGETexture::AddressingMode mode)
+{
+  m_textureAddressingModeT = mode;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

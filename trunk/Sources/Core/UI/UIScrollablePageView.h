@@ -45,7 +45,7 @@ class UIScrollablePageView : public UIScrollView
     /*! @see UIScrollView::pointerEvent. */
     void pointerEvent(PPointerData data) override;
     /*! @see UIScrollView::addForRendering. */
-    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
+    void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
     /*! @see UIScrollView::construct. */
     EGEResult construct() override;
 

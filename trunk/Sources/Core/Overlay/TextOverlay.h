@@ -37,7 +37,7 @@ class TextOverlay : public Overlay
     Alignment textAlignment() const { return m_textAlignment; }
 
     /*! @see Overlay::addForRendering. */
-    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
+    void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
     /*! @see Overlay::size. */
     const Vector2f& size() const override;
 

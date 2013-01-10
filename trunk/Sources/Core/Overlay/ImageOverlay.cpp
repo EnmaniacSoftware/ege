@@ -20,7 +20,7 @@ ImageOverlay::~ImageOverlay()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ImageOverlay::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void ImageOverlay::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   if (visible())
   {

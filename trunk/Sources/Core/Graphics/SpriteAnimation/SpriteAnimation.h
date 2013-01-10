@@ -19,7 +19,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Renderer;
+class IRenderer;
 EGE_DECLARE_SMART_CLASS(SpriteAnimation, PSpriteAnimation)
 EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
@@ -92,7 +92,7 @@ class SpriteAnimation : public Object, public IAnimation
     PSequencer currentSequencer() const;
 
     /*! Renders animation. */
-    void addForRendering(Renderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
+    void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
 
     /*! Returns physics data component. */
     const PPhysicsComponent& physics() const { return m_physicsData; }

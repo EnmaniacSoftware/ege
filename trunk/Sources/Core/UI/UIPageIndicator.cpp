@@ -130,7 +130,7 @@ s32 UIPageIndicator::page() const
   return m_page;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void UIPageIndicator::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void UIPageIndicator::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   if (!isVisible())
   {

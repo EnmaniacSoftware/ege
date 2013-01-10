@@ -18,6 +18,8 @@ class Texture2DPrivate
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+    /*! Returns TRUE if object is valid. */
+    bool isValid() const;
     /*! Creates texture from given file. 
      *  @note Calling thread must be able to issue OpenGL API commands.
      */
@@ -34,13 +36,6 @@ class Texture2DPrivate
     GLuint id() const { return m_id; }
     /*! Creates associated render target. */
     EGEResult createRenderTarget();
-
-  private:
-
-    /*! Maps filter to OpenGL equivalent. */
-    GLint mapFilter(EGETexture::Filter filter) const;
-    /*! Maps texture addressing mode into OpenGL equivalent. */
-    GLint mapAddressingMode(EGETexture::AddressingMode mode) const;
 
   private:
 

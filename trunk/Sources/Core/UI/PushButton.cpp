@@ -51,7 +51,7 @@ void PushButton::update(const Time& time)
   Widget::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PushButton::addForRendering(Renderer* renderer, const Matrix4f& transform)
+void PushButton::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   if (isVisible())
   {

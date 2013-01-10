@@ -140,7 +140,7 @@ void ScreenManager::hide()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ScreenManager::render(Viewport* viewport, Renderer* renderer)
+void ScreenManager::render(Viewport* viewport, IRenderer* renderer)
 {
   // go thru all screens from top to bottom
   // NOTE: no const_reverse_iterator due to GCC incompatibility of operator== and operator!=

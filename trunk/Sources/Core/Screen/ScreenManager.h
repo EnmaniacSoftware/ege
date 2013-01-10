@@ -13,7 +13,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Renderer;
+class IRenderer;
 class Viewport;
 EGE_DECLARE_SMART_CLASS(Screen, PScreen)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ class ScreenManager : public Object
     /*! Creates object. */
     EGEResult construct();
     /*! Renders all screens. */
-    void render(Viewport* viewport, Renderer* renderer);
+    void render(Viewport* viewport, IRenderer* renderer);
     /*! Updates manager. */
     void update(const Time& time);
     /*! Shows given screen adding it on top of the rest ones. 

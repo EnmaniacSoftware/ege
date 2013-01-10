@@ -15,7 +15,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Renderer;
+class IRenderer;
 class SceneManager;
 EGE_DECLARE_SMART_CLASS(SceneNodeObject, PSceneNodeObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
      *  @param  renderer  Renderer accepting the object to show.
      *  @return TRUE if successful.
      */
-    bool addForRendering(PCamera& camera, Renderer* renderer) const;
+    bool addForRendering(PCamera& camera, IRenderer* renderer) const;
 
   private:
 

@@ -14,7 +14,7 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Viewport;
-class Renderer;
+class IRenderer;
 EGE_DECLARE_SMART_CLASS(Screen, PScreen)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Screen : public Object
@@ -37,7 +37,7 @@ class Screen : public Object
     /*! Pointer event. */
     virtual void pointerEvent(PPointerData data);
     /*! Renders object. */
-    virtual void render(const Viewport* viewport, Renderer* renderer);
+    virtual void render(const Viewport* viewport, IRenderer* renderer);
     /*! Screen is about to be shown for the first time. */
     virtual void enter();
     /*! Screen is about to be hidden. */

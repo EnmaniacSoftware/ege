@@ -91,7 +91,7 @@ POverlay OverlayManager::overlay(const String& name) const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void OverlayManager::render(Viewport* viewport, Renderer* renderer)
+void OverlayManager::render(Viewport* viewport, IRenderer* renderer)
 {
   // go thru all overlays
   for (OverlayList::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
