@@ -28,9 +28,6 @@ typedef PResource (*egeResourceCreateFunc)(Application* app, ResourceGroup* grou
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManager : public Object, public IEventListener
 {
-  /*! For accessing private data. */
-  friend class ResourceManagerWorkThread;
-
   public:
 
     ResourceManager(Application* app);

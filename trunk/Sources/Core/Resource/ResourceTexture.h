@@ -63,8 +63,8 @@ class ResourceTexture : public IResource
 
   private slots:
 
-    /*! Slot called when texture has been created. */
-    void onTextureCreated(u32 handle, PTexture2D texture, EGEResult result);
+    /*! Slot called when texture request is done. */
+    void onRequestComplete(u32 handle, PObject object);
 
   private:
 
@@ -84,8 +84,8 @@ class ResourceTexture : public IResource
     PObject m_texture;
     /*! Rotation angle. */
     Angle m_rotation;
-    /*! Texture creation handle. */
-    u32 m_textureCreateHandle;
+    /*! Resource request id. */
+    u32 m_resourceRequestId;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

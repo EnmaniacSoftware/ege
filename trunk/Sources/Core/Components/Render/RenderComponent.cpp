@@ -24,8 +24,8 @@ RenderComponent::RenderComponent(Application* app, const String& name, s32 prior
   m_pointSize(1.0f),
   m_lineWidth(1.0f)
 {
-  m_indexBuffer  = app->graphics()->renderSystem()->createIndexBuffer(indexUsage);
-  m_vertexBuffer = app->graphics()->renderSystem()->createVertexBuffer(vertexUsage);
+  m_indexBuffer  = app->graphics()->hardwareResourceProvider()->createIndexBuffer(indexUsage);
+  m_vertexBuffer = app->graphics()->hardwareResourceProvider()->createVertexBuffer(vertexUsage);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderComponent::~RenderComponent()

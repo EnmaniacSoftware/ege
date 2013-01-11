@@ -419,7 +419,7 @@ bool ResourceManager::createDefaultResources()
   DataBuffer textureData(DebugFontData, DEBUG_FONT_LEN);
 
   // create debug font texture
-  PTexture2D texture = app()->graphics()->renderSystem()->createTexture2D("debug-font", textureData);
+  PTexture2D texture = app()->graphics()->hardwareResourceProvider()->createTexture2D("debug-font", textureData);
   if (NULL == texture)
   {
     // error!

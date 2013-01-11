@@ -214,6 +214,7 @@
     <ClInclude Include="..\..\Sources\Core\Debug\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\HardwareResourceProvider.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\ImagedAnimation\ImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\Image.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageHandlerJPG.h" />

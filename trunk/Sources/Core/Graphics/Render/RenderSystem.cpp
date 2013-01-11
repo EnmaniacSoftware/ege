@@ -24,11 +24,13 @@ EGE_DEFINE_DELETE_OPERATORS(RenderSystem)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderSystem::RenderSystem(Application* app) : Object(app),
                                                IRenderer(),
+                                               IHardwareResourceProvider(),
                                                m_p(NULL),
                                                m_textureMinFilter(EGETexture::BILINEAR),
                                                m_textureMagFilter(EGETexture::BILINEAR),
                                                m_textureAddressingModeS(EGETexture::AM_CLAMP),
-                                               m_textureAddressingModeT(EGETexture::AM_CLAMP)
+                                               m_textureAddressingModeT(EGETexture::AM_CLAMP),
+                                               m_nextRequestID(1)
 {
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -47,7 +49,48 @@ EGEResult RenderSystem::construct()
     return EGE_ERROR_NO_MEMORY;
   }
 
+  // create access mutex
+  m_requestsMutex = ege_new Mutex(app());
+  if (NULL == m_requestsMutex)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
   return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystem::update()
+{
+  if ( ! m_requests.empty())
+  {
+    // copy for processing
+    m_requestsMutex->lock();
+    RequestDataList queue(m_requests);
+    m_requests.clear();
+    m_requestsMutex->unlock();
+
+    // process locally
+    for (RequestDataList::iterator it = queue.begin(); it != queue.end(); ++it)
+    {
+      RequestData& request = *it;
+
+      if (REQUEST_TEXTURE_2D == request.type)
+      {
+        // apply texture params
+        setTextureMinFilter(request.textureMinFilter);
+        setTextureMagFilter(request.textureMagFilter);
+        setTextureAddressingModeS(request.textureAddressingModeS);
+        setTextureAddressingModeT(request.textureAddressingModeT);
+
+        // create texture
+        PTexture2D texture = createTexture2D(request.name, request.image);
+
+        // signal
+        emit requestComplete(request.id, texture);
+      }
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystem::flush()
@@ -184,6 +227,26 @@ PTexture2D RenderSystem::createTexture2D(const String& name, const PImage& image
 PTexture2D RenderSystem::createTexture2D(const String& name, const PDataBuffer& data)
 {
   return p_func()->createTexture2D(name, data);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 RenderSystem::requestTexture2D(const String& name, const PImage& image)
+{
+  // create request
+  RequestData request;
+  request.type                    = REQUEST_TEXTURE_2D;
+  request.id                      = m_nextRequestID++;
+  request.image                   = image;
+  request.name                    = name;
+  request.textureMinFilter        = m_textureMinFilter;
+  request.textureMagFilter        = m_textureMagFilter;
+  request.textureAddressingModeS  = m_textureAddressingModeS;
+  request.textureAddressingModeT  = m_textureAddressingModeT;
+
+  // queue it
+  MutexLocker locker(m_requestsMutex);
+  m_requests.push_back(request);
+
+  return request.id;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystem::setTextureMinFilter(EGETexture::Filter filter)

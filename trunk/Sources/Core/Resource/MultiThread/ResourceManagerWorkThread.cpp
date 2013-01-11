@@ -21,7 +21,7 @@ ResourceManagerWorkThread::~ResourceManagerWorkThread()
 s32 ResourceManagerWorkThread::run()
 {
   // initialize rendering context for this thread
-  app()->graphics()->initializeWorkThreadRenderingContext();
+  //app()->graphics()->initializeWorkThreadRenderingContext();
 
   while ( ! isStopping())
   {
@@ -29,7 +29,7 @@ s32 ResourceManagerWorkThread::run()
   }
 
   // deinitialize rendering context for this thread
-  app()->graphics()->deinitializeWorkThreadRenderingContext();
+  //app()->graphics()->deinitializeWorkThreadRenderingContext();
 
   return 0;
 }

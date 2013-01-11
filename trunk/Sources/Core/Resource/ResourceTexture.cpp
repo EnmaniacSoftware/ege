@@ -1,5 +1,8 @@
 #include "Core/Resource/ResourceTexture.h"
 #include "Core/Resource/ResourceManager.h"
+#include "Core/Graphics/Graphics.h"
+#include "Core/Graphics/HardwareResourceProvider.h"
+#include "Core/Graphics/Render/RenderSystem.h"
 #include <EGEApplication.h>
 #include <EGEGraphics.h>
 #include <EGEXml.h>
@@ -50,12 +53,14 @@ static EGETexture::AddressingMode MapTextureAddressingName(const String& name, E
   return defaultValue; //EGETexture::AM_REPEAT;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceTexture::ResourceTexture(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_TEXTURE)
+ResourceTexture::ResourceTexture(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_TEXTURE),
+                                                                           m_resourceRequestId(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceTexture::~ResourceTexture()
 {
+  ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PResource ResourceTexture::Create(Application* app, ResourceGroup* group)
@@ -119,26 +124,17 @@ EGEResult ResourceTexture::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if (STATE_LOADED != m_state)
+  if (STATE_UNLOADED == m_state)
   {
     // create according to type
     if ("2d" == type())
     {
-      if (NULL == m_texture)
+      result = create2D();
+      if (EGE_SUCCESS == result)
       {
-  //    EGE_PRINT("%s, 2D", name().toAscii());
-        result = create2D();
+        // set to loading
+        m_state = STATE_LOADING;
       }
-      else
-      {
-        result = EGE_SUCCESS;
-      }
-    }
-
-    if (EGE_SUCCESS == result)
-    {
-      // set flag
-      m_state = STATE_LOADED;
     }
   }
 
@@ -147,34 +143,27 @@ EGEResult ResourceTexture::load()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceTexture::create2D()
 {
-  EGEResult result = EGE_SUCCESS;
-
+  // load image data
   PImage image = Image::Load(path());
+  if (NULL == image)
+  {
+    // error!
+    return EGE_ERROR;
+  }
 
-  m_textureCreateHandle = app()->graphics()->createTexture2D(image);
+  // apply texture filters
+  app()->graphics()->renderSystem()->setTextureMinFilter(minFilter());
+  app()->graphics()->renderSystem()->setTextureMagFilter(magFilter());
+  app()->graphics()->renderSystem()->setTextureAddressingModeS(adressingModeS());
+  app()->graphics()->renderSystem()->setTextureAddressingModeT(adressingModeT());
 
-  ege_connect(app()->graphics(), texture2DCreated, this, ResourceTexture::onTextureCreated);
+  // request texture
+  m_resourceRequestId = app()->graphics()->hardwareResourceProvider()->requestTexture2D(name(), image);
 
-  //PTexture2D texture = ege_new Texture2D(app(), name());
-  //if ((NULL == texture) || !texture->isValid())
-  //{
-  //  // error!
-  //  return EGE_ERROR_NO_MEMORY;
-  //}
+  // connect for notification
+  ege_connect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
 
-  // sets parameters
-  //texture->setMinFilter(minFilter());
-  //texture->setMagFilter(magFilter());
-  //texture->setTextureAddressingModeS(adressingModeS());
-  //texture->setTextureAddressingModeT(adressingModeT());
-
-  // create it
- //  result = texture->create(path());
-  
-  // assign
- // m_texture = texture;
-  return EGE_WAIT;
-  return result;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceTexture::unload() 
@@ -186,11 +175,19 @@ void ResourceTexture::unload()
   m_state = STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceTexture::onTextureCreated(u32 handle, PTexture2D texture, EGEResult result)
+void ResourceTexture::onRequestComplete(u32 handle, PObject object)
 {
-  if (handle == m_textureCreateHandle)
+  if (handle == m_resourceRequestId)
   {
-    m_texture = texture;
+    // store handle
+    m_texture = object;
+
+    // disconnect
+    ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
+    m_resourceRequestId = 0;
+
+    // set state
+    m_state = STATE_LOADED;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

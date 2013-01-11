@@ -10,8 +10,6 @@
 #include <EGEDevice.h>
 #include <EGEDebug.h>
 
-#include <EGEMutex.h>
-
 #ifdef EGE_PLATFORM_WIN32
 #include "Win32/Graphics/GraphicsWin32_p.h"
 #elif EGE_PLATFORM_AIRPLAY
@@ -29,8 +27,7 @@ Graphics::Graphics(Application* app, const Dictionary& params) : Object(app),
                                                                  m_renderSystem(NULL),
                                                                  m_particleFactory(NULL),
                                                                  m_widgetFactory(NULL),
-                                                                 m_renderingEnabled(true),
-                                                                 m_nextHandle(0)
+                                                                 m_renderingEnabled(true)
 {
   m_params = params;
 }
@@ -104,14 +101,6 @@ EGEResult Graphics::construct()
   {
     // error!
     return result;
-  }
-
-  // create access mutex
-  m_mutex = ege_new Mutex(app());
-  if (NULL == m_mutex)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
   }
 
   return EGE_SUCCESS;
@@ -217,34 +206,17 @@ void Graphics::deinitializeWorkThreadRenderingContext()
   p_func()->deinitializeWorkThreadRenderingContext();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-u32 Graphics::createTexture2D(const PImage& image)
-{
-  TextureCreateRequest request;
-  request.image  = image;
-  request.handle = m_nextHandle++;
-
-  // add to pool
-  MutexLocker locker(m_mutex);
-  m_texture2DRequests.push_back(request);
-
-  return request.handle;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Graphics::update()
 {
-  MutexLocker locker(m_mutex);
-  for (TextureCreateRequestList::iterator it = m_texture2DRequests.begin(); it != m_texture2DRequests.end(); ++it)
-  {
-    TextureCreateRequest& request = *it;
-
-    PTexture2D texture = renderSystem()->createTexture2D("ala", request.image);
- 
-    emit texture2DCreated(request.handle, texture, EGE_SUCCESS);
-  }
-  m_texture2DRequests.clear();
+  m_renderSystem->update();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 IRenderer* Graphics::renderer()
+{
+  return m_renderSystem;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+IHardwareResourceProvider* Graphics::hardwareResourceProvider()
 {
   return m_renderSystem;
 }

@@ -94,6 +94,9 @@ EGEResult ResourceGroup::load()
   // check if NOT already loaded
   if ( ! isLoaded())
   {
+    // This flag is turned on if at least one of the resources reported busy after load
+    bool resourceBusy = false;
+
     // go thru all resources
     for (ResourcesMap::iterator it = m_resources.begin(); it != m_resources.end(); ++it)
     {
@@ -118,6 +121,12 @@ EGEResult ResourceGroup::load()
           // signal
           emit resourceLoaded(resource);
         }
+        // check if resource is busy
+        else if (IResource::STATE_LOADING == resource->state())
+        {
+          // we will need another interation
+          resourceBusy = true;
+        }
 
         // check processing policy
         if (ResourceManager::RLP_RESOURCE == m_manager->resourceProcessPolicy())
@@ -136,11 +145,20 @@ EGEResult ResourceGroup::load()
     }
     else
     {
-      // signal
-      emit resourceGroupLoaded(*this);
+      // check if all resources reported they are loaded
+      if ( ! resourceBusy)
+      {
+        // signal
+        emit resourceGroupLoaded(*this);
 
-      // set flag
-      m_loaded = true;
+        // set flag
+        m_loaded = true;
+      }
+      else
+      {
+        // need to wait
+        result = EGE_WAIT;
+      }
     }
   }
   else

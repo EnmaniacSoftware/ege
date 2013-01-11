@@ -4,6 +4,8 @@
 #include <EGE.h>
 #include <EGEString.h>
 #include <EGEMatrix.h>
+#include <EGEMutex.h>
+#include "Core/Graphics/HardwareResourceProvider.h"
 #include "Core/Graphics/Render/Renderer.h"
 #include "Core/Components/Render/RenderComponent.h"
 
@@ -20,7 +22,7 @@ EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
 EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RenderSystem : public Object, public IRenderer
+class RenderSystem : public Object, public IRenderer, public IHardwareResourceProvider
 {
   public:
 
@@ -30,8 +32,12 @@ class RenderSystem : public Object, public IRenderer
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  public:
+
     /*! Creates object. */
     EGEResult construct();
+    /*! Updates object. */
+    void update();
     /*! Sends all geometry through the geometry pipeline to hardware. */
     void flush();
     /*! Sets given viewport. */
@@ -40,8 +46,6 @@ class RenderSystem : public Object, public IRenderer
     void clearViewport(const PViewport& viewport);
     /*! Applies material for given pass. */
     void applyMaterial(const PMaterial& material, const RenderPass* pass);
-    /*! @see IRenderer::addForRendering. */
-    bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY) override;
 
     /*! Resets statistics. */
     void resetStats();
@@ -64,21 +68,6 @@ class RenderSystem : public Object, public IRenderer
     // TAGE - IRenderer, update comments etc
     /*! Returns view matrix. */
     const Matrix4f& viewMatrix() const { return m_viewMatrix; }
-
-    /*! Creates vertex buffer obejct. */
-    PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const;
-    /*! Creates index buffer obejct. */
-    PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const;
-    /*! Creates 2D texture from given image. 
-     *  @param  name  Name of the texture.
-     *  @param  image Image data for texture.
-     */
-    PTexture2D createTexture2D(const String& name, const PImage& image);
-    /*! Creates 2D texture from given data. 
-     *  @param  name  Name of the texture.
-     *  @param  image Image data for texture.
-     */
-    PTexture2D createTexture2D(const String& name, const PDataBuffer& data);
 
     /*! Sets texture minifying function filter. */
     void setTextureMinFilter(EGETexture::Filter filter);
@@ -120,14 +109,6 @@ class RenderSystem : public Object, public IRenderer
     u32 m_vertexCount;
     /*! Map of rendering queues sorted by render priority. */
     Map<s32, PRenderQueue> m_renderQueues;
-    /*! Texture minifying function filter. */
-    EGETexture::Filter m_textureMinFilter;
-    /*! Texture magnification function filter. */
-    EGETexture::Filter m_textureMagFilter;
-    /*! Texture addressing mode for S texture coordinate. */
-    EGETexture::AddressingMode m_textureAddressingModeS;
-    /*! Texture addressing mode for T texture coordinate. */
-    EGETexture::AddressingMode m_textureAddressingModeT;
 
 
    // std::vector<PRenderComponent> m_components;     // components pool
@@ -161,8 +142,44 @@ class RenderSystem : public Object, public IRenderer
 
   private:
 
+    /*! Available request types. */
+    enum RequestType
+    {
+      REQUEST_TEXTURE_2D = 0
+    };
+
+    /*! Resource request data struct. */
+    struct RequestData
+    {
+      u32 id;               /*!< Assigned request id. */
+      RequestType type;     /*!< Request type. */
+      PImage image;         /*!< Image associated with request. May be NULL. */
+      String name;          /*!< Name associated with request. May be empty. */
+      
+      EGETexture::Filter textureMinFilter;                /*!< Texture minifying function filter. */
+      EGETexture::Filter textureMagFilter;                /*!< Texture magnification function filter. */
+      EGETexture::AddressingMode textureAddressingModeS;  /*!< Texture addressing mode for S texture coordinate. */
+      EGETexture::AddressingMode textureAddressingModeT;  /*!< Texture addressing mode for T texture coordinate. */
+    };
+
+    typedef List<RequestData> RequestDataList;
+
+  private:
+
     /*! Updates rectangle coordinates by given angle. */
     Rectf applyRotation(const Rectf& rect, const Angle& angle) const;
+    /*! @see IRenderer::addForRendering. */
+    bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY) override;
+    /*! @see IHardwareResourceProvider::createVertexBuffer. */
+    PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const override;
+    /*! @see IHardwareResourceProvider::createIndexBuffer. */
+    PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const override;
+    /*! @see IHardwareResourceProvider::createTexture2D. */
+    PTexture2D createTexture2D(const String& name, const PImage& image) override;
+    /*! @see IHardwareResourceProvider::requestTexture2D. */
+    u32 requestTexture2D(const String& name, const PImage& image) override;
+    /*! @see IHardwareResourceProvider::createTexture2D. */
+    PTexture2D createTexture2D(const String& name, const PDataBuffer& data) override;
 
   private:
 
@@ -170,6 +187,20 @@ class RenderSystem : public Object, public IRenderer
 
     /*! Currently active render target. */
     PRenderTarget m_renderTarget;
+    /*! Texture minifying function filter. */
+    EGETexture::Filter m_textureMinFilter;
+    /*! Texture magnification function filter. */
+    EGETexture::Filter m_textureMagFilter;
+    /*! Texture addressing mode for S texture coordinate. */
+    EGETexture::AddressingMode m_textureAddressingModeS;
+    /*! Texture addressing mode for T texture coordinate. */
+    EGETexture::AddressingMode m_textureAddressingModeT;
+    /*! Next available request ID. */
+    u32 m_nextRequestID;
+    /*! List of pending requests. */
+    RequestDataList m_requests;
+    /*! Request data list mutex. */
+    PMutex m_requestsMutex;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
