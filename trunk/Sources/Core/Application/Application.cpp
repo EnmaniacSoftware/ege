@@ -43,6 +43,7 @@ Application::Application() : m_sceneManager(NULL),
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Application::~Application()
 {
+  EGE_DELETE(m_imageLoader);
   EGE_DELETE(m_sceneManager);
   EGE_DELETE(m_imageLoader);
   EGE_DELETE(m_graphics);

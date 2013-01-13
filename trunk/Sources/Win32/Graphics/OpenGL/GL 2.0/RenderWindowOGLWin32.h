@@ -15,6 +15,8 @@ class RenderWindowOGLWin32 : public RenderWindow
     RenderWindowOGLWin32(Application* app, const Dictionary& params);
     virtual ~RenderWindowOGLWin32();
 
+    /*! Creates object. */
+    EGEResult construct(const Dictionary& params);
     /*! Initializes rendering context for worker thread. 
      *  @note This method needs to be called from worker thread.
      */
@@ -26,8 +28,6 @@ class RenderWindowOGLWin32 : public RenderWindow
 
   private:
 
-    /*! Creates Windows OS OpenGL window. */
-    void create(const Dictionary& params);
     /*! Destorys Windows OS OpenGL window. */
     void destroy();
     /*! Returns TRUE if object is valid. */

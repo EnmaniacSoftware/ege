@@ -1510,6 +1510,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\HardwareResourceProvider.h">
       <Filter>Core\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\EGERenderSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

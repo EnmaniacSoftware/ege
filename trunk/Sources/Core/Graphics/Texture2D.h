@@ -29,11 +29,6 @@ class Texture2D : public Object
 
   public:
 
-    /*! Creates render texture. */
-    static PTexture2D CreateRenderTexture(Application* app, const String& name, s32 width, s32 height, PixelFormat format);
-
-  public:
-
     /*! Returns TRUE if object is valid. */
     bool isValid() const;
     /*! Returns name. */

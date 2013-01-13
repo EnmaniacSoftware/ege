@@ -5,10 +5,13 @@
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
+#include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/OpenGL/IndexBufferVAOGL.h"
 #include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
 #include "Core/Graphics/OpenGL/VertexBufferVAOGL.h"
 #include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
+#include "Core/Graphics/OpenGL/RenderTextureCopyOGL.h"
+#include "Core/Graphics/OpenGL/RenderTextureFBOOGL.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/Render/RenderWindow.h"
@@ -1008,6 +1011,70 @@ PTexture2D RenderSystemPrivate::createTexture2D(const String& name, const PDataB
   }
 
   bindTexture(GL_TEXTURE_2D, 0);
+
+  return texture;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PTexture2D RenderSystemPrivate::createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format)
+{
+  // create empty image from which empty texture is to be created
+  PImage image = ImageUtils::CreateImage(width, height, format, false, 0, NULL);
+  if (NULL == image)
+  {
+    // error!
+    return NULL;
+  }
+
+  // create empty texture of given size and format
+  PTexture2D texture = ege_new Texture2D(d_func()->app(), name);
+  if ((NULL == texture) || ! texture->isValid())
+  {
+    // error!
+    return NULL;
+  }
+
+  activateTextureUnit(0);
+  bindTexture(GL_TEXTURE_2D, texture->p_func()->id());
+
+  // set texture parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(d_func()->m_textureMinFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(d_func()->m_textureMagFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(d_func()->m_textureAddressingModeS));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(d_func()->m_textureAddressingModeT));
+
+  // create texture from image
+  if (EGE_SUCCESS != texture->p_func()->create(image))
+  {
+    // error!
+    return NULL;
+  }
+
+  Dictionary params;
+  params[EGE_RENDER_TARGET_PARAM_NAME]    = name;
+  params[EGE_RENDER_TARGET_PARAM_WIDTH]   = String::FromNumber(width);
+  params[EGE_RENDER_TARGET_PARAM_HEIGHT]  = String::FromNumber(height);
+
+  // check if Frame Buffer Object is supported
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_FBO))
+  {
+    texture->m_target = ege_new RenderTextureFBOOGL(d_func()->app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, texture->p_func()->id());
+  }
+  else
+  {
+    texture->m_target = ege_new RenderTextureCopyOGL(d_func()->app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, texture->p_func()->id());
+  }
+
+  // check if could not be allocated
+  if (NULL == texture->m_target)
+  {
+    // error!
+    return NULL;
+  }
+
+  egeWarning() << "Creating render target done" << texture->m_target;
+
+  // add into render targets
+  d_func()->app()->graphics()->registerRenderTarget(texture->m_target);
 
   return texture;
 }

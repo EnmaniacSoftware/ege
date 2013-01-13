@@ -334,6 +334,7 @@
     <ClInclude Include="..\..\Sources\EGEQuaternion.h" />
     <ClInclude Include="..\..\Sources\EGERenderComponent.h" />
     <ClInclude Include="..\..\Sources\EGERenderer.h" />
+    <ClInclude Include="..\..\Sources\EGERenderSystem.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
     <ClCompile Include="..\..\Sources\Win32\Application\AppControllerWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />

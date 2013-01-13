@@ -14,46 +14,6 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Texture2D)
 EGE_DEFINE_DELETE_OPERATORS(Texture2D)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PTexture2D Texture2D::CreateRenderTexture(Application* app, const String& name, s32 width, s32 height, PixelFormat format)
-{
-  // create empty texture of given size and format
-  PTexture2D texture = ege_new Texture2D(app, name);
-  if (texture && texture->isValid())
-  {
-    // TAGE - for the time being set to CLAMP so we non-power of 2 render textures can be created for iOS
-    app->graphics()->renderSystem()->setTextureAddressingModeS(EGETexture::AM_CLAMP);
-    app->graphics()->renderSystem()->setTextureAddressingModeT(EGETexture::AM_CLAMP);
-
-    // create empty image from which empty texture is to be created
-    PImage image = ImageUtils::CreateImage(width, height, format, false, 0, NULL);
-    if (NULL == image)
-    {
-      // error!
-      return NULL;
-    }
-
-    if (EGE_SUCCESS != texture->p_func()->create(image))
-    {
-      // error!
-      return NULL;
-    }
-
-    // create render target
-    if (EGE_SUCCESS == texture->p_func()->createRenderTarget())
-    {
-      // add into render targets
-      app->graphics()->registerRenderTarget(texture->renderTarget());
-    }
-    else
-    {
-      // error!
-      texture = NULL;
-    }
-  }
-
-  return texture;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Texture2D::Texture2D(Application* app, const String& name) : Object(app, EGE_OBJECT_UID_TEXTURE_2D), 
                                                              m_name(name), 
                                                              m_width(0), 

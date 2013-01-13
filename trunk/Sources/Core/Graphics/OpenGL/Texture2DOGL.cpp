@@ -1,8 +1,6 @@
 #include <EGEOpenGL.h>
 #include "Core/Graphics/Image/Image.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
-#include "Core/Graphics/OpenGL/RenderTextureCopyOGL.h"
-#include "Core/Graphics/OpenGL/RenderTextureFBOOGL.h"
 #include <EGEDevice.h>
 #include <EGEDebug.h>
 
@@ -248,37 +246,6 @@ EGEResult Texture2DPrivate::create(const PImage& image)
 
   // check for error
   OGL_CHECK();
-
-  return EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Texture2DPrivate::createRenderTarget()
-{
-  egeWarning() << "Creating render target!";
-
-  Dictionary params;
-  params[EGE_RENDER_TARGET_PARAM_NAME]    = d_func()->name();
-  params[EGE_RENDER_TARGET_PARAM_WIDTH]   = String::FromNumber(d_func()->width());
-  params[EGE_RENDER_TARGET_PARAM_HEIGHT]  = String::FromNumber(d_func()->height());
-
-  // check if Frame Buffer Object is supported
-  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_FBO))
-  {
-    d_func()->m_target = ege_new RenderTextureFBOOGL(d_func()->app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, id());
-  }
-  else
-  {
-    d_func()->m_target = ege_new RenderTextureCopyOGL(d_func()->app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, id());
-  }
-
-  egeWarning() << "Creating render target done" << d_func()->m_target;
-
-  // check if could not be allocated
-  if (NULL == d_func()->m_target)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
 
   return EGE_SUCCESS;
 }

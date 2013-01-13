@@ -10,9 +10,11 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderTextureCopyOGL : public RenderTarget
 {
+  /* For accessing private data. */
+  friend class RenderSystemPrivate;
+
   public:
 
-    RenderTextureCopyOGL(Application* app, const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId);
     virtual ~RenderTextureCopyOGL();
 
   private:
@@ -32,6 +34,11 @@ class RenderTextureCopyOGL : public RenderTarget
     GLenum textureTarget() const { return m_textureTarget; }
     /*! Returns texture face where data should be rendered to. */
     GLenum faceTarget() const { return m_faceTarget; }
+
+  protected:
+
+    /*! Constructing only via RenderSystem. */
+    RenderTextureCopyOGL(Application* app, const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId);
 
   private:
 

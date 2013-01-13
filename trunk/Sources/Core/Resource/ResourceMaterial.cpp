@@ -279,9 +279,9 @@ EGEResult ResourceMaterial::load()
         if (textureImageRes)
         {
           // load texture image
-          if (EGE_SUCCESS != (result = textureImageRes->load()))
+          result = textureImageRes->load();
+          if (EGE_SUCCESS != result)
           {
-            // error!
             return result;
           }
 

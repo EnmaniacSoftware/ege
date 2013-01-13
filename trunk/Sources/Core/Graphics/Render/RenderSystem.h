@@ -49,13 +49,10 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
 
     /*! Resets statistics. */
     void resetStats();
-    /*! Returns number of batches rendered last frame. */
-    u32 batchCount() const { return m_batchCount; }
-    /*! Returns number of vertices rendered last frame. */
-    u32 vertexCount() const { return m_vertexCount; }
-
-    /*! Returns current render target. */
-    PRenderTarget currentRenderTarget() const { return m_renderTarget; }
+    /*! @see IRenderer::batchCount. */
+    u32 batchCount() const override;
+    /*! @see IRenderer::vertexCount. */
+    u32 vertexCount() const override;
 
     //PRenderComponent addComponent(const String& name = "");
 
@@ -170,6 +167,8 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     Rectf applyRotation(const Rectf& rect, const Angle& angle) const;
     /*! @see IRenderer::addForRendering. */
     bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY) override;
+    /*! @see IRenderer::currentRenderTarget. */
+    PRenderTarget currentRenderTarget() const override;
     /*! @see IHardwareResourceProvider::createVertexBuffer. */
     PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const override;
     /*! @see IHardwareResourceProvider::createIndexBuffer. */
@@ -180,6 +179,8 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     u32 requestTexture2D(const String& name, const PImage& image) override;
     /*! @see IHardwareResourceProvider::createTexture2D. */
     PTexture2D createTexture2D(const String& name, const PDataBuffer& data) override;
+    /*! @see IHardwareResourceProvider::createRenderTexture. */
+    PTexture2D createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format) override;
 
   private:
 

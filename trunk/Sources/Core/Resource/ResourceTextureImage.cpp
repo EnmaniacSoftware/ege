@@ -69,17 +69,19 @@ EGEResult ResourceTextureImage::load()
     if (NULL != textureResource)
     {
       // load texture
-      if (EGE_SUCCESS != (result = textureResource->load()))
+      result = textureResource->load();
+      if (EGE_SUCCESS == result)
       {
-        // error!
+        // store texture object
+        m_texture = textureResource->texture();
+
+        // set flag
+        m_state = STATE_LOADED;
+      }
+      else
+      {
         return result;
       }
-
-      // store texture object
-      m_texture = textureResource->texture();
-
-      // set flag
-      m_state = STATE_LOADED;
     }
     else
     {

@@ -34,8 +34,6 @@ class Texture2DPrivate
     EGEResult create(const PImage& image);
     /*! Returns texture ID. */
     GLuint id() const { return m_id; }
-    /*! Creates associated render target. */
-    EGEResult createRenderTarget();
 
   private:
 

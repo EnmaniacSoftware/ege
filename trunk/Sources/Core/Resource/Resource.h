@@ -41,7 +41,9 @@ class IResource : public Object
      *  @param  tag   xml element with resource definition. 
      */
     virtual EGEResult create(const String& path, const PXmlElement& tag) = 0;
-    /*! Loads resource. */
+    /*! Loads resource. 
+     *  @return Returns EGE_SUCCESS if resource has been loaded. EGE_WAIT if resource is being loaded.
+     */
     virtual EGEResult load() = 0;
     /*! Unloads resource. */
     virtual void unload() = 0;

@@ -15,7 +15,6 @@ RenderWindowOGLWin32::RenderWindowOGLWin32(Application* app, const Dictionary& p
                                                                                          m_hRC(NULL),
                                                                                          m_hRCWorkThread(NULL)
 {
-  create(params);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderWindowOGLWin32::~RenderWindowOGLWin32()
@@ -23,7 +22,7 @@ RenderWindowOGLWin32::~RenderWindowOGLWin32()
   destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderWindowOGLWin32::create(const Dictionary& params)
+EGEResult RenderWindowOGLWin32::construct(const Dictionary& params)
 {
   WNDCLASS sWndclass = { 0 };
 
@@ -41,7 +40,7 @@ void RenderWindowOGLWin32::create(const Dictionary& params)
   if (error)
   {
     // error!
-    return;
+    return EGE_ERROR;
   }
 
   // apply dimensions according to landscape requirement
@@ -81,7 +80,7 @@ void RenderWindowOGLWin32::create(const Dictionary& params)
 	if (!RegisterClass(&sWndclass))
   {
     // error!
-    return;
+    return EGE_ERROR;
   }
 
   // enable fullscreen window
@@ -94,7 +93,7 @@ void RenderWindowOGLWin32::create(const Dictionary& params)
     if (EGE_SUCCESS != enableFullScreen(m_width, m_height, true))
     {
       // error!
-      return;
+      return EGE_ERROR;
     }
 	}
   else
@@ -118,7 +117,7 @@ void RenderWindowOGLWin32::create(const Dictionary& params)
                                       rcWindow.bottom - rcWindow.top, NULL, NULL, GetModuleHandle(NULL), NULL)))
   {
     // error!
-    return;
+    return EGE_ERROR;
   }
 
   // get window's DC
@@ -126,7 +125,7 @@ void RenderWindowOGLWin32::create(const Dictionary& params)
   {
     // error!
     destroy();
-    return;
+    return EGE_ERROR;
   }
 
   // setup pixel format
@@ -134,7 +133,7 @@ void RenderWindowOGLWin32::create(const Dictionary& params)
   {
     // error!
     destroy();
-    return;
+    return EGE_ERROR;
   }
   
   // create rendering context
@@ -142,7 +141,7 @@ void RenderWindowOGLWin32::create(const Dictionary& params)
   {
     // error!
     destroy();
-    return;
+    return EGE_ERROR;
   }
 
   // share objects between rendering contexts
@@ -150,7 +149,7 @@ void RenderWindowOGLWin32::create(const Dictionary& params)
   {
     // error!
     destroy();
-    return;
+    return EGE_ERROR;
   }
 
   // assign rendering context to current thread
@@ -158,18 +157,20 @@ void RenderWindowOGLWin32::create(const Dictionary& params)
   {
     // error!
     destroy();
-    return;
+    return EGE_ERROR;
   }
 
   // set pointer to this control in extra wnd data
-  SetWindowLongPtr(m_hWnd, 0, (LONG) this);
+  SetWindowLongPtr(m_hWnd, 0, reinterpret_cast<LONG>(this));
 
   //// store render target dimensions
   //setDimensions( uiWindowWidth, uiWindowHeight );
 
   // show window and update it
 	ShowWindow(m_hWnd, SW_SHOWNORMAL);
-	UpdateWindow(m_hWnd);					
+	UpdateWindow(m_hWnd);		
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderWindowOGLWin32::destroy()
@@ -204,6 +205,9 @@ void RenderWindowOGLWin32::destroy()
       m_hDC = NULL;
     }
 
+    // clean up
+    SetWindowLongPtr(m_hWnd, 0, 0);
+
     // destroy main window
     DestroyWindow(m_hWnd);
     m_hWnd = NULL;
@@ -212,7 +216,13 @@ void RenderWindowOGLWin32::destroy()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-  RenderWindowOGLWin32* me = (RenderWindowOGLWin32*) GetWindowLongPtr(hWnd, 0);
+  RenderWindowOGLWin32* me = reinterpret_cast<RenderWindowOGLWin32*>(GetWindowLongPtr(hWnd, 0));
+
+  EventManager* eventManager = NULL;
+  if (NULL != me)
+  {
+    eventManager = me->app()->eventManager();
+  }
 
   // detrmine current keyboard modifiers
   KeyboardModifiers keyboardModifiers = KM_NONE;
@@ -239,47 +249,62 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
   {
     case WM_LBUTTONDOWN:
 
-      x = static_cast<s32>(LOWORD(lParam) / me->zoom());
-      y = static_cast<s32>(HIWORD(lParam) / me->zoom());
+      if (NULL != eventManager)
+      {
+        x = static_cast<s32>(LOWORD(lParam) / me->zoom());
+        y = static_cast<s32>(HIWORD(lParam) / me->zoom());
 
-      me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(ACTION_BUTTON_DOWN, BUTTON_LEFT, keyboardModifiers, x, y, 0));
+        eventManager->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
+                           ege_new PointerData(ACTION_BUTTON_DOWN, BUTTON_LEFT, keyboardModifiers, x, y, 0));
+      }
       return 0;
 
     case WM_LBUTTONUP:
 
-      x = static_cast<s32>(LOWORD(lParam) / me->zoom());
-      y = static_cast<s32>(HIWORD(lParam) / me->zoom());
+      if (NULL != eventManager)
+      {
+        x = static_cast<s32>(LOWORD(lParam) / me->zoom());
+        y = static_cast<s32>(HIWORD(lParam) / me->zoom());
 
-      me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(ACTION_BUTTON_UP, BUTTON_LEFT, keyboardModifiers, x, y, 0));
+        eventManager->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
+                           ege_new PointerData(ACTION_BUTTON_UP, BUTTON_LEFT, keyboardModifiers, x, y, 0));
+      }
       return 0;
 
     case WM_RBUTTONDOWN:
 
-      x = static_cast<s32>(LOWORD(lParam) / me->zoom());
-      y = static_cast<s32>(HIWORD(lParam) / me->zoom());
+      if (NULL != eventManager)
+      {
+        x = static_cast<s32>(LOWORD(lParam) / me->zoom());
+        y = static_cast<s32>(HIWORD(lParam) / me->zoom());
 
-      me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(ACTION_BUTTON_DOWN, BUTTON_RIGHT, keyboardModifiers, x, y, 0));
+        eventManager->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
+                           ege_new PointerData(ACTION_BUTTON_DOWN, BUTTON_RIGHT, keyboardModifiers, x, y, 0));
+      }
       return 0;
 
     case WM_RBUTTONUP:
 
-      x = static_cast<s32>(LOWORD(lParam) / me->zoom());
-      y = static_cast<s32>(HIWORD(lParam) / me->zoom());
+      if (NULL != eventManager)
+      {
+        x = static_cast<s32>(LOWORD(lParam) / me->zoom());
+        y = static_cast<s32>(HIWORD(lParam) / me->zoom());
 
-      me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(ACTION_BUTTON_UP, BUTTON_RIGHT, keyboardModifiers, x, y, 0));
+        eventManager->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
+                           ege_new PointerData(ACTION_BUTTON_UP, BUTTON_RIGHT, keyboardModifiers, x, y, 0));
+      }
       return 0;
 
     case WM_MOUSEMOVE:
 
-      x = static_cast<s32>(LOWORD(lParam) / me->zoom());
-      y = static_cast<s32>(HIWORD(lParam) / me->zoom());
+      if (NULL != eventManager)
+      {
+        x = static_cast<s32>(LOWORD(lParam) / me->zoom());
+        y = static_cast<s32>(HIWORD(lParam) / me->zoom());
 
-      me->app()->eventManager()->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
-                                      ege_new PointerData(ACTION_MOVE, BUTTON_NONE, keyboardModifiers, x, y, 0));
+        eventManager->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, 
+                           ege_new PointerData(ACTION_MOVE, BUTTON_NONE, keyboardModifiers, x, y, 0));
+      }
       return 0;
 
     case WM_SIZE:
@@ -305,12 +330,18 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
 
     case WM_SETFOCUS:
 
-      me->app()->eventManager()->send(EGE_EVENT_ID_CORE_APP_RESUME);
+      if (NULL != eventManager)
+      {
+        eventManager->send(EGE_EVENT_ID_CORE_APP_RESUME);
+      }
       return 0;
 
     case WM_KILLFOCUS:
 
-      me->app()->eventManager()->send(EGE_EVENT_ID_CORE_APP_PAUSE);
+      if (NULL != eventManager)
+      {
+        eventManager->send(EGE_EVENT_ID_CORE_APP_PAUSE);
+      }
       return 0;
   } 
 

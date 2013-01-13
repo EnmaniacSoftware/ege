@@ -42,6 +42,8 @@ class RenderSystemPrivate
     PTexture2D createTexture2D(const String& name, const PImage& image);
     /*! @see RenderSystem::createTexture2D. */
     PTexture2D createTexture2D(const String& name, const PDataBuffer& data);
+    /*! @see RenderSystem::createRenderTexture. */
+    PTexture2D createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format);
 
   private:
 

@@ -249,6 +249,11 @@ u32 RenderSystem::requestTexture2D(const String& name, const PImage& image)
   return request.id;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PTexture2D RenderSystem::createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format)
+{
+  return p_func()->createRenderTexture(name, width, height, format);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystem::setTextureMinFilter(EGETexture::Filter filter)
 {
   m_textureMinFilter = filter;
@@ -267,6 +272,21 @@ void RenderSystem::setTextureAddressingModeS(EGETexture::AddressingMode mode)
 void RenderSystem::setTextureAddressingModeT(EGETexture::AddressingMode mode)
 {
   m_textureAddressingModeT = mode;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 RenderSystem::batchCount() const 
+{ 
+  return m_batchCount; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 RenderSystem::vertexCount() const 
+{ 
+  return m_vertexCount; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PRenderTarget RenderSystem::currentRenderTarget() const 
+{ 
+  return m_renderTarget; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

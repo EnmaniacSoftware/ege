@@ -106,7 +106,8 @@ EGEResult ResourceGroup::load()
       if ( ! resource->isManual() && (IResource::STATE_LOADED != resource->state()))
       {
         // load resource
-        if (EGE_SUCCESS != (result = resource->load()))
+        result = resource->load();
+        if ((EGE_SUCCESS != result) && (EGE_WAIT != result))
         {
           // error!
           egeWarning() << "Load failed:" << resource->name();
@@ -114,7 +115,7 @@ EGEResult ResourceGroup::load()
         }
 
         // check if loaded
-        if (IResource::STATE_LOADED == resource->state())
+        if (EGE_SUCCESS == result)
         {
           egeLog() << resource->name() << "of group" << name();
 
@@ -122,7 +123,7 @@ EGEResult ResourceGroup::load()
           emit resourceLoaded(resource);
         }
         // check if resource is busy
-        else if (IResource::STATE_LOADING == resource->state())
+        else if (EGE_WAIT == result)
         {
           // we will need another interation
           resourceBusy = true;

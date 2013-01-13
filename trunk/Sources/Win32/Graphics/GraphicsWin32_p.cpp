@@ -22,12 +22,20 @@ GraphicsPrivate::~GraphicsPrivate()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult GraphicsPrivate::construct()
 {
-  // create render window
+  EGEResult result = EGE_SUCCESS;
+
+  // allocate render window
   RenderWindowOGLWin32* renderWindow = ege_new RenderWindowOGLWin32(d_func()->app(), d_func()->m_params);
   if (NULL == renderWindow)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
+  }
+
+  if (EGE_SUCCESS != (result = renderWindow->construct(d_func()->m_params)))
+  {
+    // error!
+    return result;
   }
 
   // add to render targets pool

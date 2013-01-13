@@ -12,12 +12,12 @@
 #include <EGESignal.h>
 #include <EGEVertexBuffer.h>
 #include <EGEIndexBuffer.h>
+#include <EGEImage.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
-EGE_DECLARE_SMART_CLASS(Image, PImage)
 EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
 EGE_DECLARE_SMART_CLASS(Object, PObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -25,8 +25,8 @@ class IHardwareResourceProvider
 {
   public:
 
-    IHardwareResourceProvider();
-    virtual ~IHardwareResourceProvider();
+    IHardwareResourceProvider() {}
+    virtual ~IHardwareResourceProvider() {}
 
   signals:
 
@@ -48,6 +48,11 @@ class IHardwareResourceProvider
      *  @param  image Image data for texture.
      */
     virtual PTexture2D createTexture2D(const String& name, const PImage& image) = 0;
+    /*! Creates 2D texture from given data. 
+     *  @param  name  Name of the texture.
+     *  @param  image Image data for texture.
+     */
+    virtual PTexture2D createTexture2D(const String& name, const PDataBuffer& data) = 0;
     /*! Requests creation of 2D texture from given image. 
      *  @param  name  Name of the texture.
      *  @param  image Image data for texture.
@@ -56,11 +61,13 @@ class IHardwareResourceProvider
      *        Upon completion result will be signalled by requestTexture2DComplete.
      */
     virtual u32 requestTexture2D(const String& name, const PImage& image) = 0;
-    /*! Creates 2D texture from given data. 
-     *  @param  name  Name of the texture.
-     *  @param  image Image data for texture.
+    /*! Creates render texture. 
+     *  @param  name    Name of the texture.
+     *  @param  width   Width of the texture (in pixels).
+     *  @param  height  Height of the texture (in pixels).
+     *  @param  format  Color format of the texture.
      */
-    virtual PTexture2D createTexture2D(const String& name, const PDataBuffer& data) = 0;
+    virtual PTexture2D createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format) = 0;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

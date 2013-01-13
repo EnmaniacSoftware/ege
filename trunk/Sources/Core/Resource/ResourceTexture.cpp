@@ -137,6 +137,12 @@ EGEResult ResourceTexture::load()
       }
     }
   }
+  
+  // check if still loading
+  if (STATE_LOADING == m_state)
+  {
+    result = EGE_WAIT;
+  }
 
   return result;
 }
