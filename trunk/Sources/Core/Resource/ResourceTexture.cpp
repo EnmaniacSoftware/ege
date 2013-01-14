@@ -60,7 +60,10 @@ ResourceTexture::ResourceTexture(Application* app, ResourceGroup* group) : IReso
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceTexture::~ResourceTexture()
 {
-  ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
+  if ((NULL != app()->graphics()) && (NULL != app()->graphics()->hardwareResourceProvider()))
+  {
+    ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PResource ResourceTexture::Create(Application* app, ResourceGroup* group)

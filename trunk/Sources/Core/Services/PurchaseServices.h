@@ -4,7 +4,7 @@
 /*! \brief Class representing in-game purchases interface. */
 
 #include <EGE.h>
-#include <EGESocial.h>
+#include <EGESocialServices.h>
 #include <EGESignal.h>
 
 EGE_NAMESPACE_BEGIN
