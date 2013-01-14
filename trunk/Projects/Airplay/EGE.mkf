@@ -14,6 +14,7 @@ define EGE_THREAD_PTHREAD
 define EGE_SOCIAL_PLATFORM_GAMECENTER
 define EGE_PURCHASES_APPSTORE
 define EGE_RESOURCE_MANAGER_SINGLE_THREAD
+defome EGE_IMAGEMANAGER_SINGLE_THREAD
 
 #define EGE_AIRPLAY_AUDIO_SOFTWARE
 
@@ -38,8 +39,9 @@ files
   EGEComplex.h
   EGEDataBuffer.h
   EGEDebug.h
-  EGEDesktopServices.h
   EGEDevice.h
+  EGEDeviceServices.h
+  EGEDictionary.h
   EGEDir.h
   EGEDynamicArray.h
   EGEEvent.h
@@ -57,29 +59,34 @@ files
   EGEMaterial.h
   EGEMath.h
   EGEMatrix.h
+  EGEMemory.h
   EGEMutex.h
   EGENativeUI.h
-  EGEMemory.h
   EGEOpenGL.h
   EGEOverlay.h
   EGEParticle.h
   EGEPhysics.h
   EGEPlane.h
+  EGEPurchaseServices.h
   EGEQuaternion.h
   EGERandom.h
   EGERect.h
+  EGERenderComponent.h
+  EGERenderer.h
+  EGERenderSystem.h
   EGEResources.h
   EGEScene.h
   EGEScreen.h
   EGESequencer.h
   EGESignal.h
-  EGESocial.h
+  EGESocialServices.h
   EGESpline.h
   EGESpriteAnimation.h
   EGEString.h
   EGETexture.h
   EGEThread.h
   EGETime.h
+  EGETimeline.h
   EGETimer.h
   EGETree.h
   EGETweener.h
@@ -244,6 +251,7 @@ files
 	Frustum.h
 	Graphics.cpp
 	Graphics.h
+	HardwareResourceProvider.h
 	IndexBuffer.cpp
 	IndexBuffer.h
 	IndexBufferTypes.h
@@ -273,8 +281,15 @@ files
   ImageHandlerPNG.h
   ImageHandlerPVR.cpp
   ImageHandlerPVR.h
+  ImageLoader.cpp
+  ImageLoader.h
 	ImageUtils.cpp
 	ImageUtils.h
+
+	["Core/Graphics/Image/Single Thread"]
+ 	(../../Sources/Core/Graphics/Image/SingleThread)
+  ImageLoaderST_p.cpp
+  ImageLoaderST_p.h
 
 	["Core/Graphics/ImagedAnimation"]
  	(../../Sources/Core/Graphics/ImagedAnimation)
@@ -300,6 +315,11 @@ files
   VertexBufferVBOOGL.cpp
   VertexBufferVBOOGL.h
 
+	["Core/Graphics/OpenGL/ES 1.0"]
+  ("../../Sources/Core/Graphics/OpenGL/ES 1.0")
+	RenderSystemOGLES1_p.cpp
+	RenderSystemOGLES1_p.h
+
 	["Core/Graphics/Particle"]
   ("../../Sources/Core/Graphics/Particle")
 	ParticleAffector.cpp
@@ -313,19 +333,15 @@ files
 	ParticleFactory.cpp
 	ParticleFactory.h
 
-	["Core/Graphics/OpenGL/ES 1.0"]
-  ("../../Sources/Core/Graphics/OpenGL/ES 1.0")
-	RendererOGLES1_p.cpp
-	RendererOGLES1_p.h
-
 	["Core/Graphics/Render"]
   (../../Sources/Core/Graphics/Render)
-	Renderer.cpp
 	Renderer.h
   RenderPass.cpp
   RenderPass.h
   RenderQueue.cpp
   RenderQueue.h
+  RenderSystem.cpp
+  RenderSystem.h
 	RenderTarget.cpp
 	RenderTarget.h
 	RenderWindow.cpp
@@ -440,11 +456,6 @@ files
 	PhysicsManagerNull_p.cpp
 	PhysicsManagerNull_p.h
 
-	["Core/Purchases"]
-  (../../Sources/Core/Purchases)
-  Purchases.cpp
-  Purchases.h
-
   ["Core/Random"]
   (../../Sources/Core/Random)
   RandomGenerator.cpp
@@ -527,15 +538,34 @@ files
   Sequencer.cpp
   Sequencer.h
 
+	["Core/Services"]
+  (../../Sources/Core/Services)
+  DeviceServices.cpp
+  DeviceServices.h
+  PurchaseServices.cpp
+  PurchaseServices.h
+  PurchaseServicesNull_p.cpp
+  PurchaseServicesNull_p.h
+  SocialServices.cpp
+  SocialServices.h
+  SocialServicesNull_p.cpp
+  SocialServicesNull_p.h
+
 	["Core/Signal"]
   (../../Sources/Core/Signal)
   Delegate.h
   Signal.h
 
-	["Core/Social"]
-  (../../Sources/Core/Social)
-  SocialPlatform.cpp
-  SocialPlatform.h
+	["Core/String"]
+  (../../Sources/Core/String)
+  StringUtils.h
+
+	["Core/String/Stl"]
+  (../../Sources/Core/String/Stl)
+	String.cpp
+	String.h
+  Text.cpp
+  Text.h
 
 	["Core/Threading"]
   (../../Sources/Core/Threading)
@@ -557,17 +587,6 @@ files
   WaitCondition_p.cpp
   WaitCondition_p.h
 
-	["Core/String"]
-  (../../Sources/Core/String)
-  StringUtils.h
-
-	["Core/String/Stl"]
-  (../../Sources/Core/String/Stl)
-	String.cpp
-	String.h
-  Text.cpp
-  Text.h
-
 	["Core/Timer"]
   (../../Sources/Core/Timer)
 	Time.h
@@ -580,8 +599,6 @@ files
   (../../Sources/Core/Tools)
   ByteOrder.cpp
   ByteOrder.h
-  DesktopServices.cpp
-  DesktopServices.h
 
 	["Core/UI"]
   (../../Sources/Core/UI)
@@ -692,29 +709,23 @@ files
 	PointerAirplay_p.cpp
 	PointerAirplay_p.h
 
-	["Airplay/Purchases"]
-  (../../Sources/Airplay/Purchases)
-  PurchasesAppStoreAirplay_p.cpp
-  PurchasesAppStoreAirplay_p.h
-
-	["Airplay/Social"]
-  (../../Sources/Airplay/Social)
-  SocialPlatformGameCenterAirplay_p.cpp
-  SocialPlatformGameCenterAirplay_p.h
-
 	["Airplay/String"]
   (../../Sources/Airplay/String)
   StringUtilsAirplay.cpp
+
+	["Airplay/Services"]
+  (../../Sources/Airplay/Services)
+  DeviceServicesAirplay_p.cpp
+  DeviceServicesAirplay_p.h
+  PurchaseServicesAppStoreAirplay_p.cpp
+  PurchaseServicesAppStoreAirplay_p.h
+  SocialServicesGameCenterAirplay_p.cpp
+  SocialServicesGameCenterAirplay_p.h
 
 	["Airplay/Timer"]
 	(../../Sources/Airplay/Timer)
 	TimerAirplay_p.cpp
 	TimerAirplay_p.h
-
-	["Airplay/Tools"]
-  (../../Sources/Airplay/Tools)
-  DesktopServicesAirplay_p.cpp
-  DesktopServicesAirplay_p.h
 }
 
 packages

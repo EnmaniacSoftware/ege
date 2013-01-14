@@ -139,9 +139,6 @@
     <Filter Include="Core\Graphics\Particle">
       <UniqueIdentifier>{4b87de33-b883-48cb-9822-856766c15071}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Tools">
-      <UniqueIdentifier>{456ea8d8-688c-4555-a9e6-bfb22637b52c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Audio">
       <UniqueIdentifier>{6556f711-9739-4124-9e4d-40f130ad80e4}</UniqueIdentifier>
     </Filter>
@@ -190,12 +187,6 @@
     <Filter Include="Core\Math\Tweeners">
       <UniqueIdentifier>{bafdcfb4-1648-43bf-9ce1-fa7db79a2489}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Social">
-      <UniqueIdentifier>{31b4e833-8e99-4ad0-b9bc-0fb99e5d6845}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Purchases">
-      <UniqueIdentifier>{4cdab25f-fe11-41dc-8e27-9a05c4a9d516}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\NativeUI">
       <UniqueIdentifier>{4e9f0d99-bcd1-41c8-8d86-18a5d71ca68a}</UniqueIdentifier>
     </Filter>
@@ -222,6 +213,12 @@
     </Filter>
     <Filter Include="Core\Graphics\Image\Single Thread">
       <UniqueIdentifier>{3d81d51d-0e70-4bf9-a2d1-7ec995b97a2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Services">
+      <UniqueIdentifier>{b9574d02-37c8-4d6e-8160-3d1e5cf65d27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Services">
+      <UniqueIdentifier>{462146db-a25a-4f79-9a4e-cda48d17fab2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -534,12 +531,6 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceParticleAffector.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Tools\DesktopServices.cpp">
-      <Filter>Core\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.cpp">
-      <Filter>Win32\Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceText.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
@@ -720,18 +711,6 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPVR.cpp">
       <Filter>Core\Graphics\Image</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Social\SocialPlatformNull_p.cpp">
-      <Filter>Core\Social</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Social\SocialPlatform.cpp">
-      <Filter>Core\Social</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Purchases\Purchases.cpp">
-      <Filter>Core\Purchases</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Purchases\PurchasesNull_p.cpp">
-      <Filter>Core\Purchases</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.cpp">
       <Filter>Win32\NativeUI</Filter>
     </ClCompile>
@@ -779,6 +758,24 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RenderSystemOGL2_p.cpp">
       <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Services\DeviceServicesWin32_p.cpp">
+      <Filter>Win32\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\DeviceServices.cpp">
+      <Filter>Core\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\PurchaseServices.cpp">
+      <Filter>Core\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\PurchaseServicesNull_p.cpp">
+      <Filter>Core\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\SocialServices.cpp">
+      <Filter>Core\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\SocialServicesNull_p.cpp">
+      <Filter>Core\Services</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1222,13 +1219,6 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceParticleAffector.h">
       <Filter>Core\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Tools\DesktopServices.h">
-      <Filter>Core\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\EGEDesktopServices.h" />
-    <ClInclude Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.h">
-      <Filter>Win32\Tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceText.h">
       <Filter>Core\Resource</Filter>
     </ClInclude>
@@ -1444,20 +1434,6 @@
       <Filter>Core\Graphics\Image</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEMaterial.h" />
-    <ClInclude Include="..\..\Sources\EGESocial.h" />
-    <ClInclude Include="..\..\Sources\Core\Social\SocialPlatform.h">
-      <Filter>Core\Social</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Social\SocialPlatformNull_p.h">
-      <Filter>Core\Social</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Purchases\Purchases.h">
-      <Filter>Core\Purchases</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Purchases\PurchasesNull_p.h">
-      <Filter>Core\Purchases</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\EGEPurchases.h" />
     <ClInclude Include="..\..\Sources\Core\NativeUI\MessageBox.h">
       <Filter>Core\NativeUI</Filter>
     </ClInclude>
@@ -1511,6 +1487,27 @@
       <Filter>Core\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGERenderSystem.h" />
+    <ClInclude Include="..\..\Sources\Win32\Services\DeviceServicesWin32_p.h">
+      <Filter>Win32\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Services\DeviceServices.h">
+      <Filter>Core\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Services\PurchaseServices.h">
+      <Filter>Core\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Services\PurchaseServicesNull_p.h">
+      <Filter>Core\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Services\SocialServices.h">
+      <Filter>Core\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Services\SocialServicesNull_p.h">
+      <Filter>Core\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEDeviceServices.h" />
+    <ClInclude Include="..\..\Sources\EGEPurchaseServices.h" />
+    <ClInclude Include="..\..\Sources\EGESocialServices.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

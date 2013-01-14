@@ -13,7 +13,7 @@
 #include "Core/Input/Pointer.h"
 #include "Core/Screen/ScreenManager.h"
 #include "Core/Debug/Debug.h"
-#include "Core/Tools/DesktopServices.h"
+#include "Core/Services/DeviceServices.h"
 #include "Core/Audio/AudioManager.h"
 #include "Core/Graphics/Image/ImageLoader.h"
 #include <EGETimer.h>
@@ -34,7 +34,7 @@ Application::Application() : m_sceneManager(NULL),
                              m_screenManager(NULL), 
                              m_audioManager(NULL),
                              m_debug(NULL), 
-                             m_desktopServices(NULL),
+                             m_deviceServices(NULL),
                              m_imageLoader(NULL),
                              m_landscapeMode(false),
                              m_language("en")
@@ -54,7 +54,7 @@ Application::~Application()
   EGE_DELETE(m_pointer);
   EGE_DELETE(m_eventManager);
   EGE_DELETE(m_physicsManager);
-  EGE_DELETE(m_desktopServices);
+  EGE_DELETE(m_deviceServices);
   EGE_DELETE(m_resourceManager);
   //EGE_DELETE(m_debug);
 
@@ -73,15 +73,15 @@ EGEResult Application::initialize(const Dictionary& params)
     m_landscapeMode = iterLandscape->second.toBool();
   }
   
-  // create desktop services
-  m_desktopServices = ege_new DesktopServices();
-  if (NULL == m_desktopServices)
+  // create device services
+  m_deviceServices = ege_new DeviceServices();
+  if (NULL == m_deviceServices)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
   }
 
-  if (EGE_SUCCESS != (result = m_desktopServices->construct()))
+  if (EGE_SUCCESS != (result = m_deviceServices->construct()))
   {
     // error!
     return result;

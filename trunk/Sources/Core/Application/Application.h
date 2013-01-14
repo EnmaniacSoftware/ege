@@ -3,8 +3,8 @@
 
 #include <EGE.h>
 #include <EGETime.h>
-#include "Core/Event/EventListener.h"
 #include <EGEDictionary.h>
+#include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -19,7 +19,7 @@ class Pointer;
 class SceneManager;
 class OverlayManager;
 class Debug;
-class DesktopServices;
+class DeviceServices;
 class AudioManager;
 class ImageLoader;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -64,8 +64,8 @@ class Application
     AudioManager* audioManager() const { return m_audioManager; }
     /*! Returns debug object. */
     Debug* debug() const { return m_debug; }
-    /*! Returns dektop services object. */
-    DesktopServices* desktopServices() const { return m_desktopServices; }
+    /*! Returns device services object. */
+    DeviceServices* deviceServices() const { return m_deviceServices; }
     /*! Returns image loader object. */
     ImageLoader* imageLoader() const { return m_imageLoader; }
 
@@ -113,8 +113,8 @@ class Application
     ImageLoader* m_imageLoader;
     /*! Debug object. */
     Debug* m_debug;
-    /*! Desktop services object. */
-    DesktopServices* m_desktopServices;
+    /*! Device services object. */
+    DeviceServices* m_deviceServices;
     /*! Landscape mode flag. */
     bool m_landscapeMode;
     /*! Current language identifier. */

@@ -122,8 +122,6 @@
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJointDistance.cpp" />
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsJointPulley.cpp" />
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsManager.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Purchases\Purchases.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Purchases\PurchasesNull_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Random\RandomGenerator.cpp" />
     <ClCompile Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\MultiThread\ResourceManagerMT_p.cpp" />
@@ -153,8 +151,11 @@
     <ClCompile Include="..\..\Sources\Core\Screen\Screen.cpp" />
     <ClCompile Include="..\..\Sources\Core\Screen\ScreenManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Sequencer\Sequencer.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Social\SocialPlatform.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Social\SocialPlatformNull_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Services\DeviceServices.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Services\PurchaseServices.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Services\PurchaseServicesNull_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Services\SocialServices.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Services\SocialServicesNull_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\String.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\Text.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\Mutex.cpp" />
@@ -167,7 +168,6 @@
     <ClCompile Include="..\..\Sources\Core\Timer\TimeLine.cpp" />
     <ClCompile Include="..\..\Sources\Core\Timer\Timer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Tools\ByteOrder.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Tools\DesktopServices.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\Dialog.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\Label.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\UIPageIndicator.cpp" />
@@ -188,8 +188,8 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
     <ClCompile Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Services\DeviceServicesWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp" />
-    <ClCompile Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.cpp" />
     <ClInclude Include="..\..\Sources\Core\Animation\IAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodec.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecMp3.h" />
@@ -262,8 +262,6 @@
     <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsJointPulleyNull_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsManagerNull_p.h" />
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointPulley.h" />
-    <ClInclude Include="..\..\Sources\Core\Purchases\Purchases.h" />
-    <ClInclude Include="..\..\Sources\Core\Purchases\PurchasesNull_p.h" />
     <ClInclude Include="..\..\Sources\Core\Random\RandomGenerator.h" />
     <ClInclude Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\MultiThread\ResourceManagerMT_p.h" />
@@ -281,8 +279,11 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceWidget.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\SingleThread\ResourceManagerST_p.h" />
     <ClInclude Include="..\..\Sources\Core\Sequencer\Sequencer.h" />
-    <ClInclude Include="..\..\Sources\Core\Social\SocialPlatformNull_p.h" />
-    <ClInclude Include="..\..\Sources\Core\Social\SocialPlatform.h" />
+    <ClInclude Include="..\..\Sources\Core\Services\DeviceServices.h" />
+    <ClInclude Include="..\..\Sources\Core\Services\PurchaseServices.h" />
+    <ClInclude Include="..\..\Sources\Core\Services\PurchaseServicesNull_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Services\SocialServices.h" />
+    <ClInclude Include="..\..\Sources\Core\Services\SocialServicesNull_p.h" />
     <ClInclude Include="..\..\Sources\Core\String\StringUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\Mutex.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\MutexLocker.h" />
@@ -293,7 +294,6 @@
     <ClInclude Include="..\..\Sources\Core\Threading\WaitCondition.h" />
     <ClInclude Include="..\..\Sources\Core\Timer\TimeLine.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\ByteOrder.h" />
-    <ClInclude Include="..\..\Sources\Core\Tools\DesktopServices.h" />
     <ClInclude Include="..\..\Sources\Core\UI\Dialog.h" />
     <ClInclude Include="..\..\Sources\Core\UI\Label.h" />
     <ClInclude Include="..\..\Sources\Core\UI\UIAbstractScrollbar.h" />
@@ -316,7 +316,7 @@
     <ClInclude Include="..\..\Sources\EGEByteOrder.h" />
     <ClInclude Include="..\..\Sources\EGECircle.h" />
     <ClInclude Include="..\..\Sources\EGEComplex.h" />
-    <ClInclude Include="..\..\Sources\EGEDesktopServices.h" />
+    <ClInclude Include="..\..\Sources\EGEDeviceServices.h" />
     <ClInclude Include="..\..\Sources\EGEDictionary.h" />
     <ClInclude Include="..\..\Sources\EGEFlags.h" />
     <ClInclude Include="..\..\Sources\EGEHash.h" />
@@ -330,7 +330,7 @@
     <ClInclude Include="..\..\Sources\EGEOpenGL.h" />
     <ClInclude Include="..\..\Sources\EGEParticle.h" />
     <ClInclude Include="..\..\Sources\EGEPlane.h" />
-    <ClInclude Include="..\..\Sources\EGEPurchases.h" />
+    <ClInclude Include="..\..\Sources\EGEPurchaseServices.h" />
     <ClInclude Include="..\..\Sources\EGEQuaternion.h" />
     <ClInclude Include="..\..\Sources\EGERenderComponent.h" />
     <ClInclude Include="..\..\Sources\EGERenderer.h" />
@@ -464,7 +464,7 @@
     <ClInclude Include="..\..\Sources\EGEScene.h" />
     <ClInclude Include="..\..\Sources\EGESequencer.h" />
     <ClInclude Include="..\..\Sources\EGESignal.h" />
-    <ClInclude Include="..\..\Sources\EGESocial.h" />
+    <ClInclude Include="..\..\Sources\EGESocialServices.h" />
     <ClInclude Include="..\..\Sources\EGESpline.h" />
     <ClInclude Include="..\..\Sources\EGESpriteAnimation.h" />
     <ClInclude Include="..\..\Sources\EGEString.h" />
@@ -487,8 +487,8 @@
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\GL 2.0\RenderWindowOGLWin32.h" />
     <ClInclude Include="..\..\Sources\Win32\Input\PointerWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.h" />
+    <ClInclude Include="..\..\Sources\Win32\Services\DeviceServicesWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\Timer\TimerWin32_p.h" />
-    <ClInclude Include="..\..\Sources\Win32\Tools\DesktopServicesWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\TypesWin32.h" />
   </ItemGroup>
   <ItemGroup>

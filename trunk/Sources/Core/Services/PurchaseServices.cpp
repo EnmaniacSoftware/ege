@@ -1,0 +1,63 @@
+#include "Core/Services/PurchaseServices.h"
+#include <EGEDebug.h>
+
+#ifdef EGE_PURCHASES_APPSTORE
+  #ifdef EGE_PLATFORM_AIRPLAY
+    #include "Airplay/Services/PurchaseServicesAppStoreAirplay_p.h"
+  #else
+    #error NO APP STORE IMPLEMENTATION AVAILABLE ?
+  #endif // EGE_PLATFORM_AIRPLAY
+#else
+  #include "Core/Services/PurchaseServicesNull_p.h"
+#endif // EGE_SOCIAL_PLATFORM_GAMECENTER
+
+EGE_NAMESPACE_BEGIN
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGE_DEFINE_NEW_OPERATORS(PurchaseServices)
+EGE_DEFINE_DELETE_OPERATORS(PurchaseServices)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PurchaseServices::PurchaseServices(Application* app) : Object(app),
+                                                       m_p(NULL)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PurchaseServices::~PurchaseServices()
+{
+  EGE_DELETE(m_p);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult PurchaseServices::construct()
+{
+  EGEResult result = EGE_SUCCESS;
+
+  // create private
+  m_p = ege_new PurchaseServicesPrivate(this);
+  if (NULL == m_p)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // construct
+  if (EGE_SUCCESS != (result = m_p->construct()))
+  {
+    // error!
+    return result;
+  }
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult PurchaseServices::purchase(const String& product)
+{
+  if (NULL != m_p)
+  {
+    return m_p->purchase(product);
+  }
+
+  return EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
