@@ -20,16 +20,10 @@ ResourceManagerWorkThread::~ResourceManagerWorkThread()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 ResourceManagerWorkThread::run()
 {
-  // initialize rendering context for this thread
-  //app()->graphics()->initializeWorkThreadRenderingContext();
-
   while ( ! isStopping())
   {
     m_manager->threadUpdate();
   }
-
-  // deinitialize rendering context for this thread
-  //app()->graphics()->deinitializeWorkThreadRenderingContext();
 
   return 0;
 }

@@ -67,14 +67,6 @@ class Graphics : public Object
     PRenderTarget renderTarget(const String& name) const;
     /*! Enables/disables rendering. */
     void setRenderingEnabled(bool set);
-    /*! Initializes rendering context for worker thread. 
-     *  @note This method needs to be called from worker thread.
-     */
-    void initializeWorkThreadRenderingContext();
-    /*! Deinitializes rendering context for worker thread. 
-     *  @note This method needs to be called from worker thread.
-     */
-    void deinitializeWorkThreadRenderingContext();
 
   private:
 

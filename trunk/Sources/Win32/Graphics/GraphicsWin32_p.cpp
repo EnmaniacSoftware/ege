@@ -44,23 +44,5 @@ EGEResult GraphicsPrivate::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void GraphicsPrivate::initializeWorkThreadRenderingContext()
-{
-  PRenderWindow renderWindow = d_func()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
-  if (NULL != renderWindow)
-  {
-    ege_cast<RenderWindowOGLWin32*>(renderWindow)->initializeWorkThreadRenderingContext();
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void GraphicsPrivate::deinitializeWorkThreadRenderingContext()
-{
-  PRenderWindow renderWindow = d_func()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
-  if (NULL != renderWindow)
-  {
-    ege_cast<RenderWindowOGLWin32*>(renderWindow)->deinitializeWorkThreadRenderingContext();
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

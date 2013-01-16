@@ -28,14 +28,6 @@ class GraphicsPrivate
 
     /*! Creates object. */
     EGEResult construct();
-    /*! Initializes rendering context for worker thread. 
-     *  @note This method needs to be called from worker thread.
-     */
-    void initializeWorkThreadRenderingContext();
-    /*! Deinitializes rendering context for worker thread. 
-     *  @note This method needs to be called from worker thread.
-     */
-    void deinitializeWorkThreadRenderingContext();
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -20,6 +20,8 @@ Texture2D::Texture2D(Application* app, const String& name) : Object(app, EGE_OBJ
                                                              m_height(0), 
                                                              m_format(PF_UNKNOWN)
 {
+  egeDebug() << "Creating texture" << name;
+
   m_p = ege_new Texture2DPrivate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -196,16 +196,6 @@ void Graphics::setRenderingEnabled(bool set)
   m_renderingEnabled = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Graphics::initializeWorkThreadRenderingContext()
-{
-  p_func()->initializeWorkThreadRenderingContext();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Graphics::deinitializeWorkThreadRenderingContext()
-{
-  p_func()->deinitializeWorkThreadRenderingContext();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Graphics::update()
 {
   m_renderSystem->update();

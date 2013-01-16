@@ -12,8 +12,7 @@ EGE_NAMESPACE_BEGIN
 RenderWindowOGLWin32::RenderWindowOGLWin32(Application* app, const Dictionary& params) : RenderWindow(app, params), 
                                                                                          m_hWnd(NULL), 
                                                                                          m_hDC(NULL), 
-                                                                                         m_hRC(NULL),
-                                                                                         m_hRCWorkThread(NULL)
+                                                                                         m_hRC(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -137,15 +136,7 @@ EGEResult RenderWindowOGLWin32::construct(const Dictionary& params)
   }
   
   // create rendering context
-  if ((NULL == (m_hRC = wglCreateContext(m_hDC))) || (NULL == (m_hRCWorkThread = (wglCreateContext(m_hDC)))))
-  {
-    // error!
-    destroy();
-    return EGE_ERROR;
-  }
-
-  // share objects between rendering contexts
-  if (FALSE == wglShareLists(m_hRC, m_hRCWorkThread))
+  if (NULL == (m_hRC = wglCreateContext(m_hDC)))
   {
     // error!
     destroy();
@@ -192,14 +183,6 @@ void RenderWindowOGLWin32::destroy()
         m_hRC = NULL;
       }
       
-      // check if there is any RC 
-      if (NULL != m_hRCWorkThread)
-      {
-        // disconnect it from window
-        wglDeleteContext(m_hRCWorkThread);
-        m_hRCWorkThread = NULL;
-      }
-
       // delete DC
       ReleaseDC(m_hWnd, m_hDC);
       m_hDC = NULL;
@@ -485,20 +468,6 @@ bool RenderWindowOGLWin32::isValid() const
 bool RenderWindowOGLWin32::requiresTextureFlipping() const
 {
   return false;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderWindowOGLWin32::initializeWorkThreadRenderingContext()
-{
-  // assign rendering context to current thread
-  if (FALSE == wglMakeCurrent(m_hDC, m_hRCWorkThread))
-  {
-    egeWarning() << "Could not initialize worker thread rendering context";
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderWindowOGLWin32::deinitializeWorkThreadRenderingContext()
-{
-  wglMakeCurrent(NULL, NULL);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

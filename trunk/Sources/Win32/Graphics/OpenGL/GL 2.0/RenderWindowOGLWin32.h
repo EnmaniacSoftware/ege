@@ -17,14 +17,6 @@ class RenderWindowOGLWin32 : public RenderWindow
 
     /*! Creates object. */
     EGEResult construct(const Dictionary& params);
-    /*! Initializes rendering context for worker thread. 
-     *  @note This method needs to be called from worker thread.
-     */
-    void initializeWorkThreadRenderingContext();
-    /*! Deinitializes rendering context for worker thread. 
-     *  @note This method needs to be called from worker thread.
-     */
-    void deinitializeWorkThreadRenderingContext();
 
   private:
 
@@ -54,8 +46,6 @@ class RenderWindowOGLWin32 : public RenderWindow
     HDC m_hDC;
     /*! Window OpenGL rendering context. */
     HGLRC m_hRC;
-    /*! Work thread OpenGL rendering context. */
-    HGLRC m_hRCWorkThread;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -39,11 +39,12 @@ Texture2DPrivate::Texture2DPrivate(Texture2D* base) : m_d(base),
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Texture2DPrivate::~Texture2DPrivate()
 {
-  egeDebug() << "Destroying texture" << m_id;
+  egeDebug() << "Destroying texture" << m_id << d_func()->name();
 
   if (0 != m_id)
   {
     glDeleteTextures(1, &m_id);
+    OGL_CHECK();
     m_id = 0;
   }
 }
@@ -105,9 +106,6 @@ EGEResult Texture2DPrivate::create(const PImage& image)
   d_func()->m_width  = image->width();
   d_func()->m_height = image->height();
   d_func()->m_format = image->format();
-
-  // setup 4 byte alignment
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 //	glBindTexture(GL_TEXTURE_2D, m_id);
 

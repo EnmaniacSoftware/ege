@@ -28,101 +28,109 @@ EGE_DEFINE_DELETE_OPERATORS(RenderSystemPrivate)
 /*! Maps primitive type to OpenGL compilant one. */
 static GLenum MapPrimitiveType(EGEGraphics::RenderPrimitiveType type)
 {
+  GLenum result = GL_TRIANGLES;
+
   switch (type)
   {
-    case EGEGraphics::RPT_TRIANGLES:        return GL_TRIANGLES;
-    case EGEGraphics::RPT_TRIANGLE_STRIPS:  return GL_TRIANGLE_STRIP;
-    case EGEGraphics::RPT_TRIANGLE_FAN:     return GL_TRIANGLE_FAN;
-    case EGEGraphics::RPT_LINES:            return GL_LINES;
-    case EGEGraphics::RPT_LINE_LOOP:        return GL_LINE_LOOP;
-    case EGEGraphics::RPT_POINTS:           return GL_POINTS;
+    case EGEGraphics::RPT_TRIANGLES:        result = GL_TRIANGLES; break;
+    case EGEGraphics::RPT_TRIANGLE_STRIPS:  result = GL_TRIANGLE_STRIP; break;
+    case EGEGraphics::RPT_TRIANGLE_FAN:     result = GL_TRIANGLE_FAN; break;
+    case EGEGraphics::RPT_LINES:            result = GL_LINES; break;
+    case EGEGraphics::RPT_LINE_LOOP:        result = GL_LINE_LOOP; break;
+    case EGEGraphics::RPT_POINTS:           result = GL_POINTS; break;
   }
 
-  // default
-  return GL_TRIANGLES;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps blend factors to OpenGL compilant values. */
 static GLenum MapBlendFactor(EGEGraphics::BlendFactor factor)
 {
+  GLenum result = GL_ONE;
+
   switch (factor)
   {
-    case EGEGraphics::BF_ZERO:                return GL_ZERO;
-    case EGEGraphics::BF_ONE:                 return GL_ONE;
-    case EGEGraphics::BF_SRC_COLOR:           return GL_SRC_COLOR;
-    case EGEGraphics::BF_DST_COLOR:           return GL_DST_COLOR;
-    case EGEGraphics::BF_ONE_MINUS_SRC_COLOR: return GL_ONE_MINUS_SRC_COLOR;
-    case EGEGraphics::BF_ONE_MINUS_DST_COLOR: return GL_ONE_MINUS_DST_COLOR;
-    case EGEGraphics::BF_SRC_ALPHA:           return GL_SRC_ALPHA;
-    case EGEGraphics::BF_DST_ALPHA:           return GL_DST_ALPHA;
-    case EGEGraphics::BF_ONE_MINUS_SRC_ALPHA: return GL_ONE_MINUS_SRC_ALPHA;
-    case EGEGraphics::BF_ONE_MINUS_DST_ALPHA: return GL_ONE_MINUS_DST_ALPHA;
+    case EGEGraphics::BF_ZERO:                result = GL_ZERO; break;
+    case EGEGraphics::BF_ONE:                 result = GL_ONE; break;
+    case EGEGraphics::BF_SRC_COLOR:           result = GL_SRC_COLOR; break;
+    case EGEGraphics::BF_DST_COLOR:           result = GL_DST_COLOR; break;
+    case EGEGraphics::BF_ONE_MINUS_SRC_COLOR: result = GL_ONE_MINUS_SRC_COLOR; break;
+    case EGEGraphics::BF_ONE_MINUS_DST_COLOR: result = GL_ONE_MINUS_DST_COLOR; break;
+    case EGEGraphics::BF_SRC_ALPHA:           result = GL_SRC_ALPHA; break;
+    case EGEGraphics::BF_DST_ALPHA:           result = GL_DST_ALPHA; break;
+    case EGEGraphics::BF_ONE_MINUS_SRC_ALPHA: result = GL_ONE_MINUS_SRC_ALPHA; break;
+    case EGEGraphics::BF_ONE_MINUS_DST_ALPHA: result = GL_ONE_MINUS_DST_ALPHA; break;
   }
 
-  // default
-  return GL_ONE;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps texture environment to OpenGL compilant one. */
 static GLint MapPrimitiveType(EGETexture::EnvironmentMode mode)
 {
+  GLint result = GL_MODULATE;
+
   switch (mode)
   {
-    case EGETexture::EM_ADD:      return GL_ADD;
-    case EGETexture::EM_BLEND:    return GL_BLEND;
-    case EGETexture::EM_COMBINE:  return GL_COMBINE;
-    case EGETexture::EM_DECAL:    return GL_DECAL;
-    case EGETexture::EM_MODULATE: return GL_MODULATE;
-    case EGETexture::EM_REPLACE:  return GL_REPLACE;
+    case EGETexture::EM_ADD:      result = GL_ADD; break;
+    case EGETexture::EM_BLEND:    result = GL_BLEND; break;
+    case EGETexture::EM_COMBINE:  result = GL_COMBINE; break;
+    case EGETexture::EM_DECAL:    result = GL_DECAL; break;
+    case EGETexture::EM_MODULATE: result = GL_MODULATE; break;
+    case EGETexture::EM_REPLACE:  result = GL_REPLACE; break;
   }
 
-  // default
-  return GL_MODULATE;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps incides size to OpenGL compilant value. */
 static GLenum MapIndexSize(EGEIndexBuffer::IndexSize size)
 {
+  GLenum result = GL_UNSIGNED_INT;
+
   switch (size)
   {
-    case EGEIndexBuffer::IS_8BIT:   return GL_UNSIGNED_BYTE;
-    case EGEIndexBuffer::IS_16BIT:  return GL_UNSIGNED_SHORT;
-    case EGEIndexBuffer::IS_32BIT:  return GL_UNSIGNED_INT;
+    case EGEIndexBuffer::IS_8BIT:   result = GL_UNSIGNED_BYTE; break;
+    case EGEIndexBuffer::IS_16BIT:  result = GL_UNSIGNED_SHORT; break;
+    case EGEIndexBuffer::IS_32BIT:  result = GL_UNSIGNED_INT; break;
   }
 
-  // default
-  return GL_UNSIGNED_INT;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps texture filtering mode to OpenGL compilant value. */
 static GLint MapTextureFilter(EGETexture::Filter filter)
 {
+  GLint result = GL_NEAREST;
+
   switch (filter)
   {
-    case EGETexture::BILINEAR:          return GL_NEAREST;
-    case EGETexture::TRILINEAR:         return GL_LINEAR;
-    case EGETexture::MIPMAP_BILINEAR:   return GL_LINEAR_MIPMAP_NEAREST;
-    case EGETexture::MIPMAP_TRILINEAR:  return GL_LINEAR_MIPMAP_LINEAR;
+    case EGETexture::BILINEAR:          result = GL_NEAREST; break;
+    case EGETexture::TRILINEAR:         result = GL_LINEAR; break;
+    case EGETexture::MIPMAP_BILINEAR:   result = GL_LINEAR_MIPMAP_NEAREST; break;
+    case EGETexture::MIPMAP_TRILINEAR:  result = GL_LINEAR_MIPMAP_LINEAR; break;
   }
 
-  return GL_NEAREST;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps texture addressing mode to OpenGL compilant value. */
 // TAGE - when moved to OGLES1X remove #defines
 static GLint MapTextureAddressingMode(EGETexture::AddressingMode mode)
 {
+  GLint result = GL_REPEAT;
+
   switch (mode)
   {
 #ifndef EGE_RENDERING_OPENGLES_1
-    case EGETexture::AM_CLAMP:  return GL_CLAMP;
+    case EGETexture::AM_CLAMP:  result = GL_CLAMP; break;
 #else
-    case EGETexture::AM_CLAMP:  return GL_CLAMP_TO_EDGE;
+    case EGETexture::AM_CLAMP:  result = GL_CLAMP_TO_EDGE; break;
 #endif
-    case EGETexture::AM_REPEAT: return GL_REPEAT;
+    case EGETexture::AM_REPEAT: result = GL_REPEAT; break;
   }
 
-  return GL_REPEAT;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderSystemPrivate::RenderSystemPrivate(RenderSystem* base) : m_d(base), 
@@ -994,6 +1002,9 @@ PTexture2D RenderSystemPrivate::createTexture2D(const String& name, const PDataB
     return NULL;
   }
 
+  // setup 4 byte alignment
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
   activateTextureUnit(0);
   bindTexture(GL_TEXTURE_2D, texture->p_func()->id());
 
@@ -1033,6 +1044,9 @@ PTexture2D RenderSystemPrivate::createRenderTexture(const String& name, s32 widt
     return NULL;
   }
 
+  // setup 4 byte alignment
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
   activateTextureUnit(0);
   bindTexture(GL_TEXTURE_2D, texture->p_func()->id());
 
@@ -1048,6 +1062,8 @@ PTexture2D RenderSystemPrivate::createRenderTexture(const String& name, s32 widt
     // error!
     return NULL;
   }
+
+  bindTexture(GL_TEXTURE_2D, 0);
 
   Dictionary params;
   params[EGE_RENDER_TARGET_PARAM_NAME]    = name;
