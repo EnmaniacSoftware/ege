@@ -22,6 +22,9 @@ ResourceGroup::ResourceGroup(Application* app, ResourceManager* manager, const S
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceGroup::~ResourceGroup()
 {
+  // NOTE: at this stage group should be already unloaded
+  EGE_ASSERT( ! isLoaded());
+
   destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -139,7 +142,7 @@ EGEResult ResourceGroup::load()
     }
 
     // check if error occured
-    if (EGE_SUCCESS != result)
+    if ((EGE_SUCCESS != result) && (EGE_WAIT != result))
     {
       // unload entire group
       unload();
@@ -175,6 +178,11 @@ EGEResult ResourceGroup::unload()
 {
   EGEResult result = EGE_SUCCESS;
 
+  if (name() == "fonts")
+  {
+    int a = 1;
+  }
+
   // check if loaded
   if (isLoaded())
   {
@@ -206,7 +214,7 @@ EGEResult ResourceGroup::unload()
   }
   else
   {
-    // already loaded
+    // already unloaded
     result = EGE_ERROR_ALREADY_EXISTS;
   }
 
@@ -272,9 +280,6 @@ u32 ResourceGroup::resourceCount() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceGroup::destroy()
 {
-  // unload first
-  unload();
-
   // go thru all resources
   for (ResourcesMap::iterator it = m_resources.begin(); it != m_resources.end();)
   {

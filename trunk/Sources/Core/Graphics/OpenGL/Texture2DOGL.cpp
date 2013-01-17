@@ -36,14 +36,8 @@ Texture2DPrivate::Texture2DPrivate(Texture2D* base) : m_d(base),
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Texture2DPrivate::~Texture2DPrivate()
 {
-  egeDebug() << "Destroying texture" << m_id << d_func()->name();
-
-  if (0 != m_id)
-  {
-    glDeleteTextures(1, &m_id);
-    OGL_CHECK();
-    m_id = 0;
-  }
+  // NOTE: at this point texture should be deallocated
+  EGE_ASSERT(0 == m_id);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Texture2DPrivate::isValid() const

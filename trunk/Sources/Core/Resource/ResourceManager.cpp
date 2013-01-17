@@ -75,7 +75,8 @@ ResourceManager::ResourceManager(Application* app) : Object(app),
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::~ResourceManager()
 {
-  removeGroups();
+  // NOTE: all groups should be already removed
+  EGE_ASSERT(m_groups.empty());
 
   EGE_DELETE(m_p);
 }
@@ -367,6 +368,12 @@ PResourceGroup ResourceManager::group(const String& name) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManager::loadGroup(const String& name)
 {
+  // check if can NOT accept loading
+  if (STATE_READY != state())
+  {
+    return EGE_ERROR;
+  }
+
   return p_func()->loadGroup(name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -412,8 +419,6 @@ bool ResourceManager::createDefaultResources()
     // error!
     return false;
   }
-
-  m_groups.push_back(group);
 
   // wrap texture data into buffer and create texture from it
   DataBuffer textureData(DebugFontData, DEBUG_FONT_LEN);
@@ -503,15 +508,49 @@ bool ResourceManager::createDefaultResources()
     return false;
   }
 
+  // add to pool
+  m_groups.push_back(group);
+
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManager::removeGroups()
+void ResourceManager::destroyDefaultResources()
 {
-  // remove all groups
-  for (GroupList::iterator it = m_groups.begin(); it != m_groups.end();)
+  PResourceGroup defaultGroup = group(DEFAULT_GROUP_NAME);
+  if (NULL != defaultGroup)
   {
-    PResourceGroup& group = *it;
+    List<PResource> resources = defaultGroup->resources("");
+
+    // go thru all resources
+    for (List<PResource>::iterator it = resources.begin(); it != resources.end(); ++it)
+    {
+      PResource resource = *it;
+
+      if (RESOURCE_NAME_TEXTURE == resource->typeName())
+      {
+        PResourceTexture textureResource = resource;
+        app()->graphics()->hardwareResourceProvider()->destroyTexture2D(textureResource->texture());
+      }
+    }
+
+    // remove from pool
+    m_groups.remove(defaultGroup);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManager::unloadAll()
+{
+  destroyDefaultResources();
+
+  // go thru all groups
+  for (GroupList::iterator it = m_groups.begin(); it != m_groups.end(); )
+  {
+    PResourceGroup group = *it;
+
+    if (group->name() == DEFAULT_GROUP_NAME)
+    {
+      int a = 1;
+    }
 
     // disconnect
     ege_disconnect(group, resourceLoaded, p_func(), ResourceManagerPrivate::onResourceLoaded);
@@ -519,7 +558,16 @@ void ResourceManager::removeGroups()
     ege_disconnect(group, resourceGroupLoaded, p_func(), ResourceManagerPrivate::onGroupLoaded);
     ege_disconnect(group, resourceGroupUnloaded, p_func(), ResourceManagerPrivate::onGroupUnloaded);
 
-    m_groups.erase(it++);
+    // try to unload
+    if (EGE_ERROR_ALREADY_EXISTS == group->unload())
+    {
+      // remove
+      it = m_groups.erase(it);
+      continue;
+    }
+
+    // go to next
+    ++it;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

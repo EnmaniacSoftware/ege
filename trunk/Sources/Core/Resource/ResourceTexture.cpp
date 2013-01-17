@@ -177,16 +177,19 @@ EGEResult ResourceTexture::create2D()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceTexture::unload() 
 { 
-  if ("2d" == type())
+  if (STATE_LOADED == m_state)
   {
-    app()->graphics()->hardwareResourceProvider()->requestDestroyTexture2D(m_texture);
+    if ("2d" == type())
+    {
+      app()->graphics()->hardwareResourceProvider()->requestDestroyTexture2D(m_texture);
 
-    // clean up
-    m_texture = NULL; 
+      // clean up
+      m_texture = NULL; 
+    }
+
+    // reset flag
+    m_state = STATE_UNLOADED;
   }
-
-  // reset flag
-  m_state = STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceTexture::onRequestComplete(u32 handle, PObject object)

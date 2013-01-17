@@ -128,16 +128,15 @@ class ResourceManager : public Object, public IEventListener
     *   @param  tag       group element to process. 
     */
     EGEResult addGroup(const String& filePath, const PXmlElement& tag);
-    /*! Removes all groups. */
-    void removeGroups();
     /*! Creates default resources. */
     bool createDefaultResources();
+    /*! Destroys default resources. */
+    void destroyDefaultResources();
     /*! Processes include command from XML data. 
      *  @param  filePath  relative (with respect to resource root directory) path to resouce file containing the group definition.
      *  @param  tag       include element to process. 
      */
     EGEResult processInclude(const String& filePath, const PXmlElement& tag);
-
     /*! Builds dependancy list for a given group. */
     bool buildDependacyList(StringList& list, const String& groupName) const;
     /*! @see IEventListener::onEventRecieved. */
@@ -146,6 +145,8 @@ class ResourceManager : public Object, public IEventListener
     void shutDown();
     /*! Processes commands. */
     void processCommands();
+    /*! Unloads all groups. This is called from ResourceManager thread. */
+    void unloadAll();
 
   private:
 

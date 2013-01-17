@@ -8,8 +8,6 @@
 
 EGE_NAMESPACE
 
-#define SINGLE_TREAD_MODE 0
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceManagerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(ResourceManagerPrivate)
@@ -59,13 +57,11 @@ EGEResult ResourceManagerPrivate::construct()
   }
 
   // start thread
-#if !SINGLE_TREAD_MODE
   if ( ! m_workThread->start())
   {
     // error!
     return EGE_ERROR;
   }
-#endif // !SINGLE_TREAD_MODE
 
   // set state
   m_state = ResourceManager::STATE_READY;
@@ -79,10 +75,6 @@ void ResourceManagerPrivate::update(const Time& time)
 
   if (ResourceManager::STATE_READY == m_state)
   {
-#if SINGLE_TREAD_MODE
-    threadUpdate();
-#endif // SINGLE_TREAD_MODE
-
     // check if any signals are to be emitted
     if ( ! m_emissionRequests.empty())
     {
@@ -125,12 +117,14 @@ void ResourceManagerPrivate::update(const Time& time)
   else if ((ResourceManager::STATE_CLOSING == m_state) && m_workThread->isFinished())
   {
     // clean up
+    // NOTE: this should be repeated until all groups are unloaded and removed
+    d_func()->unloadAll();
 
-    // set state
-    m_state = ResourceManager::STATE_CLOSED;
-
-    // clean up
-    d_func()->removeGroups();
+    if (d_func()->m_groups.empty())
+    {
+      // done
+      m_state = ResourceManager::STATE_CLOSED;
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -230,19 +224,14 @@ void ResourceManagerPrivate::threadUpdate()
 {
   // check if nothing left to process
   // NOTE: stop processing when not ready (ie closing)
-#if SINGLE_TREAD_MODE
-#else
   while (m_pendingList.empty() && (ResourceManager::STATE_READY == m_state))
-#endif // SINGLE_TREAD_MODE
   {
     // check if no more data to process
     if (m_scheduledList.empty())
     {
       // wait for data
       m_mutex->lock();
-#if !SINGLE_TREAD_MODE
       m_commandsToProcess->wait(m_mutex);
-#endif // !SINGLE_TREAD_MODE
     }
     else
     {
@@ -371,7 +360,7 @@ void ResourceManagerPrivate::shutDown()
 {
   // mark we are to be closed
   m_state = ResourceManager::STATE_CLOSING;
-
+  
   // request stop
   m_workThread->stop(0);
 

@@ -280,6 +280,8 @@ u32 RenderSystem::requestDestroyTexture2D(PTexture2D texture)
   MutexLocker locker(m_requestsMutex);
   m_requests.push_back(request);
 
+  egeDebug() << "Requested texture destroy:" << texture->name();
+
   return request.id;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
