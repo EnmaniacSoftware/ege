@@ -167,7 +167,7 @@ EGEResult ResourceTexture::create2D()
   app()->graphics()->renderSystem()->setTextureAddressingModeT(adressingModeT());
 
   // request texture
-  m_resourceRequestId = app()->graphics()->hardwareResourceProvider()->requestTexture2D(name(), image);
+  m_resourceRequestId = app()->graphics()->hardwareResourceProvider()->requestCreateTexture2D(name(), image);
 
   // connect for notification
   ege_connect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
@@ -177,8 +177,13 @@ EGEResult ResourceTexture::create2D()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceTexture::unload() 
 { 
-  // clean up
-  m_texture = NULL; 
+  if ("2d" == type())
+  {
+    app()->graphics()->hardwareResourceProvider()->requestDestroyTexture2D(m_texture);
+
+    // clean up
+    m_texture = NULL; 
+  }
 
   // reset flag
   m_state = STATE_UNLOADED;

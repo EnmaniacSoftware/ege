@@ -2,6 +2,7 @@
 #include "Core/Application/Application.h"
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Render/RenderSystem.h"
+#include "Core/Graphics/HardwareResourceProvider.h"
 #include <EGEDebug.h>
 
 #if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
@@ -14,14 +15,13 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Texture2D)
 EGE_DEFINE_DELETE_OPERATORS(Texture2D)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Texture2D::Texture2D(Application* app, const String& name) : Object(app, EGE_OBJECT_UID_TEXTURE_2D), 
-                                                             m_name(name), 
-                                                             m_width(0), 
-                                                             m_height(0), 
-                                                             m_format(PF_UNKNOWN)
+Texture2D::Texture2D(Application* app, const String& name, IHardwareResourceProvider* provider) : Object(app, EGE_OBJECT_UID_TEXTURE_2D), 
+                                                                                                  m_name(name), 
+                                                                                                  m_width(0), 
+                                                                                                  m_height(0), 
+                                                                                                  m_format(PF_UNKNOWN),
+                                                                                                  m_provider(provider)
 {
-  egeDebug() << "Creating texture" << name;
-
   m_p = ege_new Texture2DPrivate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

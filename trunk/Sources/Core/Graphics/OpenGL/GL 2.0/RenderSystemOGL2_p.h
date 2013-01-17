@@ -34,17 +34,6 @@ class RenderSystemPrivate
     /*! Sends all geometry through the geometry pipeline to hardware. */
     void flush();
 
-    /*! @see RenderSystem::createVertexBuffer. */
-    PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const;
-    /*! @see RenderSystem::createIndexBuffer. */
-    PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const;
-    /*! @see RenderSystem::createTexture2D. */
-    PTexture2D createTexture2D(const String& name, const PImage& image);
-    /*! @see RenderSystem::createTexture2D. */
-    PTexture2D createTexture2D(const String& name, const PDataBuffer& data);
-    /*! @see RenderSystem::createRenderTexture. */
-    PTexture2D createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format);
-
   private:
 
     /*! Detects rendering capabilities. */
@@ -78,6 +67,24 @@ class RenderSystemPrivate
     void* bindIndexBuffer(PIndexBuffer& buffer) const;
     /*! Unbinds given index buffer. */
     void unbindIndexBuffer(PIndexBuffer& buffer) const;
+
+    /*! Creates empty 2D texture. 
+     *  @param  name  Texture name.
+     *  @return Returns created texture. NULL if failed.
+     */
+    PTexture2D createEmptyTexture(const String& name);
+    /*! @see RenderSystem::createVertexBuffer. */
+    PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const;
+    /*! @see RenderSystem::createIndexBuffer. */
+    PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const;
+    /*! @see RenderSystem::createTexture2D. */
+    PTexture2D createTexture2D(const String& name, const PImage& image);
+    /*! @see RenderSystem::createTexture2D. */
+    PTexture2D createTexture2D(const String& name, const PDataBuffer& data);
+    /*! @see RenderSystem::createRenderTexture. */
+    PTexture2D createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format);
+    /*! @see RenderSystem::destroyTexture2D. */
+    void destroyTexture2D(PTexture2D texture);
 
   private:
 

@@ -75,7 +75,7 @@ void RenderSystem::update()
     {
       RequestData& request = *it;
 
-      if (REQUEST_TEXTURE_2D == request.type)
+      if (REQUEST_CREATE_TEXTURE_2D == request.type)
       {
         // apply texture params
         setTextureMinFilter(request.textureMinFilter);
@@ -84,10 +84,19 @@ void RenderSystem::update()
         setTextureAddressingModeT(request.textureAddressingModeT);
 
         // create texture
-        PTexture2D texture = createTexture2D(request.name, request.image);
+        PImage image = request.object;
+        PTexture2D texture = createTexture2D(request.name, image);
 
         // signal
         emit requestComplete(request.id, texture);
+      }
+      else if (REQUEST_DESTROY_TEXTURE_2D == request.type)
+      {
+        PTexture2D texture = request.object;
+        destroyTexture2D(texture);
+
+        // signal
+        emit requestComplete(request.id, NULL);
       }
     }
   }
@@ -229,13 +238,13 @@ PTexture2D RenderSystem::createTexture2D(const String& name, const PDataBuffer& 
   return p_func()->createTexture2D(name, data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-u32 RenderSystem::requestTexture2D(const String& name, const PImage& image)
+u32 RenderSystem::requestCreateTexture2D(const String& name, const PImage& image)
 {
   // create request
   RequestData request;
-  request.type                    = REQUEST_TEXTURE_2D;
+  request.type                    = REQUEST_CREATE_TEXTURE_2D;
   request.id                      = m_nextRequestID++;
-  request.image                   = image;
+  request.object                  = image;
   request.name                    = name;
   request.textureMinFilter        = m_textureMinFilter;
   request.textureMagFilter        = m_textureMagFilter;
@@ -252,6 +261,26 @@ u32 RenderSystem::requestTexture2D(const String& name, const PImage& image)
 PTexture2D RenderSystem::createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format)
 {
   return p_func()->createRenderTexture(name, width, height, format);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystem::destroyTexture2D(PTexture2D texture)
+{
+  p_func()->destroyTexture2D(texture);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 RenderSystem::requestDestroyTexture2D(PTexture2D texture)
+{
+  // create request
+  RequestData request;
+  request.type    = REQUEST_DESTROY_TEXTURE_2D;
+  request.id      = m_nextRequestID++;
+  request.object  = texture;
+
+  // queue it
+  MutexLocker locker(m_requestsMutex);
+  m_requests.push_back(request);
+
+  return request.id;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystem::setTextureMinFilter(EGETexture::Filter filter)

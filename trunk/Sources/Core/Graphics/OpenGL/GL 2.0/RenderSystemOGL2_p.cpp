@@ -965,21 +965,13 @@ PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType us
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PTexture2D RenderSystemPrivate::createTexture2D(const String& name, const PImage& image)
 {
-  PTexture2D texture = ege_new Texture2D(d_func()->app(), name);
+  // create empty texture
+  PTexture2D texture = createEmptyTexture(name);
   if ((NULL == texture) || ! texture->isValid())
   {
     // error!
     return NULL;
   }
-
-  activateTextureUnit(0);
-  bindTexture(GL_TEXTURE_2D, texture->p_func()->id());
-
-  // set texture parameters
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(d_func()->m_textureMinFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(d_func()->m_textureMagFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(d_func()->m_textureAddressingModeS));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(d_func()->m_textureAddressingModeT));
 
   // create it
   if (EGE_SUCCESS != texture->create(image))
@@ -995,26 +987,15 @@ PTexture2D RenderSystemPrivate::createTexture2D(const String& name, const PImage
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PTexture2D RenderSystemPrivate::createTexture2D(const String& name, const PDataBuffer& data)
 {
-  PTexture2D texture = ege_new Texture2D(d_func()->app(), name);
+  // create empty texture
+  PTexture2D texture = createEmptyTexture(name);
   if ((NULL == texture) || ! texture->isValid())
   {
     // error!
     return NULL;
   }
 
-  // setup 4 byte alignment
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-  activateTextureUnit(0);
-  bindTexture(GL_TEXTURE_2D, texture->p_func()->id());
-
-  // set texture parameters
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(d_func()->m_textureMinFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(d_func()->m_textureMagFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(d_func()->m_textureAddressingModeS));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(d_func()->m_textureAddressingModeT));
-
-  // create it
+  // upload data
   if (EGE_SUCCESS != texture->create(data))
   {
     // error!
@@ -1036,25 +1017,13 @@ PTexture2D RenderSystemPrivate::createRenderTexture(const String& name, s32 widt
     return NULL;
   }
 
-  // create empty texture of given size and format
-  PTexture2D texture = ege_new Texture2D(d_func()->app(), name);
+  // create empty texture
+  PTexture2D texture = createEmptyTexture(name);
   if ((NULL == texture) || ! texture->isValid())
   {
     // error!
     return NULL;
   }
-
-  // setup 4 byte alignment
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-  activateTextureUnit(0);
-  bindTexture(GL_TEXTURE_2D, texture->p_func()->id());
-
-  // set texture parameters
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(d_func()->m_textureMinFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(d_func()->m_textureMagFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(d_func()->m_textureAddressingModeS));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(d_func()->m_textureAddressingModeT));
 
   // create texture from image
   if (EGE_SUCCESS != texture->p_func()->create(image))
@@ -1091,6 +1060,47 @@ PTexture2D RenderSystemPrivate::createRenderTexture(const String& name, s32 widt
 
   // add into render targets
   d_func()->app()->graphics()->registerRenderTarget(texture->m_target);
+
+  return texture;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::destroyTexture2D(PTexture2D texture)
+{
+  if (0 != texture->p_func()->m_id)
+  {
+    egeDebug() << "Destroying texture" << texture->p_func()->m_id << texture->name();
+  
+    glDeleteTextures(1, &texture->p_func()->m_id);
+    OGL_CHECK();
+    texture->p_func()->m_id = 0;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PTexture2D RenderSystemPrivate::createEmptyTexture(const String& name)
+{
+  PTexture2D texture = ege_new Texture2D(d_func()->app(), name, d_func());
+  if ((NULL == texture) || (NULL == texture->p_func()))
+  {
+    // error!
+    return NULL;
+  }
+
+  // setup 1 byte alignment
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+  // generate OGL texture
+  glGenTextures(1, &texture->p_func()->m_id);
+  OGL_CHECK();
+
+  // bind it
+  activateTextureUnit(0);
+  bindTexture(GL_TEXTURE_2D, texture->p_func()->id());
+
+  // set texture parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(d_func()->m_textureMinFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(d_func()->m_textureMagFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(d_func()->m_textureAddressingModeS));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(d_func()->m_textureAddressingModeT));
 
   return texture;
 }

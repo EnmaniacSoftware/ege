@@ -32,9 +32,6 @@ Texture2DPrivate::Texture2DPrivate(Texture2D* base) : m_d(base),
                                                       m_internalFormat(0),
                                                       m_typeFormat(0)
 {
-  // generate OGL texture
-  glGenTextures(1, &m_id);
-  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Texture2DPrivate::~Texture2DPrivate()

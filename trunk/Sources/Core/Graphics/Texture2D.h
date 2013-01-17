@@ -14,6 +14,7 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
+class IHardwareResourceProvider;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Texture2D : public Object
 {
@@ -57,7 +58,7 @@ class Texture2D : public Object
   protected:
 
     /*! Constructing only via RenderSystem. */
-    Texture2D(Application* app, const String& name);
+    Texture2D(Application* app, const String& name, IHardwareResourceProvider* provider);
 
   private:
 
@@ -73,6 +74,8 @@ class Texture2D : public Object
     s32 m_height;
     /*! Pixel format. */
     PixelFormat m_format;
+    /*! Texture provider used to create texture. */
+    IHardwareResourceProvider* m_provider;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

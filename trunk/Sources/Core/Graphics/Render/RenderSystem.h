@@ -142,7 +142,8 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     /*! Available request types. */
     enum RequestType
     {
-      REQUEST_TEXTURE_2D = 0
+      REQUEST_CREATE_TEXTURE_2D = 0,
+      REQUEST_DESTROY_TEXTURE_2D
     };
 
     /*! Resource request data struct. */
@@ -150,9 +151,10 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     {
       u32 id;               /*!< Assigned request id. */
       RequestType type;     /*!< Request type. */
-      PImage image;         /*!< Image associated with request. May be NULL. */
       String name;          /*!< Name associated with request. May be empty. */
-      
+
+      PObject object;       /*!< Object associated with request. May be NULL. */
+
       EGETexture::Filter textureMinFilter;                /*!< Texture minifying function filter. */
       EGETexture::Filter textureMagFilter;                /*!< Texture magnification function filter. */
       EGETexture::AddressingMode textureAddressingModeS;  /*!< Texture addressing mode for S texture coordinate. */
@@ -175,12 +177,16 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const override;
     /*! @see IHardwareResourceProvider::createTexture2D. */
     PTexture2D createTexture2D(const String& name, const PImage& image) override;
-    /*! @see IHardwareResourceProvider::requestTexture2D. */
-    u32 requestTexture2D(const String& name, const PImage& image) override;
+    /*! @see IHardwareResourceProvider::requestCreateTexture2D. */
+    u32 requestCreateTexture2D(const String& name, const PImage& image) override;
     /*! @see IHardwareResourceProvider::createTexture2D. */
     PTexture2D createTexture2D(const String& name, const PDataBuffer& data) override;
     /*! @see IHardwareResourceProvider::createRenderTexture. */
     PTexture2D createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format) override;
+    /*! @see IHardwareResourceProvider::destroyTexture2D. */
+    void destroyTexture2D(PTexture2D texture) override;
+    /*! @see IHardwareResourceProvider::requestDestroyTexture2D. */
+    u32 requestDestroyTexture2D(PTexture2D texture) override;
 
   private:
 

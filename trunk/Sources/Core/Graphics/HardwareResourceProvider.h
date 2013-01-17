@@ -32,8 +32,8 @@ class IHardwareResourceProvider
 
     /*! Signal emitted when request has been completed. 
      *  @param  requestId   ID of the request.
-     *  @param  object      Requested object. NULL if failed.
-     *  @note Signal is emitted in RenderSystem's thread. 
+     *  @param  object      Requested object.
+     *  @note Signal is emitted in RenderSystem's thread. In case of creation requests, if object is NULL indicates error.
      */
     Signal2<u32, PObject> requestComplete;
 
@@ -46,11 +46,13 @@ class IHardwareResourceProvider
     /*! Creates 2D texture from given image. 
      *  @param  name  Name of the texture.
      *  @param  image Image data for texture.
+     *  @return Returns created texture. NULL if error occured.
      */
     virtual PTexture2D createTexture2D(const String& name, const PImage& image) = 0;
     /*! Creates 2D texture from given data. 
      *  @param  name  Name of the texture.
      *  @param  image Image data for texture.
+     *  @return Returns created texture. NULL if error occured.
      */
     virtual PTexture2D createTexture2D(const String& name, const PDataBuffer& data) = 0;
     /*! Requests creation of 2D texture from given image. 
@@ -58,16 +60,28 @@ class IHardwareResourceProvider
      *  @param  image Image data for texture.
      *  @return Returns ID of the request for further delivery check.
      *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
-     *        Upon completion result will be signalled by requestTexture2DComplete.
+     *        Upon completion result will be signalled by requestComplete.
      */
-    virtual u32 requestTexture2D(const String& name, const PImage& image) = 0;
+    virtual u32 requestCreateTexture2D(const String& name, const PImage& image) = 0;
     /*! Creates render texture. 
      *  @param  name    Name of the texture.
      *  @param  width   Width of the texture (in pixels).
      *  @param  height  Height of the texture (in pixels).
      *  @param  format  Color format of the texture.
+     *  @return Returns created texture. NULL if error occured.
      */
     virtual PTexture2D createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format) = 0;
+    /*! Destroys 2D texture. 
+     *  @param  texture Texture to destroy.
+     */
+    virtual void destroyTexture2D(PTexture2D texture) = 0;
+    /*! Requests deletion of 2D texture. 
+     *  @param  texture Texture to destroy.
+     *  @return Returns ID of the request for further delivery check.
+     *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
+     *        Upon completion result will be signalled by requestComplete.
+     */
+    virtual u32 requestDestroyTexture2D(PTexture2D texture) = 0;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
