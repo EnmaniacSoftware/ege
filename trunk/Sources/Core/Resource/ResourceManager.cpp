@@ -79,6 +79,8 @@ ResourceManager::~ResourceManager()
   EGE_ASSERT(m_groups.empty());
 
   EGE_DELETE(m_p);
+
+  app()->eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManager::construct()
@@ -558,16 +560,34 @@ void ResourceManager::unloadAll()
     ege_disconnect(group, resourceGroupLoaded, p_func(), ResourceManagerPrivate::onGroupLoaded);
     ege_disconnect(group, resourceGroupUnloaded, p_func(), ResourceManagerPrivate::onGroupUnloaded);
 
+    // try to unload all resource one by one
+    // NOTE: we need to go thru all resources instead of letting the group to unload itself cause it is possible (due to implementation)
+    //       that some of the resources were loaded from outside (ie no thru PResourceGroup::load) ie when some other group refers 
+    //       the resources from other group
+    
+    bool pending = false;
+    List<PResource> resources = group->resources("");
+    for (List<PResource>::iterator itResource = resources.begin(); itResource != resources.end(); ++itResource)
+    {
+      PResource resource = *itResource;
+
+      // try to unload
+      resource->unload();
+    }
+
+    // NOTE: just to reset load flag
+    group->unload();
+
     // try to unload
-    if (EGE_ERROR_ALREADY_EXISTS == group->unload())
+    //if (EGE_ERROR_ALREADY_EXISTS == group->unload())
     {
       // remove
       it = m_groups.erase(it);
-      continue;
+      //continue;
     }
 
     // go to next
-    ++it;
+    //++it;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -8,6 +8,7 @@
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include "Core/Graphics/Render/Renderer.h"
 #include "Core/Components/Render/RenderComponent.h"
+#include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -22,7 +23,7 @@ EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
 EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RenderSystem : public Object, public IRenderer, public IHardwareResourceProvider
+class RenderSystem : public Object, public IRenderer, public IHardwareResourceProvider, public IEventListener
 {
   public:
 
@@ -32,10 +33,21 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+    /*! Available states. */
+    enum State
+    {
+      STATE_NONE = -1,      /*!< Uninitialized. */
+      STATE_READY,          /*!< Ready to use. */
+      STATE_CLOSING,        /*!< Closing. */
+      STATE_CLOSED          /*!< Closed. */
+    };
+
   public:
 
     /*! Creates object. */
     EGEResult construct();
+    /*! Returns current state. */
+    State state() const;
     /*! Updates object. */
     void update();
     /*! Sends all geometry through the geometry pipeline to hardware. */
@@ -187,11 +199,15 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     void destroyTexture2D(PTexture2D texture) override;
     /*! @see IHardwareResourceProvider::requestDestroyTexture2D. */
     u32 requestDestroyTexture2D(PTexture2D texture) override;
+    /*! @see IEventListener::onEventRecieved. */
+    void onEventRecieved(PEvent event) override;
 
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(RenderSystem);
 
+    /*! Current state. */
+    State m_state;
     /*! Currently active render target. */
     PRenderTarget m_renderTarget;
     /*! Texture minifying function filter. */

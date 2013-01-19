@@ -3,6 +3,7 @@
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Scene/SceneManager.h"
 #include "Core/Graphics/Image/ImageLoader.h"
+#include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Event/EventManager.h"
 #include "Core/Event/Event.h"
@@ -126,6 +127,7 @@ void AppController::update()
   if (STATE_QUITTING == m_state)
   {
     // update only object which needs time to shut down
+    app()->graphics()->update();
     app()->resourceManager()->update(m_updateInterval);
     app()->audioManager()->update(m_updateInterval);
     app()->imageLoader()->update(m_updateInterval);
@@ -133,7 +135,8 @@ void AppController::update()
     // check if ready to quit
     if ((ResourceManager::STATE_CLOSED == app()->resourceManager()->state()) &&
         (AudioManager::STATE_CLOSED == app()->audioManager()->state()) &&
-        (ImageLoader::STATE_CLOSED == app()->imageLoader()->state()))
+        (ImageLoader::STATE_CLOSED == app()->imageLoader()->state()) &&
+        (RenderSystem::STATE_CLOSED == app()->graphics()->renderSystem()->state()))
     {
       // change state
       m_state = STATE_QUIT;

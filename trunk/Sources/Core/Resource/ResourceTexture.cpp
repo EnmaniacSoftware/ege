@@ -60,6 +60,11 @@ ResourceTexture::ResourceTexture(Application* app, ResourceGroup* group) : IReso
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceTexture::~ResourceTexture()
 {
+  if (name() == "main-menu-heart")
+  {
+    int a = 1;
+  }
+
   if ((NULL != app()->graphics()) && (NULL != app()->graphics()->hardwareResourceProvider()))
   {
     ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
@@ -166,6 +171,16 @@ EGEResult ResourceTexture::create2D()
   app()->graphics()->renderSystem()->setTextureAddressingModeS(adressingModeS());
   app()->graphics()->renderSystem()->setTextureAddressingModeT(adressingModeT());
 
+  if (group()->name() == "main-menu-heart")
+  {
+    int a = 1;
+  }
+
+  if (name() == "main-menu-heart")
+  {
+      int b = 1;
+  }
+
   // request texture
   m_resourceRequestId = app()->graphics()->hardwareResourceProvider()->requestCreateTexture2D(name(), image);
 
@@ -177,6 +192,11 @@ EGEResult ResourceTexture::create2D()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceTexture::unload() 
 { 
+  if (group()->name() == "main-menu-heart")
+  {
+    int a = 1;
+  }
+
   if (STATE_LOADED == m_state)
   {
     if ("2d" == type())

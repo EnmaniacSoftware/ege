@@ -1,3 +1,4 @@
+#include <EGEApplication.h>
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 #include "Core/Components/Render/RenderComponent.h"
@@ -7,6 +8,10 @@
 #include "Core/Graphics/VertexBuffer.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/Render/RenderQueue.h"
+#include "Core/Event/Event.h"
+#include "Core/Event/EventIDs.h"
+#include "Core/Event/EventManager.h"
+#include "Core/Resource/ResourceManager.h"
 
 #if EGE_RENDERING_OPENGLES_1
 #include <EGEOpenGL.h>
@@ -26,6 +31,7 @@ RenderSystem::RenderSystem(Application* app) : Object(app),
                                                IRenderer(),
                                                IHardwareResourceProvider(),
                                                m_p(NULL),
+                                               m_state(STATE_NONE),
                                                m_textureMinFilter(EGETexture::BILINEAR),
                                                m_textureMagFilter(EGETexture::BILINEAR),
                                                m_textureAddressingModeS(EGETexture::AM_CLAMP),
@@ -37,6 +43,8 @@ RenderSystem::RenderSystem(Application* app) : Object(app),
 RenderSystem::~RenderSystem()
 {
   EGE_DELETE(m_p);
+
+  app()->eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult RenderSystem::construct()
@@ -56,6 +64,17 @@ EGEResult RenderSystem::construct()
     // error!
     return EGE_ERROR_NO_MEMORY;
   }
+
+  // subscribe for event notifications
+  if ( ! app()->eventManager()->addListener(this))
+  {
+    // error!
+    egeCritical() << EGE_FUNC_INFO << "Could not register for notifications!";
+    return EGE_ERROR;
+  }
+
+  // set state
+  m_state = STATE_READY;
 
   return EGE_SUCCESS;
 }
@@ -95,9 +114,19 @@ void RenderSystem::update()
         PTexture2D texture = request.object;
         destroyTexture2D(texture);
 
+        egeDebug() << "Texture destroy request done:" << texture->name();
+
         // signal
         emit requestComplete(request.id, NULL);
       }
+    }
+  }
+  else if (STATE_CLOSING == m_state)
+  {
+    // NOTE: wait till resource manager is done processing
+    if (ResourceManager::STATE_CLOSED == app()->resourceManager()->state())
+    {
+      m_state = STATE_CLOSED;
     }
   }
 }
@@ -320,7 +349,22 @@ PRenderTarget RenderSystem::currentRenderTarget() const
   return m_renderTarget; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+RenderSystem::State RenderSystem::state() const
+{
+  return m_state;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystem::onEventRecieved(PEvent event)
+{
+  switch (event->id())
+  {
+    case EGE_EVENT_ID_CORE_QUIT_REQUEST:
 
+      m_state = STATE_CLOSING;
+      break;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //// Constructors

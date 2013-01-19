@@ -25,6 +25,8 @@ ImageLoader::ImageLoader(Application* app) : Object(app),
 ImageLoader::~ImageLoader()
 {
   EGE_DELETE(m_p);
+
+  app()->eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ImageLoader::construct()

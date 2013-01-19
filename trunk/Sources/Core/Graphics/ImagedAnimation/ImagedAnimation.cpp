@@ -19,7 +19,8 @@ ImagedAnimation::ImagedAnimation() : Object(NULL),
                                      m_name(""),
                                      m_baseRenderPriority(EGEGraphics::RP_MAIN),
                                      m_displaySize(50, 50),
-                                     m_baseAlignment(ALIGN_TOP_LEFT)
+                                     m_baseAlignment(ALIGN_TOP_LEFT),
+                                     m_alpha(1.0f)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,7 +29,8 @@ ImagedAnimation::ImagedAnimation(Application* app, const String& name) : Object(
                                                                          m_name(name),
                                                                          m_baseRenderPriority(EGEGraphics::RP_MAIN),
                                                                          m_displaySize(50, 50),
-                                                                         m_baseAlignment(ALIGN_TOP_LEFT)
+                                                                         m_baseAlignment(ALIGN_TOP_LEFT),
+                                                                         m_alpha(1.0f)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -191,6 +193,9 @@ EGEResult ImagedAnimation::addObject(const EGEImagedAnimation::Object& object)
 
     // set material
     child.renderData->setMaterial(childData.material);
+    
+    // store base color
+    //child.baseDiffuseColor = childData.material->
 
     // add to pool
     data.children << child;
@@ -207,12 +212,6 @@ EGEResult ImagedAnimation::addFrameData(const List<EGEImagedAnimation:: ActionDa
   frameData.actions = actions;
 
   m_frames.push_back(frameData);
-
-  // if first frame added, update object
-  if (1 == m_frames.size())
-  {
-   // update(0);
-  }
 
   return EGE_SUCCESS;
 }
@@ -244,7 +243,7 @@ void ImagedAnimation::addForRendering(IRenderer* renderer, const Matrix4f& trans
 
       // update priority
       childData.renderData->setPriority(m_baseRenderPriority + count);
-
+      
       renderer->addForRendering(childData.renderData, transform * childData.baseFrameMatrix);
 
       ++count;
@@ -370,6 +369,11 @@ void ImagedAnimation::onSequencerFinished(PSequencer sequencer)
 PSequencer ImagedAnimation::currentSequencer() const 
 { 
   return m_currentSequencer; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ImagedAnimation::setAlpha(float32 alpha)
+{
+  m_alpha = alpha;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

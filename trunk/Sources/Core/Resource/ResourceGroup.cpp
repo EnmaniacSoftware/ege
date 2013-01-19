@@ -94,6 +94,11 @@ EGEResult ResourceGroup::load()
 {
   EGEResult result = EGE_SUCCESS;
 
+  if (name() == "atlas-misc-menus")
+  {
+    int a = 1;
+  }
+
   // check if NOT already loaded
   if ( ! isLoaded())
   {
@@ -178,7 +183,7 @@ EGEResult ResourceGroup::unload()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if (name() == "fonts")
+  if (name() == "main-menu-heart")
   {
     int a = 1;
   }

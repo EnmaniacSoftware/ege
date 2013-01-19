@@ -109,12 +109,16 @@ class ImagedAnimation : public Object, public IAnimation
     /*! Clears object. */
     void clear();
 
+    /*! Sets transparency level. */
+    void setAlpha(float32 alpha);
+
   private:
 
     /*! Child object data structure. */
     struct ChildObjectData
     {
       PRenderComponent renderData;                            /*!< Render data. */
+      Color baseDiffuseColor;                                 /*!< Base diffuse color. */
       Matrix4f baseMatrix;                                    /*!< Base transformation matrix. */
       Matrix4f baseFrameMatrix;                               /*!< Combined base and frame transformations matrix. */
     };
@@ -171,6 +175,8 @@ class ImagedAnimation : public Object, public IAnimation
     SequencerArray m_sequencers;
     /*! Current sequencer. */
     PSequencer m_currentSequencer;
+    /*! Global color alpha value. */
+    float32 m_alpha;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
