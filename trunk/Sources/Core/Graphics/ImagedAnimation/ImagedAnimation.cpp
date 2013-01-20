@@ -244,6 +244,10 @@ void ImagedAnimation::addForRendering(IRenderer* renderer, const Matrix4f& trans
       // update priority
       childData.renderData->setPriority(m_baseRenderPriority + count);
       
+      // update alpha
+      ColorTransform colorTransform(Color::NONE, Color(1.0f, 1.0f, 1.0f, m_alpha));
+      childData.renderData->material()->setDiffuseColorTransformation(colorTransform);
+
       renderer->addForRendering(childData.renderData, transform * childData.baseFrameMatrix);
 
       ++count;

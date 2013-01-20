@@ -140,16 +140,22 @@ RenderPass* RenderPass::clone() const
       pass->m_textures.push_back(*it);
     }
 
-    pass->m_srcBlendFactor = m_srcBlendFactor;
-    pass->m_dstBlendFactor = m_dstBlendFactor;
-    pass->m_ambientColor   = m_ambientColor;
-    pass->m_diffuseColor   = m_diffuseColor;
-    pass->m_specularColor  = m_specularColor;
-    pass->m_emissionColor  = m_emissionColor;
-    pass->m_shininess      = m_shininess;
+    pass->m_srcBlendFactor        = m_srcBlendFactor;
+    pass->m_dstBlendFactor        = m_dstBlendFactor;
+    pass->m_ambientColor          = m_ambientColor;
+    pass->m_diffuseColor          = m_diffuseColor;
+    pass->m_specularColor         = m_specularColor;
+    pass->m_emissionColor         = m_emissionColor;
+    pass->m_shininess             = m_shininess;
+    pass->m_diffuseColorTransform = m_diffuseColorTransform;
   }
 
   return pass;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderPass::setDiffuseColorTransformation(const ColorTransform& transformation)
+{
+  m_diffuseColorTransform = transformation;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

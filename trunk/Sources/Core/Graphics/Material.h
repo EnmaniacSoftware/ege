@@ -4,6 +4,7 @@
 #include <EGE.h>
 #include <EGEString.h>
 #include <EGEDynamicArray.h>
+#include <EGEColorTransform.h>
 #include "Core/Graphics/Render/RenderPass.h"
 
 EGE_NAMESPACE_BEGIN
@@ -45,6 +46,8 @@ class Material : public Object
     void setDiffuseColor(const Color& color);
     /*! Sets diffuse alpha only for all passes. */
     void setDiffuseAlpha(float32 alpha);
+    /*! Sets diffuse color transformation for all passes. */
+    void setDiffuseColorTransformation(const ColorTransform& transformation);
     /*! Sets ambient color for all passes. */
     void setAmbientColor(const Color& color);
     /*! Sets specular color for all passes. */

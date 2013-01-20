@@ -1,8 +1,8 @@
-#ifndef EGE_COLOR_H
-#define EGE_COLOR_H
+#ifndef EGE_COLORTRANSFORM_H
+#define EGE_COLORTRANSFORM_H
 
-#include "Core/Graphics/Color/Color.h"
+#include "Core/Graphics/Color/ColorTransform.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // EGE_EVENT_H
+#endif // EGE_COLORTRANSFORM_H

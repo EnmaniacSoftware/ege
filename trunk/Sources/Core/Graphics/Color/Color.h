@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_COLOR_H
-#define EGE_CORE_COLOR_H
+#ifndef EGE_CORE_GRAPHICS_COLOR_COLOR_H
+#define EGE_CORE_GRAPHICS_COLOR_COLOR_H
 
 #include <EGETypes.h>
 
@@ -72,4 +72,4 @@ Debug& operator << (Debug& debug, const Color& obj);
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_COLOR_H
+#endif // EGE_CORE_GRAPHICS_COLOR_COLOR_H

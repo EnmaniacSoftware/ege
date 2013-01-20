@@ -157,5 +157,15 @@ PMaterial Material::clone() const
   return material;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Material::setDiffuseColorTransformation(const ColorTransform& transformation)
+{
+  for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+  {
+    PRenderPass& pass = *it;
+
+    pass->setDiffuseColorTransformation(transformation);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

@@ -6,7 +6,7 @@
 #include <EGEAngle.h>
 #include <EGETime.h>
 #include <string>
-#include "Core/Graphics/Color.h"
+#include "Core/Graphics/Color/Color.h"
 
 EGE_NAMESPACE_BEGIN
 

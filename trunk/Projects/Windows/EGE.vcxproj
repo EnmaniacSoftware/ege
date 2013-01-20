@@ -51,7 +51,8 @@
     <ClCompile Include="..\..\Sources\Core\Event\EventManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\File\File.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Camera.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Graphics\Color.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Color\Color.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Color\ColorTransform.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Font.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Graphics.cpp" />
@@ -214,6 +215,8 @@
     <ClInclude Include="..\..\Sources\Core\Debug\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Color\Color.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Color\ColorTransform.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\HardwareResourceProvider.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\ImagedAnimation\ImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\Image.h" />
@@ -372,7 +375,6 @@
     <ClInclude Include="..\..\Sources\Core\File\File.h" />
     <ClInclude Include="..\..\Sources\Core\Flags.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\Color.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Font.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Frustum.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Graphics.h" />
