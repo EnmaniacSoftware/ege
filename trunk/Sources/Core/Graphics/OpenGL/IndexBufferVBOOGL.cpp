@@ -1,6 +1,7 @@
 #include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
 #include "Core/Data/DataBuffer.h"
 #include <EGEDebug.h>
+#include <EGEMath.h>
 #include <EGEDevice.h>
 
 EGE_NAMESPACE_BEGIN

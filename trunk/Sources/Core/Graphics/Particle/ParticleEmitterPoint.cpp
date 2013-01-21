@@ -1,4 +1,5 @@
 #include "Core/Graphics/Particle/ParticleEmitterPoint.h"
+#include <EGEStringUtils.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
@@ -28,11 +29,11 @@ bool ParticleEmitterPoint::initialize(const Dictionary& params)
   // decompose params
   m_emissionAngle                 = Angle::FromDegrees(params.value("emission-angle", "360").toFloat(&error));
   m_emissionAngleVariance         = Angle::FromDegrees(params.value("emission-angle-variance", "0").toFloat(&error));
-  m_emissionDirection             = params.value("emission-direction", "1 0 0").toVector3f(&error);
-  m_emissionDirectionMask         = params.value("emission-direction-mask", "1 1 1").toVector3f(&error);
-  m_emissionAcceleration          = params.value("emission-acceleration", "0 0 0").toVector3f(&error);
-  m_emissionAccelerationVariance  = params.value("emission-acceleration-variance", "0 0 0").toVector3f(&error);
-  m_particleStartPositionVariance = params.value("particle-start-position-variance", "0 0 0").toVector3f(&error);
+  m_emissionDirection             = StringUtils::ToVector3f(params.value("emission-direction", "1 0 0"), &error);
+  m_emissionDirectionMask         = StringUtils::ToVector3f(params.value("emission-direction-mask", "1 1 1"), &error);
+  m_emissionAcceleration          = StringUtils::ToVector3f(params.value("emission-acceleration", "0 0 0"), &error);
+  m_emissionAccelerationVariance  = StringUtils::ToVector3f(params.value("emission-acceleration-variance", "0 0 0"), &error);
+  m_particleStartPositionVariance = StringUtils::ToVector3f(params.value("particle-start-position-variance", "0 0 0"), &error);
   m_particleSpeed                 = params.value("particle-speed", "1.0").toFloat(&error);
   m_particleSpeedVariance         = params.value("particle-speed-variance", "0").toFloat(&error);
 

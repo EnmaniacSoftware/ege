@@ -159,6 +159,7 @@
     <ClCompile Include="..\..\Sources\Core\Services\SocialServicesNull_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\String.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\Text.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\StringUtils.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\Mutex.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\MutexLocker.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\PThread\Mutex_p.cpp" />
@@ -318,6 +319,7 @@
     <ClInclude Include="..\..\Sources\EGEAudio.h" />
     <ClInclude Include="..\..\Sources\EGEByteOrder.h" />
     <ClInclude Include="..\..\Sources\EGECircle.h" />
+    <ClInclude Include="..\..\Sources\EGEColorTransform.h" />
     <ClInclude Include="..\..\Sources\EGEComplex.h" />
     <ClInclude Include="..\..\Sources\EGEDeviceServices.h" />
     <ClInclude Include="..\..\Sources\EGEDictionary.h" />
@@ -470,6 +472,12 @@
     <ClInclude Include="..\..\Sources\EGESpline.h" />
     <ClInclude Include="..\..\Sources\EGESpriteAnimation.h" />
     <ClInclude Include="..\..\Sources\EGEString.h" />
+    <ClInclude Include="..\..\Sources\EGEStringArray.h" />
+    <ClInclude Include="..\..\Sources\EGEStringList.h" />
+    <ClInclude Include="..\..\Sources\EGEStringUtils.h" />
+    <ClInclude Include="..\..\Sources\EGEText.h" />
+    <ClInclude Include="..\..\Sources\EGETextArray.h" />
+    <ClInclude Include="..\..\Sources\EGETextList.h" />
     <ClInclude Include="..\..\Sources\EGETexture.h" />
     <ClInclude Include="..\..\Sources\EGEThread.h" />
     <ClInclude Include="..\..\Sources\EGETime.h" />

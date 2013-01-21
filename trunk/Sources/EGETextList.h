@@ -1,21 +1,18 @@
-#ifndef EGE_LIST_H
-#define EGE_LIST_H
+#ifndef EGE_TEXTLIST_H
+#define EGE_TEXTLIST_H
 
 #include "Core/Platform.h"
-
-#if EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
-#include "Core/Containers/Stl/List.h"
-#endif // EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
+#include <EGEText.h>
+#include <EGEList.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef List<s32> IntList;
-typedef List<float32> FloatList;
+typedef List<Text> TextList;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_LIST_H
+#endif // EGE_TEXTLIST_H

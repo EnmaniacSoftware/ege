@@ -27,6 +27,7 @@
 
 #include <EGE.h>
 #include <EGETime.h>
+#include <EGEString.h>
 #include <EGEDynamicArray.h>
 #include <EGESignal.h>
 

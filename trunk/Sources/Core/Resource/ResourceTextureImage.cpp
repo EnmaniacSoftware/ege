@@ -3,8 +3,9 @@
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Graphics/TextureImage.h"
 #include <EGEXml.h>
-#include <EGEDebug.h>
 #include <EGEResources.h>
+#include <EGEStringUtils.h>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -41,8 +42,8 @@ EGEResult ResourceTextureImage::create(const String& path, const PXmlElement& ta
   // get data
   m_name          = tag->attribute("name");
   m_textureName   = tag->attribute("texture");
-  m_rect          = tag->attribute("rect", "0 0 0 0").toRectf(&error);
-  m_rotationAngle = tag->attribute("rotation", "0").toAngle(&error);
+  m_rect          = StringUtils::ToRectf(tag->attribute("rect", "0 0 0 0"), &error);
+  m_rotationAngle = StringUtils::ToAngle(tag->attribute("rotation", "0"), &error);
 
   // check if obligatory data is wrong
   if (error || m_name.empty() || m_textureName.empty())

@@ -3,9 +3,10 @@
 #include "Core/Graphics/SpriteAnimation/SpriteAnimation.h"
 #include "Core/Resource/ResourceTextureImage.h"
 #include <EGEXml.h>
-#include <EGEDebug.h>
 #include <EGEResources.h>
 #include <EGEVector.h>
+#include <EGEStringUtils.h>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -85,12 +86,12 @@ EGEResult ResourceCurve::create(const String& path, const PXmlElement& tag)
     {
       PointData point;
 
-      point.position             = child->attribute("pos", "0 0 0").toVector3f(&error);
-      point.tangent              = child->attribute("tangent", "0 0 0").toVector3f(&error);
+      point.position             = StringUtils::ToVector3f(child->attribute("pos", "0 0 0"), &error);
+      point.tangent              = StringUtils::ToVector3f(child->attribute("tangent", "0 0 0"), &error);
       point.beginTangentOverride = child->hasAttribute("begin-tangent");
       if (point.beginTangentOverride)
       {
-        point.beginTangent = child->attribute("begin-tangent", "0 0 0").toVector3f(&error);
+        point.beginTangent = StringUtils::ToVector3f(child->attribute("begin-tangent", "0 0 0"), &error);
       }
 
       if (error)

@@ -783,6 +783,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Color\ColorTransform.cpp">
       <Filter>Core\Graphics\Color</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\StringUtils.cpp">
+      <Filter>Core\String</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1517,6 +1520,13 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\ColorTransform.h">
       <Filter>Core\Graphics\Color</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEStringUtils.h" />
+    <ClInclude Include="..\..\Sources\EGEStringList.h" />
+    <ClInclude Include="..\..\Sources\EGEStringArray.h" />
+    <ClInclude Include="..\..\Sources\EGETextArray.h" />
+    <ClInclude Include="..\..\Sources\EGETextList.h" />
+    <ClInclude Include="..\..\Sources\EGEText.h" />
+    <ClInclude Include="..\..\Sources\EGEColorTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

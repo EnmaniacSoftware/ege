@@ -1,5 +1,6 @@
 #include "Core/Graphics/Particle/ParticleEmitter.h"
 #include <EGEGraphics.h>
+#include <EGEStringUtils.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
@@ -63,16 +64,16 @@ bool ParticleEmitter::initialize(const Dictionary& params)
   m_particleMaxCount            = params.value("max-particle-count", "100").toInt(&error);
   m_emissionRate                = params.value("emission-rate", "15").toInt(&error);
   m_localSpace                  = params.value("local-space", "false").toBool(&error);
-  m_particleStartSize           = params.value("particle-start-size", "10 10").toVector2f(&error);
-  m_particleStartSizeVariance   = params.value("particle-start-size-variance", "0 0").toVector2f(&error);
-  m_particleEndSize             = params.value("particle-end-size", "0 0").toVector2f(&error);
-  m_particleEndSizeVariance     = params.value("particle-end-size-variance", "0 0").toVector2f(&error);
+  m_particleStartSize           = StringUtils::ToVector2f(params.value("particle-start-size", "10 10"), &error);
+  m_particleStartSizeVariance   = StringUtils::ToVector2f(params.value("particle-start-size-variance", "0 0"), &error);
+  m_particleEndSize             = StringUtils::ToVector2f(params.value("particle-end-size", "0 0"), &error);
+  m_particleEndSizeVariance     = StringUtils::ToVector2f(params.value("particle-end-size-variance", "0 0"), &error);
   m_particleLifeSpan            = params.value("particle-life-span", "5").toFloat(&error);
   m_particleLifeSpanVariance    = params.value("particle-life-span-variance", "0").toFloat(&error);
-  m_particleStartColor          = params.value("particle-start-color", "0 0 0 1").toColor(&error);
-  m_particleStartColorVariance  = params.value("particle-start-color-variance", "0 0 0 0").toColor(&error);
-  m_particleEndColor            = params.value("particle-end-color", "1 1 1 1").toColor(&error);
-  m_particleEndColorVariance    = params.value("particle-end-color-variance", "0 0 0 0").toColor(&error);
+  m_particleStartColor          = StringUtils::ToColor(params.value("particle-start-color", "0 0 0 1"), &error);
+  m_particleStartColorVariance  = StringUtils::ToColor(params.value("particle-start-color-variance", "0 0 0 0"), &error);
+  m_particleEndColor            = StringUtils::ToColor(params.value("particle-end-color", "1 1 1 1"), &error);
+  m_particleEndColorVariance    = StringUtils::ToColor(params.value("particle-end-color-variance", "0 0 0 0"), &error);
   m_particleSpinSpeed           = params.value("particle-spin-speed", "0").toFloat(&error);
   m_particleSpinSpeedVariance   = params.value("particle-spin-speed-variance", "0").toFloat(&error);
 

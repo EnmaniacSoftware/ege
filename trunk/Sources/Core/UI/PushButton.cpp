@@ -3,6 +3,7 @@
 #include <EGEApplication.h>
 #include <EGEResources.h>
 #include <EGEGraphics.h>
+#include <EGEStringUtils.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -159,7 +160,7 @@ bool PushButton::initialize(const Dictionary& params)
 
   if (params.contains("text-alignment"))
   {
-    Alignment alignment = params.at("text-alignment").toAlignment(&error);
+    Alignment alignment = StringUtils::ToAlignment(params.at("text-alignment"), &error);
     label->setTextAlignment(alignment);
   }
 

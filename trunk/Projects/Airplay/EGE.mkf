@@ -29,6 +29,7 @@ files
 {
 	(../../Sources)
   EGE.h
+  EGEAlignment.h
   EGEAngle.h
   EGEAnimation.h
   EGEApplication.h
@@ -36,6 +37,7 @@ files
   EGEByteOrder.h
   EGECircle.h
   EGEColor.h
+  EGEColorTransform.h
   EGEComplex.h
   EGEDataBuffer.h
   EGEDebug.h
@@ -83,6 +85,12 @@ files
   EGESpline.h
   EGESpriteAnimation.h
   EGEString.h
+  EGEStringArray.h
+  EGEStringList.h
+  EGEStringUtils.h
+  EGEText.h
+  EGETextArray.h
+  EGETextList.h
   EGETexture.h
   EGEThread.h
   EGETime.h
@@ -243,8 +251,6 @@ files
   (../../Sources/Core/Graphics)
 	Camera.cpp
 	Camera.h
-	Color.cpp
-	Color.h
   Font.cpp
   Font.h
 	Frustum.cpp
@@ -270,6 +276,13 @@ files
 	VertexBufferTypes.h
   Viewport.cpp
 	Viewport.h
+
+	["Core/Graphics/Color"]
+ 	(../../Sources/Core/Graphics/Color)
+	Color.cpp
+	Color.h
+	ColorTransform.cpp
+	ColorTransform.h
 
 	["Core/Graphics/Image"]
  	(../../Sources/Core/Graphics/Image)
@@ -558,6 +571,7 @@ files
 
 	["Core/String"]
   (../../Sources/Core/String)
+  StringUtils.cpp
   StringUtils.h
 
 	["Core/String/Stl"]

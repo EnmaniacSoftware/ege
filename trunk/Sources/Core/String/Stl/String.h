@@ -2,11 +2,7 @@
 #define EGE_CORE_STRING_H
 
 #include <EGETypes.h>
-#include <EGERect.h>
-#include <EGEAngle.h>
-#include <EGETime.h>
 #include <string>
-#include "Core/Graphics/Color/Color.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -68,28 +64,6 @@ class String : public std::string
     bool toBool(bool* error = NULL) const;
     /*! Converts to float. If error is valid, it holds TRUE if error occured during the conversion. */
     float32 toFloat(bool* error = NULL) const;
-    /*! Converts to color. If error is valid, it holds TRUE if error occured during the conversion. */
-    Color toColor(bool* error = NULL) const;
-    /*! Converts to rectangle of floats. If error is valid, it holds TRUE if error occured during the conversion. */
-    Rectf toRectf(bool* error = NULL) const;
-    /*! Converts to rectangle of integers. If error is valid, it holds TRUE if error occured during the conversion. */
-    Recti toRecti(bool* error = NULL) const;
-    /*! Converts to 2D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
-    Vector2f toVector2f(bool* error = NULL) const;
-    /*! Converts to 2D vector of ints. If error is valid, it holds TRUE if error occured during the conversion. */
-    Vector2i toVector2i(bool* error = NULL) const;
-    /*! Converts to 3D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
-    Vector3f toVector3f(bool* error = NULL) const;
-    /*! Converts to 4D vector of floats. If error is valid, it holds TRUE if error occured during the conversion. */
-    Vector4f toVector4f(bool* error = NULL) const;
-    /*! Converts to 4D vector of signed integers. If error is valid, it holds TRUE if error occured during the conversion. */
-    Vector4i toVector4i(bool* error = NULL) const;
-    /*! Converts to alignments flag. If error is valid, it holds TRUE if error occured during the conversion. */
-    Alignment toAlignment(bool* error = NULL) const;
-    /*! Converts to angle. If error is valid, it holds TRUE if error occured during the conversion. */
-    Angle toAngle(bool* error = NULL) const;
-    /*! Converts to time. If error is valid, it holds TRUE if error occured during the conversion. */
-    Time toTime(bool* error = NULL) const;
 
     /*! Splits the string into array of substrings whenever seperator occurs. */
     StringArray split(const String& separator) const;

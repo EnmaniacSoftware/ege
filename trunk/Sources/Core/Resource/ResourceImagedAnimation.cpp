@@ -3,8 +3,9 @@
 #include "Core/Resource/ResourceSequencer.h"
 #include "Core/Graphics/ImagedAnimation/ImagedAnimation.h"
 #include <EGEXml.h>
-#include <EGEDebug.h>
 #include <EGEResources.h>
+#include <EGEStringUtils.h>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -47,7 +48,7 @@ EGEResult ResourceImagedAnimation::create(const String& path, const PXmlElement&
   // get data
   m_name        = tag->attribute("name");
   m_fps         = tag->attribute("fps").toFloat(&error);
-  m_displaySize = tag->attribute("size").toVector2f(&error);
+  m_displaySize = StringUtils::ToVector2f(tag->attribute("size"), &error);
 
   // check if obligatory data is wrong
   if (error || m_name.empty())
@@ -318,11 +319,11 @@ EGEResult ResourceImagedAnimation::addObject(const PXmlElement& tag)
       ObjectChildData childData;
 
       childData.materialName = child->attribute("material");
-      childData.translate    = child->attribute("translate", "0 0").toVector2f(&error);
-      childData.scale        = child->attribute("scale", "1 1").toVector2f(&error);
-      childData.skew         = child->attribute("skew", "0 0").toVector2f(&error);
-      childData.rect         = child->attribute("rect", "0 0 0 0").toRectf(&error);
-      childData.size         = child->attribute("size", "0 0").toVector2f(&error);
+      childData.translate    = StringUtils::ToVector2f(child->attribute("translate", "0 0"), &error);
+      childData.scale        = StringUtils::ToVector2f(child->attribute("scale", "1 1"), &error);
+      childData.skew         = StringUtils::ToVector2f(child->attribute("skew", "0 0"), &error);
+      childData.rect         = StringUtils::ToRectf(child->attribute("rect", "0 0 0 0"), &error);
+      childData.size         = StringUtils::ToVector2f(child->attribute("size", "0 0"), &error);
 
       if (error)
       {
@@ -385,10 +386,10 @@ EGEResult ResourceImagedAnimation::addAction(const PXmlElement& tag, FrameData* 
   // get data
   action.objectId   = tag->attribute("object-id").toInt(&error);
  // action.queue      = tag->attribute("queue").toInt(&error);
-  action.translate  = tag->attribute("translate", "0 0").toVector2f(&error);
-  action.scale      = tag->attribute("scale", "1 1").toVector2f(&error);
-  action.skew       = tag->attribute("skew", "0 0").toVector2f(&error);
-  action.color      = tag->attribute("color", "1 1 1 1").toColor(&error);
+  action.translate  = StringUtils::ToVector2f(tag->attribute("translate", "0 0"), &error);
+  action.scale      = StringUtils::ToVector2f(tag->attribute("scale", "1 1"), &error);
+  action.skew       = StringUtils::ToVector2f(tag->attribute("skew", "0 0"), &error);
+  action.color      = StringUtils::ToColor(tag->attribute("color", "1 1 1 1"), &error);
 
   if (error)
   {

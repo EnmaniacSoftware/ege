@@ -5,6 +5,7 @@
 #include <EGEAngle.h>
 #include <EGEComplex.h>
 #include <EGEColor.h>
+#include <EGERect.h>
 #include <EGEDebug.h>
 #include <limits>
 

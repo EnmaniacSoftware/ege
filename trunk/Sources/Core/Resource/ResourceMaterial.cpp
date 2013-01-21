@@ -6,6 +6,7 @@
 #include "Core/Graphics/TextureImage.h"
 #include <EGETexture.h>
 #include <EGEResources.h>
+#include <EGEStringUtils.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -139,10 +140,10 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
   // also read data for default pass
   defaultPass.m_srcBlend        = MapBlendFactor(tag->attribute("src-blend").toLower(), EGEGraphics::BF_ONE);
   defaultPass.m_dstBlend        = MapBlendFactor(tag->attribute("dst-blend").toLower(), EGEGraphics::BF_ZERO);
-  defaultPass.m_diffuseColor    = tag->attribute("diffuse-color", "1 1 1 1").toColor(&error);
-  defaultPass.m_ambientColor    = tag->attribute("ambient-color", "1 1 1 1").toColor(&error);
-  defaultPass.m_specularColor   = tag->attribute("specular-color", "0 0 0 1").toColor(&error);
-  defaultPass.m_emissionColor   = tag->attribute("emission-color", "0 0 0 1").toColor(&error);
+  defaultPass.m_diffuseColor    = StringUtils::ToColor(tag->attribute("diffuse-color", "1 1 1 1"), &error);
+  defaultPass.m_ambientColor    = StringUtils::ToColor(tag->attribute("ambient-color", "1 1 1 1"), &error);
+  defaultPass.m_specularColor   = StringUtils::ToColor(tag->attribute("specular-color", "0 0 0 1"), &error);
+  defaultPass.m_emissionColor   = StringUtils::ToColor(tag->attribute("emission-color", "0 0 0 1"), &error);
   defaultPass.m_shininess       = tag->attribute("shininess", "0").toFloat(&error);
 
   // check if obligatory data is wrong
@@ -402,10 +403,10 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag, PassData& pass)
 
   // get data
   textureData.name          = tag->attribute("name");
-  textureData.rect          = tag->attribute("rect", "0 0 1 1").toRectf(&error);
+  textureData.rect          = StringUtils::ToRectf(tag->attribute("rect", "0 0 1 1"), &error);
   textureData.envMode       = MapTextureEnvironmentMode(tag->attribute("env-mode", "modulate"), EGETexture::EM_MODULATE);
   textureData.manual        = tag->attribute("manual", "false").toBool(&error);
-  textureData.rotationAngle = tag->attribute("rotation", "0").toAngle(&error);
+  textureData.rotationAngle = StringUtils::ToAngle(tag->attribute("rotation", "0"), &error);
 
   // check if obligatory data is wrong
   if (error || textureData.name.empty())
@@ -436,10 +437,10 @@ EGEResult ResourceMaterial::addPass(const PXmlElement& tag)
   // get data
   pass.m_srcBlend        = MapBlendFactor(tag->attribute("src-blend").toLower(), EGEGraphics::BF_ONE);
   pass.m_dstBlend        = MapBlendFactor(tag->attribute("dst-blend").toLower(), EGEGraphics::BF_ZERO);
-  pass.m_diffuseColor    = tag->attribute("diffuse-color", "1 1 1 1").toColor(&error);
-  pass.m_ambientColor    = tag->attribute("ambient-color", "1 1 1 1").toColor(&error);
-  pass.m_specularColor   = tag->attribute("specular-color", "0 0 0 1").toColor(&error);
-  pass.m_emissionColor   = tag->attribute("emission-color", "0 0 0 1").toColor(&error);
+  pass.m_diffuseColor    = StringUtils::ToColor(tag->attribute("diffuse-color", "1 1 1 1"), &error);
+  pass.m_ambientColor    = StringUtils::ToColor(tag->attribute("ambient-color", "1 1 1 1"), &error);
+  pass.m_specularColor   = StringUtils::ToColor(tag->attribute("specular-color", "0 0 0 1"), &error);
+  pass.m_emissionColor   = StringUtils::ToColor(tag->attribute("emission-color", "0 0 0 1"), &error);
   pass.m_shininess       = tag->attribute("shininess", "0").toFloat(&error);
 
   if (error)

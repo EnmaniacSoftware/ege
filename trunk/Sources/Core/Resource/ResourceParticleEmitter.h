@@ -10,6 +10,7 @@
 #include <EGETime.h>
 #include <EGEDictionary.h>
 #include <EGEParticle.h>
+#include <EGEStringList.h>
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN

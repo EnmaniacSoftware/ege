@@ -8,8 +8,7 @@
 #include "Core/Resource/Resource.h"
 #include <EGEXml.h>
 #include <EGEMap.h>
-#include <EGEDynamicArray.h>
-#include <EGEString.h>
+#include <EGETextArray.h>
 
 EGE_NAMESPACE_BEGIN
 

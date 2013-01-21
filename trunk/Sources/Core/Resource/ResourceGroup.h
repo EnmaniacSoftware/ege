@@ -8,6 +8,7 @@
 #include <EGE.h>
 #include <EGEXml.h>
 #include <EGEString.h>
+#include <EGEStringList.h>
 #include <EGEList.h>
 #include <EGEMap.h>
 #include <EGESignal.h>

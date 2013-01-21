@@ -11,6 +11,7 @@
 #include <EGEList.h>
 #include <EGESignal.h>
 #include <EGETime.h>
+#include <EGEStringList.h>
 #include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN

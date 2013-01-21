@@ -3,6 +3,7 @@
 #include <EGEApplication.h>
 #include <EGEResources.h>
 #include <EGEGraphics.h>
+#include <EGEStringUtils.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -193,7 +194,7 @@ bool Dialog::initialize(const Dictionary& params)
   // TITLE AREA
   if (params.contains("title-rect"))
   {
-    Rectf rect = params.at("title-rect").toRectf(&error);
+    Rectf rect = StringUtils::ToRectf(params.at("title-rect"), &error);
     
     titlelabel->setPosition(Vector4f(rect.x, rect.y, 0));
     titlelabel->setSize(Vector2f(rect.width, rect.height));
@@ -216,14 +217,14 @@ bool Dialog::initialize(const Dictionary& params)
 
   if (params.contains("title-alignment"))
   {
-    Alignment alignment = params.at("title-alignment").toAlignment(&error);
+    Alignment alignment = StringUtils::ToAlignment(params.at("title-alignment"), &error);
     titlelabel->setTextAlignment(alignment);
   }
 
   // TEXT AREA
   if (params.contains("text-rect"))
   {
-    Rectf rect = params.at("text-rect").toRectf(&error);
+    Rectf rect = StringUtils::ToRectf(params.at("text-rect"), &error);
 
     textLabel->setPosition(Vector4f(rect.x, rect.y, 0));
     textLabel->setSize(Vector2f(rect.width, rect.height));
@@ -246,19 +247,19 @@ bool Dialog::initialize(const Dictionary& params)
 
   if (params.contains("text-alignment"))
   {
-    Alignment alignment = params.at("text-alignment").toAlignment(&error);
+    Alignment alignment = StringUtils::ToAlignment(params.at("text-alignment"), &error);
     textLabel->setTextAlignment(alignment);
   }
 
   // TAIL
   if (params.contains("tail-rect"))
   {
-    m_tailRect = params.at("tail-rect").toRecti(&error);
+    m_tailRect = StringUtils::ToRecti(params.at("tail-rect"), &error);
   }
 
   if (params.contains("tail-offset"))
   {
-    m_tailOffset = params.at("tail-offset").toVector2f(&error);
+    m_tailOffset = StringUtils::ToVector2f(params.at("tail-offset"), &error);
   }
 
   return !error;

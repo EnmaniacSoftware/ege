@@ -1,5 +1,6 @@
 #include "Core/UI/Widget.h"
 #include <EGETexture.h>
+#include <EGEStringUtils.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -45,7 +46,7 @@ bool Widget::initialize(const Dictionary& params)
   }
 
   bool error = false;
-  Vector2f size = params.value("size", "0 0").toVector2f(&error);
+  Vector2f size = StringUtils::ToVector2f(params.value("size", "0 0"), &error);
   if ((0 >= size.x) || (0 >= size.y))
   {
     // error!
@@ -55,7 +56,7 @@ bool Widget::initialize(const Dictionary& params)
 
   if (params.contains("alignment"))
   {
-    Alignment alignment = params.at("alignment").toAlignment(&error);
+    Alignment alignment = StringUtils::ToAlignment(params.at("alignment"), &error);
     setAlignment(alignment);
   }
 

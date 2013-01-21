@@ -6,8 +6,9 @@
 #include <EGEApplication.h>
 #include <EGEGraphics.h>
 #include <EGEXml.h>
-#include <EGEDebug.h>
 #include <EGEResources.h>
+#include <EGEStringUtils.h>
+#include <EGEDebug.h>
 
 #if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
@@ -109,7 +110,7 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   m_magFilter       = MapFilterName(tag->attribute("mag-filter").toLower(), EGETexture::BILINEAR);
   m_addressingModeS = MapTextureAddressingName(tag->attribute("mode-s").toLower(), EGETexture::AM_REPEAT);
   m_addressingModeT = MapTextureAddressingName(tag->attribute("mode-t").toLower(), EGETexture::AM_REPEAT);
-  m_rotation        = tag->attribute("rotation", "0").toAngle(&error);
+  m_rotation        = StringUtils::ToAngle(tag->attribute("rotation", "0"), &error);
 
   // check if obligatory data is wrong
   if (m_name.empty() || m_path.empty() || m_type.empty() || error)

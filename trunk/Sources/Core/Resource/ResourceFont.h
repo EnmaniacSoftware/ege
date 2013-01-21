@@ -10,6 +10,7 @@
 #include <EGEString.h>
 #include <EGEMath.h>
 #include <EGEMap.h>
+#include <EGERect.h>
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN

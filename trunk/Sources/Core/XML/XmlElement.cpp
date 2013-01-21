@@ -1,5 +1,6 @@
 #include "Core/Xml/XmlElement.h"
 #include "Core/Xml/XmlAttribute.h"
+#include <EGEStringUtils.h>
 
 #if EGE_XML_TINYXML
   #include "Core/XML/TinyXml/XMLElementTinyXML_p.h"
@@ -131,7 +132,7 @@ Time XmlElement::attribute(const String& name, const Time& defValue) const
   if (isValid())
   {
     bool error = false;
-    value = p_func()->attribute(name, "").toTime(&error);
+    value = StringUtils::ToTime(p_func()->attribute(name, ""), &error);
     if (error)
     {
       value = defValue;

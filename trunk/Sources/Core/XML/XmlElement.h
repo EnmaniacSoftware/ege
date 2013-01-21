@@ -3,18 +3,16 @@
 
 #include <EGE.h>
 #include <EGEString.h>
+#include <EGETime.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class XmlElementPrivate;
 
 EGE_DECLARE_SMART_CLASS(XmlElement, PXmlElement)
 EGE_DECLARE_SMART_CLASS(XmlAttribute, PXmlAttribute)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class XmlElement : public Object
 {
    friend class XmlDocumentPrivate;

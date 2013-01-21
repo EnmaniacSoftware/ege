@@ -1,9 +1,10 @@
 #include "Core/String/Stl/String.h"
-#include "Core/Containers/Stl/DynamicArray.h"
 #include <sstream>
 #include <algorithm>
 #include <cctype>
 #include <stdarg.h>
+#include <EGEStringArray.h>
+#include <EGEStringUtils.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
@@ -211,177 +212,6 @@ String String::Format(const char* text, ...)
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Color String::toColor(bool* error) const
-{
-  if (empty())
-  {
-    if (error)
-    {
-      *error = true;
-    }
-
-    return Color::NONE;
-  }
-
-  // make sure alpha is set to opaque in case only RGB is set
-  Color color = Color::BLACK;
-
-  // check if not even RGB was able to be read
-  if (3 > sscanf(toAscii(), "%f %f %f %f", &color.red, &color.green, &color.blue, &color.alpha) && error)
-  {
-    *error = true;
-  }
-
-  return color;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Rectf String::toRectf(bool* error) const
-{
-  if (empty())
-  {
-    if (error)
-    {
-      *error = true;
-    }
-
-    return Rectf::INVALID;
-  }
-
-  Rectf rect;
-  if (4 > sscanf(toAscii(), "%f %f %f %f", &rect.x, &rect.y, &rect.width, &rect.height) && error)
-  {
-    *error = true;
-  }
-
-  return rect;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Recti String::toRecti(bool* error) const
-{
-  if (empty())
-  {
-    if (error)
-    {
-      *error = true;
-    }
-
-    return Recti::INVALID;
-  }
-
-  Recti rect;
-  if (4 > sscanf(toAscii(), "%d %d %d %d", &rect.x, &rect.y, &rect.width, &rect.height) && error)
-  {
-    *error = true;
-  }
-
-  return rect;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Vector2f String::toVector2f(bool* error) const
-{
-  if (empty())
-  {
-    if (error)
-    {
-      *error = true;
-    }
-
-    return Vector2f::ZERO;
-  }
-
-  Vector2f vec;
-  if (2 > sscanf(toAscii(), "%f %f", &vec.x, &vec.y) && error)
-  {
-    *error = true;
-  }
-
-  return vec;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Vector2i String::toVector2i(bool* error) const
-{
-  if (empty())
-  {
-    if (error)
-    {
-      *error = true;
-    }
-
-    return Vector2i::ZERO;
-  }
-
-  Vector2i vec(0, 0);
-  if (2 > sscanf(toAscii(), "%d %d", &vec.x, &vec.y) && error)
-  {
-    *error = true;
-  }
-
-  return vec;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Vector3f String::toVector3f(bool* error) const
-{
-  if (empty())
-  {
-    if (error)
-    {
-      *error = true;
-    }
-
-    return Vector3f::ZERO;
-  }
-
-  Vector3f vec(0, 0, 0);
-  if (3 > sscanf(toAscii(), "%f %f %f", &vec.x, &vec.y, &vec.z) && error)
-  {
-    *error = true;
-  }
-
-  return vec;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Vector4f String::toVector4f(bool* error) const
-{
-  if (empty())
-  {
-    if (error)
-    {
-      *error = true;
-    }
-
-    return Vector4f::ZERO;
-  }
-
-  Vector4f vec(0, 0, 0, 0);
-  if (4 > sscanf(toAscii(), "%f %f %f %f", &vec.x, &vec.y, &vec.z, &vec.w) && error)
-  {
-    *error = true;
-  }
-
-  return vec;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Vector4i String::toVector4i(bool* error) const
-{
-  if (empty())
-  {
-    if (error)
-    {
-      *error = true;
-    }
-
-    return Vector4i::ZERO;
-  }
-
-  Vector4i vec(0, 0, 0, 0);
-  if (4 > sscanf(toAscii(), "%d %d %d %d", &vec.x, &vec.y, &vec.z, &vec.w) && error)
-  {
-    *error = true;
-  }
-
-  return vec;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool String::endsWith(const String& string) const
 {
   // check if current string can contain the one to test
@@ -572,63 +402,6 @@ StringArray String::split(const String& separator) const
   return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Alignment String::toAlignment(bool* error) const
-{
-  if (empty())
-  {
-    if (error)
-    {
-      *error = true;
-    }
-
-    return ALIGN_TOP_LEFT;
-  }
-
-  // split into parts
-  StringArray parts = split("-");
-
-  Alignment alignment;
-  for (StringArray::const_iterator it = parts.begin(); it != parts.end(); ++it)
-  {
-    // remove whitespaces on both sides
-    String final = it->trimmed();
-    if ("top" == final)
-    {
-      alignment |= ALIGN_TOP;
-    }
-    else if ("bottom" == final)
-    {
-      alignment |= ALIGN_BOTTOM;
-    }
-    else if ("vcenter" == final)
-    {
-      alignment |= ALIGN_VCENTER;
-    }
-    else if ("left" == final)
-    {
-      alignment |= ALIGN_LEFT;
-    }
-    else if ("right" == final)
-    {
-      alignment |= ALIGN_RIGHT;
-    }
-    else if ("hcenter" == final)
-    {
-      alignment |= ALIGN_HCENTER;
-    }
-    else if ("center" == final)
-    {
-      alignment = ALIGN_CENTER;
-    }
-    else
-    {
-      EGE_ASSERT("Unknown alignment string");
-    }
-  }
-
-  return alignment;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String String::trimmed() const
 {
   // check if empty string
@@ -664,56 +437,6 @@ String String::trimmed() const
   }
 
   return String(std::string(startPos, endPos + 1));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Angle String::toAngle(bool* error) const
-{
-  Angle angle;
-
-  if (empty())
-  {
-    if (error)
-    {
-      *error = true;
-    }
-
-    return angle;
-  }
-
-  float32 value;
-  if (1 > sscanf(toAscii(), "%f", &value) && error)
-  {
-    *error = true;
-  }
-
-  angle.fromDegrees(value);
-
-  return angle;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Time String::toTime(bool* error) const
-{
-  Time time;
-
-  if (empty())
-  {
-    if (error)
-    {
-      *error = true;
-    }
-
-    return time;
-  }
-
-  float32 value;
-  if (1 > sscanf(toAscii(), "%f", &value) && error)
-  {
-    *error = true;
-  }
-
-  time = value;
-
-  return time;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

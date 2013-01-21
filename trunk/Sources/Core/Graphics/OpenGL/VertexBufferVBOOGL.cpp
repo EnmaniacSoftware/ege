@@ -1,8 +1,9 @@
 #include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
 #include "Core/Data/DataBuffer.h"
 #include <EGEOpenGL.h>
-#include <EGEDebug.h>
+#include <EGEMath.h>
 #include <EGEDevice.h>
+#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 

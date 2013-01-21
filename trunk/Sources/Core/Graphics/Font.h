@@ -2,7 +2,7 @@
 #define EGE_CORE_GRAPHICS_FONT_H
 
 #include <EGE.h>
-#include <EGEString.h>
+#include <EGEText.h>
 #include <EGEMap.h>
 #include "Core/Resource/ResourceFont.h"
 

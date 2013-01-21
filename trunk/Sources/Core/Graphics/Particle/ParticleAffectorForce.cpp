@@ -1,5 +1,6 @@
 #include "Core/Graphics/Particle/ParticleAffectorForce.h"
 #include <EGEGraphics.h>
+#include <EGEStringUtils.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
@@ -28,7 +29,7 @@ bool ParticleAffectorForce::initialize(const Dictionary& params)
   bool error = false;
 
   // decompose params
-  m_force = params.value("force", "0 0 0").toVector3f(&error);
+  m_force = StringUtils::ToVector3f(params.value("force", "0 0 0"), &error);
 
   return !error;
 }

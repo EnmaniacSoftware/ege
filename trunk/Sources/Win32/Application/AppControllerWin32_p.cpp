@@ -2,6 +2,7 @@
 #include "Win32/Application/AppControllerWin32_p.h"
 #include <EGEApplication.h>
 #include <EGEEvent.h>
+#include <EGEMath.h>
 #include <EGEDebug.h>
 #include <windows.h>
 

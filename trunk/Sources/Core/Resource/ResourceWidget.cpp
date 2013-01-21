@@ -5,6 +5,7 @@
 #include <EGEApplication.h>
 #include <EGEResources.h>
 #include <EGEGraphics.h>
+#include <EGEStringUtils.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -188,7 +189,7 @@ EGEResult ResourceWidget::processChild(const PXmlElement& tag)
 
   // retrieve data
   childData.name        = tag->attribute("name");
-  childData.offset      = tag->attribute("offset", "0 0").toVector2f(&error);
+  childData.offset      = StringUtils::ToVector2f(tag->attribute("offset", "0 0"), &error);
   childData.widgetName  = tag->attribute("widget-name");
  
   // check for error
@@ -222,15 +223,15 @@ EGEResult ResourceWidget::processFrame(const PXmlElement& tag)
   bool error = false;
 
   // retrieve data
-  m_frameData.topLeftRect       = tag->attribute("top-left-rect").toRecti(&error);
-  m_frameData.topMiddleRect     = tag->attribute("top-middle-rect").toRecti(&error);
-  m_frameData.topRightRect      = tag->attribute("top-right-rect").toRecti(&error);
-  m_frameData.middleLeftRect    = tag->attribute("middle-left-rect").toRecti(&error);
-  m_frameData.fillRect          = tag->attribute("fill-rect").toRecti(&error);
-  m_frameData.middleRightRect   = tag->attribute("middle-right-rect").toRecti(&error);
-  m_frameData.bottomLeftRect    = tag->attribute("bottom-left-rect").toRecti(&error);
-  m_frameData.bottomMiddleRect  = tag->attribute("bottom-middle-rect").toRecti(&error);
-  m_frameData.bottomRightRect   = tag->attribute("bottom-right-rect").toRecti(&error);
+  m_frameData.topLeftRect       = StringUtils::ToRecti(tag->attribute("top-left-rect"), &error);
+  m_frameData.topMiddleRect     = StringUtils::ToRecti(tag->attribute("top-middle-rect"), &error);
+  m_frameData.topRightRect      = StringUtils::ToRecti(tag->attribute("top-right-rect"), &error);
+  m_frameData.middleLeftRect    = StringUtils::ToRecti(tag->attribute("middle-left-rect"), &error);
+  m_frameData.fillRect          = StringUtils::ToRecti(tag->attribute("fill-rect"), &error);
+  m_frameData.middleRightRect   = StringUtils::ToRecti(tag->attribute("middle-right-rect"), &error);
+  m_frameData.bottomLeftRect    = StringUtils::ToRecti(tag->attribute("bottom-left-rect"), &error);
+  m_frameData.bottomMiddleRect  = StringUtils::ToRecti(tag->attribute("bottom-middle-rect"), &error);
+  m_frameData.bottomRightRect   = StringUtils::ToRecti(tag->attribute("bottom-right-rect"), &error);
 
   // check for error
   if (error)

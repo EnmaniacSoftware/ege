@@ -23,7 +23,9 @@ class Material : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Returns TRUE if material is valid. */
+    /*! Returns TRUE if material is valid. 
+     *  @note Material is considered valid if at least one pass is defined.
+     */
     bool isValid() const;
 
     /*! Returns number of passes. */
@@ -37,25 +39,61 @@ class Material : public Object
      */
     PRenderPass addPass(const PRenderPass& pass);
 
-    /*! Sets source pixel blend factor for all passes. */
-    void setSrcBlendFactor(EGEGraphics::BlendFactor factor);
-    /*! Sets destination pixel blend factor for all passes. */
-    void setDstBlendFactor(EGEGraphics::BlendFactor factor);
+    /*! Sets source pixel blend factor. 
+     *  @param factor     Blend factor to set.
+     *  @param passIndex  Pass index for which value is to be set.
+     *  @note If negative index is passed value is set for ALL passes.
+     */
+    void setSrcBlendFactor(EGEGraphics::BlendFactor factor, s32 passIndex = -1);
+    /*! Sets destination pixel blend factor. 
+     *  @param factor     Blend factor to set.
+     *  @param passIndex  Pass index for which value is to be set.
+     *  @note If negative index is passed value is set for ALL passes.
+     */
+    void setDstBlendFactor(EGEGraphics::BlendFactor factor, s32 passIndex = -1);
 
-    /*! Sets diffuse color for all passes. */
-    void setDiffuseColor(const Color& color);
-    /*! Sets diffuse alpha only for all passes. */
-    void setDiffuseAlpha(float32 alpha);
-    /*! Sets diffuse color transformation for all passes. */
-    void setDiffuseColorTransformation(const ColorTransform& transformation);
-    /*! Sets ambient color for all passes. */
-    void setAmbientColor(const Color& color);
-    /*! Sets specular color for all passes. */
-    void setSpecularColor(const Color& color);
-    /*! Sets shininess for all passes. */
-    void setShininess(float32 shininess);
-    /*! Sets emission color for all passes. */
-    void setEmissionColor(const Color& color);
+    /*! Sets diffuse color. 
+     *  @param color      Color to set.
+     *  @param passIndex  Pass index for which value is to be set.
+     *  @note If negative index is passed value is set for ALL passes.
+     */
+    void setDiffuseColor(const Color& color, s32 passIndex = -1);
+    /*! Sets diffuse alpha. 
+     *  @param color      Color to set.
+     *  @param passIndex  Pass index for which value is to be set.
+     *  @note If negative index is passed value is set for ALL passes.
+     */
+    void setDiffuseAlpha(float32 alpha, s32 passIndex = -1);
+    /*! Sets diffuse color transformation.
+     *  @param color      Color to set.
+     *  @param passIndex  Pass index for which value is to be set.
+     *  @note If negative index is passed value is set for ALL passes.
+     */
+    void setDiffuseColorTransformation(const ColorTransform& transformation, s32 passIndex = -1);
+    /*! Sets ambient color. 
+     *  @param transformation Value to set.
+     *  @param passIndex      Pass index for which value is to be set.
+     *  @note If negative index is passed value is set for ALL passes.
+     */
+    void setAmbientColor(const Color& color, s32 passIndex = -1);
+    /*! Sets specular color. 
+     *  @param color      Color to set.
+     *  @param passIndex  Pass index for which value is to be set.
+     *  @note If negative index is passed value is set for ALL passes.
+     */
+    void setSpecularColor(const Color& color, s32 passIndex = -1);
+    /*! Sets shininess factor.
+     *  @param shininess  Value to set.
+     *  @param passIndex  Pass index for which value is to be set.
+     *  @note If negative index is passed value is set for ALL passes.
+     */
+    void setShininess(float32 shininess, s32 passIndex = -1);
+    /*! Sets emission color. 
+     *  @param color      Color to set.
+     *  @param passIndex  Pass index for which value is to be set.
+     *  @note If negative index is passed value is set for ALL passes.
+     */
+    void setEmissionColor(const Color& color, s32 passIndex = -1);
 
     /*! Clears material. */
     void clear();
