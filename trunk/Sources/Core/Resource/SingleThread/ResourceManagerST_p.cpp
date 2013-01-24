@@ -76,6 +76,18 @@ void ResourceManagerPrivate::update(const Time& time)
       }
     }
   }
+  else if (ResourceManager::STATE_CLOSING == m_state)
+  {
+    // clean up
+    // NOTE: this should be repeated until all groups are unloaded and removed
+    d_func()->unloadAll();
+
+    if (d_func()->m_groups.empty())
+    {
+      // done
+      m_state = ResourceManager::STATE_CLOSED;
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerPrivate::processCommands()
@@ -229,11 +241,8 @@ ResourceManager::ResourceProcessPolicy ResourceManagerPrivate::resourceProcessPo
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerPrivate::shutDown()
 {
-  // remove all data
-  d_func()->removeGroups();
-
   // we are done
-  m_state = ResourceManager::STATE_CLOSED;
+  m_state = ResourceManager::STATE_CLOSING;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::State ResourceManagerPrivate::state() const
