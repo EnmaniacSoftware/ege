@@ -27,16 +27,18 @@ class RenderObjectFactory
      *  @param position    Quad position (local-space).
      *  @param size        Size of quad.
      *  @param origin      Quad's origin alignment.
+     *  @param flipU       If TRUE U texture coordinates are flipped
+     *  @param flipV       If TRUE V texture coordinates are flipped
      *  @param semantics   Render component's vertex buffer semantics.
      *  @param priority    Render priority.
      *  @param primitive   Render primitive type.
      *  @param vertexUsage Vertex buffer usage.
      *  @return Returns render component. NULL if failed.
      */
-    static PRenderComponent CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, 
+    static PRenderComponent CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, bool flipV,
                                          EGEVertexBuffer::SemanticType semantics, s32 priority, EGEGraphics::RenderPrimitiveType primitive,
                                          EGEVertexBuffer::UsageType vertexUsage);
-    static PRenderComponent CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, 
+    static PRenderComponent CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, bool flipV,
                                          const List<EGEVertexBuffer::ArrayType>& semantics, s32 priority, EGEGraphics::RenderPrimitiveType primitive,
                                          EGEVertexBuffer::UsageType vertexUsage);
 
@@ -54,7 +56,8 @@ class RenderObjectFactory
 
   private:
 
-    static bool DoCreateQuadXY(PRenderComponent& component, Vector4f position, Vector2f size, Alignment origin, EGEGraphics::RenderPrimitiveType primitive);
+    static bool DoCreateQuadXY(PRenderComponent& component, Vector4f position, Vector2f size, Alignment origin, EGEGraphics::RenderPrimitiveType primitive,
+                               bool flipU, bool flipV);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

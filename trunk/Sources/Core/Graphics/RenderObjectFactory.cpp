@@ -7,9 +7,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, 
-                                                   EGEVertexBuffer::SemanticType semantics, s32 priority, EGEGraphics::RenderPrimitiveType primitive,
-                                                   EGEVertexBuffer::UsageType vertexUsage)
+PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU,
+                                                   bool flipV, EGEVertexBuffer::SemanticType semantics, s32 priority, 
+                                                   EGEGraphics::RenderPrimitiveType primitive, EGEVertexBuffer::UsageType vertexUsage)
 {
   PRenderComponent object = ege_new RenderComponent(app, name, priority, primitive, vertexUsage);
   if (NULL != object)
@@ -21,7 +21,7 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
       return NULL;
     }
 
-    if ( ! DoCreateQuadXY(object, position, size, origin, primitive))
+    if ( ! DoCreateQuadXY(object, position, size, origin, primitive, flipU, flipV))
     {
       // error!
       return NULL;
@@ -31,9 +31,9 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, 
-                                                   const List<EGEVertexBuffer::ArrayType>& semantics, s32 priority, EGEGraphics::RenderPrimitiveType primitive,
-                                                   EGEVertexBuffer::UsageType vertexUsage)
+PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, 
+                                                   bool flipV, const List<EGEVertexBuffer::ArrayType>& semantics, s32 priority, 
+                                                   EGEGraphics::RenderPrimitiveType primitive, EGEVertexBuffer::UsageType vertexUsage)
 
 {
   PRenderComponent object = ege_new RenderComponent(app, name, priority, primitive, vertexUsage);
@@ -46,7 +46,7 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
       return NULL;
     }
 
-    if ( ! DoCreateQuadXY(object, position, size, origin, primitive))
+    if ( ! DoCreateQuadXY(object, position, size, origin, primitive, flipU, flipV))
     {
       // error!
       return NULL;
@@ -57,7 +57,7 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderObjectFactory::DoCreateQuadXY(PRenderComponent& component, Vector4f position, Vector2f size, Alignment origin, 
-                                         EGEGraphics::RenderPrimitiveType primitive)
+                                         EGEGraphics::RenderPrimitiveType primitive, bool flipU, bool flipV)
 {
   // apply alignment
   // NOTE: by default it is TOP-LEFT
@@ -99,13 +99,13 @@ bool RenderObjectFactory::DoCreateQuadXY(PRenderComponent& component, Vector4f p
   };
   VertexData vertices[4];
   vertices[0].pos = Vector3f(position.x, position.y, position.z);
-  vertices[0].uv  = Vector2f(0, 0);
+  vertices[0].uv  = Vector2f(flipU ? 1.0f : 0.0f, flipV ? 1.0f : 0.0f);
   vertices[1].pos = Vector3f(position.x, position.y + size.y, position.z);
-  vertices[1].uv  = Vector2f(0, 1);
+  vertices[1].uv  = Vector2f(flipU ? 1.0f : 0.0f, flipV ? 0.0f : 1.0f);
   vertices[2].pos = Vector3f(position.x + size.x, position.y + size.y, position.z);
-  vertices[2].uv  = Vector2f(1, 1);
+  vertices[2].uv  = Vector2f(flipU ? 0.0f : 1.0f, flipV ? 0.0f : 1.0f);
   vertices[3].pos = Vector3f(position.x + size.x, position.y, position.z);
-  vertices[3].uv  = Vector2f(1, 0);
+  vertices[3].uv  = Vector2f(flipU ? 0.0f : 1.0f, flipV ? 1.0f : 0.0f);
 
   // determine list of vertices
   IntArray vertexList;

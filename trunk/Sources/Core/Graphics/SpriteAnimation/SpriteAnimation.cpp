@@ -35,7 +35,7 @@ EGEResult SpriteAnimation::construct()
   EGEResult result;
 
   // create render data
-  m_renderData = RenderObjectFactory::CreateQuadXY(app(), name(), Vector4f::ZERO, Vector2f::ONE, ALIGN_TOP_LEFT, EGEVertexBuffer::ST_V2_T2, 
+  m_renderData = RenderObjectFactory::CreateQuadXY(app(), name(), Vector4f::ZERO, Vector2f::ONE, ALIGN_TOP_LEFT, false, false, EGEVertexBuffer::ST_V2_T2, 
                                                    EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLE_STRIPS, EGEVertexBuffer::UT_STATIC_WRITE);
   if (NULL == m_renderData)
   {

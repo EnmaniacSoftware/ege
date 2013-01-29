@@ -182,8 +182,8 @@ EGEResult ImagedAnimation::addObject(const EGEImagedAnimation::Object& object)
     child.baseFrameMatrix  = Matrix4f::IDENTITY;
     child.baseMatrix       = childData.matrix;
     child.renderData       = RenderObjectFactory::CreateQuadXY(app(), String::Format("image-animation-object-%d", m_objects.size()), Vector4f::ZERO, 
-                                                               childData.size, ALIGN_TOP_LEFT, EGEVertexBuffer::ST_V2_T2, 0, EGEGraphics::RPT_TRIANGLE_STRIPS, 
-                                                               EGEVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
+                                                               childData.size, ALIGN_TOP_LEFT, false, false, EGEVertexBuffer::ST_V2_T2, 0, 
+                                                               EGEGraphics::RPT_TRIANGLE_STRIPS, EGEVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
 
     if (NULL == child.renderData)
     {
