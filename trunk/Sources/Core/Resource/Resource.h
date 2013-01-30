@@ -20,6 +20,9 @@ EGE_DECLARE_SMART_CLASS(IResource, PResource)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IResource : public Object
 {
+  /*! For overriding group while overriding resources. */
+  friend class ResourceGroup;
+
   public:
 
     /*! Available states. */

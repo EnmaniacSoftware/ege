@@ -361,6 +361,9 @@ EGEResult ResourceGroup::overrideBy(const PResourceGroup& group)
         // override
         egeWarning() << "Overriding resource" << incomingResource->name();
         itRes->second = incomingResource;
+
+        // override group
+        incomingResource->m_group = this;
         break;
       }
       else
