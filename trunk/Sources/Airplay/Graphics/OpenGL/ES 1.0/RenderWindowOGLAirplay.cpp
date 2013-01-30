@@ -1,6 +1,6 @@
 #include "Core/Application/Application.h"
 #include "Airplay/Graphics/OpenGL/ES 1.0/RenderWindowOGLAirplay.h"
-#include "s3e.h"
+#include <s3e.h>
 #include <EGEMath.h>
 #include <EGEDevice.h>
 #include <GLES/gl.h>
@@ -13,10 +13,18 @@ EGE_NAMESPACE_BEGIN
 RenderWindowOGLAirplay::RenderWindowOGLAirplay(Application* app, const Dictionary& params) : RenderWindow(app, params), 
                                                                                              m_eglDisplay(EGL_NO_DISPLAY), 
                                                                                              m_eglContext(EGL_NO_CONTEXT),
-                                                                                             m_eglWorkerThreadContext(EGL_NO_CONTEXT),
                                                                                              m_eglSurface(EGL_NO_SURFACE)
 {
-  create(params);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+RenderWindowOGLAirplay::~RenderWindowOGLAirplay()
+{
+  destroy();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult RenderWindowOGLAirplay::construct(const Dictionary& params)
+{
+  bool error = false;
 
   // register for surface orientation changes
   if (S3E_RESULT_SUCCESS != s3eSurfaceRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB, this))
@@ -24,20 +32,6 @@ RenderWindowOGLAirplay::RenderWindowOGLAirplay(Application* app, const Dictionar
     // error!
     egeWarning() << "Count not register surface orientation change callback.";
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderWindowOGLAirplay::~RenderWindowOGLAirplay()
-{
-  // unregister surface orientation change callback
-  s3eSurfaceUnRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB);
-
-  destroy();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates Airplay OpenGL window. */
-void RenderWindowOGLAirplay::create(const Dictionary& params)
-{
-  bool error = false;
 
   // decompose param list
   Dictionary::const_iterator iterColorBits = params.find(EGE_RENDER_TARGET_PARAM_COLOR_BITS);
@@ -164,15 +158,6 @@ void RenderWindowOGLAirplay::create(const Dictionary& params)
 
   if (EGL_FALSE != success)
   {
-    m_eglWorkerThreadContext = eglCreateContext(m_eglDisplay, sEglConfig, m_eglContext, NULL);
-    if (m_eglWorkerThreadContext == EGL_NO_CONTEXT)
-    {
-      success = EGL_FALSE;
-    }
-  }
-
-  if (EGL_FALSE != success)
-  {
     success = eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext);
   }
 
@@ -207,32 +192,30 @@ void RenderWindowOGLAirplay::create(const Dictionary& params)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Destorys Airplay OpenGL window. */
 void RenderWindowOGLAirplay::destroy()
 {
+  // unregister surface orientation change callback
+  s3eSurfaceUnRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB);
+
   eglMakeCurrent(m_eglDisplay, NULL, NULL, NULL);
 
-  eglDestroyContext(m_eglDisplay, m_eglWorkerThreadContext);
   eglDestroyContext(m_eglDisplay, m_eglContext);
   eglDestroySurface(m_eglDisplay, m_eglSurface);
   eglTerminate(m_eglDisplay);
 
-  m_eglDisplay              = EGL_NO_DISPLAY;
-  m_eglContext              = EGL_NO_CONTEXT;
-  m_eglWorkerThreadContext  = EGL_NO_CONTEXT;
-  m_eglSurface              = EGL_NO_SURFACE;
+  m_eglDisplay = EGL_NO_DISPLAY;
+  m_eglContext = EGL_NO_CONTEXT;
+  m_eglSurface = EGL_NO_SURFACE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderWindow override. Shows frame buffer. */
 void RenderWindowOGLAirplay::showFrameBuffer()
 {
   eglSwapBuffers(m_eglDisplay, m_eglSurface);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Returns TRUE if object is valid. */
 bool RenderWindowOGLAirplay::isValid() const
 {
-  if (!RenderWindow::isValid())
+  if ( ! RenderWindow::isValid())
   {
     // not valid
     return false;
@@ -241,7 +224,6 @@ bool RenderWindowOGLAirplay::isValid() const
   return (EGL_NO_SURFACE != m_eglSurface) && (EGL_NO_CONTEXT != m_eglContext) && (EGL_NO_DISPLAY != m_eglDisplay);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderWindow override. Enables/Disables fullscreen mode. */
 EGEResult RenderWindowOGLAirplay::enableFullScreen(s32 width, s32 height, bool enable)
 {
   EGE_UNUSED(width);
@@ -251,13 +233,11 @@ EGEResult RenderWindowOGLAirplay::enableFullScreen(s32 width, s32 height, bool e
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
 bool RenderWindowOGLAirplay::requiresTextureFlipping() const
 {
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Orientation change callback. */
 int32 RenderWindowOGLAirplay::OrientationChangeCB(void* systemData, void* userData)
 {
   s3eSurfaceOrientation* so  = reinterpret_cast<s3eSurfaceOrientation*>(systemData);
@@ -283,19 +263,6 @@ int32 RenderWindowOGLAirplay::OrientationChangeCB(void* systemData, void* userDa
 //  EGE_PRINT("ORIENTATION %d %f   bd: %d dbd: %d w: %d h: %d", so->m_DeviceBlitDirection, me->m_orientationRotation.degrees(), bd, dbd, s3eSurfaceGetInt(S3E_SURFACE_WIDTH), s3eSurfaceGetInt(S3E_SURFACE_HEIGHT));
 
   return 0;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderWindowOGLAirplay::initializeWorkThreadRenderingContext()
-{
-  if (EGL_FALSE == eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglWorkerThreadContext))
-  {
-    egeWarning() << "Could not initialize worker thread rendering context";
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderWindowOGLAirplay::deinitializeWorkThreadRenderingContext()
-{
-  eglMakeCurrent(m_eglDisplay, NULL, NULL, NULL);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

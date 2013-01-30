@@ -8,7 +8,7 @@
 
 #include <EGETypes.h>
 #include <EGEVector.h>
-//#include "Core/Debug/Debug.h"
+#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -210,13 +210,13 @@ inline bool TRect<T>::contains(const TRect<T>& rect) const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//template <typename T>
-//inline Debug& operator << (Debug& debug, const TRect<T>& rect)
-//{
-//  debug.nospace() << "Rect(" << obj.x << "," << obj.y << " - " << obj.width << "," obj.height << ")";
-//  return debug.space();
-//}
-////--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline Debug& operator << (Debug& debug, const TRect<T>& rect)
+{
+  debug.nospace() << "Rect(" << obj.x << "," << obj.y << " - " << obj.width << "," obj.height << ")";
+  return debug.space();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 

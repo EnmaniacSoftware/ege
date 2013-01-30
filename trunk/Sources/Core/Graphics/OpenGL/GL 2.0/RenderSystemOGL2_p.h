@@ -2,7 +2,7 @@
 #define EGE_CORE_GRAPHICS_OPENGL20_RENDERSYSTEM_PRIVATE_H
 
 #include <EGE.h>
-#include <EGEMap.h>
+#include <EGEOpenGL.h>
 #include <EGEDynamicArray.h>
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Components/Render/RenderComponent.h"
@@ -14,6 +14,7 @@ class RenderSystem;
 
 EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
 EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
+EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderSystemPrivate
 {

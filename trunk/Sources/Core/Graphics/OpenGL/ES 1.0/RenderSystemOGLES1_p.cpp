@@ -4,10 +4,13 @@
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
+#include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/OpenGL/IndexBufferVAOGL.h"
 #include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
 #include "Core/Graphics/OpenGL/VertexBufferVAOGL.h"
 #include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
+#include "Core/Graphics/OpenGL/RenderTextureCopyOGL.h"
+#include "Core/Graphics/OpenGL/RenderTextureFBOOGL.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/TextureImage.h"
@@ -17,89 +20,123 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(RendererPrivate)
-EGE_DEFINE_DELETE_OPERATORS(RendererPrivate)
+EGE_DEFINE_NEW_OPERATORS(RenderSystemPrivate)
+EGE_DEFINE_DELETE_OPERATORS(RenderSystemPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps primitive type to OpenGL compilant one. */
 static GLenum MapPrimitiveType(EGEGraphics::RenderPrimitiveType type)
 {
+  GLenum result = GL_TRIANGLES;
+
   switch (type)
   {
-    case EGEGraphics::RPT_TRIANGLES:        return GL_TRIANGLES;
-    case EGEGraphics::RPT_TRIANGLE_STRIPS:  return GL_TRIANGLE_STRIP;
-    case EGEGraphics::RPT_TRIANGLE_FAN:     return GL_TRIANGLE_FAN;
-    case EGEGraphics::RPT_LINES:            return GL_LINES;
-    case EGEGraphics::RPT_LINE_LOOP:        return GL_LINE_LOOP;
-    case EGEGraphics::RPT_POINTS:           return GL_POINTS;
+    case EGEGraphics::RPT_TRIANGLES:        result = GL_TRIANGLES; break;
+    case EGEGraphics::RPT_TRIANGLE_STRIPS:  result = GL_TRIANGLE_STRIP; break;
+    case EGEGraphics::RPT_TRIANGLE_FAN:     result = GL_TRIANGLE_FAN; break;
+    case EGEGraphics::RPT_LINES:            result = GL_LINES; break;
+    case EGEGraphics::RPT_LINE_LOOP:        result = GL_LINE_LOOP; break;
+    case EGEGraphics::RPT_POINTS:           result = GL_POINTS; break;
   }
 
-  // default
-  return GL_TRIANGLES;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps blend factors to OpenGL compilant values. */
 static GLenum MapBlendFactor(EGEGraphics::BlendFactor factor)
 {
+  GLenum result = GL_ONE;
+
   switch (factor)
   {
-    case EGEGraphics::BF_ZERO:                return GL_ZERO;
-    case EGEGraphics::BF_ONE:                 return GL_ONE;
-    case EGEGraphics::BF_SRC_COLOR:           return GL_SRC_COLOR;
-    case EGEGraphics::BF_DST_COLOR:           return GL_DST_COLOR;
-    case EGEGraphics::BF_ONE_MINUS_SRC_COLOR: return GL_ONE_MINUS_SRC_COLOR;
-    case EGEGraphics::BF_ONE_MINUS_DST_COLOR: return GL_ONE_MINUS_DST_COLOR;
-    case EGEGraphics::BF_SRC_ALPHA:           return GL_SRC_ALPHA;
-    case EGEGraphics::BF_DST_ALPHA:           return GL_DST_ALPHA;
-    case EGEGraphics::BF_ONE_MINUS_SRC_ALPHA: return GL_ONE_MINUS_SRC_ALPHA;
-    case EGEGraphics::BF_ONE_MINUS_DST_ALPHA: return GL_ONE_MINUS_DST_ALPHA;
+    case EGEGraphics::BF_ZERO:                result = GL_ZERO; break;
+    case EGEGraphics::BF_ONE:                 result = GL_ONE; break;
+    case EGEGraphics::BF_SRC_COLOR:           result = GL_SRC_COLOR; break;
+    case EGEGraphics::BF_DST_COLOR:           result = GL_DST_COLOR; break;
+    case EGEGraphics::BF_ONE_MINUS_SRC_COLOR: result = GL_ONE_MINUS_SRC_COLOR; break;
+    case EGEGraphics::BF_ONE_MINUS_DST_COLOR: result = GL_ONE_MINUS_DST_COLOR; break;
+    case EGEGraphics::BF_SRC_ALPHA:           result = GL_SRC_ALPHA; break;
+    case EGEGraphics::BF_DST_ALPHA:           result = GL_DST_ALPHA; break;
+    case EGEGraphics::BF_ONE_MINUS_SRC_ALPHA: result = GL_ONE_MINUS_SRC_ALPHA; break;
+    case EGEGraphics::BF_ONE_MINUS_DST_ALPHA: result = GL_ONE_MINUS_DST_ALPHA; break;
   }
 
-  // default
-  return GL_ONE;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps texture environment to OpenGL compilant one. */
 static GLint MapPrimitiveType(EGETexture::EnvironmentMode mode)
 {
+  GLint result = GL_MODULATE;
+
   switch (mode)
   {
-    case EGETexture::EM_ADD:      return GL_ADD;
-    case EGETexture::EM_BLEND:    return GL_BLEND;
-    case EGETexture::EM_COMBINE:  return GL_COMBINE;
-    case EGETexture::EM_DECAL:    return GL_DECAL;
-    case EGETexture::EM_MODULATE: return GL_MODULATE;
-    case EGETexture::EM_REPLACE:  return GL_REPLACE;
+    case EGETexture::EM_ADD:      result = GL_ADD; break;
+    case EGETexture::EM_BLEND:    result = GL_BLEND; break;
+    case EGETexture::EM_COMBINE:  result = GL_COMBINE; break;
+    case EGETexture::EM_DECAL:    result = GL_DECAL; break;
+    case EGETexture::EM_MODULATE: result = GL_MODULATE; break;
+    case EGETexture::EM_REPLACE:  result = GL_REPLACE; break;
   }
 
-  // default
-  return GL_MODULATE;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps incides size to OpenGL compilant value. */
 static GLenum MapIndexSize(EGEIndexBuffer::IndexSize size)
 {
+  GLenum result = GL_UNSIGNED_INT;
+
   switch (size)
   {
-    case EGEIndexBuffer::IS_8BIT:   return GL_UNSIGNED_BYTE;
-    case EGEIndexBuffer::IS_16BIT:  return GL_UNSIGNED_SHORT;
-    case EGEIndexBuffer::IS_32BIT:  return GL_UNSIGNED_INT;
+    case EGEIndexBuffer::IS_8BIT:   result = GL_UNSIGNED_BYTE; break;
+    case EGEIndexBuffer::IS_16BIT:  result = GL_UNSIGNED_SHORT; break;
+    case EGEIndexBuffer::IS_32BIT:  result = GL_UNSIGNED_INT; break;
   }
 
-  // default
-  return GL_UNSIGNED_INT;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RendererPrivate::RendererPrivate(Renderer* base) : m_d(base), 
-                                                   m_activeTextureUnit(0xffffffff)
+/*! Maps texture filtering mode to OpenGL compilant value. */
+static GLint MapTextureFilter(EGETexture::Filter filter)
+{
+  GLint result = GL_NEAREST;
+
+  switch (filter)
+  {
+    case EGETexture::BILINEAR:          result = GL_NEAREST; break;
+    case EGETexture::TRILINEAR:         result = GL_LINEAR; break;
+    case EGETexture::MIPMAP_BILINEAR:   result = GL_LINEAR_MIPMAP_NEAREST; break;
+    case EGETexture::MIPMAP_TRILINEAR:  result = GL_LINEAR_MIPMAP_LINEAR; break;
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Maps texture addressing mode to OpenGL compilant value. */
+static GLint MapTextureAddressingMode(EGETexture::AddressingMode mode)
+{
+  GLint result = GL_REPEAT;
+
+  switch (mode)
+  {
+    case EGETexture::AM_CLAMP:  result = GL_CLAMP_TO_EDGE; break;
+    case EGETexture::AM_REPEAT: result = GL_REPEAT; break;
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+RenderSystemPrivate::RenderSystemPrivate(Renderer* base) : m_d(base), 
+                                                           m_activeTextureUnit(0xffffffff)
 {
   detectCapabilities();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RendererPrivate::~RendererPrivate()
+RenderSystemPrivate::~RenderSystemPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RendererPrivate::clearViewport(const PViewport& viewport)
+void RenderSystemPrivate::clearViewport(const PViewport& viewport)
 {
   GLbitfield bits = 0;
 
@@ -119,7 +156,7 @@ void RendererPrivate::clearViewport(const PViewport& viewport)
   glClear(bits);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RendererPrivate::setViewport(const PViewport& viewport)
+void RenderSystemPrivate::setViewport(const PViewport& viewport)
 {
   // set render target
   RenderTarget* target = viewport->renderTarget();
@@ -135,13 +172,15 @@ void RendererPrivate::setViewport(const PViewport& viewport)
   }
 
   // set viewport to physical region occupied by render target
-  glViewport((GLint) actualRect.x, (GLint) actualRect.y, (GLsizei) actualRect.width, (GLsizei) actualRect.height);
+  glViewport(static_cast<GLint>(actualRect.x), static_cast<GLint>(actualRect.y), 
+             static_cast<GLsizei>(actualRect.width), static_cast<GLsizei>(actualRect.height));
 
   // set scissor
-  glScissor((GLint) actualRect.x, (GLint) actualRect.y, (GLsizei) actualRect.width, (GLsizei) actualRect.height);
+  glScissor(static_cast<GLint>(actualRect.x), static_cast<GLint>(actualRect.y), 
+            static_cast<GLsizei>(actualRect.width), static_cast<GLsizei>(actualRect.height));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RendererPrivate::setRenderTarget(const PRenderTarget& renderTarget)
+void RenderSystemPrivate::setRenderTarget(const PRenderTarget& renderTarget)
 {
   // unbind current render target
   if (d_func()->m_renderTarget)
@@ -155,7 +194,7 @@ void RendererPrivate::setRenderTarget(const PRenderTarget& renderTarget)
   d_func()->m_renderTarget->bind();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RendererPrivate::flush()
+void RenderSystemPrivate::flush()
 {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -370,7 +409,6 @@ void RendererPrivate::flush()
           //glDisableClientState(GL_POINT_SIZE_ARRAY_ARB);                
           glDisable(GL_BLEND);
           glMatrixMode(GL_TEXTURE);
-          glLoadIdentity();
         }
       }
 
@@ -384,7 +422,7 @@ void RendererPrivate::flush()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RendererPrivate::applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass* pass)
+void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass* pass)
 {
   // disable blending by default
   glDisable(GL_BLEND);
@@ -406,7 +444,8 @@ void RendererPrivate::applyPassParams(const PRenderComponent& component, const P
 
     // set vertex color
     // NOTE: this will be overriden if color array is activated
-    glColor4f(pass->diffuseColor().red, pass->diffuseColor().green, pass->diffuseColor().blue, pass->diffuseColor().alpha);
+    Color color = pass->diffuseColorTransformation().transform(pass->diffuseColor());
+    glColor4f(color.red, color.green, color.blue, color.alpha);
 
     // go thru all textures
     for (u32 i = 0; i < pass->textureCount(); ++i)
@@ -473,7 +512,7 @@ void RendererPrivate::applyPassParams(const PRenderComponent& component, const P
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RendererPrivate::activateTextureUnit(u32 unit)
+void RenderSystemPrivate::activateTextureUnit(u32 unit)
 {
   // check if unit available
   if (unit < Device::TextureUnitsCount())
@@ -498,7 +537,7 @@ void RendererPrivate::activateTextureUnit(u32 unit)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RendererPrivate::bindTexture(GLenum target, GLuint textureId)
+void RenderSystemPrivate::bindTexture(GLenum target, GLuint textureId)
 {
   // enable target first
   glEnable(target);
@@ -528,7 +567,7 @@ void RendererPrivate::bindTexture(GLenum target, GLuint textureId)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RendererPrivate::detectCapabilities()
+void RenderSystemPrivate::detectCapabilities()
 {
   // get list of all extensions
   String extensionString(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
@@ -625,12 +664,12 @@ void RendererPrivate::detectCapabilities()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool RendererPrivate::isExtensionSupported(const char* extension) const
+bool RenderSystemPrivate::isExtensionSupported(const char* extension) const
 {
   return m_extensionArray.contains(extension);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RendererPrivate::applyGeneralParams(const PRenderComponent& component)
+void RenderSystemPrivate::applyGeneralParams(const PRenderComponent& component)
 {
   // apply scissor test
   if (component->clipRect().isNull())
@@ -679,7 +718,7 @@ void RendererPrivate::applyGeneralParams(const PRenderComponent& component)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void* RendererPrivate::bindVertexBuffer(PVertexBuffer& buffer) const
+void* RenderSystemPrivate::bindVertexBuffer(PVertexBuffer& buffer) const
 {
   void* data = NULL;
 
@@ -715,7 +754,7 @@ void* RendererPrivate::bindVertexBuffer(PVertexBuffer& buffer) const
   return data;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RendererPrivate::unbindVertexBuffer(PVertexBuffer& buffer) const
+void RenderSystemPrivate::unbindVertexBuffer(PVertexBuffer& buffer) const
 {
   // process according to buffer type
   switch (buffer->uid())
@@ -740,7 +779,7 @@ void RendererPrivate::unbindVertexBuffer(PVertexBuffer& buffer) const
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void* RendererPrivate::bindIndexBuffer(PIndexBuffer& buffer) const
+void* RenderSystemPrivate::bindIndexBuffer(PIndexBuffer& buffer) const
 {
   void* data = NULL;
 
@@ -776,7 +815,7 @@ void* RendererPrivate::bindIndexBuffer(PIndexBuffer& buffer) const
   return data;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RendererPrivate::unbindIndexBuffer(PIndexBuffer& buffer) const
+void RenderSystemPrivate::unbindIndexBuffer(PIndexBuffer& buffer) const
 {
   // process according to buffer type
   switch (buffer->uid())
@@ -799,6 +838,180 @@ void RendererPrivate::unbindIndexBuffer(PIndexBuffer& buffer) const
       EGE_ASSERT(false && "Invalid index buffer type");
       break;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PVertexBuffer RenderSystemPrivate::createVertexBuffer(EGEVertexBuffer::UsageType usage) const
+{
+  PVertexBuffer buffer;
+
+  if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  {
+    buffer = ege_new VertexBufferVBO(d_func()->app(), usage);
+  }
+  else
+  {
+    buffer = ege_new VertexBufferVA(d_func()->app(), usage);
+  }
+
+  return buffer;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType usage) const
+{
+  PIndexBuffer buffer;
+
+  if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  {
+    buffer = ege_new IndexBufferVBO(d_func()->app(), usage);
+  }
+  else
+  {
+    buffer = ege_new IndexBufferVA(d_func()->app(), usage);
+  }
+
+  return buffer;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PTexture2D RenderSystemPrivate::createTexture2D(const String& name, const PImage& image)
+{
+  // create empty texture
+  PTexture2D texture = createEmptyTexture(name);
+  if ((NULL == texture) || ! texture->isValid())
+  {
+    // error!
+    return NULL;
+  }
+
+  // create it
+  if (EGE_SUCCESS != texture->create(image))
+  {
+    // error!
+    return NULL;
+  }
+
+  bindTexture(GL_TEXTURE_2D, 0);
+
+  return texture;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PTexture2D RenderSystemPrivate::createTexture2D(const String& name, const PDataBuffer& data)
+{
+  // create empty texture
+  PTexture2D texture = createEmptyTexture(name);
+  if ((NULL == texture) || ! texture->isValid())
+  {
+    // error!
+    return NULL;
+  }
+
+  // upload data
+  if (EGE_SUCCESS != texture->create(data))
+  {
+    // error!
+    return NULL;
+  }
+
+  bindTexture(GL_TEXTURE_2D, 0);
+
+  return texture;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PTexture2D RenderSystemPrivate::createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format)
+{
+  // create empty image from which empty texture is to be created
+  PImage image = ImageUtils::CreateImage(width, height, format, false, 0, NULL);
+  if (NULL == image)
+  {
+    // error!
+    return NULL;
+  }
+
+  // create empty texture
+  PTexture2D texture = createEmptyTexture(name);
+  if ((NULL == texture) || ! texture->isValid())
+  {
+    // error!
+    return NULL;
+  }
+
+  // create texture from image
+  if (EGE_SUCCESS != texture->p_func()->create(image))
+  {
+    // error!
+    return NULL;
+  }
+
+  bindTexture(GL_TEXTURE_2D, 0);
+
+  Dictionary params;
+  params[EGE_RENDER_TARGET_PARAM_NAME]    = name;
+  params[EGE_RENDER_TARGET_PARAM_WIDTH]   = String::FromNumber(width);
+  params[EGE_RENDER_TARGET_PARAM_HEIGHT]  = String::FromNumber(height);
+
+  // check if Frame Buffer Object is supported
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_FBO))
+  {
+    texture->m_target = ege_new RenderTextureFBOOGL(d_func()->app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, texture->p_func()->id());
+  }
+  else
+  {
+    texture->m_target = ege_new RenderTextureCopyOGL(d_func()->app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, texture->p_func()->id());
+  }
+
+  // check if could not be allocated
+  if (NULL == texture->m_target)
+  {
+    // error!
+    return NULL;
+  }
+
+  egeWarning() << "Creating render target done" << texture->m_target;
+
+  // add into render targets
+  d_func()->app()->graphics()->registerRenderTarget(texture->m_target);
+
+  return texture;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::destroyTexture2D(PTexture2D texture)
+{
+  if (0 != texture->p_func()->m_id)
+  {
+    egeDebug() << "Destroying texture" << texture->p_func()->m_id << texture->name();
+  
+    glDeleteTextures(1, &texture->p_func()->m_id);
+    OGL_CHECK();
+    texture->p_func()->m_id = 0;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PTexture2D RenderSystemPrivate::createEmptyTexture(const String& name)
+{
+  PTexture2D texture = ege_new Texture2D(d_func()->app(), name, d_func());
+  if ((NULL == texture) || (NULL == texture->p_func()))
+  {
+    // error!
+    return NULL;
+  }
+
+  // setup 1 byte alignment
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+  // generate OGL texture
+  glGenTextures(1, &texture->p_func()->m_id);
+  OGL_CHECK();
+
+  // bind it
+  activateTextureUnit(0);
+  bindTexture(GL_TEXTURE_2D, texture->p_func()->id());
+
+  // set texture parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(d_func()->m_textureMinFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(d_func()->m_textureMagFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(d_func()->m_textureAddressingModeS));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(d_func()->m_textureAddressingModeT));
+
+  return texture;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

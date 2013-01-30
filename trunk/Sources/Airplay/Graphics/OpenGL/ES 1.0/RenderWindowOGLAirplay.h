@@ -15,19 +15,11 @@ class RenderWindowOGLAirplay : public RenderWindow
     RenderWindowOGLAirplay(Application* app, const Dictionary& params);
     virtual ~RenderWindowOGLAirplay();
 
-    /*! Initializes rendering context for worker thread. 
-     *  @note This method needs to be called from worker thread.
-     */
-    void initializeWorkThreadRenderingContext();
-    /*! Deinitializes rendering context for worker thread. 
-     *  @note This method needs to be called from worker thread.
-     */
-    void deinitializeWorkThreadRenderingContext();
+    /*! Creates object. */
+    EGEResult construct(const Dictionary& params);
 
   private:
 
-    /*! Creates Airplay OpenGL window. */
-    void create(const Dictionary& params);
     /*! Destorys Airplay OpenGL window. */
     void destroy();
     /*! Returns TRUE if object is valid. */
@@ -54,8 +46,6 @@ class RenderWindowOGLAirplay : public RenderWindow
     EGLDisplay m_eglDisplay;
     /*! OpengGLES context. */
     EGLContext m_eglContext;
-    /*! OpengGLES context for worker thread. */
-    EGLContext m_eglWorkerThreadContext;
     /*! OpenGLES display surface. */
     EGLSurface m_eglSurface;
 };

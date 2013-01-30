@@ -2,15 +2,11 @@
 #define EGE_WIN32_GRAPHICS_PRIVATE_H
 
 #include <EGE.h>
-#include <EGEDictionary.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(Graphics, PGraphics)
-EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
-EGE_DECLARE_SMART_CLASS(RenderWindow, PRenderWindow)
-EGE_DECLARE_SMART_CLASS(Renderer, PRenderer)
+class Graphics;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class GraphicsPrivate
 {

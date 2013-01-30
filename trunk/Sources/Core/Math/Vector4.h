@@ -6,6 +6,7 @@
 */
 
 #include <EGETypes.h>
+#include <EGEDebug.h>
 #include "Core/Math/Math.h"
 
 EGE_NAMESPACE_BEGIN
@@ -250,6 +251,13 @@ template <typename T>
 inline TVector4<T> operator - (const TVector4<T>& left, const TVector4<T>& right)
 {
   return TVector4<T>(left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline Debug& operator << (Debug& debug, const TVector4<T>& obj)
+{
+  debug.nospace() << "Vector4(" << x << ", " << y << ", " << z << ", " << w << ")";
+  return debug.space();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

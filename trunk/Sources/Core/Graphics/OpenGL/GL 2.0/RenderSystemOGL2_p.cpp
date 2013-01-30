@@ -1,5 +1,4 @@
 #include <EGEApplication.h>
-#include <EGEOpenGL.h>
 #include "Core/Graphics/OpenGL/GL 2.0/RenderSystemOGL2_p.h"
 #include "Core/Graphics/OpenGL/ExtensionsOGL.h"
 #include "Core/Components/Render/RenderComponent.h"
@@ -115,18 +114,13 @@ static GLint MapTextureFilter(EGETexture::Filter filter)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps texture addressing mode to OpenGL compilant value. */
-// TAGE - when moved to OGLES1X remove #defines
 static GLint MapTextureAddressingMode(EGETexture::AddressingMode mode)
 {
   GLint result = GL_REPEAT;
 
   switch (mode)
   {
-#ifndef EGE_RENDERING_OPENGLES_1
     case EGETexture::AM_CLAMP:  result = GL_CLAMP; break;
-#else
-    case EGETexture::AM_CLAMP:  result = GL_CLAMP_TO_EDGE; break;
-#endif
     case EGETexture::AM_REPEAT: result = GL_REPEAT; break;
   }
 
@@ -179,10 +173,12 @@ void RenderSystemPrivate::setViewport(const PViewport& viewport)
   }
 
   // set viewport to physical region occupied by render target
-  glViewport((GLint) actualRect.x, (GLint) actualRect.y, (GLsizei) actualRect.width, (GLsizei) actualRect.height);
+  glViewport(static_cast<GLint>(actualRect.x), static_cast<GLint>(actualRect.y), 
+             static_cast<GLsizei>(actualRect.width), static_cast<GLsizei>(actualRect.height));
 
   // set scissor
-  glScissor((GLint) actualRect.x, (GLint) actualRect.y, (GLsizei) actualRect.width, (GLsizei) actualRect.height);
+  glScissor(static_cast<GLint>(actualRect.x), static_cast<GLint>(actualRect.y), 
+            static_cast<GLsizei>(actualRect.width), static_cast<GLsizei>(actualRect.height));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::setRenderTarget(const PRenderTarget& renderTarget)
@@ -384,11 +380,7 @@ void RenderSystemPrivate::flush()
 	        //  glClientActiveTexture(GL_TEXTURE0);
 
           // set model-view matrix
-          Matrix4f out = d_func()->m_viewMatrix.multiply(data.worldMatrix);
-          glLoadMatrixf(d_func()->m_viewMatrix.data);
-          glMultMatrixf(data.worldMatrix.data);
-
-          //glLoadMatrixf(d_func()->m_viewMatrix.multiply(data.worldMatrix).data);
+          glLoadMatrixf(d_func()->m_viewMatrix.multiply(data.worldMatrix).data);
 
           // check if INDICIES are to be used
           if (0 < indexBuffer->indexCount())

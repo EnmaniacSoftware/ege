@@ -1,29 +1,32 @@
-#ifndef EGE_CORE_RENDERER_PRIVATE_H
-#define EGE_CORE_RENDERER_PRIVATE_H
+#ifndef EGE_CORE_GRAPHICS_OPENGLES10_RENDERSYSTEM_PRIVATE_H
+#define EGE_CORE_GRAPHICS_OPENGLES10_RENDERSYSTEM_PRIVATE_H
 
 #include <EGE.h>
-#include <EGEMap.h>
+#include <EGEOpenGL.h>
 #include <EGEDynamicArray.h>
-#include "GLES/gl.h"
-#include "Core/Graphics/Render/Renderer.h"
+#include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Components/Render/RenderComponent.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Renderer;
+class RenderSystem;
+
+EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
+EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
+EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RendererPrivate
+class RenderSystemPrivate
 {
   public:
 
-    RendererPrivate(Renderer* base);
-   ~RendererPrivate();
+    RenderSystemPrivate(RenderSystem* base);
+   ~RenderSystemPrivate();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    EGE_DECLARE_PUBLIC_IMPLEMENTATION(Renderer)
+    EGE_DECLARE_PUBLIC_IMPLEMENTATION(RenderSystem)
 
     /*! Sets given viewport. */
     void setViewport(const PViewport& viewport);
@@ -66,6 +69,24 @@ class RendererPrivate
     /*! Unbinds given index buffer. */
     void unbindIndexBuffer(PIndexBuffer& buffer) const;
 
+    /*! Creates empty 2D texture. 
+     *  @param  name  Texture name.
+     *  @return Returns created texture. NULL if failed.
+     */
+    PTexture2D createEmptyTexture(const String& name);
+    /*! @see RenderSystem::createVertexBuffer. */
+    PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const;
+    /*! @see RenderSystem::createIndexBuffer. */
+    PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const;
+    /*! @see RenderSystem::createTexture2D. */
+    PTexture2D createTexture2D(const String& name, const PImage& image);
+    /*! @see RenderSystem::createTexture2D. */
+    PTexture2D createTexture2D(const String& name, const PDataBuffer& data);
+    /*! @see RenderSystem::createRenderTexture. */
+    PTexture2D createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format);
+    /*! @see RenderSystem::destroyTexture2D. */
+    void destroyTexture2D(PTexture2D texture);
+
   private:
 
     /*! Texture unit currently active. */
@@ -79,4 +100,4 @@ class RendererPrivate
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_RENDERER_PRIVATE_H
+#endif // EGE_CORE_GRAPHICS_OPENGLES10_RENDERSYSTEM_PRIVATE_H
