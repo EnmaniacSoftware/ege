@@ -59,7 +59,7 @@ PDataBuffer Cipher::result()
 
   if (isValid())
   {
-    //buffer = p_func()->result();
+    buffer = p_func()->result();
   }
 
   return buffer;

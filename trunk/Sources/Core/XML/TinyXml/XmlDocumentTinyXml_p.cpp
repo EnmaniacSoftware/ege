@@ -33,15 +33,17 @@ EGEResult XmlDocumentPrivate::load(const String& fileName)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult XmlDocumentPrivate::load(const PDataBuffer& buffer)
 {
+  EGEResult result = EGE_ERROR;
+
   // parse data buffer
-  m_xml.Parse((const char*) buffer->data(0));
-  if (m_xml.Error())
+  m_xml.Parse(reinterpret_cast<char*>(buffer->data(0)));
+  if ( ! m_xml.Error())
   {
-    // error!
-    return EGE_ERROR;
+    // success
+    result = EGE_SUCCESS;
   }
 
-  return EGE_SUCCESS;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PXmlElement XmlDocumentPrivate::firstChild(const String& name)

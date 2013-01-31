@@ -52,6 +52,12 @@ EGEResult XmlDocument::load(const PDataBuffer& buffer)
 {
   if (isValid())
   {
+    if (NULL == buffer)
+    {
+      // error!
+      return EGE_ERROR_NOT_FOUND;
+    }
+
     return p_func()->load(buffer);
   }
 

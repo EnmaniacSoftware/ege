@@ -24,6 +24,9 @@ EGEResult CipherXORPrivate::addData(const char* data, s32 length)
     // get pointer to first element in result buffer where new data should be written to
     char* outData = reinterpret_cast<char*>(m_result->data(m_result->writeOffset()));
 
+    // update write offset already
+    m_result->setWriteOffset(m_result->writeOffset() + length);
+
     while (0 < length)
     {
       // encrypt/decrypt
@@ -32,7 +35,7 @@ EGEResult CipherXORPrivate::addData(const char* data, s32 length)
       // next
       ++outData;
       ++data;
-      ++m_keyIndex;
+      m_keyIndex = (m_keyIndex + 1) % m_key->length();
       --length;
     }
   }

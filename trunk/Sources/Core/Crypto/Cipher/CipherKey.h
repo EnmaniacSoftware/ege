@@ -25,6 +25,8 @@ class CipherKey : public Object
 
     /*! Returns key value at given index. */
     u8 value(s32 index) const;
+    /*! Returns length of the key (in bytes). */
+    s64 length() const;
 
   private:
 
@@ -37,6 +39,11 @@ inline u8 CipherKey::value(s32 index) const
   EGE_ASSERT(index < m_key.size());
 
   return *reinterpret_cast<u8*>(m_key.data(static_cast<s64>(index)));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline s64 CipherKey::length() const
+{
+  return m_key.size();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
