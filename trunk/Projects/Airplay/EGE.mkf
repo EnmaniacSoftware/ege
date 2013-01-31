@@ -35,6 +35,7 @@ files
   EGEApplication.h
   EGEAudio.h
   EGEByteOrder.h
+  EGECipher.h
   EGECircle.h
   EGEColor.h
   EGEColorTransform.h
@@ -205,6 +206,20 @@ files
  	(../../Sources/Core/Crypto/md5)
   md5.c
   md5.h
+
+	["Core/Crypto/Cipher"]
+ 	(../../Sources/Core/Crypto/Cipher)
+  Cipher.cpp
+  Cipher.h
+  Cipher_p.cpp
+  Cipher_p.h
+  CipherKey.cpp
+  CipherKey.h
+
+	["Core/Crypto/Cipher/XOR"]
+ 	(../../Sources/Core/Crypto/Cipher/XOR)
+  CipherXOR_p.cpp
+  CipherXOR_p.h
 
 	["Core/Data"]
  	(../../Sources/Core/Data)

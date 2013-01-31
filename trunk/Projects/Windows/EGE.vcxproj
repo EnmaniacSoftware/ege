@@ -36,6 +36,10 @@
     <ClCompile Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Render\RenderComponent.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Crypto\Cipher\Cipher.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Crypto\Cipher\CipherKey.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Crypto\Cipher\Cipher_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Crypto\Cipher\XOR\CipherXOR_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\CryptographicHash.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\CryptographicHash_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Hash.cpp" />
@@ -209,6 +213,10 @@
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeOut.h" />
     <ClInclude Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Crypto\Cipher\Cipher.h" />
+    <ClInclude Include="..\..\Sources\Core\Crypto\Cipher\CipherKey.h" />
+    <ClInclude Include="..\..\Sources\Core\Crypto\Cipher\Cipher_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Crypto\Cipher\XOR\CipherXOR_p.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\CryptographicHash.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\CryptographicHash_p.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Hash.h" />
@@ -318,6 +326,7 @@
     <ClInclude Include="..\..\Sources\EGEAnimation.h" />
     <ClInclude Include="..\..\Sources\EGEAudio.h" />
     <ClInclude Include="..\..\Sources\EGEByteOrder.h" />
+    <ClInclude Include="..\..\Sources\EGECipher.h" />
     <ClInclude Include="..\..\Sources\EGECircle.h" />
     <ClInclude Include="..\..\Sources\EGEColorTransform.h" />
     <ClInclude Include="..\..\Sources\EGEComplex.h" />

@@ -90,7 +90,7 @@ EGEResult DataBuffer::setCapacity(s64 newCapacity)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 DataBuffer::write(void* data, s64 size)
+s64 DataBuffer::write(const void* data, s64 size)
 {
   EGE_ASSERT(0 <= size && data);
 

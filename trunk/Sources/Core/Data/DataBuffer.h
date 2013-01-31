@@ -34,7 +34,7 @@ class DataBuffer : public Object
     /*! Gets pointer to data at given byte offset. */
     void* data(s64 offset = 0) const;
     /*! Writes given amount of data into buffer. Returns number of data written. */
-    s64 write(void* data, s64 size);
+    s64 write(const void* data, s64 size);
     /*! Reads given amount of data from buffer. Returns number of data read. */
     s64 read(void* data, s64 size);
     /*! Reads given amount of data into destination buffer.

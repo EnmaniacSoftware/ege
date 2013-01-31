@@ -3,6 +3,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGE_DEFINE_NEW_OPERATORS(CryptographicHashPrivate)
+EGE_DEFINE_DELETE_OPERATORS(CryptographicHashPrivate)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 CryptographicHashPrivate::CryptographicHashPrivate(EGECryptographicHash::Algorithm algorithm) : m_algorithm(algorithm)
 {
   switch (m_algorithm)
