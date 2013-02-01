@@ -38,7 +38,6 @@ static DeviceInfo l_iOSDeviceInfoMap[] = {
   { "iPad3,3",    EGEDevice::DEVICE_IPAD_3 },
   { "iPad3,4",    EGEDevice::DEVICE_IPAD_4 }
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function determining iOS device from string value. */
 static EGEDevice::Device GetIOSDevice(const String& deviceId)
@@ -126,12 +125,17 @@ void Device::Sleep(u32 ms)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u64 Device::AvailableMemory()
 {
-  return static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_FREE_RAM));
+  return static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_MEM_FREE));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u64 Device::TotalMemory()
 {
-  return static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_TOTAL_RAM));
+  return static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_MEM_TOTAL));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+String Device::GetUniqueId()
+{
+  return s3eDeviceGetString(S3E_DEVICE_UNIQUE_ID);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

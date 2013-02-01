@@ -7,6 +7,7 @@
 
 #include <EGE.h>
 #include <EGEDevice.h>
+#include <EGEString.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -19,6 +20,10 @@ class Device
     static EGEDevice::OS GetOS();
     /*! Returns current device ID. */
     static EGEDevice::Device GetDevice();
+    /*! Returns device unique identifier. 
+     *  @note Empty string is returned in case of an error.
+     */
+    static String GetUniqueId();
 
     /*! Returns physical surface width. */
     static s32 SurfaceWidth();
