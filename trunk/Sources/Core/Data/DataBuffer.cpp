@@ -386,7 +386,11 @@ s64 DataBuffer::read(const PDataBuffer& dst, s64 size)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 DataBuffer::write(const PDataBuffer& src, s64 size)
 {
-  EGE_ASSERT(0 <= size);
+  // check if all data from source buffer requested
+  if (0 > size)
+  {
+    size = src->size() - src->readOffset();
+  }
 
   // check if there is NO enough capacity for new data
   if (size + writeOffset() >= capacity())
