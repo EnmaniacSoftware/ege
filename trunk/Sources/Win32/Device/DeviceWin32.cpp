@@ -81,7 +81,7 @@ String Device::GetUniqueId()
       if (EGE_SUCCESS == cipher.addData(valueNameData))
       {
         BYTE byProductID[256];
-        DWORD dwDataLength;
+        DWORD dwDataLength = sizeof (byProductID);
 
         // retrieve Product ID
         if (ERROR_SUCCESS == RegQueryValueExA(hRegistryKey, reinterpret_cast<char*>(cipher.result()->data()), NULL, NULL, byProductID, &dwDataLength))
@@ -90,6 +90,9 @@ String Device::GetUniqueId()
           uniqueId = reinterpret_cast<char*>(byProductID);
         }
       }
+
+      // close key
+      RegCloseKey(hRegistryKey);
     } 
   }
 
