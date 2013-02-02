@@ -219,7 +219,7 @@ void RenderSystemPrivate::flush()
       
     //  EGE_LOG("Q: %d, name: %s", itQueue->first, data.component->name().toAscii());
 
-      //if (data.component->name() == "achievement-frame")
+      //if (data.component->name() == "ripple-effect")
       //{
       //  int a = 1;
       //}
@@ -424,7 +424,6 @@ void RenderSystemPrivate::flush()
           glDisableClientState(GL_NORMAL_ARRAY);
           glDisableClientState(GL_COLOR_ARRAY);
           glDisable(GL_BLEND);
-          glMatrixMode(GL_TEXTURE);
         }
       }
 
