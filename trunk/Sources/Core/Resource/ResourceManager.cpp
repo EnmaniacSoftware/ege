@@ -549,10 +549,10 @@ void ResourceManager::unloadAll()
   {
     PResourceGroup group = *it;
 
-    if (group->name() == DEFAULT_GROUP_NAME)
-    {
-      int a = 1;
-    }
+    //if (group->name() == DEFAULT_GROUP_NAME)
+    //{
+    //  int a = 1;
+    //}
 
     // disconnect
     ege_disconnect(group, resourceLoaded, p_func(), ResourceManagerPrivate::onResourceLoaded);

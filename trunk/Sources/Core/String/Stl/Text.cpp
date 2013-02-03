@@ -151,7 +151,7 @@ bool Text::fromString(const String& string)
         return false;
       }
 
-      u8 ch = string[i++];
+      ch = string[i++];
       if (ch < 0x80 || ch > 0xBF)
       {
         // error! Not UTF-8 string
@@ -181,7 +181,7 @@ bool Text::fromString(const String& string)
 
   // build final UTF-16 string
   clear();
-  for (size_t i = 0; i < unicode.size(); ++i)
+  for (i = 0; i < unicode.size(); ++i)
   {
     u32 uni = unicode[i];
 

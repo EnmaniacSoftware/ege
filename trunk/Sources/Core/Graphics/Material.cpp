@@ -58,7 +58,7 @@ void Material::setSrcBlendFactor(EGEGraphics::BlendFactor factor, s32 passIndex)
   {
     for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
-      PRenderPass& pass = *it;
+      pass = *it;
 
       pass->setSrcBlendFactor(factor);
     }
@@ -76,7 +76,7 @@ void Material::setDstBlendFactor(EGEGraphics::BlendFactor factor, s32 passIndex)
   {
     for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
-      PRenderPass& pass = *it;
+      pass = *it;
 
       pass->setDstBlendFactor(factor);
     }
@@ -94,7 +94,7 @@ void Material::setDiffuseColor(const Color& color, s32 passIndex)
   {
     for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
-      PRenderPass& pass = *it;
+      pass = *it;
 
       pass->setDiffuseColor(color);
     }
@@ -112,7 +112,7 @@ void Material::setDiffuseAlpha(float32 alpha, s32 passIndex)
   {
     for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
-      PRenderPass& pass = *it;
+      pass = *it;
 
       pass->diffuseColor().alpha = alpha;
     }
@@ -130,7 +130,7 @@ void Material::setAmbientColor(const Color& color, s32 passIndex)
   {
     for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
-      PRenderPass& pass = *it;
+      pass = *it;
 
       pass->setAmbientColor(color);
     }
@@ -148,7 +148,7 @@ void Material::setSpecularColor(const Color& color, s32 passIndex)
   {
     for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
-      PRenderPass& pass = *it;
+      pass = *it;
 
       pass->setSpecularColor(color);
     }
@@ -166,7 +166,7 @@ void Material::setShininess(float32 shininess, s32 passIndex)
   {
     for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
-      PRenderPass& pass = *it;
+      pass = *it;
 
       pass->setShininess(shininess);
     }
@@ -184,7 +184,7 @@ void Material::setEmissionColor(const Color& color, s32 passIndex)
   {
     for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
-      PRenderPass& pass = *it;
+      pass = *it;
 
       pass->setEmissionColor(color);
     }
@@ -202,7 +202,7 @@ void Material::setDiffuseColorTransformation(const ColorTransform& transformatio
   {
     for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
-      PRenderPass& pass = *it;
+      pass = *it;
 
       pass->setDiffuseColorTransformation(transformation);
     }

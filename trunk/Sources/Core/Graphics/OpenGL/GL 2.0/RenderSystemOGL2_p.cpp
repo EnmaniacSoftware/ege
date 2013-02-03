@@ -17,6 +17,7 @@
 #include "Core/Graphics/TextureImage.h"
 #include "Core/Graphics/Render/RenderQueue.h"
 #include <EGEDevice.h>
+#include <EGELog.h>
 
 EGE_NAMESPACE
 
@@ -219,10 +220,11 @@ void RenderSystemPrivate::flush()
       
     //  EGE_LOG("Q: %d, name: %s", itQueue->first, data.component->name().toAscii());
 
-      //if (data.component->name() == "ripple-effect")
-      //{
-      //  int a = 1;
-      //}
+      bool testing = false;
+      if (data.component->name() == "achievement-frame")
+      {
+        testing = true;
+      }
 
       PVertexBuffer& vertexBuffer = data.component->vertexBuffer();
       PIndexBuffer& indexBuffer   = data.component->indexBuffer();
@@ -306,6 +308,11 @@ void RenderSystemPrivate::flush()
                     glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
                   }
 
+                  if (testing)
+                  {
+                  //  Logger() << textureUnitsActivated << itSemantic->offset;
+                  }
+
                   glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
                   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
@@ -320,6 +327,11 @@ void RenderSystemPrivate::flush()
                     if (glClientActiveTexture)
                     {
                       glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                    }
+
+                    if (testing)
+                    {
+                      egeLog() << "2" << data.component->name() << "unit" << textureUnitsActivated << "@offset" << itSemantic->offset;
                     }
 
                     glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
@@ -613,6 +625,7 @@ void RenderSystemPrivate::bindTexture(GLenum target, GLuint textureId)
     default:
 
       EGE_ASSERT(false && "Incorrect texture binding!");
+      return;
   }
 
   // query texture Id bound to given target

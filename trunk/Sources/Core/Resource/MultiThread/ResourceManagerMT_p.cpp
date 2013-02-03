@@ -276,14 +276,14 @@ void ResourceManagerPrivate::appendBatchesForProcessing(ProcessingBatchList& bat
     batch.groups.push_back(groupName);
 
     // count resources
-    for (StringList::const_iterator it = batch.groups.begin(); it != batch.groups.end(); ++it)
+    for (StringList::const_iterator itGroup = batch.groups.begin(); itGroup != batch.groups.end(); ++itGroup)
     {
       // find group of given name
-      PResourceGroup group = d_func()->group(*it);
+      PResourceGroup group = d_func()->group(*itGroup);
       if (NULL == group)
       {
         // error!
-        egeWarning() << "Group" << *it << "not found!";
+        egeWarning() << "Group" << *itGroup << "not found!";
         continue;
       }
 

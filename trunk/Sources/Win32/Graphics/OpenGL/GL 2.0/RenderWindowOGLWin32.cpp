@@ -308,7 +308,10 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
     case WM_QUIT:
 
       // shut down engine
-      me->app()->quit();
+      if (NULL != me)
+      {
+        me->app()->quit();
+      }
       return 0;
 
     case WM_SETFOCUS:

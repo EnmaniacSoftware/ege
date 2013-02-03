@@ -525,7 +525,7 @@ EGEResult ResourceMaterial::setInstance(const PMaterial& instance) const
     renderPass->setShininess(pass.m_shininess);
 
     renderPass->removeTexture(-1);
-    for (TextureImageList::const_iterator it = pass.m_textureImages.begin(); it != pass.m_textureImages.end(); ++it)
+    for (TextureImageList::const_iterator itTexture = pass.m_textureImages.begin(); itTexture != pass.m_textureImages.end(); ++itTexture)
     {
       // allocate new texture image
       PTextureImage texImg = ege_new TextureImage(app());
@@ -536,7 +536,7 @@ EGEResult ResourceMaterial::setInstance(const PMaterial& instance) const
       }
 
       // copy data into new texture image
-      texImg->copy(*it);
+      texImg->copy(*itTexture);
 
       // add to render pass
       EGEResult result;
