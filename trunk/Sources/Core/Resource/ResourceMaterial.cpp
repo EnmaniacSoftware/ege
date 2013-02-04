@@ -241,6 +241,7 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
 
   return result;
 }
+static bool a = false;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceMaterial::load()
 {
@@ -248,105 +249,26 @@ EGEResult ResourceMaterial::load()
 
   if (STATE_LOADED != m_state)
   {
-    // load textures (for all passes)
-    for (PassDataArray::iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
+    // try to load all dependencies
+    result = loadDependencies();
+    if (EGE_SUCCESS == result)
     {
-      PassData& pass = *passIt;
-
-      // load all textures for current pass
-      for (TextureImageDataList::const_iterator it = pass.m_textureImageData.begin(); it != pass.m_textureImageData.end(); ++it)
+      // fetch data to passes
+      for (PassDataArray::iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
       {
-        const TextureImageData& textureImageData = *it;
+        PassData& pass = *passIt;
 
-        // check if manual texture
-        if (textureImageData.manual)
+        for (TextureImageDataList::const_iterator it = pass.m_textureImageData.begin(); it != pass.m_textureImageData.end(); ++it)
         {
-          // add placeholder only
-          PTextureImage manual = ege_new TextureImage(app());
-          manual->setName(textureImageData.name);
-          pass.m_textureImages.push_back(manual);
-          continue;
+          const TextureImageData& textureImageData = *it;
+
+          pass.m_textureImages.push_back(textureImageData.textureImage);
         }
-
-        PObject texture;
-
-        // material referred texture space in use
-        Rectf texRect(0, 0, 1, 1);
-
-        // NOTE: Material can refer to Texture or TextureImage (ie. from atlas)
-
-        // try to find TextureImage of a given name
-        PResourceTextureImage textureImageRes = group()->manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureImageData.name);
-        if (textureImageRes)
-        {
-          // load texture image
-          result = textureImageRes->load();
-          if (EGE_SUCCESS != result)
-          {
-            return result;
-          }
-
-          // retrieve referred texture
-          TextureImage textureImage(app());
-          if (EGE_SUCCESS != (result = textureImageRes->setInstance(textureImage)))
-          {
-            // error!
-            return result;
-          }
-
-          // store referred texture
-          texture = textureImage.texture();
-
-          // set new texture space in use
-          texRect = textureImage.rect();
-        }
-        else
-        {
-          // try to find Texture of a given name
-          PResourceTexture textureRes = group()->manager()->resource(RESOURCE_NAME_TEXTURE, textureImageData.name);
-          if (textureRes)
-          {
-            // load texture
-            if (EGE_SUCCESS != (result = textureRes->load()))
-            {
-              // error!
-              return result;
-            }
-
-            // retrieve referred texture
-            texture = textureRes->texture();
-          }
-        }
-      
-        // check if not found
-        if (NULL == texture)
-        {
-          // texture not found
-          egeWarning() << "Material texture not found:" << textureImageData.name;
-          return EGE_ERROR;
-        }
-
-        // calculate final referred rectangle
-        Rectf finalRect = texRect.combine(textureImageData.rect);
-
-        PTextureImage textureImage = ege_new TextureImage(app(), texture, finalRect);
-        if (NULL == textureImage || !textureImage->isValid())
-        {
-          // erro!
-          return EGE_ERROR;
-        }
-
-        // set texture data
-        textureImage->setEnvironmentMode(textureImageData.envMode);
-        textureImage->setRotationAngle(textureImageData.rotationAngle);
-
-        // add to pool
-        pass.m_textureImages.push_back(textureImage);
       }
-    }
 
-    // set loaded
-    m_state = STATE_LOADED;
+      // set loaded
+      m_state = STATE_LOADED;
+    }
   }
 
   return result;
@@ -371,6 +293,8 @@ void ResourceMaterial::unload()
       for (TextureImageDataList::iterator it = pass.m_textureImageData.begin(); it != pass.m_textureImageData.end(); ++it)
       {
         TextureImageData& textureImageData = *it;
+
+        textureImageData.textureImage = NULL;
 
         PResourceTextureImage textureImageRes = group()->manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureImageData.name);
         if (textureImageRes)
@@ -524,7 +448,6 @@ EGEResult ResourceMaterial::setInstance(const PMaterial& instance) const
 
     renderPass->setShininess(pass.m_shininess);
 
-    renderPass->removeTexture(-1);
     for (TextureImageList::const_iterator itTexture = pass.m_textureImages.begin(); itTexture != pass.m_textureImages.end(); ++itTexture)
     {
       // allocate new texture image
@@ -584,6 +507,118 @@ const Color& ResourceMaterial::emissionColor(u32 pass) const
 float32 ResourceMaterial::shininess(u32 pass) const 
 { 
   return (pass < passCount()) ? m_passes[pass].m_shininess : 0.0f; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult ResourceMaterial::loadDependencies()
+{
+  // try to load (if necessary) textures (for all passes)
+  for (PassDataArray::iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
+  {
+    PassData& pass = *passIt;
+
+    // load all textures for current pass
+    for (TextureImageDataList::iterator it = pass.m_textureImageData.begin(); it != pass.m_textureImageData.end(); ++it)
+    {
+      TextureImageData& textureImageData = *it;
+
+      // check if loaded already
+      if (NULL != textureImageData.textureImage)
+      {
+        // skip
+        continue;
+      }
+
+      // check if manual texture
+      if (textureImageData.manual)
+      {
+        // add placeholder only
+        textureImageData.textureImage = ege_new TextureImage(app());
+        if (NULL == textureImageData.textureImage)
+        {
+          // error!
+          return EGE_ERROR_NO_MEMORY;
+        }
+
+        textureImageData.textureImage->setName(textureImageData.name);
+        continue;
+      }
+
+      PObject texture;
+
+      // material referred texture space in use
+      Rectf texRect(0, 0, 1, 1);
+
+      // NOTE: Material can refer to Texture or TextureImage (ie. from atlas)
+
+      // try to find TextureImage of a given name
+      PResourceTextureImage textureImageRes = group()->manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureImageData.name);
+      if (textureImageRes)
+      {
+        // load texture image
+        EGEResult result = textureImageRes->load();
+        if (EGE_SUCCESS != result)
+        {
+          return result;
+        }
+
+        // retrieve referred texture
+        TextureImage textureImage(app());
+        if (EGE_SUCCESS != (result = textureImageRes->setInstance(textureImage)))
+        {
+          // error!
+          return result;
+        }
+
+        // store referred texture
+        texture = textureImage.texture();
+
+        // set new texture space in use
+        texRect = textureImage.rect();
+      }
+      else
+      {
+        // try to find Texture of a given name
+        PResourceTexture textureRes = group()->manager()->resource(RESOURCE_NAME_TEXTURE, textureImageData.name);
+        if (textureRes)
+        {
+          // load texture
+          EGEResult result = textureRes->load();
+          if (EGE_SUCCESS != result)
+          {
+            return result;
+          }
+
+          // retrieve referred texture
+          texture = textureRes->texture();
+        }
+      }
+      
+      // check if not found
+      if (NULL == texture)
+      {
+        // texture not found
+        egeWarning() << "Material texture not found:" << textureImageData.name;
+        return EGE_ERROR;
+      }
+
+      // calculate final referred rectangle
+      Rectf finalRect = texRect.combine(textureImageData.rect);
+
+      textureImageData.textureImage = ege_new TextureImage(app(), texture, finalRect);
+      if ((NULL == textureImageData.textureImage) || ! textureImageData.textureImage->isValid())
+      {
+        // error!
+        return EGE_ERROR;
+      }
+
+      // set texture data
+      textureImageData.textureImage->setEnvironmentMode(textureImageData.envMode);
+      textureImageData.textureImage->setRotationAngle(textureImageData.rotationAngle);
+    }
+  }
+
+  // all dependencies loaded
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

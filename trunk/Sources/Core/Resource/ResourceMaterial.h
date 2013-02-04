@@ -39,6 +39,7 @@ class ResourceMaterial : public IResource
         EGETexture::EnvironmentMode envMode;        /*!< Texture environment mode. */
         bool manual;                                /*!< Manual flag. */
         Angle rotationAngle;                        /*!< Texture rotation angle. */
+        PTextureImage textureImage;                 /*!< Loaded texture image. It is loaded and initialized with data above. */
     };
         
     typedef List<TextureImageData> TextureImageDataList;
@@ -112,6 +113,11 @@ class ResourceMaterial : public IResource
     EGEResult addTexture(const PXmlElement& tag, PassData& pass);
     /*! Adds pass. */
     EGEResult addPass(const PXmlElement& tag);
+    /*! Loads all dependencies.
+     *  @return Returns EGE_SUCCESS if all dependencies are ready (loaded). EGE_WAIT if some dependencies are still being loaded. 
+     *          Otherwise one of the error values.
+     */
+    EGEResult loadDependencies();
 
   private:
 

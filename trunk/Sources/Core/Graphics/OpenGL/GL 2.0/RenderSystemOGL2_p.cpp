@@ -21,6 +21,7 @@
 
 EGE_NAMESPACE
 
+static bool testing = false;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(RenderSystemPrivate)
 EGE_DEFINE_DELETE_OPERATORS(RenderSystemPrivate)
@@ -220,11 +221,14 @@ void RenderSystemPrivate::flush()
       
     //  EGE_LOG("Q: %d, name: %s", itQueue->first, data.component->name().toAscii());
 
-      bool testing = false;
-      if (data.component->name() == "achievement-frame")
-      {
-        testing = true;
-      }
+      //if (data.component->name() == "achievement-frame")
+      //{
+      //  testing = true;
+      //}
+      //else
+      //{
+      //  testing = false;
+      //}
 
       PVertexBuffer& vertexBuffer = data.component->vertexBuffer();
       PIndexBuffer& indexBuffer   = data.component->indexBuffer();
@@ -315,12 +319,6 @@ void RenderSystemPrivate::flush()
                   {
                     glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
                     OGL_CHECK();
-                  }
-
-                  if (testing)
-                  {
-                   // testing = false;
-                    //Logger() << textureUnitsActivated << itSemantic->offset;
                   }
 
                   glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
