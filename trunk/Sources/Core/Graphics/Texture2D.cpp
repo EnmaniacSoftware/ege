@@ -20,7 +20,11 @@ Texture2D::Texture2D(Application* app, const String& name, IHardwareResourceProv
                                                                                                   m_width(0), 
                                                                                                   m_height(0), 
                                                                                                   m_format(PF_UNKNOWN),
-                                                                                                  m_provider(provider)
+                                                                                                  m_provider(provider),
+                                                                                                  m_minFilter(EGETexture::BILINEAR),
+                                                                                                  m_magFilter(EGETexture::BILINEAR),
+                                                                                                  m_addressingModeS(EGETexture::AM_CLAMP),
+                                                                                                  m_addressingModeT(EGETexture::AM_CLAMP)
 {
   m_p = ege_new Texture2DPrivate(this);
 }

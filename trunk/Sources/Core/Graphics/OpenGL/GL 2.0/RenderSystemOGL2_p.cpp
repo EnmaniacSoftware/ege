@@ -277,103 +277,124 @@ void RenderSystemPrivate::flush()
               case EGEVertexBuffer::AT_POSITION_XYZ:
 
                 glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                OGL_CHECK();
                 glEnableClientState(GL_VERTEX_ARRAY);
+                OGL_CHECK();
                 break;
 
               case EGEVertexBuffer::AT_POSITION_XY:
 
                 glVertexPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                OGL_CHECK();
                 glEnableClientState(GL_VERTEX_ARRAY);
+                OGL_CHECK();
                 break;
 
               case EGEVertexBuffer::AT_NORMAL:
 
                 glNormalPointer(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                OGL_CHECK();
                 glEnableClientState(GL_NORMAL_ARRAY);
+                OGL_CHECK();
                 break;
 
               case EGEVertexBuffer::AT_COLOR_RGBA:
 
                 glColorPointer(4, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                OGL_CHECK();
                 glEnableClientState(GL_COLOR_ARRAY);
+                OGL_CHECK();
                 break;
       
               case EGEVertexBuffer::AT_TEXTURE_UV:
 
                 // check if number of texture arrays is exactly the same as texture units in a current pass
-                if (textureArraysCount == textureCount)
+               // if (textureArraysCount == textureCount)
                 {
                   if (glClientActiveTexture)
                   {
                     glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                    OGL_CHECK();
                   }
 
                   if (testing)
                   {
-                  //  Logger() << textureUnitsActivated << itSemantic->offset;
+                   // testing = false;
+                    //Logger() << textureUnitsActivated << itSemantic->offset;
                   }
 
                   glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                  OGL_CHECK();
                   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                  OGL_CHECK();
 
                   ++textureUnitsActivated;
                 }
                 // check if there is more texture arrays than texture units
-                else if (textureArraysCount > textureCount)
-                {
-                  // check if still some texture unit is to be set
-                  if (textureUnitsActivated < textureCount)
-                  {
-                    if (glClientActiveTexture)
-                    {
-                      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                    }
+                //else if (textureArraysCount > textureCount)
+                //{
+                //  // check if still some texture unit is to be set
+                //  if (textureUnitsActivated < textureCount)
+                //  {
+                //    if (glClientActiveTexture)
+                //    {
+                //      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                //      OGL_CHECK();
+                //    }
 
-                    if (testing)
-                    {
-                      egeLog() << "2" << data.component->name() << "unit" << textureUnitsActivated << "@offset" << itSemantic->offset;
-                    }
+                //    if (testing)
+                //    {
+                //      egeLog() << "2" << data.component->name() << "unit" << textureUnitsActivated << "@offset" << itSemantic->offset;
+                //    }
 
-                    glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                //    glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                //    OGL_CHECK();
+                //    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                //    OGL_CHECK();
 
-                    ++textureUnitsActivated;
-                  }
-                }
-                // check if there are more texture units than texture arrays
-                else if (textureArraysCount < textureCount)
-                {
-                  // check if this is last texture array
-                  if ((textureUnitsActivated + 1) == textureArraysCount)
-                  {
-                    // set current texture array to all remaining texture units
-                    while (textureUnitsActivated != textureCount)
-                    {
-                      if (glClientActiveTexture)
-                      {
-                        glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                      }
+                //    ++textureUnitsActivated;
+                //  }
+                //}
+                //// check if there are more texture units than texture arrays
+                //else if (textureArraysCount < textureCount)
+                //{
+                //  // check if this is last texture array
+                //  if ((textureUnitsActivated + 1) == textureArraysCount)
+                //  {
+                //    // set current texture array to all remaining texture units
+                //    while (textureUnitsActivated != textureCount)
+                //    {
+                //      if (glClientActiveTexture)
+                //      {
+                //        glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                //        OGL_CHECK();
+                //      }
 
-                      glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                      glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                //      glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                //      OGL_CHECK();
+                //      glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                //      OGL_CHECK();
 
-                      ++textureUnitsActivated;
-                    }
-                  }
-                  else
-                  {
-                    // set current texture array to corresponding texture unit
-                    if (glClientActiveTexture)
-                    {
-                      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                    }
+                //      ++textureUnitsActivated;
+                //    }
+                //  }
+                //  else
+                //  {
+                //    // set current texture array to corresponding texture unit
+                //    if (glClientActiveTexture)
+                //    {
+                //      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                //      OGL_CHECK();
+                //    }
 
-                    glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                //    glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                //    OGL_CHECK();
+                //    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                //    OGL_CHECK();
 
-                    ++textureUnitsActivated;
-                  }
-                }
+                //    ++textureUnitsActivated;
+                //  }
+                //}
                 break;
 
               //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
@@ -393,17 +414,20 @@ void RenderSystemPrivate::flush()
 
           // set model-view matrix
           glLoadMatrixf(d_func()->m_viewMatrix.multiply(data.worldMatrix).data);
+          OGL_CHECK();
 
           // check if INDICIES are to be used
           if (0 < indexBuffer->indexCount())
           {
             // render only if there is anything to render
             glDrawElements(MapPrimitiveType(data.component->primitiveType()), indexBuffer->indexCount(), MapIndexSize(indexBuffer->size()), indexData);
+            OGL_CHECK();
           }
           else
           {
             // render only if there is anything to render
             glDrawArrays(MapPrimitiveType(data.component->primitiveType()), 0, vertexBuffer->vertexCount());
+            OGL_CHECK();
           }
 
           // disable all actived texture units
@@ -412,13 +436,16 @@ void RenderSystemPrivate::flush()
             // disable texturing on server side
             activateTextureUnit(*itTextureUnit);
             glDisable(GL_TEXTURE_2D);
+            OGL_CHECK();
 
             // disable texturing data on client side
             if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
             {
               glClientActiveTexture(GL_TEXTURE0 + *itTextureUnit);
+              OGL_CHECK();
             }
             glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+            OGL_CHECK();
 
             // disable point sprites
             if (EGEGraphics::RPT_POINTS == data.component->primitiveType())
@@ -426,16 +453,23 @@ void RenderSystemPrivate::flush()
               if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
               {
                 glDisable(GL_POINT_SPRITE_ARB);
+                OGL_CHECK();
               }
             }
           }
           m_activeTextureUnits.clear();
 
           // clean up
+          activateTextureUnit(0);
+          glClientActiveTexture(GL_TEXTURE0);
           glDisableClientState(GL_VERTEX_ARRAY);
+          OGL_CHECK();
           glDisableClientState(GL_NORMAL_ARRAY);
+          OGL_CHECK();
           glDisableClientState(GL_COLOR_ARRAY);
+          OGL_CHECK();
           glDisable(GL_BLEND);
+          OGL_CHECK();
         }
       }
 
@@ -491,6 +525,11 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
 
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(tex2d->m_minFilter));
+	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(tex2d->m_magFilter));
+	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(tex2d->m_addressingModeS));
+	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(tex2d->m_addressingModeT));
+
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
       }
@@ -543,6 +582,11 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
         //}
         //else
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MapPrimitiveType(texImg->environmentMode()));
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(tex2d->m_minFilter));
+	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(tex2d->m_magFilter));
+	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(tex2d->m_addressingModeS));
+	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(tex2d->m_addressingModeT));
 
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
@@ -1102,10 +1146,10 @@ PTexture2D RenderSystemPrivate::createEmptyTexture(const String& name)
   bindTexture(GL_TEXTURE_2D, texture->p_func()->id());
 
   // set texture parameters
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(d_func()->m_textureMinFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(d_func()->m_textureMagFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(d_func()->m_textureAddressingModeS));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(d_func()->m_textureAddressingModeT));
+  texture->m_minFilter        = d_func()->m_textureMinFilter;
+  texture->m_magFilter        = d_func()->m_textureMagFilter;
+  texture->m_addressingModeS  = d_func()->m_textureAddressingModeS;
+  texture->m_addressingModeT  = d_func()->m_textureAddressingModeT;
 
   return texture;
 }

@@ -76,6 +76,14 @@ class Texture2D : public Object
     PixelFormat m_format;
     /*! Texture provider used to create texture. */
     IHardwareResourceProvider* m_provider;
+    /*! Texture minifying function filter. */
+    EGETexture::Filter m_minFilter;
+    /*! Texture magnification function filter. */
+    EGETexture::Filter m_magFilter;
+    /*! Texture addressing mode for S texture coordinate. */
+    EGETexture::AddressingMode m_addressingModeS;
+    /*! Texture addressing mode for T texture coordinate. */
+    EGETexture::AddressingMode m_addressingModeT;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
