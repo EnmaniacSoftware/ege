@@ -26,6 +26,7 @@ EGE_DECLARE_SMART_CLASS(ResourceSound, PResourceSound)
 EGE_DECLARE_SMART_CLASS(Event, PEvent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef PResource (*egeResourceCreateFunc)(Application* app, ResourceGroup* group);
+class ResourceManagerPrivate;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManager : public Object, public IEventListener
 {

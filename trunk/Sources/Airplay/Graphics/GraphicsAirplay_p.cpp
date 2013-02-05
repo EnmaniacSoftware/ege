@@ -1,8 +1,8 @@
 #include "Core/Graphics/Graphics.h"
+#include "Airplay/Graphics/GraphicsAirplay_p.h"
 #include <EGEDevice.h>
 
 #if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
-#include "Airplay/Graphics/GraphicsAirplay_p.h"
 #include "Airplay/Graphics/OpenGL/ES 1.0/RenderWindowOGLAirplay.h"
 #endif // EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 
@@ -25,7 +25,7 @@ EGEResult GraphicsPrivate::construct()
   EGEResult result = EGE_SUCCESS;
 
   // allocate render window
-  RenderWindowOGLWin32* renderWindow = ege_new RenderWindowOGLAirplay(d_func()->app(), d_func()->m_params);
+  RenderWindowOGLAirplay* renderWindow = ege_new RenderWindowOGLAirplay(d_func()->app(), d_func()->m_params);
   if (NULL == renderWindow)
   {
     // error!

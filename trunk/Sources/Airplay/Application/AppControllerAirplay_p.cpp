@@ -2,6 +2,7 @@
 #include "Airplay/Application/AppControllerAirplay_p.h"
 #include <EGEApplication.h>
 #include <EGEEvent.h>
+#include <EGEMath.h>
 #include <EGEDebug.h>
 #include <s3e.h>
 #include <s3eDevice.h>
