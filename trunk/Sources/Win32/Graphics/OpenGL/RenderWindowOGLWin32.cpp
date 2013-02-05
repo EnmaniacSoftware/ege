@@ -1,5 +1,5 @@
 #include "Core/Application/Application.h"
-#include "Win32/Graphics/OpenGL/GL 2.0/RenderWindowOGLWin32.h"
+#include "Win32/Graphics/OpenGL/RenderWindowOGLWin32.h"
 #include <EGEEvent.h>
 #include <EGEInput.h>
 #include <EGEMath.h>

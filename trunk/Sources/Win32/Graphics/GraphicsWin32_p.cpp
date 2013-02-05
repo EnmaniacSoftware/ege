@@ -2,9 +2,8 @@
 #include "Win32/Graphics/GraphicsWin32_p.h"
 #include <EGEDevice.h>
 
-// TAGE - move to generic OGL folder
 #if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGL_3
-#include "Win32/Graphics/OpenGL/GL 2.0/RenderWindowOGLWin32.h"
+#include "Win32/Graphics/OpenGL/RenderWindowOGLWin32.h"
 #endif // EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGL_3
 
 EGE_NAMESPACE_BEGIN

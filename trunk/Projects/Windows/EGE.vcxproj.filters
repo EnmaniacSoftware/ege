@@ -79,9 +79,6 @@
     <Filter Include="Win32\Graphics\OpenGL">
       <UniqueIdentifier>{c93c548d-9770-4921-9b9d-298943fce613}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Graphics\OpenGL\GL 2.0">
-      <UniqueIdentifier>{f33c5f13-9872-4829-98c1-31b48288392d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Win32\Memory">
       <UniqueIdentifier>{4d261eae-d14d-4643-998e-af9f1ed671b8}</UniqueIdentifier>
     </Filter>
@@ -320,9 +317,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\ComplexTypes.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\GL 2.0\RenderWindowOGLWin32.cpp">
-      <Filter>Win32\Graphics\OpenGL\GL 2.0</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Memory\MemoryWin32.cpp">
       <Filter>Win32\Memory</Filter>
@@ -819,6 +813,9 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceShader.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.cpp">
+      <Filter>Win32\Graphics\OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -973,9 +970,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Platform.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\GL 2.0\RenderWindowOGLWin32.h">
-      <Filter>Win32\Graphics\OpenGL\GL 2.0</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Win32\TypesWin32.h">
       <Filter>Win32</Filter>
@@ -1585,6 +1579,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceShader.h">
       <Filter>Core\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.h">
+      <Filter>Win32\Graphics\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
