@@ -284,7 +284,7 @@ inline TVector3<T> operator * (const TVector3<T>& left, const TVector3<T>& right
 template <typename T>
 inline Debug& operator << (Debug& debug, const TVector3<T>& obj)
 {
-  debug.nospace() << "Vector3(" << x << ", " << y << ", " << z << ")";
+  debug.nospace() << "Vector3(" << obj.x << ", " << obj.y << ", " << obj.z << ")";
   return debug.space();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

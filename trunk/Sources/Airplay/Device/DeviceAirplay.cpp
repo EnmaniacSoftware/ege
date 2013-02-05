@@ -43,7 +43,7 @@ static DeviceInfo l_iOSDeviceInfoMap[] = {
 static EGEDevice::Device GetIOSDevice(const String& deviceId)
 {  
   // go thru all iOS devices
-  for (s32 i = 0; i < sizeof (l_iOSDeviceInfoMap) / sizeof (l_iOSDeviceInfoMap[0]); ++i)
+  for (u32 i = 0; i < sizeof (l_iOSDeviceInfoMap) / sizeof (l_iOSDeviceInfoMap[0]); ++i)
   {
     const DeviceInfo& deviceInfo = l_iOSDeviceInfoMap[i];
 

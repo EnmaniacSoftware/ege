@@ -211,9 +211,9 @@ inline bool TRect<T>::contains(const TRect<T>& rect) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline Debug& operator << (Debug& debug, const TRect<T>& rect)
+inline Debug& operator << (Debug& debug, const TRect<T>& obj)
 {
-  debug.nospace() << "Rect(" << obj.x << "," << obj.y << " - " << obj.width << "," obj.height << ")";
+  debug.nospace() << "Rect(" << obj.x << "," << obj.y << " - " << obj.width << "," << obj.height << ")";
   return debug.space();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
