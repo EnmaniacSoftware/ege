@@ -11,6 +11,7 @@ inline void ege_noop() {}
 
 // Available rendering APIs
 // EGE_RENDERING_OPENGL_2
+// EGE_RENDERING_OPENGL_3
 // EGE_RENDERING_OPENGLES_1
 
 // Available physics APIs

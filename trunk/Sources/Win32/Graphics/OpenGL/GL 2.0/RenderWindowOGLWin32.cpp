@@ -136,7 +136,8 @@ EGEResult RenderWindowOGLWin32::construct(const Dictionary& params)
   }
   
   // create rendering context
-  if (NULL == (m_hRC = wglCreateContext(m_hDC)))
+  HGLRC hRC;
+  if (NULL == (hRC = wglCreateContext(m_hDC)))
   {
     // error!
     destroy();
@@ -144,12 +145,37 @@ EGEResult RenderWindowOGLWin32::construct(const Dictionary& params)
   }
 
   // assign rendering context to current thread
-  if (FALSE == wglMakeCurrent(m_hDC, m_hRC))
+  if (FALSE == wglMakeCurrent(m_hDC, hRC))
   {
     // error!
     destroy();
     return EGE_ERROR;
   }
+
+#if EGE_RENDERING_OPENGL_3
+  // requesting 3.x+ context via extension
+  int attributes[] = 
+  {  
+    WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
+    WGL_CONTEXT_MINOR_VERSION_ARB, 2,
+    WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+    0  
+  };  
+
+  m_hRC = wglCreateContextAttribs(hDC, 0, attributes);
+  if (NULL == m_hRC);
+  {
+    // error!
+    destroy();
+    return EGE_ERROR;
+  }
+
+  // delete old rendering context
+  wglMakeCurrent(NULL, NULL);
+  wglDeleteContext(hRC);
+#else
+  m_hRC = hRC;
+#endif // EGE_RENDERING_OPENGL_3
 
   // set pointer to this control in extra wnd data
   SetWindowLongPtr(m_hWnd, 0, reinterpret_cast<LONG>(this));

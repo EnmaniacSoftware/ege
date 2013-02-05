@@ -10,10 +10,6 @@
 #include <EGEStringUtils.h>
 #include <EGEDebug.h>
 
-#if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
-#include "Core/Graphics/OpenGL/Texture2DOGL.h"
-#endif // EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
-
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

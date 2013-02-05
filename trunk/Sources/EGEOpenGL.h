@@ -10,7 +10,7 @@
 #include <GLES/gl.h>
 #endif
 
-#if EGE_RENDERING_OPENGL_2
+#if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGL_3
 #include "Core/Graphics/OpenGL/ExtensionsOGL.h"
 #elif EGE_RENDERING_OPENGLES_1
 #include "Core/Graphics/OpenGL/ExtensionsOGLES.h"

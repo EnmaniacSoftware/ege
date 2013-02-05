@@ -24,6 +24,7 @@ EGE_NAMESPACE_BEGIN
 #define RESOURCE_NAME_WIDGET            "widget"
 #define RESOURCE_NAME_IMAGED_ANIMATION  "imaged-animation"
 #define RESOURCE_NAME_SEQUENCE          "sequence"
+#define RESOURCE_NAME_SHADER            "shader"
 
 #define TR(app, name)     (app)->resourceManager()->textResource((name))->text()
 #define TRN(app, name, n) (app)->resourceManager()->textResource((name))->text((n))
@@ -34,6 +35,7 @@ EGE_NAMESPACE_END
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+// TAGE - is this all needed ?
 #include "Core/Resource/Resource.h"
 #include "Core/Resource/ResourceData.h"
 #include "Core/Resource/ResourceMaterial.h"

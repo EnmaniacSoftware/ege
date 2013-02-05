@@ -12,13 +12,14 @@
 #include "Core/Event/EventIDs.h"
 #include "Core/Event/EventManager.h"
 #include "Core/Resource/ResourceManager.h"
+#include <EGEOpenGL.h>
 
 #if EGE_RENDERING_OPENGLES_1
-#include <EGEOpenGL.h>
 #include "Core/Graphics/OpenGL/ES 1.0/RenderSystemOGLES1_p.h"
 #elif EGE_RENDERING_OPENGL_2
-#include <EGEOpenGL.h>
 #include "Core/Graphics/OpenGL/GL 2.0/RenderSystemOGL2_p.h"
+#elif EGE_RENDERING_OPENGL_3
+#include "Core/Graphics/OpenGL/GL 3.x/RenderSystemOGL3_p.h"
 #endif // EGE_RENDERING_OPENGLES_1
 
 EGE_NAMESPACE_BEGIN
@@ -114,10 +115,23 @@ void RenderSystem::update()
         PTexture2D texture = request.object;
         destroyTexture2D(texture);
 
-        egeDebug() << "Texture destroy request done:" << texture->name();
-
         // signal
         emit requestComplete(request.id, NULL);
+      }
+      else if (REQUEST_CREATE_SHADER == request.type)
+      {
+        PShader shader = createShader(request.shaderType, request.name, request.object);
+
+        // signal
+        emit requestComplete(request.id, shader);
+      }
+      else if (REQUEST_DESTROY_SHADER == request.type)
+      {
+        PShader shader = request.object;
+        destroyShader(shader);
+
+        // signal
+        emit requestComplete(request.id, shader);
       }
     }
   }
@@ -310,6 +324,48 @@ u32 RenderSystem::requestDestroyTexture2D(PTexture2D texture)
   m_requests.push_back(request);
 
   egeDebug() << "Requested texture destroy:" << texture->name();
+
+  return request.id;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PShader RenderSystem::createShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data)
+{
+  return p_func()->createShader(type, name, data);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 RenderSystem::requestCreateShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data)
+{
+  // create request
+  RequestData request;
+  request.type       = REQUEST_CREATE_SHADER;
+  request.id         = m_nextRequestID++;
+  request.object     = data;
+  request.name       = name;
+  request.shaderType = type;
+
+  // queue it
+  MutexLocker locker(m_requestsMutex);
+  m_requests.push_back(request);
+
+  return request.id;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystem::destroyShader(PShader shader)
+{
+  p_func()->destroyShader(shader);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 RenderSystem::requestDestroyShader(PShader shader)
+{
+  // create request
+  RequestData request;
+  request.type       = REQUEST_DESTROY_SHADER;
+  request.id         = m_nextRequestID++;
+  request.object     = shader;
+
+  // queue it
+  MutexLocker locker(m_requestsMutex);
+  m_requests.push_back(request);
 
   return request.id;
 }

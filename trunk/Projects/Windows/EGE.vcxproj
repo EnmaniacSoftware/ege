@@ -73,10 +73,12 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Material.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RenderSystemOGL2_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ShaderOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVAOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVBOOGL.cpp" />
@@ -91,6 +93,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderSystem.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderTarget.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderWindow.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Shader.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Texture2D.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\TextureImage.cpp" />
@@ -142,6 +145,7 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceParticleAffector.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSequencer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceShader.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSound.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSpriteAnimation.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSpritesheet.cpp" />
@@ -238,10 +242,12 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\IndexBufferTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RenderSystemOGL2_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ShaderOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVAOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVBOOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleAffector.h" />
@@ -254,6 +260,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderPass.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderSystem.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Shader.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexBufferTypes.h" />
@@ -283,6 +290,7 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceParticleAffector.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSequencer.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceShader.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSound.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpriteAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpritesheet.h" />
@@ -476,6 +484,7 @@
     <ClInclude Include="..\..\Sources\EGEResources.h" />
     <ClInclude Include="..\..\Sources\EGEScene.h" />
     <ClInclude Include="..\..\Sources\EGESequencer.h" />
+    <ClInclude Include="..\..\Sources\EGEShader.h" />
     <ClInclude Include="..\..\Sources\EGESignal.h" />
     <ClInclude Include="..\..\Sources\EGESocialServices.h" />
     <ClInclude Include="..\..\Sources\EGESpline.h" />

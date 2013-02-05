@@ -13,6 +13,7 @@
 #include <EGEVertexBuffer.h>
 #include <EGEIndexBuffer.h>
 #include <EGEImage.h>
+#include <EGEShader.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -82,6 +83,33 @@ class IHardwareResourceProvider
      *        Upon completion result will be signalled by requestComplete.
      */
     virtual u32 requestDestroyTexture2D(PTexture2D texture) = 0;
+    /*! Creates shader from given data. 
+     *  @param  type  Type of the shader.
+     *  @param  name  Name of the texture.
+     *  @param  data  Shader data.
+     *  @return Returns created shader. NULL if error occured.
+     */
+    virtual PShader createShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data) = 0;
+    /*! Requests creation shader from given data. 
+     *  @param  type  Type of the shader.
+     *  @param  name  Name of the texture.
+     *  @param  data  Shader data.
+     *  @return Returns ID of the request for further delivery check.
+     *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
+     *        Upon completion result will be signalled by requestComplete.
+     */
+    virtual u32 requestCreateShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data) = 0;
+    /*! Destroys shader. 
+     *  @param  shader Shader to destroy.
+     */
+    virtual void destroyShader(PShader shader) = 0;
+    /*! Requests deletion of shader. 
+     *  @param  shader  Shader to destroy.
+     *  @return Returns ID of the request for further delivery check.
+     *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
+     *        Upon completion result will be signalled by requestComplete.
+     */
+    virtual u32 requestDestroyShader(PShader shader) = 0;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

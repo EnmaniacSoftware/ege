@@ -229,6 +229,9 @@
     <Filter Include="Core\Crypto\Cipher\XOR">
       <UniqueIdentifier>{568114ad-97f8-4480-a6d7-540c9670f531}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Graphics\OpenGL\GL 3.x">
+      <UniqueIdentifier>{cd293347-a2a3-4e54-a2bd-ff17f13cf292}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -803,6 +806,18 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Cipher\Cipher_p.cpp">
       <Filter>Core\Crypto\Cipher</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.cpp">
+      <Filter>Core\Graphics\OpenGL\GL 3.x</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Shader.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ShaderOGL.cpp">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceShader.cpp">
+      <Filter>Core\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1557,6 +1572,19 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Crypto\Cipher\CipherKey.h">
       <Filter>Core\Crypto\Cipher</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.h">
+      <Filter>Core\Graphics\OpenGL\GL 3.x</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEShader.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Shader.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ShaderOGL.h">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceShader.h">
+      <Filter>Core\Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

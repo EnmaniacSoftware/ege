@@ -155,7 +155,9 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     enum RequestType
     {
       REQUEST_CREATE_TEXTURE_2D = 0,
-      REQUEST_DESTROY_TEXTURE_2D
+      REQUEST_DESTROY_TEXTURE_2D,
+      REQUEST_CREATE_SHADER,
+      REQUEST_DESTROY_SHADER
     };
 
     /*! Resource request data struct. */
@@ -171,6 +173,7 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
       EGETexture::Filter textureMagFilter;                /*!< Texture magnification function filter. */
       EGETexture::AddressingMode textureAddressingModeS;  /*!< Texture addressing mode for S texture coordinate. */
       EGETexture::AddressingMode textureAddressingModeT;  /*!< Texture addressing mode for T texture coordinate. */
+      EGEGraphics::ShaderType shaderType;                 /*!< Shader type. */
     };
 
     typedef List<RequestData> RequestDataList;
@@ -199,6 +202,14 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     void destroyTexture2D(PTexture2D texture) override;
     /*! @see IHardwareResourceProvider::requestDestroyTexture2D. */
     u32 requestDestroyTexture2D(PTexture2D texture) override;
+    /*! @see IHardwareResourceProvider::createShader. */
+    PShader createShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data) override;
+    /*! @see IHardwareResourceProvider::requestCreateShader. */
+    u32 requestCreateShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data) override;
+    /*! @see IHardwareResourceProvider::destroyShader. */
+    void destroyShader(PShader shader) override;
+    /*! @see IHardwareResourceProvider::requestDestroyShader. */
+    u32 requestDestroyShader(PShader shader) override;
     /*! @see IEventListener::onEventRecieved. */
     void onEventRecieved(PEvent event) override;
 

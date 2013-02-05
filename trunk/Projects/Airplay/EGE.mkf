@@ -81,6 +81,7 @@ files
   EGEScene.h
   EGEScreen.h
   EGESequencer.h
+  EGEShader.h
   EGESignal.h
   EGESocialServices.h
   EGESpline.h
@@ -282,6 +283,8 @@ files
   Material.h
   RenderObjectFactory.cpp
   RenderObjectFactory.h
+  Shader.cpp
+  Shader.h
   Texture2D.cpp
   Texture2D.h
   TextureImage.cpp
@@ -336,6 +339,8 @@ files
   RenderTextureCopyOGL.h
   RenderTextureFBOOGL.cpp
   RenderTextureFBOOGL.h
+  ShaderOGL.cpp
+  ShaderOGL.h
   Texture2DOGL.cpp
 	Texture2DOGL.h
   VertexBufferVAOGL.cpp
@@ -520,6 +525,8 @@ files
   ResourceSound.h
   ResourceSequencer.cpp
   ResourceSequencer.h
+  ResourceShader.cpp
+  ResourceShader.h
   ResourceSpriteAnimation.cpp
   ResourceSpriteAnimation.h
   ResourceSpritesheet.cpp

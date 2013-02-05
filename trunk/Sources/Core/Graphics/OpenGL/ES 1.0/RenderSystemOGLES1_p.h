@@ -15,6 +15,7 @@ class RenderSystem;
 EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
 EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
 EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
+EGE_DECLARE_SMART_CLASS(Shader, PShader)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderSystemPrivate
 {
@@ -86,6 +87,10 @@ class RenderSystemPrivate
     PTexture2D createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format);
     /*! @see RenderSystem::destroyTexture2D. */
     void destroyTexture2D(PTexture2D texture);
+    /*! @see RenderSystem::createShader. */
+    PShader createShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data);
+    /*! @see RenderSystem::destroyShader. */
+    void destroyShader(PShader shader);
 
   private:
 

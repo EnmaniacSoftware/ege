@@ -54,6 +54,8 @@ namespace EGEDevice
     RENDER_CAPS_MAP_BUFFER,                               /*!< Mapping of VBO starage in client memory space (thru glMapBuffer etc). */
     RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC,                /*!< Tetxure compression using PVRTC (GL_IMG_texture_compression_pvrtc). */
     RENDER_CAPS_TEXTURE_COMPRESSION_S3TC,                 /*!< Tetxure compression using S3TC (GL_EXT_texture_compression_s3tc). */
+    RENDER_CAPS_VERTEX_SHADER,                            /*!< Vertex shader support (GL_ARB_vertex_shader). */
+    RENDER_CAPS_FRAGMENT_SHADER,                          /*!< Fragment shader support (GL_ARB_fragment_shader). */
     RENDER_CAPS_COUNT
   };
 }

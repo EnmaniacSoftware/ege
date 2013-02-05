@@ -1014,5 +1014,22 @@ PTexture2D RenderSystemPrivate::createEmptyTexture(const String& name)
   return texture;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PShader RenderSystemPrivate::createShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data)
+{
+  EGE_UNUSED(type);
+  EGE_UNUSED(name);
+  EGE_UNUSED(data);
+
+  // not available
+  return NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::destroyShader(PShader shader)
+{
+  EGE_UNUSED(shader);
+
+  // not available
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

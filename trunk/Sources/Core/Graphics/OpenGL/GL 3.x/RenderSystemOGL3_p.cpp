@@ -1,7 +1,7 @@
-#if EGE_RENDERING_OPENGL_2
+#if EGE_RENDERING_OPENGL_3
 
 #include <EGEApplication.h>
-#include "Core/Graphics/OpenGL/GL 2.0/RenderSystemOGL2_p.h"
+#include "Core/Graphics/OpenGL/GL 3.x/RenderSystemOGL3_p.h"
 #include "Core/Graphics/OpenGL/ExtensionsOGL.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
@@ -124,7 +124,7 @@ static GLint MapTextureAddressingMode(EGETexture::AddressingMode mode)
 
   switch (mode)
   {
-    case EGETexture::AM_CLAMP:  result = GL_CLAMP; break;
+    case EGETexture::AM_CLAMP:  result = GL_CLAMP_TO_EDGE; break;
     case EGETexture::AM_REPEAT: result = GL_REPEAT; break;
   }
 
@@ -1208,4 +1208,4 @@ void RenderSystemPrivate::destroyShader(PShader shader)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // EGE_RENDERING_OPENGL_2
+#endif // EGE_RENDERING_OPENGL_3
