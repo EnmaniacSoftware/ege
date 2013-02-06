@@ -30,7 +30,7 @@ bool ShaderPrivate::isValid() const
 EGEResult ShaderPrivate::create(const PDataBuffer& buffer)
 {
   GLint length = static_cast<GLint>(buffer->size() - buffer->readOffset());
-  const GLcharARB* source = reinterpret_cast<GLcharARB*>(buffer->data(buffer->readOffset()));
+  const GLchar* source = reinterpret_cast<GLchar*>(buffer->data(buffer->readOffset()));
 
   // set source
   glShaderSource(m_handle, 1, &source, &length);

@@ -8,6 +8,7 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // misc
 #define GLhandle GLhandleARB
+#define GLchar GLcharARB
 
 extern PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
 
