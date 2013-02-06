@@ -59,9 +59,9 @@ PFNGLUNIFORM1IARBPROC glUniform1i = NULL;
 PFNGLUNIFORM2IARBPROC glUniform2i = NULL;
 PFNGLUNIFORM3IARBPROC glUniform3i = NULL;
 PFNGLUNIFORM4IARBPROC glUniform4i = NULL;
-PFNGLUNIFORMMATRIX2FVARBPROC glUniformMatrix2fvARB = NULL;
-PFNGLUNIFORMMATRIX3FVARBPROC glUniformMatrix3fvARB = NULL;
-PFNGLUNIFORMMATRIX4FVARBPROC glUniformMatrix4fvARB = NULL;
+PFNGLUNIFORMMATRIX2FVARBPROC glUniformMatrix2fv = NULL;
+PFNGLUNIFORMMATRIX3FVARBPROC glUniformMatrix3fv = NULL;
+PFNGLUNIFORMMATRIX4FVARBPROC glUniformMatrix4fv = NULL;
 PFNGLGETOBJECTPARAMETERFVARBPROC glGetObjectParameterfv = NULL;
 PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameteriv = NULL;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
