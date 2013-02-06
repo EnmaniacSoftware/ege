@@ -42,7 +42,7 @@ EGEResult RenderWindowOGLAirplay::construct(const Dictionary& params)
   if (iterColorBits == params.end() || iterDepthBits == params.end())
   {
     // error!
-    return;
+    return EGE_ERROR;
   }
 
   bool landscape = (iterLandscape != params.end()) ? iterLandscape->second.toBool(&error) : false;
@@ -54,7 +54,7 @@ EGEResult RenderWindowOGLAirplay::construct(const Dictionary& params)
   if (error)
   {
     // error!
-    return;
+    return EGE_ERROR;
   }
 
   // get device screen dimensions
@@ -189,7 +189,10 @@ EGEResult RenderWindowOGLAirplay::construct(const Dictionary& params)
   if (EGL_FALSE == success)
   {
     destroy();
+    return EGE_ERROR;
   }
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderWindowOGLAirplay::destroy()

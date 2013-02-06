@@ -1,6 +1,6 @@
 #include <EGEDataBuffer.h>
 #include <EGEOpenGL.h>
-#include "Core/Graphics/OpenGL/ShaderOGL.h"
+#include "Core/Graphics/OpenGL/ES 1.0/ShaderOGLES1_p.h"
 #include <EGEShader.h>
 #include <EGEDevice.h>
 #include <EGEDebug.h>

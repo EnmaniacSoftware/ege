@@ -338,14 +338,10 @@ files
   IndexBufferVAOGL.h
   IndexBufferVBOOGL.cpp
   IndexBufferVBOOGL.h
-  ProgramOGL.cpp
-  ProgramOGL.h
   RenderTextureCopyOGL.cpp
   RenderTextureCopyOGL.h
   RenderTextureFBOOGL.cpp
   RenderTextureFBOOGL.h
-  ShaderOGL.cpp
-  ShaderOGL.h
   Texture2DOGL.cpp
 	Texture2DOGL.h
   VertexBufferVAOGL.cpp
@@ -591,12 +587,8 @@ if {{defined EGE_RENDERING_OPENGLES_1}}
   DeviceServices.h
   PurchaseServices.cpp
   PurchaseServices.h
-  PurchaseServicesNull_p.cpp
-  PurchaseServicesNull_p.h
   SocialServices.cpp
   SocialServices.h
-  SocialServicesNull_p.cpp
-  SocialServicesNull_p.h
 
 	["Core/Signal"]
   (../../Sources/Core/Signal)

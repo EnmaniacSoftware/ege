@@ -5,7 +5,7 @@
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include <EGEDebug.h>
 
-#if EGE_RENDERING_OPENGL_3 || EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
+#if EGE_RENDERING_OPENGL_3 || EGE_RENDERING_OPENGL_2
 #include "Core/Graphics/OpenGL/ProgramOGL.h"
 #elif EGE_RENDERING_OPENGLES_1
 #include "Core/Graphics/OpenGL/ES 1.0/ProgramOGLES1_p.h"

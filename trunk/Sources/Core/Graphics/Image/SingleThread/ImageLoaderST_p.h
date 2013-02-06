@@ -44,8 +44,6 @@ class ImageLoaderPrivate
 
   private:
 
-    EGE_DECLARE_PRIVATE_IMPLEMENTATION(ImageLoader)
-
     /*! Current state. */
     ImageLoader::State m_state;
 };

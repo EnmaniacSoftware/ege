@@ -1,7 +1,5 @@
 #include <EGEOpenGL.h>
-#include "Core/Graphics/OpenGL/ProgramOGL.h"
-#include "Core/Graphics/OpenGL/ShaderOGL.h"
-#include <EGEShader.h>
+#include "Core/Graphics/OpenGL/ES 1.0/ProgramOGLES1_p.h"
 #include <EGEDevice.h>
 #include <EGEDebug.h>
 
