@@ -93,6 +93,10 @@ class RenderSystemPrivate
     PShader createShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data);
     /*! @see RenderSystem::destroyShader. */
     void destroyShader(PShader shader);
+    /*! @see RenderSystem::createProgram. */
+    PProgram createProgram(const String& name, const List<PShader>& shaders);
+    /*! @see RenderSystem::destroyProgram. */
+    void destroyProgram(PProgram program);
 
   private:
 

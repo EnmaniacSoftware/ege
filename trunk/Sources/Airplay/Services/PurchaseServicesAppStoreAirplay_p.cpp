@@ -1,5 +1,6 @@
 #include "Core/Services/PurchaseServices.h"
 #include "Airplay/Services/PurchaseServicesAppStoreAirplay_p.h"
+#include <EGEMath.h>
 #include <EGEMemory.h>
 #include <EGEDebug.h>
 

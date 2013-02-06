@@ -14,6 +14,7 @@
 #include <EGEIndexBuffer.h>
 #include <EGEImage.h>
 #include <EGEShader.h>
+#include <EGEList.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -40,12 +41,16 @@ class IHardwareResourceProvider
 
   public:
 
-    /*! Creates vertex buffer obejct. */
+    /*! Creates vertex buffer object. 
+     *  @param  usage Intended usage hint.
+     */
     virtual PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const = 0;
-    /*! Creates index buffer obejct. */
+    /*! Creates index buffer object. 
+     *  @param  usage Intended usage hint.
+     */
     virtual PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const = 0;
     /*! Creates 2D texture from given image. 
-     *  @param  name  Name of the texture.
+     *  @param  name  Name of the object.
      *  @param  image Image data for texture.
      *  @return Returns created texture. NULL if error occured.
      */
@@ -85,14 +90,14 @@ class IHardwareResourceProvider
     virtual u32 requestDestroyTexture2D(PTexture2D texture) = 0;
     /*! Creates shader from given data. 
      *  @param  type  Type of the shader.
-     *  @param  name  Name of the texture.
+     *  @param  name  Name of the shader.
      *  @param  data  Shader data.
      *  @return Returns created shader. NULL if error occured.
      */
     virtual PShader createShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data) = 0;
     /*! Requests creation shader from given data. 
      *  @param  type  Type of the shader.
-     *  @param  name  Name of the texture.
+     *  @param  name  Name of the shader.
      *  @param  data  Shader data.
      *  @return Returns ID of the request for further delivery check.
      *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
@@ -110,6 +115,31 @@ class IHardwareResourceProvider
      *        Upon completion result will be signalled by requestComplete.
      */
     virtual u32 requestDestroyShader(PShader shader) = 0;
+    /*! Creates program. 
+     *  @param  name    Name of the program.
+     *  @param  shaders List of shaders to attach to program.
+     *  @return Returns created object. NULL if error occured.
+     */
+    virtual PProgram createProgram(const String& name, const List<PShader>& shaders) = 0;
+    /*! Requests creation of program. 
+     *  @param  name    Name of the program.
+     *  @param  shaders List of shaders to attach to program.
+     *  @return Returns ID of the request for further delivery check.
+     *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
+     *        Upon completion result will be signalled by requestComplete.
+     */
+    virtual u32 requestCreateProgram(const String& name, const List<PShader>& shaders) = 0;
+    /*! Destroys program. 
+     *  @param  program Program to destroy.
+     */
+    virtual void destroyProgram(PProgram program) = 0;
+    /*! Requests deletion of program. 
+     *  @param  program  Program to destroy.
+     *  @return Returns ID of the request for further delivery check.
+     *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
+     *        Upon completion result will be signalled by requestComplete.
+     */
+    virtual u32 requestDestroyProgram(PProgram program) = 0;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

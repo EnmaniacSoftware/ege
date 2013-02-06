@@ -3,6 +3,9 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+// misc
+PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog = NULL;
+
 // multitexturing
 PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTexture = NULL;
 PFNGLACTIVETEXTUREARBPROC glActiveTexture = NULL;
@@ -40,6 +43,7 @@ PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribs = NULL;
 
 // ARB_shader_objects
 PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObject = NULL;
+PFNGLDELETEOBJECTARBPROC glDeleteObject = NULL;
 PFNGLSHADERSOURCEARBPROC glShaderSource = NULL;
 PFNGLCOMPILESHADERARBPROC glCompileShader = NULL;
 PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObject = NULL;
@@ -58,4 +62,6 @@ PFNGLUNIFORM4IARBPROC glUniform4i = NULL;
 PFNGLUNIFORMMATRIX2FVARBPROC glUniformMatrix2fvARB = NULL;
 PFNGLUNIFORMMATRIX3FVARBPROC glUniformMatrix3fvARB = NULL;
 PFNGLUNIFORMMATRIX4FVARBPROC glUniformMatrix4fvARB = NULL;
+PFNGLGETOBJECTPARAMETERFVARBPROC glGetObjectParameterfv = NULL;
+PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameteriv = NULL;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

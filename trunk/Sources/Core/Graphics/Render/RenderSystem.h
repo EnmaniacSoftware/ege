@@ -5,6 +5,7 @@
 #include <EGEString.h>
 #include <EGEMatrix.h>
 #include <EGEMutex.h>
+#include <EGEObjectList.h>
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include "Core/Graphics/Render/Renderer.h"
 #include "Core/Components/Render/RenderComponent.h"
@@ -157,17 +158,19 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
       REQUEST_CREATE_TEXTURE_2D = 0,
       REQUEST_DESTROY_TEXTURE_2D,
       REQUEST_CREATE_SHADER,
-      REQUEST_DESTROY_SHADER
+      REQUEST_DESTROY_SHADER,
+      REQUEST_CREATE_PROGRAM,
+      REQUEST_DESTROY_PROGRAM
     };
 
     /*! Resource request data struct. */
     struct RequestData
     {
-      u32 id;               /*!< Assigned request id. */
-      RequestType type;     /*!< Request type. */
-      String name;          /*!< Name associated with request. May be empty. */
+      u32 id;                                             /*!< Assigned request id. */
+      RequestType type;                                   /*!< Request type. */
+      String name;                                        /*!< Name associated with request. May be empty. */
 
-      PObject object;       /*!< Object associated with request. May be NULL. */
+      ObjectList objects;                                 /*!< List of object associated with request. May be NULL. */
 
       EGETexture::Filter textureMinFilter;                /*!< Texture minifying function filter. */
       EGETexture::Filter textureMagFilter;                /*!< Texture magnification function filter. */
@@ -210,6 +213,14 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     void destroyShader(PShader shader) override;
     /*! @see IHardwareResourceProvider::requestDestroyShader. */
     u32 requestDestroyShader(PShader shader) override;
+    /*! @see IHardwareResourceProvider::createProgram. */
+    PProgram createProgram(const String& name, const List<PShader>& shaders) override;
+    /*! @see IHardwareResourceProvider::requestCreateProgram. */
+    u32 requestCreateProgram(const String& name, const List<PShader>& shaders) override;
+    /*! @see IHardwareResourceProvider::destroyProgram. */
+    void destroyProgram(PProgram program) override;
+    /*! @see IHardwareResourceProvider::requestDestroyProgram. */
+    u32 requestDestroyProgram(PProgram program) override;
     /*! @see IEventListener::onEventRecieved. */
     void onEventRecieved(PEvent event) override;
 

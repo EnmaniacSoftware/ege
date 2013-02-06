@@ -76,6 +76,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ProgramOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ShaderOGL.cpp" />
@@ -87,6 +88,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitter.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterPoint.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleFactory.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Program.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\RenderObjectFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderPass.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderQueue.cpp" />
@@ -246,6 +248,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ProgramOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ShaderOGL.h" />
@@ -256,6 +259,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitter.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterPoint.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleFactory.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Program.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\RenderObjectFactory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\IRenderable.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderPass.h" />
@@ -350,6 +354,7 @@
     <ClInclude Include="..\..\Sources\EGEMatrix.h" />
     <ClInclude Include="..\..\Sources\EGEMutex.h" />
     <ClInclude Include="..\..\Sources\EGENativeUI.h" />
+    <ClInclude Include="..\..\Sources\EGEObjectList.h" />
     <ClInclude Include="..\..\Sources\EGEOpenGL.h" />
     <ClInclude Include="..\..\Sources\EGEParticle.h" />
     <ClInclude Include="..\..\Sources\EGEPlane.h" />
@@ -603,7 +608,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_DEBUG;EGE_FEATURE_MEMORY_DEBUG;EGE_FEATURE_OPENGL_DEBUG;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_3;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_DEBUG;EGE_FEATURE_MEMORY_DEBUG;EGE_FEATURE_OPENGL_DEBUG;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>

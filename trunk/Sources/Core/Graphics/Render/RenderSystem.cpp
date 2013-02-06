@@ -104,7 +104,7 @@ void RenderSystem::update()
         setTextureAddressingModeT(request.textureAddressingModeT);
 
         // create texture
-        PImage image = request.object;
+        PImage image = request.objects.front();
         PTexture2D texture = createTexture2D(request.name, image);
 
         // signal
@@ -112,7 +112,7 @@ void RenderSystem::update()
       }
       else if (REQUEST_DESTROY_TEXTURE_2D == request.type)
       {
-        PTexture2D texture = request.object;
+        PTexture2D texture = request.objects.front();
         destroyTexture2D(texture);
 
         // signal
@@ -120,18 +120,40 @@ void RenderSystem::update()
       }
       else if (REQUEST_CREATE_SHADER == request.type)
       {
-        PShader shader = createShader(request.shaderType, request.name, request.object);
+        PDataBuffer data = request.objects.front();
+        PShader shader = createShader(request.shaderType, request.name, data);
 
         // signal
         emit requestComplete(request.id, shader);
       }
       else if (REQUEST_DESTROY_SHADER == request.type)
       {
-        PShader shader = request.object;
+        PShader shader = request.objects.front();
         destroyShader(shader);
 
         // signal
-        emit requestComplete(request.id, shader);
+        emit requestComplete(request.id, NULL);
+      }
+      else if (REQUEST_CREATE_PROGRAM == request.type)
+      {
+        List<PShader> shadersList;
+        for (ObjectList::const_iterator it = request.objects.begin(); it != request.objects.end(); ++it)
+        {
+          shadersList << *it;
+        }
+
+        PProgram program = createProgram(request.name, shadersList);
+
+        // signal
+        emit requestComplete(request.id, program);
+      }
+      else if (REQUEST_DESTROY_PROGRAM == request.type)
+      {
+        PProgram program = request.objects.front();
+        destroyProgram(program);
+
+        // signal
+        emit requestComplete(request.id, NULL);
       }
     }
   }
@@ -287,12 +309,12 @@ u32 RenderSystem::requestCreateTexture2D(const String& name, const PImage& image
   RequestData request;
   request.type                    = REQUEST_CREATE_TEXTURE_2D;
   request.id                      = m_nextRequestID++;
-  request.object                  = image;
   request.name                    = name;
   request.textureMinFilter        = m_textureMinFilter;
   request.textureMagFilter        = m_textureMagFilter;
   request.textureAddressingModeS  = m_textureAddressingModeS;
   request.textureAddressingModeT  = m_textureAddressingModeT;
+  request.objects << image;
 
   // queue it
   MutexLocker locker(m_requestsMutex);
@@ -317,7 +339,7 @@ u32 RenderSystem::requestDestroyTexture2D(PTexture2D texture)
   RequestData request;
   request.type    = REQUEST_DESTROY_TEXTURE_2D;
   request.id      = m_nextRequestID++;
-  request.object  = texture;
+  request.objects << texture;
 
   // queue it
   MutexLocker locker(m_requestsMutex);
@@ -339,9 +361,9 @@ u32 RenderSystem::requestCreateShader(EGEGraphics::ShaderType type, const String
   RequestData request;
   request.type       = REQUEST_CREATE_SHADER;
   request.id         = m_nextRequestID++;
-  request.object     = data;
   request.name       = name;
   request.shaderType = type;
+  request.objects << data;
 
   // queue it
   MutexLocker locker(m_requestsMutex);
@@ -359,9 +381,49 @@ u32 RenderSystem::requestDestroyShader(PShader shader)
 {
   // create request
   RequestData request;
-  request.type       = REQUEST_DESTROY_SHADER;
-  request.id         = m_nextRequestID++;
-  request.object     = shader;
+  request.type = REQUEST_DESTROY_SHADER;
+  request.id   = m_nextRequestID++;
+  request.objects << shader;
+
+  // queue it
+  MutexLocker locker(m_requestsMutex);
+  m_requests.push_back(request);
+
+  return request.id;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PProgram RenderSystem::createProgram(const String& name, const List<PShader>& shaders)
+{
+  return p_func()->createProgram(name, shaders);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 RenderSystem::requestCreateProgram(const String& name, const List<PShader>& shaders)
+{
+  // create request
+  RequestData request;
+  request.type = REQUEST_CREATE_PROGRAM;
+  request.id   = m_nextRequestID++;
+  request.name = name;
+
+  // queue it
+  MutexLocker locker(m_requestsMutex);
+  m_requests.push_back(request);
+
+  return request.id;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystem::destroyProgram(PProgram program)
+{
+  return p_func()->destroyProgram(program);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 RenderSystem::requestDestroyProgram(PProgram program)
+{
+  // create request
+  RequestData request;
+  request.type    = REQUEST_DESTROY_PROGRAM;
+  request.id      = m_nextRequestID++;
+  request.objects << program;
 
   // queue it
   MutexLocker locker(m_requestsMutex);

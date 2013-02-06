@@ -16,6 +16,7 @@ EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
 EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
 EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
 EGE_DECLARE_SMART_CLASS(Shader, PShader)
+EGE_DECLARE_SMART_CLASS(Program, PProgram)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderSystemPrivate
 {
@@ -91,6 +92,10 @@ class RenderSystemPrivate
     PShader createShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data);
     /*! @see RenderSystem::destroyShader. */
     void destroyShader(PShader shader);
+    /*! @see RenderSystem::createProgram. */
+    PProgram createProgram(const String& name, const List<PShader>& shaders);
+    /*! @see RenderSystem::destroyProgram. */
+    void destroyProgram(PProgram program);
 
   private:
 

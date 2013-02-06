@@ -6,6 +6,11 @@
 #include "Core/Graphics/OpenGL/GL 2.0/glext.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+// misc
+#define GLhandle GLhandleARB
+
+extern PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
+
 // multitexturing
 extern PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTexture;
 extern PFNGLACTIVETEXTUREARBPROC glActiveTexture;
@@ -60,6 +65,7 @@ extern PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribs;
 
 // ARB_shader_objects
 extern PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObject;
+extern PFNGLDELETEOBJECTARBPROC glDeleteObject;
 extern PFNGLSHADERSOURCEARBPROC glShaderSource;
 extern PFNGLCOMPILESHADERARBPROC glCompileShader;
 extern PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObject;
@@ -75,11 +81,14 @@ extern PFNGLUNIFORM1IARBPROC glUniform1i;
 extern PFNGLUNIFORM2IARBPROC glUniform2i;
 extern PFNGLUNIFORM3IARBPROC glUniform3i;
 extern PFNGLUNIFORM4IARBPROC glUniform4i;
-extern PFNGLUNIFORMMATRIX2FVARBPROC glUniformMatrix2fvARB;
-extern PFNGLUNIFORMMATRIX3FVARBPROC glUniformMatrix3fvARB;
-extern PFNGLUNIFORMMATRIX4FVARBPROC glUniformMatrix4fvARB;
+extern PFNGLUNIFORMMATRIX2FVARBPROC glUniformMatrix2fv;
+extern PFNGLUNIFORMMATRIX3FVARBPROC glUniformMatrix3fv;
+extern PFNGLUNIFORMMATRIX4FVARBPROC glUniformMatrix4fv;
+extern PFNGLGETOBJECTPARAMETERFVARBPROC glGetObjectParameterfv;
+extern PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameteriv;
 
 // ARB_vertex_shader
+// ARB_fragment_shader
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_CORE_EXTENSIONSOGL_H

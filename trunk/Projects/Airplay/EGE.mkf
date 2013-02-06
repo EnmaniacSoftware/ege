@@ -65,6 +65,7 @@ files
   EGEMemory.h
   EGEMutex.h
   EGENativeUI.h
+  EGEObjectList.h
   EGEOpenGL.h
   EGEOverlay.h
   EGEParticle.h
@@ -281,6 +282,8 @@ files
   JpegDataSrcFile.h
   Material.cpp
   Material.h
+  Program.cpp
+  Program.h
   RenderObjectFactory.cpp
   RenderObjectFactory.h
   Shader.cpp
@@ -335,6 +338,8 @@ files
   IndexBufferVAOGL.h
   IndexBufferVBOOGL.cpp
   IndexBufferVBOOGL.h
+  ProgramOGL.cpp
+  ProgramOGL.h
   RenderTextureCopyOGL.cpp
   RenderTextureCopyOGL.h
   RenderTextureFBOOGL.cpp

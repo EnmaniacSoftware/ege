@@ -17,6 +17,7 @@ EGE_NAMESPACE_BEGIN
 class ResourceGroup;
 
 EGE_DECLARE_SMART_CLASS(ResourceShader, PResourceShader)
+EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 EGE_DECLARE_SMART_CLASS(Object, PObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceShader : public IResource
@@ -48,8 +49,6 @@ class ResourceShader : public IResource
     ResourceShader(Application* app, ResourceGroup* group);
     /*! Creates shader. */
     EGEResult create();
-    /*! Gets shader type. */
-    const String& type() const { return m_type; }
 
   private slots:
 
@@ -61,11 +60,13 @@ class ResourceShader : public IResource
     /*! Name. */
     String m_name;
     /*! Shader type. */
-    String m_type;
+    EGEGraphics::ShaderType m_type;
     /*! Shader object created from resource. NULL if not created yet. */
     PShader m_shader;
     /*! Resource request id. */
     u32 m_resourceRequestId;
+    /*! Shader source data. */
+    PDataBuffer m_data;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

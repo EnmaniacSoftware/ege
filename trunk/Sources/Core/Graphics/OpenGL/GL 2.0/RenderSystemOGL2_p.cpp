@@ -7,6 +7,8 @@
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
 #include "Core/Graphics/Graphics.h"
+#include "Core/Graphics/Program.h"
+#include "Core/Graphics/Shader.h"
 #include "Core/Graphics/OpenGL/IndexBufferVAOGL.h"
 #include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
 #include "Core/Graphics/OpenGL/VertexBufferVAOGL.h"
@@ -1170,12 +1172,12 @@ PTexture2D RenderSystemPrivate::createEmptyTexture(const String& name)
     return NULL;
   }
 
-  // setup 1 byte alignment
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
   // generate OGL texture
   glGenTextures(1, &texture->p_func()->m_id);
   OGL_CHECK();
+
+  // setup 1 byte alignment
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
   // bind it
   activateTextureUnit(0);
@@ -1203,6 +1205,22 @@ PShader RenderSystemPrivate::createShader(EGEGraphics::ShaderType type, const St
 void RenderSystemPrivate::destroyShader(PShader shader)
 {
   EGE_UNUSED(shader);
+
+  // not available
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PProgram RenderSystemPrivate::createProgram(const String& name, const List<PShader>& shaders)
+{
+  EGE_UNUSED(name);
+  EGE_UNUSED(shaders);
+
+  // not available
+  return NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::destroyProgram(PProgram program)
+{
+  EGE_UNUSED(program);
 
   // not available
 }

@@ -7,12 +7,16 @@
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
 #include "Core/Graphics/Graphics.h"
+#include "Core/Graphics/Program.h"
+#include "Core/Graphics/Shader.h"
 #include "Core/Graphics/OpenGL/IndexBufferVAOGL.h"
 #include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
 #include "Core/Graphics/OpenGL/VertexBufferVAOGL.h"
 #include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
 #include "Core/Graphics/OpenGL/RenderTextureCopyOGL.h"
 #include "Core/Graphics/OpenGL/RenderTextureFBOOGL.h"
+#include "Core/Graphics/OpenGL/ShaderOGL.h"
+#include "Core/Graphics/OpenGL/ProgramOGL.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/Render/RenderWindow.h"
@@ -126,6 +130,20 @@ static GLint MapTextureAddressingMode(EGETexture::AddressingMode mode)
   {
     case EGETexture::AM_CLAMP:  result = GL_CLAMP_TO_EDGE; break;
     case EGETexture::AM_REPEAT: result = GL_REPEAT; break;
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Maps shader type to OpenGL compilant one. */
+static GLenum MapShaderType(EGEGraphics::ShaderType type)
+{
+  GLenum result = 0;
+
+  switch (type)
+  {
+    case EGEGraphics::FRAGMENT_SHADER:  result = GL_FRAGMENT_SHADER_ARB; break;
+    case EGEGraphics::VERTEX_SHADER:    result = GL_VERTEX_SHADER_ARB; break;
   }
 
   return result;
@@ -802,9 +820,11 @@ void RenderSystemPrivate::detectCapabilities()
   }
 
   // check shader objects support
+  // NOTE: this extension is required for GL_ARB_vertex_shader and GL_ARB_fragment_shader but it does not forces the existance of these
   if (isExtensionSupported("GL_ARB_shader_objects"))
   {
     glCreateShaderObject = reinterpret_cast<PFNGLCREATESHADEROBJECTARBPROC>(wglGetProcAddress("glCreateShaderObject"));
+    glDeleteObject = reinterpret_cast<PFNGLDELETEOBJECTARBPROC>(wglGetProcAddress("glDeleteObject"));
     glShaderSource = reinterpret_cast<PFNGLSHADERSOURCEARBPROC>(wglGetProcAddress("glShaderSource"));
     glCompileShader = reinterpret_cast<PFNGLCOMPILESHADERARBPROC>(wglGetProcAddress("glCompileShader"));
     glCreateProgramObject = reinterpret_cast<PFNGLCREATEPROGRAMOBJECTARBPROC>(wglGetProcAddress("glCreateProgramObject"));
@@ -820,9 +840,11 @@ void RenderSystemPrivate::detectCapabilities()
     glUniform2i = reinterpret_cast<PFNGLUNIFORM2IARBPROC>(wglGetProcAddress("glUniform2i"));
     glUniform3i = reinterpret_cast<PFNGLUNIFORM3IARBPROC>(wglGetProcAddress("glUniform3i"));
     glUniform4i = reinterpret_cast<PFNGLUNIFORM4IARBPROC>(wglGetProcAddress("glUniform4i"));
-    glUniformMatrix2fvARB = reinterpret_cast<PFNGLUNIFORMMATRIX2FVARBPROC>(wglGetProcAddress("glUniformMatrix2fvARB"));
-    glUniformMatrix3fvARB = reinterpret_cast<PFNGLUNIFORMMATRIX3FVARBPROC>(wglGetProcAddress("glUniformMatrix3fvARB"));
-    glUniformMatrix4fvARB = reinterpret_cast<PFNGLUNIFORMMATRIX4FVARBPROC>(wglGetProcAddress("glUniformMatrix4fvARB"));
+    glUniformMatrix2fv = reinterpret_cast<PFNGLUNIFORMMATRIX2FVARBPROC>(wglGetProcAddress("glUniformMatrix2fvARB"));
+    glUniformMatrix3fv = reinterpret_cast<PFNGLUNIFORMMATRIX3FVARBPROC>(wglGetProcAddress("glUniformMatrix3fvARB"));
+    glUniformMatrix4fv = reinterpret_cast<PFNGLUNIFORMMATRIX4FVARBPROC>(wglGetProcAddress("glUniformMatrix4fvARB"));
+    glGetObjectParameterfv = reinterpret_cast<PFNGLGETOBJECTPARAMETERFVARBPROC>(wglGetProcAddress("glGetObjectParameterfvARB"));
+    glGetObjectParameteriv = reinterpret_cast<PFNGLGETOBJECTPARAMETERIVARBPROC>(wglGetProcAddress("glGetObjectParameterivARB"));
   }
 
   // check vertex shader support
@@ -836,6 +858,9 @@ void RenderSystemPrivate::detectCapabilities()
   {
     Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FRAGMENT_SHADER, true);
   }
+
+  // misc
+  glGetShaderInfoLog  = reinterpret_cast<PFNGLGETSHADERINFOLOGPROC>(wglGetProcAddress("glGetShaderInfoLog"));
 
   // Point sprite size array is not supported by default
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE_SIZE, false);
@@ -1170,12 +1195,12 @@ PTexture2D RenderSystemPrivate::createEmptyTexture(const String& name)
     return NULL;
   }
 
-  // setup 1 byte alignment
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
   // generate OGL texture
   glGenTextures(1, &texture->p_func()->m_id);
   OGL_CHECK();
+
+  // setup 1 byte alignment
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
   // bind it
   activateTextureUnit(0);
@@ -1192,19 +1217,92 @@ PTexture2D RenderSystemPrivate::createEmptyTexture(const String& name)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PShader RenderSystemPrivate::createShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data)
 {
-  EGE_UNUSED(type);
-  EGE_UNUSED(name);
-  EGE_UNUSED(data);
+  // check if NOT supported
+  if (((EGEGraphics::VERTEX_SHADER == type) && ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_SHADER)) ||
+      ((EGEGraphics::FRAGMENT_SHADER == type) && ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_FRAGMENT_SHADER)) ||
+      (EGEGraphics::UNKNOWN_SHADER == type))
+  {
+    // error!
+    return NULL;
+  }
 
-  // not available
-  return NULL;
+  // create shader
+  PShader shader = ege_new Shader(d_func()->app(), name, type, d_func());
+  if ((NULL == shader) || (NULL == shader->p_func()))
+  {
+    // error!
+    return NULL;
+  }
+
+  // create shader object
+  shader->p_func()->m_handle = glCreateShaderObject(MapShaderType(type));
+  if (0 == shader->p_func()->m_handle)
+  {
+    // error!
+    return NULL;
+  }
+
+  // create it from data source
+  if (EGE_SUCCESS != shader->create(data))
+  {
+    // error!
+    return NULL;
+  }
+
+  return shader;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::destroyShader(PShader shader)
 {
-  EGE_UNUSED(shader);
+  if (0 != shader->p_func()->m_handle)
+  {
+    egeDebug() << "Destroying shader" << shader->p_func()->m_handle << shader->name();
+  
+    glDeleteObject(shader->p_func()->m_handle);
+    OGL_CHECK();
+    shader->p_func()->m_handle = 0;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PProgram RenderSystemPrivate::createProgram(const String& name, const List<PShader>& shaders)
+{
+  // create shader
+  PProgram program = ege_new Program(d_func()->app(), name, d_func());
+  if ((NULL == program) || (NULL == program->p_func()))
+  {
+    // error!
+    return NULL;
+  }
 
-  // not available
+  // TAGE - attach shaders
+  // ..
+
+  // create shader object
+  program->p_func()->m_handle = glCreateProgramObject();
+  if (0 == program->p_func()->m_handle)
+  {
+    // error!
+    return NULL;
+  }
+
+  // TAGE - link
+
+  return program;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::destroyProgram(PProgram program)
+{
+  if (0 != program->p_func()->m_handle)
+  {
+    egeDebug() << "Destroying program" << program->p_func()->m_handle << program->name();
+  
+    // TAGE - detach shaders
+    // ..
+
+    glDeleteObject(program->p_func()->m_handle);
+    OGL_CHECK();
+    program->p_func()->m_handle = 0;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

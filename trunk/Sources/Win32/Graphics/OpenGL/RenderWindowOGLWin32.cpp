@@ -1,5 +1,6 @@
 #include "Core/Application/Application.h"
 #include "Win32/Graphics/OpenGL/RenderWindowOGLWin32.h"
+#include "Core/Graphics/OpenGL/ExtensionsOGL.h"
 #include <EGEEvent.h>
 #include <EGEInput.h>
 #include <EGEMath.h>
@@ -162,17 +163,30 @@ EGEResult RenderWindowOGLWin32::construct(const Dictionary& params)
     0  
   };  
 
-  m_hRC = wglCreateContextAttribs(hDC, 0, attributes);
-  if (NULL == m_hRC);
+  // retrieve required wiggle function pointer
+  wglCreateContextAttribs = reinterpret_cast<PFNWGLCREATECONTEXTATTRIBSARBPROC>(wglGetProcAddress("wglCreateContextAttribsARB"));
+  if (NULL == wglCreateContextAttribs)
+  {
+    // error!
+    wglMakeCurrent(NULL, NULL);
+    wglDeleteContext(hRC);
+    destroy();
+    return EGE_ERROR;
+  }
+
+  m_hRC = wglCreateContextAttribs(m_hDC, 0, attributes);
+
+  // delete old rendering context
+  wglMakeCurrent(NULL, NULL);
+  wglDeleteContext(hRC);
+
+  // check if new rendering context failed to create
+  if (NULL == m_hRC)
   {
     // error!
     destroy();
     return EGE_ERROR;
   }
-
-  // delete old rendering context
-  wglMakeCurrent(NULL, NULL);
-  wglDeleteContext(hRC);
 #else
   m_hRC = hRC;
 #endif // EGE_RENDERING_OPENGL_3

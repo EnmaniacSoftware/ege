@@ -1,4 +1,4 @@
-#include "Core/Graphics/Shader.h"
+#include "Core/Graphics/Program.h"
 #include "Core/Application/Application.h"
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Render/RenderSystem.h"
@@ -6,36 +6,30 @@
 #include <EGEDebug.h>
 
 #if EGE_RENDERING_OPENGL_3 || EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
-#include "Core/Graphics/OpenGL/ShaderOGL.h"
+#include "Core/Graphics/OpenGL/ProgramOGL.h"
 #endif // EGE_RENDERING_OPENGL_3 || EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGLES_1
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(Shader)
-EGE_DEFINE_DELETE_OPERATORS(Shader)
+EGE_DEFINE_NEW_OPERATORS(Program)
+EGE_DEFINE_DELETE_OPERATORS(Program)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Shader::Shader(Application* app, const String& name, EGEGraphics::ShaderType type, IHardwareResourceProvider* provider) : Object(app, EGE_OBJECT_UID_SHADER), 
-                                                                                                                          m_name(name), 
-                                                                                                                          m_type(type),
-                                                                                                                          m_provider(provider)
+Program::Program(Application* app, const String& name, IHardwareResourceProvider* provider) : Object(app, EGE_OBJECT_UID_PROGRAM), 
+                                                                                              m_name(name),
+                                                                                              m_provider(provider)
 {
-  m_p = ege_new ShaderPrivate(this);
+  m_p = ege_new ProgramPrivate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Shader::~Shader()
+Program::~Program()
 {
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Shader::isValid() const
+bool Program::isValid() const
 {
   return (NULL != m_p) && m_p->isValid();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Shader::create(const PDataBuffer& buffer)
-{
-  return p_func()->create(buffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

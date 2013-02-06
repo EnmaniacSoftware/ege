@@ -11,7 +11,8 @@ namespace EGEGraphics
   /*! Available shader types. */
   enum ShaderType
   {
-    VERTEX_SHADER = 0,              /*!< Vertex shader type. */
+    UNKNOWN_SHADER = -1,            /*!< Unknown shader type. */
+    VERTEX_SHADER,                  /*!< Vertex shader type. */
     FRAGMENT_SHADER,                /*!< Fragment shader type. */ 
   };
 }
@@ -21,6 +22,7 @@ EGE_NAMESPACE_END
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include "Core/Graphics/Shader.h"
+#include "Core/Graphics/Program.h"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_SHADER_H

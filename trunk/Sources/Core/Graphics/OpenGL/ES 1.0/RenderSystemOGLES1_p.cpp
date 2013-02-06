@@ -1,10 +1,12 @@
 #include <EGEApplication.h>
-#include "Core/Graphics/OpenGL/ES 1.0/RendererOGLES1_p.h"
+#include "Core/Graphics/OpenGL/ES 1.0/RenderSystemOGLES1_p.h"
 #include "Core/Graphics/OpenGL/ExtensionsOGLES.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
 #include "Core/Graphics/Graphics.h"
+#include "Core/Graphics/Program.h"
+#include "Core/Graphics/Shader.h"
 #include "Core/Graphics/OpenGL/IndexBufferVAOGL.h"
 #include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
 #include "Core/Graphics/OpenGL/VertexBufferVAOGL.h"
@@ -126,8 +128,8 @@ static GLint MapTextureAddressingMode(EGETexture::AddressingMode mode)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderSystemPrivate::RenderSystemPrivate(Renderer* base) : m_d(base), 
-                                                           m_activeTextureUnit(0xffffffff)
+RenderSystemPrivate::RenderSystemPrivate(RenderSystem* base) : m_d(base), 
+                                                               m_activeTextureUnit(0xffffffff)
 {
   detectCapabilities();
 }
@@ -994,12 +996,12 @@ PTexture2D RenderSystemPrivate::createEmptyTexture(const String& name)
     return NULL;
   }
 
-  // setup 1 byte alignment
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
   // generate OGL texture
   glGenTextures(1, &texture->p_func()->m_id);
   OGL_CHECK();
+
+  // setup 1 byte alignment
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
   // bind it
   activateTextureUnit(0);
@@ -1027,6 +1029,37 @@ PShader RenderSystemPrivate::createShader(EGEGraphics::ShaderType type, const St
 void RenderSystemPrivate::destroyShader(PShader shader)
 {
   EGE_UNUSED(shader);
+
+  // not available
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PProgram RenderSystemPrivate::createProgram(const String& name)
+{
+  EGE_UNUSED(name);
+
+  // not available
+  return NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::destroyProgram(PProgram program)
+{
+  EGE_UNUSED(program);
+
+  // not available
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PProgram RenderSystemPrivate::createProgram(const String& name, const List<PShader>& shaders)
+{
+  EGE_UNUSED(name);
+  EGE_UNUSED(shaders);
+
+  // not available
+  return NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::destroyProgram(PProgram program)
+{
+  EGE_UNUSED(program);
 
   // not available
 }

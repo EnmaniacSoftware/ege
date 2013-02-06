@@ -816,6 +816,12 @@
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.cpp">
       <Filter>Win32\Graphics\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Program.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ProgramOGL.cpp">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1583,6 +1589,13 @@
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.h">
       <Filter>Win32\Graphics\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Program.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ProgramOGL.h">
+      <Filter>Core\Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEObjectList.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

@@ -21,19 +21,13 @@ class Texture2DPrivate
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Returns TRUE if object is valid. */
+    /*! @see Texture2D::isValid. */
     bool isValid() const;
-    /*! Creates texture from given file. 
-     *  @note Calling thread must be able to issue OpenGL API commands.
-     */
+    /*! @see Texture2D::create. */
     EGEResult create(const String& path);
-    /*! Creates texture from given buffer. 
-     *  @note Calling thread must be able to issue OpenGL API commands.
-     */
+    /*! @see Texture2D::create. */
     EGEResult create(const PDataBuffer& buffer);
-    /*! Creates texture from given image. 
-     *  @note Calling thread must be able to issue OpenGL API commands.
-     */
+    /*! @see Texture2D::create. */
     EGEResult create(const PImage& image);
     /*! Returns texture ID. */
     GLuint id() const { return m_id; }

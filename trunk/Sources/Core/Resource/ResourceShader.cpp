@@ -8,6 +8,8 @@
 #include <EGEXml.h>
 #include <EGEResources.h>
 #include <EGEStringUtils.h>
+#include <EGEDataBuffer.h>
+#include <EGEFile.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
@@ -15,6 +17,21 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceShader)
 EGE_DEFINE_DELETE_OPERATORS(ResourceShader)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function mapping literal shader type name into numeric value. */
+static EGEGraphics::ShaderType MapShaderTypeName(const String& name)
+{
+  if ("vertex" == name)
+  {
+    return EGEGraphics::VERTEX_SHADER;
+  }
+  else if ("fragment" == name)
+  {
+    return EGEGraphics::FRAGMENT_SHADER;
+  }
+
+  return EGEGraphics::UNKNOWN_SHADER;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceShader::ResourceShader(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_SHADER),
                                                                          m_resourceRequestId(0)
@@ -46,12 +63,12 @@ EGEResult ResourceShader::create(const String& path, const PXmlElement& tag)
   bool error = false;
 
   // get data
-  m_name            = tag->attribute("name");
-  m_path            = tag->attribute("path");
-  m_type            = tag->attribute("type").toLower();
+  m_name = tag->attribute("name");
+  m_path = tag->attribute("path");
+  m_type = MapShaderTypeName(tag->attribute("type").toLower());
 
   // check if obligatory data is wrong
-  if (m_name.empty() || m_path.empty() || m_type.empty() || error)
+  if (m_name.empty() || m_path.empty() || (EGEGraphics::UNKNOWN_SHADER == m_type) || error)
   {
     // error!
     egeWarning() << "Failed for name:" << m_name;
@@ -93,16 +110,34 @@ EGEResult ResourceShader::load()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceShader::create()
 {
-  //// load image data
-  //PImage image = Image::Load(path());
-  //if (NULL == image)
-  //{
-  //  // error!
-  //  return EGE_ERROR;
-  //}
+  EGEResult result;
 
-  //// request texture
-  //m_resourceRequestId = app()->graphics()->hardwareResourceProvider()->requestCreateShader(name(), image);
+  // allocate buffer
+  m_data = ege_new DataBuffer();
+  if (NULL == m_data)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // read shader file into buffer
+  File file(path());
+  if (EGE_SUCCESS != (result = file.open(EGEFile::MODE_READ_ONLY)))
+  {
+    // error!
+    return result;
+  }
+
+  if (file.read(m_data, file.size()) != file.size())
+  {
+    // error!
+    return EGE_ERROR_IO;
+  }
+
+  file.close();
+
+  // request texture
+  m_resourceRequestId = app()->graphics()->hardwareResourceProvider()->requestCreateShader(m_type, name(), m_data);
 
   // connect for notification
   ege_connect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceShader::onRequestComplete);
