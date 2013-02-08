@@ -16,14 +16,7 @@ define EGE_PURCHASES_APPSTORE
 define EGE_RESOURCEMANAGER_MULTI_THREAD
 define EGE_IMAGEMANAGER_SINGLE_THREAD
 
-#define EGE_AIRPLAY_AUDIO_SOFTWARE
-
 includepath ../../Sources
-
-#options
-#{
-#	module_path="$MARMALADE_ROOT/modules/third_party"
-#}
 
 files
 {
@@ -348,18 +341,6 @@ files
   VertexBufferVAOGL.h
   VertexBufferVBOOGL.cpp
   VertexBufferVBOOGL.h
-
-if {{defined EGE_RENDERING_OPENGLES_1}}
-{
-	["Core/Graphics/OpenGL/ES 1.0"]
-  ("../../Sources/Core/Graphics/OpenGL/ES 1.0")
-  ProgramOGLES1_p.cpp
-  ProgramOGLES1_p.h
-	RenderSystemOGLES1_p.cpp
-	RenderSystemOGLES1_p.h
-  ShaderOGLES1_p.cpp
-  ShaderOGLES1_p.h
-}
 
 	["Core/Graphics/Particle"]
   ("../../Sources/Core/Graphics/Particle")
@@ -686,6 +667,21 @@ if {{defined EGE_RENDERING_OPENGLES_1}}
 	XmlDocumentTinyXml_p.h
 	XmlElementTinyXml_p.cpp
 	XmlElementTinyXml_p.h
+}
+
+if {{defined EGE_RENDERING_OPENGLES_1}}
+{
+files
+{
+	["Core/Graphics/OpenGL/ES 1.0"]
+  ("../../Sources/Core/Graphics/OpenGL/ES 1.0")
+  ProgramOGLES1_p.cpp
+  ProgramOGLES1_p.h
+	RenderSystemOGLES1_p.cpp
+	RenderSystemOGLES1_p.h
+  ShaderOGLES1_p.cpp
+  ShaderOGLES1_p.h
+}
 }
 
 files
