@@ -11,6 +11,7 @@
 #define GLchar GLcharARB
 
 extern PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
+extern PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog;
 
 // multitexturing
 extern PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTexture;
@@ -67,13 +68,17 @@ extern PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribs;
 // ARB_shader_objects
 extern PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObject;
 extern PFNGLDELETEOBJECTARBPROC glDeleteObject;
+extern PFNGLDETACHOBJECTARBPROC glDetachObject;
 extern PFNGLSHADERSOURCEARBPROC glShaderSource;
 extern PFNGLCOMPILESHADERARBPROC glCompileShader;
 extern PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObject;
+extern PFNGLGETPROGRAMIVPROC glGetProgramiv;
 extern PFNGLATTACHOBJECTARBPROC glAttachObject;
 extern PFNGLLINKPROGRAMARBPROC glLinkProgram;
+extern PFNGLVALIDATEPROGRAMARBPROC glValidateProgram;
 extern PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObject;
 extern PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocation;
+extern PFNGLGETACTIVEUNIFORMPROC glGetActiveUniform;
 extern PFNGLUNIFORM1FARBPROC glUniform1f;
 extern PFNGLUNIFORM2FARBPROC glUniform2f;
 extern PFNGLUNIFORM3FARBPROC glUniform3f;
@@ -89,6 +94,11 @@ extern PFNGLGETOBJECTPARAMETERFVARBPROC glGetObjectParameterfv;
 extern PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameteriv;
 
 // ARB_vertex_shader
+extern PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray;
+extern PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray;
+extern PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation;
+extern PFNGLVERTEXATTRIBPOINTERARBPROC glVertexAttribPointer;
+
 // ARB_fragment_shader
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

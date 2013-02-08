@@ -5,6 +5,7 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // misc
 PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog = NULL;
+PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog = NULL;
 
 // multitexturing
 PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTexture = NULL;
@@ -44,13 +45,17 @@ PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribs = NULL;
 // ARB_shader_objects
 PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObject = NULL;
 PFNGLDELETEOBJECTARBPROC glDeleteObject = NULL;
+PFNGLDETACHOBJECTARBPROC glDetachObject = NULL;
 PFNGLSHADERSOURCEARBPROC glShaderSource = NULL;
 PFNGLCOMPILESHADERARBPROC glCompileShader = NULL;
 PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObject = NULL;
+PFNGLGETPROGRAMIVPROC glGetProgramiv = NULL;
 PFNGLATTACHOBJECTARBPROC glAttachObject = NULL;
 PFNGLLINKPROGRAMARBPROC glLinkProgram = NULL;
+PFNGLVALIDATEPROGRAMARBPROC glValidateProgram = NULL;
 PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObject = NULL;
 PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocation = NULL;
+PFNGLGETACTIVEUNIFORMPROC glGetActiveUniform = NULL;
 PFNGLUNIFORM1FARBPROC glUniform1f = NULL;
 PFNGLUNIFORM2FARBPROC glUniform2f = NULL;
 PFNGLUNIFORM3FARBPROC glUniform3f = NULL;
@@ -64,4 +69,10 @@ PFNGLUNIFORMMATRIX3FVARBPROC glUniformMatrix3fv = NULL;
 PFNGLUNIFORMMATRIX4FVARBPROC glUniformMatrix4fv = NULL;
 PFNGLGETOBJECTPARAMETERFVARBPROC glGetObjectParameterfv = NULL;
 PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameteriv = NULL;
+
+// ARB_vertex_shader
+PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray = NULL;
+PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray = NULL;
+PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation = NULL;
+PFNGLVERTEXATTRIBPOINTERARBPROC glVertexAttribPointer = NULL;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

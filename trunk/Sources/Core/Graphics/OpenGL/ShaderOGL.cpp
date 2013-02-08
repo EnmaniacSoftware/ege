@@ -12,19 +12,19 @@ EGE_DEFINE_NEW_OPERATORS(ShaderPrivate)
 EGE_DEFINE_DELETE_OPERATORS(ShaderPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ShaderPrivate::ShaderPrivate(Shader* base) : m_d(base),
-                                             m_handle(0)
+                                             m_id(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ShaderPrivate::~ShaderPrivate()
 {
   // NOTE: at this point object should be deallocated
-  EGE_ASSERT(0 == m_handle);
+  EGE_ASSERT(0 == m_id);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ShaderPrivate::isValid() const
 {
-  return (0 != m_handle);
+  return (0 != m_id);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ShaderPrivate::create(const PDataBuffer& buffer)
@@ -33,7 +33,7 @@ EGEResult ShaderPrivate::create(const PDataBuffer& buffer)
   const GLchar* source = reinterpret_cast<GLchar*>(buffer->data(buffer->readOffset()));
 
   // set source
-  glShaderSource(m_handle, 1, &source, &length);
+  glShaderSource(m_id, 1, &source, &length);
   
   GLenum result = GL_NO_ERROR;
   OGL_CHECK_RESULT(result);
@@ -45,10 +45,10 @@ EGEResult ShaderPrivate::create(const PDataBuffer& buffer)
   }
 
   // compile
-  glCompileShader(m_handle);
+  glCompileShader(m_id);
 
   int compileResult;
-  glGetObjectParameteriv(m_handle, GL_OBJECT_COMPILE_STATUS_ARB, &compileResult);
+  glGetObjectParameteriv(m_id, GL_OBJECT_COMPILE_STATUS_ARB, &compileResult);
   if (GL_TRUE != compileResult)
   {
     // error!
@@ -66,20 +66,20 @@ void ShaderPrivate::printInfoLog()
   char* log;
 
   // get log length
-  glGetObjectParameteriv(m_handle, GL_OBJECT_INFO_LOG_LENGTH_ARB, &logLength);
+  glGetObjectParameteriv(m_id, GL_OBJECT_INFO_LOG_LENGTH_ARB, &logLength);
   if (0 < logLength)
   {
     // allocate space for the log
 	  log = reinterpret_cast<char*>(EGE_MALLOC(logLength));
-	  if (NULL != log)
+	  if ((NULL != log) && (NULL != glGetShaderInfoLog))
     {
       // retrieve log
-      glGetShaderInfoLog(m_handle, logLength, &charsWritten, log);
+      glGetShaderInfoLog(m_id, logLength, &charsWritten, log);
       egeCritical() << log;
-
-      // clean up
-  	  EGE_FREE(log);
     }
+
+    // clean up
+  	EGE_FREE(log);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

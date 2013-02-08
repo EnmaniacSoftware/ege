@@ -7,6 +7,7 @@
 #include <EGE.h>
 #include <EGEString.h>
 #include <EGEShader.h>
+#include <EGEList.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -33,7 +34,23 @@ class Program : public Object
     bool isValid() const;
     /*! Returns name. */
     const String& name() const;
-
+    /*! Attaches given shader. 
+     *  @note Calling thread must be able to issue underlying 3D API commands.
+     */
+    bool attach(const PShader& shader);
+    /*! Detaches given shader. 
+     *  @note Calling thread must be able to issue underlying 3D API commands.
+     */
+    bool detach(const PShader& shader);
+    /*! Detaches all shaders. 
+     *  @note Calling thread must be able to issue underlying 3D API commands.
+     */
+    bool detachAll();
+    /*! Links the program. 
+     *  @note Calling thread must be able to issue underlying 3D API commands.
+     */
+    bool link();
+    
   protected:
 
     /*! Constructing only via RenderSystem. */
@@ -47,6 +64,8 @@ class Program : public Object
     String m_name; 
     /*! Resource provider used to create program. */
     IHardwareResourceProvider* m_provider;
+    /*! List of attached shaders. */
+    List<PShader> m_attachedShaders;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline const String& Program::name() const 

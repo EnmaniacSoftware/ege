@@ -27,6 +27,8 @@ class ShaderPrivate
     bool isValid() const;
     /*! @see Shader::create. */
     EGEResult create(const PDataBuffer& buffer);
+    /*! Returns id. */
+    GLhandle id() const;
 
   private:
 
@@ -37,9 +39,14 @@ class ShaderPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(Shader);
 
-    /*! Shader handle. */
-    GLhandle m_handle;
+    /*! Shader id. */
+    GLhandle m_id;
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline GLhandle ShaderPrivate::id() const
+{
+  return m_id;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

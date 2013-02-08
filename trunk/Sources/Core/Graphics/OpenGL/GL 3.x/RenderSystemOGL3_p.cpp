@@ -219,14 +219,10 @@ void RenderSystemPrivate::setRenderTarget(const PRenderTarget& renderTarget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::flush()
 {
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-
-  // NOTE: actual OGLES rotation should be opposite
-  glRotatef(-d_func()->m_renderTarget->orientationRotation().degrees(), 0, 0, 1);
-  glMultMatrixf(d_func()->m_projectionMatrix.data);
-
- // EGE_LOG("---------------------- Render Flush begin ----------------------");
+  // TAGE - make and submit as uniform - projection matrix
+  //// NOTE: actual OGLES rotation should be opposite
+  //glRotatef(-d_func()->m_renderTarget->orientationRotation().degrees(), 0, 0, 1);
+  //glMultMatrixf(d_func()->m_projectionMatrix.data);
 
   // go thru all render queues
   for (Map<s32, PRenderQueue>::const_iterator itQueue = d_func()->m_renderQueues.begin(); itQueue != d_func()->m_renderQueues.end(); ++itQueue)
@@ -234,8 +230,8 @@ void RenderSystemPrivate::flush()
     RenderQueue* queue = itQueue->second;
 
     // go thru all render data within current queue
-    const MultiMap<u32, RenderQueue::SRENDERDATA>& renderData = queue->renderData();
-    for (MultiMap<u32, RenderQueue::SRENDERDATA>::const_iterator it = renderData.begin(); it != renderData.end(); ++it)
+    const RenderQueue::RenderDataMap& renderData = queue->renderData();
+    for (RenderQueue::RenderDataMap::const_iterator it = renderData.begin(); it != renderData.end(); ++it)
     {
       const RenderQueue::SRENDERDATA& data = it->second;
       
@@ -280,9 +276,6 @@ void RenderSystemPrivate::flush()
           // apply pass related params
           applyPassParams(data.component, material, renderPass);
         
-          // NOTE: change to modelview after material is applied as it may change current matrix mode
-          glMatrixMode(GL_MODELVIEW);
-
           // determine texture count
           s32 textureCount = renderPass ? renderPass->textureCount() : 0;
 
@@ -430,9 +423,8 @@ void RenderSystemPrivate::flush()
 	        //if (multitexturing)
 	        //  glClientActiveTexture(GL_TEXTURE0);
 
-          // set model-view matrix
-          glLoadMatrixf(d_func()->m_viewMatrix.multiply(data.worldMatrix).data);
-          OGL_CHECK();
+          // TAGE - set model-view matrix
+          //glLoadMatrixf(d_func()->m_viewMatrix.multiply(data.worldMatrix).data);
 
           // check if INDICIES are to be used
           if (0 < indexBuffer->indexCount())
@@ -823,23 +815,27 @@ void RenderSystemPrivate::detectCapabilities()
   // NOTE: this extension is required for GL_ARB_vertex_shader and GL_ARB_fragment_shader but it does not forces the existance of these
   if (isExtensionSupported("GL_ARB_shader_objects"))
   {
-    glCreateShaderObject = reinterpret_cast<PFNGLCREATESHADEROBJECTARBPROC>(wglGetProcAddress("glCreateShaderObject"));
-    glDeleteObject = reinterpret_cast<PFNGLDELETEOBJECTARBPROC>(wglGetProcAddress("glDeleteObject"));
-    glShaderSource = reinterpret_cast<PFNGLSHADERSOURCEARBPROC>(wglGetProcAddress("glShaderSource"));
-    glCompileShader = reinterpret_cast<PFNGLCOMPILESHADERARBPROC>(wglGetProcAddress("glCompileShader"));
-    glCreateProgramObject = reinterpret_cast<PFNGLCREATEPROGRAMOBJECTARBPROC>(wglGetProcAddress("glCreateProgramObject"));
-    glAttachObject = reinterpret_cast<PFNGLATTACHOBJECTARBPROC>(wglGetProcAddress("glAttachObject"));
-    glLinkProgram = reinterpret_cast<PFNGLLINKPROGRAMARBPROC>(wglGetProcAddress("glLinkProgram"));
-    glUseProgramObject = reinterpret_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(wglGetProcAddress("glUseProgramObject"));
-    glGetUniformLocation = reinterpret_cast<PFNGLGETUNIFORMLOCATIONARBPROC>(wglGetProcAddress("glGetUniformLocation"));
-    glUniform1f = reinterpret_cast<PFNGLUNIFORM1FARBPROC>(wglGetProcAddress("glUniform1f"));
-    glUniform2f = reinterpret_cast<PFNGLUNIFORM2FARBPROC>(wglGetProcAddress("glUniform2f"));
-    glUniform3f = reinterpret_cast<PFNGLUNIFORM3FARBPROC>(wglGetProcAddress("glUniform3f"));
-    glUniform4f = reinterpret_cast<PFNGLUNIFORM4FARBPROC>(wglGetProcAddress("glUniform4f"));
-    glUniform1i = reinterpret_cast<PFNGLUNIFORM1IARBPROC>(wglGetProcAddress("glUniform1i"));
-    glUniform2i = reinterpret_cast<PFNGLUNIFORM2IARBPROC>(wglGetProcAddress("glUniform2i"));
-    glUniform3i = reinterpret_cast<PFNGLUNIFORM3IARBPROC>(wglGetProcAddress("glUniform3i"));
-    glUniform4i = reinterpret_cast<PFNGLUNIFORM4IARBPROC>(wglGetProcAddress("glUniform4i"));
+    glCreateShaderObject = reinterpret_cast<PFNGLCREATESHADEROBJECTARBPROC>(wglGetProcAddress("glCreateShaderObjectARB"));
+    glDeleteObject = reinterpret_cast<PFNGLDELETEOBJECTARBPROC>(wglGetProcAddress("glDeleteObjectARB"));
+    glDetachObject = reinterpret_cast<PFNGLDETACHOBJECTARBPROC>(wglGetProcAddress("glDetachObjectARB"));
+    glShaderSource = reinterpret_cast<PFNGLSHADERSOURCEARBPROC>(wglGetProcAddress("glShaderSourceARB"));
+    glCompileShader = reinterpret_cast<PFNGLCOMPILESHADERARBPROC>(wglGetProcAddress("glCompileShaderARB"));
+    glCreateProgramObject = reinterpret_cast<PFNGLCREATEPROGRAMOBJECTARBPROC>(wglGetProcAddress("glCreateProgramObjectARB"));
+    glGetProgramiv = reinterpret_cast<PFNGLGETPROGRAMIVPROC>(wglGetProcAddress("glGetProgramivARB"));
+    glAttachObject = reinterpret_cast<PFNGLATTACHOBJECTARBPROC>(wglGetProcAddress("glAttachObjectARB"));
+    glLinkProgram = reinterpret_cast<PFNGLLINKPROGRAMARBPROC>(wglGetProcAddress("glLinkProgramARB"));
+    glValidateProgram = reinterpret_cast<PFNGLVALIDATEPROGRAMARBPROC>(wglGetProcAddress("glValidateProgramARB"));
+    glUseProgramObject = reinterpret_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(wglGetProcAddress("glUseProgramObjectARB"));
+    glGetUniformLocation = reinterpret_cast<PFNGLGETUNIFORMLOCATIONARBPROC>(wglGetProcAddress("glGetUniformLocationARB"));
+    glGetActiveUniform = reinterpret_cast<PFNGLGETACTIVEUNIFORMPROC>(wglGetProcAddress("glGetActiveUniformARB"));
+    glUniform1f = reinterpret_cast<PFNGLUNIFORM1FARBPROC>(wglGetProcAddress("glUniform1fARB"));
+    glUniform2f = reinterpret_cast<PFNGLUNIFORM2FARBPROC>(wglGetProcAddress("glUniform2fARB"));
+    glUniform3f = reinterpret_cast<PFNGLUNIFORM3FARBPROC>(wglGetProcAddress("glUniform3fARB"));
+    glUniform4f = reinterpret_cast<PFNGLUNIFORM4FARBPROC>(wglGetProcAddress("glUniform4fARB"));
+    glUniform1i = reinterpret_cast<PFNGLUNIFORM1IARBPROC>(wglGetProcAddress("glUniform1iARB"));
+    glUniform2i = reinterpret_cast<PFNGLUNIFORM2IARBPROC>(wglGetProcAddress("glUniform2iARB"));
+    glUniform3i = reinterpret_cast<PFNGLUNIFORM3IARBPROC>(wglGetProcAddress("glUniform3iARB"));
+    glUniform4i = reinterpret_cast<PFNGLUNIFORM4IARBPROC>(wglGetProcAddress("glUniform4iARB"));
     glUniformMatrix2fv = reinterpret_cast<PFNGLUNIFORMMATRIX2FVARBPROC>(wglGetProcAddress("glUniformMatrix2fvARB"));
     glUniformMatrix3fv = reinterpret_cast<PFNGLUNIFORMMATRIX3FVARBPROC>(wglGetProcAddress("glUniformMatrix3fvARB"));
     glUniformMatrix4fv = reinterpret_cast<PFNGLUNIFORMMATRIX4FVARBPROC>(wglGetProcAddress("glUniformMatrix4fvARB"));
@@ -850,7 +846,15 @@ void RenderSystemPrivate::detectCapabilities()
   // check vertex shader support
   if (isExtensionSupported("GL_ARB_vertex_shader"))
   {
-    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_SHADER, true);
+    glGetAttribLocation = reinterpret_cast<PFNGLGETATTRIBLOCATIONPROC>(wglGetProcAddress("glGetAttribLocationARB"));
+    glDisableVertexAttribArray = reinterpret_cast<PFNGLDISABLEVERTEXATTRIBARRAYPROC>(wglGetProcAddress("glDisableVertexAttribArrayARB"));
+    glEnableVertexAttribArray = reinterpret_cast<PFNGLENABLEVERTEXATTRIBARRAYPROC>(wglGetProcAddress("glEnableVertexAttribArrayARB"));
+    glVertexAttribPointer = reinterpret_cast<PFNGLVERTEXATTRIBPOINTERARBPROC>(wglGetProcAddress("glVertexAttribPointerARB"));
+
+    if (glGetAttribLocation && glDisableVertexAttribArray && glEnableVertexAttribArray && glVertexAttribPointer)
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_SHADER, true);
+    }
   }
 
   // check fragment shader support
@@ -861,6 +865,7 @@ void RenderSystemPrivate::detectCapabilities()
 
   // misc
   glGetShaderInfoLog  = reinterpret_cast<PFNGLGETSHADERINFOLOGPROC>(wglGetProcAddress("glGetShaderInfoLog"));
+  glGetProgramInfoLog = reinterpret_cast<PFNGLGETPROGRAMINFOLOGPROC>(wglGetProcAddress("glGetProgramInfoLog"));
 
   // Point sprite size array is not supported by default
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE_SIZE, false);
@@ -1235,8 +1240,8 @@ PShader RenderSystemPrivate::createShader(EGEGraphics::ShaderType type, const St
   }
 
   // create shader object
-  shader->p_func()->m_handle = glCreateShaderObject(MapShaderType(type));
-  if (0 == shader->p_func()->m_handle)
+  shader->p_func()->m_id = glCreateShaderObject(MapShaderType(type));
+  if (0 == shader->p_func()->m_id)
   {
     // error!
     return NULL;
@@ -1254,13 +1259,13 @@ PShader RenderSystemPrivate::createShader(EGEGraphics::ShaderType type, const St
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::destroyShader(PShader shader)
 {
-  if (0 != shader->p_func()->m_handle)
+  if (0 != shader->p_func()->m_id)
   {
-    egeDebug() << "Destroying shader" << shader->p_func()->m_handle << shader->name();
+    egeDebug() << "Destroying shader" << shader->p_func()->m_id << shader->name();
   
-    glDeleteObject(shader->p_func()->m_handle);
+    glDeleteObject(shader->p_func()->m_id);
     OGL_CHECK();
-    shader->p_func()->m_handle = 0;
+    shader->p_func()->m_id = 0;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1274,34 +1279,51 @@ PProgram RenderSystemPrivate::createProgram(const String& name, const List<PShad
     return NULL;
   }
 
-  // TAGE - attach shaders
-  // ..
+  // attach shaders
+  for (List<PShader>::const_iterator it = shaders.begin(); it != shaders.end(); ++it)
+  {
+    const PShader& shader = *it;
+
+    if ( ! program->attach(shader))
+    {
+      // error!
+      return NULL;
+    }
+  }
 
   // create shader object
-  program->p_func()->m_handle = glCreateProgramObject();
-  if (0 == program->p_func()->m_handle)
+  program->p_func()->m_id = glCreateProgramObject();
+  if (0 == program->p_func()->m_id)
   {
     // error!
     return NULL;
   }
 
-  // TAGE - link
+  // link
+  if ( ! program->link())
+  {
+    // error!
+    return NULL;
+  }
 
   return program;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::destroyProgram(PProgram program)
 {
-  if (0 != program->p_func()->m_handle)
+  if (0 != program->p_func()->m_id)
   {
-    egeDebug() << "Destroying program" << program->p_func()->m_handle << program->name();
+    egeDebug() << "Destroying program" << program->p_func()->m_id << program->name();
   
-    // TAGE - detach shaders
-    // ..
+    // detach shaders
+    program->detachAll();
 
-    glDeleteObject(program->p_func()->m_handle);
+    // delete program
+    glDeleteObject(program->p_func()->m_id);
     OGL_CHECK();
-    program->p_func()->m_handle = 0;
+    program->p_func()->m_id = 0;
+    program->p_func()->m_linked = false;
+    program->p_func()->m_uniforms.clear();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

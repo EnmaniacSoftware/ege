@@ -148,6 +148,7 @@ RenderPass* RenderPass::clone() const
     pass->m_emissionColor         = m_emissionColor;
     pass->m_shininess             = m_shininess;
     pass->m_diffuseColorTransform = m_diffuseColorTransform;
+    pass->m_program               = m_program;
   }
 
   return pass;
@@ -156,6 +157,11 @@ RenderPass* RenderPass::clone() const
 void RenderPass::setDiffuseColorTransformation(const ColorTransform& transformation)
 {
   m_diffuseColorTransform = transformation;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderPass::setProgram(const PProgram& program)
+{
+  m_program = program;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

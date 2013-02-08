@@ -19,7 +19,8 @@ class Shader : public Object
 {
   /* For accessing private data. */
   friend class RenderSystemPrivate;
-  
+  friend class ProgramPrivate;
+
   public:
 
     virtual ~Shader();
@@ -53,7 +54,7 @@ class Shader : public Object
     String m_name; 
     /*! Type. */
     EGEGraphics::ShaderType m_type;
-    /*! Texture provider used to create texture. */
+    /*! Resource provider used to create shader. */
     IHardwareResourceProvider* m_provider;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

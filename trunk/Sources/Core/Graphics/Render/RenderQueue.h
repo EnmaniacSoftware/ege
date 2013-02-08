@@ -31,6 +31,8 @@ class RenderQueue : public Object
       Matrix4f worldMatrix;         /*< World transformation matrix. */
     };
 
+    typedef MultiMap<u32, SRENDERDATA> RenderDataMap;
+
   public:
 
     /*! Adds given data for rendering. */
@@ -38,12 +40,12 @@ class RenderQueue : public Object
     /*! Clears (empties) queue. */
     void clear();
     /*! Returns map of render data structures. */
-    const MultiMap<u32, SRENDERDATA>& renderData() const;
+    const RenderDataMap& renderData() const;
 
   private:
 
     /*! Render data sorted by component hash. */
-    MultiMap<u32, SRENDERDATA> m_renderData;
+    RenderDataMap m_renderData;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

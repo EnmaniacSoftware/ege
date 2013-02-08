@@ -8,6 +8,7 @@
 #include <EGEGraphics.h>
 #include <EGEColorTransform.h>
 #include "Core/Graphics/TextureImage.h"
+#include "Core/Graphics/Program.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -75,6 +76,11 @@ class RenderPass : public Object
     /*! Returns emission color. */
     const Color& emissionColor() const;
 
+    /*! Sets GPU program. */
+    void setProgram(const PProgram& program);
+    /*! Returns GPU program. */
+    PProgram program() const;
+
     /*! Sets diffuse color transformation. */
     void setDiffuseColorTransformation(const ColorTransform& transformation);
     /*! Returns current diffuse color transformation. */
@@ -106,6 +112,8 @@ class RenderPass : public Object
     Color m_emissionColor;
     /*! Shininess value. */
     float32 m_shininess;
+    /*! GPU program to use. */
+    PProgram m_program;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline EGEGraphics::BlendFactor RenderPass::srcBlendFactor() const 
@@ -151,6 +159,11 @@ inline const Color& RenderPass::emissionColor() const
 inline const ColorTransform& RenderPass::diffuseColorTransformation() const 
 { 
   return m_diffuseColorTransform; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline PProgram RenderPass::program() const
+{
+  return m_program;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

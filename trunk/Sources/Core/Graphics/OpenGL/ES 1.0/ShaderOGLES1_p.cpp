@@ -27,8 +27,7 @@ bool ShaderPrivate::isValid() const
 EGEResult ShaderPrivate::create(const PDataBuffer& buffer)
 {
   EGE_UNUSED(buffer);
-
-  return EGE_ERROR;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

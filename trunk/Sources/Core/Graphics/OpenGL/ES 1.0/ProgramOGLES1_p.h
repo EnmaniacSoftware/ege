@@ -24,6 +24,12 @@ class ProgramPrivate
 
     /*! @see Program::isValid. */
     bool isValid() const;
+    /*! @see Program::attach. */
+    bool attach(const PShader& shader);
+    /*! @see Program::detach. */
+    bool detach(const PShader& shader);
+    /*! @see Program::link. */
+    bool link();
 
   private:
 

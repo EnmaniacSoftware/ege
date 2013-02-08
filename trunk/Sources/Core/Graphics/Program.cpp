@@ -34,5 +34,52 @@ bool Program::isValid() const
   return (NULL != m_p) && m_p->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Program::attach(const PShader& shader)
+{
+  bool result = p_func()->attach(shader);
+  if (result)
+  {
+    // add to pool
+    m_attachedShaders << shader;
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Program::detach(const PShader& shader)
+{
+  bool result = p_func()->detach(shader);
+  if (result)
+  {
+    // remove from pool
+    m_attachedShaders.remove(shader);
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Program::detachAll()
+{
+  bool result = true;
+  for (List<PShader>::const_iterator it = m_attachedShaders.begin(); it != m_attachedShaders.end(); ++it)
+  {
+    const PShader& shader = *it;
+
+    if ( ! detach(shader))
+    {
+      // error!
+      result = false;
+    }
+  }
+  m_attachedShaders.clear();
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Program::link()
+{
+  return p_func()->link();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
