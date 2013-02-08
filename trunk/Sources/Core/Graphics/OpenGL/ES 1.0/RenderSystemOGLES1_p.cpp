@@ -1033,21 +1033,6 @@ void RenderSystemPrivate::destroyShader(PShader shader)
   // not available
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PProgram RenderSystemPrivate::createProgram(const String& name)
-{
-  EGE_UNUSED(name);
-
-  // not available
-  return NULL;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::destroyProgram(PProgram program)
-{
-  EGE_UNUSED(program);
-
-  // not available
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PProgram RenderSystemPrivate::createProgram(const String& name, const List<PShader>& shaders)
 {
   EGE_UNUSED(name);
