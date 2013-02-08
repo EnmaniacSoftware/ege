@@ -1052,6 +1052,8 @@ PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType us
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PTexture2D RenderSystemPrivate::createTexture2D(const String& name, const PImage& image)
 {
+  s64 startTime = Timer::GetMicroseconds();
+
   // create empty texture
   PTexture2D texture = createEmptyTexture(name);
   if ((NULL == texture) || ! texture->isValid())
@@ -1068,6 +1070,9 @@ PTexture2D RenderSystemPrivate::createTexture2D(const String& name, const PImage
   }
 
   bindTexture(GL_TEXTURE_2D, 0);
+
+  s64 endTime = Timer::GetMicroseconds();
+  egeWarning() << "Texture" << name << "uploaded:" << endTime - startTime << "microseconds";
 
   return texture;
 }

@@ -168,16 +168,6 @@ EGEResult ResourceTexture::create2D()
   app()->graphics()->renderSystem()->setTextureAddressingModeS(adressingModeS());
   app()->graphics()->renderSystem()->setTextureAddressingModeT(adressingModeT());
 
-  if (group()->name() == "main-menu-heart")
-  {
-    int a = 1;
-  }
-
-  if (name() == "main-menu-heart")
-  {
-      int b = 1;
-  }
-
   // request texture
   m_resourceRequestId = app()->graphics()->hardwareResourceProvider()->requestCreateTexture2D(name(), image);
 
