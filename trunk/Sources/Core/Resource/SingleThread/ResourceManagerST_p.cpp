@@ -111,13 +111,13 @@ EGEResult ResourceManagerPrivate::loadGroup(const String& name)
 
         // remove from pool
         m_processList.erase(it);
-        return EGE_SUCCESS;
+        return EGE_ERROR_ALREADY_EXISTS;
       }
       else
       {
         // already scheduled
         egeWarning() << "Group" << name << "already scheduled for loading!";
-        return EGE_ERROR_ALREADY_EXISTS;
+        return EGE_SUCCESS;
       }
     }
   }
