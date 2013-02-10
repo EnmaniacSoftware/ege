@@ -133,7 +133,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Zlib\ZLib.vcxproj">
       <Project>{0697d285-5c52-44b0-a9f9-11824a857a66}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

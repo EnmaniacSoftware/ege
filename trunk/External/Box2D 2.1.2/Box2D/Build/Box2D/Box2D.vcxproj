@@ -9,28 +9,12 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="MinSizeRel|Win32">
-      <Configuration>MinSizeRel</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="MinSizeRel|x64">
-      <Configuration>MinSizeRel</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="RelWithDebInfo|Win32">
-      <Configuration>RelWithDebInfo</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="RelWithDebInfo|x64">
-      <Configuration>RelWithDebInfo</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -63,26 +47,6 @@
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -108,22 +72,6 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectName)</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.lib</TargetExt>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Build\Box2D\MinSizeRel\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Box2D.dir\MinSizeRel\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(Configuration)\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Box2D</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(ProjectName)</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.lib</TargetExt>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.lib</TargetExt>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Build\Box2D\RelWithDebInfo\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Box2D.dir\RelWithDebInfo\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(Configuration)\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Box2D</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(ProjectName)</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.lib</TargetExt>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.lib</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -248,127 +196,6 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
-    <ClCompile>
-      <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <Optimization>MinSpace</Optimization>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>
-      </DebugInformationFormat>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AssemblerListingLocation>MinSizeRel</AssemblerListingLocation>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <ProgramDataBaseFileName>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Build/Box2D/MinSizeRel/Box2D.pdb</ProgramDataBaseFileName>
-    </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
-    <ClCompile>
-      <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <Optimization>MinSpace</Optimization>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AssemblerListingLocation>MinSizeRel</AssemblerListingLocation>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <ProgramDataBaseFileName>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Build/Box2D/MinSizeRel/Box2D.pdb</ProgramDataBaseFileName>
-    </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
-    <ClCompile>
-      <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <Optimization>MaxSpeed</Optimization>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AssemblerListingLocation>RelWithDebInfo</AssemblerListingLocation>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <ProgramDataBaseFileName>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Build/Box2D/RelWithDebInfo/Box2D.pdb</ProgramDataBaseFileName>
-    </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
-    <ClCompile>
-      <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <Optimization>MaxSpeed</Optimization>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AssemblerListingLocation>RelWithDebInfo</AssemblerListingLocation>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <ProgramDataBaseFileName>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Build/Box2D/RelWithDebInfo/Box2D.pdb</ProgramDataBaseFileName>
-    </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
-  </ItemDefinitionGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\Box2D\CMakeLists.txt">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/CMakeLists.txt</Message>
@@ -391,26 +218,6 @@ if errorlevel 1 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/CMakeLists.txt;E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Box2D\CMakeLists.txt;E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Box2D\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Build\Box2D\CMakeFiles\generate.stamp;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Build\Box2D\CMakeFiles\generate.stamp;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/CMakeLists.txt</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" "-HE:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D" "-BE:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Build" --check-stamp-file "E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Build\Box2D\CMakeFiles\generate.stamp"
-if errorlevel 1 goto :VCEnd</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" "-HE:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D" "-BE:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Build" --check-stamp-file "E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Build\Box2D\CMakeFiles\generate.stamp"
-if errorlevel 1 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/CMakeLists.txt;E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Box2D\CMakeLists.txt;E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Box2D\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/CMakeLists.txt;E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Box2D\CMakeLists.txt;E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Box2D\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Build\Box2D\CMakeFiles\generate.stamp;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Build\Box2D\CMakeFiles\generate.stamp;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/CMakeLists.txt</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" "-HE:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D" "-BE:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Build" --check-stamp-file "E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Build\Box2D\CMakeFiles\generate.stamp"
-if errorlevel 1 goto :VCEnd</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" "-HE:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D" "-BE:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Build" --check-stamp-file "E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Build\Box2D\CMakeFiles\generate.stamp"
-if errorlevel 1 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/CMakeLists.txt;E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Box2D\CMakeLists.txt;E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Box2D\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">E:/Projects/CPP/EGE/External/Box2D 2.1.2/Box2D/Box2D/CMakeLists.txt;E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Box2D\CMakeLists.txt;E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Box2D\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Build\Box2D\CMakeFiles\generate.stamp;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">E:\Projects\CPP\EGE\External\Box2D 2.1.2\Box2D\Build\Box2D\CMakeFiles\generate.stamp;%(Outputs)</Outputs>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </CustomBuild>

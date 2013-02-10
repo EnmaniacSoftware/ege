@@ -33,7 +33,7 @@ bool ProgramPrivate::attach(const PShader& shader)
   GLenum result = GL_NO_ERROR;
 
   glAttachObject(m_id, shader->p_func()->id());
-  OGL_CHECK_RESULT(result)
+  OGL_CHECK_RESULT(result);
 
   return (GL_NO_ERROR == result);
 }
@@ -43,7 +43,7 @@ bool ProgramPrivate::detach(const PShader& shader)
   GLenum result = GL_NO_ERROR;
 
   glDetachObject(m_id, shader->p_func()->id());
-  OGL_CHECK_RESULT(result)
+  OGL_CHECK_RESULT(result);
 
   return (GL_NO_ERROR == result);
 }
