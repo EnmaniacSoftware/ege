@@ -863,6 +863,20 @@ void RenderSystemPrivate::detectCapabilities()
     Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FRAGMENT_SHADER, true);
   }
 
+  // check VAO support
+  if (isExtensionSupported("GL_ARB_vertex_array_object"))
+  {
+    glBindVertexArray = reinterpret_cast<PFNGLBINDVERTEXARRAYARBPROC>(wglGetProcAddress("glBindVertexArrayARB"));
+    glDeleteVertexArrays = reinterpret_cast<PFNGLDELETEVERTEXARRAYSARBPROC>(wglGetProcAddress("glDeleteVertexArraysARB"));
+    glGenVertexArrays = reinterpret_cast<PFNGLGENVERTEXARRAYSARBPROC>(wglGetProcAddress("glGenVertexArraysARB"));
+    glIsVertexArray = reinterpret_cast<PFNGLISVERTEXARRAYARBPROC>(wglGetProcAddress("glIsVertexArrayARB"));
+   
+    if (glBindVertexArray && glDeleteVertexArrays && glGenVertexArrays && glIsVertexArray)
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECTS, true);
+    }
+  }
+
   // misc
   glGetShaderInfoLog  = reinterpret_cast<PFNGLGETSHADERINFOLOGPROC>(wglGetProcAddress("glGetShaderInfoLog"));
   glGetProgramInfoLog = reinterpret_cast<PFNGLGETPROGRAMINFOLOGPROC>(wglGetProcAddress("glGetProgramInfoLog"));

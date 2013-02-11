@@ -75,4 +75,10 @@ PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray = NULL;
 PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray = NULL;
 PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation = NULL;
 PFNGLVERTEXATTRIBPOINTERARBPROC glVertexAttribPointer = NULL;
+
+// ARB_vertex_array_object
+PFNGLBINDVERTEXARRAYARBPROC glBindVertexArray = NULL;
+PFNGLDELETEVERTEXARRAYSARBPROC glDeleteVertexArrays = NULL;
+PFNGLGENVERTEXARRAYSARBPROC glGenVertexArrays = NULL;
+PFNGLISVERTEXARRAYARBPROC glIsVertexArray = NULL;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

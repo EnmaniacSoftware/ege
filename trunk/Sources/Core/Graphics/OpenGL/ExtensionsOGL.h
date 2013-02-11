@@ -100,6 +100,19 @@ extern PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation;
 extern PFNGLVERTEXATTRIBPOINTERARBPROC glVertexAttribPointer;
 
 // ARB_fragment_shader
+
+// ARB_vertex_array_object
+#define GL_VERTEX_ARRAY_BINDING 0x85B5
+
+typedef void (APIENTRYP PFNGLBINDVERTEXARRAYARBPROC) (GLuint array);
+typedef void (APIENTRYP PFNGLDELETEVERTEXARRAYSARBPROC) (GLsizei n, const GLuint *arrays);
+typedef void (APIENTRYP PFNGLGENVERTEXARRAYSARBPROC) (GLsizei n, GLuint *arrays);
+typedef GLboolean (APIENTRYP PFNGLISVERTEXARRAYARBPROC) (GLuint array);
+
+extern PFNGLBINDVERTEXARRAYARBPROC glBindVertexArray;
+extern PFNGLDELETEVERTEXARRAYSARBPROC glDeleteVertexArrays;
+extern PFNGLGENVERTEXARRAYSARBPROC glGenVertexArrays;
+extern PFNGLISVERTEXARRAYARBPROC glIsVertexArray;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_CORE_EXTENSIONSOGL_H
