@@ -17,7 +17,6 @@ class IndexBuffer : public Object
 {
   public:
 
-    IndexBuffer(Application* app, u32 uid, EGEIndexBuffer::UsageType usage);
     virtual ~IndexBuffer();
 
     /*! Returns TRUE if object is valid. */
@@ -51,6 +50,8 @@ class IndexBuffer : public Object
  
   protected:
 
+    /*! Constructing only via RenderSystem. */
+    IndexBuffer(Application* app, u32 uid);
     /*! Destroys buffer. */
     virtual void destroy();
 

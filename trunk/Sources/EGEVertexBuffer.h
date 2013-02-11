@@ -1,8 +1,6 @@
 #ifndef EGE_VERTEX_BUFFER_H
 #define EGE_VERTEX_BUFFER_H
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include "Core/Graphics/VertexBufferTypes.h"
 #include "Core/Graphics/VertexBuffer.h"
 

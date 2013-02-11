@@ -36,7 +36,7 @@ static GLenum MapUsageTypeToAccessType(EGEIndexBuffer::UsageType type)
   return GL_WRITE_ONLY;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IndexBufferVBO::IndexBufferVBO(Application* app, EGEIndexBuffer::UsageType usage) : IndexBuffer(app, EGE_OBJECT_UID_INDEX_BUFFER_VBO, usage),
+IndexBufferVBO::IndexBufferVBO(Application* app, EGEIndexBuffer::UsageType usage) : IndexBuffer(app, EGE_OBJECT_UID_INDEX_BUFFER_VBO),
                                                                                     m_id(0),
                                                                                     m_indexCount(0),
                                                                                     m_indexCapacity(0),
@@ -45,6 +45,9 @@ IndexBufferVBO::IndexBufferVBO(Application* app, EGEIndexBuffer::UsageType usage
                                                                                     m_lockLength(0),
                                                                                     m_mapping(NULL)
 {
+  // set usage
+  m_usage = usage;
+
   glGenBuffers(1, &m_id);
   OGL_CHECK();
 

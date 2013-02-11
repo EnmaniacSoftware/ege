@@ -1028,7 +1028,7 @@ PVertexBuffer RenderSystemPrivate::createVertexBuffer(EGEVertexBuffer::UsageType
   }
   else
   {
-    buffer = ege_new VertexBufferVA(d_func()->app(), usage);
+    buffer = ege_new VertexBufferVA(d_func()->app());
   }
 
   return buffer;
@@ -1044,7 +1044,7 @@ PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType us
   }
   else
   {
-    buffer = ege_new IndexBufferVA(d_func()->app(), usage);
+    buffer = ege_new IndexBufferVA(d_func()->app());
   }
 
   return buffer;

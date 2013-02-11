@@ -19,7 +19,6 @@ class VertexBuffer : public Object
 {
   public:
 
-    VertexBuffer(Application* app, u32 uid, EGEVertexBuffer::UsageType usage);
     virtual ~VertexBuffer();
 
     /*! Returns TRUE if object is valid. */
@@ -59,6 +58,8 @@ class VertexBuffer : public Object
 
   protected:
 
+    /*! Constructing only via RenderSystem. */
+    VertexBuffer(Application* app, u32 uid);
     /*! Destroys buffer. */
     virtual void destroy();
 

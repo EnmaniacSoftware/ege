@@ -17,7 +17,7 @@ class VertexBufferVA : public VertexBuffer
 {
   public:
 
-    VertexBufferVA(Application* app, EGEVertexBuffer::UsageType usage);
+    VertexBufferVA(Application* app);
     virtual ~VertexBufferVA();
 
     EGE_DECLARE_NEW_OPERATORS

@@ -5,10 +5,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IndexBuffer::IndexBuffer(Application* app, u32 uid, EGEIndexBuffer::UsageType usage) : Object(app, uid), 
-                                                                                       m_indexSize(EGEIndexBuffer::IS_UNKNOWN), 
-                                                                                       m_locked(false),
-                                                                                       m_usage(usage)
+IndexBuffer::IndexBuffer(Application* app, u32 uid) : Object(app, uid), 
+                                                      m_indexSize(EGEIndexBuffer::IS_UNKNOWN), 
+                                                      m_locked(false),
+                                                      m_usage(EGEIndexBuffer::UT_STATIC_WRITE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

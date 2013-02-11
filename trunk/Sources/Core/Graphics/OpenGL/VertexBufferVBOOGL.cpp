@@ -37,7 +37,7 @@ static GLenum MapUsageTypeToAccessType(EGEVertexBuffer::UsageType type)
   return GL_WRITE_ONLY;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBufferVBO::VertexBufferVBO(Application* app, EGEVertexBuffer::UsageType usage) : VertexBuffer(app, EGE_OBJECT_UID_VERTEX_BUFFER_VBO, usage),
+VertexBufferVBO::VertexBufferVBO(Application* app, EGEVertexBuffer::UsageType usage) : VertexBuffer(app, EGE_OBJECT_UID_VERTEX_BUFFER_VBO),
                                                                                        m_id(0),
                                                                                        m_vertexCount(0),
                                                                                        m_vertexCapacity(0),
@@ -46,6 +46,9 @@ VertexBufferVBO::VertexBufferVBO(Application* app, EGEVertexBuffer::UsageType us
                                                                                        m_lockLength(0),
                                                                                        m_mapping(NULL)
 {
+  // set usage
+  m_usage = usage;
+
   glGenBuffers(1, &m_id);
   OGL_CHECK();
 
