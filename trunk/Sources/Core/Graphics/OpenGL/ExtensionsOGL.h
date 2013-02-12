@@ -1,4 +1,4 @@
-#ifndef EGE_CORE_EXTENSIONSOGL_H
+﻿#ifndef EGE_CORE_EXTENSIONSOGL_H
 #define EGE_CORE_EXTENSIONSOGL_H
 
 #include <EGE.h>
@@ -12,6 +12,11 @@
 
 extern PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
 extern PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog;
+
+#define GL_NUM_EXTENSIONS 0x821D
+
+typedef const GLubyte* (APIENTRYP PFNGLGETSTRINGIPROC) (GLenum name​, GLuint index);
+extern PFNGLGETSTRINGIPROC glGetStringi;
 
 // multitexturing
 extern PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTexture;

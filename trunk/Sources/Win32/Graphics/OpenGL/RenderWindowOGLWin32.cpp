@@ -187,6 +187,14 @@ EGEResult RenderWindowOGLWin32::construct(const Dictionary& params)
     destroy();
     return EGE_ERROR;
   }
+
+  // assign rendering context to current thread
+  if (FALSE == wglMakeCurrent(m_hDC, m_hRC))
+  {
+    // error!
+    destroy();
+    return EGE_ERROR;
+  }
 #else
   m_hRC = hRC;
 #endif // EGE_RENDERING_OPENGL_3

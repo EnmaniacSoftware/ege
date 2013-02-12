@@ -444,9 +444,9 @@ void RenderSystemPrivate::flush()
           for (DynamicArray<u32>::const_iterator itTextureUnit = m_activeTextureUnits.begin(); itTextureUnit != m_activeTextureUnits.end(); ++itTextureUnit)
           {
             // disable texturing on server side
-            activateTextureUnit(*itTextureUnit);
-            glDisable(GL_TEXTURE_2D);
-            OGL_CHECK();
+            //activateTextureUnit(*itTextureUnit);
+            //glDisable(GL_TEXTURE_2D);
+            //OGL_CHECK();
 
             // disable texturing data on client side
             if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
@@ -458,14 +458,14 @@ void RenderSystemPrivate::flush()
             OGL_CHECK();
 
             // disable point sprites
-            if (EGEGraphics::RPT_POINTS == data.component->primitiveType())
-            {
-              if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
-              {
-                glDisable(GL_POINT_SPRITE_ARB);
-                OGL_CHECK();
-              }
-            }
+            //if (EGEGraphics::RPT_POINTS == data.component->primitiveType())
+            //{
+            //  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
+            //  {
+            //    glDisable(GL_POINT_SPRITE_ARB);
+            //    OGL_CHECK();
+            //  }
+            //}
           }
           m_activeTextureUnits.clear();
 
@@ -615,16 +615,17 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
       }
 
       // check if points are be rendered
-      if (EGEGraphics::RPT_POINTS == component->primitiveType())
-      {
-        // check if point sprites are supported
-        if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
-        {
-          glEnable(GL_POINT_SPRITE_ARB);
+      // TAGE - removed ?
+      //if (EGEGraphics::RPT_POINTS == component->primitiveType())
+      //{
+      //  // check if point sprites are supported
+      //  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
+      //  {
+      //    glEnable(GL_POINT_SPRITE_ARB);
 
-          glTexEnvf(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE);
-        }
-      }
+      //    glTexEnvf(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE);
+      //  }
+      //}
     }
   }
 }
@@ -649,9 +650,9 @@ void RenderSystemPrivate::activateTextureUnit(u32 unit)
       if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
       {
         glActiveTexture(GL_TEXTURE0 + unit);
-        m_activeTextureUnit = unit;
-
         OGL_CHECK();
+
+        m_activeTextureUnit = unit;
       }
       else if (0 == unit)
       {
@@ -664,10 +665,6 @@ void RenderSystemPrivate::activateTextureUnit(u32 unit)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::bindTexture(GLenum target, GLuint textureId)
 {
-  // enable target first
-  glEnable(target);
-  OGL_CHECK();
-
   // map texture target into texture binding query value
   GLenum textureBinding;
   switch (target)
@@ -685,6 +682,7 @@ void RenderSystemPrivate::bindTexture(GLenum target, GLuint textureId)
   // query texture Id bound to given target
   GLint boundTextureId;
 	glGetIntegerv(textureBinding, &boundTextureId);
+  OGL_CHECK();
 
   // check if different texture bound currently
   if (static_cast<GLuint>(boundTextureId) != textureId)
@@ -697,13 +695,20 @@ void RenderSystemPrivate::bindTexture(GLenum target, GLuint textureId)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::detectCapabilities()
 {
+  glGetStringi = reinterpret_cast<PFNGLGETSTRINGIPROC>(wglGetProcAddress("glGetStringi"));
+  
   // get list of all extensions
-  String extensionString(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
-  m_extensionArray = extensionString.split(" ");
-
-  for (StringArray::const_iterator it = m_extensionArray.begin(); it != m_extensionArray.end(); ++it)
+  if (NULL != glGetStringi)
   {
-    egeDebug() << "Available OGL extension:" << *it;
+    GLint count;
+    glGetIntegerv(GL_NUM_EXTENSIONS, &count);
+    for (GLint i = 0; i < count; ++i)
+    {
+      const char* extension = reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i));
+      m_extensionArray << extension;
+
+      egeDebug() << "Available OGL extension:" << extension;
+    }
   }
 
 	GLint value;
@@ -1221,6 +1226,7 @@ PTexture2D RenderSystemPrivate::createEmptyTexture(const String& name)
 
   // setup 1 byte alignment
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+  OGL_CHECK();
 
   // bind it
   activateTextureUnit(0);
