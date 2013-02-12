@@ -956,8 +956,7 @@ void* RenderSystemPrivate::bindVertexBuffer(PVertexBuffer& buffer) const
       case EGE_OBJECT_UID_VERTEX_BUFFER_VBO:
 
         // bind VBO
-        // TAGE - why casting ?? bind not generic ?? why ??
-        ((VertexBufferVBO*) buffer.object())->bind();
+        static_cast<VertexBufferVBO*>(buffer.object())->bind();
 
         // set vertex data base to 0 as for VBO we use offsets
         data = 0;
@@ -988,8 +987,7 @@ void RenderSystemPrivate::unbindVertexBuffer(PVertexBuffer& buffer) const
     case EGE_OBJECT_UID_VERTEX_BUFFER_VBO:
 
       // unbind VBO
-      // TAGE - why casting ? unbind not generic ? why ?
-      ((VertexBufferVBO*) buffer.object())->unbind();
+      static_cast<VertexBufferVBO*>(buffer.object())->unbind();
       break;
 
     default:
@@ -1018,8 +1016,7 @@ void* RenderSystemPrivate::bindIndexBuffer(PIndexBuffer& buffer) const
       case EGE_OBJECT_UID_INDEX_BUFFER_VBO:
 
         // bind VBO
-        // TAGE - why casting ? bind not generic ? why ?
-        ((IndexBufferVBO*) buffer.object())->bind();
+        static_cast<IndexBufferVBO*>(buffer.object())->bind();
 
         // set index data base to 0 as for VBO we use offsets
         data = 0;
@@ -1049,8 +1046,7 @@ void RenderSystemPrivate::unbindIndexBuffer(PIndexBuffer& buffer) const
     case EGE_OBJECT_UID_INDEX_BUFFER_VBO:
 
       // unbind VBO
-      // TAGE - why casting ? unbind not generic ? why ?
-      ((IndexBufferVBO*) buffer.object())->unbind();
+      static_cast<IndexBufferVBO*>(buffer.object())->unbind();
       break;
 
     default:
@@ -1070,7 +1066,7 @@ PVertexBuffer RenderSystemPrivate::createVertexBuffer(EGEVertexBuffer::UsageType
   }
   else
   {
-    buffer = ege_new VertexBufferVA(d_func()->app(), usage);
+    buffer = ege_new VertexBufferVA(d_func()->app());
   }
 
   return buffer;
@@ -1086,7 +1082,7 @@ PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType us
   }
   else
   {
-    buffer = ege_new IndexBufferVA(d_func()->app(), usage);
+    buffer = ege_new IndexBufferVA(d_func()->app());
   }
 
   return buffer;
