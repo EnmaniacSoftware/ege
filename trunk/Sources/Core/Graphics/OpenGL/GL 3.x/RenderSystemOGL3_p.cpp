@@ -1272,6 +1272,7 @@ PShader RenderSystemPrivate::createShader(EGEGraphics::ShaderType type, const St
   if (EGE_SUCCESS != shader->create(data))
   {
     // error!
+    destroyShader(shader);
     return NULL;
   }
 

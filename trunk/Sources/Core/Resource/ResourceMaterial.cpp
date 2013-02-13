@@ -2,6 +2,7 @@
 #include "Core/Resource/ResourceTexture.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceTextureImage.h"
+#include "Core/Resource/ResourceShader.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/TextureImage.h"
 #include <EGETexture.h>
@@ -11,8 +12,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define NODE_TEXTURE  "texture"
-#define NODE_PASS     "pass"
+#define NODE_TEXTURE    "texture"
+#define NODE_PASS       "pass"
+#define NODE_SHADER_REF "shader-ref"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping texture environment mode name into value. */
 EGETexture::EnvironmentMode MapTextureEnvironmentMode(const String& name, EGETexture::EnvironmentMode defaultValue)
@@ -172,6 +174,14 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
       // add defined pass
       result = addPass(child);
     }
+    else if (NODE_SHADER_REF == child->name())
+    {
+      // add shader reference (shaders without pass add to default one)
+      result = addShaderReference(child, defaultPass);
+
+      // mark to indicate default pass is in use
+      defaultPassInUse = true;
+    }
 
     // check if failed
     if (EGE_SUCCESS != result)
@@ -241,7 +251,6 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
 
   return result;
 }
-static bool a = false;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceMaterial::load()
 {
@@ -274,7 +283,6 @@ EGEResult ResourceMaterial::load()
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResource override. Unloads resource. */
 void ResourceMaterial::unload()
 {
   if (STATE_LOADED == m_state)
@@ -309,6 +317,18 @@ void ResourceMaterial::unload()
             textureRes->unload();
           }
         }
+      }
+
+      // unload all shaders for current pass
+      for (ShaderMap::iterator it = pass.m_shaders.begin(); it != pass.m_shaders.end(); ++it)
+      {
+        PResourceShader resource = group()->manager()->resource(RESOURCE_NAME_SHADER, it->first);
+        if (NULL != resource)
+        {
+          resource->unload();
+        }
+
+        it->second = NULL;
       }
     }
 
@@ -382,6 +402,10 @@ EGEResult ResourceMaterial::addPass(const PXmlElement& tag)
     {
       result = addTexture(child, pass);
     }
+    else if (NODE_SHADER_REF == child->name())
+    {
+      result = addShaderReference(child, pass);
+    }
 
     // check if failed
     if (EGE_SUCCESS != result)
@@ -395,6 +419,24 @@ EGEResult ResourceMaterial::addPass(const PXmlElement& tag)
   }
 
   return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult ResourceMaterial::addShaderReference(const PXmlElement& tag, PassData& pass)
+{
+  // get data
+  String name = tag->attribute("name", "");
+
+  // check if invalid data
+  if (name.empty())
+  {
+    // error!
+    return EGE_ERROR_BAD_PARAM;
+  }
+
+  // add to pool
+  pass.m_shaders.insert(name, NULL);
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PMaterial ResourceMaterial::createInstance() const
@@ -511,7 +553,7 @@ float32 ResourceMaterial::shininess(u32 pass) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceMaterial::loadDependencies()
 {
-  // try to load (if necessary) textures (for all passes)
+  // try to load (if necessary) textures, shaders (for all passes)
   for (PassDataArray::iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
   {
     PassData& pass = *passIt;
@@ -614,6 +656,38 @@ EGEResult ResourceMaterial::loadDependencies()
       // set texture data
       textureImageData.textureImage->setEnvironmentMode(textureImageData.envMode);
       textureImageData.textureImage->setRotationAngle(textureImageData.rotationAngle);
+    }
+
+    // try to load all shaders for current pass
+    for (ShaderMap::iterator it = pass.m_shaders.begin(); it != pass.m_shaders.end(); ++it)
+    {
+      const String& name = it->first;
+      PShader shader = it->second;
+
+      // check if already loaded
+      if (NULL != shader)
+      {
+        // skip
+        continue;
+      }
+
+      // try to find Shader of a given name
+      PResourceShader resource = group()->manager()->resource(RESOURCE_NAME_SHADER, name);
+      if (NULL == resource)
+      {
+        // error!
+        return EGE_ERROR_NOT_FOUND;
+      }
+
+      // load it
+      EGEResult result = resource->load();
+      if (EGE_SUCCESS != result)
+      {
+        return result;
+      }
+
+      // store it
+      it->second = resource->shader();
     }
   }
 
