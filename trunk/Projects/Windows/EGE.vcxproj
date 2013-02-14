@@ -156,6 +156,7 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceMaterial.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceParticleAffector.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceProgram.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSequencer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceShader.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSound.cpp" />
@@ -304,6 +305,7 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceParticleAffector.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceProgram.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSequencer.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceShader.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSound.h" />

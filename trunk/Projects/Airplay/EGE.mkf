@@ -510,6 +510,8 @@ files
   ResourceParticleAffector.h
   ResourceParticleEmitter.cpp
   ResourceParticleEmitter.h
+  ResourceProgram.cpp
+  ResourceProgram.h
   ResourceSound.cpp
   ResourceSound.h
   ResourceSequencer.cpp

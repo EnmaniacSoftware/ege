@@ -2,7 +2,7 @@
 #include "Core/Resource/ResourceTexture.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceTextureImage.h"
-#include "Core/Resource/ResourceShader.h"
+#include "Core/Resource/ResourceProgram.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/TextureImage.h"
 #include <EGETexture.h>
@@ -12,9 +12,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define NODE_TEXTURE    "texture"
-#define NODE_PASS       "pass"
-#define NODE_SHADER_REF "shader-ref"
+#define NODE_TEXTURE      "texture"
+#define NODE_PASS         "pass"
+#define NODE_PROGRAM_REF  "program-ref"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping texture environment mode name into value. */
 EGETexture::EnvironmentMode MapTextureEnvironmentMode(const String& name, EGETexture::EnvironmentMode defaultValue)
@@ -174,10 +174,10 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
       // add defined pass
       result = addPass(child);
     }
-    else if (NODE_SHADER_REF == child->name())
+    else if (NODE_PROGRAM_REF == child->name())
     {
-      // add shader reference (shaders without pass add to default one)
-      result = addShaderReference(child, defaultPass);
+      // add program reference (shaders without pass add to default one)
+      result = addProgramReference(child, defaultPass);
 
       // mark to indicate default pass is in use
       defaultPassInUse = true;
@@ -319,17 +319,13 @@ void ResourceMaterial::unload()
         }
       }
 
-      // unload all shaders for current pass
-      for (ShaderMap::iterator it = pass.m_shaders.begin(); it != pass.m_shaders.end(); ++it)
+      // unload all program for current pass
+      PResourceProgram resource = group()->manager()->resource(RESOURCE_NAME_PROGRAM, pass.m_programName);
+      if (NULL != resource)
       {
-        PResourceShader resource = group()->manager()->resource(RESOURCE_NAME_SHADER, it->first);
-        if (NULL != resource)
-        {
-          resource->unload();
-        }
-
-        it->second = NULL;
+        resource->unload();
       }
+      pass.m_program = NULL;
     }
 
     // reset flag
@@ -402,9 +398,9 @@ EGEResult ResourceMaterial::addPass(const PXmlElement& tag)
     {
       result = addTexture(child, pass);
     }
-    else if (NODE_SHADER_REF == child->name())
+    else if (NODE_PROGRAM_REF == child->name())
     {
-      result = addShaderReference(child, pass);
+      result = addProgramReference(child, pass);
     }
 
     // check if failed
@@ -421,7 +417,7 @@ EGEResult ResourceMaterial::addPass(const PXmlElement& tag)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceMaterial::addShaderReference(const PXmlElement& tag, PassData& pass)
+EGEResult ResourceMaterial::addProgramReference(const PXmlElement& tag, PassData& pass)
 {
   // get data
   String name = tag->attribute("name", "");
@@ -433,8 +429,8 @@ EGEResult ResourceMaterial::addShaderReference(const PXmlElement& tag, PassData&
     return EGE_ERROR_BAD_PARAM;
   }
 
-  // add to pool
-  pass.m_shaders.insert(name, NULL);
+  // set name
+  pass.m_programName = name;
 
   return EGE_SUCCESS;
 }
@@ -489,6 +485,8 @@ EGEResult ResourceMaterial::setInstance(const PMaterial& instance) const
     renderPass->setEmissionColor(pass.m_emissionColor);
 
     renderPass->setShininess(pass.m_shininess);
+
+    renderPass->setProgram(pass.m_program);
 
     for (TextureImageList::const_iterator itTexture = pass.m_textureImages.begin(); itTexture != pass.m_textureImages.end(); ++itTexture)
     {
@@ -658,21 +656,11 @@ EGEResult ResourceMaterial::loadDependencies()
       textureImageData.textureImage->setRotationAngle(textureImageData.rotationAngle);
     }
 
-    // try to load all shaders for current pass
-    for (ShaderMap::iterator it = pass.m_shaders.begin(); it != pass.m_shaders.end(); ++it)
+    // try to load program for current pass
+    if (NULL == pass.m_program)
     {
-      const String& name = it->first;
-      PShader shader = it->second;
-
-      // check if already loaded
-      if (NULL != shader)
-      {
-        // skip
-        continue;
-      }
-
-      // try to find Shader of a given name
-      PResourceShader resource = group()->manager()->resource(RESOURCE_NAME_SHADER, name);
+      // try to find program resource of a given name
+      PResourceProgram resource = group()->manager()->resource(RESOURCE_NAME_PROGRAM, pass.m_programName);
       if (NULL == resource)
       {
         // error!
@@ -687,7 +675,7 @@ EGEResult ResourceMaterial::loadDependencies()
       }
 
       // store it
-      it->second = resource->shader();
+      pass.m_program = resource->program();
     }
   }
 

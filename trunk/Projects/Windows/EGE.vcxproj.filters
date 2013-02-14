@@ -822,6 +822,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ProgramOGL.cpp">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\ResourceProgram.cpp">
+      <Filter>Core\Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1596,6 +1599,9 @@
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEObjectList.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\ResourceProgram.h">
+      <Filter>Core\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

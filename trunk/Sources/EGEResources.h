@@ -25,6 +25,7 @@ EGE_NAMESPACE_BEGIN
 #define RESOURCE_NAME_IMAGED_ANIMATION  "imaged-animation"
 #define RESOURCE_NAME_SEQUENCE          "sequence"
 #define RESOURCE_NAME_SHADER            "shader"
+#define RESOURCE_NAME_PROGRAM           "program"
 
 #define TR(app, name)     (app)->resourceManager()->textResource((name))->text()
 #define TRN(app, name, n) (app)->resourceManager()->textResource((name))->text((n))

@@ -1,30 +1,31 @@
-#ifndef EGE_CORE_RESOURCESHADER_H
-#define EGE_CORE_RESOURCESHADER_H
+#ifndef EGE_CORE_RESOURCEPROGRAM_H
+#define EGE_CORE_RESOURCEPROGRAM_H
 
-/** Shader resource definition class. This object (resource) contains definition of shader object.
- *  Shader resource can define any type of shader i.e. VERTEX or FRAGMENT. Upon loading it contains shader object to be used in rendering.
+/** Program resource definition class. This object (resource) contains definition of shader program object.
+ *  Program resource can define set of shaders to be used together. Upon loading it contains program object to be used in rendering.
  */
 
 #include <EGE.h>
 #include <EGEString.h>
 #include <EGEXml.h>
-#include <EGEShader.h>
+#include <EGEMap.h>
 #include "Core/Resource/Resource.h"
+#include "Core/Graphics/Program.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup;
 
-EGE_DECLARE_SMART_CLASS(ResourceShader, PResourceShader)
-EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
+EGE_DECLARE_SMART_CLASS(ResourceProgram, PResourceProgram)
+EGE_DECLARE_SMART_CLASS(Shader, PShader)
 EGE_DECLARE_SMART_CLASS(Object, PObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceShader : public IResource
+class ResourceProgram : public IResource
 {
   public:
 
-    virtual ~ResourceShader();
+    virtual ~ResourceProgram();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -41,14 +42,19 @@ class ResourceShader : public IResource
     /*! @see IResource::unload. */
     void unload() override;
 
-    /*! Gets instance of shader object defined by resource. */
-    PShader shader() const { return m_shader; }
+    /*! Gets instance of program object defined by resource. */
+    PProgram program() const { return m_program; }
 
   private:
 
-    ResourceShader(Application* app, ResourceGroup* group);
-    /*! Creates shader. */
-    EGEResult create();
+    ResourceProgram(Application* app, ResourceGroup* group);
+    /*! Adds shader reference. */
+    EGEResult addShaderReference(const PXmlElement& tag);
+    /*! Loads all dependencies.
+     *  @return Returns EGE_SUCCESS if all dependencies are ready (loaded). EGE_WAIT if some dependencies are still being loaded. 
+     *          Otherwise one of the error values.
+     */
+    EGEResult loadDependencies();
 
   private slots:
 
@@ -57,19 +63,22 @@ class ResourceShader : public IResource
 
   private:
 
+    /*! Shaders map [shaderName, shaderObject]. */
+    typedef Map<String, PShader> ShaderMap;
+
+  private:
+
     /*! Name. */
     String m_name;
-    /*! Shader type. */
-    EGEGraphics::ShaderType m_type;
-    /*! Shader object created from resource. NULL if not created yet. */
-    PShader m_shader;
+    /*! Program object created from resource. NULL if not created yet. */
+    PProgram m_program;
     /*! Resource request id. */
     u32 m_resourceRequestId;
-    /*! Shader source data. */
-    PDataBuffer m_data;
+    /*! Shader map. */
+    ShaderMap m_shaders;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_RESOURCESHADER_H
+#endif // EGE_CORE_RESOURCEPROGRAM_H

@@ -22,6 +22,7 @@ class ResourceGroup;
 
 EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
 EGE_DECLARE_SMART_CLASS(TextureImage, PTextureImage)
+EGE_DECLARE_SMART_CLASS(Program, PProgram)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceMaterial : public IResource
 {
@@ -43,7 +44,6 @@ class ResourceMaterial : public IResource
     };
         
     typedef List<TextureImageData> TextureImageDataList;
-    typedef Map<String, PShader> ShaderMap;
 
     /*! Small class containing information about render passes. */
     class PassData
@@ -64,7 +64,8 @@ class ResourceMaterial : public IResource
         float32 m_shininess;                            /*!< Shininess value. */
         TextureImageList m_textureImages;               /*!< List of all loaded texture image objects used by pass. */
         TextureImageDataList m_textureImageData;        /*!< List of definitions of all texture images contributing to pass. */
-        ShaderMap m_shaders;                            /*!< Map of all shaders used in the pass [name, object (only if loaded). */ 
+        String m_programName;                           /*!< Name of the program used in the pass. */
+        PProgram m_program;                             /*!< Program used in the pass (only if loaded). */ 
     };
 
   public:
@@ -115,8 +116,8 @@ class ResourceMaterial : public IResource
     EGEResult addTexture(const PXmlElement& tag, PassData& pass);
     /*! Adds pass. */
     EGEResult addPass(const PXmlElement& tag);
-    /*! Adds shader reference. */
-    EGEResult addShaderReference(const PXmlElement& tag, PassData& pass);
+    /*! Adds program reference. */
+    EGEResult addProgramReference(const PXmlElement& tag, PassData& pass);
 
     /*! Loads all dependencies.
      *  @return Returns EGE_SUCCESS if all dependencies are ready (loaded). EGE_WAIT if some dependencies are still being loaded. 
