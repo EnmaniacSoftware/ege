@@ -656,8 +656,8 @@ EGEResult ResourceMaterial::loadDependencies()
       textureImageData.textureImage->setRotationAngle(textureImageData.rotationAngle);
     }
 
-    // try to load program for current pass
-    if (NULL == pass.m_program)
+    // try to load program for current pass (if any)
+    if ((NULL == pass.m_program) && ! pass.m_programName.empty())
     {
       // try to find program resource of a given name
       PResourceProgram resource = group()->manager()->resource(RESOURCE_NAME_PROGRAM, pass.m_programName);
