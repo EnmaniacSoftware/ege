@@ -167,15 +167,15 @@ EGEResult ResourceProgram::addShaderReference(const PXmlElement& tag)
   bool error = false;
 
   // get data
-  m_name = tag->attribute("name");
-  if (m_name.empty())
+  String name = tag->attribute("name");
+  if (name.empty())
   {
     // error!
     return EGE_ERROR_NOT_FOUND;
   }
 
   // add to pool
-  m_shaders.insert(m_name, NULL);
+  m_shaders.insert(name, NULL);
 
   return EGE_SUCCESS;
 }

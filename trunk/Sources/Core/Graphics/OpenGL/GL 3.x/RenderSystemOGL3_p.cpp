@@ -1301,6 +1301,14 @@ PProgram RenderSystemPrivate::createProgram(const String& name, const List<PShad
     return NULL;
   }
 
+  // create shader object
+  program->p_func()->m_id = glCreateProgramObject();
+  if (0 == program->p_func()->m_id)
+  {
+    // error!
+    return NULL;
+  }
+
   // attach shaders
   for (List<PShader>::const_iterator it = shaders.begin(); it != shaders.end(); ++it)
   {
@@ -1313,18 +1321,11 @@ PProgram RenderSystemPrivate::createProgram(const String& name, const List<PShad
     }
   }
 
-  // create shader object
-  program->p_func()->m_id = glCreateProgramObject();
-  if (0 == program->p_func()->m_id)
-  {
-    // error!
-    return NULL;
-  }
-
   // link
   if ( ! program->link())
   {
     // error!
+    destroyProgram(program);
     return NULL;
   }
 

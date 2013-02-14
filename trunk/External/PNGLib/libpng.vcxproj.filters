@@ -73,19 +73,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="scripts\pngw32.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuildStep Include="scripts\pngw32.def">
       <Filter>Source Files</Filter>
     </CustomBuildStep>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="PRJ0041.mak" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="README.txt" />
   </ItemGroup>
 </Project>

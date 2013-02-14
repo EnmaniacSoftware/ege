@@ -405,6 +405,11 @@ u32 RenderSystem::requestCreateProgram(const String& name, const List<PShader>& 
   request.id   = m_nextRequestID++;
   request.name = name;
 
+  for (List<PShader>::const_iterator it = shaders.begin(); it != shaders.end(); ++it)
+  {
+    request.objects << *it;
+  }
+
   // queue it
   MutexLocker locker(m_requestsMutex);
   m_requests.push_back(request);

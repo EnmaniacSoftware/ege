@@ -54,16 +54,20 @@ bool ProgramPrivate::link()
   glLinkProgram(m_id);
 
   // validate
-  glValidateProgram(m_id);
+  //glValidateProgram(m_id);
 
-  int compileResult;
-  glGetObjectParameteriv(m_id, GL_OBJECT_LINK_STATUS_ARB, &compileResult);
-  if (GL_TRUE != compileResult)
+  int linkResult;
+  glGetObjectParameteriv(m_id, GL_OBJECT_LINK_STATUS_ARB, &linkResult);
+  if (GL_TRUE != linkResult)
   {
     // error!
     printInfoLog();
     return false;
   }
+
+  // bind it so uniforms can be quereied
+  glUseProgramObject(m_id);
+  OGL_CHECK();
 
   // retrieve uniform data
   if ( ! buildUniformsList())
@@ -75,31 +79,36 @@ bool ProgramPrivate::link()
   // set flag
   m_linked = true;
 
+  // unbind
+  glUseProgramObject(0);
+  OGL_CHECK();
+
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ProgramPrivate::buildUniformsList()
 {
   // retrive number of uniforms
-  int total = -1;
-  glGetProgramiv(m_id, GL_ACTIVE_UNIFORMS, &total); 
-  for (int i = 0; i < total; ++i)  
+  GLint total = 0;
+  glGetObjectParameteriv(m_id, GL_OBJECT_ACTIVE_UNIFORMS_ARB, &total); 
+  for (GLint i = 0; i < total; ++i)  
   {
-    int nameLength = -1;
-    int num = -1;
+    GLsizei nameLength = -1;
+    GLint num = -1;
 
     GLenum type = GL_ZERO;
     
-    char name[128];
+    GLchar name[128];
 
     // get uniform data
-    glGetActiveUniform(m_id, static_cast<GLuint>(i), sizeof(name) - 1, &nameLength, &num, &type, name);
+    glGetActiveUniform(m_id, i, sizeof(name) - 1, &nameLength, &num, &type, name);
 
     // zero terminate
     name[nameLength] = 0;
 
     // retrieve location
-    GLuint location = glGetUniformLocation(m_id, name);
+    GLuint location = 0;
+    location = glGetUniformLocation(m_id, name);
 
     // add to pool
     m_uniforms.insert(name, location);
@@ -118,7 +127,7 @@ void ProgramPrivate::printInfoLog()
   char* log;
 
   // get log length
-  glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &logLength);
+  glGetObjectParameteriv(m_id, GL_OBJECT_INFO_LOG_LENGTH_ARB, &logLength);
   if (0 < logLength)
   {
     // allocate space for the log

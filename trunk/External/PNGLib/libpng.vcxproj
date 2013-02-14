@@ -72,7 +72,8 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>png.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>CompileAsC</CompileAs>
@@ -117,18 +118,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </CustomBuildStep>
-    <CustomBuild Include="PRJ0041.mak" />
-    <None Include="README.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="png.h" />
     <ClInclude Include="pngconf.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="scripts\pngw32.rc">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Zlib\ZLib.vcxproj">
