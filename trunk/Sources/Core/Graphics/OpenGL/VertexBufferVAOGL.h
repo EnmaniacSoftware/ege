@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_VERTEXBUFFERVAOGL_H
-#define EGE_CORE_VERTEXBUFFERVAOGL_H
+#ifndef EGE_CORE_GRAPHICS_OPENGL_VERTEXBUFFERVAOGL_H
+#define EGE_CORE_GRAPHICS_OPENGL_VERTEXBUFFERVAOGL_H
 
 /** 
  *   VertexBuffer base class specializtion based on Vertex Arrays.
@@ -34,8 +34,6 @@ class VertexBufferVA : public VertexBuffer
 
     /*! @see VertexBuffer::vertexCount. */
     u32 vertexCount() const override;
-    /*! @see VertexBuffer::vertexCapacity. */
-    u32 vertexCapacity() const override;
 
   private:
 
@@ -53,4 +51,4 @@ class VertexBufferVA : public VertexBuffer
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_VERTEXBUFFERVAOGL_H
+#endif // EGE_CORE_GRAPHICS_OPENGL_VERTEXBUFFERVAOGL_H

@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_INDEXBUFFERVAOGL_H
-#define EGE_CORE_INDEXBUFFERVAOGL_H
+#ifndef EGE_CORE_GRAPHICS_OPENGL_INDEXBUFFERVAOGL_H
+#define EGE_CORE_GRAPHICS_OPENGL_INDEXBUFFERVAOGL_H
 
 /** 
  *   IndexBuffer base class specialization based on Vertex Arrays.
@@ -34,8 +34,6 @@ class IndexBufferVA : public IndexBuffer
 
     /*! @see IndexBuffer::indexCount. */
     u32 indexCount() const override;
-    /*! @see IndexBuffer::indexCapacity. */
-    u32 indexCapacity() const override;
 
   private:
 
@@ -53,4 +51,4 @@ class IndexBufferVA : public IndexBuffer
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_INDEXBUFFERVAOGL_H
+#endif // EGE_CORE_GRAPHICS_OPENGL_INDEXBUFFERVAOGL_H

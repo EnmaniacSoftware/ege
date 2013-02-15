@@ -155,6 +155,22 @@ void RenderSystem::update()
         // signal
         emit requestComplete(request.id, NULL);
       }
+      else if (REQUEST_DESTROY_VERTEX_BUFFER == request.type)
+      {
+        PVertexBuffer object = request.objects.front();
+        destroyVertexBuffer(object);
+
+        // signal
+        emit requestComplete(request.id, NULL);
+      }
+      else if (REQUEST_DESTROY_INDEX_BUFFER == request.type)
+      {
+        PIndexBuffer object = request.objects.front();
+        destroyIndexBuffer(object);
+
+        // signal
+        emit requestComplete(request.id, NULL);
+      }
     }
   }
   else if (STATE_CLOSING == m_state)
@@ -288,9 +304,49 @@ PVertexBuffer RenderSystem::createVertexBuffer(EGEVertexBuffer::UsageType usage)
   return p_func()->createVertexBuffer(usage);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystem::destroyVertexBuffer(PVertexBuffer object) const
+{
+  p_func()->destroyVertexBuffer(object);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 RenderSystem::requestDestroyVertexBuffer(PVertexBuffer object)
+{
+  // create request
+  RequestData request;
+  request.type  = REQUEST_DESTROY_VERTEX_BUFFER;
+  request.id    = m_nextRequestID++;
+  request.objects << object;
+
+  // queue it
+  MutexLocker locker(m_requestsMutex);
+  m_requests.push_back(request);
+
+  return request.id;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PIndexBuffer RenderSystem::createIndexBuffer(EGEIndexBuffer::UsageType usage) const
 {
   return p_func()->createIndexBuffer(usage);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystem::destroyIndexBuffer(PIndexBuffer object) const
+{
+  p_func()->destroyIndexBuffer(object);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 RenderSystem::requestDestroyIndexBuffer(PIndexBuffer object)
+{
+  // create request
+  RequestData request;
+  request.type  = REQUEST_DESTROY_INDEX_BUFFER;
+  request.id    = m_nextRequestID++;
+  request.objects << object;
+
+  // queue it
+  MutexLocker locker(m_requestsMutex);
+  m_requests.push_back(request);
+
+  return request.id;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PTexture2D RenderSystem::createTexture2D(const String& name, const PImage& image)

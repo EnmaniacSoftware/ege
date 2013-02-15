@@ -96,30 +96,34 @@ void Dialog::generateRenderData()
   Vector2f textureSize(m_tailRenderData->material()->pass(0)->texture(0)->width() * 1.0f, m_tailRenderData->material()->pass(0)->texture(0)->height() * 1.0f);
   textureSize.set(1.0f / textureSize.x, 1.0f / textureSize.y);
 
-  float32* data = reinterpret_cast<float32*>(m_tailRenderData->vertexBuffer()->lock(0, 4));
-  if (data)
+  // set buffer size
+  if (m_tailRenderData->vertexBuffer()->setSize(4))
   {
-    *data++ = m_tailOffset.x;
-    *data++ = m_tailOffset.y + m_tailRect.height;
-    *data++ = m_tailRect.x * textureSize.x;
-    *data++ = (m_tailRect.y + m_tailRect.height) * textureSize.y;
+    float32* data = reinterpret_cast<float32*>(m_tailRenderData->vertexBuffer()->lock(0, 4));
+    if (NULL != data)
+    {
+      *data++ = m_tailOffset.x;
+      *data++ = m_tailOffset.y + m_tailRect.height;
+      *data++ = m_tailRect.x * textureSize.x;
+      *data++ = (m_tailRect.y + m_tailRect.height) * textureSize.y;
 
-    *data++ = m_tailOffset.x + m_tailRect.width;
-    *data++ = m_tailOffset.y + m_tailRect.height;
-    *data++ = (m_tailRect.x + m_tailRect.width) * textureSize.x;
-    *data++ = (m_tailRect.y + m_tailRect.height) * textureSize.y;
+      *data++ = m_tailOffset.x + m_tailRect.width;
+      *data++ = m_tailOffset.y + m_tailRect.height;
+      *data++ = (m_tailRect.x + m_tailRect.width) * textureSize.x;
+      *data++ = (m_tailRect.y + m_tailRect.height) * textureSize.y;
 
-    *data++ = m_tailOffset.x;
-    *data++ = m_tailOffset.y;
-    *data++ = m_tailRect.x * textureSize.x;
-    *data++ = m_tailRect.y * textureSize.y;
+      *data++ = m_tailOffset.x;
+      *data++ = m_tailOffset.y;
+      *data++ = m_tailRect.x * textureSize.x;
+      *data++ = m_tailRect.y * textureSize.y;
 
-    *data++ = m_tailOffset.x + m_tailRect.width;
-    *data++ = m_tailOffset.y;
-    *data++ = (m_tailRect.x + m_tailRect.width) * textureSize.x;
-    *data++ = m_tailRect.y * textureSize.y;
+      *data++ = m_tailOffset.x + m_tailRect.width;
+      *data++ = m_tailOffset.y;
+      *data++ = (m_tailRect.x + m_tailRect.width) * textureSize.x;
+      *data++ = m_tailRect.y * textureSize.y;
+    }
+    m_tailRenderData->vertexBuffer()->unlock(data - 1);
   }
-  m_tailRenderData->vertexBuffer()->unlock(data - 1);
 
   m_tailRenderData->setPriority(m_widgetFrame->renderComponent()->priority() + 1);
 }

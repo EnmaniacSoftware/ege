@@ -7,6 +7,8 @@
 
 EGE_NAMESPACE_BEGIN
 
+#define SHADOW_BUFFER 0
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(VertexBufferVBO)
 EGE_DEFINE_DELETE_OPERATORS(VertexBufferVBO)
@@ -18,7 +20,7 @@ static GLenum MapUsageType(EGEVertexBuffer::UsageType type)
   {
     case EGEVertexBuffer::UT_STATIC_WRITE:  return GL_STATIC_DRAW;
     case EGEVertexBuffer::UT_DYNAMIC_WRITE: return GL_DYNAMIC_DRAW;
-  };
+  }
 
   return GL_DYNAMIC_DRAW;
 }
@@ -32,7 +34,7 @@ static GLenum MapUsageTypeToAccessType(EGEVertexBuffer::UsageType type)
     case EGEVertexBuffer::UT_DYNAMIC_WRITE: 
       
       return GL_WRITE_ONLY;
-  };
+  }
 
   return GL_WRITE_ONLY;
 }
@@ -49,15 +51,14 @@ VertexBufferVBO::VertexBufferVBO(Application* app, EGEVertexBuffer::UsageType us
   // set usage
   m_usage = usage;
 
-  glGenBuffers(1, &m_id);
-  OGL_CHECK();
-
   // allocate shadow buffer
   m_shadowBuffer = ege_new DataBuffer();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 VertexBufferVBO::~VertexBufferVBO()
 {
+  // NOTE: at this point object should be deallocated
+  EGE_ASSERT(0 == m_id);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool VertexBufferVBO::isValid() const
@@ -77,8 +78,8 @@ bool VertexBufferVBO::setSize(u32 count)
   }
 
   // allocate buffer
-  if (!reallocateBuffer(count))
-  {
+  if ( ! reallocateBuffer(count))
+  { 
     // error!
     return false;
   }
@@ -95,61 +96,63 @@ void* VertexBufferVBO::lock(u32 offset, u32 count)
 
   void* buffer = NULL;
 
-  // make sure buffer is big enough
-  if (!reallocateBuffer(offset + count))
+  // check if and any data to lock
+  if (0 <= count)
   {
-    // error!
-    return NULL;
-  }
-
-  // update vertex count
-  m_vertexCount = Math::Max(m_vertexCount, offset + count);
-
-  // check if scratch buffer should be used
-  // TAGE - some threshold should be here ie 32K ?
-  if (true || !Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER))
-  {
-    // set flags to indicate lock done on shadow buffer
-    m_shadowBufferLock = true;      
-
-    // return pointer to requested offset
-    buffer = m_shadowBuffer->data(static_cast<s64>(offset) * vertexSize());
-  }
-  else
-  {
-	  glBindBuffer(GL_ARRAY_BUFFER, m_id);
-    OGL_CHECK();
-
-    // check if content is discardable
-	  if (m_usage & EGEVertexBuffer::UT_DISCARDABLE)
-	  {
-	  	// discard the buffer
-	  	glBufferData(GL_ARRAY_BUFFER, vertexCount() * vertexSize(), NULL, MapUsageType(m_usage));
-	  }
-
-    // map the buffer
-	  buffer = glMapBuffer(GL_ARRAY_BUFFER, MapUsageTypeToAccessType(m_usage));
-    if (buffer)            
-    {                  
-	    // return offsetted
-	    buffer = static_cast<void*>(static_cast<u8*>(buffer) + offset);
-
-      // store map pointer to begining of requested data for further use
-      m_mapping = buffer;
-    }
-    else
+    // check if inside the buffer
+    if ((offset + count) <= m_vertexCapacity)
     {
-      egeWarning() << "Mapping failed!";
+      // check if scratch buffer should be used
+      // TAGE - some threshold should be here ie 32K ?
+#if SHADOW_BUFFER
+      if (true || !Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER))
+      {
+        // set flags to indicate lock done on shadow buffer
+        m_shadowBufferLock = true;      
+
+        // return pointer to requested offset
+        buffer = m_shadowBuffer->data(static_cast<s64>(offset) * vertexSize());
+      }
+      else
+#endif
+      {
+	      glBindBuffer(GL_ARRAY_BUFFER, m_id);
+        OGL_CHECK();
+
+        // check if content is discardable
+	      if (m_usage & EGEVertexBuffer::UT_DISCARDABLE)
+	      {
+	  	    // discard the buffer
+	  	    glBufferData(GL_ARRAY_BUFFER, vertexCount() * vertexSize(), NULL, MapUsageType(m_usage));
+          OGL_CHECK();
+	      }
+
+        // map the buffer
+	      buffer = glMapBuffer(GL_ARRAY_BUFFER, MapUsageTypeToAccessType(m_usage));
+        OGL_CHECK();
+        if (NULL != buffer)            
+        {                  
+	        // return offsetted
+	        buffer = static_cast<void*>(static_cast<u8*>(buffer) + offset * vertexSize());
+
+          // store map pointer to begining of requested data for further use
+          m_mapping = buffer;
+        }
+        else
+        {
+          egeWarning() << "Mapping failed!";
+        }
+      }
+
+      if (NULL != buffer)
+      {
+        m_lockOffset = offset;
+        m_lockLength = count;
+
+        // store data
+        m_locked = true;
+      }
     }
-  }
-
-  if (buffer)
-  {
-    m_lockOffset = offset;
-    m_lockLength = count;
-
-    // store data
-    m_locked = true;
   }
 
   return buffer;
@@ -163,6 +166,7 @@ void VertexBufferVBO::unlock(void* data)
   OGL_CHECK();
 
   // check if locked on shadow buffer
+#if SHADOW_BUFFER
   if (m_shadowBufferLock)
   {
     // check if entire buffer was locked
@@ -190,9 +194,12 @@ void VertexBufferVBO::unlock(void* data)
     m_shadowBufferLock = false;
   }
   else
+#endif 
   {
+#if SHADOW_BUFFER
     // update shadow buffer first
     EGE_MEMCPY(m_shadowBuffer->data(static_cast<s64>(m_lockOffset) * vertexSize()), m_mapping, m_lockOffset * vertexSize());
+#endif 
 
     // unmap
     glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -219,12 +226,14 @@ bool VertexBufferVBO::reallocateBuffer(u32 count)
     glBufferData(GL_ARRAY_BUFFER, count * vertexSize(), NULL, MapUsageType(m_usage));
     OGL_CHECK();
 
+#if SHADOW_BUFFER
     // allocate shadow buffer
     if (EGE_SUCCESS != m_shadowBuffer->setSize(static_cast<s64>(count) * vertexSize()))
     {
       // error!
       return false;
     }
+#endif
 
     // change capacity
     m_vertexCapacity = count;
@@ -247,12 +256,6 @@ void VertexBufferVBO::unbind()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void VertexBufferVBO::destroy()
 {
-  if (0 < m_id)
-  {
-    glDeleteBuffers(1, &m_id);
-    m_id = 0;
-  }
-
   // call base class
   VertexBuffer::destroy();
 }

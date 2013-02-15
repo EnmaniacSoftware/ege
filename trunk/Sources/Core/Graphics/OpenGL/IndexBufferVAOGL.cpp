@@ -53,25 +53,15 @@ void* IndexBufferVA::lock(u32 offset, u32 count)
   // check if and any data to lock
   if (0 <= count)
   {
-    // check if NOT enough space in buffer
-    if (offset + count > indexCapacity())
+    // check if inside the buffer
+    if ((offset + count) * indexSize() <= m_buffer->size())
     {
-      // reallocate buffer
-      if (!reallocateBuffer(offset + count))
-      {
-        // error!
-        return NULL;
-      }
+      // set lock flag
+      m_locked = true;
+
+      // return begining of the block
+      return reinterpret_cast<void*>(reinterpret_cast<u8*>(m_buffer->data()) + offset * indexSize());
     }
-
-    // set lock flag
-    m_locked = true;
-
-    // update amount of data used
-    m_buffer->setSize((offset + count) * indexSize());
-
-    // return offsetted
-    return reinterpret_cast<void*>(reinterpret_cast<u8*>(m_buffer->data()) + offset * indexSize());
   }
 
   return NULL;
@@ -81,7 +71,7 @@ void IndexBufferVA::unlock(void* data)
 {
   if (data)
   {
-    EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_buffer->data()) + indexCapacity() * indexSize());
+    EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_buffer->data()) + indexCount() * indexSize());
   }
 
   m_locked = false;
@@ -102,11 +92,6 @@ bool IndexBufferVA::reallocateBuffer(u32 count)
   }
 
   return true;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-u32 IndexBufferVA::indexCapacity() const
-{
-  return (m_buffer) ? static_cast<u32>(m_buffer->capacity() / indexSize()) : 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

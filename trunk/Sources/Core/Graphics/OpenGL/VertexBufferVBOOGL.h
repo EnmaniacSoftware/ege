@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_VERTEXBUFFERVBOOGL_H
-#define EGE_CORE_VERTEXBUFFERVBOOGL_H
+#ifndef EGE_CORE_GRAPHICS_OPENGL_VERTEXBUFFERVBOOGL_H
+#define EGE_CORE_GRAPHICS_OPENGL_VERTEXBUFFERVBOOGL_H
 
 /** 
  *   VertexBuffer base class specializtion based on Vertex Buffer Objects extension.
@@ -16,6 +16,8 @@ EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class VertexBufferVBO : public VertexBuffer
 {
+  friend class RenderSystemPrivate;
+
   public:
 
     VertexBufferVBO(Application* app, EGEVertexBuffer::UsageType usage);
@@ -36,9 +38,9 @@ class VertexBufferVBO : public VertexBuffer
     void unlock(void* data) override;
 
     /*! @see VertexBuffer::vertexCount. */
-    u32 vertexCount() const override { return m_vertexCount; }
+    u32 vertexCount() const override;
     /*! @see VertexBuffer::vertexCapacity. */
-    u32 vertexCapacity() const override { return m_vertexCapacity; }
+    u32 vertexCapacity() const;
 
     /*! Binds buffer. */
     void bind();
@@ -56,9 +58,9 @@ class VertexBufferVBO : public VertexBuffer
 
     /*! OpenGL VBO identifier. */
     GLuint m_id;
-    /*! Vertex count. */
+    /*! Current number of vertices in use. */
     u32 m_vertexCount;
-    /*! Vertex capacity. */
+    /*! Number of vertices which can used with reallocation. */
     u32 m_vertexCapacity;
     /*! Shadow data buffer. */
     PDataBuffer m_shadowBuffer;  
@@ -72,7 +74,17 @@ class VertexBufferVBO : public VertexBuffer
     void* m_mapping;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline u32 VertexBufferVBO::vertexCount() const 
+{ 
+  return m_vertexCount; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline u32 VertexBufferVBO::vertexCapacity() const 
+{ 
+  return m_vertexCapacity; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_VERTEXBUFFERVBOOGL_H
+#endif // EGE_CORE_GRAPHICS_OPENGL_VERTEXBUFFERVBOOGL_H

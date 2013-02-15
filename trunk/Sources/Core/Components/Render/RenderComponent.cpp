@@ -30,6 +30,9 @@ RenderComponent::RenderComponent(Application* app, const String& name, s32 prior
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderComponent::~RenderComponent()
 {
+  app()->graphics()->hardwareResourceProvider()->destroyIndexBuffer(m_indexBuffer);
+  app()->graphics()->hardwareResourceProvider()->destroyVertexBuffer(m_vertexBuffer);
+
   m_indexBuffer  = NULL;
   m_vertexBuffer = NULL;
   m_material     = NULL;

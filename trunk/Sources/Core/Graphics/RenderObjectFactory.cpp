@@ -135,8 +135,15 @@ bool RenderObjectFactory::DoCreateQuadXY(PRenderComponent& component, Vector4f p
       return NULL;
   }
 
+  // resize vertex buffer
+  if ( ! component->vertexBuffer()->setSize(static_cast<u32>(vertexList.size())))
+  {
+    // error!
+    return false;
+  }
+
   // lock vertex buffer
-  float32* data = (float32*) component->vertexBuffer()->lock(0, static_cast<u32>(vertexList.size()));
+  float32* data = reinterpret_cast<float32*>(component->vertexBuffer()->lock(0, static_cast<u32>(vertexList.size())));
   if (NULL == data)
   {
     // error!
@@ -200,12 +207,17 @@ PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Applicat
 {
   s32 vertexCount = 25;
 
-  RenderComponent* component = ege_new RenderComponent(app, name, priority, EGEGraphics::RPT_LINES);
-  if (component && component->isValid())
+  PRenderComponent component = ege_new RenderComponent(app, name, priority, EGEGraphics::RPT_LINES);
+  if ((NULL != component) && component->isValid())
   {
-    if (component->vertexBuffer()->setSemantics(semantics))
+    if (component->vertexBuffer()->setSemantics(semantics) && component->vertexBuffer()->setSize(vertexCount * 2))
     {
-      float32* data = (float32*) component->vertexBuffer()->lock(0, vertexCount * 2);
+      float32* data = reinterpret_cast<float32*>(component->vertexBuffer()->lock(0, vertexCount * 2));
+      if (NULL == data)
+      {
+        // error!
+        return NULL;
+      }
 
       Vector4f pos;
 

@@ -80,8 +80,12 @@ class RenderSystemPrivate
     PTexture2D createEmptyTexture(const String& name);
     /*! @see RenderSystem::createVertexBuffer. */
     PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const;
+    /*! @see RenderSystem::destroyVertexBuffer. */
+    void destroyVertexBuffer(PVertexBuffer object) const;
     /*! @see RenderSystem::createIndexBuffer. */
     PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const;
+    /*! @see RenderSystem::destroyIndexBuffer. */
+    void destroyIndexBuffer(PIndexBuffer object) const;
     /*! @see RenderSystem::createTexture2D. */
     PTexture2D createTexture2D(const String& name, const PImage& image);
     /*! @see RenderSystem::createTexture2D. */

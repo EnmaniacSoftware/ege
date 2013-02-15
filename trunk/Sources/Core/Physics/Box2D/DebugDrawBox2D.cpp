@@ -31,6 +31,7 @@ void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2C
  
     component->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
 
+    // TAGE - set buffer size
     float32* data = (float32*) component->vertexBuffer()->lock(0, vertexCount);
 
 	  for (int32 i = 0; i < vertexCount; ++i)
@@ -70,6 +71,7 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
     component_fill->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
     component_frame->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
     
+    // TAGE - set buffer size
     float32* data_fill  = (float32*) component_fill->vertexBuffer()->lock(0, vertexCount);
     float32* data_frame = (float32*) component_frame->vertexBuffer()->lock(0, vertexCount);
 
@@ -114,6 +116,7 @@ void DebugDraw::DrawCircle(const b2Vec2& center, EGE::float32 radius, const b2Co
  
     component->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
 
+    // TAGE - set buffer size
     float32* data = (float32*) component->vertexBuffer()->lock(0, (u32) k_segments);
 
 	  for (int32 i = 0; i < k_segments; ++i)
@@ -161,6 +164,7 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
     component_fill->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
     component_frame->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
     
+    // TAGE - set buffer size
     float32* data_fill  = (float32*) component_fill->vertexBuffer()->lock(0, (u32) k_segments);
     float32* data_frame = (float32*) component_frame->vertexBuffer()->lock(0, (u32) k_segments);
 
@@ -211,6 +215,7 @@ void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& c
  
     component->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
 
+    // TAGE - set buffer size
     float32* data = (float32*) component->vertexBuffer()->lock(0, 2);
 
     *data++ = p1.x * scale;

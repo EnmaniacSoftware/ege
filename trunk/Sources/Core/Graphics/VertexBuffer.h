@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_VERTEXBUFFER_H
-#define EGE_CORE_VERTEXBUFFER_H
+#ifndef EGE_CORE_GRAPHICS_VERTEXBUFFER_H
+#define EGE_CORE_GRAPHICS_VERTEXBUFFER_H
 
 /** 
  *   VertexBuffer base class. Instances of this class are used to define vertex array of arbitrary type(s).
@@ -32,6 +32,8 @@ class VertexBuffer : public Object
     /*! Locks buffer's given part of the buffer for read/write operations. 
      *  @param offset  0-based vertex offset from which locking should be done. 
      *  @param count   Number of vertices to lock.
+     *  @return Pointer to the begining of the locked part of the buffer. NULL if lock could not be set.
+     *  @note Locking fails if requested block lies outside of the buffer.
      */
     virtual void* lock(u32 offset, u32 count) = 0;
     /*! Unlocks buffer. */
@@ -51,8 +53,6 @@ class VertexBuffer : public Object
 
     /*! Returns number of vertices currently in use. */
     virtual u32 vertexCount() const = 0;
-    /*! Returns maximal number of available vertices. */
-    virtual u32 vertexCapacity() const = 0;
     /*! Returns vertex size for current semantics (in bytes). */
     u32 vertexSize() const;
 
@@ -83,4 +83,4 @@ class VertexBuffer : public Object
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_VERTEXBUFFER_H
+#endif // EGE_CORE_GRAPHICS_VERTEXBUFFER_H

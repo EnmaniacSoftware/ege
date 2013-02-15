@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_INDEXBUFFER_H
-#define EGE_CORE_INDEXBUFFER_H
+#ifndef EGE_CORE_GRAPHICS_INDEXBUFFER_H
+#define EGE_CORE_GRAPHICS_INDEXBUFFER_H
 
 /** 
  *   IndexBuffer base class. Instances of this class are used to define index array to vertex buffers.
@@ -30,6 +30,8 @@ class IndexBuffer : public Object
     /*! Locks buffer's given part of the buffer for read/write operations. 
      *  @param offset  0-based index offset from which locking should be done. 
      *  @param count   Number of indicies to lock.
+     *  @return Pointer to the begining of the locked part of the buffer. NULL if lock could not be set.
+     *  @note Locking fails if requested block lies outside of the buffer.
      */
     virtual void* lock(u32 offset, u32 count) = 0;
     /*! Unlocks buffer. */
@@ -37,8 +39,6 @@ class IndexBuffer : public Object
 
     /*! Returns number of allocated indicies. */
     virtual u32 indexCount() const = 0;
-    /*! Returns maximal number of available indicies. */
-    virtual u32 indexCapacity() const = 0;
 
     /*! Returns index size (in bytes). */
     u8 indexSize() const;
@@ -68,4 +68,4 @@ class IndexBuffer : public Object
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_INDEXBUFFER_H
+#endif // EGE_CORE_GRAPHICS_INDEXBUFFER_H

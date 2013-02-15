@@ -290,10 +290,12 @@ bool ParticleEmitter::allocateParticlesData()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ParticleEmitter::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
+  const u32 vertexCount = m_activeParticlesCount * ((pointSprite) ? 1 : 6);
+
   // update vertex data
-  if (m_renderData->vertexBuffer()->setSize(m_activeParticlesCount * ((pointSprite) ? 1 : 6)))
+  if (m_renderData->vertexBuffer()->setSize(vertexCount))
   {
-    float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_activeParticlesCount * ((pointSprite) ? 1 : 6)));
+    float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, vertexCount));
     if (data)
     {
       // go thru all active particles

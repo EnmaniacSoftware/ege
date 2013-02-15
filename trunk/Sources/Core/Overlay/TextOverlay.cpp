@@ -55,98 +55,101 @@ void TextOverlay::setFont(PFont font)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void TextOverlay::updateRenderData()
 {
-  // cache font height
-  const float32 height = static_cast<float32>(font()->height());
-
   // update vertex data
-  float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_renderableCharactersCount * 6));
-  if (NULL != data)
+  if (m_renderData->vertexBuffer()->setSize(m_renderableCharactersCount * 6))
   {
-    float32 spacing = 0.0f;
+    // cache font height
+    const float32 height = static_cast<float32>(font()->height());
 
-    Vector2f pos(0, 0);
-
-    // go thru all lines of text
-    float32 startPosX = pos.x;
-    for (TextLineDataList::const_iterator it = m_textLines.begin(); it != m_textLines.end(); ++it)
+    float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, m_renderableCharactersCount * 6));
+    if (NULL != data)
     {
-      const TextLineData& lineData = *it;
+      float32 spacing = 0.0f;
 
-      // apply text alignment
-      // NOTE: text is aligned with respect to overall size.
-      if (m_textAlignment & ALIGN_RIGHT)
-      {
-        pos.x += (size().x - lineData.width);
-      }
-      else if (m_textAlignment & ALIGN_HCENTER)
-      {
-        pos.x += Math::Floor((size().x - lineData.width) * 0.5f);
-      }
+      Vector2f pos(0, 0);
 
-      // go thru all characters in current line
-      for (Text::const_iterator itChar = lineData.start; itChar != lineData.end; ++itChar)
+      // go thru all lines of text
+      float32 startPosX = pos.x;
+      for (TextLineDataList::const_iterator it = m_textLines.begin(); it != m_textLines.end(); ++it)
       {
-        // get current glyph texture coords
-        const GlyphData* glyphData = font()->glyphData(*itChar);
-        if (glyphData)
+        const TextLineData& lineData = *it;
+
+        // apply text alignment
+        // NOTE: text is aligned with respect to overall size.
+        if (m_textAlignment & ALIGN_RIGHT)
         {
-          float32 width = static_cast<float32>(glyphData->m_width);
-
-          // Glyph quad looks like follows:
-          //
-          //   (0,3)  (5)
-          //    *------*
-          //    |\     |
-          //    | \Tri2|
-          //    |  \   |
-          //    |   \  |
-          //    |    \ |
-          //    |Tri1 \|
-          //    |      |
-          //    *------*
-          //   (1)   (2,4)
-
-          *data++ = pos.x;
-          *data++ = pos.y;
-          *data++ = glyphData->m_textureRect.x;
-          *data++ = glyphData->m_textureRect.y;
-
-          *data++ = pos.x;
-          *data++ = pos.y + height;
-          *data++ = glyphData->m_textureRect.x;
-          *data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
-
-          *data++ = pos.x + width;
-          *data++ = pos.y + height;
-          *data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
-          *data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
-
-          *data++ = pos.x;
-          *data++ = pos.y;
-          *data++ = glyphData->m_textureRect.x;
-          *data++ = glyphData->m_textureRect.y;
-
-          *data++ = pos.x + width;
-          *data++ = pos.y + height;
-          *data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
-          *data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
-
-          *data++ = pos.x + width;
-          *data++ = pos.y;
-          *data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
-          *data++ = glyphData->m_textureRect.y;
-
-          pos.x += (width + spacing);
+          pos.x += (size().x - lineData.width);
         }
+        else if (m_textAlignment & ALIGN_HCENTER)
+        {
+          pos.x += Math::Floor((size().x - lineData.width) * 0.5f);
+        }
+
+        // go thru all characters in current line
+        for (Text::const_iterator itChar = lineData.start; itChar != lineData.end; ++itChar)
+        {
+          // get current glyph texture coords
+          const GlyphData* glyphData = font()->glyphData(*itChar);
+          if (glyphData)
+          {
+            float32 width = static_cast<float32>(glyphData->m_width);
+
+            // Glyph quad looks like follows:
+            //
+            //   (0,3)  (5)
+            //    *------*
+            //    |\     |
+            //    | \Tri2|
+            //    |  \   |
+            //    |   \  |
+            //    |    \ |
+            //    |Tri1 \|
+            //    |      |
+            //    *------*
+            //   (1)   (2,4)
+
+            *data++ = pos.x;
+            *data++ = pos.y;
+            *data++ = glyphData->m_textureRect.x;
+            *data++ = glyphData->m_textureRect.y;
+
+            *data++ = pos.x;
+            *data++ = pos.y + height;
+            *data++ = glyphData->m_textureRect.x;
+            *data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
+
+            *data++ = pos.x + width;
+            *data++ = pos.y + height;
+            *data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
+            *data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
+
+            *data++ = pos.x;
+            *data++ = pos.y;
+            *data++ = glyphData->m_textureRect.x;
+            *data++ = glyphData->m_textureRect.y;
+
+            *data++ = pos.x + width;
+            *data++ = pos.y + height;
+            *data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
+            *data++ = glyphData->m_textureRect.y + glyphData->m_textureRect.height;
+
+            *data++ = pos.x + width;
+            *data++ = pos.y;
+            *data++ = glyphData->m_textureRect.x + glyphData->m_textureRect.width;
+            *data++ = glyphData->m_textureRect.y;
+
+            pos.x += (width + spacing);
+          }
+        }
+
+        // next line of text
+        pos.y += height;
+        pos.x = startPosX;
       }
-
-      // next line of text
-      pos.y += height;
-      pos.x = startPosX;
     }
-  }
 
-  m_renderData->vertexBuffer()->unlock(data - 1);
+    m_renderData->vertexBuffer()->unlock(data - 1);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const Vector2f& TextOverlay::size() const

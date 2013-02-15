@@ -59,27 +59,17 @@ void* VertexBufferVA::lock(u32 offset, u32 count)
   // check if and any data to lock
   if (0 <= count)
   {
-    // check if NOT enough space in buffer
-    if (offset + count > vertexCapacity())
+    // check if inside the buffer
+    if ((offset + count) * vertexSize() <= m_buffer->size())
     {
-      // reallocate buffer
-      if (!reallocateBuffer(offset + count))
-      {
-        // error!
-        return NULL;
-      }
+      // set lock flag
+      m_locked = true;
+
+      // return begining of the block
+      return reinterpret_cast<void*>(reinterpret_cast<u8*>(m_buffer->data()) + offset * vertexSize());
     }
-
-    // set lock flag
-    m_locked = true;
-
-    // update amount of data used
-    m_buffer->setSize((offset + count) * vertexSize());
-
-    // return offsetted
-    return reinterpret_cast<void*>(reinterpret_cast<u8*>(m_buffer->data()) + offset * vertexSize());
   }
-  
+
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -87,7 +77,7 @@ void VertexBufferVA::unlock(void* data)
 {
   if (data)
   {
-    EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_buffer->data()) + vertexCapacity() * vertexSize());
+    EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_buffer->data()) + vertexCount() * vertexSize());
   }
 
   m_locked = false;
@@ -108,11 +98,6 @@ bool VertexBufferVA::reallocateBuffer(u32 count)
   }
 
   return true;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-u32 VertexBufferVA::vertexCapacity() const
-{
-  return (m_buffer) ? static_cast<u32>(m_buffer->capacity() / vertexSize()) : 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

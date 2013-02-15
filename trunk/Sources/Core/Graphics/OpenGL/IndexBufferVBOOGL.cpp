@@ -6,6 +6,8 @@
 
 EGE_NAMESPACE_BEGIN
 
+#define SHADOW_BUFFER 0
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(IndexBufferVBO)
 EGE_DEFINE_DELETE_OPERATORS(IndexBufferVBO)
@@ -48,15 +50,14 @@ IndexBufferVBO::IndexBufferVBO(Application* app, EGEIndexBuffer::UsageType usage
   // set usage
   m_usage = usage;
 
-  glGenBuffers(1, &m_id);
-  OGL_CHECK();
-
   // allocate shadow buffer
   m_shadowBuffer = ege_new DataBuffer();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 IndexBufferVBO::~IndexBufferVBO()
 {
+  // NOTE: at this point object should be deallocated
+  EGE_ASSERT(0 == m_id);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool IndexBufferVBO::isValid() const
@@ -70,8 +71,8 @@ bool IndexBufferVBO::setSize(u32 count)
   EGE_ASSERT(EGEIndexBuffer::IS_UNKNOWN != m_indexSize);
 
   // allocate buffer
-  if (!reallocateBuffer(count))
-  {
+  if ( ! reallocateBuffer(count))
+  { 
     // error!
     return false;
   }
@@ -88,61 +89,63 @@ void* IndexBufferVBO::lock(u32 offset, u32 count)
 
   void* buffer = NULL;
 
-  // make sure buffer is big enough
-  if (!reallocateBuffer(offset + count))
+  // check if and any data to lock
+  if (0 <= count)
   {
-    // error!
-    return NULL;
-  }
-
-  // update vertex count
-  m_indexCount = Math::Max(m_indexCount, offset + count);
-
+    // check if inside the buffer
+    if ((offset + count) <= m_indexCapacity)
+    {
   // check if scratch buffer should be used
   // TAGE - some threshold should be here ie 32K ?
-  if (true || !Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER))
-  {
-    // set flags to indicate lock done on shadow buffer
-    m_shadowBufferLock = true;      
+#if SHADOW_BUFFER
+      if (true || !Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER))
+      {
+        // set flags to indicate lock done on shadow buffer
+        m_shadowBufferLock = true;      
 
-    // return pointer to requested offset
-    buffer = m_shadowBuffer->data(static_cast<s64>(offset) * indexSize());
-  }
-  else
-  {
-	  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
-    OGL_CHECK();
+        // return pointer to requested offset
+        buffer = m_shadowBuffer->data(static_cast<s64>(offset) * indexSize());
+      }
+      else
+#endif
+      {
+	      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
+        OGL_CHECK();
 
-    // check if content is discardable
-	  if (m_usage & EGEIndexBuffer::UT_DISCARDABLE)
-	  {
-	  	// discard the buffer
-	  	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount() * indexSize(), NULL, MapUsageType(m_usage));
-	  }
+        // check if content is discardable
+	      if (m_usage & EGEIndexBuffer::UT_DISCARDABLE)
+	      {
+	  	    // discard the buffer
+	  	    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount() * indexSize(), NULL, MapUsageType(m_usage));
+          OGL_CHECK();
+	      }
 
-    // map the buffer
-	  buffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, MapUsageTypeToAccessType(m_usage));
-    if (buffer)            
-    {            
-	    // return offsetted
-	    buffer = static_cast<void*>(static_cast<u8*>(buffer) + offset);
+        // map the buffer
+	      buffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, MapUsageTypeToAccessType(m_usage));
+        OGL_CHECK();
+        if (NULL != buffer)            
+        {            
+	        // return offsetted
+	        buffer = static_cast<void*>(static_cast<u8*>(buffer) + offset * indexSize());
 
-      // store map pointer to begining of requested data for further use
-      m_mapping = buffer;
+          // store map pointer to begining of requested data for further use
+          m_mapping = buffer;
+        }
+        else
+        {
+          egeWarning() << "Mapping failed!";
+        }
+      }
+
+      if (buffer)
+      {
+        m_lockOffset = offset;
+        m_lockLength = count;
+
+        // store data
+        m_locked = true;
+      }
     }
-    else
-    {
-      egeWarning() << "Mapping failed!";
-    }
-  }
-
-  if (buffer)
-  {
-    m_lockOffset = offset;
-    m_lockLength = count;
-
-    // store data
-    m_locked = true;
   }
 
   return buffer;
@@ -155,6 +158,7 @@ void IndexBufferVBO::unlock(void* data)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
   OGL_CHECK();
 
+#if SHADOW_BUFFER
   // check if locked on shadow buffer
   if (m_shadowBufferLock)
   {
@@ -183,10 +187,12 @@ void IndexBufferVBO::unlock(void* data)
     m_shadowBufferLock = false;
   }
   else
+#endif
   {
+#if SHADOW_BUFFER
     // update shadow buffer first
     EGE_MEMCPY(m_shadowBuffer->data(static_cast<s64>(m_lockOffset) * indexSize()), m_mapping, m_lockOffset * indexSize());
-
+#endif 
     // unmap
     glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
     OGL_CHECK();
@@ -212,12 +218,14 @@ bool IndexBufferVBO::reallocateBuffer(u32 count)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * indexSize(), NULL, MapUsageType(m_usage));
     OGL_CHECK();
 
+#if SHADOW_BUFFER
     // allocate shadow buffer
     if (EGE_SUCCESS != m_shadowBuffer->setSize(static_cast<s64>(count) * indexSize()))
     {
       // error!
       return false;
     }
+#endif
 
     // change capacity
     m_indexCapacity = count;
@@ -240,12 +248,6 @@ void IndexBufferVBO::unbind()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void IndexBufferVBO::destroy()
 {
-  if (0 < m_id)
-  {
-    glDeleteBuffers(1, &m_id);
-    m_id = 0;
-  }
-
   // call base class
   IndexBuffer::destroy();
 }

@@ -1072,6 +1072,23 @@ PVertexBuffer RenderSystemPrivate::createVertexBuffer(EGEVertexBuffer::UsageType
   if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     buffer = ege_new VertexBufferVBO(d_func()->app(), usage);
+    if (NULL != buffer)
+    {
+      VertexBufferVBO* bufferVBO = ege_cast<EGE::VertexBufferVBO*>(buffer);
+
+      // generate OGL buffer
+      glGenBuffers(1, &bufferVBO->m_id);
+      OGL_CHECK();
+
+      // check if failed
+      if (0 == bufferVBO->m_id)
+      {
+        // error!
+        buffer = NULL;
+      }
+    }
+
+    buffer = ege_new VertexBufferVBO(d_func()->app(), usage);
   }
   else
   {
@@ -1081,6 +1098,18 @@ PVertexBuffer RenderSystemPrivate::createVertexBuffer(EGEVertexBuffer::UsageType
   return buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::destroyVertexBuffer(PVertexBuffer object) const
+{
+  if (EGE_OBJECT_UID_VERTEX_BUFFER_VBO == object->uid())
+  {
+    VertexBufferVBO* bufferVBO = ege_cast<EGE::VertexBufferVBO*>(object);
+ 
+    glDeleteBuffers(1, &bufferVBO->m_id);
+    OGL_CHECK();
+    bufferVBO->m_id = 0;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType usage) const
 {
   PIndexBuffer buffer;
@@ -1088,6 +1117,21 @@ PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType us
   if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     buffer = ege_new IndexBufferVBO(d_func()->app(), usage);
+    if (NULL != buffer)
+    {
+      IndexBufferVBO* bufferVBO = ege_cast<EGE::IndexBufferVBO*>(buffer);
+
+      // generate OGL buffer
+      glGenBuffers(1, &bufferVBO->m_id);
+      OGL_CHECK();
+
+      // check if failed
+      if (0 == bufferVBO->m_id)
+      {
+        // error!
+        buffer = NULL;
+      }
+    }
   }
   else
   {
@@ -1095,6 +1139,18 @@ PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType us
   }
 
   return buffer;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::destroyIndexBuffer(PIndexBuffer object) const
+{
+  if (EGE_OBJECT_UID_INDEX_BUFFER_VBO == object->uid())
+  {
+    IndexBufferVBO* bufferVBO = ege_cast<EGE::IndexBufferVBO*>(object);
+ 
+    glDeleteBuffers(1, &bufferVBO->m_id);
+    OGL_CHECK();
+    bufferVBO->m_id = 0;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PTexture2D RenderSystemPrivate::createTexture2D(const String& name, const PImage& image)

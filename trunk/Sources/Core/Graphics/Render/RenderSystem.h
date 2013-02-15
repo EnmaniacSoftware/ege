@@ -160,7 +160,11 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
       REQUEST_CREATE_SHADER,
       REQUEST_DESTROY_SHADER,
       REQUEST_CREATE_PROGRAM,
-      REQUEST_DESTROY_PROGRAM
+      REQUEST_DESTROY_PROGRAM,
+      REQUEST_CREATE_VERTEX_BUFFER,   // not implemented
+      REQUEST_DESTROY_VERTEX_BUFFER,
+      REQUEST_CREATE_INDEX_BUFFER,    // not implemented
+      REQUEST_DESTROY_INDEX_BUFFER
     };
 
     /*! Resource request data struct. */
@@ -191,8 +195,16 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     PRenderTarget currentRenderTarget() const override;
     /*! @see IHardwareResourceProvider::createVertexBuffer. */
     PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const override;
+    /*! @see IHardwareResourceProvider::destroyVertexBuffer. */
+    void destroyVertexBuffer(PVertexBuffer object) const override;
+    /*! @see IHardwareResourceProvider::requestDestroyVertexBuffer. */
+    u32 requestDestroyVertexBuffer(PVertexBuffer object) override;
     /*! @see IHardwareResourceProvider::createIndexBuffer. */
     PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const override;
+    /*! @see IHardwareResourceProvider::destroyIndexBuffer. */
+    void destroyIndexBuffer(PIndexBuffer object) const override;
+    /*! @see IHardwareResourceProvider::requestDestroyIndexBuffer. */
+    u32 requestDestroyIndexBuffer(PIndexBuffer object) override;
     /*! @see IHardwareResourceProvider::createTexture2D. */
     PTexture2D createTexture2D(const String& name, const PImage& image) override;
     /*! @see IHardwareResourceProvider::requestCreateTexture2D. */

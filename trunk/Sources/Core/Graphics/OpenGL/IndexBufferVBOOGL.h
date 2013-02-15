@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_INDEXBUFFERVBOOGL_H
-#define EGE_CORE_INDEXBUFFERVBOOGL_H
+#ifndef EGE_CORE_GRAPHICS_OPENGL_INDEXBUFFERVBOOGL_H
+#define EGE_CORE_GRAPHICS_OPENGL_INDEXBUFFERVBOOGL_H
 
 /** 
  *   IndexBuffer base class specialization based on Vertex Buffer Objects extension.
@@ -16,6 +16,8 @@ EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IndexBufferVBO : public IndexBuffer
 {
+  friend class RenderSystemPrivate;
+
   public:
 
     IndexBufferVBO(Application* app, EGEIndexBuffer::UsageType usage);
@@ -36,9 +38,9 @@ class IndexBufferVBO : public IndexBuffer
     void unlock(void* data) override;
 
     /*! @see IndexBuffer::indexCount. */
-    u32 indexCount() const override { return m_indexCount; }
+    u32 indexCount() const override;
     /*! @see IndexBuffer::indexCapacity. */
-    u32 indexCapacity() const override { return m_indexCapacity; }
+    u32 indexCapacity() const;
 
     /*! Binds buffer. */
     void bind();
@@ -72,7 +74,17 @@ class IndexBufferVBO : public IndexBuffer
     void* m_mapping;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline u32 IndexBufferVBO::indexCount() const 
+{ 
+  return m_indexCount; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline u32 IndexBufferVBO::indexCapacity() const 
+{ 
+  return m_indexCapacity; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_INDEXBUFFERVBOOGL_H
+#endif // EGE_CORE_GRAPHICS_OPENGL_INDEXBUFFERVBOOGL_H
