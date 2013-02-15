@@ -27,7 +27,6 @@
 
 EGE_NAMESPACE
 
-static bool testing = false;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(RenderSystemPrivate)
 EGE_DEFINE_DELETE_OPERATORS(RenderSystemPrivate)
@@ -301,9 +300,9 @@ void RenderSystemPrivate::flush()
 
               case EGEVertexBuffer::AT_POSITION_XY:
 
-                glVertexPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                glEnableVertexAttribArray(0);
                 OGL_CHECK();
-                glEnableClientState(GL_VERTEX_ARRAY);
+                glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
                 OGL_CHECK();
                 break;
 
@@ -499,6 +498,7 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
 {
   // disable blending by default
   glDisable(GL_BLEND);
+  OGL_CHECK();
 
   if (NULL != pass)
   {
@@ -506,19 +506,17 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
     if ((EGEGraphics::BF_ONE != pass->srcBlendFactor()) || (EGEGraphics::BF_ZERO != pass->dstBlendFactor()))
     {
       glEnable(GL_BLEND);
+      OGL_CHECK();
 
-      //if (pass->srcBlendFactor() == EGEGraphics::BF_SRC_ALPHA && pass->dstBlendFactor() == EGEGraphics::BF_ONE_MINUS_SRC_ALPHA)
-      //{
-      //  glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-      //}
-      //else
       glBlendFunc(MapBlendFactor(pass->srcBlendFactor()), MapBlendFactor(pass->dstBlendFactor()));
+      OGL_CHECK();
     }
 
     // set vertex color
     // NOTE: this will be overriden if color array is activated
-    Color color = pass->diffuseColorTransformation().transform(pass->diffuseColor());
-    glColor4f(color.red, color.green, color.blue, color.alpha);
+    //Color color = pass->diffuseColorTransformation().transform(pass->diffuseColor());
+    //glColor4f(color.red, color.green, color.blue, color.alpha);
+    //OGL_CHECK();
 
     // go thru all textures
     for (u32 i = 0; i < pass->textureCount(); ++i)
@@ -534,14 +532,18 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
         bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
 
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        OGL_CHECK();
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(tex2d->m_minFilter));
 	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(tex2d->m_magFilter));
 	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(tex2d->m_addressingModeS));
 	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(tex2d->m_addressingModeT));
+        OGL_CHECK();
 
         glMatrixMode(GL_TEXTURE);
+        OGL_CHECK();
         glLoadIdentity();
+        OGL_CHECK();
       }
       // check if texture image
       else if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
@@ -599,7 +601,9 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
 	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(tex2d->m_addressingModeT));
 
         glMatrixMode(GL_TEXTURE);
+        OGL_CHECK();
         glLoadIdentity();
+        OGL_CHECK();
 
         float32 degrees = texImg->rotationAngle().degrees();
 

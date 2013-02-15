@@ -225,10 +225,10 @@ void RenderSystemPrivate::flush()
       
     //  EGE_LOG("Q: %d, name: %s", itQueue->first, data.component->name().toAscii());
 
-      //if (data.component->name() == "achievement-frame")
-      //{
-      //  testing = true;
-      //}
+      if (data.component->name() == "overlay-fps")
+      {
+        int a = 1;
+      }
       //else
       //{
       //  testing = false;
@@ -1018,7 +1018,7 @@ PVertexBuffer RenderSystemPrivate::createVertexBuffer(EGEVertexBuffer::UsageType
 {
   PVertexBuffer buffer;
 
-  if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     buffer = ege_new VertexBufferVBO(d_func()->app(), usage);
   }
@@ -1034,7 +1034,7 @@ PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType us
 {
   PIndexBuffer buffer;
 
-  if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     buffer = ege_new IndexBufferVBO(d_func()->app(), usage);
   }

@@ -545,10 +545,15 @@
   <ItemGroup>
     <ProjectReference Include="..\..\External\Box2D 2.1.2\Box2D\Build\Box2D\Box2D.vcxproj">
       <Project>{90b6c2e4-0188-4552-ad48-15c26ce84838}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
     <ProjectReference Include="..\..\External\JpegLib\JpegLib.vcxproj">
       <Project>{9e7ecddf-c76e-4013-83a0-7d67125d7511}</Project>
-      <Private>true</Private>
+      <Private>false</Private>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
       <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -556,7 +561,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\External\PNGLib\libpng.vcxproj">
       <Project>{9558633a-30ad-4309-bc0f-e9a45db9b2b9}</Project>
-      <Private>true</Private>
+      <Private>false</Private>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
       <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -564,7 +569,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\External\tinyxml 2.6.1\tinyxmlSTL.vcxproj">
       <Project>{a3a84737-5017-4577-b8a2-79429a25b8b6}</Project>
-      <Private>true</Private>
+      <Private>false</Private>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
       <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -572,6 +577,11 @@
     </ProjectReference>
     <ProjectReference Include="..\..\External\Zlib\ZLib.vcxproj">
       <Project>{0697d285-5c52-44b0-a9f9-11824a857a66}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
