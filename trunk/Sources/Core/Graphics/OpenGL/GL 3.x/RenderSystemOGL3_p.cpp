@@ -1087,8 +1087,6 @@ PVertexBuffer RenderSystemPrivate::createVertexBuffer(EGEVertexBuffer::UsageType
         buffer = NULL;
       }
     }
-
-    buffer = ege_new VertexBufferVBO(d_func()->app(), usage);
   }
   else
   {
