@@ -1,7 +1,8 @@
-#include "Core/Application/AppController.h"
+#include "Core/Application/Application.h"
 #include "Win32/Application/AppControllerWin32_p.h"
-#include <EGEApplication.h>
 #include <EGEEvent.h>
+#include <EGETimer.h>
+#include <EGETime.h>
 #include <EGEMath.h>
 #include <EGEDebug.h>
 #include <windows.h>
@@ -9,25 +10,25 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(AppControllerPrivate)
-EGE_DEFINE_DELETE_OPERATORS(AppControllerPrivate)
+EGE_DEFINE_NEW_OPERATORS(ApplicationPrivate)
+EGE_DEFINE_DELETE_OPERATORS(ApplicationPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AppControllerPrivate::AppControllerPrivate(AppController* base) : m_d(base)
+ApplicationPrivate::ApplicationPrivate(Application* base) : m_d(base)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AppControllerPrivate::~AppControllerPrivate()
+ApplicationPrivate::~ApplicationPrivate()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult AppControllerPrivate::run()
+EGEResult ApplicationPrivate::run()
 {
   Time startTime;
   Time endTime;
   Time yieldTime;
 
   // for Windows, we enter tight loop making sure to process all messages sent to our process
-  while (AppController::STATE_QUIT != d_func()->state())
+  while (Application::STATE_QUIT != d_func()->state())
   {
     MSG sMsg;
 
@@ -49,7 +50,7 @@ EGEResult AppControllerPrivate::run()
     d_func()->render();
 
     // send end of frame event
-    d_func()->app()->eventManager()->send(EGE_EVENT_ID_CORE_FRAME_END);
+    d_func()->eventManager()->send(EGE_EVENT_ID_CORE_FRAME_END);
 
     // stat this loop end time
     endTime.fromMicroseconds(Timer::GetMicroseconds());

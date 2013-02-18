@@ -22,6 +22,7 @@
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Graphics/TextureImage.h"
 #include "Core/Graphics/Render/RenderQueue.h"
+#include <EGETimer.h>
 #include <EGEDevice.h>
 #include <EGELog.h>
 

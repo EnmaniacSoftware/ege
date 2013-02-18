@@ -1,33 +1,39 @@
+#include "Core/Application/Application.h"
+#include "Core/Graphics/Viewport.h"
+#include "Core/Graphics/Camera.h"
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Graphics/Render/RenderTarget.h"
+#include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Scene/SceneManager.h"
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Overlay/OverlayManager.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Event/EventManager.h"
-#include "Core/Graphics/Viewport.h"
-#include "Core/Graphics/Camera.h"
-#include "Core/Debug/Debug.h"
 #include "Core/ComplexTypes.h"
 #include "Core/Event/Event.h"
 #include "Core/Input/Pointer.h"
 #include "Core/Screen/ScreenManager.h"
-#include "Core/Debug/Debug.h"
 #include "Core/Services/DeviceServices.h"
 #include "Core/Audio/AudioManager.h"
 #include "Core/Graphics/Image/ImageLoader.h"
+#include "Core/Debug/Debug.h"
 #include <EGETimer.h>
-#include <EGEGraphics.h>
-#include <EGEApplication.h>
+
+#ifdef EGE_PLATFORM_WIN32
+#include "Win32/Application/AppControllerWin32_p.h"
+#elif EGE_PLATFORM_AIRPLAY
+#include "Airplay/Application/AppControllerAirplay_p.h"
+#endif
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Application::Application() : m_sceneManager(NULL), 
+Application::Application() : IEventListener(),
+                             m_p(NULL),
+                             m_sceneManager(NULL), 
                              m_physicsManager(NULL), 
                              m_eventManager(NULL), 
                              m_graphics(NULL), 
-                             m_appController(NULL), 
                              m_resourceManager(NULL), 
                              m_pointer(NULL), 
                              m_overlayManager(NULL), 
@@ -37,7 +43,12 @@ Application::Application() : m_sceneManager(NULL),
                              m_deviceServices(NULL),
                              m_imageLoader(NULL),
                              m_landscapeMode(false),
-                             m_language("en")
+                             m_language("en"),
+                             m_updateInterval(0LL),
+                             m_renderInterval(0LL),
+                             m_state(STATE_INVALID), 
+                             m_fps(0), 
+                             m_rendersCount()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -47,7 +58,6 @@ Application::~Application()
   EGE_DELETE(m_sceneManager);
   EGE_DELETE(m_imageLoader);
   EGE_DELETE(m_graphics);
-  EGE_DELETE(m_appController);
   EGE_DELETE(m_screenManager);
   EGE_DELETE(m_audioManager);
   EGE_DELETE(m_overlayManager);
@@ -57,21 +67,46 @@ Application::~Application()
   EGE_DELETE(m_resourceManager);
   EGE_DELETE(m_eventManager);
 
+  EGE_DELETE(m_p);
+
   MemoryManager::Deinit();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Application::initialize(const Dictionary& params)
+EGEResult Application::construct(const Dictionary& params)
 {
   EGEResult result;
 
+  // decompose param list
+  Dictionary::const_iterator iterLandscape  = params.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
+  Dictionary::const_iterator iterUPS        = params.find(EGE_ENGINE_PARAM_UPDATES_PER_SECOND);
+  Dictionary::const_iterator iterFPS        = params.find(EGE_ENGINE_PARAM_RENDERS_PER_SECOND);
+
+  // check if update rate is given
+  if (iterUPS != params.end())
+  {
+    m_updateInterval.fromMiliseconds(1000 / iterUPS->second.toInt());
+  }
+
+  // check if render rate is given
+  if (iterFPS != params.end())
+  {
+    m_renderInterval.fromMiliseconds(1000 / iterFPS->second.toInt());
+  }
+
   // check landscape mode
-  m_landscapeMode = false;
-  Dictionary::const_iterator iterLandscape = params.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
   if (iterLandscape != params.end())
   {
     m_landscapeMode = iterLandscape->second.toBool();
   }
   
+  // create private implementation
+  m_p = ege_new ApplicationPrivate(this);
+  if (NULL == m_p)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
   // create device services
   m_deviceServices = ege_new DeviceServices();
   if (NULL == m_deviceServices)
@@ -179,20 +214,6 @@ EGEResult Application::initialize(const Dictionary& params)
     return result;
   }
 
-  // create application controller
-  m_appController = ege_new AppController(this, params);
-  if (NULL == m_appController)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  if (EGE_SUCCESS != (result = m_appController->construct()))
-  {
-    // error!
-    return result;
-  }
-
   // create pointer input
   m_pointer = ege_new Pointer(this);
   if (NULL == m_pointer)
@@ -235,21 +256,123 @@ EGEResult Application::initialize(const Dictionary& params)
     return result;
   }
 
+  // subscribe for event notifications
+  if ( ! eventManager()->addListener(this))
+  {
+    // error!
+    return EGE_ERROR;
+  }
+
   return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Application::update()
+{
+  // get current time
+  Time time(Timer::GetMicroseconds());
+
+  // calculate time passed
+  Time timeInterval = time - m_lastUpdateTime;
+
+  // dont allow to long changes
+  if (0.25f < timeInterval.seconds())
+  {
+    timeInterval = 0.25f;
+  }
+
+  // store frame current time
+  m_lastUpdateTime = time;
+
+  // check if quitting
+  if (STATE_QUITTING == m_state)
+  {
+    // update only object which needs time to shut down
+    graphics()->update();
+    resourceManager()->update(m_updateInterval);
+    audioManager()->update(m_updateInterval);
+    imageLoader()->update(m_updateInterval);
+
+    // check if ready to quit
+    if ((ResourceManager::STATE_CLOSED == resourceManager()->state()) &&
+        (AudioManager::STATE_CLOSED == audioManager()->state()) &&
+        (ImageLoader::STATE_CLOSED == imageLoader()->state()) &&
+        (RenderSystem::STATE_CLOSED == graphics()->renderSystem()->state()))
+    {
+      // change state
+      m_state = STATE_QUIT;
+    }
+  }
+  else if (STATE_RUNNING == m_state)
+  {
+    // update accumulator for updates
+    m_updateAccumulator += timeInterval;
+
+    // update as much as requested
+    while (m_updateAccumulator > m_updateInterval)
+    {
+      m_updateAccumulator -= m_updateInterval;
+      physicsManager()->update(m_updateInterval);
+    }
+
+    graphics()->update();
+    imageLoader()->update(m_updateInterval);
+    resourceManager()->update(timeInterval);
+
+    audioManager()->update(timeInterval);
+    screenManager()->update(timeInterval);
+    sceneManager()->update(timeInterval);
+    overlayManager()->update(timeInterval);
+
+    // interpolate physics by remaining value
+    // ..
+  }
+
+  // store update duration
+  m_lastFrameUpdateDuration.fromMicroseconds(Timer::GetMicroseconds() - m_lastUpdateTime.microseconds());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Application::render()
+{
+  // get current time
+  Time time(Timer::GetMicroseconds());
+
+  // check if 1 second hasnt passed yet
+  if (time - m_fpsCountStartTime < Time(1.0f))
+  {
+    // new render
+    ++m_rendersCount;
+  }
+  else
+  {
+    // store FPS indication
+    m_fps = m_rendersCount;
+
+    // reset renders count
+    m_rendersCount = 0;
+
+    // reset time stamp
+    m_fpsCountStartTime = time;
+  }
+
+  if (STATE_RUNNING == m_state)
+  {
+    // do render
+    graphics()->render();
+  }
+
+  // store render duration
+  m_lastFrameRenderDuration.fromMicroseconds(Timer::GetMicroseconds() - time.microseconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult Application::run()
 {
-  return controller()->run();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Application::update(const Time& time)
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s32 Application::fps() const
-{
-  return controller()->fps();
+  // initialize update timer (to smooth out first update)
+  m_lastUpdateTime.fromMicroseconds(Timer::GetMicroseconds());
+
+  // set state
+  m_state = STATE_RUNNING;
+
+  return p_func()->run();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Application::setLanguage(const String& language)
@@ -270,17 +393,36 @@ void Application::quit()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Application::isQuitting() const
 {
-  return (AppController::STATE_QUIT == controller()->state()) || (AppController::STATE_QUITTING == controller()->state());
+  return (STATE_QUIT == state()) || (STATE_QUITTING == state());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const Time& Application::lastFrameUpdateDuration() const
+void Application::onEventRecieved(PEvent event)
 {
-  return controller()->lastFrameUpdateDuration();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const Time& Application::lastFrameRenderDuration() const
-{
-  return controller()->lastFrameRenderDuration();
+  switch (event->id())
+  {
+    case EGE_EVENT_ID_CORE_QUIT_REQUEST:
+
+      m_state = STATE_QUITTING;
+      // TAGE - for testing
+      //m_state = STATE_QUIT;
+      break;
+      
+    case EGE_EVENT_ID_CORE_APP_PAUSE:
+
+      if (STATE_RUNNING == state())
+      {
+        m_state = STATE_PAUSED;
+      }
+      break;
+
+    case EGE_EVENT_ID_CORE_APP_RESUME:
+
+      if (STATE_PAUSED == state())
+      {
+        m_state = STATE_RUNNING;
+      }
+      break;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

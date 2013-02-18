@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Sources\Core\Application\AppController.cpp" />
     <ClCompile Include="..\..\Sources\Core\Application\Application.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecMp3.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecOgg.cpp" />
@@ -386,7 +385,6 @@
     <ClCompile Include="..\..\Sources\Win32\Timer\TimerWin32_p.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Sources\Core\Application\AppController.h" />
     <ClInclude Include="..\..\Sources\Core\Application\Application.h" />
     <ClInclude Include="..\..\Sources\Core\ComplexTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Components\Component.h" />

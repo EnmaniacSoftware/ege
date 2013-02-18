@@ -17,6 +17,7 @@
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/TextureImage.h"
 #include "Core/Graphics/Render/RenderQueue.h"
+#include <EGETimer.h>
 #include <EGEDevice.h>
 
 EGE_NAMESPACE_BEGIN
@@ -664,6 +665,11 @@ void RenderSystemPrivate::detectCapabilities()
   {
     Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_S3TC, true);
   }
+
+  egeCritical() << "glBindBuffer" << glBindBuffer;
+  egeCritical() << "glBufferData" << glBufferData;
+  egeCritical() << "glMapBuffer" << glMapBuffer;
+  egeCritical() << "glUnmapBuffer" << glUnmapBuffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderSystemPrivate::isExtensionSupported(const char* extension) const

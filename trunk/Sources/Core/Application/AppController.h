@@ -66,28 +66,28 @@ class AppController : public Object, public IEventListener
     
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(AppController);
 
-    /*! Time at which last update was done. */
-    Time m_lastUpdateTime;
-    /*! Time interval between updates. */
-    Time m_updateInterval;
-    /*! Time interval between renders. */
-    Time m_renderInterval;
-    /*! Currently accumulated update duration. */
-    Time m_updateAccumulator;
-    /*! Current state. */
-    State m_state;
-    /*! Current FPS indication. */
-    s32 m_fps;
-    /*! Number of frames rendering within current count interval. */
-    s32 m_rendersCount;
-    /*! Time at which last FPS count started. */
-    Time m_fpsCountStartTime;
-    /*! Timer. */
-    Timer m_timer;
-    /*! Last frame update duration. */
-    Time m_lastFrameUpdateDuration;
-    /*! Last frame render duration. */
-    Time m_lastFrameRenderDuration;
+    ///*! Time at which last update was done. */
+    //Time m_lastUpdateTime;
+    ///*! Time interval between updates. */
+    //Time m_updateInterval;
+    ///*! Time interval between renders. */
+    //Time m_renderInterval;
+    ///*! Currently accumulated update duration. */
+    //Time m_updateAccumulator;
+    ///*! Current state. */
+    //State m_state;
+    ///*! Current FPS indication. */
+    //s32 m_fps;
+    ///*! Number of frames rendering within current count interval. */
+    //s32 m_rendersCount;
+    ///*! Time at which last FPS count started. */
+    //Time m_fpsCountStartTime;
+    ///*! Timer. */
+    //Timer m_timer;
+    ///*! Last frame update duration. */
+    //Time m_lastFrameUpdateDuration;
+    ///*! Last frame render duration. */
+    //Time m_lastFrameRenderDuration;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

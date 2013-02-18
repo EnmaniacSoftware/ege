@@ -339,9 +339,6 @@
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp">
       <Filter>Win32\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Application\AppController.cpp">
-      <Filter>Core\Application</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Application\AppControllerWin32_p.cpp">
       <Filter>Win32\Application</Filter>
     </ClCompile>
@@ -1012,9 +1009,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\File\File.h">
       <Filter>Core\File</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Application\AppController.h">
-      <Filter>Core\Application</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Win32\Application\AppControllerWin32_p.h">
       <Filter>Win32\Application</Filter>

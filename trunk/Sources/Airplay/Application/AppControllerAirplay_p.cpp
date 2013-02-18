@@ -1,7 +1,8 @@
-#include "Core/Application/AppController.h"
-#include "Airplay/Application/AppControllerAirplay_p.h"
-#include <EGEApplication.h>
+#include "Core/Application/Application.h"
+#include "Airplay/Application/ApplicationAirplay_p.h"
 #include <EGEEvent.h>
+#include <EGETimer.h>
+#include <EGETime.h>
 #include <EGEMath.h>
 #include <EGEDebug.h>
 #include <s3e.h>
@@ -10,38 +11,38 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(AppControllerPrivate)
-EGE_DEFINE_DELETE_OPERATORS(AppControllerPrivate)
+EGE_DEFINE_NEW_OPERATORS(ApplicationPrivate)
+EGE_DEFINE_DELETE_OPERATORS(ApplicationPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AppControllerPrivate::AppControllerPrivate(AppController* base) : m_d(base)
+ApplicationPrivate::ApplicationPrivate(Application* base) : m_d(base)
 {
   // register for pause/resume notifications
-  if (S3E_RESULT_SUCCESS != s3eDeviceRegister(S3E_DEVICE_PAUSE, AppControllerPrivate::PauseCB, this))
+  if (S3E_RESULT_SUCCESS != s3eDeviceRegister(S3E_DEVICE_PAUSE, ApplicationPrivate::PauseCB, this))
   {
     egeWarning() << "Could not install PAUSE callback!";
   }
 
-  if (S3E_RESULT_SUCCESS != s3eDeviceRegister(S3E_DEVICE_UNPAUSE, AppControllerPrivate::ResumeCB, this))
+  if (S3E_RESULT_SUCCESS != s3eDeviceRegister(S3E_DEVICE_UNPAUSE, ApplicationPrivate::ResumeCB, this))
   {
     egeWarning() << "Could not install RESUME callback!";
   }
 }
 //------------------------------------------------------------------------  --------------------------------------------------------------------------------------
-AppControllerPrivate::~AppControllerPrivate()
+ApplicationPrivate::~ApplicationPrivate()
 {
   // unregister for pause/resume notifications
-  s3eDeviceUnRegister(S3E_DEVICE_PAUSE, AppControllerPrivate::PauseCB);
-  s3eDeviceUnRegister(S3E_DEVICE_UNPAUSE, AppControllerPrivate::ResumeCB);
+  s3eDeviceUnRegister(S3E_DEVICE_PAUSE, ApplicationPrivate::PauseCB);
+  s3eDeviceUnRegister(S3E_DEVICE_UNPAUSE, ApplicationPrivate::ResumeCB);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult AppControllerPrivate::run()
+EGEResult ApplicationPrivate::run()
 {
   Time startTime;
   Time endTime;
   Time yieldTime;
 
   // app loop
-  while ( ! s3eDeviceCheckQuitRequest() && (AppController::STATE_QUIT != d_func()->state()))
+  while ( ! s3eDeviceCheckQuitRequest() && (Application::STATE_QUIT != d_func()->state()))
   {
     // store this loop start time
     startTime.fromMicroseconds(Timer::GetMicroseconds());
@@ -56,7 +57,7 @@ EGEResult AppControllerPrivate::run()
     d_func()->render();
 
     // send end of frame event
-    d_func()->app()->eventManager()->send(EGE_EVENT_ID_CORE_FRAME_END);
+    d_func()->eventManager()->send(EGE_EVENT_ID_CORE_FRAME_END);
 
     // stat this loop end time
     endTime.fromMicroseconds(Timer::GetMicroseconds());
@@ -69,22 +70,22 @@ EGEResult AppControllerPrivate::run()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-int32 AppControllerPrivate::PauseCB(void* data, void* userData)
+int32 ApplicationPrivate::PauseCB(void* data, void* userData)
 {
-  AppControllerPrivate* me = static_cast<AppControllerPrivate*>(userData);
+  ApplicationPrivate* me = static_cast<ApplicationPrivate*>(userData);
 
   // send event
-  me->d_func()->app()->eventManager()->send(EGE_EVENT_ID_CORE_APP_PAUSE);
+  me->d_func()->eventManager()->send(EGE_EVENT_ID_CORE_APP_PAUSE);
 
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-int32 AppControllerPrivate::ResumeCB(void* data, void* userData)
+int32 ApplicationPrivate::ResumeCB(void* data, void* userData)
 {
-  AppControllerPrivate* me = static_cast<AppControllerPrivate*>(userData);
+  ApplicationPrivate* me = static_cast<ApplicationPrivate*>(userData);
 
   // send event
-  me->d_func()->app()->eventManager()->send(EGE_EVENT_ID_CORE_APP_RESUME);
+  me->d_func()->eventManager()->send(EGE_EVENT_ID_CORE_APP_RESUME);
 
   return 0;
 }
