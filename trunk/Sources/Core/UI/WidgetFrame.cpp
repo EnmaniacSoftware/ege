@@ -97,7 +97,7 @@ void WidgetFrame::generateRenderData()
    */
 
   // set buffer sizes
-  if (m_renderData->vertexBuffer()->setSize(9 * 4) && m_renderData->indexBuffer()->setSize(9 * 4))
+  if (m_renderData->vertexBuffer()->setSize(9 * 4) && m_renderData->indexBuffer()->setSize(9 * 6))
   {
     float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, 9 * 4));
     u8* indexData = reinterpret_cast<u8*>(m_renderData->indexBuffer()->lock(0, 9 * 6));
