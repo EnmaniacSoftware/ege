@@ -1,5 +1,5 @@
 #include "Core/Application/Application.h"
-#include "Win32/Application/AppControllerWin32_p.h"
+#include "Win32/Application/ApplicationWin32_p.h"
 #include <EGEEvent.h>
 #include <EGETimer.h>
 #include <EGETime.h>

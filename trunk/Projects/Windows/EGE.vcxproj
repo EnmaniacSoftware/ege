@@ -209,6 +209,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlAttribute.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Application\ApplicationWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Services\DeviceServicesWin32_p.cpp" />
@@ -375,7 +376,6 @@
     <ClInclude Include="..\..\Sources\EGERenderer.h" />
     <ClInclude Include="..\..\Sources\EGERenderSystem.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
-    <ClCompile Include="..\..\Sources\Win32\Application\AppControllerWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Device\DeviceWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\File\FileWin32_p.cpp" />
@@ -524,7 +524,7 @@
     <ClInclude Include="..\..\Sources\EGEVertexBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEWaitCondition.h" />
     <ClInclude Include="..\..\Sources\EGEXml.h" />
-    <ClInclude Include="..\..\Sources\Win32\Application\AppControllerWin32_p.h" />
+    <ClInclude Include="..\..\Sources\Win32\Application\ApplicationWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\File\FileWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.h" />

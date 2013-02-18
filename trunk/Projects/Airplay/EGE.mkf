@@ -117,8 +117,6 @@ files
 
 	["Core/Application"]
 	(../../Sources/Core/Application)
-  AppController.cpp
-  AppController.h
   Application.cpp
   Application.h
 
@@ -695,8 +693,8 @@ files
 
 	["Airplay/Application"]
 	(../../Sources/Airplay/Application)
-	AppControllerAirplay_p.cpp
-	AppControllerAirplay_p.h
+	ApplicationAirplay_p.cpp
+	ApplicationAirplay_p.h
 
 	["Airplay/Audio"]
 	(../../Sources/Airplay/Audio)

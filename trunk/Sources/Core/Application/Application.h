@@ -92,10 +92,15 @@ class Application : public IEventListener
     /*! Returns current language. */
     const String& language() const;
 
+    /*! Returns last frame update duration. */
+    const Time& lastFrameUpdateDuration() const;
+    /*! Returns last frame render duration. */
+    const Time& lastFrameRenderDuration() const;
+
   protected:
 
     /*! Application updater. */
-    virtual void update();
+    virtual void update(const Time& time);
     /*! Application renderer. */
     virtual void render();
 
@@ -103,11 +108,8 @@ class Application : public IEventListener
 
     /*! @see IEventListener::onEventRecieved. */
     void onEventRecieved(PEvent pEvent) override;
-
-    /*! Returns last frame update duration. */
-    const Time& lastFrameUpdateDuration() const;
-    /*! Returns last frame render duration. */
-    const Time& lastFrameRenderDuration() const;
+    /*! Application internal updater. */
+    void update();
 
   private:
 

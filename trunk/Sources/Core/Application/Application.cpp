@@ -20,9 +20,9 @@
 #include <EGETimer.h>
 
 #ifdef EGE_PLATFORM_WIN32
-#include "Win32/Application/AppControllerWin32_p.h"
+#include "Win32/Application/ApplicationWin32_p.h"
 #elif EGE_PLATFORM_AIRPLAY
-#include "Airplay/Application/AppControllerAirplay_p.h"
+#include "Airplay/Application/ApplicationAirplay_p.h"
 #endif
 
 EGE_NAMESPACE_BEGIN
@@ -323,12 +323,19 @@ void Application::update()
     sceneManager()->update(timeInterval);
     overlayManager()->update(timeInterval);
 
+    update(timeInterval);
+
     // interpolate physics by remaining value
     // ..
   }
 
   // store update duration
   m_lastFrameUpdateDuration.fromMicroseconds(Timer::GetMicroseconds() - m_lastUpdateTime.microseconds());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Application::update(const Time& time)
+{
+  EGE_UNUSED(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Application::render()
