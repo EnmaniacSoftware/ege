@@ -31,6 +31,13 @@ class Application : public IEventListener
 
   public:
 
+    /*! Returns instance of application. This is to be provided by application consuming EGE library. 
+     *  @param  Command line parameters
+     */
+    static Application* CreateInstance(const Dictionary& commandLineParams);
+
+  public:
+
     /*! Available states. */
     enum State
     {

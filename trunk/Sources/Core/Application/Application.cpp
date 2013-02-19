@@ -68,8 +68,6 @@ Application::~Application()
   EGE_DELETE(m_eventManager);
 
   EGE_DELETE(m_p);
-
-  MemoryManager::Deinit();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult Application::construct(const Dictionary& params)

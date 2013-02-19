@@ -62,15 +62,13 @@ class IndexBufferVBO : public IndexBuffer
     u32 m_indexCount;
     /*! Index capacity. */
     u32 m_indexCapacity;
-    /*! Shadow data buffer. */
+    /*! Shadow data buffer. Used when mapping API is not available. Used in lock/unlock periods. */
     PDataBuffer m_shadowBuffer;  
-    /*! Flag indicating if current lock is done on shadow buffer directly. */
-    bool m_shadowBufferLock;
     /*! Lock offset (in vertices). */
     u32 m_lockOffset;
     /*! Lock length (in vertices). */
     u32 m_lockLength;
-    /*! Map pointer. Only valid if mapping API is used for ie. m_shadowBufferLock is FALSE. */
+    /*! Begining of mapped memory. Used in lock/unlock periods. */
     void* m_mapping;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

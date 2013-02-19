@@ -602,13 +602,14 @@ void RenderSystemPrivate::detectCapabilities()
   // check if frame buffer object is supported
   if (isExtensionSupported("GL_OES_framebuffer_object"))
   {
-    glBindFramebuffer         = (PFNGLBINDFRAMEBUFFEROESPROC) eglGetProcAddress("glBindFramebufferOES");
-    glDeleteFramebuffers      = (PFNGLDELETEFRAMEBUFFERSOESPROC) eglGetProcAddress("glDeleteFramebuffersOES");
-    glGenFramebuffers         = (PFNGLGENFRAMEBUFFERSOESPROC) eglGetProcAddress("glGenFramebuffersOES");
-    glCheckFramebufferStatus  = (PFNGLCHECKFRAMEBUFFERSTATUSOESPROC) eglGetProcAddress("glCheckFramebufferStatusOES");
-    glFramebufferTexture2D    = (PFNGLFRAMEBUFFERTEXTURE2DOESPROC) eglGetProcAddress("glFramebufferTexture2DOES");
+    glBindFramebuffer         = reinterpret_cast<PFNGLBINDFRAMEBUFFEROESPROC>(eglGetProcAddress("glBindFramebufferOES"));
+    glDeleteFramebuffers      = reinterpret_cast<PFNGLDELETEFRAMEBUFFERSOESPROC>(eglGetProcAddress("glDeleteFramebuffersOES"));
+    glGenFramebuffers         = reinterpret_cast<PFNGLGENFRAMEBUFFERSOESPROC>(eglGetProcAddress("glGenFramebuffersOES"));
+    glCheckFramebufferStatus  = reinterpret_cast<PFNGLCHECKFRAMEBUFFERSTATUSOESPROC>(eglGetProcAddress("glCheckFramebufferStatusOES"));
+    glFramebufferTexture2D    = reinterpret_cast<PFNGLFRAMEBUFFERTEXTURE2DOESPROC>(eglGetProcAddress("glFramebufferTexture2DOES"));
 
-    if (glBindFramebuffer && glDeleteFramebuffers && glGenFramebuffers && glCheckFramebufferStatus && glFramebufferTexture2D)
+    if ((NULL != glBindFramebuffer) && (NULL != glDeleteFramebuffers) && (NULL != glGenFramebuffers) && 
+        (NULL != glCheckFramebufferStatus) && (NULL != glFramebufferTexture2D))
     {
       Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
     }
@@ -617,12 +618,10 @@ void RenderSystemPrivate::detectCapabilities()
   // check if VBO mapping is supported
   if (isExtensionSupported("GL_OES_mapbuffer"))
   {
-    glMapBuffer   = (PFNGLMAPBUFFEROESPROC) eglGetProcAddress("glMapBufferOES");
-    glUnmapBuffer = (PFNGLUNMAPBUFFEROESPROC) eglGetProcAddress("glUnmapBufferOES");
+    glMapBuffer   = reinterpret_cast<PFNGLMAPBUFFEROESPROC>(eglGetProcAddress("glMapBufferOES"));
+    glUnmapBuffer = reinterpret_cast<PFNGLUNMAPBUFFEROESPROC>(eglGetProcAddress("glUnmapBufferOES"));
 
-//    EGE_PRINT("GL_OES_mapbuffer %p %p", eglGetProcAddress("glMapBufferOES"), eglGetProcAddress("glMapBuffer"));
-
-    if (glMapBuffer && glUnmapBuffer)
+    if ((NULL != glMapBuffer) && (NULL != glUnmapBuffer))
     {
       Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER, true);
     }
@@ -665,11 +664,6 @@ void RenderSystemPrivate::detectCapabilities()
   {
     Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_S3TC, true);
   }
-
-  egeCritical() << "glBindBuffer" << glBindBuffer;
-  egeCritical() << "glBufferData" << glBufferData;
-  egeCritical() << "glMapBuffer" << glMapBuffer;
-  egeCritical() << "glUnmapBuffer" << glUnmapBuffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderSystemPrivate::isExtensionSupported(const char* extension) const
