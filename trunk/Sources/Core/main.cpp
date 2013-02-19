@@ -23,14 +23,12 @@ int main(int argc, char** argv)
 
   EGEResult result = EGE_ERROR;
 
-  Dictionary commandLineParams;
-
   // create application instance
-  Application* application = Application::CreateInstance(commandLineParams);
+  Application* application = Application::CreateInstance();
   if (NULL != application)
   {
     // run application
-    result = application->run();
+    result = application->run(commandLineParser.dictionary());
   }
 
   // deinitialize memory manager

@@ -34,7 +34,7 @@ class Application : public IEventListener
     /*! Returns instance of application. This is to be provided by application consuming EGE library. 
      *  @param  Command line parameters
      */
-    static Application* CreateInstance(const Dictionary& commandLineParams);
+    static Application* CreateInstance();
 
   public:
 
@@ -50,15 +50,12 @@ class Application : public IEventListener
 
   public:
 
-    /*! Initializes engine.
-     *  @param params    List of parameters to initialize engine with.
-     *  @param listener  Listener object which is to be notified with engine events. 
+    /*! Starts engine work. 
+     *  @param  commandLineParams Command line params dictionary.
      */
-    virtual EGEResult construct(const Dictionary& params);
+    virtual EGEResult run(const Dictionary& commandLineParams);
     /*! Returns current state. */
     State state() const;
-    /*! Starts engine work. */
-    EGEResult run();
 
     /*! Requests quit. */
     void quit();
@@ -106,6 +103,11 @@ class Application : public IEventListener
 
   protected:
 
+    /*! Initializes engine.
+     *  @param params    List of parameters to initialize engine with.
+     *  @param listener  Listener object which is to be notified with engine events. 
+     */
+    virtual EGEResult construct(const Dictionary& params);
     /*! Application updater. */
     virtual void update(const Time& time);
     /*! Application renderer. */

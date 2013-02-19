@@ -369,8 +369,10 @@ void Application::render()
   m_lastFrameRenderDuration.fromMicroseconds(Timer::GetMicroseconds() - time.microseconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Application::run()
+EGEResult Application::run(const Dictionary& commandLineParams)
 {
+  EGE_UNUSED(commandLineParams)
+
   // initialize update timer (to smooth out first update)
   m_lastUpdateTime.fromMicroseconds(Timer::GetMicroseconds());
 

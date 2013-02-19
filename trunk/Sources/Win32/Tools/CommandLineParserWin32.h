@@ -2,6 +2,7 @@
 #define EGE_WIN32_TOOLS_COMMANDLINEPARSER_H
 
 #include <EGE.h>
+#include <EGEDictionary.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -12,6 +13,19 @@ class CommandLineParser
     
     CommandLineParser();
    ~CommandLineParser();
+
+    /*! Returns dictionary with command line parameters. */
+    const Dictionary& dictionary() const;
+
+  private:
+
+    /*! Parses the command line and generates dictionary. */
+    void parse(const String& commandLine);
+
+  private:
+
+    /*! Parameters. */
+    Dictionary m_values;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
