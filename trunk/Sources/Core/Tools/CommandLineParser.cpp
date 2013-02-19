@@ -1,28 +1,24 @@
 #include "Core/Tools/CommandLineParser.h"
 #include <EGEDebug.h>
 
-#ifdef EGE_PLATFORM_WIN32
-#include "Win32/Tools/CommandLineParserWin32_p.h"
-#elif EGE_PLATFORM_AIRPLAY
-#include "Core/Tools/CommandLineParserGeneric.h"
-#endif
-
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CommandLineParser::CommandLineParser() : m_p(NULL)
+CommandLineParser::CommandLineParser(int argc, char** argv)
 {
-  m_p = ege_new CommandLineParserPrivate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 CommandLineParser::~CommandLineParser()
 {
-  EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool CommandLineParser::isValid() const
+const Dictionary& CommandLineParser::dictionary() const
 {
-  return (NULL != m_p);
+  return m_values;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void CommandLineParser::parse(const String& commandLine)
+{
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
