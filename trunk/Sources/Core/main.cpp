@@ -8,7 +8,7 @@
 #define COMMANDLINE(name) CommandLineParser name(argc, argv)
 #endif // #ifdef EGE_PLATFORM_WIN32
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #ifdef EGE_PLATFORM_WIN32
@@ -42,5 +42,3 @@ int main(int argc, char** argv)
   return (EGE_SUCCESS == result) ? 0 : 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END
