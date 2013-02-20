@@ -842,7 +842,7 @@ PVertexBuffer RenderSystemPrivate::createVertexBuffer(EGEVertexBuffer::UsageType
 {
   PVertexBuffer buffer;
 
-  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  if (!Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     buffer = ege_new VertexBufferVBO(d_func()->app(), usage);
     if (NULL != buffer)
@@ -885,7 +885,7 @@ PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType us
 {
   PIndexBuffer buffer;
 
-  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  if (!Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     buffer = ege_new IndexBufferVBO(d_func()->app(), usage);
     if (NULL != buffer)
