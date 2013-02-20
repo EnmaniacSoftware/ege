@@ -229,9 +229,6 @@
     <Filter Include="Core\Graphics\OpenGL\GL 3.x">
       <UniqueIdentifier>{cd293347-a2a3-4e54-a2bd-ff17f13cf292}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Tools">
-      <UniqueIdentifier>{5fd36313-eb5e-4314-96e2-58f512aa7ee7}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -828,8 +825,8 @@
     <ClCompile Include="..\..\Sources\Core\main.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\Tools\CommandLineParserWin32.cpp">
-      <Filter>Win32\Tools</Filter>
+    <ClCompile Include="..\..\Sources\Core\Tools\CommandLineParser.cpp">
+      <Filter>Core\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1606,8 +1603,8 @@
       <Filter>Win32\Application</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGECommandLine.h" />
-    <ClInclude Include="..\..\Sources\Win32\Tools\CommandLineParserWin32.h">
-      <Filter>Win32\Tools</Filter>
+    <ClInclude Include="..\..\Sources\Core\Tools\CommandLineParser.h">
+      <Filter>Core\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

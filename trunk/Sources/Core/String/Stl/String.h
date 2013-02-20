@@ -24,6 +24,7 @@ class String : public std::string
    	String& operator=(const char* string);
    	String& operator=(const String& string);
    	String& operator+=(const char* string);
+   	String& operator+=(char c);
    	String& operator+=(const String& string);
 
   public:

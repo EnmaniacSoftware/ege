@@ -50,10 +50,14 @@ class Application : public IEventListener
 
   public:
 
-    /*! Starts engine work. 
-     *  @param  commandLineParams Command line params dictionary.
+    /*! Initializes engine.
+     *  @param params    List of parameters to initialize engine with.
+     *  @param listener  Listener object which is to be notified with engine events. 
      */
-    virtual EGEResult run(const Dictionary& commandLineParams);
+    virtual EGEResult construct(const Dictionary& params);
+    /*! Starts engine work. */
+    virtual EGEResult run();
+
     /*! Returns current state. */
     State state() const;
 
@@ -103,11 +107,6 @@ class Application : public IEventListener
 
   protected:
 
-    /*! Initializes engine.
-     *  @param params    List of parameters to initialize engine with.
-     *  @param listener  Listener object which is to be notified with engine events. 
-     */
-    virtual EGEResult construct(const Dictionary& params);
     /*! Application updater. */
     virtual void update(const Time& time);
     /*! Application renderer. */

@@ -191,6 +191,7 @@
     <ClCompile Include="..\..\Sources\Core\Timer\TimeLine.cpp" />
     <ClCompile Include="..\..\Sources\Core\Timer\Timer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Tools\ByteOrder.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Tools\CommandLineParser.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\Dialog.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\Label.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\UIPageIndicator.cpp" />
@@ -215,7 +216,6 @@
     <ClCompile Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Services\DeviceServicesWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp" />
-    <ClCompile Include="..\..\Sources\Win32\Tools\CommandLineParserWin32.cpp" />
     <ClInclude Include="..\..\Sources\Core\Animation\IAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodec.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecMp3.h" />
@@ -333,6 +333,7 @@
     <ClInclude Include="..\..\Sources\Core\Threading\WaitCondition.h" />
     <ClInclude Include="..\..\Sources\Core\Timer\TimeLine.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\ByteOrder.h" />
+    <ClInclude Include="..\..\Sources\Core\Tools\CommandLineParser.h" />
     <ClInclude Include="..\..\Sources\Core\UI\Dialog.h" />
     <ClInclude Include="..\..\Sources\Core\UI\Label.h" />
     <ClInclude Include="..\..\Sources\Core\UI\UIAbstractScrollbar.h" />
@@ -535,7 +536,6 @@
     <ClInclude Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\Services\DeviceServicesWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\Timer\TimerWin32_p.h" />
-    <ClInclude Include="..\..\Sources\Win32\Tools\CommandLineParserWin32.h" />
     <ClInclude Include="..\..\Sources\Win32\TypesWin32.h" />
   </ItemGroup>
   <ItemGroup>

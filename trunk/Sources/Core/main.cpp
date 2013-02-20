@@ -3,7 +3,7 @@
 #include <EGEDictionary.h>
 
 #ifdef EGE_PLATFORM_WIN32
-#define COMMANDLINE(name) CommandLineParser name
+#define COMMANDLINE(name) CommandLineParser name(reinterpret_cast<char*>(strCmdLine))
 #else
 #define COMMANDLINE(name) CommandLineParser name(argc, argv)
 #endif // #ifdef EGE_PLATFORM_WIN32
@@ -27,8 +27,13 @@ int main(int argc, char** argv)
   Application* application = Application::CreateInstance();
   if (NULL != application)
   {
-    // run application
-    result = application->run(commandLineParser.dictionary());
+    // construct application
+    result = application->construct(commandLineParser.dictionary());
+    if (EGE_SUCCESS == result)
+    {
+      // run application
+      result = application->run();
+    }
   }
 
   // deinitialize memory manager
