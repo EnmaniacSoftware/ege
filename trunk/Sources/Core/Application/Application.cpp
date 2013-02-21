@@ -17,6 +17,7 @@
 #include "Core/Audio/AudioManager.h"
 #include "Core/Graphics/Image/ImageLoader.h"
 #include "Core/Debug/Debug.h"
+#include "Core/Debug/EngineInfo.h"
 #include <EGETimer.h>
 
 #ifdef EGE_PLATFORM_WIN32
@@ -311,6 +312,8 @@ void Application::update()
       m_updateAccumulator -= m_updateInterval;
       physicsManager()->update(m_updateInterval);
     }
+
+    EngineInfo::Instance().update(m_updateInterval);
 
     graphics()->update();
     imageLoader()->update(m_updateInterval);

@@ -1,5 +1,6 @@
 #include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
 #include "Core/Data/DataBuffer.h"
+#include "Core/Debug/EngineInfo.h"
 #include <EGEDebug.h>
 #include <EGEMath.h>
 #include <EGEDevice.h>
@@ -119,7 +120,10 @@ void* IndexBufferVBO::lock(u32 offset, u32 count)
 	  	    // discard the buffer
 	  	    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount() * indexSize(), NULL, MapUsageType(m_usage));
           OGL_CHECK();
-	      }
+
+          // update engine info
+          ENGINE_INFO(m_VBOBufferDataCalls++);
+        }
 
         // map the buffer
 	      buffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, MapUsageTypeToAccessType(m_usage));
@@ -173,7 +177,10 @@ void IndexBufferVBO::unlock(void* data)
 	  	// discard the buffer
 	  	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount() * indexSize(), NULL, MapUsageType(m_usage));
       OGL_CHECK();
-	  }
+
+      // update engine info
+      ENGINE_INFO(m_VBOBufferDataCalls++);
+    }
 
     // check if entire buffer was locked
     if ((0 == m_lockOffset) && (m_lockLength == indexCount()))
@@ -181,12 +188,18 @@ void IndexBufferVBO::unlock(void* data)
       // update buffer at once
       glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<u32>(m_shadowBuffer->size()), m_shadowBuffer->data(), MapUsageType(m_usage));
       OGL_CHECK();
+
+      // update engine info
+      ENGINE_INFO(m_VBOBufferDataCalls++);
     }
     else
     {
       glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, m_lockOffset * indexSize(), m_lockLength * indexSize(), 
                       m_shadowBuffer->data(static_cast<s64>(m_lockOffset) * indexSize()));
       OGL_CHECK();
+
+      // update engine info
+      ENGINE_INFO(m_VBOBufferSubDataCalls++);
     }
   }
   else
@@ -221,6 +234,9 @@ bool IndexBufferVBO::reallocateBuffer(u32 count)
     // allocate enough space
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * indexSize(), NULL, MapUsageType(m_usage));
     OGL_CHECK();
+
+    // update engine info
+    ENGINE_INFO(m_VBOBufferDataCalls++);
 
     // allocate enough space in shadow buffer if required
     if (NULL != m_shadowBuffer)

@@ -57,6 +57,7 @@
     <ClCompile Include="..\..\Sources\Core\Data\Node.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Console.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Debug.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Debug\EngineInfo.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Logger.cpp" />
     <ClCompile Include="..\..\Sources\Core\Device\Device.cpp" />
     <ClCompile Include="..\..\Sources\Core\Dir\Dir.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="..\..\Sources\Core\Crypto\md5\md5.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h" />
+    <ClInclude Include="..\..\Sources\Core\Debug\EngineInfo.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\Color.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\ColorTransform.h" />
@@ -646,7 +648,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_DEBUG;EGE_FEATURE_MEMORY_DEBUG;EGE_FEATURE_OPENGL_DEBUG;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_2;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_DEBUG;EGE_FEATURE_MEMORY_DEBUG;EGE_FEATURE_OPENGL_DEBUG;EGE_FEATURE_ENGINE_INFO;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>
@@ -673,7 +675,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_3;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_DEBUG;EGE_FEATURE_MEMORY_DEBUG;EGE_FEATURE_OPENGL_DEBUG;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_3;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_DEBUG;EGE_FEATURE_MEMORY_DEBUG;EGE_FEATURE_OPENGL_DEBUG;EGE_FEATURE_ENGINE_INFO;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>

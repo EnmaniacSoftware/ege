@@ -1,7 +1,3 @@
-#!/usr/bin/env mkb
-
-#platform S3E_LIB
-
 define AIRPLAY_BUILD
 define PNG_NO_SNPRINTF
 define TIXML_USE_STL
@@ -230,6 +226,8 @@ files
   Debug.cpp
 	Debug.h
   DebugFont.h
+  EngineInfo.cpp
+  EngineInfo.h
   Logger.cpp
   Logger.h
 

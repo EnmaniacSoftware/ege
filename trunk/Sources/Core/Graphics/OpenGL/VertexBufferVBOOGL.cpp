@@ -1,5 +1,6 @@
 #include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
 #include "Core/Data/DataBuffer.h"
+#include "Core/Debug/EngineInfo.h"
 #include <EGEOpenGL.h>
 #include <EGEMath.h>
 #include <EGEDevice.h>
@@ -126,7 +127,10 @@ void* VertexBufferVBO::lock(u32 offset, u32 count)
 	  	    // discard the buffer
 	  	    glBufferData(GL_ARRAY_BUFFER, vertexCount() * vertexSize(), NULL, MapUsageType(m_usage));
           OGL_CHECK();
-	      }
+
+          // update engine info
+          ENGINE_INFO(m_VBOBufferDataCalls++);
+        }
 
         // map the buffer
 	      buffer = glMapBuffer(GL_ARRAY_BUFFER, MapUsageTypeToAccessType(m_usage));
@@ -180,6 +184,9 @@ void VertexBufferVBO::unlock(void* data)
 	  	// discard the buffer
 	  	glBufferData(GL_ARRAY_BUFFER, vertexCount() * vertexSize(), NULL, MapUsageType(m_usage));
       OGL_CHECK();
+
+      // update engine info
+      ENGINE_INFO(m_VBOBufferDataCalls++);
 	  }
 
     // check if entire buffer was locked
@@ -188,12 +195,18 @@ void VertexBufferVBO::unlock(void* data)
       // update buffer at once
       glBufferData(GL_ARRAY_BUFFER, static_cast<u32>(m_shadowBuffer->size()), m_shadowBuffer->data(), MapUsageType(m_usage));
       OGL_CHECK();
+
+      // update engine info
+      ENGINE_INFO(m_VBOBufferDataCalls++);
     }
     else
     {
       glBufferSubData(GL_ARRAY_BUFFER, m_lockOffset * vertexSize(), m_lockLength * vertexSize(), 
                       m_shadowBuffer->data(static_cast<s64>(m_lockOffset) * vertexSize()));
       OGL_CHECK();
+
+      // update engine info
+      ENGINE_INFO(m_VBOBufferSubDataCalls++);
     }
   }
   else
@@ -228,6 +241,9 @@ bool VertexBufferVBO::reallocateBuffer(u32 count)
     // allocate enough space
     glBufferData(GL_ARRAY_BUFFER, count * vertexSize(), NULL, MapUsageType(m_usage));
     OGL_CHECK();
+
+    // update engine info
+    ENGINE_INFO(m_VBOBufferDataCalls++);
 
     // allocate enough space in shadow buffer if required
     if (NULL != m_shadowBuffer)

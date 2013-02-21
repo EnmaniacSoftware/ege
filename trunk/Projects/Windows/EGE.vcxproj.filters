@@ -828,6 +828,9 @@
     <ClCompile Include="..\..\Sources\Core\Tools\CommandLineParser.cpp">
       <Filter>Core\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Debug\EngineInfo.cpp">
+      <Filter>Core\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1605,6 +1608,9 @@
     <ClInclude Include="..\..\Sources\EGECommandLine.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\CommandLineParser.h">
       <Filter>Core\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Debug\EngineInfo.h">
+      <Filter>Core\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
