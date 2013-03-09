@@ -226,7 +226,7 @@ void RenderSystemPrivate::flush()
       
     //  EGE_LOG("Q: %d, name: %s", itQueue->first, data.component->name().toAscii());
 
-      if (data.component->name() == "overlay-fps")
+      if (data.component->name() == "level-meter-classic")
       {
         int a = 1;
       }
@@ -318,7 +318,7 @@ void RenderSystemPrivate::flush()
               case EGEVertexBuffer::AT_TEXTURE_UV:
 
                 // check if number of texture arrays is exactly the same as texture units in a current pass
-               // if (textureArraysCount == textureCount)
+                if (textureArraysCount == textureCount)
                 {
                   if (glClientActiveTexture)
                   {
@@ -334,70 +334,70 @@ void RenderSystemPrivate::flush()
                   ++textureUnitsActivated;
                 }
                 // check if there is more texture arrays than texture units
-                //else if (textureArraysCount > textureCount)
-                //{
-                //  // check if still some texture unit is to be set
-                //  if (textureUnitsActivated < textureCount)
-                //  {
-                //    if (glClientActiveTexture)
-                //    {
-                //      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                //      OGL_CHECK();
-                //    }
+                else if (textureArraysCount > textureCount)
+                {
+                  // check if still some texture unit is to be set
+                  if (textureUnitsActivated < textureCount)
+                  {
+                    if (glClientActiveTexture)
+                    {
+                      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                      OGL_CHECK();
+                    }
 
-                //    if (testing)
-                //    {
-                //      egeLog() << "2" << data.component->name() << "unit" << textureUnitsActivated << "@offset" << itSemantic->offset;
-                //    }
+                    if (testing)
+                    {
+                      egeLog() << "2" << data.component->name() << "unit" << textureUnitsActivated << "@offset" << itSemantic->offset;
+                    }
 
-                //    glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                //    OGL_CHECK();
-                //    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-                //    OGL_CHECK();
+                    glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                    OGL_CHECK();
+                    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                    OGL_CHECK();
 
-                //    ++textureUnitsActivated;
-                //  }
-                //}
-                //// check if there are more texture units than texture arrays
-                //else if (textureArraysCount < textureCount)
-                //{
-                //  // check if this is last texture array
-                //  if ((textureUnitsActivated + 1) == textureArraysCount)
-                //  {
-                //    // set current texture array to all remaining texture units
-                //    while (textureUnitsActivated != textureCount)
-                //    {
-                //      if (glClientActiveTexture)
-                //      {
-                //        glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                //        OGL_CHECK();
-                //      }
+                    ++textureUnitsActivated;
+                  }
+                }
+                // check if there are more texture units than texture arrays
+                else if (textureArraysCount < textureCount)
+                {
+                  // check if this is last texture array
+                  if ((textureUnitsActivated + 1) == textureArraysCount)
+                  {
+                    // set current texture array to all remaining texture units
+                    while (textureUnitsActivated != textureCount)
+                    {
+                      if (glClientActiveTexture)
+                      {
+                        glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                        OGL_CHECK();
+                      }
 
-                //      glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                //      OGL_CHECK();
-                //      glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-                //      OGL_CHECK();
+                      glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                      OGL_CHECK();
+                      glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                      OGL_CHECK();
 
-                //      ++textureUnitsActivated;
-                //    }
-                //  }
-                //  else
-                //  {
-                //    // set current texture array to corresponding texture unit
-                //    if (glClientActiveTexture)
-                //    {
-                //      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                //      OGL_CHECK();
-                //    }
+                      ++textureUnitsActivated;
+                    }
+                  }
+                  else
+                  {
+                    // set current texture array to corresponding texture unit
+                    if (glClientActiveTexture)
+                    {
+                      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                      OGL_CHECK();
+                    }
 
-                //    glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                //    OGL_CHECK();
-                //    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-                //    OGL_CHECK();
+                    glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                    OGL_CHECK();
+                    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                    OGL_CHECK();
 
-                //    ++textureUnitsActivated;
-                //  }
-                //}
+                    ++textureUnitsActivated;
+                  }
+                }
                 break;
 
               //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
