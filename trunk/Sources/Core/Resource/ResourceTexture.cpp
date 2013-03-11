@@ -162,6 +162,11 @@ EGEResult ResourceTexture::create2D()
     return EGE_ERROR;
   }
 
+  //if (path().endsWith("grid.jpg"))
+  //{
+  //  Image::Save(image, "ala.png");
+  //}
+
   // apply texture filters
   app()->graphics()->renderSystem()->setTextureMinFilter(minFilter());
   app()->graphics()->renderSystem()->setTextureMagFilter(magFilter());

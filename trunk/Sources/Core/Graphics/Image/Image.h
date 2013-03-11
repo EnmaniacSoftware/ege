@@ -73,6 +73,10 @@ class Image : public Object
     bool isAlphaPremultiplied() const { return m_premultiplied; }
     /*! Returns TRUE if image is compressed. */
     bool isCompressed() const;
+    /*! Sets row alignment value. */
+    void setRowAlignment(u8 bytes);
+    /*! Returns row alignment value. */
+    u8 rowAlignment() const;
 
   private:
 
@@ -93,6 +97,10 @@ class Image : public Object
     s32 m_height;
     /*! Alpha pre-multiplied flag. */
     bool m_premultiplied;
+    /*! Row alignment (in bytes). 
+     *  @note: Each row will be align to this boundary.
+     */
+    u8 m_rowAlignment;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

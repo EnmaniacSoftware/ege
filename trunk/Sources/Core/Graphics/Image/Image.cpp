@@ -16,12 +16,14 @@ Image::Image(Application* app) : Object(app, EGE_OBJECT_UID_IMAGE),
                                  m_rowLength(0), 
                                  m_width(0), 
                                  m_height(0),
-                                 m_premultiplied(false)
+                                 m_premultiplied(false),
+                                 m_rowAlignment(1)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Image::Image(Application* app, s32 width, s32 height, PixelFormat format) : Object(app, EGE_OBJECT_UID_IMAGE),
-                                                                            m_premultiplied(false)
+                                                                            m_premultiplied(false),
+                                                                            m_rowAlignment(1)
 {
   // allocate empty image
   allocateData(width, height, format);
@@ -156,11 +158,11 @@ EGEResult Image::allocateData(s32 width, s32 height, PixelFormat format)
   // calculate row length
   m_rowLength = width * pixelSize;
 
-  // align row length to 4 bytes
-  if (m_rowLength & 0x3)
+  // check row alignment
+  u32 disalignment = m_rowLength % m_rowAlignment;
+  if (0 != disalignment)
   {
-    m_rowLength = (m_rowLength & 0xFFFFFFFC);
-    m_rowLength += 4;
+    m_rowLength += (m_rowAlignment - disalignment);
   }
 
   // allocate buffer
@@ -203,6 +205,19 @@ bool Image::isCompressed() const
   }
 
   return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Image::setRowAlignment(u8 bytes)
+{
+  // NOTE: should be called on invalid (not loaded yet) images only!
+  EGE_ASSERT( ! isValid());
+
+  m_rowAlignment = bytes;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u8 Image::rowAlignment() const
+{
+  return m_rowAlignment;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
