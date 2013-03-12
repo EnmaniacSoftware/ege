@@ -105,7 +105,6 @@ files
   ConfigParams.h
   Flags.h
   ListenerContainer.h
-  main.cpp
   ObjectUIDs.h
   Platform.h
 
@@ -690,6 +689,7 @@ files
 {
 	["Airplay"]
 	(../../Sources/Airplay)
+  main.cpp
 	TypesAirplay.h
 	ISSUES.txt
 

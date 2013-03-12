@@ -113,7 +113,6 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Viewport.cpp" />
     <ClCompile Include="..\..\Sources\Core\Input\Pointer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Input\PointerData.cpp" />
-    <ClCompile Include="..\..\Sources\Core\main.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Angle.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\AxisAlignedBox.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Math.cpp" />
@@ -214,6 +213,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Application\ApplicationWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\main.cpp" />
     <ClCompile Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Services\DeviceServicesWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp" />

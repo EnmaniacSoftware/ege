@@ -822,14 +822,14 @@
     <ClCompile Include="..\..\Sources\Win32\Application\ApplicationWin32_p.cpp">
       <Filter>Win32\Application</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\main.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Tools\CommandLineParser.cpp">
       <Filter>Core\Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Debug\EngineInfo.cpp">
       <Filter>Core\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\main.cpp">
+      <Filter>Win32</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
