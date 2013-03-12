@@ -28,6 +28,8 @@ class PurchaseServicesPrivate
     EGEResult construct();
     /*! PurchaseServices the given product. */
     EGEResult purchase(const String& product);
+    /*! Restores all purchases made for so far. */
+    EGEResult restoreAll();
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -26,5 +26,10 @@ EGEResult PurchaseServicesPrivate::purchase(const String& product)
   return EGE_ERROR_NOT_SUPPORTED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult PurchaseServicesPrivate::restoreAll()
+{
+  return EGE_ERROR_NOT_SUPPORTED;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
