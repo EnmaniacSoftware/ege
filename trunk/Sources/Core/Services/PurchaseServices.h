@@ -29,13 +29,19 @@ class PurchaseServices : public Object
      *  @param product  Product name for which purchase was done.
      */
     Signal2<EGEResult, const String&> purchased;
+    /*! Signal emitted when purchase restore is done. 
+     *  @param result   Result code of transcation.
+     */
+    Signal1<EGEResult> restored;
 
   public:
 
     /*! Constructs object. */
     EGEResult construct();
-    /*! PurchaseServices the given product. */
+    /*! Purchases the given product. */
     EGEResult purchase(const String& product);
+    /*! Restores all purchases made for so far. */
+    EGEResult restoreAll();
 
   private:
 

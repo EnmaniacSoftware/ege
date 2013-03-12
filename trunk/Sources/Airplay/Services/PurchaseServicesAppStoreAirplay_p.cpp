@@ -16,6 +16,7 @@ PurchaseServicesPrivate::PurchaseServicesPrivate(PurchaseServices* base) : m_d(b
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PurchaseServicesPrivate::~PurchaseServicesPrivate()
 {
+  s3eIOSAppStoreBillingStop();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult PurchaseServicesPrivate::construct()
@@ -34,6 +35,22 @@ EGEResult PurchaseServicesPrivate::construct()
 void PurchaseServicesPrivate::ProductInfoCallback(s3eProductInformation* productInfo, void* userData)
 {
   PurchaseServicesPrivate* me = static_cast<PurchaseServicesPrivate*>(userData);
+
+  // process accroding to status
+  switch (productInfo->m_ProductStoreStatus)
+  {
+    case S3E_PRODUCT_STORE_STATUS_RESTORE_COMPLETED:
+
+      // emit
+      emit me->d_func()->restored(EGE_SUCCESS);
+      break;
+
+    case S3E_PRODUCT_STORE_STATUS_RESTORE_FAILED:
+
+      // emit
+      emit me->d_func()->restored(EGE_ERROR);
+      break;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PurchaseServicesPrivate::TransactionUpdateCallback(s3ePaymentTransaction* transaction, void* userData)
@@ -100,6 +117,11 @@ EGEResult PurchaseServicesPrivate::purchase(const String& product)
   paymentRequest.m_Quantity  = 1;
 
   return (S3E_RESULT_SUCCESS == s3eIOSAppStoreBillingRequestPayment(&paymentRequest)) ?  EGE_SUCCESS : EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult PurchaseServicesPrivate::restoreAll()
+{
+  return (S3E_RESULT_SUCCESS == s3eIOSAppStoreBillingRestoreCompletedTransactions()) ?  EGE_SUCCESS : EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
