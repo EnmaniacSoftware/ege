@@ -111,6 +111,8 @@ void PurchaseServicesPrivate::TransactionUpdateCallback(s3ePaymentTransaction* t
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult PurchaseServicesPrivate::purchase(const String& product)
 {
+  egeDebug() << "Initiating purchase of" << product;
+
   s3ePaymentRequest paymentRequest;
   
   EGE_MEMCPY(paymentRequest.m_ProductID, product.toAscii(), Math::Min(product.length() + 1, sizeof (paymentRequest.m_ProductID)));
@@ -121,6 +123,8 @@ EGEResult PurchaseServicesPrivate::purchase(const String& product)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult PurchaseServicesPrivate::restoreAll()
 {
+  egeDebug() << "Initiating purchase restoration";
+
   return (S3E_RESULT_SUCCESS == s3eIOSAppStoreBillingRestoreCompletedTransactions()) ?  EGE_SUCCESS : EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
