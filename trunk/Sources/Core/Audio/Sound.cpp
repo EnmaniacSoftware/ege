@@ -19,6 +19,12 @@
   #elif EGE_AUDIO_NULL
     #include "Core/Audio/Null/SoundNull_p.h"    
   #endif // EGE_AUDIO_AIRPLAY
+#elif EGE_PLATFORM_IOS
+  #if EGE_AUDIO_OPENAL
+    #include "Core/Audio/OpenAL/SoundOpenAL_p.h"
+  #elif EGE_AUDIO_NULL
+    #include "Core/Audio/Null/SoundNull_p.h"
+  #endif // EGE_AUDIO_OPENAL
 #endif // EGE_PLATFORM_WIN32
 
 EGE_NAMESPACE_BEGIN

@@ -9,8 +9,8 @@ EGE_NAMESPACE_BEGIN
 /*! Available byte ordering. */
 enum Endianness
 {
-  BIG_ENDIAN,
-  LITTLE_ENDIAN
+  EBigEndian,
+  ELittleEndian
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

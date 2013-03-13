@@ -29,7 +29,11 @@ u8 IndexBuffer::indexSize() const
   {
     case EGEIndexBuffer::IS_8BIT:  return 1; 
     case EGEIndexBuffer::IS_16BIT: return 2; 
-    case EGEIndexBuffer::IS_32BIT: return 4; 
+    case EGEIndexBuffer::IS_32BIT: return 4;
+      
+    default:
+      
+      return 0;
   }
 
   return 0;

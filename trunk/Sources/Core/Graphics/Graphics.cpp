@@ -14,6 +14,8 @@
 #include "Win32/Graphics/GraphicsWin32_p.h"
 #elif EGE_PLATFORM_AIRPLAY
 #include "Airplay/Graphics/GraphicsAirplay_p.h"
+#elif EGE_PLATFORM_IOS
+#include "iOS/Graphics/GraphicsIOS_p.h"
 #endif
 
 EGE_NAMESPACE_BEGIN

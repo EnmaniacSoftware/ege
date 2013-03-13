@@ -15,7 +15,7 @@ DataBuffer::DataBuffer() : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER),
                            m_readOffset(0), 
                            m_writeOffset(0), 
                            m_mutable(true),
-                           m_byteOrdering(LITTLE_ENDIAN)
+                           m_byteOrdering(ELittleEndian)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ DataBuffer::DataBuffer(void* data, s64 size) : Object(NULL, EGE_OBJECT_UID_DATA_
                                                m_readOffset(0), 
                                                m_writeOffset(0), 
                                                m_mutable(false),
-                                               m_byteOrdering(LITTLE_ENDIAN)
+                                               m_byteOrdering(ELittleEndian)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

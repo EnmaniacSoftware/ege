@@ -50,7 +50,7 @@ bool ImageHandlerPVR::IsValidFormat(PObject buffer)
     PDataBuffer data = buffer;
 
     data->setReadOffset(0);
-    data->setByteOrdering(LITTLE_ENDIAN);
+    data->setByteOrdering(ELittleEndian);
 
     u32 version;
     *data >> version;
@@ -72,8 +72,6 @@ bool ImageHandlerPVR::IsValidFormat(PObject buffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PImage ImageHandlerPVR::Load(PObject buffer, PixelFormat format)
 {
-  EGEResult result = EGE_SUCCESS;
-
   // no pixel format conversion possible
   if (PF_UNKNOWN != format)
   {
@@ -137,7 +135,7 @@ PImage ImageHandlerPVR::Load(PObject buffer, PixelFormat format)
   else if (EGE_OBJECT_UID_DATA_BUFFER == buffer->uid())
   {
     PDataBuffer data = buffer;
-    data->setByteOrdering(LITTLE_ENDIAN);
+    data->setByteOrdering(ELittleEndian);
 
     *data >> header.version;
     *data >> header.flags;

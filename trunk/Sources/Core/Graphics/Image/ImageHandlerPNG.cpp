@@ -129,8 +129,6 @@ bool ImageHandlerPNG::IsValidFormat(PObject buffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PImage ImageHandlerPNG::Load(PObject buffer, PixelFormat format)
 {
-  EGEResult result = EGE_SUCCESS;
-
 	png_structp pngReadStruct;
 	png_infop   pngInfoStruct;
 

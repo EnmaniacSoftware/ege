@@ -3,9 +3,9 @@
 
 #include "Core/Platform.h"
 
-#if EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
+#if EGE_CONTAINERS_STL
 #include "Core/Containers/Stl/List.h"
-#endif // EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
+#endif // EGE_CONTAINERS_STL
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

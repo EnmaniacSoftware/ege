@@ -326,11 +326,11 @@ PSequencer ImagedAnimation::sequencer(const String& name) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ImagedAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
 {
-  s32 nextFrameId = sequencer->frameId(Math::Min(sequencer->currentFrameIndex() + 1, sequencer->frameCount() - 1));
+ // s32 nextFrameId = sequencer->frameId(Math::Min(sequencer->currentFrameIndex() + 1, sequencer->frameCount() - 1));
 
   // update object data
   FrameData& frameData            = m_frames[frameId];
-  const FrameData& nextFrameData  = m_frames[nextFrameId];
+  //const FrameData& nextFrameData  = m_frames[nextFrameId];
   for (List<EGEImagedAnimation::ActionData>::iterator it = frameData.actions.begin(); it != frameData.actions.end(); ++it)
   {
     EGEImagedAnimation::ActionData& action = *it;

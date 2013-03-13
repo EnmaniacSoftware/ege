@@ -27,6 +27,10 @@ u32 ImageUtils::PixelSize(PixelFormat format)
   {
     case PF_RGB_888:   return 3;
     case PF_RGBA_8888: return 4;
+    
+    default:
+    
+      return 0;
   }
 
   return 0;

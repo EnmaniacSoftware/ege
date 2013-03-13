@@ -202,6 +202,10 @@ bool Image::isCompressed() const
     case PF_DXT5:
 
       return true;
+      
+    default:
+      
+      return false;
   }
 
   return false;

@@ -19,11 +19,11 @@ void AudioUtils::ReadWavHeaders(const PDataBuffer& data, EGEAudio::WaveRiffHeade
   EGE_MEMSET(&dataHeader, 0, sizeof (dataHeader));
 
   // read in RIFF header
-  data->setByteOrdering(BIG_ENDIAN);
+  data->setByteOrdering(EBigEndian);
   *data >> riffHeader.id;
-  data->setByteOrdering(LITTLE_ENDIAN);
+  data->setByteOrdering(ELittleEndian);
   *data >> riffHeader.size;
-  data->setByteOrdering(BIG_ENDIAN);
+  data->setByteOrdering(EBigEndian);
   *data >> riffHeader.format;
 
   // check if there is a chance this is wav file
@@ -35,11 +35,11 @@ void AudioUtils::ReadWavHeaders(const PDataBuffer& data, EGEAudio::WaveRiffHeade
       // read chunk header
       u32 chunkId;
       u32 chunkSize;
-      data->setByteOrdering(BIG_ENDIAN);
+      data->setByteOrdering(EBigEndian);
       *data >> chunkId;
 
       // read chunk size
-      data->setByteOrdering(LITTLE_ENDIAN);
+      data->setByteOrdering(ELittleEndian);
       *data >> chunkSize;
 
       // check if FMT chunk
@@ -106,7 +106,7 @@ EGEAudio::StreamType AudioUtils::DetectStreamType(const PDataBuffer& data)
 
   // check if OGG stream
   data->setReadOffset(0);
-  data->setByteOrdering(BIG_ENDIAN);
+  data->setByteOrdering(EBigEndian);
 
   u32 headerId;
   *data >> headerId;
@@ -124,7 +124,7 @@ EGEAudio::StreamType AudioUtils::DetectStreamType(const PDataBuffer& data)
   //    - if appened it is 10 bytes from the end of file (current not done!)
   // - for ENC header first two bytes needs to be 0xFFFB
   data->setReadOffset(0);
-  data->setByteOrdering(BIG_ENDIAN);
+  data->setByteOrdering(EBigEndian);
   
   *data >> headerId;
   if ((MP3_ID3_HEADER_ID == (headerId & 0xffffff00)) || (MP3_ENC_HEADER_ID == (headerId & 0xffff0000)))

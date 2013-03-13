@@ -9,6 +9,8 @@ Debug::Debug(DebugMsgType type) : m_referenceCounter(1), m_consoleOutput(true), 
   {
     case DMT_WARNING:   m_buffer = "WARNING: "; break;
     case DMT_CRITICAL:  m_buffer = "CRITICAL: "; break;
+    default:
+      break;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

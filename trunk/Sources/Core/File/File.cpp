@@ -6,6 +6,8 @@
 #include "Win32/File/FileWin32_p.h"
 #elif EGE_PLATFORM_AIRPLAY
 #include "Airplay/File/FileAirplay_p.h"
+#elif EGE_PLATFORM_IOS
+#include "iOS/File/FileIOS_p.h"
 #endif
 
 EGE_NAMESPACE_BEGIN
@@ -132,7 +134,7 @@ EGE::File& File::operator << (u16 value)
 {
   if (isValid())
   {
-    u8 data[2] = { value & 0x00ff, (value & 0xff00) >> 8 };
+    u8 data[2] = { static_cast<u8>(value & 0x00ff), static_cast<u8>((value & 0xff00) >> 8) };
 
     DataBuffer buf(&data, sizeof (data));
     p_func()->write(buf, sizeof (value));
@@ -145,7 +147,7 @@ EGE::File& File::operator << (s16 value)
 {
   if (isValid())
   {
-    u8 data[2] = { value & 0x00ff, (value & 0xff00) >> 8 };
+    s8 data[2] = { static_cast<s8>(value & 0x00ff), static_cast<s8>((value & 0xff00) >> 8) };
 
     DataBuffer buf(&data, sizeof (data));
     p_func()->write(buf, sizeof (value));

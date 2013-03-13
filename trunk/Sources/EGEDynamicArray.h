@@ -3,9 +3,9 @@
 
 #include <EGETypes.h>
 
-#if EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
+#if EGE_CONTAINERS_STL
 #include "Core/Containers/Stl/DynamicArray.h"
-#endif // EGE_PLATFORM_WIN32 || EGE_PLATFORM_AIRPLAY
+#endif // EGE_CONTAINERS_STL
 
 EGE_NAMESPACE_BEGIN
 

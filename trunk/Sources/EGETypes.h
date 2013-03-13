@@ -24,6 +24,8 @@ enum EGEResult
 #include "Win32/TypesWin32.h"
 #elif EGE_PLATFORM_AIRPLAY
 #include "Airplay/TypesAirplay.h"
+#elif EGE_PLATFORM_IOS
+#include "iOS/TypesIOS.h"
 #endif // EGE_PLATFORM_WIN32
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef wchar_t Char;

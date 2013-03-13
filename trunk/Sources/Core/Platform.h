@@ -8,6 +8,7 @@ inline void ege_noop() {}
 // Available platform defines
 // EGE_PLATFORM_WIN32
 // EGE_PLATFORM_AIRPLAY
+// EGE_PLATFORM_IOS
 
 // Available rendering APIs
 // EGE_RENDERING_OPENGL_2
@@ -33,6 +34,12 @@ inline void ege_noop() {}
 // EGE_RESOURCE_MANAGER_SINGLE_THREAD
 // EGE_RESOURCE_MANAGER_MULTI_THREAD
 
+// Available containers implementations
+// EGE_CONTAINERS_STL
+
+// Available string/text implementations
+// EGE_STRING_STL
+
 #if WIN32
 #define EGE_PLATFORM_WIN32 1
 #endif // WIN32
@@ -40,6 +47,14 @@ inline void ege_noop() {}
 #if AIRPLAY_BUILD
 #define EGE_PLATFORM_AIRPLAY 1
 #endif // AIRPLAY_BUILD
+
+#ifdef __APPLE__
+#include "TargetConditionals.h"
+
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#define EGE_PLATFORM_IOS 1
+#endif // TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#endif // __APPLE__
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Common defines
@@ -74,6 +89,10 @@ inline void ege_noop() {}
 #include <math.h>
 #include <assert.h>
 #endif // EGE_PLATFORM_AIRPLAY
+
+#if EGE_PLATFORM_IOS
+#include <math.h>
+#endif // EGE_PLATFORM_IOS
 
 // Compiler specific
 #ifdef __GNUC__

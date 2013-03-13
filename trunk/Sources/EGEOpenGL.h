@@ -9,6 +9,7 @@
 #else
 #include <GLES/gl.h>
 #endif
+//#import <OpenGLES/ES1/gl.h>
 
 #if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGL_3
 #include "Core/Graphics/OpenGL/ExtensionsOGL.h"

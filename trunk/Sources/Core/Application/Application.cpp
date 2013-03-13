@@ -24,6 +24,8 @@
 #include "Win32/Application/ApplicationWin32_p.h"
 #elif EGE_PLATFORM_AIRPLAY
 #include "Airplay/Application/ApplicationAirplay_p.h"
+#elif EGE_PLATFORM_IOS
+#include "iOS/Application/ApplicationIOS_p.h"
 #endif
 
 EGE_NAMESPACE_BEGIN
