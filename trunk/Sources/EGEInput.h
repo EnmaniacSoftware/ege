@@ -2,7 +2,7 @@
 #define EGE_INPUT_H
 
 #include "Core/Platform.h"
-#include <EGEFlags.h>
+#include "EGEFlags.h"
 
 EGE_NAMESPACE_BEGIN
 

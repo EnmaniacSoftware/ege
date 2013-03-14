@@ -5,11 +5,11 @@
 *   Factory (utility) class creating predefined render objects.
 */
 
-#include <EGE.h>
-#include <EGEVertexBuffer.h>
-#include <EGEGraphics.h>
-#include <EGEAlignment.h>
-#include <EGEList.h>
+#include "EGE.h"
+#include "EGEVertexBuffer.h"
+#include "EGEGraphics.h"
+#include "EGEAlignment.h"
+#include "EGEList.h"
 
 EGE_NAMESPACE_BEGIN
 

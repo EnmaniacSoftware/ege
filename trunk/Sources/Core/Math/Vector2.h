@@ -5,8 +5,8 @@
   This class represents 2D vector.
 */
 
-#include <EGETypes.h>
-#include <EGEDebug.h>
+#include "EGETypes.h"
+#include "EGEDebug.h"
 #include "Core/Math/Math.h"
 
 EGE_NAMESPACE_BEGIN

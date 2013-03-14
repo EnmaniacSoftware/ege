@@ -1,8 +1,8 @@
 #ifndef EGE_DICTIONARY_H
 #define EGE_DICTIONARY_H
 
-#include <EGEString.h>
-#include <EGEMap.h>
+#include "EGEString.h"
+#include "EGEMap.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

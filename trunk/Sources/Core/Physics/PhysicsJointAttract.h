@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_PHYSICSJOINTATTRACT_H
 #define EGE_CORE_PHYSICSJOINTATTRACT_H
 
-#include <EGE.h>
+#include "EGE.h"
 #include "Core/Physics/PhysicsJoint.h"
 
 EGE_NAMESPACE_BEGIN

@@ -1,5 +1,5 @@
 #include "Core/Audio/AudioUtils.h"
-#include <EGEDataBuffer.h>
+#include "EGEDataBuffer.h"
 
 EGE_NAMESPACE_BEGIN
 

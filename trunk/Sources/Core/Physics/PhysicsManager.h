@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_PHYSICSMANAGER_H
 #define EGE_CORE_PHYSICSMANAGER_H
 
-#include <EGE.h>
-#include <EGETime.h>
-#include <EGEDictionary.h>
+#include "EGE.h"
+#include "EGETime.h"
+#include "EGEDictionary.h"
 #include "Core/Math/Vector4.h"
 #include "Core/Physics/PhysicsJoint.h"
 

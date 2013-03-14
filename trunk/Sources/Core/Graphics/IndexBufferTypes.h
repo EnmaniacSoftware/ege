@@ -2,7 +2,7 @@
 #define EGE_CORE_INDEXBUFFERTYPES_H
 
 #include "Core/Platform.h"
-#include <EGEDynamicArray.h>
+#include "EGEDynamicArray.h"
 
 EGE_NAMESPACE_BEGIN
 

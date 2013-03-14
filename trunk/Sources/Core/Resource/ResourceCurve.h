@@ -4,13 +4,13 @@
 /** Curve resource definition class. This object (resource) contains definition of curve object.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
-#include <EGETime.h>
-#include <EGESpline.h>
-#include <EGEList.h>
-#include <EGEVector.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
+#include "EGETime.h"
+#include "EGESpline.h"
+#include "EGEList.h"
+#include "EGEVector.h"
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN

@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_IMAGEOVERLAY_H
 #define EGE_CORE_IMAGEOVERLAY_H
 
-#include <EGETime.h>
-#include <EGEString.h>
+#include "EGETime.h"
+#include "EGEString.h"
 #include "Core/Overlay/Overlay.h"
 #include "Core/Graphics/Font.h"
 

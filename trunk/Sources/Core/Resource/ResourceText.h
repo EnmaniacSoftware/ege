@@ -4,11 +4,11 @@
 /** Text resource definition class. This object (resource) contains text string localization data.
  */
 
-#include <EGE.h>
+#include "EGE.h"
 #include "Core/Resource/Resource.h"
-#include <EGEXml.h>
-#include <EGEMap.h>
-#include <EGETextArray.h>
+#include "EGEXml.h"
+#include "EGEMap.h"
+#include "EGETextArray.h"
 
 EGE_NAMESPACE_BEGIN
 

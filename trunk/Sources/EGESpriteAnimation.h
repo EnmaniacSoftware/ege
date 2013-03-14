@@ -2,7 +2,7 @@
 #define EGE_SPRITEANIMATION_H
 
 #include "Core/Platform.h"
-#include <EGERect.h>
+#include "EGERect.h"
 
 EGE_NAMESPACE_BEGIN
 

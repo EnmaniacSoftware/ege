@@ -25,11 +25,11 @@
                   frameChanged(0)   frameChanged(1)   frameChanged(2)   frameChanged(3)   frameChanged(4)   frameChanged(0)
  */
 
-#include <EGE.h>
-#include <EGETime.h>
-#include <EGEString.h>
-#include <EGEDynamicArray.h>
-#include <EGESignal.h>
+#include "EGE.h"
+#include "EGETime.h"
+#include "EGEString.h"
+#include "EGEDynamicArray.h"
+#include "EGESignal.h"
 
 EGE_NAMESPACE_BEGIN
 

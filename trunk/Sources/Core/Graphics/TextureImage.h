@@ -4,9 +4,9 @@
 /** This object represents a subsection of existing texture. Especially useful for texture atlases.
 */
 
-#include <EGE.h>
-#include <EGERect.h>
-#include <EGETexture.h>
+#include "EGE.h"
+#include "EGERect.h"
+#include "EGETexture.h"
 
 EGE_NAMESPACE_BEGIN
 

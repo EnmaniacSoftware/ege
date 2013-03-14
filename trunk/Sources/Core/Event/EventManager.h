@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_EVENTMANAGER_H
 #define EGE_CORE_EVENTMANAGER_H
 
-#include <EGE.h>
+#include "EGE.h"
 #include "Core/Event/EventListener.h"
 #include "Core/ListenerContainer.h"
 

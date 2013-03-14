@@ -2,8 +2,8 @@
 #define EGE_STRINGLIST_H
 
 #include "Core/Platform.h"
-#include <EGEString.h>
-#include <EGEList.h>
+#include "EGEString.h"
+#include "EGEList.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

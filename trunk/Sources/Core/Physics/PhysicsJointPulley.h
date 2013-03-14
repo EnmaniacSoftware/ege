@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_PHYSICSJOINTPULLEY_H
 #define EGE_CORE_PHYSICSJOINTPULLEY_H
 
-#include <EGE.h>
+#include "EGE.h"
 #include "Core/Physics/PhysicsJoint.h"
 #include "Core/Math/Vector4.h"
 

@@ -5,12 +5,12 @@
  *   Upon loading it contains font object to be used in font rendering.
  */
 
-#include <EGE.h>
-#include <EGEXml.h>
-#include <EGEString.h>
-#include <EGEMath.h>
-#include <EGEMap.h>
-#include <EGERect.h>
+#include "EGE.h"
+#include "EGEXml.h"
+#include "EGEString.h"
+#include "EGEMath.h"
+#include "EGEMap.h"
+#include "EGERect.h"
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN

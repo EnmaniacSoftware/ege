@@ -1,10 +1,10 @@
 #ifndef EGE_CORE_GRAPHICS_MATERIAL_H
 #define EGE_CORE_GRAPHICS_MATERIAL_H
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEDynamicArray.h>
-#include <EGEColorTransform.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEDynamicArray.h"
+#include "EGEColorTransform.h"
 #include "Core/Graphics/Render/RenderPass.h"
 
 EGE_NAMESPACE_BEGIN

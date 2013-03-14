@@ -8,13 +8,13 @@
  * etc.
  */
 
-#include <EGEString.h>
-#include <EGESignal.h>
-#include <EGEVertexBuffer.h>
-#include <EGEIndexBuffer.h>
-#include <EGEImage.h>
-#include <EGEShader.h>
-#include <EGEList.h>
+#include "EGEString.h"
+#include "EGESignal.h"
+#include "EGEVertexBuffer.h"
+#include "EGEIndexBuffer.h"
+#include "EGEImage.h"
+#include "EGEShader.h"
+#include "EGEList.h"
 
 EGE_NAMESPACE_BEGIN
 

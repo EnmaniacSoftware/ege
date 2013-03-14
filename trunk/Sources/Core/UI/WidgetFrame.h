@@ -6,7 +6,7 @@
  *  @note On its own widget frame should never exists. It should always be a part of defined widget.
  */
 
-#include <EGEMath.h>
+#include "EGEMath.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 

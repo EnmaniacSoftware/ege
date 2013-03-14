@@ -3,7 +3,7 @@
 
 /*! Convienience class for automated mutex locking/unlocking. */
 
-#include <EGE.h>
+#include "EGE.h"
 
 EGE_NAMESPACE_BEGIN
 

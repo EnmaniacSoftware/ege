@@ -2,8 +2,8 @@
 #define EGE_TEXTARRAY_H
 
 #include "Core/Platform.h"
-#include <EGEText.h>
-#include <EGEDynamicArray.h>
+#include "EGEText.h"
+#include "EGEDynamicArray.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -2,7 +2,7 @@
 #define EGE_CORE_CONTAINER_MAP_H
 
 #include "Core/Platform.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 #include <map>
 
 EGE_NAMESPACE_BEGIN

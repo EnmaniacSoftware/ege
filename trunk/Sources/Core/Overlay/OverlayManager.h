@@ -1,11 +1,11 @@
 #ifndef EGE_CORE_OVERLAYMANAGER_H
 #define EGE_CORE_OVERLAYMANAGER_H
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEList.h>
-#include <EGETime.h>
-#include <EGEOverlay.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEList.h"
+#include "EGETime.h"
+#include "EGEOverlay.h"
 
 EGE_NAMESPACE_BEGIN
 

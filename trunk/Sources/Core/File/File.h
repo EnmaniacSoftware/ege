@@ -1,10 +1,10 @@
 #ifndef EGE_CORE_FILE_H
 #define EGE_CORE_FILE_H
 
-#include <EGE.h>
-#include <EGEFile.h>
-#include <EGEString.h>
-#include <EGEDataBuffer.h>
+#include "EGE.h"
+#include "EGEFile.h"
+#include "EGEString.h"
+#include "EGEDataBuffer.h"
 
 EGE_NAMESPACE_BEGIN
 

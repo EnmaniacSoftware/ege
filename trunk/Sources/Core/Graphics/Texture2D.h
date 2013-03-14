@@ -4,10 +4,10 @@
 /** Base object representing 2D texture.
 */
 
-#include <EGE.h>
-#include <EGETexture.h>
-#include <EGEString.h>
-#include <EGEImage.h>
+#include "EGE.h"
+#include "EGETexture.h"
+#include "EGEString.h"
+#include "EGEImage.h"
 #include "Core/Graphics/Render/RenderTarget.h"
 
 EGE_NAMESPACE_BEGIN

@@ -7,8 +7,8 @@
 
 #include <EGE.h>
 #include <EGETime.h>
-#include <EGEInput.h>
-#include <EGEString.h>
+#include "EGEInput.h"
+#include "EGEString.h"
 
 EGE_NAMESPACE_BEGIN
 

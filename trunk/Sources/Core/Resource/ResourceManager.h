@@ -4,14 +4,14 @@
 /*! Resource manager class. This object is a root to entire resource management.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
-#include <EGEMap.h>
-#include <EGEList.h>
-#include <EGESignal.h>
-#include <EGETime.h>
-#include <EGEStringList.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
+#include "EGEMap.h"
+#include "EGEList.h"
+#include "EGESignal.h"
+#include "EGETime.h"
+#include "EGEStringList.h"
 #include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN

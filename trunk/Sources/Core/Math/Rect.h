@@ -6,9 +6,9 @@
  *  Rectangle is INVALID (NULL) if width and/or height is negative.
  */
 
-#include <EGETypes.h>
-#include <EGEVector.h>
-#include <EGEDebug.h>
+#include "EGETypes.h"
+#include "EGEVector.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

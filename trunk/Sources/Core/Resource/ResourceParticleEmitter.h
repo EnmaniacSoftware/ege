@@ -4,13 +4,13 @@
 /** Particle emitter resource definition class. This object (resource) contains definition of particle emitter.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
-#include <EGETime.h>
-#include <EGEDictionary.h>
-#include <EGEParticle.h>
-#include <EGEStringList.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
+#include "EGETime.h"
+#include "EGEDictionary.h"
+#include "EGEParticle.h"
+#include "EGEStringList.h"
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN

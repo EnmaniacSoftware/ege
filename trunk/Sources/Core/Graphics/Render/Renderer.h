@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_GRAPHICS_RENDER_RENDERER_H
 #define EGE_CORE_GRAPHICS_RENDER_RENDERER_H
 
-#include <EGE.h>
-#include <EGEMatrix.h>
+#include "EGE.h"
+#include "EGEMatrix.h"
 
 EGE_NAMESPACE_BEGIN
 

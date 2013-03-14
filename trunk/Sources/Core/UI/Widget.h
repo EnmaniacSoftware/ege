@@ -4,11 +4,11 @@
 /** Widget class represents a base for all kind of widgets.
  */
 
-#include <EGEString.h>
-#include <EGETime.h>
-#include <EGEInput.h>
-#include <EGEMap.h>
-#include <EGESignal.h>
+#include "EGEString.h"
+#include "EGETime.h"
+#include "EGEInput.h"
+#include "EGEMap.h"
+#include "EGESignal.h"
 #include "Core/UI/WidgetFrame.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Components/Physics/PhysicsComponent.h"

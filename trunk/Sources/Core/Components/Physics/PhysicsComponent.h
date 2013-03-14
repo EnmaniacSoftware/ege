@@ -5,16 +5,16 @@
    PhysicsComponent can be used by physics simulators.
 */
 
-#include <EGE.h>
+#include "EGE.h"
 #include "Core/Components/Component.h"
 #include "Core/Math/Quaternion.h"
 #include "Core/Math/Vector4.h"
 #include "Core/Math/Matrix4.h"
 #include "Core/Physics/PhysicsJoint.h"
-#include <EGEPhysics.h>
-#include <EGEList.h>
-#include <EGEDynamicArray.h>
-#include <EGESignal.h>
+#include "EGEPhysics.h"
+#include "EGEList.h"
+#include "EGEDynamicArray.h"
+#include "EGESignal.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -4,10 +4,10 @@
 /** This class is intended to be a part of Camera class rather then stand alone instance.
  */
 
-#include <EGE.h>
-#include <EGEMatrix.h>
-#include <EGERect.h>
-#include <EGEPlane.h>
+#include "EGE.h"
+#include "EGEMatrix.h"
+#include "EGERect.h"
+#include "EGEPlane.h"
 #include "Core/Math/Angle.h"
 
 EGE_NAMESPACE_BEGIN

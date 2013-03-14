@@ -5,11 +5,11 @@
  *   Upon loading it contains data buffer filled with data in the given location.
  */
 
-#include <EGE.h>
+#include "EGE.h"
 #include "Core/Data/DataBuffer.h"
 #include "Core/Resource/Resource.h"
-#include <EGEXml.h>
-#include <EGEString.h>
+#include "EGEXml.h"
+#include "EGEString.h"
 
 EGE_NAMESPACE_BEGIN
 

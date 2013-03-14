@@ -5,15 +5,15 @@
  *  Usually, sprites change their look (area within sheet) while time passes. This can be used to achieve some basic frame based animated images.
  */
 
-#include <EGE.h>
-#include <EGETime.h>
-#include <EGEFlags.h>
-#include <EGEDynamicArray.h>
-#include <EGESignal.h>
-#include <EGESpriteAnimation.h>
-#include <EGEAnimation.h>
-#include <EGESequencer.h>
-#include <EGEMatrix.h>
+#include "EGE.h"
+#include "EGETime.h"
+#include "EGEFlags.h"
+#include "EGEDynamicArray.h"
+#include "EGESignal.h"
+#include "EGESpriteAnimation.h"
+#include "EGEAnimation.h"
+#include "EGESequencer.h"
+#include "EGEMatrix.h"
 #include "Core/Graphics/TextureImage.h"
 
 EGE_NAMESPACE_BEGIN

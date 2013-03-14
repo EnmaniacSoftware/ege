@@ -1,10 +1,10 @@
 #ifndef EGE_CORE_RENDERCOMPONENT_H
 #define EGE_CORE_RENDERCOMPONENT_H
 
-#include <EGE.h>
-#include <EGEGraphics.h>
-#include <EGEVertexBuffer.h>
-#include <EGESignal.h>
+#include "EGE.h"
+#include "EGEGraphics.h"
+#include "EGEVertexBuffer.h"
+#include "EGESignal.h"
 #include "Core/Components/Component.h"
 
 EGE_NAMESPACE_BEGIN

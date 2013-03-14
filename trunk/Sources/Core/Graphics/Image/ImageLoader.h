@@ -4,11 +4,11 @@
 /*! Single threaded implementation for resource manager class.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGETime.h>
-#include <EGEImage.h>
-#include <EGESignal.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGETime.h"
+#include "EGEImage.h"
+#include "EGESignal.h"
 #include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN

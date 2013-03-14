@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_STRING_H
 #define EGE_CORE_STRING_H
 
-#include <EGETypes.h>
+#include "EGETypes.h"
 #include <string>
 
 EGE_NAMESPACE_BEGIN

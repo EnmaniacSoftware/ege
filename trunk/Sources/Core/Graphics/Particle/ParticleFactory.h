@@ -6,9 +6,9 @@
 *   through factory.
 */
 
-#include <EGE.h>
-#include <EGEParticle.h>
-#include <EGEMap.h>
+#include "EGE.h"
+#include "EGEParticle.h"
+#include "EGEMap.h"
 
 EGE_NAMESPACE_BEGIN
 

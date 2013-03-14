@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_GRAPHICS_COLOR_COLOR_H
 #define EGE_CORE_GRAPHICS_COLOR_COLOR_H
 
-#include <EGETypes.h>
+#include "EGETypes.h"
 
 EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

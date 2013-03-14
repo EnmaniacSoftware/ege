@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_SCENEMANAGER_H
 #define EGE_CORE_SCENEMANAGER_H
 
-#include <EGE.h>
-#include <EGETime.h>
+#include "EGE.h"
+#include "EGETime.h"
 
 EGE_NAMESPACE_BEGIN
 

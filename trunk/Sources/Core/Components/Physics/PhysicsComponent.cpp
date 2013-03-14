@@ -1,6 +1,6 @@
 #include "Core/Application/Application.h"
-#include <EGEPhysics.h>
-#include <EGEDebug.h>
+#include "EGEPhysics.h"
+#include "EGEDebug.h"
 
 #if EGE_PHYSICS_BOX2D
 #include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"

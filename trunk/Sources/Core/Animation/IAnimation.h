@@ -4,8 +4,8 @@
 /** Interface for all kinds of animations. 
  */
 
-#include <EGEString.h>
-#include <EGETime.h>
+#include "EGEString.h"
+#include "EGETime.h"
 
 EGE_NAMESPACE_BEGIN
 

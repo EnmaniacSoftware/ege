@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_TIMER_H
 #define EGE_CORE_TIMER_H
 
-#include <EGE.h>
-#include <EGESignal.h>
+#include "EGE.h"
+#include "EGESignal.h"
 
 EGE_NAMESPACE_BEGIN
 

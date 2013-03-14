@@ -1,10 +1,10 @@
 #ifndef EGE_CORE_IMAGE_H
 #define EGE_CORE_IMAGE_H
 
-#include <EGEFile.h>
-#include <EGEImage.h>
-#include <EGEString.h>
-#include <EGEDataBuffer.h>
+#include "EGEFile.h"
+#include "EGEImage.h"
+#include "EGEString.h"
+#include "EGEDataBuffer.h"
 
 EGE_NAMESPACE_BEGIN
 

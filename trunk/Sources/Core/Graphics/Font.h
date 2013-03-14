@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_GRAPHICS_FONT_H
 #define EGE_CORE_GRAPHICS_FONT_H
 
-#include <EGE.h>
-#include <EGEText.h>
-#include <EGEMap.h>
+#include "EGE.h"
+#include "EGEText.h"
+#include "EGEMap.h"
 #include "Core/Resource/ResourceFont.h"
 
 EGE_NAMESPACE_BEGIN

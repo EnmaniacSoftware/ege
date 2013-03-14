@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_RENDERWINDOW_H
 #define EGE_CORE_RENDERWINDOW_H
 
-#include <EGE.h>
+#include "EGE.h"
 #include "Core/Graphics/Render/RenderTarget.h"
 
 EGE_NAMESPACE_BEGIN

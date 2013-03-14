@@ -5,11 +5,11 @@
  *  Textures images refer to Texture objects. This is especially handy for atlasing.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
-#include <EGERect.h>
-#include <EGEAngle.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
+#include "EGERect.h"
+#include "EGEAngle.h"
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN

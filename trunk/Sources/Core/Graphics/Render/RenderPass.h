@@ -4,9 +4,9 @@
 /** Class describing single render pass for a material. 
  */
 
-#include <EGE.h>
-#include <EGEGraphics.h>
-#include <EGEColorTransform.h>
+#include "EGE.h"
+#include "EGEGraphics.h"
+#include "EGEColorTransform.h"
 #include "Core/Graphics/TextureImage.h"
 #include "Core/Graphics/Program.h"
 

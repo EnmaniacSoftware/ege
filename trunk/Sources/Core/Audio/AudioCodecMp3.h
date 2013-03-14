@@ -4,7 +4,7 @@
 /** MP3 audio file codec specialization. 
 */
 
-#include <EGE.h>
+#include "EGE.h"
 #include "Core/Audio/AudioCodec.h"
 
 EGE_NAMESPACE_BEGIN

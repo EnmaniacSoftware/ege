@@ -5,17 +5,17 @@
  *  lifetime. 
  */
 
-#include <EGE.h>
-#include <EGETime.h>
-#include <EGEFlags.h>
-#include <EGEDynamicArray.h>
-#include <EGESignal.h>
-#include <EGEImagedAnimation.h>
-#include <EGEMatrix.h>
-#include <EGEMap.h>
-#include <EGEGraphics.h>
-#include <EGEVector.h>
-#include <EGEAnimation.h>
+#include "EGE.h"
+#include "EGETime.h"
+#include "EGEFlags.h"
+#include "EGEDynamicArray.h"
+#include "EGESignal.h"
+#include "EGEImagedAnimation.h"
+#include "EGEMatrix.h"
+#include "EGEMap.h"
+#include "EGEGraphics.h"
+#include "EGEVector.h"
+#include "EGEAnimation.h"
 
 EGE_NAMESPACE_BEGIN
 

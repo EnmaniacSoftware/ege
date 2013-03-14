@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_DATABUFFER_H
 #define EGE_CORE_DATABUFFER_H
 
-#include <EGE.h>
-#include <EGEByteOrder.h>
+#include "EGE.h"
+#include "EGEByteOrder.h"
 
 EGE_NAMESPACE_BEGIN
 

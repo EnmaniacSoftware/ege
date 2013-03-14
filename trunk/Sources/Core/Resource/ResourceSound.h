@@ -4,11 +4,11 @@
 /** Sound resource definition class. This object (resource) contains definition of sound.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
-#include <EGETime.h>
-#include <EGEAudio.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
+#include "EGETime.h"
+#include "EGEAudio.h"
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN

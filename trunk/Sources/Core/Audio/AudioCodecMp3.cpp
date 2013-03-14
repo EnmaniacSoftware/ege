@@ -1,7 +1,7 @@
 #include "Core/Audio/AudioCodecMp3.h"
-#include <EGEAudio.h>
-#include <EGEMath.h>
-#include <EGEDebug.h>
+#include "EGEAudio.h"
+#include "EGEMath.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

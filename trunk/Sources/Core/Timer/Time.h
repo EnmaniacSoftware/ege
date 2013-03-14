@@ -5,7 +5,7 @@
   This class encapsulates time duration.
 */
 
-#include <EGETypes.h>
+#include "EGETypes.h"
 
 EGE_NAMESPACE_BEGIN
 

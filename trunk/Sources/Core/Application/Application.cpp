@@ -18,7 +18,7 @@
 #include "Core/Graphics/Image/ImageLoader.h"
 #include "Core/Debug/Debug.h"
 #include "Core/Debug/EngineInfo.h"
-#include <EGETimer.h>
+#include "EGETimer.h"
 
 #ifdef EGE_PLATFORM_WIN32
 #include "Win32/Application/ApplicationWin32_p.h"

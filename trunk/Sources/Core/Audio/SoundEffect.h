@@ -4,10 +4,10 @@
 /** Class representing sound effect interface.
 */
 
-#include <EGE.h>
-#include <EGESignal.h>
-#include <EGETime.h>
-#include <EGEList.h>
+#include "EGE.h"
+#include "EGESignal.h"
+#include "EGETime.h"
+#include "EGEList.h"
 
 EGE_NAMESPACE_BEGIN
 

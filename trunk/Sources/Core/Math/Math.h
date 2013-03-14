@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_MATH_H
 #define EGE_CORE_MATH_H
 
-#include <EGETypes.h>
-#include <EGEAlignment.h>
-#include <EGERandom.h>
+#include "EGETypes.h"
+#include "EGEAlignment.h"
+#include "EGERandom.h"
 
 EGE_NAMESPACE_BEGIN
 

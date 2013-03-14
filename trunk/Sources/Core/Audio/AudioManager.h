@@ -4,9 +4,9 @@
 /** Class managing audio.
  */
 
-#include <EGE.h>
-#include <EGETime.h>
-#include <EGEList.h>
+#include "EGE.h"
+#include "EGETime.h"
+#include "EGEList.h"
 #include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN

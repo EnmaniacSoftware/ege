@@ -4,9 +4,9 @@
 /** Base object representing programmable shader.
 */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEShader.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEShader.h"
 
 EGE_NAMESPACE_BEGIN
 

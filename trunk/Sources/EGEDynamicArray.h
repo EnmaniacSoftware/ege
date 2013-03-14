@@ -1,7 +1,7 @@
 #ifndef EGE_DYNAMIC_ARRAY_H
 #define EGE_DYNAMIC_ARRAY_H
 
-#include <EGETypes.h>
+#include "EGETypes.h"
 
 #if EGE_CONTAINERS_STL
 #include "Core/Containers/Stl/DynamicArray.h"

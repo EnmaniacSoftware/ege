@@ -3,7 +3,7 @@
 
 /*! This class provides access serialization between threads. */
 
-#include <EGE.h>
+#include "EGE.h"
 
 EGE_NAMESPACE_BEGIN
 

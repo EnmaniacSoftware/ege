@@ -5,14 +5,14 @@
  *  Imaged animation resources define how set of images if being changed during the time line.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
-#include <EGETime.h>
-#include <EGEDynamicArray.h>
-#include <EGEList.h>
-#include <EGERect.h>
-#include <EGEImagedAnimation.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
+#include "EGETime.h"
+#include "EGEDynamicArray.h"
+#include "EGEList.h"
+#include "EGERect.h"
+#include "EGEImagedAnimation.h"
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN

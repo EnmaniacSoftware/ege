@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_OVERLAY_H
 #define EGE_CORE_OVERLAY_H
 
-#include <EGEString.h>
-#include <EGETime.h>
-#include <EGEAlignment.h>
+#include "EGEString.h"
+#include "EGETime.h"
+#include "EGEAlignment.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 

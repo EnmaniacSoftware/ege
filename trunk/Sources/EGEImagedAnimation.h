@@ -2,8 +2,8 @@
 #define EGE_IMAGEDANIMATION_H
 
 #include "Core/Platform.h"
-#include <EGEMatrix.h>
-#include <EGEMaterial.h>
+#include "EGEMatrix.h"
+#include "EGEMaterial.h"
 
 EGE_NAMESPACE_BEGIN
 

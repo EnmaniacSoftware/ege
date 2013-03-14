@@ -5,13 +5,13 @@
  *   Upon loading it contains material object to be used in rendering. Materials consist of one or more render passes.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
-#include <EGEMath.h>
-#include <EGEList.h>
-#include <EGEGraphics.h>
-#include <EGETexture.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
+#include "EGEMath.h"
+#include "EGEList.h"
+#include "EGEGraphics.h"
+#include "EGETexture.h"
 #include "Core/Resource/Resource.h"
 #include "Core/Graphics/Material.h"
 

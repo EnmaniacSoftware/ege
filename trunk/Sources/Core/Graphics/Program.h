@@ -4,10 +4,10 @@
 /** Base object representing programmable (shader) program.
 */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEShader.h>
-#include <EGEList.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEShader.h"
+#include "EGEList.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -5,9 +5,9 @@
 // NOTE: scene object should not be wrapped around smart pointer as it is shared with children and it would prevent 
 //       correct deallocation
 
-#include <EGE.h>
-#include <EGETime.h>
-#include <EGEList.h>
+#include "EGE.h"
+#include "EGETime.h"
+#include "EGEList.h"
 #include "Core/Data/Node.h"
 #include "Core/Math/Matrix4.h"
 #include "Core/Graphics/Camera.h"

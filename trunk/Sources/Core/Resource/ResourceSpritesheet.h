@@ -6,9 +6,9 @@
  *  first (top) row to last (bottom) one.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN

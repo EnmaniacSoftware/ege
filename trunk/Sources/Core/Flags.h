@@ -4,7 +4,7 @@
 /** Class encpsulating type-safe OR-combinations of enum values.
  */
 
-#include <EGETypes.h>
+#include "EGETypes.h"
 
 EGE_NAMESPACE_BEGIN
 

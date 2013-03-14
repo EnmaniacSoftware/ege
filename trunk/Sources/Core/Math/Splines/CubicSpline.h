@@ -16,10 +16,10 @@
  *  f3x are the components of fourth base function polynomial applied to segment second control point.
  */
 
-#include <EGEDynamicArray.h>
-#include <EGEVector.h>
-#include <EGEMatrix.h>
-#include <EGESpline.h>
+#include "EGEDynamicArray.h"
+#include "EGEVector.h"
+#include "EGEMatrix.h"
+#include "EGESpline.h"
 #include "Core/Math/Splines/CurveSegment.h"
 
 EGE_NAMESPACE_BEGIN

@@ -5,8 +5,8 @@
  *   IndexBuffer base class. Instances of this class are used to define index array to vertex buffers.
  */
 
-#include <EGE.h>
-#include <EGEIndexBuffer.h>
+#include "EGE.h"
+#include "EGEIndexBuffer.h"
 
 EGE_NAMESPACE_BEGIN
 

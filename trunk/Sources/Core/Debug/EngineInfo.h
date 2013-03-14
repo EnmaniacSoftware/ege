@@ -5,8 +5,8 @@
  *  @note It is intended to be used internally only.
  */
 
-#include <EGE.h>
-#include <EGETime.h>
+#include "EGE.h"
+#include "EGETime.h"
 
 EGE_NAMESPACE_BEGIN
 

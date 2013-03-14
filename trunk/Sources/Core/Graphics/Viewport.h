@@ -1,10 +1,10 @@
 #ifndef EGE_CORE_VIEWPORT_H
 #define EGE_CORE_VIEWPORT_H
 
-#include <EGE.h>
-#include <EGEColor.h>
-#include <EGEMath.h>
-#include <EGEFlags.h>
+#include "EGE.h"
+#include "EGEColor.h"
+#include "EGEMath.h"
+#include "EGEFlags.h"
 #include "Core/Graphics/Camera.h"
 
 EGE_NAMESPACE_BEGIN

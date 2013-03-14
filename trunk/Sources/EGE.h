@@ -4,9 +4,9 @@
 #include "Core/Platform.h"
 #include "Core/ObjectUIDs.h"
 
-#include <EGEMemory.h>
-#include <EGETypes.h>
-#include <EGEFlags.h>
+#include "EGEMemory.h"
+#include "EGETypes.h"
+#include "EGEFlags.h"
 
 #include "Core/ListenerContainer.h"
 #include "Core/ConfigParams.h"

@@ -2,8 +2,8 @@
 #define EGE_CORE_IMAGEUTILS_H
 
 #include "Core/Graphics/Image/Image.h"
-#include <EGERect.h>
-#include <EGEVector.h>
+#include "EGERect.h"
+#include "EGEVector.h"
 
 EGE_NAMESPACE_BEGIN
 

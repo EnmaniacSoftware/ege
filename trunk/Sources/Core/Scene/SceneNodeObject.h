@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_SCENENODEOBJECT_H
 #define EGE_CORE_SCENENODEOBJECT_H
 
-#include <EGE.h>
-#include <EGEMatrix.h>
+#include "EGE.h"
+#include "EGEMatrix.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Scene/SceneNode.h"
 

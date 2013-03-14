@@ -1,10 +1,10 @@
 #ifndef EGE_CORE_RENDERTARGET_H
 #define EGE_CORE_RENDERTARGET_H
 
-#include <EGE.h>
-#include <EGEDynamicArray.h>
-#include <EGEAngle.h>
-#include <EGEDictionary.h>
+#include "EGE.h"
+#include "EGEDynamicArray.h"
+#include "EGEAngle.h"
+#include "EGEDictionary.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -3,8 +3,8 @@
 
 #ifdef EGE_AUDIO_NULL
 
-#include <EGE.h>
-#include <EGETime.h>
+#include "EGE.h"
+#include "EGETime.h"
 
 EGE_NAMESPACE_BEGIN
 

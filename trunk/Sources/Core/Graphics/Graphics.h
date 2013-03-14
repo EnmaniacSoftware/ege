@@ -1,10 +1,10 @@
 #ifndef EGE_CORE_GRAPHICS_H
 #define EGE_CORE_GRAPHICS_H
 
-#include <EGEMap.h>
-#include <EGESignal.h>
-#include <EGEDictionary.h>
-#include <EGEList.h>
+#include "EGEMap.h"
+#include "EGESignal.h"
+#include "EGEDictionary.h"
+#include "EGEList.h"
 
 EGE_NAMESPACE_BEGIN
 

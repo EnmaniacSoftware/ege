@@ -6,16 +6,16 @@
 *   according to predefined data.
 */
 
-#include <EGE.h>
-#include <EGEVertexBuffer.h>
-#include <EGEDynamicArray.h>
-#include <EGEList.h>
-#include <EGETime.h>
-#include <EGEColor.h>
-#include <EGEVector.h>
-#include <EGEScene.h>
-#include <EGEParticle.h>
-#include <EGESignal.h>
+#include "EGE.h"
+#include "EGEVertexBuffer.h"
+#include "EGEDynamicArray.h"
+#include "EGEList.h"
+#include "EGETime.h"
+#include "EGEColor.h"
+#include "EGEVector.h"
+#include "EGEScene.h"
+#include "EGEParticle.h"
+#include "EGESignal.h"
 
 EGE_NAMESPACE_BEGIN
 

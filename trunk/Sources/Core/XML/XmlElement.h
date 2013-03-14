@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_XML_XMLELEMENT_H
 #define EGE_CORE_XML_XMLELEMENT_H
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGETime.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGETime.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_XML_XMLATTRIBUTE_H
 #define EGE_CORE_XML_XMLATTRIBUTE_H
 
-#include <EGE.h>
-#include <EGEString.h>
+#include "EGE.h"
+#include "EGEString.h"
 
 EGE_NAMESPACE_BEGIN
 

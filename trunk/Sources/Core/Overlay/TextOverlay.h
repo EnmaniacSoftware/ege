@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_TEXTOVERLAY_H
 #define EGE_CORE_TEXTOVERLAY_H
 
-#include <EGETime.h>
-#include <EGEText.h>
-#include <EGEList.h>
+#include "EGETime.h"
+#include "EGEText.h"
+#include "EGEList.h"
 #include "Core/Overlay/Overlay.h"
 #include "Core/Graphics/Font.h"
 

@@ -4,12 +4,12 @@
 /** Objects of this class represents discreet sound effect.
 */
 
-#include <EGE.h>
-#include <EGEList.h>
-#include <EGEDataBuffer.h>
-#include <EGEString.h>
-#include <EGESignal.h>
-#include <EGETime.h>
+#include "EGE.h"
+#include "EGEList.h"
+#include "EGEDataBuffer.h"
+#include "EGEString.h"
+#include "EGESignal.h"
+#include "EGETime.h"
 #include "Core/Audio/SoundEffect.h"
 
 EGE_NAMESPACE_BEGIN

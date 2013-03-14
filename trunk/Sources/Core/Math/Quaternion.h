@@ -9,7 +9,7 @@
  *  then - conj(q) = + xi + yj + zk - w rotates from B to A (different path)
  */
 
-#include <EGETypes.h>
+#include "EGETypes.h"
 #include "Core/Math/Math.h"
 #include "Core/Math/Vector3.h"
 #include "Core/Math/Matrix4.h"

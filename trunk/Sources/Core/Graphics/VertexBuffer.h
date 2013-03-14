@@ -6,8 +6,8 @@
  *   Vertex arrays data are stored one after another (interleaved)
  */
 
-#include <EGE.h>
-#include <EGEList.h>
+#include "EGE.h"
+#include "EGEList.h"
 #include "Core/Graphics/VertexBufferTypes.h"
 
 EGE_NAMESPACE_BEGIN

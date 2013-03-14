@@ -5,12 +5,12 @@
  *  SpriteAnimation resources define how sequence of frames from sprite sheet should be animated (played).
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
-#include <EGETime.h>
-#include <EGESpriteAnimation.h>
-#include <EGEList.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
+#include "EGETime.h"
+#include "EGESpriteAnimation.h"
+#include "EGEList.h"
 #include "Core/Resource/Resource.h"
 #include "Core/Resource/ResourceSpritesheet.h"
 

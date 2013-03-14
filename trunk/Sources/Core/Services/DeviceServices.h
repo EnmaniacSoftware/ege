@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_SERVICES_DEVICESERVICES_H
 #define EGE_CORE_SERVICES_DEVICESERVICES_H
 
-#include <EGE.h>
-#include <EGEString.h>
+#include "EGE.h"
+#include "EGEString.h"
 
 EGE_NAMESPACE_BEGIN
 

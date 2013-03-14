@@ -4,8 +4,8 @@
 /** This class represents curve segment. It does not do anything except of being a data holder used by spline classes.
  */
 
-#include <EGEVector.h>
-#include <EGESignal.h>
+#include "EGEVector.h"
+#include "EGESignal.h"
 
 EGE_NAMESPACE_BEGIN
 

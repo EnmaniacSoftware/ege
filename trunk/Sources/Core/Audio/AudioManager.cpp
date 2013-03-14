@@ -3,7 +3,7 @@
 #include "Core/Event/Event.h"
 #include "Core/Event/EventIDs.h"
 #include "Core/Event/EventManager.h"
-#include <EGEResources.h>
+#include "EGEResources.h"
 
 #ifdef EGE_PLATFORM_WIN32
   #if EGE_AUDIO_OPENAL

@@ -4,7 +4,7 @@
 /** Sound effect responsible for fading volume out.
 */
 
-#include <EGE.h>
+#include "EGE.h"
 #include "Core/Audio/SoundEffect.h"
 
 EGE_NAMESPACE_BEGIN

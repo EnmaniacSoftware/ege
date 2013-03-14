@@ -4,12 +4,12 @@
 /** Particle affector resource definition class. This object (resource) contains definition of particle affector.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
-#include <EGETime.h>
-#include <EGEDictionary.h>
-#include <EGEParticle.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
+#include "EGETime.h"
+#include "EGEDictionary.h"
+#include "EGEParticle.h"
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN

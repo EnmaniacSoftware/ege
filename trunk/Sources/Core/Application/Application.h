@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_APPLICATION_H
 #define EGE_CORE_APPLICATION_H
 
-#include <EGE.h>
-#include <EGETime.h>
-#include <EGEDictionary.h>
+#include "EGE.h"
+#include "EGETime.h"
+#include "EGEDictionary.h"
 #include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN

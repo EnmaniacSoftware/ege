@@ -4,9 +4,9 @@
 /** This object represents debug root for framework. Most debugging tools and functionalities have root in this class. 
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEDebug.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

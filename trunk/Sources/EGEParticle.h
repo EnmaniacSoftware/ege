@@ -2,11 +2,11 @@
 #define EGE_PARTICLE_H
 
 #include "Core/Platform.h"
-#include <EGEVector.h>
-#include <EGEColor.h>
-#include <EGETime.h>
-#include <EGEDynamicArray.h>
-#include <EGEAngle.h>
+#include "EGEVector.h"
+#include "EGEColor.h"
+#include "EGETime.h"
+#include "EGEDynamicArray.h"
+#include "EGEAngle.h"
 
 EGE_NAMESPACE_BEGIN
 

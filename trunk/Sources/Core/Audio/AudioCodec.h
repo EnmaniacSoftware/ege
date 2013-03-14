@@ -4,8 +4,8 @@
 /** Class represents audio codec interface.
 */
 
-#include <EGE.h>
-#include <EGEDataBuffer.h>
+#include "EGE.h"
+#include "EGEDataBuffer.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -3,10 +3,10 @@
 
 #ifdef EGE_PHYSICS_NULL
 
-#include <EGE.h>
-#include <EGEVector.h>
-#include <EGEDynamicArray.h>
-#include <EGEPhysics.h>
+#include "EGE.h"
+#include "EGEVector.h"
+#include "EGEDynamicArray.h"
+#include "EGEPhysics.h"
 
 EGE_NAMESPACE_BEGIN
 

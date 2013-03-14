@@ -6,8 +6,8 @@
     unload etc.
  */
 
-#include <EGE.h>
-#include <EGEXml.h>
+#include "EGE.h"
+#include "EGEXml.h"
 #include "Core/Memory/Object.h"
 
 EGE_NAMESPACE_BEGIN

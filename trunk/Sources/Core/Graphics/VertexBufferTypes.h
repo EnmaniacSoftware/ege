@@ -2,7 +2,7 @@
 #define EGE_CORE_VERTEXBUFFERTYPES_H
 
 #include "Core/Platform.h"
-#include <EGEDynamicArray.h>
+#include "EGEDynamicArray.h"
 
 EGE_NAMESPACE_BEGIN
 

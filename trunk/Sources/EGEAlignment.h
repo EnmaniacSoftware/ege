@@ -2,7 +2,7 @@
 #define EGE_ALIGNMENT_H
 
 #include "Core/Platform.h"
-#include <EGEFlags.h>
+#include "EGEFlags.h"
 
 EGE_NAMESPACE_BEGIN
 

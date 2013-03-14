@@ -1,7 +1,7 @@
 #ifndef EGE_PHYSICS_H
 #define EGE_PHYSICS_H
 
-#include <EGETypes.h>
+#include "EGETypes.h"
 
 EGE_NAMESPACE_BEGIN
 

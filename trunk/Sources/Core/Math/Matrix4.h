@@ -10,9 +10,9 @@
  *
  */
 
-#include <EGETypes.h>
-#include <EGEDebug.h>
-#include <EGEVector.h>
+#include "EGETypes.h"
+#include "EGEDebug.h"
+#include "EGEVector.h"
 
 EGE_NAMESPACE_BEGIN
 

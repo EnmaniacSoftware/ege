@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_AUDIOUTILS_H
 #define EGE_CORE_AUDIOUTILS_H
 
-#include <EGE.h>
-#include <EGEDataBuffer.h>
-#include <EGEAudio.h>
+#include "EGE.h"
+#include "EGEDataBuffer.h"
+#include "EGEAudio.h"
 
 EGE_NAMESPACE_BEGIN
 

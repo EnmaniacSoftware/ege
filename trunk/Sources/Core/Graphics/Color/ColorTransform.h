@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_GRAPHICS_COLOR_COLORTRANSFORM_H
 #define EGE_CORE_GRAPHICS_COLOR_COLORTRANSFORM_H
 
-#include <EGETypes.h>
-#include <EGEColor.h>
+#include "EGETypes.h"
+#include "EGEColor.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -4,12 +4,12 @@
 /**  Widget resource definition class. This object (resource) contains definition of an arbitrary widget.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
-#include <EGEGraphics.h>
-#include <EGEList.h>
-#include <EGEDictionary.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
+#include "EGEGraphics.h"
+#include "EGEList.h"
+#include "EGEDictionary.h"
 #include "Core/UI/Widget.h"
 #include "Core/Resource/Resource.h"
 #include "Core/Resource/ResourceMaterial.h"

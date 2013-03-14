@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_ANGLE_H
 #define EGE_CORE_ANGLE_H
 
-#include <EGETypes.h>
-#include <EGEAngle.h>
-#include <EGEMath.h>
+#include "EGETypes.h"
+#include "EGEAngle.h"
+#include "EGEMath.h"
 
 EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

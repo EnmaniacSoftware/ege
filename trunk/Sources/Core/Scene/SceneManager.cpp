@@ -6,9 +6,9 @@
 #include "Core/Scene/SceneNode.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 #include "Core/Overlay/OverlayManager.h"
-#include <EGEGraphics.h>
+#include "EGEGraphics.h"
 
-#include <EGEScreen.h>
+#include "EGEScreen.h"
 
 EGE_NAMESPACE_BEGIN
 

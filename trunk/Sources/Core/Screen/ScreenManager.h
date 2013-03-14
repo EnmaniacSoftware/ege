@@ -5,10 +5,10 @@
     changes.
 */
 
-#include <EGE.h>
-#include <EGETime.h>
-#include <EGEList.h>
-#include <EGEInput.h>
+#include "EGE.h"
+#include "EGETime.h"
+#include "EGEList.h"
+#include "EGEInput.h"
 
 EGE_NAMESPACE_BEGIN
 

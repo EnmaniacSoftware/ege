@@ -12,8 +12,8 @@
         e.g. SceneNode, Bone
 */
 
-#include <EGE.h>
-#include <EGEList.h>
+#include "EGE.h"
+#include "EGEList.h"
 #include "Core/Math/Matrix4.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 

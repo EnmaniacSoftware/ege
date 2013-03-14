@@ -1,8 +1,8 @@
 #include "Core/Audio/AudioCodecOgg.h"
-#include <EGEAudio.h>
-#include <EGEMath.h>
-#include <EGEDebug.h>
-#include <EGEFile.h>
+#include "EGEAudio.h"
+#include "EGEMath.h"
+#include "EGEDebug.h"
+#include "EGEFile.h"
 
 #include "Core/Audio/stb_vorbis.c"
 

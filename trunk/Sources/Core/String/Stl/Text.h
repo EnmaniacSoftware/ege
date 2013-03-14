@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_TEXT_H
 #define EGE_CORE_TEXT_H
 
-#include <EGETypes.h>
+#include "EGETypes.h"
 #include <string>
 #include "Core/String/Stl/String.h"
 

@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_CAMERA_H
 #define EGE_CORE_CAMERA_H
 
-#include <EGEString.h>
-#include <EGEVector.h>
+#include "EGEString.h"
+#include "EGEVector.h"
 #include "Core/Graphics/Frustum.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 

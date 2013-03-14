@@ -1,7 +1,7 @@
 #ifndef EGE_MATH_H
 #define EGE_MATH_H
 
-#include <EGETypes.h>
+#include "EGETypes.h"
 
 EGE_NAMESPACE_BEGIN
 

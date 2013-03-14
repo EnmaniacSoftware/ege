@@ -5,13 +5,13 @@
     to all contained resources ie. when group is loaded, all contained resources are loaded as well.
  */
 
-#include <EGE.h>
-#include <EGEXml.h>
-#include <EGEString.h>
-#include <EGEStringList.h>
-#include <EGEList.h>
-#include <EGEMap.h>
-#include <EGESignal.h>
+#include "EGE.h"
+#include "EGEXml.h"
+#include "EGEString.h"
+#include "EGEStringList.h"
+#include "EGEList.h"
+#include "EGEMap.h"
+#include "EGESignal.h"
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN

@@ -5,10 +5,10 @@
  *  Texture resource can define any type of texture i.e. 2D, 3D or CUBE MAP. Upon loading it contains texture object to be used in rendering.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
-#include <EGETexture.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
+#include "EGETexture.h"
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN

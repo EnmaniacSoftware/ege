@@ -1,11 +1,11 @@
 #ifndef EGE_CORE_GRAPHICS_RENDER_RENDERSYSTEM_H
 #define EGE_CORE_GRAPHICS_RENDER_RENDERSYSTEM_H
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEMatrix.h>
-#include <EGEMutex.h>
-#include <EGEObjectList.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEMatrix.h"
+#include "EGEMutex.h"
+#include "EGEObjectList.h"
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include "Core/Graphics/Render/Renderer.h"
 #include "Core/Components/Render/RenderComponent.h"
