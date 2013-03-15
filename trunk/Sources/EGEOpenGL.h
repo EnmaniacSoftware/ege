@@ -5,13 +5,12 @@
 
 #ifdef EGE_PLATFORM_WIN32
 #include <windows.h>
-#include <gl/GL.h>
+#include <gl/gl.h>
+#elif EGE_PLATFORM_AIRPLAY
+#include <GLES/gl.h>
 #elif EGE_PLATFORM_IOS
 #import <OpenGLES/ES1/gl.h>
-#else
-#include <GLES/gl.h>
 #endif
-//#import <OpenGLES/ES1/gl.h>
 
 #if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGL_3
 #include "Core/Graphics/OpenGL/ExtensionsOGL.h"

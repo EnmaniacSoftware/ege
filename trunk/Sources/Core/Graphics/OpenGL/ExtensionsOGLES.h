@@ -2,20 +2,19 @@
 #define EGE_CORE_EXTENSIONSOGLES_H
 
 #include "EGE.h"
-
-#if EGE_PLATFORM_AIRPLAY
-#include <GLES/egl.h>
-#include <GLES/glext.h>
-#elif EGE_PLATFORM_IOS
-#import <OpenGLES/ES1/gl.h>
-#import <OpenGLES/ES1/glext.h>
-#endif // EGE_PLATFORM_AIRPLAY
+#include "EGEOpenGL.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// frame buffer object
+// GL_OES_framebuffer_object
+typedef void (GL_APIENTRY* PFNGLBINDFRAMEBUFFEROESPROC) (GLenum target, GLuint framebuffer);
+typedef void (GL_APIENTRY* PFNGLDELETEFRAMEBUFFERSOESPROC) (GLsizei n, const GLuint* framebuffers);
+typedef void (GL_APIENTRY* PFNGLGENFRAMEBUFFERSOESPROC) (GLsizei n, GLuint* framebuffers);
+typedef GLenum (GL_APIENTRY* PFNGLCHECKFRAMEBUFFERSTATUSOESPROC) (GLenum target);
+typedef void (GL_APIENTRY* PFNGLFRAMEBUFFERTEXTURE2DOESPROC) (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+
 extern PFNGLBINDFRAMEBUFFEROESPROC glBindFramebuffer;
 extern PFNGLDELETEFRAMEBUFFERSOESPROC glDeleteFramebuffers;
 extern PFNGLGENFRAMEBUFFERSOESPROC glGenFramebuffers;
@@ -27,12 +26,15 @@ extern PFNGLFRAMEBUFFERTEXTURE2DOESPROC glFramebufferTexture2D;
 #define GL_FRAMEBUFFER_BINDING_EXT  GL_FRAMEBUFFER_BINDING_OES
 #define GL_FRAMEBUFFER_COMPLETE_EXT GL_FRAMEBUFFER_COMPLETE_OES
 
-// point sprites
+// GL_OES_point_sprite
 #define GL_POINT_SPRITE_ARB     GL_POINT_SPRITE_OES
 #define GL_COORD_REPLACE_ARB    GL_COORD_REPLACE_OES
 #define GL_POINT_SIZE_ARRAY_ARB GL_POINT_SIZE_ARRAY_OES
 
-// map buffer
+// GL_OES_mapbuffer
+typedef void* (GL_APIENTRY* PFNGLMAPBUFFEROESPROC) (GLenum target, GLenum access);
+typedef GLboolean (GL_APIENTRY* PFNGLUNMAPBUFFEROESPROC) (GLenum target);
+
 extern PFNGLMAPBUFFEROESPROC glMapBuffer;
 extern PFNGLUNMAPBUFFEROESPROC glUnmapBuffer;
 
