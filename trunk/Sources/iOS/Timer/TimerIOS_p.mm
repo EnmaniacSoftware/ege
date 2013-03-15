@@ -1,34 +1,27 @@
 #include "Core/Timer/Timer.h"
-
-#ifdef EGE_PLATFORM_WIN32
-  #include "Win32/Timer/TimerWin32_p.h"
-#elif EGE_PLATFORM_AIRPLAY
-  #include "Airplay/Timer/TimerAirplay_p.h"
-#elif EGE_PLATFORM_IOS
-  #include "iOS/Timer/TimerIOS_p.h"
-#endif
+#include "iOS/Timer/TimerIOSS_p.h"
+#include "Core/Math/Math.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Timer::Timer()
+void TimerPrivate::Reset()
 {
-  TimerPrivate::Reset();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 Timer::GetMiliseconds()
+s64 TimerPrivate::GetMiliseconds()
 {
-  return TimerPrivate::GetMiliseconds();
+  return 0;//(s64) s3eTimerGetMs();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 Timer::GetMicroseconds()
+s64 TimerPrivate::GetMicroseconds()
 {
-  return TimerPrivate::GetMicroseconds();
+  return 0;//(s64) s3eTimerGetMs() * 1000;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Timer::IsHighResolution()
+bool TimerPrivate::IsHighResolution()
 {
-  return TimerPrivate::IsHighResolution();
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
