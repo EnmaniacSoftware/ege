@@ -46,6 +46,8 @@ extern PFNGLUNMAPBUFFEROESPROC glUnmapBuffer;
 
 #define GL_WRITE_ONLY GL_WRITE_ONLY_OES
 
+#define GL_UNSIGNED_INT 0x1405
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

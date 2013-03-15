@@ -1,4 +1,4 @@
-#include <EGEApplication.h>
+#include "EGEApplication.h"
 #include "Core/Graphics/OpenGL/ES 1.0/RenderSystemOGLES1_p.h"
 #include "Core/Graphics/OpenGL/ExtensionsOGLES.h"
 #include "Core/Components/Render/RenderComponent.h"
@@ -17,8 +17,8 @@
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/TextureImage.h"
 #include "Core/Graphics/Render/RenderQueue.h"
-#include <EGETimer.h>
-#include <EGEDevice.h>
+#include "EGETimer.h"
+#include "EGEDevice.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -61,6 +61,9 @@ static GLenum MapBlendFactor(EGEGraphics::BlendFactor factor)
     case EGEGraphics::BF_DST_ALPHA:           result = GL_DST_ALPHA; break;
     case EGEGraphics::BF_ONE_MINUS_SRC_ALPHA: result = GL_ONE_MINUS_SRC_ALPHA; break;
     case EGEGraphics::BF_ONE_MINUS_DST_ALPHA: result = GL_ONE_MINUS_DST_ALPHA; break;
+      
+    default:
+      break;
   }
 
   return result;
@@ -79,6 +82,9 @@ static GLint MapPrimitiveType(EGETexture::EnvironmentMode mode)
     case EGETexture::EM_DECAL:    result = GL_DECAL; break;
     case EGETexture::EM_MODULATE: result = GL_MODULATE; break;
     case EGETexture::EM_REPLACE:  result = GL_REPLACE; break;
+
+    default:
+      break;
   }
 
   return result;
@@ -91,9 +97,24 @@ static GLenum MapIndexSize(EGEIndexBuffer::IndexSize size)
 
   switch (size)
   {
-    case EGEIndexBuffer::IS_8BIT:   result = GL_UNSIGNED_BYTE; break;
-    case EGEIndexBuffer::IS_16BIT:  result = GL_UNSIGNED_SHORT; break;
-    case EGEIndexBuffer::IS_32BIT:  result = GL_UNSIGNED_INT; break;
+    case EGEIndexBuffer::IS_8BIT:
+      
+      result = GL_UNSIGNED_BYTE;
+      break;
+    
+    case EGEIndexBuffer::IS_16BIT:
+      
+      result = GL_UNSIGNED_SHORT;
+      break;
+    
+    case EGEIndexBuffer::IS_32BIT:
+      
+      EGE_ASSERT(Device::HasRenderCapability(RENDER_CAPS_ELEMENT_INDEX_UINT));
+      result = GL_UNSIGNED_INT;
+      break;
+      
+    default:
+      break;
   }
 
   return result;
@@ -110,6 +131,9 @@ static GLint MapTextureFilter(EGETexture::Filter filter)
     case EGETexture::TRILINEAR:         result = GL_LINEAR; break;
     case EGETexture::MIPMAP_BILINEAR:   result = GL_LINEAR_MIPMAP_NEAREST; break;
     case EGETexture::MIPMAP_TRILINEAR:  result = GL_LINEAR_MIPMAP_LINEAR; break;
+
+    default:
+      break;
   }
 
   return result;
@@ -124,6 +148,9 @@ static GLint MapTextureAddressingMode(EGETexture::AddressingMode mode)
   {
     case EGETexture::AM_CLAMP:  result = GL_CLAMP_TO_EDGE; break;
     case EGETexture::AM_REPEAT: result = GL_REPEAT; break;
+
+    default:
+      break;
   }
 
   return result;
@@ -364,6 +391,9 @@ void RenderSystemPrivate::flush()
               //                     static_cast<char*>( vertexData )+iter->uiOffset );
               //  glEnableClientState( GL_TEXTURE_COORD_ARRAY );
               //  break;
+              default:
+                
+                break;
             }
           }
 
@@ -547,7 +577,7 @@ void RenderSystemPrivate::bindTexture(GLenum target, GLuint textureId)
   OGL_CHECK();
 
   // map texture target into texture binding query value
-  GLenum textureBinding;
+  GLenum textureBinding = GL_TEXTURE_BINDING_2D;
   switch (target)
   {
     case GL_TEXTURE_2D: textureBinding = GL_TEXTURE_BINDING_2D; break;
@@ -555,6 +585,7 @@ void RenderSystemPrivate::bindTexture(GLenum target, GLuint textureId)
     default:
 
       EGE_ASSERT("Incorrect texture binding!");
+      break;
   }
 
   // query texture Id bound to given target
@@ -663,6 +694,12 @@ void RenderSystemPrivate::detectCapabilities()
   if (isExtensionSupported("GL_EXT_texture_compression_s3tc"))
   {
     Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_S3TC, true);
+  }
+
+  // check for Uint32 element indicies support
+  if (isExtensionSupported("GL_OES_element_index_uint"))
+  {
+    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT, true);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

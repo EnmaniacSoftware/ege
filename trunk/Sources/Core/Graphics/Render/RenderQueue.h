@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_RENDERQUEUE_H
 #define EGE_CORE_RENDERQUEUE_H
 
-#include <EGE.h>
+#include "EGE.h"
 #include "Core/Math/Matrix4.h"
 #include "Core/Components/Render/RenderComponent.h"
 

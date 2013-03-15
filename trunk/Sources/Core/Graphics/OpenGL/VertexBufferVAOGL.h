@@ -5,7 +5,7 @@
  *   VertexBuffer base class specializtion based on Vertex Arrays.
  */
 
-#include <EGE.h>
+#include "EGE.h"
 #include "Core/Graphics/VertexBuffer.h"
 
 EGE_NAMESPACE_BEGIN

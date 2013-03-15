@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <cctype>
 #include <stdarg.h>
-#include <EGEDynamicArray.h>
-#include <EGEMath.h>
+#include "EGEDynamicArray.h"
+#include "EGEMath.h"
 
 EGE_NAMESPACE_BEGIN
 

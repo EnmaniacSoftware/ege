@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_RENDERTEXTUREFBOOGL_H
 #define EGE_CORE_RENDERTEXTUREFBOOGL_H
 
-#include <EGE.h>
-#include <EGEOpenGL.h>
+#include "EGE.h"
+#include "EGEOpenGL.h"
 #include "Core/Graphics/Render/RenderTarget.h"
 
 EGE_NAMESPACE_BEGIN

@@ -5,8 +5,8 @@
  *   IndexBuffer base class specialization based on Vertex Arrays.
  */
 
-#include <EGE.h>
-#include <EGEIndexBuffer.h>
+#include "EGE.h"
+#include "EGEIndexBuffer.h"
 
 EGE_NAMESPACE_BEGIN
 

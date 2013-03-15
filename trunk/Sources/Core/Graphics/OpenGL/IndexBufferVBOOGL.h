@@ -5,9 +5,9 @@
  *   IndexBuffer base class specialization based on Vertex Buffer Objects extension.
  */
 
-#include <EGE.h>
+#include "EGE.h"
 #include "Core/Graphics/IndexBuffer.h"
-#include <EGEOpenGL.h>
+#include "EGEOpenGL.h"
 
 EGE_NAMESPACE_BEGIN
 

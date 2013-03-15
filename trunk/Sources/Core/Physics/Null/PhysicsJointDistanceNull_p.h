@@ -3,7 +3,7 @@
 
 #ifdef EGE_PHYSICS_NULL
 
-#include <EGE.h>
+#include "EGE.h"
 
 EGE_NAMESPACE_BEGIN
 

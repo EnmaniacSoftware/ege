@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_TEXTURE2D_PRIVATE_H
 #define EGE_CORE_TEXTURE2D_PRIVATE_H
 
-#include <EGE.h>
-#include <EGETexture.h>
-#include <EGEOpenGL.h>
+#include "EGE.h"
+#include "EGETexture.h"
+#include "EGEOpenGL.h"
 
 EGE_NAMESPACE_BEGIN
 

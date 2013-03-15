@@ -1,6 +1,6 @@
 #include "Core/Application/Application.h"
-#include <EGEPhysics.h>
-#include <EGEDebug.h>
+#include "EGEPhysics.h"
+#include "EGEDebug.h"
 
 #ifdef EGE_PHYSICS_BOX2D
 #include "Core/Physics/Box2D/PhysicsJointDistanceBox2D_p.h"

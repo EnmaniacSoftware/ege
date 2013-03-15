@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_RENDERTEXTURECOPYOGL_H
 #define EGE_CORE_RENDERTEXTURECOPYOGL_H
 
-#include <EGE.h>
-#include <EGEOpenGL.h>
+#include "EGE.h"
+#include "EGEOpenGL.h"
 #include "Core/Graphics/Render/RenderTarget.h"
 
 EGE_NAMESPACE_BEGIN

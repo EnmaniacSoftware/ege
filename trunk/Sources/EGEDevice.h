@@ -57,6 +57,7 @@ namespace EGEDevice
     RENDER_CAPS_VERTEX_SHADER,                            /*!< Vertex shader support (GL_ARB_vertex_shader). */
     RENDER_CAPS_FRAGMENT_SHADER,                          /*!< Fragment shader support (GL_ARB_fragment_shader). */
     RENDER_CAPS_VERTEX_ARRAY_OBJECTS,                     /*!< Vertex array objects support (GL_ARB_vertex_array_object). */
+    RENDER_CAPS_ELEMENT_INDEX_UINT,                       /*!< Indexing vertices with Uint32 support (GL_OES_element_index_uint). */
     RENDER_CAPS_COUNT
   };
 }

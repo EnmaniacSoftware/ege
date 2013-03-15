@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_GRAPHICS_OPENGLES10_RENDERSYSTEM_PRIVATE_H
 #define EGE_CORE_GRAPHICS_OPENGLES10_RENDERSYSTEM_PRIVATE_H
 
-#include <EGE.h>
-#include <EGEOpenGL.h>
-#include <EGEDynamicArray.h>
+#include "EGE.h"
+#include "EGEOpenGL.h"
+#include "EGEDynamicArray.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Components/Render/RenderComponent.h"
 
