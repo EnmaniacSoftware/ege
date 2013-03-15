@@ -46,6 +46,7 @@ CODING:
    entries at the begining or sth.
  - Re-design PhysicsManager. Add NULL physics
  - Re-design AudioManager. Add NULL audio.
+ - OGL: If shaders and programs for OGLES 2.x are the same as for OGL make only ONE implementation. OGLES 1.x and OGL 2.x can use the same with NULLed function pointers
 
 ISSUES:
 
