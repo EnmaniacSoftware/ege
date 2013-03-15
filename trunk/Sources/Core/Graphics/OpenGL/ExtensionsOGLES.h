@@ -1,9 +1,15 @@
 #ifndef EGE_CORE_EXTENSIONSOGLES_H
 #define EGE_CORE_EXTENSIONSOGLES_H
 
-#include <EGE.h>
+#include "EGE.h"
+
+#if EGE_PLATFORM_AIRPLAY
 #include <GLES/egl.h>
 #include <GLES/glext.h>
+#elif EGE_PLATFORM_IOS
+#import <OpenGLES/ES1/gl.h>
+#import <OpenGLES/ES1/glext.h>
+#endif // EGE_PLATFORM_AIRPLAY
 
 EGE_NAMESPACE_BEGIN
 

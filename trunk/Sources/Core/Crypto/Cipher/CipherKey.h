@@ -3,9 +3,9 @@
 
 /** Class representing key used to cipher data. */
 
-#include <EGEString.h>
-#include <EGEDataBuffer.h>
-#include <EGEDebug.h>
+#include "EGEString.h"
+#include "EGEDataBuffer.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

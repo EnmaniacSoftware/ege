@@ -4,10 +4,10 @@
 /** Dialogs are specialization of Widgets. Dialogs typically have title and main content areas.
  */
 
-#include <EGEString.h>
-#include <EGETime.h>
-#include <EGEAlignment.h>
-#include <EGEMap.h>
+#include "EGEString.h"
+#include "EGETime.h"
+#include "EGEAlignment.h"
+#include "EGEMap.h"
 #include "Core/UI/Widget.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Components/Physics/PhysicsComponent.h"

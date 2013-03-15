@@ -1,6 +1,6 @@
 #include "Core/Graphics/OpenGL/IndexBufferVAOGL.h"
 #include "Core/Data/DataBuffer.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -51,7 +51,7 @@ void* IndexBufferVA::lock(u32 offset, u32 count)
   EGE_ASSERT(!m_locked);
 
   // check if and any data to lock
-  if (0 <= count)
+  if (0 < count)
   {
     // check if inside the buffer
     if ((offset + count) * indexSize() <= m_buffer->size())

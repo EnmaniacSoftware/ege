@@ -6,6 +6,8 @@
 #ifdef EGE_PLATFORM_WIN32
 #include <windows.h>
 #include <gl/GL.h>
+#elif EGE_PLATFORM_IOS
+#import <OpenGLES/ES1/gl.h>
 #else
 #include <GLES/gl.h>
 #endif

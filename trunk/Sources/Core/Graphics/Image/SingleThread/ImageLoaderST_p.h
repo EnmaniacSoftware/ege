@@ -6,10 +6,10 @@
 /*! Single threaded implementation for image loader class.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGETime.h>
-#include <EGEImage.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGETime.h"
+#include "EGEImage.h"
 #include "Core/Graphics/Image/ImageLoader.h"
 
 EGE_NAMESPACE_BEGIN

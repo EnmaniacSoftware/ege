@@ -1,5 +1,5 @@
 #include "Core/Graphics/Color/Color.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -1,5 +1,5 @@
 #include "Core/Timer/Timer.h"
-#include "iOS/Timer/TimerIOSS_p.h"
+#include "iOS/Timer/TimerIOS_p.h"
 #include "Core/Math/Math.h"
 
 EGE_NAMESPACE_BEGIN

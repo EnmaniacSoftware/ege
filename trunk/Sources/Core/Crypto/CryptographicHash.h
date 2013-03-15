@@ -3,8 +3,8 @@
 
 /** Class providing the way to generate cryptographic hashes. */
 
-#include <EGEDataBuffer.h>
-#include <EGEHash.h>
+#include "EGEDataBuffer.h"
+#include "EGEHash.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -1,6 +1,6 @@
 #include "Core/Graphics/IndexBuffer.h"
 #include "Core/Data/DataBuffer.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

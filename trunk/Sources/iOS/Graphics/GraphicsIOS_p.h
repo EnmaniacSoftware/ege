@@ -1,7 +1,7 @@
 #ifndef EGE_IOS_GRAPHICS_PRIVATE_H
 #define EGE_IOS_GRAPHICS_PRIVATE_H
 
-#include <EGE.h>
+#include "EGE.h"
 
 EGE_NAMESPACE_BEGIN
 

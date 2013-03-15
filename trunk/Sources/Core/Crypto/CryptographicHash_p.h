@@ -5,7 +5,7 @@
 
 #include "Core/Crypto/CryptographicHash.h"
 #include "Core/Crypto/md5/md5.h"
-#include <EGEDataBuffer.h>
+#include "EGEDataBuffer.h"
 
 EGE_NAMESPACE_BEGIN
 

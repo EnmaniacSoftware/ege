@@ -3,8 +3,8 @@
 
 /** Class providing the way to encrypt/decrypt data. */
 
-#include <EGEDataBuffer.h>
-#include <EGECipher.h>
+#include "EGEDataBuffer.h"
+#include "EGECipher.h"
 #include "Core/Crypto/Cipher/CipherKey.h"
 
 EGE_NAMESPACE_BEGIN

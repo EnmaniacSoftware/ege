@@ -3,7 +3,7 @@
 #include "Core/Application/Application.h"
 #include "Core/Audio/Null/AudioManagerNull_p.h"
 #include "Core/Audio/AudioManager.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE
 

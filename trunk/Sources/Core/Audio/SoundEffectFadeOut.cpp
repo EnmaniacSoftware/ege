@@ -1,6 +1,6 @@
 #include "Core/Audio/SoundEffectFadeOut.h"
 #include "Core/Audio/Sound.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

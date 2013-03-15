@@ -7,7 +7,7 @@ extern "C"
 }
 
 #include "Core/Graphics/JpegDataSrcFile.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -4,7 +4,7 @@
 /** Private implementation for XOR cipher. */
 
 #include "Core/Crypto/Cipher/Cipher_p.h"
-#include <EGEDataBuffer.h>
+#include "EGEDataBuffer.h"
 
 EGE_NAMESPACE_BEGIN
 

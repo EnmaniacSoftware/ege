@@ -1,7 +1,7 @@
 #include "Core/Graphics/Image/ImageUtils.h"
-#include <EGEDataBuffer.h>
-#include <EGEColor.h>
-#include <EGEDebug.h>
+#include "EGEDataBuffer.h"
+#include "EGEColor.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

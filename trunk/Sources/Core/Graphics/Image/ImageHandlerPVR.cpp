@@ -1,5 +1,5 @@
 #include "Core/Graphics/Image/ImageHandlerPVR.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -203,7 +203,7 @@ PImage ImageHandlerPVR::Load(PObject buffer, PixelFormat format)
   else
   {
     const u32 rgba    = 'r' | ('g' << 8) | ('b' << 16) | ('a' << 24);
-    const u32 rgb     = 'r' | ('g' << 8) | ('b' << 16) | (0 << 24);
+    //const u32 rgb     = 'r' | ('g' << 8) | ('b' << 16) | (0 << 24);
     const u32 pf5551  = 0x01050505;
     const u32 pf4444  = 0x04040404;
 

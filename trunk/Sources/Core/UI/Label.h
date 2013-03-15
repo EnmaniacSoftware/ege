@@ -4,12 +4,12 @@
 /** Labels are specialization of Widgets.
  */
 
-#include <EGEString.h>
-#include <EGETime.h>
-#include <EGEAlignment.h>
-#include <EGEMap.h>
-#include <EGESignal.h>
-#include <EGEOverlay.h>
+#include "EGEString.h"
+#include "EGETime.h"
+#include "EGEAlignment.h"
+#include "EGEMap.h"
+#include "EGESignal.h"
+#include "EGEOverlay.h"
 #include "Core/UI/Widget.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Components/Physics/PhysicsComponent.h"

@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_IMAGE_HANDLER_PNG_H
 #define EGE_CORE_IMAGE_HANDLER_PNG_H
 
-#include <EGEImage.h>
+#include "EGEImage.h"
 
 EGE_NAMESPACE_BEGIN
   

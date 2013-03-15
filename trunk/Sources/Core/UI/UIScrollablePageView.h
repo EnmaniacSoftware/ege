@@ -4,12 +4,12 @@
 /** Specialization of UIScrollView. Allows adding content to a set of pages and controls the scrolling between pages.
  */
 
-#include <EGETime.h>
-#include <EGEGraphics.h>
-#include <EGEInput.h>
-#include <EGEPhysics.h>
-#include <EGEList.h>
-#include <EGEMap.h>
+#include "EGETime.h"
+#include "EGEGraphics.h"
+#include "EGEInput.h"
+#include "EGEPhysics.h"
+#include "EGEList.h"
+#include "EGEMap.h"
 #include "Core/UI/UIScrollView.h"
 
 EGE_NAMESPACE_BEGIN

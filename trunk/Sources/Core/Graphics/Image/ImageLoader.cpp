@@ -3,7 +3,7 @@
 #include "Core/Event/Event.h"
 #include "Core/Event/EventIDs.h"
 #include "Core/Event/EventManager.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 #if EGE_IMAGEMANAGER_SINGLE_THREAD
 #include "Core/Graphics/Image/SingleThread/ImageLoaderST_p.h"

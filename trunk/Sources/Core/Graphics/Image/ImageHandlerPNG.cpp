@@ -1,5 +1,5 @@
 #include "Core/Graphics/Image/ImageHandlerPNG.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 extern "C"
 {

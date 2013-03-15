@@ -3,8 +3,8 @@
 
 #ifdef EGE_PHYSICS_NULL
 
-#include <EGE.h>
-#include <EGETime.h>
+#include "EGE.h"
+#include "EGETime.h"
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Physics/PhysicsJointDistance.h"
 #include "Core/Physics/PhysicsJointAttract.h"

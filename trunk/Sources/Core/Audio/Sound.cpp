@@ -3,8 +3,8 @@
 #include "Core/Audio/AudioCodecOgg.h"
 #include "Core/Audio/AudioCodecMp3.h"
 #include "Core/Audio/AudioUtils.h"
-#include <EGEMath.h>
-#include <EGEDebug.h>
+#include "EGEMath.h"
+#include "EGEDebug.h"
 
 #ifdef EGE_PLATFORM_WIN32
   #if EGE_AUDIO_OPENAL

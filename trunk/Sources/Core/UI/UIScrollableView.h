@@ -4,12 +4,12 @@
 /** Specialization of UIScrollView. Allows adding content to a 'virtual' canvas and controls the scrolling over it.
  */
 
-#include <EGETime.h>
-#include <EGEGraphics.h>
-#include <EGEInput.h>
-#include <EGEPhysics.h>
-#include <EGEList.h>
-#include <EGEFlags.h>
+#include "EGETime.h"
+#include "EGEGraphics.h"
+#include "EGEInput.h"
+#include "EGEPhysics.h"
+#include "EGEList.h"
+#include "EGEFlags.h"
 #include "Core/UI/UIScrollView.h"
 
 EGE_NAMESPACE_BEGIN

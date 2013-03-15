@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_IMAGE_HANDLER_PVR_H
 #define EGE_CORE_IMAGE_HANDLER_PVR_H
 
-#include <EGEImage.h>
+#include "EGEImage.h"
 
 EGE_NAMESPACE_BEGIN
   

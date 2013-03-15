@@ -3,7 +3,7 @@
 #include "Core/Graphics/Image/ImageHandlerPNG.h"
 #include "Core/Graphics/Image/ImageHandlerJPG.h"
 #include "Core/Graphics/Image/ImageHandlerPVR.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

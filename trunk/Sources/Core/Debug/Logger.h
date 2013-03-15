@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_LOGGER_H
 #define EGE_CORE_LOGGER_H
 
-#include <EGEString.h>
+#include "EGEString.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -1,12 +1,12 @@
 #include "Core/Graphics/ImagedAnimation/ImagedAnimation.h"
 #include "Core/Resource/ResourceImagedAnimation.h"
 #include "Core/Resource/ResourceTextureImage.h"
-#include <EGESequencer.h>
-#include <EGEPhysics.h>
-#include <EGEGraphics.h>
-#include <EGERenderComponent.h>
-#include <EGERenderer.h>
-#include <EGEDebug.h>
+#include "EGESequencer.h"
+#include "EGEPhysics.h"
+#include "EGEGraphics.h"
+#include "EGERenderComponent.h"
+#include "EGERenderer.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

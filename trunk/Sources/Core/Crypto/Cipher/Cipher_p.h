@@ -3,8 +3,8 @@
 
 /** Private implementation interface for ciphers. */
 
-#include <EGECipher.h>
-#include <EGEDataBuffer.h>
+#include "EGECipher.h"
+#include "EGEDataBuffer.h"
 #include "Core/Crypto/Cipher/CipherKey.h"
 
 EGE_NAMESPACE_BEGIN

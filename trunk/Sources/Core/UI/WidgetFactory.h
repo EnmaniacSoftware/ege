@@ -5,8 +5,8 @@
  *   Factory (utility) class creating widgets. It is possible to register custom widgets so they can be created through factory.
  */
 
-#include <EGE.h>
-#include <EGEUI.h>
+#include "EGE.h"
+#include "EGEUI.h"
 
 EGE_NAMESPACE_BEGIN
 

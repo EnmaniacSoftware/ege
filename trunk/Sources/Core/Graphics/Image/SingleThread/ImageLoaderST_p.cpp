@@ -1,7 +1,7 @@
 #if EGE_IMAGEMANAGER_SINGLE_THREAD
 
 #include "Core/Graphics/Image/SingleThread/ImageLoaderST_p.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE
 

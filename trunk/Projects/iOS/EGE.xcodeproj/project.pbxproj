@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4504254B16F29F6D007699A6 /* TimerIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4504254A16F29F6D007699A6 /* TimerIOS_p.mm */; };
 		4536377C16F1113600B4D72F /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536352916F1113500B4D72F /* Application.cpp */; };
 		4536377D16F1113600B4D72F /* AudioCodecMp3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536352D16F1113500B4D72F /* AudioCodecMp3.cpp */; };
 		4536377E16F1113600B4D72F /* AudioCodecOgg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536352F16F1113500B4D72F /* AudioCodecOgg.cpp */; };
@@ -66,10 +67,7 @@
 		453637B516F1113600B4D72F /* ProgramOGLES1_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635C716F1113600B4D72F /* ProgramOGLES1_p.cpp */; };
 		453637B616F1113600B4D72F /* RenderSystemOGLES1_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635C916F1113600B4D72F /* RenderSystemOGLES1_p.cpp */; };
 		453637B716F1113600B4D72F /* ShaderOGLES1_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635CB16F1113600B4D72F /* ShaderOGLES1_p.cpp */; };
-		453637B816F1113600B4D72F /* ExtensionsOGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635CD16F1113600B4D72F /* ExtensionsOGL.cpp */; };
 		453637B916F1113600B4D72F /* ExtensionsOGLES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635CF16F1113600B4D72F /* ExtensionsOGLES.cpp */; };
-		453637BA16F1113600B4D72F /* RenderSystemOGL2_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635D316F1113600B4D72F /* RenderSystemOGL2_p.cpp */; };
-		453637BB16F1113600B4D72F /* RenderSystemOGL3_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635D616F1113600B4D72F /* RenderSystemOGL3_p.cpp */; };
 		453637BC16F1113600B4D72F /* IndexBufferVAOGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635D816F1113600B4D72F /* IndexBufferVAOGL.cpp */; };
 		453637BD16F1113600B4D72F /* IndexBufferVBOOGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635DA16F1113600B4D72F /* IndexBufferVBOOGL.cpp */; };
 		453637BE16F1113600B4D72F /* ProgramOGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635DC16F1113600B4D72F /* ProgramOGL.cpp */; };
@@ -113,7 +111,6 @@
 		453637EA16F1113600B4D72F /* MessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536364716F1113600B4D72F /* MessageBox.cpp */; };
 		453637EB16F1113600B4D72F /* ImageOverlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536364B16F1113600B4D72F /* ImageOverlay.cpp */; };
 		453637EC16F1113600B4D72F /* Overlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536364D16F1113600B4D72F /* Overlay.cpp */; };
-		453637ED16F1113600B4D72F /* OverlayContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536364F16F1113600B4D72F /* OverlayContainer.cpp */; };
 		453637EE16F1113600B4D72F /* OverlayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536365116F1113600B4D72F /* OverlayManager.cpp */; };
 		453637EF16F1113600B4D72F /* TextOverlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536365316F1113600B4D72F /* TextOverlay.cpp */; };
 		453637F016F1113600B4D72F /* DebugDrawBox2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536365716F1113600B4D72F /* DebugDrawBox2D.cpp */; };
@@ -224,6 +221,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4504254916F29F6D007699A6 /* TimerIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerIOS_p.h; sourceTree = "<group>"; };
+		4504254A16F29F6D007699A6 /* TimerIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimerIOS_p.mm; sourceTree = "<group>"; };
 		4536352716F1113500B4D72F /* IAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAnimation.h; sourceTree = "<group>"; };
 		4536352916F1113500B4D72F /* Application.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Application.cpp; sourceTree = "<group>"; };
 		4536352A16F1113500B4D72F /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
@@ -360,15 +359,8 @@
 		453635CA16F1113600B4D72F /* RenderSystemOGLES1_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderSystemOGLES1_p.h; sourceTree = "<group>"; };
 		453635CB16F1113600B4D72F /* ShaderOGLES1_p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderOGLES1_p.cpp; sourceTree = "<group>"; };
 		453635CC16F1113600B4D72F /* ShaderOGLES1_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderOGLES1_p.h; sourceTree = "<group>"; };
-		453635CD16F1113600B4D72F /* ExtensionsOGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExtensionsOGL.cpp; sourceTree = "<group>"; };
-		453635CE16F1113600B4D72F /* ExtensionsOGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtensionsOGL.h; sourceTree = "<group>"; };
 		453635CF16F1113600B4D72F /* ExtensionsOGLES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExtensionsOGLES.cpp; sourceTree = "<group>"; };
 		453635D016F1113600B4D72F /* ExtensionsOGLES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtensionsOGLES.h; sourceTree = "<group>"; };
-		453635D216F1113600B4D72F /* glext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glext.h; sourceTree = "<group>"; };
-		453635D316F1113600B4D72F /* RenderSystemOGL2_p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderSystemOGL2_p.cpp; sourceTree = "<group>"; };
-		453635D416F1113600B4D72F /* RenderSystemOGL2_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderSystemOGL2_p.h; sourceTree = "<group>"; };
-		453635D616F1113600B4D72F /* RenderSystemOGL3_p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderSystemOGL3_p.cpp; sourceTree = "<group>"; };
-		453635D716F1113600B4D72F /* RenderSystemOGL3_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderSystemOGL3_p.h; sourceTree = "<group>"; };
 		453635D816F1113600B4D72F /* IndexBufferVAOGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IndexBufferVAOGL.cpp; sourceTree = "<group>"; };
 		453635D916F1113600B4D72F /* IndexBufferVAOGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexBufferVAOGL.h; sourceTree = "<group>"; };
 		453635DA16F1113600B4D72F /* IndexBufferVBOOGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IndexBufferVBOOGL.cpp; sourceTree = "<group>"; };
@@ -472,8 +464,6 @@
 		4536364C16F1113600B4D72F /* ImageOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageOverlay.h; sourceTree = "<group>"; };
 		4536364D16F1113600B4D72F /* Overlay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Overlay.cpp; sourceTree = "<group>"; };
 		4536364E16F1113600B4D72F /* Overlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Overlay.h; sourceTree = "<group>"; };
-		4536364F16F1113600B4D72F /* OverlayContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OverlayContainer.cpp; sourceTree = "<group>"; };
-		4536365016F1113600B4D72F /* OverlayContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayContainer.h; sourceTree = "<group>"; };
 		4536365116F1113600B4D72F /* OverlayManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OverlayManager.cpp; sourceTree = "<group>"; };
 		4536365216F1113600B4D72F /* OverlayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayManager.h; sourceTree = "<group>"; };
 		4536365316F1113600B4D72F /* TextOverlay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextOverlay.cpp; sourceTree = "<group>"; };
@@ -767,6 +757,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4504254816F29F6D007699A6 /* Timer */ = {
+			isa = PBXGroup;
+			children = (
+				4504254916F29F6D007699A6 /* TimerIOS_p.h */,
+				4504254A16F29F6D007699A6 /* TimerIOS_p.mm */,
+			);
+			path = Timer;
+			sourceTree = "<group>";
+		};
 		4536352416F110F000B4D72F /* EGE */ = {
 			isa = PBXGroup;
 			children = (
@@ -1259,12 +1258,8 @@
 			isa = PBXGroup;
 			children = (
 				453635C616F1113600B4D72F /* ES 1.0 */,
-				453635CD16F1113600B4D72F /* ExtensionsOGL.cpp */,
-				453635CE16F1113600B4D72F /* ExtensionsOGL.h */,
 				453635CF16F1113600B4D72F /* ExtensionsOGLES.cpp */,
 				453635D016F1113600B4D72F /* ExtensionsOGLES.h */,
-				453635D116F1113600B4D72F /* GL 2.0 */,
-				453635D516F1113600B4D72F /* GL 3.x */,
 				453635D816F1113600B4D72F /* IndexBufferVAOGL.cpp */,
 				453635D916F1113600B4D72F /* IndexBufferVAOGL.h */,
 				453635DA16F1113600B4D72F /* IndexBufferVBOOGL.cpp */,
@@ -1298,25 +1293,6 @@
 				453635CC16F1113600B4D72F /* ShaderOGLES1_p.h */,
 			);
 			path = "ES 1.0";
-			sourceTree = "<group>";
-		};
-		453635D116F1113600B4D72F /* GL 2.0 */ = {
-			isa = PBXGroup;
-			children = (
-				453635D216F1113600B4D72F /* glext.h */,
-				453635D316F1113600B4D72F /* RenderSystemOGL2_p.cpp */,
-				453635D416F1113600B4D72F /* RenderSystemOGL2_p.h */,
-			);
-			path = "GL 2.0";
-			sourceTree = "<group>";
-		};
-		453635D516F1113600B4D72F /* GL 3.x */ = {
-			isa = PBXGroup;
-			children = (
-				453635D616F1113600B4D72F /* RenderSystemOGL3_p.cpp */,
-				453635D716F1113600B4D72F /* RenderSystemOGL3_p.h */,
-			);
-			path = "GL 3.x";
 			sourceTree = "<group>";
 		};
 		453635EA16F1113600B4D72F /* Particle */ = {
@@ -1455,8 +1431,6 @@
 				4536364C16F1113600B4D72F /* ImageOverlay.h */,
 				4536364D16F1113600B4D72F /* Overlay.cpp */,
 				4536364E16F1113600B4D72F /* Overlay.h */,
-				4536364F16F1113600B4D72F /* OverlayContainer.cpp */,
-				4536365016F1113600B4D72F /* OverlayContainer.h */,
 				4536365116F1113600B4D72F /* OverlayManager.cpp */,
 				4536365216F1113600B4D72F /* OverlayManager.h */,
 				4536365316F1113600B4D72F /* TextOverlay.cpp */,
@@ -1800,6 +1774,7 @@
 		4536376916F1113600B4D72F /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				4504254816F29F6D007699A6 /* Timer */,
 				4536376A16F1113600B4D72F /* Application */,
 				4536376D16F1113600B4D72F /* File */,
 				4536377016F1113600B4D72F /* Graphics */,
@@ -1993,10 +1968,7 @@
 				453637B516F1113600B4D72F /* ProgramOGLES1_p.cpp in Sources */,
 				453637B616F1113600B4D72F /* RenderSystemOGLES1_p.cpp in Sources */,
 				453637B716F1113600B4D72F /* ShaderOGLES1_p.cpp in Sources */,
-				453637B816F1113600B4D72F /* ExtensionsOGL.cpp in Sources */,
 				453637B916F1113600B4D72F /* ExtensionsOGLES.cpp in Sources */,
-				453637BA16F1113600B4D72F /* RenderSystemOGL2_p.cpp in Sources */,
-				453637BB16F1113600B4D72F /* RenderSystemOGL3_p.cpp in Sources */,
 				453637BC16F1113600B4D72F /* IndexBufferVAOGL.cpp in Sources */,
 				453637BD16F1113600B4D72F /* IndexBufferVBOOGL.cpp in Sources */,
 				453637BE16F1113600B4D72F /* ProgramOGL.cpp in Sources */,
@@ -2040,7 +2012,6 @@
 				453637EA16F1113600B4D72F /* MessageBox.cpp in Sources */,
 				453637EB16F1113600B4D72F /* ImageOverlay.cpp in Sources */,
 				453637EC16F1113600B4D72F /* Overlay.cpp in Sources */,
-				453637ED16F1113600B4D72F /* OverlayContainer.cpp in Sources */,
 				453637EE16F1113600B4D72F /* OverlayManager.cpp in Sources */,
 				453637EF16F1113600B4D72F /* TextOverlay.cpp in Sources */,
 				453637F016F1113600B4D72F /* DebugDrawBox2D.cpp in Sources */,
@@ -2131,6 +2102,7 @@
 				4536384616F1113700B4D72F /* GraphicsIOS_p.mm in Sources */,
 				4536384716F1113700B4D72F /* RenderWindowOGLIOS.mm in Sources */,
 				4536384816F1113700B4D72F /* main.mm in Sources */,
+				4504254B16F29F6D007699A6 /* TimerIOS_p.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

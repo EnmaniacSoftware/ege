@@ -7,8 +7,8 @@
 #include "Core/Graphics/Particle/ParticleFactory.h"
 #include "Core/UI/WidgetFactory.h"
 #include "Core/Data/DataBuffer.h"
-#include <EGEDevice.h>
-#include <EGEDebug.h>
+#include "EGEDevice.h"
+#include "EGEDebug.h"
 
 #ifdef EGE_PLATFORM_WIN32
 #include "Win32/Graphics/GraphicsWin32_p.h"

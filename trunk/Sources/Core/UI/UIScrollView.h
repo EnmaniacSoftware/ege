@@ -4,12 +4,12 @@
 /** Base class supporting displaying of the content larger than size of a window. It is intended to be subclassed.
  */
 
-#include <EGETime.h>
-#include <EGEGraphics.h>
-#include <EGEInput.h>
-#include <EGEPhysics.h>
-#include <EGEList.h>
-#include <EGEFlags.h>
+#include "EGETime.h"
+#include "EGEGraphics.h"
+#include "EGEInput.h"
+#include "EGEPhysics.h"
+#include "EGEList.h"
+#include "EGEFlags.h"
 #include "Core/UI/Widget.h"
 
 EGE_NAMESPACE_BEGIN

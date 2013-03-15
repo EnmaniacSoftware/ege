@@ -5,9 +5,9 @@
  *  Some information is being supplied by other framework subsystems once its available (ie. render system).
  */
 
-#include <EGE.h>
-#include <EGEDevice.h>
-#include <EGEString.h>
+#include "EGE.h"
+#include "EGEDevice.h"
+#include "EGEString.h"
 
 EGE_NAMESPACE_BEGIN
 

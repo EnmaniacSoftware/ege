@@ -3,8 +3,8 @@
 
 /** This class calculates 32-bit hash values from given input data. */
 
-#include <EGETypes.h>
-#include <EGEString.h>
+#include "EGETypes.h"
+#include "EGEString.h"
 
 EGE_NAMESPACE_BEGIN
 

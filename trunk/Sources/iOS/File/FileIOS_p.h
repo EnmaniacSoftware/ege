@@ -1,9 +1,9 @@
 #ifndef EGE_IOS_FILE_PRIVATE_H
 #define EGE_IOS_FILE_PRIVATE_H
 
-#include <EGE.h>
-#include <EGEFile.h>
-#include <EGEDataBuffer.h>
+#include "EGE.h"
+#include "EGEFile.h"
+#include "EGEDataBuffer.h"
 
 EGE_NAMESPACE_BEGIN
 
