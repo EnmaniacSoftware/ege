@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:EGE.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:../../External/PNGLib/pnglib.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:../../External/Zlib/zlib.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:../../External/tinyxml 2.6.1/tinyxml.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:../../External/JpegLib/jpeglib.xcodeproj">
+   </FileRef>
+</Workspace>
