@@ -1,13 +1,13 @@
-#ifndef EGE_CORE_GRAPHICS_OPENGL20_RENDERSYSTEM_PRIVATE_H
-#define EGE_CORE_GRAPHICS_OPENGL20_RENDERSYSTEM_PRIVATE_H
+#ifndef EGE_CORE_GRAPHICS_OPENGL_FIXED_RENDERSYSTEMFIXED_PRIVATE_H
+#define EGE_CORE_GRAPHICS_OPENGL_FIXED_RENDERSYSTEMFIXED_PRIVATE_H
 
-#if EGE_RENDERING_OPENGL_2
+/*! This class is a base class for private implementations of OpenGL(ES) rendering systems based on fixed pipeline architecture.
+ */
 
-#include <EGE.h>
-#include <EGEOpenGL.h>
-#include <EGEDynamicArray.h>
+#include "EGE.h"
+#include "EGEOpenGL.h"
+#include "EGEDynamicArray.h"
 #include "Core/Graphics/Render/RenderSystem.h"
-#include "Core/Components/Render/RenderComponent.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -19,6 +19,7 @@ EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
 EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
 EGE_DECLARE_SMART_CLASS(Shader, PShader)
 EGE_DECLARE_SMART_CLASS(Program, PProgram)
+EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderSystemPrivate
 {
@@ -32,25 +33,18 @@ class RenderSystemPrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(RenderSystem)
 
+  protected:
+ 
     /*! Sets given viewport. */
     void setViewport(const PViewport& viewport);
     /*! Clears given viewport. */
     void clearViewport(const PViewport& viewport);
     /*! Sends all geometry through the geometry pipeline to hardware. */
     void flush();
-
-  private:
-
-    /*! Detects rendering capabilities. */
-    void detectCapabilities();
     /*! Activates given texture unit. */
     void activateTextureUnit(u32 unit);
-    /*! Checks if given extension is supported. */
-    bool isExtensionSupported(const char* extension) const;
     /*! Binds texture to target. */
     void bindTexture(GLenum target, GLuint textureId);
-    /*! Sets render target. */
-    void setRenderTarget(const PRenderTarget& renderTarget);
     /*! Applies general parameters. 
      *  @note General parameters are the ones that require only one setup before component is rendered. 
      */
@@ -103,19 +97,15 @@ class RenderSystemPrivate
     /*! @see RenderSystem::destroyProgram. */
     void destroyProgram(PProgram program);
 
-  private:
+  protected:
 
     /*! Texture unit currently active. */
     u32 m_activeTextureUnit;
     /*! Pool of all currently active texture units. */
     DynamicArray<u32> m_activeTextureUnits;
-    /*! Array of all extensions. */
-    StringArray m_extensionArray;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_RENDERING_OPENGL_2
-
-#endif // EGE_CORE_GRAPHICS_OPENGL20_RENDERSYSTEM_PRIVATE_H
+#endif // EGE_CORE_GRAPHICS_OPENGL_FIXED_RENDERSYSTEMFIXED_PRIVATE_H

@@ -32,7 +32,9 @@ class RenderWindowOGLWin32 : public RenderWindow
     void showFrameBuffer() override;
     /*! Selects best pixel format for given parameters. */
     EGEResult setupPixelFormat(const Dictionary& params);
-
+    /*! Detects rendering capabilities. */
+    void detectCapabilities();
+      
   private:
 
     /*! Window procedure. */

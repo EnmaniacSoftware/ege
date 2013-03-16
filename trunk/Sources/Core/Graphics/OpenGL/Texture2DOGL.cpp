@@ -121,10 +121,10 @@ EGEResult Texture2DPrivate::create(const PImage& image)
     case PF_PVRTC_RGB_4BPP:   imageFormat = GL_RGB;   internalFormat = GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG; break;
     case PF_PVRTC_RGBA_2BPP:  imageFormat = GL_RGBA;  internalFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG; break;
     case PF_PVRTC_RGBA_4BPP:  imageFormat = GL_RGBA;  internalFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG; break;
-    case PF_DXT1:             imageFormat = GL_RGB;   internalFormat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT; break;
-    case PF_DXT2:             imageFormat = GL_RGBA;  internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT; break;
-    case PF_DXT3:             imageFormat = GL_RGBA;  internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT; break;
-    case PF_DXT5:             imageFormat = GL_RGBA;  internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT; break;
+    case PF_DXT1:             imageFormat = GL_RGB;   internalFormat = GL_COMPRESSED_RGB_S3TC_DXT1; break;
+    case PF_DXT2:             imageFormat = GL_RGBA;  internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT1; break;
+    case PF_DXT3:             imageFormat = GL_RGBA;  internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT3; break;
+    case PF_DXT5:             imageFormat = GL_RGBA;  internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5; break;
 
     //case CImage::RGB:  eImageFormat = RGB; break;  
     //case CImage::BGR: 

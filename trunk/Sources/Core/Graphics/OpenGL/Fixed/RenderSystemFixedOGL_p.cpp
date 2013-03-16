@@ -1,6 +1,6 @@
 #include "EGEApplication.h"
-#include "Core/Graphics/OpenGL/ES 1.0/RenderSystemOGLES1_p.h"
-#include "Core/Graphics/OpenGL/ExtensionsOGLES.h"
+#include "Core/Graphics/OpenGL/Fixed/RenderSystemFixedOGL_p.h"
+#include "Core/Graphics/OpenGL/ExtensionsOGL.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
@@ -15,12 +15,14 @@
 #include "Core/Graphics/OpenGL/RenderTextureFBOOGL.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
+#include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Graphics/TextureImage.h"
 #include "Core/Graphics/Render/RenderQueue.h"
 #include "EGETimer.h"
 #include "EGEDevice.h"
+#include "EGELog.h"
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(RenderSystemPrivate)
@@ -39,6 +41,9 @@ static GLenum MapPrimitiveType(EGEGraphics::RenderPrimitiveType type)
     case EGEGraphics::RPT_LINES:            result = GL_LINES; break;
     case EGEGraphics::RPT_LINE_LOOP:        result = GL_LINE_LOOP; break;
     case EGEGraphics::RPT_POINTS:           result = GL_POINTS; break;
+
+    default:
+      break;
   }
 
   return result;
@@ -61,7 +66,7 @@ static GLenum MapBlendFactor(EGEGraphics::BlendFactor factor)
     case EGEGraphics::BF_DST_ALPHA:           result = GL_DST_ALPHA; break;
     case EGEGraphics::BF_ONE_MINUS_SRC_ALPHA: result = GL_ONE_MINUS_SRC_ALPHA; break;
     case EGEGraphics::BF_ONE_MINUS_DST_ALPHA: result = GL_ONE_MINUS_DST_ALPHA; break;
-      
+
     default:
       break;
   }
@@ -78,7 +83,7 @@ static GLint MapPrimitiveType(EGETexture::EnvironmentMode mode)
   {
     case EGETexture::EM_ADD:      result = GL_ADD; break;
     case EGETexture::EM_BLEND:    result = GL_BLEND; break;
-    case EGETexture::EM_COMBINE:  result = GL_COMBINE; break;
+    //case EGETexture::EM_COMBINE:  result = GL_COMBINE; break;
     case EGETexture::EM_DECAL:    result = GL_DECAL; break;
     case EGETexture::EM_MODULATE: result = GL_MODULATE; break;
     case EGETexture::EM_REPLACE:  result = GL_REPLACE; break;
@@ -97,22 +102,10 @@ static GLenum MapIndexSize(EGEIndexBuffer::IndexSize size)
 
   switch (size)
   {
-    case EGEIndexBuffer::IS_8BIT:
-      
-      result = GL_UNSIGNED_BYTE;
-      break;
-    
-    case EGEIndexBuffer::IS_16BIT:
-      
-      result = GL_UNSIGNED_SHORT;
-      break;
-    
-    case EGEIndexBuffer::IS_32BIT:
-      
-      EGE_ASSERT(Device::HasRenderCapability(RENDER_CAPS_ELEMENT_INDEX_UINT));
-      result = GL_UNSIGNED_INT;
-      break;
-      
+    case EGEIndexBuffer::IS_8BIT:   result = GL_UNSIGNED_BYTE; break;
+    case EGEIndexBuffer::IS_16BIT:  result = GL_UNSIGNED_SHORT; break;
+    case EGEIndexBuffer::IS_32BIT:  result = GL_UNSIGNED_INT; break;
+
     default:
       break;
   }
@@ -146,7 +139,7 @@ static GLint MapTextureAddressingMode(EGETexture::AddressingMode mode)
 
   switch (mode)
   {
-    case EGETexture::AM_CLAMP:  result = GL_CLAMP_TO_EDGE; break;
+    case EGETexture::AM_CLAMP:  result = GL_CLAMP; break;
     case EGETexture::AM_REPEAT: result = GL_REPEAT; break;
 
     default:
@@ -159,7 +152,6 @@ static GLint MapTextureAddressingMode(EGETexture::AddressingMode mode)
 RenderSystemPrivate::RenderSystemPrivate(RenderSystem* base) : m_d(base), 
                                                                m_activeTextureUnit(0xffffffff)
 {
-  detectCapabilities();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderSystemPrivate::~RenderSystemPrivate()
@@ -188,14 +180,12 @@ void RenderSystemPrivate::clearViewport(const PViewport& viewport)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::setViewport(const PViewport& viewport)
 {
-  // set render target
   RenderTarget* target = viewport->renderTarget();
-  setRenderTarget(target);
 
   // set viewport area
   Rectf actualRect = viewport->physicalRect();
 
-  if (!target->requiresTextureFlipping())
+  if ( ! target->requiresTextureFlipping())
   {
     // convert "upper-left" corner to "lower-left"
     actualRect.y = target->physicalHeight() - actualRect.height - actualRect.y;
@@ -210,20 +200,6 @@ void RenderSystemPrivate::setViewport(const PViewport& viewport)
             static_cast<GLsizei>(actualRect.width), static_cast<GLsizei>(actualRect.height));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::setRenderTarget(const PRenderTarget& renderTarget)
-{
-  // unbind current render target
-  if (d_func()->m_renderTarget)
-  {
-    d_func()->m_renderTarget->unbind();
-  }
-
-  d_func()->m_renderTarget = renderTarget;
-
-  // bind new target
-  d_func()->m_renderTarget->bind();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::flush()
 {
   glMatrixMode(GL_PROJECTION);
@@ -233,25 +209,27 @@ void RenderSystemPrivate::flush()
   glRotatef(-d_func()->m_renderTarget->orientationRotation().degrees(), 0, 0, 1);
   glMultMatrixf(d_func()->m_projectionMatrix.data);
 
+ // EGE_LOG("---------------------- Render Flush begin ----------------------");
+
   // go thru all render queues
   for (Map<s32, PRenderQueue>::const_iterator itQueue = d_func()->m_renderQueues.begin(); itQueue != d_func()->m_renderQueues.end(); ++itQueue)
   {
     RenderQueue* queue = itQueue->second;
-    
+
     // go thru all render data within current queue
     const MultiMap<u32, RenderQueue::SRENDERDATA>& renderData = queue->renderData();
     for (MultiMap<u32, RenderQueue::SRENDERDATA>::const_iterator it = renderData.begin(); it != renderData.end(); ++it)
     {
       const RenderQueue::SRENDERDATA& data = it->second;
-
-      //if (data.component->name() == "mode-selection-screen-chimney-smoke")
+      
+      //if (data.component->name() == "level-meter-classic")
       //{
       //  int a = 1;
       //}
 
-      PVertexBuffer vertexBuffer = data.component->vertexBuffer();
-      PIndexBuffer indexBuffer   = data.component->indexBuffer();
-      PMaterial material         = data.component->material();
+      PVertexBuffer& vertexBuffer = data.component->vertexBuffer();
+      PIndexBuffer& indexBuffer   = data.component->indexBuffer();
+      PMaterial& material         = data.component->material();
 
       // determine number of texture arrays
       s32 textureArraysCount = vertexBuffer->arrayCount(EGEVertexBuffer::AT_TEXTURE_UV);
@@ -278,7 +256,7 @@ void RenderSystemPrivate::flush()
 
           // apply pass related params
           applyPassParams(data.component, material, renderPass);
-
+        
           // NOTE: change to modelview after material is applied as it may change current matrix mode
           glMatrixMode(GL_MODELVIEW);
 
@@ -300,25 +278,33 @@ void RenderSystemPrivate::flush()
               case EGEVertexBuffer::AT_POSITION_XYZ:
 
                 glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                OGL_CHECK();
                 glEnableClientState(GL_VERTEX_ARRAY);
+                OGL_CHECK();
                 break;
 
               case EGEVertexBuffer::AT_POSITION_XY:
 
                 glVertexPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                OGL_CHECK();
                 glEnableClientState(GL_VERTEX_ARRAY);
+                OGL_CHECK();
                 break;
 
               case EGEVertexBuffer::AT_NORMAL:
 
                 glNormalPointer(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                OGL_CHECK();
                 glEnableClientState(GL_NORMAL_ARRAY);
+                OGL_CHECK();
                 break;
 
               case EGEVertexBuffer::AT_COLOR_RGBA:
 
                 glColorPointer(4, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                OGL_CHECK();
                 glEnableClientState(GL_COLOR_ARRAY);
+                OGL_CHECK();
                 break;
       
               case EGEVertexBuffer::AT_TEXTURE_UV:
@@ -326,10 +312,16 @@ void RenderSystemPrivate::flush()
                 // check if number of texture arrays is exactly the same as texture units in a current pass
                 if (textureArraysCount == textureCount)
                 {
-                  glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                  if (glClientActiveTexture)
+                  {
+                    glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                    OGL_CHECK();
+                  }
 
                   glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                  OGL_CHECK();
                   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                  OGL_CHECK();
 
                   ++textureUnitsActivated;
                 }
@@ -339,10 +331,16 @@ void RenderSystemPrivate::flush()
                   // check if still some texture unit is to be set
                   if (textureUnitsActivated < textureCount)
                   {
-                    glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                    if (glClientActiveTexture)
+                    {
+                      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                      OGL_CHECK();
+                    }
 
                     glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                    OGL_CHECK();
                     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                    OGL_CHECK();
 
                     ++textureUnitsActivated;
                   }
@@ -356,10 +354,16 @@ void RenderSystemPrivate::flush()
                     // set current texture array to all remaining texture units
                     while (textureUnitsActivated != textureCount)
                     {
-                      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                      if (glClientActiveTexture)
+                      {
+                        glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                        OGL_CHECK();
+                      }
 
                       glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                      OGL_CHECK();
                       glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                      OGL_CHECK();
 
                       ++textureUnitsActivated;
                     }
@@ -367,20 +371,20 @@ void RenderSystemPrivate::flush()
                   else
                   {
                     // set current texture array to corresponding texture unit
-                    glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                    if (glClientActiveTexture)
+                    {
+                      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                      OGL_CHECK();
+                    }
 
                     glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                    OGL_CHECK();
                     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                    OGL_CHECK();
 
                     ++textureUnitsActivated;
                   }
                 }
-                break;
-
-              case EGEVertexBuffer::AT_POINT_SPRITE_SIZE:
-
-                glPointSizePointerOES(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                glEnableClientState(GL_POINT_SIZE_ARRAY_ARB);                
                 break;
 
               //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
@@ -391,29 +395,29 @@ void RenderSystemPrivate::flush()
               //                     static_cast<char*>( vertexData )+iter->uiOffset );
               //  glEnableClientState( GL_TEXTURE_COORD_ARRAY );
               //  break;
-              default:
-                
-                break;
             }
           }
 
           // TAGE - might be necessary
 	        //if (multitexturing)
-	        //glClientActiveTextureARB(GL_TEXTURE0);
+	        //  glClientActiveTexture(GL_TEXTURE0);
 
           // set model-view matrix
           glLoadMatrixf(d_func()->m_viewMatrix.multiply(data.worldMatrix).data);
+          OGL_CHECK();
 
           // check if INDICIES are to be used
           if (0 < indexBuffer->indexCount())
           {
             // render only if there is anything to render
             glDrawElements(MapPrimitiveType(data.component->primitiveType()), indexBuffer->indexCount(), MapIndexSize(indexBuffer->size()), indexData);
+            OGL_CHECK();
           }
           else
           {
             // render only if there is anything to render
             glDrawArrays(MapPrimitiveType(data.component->primitiveType()), 0, vertexBuffer->vertexCount());
+            OGL_CHECK();
           }
 
           // disable all actived texture units
@@ -422,26 +426,40 @@ void RenderSystemPrivate::flush()
             // disable texturing on server side
             activateTextureUnit(*itTextureUnit);
             glDisable(GL_TEXTURE_2D);
+            OGL_CHECK();
 
             // disable texturing data on client side
-            glClientActiveTexture(GL_TEXTURE0 + *itTextureUnit);
+            if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
+            {
+              glClientActiveTexture(GL_TEXTURE0 + *itTextureUnit);
+              OGL_CHECK();
+            }
             glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+            OGL_CHECK();
 
             // disable point sprites
             if (EGEGraphics::RPT_POINTS == data.component->primitiveType())
             {
-              glDisable(GL_POINT_SPRITE_ARB);
+              if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
+              {
+                glDisable(GL_POINT_SPRITE);
+                OGL_CHECK();
+              }
             }
           }
           m_activeTextureUnits.clear();
 
           // clean up
+          activateTextureUnit(0);
+          glClientActiveTexture(GL_TEXTURE0);
           glDisableClientState(GL_VERTEX_ARRAY);
+          OGL_CHECK();
           glDisableClientState(GL_NORMAL_ARRAY);
+          OGL_CHECK();
           glDisableClientState(GL_COLOR_ARRAY);
-          //glDisableClientState(GL_POINT_SIZE_ARRAY_ARB);                
+          OGL_CHECK();
           glDisable(GL_BLEND);
-          glMatrixMode(GL_TEXTURE);
+          OGL_CHECK();
         }
       }
 
@@ -453,6 +471,8 @@ void RenderSystemPrivate::flush()
     // clear render queue
     queue->clear();
   }
+
+  //EGE_LOG("---------------------- Render Flush end ----------------------");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass* pass)
@@ -466,7 +486,7 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
     if ((EGEGraphics::BF_ONE != pass->srcBlendFactor()) || (EGEGraphics::BF_ZERO != pass->dstBlendFactor()))
     {
       glEnable(GL_BLEND);
-     
+
       //if (pass->srcBlendFactor() == EGEGraphics::BF_SRC_ALPHA && pass->dstBlendFactor() == EGEGraphics::BF_ONE_MINUS_SRC_ALPHA)
       //{
       //  glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
@@ -495,6 +515,11 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
 
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(tex2d->m_minFilter));
+	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(tex2d->m_magFilter));
+	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(tex2d->m_addressingModeS));
+	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(tex2d->m_addressingModeT));
+
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
       }
@@ -505,14 +530,53 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
         Texture2D* tex2d = (Texture2D*) texImg->texture().object();
 
         activateTextureUnit(i);
-        
+
         // NOTE: it is possible texure object might be not present ie when it is manual and hasnt been set yet
         if (tex2d)
         {
           bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
         }
 
+        //if (texImg->environmentMode() == EGETexture::EM_DECAL)
+        //{
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_MODULATE);   //Interpolate RGB with RGB
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_PREVIOUS);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_TEXTURE);
+        //     //GL_CONSTANT refers to the call we make with glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor)
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_RGB, GL_CONSTANT);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_RGB, GL_CONSTANT );
+        //     //------------------------
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_INTERPOLATE);   //Interpolate ALPHA with ALPHA
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_PREVIOUS);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_TEXTURE);
+        //     //GL_CONSTANT refers to the call we make with glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor)
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_ALPHA, GL_CONSTANT);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, GL_SRC_ALPHA);
+        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_ALPHA, GL_SRC_ALPHA);
+
+        //     static float a = 0.0f;
+        //     a += 0.01f;
+        //     if (a > 1)
+        //     {
+        //       a = 0;
+        //     }
+
+        //    float mycolor[4];
+        //     mycolor[0]=mycolor[1]=mycolor[2]=0.0;    //RGB doesn't matter since we are not using it
+        //     mycolor[3]=0.5;                         //Set the blend factor with this
+        //     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor);
+        //}
+        //else
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MapPrimitiveType(texImg->environmentMode()));
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(tex2d->m_minFilter));
+	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(tex2d->m_magFilter));
+	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(tex2d->m_addressingModeS));
+	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(tex2d->m_addressingModeT));
 
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
@@ -536,9 +600,9 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
         // check if point sprites are supported
         if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
         {
-          glEnable(GL_POINT_SPRITE_ARB);
+          glEnable(GL_POINT_SPRITE);
 
-          glTexEnvf(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE);
+          glTexEnvf(GL_POINT_SPRITE, GL_COORD_REPLACE, GL_TRUE);
         }
       }
     }
@@ -562,10 +626,18 @@ void RenderSystemPrivate::activateTextureUnit(u32 unit)
     if (m_activeTextureUnit != unit)
     {
       // check if multitexture available
-      glActiveTexture(GL_TEXTURE0 + unit);
-      m_activeTextureUnit = unit;
+      if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
+      {
+        glActiveTexture(GL_TEXTURE0 + unit);
+        m_activeTextureUnit = unit;
 
-      OGL_CHECK();
+        OGL_CHECK();
+      }
+      else if (0 == unit)
+      {
+        // unit 0 is the only valid option if no multitexturing is present. Thus, no special activation is required
+        m_activeTextureUnit = unit;
+      }
     }
   }
 }
@@ -577,15 +649,16 @@ void RenderSystemPrivate::bindTexture(GLenum target, GLuint textureId)
   OGL_CHECK();
 
   // map texture target into texture binding query value
-  GLenum textureBinding = GL_TEXTURE_BINDING_2D;
+  GLenum textureBinding;
   switch (target)
   {
+    case GL_TEXTURE_1D: textureBinding = GL_TEXTURE_BINDING_1D; break;
     case GL_TEXTURE_2D: textureBinding = GL_TEXTURE_BINDING_2D; break;
 
     default:
 
-      EGE_ASSERT("Incorrect texture binding!");
-      break;
+      EGE_ASSERT(false && "Incorrect texture binding!");
+      return;
   }
 
   // query texture Id bound to given target
@@ -599,113 +672,6 @@ void RenderSystemPrivate::bindTexture(GLenum target, GLuint textureId)
     glBindTexture(target, textureId);
     OGL_CHECK();
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::detectCapabilities()
-{
-  // get list of all extensions
-  String extensionString(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
-  m_extensionArray = extensionString.split(" ");
-
-  for (StringArray::const_iterator it = m_extensionArray.begin(); it != m_extensionArray.end(); ++it)
-  {
-    egeDebug() << "Available OGL extension:" << *it;
-  }
-
-	GLint value;
-
-  // get number of texture units
-	glGetIntegerv(GL_MAX_TEXTURE_UNITS, &value);
-  Device::SetTextureUnitsCount(static_cast<u32>(value));
-
-  // detect maximal texture size
-	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &value);
-  Device::SetTextureMaxSize(static_cast<u32>(value));
-
-  if (isExtensionSupported("GL_APPLE_texture_2D_limited_npot"))
-  {
-    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_APPLE_LIMITED_NPOT_TEXTURE, true);
-  }
-
-  // multitexturing is supported by default
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE, true);
-
-  // check if frame buffer object is supported
-  if (isExtensionSupported("GL_OES_framebuffer_object"))
-  {
-    glBindFramebuffer         = reinterpret_cast<PFNGLBINDFRAMEBUFFEROESPROC>(eglGetProcAddress("glBindFramebufferOES"));
-    glDeleteFramebuffers      = reinterpret_cast<PFNGLDELETEFRAMEBUFFERSOESPROC>(eglGetProcAddress("glDeleteFramebuffersOES"));
-    glGenFramebuffers         = reinterpret_cast<PFNGLGENFRAMEBUFFERSOESPROC>(eglGetProcAddress("glGenFramebuffersOES"));
-    glCheckFramebufferStatus  = reinterpret_cast<PFNGLCHECKFRAMEBUFFERSTATUSOESPROC>(eglGetProcAddress("glCheckFramebufferStatusOES"));
-    glFramebufferTexture2D    = reinterpret_cast<PFNGLFRAMEBUFFERTEXTURE2DOESPROC>(eglGetProcAddress("glFramebufferTexture2DOES"));
-
-    if ((NULL != glBindFramebuffer) && (NULL != glDeleteFramebuffers) && (NULL != glGenFramebuffers) && 
-        (NULL != glCheckFramebufferStatus) && (NULL != glFramebufferTexture2D))
-    {
-      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
-    }
-  }
-
-  // check if VBO mapping is supported
-  if (isExtensionSupported("GL_OES_mapbuffer"))
-  {
-    glMapBuffer   = reinterpret_cast<PFNGLMAPBUFFEROESPROC>(eglGetProcAddress("glMapBufferOES"));
-    glUnmapBuffer = reinterpret_cast<PFNGLUNMAPBUFFEROESPROC>(eglGetProcAddress("glUnmapBufferOES"));
-
-    if ((NULL != glMapBuffer) && (NULL != glUnmapBuffer))
-    {
-      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER, true);
-    }
-  }
-
-  // check if min and max blending functions are supported
-  //if (isExtensionSupported("GL_ARB_imaging") || isExtensionSupported("GL_EXT_blend_minmax"))
-  //{
-  //  glBlendEquation = (PFNGLBLENDEQUATIONPROC) wglGetProcAddress("glBlendEquationARB");
-  //  if (!glBlendEquation)
-  //  {
-  //    glBlendEquation = (PFNGLBLENDEQUATIONPROC) wglGetProcAddress("glBlendEquationEXT");
-  //  }
-
-  //  if (glBlendEquation)
-  //  {
-  //    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_BLEND_MINMAX, true);
-  //  }
-  //}
-  
-  // Combine texture environment mode is supported by default
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_COMBINE_TEXTURE_ENV, true);
-
-  // Point sprite is supported by defult
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE, true);
-
-  // Point sprite size array is supported by default
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE_SIZE, true);
-
-  // Vertex Buffer Objects is supported by default
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VBO, true);
-
-  // check for texture compressions support
-  if (isExtensionSupported("GL_IMG_texture_compression_pvrtc"))
-  {
-    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC, true);
-  }
-
-  if (isExtensionSupported("GL_EXT_texture_compression_s3tc"))
-  {
-    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_S3TC, true);
-  }
-
-  // check for Uint32 element indicies support
-  if (isExtensionSupported("GL_OES_element_index_uint"))
-  {
-    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT, true);
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool RenderSystemPrivate::isExtensionSupported(const char* extension) const
-{
-  return m_extensionArray.contains(extension);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::applyGeneralParams(const PRenderComponent& component)
@@ -729,8 +695,6 @@ void RenderSystemPrivate::applyGeneralParams(const PRenderComponent& component)
     }
 
     // apply opposite rotation to rectangle to convert it into native (non-transformed) coordinate
-    //EGE_PRINT("ORIENTATION: %f %f", d_func()->m_renderTarget->orientationRotation().radians(), d_func()->m_renderTarget->orientationRotation().degrees());
-
     clipRect = d_func()->applyRotation(clipRect, d_func()->m_renderTarget->orientationRotation());
 
     // apply zoom
@@ -785,6 +749,7 @@ void* RenderSystemPrivate::bindVertexBuffer(PVertexBuffer& buffer) const
       default:
 
         EGE_ASSERT(false && "Invalid vertex buffer type");
+        data = NULL;
         break;
     }
   }
@@ -820,7 +785,7 @@ void* RenderSystemPrivate::bindIndexBuffer(PIndexBuffer& buffer) const
 {
   void* data = NULL;
 
-  // process if any indicies exists
+  // process if any indicies exist
   if (0 < buffer->indexCount())
   {
     // process according to buffer type
@@ -879,7 +844,7 @@ PVertexBuffer RenderSystemPrivate::createVertexBuffer(EGEVertexBuffer::UsageType
 {
   PVertexBuffer buffer;
 
-  if (!Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     buffer = ege_new VertexBufferVBO(d_func()->app(), usage);
     if (NULL != buffer)
@@ -922,7 +887,7 @@ PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType us
 {
   PIndexBuffer buffer;
 
-  if (!Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     buffer = ege_new IndexBufferVBO(d_func()->app(), usage);
     if (NULL != buffer)
@@ -1100,10 +1065,10 @@ PTexture2D RenderSystemPrivate::createEmptyTexture(const String& name)
   bindTexture(GL_TEXTURE_2D, texture->p_func()->id());
 
   // set texture parameters
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(d_func()->m_textureMinFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(d_func()->m_textureMagFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(d_func()->m_textureAddressingModeS));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(d_func()->m_textureAddressingModeT));
+  texture->m_minFilter        = d_func()->m_textureMinFilter;
+  texture->m_magFilter        = d_func()->m_textureMagFilter;
+  texture->m_addressingModeS  = d_func()->m_textureAddressingModeS;
+  texture->m_addressingModeT  = d_func()->m_textureAddressingModeT;
 
   return texture;
 }
@@ -1141,5 +1106,3 @@ void RenderSystemPrivate::destroyProgram(PProgram program)
   // not available
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END

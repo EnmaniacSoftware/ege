@@ -1,4 +1,4 @@
-#include <EGEApplication.h>
+#include "EGEApplication.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 #include "Core/Components/Render/RenderComponent.h"
@@ -12,15 +12,11 @@
 #include "Core/Event/EventIDs.h"
 #include "Core/Event/EventManager.h"
 #include "Core/Resource/ResourceManager.h"
-#include <EGEOpenGL.h>
+#include "EGEOpenGL.h"
 
-#if EGE_RENDERING_OPENGLES_1
-#include "Core/Graphics/OpenGL/ES 1.0/RenderSystemOGLES1_p.h"
-#elif EGE_RENDERING_OPENGL_2
-#include "Core/Graphics/OpenGL/GL 2.0/RenderSystemOGL2_p.h"
-#elif EGE_RENDERING_OPENGL_3
-#include "Core/Graphics/OpenGL/GL 3.x/RenderSystemOGL3_p.h"
-#endif // EGE_RENDERING_OPENGLES_1
+#if EGE_RENDERING_OPENGL_FIXED
+  #include "Core/Graphics/OpenGL/Fixed/RenderSystemFixedOGL_p.h"
+#endif // EGE_RENDERING_OPENGL_FIXED
 
 EGE_NAMESPACE_BEGIN
 
@@ -198,6 +194,22 @@ void RenderSystem::clearViewport(const PViewport& viewport)
 void RenderSystem::setViewport(const PViewport& viewport)
 {
   EGE_ASSERT(NULL != m_p);
+
+  // change render target
+  if (m_renderTarget != viewport->renderTarget())
+  {
+    // unbind current render target
+    if (NULL != m_renderTarget)
+    {
+      m_renderTarget->unbind();
+    }
+
+    m_renderTarget = viewport->renderTarget();
+
+    // bind new target
+    m_renderTarget->bind();
+  }
+
   p_func()->setViewport(viewport);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

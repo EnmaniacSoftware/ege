@@ -2,7 +2,7 @@ define AIRPLAY_BUILD
 define PNG_NO_SNPRINTF
 define TIXML_USE_STL
 define STDC
-define EGE_RENDERING_OPENGLES_1
+define EGE_RENDERING_OPENGL_FIXED
 define EGE_PHYSICS_NULL
 define EGE_XML_TINYXML
 define EGE_RANDOM_STDC
@@ -324,8 +324,8 @@ files
 
 	["Core/Graphics/OpenGL"]
  	(../../Sources/Core/Graphics/OpenGL)
-	ExtensionsOGLES.cpp
-  ExtensionsOGLES.h
+	ExtensionsOGL.cpp
+  ExtensionsOGL.h
   IndexBufferVAOGL.cpp
   IndexBufferVAOGL.h
   IndexBufferVBOOGL.cpp
@@ -672,19 +672,19 @@ files
 	XmlElementTinyXml_p.h
 }
 
-if {{defined EGE_RENDERING_OPENGLES_1}}
+if {{defined EGE_RENDERING_OPENGL_FIXED}}
 {
-files
-{
-	["Core/Graphics/OpenGL/ES 1.0"]
-  ("../../Sources/Core/Graphics/OpenGL/ES 1.0")
-  ProgramOGLES1_p.cpp
-  ProgramOGLES1_p.h
-	RenderSystemOGLES1_p.cpp
-	RenderSystemOGLES1_p.h
-  ShaderOGLES1_p.cpp
-  ShaderOGLES1_p.h
-}
+  files
+  {
+	  ["Core/Graphics/OpenGL/Fixed"]
+    ("../../Sources/Core/Graphics/OpenGL/Fixed")
+#  ProgramOGLES1_p.cpp
+#  ProgramOGLES1_p.h
+	  RenderSystemFixedOGL_p.cpp
+	  RenderSystemFixedOGL_p.h
+#  ShaderOGLES1_p.cpp
+#  ShaderOGLES1_p.h
+  }
 }
 
 files

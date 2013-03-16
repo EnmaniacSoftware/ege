@@ -11,9 +11,8 @@ inline void ege_noop() {}
 // EGE_PLATFORM_IOS
 
 // Available rendering APIs
-// EGE_RENDERING_OPENGL_2
+// EGE_RENDERING_OPENGL_FIXED
 // EGE_RENDERING_OPENGL_3
-// EGE_RENDERING_OPENGLES_1
 
 // Available physics APIs
 // EGE_PHYSICS_BOX2D

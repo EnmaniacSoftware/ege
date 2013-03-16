@@ -48,7 +48,7 @@ EGEResult ShaderPrivate::create(const PDataBuffer& buffer)
   glCompileShader(m_id);
 
   int compileResult;
-  glGetObjectParameteriv(m_id, GL_OBJECT_COMPILE_STATUS_ARB, &compileResult);
+  glGetObjectParameteriv(m_id, GL_OBJECT_COMPILE_STATUS, &compileResult);
   if (GL_TRUE != compileResult)
   {
     // error!
@@ -66,7 +66,7 @@ void ShaderPrivate::printInfoLog()
   char* log;
 
   // get log length
-  glGetObjectParameteriv(m_id, GL_OBJECT_INFO_LOG_LENGTH_ARB, &logLength);
+  glGetObjectParameteriv(m_id, GL_OBJECT_INFO_LOG_LENGTH, &logLength);
   if (0 < logLength)
   {
     // allocate space for the log

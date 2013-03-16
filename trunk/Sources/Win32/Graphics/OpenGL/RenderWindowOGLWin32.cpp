@@ -199,6 +199,9 @@ EGEResult RenderWindowOGLWin32::construct(const Dictionary& params)
   m_hRC = hRC;
 #endif // EGE_RENDERING_OPENGL_3
 
+  // detect capabilities
+  detectCapabilities();
+
   // set pointer to this control in extra wnd data
   SetWindowLongPtr(m_hWnd, 0, reinterpret_cast<LONG>(this));
 
@@ -519,6 +522,167 @@ bool RenderWindowOGLWin32::isValid() const
 bool RenderWindowOGLWin32::requiresTextureFlipping() const
 {
   return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderWindowOGLWin32::detectCapabilities()
+{
+  // get list of all extensions
+  String extensionString(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
+  StringArray extensionArray = extensionString.split(" ");
+
+  for (StringArray::const_iterator it = extensionArray.begin(); it != extensionArray.end(); ++it)
+  {
+    egeDebug() << "Available OGL extension:" << *it;
+  }
+
+	GLint value;
+
+  // get number of texture units
+	glGetIntegerv(GL_MAX_TEXTURE_UNITS, &value);
+  Device::SetTextureUnitsCount(static_cast<u32>(value));
+
+  // detect maximal texture size
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &value);
+  Device::SetTextureMaxSize(static_cast<u32>(value));
+
+  // check if multitexturing is supported
+  if (extensionArray.contains("GL_ARB_multitexture"))
+  {
+    glClientActiveTexture = reinterpret_cast<PFNGLCLIENTACTIVETEXTUREARBPROC>(wglGetProcAddress("glClientActiveTextureARB"));
+    glActiveTexture       = reinterpret_cast<PFNGLACTIVETEXTUREARBPROC>(wglGetProcAddress("glActiveTextureARB"));
+
+    if ((NULL != glClientActiveTexture) && (NULL != glActiveTexture))
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE, true);
+    }
+  }
+
+  // check if frame buffer object is supported
+  if (extensionArray.contains("GL_EXT_framebuffer_object"))
+  {
+    glBindFramebuffer         = reinterpret_cast<PFNGLBINDFRAMEBUFFEREXTPROC>(wglGetProcAddress("glBindFramebufferEXT"));
+    glDeleteFramebuffers      = reinterpret_cast<PFNGLDELETEFRAMEBUFFERSEXTPROC>(wglGetProcAddress("glDeleteFramebuffersEXT"));
+    glGenFramebuffers         = reinterpret_cast<PFNGLGENFRAMEBUFFERSEXTPROC>(wglGetProcAddress("glGenFramebuffersEXT"));
+    glCheckFramebufferStatus  = reinterpret_cast<PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC>(wglGetProcAddress("glCheckFramebufferStatusEXT"));
+    glFramebufferTexture2D    = reinterpret_cast<PFNGLFRAMEBUFFERTEXTURE2DEXTPROC>(wglGetProcAddress("glFramebufferTexture2DEXT"));
+
+    if ((NULL != glBindFramebuffer) && (NULL != glDeleteFramebuffers) && (NULL != glGenFramebuffers) && (NULL != glCheckFramebufferStatus) && 
+        (NULL != glFramebufferTexture2D))
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
+    }
+  }
+
+  // check if combine texture environment mode is supported
+  if (extensionArray.contains("GL_ARB_texture_env_combine"))
+  {
+    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_COMBINE_TEXTURE_ENV, true);
+  }
+
+  // check if vertex buffer object is supported
+  // NOTE: this implies that VBO mapping extension is present too
+  if (extensionArray.contains("GL_ARB_vertex_buffer_object"))
+  {
+    glGenBuffers    = reinterpret_cast<PFNGLGENBUFFERSPROC>(wglGetProcAddress("glGenBuffersARB"));
+    glBindBuffer    = reinterpret_cast<PFNGLBINDBUFFERPROC>(wglGetProcAddress("glBindBufferARB"));
+    glBufferData    = reinterpret_cast<PFNGLBUFFERDATAPROC>(wglGetProcAddress("glBufferDataARB"));
+    glBufferSubData = reinterpret_cast<PFNGLBUFFERSUBDATAPROC>(wglGetProcAddress("glBufferSubDataARB"));
+    glDeleteBuffers = reinterpret_cast<PFNGLDELETEBUFFERSPROC>(wglGetProcAddress("glDeleteBuffersARB"));
+    glMapBuffer     = reinterpret_cast<PFNGLMAPBUFFERPROC>(wglGetProcAddress("glMapBufferARB"));
+    glUnmapBuffer   = reinterpret_cast<PFNGLUNMAPBUFFERPROC>(wglGetProcAddress("glUnmapBufferARB"));
+
+    if ((NULL != glGenBuffers) && (NULL != glBindBuffer) && (NULL != glBufferData) && (NULL != glBufferSubData) && (NULL != glDeleteBuffers) && 
+        (NULL != glMapBuffer) && (NULL != glUnmapBuffer))
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VBO, true);
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER, true);
+    }
+  }
+
+  // check if point sprites are supported
+  if (extensionArray.contains("GL_ARB_point_parameters") && extensionArray.contains("GL_ARB_point_sprite"))
+  {
+    glPointParameterf  = reinterpret_cast<PFNGLPOINTPARAMETERFARBPROC>(wglGetProcAddress("glPointParameterfARB"));
+    glPointParameterfv = reinterpret_cast<PFNGLPOINTPARAMETERFVARBPROC>(wglGetProcAddress("glPointParameterfvARB"));
+
+    if ((NULL != glPointParameterf) && (NULL != glPointParameterfv))
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE, true);
+    }
+  }
+
+  // check if min and max blending functions are supported
+  if (extensionArray.contains("GL_ARB_imaging") || extensionArray.contains("GL_EXT_blend_minmax"))
+  {
+    glBlendEquation = reinterpret_cast<PFNGLBLENDEQUATIONPROC>(wglGetProcAddress("glBlendEquationARB"));
+    if (NULL == glBlendEquation)
+    {
+      glBlendEquation = reinterpret_cast<PFNGLBLENDEQUATIONPROC>(wglGetProcAddress("glBlendEquationEXT"));
+    }
+
+    if (NULL != glBlendEquation)
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_BLEND_MINMAX, true);
+    }
+
+    glBlendFuncSeparate = reinterpret_cast<PFNGLBLENDFUNCSEPARATEPROC>(wglGetProcAddress("glBlendFuncSeparateEXT"));
+  }
+
+  // texture compression
+  glCompressedTexImage2D = reinterpret_cast<PFNGLCOMPRESSEDTEXIMAGE2DPROC>(wglGetProcAddress("glCompressedTexImage2D"));
+
+  // check for texture compressions support
+  if (extensionArray.contains("GL_IMG_texture_compression_pvrtc"))
+  {
+    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC, true);
+  }
+
+  if (extensionArray.contains("GL_EXT_texture_compression_s3tc"))
+  {
+    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_S3TC, true);
+  }
+
+  // check shader objects support
+  if (extensionArray.contains("GL_ARB_shader_objects"))
+  {
+    glCreateShaderObject  = reinterpret_cast<PFNGLCREATESHADEROBJECTARBPROC>(wglGetProcAddress("glCreateShaderObject"));
+    glShaderSource        = reinterpret_cast<PFNGLSHADERSOURCEARBPROC>(wglGetProcAddress("glShaderSource"));
+    glCompileShader       = reinterpret_cast<PFNGLCOMPILESHADERARBPROC>(wglGetProcAddress("glCompileShader"));
+    glCreateProgramObject = reinterpret_cast<PFNGLCREATEPROGRAMOBJECTARBPROC>(wglGetProcAddress("glCreateProgramObject"));
+    glAttachObject        = reinterpret_cast<PFNGLATTACHOBJECTARBPROC>(wglGetProcAddress("glAttachObject"));
+    glLinkProgram         = reinterpret_cast<PFNGLLINKPROGRAMARBPROC>(wglGetProcAddress("glLinkProgram"));
+    glUseProgramObject    = reinterpret_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(wglGetProcAddress("glUseProgramObject"));
+    glGetUniformLocation  = reinterpret_cast<PFNGLGETUNIFORMLOCATIONARBPROC>(wglGetProcAddress("glGetUniformLocation"));
+    glUniform1f           = reinterpret_cast<PFNGLUNIFORM1FARBPROC>(wglGetProcAddress("glUniform1f"));
+    glUniform2f           = reinterpret_cast<PFNGLUNIFORM2FARBPROC>(wglGetProcAddress("glUniform2f"));
+    glUniform3f           = reinterpret_cast<PFNGLUNIFORM3FARBPROC>(wglGetProcAddress("glUniform3f"));
+    glUniform4f           = reinterpret_cast<PFNGLUNIFORM4FARBPROC>(wglGetProcAddress("glUniform4f"));
+    glUniform1i           = reinterpret_cast<PFNGLUNIFORM1IARBPROC>(wglGetProcAddress("glUniform1i"));
+    glUniform2i           = reinterpret_cast<PFNGLUNIFORM2IARBPROC>(wglGetProcAddress("glUniform2i"));
+    glUniform3i           = reinterpret_cast<PFNGLUNIFORM3IARBPROC>(wglGetProcAddress("glUniform3i"));
+    glUniform4i           = reinterpret_cast<PFNGLUNIFORM4IARBPROC>(wglGetProcAddress("glUniform4i"));
+    glUniformMatrix2fv    = reinterpret_cast<PFNGLUNIFORMMATRIX2FVARBPROC>(wglGetProcAddress("glUniformMatrix2fvARB"));
+    glUniformMatrix3fv    = reinterpret_cast<PFNGLUNIFORMMATRIX3FVARBPROC>(wglGetProcAddress("glUniformMatrix3fvARB"));
+    glUniformMatrix4fv    = reinterpret_cast<PFNGLUNIFORMMATRIX4FVARBPROC>(wglGetProcAddress("glUniformMatrix4fvARB"));
+  }
+
+  // check vertex shader support
+  if (extensionArray.contains("GL_ARB_vertex_shader"))
+  {
+    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_SHADER, true);
+  }
+
+  // check fragment shader support
+  if (extensionArray.contains("GL_ARB_fragment_shader"))
+  {
+    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FRAGMENT_SHADER, true);
+  }
+
+  // Point sprite size array is not supported by default
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE_SIZE, false);
+
+  // 32bit indexing is supported by default
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT, true);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

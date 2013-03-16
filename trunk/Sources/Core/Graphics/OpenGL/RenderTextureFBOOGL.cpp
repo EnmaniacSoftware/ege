@@ -13,7 +13,7 @@ RenderTextureFBOOGL::RenderTextureFBOOGL(Application* app, const Dictionary& par
   m_faceTarget(faceTarget)
 {
   // get defult FBO id
-  glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &m_defaultFBOId);
+  glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_defaultFBOId);
 
   // generate new FBO
   glGenFramebuffers(1, &m_frameBufferObjectId);
@@ -21,20 +21,20 @@ RenderTextureFBOOGL::RenderTextureFBOOGL(Application* app, const Dictionary& par
   if (0 < m_frameBufferObjectId)
   {
     // bind FBO
-    glBindFramebuffer(GL_FRAMEBUFFER_EXT, m_frameBufferObjectId);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_frameBufferObjectId);
     
     // attach texture
-    glFramebufferTexture2D(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, textureTarget, textureId, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, textureTarget, textureId, 0);
 
     // check status
-    GLuint state = glCheckFramebufferStatus(GL_FRAMEBUFFER_EXT);
-    if (GL_FRAMEBUFFER_COMPLETE_EXT != state)
+    GLuint state = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if (GL_FRAMEBUFFER_COMPLETE != state)
     {
       egeWarning() << "RenderTextureFBOOGL::RenderTextureFBOOGL Failed with error" << state;
     }
 
     // unbind for the time being
-    glBindFramebuffer(GL_FRAMEBUFFER_EXT, m_defaultFBOId);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBOId);
   }
 
   // decompose param list
@@ -65,14 +65,14 @@ RenderTarget::Priority RenderTextureFBOOGL::priority() const
 void RenderTextureFBOOGL::bind()
 {
   // bind to FBO
-  glBindFramebuffer(GL_FRAMEBUFFER_EXT, frameBufferObjectId());
+  glBindFramebuffer(GL_FRAMEBUFFER, frameBufferObjectId());
   OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderTextureFBOOGL::unbind()
 {
   // bind default
-  glBindFramebuffer(GL_FRAMEBUFFER_EXT, m_defaultFBOId);
+  glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBOId);
   OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

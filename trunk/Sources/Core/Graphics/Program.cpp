@@ -3,13 +3,13 @@
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Graphics/HardwareResourceProvider.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
-#if EGE_RENDERING_OPENGL_3 || EGE_RENDERING_OPENGL_2
+//#if EGE_RENDERING_OPENGL_3 || EGE_RENDERING_OPENGL_FIXED
 #include "Core/Graphics/OpenGL/ProgramOGL.h"
-#elif EGE_RENDERING_OPENGLES_1
-#include "Core/Graphics/OpenGL/ES 1.0/ProgramOGLES1_p.h"
-#endif // EGE_RENDERING_OPENGL_3 || EGE_RENDERING_OPENGL_2
+//#elif EGE_RENDERING_OPENGLES_1
+//#include "Core/Graphics/OpenGL/ES 1.0/ProgramOGLES1_p.h"
+//#endif // EGE_RENDERING_OPENGL_3 || EGE_RENDERING_OPENGL_FIXED
 
 EGE_NAMESPACE_BEGIN
 

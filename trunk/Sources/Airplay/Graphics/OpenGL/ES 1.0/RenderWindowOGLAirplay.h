@@ -34,6 +34,8 @@ class RenderWindowOGLAirplay : public RenderWindow
 		bool requiresTextureFlipping() const override;
     /*! RenderWindow override. Shows frame buffer. */
     virtual void showFrameBuffer() override;
+    /*! Detects rendering capabilities. */
+    void detectCapabilities();
 
   private:
 

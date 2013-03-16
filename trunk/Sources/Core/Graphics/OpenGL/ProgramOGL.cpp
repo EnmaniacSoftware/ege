@@ -57,7 +57,7 @@ bool ProgramPrivate::link()
   //glValidateProgram(m_id);
 
   int linkResult;
-  glGetObjectParameteriv(m_id, GL_OBJECT_LINK_STATUS_ARB, &linkResult);
+  glGetObjectParameteriv(m_id, GL_OBJECT_LINK_STATUS, &linkResult);
   if (GL_TRUE != linkResult)
   {
     // error!
@@ -90,7 +90,7 @@ bool ProgramPrivate::buildUniformsList()
 {
   // retrive number of uniforms
   GLint total = 0;
-  glGetObjectParameteriv(m_id, GL_OBJECT_ACTIVE_UNIFORMS_ARB, &total); 
+  glGetObjectParameteriv(m_id, GL_OBJECT_ACTIVE_UNIFORMS, &total); 
   for (GLint i = 0; i < total; ++i)  
   {
     GLsizei nameLength = -1;
@@ -127,7 +127,7 @@ void ProgramPrivate::printInfoLog()
   char* log;
 
   // get log length
-  glGetObjectParameteriv(m_id, GL_OBJECT_INFO_LOG_LENGTH_ARB, &logLength);
+  glGetObjectParameteriv(m_id, GL_OBJECT_INFO_LOG_LENGTH, &logLength);
   if (0 < logLength)
   {
     // allocate space for the log

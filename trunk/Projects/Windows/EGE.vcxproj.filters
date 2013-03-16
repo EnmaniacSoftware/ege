@@ -118,9 +118,6 @@
     <Filter Include="Core\Graphics\OpenGL">
       <UniqueIdentifier>{49d25881-e6d5-4efd-892a-994bab1d1d30}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Graphics\OpenGL\GL 2.0">
-      <UniqueIdentifier>{2736de3a-5cff-4e6f-ab45-abde106a81a7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Graphics\Render">
       <UniqueIdentifier>{a292a486-89b4-4c40-ba69-d653e15dd192}</UniqueIdentifier>
     </Filter>
@@ -228,6 +225,9 @@
     </Filter>
     <Filter Include="Core\Graphics\OpenGL\GL 3.x">
       <UniqueIdentifier>{cd293347-a2a3-4e54-a2bd-ff17f13cf292}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\OpenGL\Fixed">
+      <UniqueIdentifier>{2736de3a-5cff-4e6f-ab45-abde106a81a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -753,9 +753,6 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderSystem.cpp">
       <Filter>Core\Graphics\Render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RenderSystemOGL2_p.cpp">
-      <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Services\DeviceServicesWin32_p.cpp">
       <Filter>Win32\Services</Filter>
     </ClCompile>
@@ -831,6 +828,9 @@
     <ClCompile Include="..\..\Sources\Win32\main.cpp">
       <Filter>Win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.cpp">
+      <Filter>Core\Graphics\OpenGL\Fixed</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -886,9 +886,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.h">
       <Filter>Core\Graphics\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\glext.h">
-      <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Renderer.h">
       <Filter>Core\Graphics\Render</Filter>
@@ -1520,9 +1517,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderSystem.h">
       <Filter>Core\Graphics\Render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 2.0\RenderSystemOGL2_p.h">
-      <Filter>Core\Graphics\OpenGL\GL 2.0</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGERenderComponent.h" />
     <ClInclude Include="..\..\Sources\EGERenderer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\HardwareResourceProvider.h">
@@ -1611,6 +1605,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Debug\EngineInfo.h">
       <Filter>Core\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.h">
+      <Filter>Core\Graphics\OpenGL\Fixed</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -33,7 +33,7 @@ namespace EGETexture
       EM_DECAL,                           /*< Incoming data replaces previous one if no ALPHA is present or blends if it is. */
       EM_BLEND,                           /*< Incoming data is blended with previous one. */
       EM_ADD,                             /*< Incoming RGB data is summed, while ALPHA channels are multiplied. */
-      EM_COMBINE                          /*< Used for more complex functions definitions. */
+      EM_COMBINE                          /*< Used for more complex functions definitions. NOT SUPPORTED. */
     };
 }
 

@@ -1,10 +1,10 @@
 #include "Core/Graphics/Graphics.h"
 #include "Win32/Graphics/GraphicsWin32_p.h"
-#include <EGEDevice.h>
+#include "EGEDevice.h"
 
-#if EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGL_3
+#if EGE_RENDERING_OPENGL_FIXED || EGE_RENDERING_OPENGL_3
 #include "Win32/Graphics/OpenGL/RenderWindowOGLWin32.h"
-#endif // EGE_RENDERING_OPENGL_2 || EGE_RENDERING_OPENGL_3
+#endif // EGE_RENDERING_OPENGL_FIXED || EGE_RENDERING_OPENGL_3
 
 EGE_NAMESPACE_BEGIN
 
