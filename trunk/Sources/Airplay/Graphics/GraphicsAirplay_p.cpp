@@ -1,10 +1,7 @@
 #include "Core/Graphics/Graphics.h"
 #include "Airplay/Graphics/GraphicsAirplay_p.h"
-#include <EGEDevice.h>
-
-#if EGE_RENDERING_OPENGLES_1
 #include "Airplay/Graphics/OpenGL/ES 1.0/RenderWindowOGLAirplay.h"
-#endif // EGE_RENDERING_OPENGLES_1
+#include "EGEDevice.h"
 
 EGE_NAMESPACE_BEGIN
 

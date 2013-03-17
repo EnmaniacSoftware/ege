@@ -1,6 +1,5 @@
 #include "EGEApplication.h"
 #include "Core/Graphics/OpenGL/Fixed/RenderSystemFixedOGL_p.h"
-#include "Core/Graphics/OpenGL/ExtensionsOGL.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
@@ -18,6 +17,7 @@
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Graphics/TextureImage.h"
 #include "Core/Graphics/Render/RenderQueue.h"
+#include "EGEOpenGL.h"
 #include "EGETimer.h"
 #include "EGEDevice.h"
 #include "EGELog.h"
@@ -104,7 +104,12 @@ static GLenum MapIndexSize(EGEIndexBuffer::IndexSize size)
   {
     case EGEIndexBuffer::IS_8BIT:   result = GL_UNSIGNED_BYTE; break;
     case EGEIndexBuffer::IS_16BIT:  result = GL_UNSIGNED_SHORT; break;
-    case EGEIndexBuffer::IS_32BIT:  result = GL_UNSIGNED_INT; break;
+    case EGEIndexBuffer::IS_32BIT:  
+      
+      EGE_ASSERT(Device::HasRenderCapability(RENDER_CAPS_ELEMENT_INDEX_UINT));
+
+      result = GL_UNSIGNED_INT; 
+      break;
 
     default:
       break;
@@ -139,7 +144,7 @@ static GLint MapTextureAddressingMode(EGETexture::AddressingMode mode)
 
   switch (mode)
   {
-    case EGETexture::AM_CLAMP:  result = GL_CLAMP; break;
+    case EGETexture::AM_CLAMP:  result = GL_CLAMP_TO_EDGE; break;
     case EGETexture::AM_REPEAT: result = GL_REPEAT; break;
 
     default:
@@ -227,9 +232,9 @@ void RenderSystemPrivate::flush()
       //  int a = 1;
       //}
 
-      PVertexBuffer& vertexBuffer = data.component->vertexBuffer();
-      PIndexBuffer& indexBuffer   = data.component->indexBuffer();
-      PMaterial& material         = data.component->material();
+      PVertexBuffer vertexBuffer = data.component->vertexBuffer();
+      PIndexBuffer indexBuffer   = data.component->indexBuffer();
+      PMaterial material         = data.component->material();
 
       // determine number of texture arrays
       s32 textureArraysCount = vertexBuffer->arrayCount(EGEVertexBuffer::AT_TEXTURE_UV);

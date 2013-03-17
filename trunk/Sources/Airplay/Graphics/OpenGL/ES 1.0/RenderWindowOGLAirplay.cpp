@@ -1,11 +1,10 @@
 #include "Core/Application/Application.h"
 #include "Airplay/Graphics/OpenGL/ES 1.0/RenderWindowOGLAirplay.h"
+#include "EGEOpenGL.h"
+#include "EGEMath.h"
+#include "EGEDevice.h"
+#include "EGEDebug.h"
 #include <s3e.h>
-#include <EGEMath.h>
-#include <EGEDevice.h>
-#include <GLES/gl.h>
-#include <GLES/egl.h>
-#include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -303,11 +302,11 @@ void RenderWindowOGLAirplay::detectCapabilities()
   // check if frame buffer object is supported
   if (extensionArray.contains("GL_OES_framebuffer_object"))
   {
-    glBindFramebuffer         = reinterpret_cast<PFNGLBINDFRAMEBUFFEROESPROC>(eglGetProcAddress("glBindFramebufferOES"));
-    glDeleteFramebuffers      = reinterpret_cast<PFNGLDELETEFRAMEBUFFERSOESPROC>(eglGetProcAddress("glDeleteFramebuffersOES"));
-    glGenFramebuffers         = reinterpret_cast<PFNGLGENFRAMEBUFFERSOESPROC>(eglGetProcAddress("glGenFramebuffersOES"));
-    glCheckFramebufferStatus  = reinterpret_cast<PFNGLCHECKFRAMEBUFFERSTATUSOESPROC>(eglGetProcAddress("glCheckFramebufferStatusOES"));
-    glFramebufferTexture2D    = reinterpret_cast<PFNGLFRAMEBUFFERTEXTURE2DOESPROC>(eglGetProcAddress("glFramebufferTexture2DOES"));
+    glBindFramebuffer         = reinterpret_cast<PFNGLBINDFRAMEBUFFERPROC>(eglGetProcAddress("glBindFramebufferOES"));
+    glDeleteFramebuffers      = reinterpret_cast<PFNGLDELETEFRAMEBUFFERSPROC>(eglGetProcAddress("glDeleteFramebuffersOES"));
+    glGenFramebuffers         = reinterpret_cast<PFNGLGENFRAMEBUFFERSPROC>(eglGetProcAddress("glGenFramebuffersOES"));
+    glCheckFramebufferStatus  = reinterpret_cast<PFNGLCHECKFRAMEBUFFERSTATUSPROC>(eglGetProcAddress("glCheckFramebufferStatusOES"));
+    glFramebufferTexture2D    = reinterpret_cast<PFNGLFRAMEBUFFERTEXTURE2DPROC>(eglGetProcAddress("glFramebufferTexture2DOES"));
 
     if ((NULL != glBindFramebuffer) && (NULL != glDeleteFramebuffers) && (NULL != glGenFramebuffers) && 
         (NULL != glCheckFramebufferStatus) && (NULL != glFramebufferTexture2D))
@@ -319,8 +318,8 @@ void RenderWindowOGLAirplay::detectCapabilities()
   // check if VBO mapping is supported
   if (extensionArray.contains("GL_OES_mapbuffer"))
   {
-    glMapBuffer   = reinterpret_cast<PFNGLMAPBUFFEROESPROC>(eglGetProcAddress("glMapBufferOES"));
-    glUnmapBuffer = reinterpret_cast<PFNGLUNMAPBUFFEROESPROC>(eglGetProcAddress("glUnmapBufferOES"));
+    glMapBuffer   = reinterpret_cast<PFNGLMAPBUFFERPROC>(eglGetProcAddress("glMapBufferOES"));
+    glUnmapBuffer = reinterpret_cast<PFNGLUNMAPBUFFERPROC>(eglGetProcAddress("glUnmapBufferOES"));
 
     if ((NULL != glMapBuffer) && (NULL != glUnmapBuffer))
     {

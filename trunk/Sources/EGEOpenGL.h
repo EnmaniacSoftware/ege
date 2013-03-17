@@ -6,13 +6,13 @@
 #ifdef EGE_PLATFORM_WIN32
   #include <windows.h>
   #include <gl/gl.h>
-  #include "Core/Graphics/OpenGL/ExtensionsOGL.h"
+  #include "Win32/Graphics/OpenGL/ExtensionsOGLWin32.h"
 #elif EGE_PLATFORM_AIRPLAY
   #include <GLES/gl.h>
-  #include "Core/Graphics/OpenGL/ExtensionsOGL.h"
+  #include "Airplay/Graphics/OpenGL/ExtensionsOGLAirplay.h"
 #elif EGE_PLATFORM_IOS
   #import <OpenGLES/ES1/gl.h>
-  #include "Core/Graphics/OpenGL/ExtensionsOGL.h"
+  #include "iOS/Graphics/OpenGL/ExtensionsOGLIOS.h"
 #endif
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

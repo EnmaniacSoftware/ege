@@ -1,11 +1,11 @@
 #include "Core/Application/Application.h"
 #include "Win32/Graphics/OpenGL/RenderWindowOGLWin32.h"
-#include "Core/Graphics/OpenGL/ExtensionsOGL.h"
-#include <EGEEvent.h>
-#include <EGEInput.h>
-#include <EGEMath.h>
-#include <EGEDevice.h>
-#include <EGEDebug.h>
+#include "EGEOpenGL.h"
+#include "EGEEvent.h"
+#include "EGEInput.h"
+#include "EGEMath.h"
+#include "EGEDevice.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

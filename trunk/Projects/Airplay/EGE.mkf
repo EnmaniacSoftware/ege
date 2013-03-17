@@ -324,8 +324,6 @@ files
 
 	["Core/Graphics/OpenGL"]
  	(../../Sources/Core/Graphics/OpenGL)
-	ExtensionsOGL.cpp
-  ExtensionsOGL.h
   IndexBufferVAOGL.cpp
   IndexBufferVAOGL.h
   IndexBufferVBOOGL.cpp
@@ -730,6 +728,10 @@ files
 	GraphicsAirplay_p.h
 
 	["Airplay/Graphics/OpenGL"]
+	("../../Sources/Airplay/Graphics/OpenGL")
+	ExtensionsOGLAirplay.cpp
+	ExtensionsOGLAirplay.h
+
 	["Airplay/Graphics/OpenGL/ES 1.0"]
 	("../../Sources/Airplay/Graphics/OpenGL/ES 1.0")
 	RenderWindowOGLAirplay.cpp
