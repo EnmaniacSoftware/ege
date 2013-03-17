@@ -1,5 +1,5 @@
 #include "Core/Application/Application.h"
-#include "Airplay/Graphics/OpenGL/ES 1.0/RenderWindowOGLAirplay.h"
+#include "Airplay/Graphics/OpenGL/RenderWindowOGLAirplay.h"
 #include "EGEOpenGL.h"
 #include "EGEMath.h"
 #include "EGEDevice.h"
