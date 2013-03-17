@@ -106,7 +106,7 @@ static GLenum MapIndexSize(EGEIndexBuffer::IndexSize size)
     case EGEIndexBuffer::IS_16BIT:  result = GL_UNSIGNED_SHORT; break;
     case EGEIndexBuffer::IS_32BIT:  
       
-      EGE_ASSERT(Device::HasRenderCapability(RENDER_CAPS_ELEMENT_INDEX_UINT));
+      EGE_ASSERT(Device::HasRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT));
 
       result = GL_UNSIGNED_INT; 
       break;

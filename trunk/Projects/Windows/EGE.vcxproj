@@ -81,7 +81,6 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\IndexBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Material.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.cpp" />
@@ -212,6 +211,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Application\ApplicationWin32_p.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\main.cpp" />
     <ClCompile Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.cpp" />
@@ -258,7 +258,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\SingleThread\ImageLoaderST_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\IndexBufferTypes.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.h" />
@@ -532,6 +531,7 @@
     <ClInclude Include="..\..\Sources\Win32\Application\ApplicationWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\File\FileWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.h" />
+    <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.h" />
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.h" />
     <ClInclude Include="..\..\Sources\Win32\Input\PointerWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.h" />

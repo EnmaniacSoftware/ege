@@ -480,9 +480,6 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.cpp">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.cpp">
-      <Filter>Core\Graphics\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Debug\Console.cpp">
       <Filter>Core\Debug</Filter>
     </ClCompile>
@@ -830,6 +827,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.cpp">
       <Filter>Core\Graphics\OpenGL\Fixed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.cpp">
+      <Filter>Win32\Graphics\OpenGL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1196,9 +1196,6 @@
       <Filter>Core\Math\Splines</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEFlags.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ExtensionsOGL.h">
-      <Filter>Core\Graphics\OpenGL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.h">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClInclude>
@@ -1608,6 +1605,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.h">
       <Filter>Core\Graphics\OpenGL\Fixed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.h">
+      <Filter>Win32\Graphics\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

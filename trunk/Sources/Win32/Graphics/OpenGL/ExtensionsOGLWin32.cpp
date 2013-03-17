@@ -1,4 +1,4 @@
-#include "Core/Graphics/OpenGL/ExtensionsOGL.h"
+#include "Win32/Graphics/OpenGL/ExtensionsOGLWin32.h"
 
 EGE_NAMESPACE
 
