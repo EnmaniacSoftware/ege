@@ -3,7 +3,7 @@
 
 /*! \brief Null (mock) implementation for purchases. */
 
-#include <EGE.h>
+#include "EGE.h"
 
 EGE_NAMESPACE_BEGIN
 

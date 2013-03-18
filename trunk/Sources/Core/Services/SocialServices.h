@@ -3,9 +3,9 @@
 
 /*! \brief Class representing social platform. */
 
-#include <EGE.h>
-#include <EGESocialServices.h>
-#include <EGESignal.h>
+#include "EGE.h"
+#include "EGESocialServices.h"
+#include "EGESignal.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -1,8 +1,8 @@
 #ifndef EGE_SOCIALSERVICES_H
 #define EGE_SOCIALSERVICES_H
 
-#include <EGEString.h>
-#include <EGEList.h>
+#include "EGEString.h"
+#include "EGEList.h"
 
 EGE_NAMESPACE_BEGIN
 

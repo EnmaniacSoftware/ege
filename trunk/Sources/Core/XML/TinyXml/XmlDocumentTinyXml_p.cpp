@@ -3,7 +3,7 @@
 #include "Core/XML/XmlElement.h"
 #include "Core/XML/TinyXml/XmlElementTinyXml_p.h"
 #include "Core/Data/DataBuffer.h"
-#include <EGEFile.h>
+#include "EGEFile.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -5,10 +5,10 @@
  *  Program resource can define set of shaders to be used together. Upon loading it contains program object to be used in rendering.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
-#include <EGEMap.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
+#include "EGEMap.h"
 #include "Core/Resource/Resource.h"
 #include "Core/Graphics/Program.h"
 

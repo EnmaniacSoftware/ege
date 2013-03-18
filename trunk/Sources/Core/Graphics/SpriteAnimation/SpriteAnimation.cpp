@@ -1,11 +1,11 @@
 #include "Core/Graphics/SpriteAnimation/SpriteAnimation.h"
 #include "Core/Resource/ResourceSpritesheet.h"
 #include "Core/Resource/ResourceTextureImage.h"
-#include <EGEMaterial.h>
-#include <EGEPhysics.h>
-#include <EGEGraphics.h>
-#include <EGERenderComponent.h>
-#include <EGEDebug.h>
+#include "EGEMaterial.h"
+#include "EGEPhysics.h"
+#include "EGEGraphics.h"
+#include "EGERenderComponent.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

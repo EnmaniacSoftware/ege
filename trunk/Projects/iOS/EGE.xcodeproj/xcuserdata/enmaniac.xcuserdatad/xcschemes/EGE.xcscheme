@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "45877DA416F09F5B00B4252B"
-               BuildableName = "libEGE.a"
-               BlueprintName = "EGE"
+               BuildableName = "libEGE OGL FPL MT.a"
+               BlueprintName = "EGE OGL FPL MT"
                ReferencedContainer = "container:EGE.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

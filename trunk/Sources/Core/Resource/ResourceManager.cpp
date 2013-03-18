@@ -1,4 +1,4 @@
-#include <EGEResources.h>
+#include "EGEResources.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceGroup.h"
 #include "Core/Resource/ResourceTexture.h"
@@ -26,8 +26,8 @@
 #include "Core/Event/Event.h"
 #include "Core/Event/EventIDs.h"
 #include "Core/Event/EventManager.h"
-#include <EGEXml.h>
-#include <EGEDir.h>
+#include "EGEXml.h"
+#include "EGEDir.h"
 
 #if EGE_RESOURCEMANAGER_SINGLE_THREAD
 #include "Core/Resource/SingleThread/ResourceManagerST_p.h"
@@ -140,8 +140,6 @@ EGEResult ResourceManager::construct()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManager::registerResource(const String& typeName, egeResourceCreateFunc createFunc)
 {
-  EGEResult result = EGE_SUCCESS;
-  
   // check if resource with such a name exists already
   Map<String, ResourceRegistryEntry>::iterator it = m_registeredResources.find(typeName);
   if (it != m_registeredResources.end())
@@ -566,10 +564,9 @@ void ResourceManager::unloadAll()
 
     // try to unload all resource one by one
     // NOTE: we need to go thru all resources instead of letting the group to unload itself cause it is possible (due to implementation)
-    //       that some of the resources were loaded from outside (ie no thru PResourceGroup::load) ie when some other group refers 
+    //       that some of the resources were loaded from outside (ie not thru PResourceGroup::load) ie when some other group refers 
     //       the resources from other group
     
-    bool pending = false;
     List<PResource> resources = group->resources("");
     for (List<PResource>::iterator itResource = resources.begin(); itResource != resources.end(); ++itResource)
     {

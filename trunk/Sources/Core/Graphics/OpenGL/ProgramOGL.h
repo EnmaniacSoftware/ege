@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_GRAPHICS_OPENGL_PROGRAMOGL_PRIVATE_H
 #define EGE_CORE_GRAPHICS_OPENGL_PROGRAMOGL_PRIVATE_H
 
-#include <EGE.h>
-#include <EGEOpenGL.h>
-#include <EGEMap.h>
+#include "EGE.h"
+#include "EGEOpenGL.h"
+#include "EGEMap.h"
 
 EGE_NAMESPACE_BEGIN
 

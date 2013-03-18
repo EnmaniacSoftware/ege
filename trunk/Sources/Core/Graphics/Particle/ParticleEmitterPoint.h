@@ -5,7 +5,7 @@
 *   Particle emitter specalization. Such emitter generates all particles from area near its position.
 */
 
-#include <EGE.h>
+#include "EGE.h"
 #include "Core/Graphics/Particle/ParticleEmitter.h"
 
 EGE_NAMESPACE_BEGIN

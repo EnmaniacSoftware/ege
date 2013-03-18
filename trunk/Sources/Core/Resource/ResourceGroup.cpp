@@ -1,8 +1,8 @@
 #include "Core/Resource/ResourceGroup.h"
 #include "Core/Resource/ResourceManager.h"
-#include <EGETimer.h>
-#include <EGEDebug.h>
-#include <EGELog.h>
+#include "EGETimer.h"
+#include "EGEDebug.h"
+#include "EGELog.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -178,10 +178,10 @@ EGEResult ResourceGroup::unload()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if (name() == "main-menu-heart")
-  {
-    int a = 1;
-  }
+//  if (name() == "main-menu-heart")
+//  {
+//    int a = 1;
+//  }
 
   // check if loaded
   if (isLoaded())

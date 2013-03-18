@@ -1,9 +1,11 @@
 #include "Core/Services/DeviceServices.h"
 
 #ifdef EGE_PLATFORM_WIN32
-#include "Win32/Services/DeviceServicesWin32_p.h"
+  #include "Win32/Services/DeviceServicesWin32_p.h"
 #elif EGE_PLATFORM_AIRPLAY
-#include "Airplay/Services/DeviceServicesAirplay_p.h"
+  #include "Airplay/Services/DeviceServicesAirplay_p.h"
+#elif EGE_PLATFORM_IOS
+  #include "iOS/Services/DeviceServicesIOS_p.h"
 #endif
 
 EGE_NAMESPACE_BEGIN

@@ -1,5 +1,5 @@
 #include "Core/Math/Tweeners/BackTweener.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

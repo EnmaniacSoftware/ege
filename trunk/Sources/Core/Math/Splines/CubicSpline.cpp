@@ -58,6 +58,11 @@ void CubicSpline::setType(EGESpline::Type type)
       case EGESpline::TYPE_HERMITE:  m_matrix = HermiteMatrix; break;
       case EGESpline::TYPE_CARDINAL: m_matrix = CatMullRomMatrix; break;
       case EGESpline::TYPE_BSPLINE:  m_matrix = BSplineMatrix; break;
+        
+      default:
+        
+        EGE_ASSERT(false && "Unknown spline type");
+        break;
     }
 
     // TAGE - update length etc

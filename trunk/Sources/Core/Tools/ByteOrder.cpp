@@ -1,5 +1,5 @@
 #include "Core/Tools/ByteOrder.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

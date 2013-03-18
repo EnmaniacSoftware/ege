@@ -1,7 +1,7 @@
 #include "Core/XML/TinyXml/XmlElementTinyXml_p.h"
 #include "Core/XML/XmlAttribute.h"
 #include "Core/XML/TinyXml/XmlAttributeTinyXml_p.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

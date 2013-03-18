@@ -1,6 +1,6 @@
 #include "Core/Random/RandomGenerator.h"
 
-#ifdef EGE_RANDOM_STDC
+#if EGE_RANDOM_STDC
   #include "Core/Random/StdC/RandomGeneratorStdC_p.h"
 #endif // EGE_RANDOM_STDC
 

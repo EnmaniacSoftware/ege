@@ -1,7 +1,7 @@
 #include "Core/Graphics/Particle/ParticleFactory.h"
 #include "Core/Graphics/Particle/ParticleEmitterPoint.h"
 #include "Core/Graphics/Particle/ParticleAffectorForce.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -68,8 +68,6 @@ EGEResult ParticleFactory::construct()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ParticleFactory::registerEmitter(const String& typeName, egeParticleEmitterCreateFunc createFunc)
 {
-  EGEResult result = EGE_SUCCESS;
-  
   // check if resource with such a name exists already
   if (isEmitterRegistered(typeName))
   {
@@ -108,8 +106,6 @@ bool ParticleFactory::isEmitterRegistered(const String& typeName) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ParticleFactory::registerAffector(const String& typeName, egeParticleAffectorCreateFunc createFunc)
 {
-  EGEResult result = EGE_SUCCESS;
-  
   // check if resource with such a name exists already
   if (isAffectorRegistered(typeName))
   {

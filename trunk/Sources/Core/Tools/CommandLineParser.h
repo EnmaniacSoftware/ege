@@ -1,8 +1,8 @@
 #ifndef EGE_CORE_TOOLS_COMMANDLINEPARSERGENERIC_H
 #define EGE_CORE_TOOLS_COMMANDLINEPARSERGENERIC_H
 
-#include <EGE.h>
-#include <EGEDictionary.h>
+#include "EGE.h"
+#include "EGEDictionary.h"
 
 EGE_NAMESPACE_BEGIN
 

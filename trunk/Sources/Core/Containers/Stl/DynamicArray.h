@@ -63,7 +63,7 @@ void DynamicArray<T>::removeAt(s32 index)
   if (index < static_cast<s32>(this->size()))
   {
     typename DynamicArray<T>::iterator it = this->begin() + index;
-    erase(it);
+    this->erase(it);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

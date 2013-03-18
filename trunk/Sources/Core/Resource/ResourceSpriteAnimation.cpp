@@ -3,9 +3,9 @@
 #include "Core/Graphics/SpriteAnimation/SpriteAnimation.h"
 #include "Core/Resource/ResourceTextureImage.h"
 #include "Core/Resource/ResourceSequencer.h"
-#include <EGEXml.h>
-#include <EGEDebug.h>
-#include <EGEResources.h>
+#include "EGEXml.h"
+#include "EGEDebug.h"
+#include "EGEResources.h"
 
 EGE_NAMESPACE_BEGIN
 

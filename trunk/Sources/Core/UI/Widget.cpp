@@ -1,6 +1,6 @@
 #include "Core/UI/Widget.h"
-#include <EGETexture.h>
-#include <EGEStringUtils.h>
+#include "EGETexture.h"
+#include "EGEStringUtils.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -308,10 +308,10 @@ Vector2f Widget::contentSize()
   // go thru all children
   for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)
   {
-    const ChildData& data = it->second;
+    //const ChildData& data = it->second;
 
     // determine content size
-    Vector2f contentSize = data.widget->contentSize();
+    //Vector2f contentSize = data.widget->contentSize();
 
     // calculate desired dialog size to match requirements for this content area
     //Vector2f sizeFromContent(contentSize.x / data.rect.width, contentSize.y / data.rect.height);

@@ -1,9 +1,9 @@
 #include "Core/Resource/ResourceSpritesheet.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceTextureImage.h"
-#include <EGEXml.h>
-#include <EGEDebug.h>
-#include <EGEResources.h>
+#include "EGEXml.h"
+#include "EGEDebug.h"
+#include "EGEResources.h"
 
 EGE_NAMESPACE_BEGIN
 

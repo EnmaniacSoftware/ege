@@ -1,6 +1,6 @@
 #include "Core/Sequencer/Sequencer.h"
-#include <EGEMath.h>
-#include <EGEDebug.h>
+#include "EGEMath.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

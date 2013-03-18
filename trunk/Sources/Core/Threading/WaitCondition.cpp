@@ -1,9 +1,9 @@
-#include <EGEWaitCondition.h>
-#include <EGEMutex.h>
-#include <EGEDebug.h>
+#include "EGEWaitCondition.h"
+#include "EGEMutex.h"
+#include "EGEDebug.h"
 
 #ifdef EGE_THREAD_PTHREAD
-#include "Core/Threading/PThread/WaitCondition_p.h"
+  #include "Core/Threading/PThread/WaitCondition_p.h"
 #endif // EGE_THREAD_PTHREAD
 
 EGE_NAMESPACE_BEGIN

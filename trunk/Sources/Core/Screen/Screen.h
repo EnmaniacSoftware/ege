@@ -5,8 +5,8 @@
     different view paths i.e. different menu screens which are stacked up the way user navigates. 
 */
 
-#include <EGE.h>
-#include <EGETime.h>
+#include "EGE.h"
+#include "EGETime.h"
 #include "EGEInput.h"
 #include "EGEString.h"
 

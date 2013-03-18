@@ -1,7 +1,7 @@
 #include "Core/Graphics/Particle/ParticleEmitter.h"
-#include <EGEGraphics.h>
-#include <EGEStringUtils.h>
-#include <EGEDebug.h>
+#include "EGEGraphics.h"
+#include "EGEStringUtils.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

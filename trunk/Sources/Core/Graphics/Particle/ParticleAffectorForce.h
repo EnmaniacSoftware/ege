@@ -5,8 +5,8 @@
 *   Particle affector specialization. Affector changes the position of particles according to force direction and magnitude.
 */
 
-#include <EGE.h>
-#include <EGEParticle.h>
+#include "EGE.h"
+#include "EGEParticle.h"
 
 EGE_NAMESPACE_BEGIN
 

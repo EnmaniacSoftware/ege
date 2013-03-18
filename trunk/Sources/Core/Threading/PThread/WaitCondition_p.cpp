@@ -1,7 +1,7 @@
-#include <EGEMutex.h>
+#include "EGEMutex.h"
 #include "Core/Threading/PThread/WaitCondition_p.h"
 #include "Core/Threading/PThread/Mutex_p.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

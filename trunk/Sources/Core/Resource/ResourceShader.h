@@ -5,10 +5,10 @@
  *  Shader resource can define any type of shader i.e. VERTEX or FRAGMENT. Upon loading it contains shader object to be used in rendering.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
-#include <EGEShader.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
+#include "EGEShader.h"
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN

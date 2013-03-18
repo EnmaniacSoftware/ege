@@ -8,8 +8,8 @@
 *
 */
 
-#include <EGE.h>
-#include <EGEString.h>
+#include "EGE.h"
+#include "EGEString.h"
 #include <tinyxml.h>
 
 EGE_NAMESPACE_BEGIN

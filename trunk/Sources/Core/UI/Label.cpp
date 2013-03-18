@@ -1,7 +1,7 @@
 #include "Core/UI/Label.h"
-#include <EGEApplication.h>
-#include <EGEResources.h>
-#include <EGEStringUtils.h>
+#include "EGEApplication.h"
+#include "EGEResources.h"
+#include "EGEStringUtils.h"
 
 EGE_NAMESPACE_BEGIN
 

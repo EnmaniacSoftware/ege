@@ -1,6 +1,6 @@
 #include "iOS/File/FileIOS_p.h"
 #include "Core/Math/Math.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -1,12 +1,12 @@
 #include "Core/Math/Math.h"
-#include <EGEMatrix.h>
-#include <EGEVector.h>
-#include <EGEQuaternion.h>
-#include <EGEAngle.h>
-#include <EGEComplex.h>
-#include <EGEColor.h>
-#include <EGERect.h>
-#include <EGEDebug.h>
+#include "EGEMatrix.h"
+#include "EGEVector.h"
+#include "EGEQuaternion.h"
+#include "EGEAngle.h"
+#include "EGEComplex.h"
+#include "EGEColor.h"
+#include "EGERect.h"
+#include "EGEDebug.h"
 #include <limits>
 
 EGE_NAMESPACE_BEGIN

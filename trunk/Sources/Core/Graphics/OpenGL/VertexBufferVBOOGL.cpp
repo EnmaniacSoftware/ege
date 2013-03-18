@@ -1,10 +1,10 @@
 #include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
 #include "Core/Data/DataBuffer.h"
 #include "Core/Debug/EngineInfo.h"
-#include <EGEOpenGL.h>
-#include <EGEMath.h>
-#include <EGEDevice.h>
-#include <EGEDebug.h>
+#include "EGEOpenGL.h"
+#include "EGEMath.h"
+#include "EGEDevice.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -19,6 +19,9 @@ static GLenum MapUsageType(EGEVertexBuffer::UsageType type)
   {
     case EGEVertexBuffer::UT_STATIC_WRITE:  return GL_STATIC_DRAW;
     case EGEVertexBuffer::UT_DYNAMIC_WRITE: return GL_DYNAMIC_DRAW;
+      
+    default:
+      break;
   }
 
   return GL_DYNAMIC_DRAW;
@@ -33,6 +36,9 @@ static GLenum MapUsageTypeToAccessType(EGEVertexBuffer::UsageType type)
     case EGEVertexBuffer::UT_DYNAMIC_WRITE: 
       
       return GL_WRITE_ONLY;
+      
+    default:
+      break;
   }
 
   return GL_WRITE_ONLY;
@@ -105,7 +111,7 @@ void* VertexBufferVBO::lock(u32 offset, u32 count)
   void* buffer = NULL;
 
   // check if and any data to lock
-  if (0 <= count)
+  if (0 < count)
   {
     // check if inside the buffer
     if ((offset + count) <= m_vertexCapacity)

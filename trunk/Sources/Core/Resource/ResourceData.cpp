@@ -1,7 +1,7 @@
 #include "Core/Resource/ResourceData.h"
 #include "Core/Resource/ResourceManager.h"
-#include <EGEFile.h>
-#include <EGEResources.h>
+#include "EGEFile.h"
+#include "EGEResources.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -1,4 +1,4 @@
-#include <EGEPhysics.h>
+#include "EGEPhysics.h"
 
 #ifdef EGE_PHYSICS_BOX2D
   #include "Core/Physics/Box2D/PhysicsManagerBox2D_p.h"

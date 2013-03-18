@@ -3,9 +3,9 @@
 
 /*! This class represents the seperate thread of control. */
 
-#include <EGE.h>
-#include <EGESignal.h>
-#include <EGETime.h>
+#include "EGE.h"
+#include "EGESignal.h"
+#include "EGETime.h"
 
 EGE_NAMESPACE_BEGIN
 

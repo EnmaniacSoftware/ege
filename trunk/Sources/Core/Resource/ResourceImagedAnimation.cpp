@@ -2,10 +2,10 @@
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceSequencer.h"
 #include "Core/Graphics/ImagedAnimation/ImagedAnimation.h"
-#include <EGEXml.h>
-#include <EGEResources.h>
-#include <EGEStringUtils.h>
-#include <EGEDebug.h>
+#include "EGEXml.h"
+#include "EGEResources.h"
+#include "EGEStringUtils.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -348,8 +348,6 @@ EGEResult ResourceImagedAnimation::addFrame(const PXmlElement& tag)
   EGEResult result = EGE_SUCCESS;
 
   FrameData data;
-
-  bool error = false;
 
   // go thru all sub nodes
   PXmlElement child = tag->firstChild();

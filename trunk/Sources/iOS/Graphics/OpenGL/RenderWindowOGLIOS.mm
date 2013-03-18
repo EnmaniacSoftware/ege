@@ -1,22 +1,17 @@
 #include "Core/Application/Application.h"
-#include "iOS/Graphics/OpenGL/ES 1.0/RenderWindowOGLIOS.h"
-#include <EGEMath.h>
-#include <EGEDevice.h>
-#include <GLES/gl.h>
-#include <GLES/egl.h>
-#include <EGEDebug.h>
+#include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
+#include "EGEMath.h"
+#include "EGEDevice.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderWindowOGLIOS::RenderWindowOGLIOS(Application* app, const Dictionary& params) : RenderWindow(app, params), 
-                                                                                             m_eglDisplay(EGL_NO_DISPLAY), 
-                                                                                             m_eglContext(EGL_NO_CONTEXT),
-                                                                                             m_eglSurface(EGL_NO_SURFACE)
+RenderWindowOGLIOS::RenderWindowOGLIOS(Application* app, const Dictionary& params) : RenderWindow(app, params)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderWindowOGLIOS::RenderWindowOGLIOS()
+RenderWindowOGLIOS::~RenderWindowOGLIOS()
 {
   destroy();
 }
@@ -26,11 +21,11 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
   bool error = false;
 
   // register for surface orientation changes
-  if (S3E_RESULT_SUCCESS != s3eSurfaceRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB, this))
-  {
-    // error!
-    egeWarning() << "Count not register surface orientation change callback.";
-  }
+//  if (S3E_RESULT_SUCCESS != s3eSurfaceRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB, this))
+//  {
+//    // error!
+//    egeWarning() << "Count not register surface orientation change callback.";
+//  }
 
   // decompose param list
   Dictionary::const_iterator iterColorBits = params.find(EGE_RENDER_TARGET_PARAM_COLOR_BITS);
@@ -61,22 +56,22 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
   m_physicalHeight = Device::SurfaceHeight();
 
   // get current orientation screen dimensions
-  m_width  = s3eSurfaceGetInt(S3E_SURFACE_WIDTH);
-  m_height = s3eSurfaceGetInt(S3E_SURFACE_HEIGHT);
+//  m_width  = s3eSurfaceGetInt(S3E_SURFACE_WIDTH);
+//  m_height = s3eSurfaceGetInt(S3E_SURFACE_HEIGHT);
 
   // determine initial screen orientation
-  switch (s3eSurfaceGetInt(S3E_SURFACE_DEVICE_BLIT_DIRECTION))
-  {
-    case S3E_SURFACE_BLIT_DIR_NORMAL: m_orientationRotation.fromDegrees(0.0f); break;
-    case S3E_SURFACE_BLIT_DIR_ROT90:  m_orientationRotation.fromDegrees(90.0f); break;
-    case S3E_SURFACE_BLIT_DIR_ROT180: m_orientationRotation.fromDegrees(180.0f); break;
-    case S3E_SURFACE_BLIT_DIR_ROT270: m_orientationRotation.fromDegrees(270.0f); break;
-
-    default:
-
-      egeWarning() << "Unknown blit direction!";
-      break;
-  }
+//  switch (s3eSurfaceGetInt(S3E_SURFACE_DEVICE_BLIT_DIRECTION))
+//  {
+//    case S3E_SURFACE_BLIT_DIR_NORMAL: m_orientationRotation.fromDegrees(0.0f); break;
+//    case S3E_SURFACE_BLIT_DIR_ROT90:  m_orientationRotation.fromDegrees(90.0f); break;
+//    case S3E_SURFACE_BLIT_DIR_ROT180: m_orientationRotation.fromDegrees(180.0f); break;
+//    case S3E_SURFACE_BLIT_DIR_ROT270: m_orientationRotation.fromDegrees(270.0f); break;
+//
+//    default:
+//
+//      egeWarning() << "Unknown blit direction!";
+//      break;
+//  }
 
   //EGE_PRINT("Pwidth: %d Pheight: %d width: %d height: %d orient: %f", m_physicalWidth, m_physicalHeight, m_width, m_height, m_orientationRotation.degrees());
 
@@ -104,115 +99,115 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
   //  }
   //}
 
-  static const EGLint configAttribs[] =
-  {
-    EGL_RED_SIZE,       colorBits / 3,
-    EGL_GREEN_SIZE,     colorBits / 3,
-    EGL_BLUE_SIZE,      colorBits / 3,
-    EGL_DEPTH_SIZE,     depthBits,
-    EGL_ALPHA_SIZE,     EGL_DONT_CARE,
-    EGL_STENCIL_SIZE,   EGL_DONT_CARE,
-    EGL_SURFACE_TYPE,   EGL_WINDOW_BIT,
-    EGL_NONE
-  };
-
-  EGLBoolean success;
-
-  EGLint numConfigs;
-  EGLint majorVersion;
-  EGLint minorVersion;
-
-  EGLConfig sEglConfig;
-
-  m_eglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-
-  success = eglInitialize(m_eglDisplay, &majorVersion, &minorVersion);
-  if (EGL_FALSE != success)
-  {
-    success = eglGetConfigs(m_eglDisplay, NULL, 0, &numConfigs);
-  }
-
-  if (EGL_FALSE != success)
-  {
-    success = eglChooseConfig(m_eglDisplay, configAttribs, &sEglConfig, 1, &numConfigs);
-  }
-
-  if (EGL_FALSE != success)
-  {
-    m_eglSurface = eglCreateWindowSurface(m_eglDisplay, sEglConfig, s3eGLGetNativeWindow(), NULL);
-    if (m_eglSurface == EGL_NO_SURFACE)
-    {
-      success = EGL_FALSE;
-    }
-  }
-  
-  if (EGL_FALSE != success)
-  {
-    m_eglContext = eglCreateContext(m_eglDisplay, sEglConfig, NULL, NULL);
-    if (m_eglContext == EGL_NO_CONTEXT)
-    {
-      success = EGL_FALSE;
-    }
-  }
-
-  if (EGL_FALSE != success)
-  {
-    success = eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext);
-  }
-
-  // obtain a detailed description of surface pixel format
-  if (EGL_FALSE != success)
-  {
-    // supply surface data for for device info
-
-    EGLint value;
-
-    if (EGL_TRUE == eglGetConfigAttrib(m_eglDisplay, sEglConfig, EGL_RED_SIZE, &value))
-    {
-      Device::SetSurfaceRedChannelBitsCount(static_cast<u32>(value));
-    }
-    if (EGL_TRUE == eglGetConfigAttrib(m_eglDisplay, sEglConfig, EGL_GREEN_SIZE, &value))
-    {
-      Device::SetSurfaceGreenChannelBitsCount(static_cast<u32>(value));
-    }
-    if (EGL_TRUE == eglGetConfigAttrib(m_eglDisplay, sEglConfig, EGL_BLUE_SIZE, &value))
-    {
-      Device::SetSurfaceBlueChannelBitsCount(static_cast<u32>(value));
-    }
-    if (EGL_TRUE == eglGetConfigAttrib(m_eglDisplay, sEglConfig, EGL_ALPHA_SIZE, &value))
-    {
-      Device::SetSurfaceAlphaChannelBitsCount(static_cast<u32>(value));
-    }
-  }
-
-  if (EGL_FALSE == success)
-  {
-    destroy();
-    return EGE_ERROR;
-  }
+//  static const EGLint configAttribs[] =
+//  {
+//    EGL_RED_SIZE,       colorBits / 3,
+//    EGL_GREEN_SIZE,     colorBits / 3,
+//    EGL_BLUE_SIZE,      colorBits / 3,
+//    EGL_DEPTH_SIZE,     depthBits,
+//    EGL_ALPHA_SIZE,     EGL_DONT_CARE,
+//    EGL_STENCIL_SIZE,   EGL_DONT_CARE,
+//    EGL_SURFACE_TYPE,   EGL_WINDOW_BIT,
+//    EGL_NONE
+//  };
+//
+//  EGLBoolean success;
+//
+//  EGLint numConfigs;
+//  EGLint majorVersion;
+//  EGLint minorVersion;
+//
+//  EGLConfig sEglConfig;
+//
+//  m_eglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+//
+//  success = eglInitialize(m_eglDisplay, &majorVersion, &minorVersion);
+//  if (EGL_FALSE != success)
+//  {
+//    success = eglGetConfigs(m_eglDisplay, NULL, 0, &numConfigs);
+//  }
+//
+//  if (EGL_FALSE != success)
+//  {
+//    success = eglChooseConfig(m_eglDisplay, configAttribs, &sEglConfig, 1, &numConfigs);
+//  }
+//
+//  if (EGL_FALSE != success)
+//  {
+//    m_eglSurface = eglCreateWindowSurface(m_eglDisplay, sEglConfig, s3eGLGetNativeWindow(), NULL);
+//    if (m_eglSurface == EGL_NO_SURFACE)
+//    {
+//      success = EGL_FALSE;
+//    }
+//  }
+//  
+//  if (EGL_FALSE != success)
+//  {
+//    m_eglContext = eglCreateContext(m_eglDisplay, sEglConfig, NULL, NULL);
+//    if (m_eglContext == EGL_NO_CONTEXT)
+//    {
+//      success = EGL_FALSE;
+//    }
+//  }
+//
+//  if (EGL_FALSE != success)
+//  {
+//    success = eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext);
+//  }
+//
+//  // obtain a detailed description of surface pixel format
+//  if (EGL_FALSE != success)
+//  {
+//    // supply surface data for for device info
+//
+//    EGLint value;
+//
+//    if (EGL_TRUE == eglGetConfigAttrib(m_eglDisplay, sEglConfig, EGL_RED_SIZE, &value))
+//    {
+//      Device::SetSurfaceRedChannelBitsCount(static_cast<u32>(value));
+//    }
+//    if (EGL_TRUE == eglGetConfigAttrib(m_eglDisplay, sEglConfig, EGL_GREEN_SIZE, &value))
+//    {
+//      Device::SetSurfaceGreenChannelBitsCount(static_cast<u32>(value));
+//    }
+//    if (EGL_TRUE == eglGetConfigAttrib(m_eglDisplay, sEglConfig, EGL_BLUE_SIZE, &value))
+//    {
+//      Device::SetSurfaceBlueChannelBitsCount(static_cast<u32>(value));
+//    }
+//    if (EGL_TRUE == eglGetConfigAttrib(m_eglDisplay, sEglConfig, EGL_ALPHA_SIZE, &value))
+//    {
+//      Device::SetSurfaceAlphaChannelBitsCount(static_cast<u32>(value));
+//    }
+//  }
+//
+//  if (EGL_FALSE == success)
+//  {
+//    destroy();
+//    return EGE_ERROR;
+//  }
 
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderWindowOGLAirplay::destroy()
+void RenderWindowOGLIOS::destroy()
 {
   // unregister surface orientation change callback
-  s3eSurfaceUnRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB);
-
-  eglMakeCurrent(m_eglDisplay, NULL, NULL, NULL);
-
-  eglDestroyContext(m_eglDisplay, m_eglContext);
-  eglDestroySurface(m_eglDisplay, m_eglSurface);
-  eglTerminate(m_eglDisplay);
-
-  m_eglDisplay = EGL_NO_DISPLAY;
-  m_eglContext = EGL_NO_CONTEXT;
-  m_eglSurface = EGL_NO_SURFACE;
+//  s3eSurfaceUnRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB);
+//
+//  eglMakeCurrent(m_eglDisplay, NULL, NULL, NULL);
+//
+//  eglDestroyContext(m_eglDisplay, m_eglContext);
+//  eglDestroySurface(m_eglDisplay, m_eglSurface);
+//  eglTerminate(m_eglDisplay);
+//
+//  m_eglDisplay = EGL_NO_DISPLAY;
+//  m_eglContext = EGL_NO_CONTEXT;
+//  m_eglSurface = EGL_NO_SURFACE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderWindowOGLIOS::showFrameBuffer()
 {
-  eglSwapBuffers(m_eglDisplay, m_eglSurface);
+  //eglSwapBuffers(m_eglDisplay, m_eglSurface);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderWindowOGLIOS::isValid() const
@@ -223,7 +218,7 @@ bool RenderWindowOGLIOS::isValid() const
     return false;
   }
 
-  return (EGL_NO_SURFACE != m_eglSurface) && (EGL_NO_CONTEXT != m_eglContext) && (EGL_NO_DISPLAY != m_eglDisplay);
+  return false;//(EGL_NO_SURFACE != m_eglSurface) && (EGL_NO_CONTEXT != m_eglContext) && (EGL_NO_DISPLAY != m_eglDisplay);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult RenderWindowOGLIOS::enableFullScreen(s32 width, s32 height, bool enable)
@@ -240,8 +235,8 @@ bool RenderWindowOGLIOS::requiresTextureFlipping() const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-int32 RenderWindowOGLIOS::OrientationChangeCB(void* systemData, void* userData)
-{
+//int32 RenderWindowOGLIOS::OrientationChangeCB(void* systemData, void* userData)
+//{
 //  s3eSurfaceOrientation* so  = reinterpret_cast<s3eSurfaceOrientation*>(systemData);
 //  RenderWindowOGLAirplay* me = reinterpret_cast<RenderWindowOGLAirplay*>(userData);
 //
@@ -265,7 +260,7 @@ int32 RenderWindowOGLIOS::OrientationChangeCB(void* systemData, void* userData)
 ////  EGE_PRINT("ORIENTATION %d %f   bd: %d dbd: %d w: %d h: %d", so->m_DeviceBlitDirection, me->m_orientationRotation.degrees(), bd, dbd, s3eSurfaceGetInt(S3E_SURFACE_WIDTH), s3eSurfaceGetInt(S3E_SURFACE_HEIGHT));
 //
 //  return 0;
-}
+//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

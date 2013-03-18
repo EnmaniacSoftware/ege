@@ -3,9 +3,9 @@
 #include <algorithm>
 #include <cctype>
 #include <stdarg.h>
-#include <EGEStringArray.h>
-#include <EGEStringUtils.h>
-#include <EGEDebug.h>
+#include "EGEStringArray.h"
+#include "EGEStringUtils.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -51,13 +51,15 @@ String::~String()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String& String::toLower()
 {
-  std::transform(begin(), end(), begin(), std::tolower);
+  // NOTE: explicit casting is needed for XCode4 as there is also template version of 'tolower' in <locale>
+  std::transform(begin(), end(), begin(), (int(*)(int)) std::tolower);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String& String::toUpper()
 {
-  std::transform(begin(), end(), begin(), std::toupper);
+  // NOTE: explicit casting is needed for XCode4 as there is also template version of 'toupper' in <locale>  
+  std::transform(begin(), end(), begin(), (int(*)(int)) std::toupper);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 #include "Core/Services/PurchaseServices.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 #ifdef EGE_PURCHASES_APPSTORE
   #ifdef EGE_PLATFORM_AIRPLAY

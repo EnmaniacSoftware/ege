@@ -2,10 +2,10 @@
 #include "Core/Resource/ResourceTexture.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Graphics/TextureImage.h"
-#include <EGEXml.h>
-#include <EGEResources.h>
-#include <EGEStringUtils.h>
-#include <EGEDebug.h>
+#include "EGEXml.h"
+#include "EGEResources.h"
+#include "EGEStringUtils.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

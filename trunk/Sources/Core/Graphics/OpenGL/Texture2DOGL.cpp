@@ -1,8 +1,8 @@
-#include <EGEOpenGL.h>
+#include "EGEOpenGL.h"
 #include "Core/Graphics/Image/Image.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
-#include <EGEDevice.h>
-#include <EGEDebug.h>
+#include "EGEDevice.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

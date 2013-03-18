@@ -1,9 +1,9 @@
 #include "Core/UI/PushButton.h"
 #include "Core/UI/WidgetFactory.h"
-#include <EGEApplication.h>
-#include <EGEResources.h>
-#include <EGEGraphics.h>
-#include <EGEStringUtils.h>
+#include "EGEApplication.h"
+#include "EGEResources.h"
+#include "EGEGraphics.h"
+#include "EGEStringUtils.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -88,6 +88,9 @@ void PushButton::pointerEvent(PPointerData data)
           // emit
           emit clicked(this);
         }
+        break;
+        
+      default:
         break;
     }
   }

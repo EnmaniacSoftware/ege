@@ -3,9 +3,9 @@
 
 /*! PThreads implementation of Thread. */
 
-#include <EGE.h>
-#include <EGESignal.h>
-#include <EGETime.h>
+#include "EGE.h"
+#include "EGESignal.h"
+#include "EGETime.h"
 #include <pthread.h>
 
 EGE_NAMESPACE_BEGIN

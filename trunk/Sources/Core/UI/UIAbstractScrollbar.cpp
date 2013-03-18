@@ -1,7 +1,7 @@
 #include "Core/UI/UIAbstractScrollbar.h"
-#include <EGEOverlay.h>
-#include <EGEMath.h>
-#include <EGEDebug.h>
+#include "EGEOverlay.h"
+#include "EGEMath.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -85,6 +85,9 @@ void UIAbstractScrollbar::update(const Time& time)
       {
         m_state = STATE_SHOWN;
       }
+      break;
+      
+    default:
       break;
   }
 

@@ -3,7 +3,7 @@
 
 /*! PThreads implementation of Mutex. */
 
-#include <EGE.h>
+#include "EGE.h"
 #include <pthread.h>
 
 EGE_NAMESPACE_BEGIN

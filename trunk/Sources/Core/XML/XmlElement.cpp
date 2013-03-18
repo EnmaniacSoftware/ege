@@ -1,6 +1,6 @@
 #include "Core/Xml/XmlElement.h"
 #include "Core/Xml/XmlAttribute.h"
-#include <EGEStringUtils.h>
+#include "EGEStringUtils.h"
 
 #if EGE_XML_TINYXML
   #include "Core/XML/TinyXml/XMLElementTinyXML_p.h"

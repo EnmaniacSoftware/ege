@@ -1,6 +1,6 @@
 #include "Core/Graphics/Particle/ParticleAffector.h"
-#include <EGEGraphics.h>
-#include <EGEDebug.h>
+#include "EGEGraphics.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

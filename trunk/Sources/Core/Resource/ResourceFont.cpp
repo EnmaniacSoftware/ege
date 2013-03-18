@@ -2,7 +2,7 @@
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceMaterial.h"
 #include "Core/Graphics/Font.h"
-#include <EGEResources.h>
+#include "EGEResources.h"
 
 EGE_NAMESPACE_BEGIN
 

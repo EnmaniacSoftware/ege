@@ -1,9 +1,9 @@
 #ifndef EGE_CORE_MESSAGEBOX_H
 #define EGE_CORE_MESSAGEBOX_H
 
-#include <EGE.h>
-#include <EGEText.h>
-#include <EGENativeUI.h>
+#include "EGE.h"
+#include "EGEText.h"
+#include "EGENativeUI.h"
 
 EGE_NAMESPACE_BEGIN
 

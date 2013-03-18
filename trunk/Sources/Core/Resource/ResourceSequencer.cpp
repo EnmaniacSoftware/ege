@@ -1,7 +1,7 @@
 #include "Core/Resource/ResourceSequencer.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Sequencer/Sequencer.h"
-#include <EGEResources.h>
+#include "EGEResources.h"
 
 EGE_NAMESPACE_BEGIN
 

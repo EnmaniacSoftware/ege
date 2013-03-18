@@ -1,5 +1,5 @@
-#include <EGEMutex.h>
-#include <EGEDebug.h>
+#include "EGEMutex.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

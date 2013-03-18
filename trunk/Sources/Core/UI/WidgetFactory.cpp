@@ -1,5 +1,5 @@
 #include "Core/UI/WidgetFactory.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -49,8 +49,6 @@ EGEResult WidgetFactory::construct()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult WidgetFactory::registerWidget(const String& typeName, egeWidgetCreateFunc createFunc)
 {
-  EGEResult result = EGE_SUCCESS;
-  
   // check if resource with such a name exists already
   if (isWidgetRegistered(typeName))
   {

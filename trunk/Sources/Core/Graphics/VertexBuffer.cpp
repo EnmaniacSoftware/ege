@@ -1,7 +1,7 @@
 #include "Core/Graphics/VertexBuffer.h"
 #include "Core/Data/DataBuffer.h"
-#include <EGEList.h>
-#include <EGEDebug.h>
+#include "EGEList.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -38,6 +38,11 @@ bool VertexBuffer::addArray(EGEVertexBuffer::ArrayType type)
       case EGEVertexBuffer::AT_TEXTURE_UV:         offset += 2; break;
       case EGEVertexBuffer::AT_TANGENT:            offset += 3; break;
       case EGEVertexBuffer::AT_POINT_SPRITE_SIZE:  offset += 1; break;
+        
+      default:
+        
+        EGE_ASSERT(false && "Unknown array type");
+        break;
     }
 
     // check if the same array type is already in
@@ -98,6 +103,11 @@ u32 VertexBuffer::vertexSize() const
         case EGEVertexBuffer::AT_TEXTURE_UV:          m_vertexSize += 2; break;
         case EGEVertexBuffer::AT_TANGENT:             m_vertexSize += 3; break;
         case EGEVertexBuffer::AT_POINT_SPRITE_SIZE:   m_vertexSize += 1; break;
+          
+        default:
+          
+          EGE_ASSERT(false && "Unknown array type");
+          break;
       }
     }
 

@@ -64,10 +64,6 @@
 		453637B216F1113600B4D72F /* IndexBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635BE16F1113600B4D72F /* IndexBuffer.cpp */; };
 		453637B316F1113600B4D72F /* JpegDataSrcFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635C116F1113600B4D72F /* JpegDataSrcFile.cpp */; };
 		453637B416F1113600B4D72F /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635C316F1113600B4D72F /* Material.cpp */; };
-		453637B516F1113600B4D72F /* ProgramOGLES1_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635C716F1113600B4D72F /* ProgramOGLES1_p.cpp */; };
-		453637B616F1113600B4D72F /* RenderSystemOGLES1_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635C916F1113600B4D72F /* RenderSystemOGLES1_p.cpp */; };
-		453637B716F1113600B4D72F /* ShaderOGLES1_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635CB16F1113600B4D72F /* ShaderOGLES1_p.cpp */; };
-		453637B916F1113600B4D72F /* ExtensionsOGLES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635CF16F1113600B4D72F /* ExtensionsOGLES.cpp */; };
 		453637BC16F1113600B4D72F /* IndexBufferVAOGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635D816F1113600B4D72F /* IndexBufferVAOGL.cpp */; };
 		453637BD16F1113600B4D72F /* IndexBufferVBOOGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635DA16F1113600B4D72F /* IndexBufferVBOOGL.cpp */; };
 		453637BE16F1113600B4D72F /* ProgramOGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635DC16F1113600B4D72F /* ProgramOGL.cpp */; };
@@ -107,7 +103,6 @@
 		453637E316F1113600B4D72F /* PowerTweener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536363516F1113600B4D72F /* PowerTweener.cpp */; };
 		453637E416F1113600B4D72F /* SineTweener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536363716F1113600B4D72F /* SineTweener.cpp */; };
 		453637E816F1113600B4D72F /* MemoryManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536364116F1113600B4D72F /* MemoryManager.cpp */; };
-		453637E916F1113600B4D72F /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536364316F1113600B4D72F /* Object.cpp */; };
 		453637EA16F1113600B4D72F /* MessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536364716F1113600B4D72F /* MessageBox.cpp */; };
 		453637EB16F1113600B4D72F /* ImageOverlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536364B16F1113600B4D72F /* ImageOverlay.cpp */; };
 		453637EC16F1113600B4D72F /* Overlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536364D16F1113600B4D72F /* Overlay.cpp */; };
@@ -199,13 +194,20 @@
 		4536384416F1113700B4D72F /* ApplicationIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4536376C16F1113600B4D72F /* ApplicationIOS_p.mm */; };
 		4536384516F1113700B4D72F /* FileIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4536376F16F1113600B4D72F /* FileIOS_p.mm */; };
 		4536384616F1113700B4D72F /* GraphicsIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4536377216F1113600B4D72F /* GraphicsIOS_p.mm */; };
-		4536384716F1113700B4D72F /* RenderWindowOGLIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4536377616F1113600B4D72F /* RenderWindowOGLIOS.mm */; };
 		4536384816F1113700B4D72F /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4536377716F1113600B4D72F /* main.mm */; };
 		454427F616F28A6F00E1A5DB /* libjpeglib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 454427F216F28A6F00E1A5DB /* libjpeglib.a */; };
 		454427F716F28A6F00E1A5DB /* libpnglib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 454427F316F28A6F00E1A5DB /* libpnglib.a */; };
 		454427F816F28A6F00E1A5DB /* libtinyxml.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 454427F416F28A6F00E1A5DB /* libtinyxml.a */; };
 		454427F916F28A6F00E1A5DB /* libzlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 454427F516F28A6F00E1A5DB /* libzlib.a */; };
+		4555B48016F775AC00FDAFF3 /* RenderSystemFixedOGL_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4555B47E16F775AC00FDAFF3 /* RenderSystemFixedOGL_p.cpp */; };
+		4555B48516F7760900FDAFF3 /* ExtensionsOGLIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4555B48116F7760900FDAFF3 /* ExtensionsOGLIOS.cpp */; };
+		4555B48616F7760900FDAFF3 /* RenderWindowOGLIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4555B48416F7760900FDAFF3 /* RenderWindowOGLIOS.mm */; };
+		4555B48A16F77A4900FDAFF3 /* PointerIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4555B48916F77A4900FDAFF3 /* PointerIOS_p.mm */; };
+		4555B48E16F77C7E00FDAFF3 /* MessageBoxIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4555B48D16F77C7E00FDAFF3 /* MessageBoxIOS_p.mm */; };
 		45877DA916F09F5B00B4252B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45877DA816F09F5B00B4252B /* Foundation.framework */; };
+		45DED89A16F7847E00623923 /* DeviceServicesIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DED89516F7847E00623923 /* DeviceServicesIOS_p.mm */; };
+		45DED89B16F7847E00623923 /* PurchaseServicesAppStoreIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DED89716F7847E00623923 /* PurchaseServicesAppStoreIOS_p.mm */; };
+		45DED89C16F7847E00623923 /* SocialServicesGameCenterIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DED89916F7847E00623923 /* SocialServicesGameCenterIOS_p.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -353,14 +355,6 @@
 		453635C216F1113600B4D72F /* JpegDataSrcFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JpegDataSrcFile.h; sourceTree = "<group>"; };
 		453635C316F1113600B4D72F /* Material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cpp; sourceTree = "<group>"; };
 		453635C416F1113600B4D72F /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
-		453635C716F1113600B4D72F /* ProgramOGLES1_p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProgramOGLES1_p.cpp; sourceTree = "<group>"; };
-		453635C816F1113600B4D72F /* ProgramOGLES1_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgramOGLES1_p.h; sourceTree = "<group>"; };
-		453635C916F1113600B4D72F /* RenderSystemOGLES1_p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderSystemOGLES1_p.cpp; sourceTree = "<group>"; };
-		453635CA16F1113600B4D72F /* RenderSystemOGLES1_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderSystemOGLES1_p.h; sourceTree = "<group>"; };
-		453635CB16F1113600B4D72F /* ShaderOGLES1_p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderOGLES1_p.cpp; sourceTree = "<group>"; };
-		453635CC16F1113600B4D72F /* ShaderOGLES1_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderOGLES1_p.h; sourceTree = "<group>"; };
-		453635CF16F1113600B4D72F /* ExtensionsOGLES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExtensionsOGLES.cpp; sourceTree = "<group>"; };
-		453635D016F1113600B4D72F /* ExtensionsOGLES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtensionsOGLES.h; sourceTree = "<group>"; };
 		453635D816F1113600B4D72F /* IndexBufferVAOGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IndexBufferVAOGL.cpp; sourceTree = "<group>"; };
 		453635D916F1113600B4D72F /* IndexBufferVAOGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexBufferVAOGL.h; sourceTree = "<group>"; };
 		453635DA16F1113600B4D72F /* IndexBufferVBOOGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IndexBufferVBOOGL.cpp; sourceTree = "<group>"; };
@@ -454,7 +448,6 @@
 		4536364016F1113600B4D72F /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Memory.h; sourceTree = "<group>"; };
 		4536364116F1113600B4D72F /* MemoryManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryManager.cpp; sourceTree = "<group>"; };
 		4536364216F1113600B4D72F /* MemoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoryManager.h; sourceTree = "<group>"; };
-		4536364316F1113600B4D72F /* Object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
 		4536364416F1113600B4D72F /* Object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Object.h; sourceTree = "<group>"; };
 		4536364516F1113600B4D72F /* SmartPointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmartPointer.h; sourceTree = "<group>"; };
 		4536364716F1113600B4D72F /* MessageBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageBox.cpp; sourceTree = "<group>"; };
@@ -726,8 +719,6 @@
 		4536376F16F1113600B4D72F /* FileIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FileIOS_p.mm; sourceTree = "<group>"; };
 		4536377116F1113600B4D72F /* GraphicsIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsIOS_p.h; sourceTree = "<group>"; };
 		4536377216F1113600B4D72F /* GraphicsIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GraphicsIOS_p.mm; sourceTree = "<group>"; };
-		4536377516F1113600B4D72F /* RenderWindowOGLIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderWindowOGLIOS.h; sourceTree = "<group>"; };
-		4536377616F1113600B4D72F /* RenderWindowOGLIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderWindowOGLIOS.mm; sourceTree = "<group>"; };
 		4536377716F1113600B4D72F /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		4536377816F1113600B4D72F /* TypesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypesIOS.h; sourceTree = "<group>"; };
 		4536377916F1113600B4D72F /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
@@ -737,8 +728,24 @@
 		454427F316F28A6F00E1A5DB /* libpnglib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpnglib.a; path = "../../../External/PNGLib/build/Release-iphoneos/libpnglib.a"; sourceTree = "<group>"; };
 		454427F416F28A6F00E1A5DB /* libtinyxml.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtinyxml.a; path = "../../../External/tinyxml 2.6.1/build/Release-iphoneos/libtinyxml.a"; sourceTree = "<group>"; };
 		454427F516F28A6F00E1A5DB /* libzlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzlib.a; path = "../../../External/Zlib/build/Release-iphoneos/libzlib.a"; sourceTree = "<group>"; };
-		45877DA516F09F5B00B4252B /* libEGE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEGE.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4555B47E16F775AC00FDAFF3 /* RenderSystemFixedOGL_p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderSystemFixedOGL_p.cpp; sourceTree = "<group>"; };
+		4555B47F16F775AC00FDAFF3 /* RenderSystemFixedOGL_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderSystemFixedOGL_p.h; sourceTree = "<group>"; };
+		4555B48116F7760900FDAFF3 /* ExtensionsOGLIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExtensionsOGLIOS.cpp; sourceTree = "<group>"; };
+		4555B48216F7760900FDAFF3 /* ExtensionsOGLIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtensionsOGLIOS.h; sourceTree = "<group>"; };
+		4555B48316F7760900FDAFF3 /* RenderWindowOGLIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderWindowOGLIOS.h; sourceTree = "<group>"; };
+		4555B48416F7760900FDAFF3 /* RenderWindowOGLIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderWindowOGLIOS.mm; sourceTree = "<group>"; };
+		4555B48816F77A4900FDAFF3 /* PointerIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointerIOS_p.h; sourceTree = "<group>"; };
+		4555B48916F77A4900FDAFF3 /* PointerIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PointerIOS_p.mm; sourceTree = "<group>"; };
+		4555B48C16F77C7E00FDAFF3 /* MessageBoxIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoxIOS_p.h; sourceTree = "<group>"; };
+		4555B48D16F77C7E00FDAFF3 /* MessageBoxIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MessageBoxIOS_p.mm; sourceTree = "<group>"; };
+		45877DA516F09F5B00B4252B /* libEGE OGL FPL MT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libEGE OGL FPL MT.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45877DA816F09F5B00B4252B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		45DED89416F7847E00623923 /* DeviceServicesIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceServicesIOS_p.h; sourceTree = "<group>"; };
+		45DED89516F7847E00623923 /* DeviceServicesIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DeviceServicesIOS_p.mm; sourceTree = "<group>"; };
+		45DED89616F7847E00623923 /* PurchaseServicesAppStoreIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseServicesAppStoreIOS_p.h; sourceTree = "<group>"; };
+		45DED89716F7847E00623923 /* PurchaseServicesAppStoreIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PurchaseServicesAppStoreIOS_p.mm; sourceTree = "<group>"; };
+		45DED89816F7847E00623923 /* SocialServicesGameCenterIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServicesGameCenterIOS_p.h; sourceTree = "<group>"; };
+		45DED89916F7847E00623923 /* SocialServicesGameCenterIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SocialServicesGameCenterIOS_p.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1257,9 +1264,7 @@
 		453635C516F1113600B4D72F /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
-				453635C616F1113600B4D72F /* ES 1.0 */,
-				453635CF16F1113600B4D72F /* ExtensionsOGLES.cpp */,
-				453635D016F1113600B4D72F /* ExtensionsOGLES.h */,
+				4555B47D16F775AC00FDAFF3 /* Fixed */,
 				453635D816F1113600B4D72F /* IndexBufferVAOGL.cpp */,
 				453635D916F1113600B4D72F /* IndexBufferVAOGL.h */,
 				453635DA16F1113600B4D72F /* IndexBufferVBOOGL.cpp */,
@@ -1280,19 +1285,6 @@
 				453635E916F1113600B4D72F /* VertexBufferVBOOGL.h */,
 			);
 			path = OpenGL;
-			sourceTree = "<group>";
-		};
-		453635C616F1113600B4D72F /* ES 1.0 */ = {
-			isa = PBXGroup;
-			children = (
-				453635C716F1113600B4D72F /* ProgramOGLES1_p.cpp */,
-				453635C816F1113600B4D72F /* ProgramOGLES1_p.h */,
-				453635C916F1113600B4D72F /* RenderSystemOGLES1_p.cpp */,
-				453635CA16F1113600B4D72F /* RenderSystemOGLES1_p.h */,
-				453635CB16F1113600B4D72F /* ShaderOGLES1_p.cpp */,
-				453635CC16F1113600B4D72F /* ShaderOGLES1_p.h */,
-			);
-			path = "ES 1.0";
 			sourceTree = "<group>";
 		};
 		453635EA16F1113600B4D72F /* Particle */ = {
@@ -1408,7 +1400,6 @@
 				4536364016F1113600B4D72F /* Memory.h */,
 				4536364116F1113600B4D72F /* MemoryManager.cpp */,
 				4536364216F1113600B4D72F /* MemoryManager.h */,
-				4536364316F1113600B4D72F /* Object.cpp */,
 				4536364416F1113600B4D72F /* Object.h */,
 				4536364516F1113600B4D72F /* SmartPointer.h */,
 			);
@@ -1774,6 +1765,9 @@
 		4536376916F1113600B4D72F /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				45DED89316F7847E00623923 /* Services */,
+				4555B48B16F77C7E00FDAFF3 /* NativeUI */,
+				4555B48716F77A4900FDAFF3 /* Input */,
 				4504254816F29F6D007699A6 /* Timer */,
 				4536376A16F1113600B4D72F /* Application */,
 				4536376D16F1113600B4D72F /* File */,
@@ -1815,18 +1809,39 @@
 		4536377316F1113600B4D72F /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
-				4536377416F1113600B4D72F /* ES 1.0 */,
+				4555B48116F7760900FDAFF3 /* ExtensionsOGLIOS.cpp */,
+				4555B48216F7760900FDAFF3 /* ExtensionsOGLIOS.h */,
+				4555B48316F7760900FDAFF3 /* RenderWindowOGLIOS.h */,
+				4555B48416F7760900FDAFF3 /* RenderWindowOGLIOS.mm */,
 			);
 			path = OpenGL;
 			sourceTree = "<group>";
 		};
-		4536377416F1113600B4D72F /* ES 1.0 */ = {
+		4555B47D16F775AC00FDAFF3 /* Fixed */ = {
 			isa = PBXGroup;
 			children = (
-				4536377516F1113600B4D72F /* RenderWindowOGLIOS.h */,
-				4536377616F1113600B4D72F /* RenderWindowOGLIOS.mm */,
+				4555B47E16F775AC00FDAFF3 /* RenderSystemFixedOGL_p.cpp */,
+				4555B47F16F775AC00FDAFF3 /* RenderSystemFixedOGL_p.h */,
 			);
-			path = "ES 1.0";
+			path = Fixed;
+			sourceTree = "<group>";
+		};
+		4555B48716F77A4900FDAFF3 /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				4555B48816F77A4900FDAFF3 /* PointerIOS_p.h */,
+				4555B48916F77A4900FDAFF3 /* PointerIOS_p.mm */,
+			);
+			path = Input;
+			sourceTree = "<group>";
+		};
+		4555B48B16F77C7E00FDAFF3 /* NativeUI */ = {
+			isa = PBXGroup;
+			children = (
+				4555B48C16F77C7E00FDAFF3 /* MessageBoxIOS_p.h */,
+				4555B48D16F77C7E00FDAFF3 /* MessageBoxIOS_p.mm */,
+			);
+			path = NativeUI;
 			sourceTree = "<group>";
 		};
 		45877D9C16F09F5B00B4252B = {
@@ -1845,7 +1860,7 @@
 		45877DA616F09F5B00B4252B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				45877DA516F09F5B00B4252B /* libEGE.a */,
+				45877DA516F09F5B00B4252B /* libEGE OGL FPL MT.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1858,12 +1873,25 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		45DED89316F7847E00623923 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				45DED89416F7847E00623923 /* DeviceServicesIOS_p.h */,
+				45DED89516F7847E00623923 /* DeviceServicesIOS_p.mm */,
+				45DED89616F7847E00623923 /* PurchaseServicesAppStoreIOS_p.h */,
+				45DED89716F7847E00623923 /* PurchaseServicesAppStoreIOS_p.mm */,
+				45DED89816F7847E00623923 /* SocialServicesGameCenterIOS_p.h */,
+				45DED89916F7847E00623923 /* SocialServicesGameCenterIOS_p.mm */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		45877DA416F09F5B00B4252B /* EGE */ = {
+		45877DA416F09F5B00B4252B /* EGE OGL FPL MT */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 45877DB316F09F5B00B4252B /* Build configuration list for PBXNativeTarget "EGE" */;
+			buildConfigurationList = 45877DB316F09F5B00B4252B /* Build configuration list for PBXNativeTarget "EGE OGL FPL MT" */;
 			buildPhases = (
 				45877DA116F09F5B00B4252B /* Sources */,
 				45877DA216F09F5B00B4252B /* Frameworks */,
@@ -1873,9 +1901,9 @@
 			);
 			dependencies = (
 			);
-			name = EGE;
+			name = "EGE OGL FPL MT";
 			productName = EGE;
-			productReference = 45877DA516F09F5B00B4252B /* libEGE.a */;
+			productReference = 45877DA516F09F5B00B4252B /* libEGE OGL FPL MT.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -1899,7 +1927,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				45877DA416F09F5B00B4252B /* EGE */,
+				45877DA416F09F5B00B4252B /* EGE OGL FPL MT */,
 			);
 		};
 /* End PBXProject section */
@@ -1965,10 +1993,6 @@
 				453637B216F1113600B4D72F /* IndexBuffer.cpp in Sources */,
 				453637B316F1113600B4D72F /* JpegDataSrcFile.cpp in Sources */,
 				453637B416F1113600B4D72F /* Material.cpp in Sources */,
-				453637B516F1113600B4D72F /* ProgramOGLES1_p.cpp in Sources */,
-				453637B616F1113600B4D72F /* RenderSystemOGLES1_p.cpp in Sources */,
-				453637B716F1113600B4D72F /* ShaderOGLES1_p.cpp in Sources */,
-				453637B916F1113600B4D72F /* ExtensionsOGLES.cpp in Sources */,
 				453637BC16F1113600B4D72F /* IndexBufferVAOGL.cpp in Sources */,
 				453637BD16F1113600B4D72F /* IndexBufferVBOOGL.cpp in Sources */,
 				453637BE16F1113600B4D72F /* ProgramOGL.cpp in Sources */,
@@ -2008,7 +2032,6 @@
 				453637E316F1113600B4D72F /* PowerTweener.cpp in Sources */,
 				453637E416F1113600B4D72F /* SineTweener.cpp in Sources */,
 				453637E816F1113600B4D72F /* MemoryManager.cpp in Sources */,
-				453637E916F1113600B4D72F /* Object.cpp in Sources */,
 				453637EA16F1113600B4D72F /* MessageBox.cpp in Sources */,
 				453637EB16F1113600B4D72F /* ImageOverlay.cpp in Sources */,
 				453637EC16F1113600B4D72F /* Overlay.cpp in Sources */,
@@ -2100,9 +2123,16 @@
 				4536384416F1113700B4D72F /* ApplicationIOS_p.mm in Sources */,
 				4536384516F1113700B4D72F /* FileIOS_p.mm in Sources */,
 				4536384616F1113700B4D72F /* GraphicsIOS_p.mm in Sources */,
-				4536384716F1113700B4D72F /* RenderWindowOGLIOS.mm in Sources */,
 				4536384816F1113700B4D72F /* main.mm in Sources */,
 				4504254B16F29F6D007699A6 /* TimerIOS_p.mm in Sources */,
+				4555B48016F775AC00FDAFF3 /* RenderSystemFixedOGL_p.cpp in Sources */,
+				4555B48516F7760900FDAFF3 /* ExtensionsOGLIOS.cpp in Sources */,
+				4555B48616F7760900FDAFF3 /* RenderWindowOGLIOS.mm in Sources */,
+				4555B48A16F77A4900FDAFF3 /* PointerIOS_p.mm in Sources */,
+				4555B48E16F77C7E00FDAFF3 /* MessageBoxIOS_p.mm in Sources */,
+				45DED89A16F7847E00623923 /* DeviceServicesIOS_p.mm in Sources */,
+				45DED89B16F7847E00623923 /* PurchaseServicesAppStoreIOS_p.mm in Sources */,
+				45DED89C16F7847E00623923 /* SocialServicesGameCenterIOS_p.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2168,12 +2198,19 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EGE-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"EGE_CONTAINERS_STL=1",
-					"EGE_STRING_STL=1",
-					"EGE_AUDIO_NULL=1",
-					"EGE_PHYSICS_NULL=1",
-					"EGE_RENDERING_OPENGLES_1=1",
-					"EGE_IMAGEMANAGER_SINGLE_THREAD=1",
+					EGE_IMAGEMANAGER_SINGLE_THREAD,
+					EGE_RESOURCEMANAGER_SINGLE_THREAD,
+					EGE_PHYSICS_NULL,
+					EGE_RENDERING_OPENGL_FIXED,
+					EGE_THREAD_PTHREAD,
+					EGE_RANDOM_STDC,
+					EGE_AUDIO_NULL,
+					EGE_XML_TINYXML,
+					EGE_CONTAINERS_STL,
+					EGE_STRING_STL,
+					EGE_FEATURE_DEBUG,
+					EGE_FEATURE_OPENGL_DEBUG,
+					TIXML_USE_STL,
 				);
 				HEADER_SEARCH_PATHS = (
 					"\"../../External/tinyxml 2.6.1\"",
@@ -2196,12 +2233,17 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EGE-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"EGE_CONTAINERS_STL=1",
-					"EGE_STRING_STL=1",
-					"EGE_AUDIO_NULL=1",
-					"EGE_PHYSICS_NULL=1",
-					"EGE_RENDERING_OPENGLES_1=1",
-					"EGE_IMAGEMANAGER_SINGLE_THREAD=1",
+					EGE_IMAGEMANAGER_SINGLE_THREAD,
+					EGE_RESOURCEMANAGER_SINGLE_THREAD,
+					EGE_PHYSICS_NULL,
+					EGE_RENDERING_OPENGL_FIXED,
+					EGE_THREAD_PTHREAD,
+					EGE_RANDOM_STDC,
+					EGE_AUDIO_NULL,
+					EGE_XML_TINYXML,
+					EGE_CONTAINERS_STL,
+					EGE_STRING_STL,
+					TIXML_USE_STL,
 				);
 				HEADER_SEARCH_PATHS = (
 					"\"../../External/tinyxml 2.6.1\"",
@@ -2228,7 +2270,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		45877DB316F09F5B00B4252B /* Build configuration list for PBXNativeTarget "EGE" */ = {
+		45877DB316F09F5B00B4252B /* Build configuration list for PBXNativeTarget "EGE OGL FPL MT" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				45877DB416F09F5B00B4252B /* Debug */,

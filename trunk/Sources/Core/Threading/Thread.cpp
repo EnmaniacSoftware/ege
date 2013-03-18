@@ -1,5 +1,5 @@
-#include <EGEThread.h>
-#include <EGEDebug.h>
+#include "EGEThread.h"
+#include "EGEDebug.h"
 
 #ifdef EGE_THREAD_PTHREAD
   #include "Core/Threading/PThread/Thread_p.h"
@@ -42,7 +42,7 @@ bool Thread::start()
   if (m_p)
   {
     // start
-    bool result = m_p->start();
+    return m_p->start();
   }
 
   return true;

@@ -1,9 +1,11 @@
 #include "Core/Input/Pointer.h"
 
 #ifdef EGE_PLATFORM_WIN32
-#include "Win32/Input/PointerWin32_p.h"
+  #include "Win32/Input/PointerWin32_p.h"
 #elif EGE_PLATFORM_AIRPLAY
-#include "Airplay/Input/PointerAirplay_p.h"
+  #include "Airplay/Input/PointerAirplay_p.h"
+#elif EGE_PLATFORM_IOS
+  #include "iOS/Input/PointerIOS_p.h"
 #endif
 
 EGE_NAMESPACE_BEGIN

@@ -1,9 +1,11 @@
 #include "Core/NativeUI/MessageBox.h"
 
 #ifdef EGE_PLATFORM_WIN32
-#include "Win32/NativeUI/MessageBoxWin32_p.h"
+  #include "Win32/NativeUI/MessageBoxWin32_p.h"
 #elif EGE_PLATFORM_AIRPLAY
-#include "Airplay/NativeUI/MessageBoxAirplay_p.h"
+  #include "Airplay/NativeUI/MessageBoxAirplay_p.h"
+#elif EGE_PLATFORM_IOS
+  #include "iOS/NativeUI/MessageBoxIOS_p.h"
 #endif
 
 EGE_NAMESPACE_BEGIN

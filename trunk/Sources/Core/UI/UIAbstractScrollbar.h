@@ -4,12 +4,12 @@
 /** Class representing abstract scrollbar widget.
  */
 
-#include <EGETime.h>
-#include <EGEGraphics.h>
-#include <EGEInput.h>
-#include <EGEPhysics.h>
-#include <EGEList.h>
-#include <EGEFlags.h>
+#include "EGETime.h"
+#include "EGEGraphics.h"
+#include "EGEInput.h"
+#include "EGEPhysics.h"
+#include "EGEList.h"
+#include "EGEFlags.h"
 #include "Core/UI/Widget.h"
 
 EGE_NAMESPACE_BEGIN

@@ -4,12 +4,12 @@
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include "Core/Graphics/Render/RenderSystem.h"
-#include <EGEApplication.h>
-#include <EGEGraphics.h>
-#include <EGEResources.h>
-#include <EGEShader.h>
-#include <EGEList.h>
-#include <EGEDebug.h>
+#include "EGEApplication.h"
+#include "EGEGraphics.h"
+#include "EGEResources.h"
+#include "EGEShader.h"
+#include "EGEList.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -164,8 +164,6 @@ void ResourceProgram::onRequestComplete(u32 handle, PObject object)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceProgram::addShaderReference(const PXmlElement& tag)
 {
-  bool error = false;
-
   // get data
   String name = tag->attribute("name");
   if (name.empty())

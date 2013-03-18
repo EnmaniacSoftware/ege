@@ -4,7 +4,7 @@
 /** Class representing complex number in the following form: x + i*y.
 */
 
-#include <EGETypes.h>
+#include "EGETypes.h"
 #include "Core/Math/Math.h"
 #include "Core/Math/Angle.h"
 

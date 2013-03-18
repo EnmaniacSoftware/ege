@@ -1,5 +1,5 @@
 #include "Core/Math/Tweeners/SineTweener.h"
-#include <EGEMath.h>
+#include "EGEMath.h"
 
 EGE_NAMESPACE_BEGIN
 

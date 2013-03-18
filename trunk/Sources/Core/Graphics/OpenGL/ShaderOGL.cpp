@@ -1,9 +1,9 @@
 #include "EGEDataBuffer.h"
 #include "EGEOpenGL.h"
 #include "Core/Graphics/OpenGL/ShaderOGL.h"
-#include <EGEShader.h>
-#include <EGEDevice.h>
-#include <EGEDebug.h>
+#include "EGEShader.h"
+#include "EGEDevice.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

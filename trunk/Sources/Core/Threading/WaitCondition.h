@@ -3,7 +3,7 @@
 
 /*! This class provides a condition variable for synchronizing threads. */
 
-#include <EGE.h>
+#include "EGE.h"
 
 EGE_NAMESPACE_BEGIN
 

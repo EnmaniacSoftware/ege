@@ -2,8 +2,8 @@
 #define EGE_STRINGARRAY_H
 
 #include "Core/Platform.h"
-#include <EGEString.h>
-#include <EGEDynamicArray.h>
+#include "EGEString.h"
+#include "EGEDynamicArray.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

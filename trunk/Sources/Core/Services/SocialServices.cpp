@@ -1,5 +1,5 @@
 #include "Core/Services/SocialServices.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 #ifdef EGE_SOCIAL_PLATFORM_GAMECENTER
   #ifdef EGE_PLATFORM_AIRPLAY

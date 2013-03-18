@@ -1,9 +1,9 @@
 #include "Core/Resource/ResourceText.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Application/Application.h"
-#include <EGEFile.h>
-#include <EGEResources.h>
-#include <EGEMath.h>
+#include "EGEFile.h"
+#include "EGEResources.h"
+#include "EGEMath.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -38,7 +38,6 @@ EGEResult ResourceText::create(const String& path, const PXmlElement& tag)
   EGEResult result = EGE_SUCCESS;
 
   // get data
-  bool error = false;
   m_name = tag->attribute("name");
 
   // check if obligatory data is wrong

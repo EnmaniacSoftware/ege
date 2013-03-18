@@ -4,7 +4,7 @@
 /** Base interface for tweener object. Tweeners are responsible for mapping a value into another depending on the underlying formulae. 
  */
 
-#include <EGE.h>
+#include "EGE.h"
 
 EGE_NAMESPACE_BEGIN
 

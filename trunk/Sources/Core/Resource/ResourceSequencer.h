@@ -4,11 +4,11 @@
 /** Sequence resource definition class. This object (resource) contains definition of sequence animator.
  */
 
-#include <EGE.h>
+#include "EGE.h"
 #include "Core/Resource/Resource.h"
-#include <EGEXml.h>
-#include <EGEDynamicArray.h>
-#include <EGEString.h>
+#include "EGEXml.h"
+#include "EGEDynamicArray.h"
+#include "EGEString.h"
 
 EGE_NAMESPACE_BEGIN
 

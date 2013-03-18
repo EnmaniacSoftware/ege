@@ -1,9 +1,9 @@
 #include "Core/Graphics/Graphics.h"
 #include "iOS/Graphics/GraphicsIOS_p.h"
-#include <EGEDevice.h>
+#include "EGEDevice.h"
 
-#if EGE_RENDERING_OPENGLES_1
-#include "iOS/Graphics/OpenGL/ES 1.0/RenderWindowOGLIOS.h"
+#if EGE_RENDERING_OPENGL_FIXED
+ #include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
 #endif // EGE_RENDERING_OPENGLES_1
 
 EGE_NAMESPACE_BEGIN

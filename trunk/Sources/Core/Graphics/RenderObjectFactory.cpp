@@ -1,8 +1,8 @@
 #include "Core/Graphics/RenderObjectFactory.h"
 #include "Core/Data/DataBuffer.h"
-#include <EGERenderComponent.h>
-#include <EGESpline.h>
-#include <EGEDebug.h>
+#include "EGERenderComponent.h"
+#include "EGESpline.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

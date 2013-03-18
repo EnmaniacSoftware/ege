@@ -1,6 +1,6 @@
 #include "Core/String/StringUtils.h"
-#include <EGEStringArray.h>
-#include <EGEDebug.h>
+#include "EGEStringArray.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

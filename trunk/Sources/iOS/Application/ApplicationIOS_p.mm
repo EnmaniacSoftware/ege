@@ -1,10 +1,10 @@
 #include "Core/Application/Application.h"
-#include "Airplay/Application/ApplicationAirplay_p.h"
-#include <EGEEvent.h>
-#include <EGETimer.h>
-#include <EGETime.h>
-#include <EGEMath.h>
-#include <EGEDebug.h>
+#include "iOS/Application/ApplicationIOS_p.h"
+#include "EGEEvent.h"
+#include "EGETimer.h"
+#include "EGETime.h"
+#include "EGEMath.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

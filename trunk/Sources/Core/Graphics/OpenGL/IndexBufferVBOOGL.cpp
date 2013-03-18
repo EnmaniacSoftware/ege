@@ -19,6 +19,9 @@ static GLenum MapUsageType(EGEIndexBuffer::UsageType type)
   {
     case EGEIndexBuffer::UT_STATIC_WRITE:  return GL_STATIC_DRAW;
     case EGEIndexBuffer::UT_DYNAMIC_WRITE: return GL_DYNAMIC_DRAW;
+      
+    default:
+      break;
   }
 
   return GL_DYNAMIC_DRAW;
@@ -33,6 +36,9 @@ static GLenum MapUsageTypeToAccessType(EGEIndexBuffer::UsageType type)
     case EGEIndexBuffer::UT_DYNAMIC_WRITE: 
       
       return GL_WRITE_ONLY;
+
+    default:
+      break;
   }
 
   return GL_WRITE_ONLY;
@@ -99,7 +105,7 @@ void* IndexBufferVBO::lock(u32 offset, u32 count)
   void* buffer = NULL;
 
   // check if and any data to lock
-  if (0 <= count)
+  if (0 < count)
   {
     // check if inside the buffer
     if ((offset + count) <= m_indexCapacity)

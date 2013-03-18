@@ -1,5 +1,5 @@
 #include "Core/Tools/CommandLineParser.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

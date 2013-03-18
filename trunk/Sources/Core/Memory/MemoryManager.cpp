@@ -1,5 +1,5 @@
 #include "Core/Memory/MemoryManager.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 #include <fstream>
 
 EGE_NAMESPACE_BEGIN
@@ -45,7 +45,7 @@ void MemoryManager::Deinit()
 void* MemoryManager::Malloc(size_t size, const char* pszFileName, int iLine)
 {
   void* pData = MemoryManager::DoMalloc(size);
-  if (pData)
+  if (NULL != pData)
   {
     bool result = MemoryManager::GetInstance()->addAlloc(pData, size, pszFileName, iLine);
     EGE_ASSERT(result);

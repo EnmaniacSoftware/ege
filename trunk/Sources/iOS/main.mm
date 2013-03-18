@@ -1,6 +1,6 @@
 #include "Core/Application/Application.h"
-#include <EGECommandLine.h>
-#include <EGEDictionary.h>
+#include "EGECommandLine.h"
+#include "EGEDictionary.h"
 
 EGE_NAMESPACE
 

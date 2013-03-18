@@ -1,12 +1,12 @@
 #ifndef EGE_CORE_STRING_STRINGUTILS_H
 #define EGE_CORE_STRING_STRINGUTILS_H
 
-#include <EGETypes.h>
-#include <EGERect.h>
-#include <EGEAngle.h>
-#include <EGETime.h>
-#include <EGEColor.h>
-#include <EGEString.h>
+#include "EGETypes.h"
+#include "EGERect.h"
+#include "EGEAngle.h"
+#include "EGETime.h"
+#include "EGEColor.h"
+#include "EGEString.h"
 
 EGE_NAMESPACE_BEGIN
 

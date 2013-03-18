@@ -1,5 +1,5 @@
-#include <EGEMutex.h>
-#include <EGEDebug.h>
+#include "EGEMutex.h"
+#include "EGEDebug.h"
 
 #ifdef EGE_THREAD_PTHREAD
   #include "Core/Threading/PThread/Mutex_p.h"

@@ -1,10 +1,10 @@
 #include "Core/XML/XMLDocument.h"
 #include "Core/XML/XMLElement.h"
 #include "Core/Data/DataBuffer.h"
-#include <EGEFile.h>
+#include "EGEFile.h"
 
 #if EGE_XML_TINYXML
-#include "Core/XML/TinyXml/XMLDocumentTinyXML_p.h"
+  #include "Core/XML/TinyXml/XMLDocumentTinyXML_p.h"
 #endif // EGE_XML_TINYXML
 
 EGE_NAMESPACE_BEGIN

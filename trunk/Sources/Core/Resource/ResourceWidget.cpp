@@ -2,10 +2,10 @@
 #include "Core/Resource/ResourceManager.h"
 #include "Core/UI/WidgetFrame.h"
 #include "Core/UI/WidgetFactory.h"
-#include <EGEApplication.h>
-#include <EGEResources.h>
-#include <EGEGraphics.h>
-#include <EGEStringUtils.h>
+#include "EGEApplication.h"
+#include "EGEResources.h"
+#include "EGEGraphics.h"
+#include "EGEStringUtils.h"
 
 EGE_NAMESPACE_BEGIN
 

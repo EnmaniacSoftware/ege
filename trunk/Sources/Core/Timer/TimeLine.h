@@ -1,10 +1,10 @@
 #ifndef EGE_CORE_TIMELINE_H
 #define EGE_CORE_TIMELINE_H
 
-#include <EGE.h>
-#include <EGETime.h>
-#include <EGESignal.h>
-#include <EGETimeline.h>
+#include "EGE.h"
+#include "EGETime.h"
+#include "EGESignal.h"
+#include "EGETimeline.h"
 
 EGE_NAMESPACE_BEGIN
 

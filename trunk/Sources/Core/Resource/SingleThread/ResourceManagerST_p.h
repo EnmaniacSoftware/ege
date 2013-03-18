@@ -6,12 +6,12 @@
 /*! Single threaded implementation for resource manager class.
  */
 
-#include <EGE.h>
-#include <EGEString.h>
-#include <EGEXml.h>
-#include <EGEMap.h>
-#include <EGEList.h>
-#include <EGETime.h>
+#include "EGE.h"
+#include "EGEString.h"
+#include "EGEXml.h"
+#include "EGEMap.h"
+#include "EGEList.h"
+#include "EGETime.h"
 #include "Core/Resource/ResourceManager.h"
 
 EGE_NAMESPACE_BEGIN

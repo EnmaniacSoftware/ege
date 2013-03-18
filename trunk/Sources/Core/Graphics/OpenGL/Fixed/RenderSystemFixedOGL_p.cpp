@@ -391,6 +391,9 @@ void RenderSystemPrivate::flush()
                   }
                 }
                 break;
+                
+              default:
+                break;
 
               //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
 

@@ -3,12 +3,12 @@
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include "Core/Graphics/Render/RenderSystem.h"
-#include <EGEApplication.h>
-#include <EGEGraphics.h>
-#include <EGEXml.h>
-#include <EGEResources.h>
-#include <EGEStringUtils.h>
-#include <EGEDebug.h>
+#include "EGEApplication.h"
+#include "EGEGraphics.h"
+#include "EGEXml.h"
+#include "EGEResources.h"
+#include "EGEStringUtils.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -57,10 +57,10 @@ ResourceTexture::ResourceTexture(Application* app, ResourceGroup* group) : IReso
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceTexture::~ResourceTexture()
 {
-  if (name() == "main-menu-heart")
-  {
-    int a = 1;
-  }
+//  if (name() == "main-menu-heart")
+//  {
+//    int a = 1;
+//  }
 
   if ((NULL != app()->graphics()) && (NULL != app()->graphics()->hardwareResourceProvider()))
   {
@@ -184,10 +184,10 @@ EGEResult ResourceTexture::create2D()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceTexture::unload() 
 { 
-  if (group()->name() == "main-menu-heart")
-  {
-    int a = 1;
-  }
+//  if (group()->name() == "main-menu-heart")
+//  {
+//    int a = 1;
+//  }
 
   if (STATE_LOADED == m_state)
   {

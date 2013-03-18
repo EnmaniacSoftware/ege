@@ -5,9 +5,9 @@
 #include "Core/Resource/ResourceProgram.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/TextureImage.h"
-#include <EGETexture.h>
-#include <EGEResources.h>
-#include <EGEStringUtils.h>
+#include "EGETexture.h"
+#include "EGEResources.h"
+#include "EGEStringUtils.h"
 
 EGE_NAMESPACE_BEGIN
 

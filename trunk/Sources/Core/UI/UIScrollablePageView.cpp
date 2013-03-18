@@ -1,8 +1,8 @@
 #include "Core/UI/UIScrollablePageView.h"
 #include "Core/UI/UIPageIndicator.h"
-#include <EGEOverlay.h>
-#include <EGEMath.h>
-#include <EGEDebug.h>
+#include "EGEOverlay.h"
+#include "EGEMath.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

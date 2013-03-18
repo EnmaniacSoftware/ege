@@ -1,6 +1,6 @@
 #include "Core/Math/AxisAlignedBox.h"
 #include "Core/Math/Vector4.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

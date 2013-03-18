@@ -1,7 +1,7 @@
 #include "Core/Graphics/OpenGL/RenderTextureCopyOGL.h"
-#include <EGEOpenGL.h>
-#include <EGETexture.h>
-#include <EGEDebug.h>
+#include "EGEOpenGL.h"
+#include "EGETexture.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

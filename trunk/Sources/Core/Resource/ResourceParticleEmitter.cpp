@@ -1,10 +1,10 @@
 #include "Core/Resource/ResourceParticleEmitter.h"
 #include "Core/Resource/ResourceManager.h"
-#include <EGEApplication.h>
-#include <EGEGraphics.h>
-#include <EGEXml.h>
-#include <EGEDebug.h>
-#include <EGEResources.h>
+#include "EGEApplication.h"
+#include "EGEGraphics.h"
+#include "EGEXml.h"
+#include "EGEDebug.h"
+#include "EGEResources.h"
 
 EGE_NAMESPACE_BEGIN
 

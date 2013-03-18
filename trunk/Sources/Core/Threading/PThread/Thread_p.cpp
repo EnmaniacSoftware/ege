@@ -1,6 +1,6 @@
 #include "Core/Threading/PThread/Thread_p.h"
 #include "Core/Threading/Thread.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -95,7 +95,7 @@ void ThreadPrivate::cancel()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void* Thread::CurrentId()
 {
-#ifdef EGE_PLATFORM_AIRPLAY
+#if EGE_PLATFORM_AIRPLAY || EGE_PLATFORM_IOS
   return reinterpret_cast<void*>(pthread_self());
 #else
   return pthread_self().p;

@@ -1,7 +1,7 @@
 #include "Core/Application/Application.h"
 #include "Core/Screen/Screen.h"
 #include "Core/Screen/ScreenManager.h"
-#include <EGESignal.h>
+#include "EGESignal.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -240,7 +240,7 @@ PScreen ScreenManager::top() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ScreenManager::isVisible(const PScreen& screen) const
 {
-  bool visibility = true;
+//  bool visibility = true;
 
   // go thru all screens from top to bottom
   // NOTE: no const_reverse_iterator due to GCC incompatibility of operator== and operator!=
