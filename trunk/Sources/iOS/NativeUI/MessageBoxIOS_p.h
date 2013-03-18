@@ -1,8 +1,8 @@
 #ifndef EGE_IOS_NATIVEUI_MESSAGEBOX_PRIVATE_H
 #define EGE_IOS_NATIVEUI_MESSAGEBOX_PRIVATE_H
 
-#include <EGE.h>
-#include <EGEString.h>
+#include "EGE.h"
+#include "EGEString.h"
 
 EGE_NAMESPACE_BEGIN
 

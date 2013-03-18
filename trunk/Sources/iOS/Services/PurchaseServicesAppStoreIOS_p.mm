@@ -16,7 +16,7 @@ PurchaseServicesPrivate::PurchaseServicesPrivate(PurchaseServices* base) : m_d(b
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PurchaseServicesPrivate::~PurchaseServicesPrivate()
 {
-  s3eIOSAppStoreBillingStop();
+  //s3eIOSAppStoreBillingStop();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult PurchaseServicesPrivate::construct()
@@ -29,7 +29,7 @@ EGEResult PurchaseServicesPrivate::construct()
   }*/
 
   // register callbacks
-  return false;//(S3E_RESULT_SUCCESS == s3eIOSAppStoreBillingStart(ProductInfoCallback, TransactionUpdateCallback, this)) ? EGE_SUCCESS : EGE_ERROR;
+  return EGE_ERROR;//(S3E_RESULT_SUCCESS == s3eIOSAppStoreBillingStart(ProductInfoCallback, TransactionUpdateCallback, this)) ? EGE_SUCCESS : EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*void PurchaseServicesPrivate::ProductInfoCallback(s3eProductInformation* productInfo, void* userData)

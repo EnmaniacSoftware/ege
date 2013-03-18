@@ -54,12 +54,12 @@ EGEResult SocialServicesPrivate::startAuthentication()
   return EGE_ERROR;// (S3E_RESULT_SUCCESS == s3eIOSGameCenterAuthenticate(AuthenticationCallback, NULL)) ? EGE_SUCCESS : EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void SocialServicesPrivate::AuthenticationCallback(s3eIOSGameCenterError* error, void* userData)
+/*void SocialServicesPrivate::AuthenticationCallback(s3eIOSGameCenterError* error, void* userData)
 {
   EGEResult result = EGE_ERROR;
 
   // map error code to framework values
- /* switch (*error)
+  switch (*error)
   {
     case S3E_IOSGAMECENTER_ERR_NONE:        result = EGE_SUCCESS; break;
     case S3E_IOSGAMECENTER_ERR_UNSUPPORTED: result = EGE_ERROR_NOT_SUPPORTED; break;
@@ -71,8 +71,8 @@ void SocialServicesPrivate::AuthenticationCallback(s3eIOSGameCenterError* error,
   l_instance->d_func()->m_authenticated = (EGE_SUCCESS == result);
 
   // emit
-  emit l_instance->d_func()->authenticated(result);*/
-}
+  emit l_instance->d_func()->authenticated(result);
+}*/
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult SocialServicesPrivate::loadAchievements()
 {
@@ -125,7 +125,7 @@ EGEResult SocialServicesPrivate::saveAchievements(const AchievementDataList& ach
     return EGE_ERROR_NOT_SUPPORTED;
   }*/
 
-  egeDebug() << "Adding" << achievements.size() << "achievements for submission";
+//  egeDebug() << "Adding" << achievements.size() << "achievements for submission";
 
   // append
   m_pendingAchievementSaveList << achievements;

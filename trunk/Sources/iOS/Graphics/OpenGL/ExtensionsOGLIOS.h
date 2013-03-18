@@ -1,5 +1,5 @@
-﻿#ifndef EGE_AIRPLAY_GRAPHICS_OPENGL_EXTENSIONSOGL_H
-#define EGE_AIRPLAY_GRAPHICS_OPENGL_EXTENSIONSOGL_H
+﻿#ifndef EGE_IOS_GRAPHICS_OPENGL_EXTENSIONSOGL_H
+#define EGE_IOS_GRAPHICS_OPENGL_EXTENSIONSOGL_H
 
 #include "EGE.h"
 #include "EGEOpenGL.h"
@@ -182,4 +182,4 @@ extern PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // EGE_AIRPLAY_GRAPHICS_OPENGL_EXTENSIONSOGL_H
+#endif // EGE_IOS_GRAPHICS_OPENGL_EXTENSIONSOGL_H

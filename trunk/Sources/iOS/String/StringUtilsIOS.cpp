@@ -3,18 +3,6 @@
 
 EGE_NAMESPACE_BEGIN
 
-// TAGE - HACK for Airplay where strtoll function seems to be missing for VC compiler
-#ifdef _MSC_VER
-extern "C"
-{
-  int64_t _strtoi64(const char *nptr, char **endptr, int base);
-  int64_t strtoll(const char *nptr, char **endptr, int base)
-  {
-      return _strtoi64(nptr, endptr, base);
-  }
-}
-#endif // _MSC_VER
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 StringUtils::ToInt(const char* text, bool* error)
 {
