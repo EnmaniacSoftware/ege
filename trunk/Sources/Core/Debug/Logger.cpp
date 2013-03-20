@@ -89,11 +89,11 @@ Logger& Logger::operator << (u32 t)
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Logger& Logger::operator << (size_t t)
-{
-  m_buffer += String::Format("%lu", t);
-  return maybeSpace();
-}
+//Logger& Logger::operator << (size_t t)
+//{
+//  m_buffer += String::Format("%lu", t);
+//  return maybeSpace();
+//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger& Logger::operator << (s64 t) 
 { 
