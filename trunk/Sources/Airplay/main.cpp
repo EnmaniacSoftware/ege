@@ -25,6 +25,9 @@ int main(int argc, char** argv)
     }
   }
 
+  // clean up
+  Application::DestroyInstance(application);
+
   // deinitialize memory manager
   MemoryManager::Deinit();
 

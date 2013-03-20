@@ -35,6 +35,11 @@ class Application : public IEventListener
      *  @param  Command line parameters
      */
     static Application* CreateInstance();
+    /*! Destroys application instance. This is to be provided by application consuming EGE library.
+     *  @param  instance Instance to destroy.
+     *  @note Instance being destroyed should be previously created by @ref Application::CreateInstance.
+     */
+    static void DestroyInstance(Application* instance);
 
   public:
 

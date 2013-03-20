@@ -26,6 +26,9 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR strCmdLine, INT)
     }
   }
 
+  // clean up
+  Application::DestroyInstance(application);
+
   // deinitialize memory manager
   MemoryManager::Deinit();
 
