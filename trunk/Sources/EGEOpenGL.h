@@ -12,7 +12,6 @@
   #include "Airplay/Graphics/OpenGL/ExtensionsOGLAirplay.h"
 #elif EGE_PLATFORM_IOS
   #if EGE_RENDERING_OPENGL_FIXED
-f
     #import <OpenGLES/ES1/gl.h>
   #endif // EGE_RENDERING_OPENGL_FIXED
   #include "iOS/Graphics/OpenGL/ExtensionsOGLIOS.h"

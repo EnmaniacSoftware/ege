@@ -23,6 +23,7 @@ class Logger
     Logger& operator << (u32 t);
     Logger& operator << (s64 t);
     Logger& operator << (u64 t);
+    Logger& operator << (size_t t);
     Logger& operator << (float32 t);
     Logger& operator << (const char* t);
     Logger& operator << (const String& t);

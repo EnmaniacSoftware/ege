@@ -28,6 +28,7 @@ class Debug
     Debug& operator << (u32 t);
     Debug& operator << (s64 t);
     Debug& operator << (u64 t);
+    Debug& operator << (size_t t);
     Debug& operator << (float32 t);
     Debug& operator << (const char* t);
     Debug& operator << (const String& t);

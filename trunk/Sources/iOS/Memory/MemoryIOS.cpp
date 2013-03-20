@@ -1,5 +1,5 @@
 #include "Core/Memory/MemoryManager.h"
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 
 EGE_NAMESPACE_BEGIN
@@ -17,7 +17,7 @@ void* MemoryManager::DoRealloc(void* data, size_t size)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MemoryManager::DoFree(void* data)
 {
-  if (data)
+  if (NULL != data)
   {
     free(data);
   }

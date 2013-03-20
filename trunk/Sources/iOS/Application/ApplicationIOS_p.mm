@@ -5,6 +5,7 @@
 #include "EGETime.h"
 #include "EGEMath.h"
 #include "EGEDebug.h"
+#import "iOS/Application/AppDelegate.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -22,10 +23,13 @@ ApplicationPrivate::~ApplicationPrivate()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ApplicationPrivate::run()
 {
+
+  
   Time startTime;
   Time endTime;
   Time yieldTime;
 
+  
   // app loop
   while (Application::STATE_QUIT != d_func()->state())
   {
