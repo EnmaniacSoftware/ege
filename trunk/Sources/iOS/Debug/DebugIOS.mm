@@ -1,6 +1,6 @@
 #include "Core/Debug/Debug.h"
-#include <stdio.h>
-#include <s3e.h>
+#import <Foundation/Foundation.h>
+#include <assert.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -9,13 +9,13 @@ void Debug::Assert(const char* assertion, const char* file, int line)
 {
   EGE_UNUSED(file);
   EGE_UNUSED(line);
-
-  s3eDebugAssertShow(S3E_MESSAGE_CONTINUE_STOP_IGNORE, assertion);
+  
+  assert(false && assertion);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Debug::Print(const char* text)
 {
-  s3eDebugOutputString(text);
+  NSLog(@"%s", text);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

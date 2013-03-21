@@ -24,6 +24,20 @@ CommandLineParser::CommandLineParser(int argc, char** argv)
   parse(string);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+CommandLineParser::CommandLineParser(const StringList& list)
+{
+  String string;
+  for (StringList::const_iterator it = list.begin(); it != list.end(); ++it)
+  {
+    const String& value = *it;
+    
+    string += value;
+    string += " ";
+  }
+  
+  parse(string);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 CommandLineParser::~CommandLineParser()
 {
 }

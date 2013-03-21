@@ -1,6 +1,5 @@
 #include "Core/Device/Device.h"
-#include "s3e.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -60,82 +59,75 @@ static EGEDevice::Device GetIOSDevice(const String& deviceId)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEDevice::OS Device::GetOS()
 {
-  int32 osId = s3eDeviceGetInt(S3E_DEVICE_OS);
-  switch (osId)
-  {
-    case S3E_OS_ID_IPHONE:  return EGEDevice::OS_IOS;
-    case S3E_OS_ID_WINDOWS: return EGEDevice::OS_WINDOWS;
-  }
-
-  return EGEDevice::OS_UNKOWN;
+  return EGEDevice::OS_IOS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEDevice::Device Device::GetDevice()
 {
-  const String deviceName = s3eDeviceGetString(S3E_DEVICE_ID);
+ // const String deviceName = s3eDeviceGetString(S3E_DEVICE_ID);
 
   EGEDevice::Device deviceId = EGEDevice::DEVICE_GENERIC;
 
-  egeDebug() << "Device ID:" << deviceName << s3eDeviceGetInt(S3E_DEVICE_OS);
-
-  // get OS ID
-  EGEDevice::OS osId = Device::GetOS();
-  switch (osId)
-  {
-    // for iOS
-    case EGEDevice::OS_IOS:
-
-      // try to get it from string representation
-      deviceId = GetIOSDevice(deviceName);
-      break;
-
-    // for Windows
-    case EGEDevice::OS_WINDOWS:
-
-      deviceId = EGEDevice::DEVICE_EMULATOR;
-      break;
-
-    default:
-
-      egeWarning() << "Unknown OS" << osId;
-  }
+//  egeDebug() << "Device ID:" << deviceName << s3eDeviceGetInt(S3E_DEVICE_OS);
+//
+//  // get OS ID
+//  EGEDevice::OS osId = Device::GetOS();
+//  switch (osId)
+//  {
+//    // for iOS
+//    case EGEDevice::OS_IOS:
+//
+//      // try to get it from string representation
+//      deviceId = GetIOSDevice(deviceName);
+//      break;
+//
+//    // for Windows
+//    case EGEDevice::OS_WINDOWS:
+//
+//      deviceId = EGEDevice::DEVICE_EMULATOR;
+//      break;
+//
+//    default:
+//
+//      egeWarning() << "Unknown OS" << osId;
+//  }
 
   return deviceId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 Device::SurfaceWidth()
 {
-  return s3eSurfaceGetInt(S3E_SURFACE_DEVICE_WIDTH);
+  return 0;//s3eSurfaceGetInt(S3E_SURFACE_DEVICE_WIDTH);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 Device::SurfaceHeight()
 {
- return s3eSurfaceGetInt(S3E_SURFACE_DEVICE_HEIGHT);
+  return 0;//s3eSurfaceGetInt(S3E_SURFACE_DEVICE_HEIGHT);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 Device::AudioOutputFrequency()
 {
-  return s3eSoundGetInt(S3E_SOUND_OUTPUT_FREQ);
+  return 0;//s3eSoundGetInt(S3E_SOUND_OUTPUT_FREQ);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Device::Sleep(u32 ms)
 {
-  s3eDeviceYield(ms);
+  //s3eDeviceYield(ms);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u64 Device::AvailableMemory()
 {
-  return static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_MEM_FREE));
+  return 0;//static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_MEM_FREE));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u64 Device::TotalMemory()
 {
-  return static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_MEM_TOTAL));
+  return 0;//static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_MEM_TOTAL));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String Device::GetUniqueId()
 {
-  return s3eDeviceGetString(S3E_DEVICE_UNIQUE_ID);
+  return 0;//s3eDeviceGetString(S3E_DEVICE_UNIQUE_ID);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

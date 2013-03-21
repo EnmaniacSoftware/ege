@@ -50,10 +50,10 @@ void* MemoryManager::Malloc(size_t size, const char* pszFileName, int iLine)
     bool result = MemoryManager::GetInstance()->addAlloc(pData, size, pszFileName, iLine);
     EGE_ASSERT(result);
   }
-#ifdef EGE_FEATURE_MEMORY_DEBUG
+#if EGE_FEATURE_MEMORY_DEBUG
   else
   {
-    egeWarning() << "Could not allocate memory:" << size << pszFileName << iLine;
+    egeWarning() << "Could not allocate memory:" << static_cast<u32>(size) << pszFileName << iLine;
   }
 #endif // EGE_FEATURE_MEMORY_DEBUG
 
@@ -80,10 +80,10 @@ void* MemoryManager::Realloc(void* pData, size_t size, const char* pszFileName, 
     }
   }
 
-#ifdef EGE_FEATURE_MEMORY_DEBUG
+#if EGE_FEATURE_MEMORY_DEBUG
   if (NULL == pNewData)
   {
-    egeWarning() << "Could not reallocate memory:" << size << pszFileName << iLine;
+    egeWarning() << "Could not reallocate memory:" << static_cast<u32>(size) << pszFileName << iLine;
   }
 #endif // EGE_FEATURE_MEMORY_DEBUG
 

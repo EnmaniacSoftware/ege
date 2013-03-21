@@ -211,6 +211,7 @@
 		45DED89A16F7847E00623923 /* DeviceServicesIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DED89516F7847E00623923 /* DeviceServicesIOS_p.mm */; };
 		45DED89B16F7847E00623923 /* PurchaseServicesAppStoreIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DED89716F7847E00623923 /* PurchaseServicesAppStoreIOS_p.mm */; };
 		45DED89C16F7847E00623923 /* SocialServicesGameCenterIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DED89916F7847E00623923 /* SocialServicesGameCenterIOS_p.mm */; };
+		45EBD4D616FA625F002F583D /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45EBD4D516FA625F002F583D /* AppDelegate.mm */; };
 		45FC679A16F7C6F200E9EDCF /* StringUtilsIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45FC679916F7C6F200E9EDCF /* StringUtilsIOS.cpp */; };
 /* End PBXBuildFile section */
 
@@ -754,6 +755,8 @@
 		45DED89716F7847E00623923 /* PurchaseServicesAppStoreIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PurchaseServicesAppStoreIOS_p.mm; sourceTree = "<group>"; };
 		45DED89816F7847E00623923 /* SocialServicesGameCenterIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServicesGameCenterIOS_p.h; sourceTree = "<group>"; };
 		45DED89916F7847E00623923 /* SocialServicesGameCenterIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SocialServicesGameCenterIOS_p.mm; sourceTree = "<group>"; };
+		45EBD4D416FA625F002F583D /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		45EBD4D516FA625F002F583D /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		45FC679916F7C6F200E9EDCF /* StringUtilsIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtilsIOS.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1794,6 +1797,8 @@
 		4536376A16F1113600B4D72F /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				45EBD4D416FA625F002F583D /* AppDelegate.h */,
+				45EBD4D516FA625F002F583D /* AppDelegate.mm */,
 				4536376B16F1113600B4D72F /* ApplicationIOS_p.h */,
 				4536376C16F1113600B4D72F /* ApplicationIOS_p.mm */,
 			);
@@ -2183,6 +2188,7 @@
 				45ADCBA116F7C94F005FE8A0 /* DeviceIOS.mm in Sources */,
 				45ADCBA416F7C955005FE8A0 /* MemoryIOS.cpp in Sources */,
 				45ADCBA916F7CB23005FE8A0 /* DebugIOS.mm in Sources */,
+				45EBD4D616FA625F002F583D /* AppDelegate.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

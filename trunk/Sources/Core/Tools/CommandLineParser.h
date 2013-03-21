@@ -3,6 +3,7 @@
 
 #include "EGE.h"
 #include "EGEDictionary.h"
+#include "EGEStringList.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -13,6 +14,7 @@ class CommandLineParser
     
     explicit CommandLineParser(char* commandLine);
     CommandLineParser(int argc, char** argv);
+    CommandLineParser(const StringList& list);
    ~CommandLineParser();
 
     /*! Returns dictionary with command line parameters. */

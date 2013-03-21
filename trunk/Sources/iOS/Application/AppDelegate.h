@@ -7,8 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#include "Core/Application/Application.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
+{
+  EGE::Application* egeApplication;
+}
 
 @property (strong, nonatomic) UIWindow *window;
 
