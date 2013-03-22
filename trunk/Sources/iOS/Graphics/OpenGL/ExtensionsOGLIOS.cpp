@@ -1,6 +1,6 @@
-#include "Airplay/Graphics/OpenGL/ExtensionsOGLAirplay.h"
+#include "iOS/Graphics/OpenGL/ExtensionsOGLIOS.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // misc
@@ -63,3 +63,5 @@ PFNGLDELETEVERTEXARRAYSARBPROC glDeleteVertexArrays = NULL;
 PFNGLGENVERTEXARRAYSARBPROC glGenVertexArrays = NULL;
 PFNGLISVERTEXARRAYARBPROC glIsVertexArray = NULL;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -6,13 +6,15 @@
 //  Copyright (c) 2013 Little Bee Studios. All rights reserved.
 //
 
-#import "iOS/Application/AppDelegate.h"
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>
+#import "iOS/Application/AppDelegate.h"
+#import "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
 #include "EGEDictionary.h"
 #include "EGEStringList.h"
 #include "EGECommandLine.h"
+#include "EGEGraphics.h"
 
 EGE_NAMESPACE
 
@@ -26,7 +28,6 @@ EGE_NAMESPACE
   // deinitialize memory manager
   MemoryManager::Deinit();
   
-  [_window release];
   [super dealloc];
 }
 
@@ -59,13 +60,7 @@ EGE_NAMESPACE
       result = egeApplication->run();
     }
   }
-  
-  self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-
-  // Override point for customization after application launch.
-  self.window.backgroundColor = [UIColor whiteColor];
-  [self.window makeKeyAndVisible];
-  
+    
   return YES;
 }
 

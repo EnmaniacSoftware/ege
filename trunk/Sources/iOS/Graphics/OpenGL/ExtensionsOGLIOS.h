@@ -4,8 +4,12 @@
 #include "EGE.h"
 #include "EGEOpenGL.h"
 
+EGE_NAMESPACE_BEGIN
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define GL_APIENTRYP *
+#ifndef GL_APIENTRYP
+  #define GL_APIENTRYP *
+#endif // GL_APIENTRYP
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Stub for unsupported features in OGLES
@@ -72,7 +76,7 @@ extern PFNGLBLENDFUNCSEPARATEPROC glBlendFuncSeparate;
 #define GL_OBJECT_ACTIVE_UNIFORMS 0x8B86
 
 typedef char GLchar;
-typedef unsigned int GLhandle;
+typedef GLuint GLhandle;
 
 typedef GLhandle (GL_APIENTRYP PFNGLCREATESHADEROBJECTARBPROC) (GLenum shaderType);
 typedef void (GL_APIENTRYP PFNGLDELETEOBJECTARBPROC) (GLhandle obj);
@@ -181,5 +185,7 @@ extern PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
 extern PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
 
 #endif // EGE_IOS_GRAPHICS_OPENGL_EXTENSIONSOGL_H

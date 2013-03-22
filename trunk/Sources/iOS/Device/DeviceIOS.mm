@@ -1,5 +1,7 @@
 #include "Core/Device/Device.h"
 #include "EGEDebug.h"
+#import <UIKit/UIScreen.h>
+#import <CoreGraphics/CGGeometry.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -97,12 +99,16 @@ EGEDevice::Device Device::GetDevice()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 Device::SurfaceWidth()
 {
-  return 0;//s3eSurfaceGetInt(S3E_SURFACE_DEVICE_WIDTH);
+  CGRect screenBounds = [[UIScreen mainScreen] bounds];
+  
+  return static_cast<s32>(screenBounds.size.width);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 Device::SurfaceHeight()
 {
-  return 0;//s3eSurfaceGetInt(S3E_SURFACE_DEVICE_HEIGHT);
+  CGRect screenBounds = [[UIScreen mainScreen] bounds];
+  
+  return static_cast<s32>(screenBounds.size.height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 Device::AudioOutputFrequency()

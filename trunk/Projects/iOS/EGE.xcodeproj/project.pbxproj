@@ -208,6 +208,7 @@
 		45ADCBA116F7C94F005FE8A0 /* DeviceIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45ADCBA016F7C94F005FE8A0 /* DeviceIOS.mm */; };
 		45ADCBA416F7C955005FE8A0 /* MemoryIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45ADCBA316F7C955005FE8A0 /* MemoryIOS.cpp */; };
 		45ADCBA916F7CB23005FE8A0 /* DebugIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45ADCBA816F7CB23005FE8A0 /* DebugIOS.mm */; };
+		45DD7A5116FB0C7C005AA431 /* ViewOGL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DD7A5016FB0C7C005AA431 /* ViewOGL.mm */; };
 		45DED89A16F7847E00623923 /* DeviceServicesIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DED89516F7847E00623923 /* DeviceServicesIOS_p.mm */; };
 		45DED89B16F7847E00623923 /* PurchaseServicesAppStoreIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DED89716F7847E00623923 /* PurchaseServicesAppStoreIOS_p.mm */; };
 		45DED89C16F7847E00623923 /* SocialServicesGameCenterIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DED89916F7847E00623923 /* SocialServicesGameCenterIOS_p.mm */; };
@@ -748,7 +749,8 @@
 		45ADCBA016F7C94F005FE8A0 /* DeviceIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DeviceIOS.mm; sourceTree = "<group>"; };
 		45ADCBA316F7C955005FE8A0 /* MemoryIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryIOS.cpp; sourceTree = "<group>"; };
 		45ADCBA816F7CB23005FE8A0 /* DebugIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DebugIOS.mm; sourceTree = "<group>"; };
-		45ADCBAA16F7CF00005FE8A0 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		45DD7A4F16FB0C7C005AA431 /* ViewOGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewOGL.h; sourceTree = "<group>"; };
+		45DD7A5016FB0C7C005AA431 /* ViewOGL.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewOGL.mm; sourceTree = "<group>"; };
 		45DED89416F7847E00623923 /* DeviceServicesIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceServicesIOS_p.h; sourceTree = "<group>"; };
 		45DED89516F7847E00623923 /* DeviceServicesIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DeviceServicesIOS_p.mm; sourceTree = "<group>"; };
 		45DED89616F7847E00623923 /* PurchaseServicesAppStoreIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseServicesAppStoreIOS_p.h; sourceTree = "<group>"; };
@@ -788,7 +790,6 @@
 		4536352416F110F000B4D72F /* EGE */ = {
 			isa = PBXGroup;
 			children = (
-				4536352516F1113500B4D72F /* Core */,
 				4536371616F1113600B4D72F /* EGE.h */,
 				4536371716F1113600B4D72F /* EGEAlignment.h */,
 				4536371816F1113600B4D72F /* EGEAngle.h */,
@@ -870,10 +871,11 @@
 				4536376616F1113600B4D72F /* EGEVertexBuffer.h */,
 				4536376716F1113600B4D72F /* EGEWaitCondition.h */,
 				4536376816F1113600B4D72F /* EGEXml.h */,
-				4536376916F1113600B4D72F /* iOS */,
 				4536377916F1113600B4D72F /* README.txt */,
 				4536377A16F1113600B4D72F /* Rendering Pipe.txt */,
 				4536377B16F1113600B4D72F /* TODO.txt */,
+				4536352516F1113500B4D72F /* Core */,
+				4536376916F1113600B4D72F /* iOS */,
 			);
 			name = EGE;
 			path = /Users/enmaniac/Desktop/EGE/Sources;
@@ -882,13 +884,18 @@
 		4536352516F1113500B4D72F /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				4536354C16F1113500B4D72F /* ComplexTypes.cpp */,
+				4536354D16F1113500B4D72F /* ComplexTypes.h */,
+				4536355D16F1113500B4D72F /* ConfigParams.h */,
+				4536359A16F1113500B4D72F /* Flags.h */,
+				4536361916F1113600B4D72F /* ListenerContainer.h */,
+				4536364916F1113600B4D72F /* ObjectUIDs.h */,
+				4536367416F1113600B4D72F /* Platform.h */,
+				4536359616F1113500B4D72F /* FeatureList.txt */,
 				4536352616F1113500B4D72F /* Animation */,
 				4536352816F1113500B4D72F /* Application */,
 				4536352B16F1113500B4D72F /* Audio */,
-				4536354C16F1113500B4D72F /* ComplexTypes.cpp */,
-				4536354D16F1113500B4D72F /* ComplexTypes.h */,
 				4536354E16F1113500B4D72F /* Components */,
-				4536355D16F1113500B4D72F /* ConfigParams.h */,
 				4536355E16F1113500B4D72F /* Containers */,
 				4536356616F1113500B4D72F /* Crypto */,
 				4536357A16F1113500B4D72F /* Data */,
@@ -896,19 +903,14 @@
 				4536358916F1113500B4D72F /* Device */,
 				4536358C16F1113500B4D72F /* Dir */,
 				4536358F16F1113500B4D72F /* Event */,
-				4536359616F1113500B4D72F /* FeatureList.txt */,
 				4536359716F1113500B4D72F /* File */,
-				4536359A16F1113500B4D72F /* Flags.h */,
 				4536359B16F1113500B4D72F /* Graphics */,
 				4536361416F1113600B4D72F /* Input */,
-				4536361916F1113600B4D72F /* ListenerContainer.h */,
 				4536361A16F1113600B4D72F /* Math */,
 				4536363F16F1113600B4D72F /* Memory */,
 				4536364616F1113600B4D72F /* NativeUI */,
-				4536364916F1113600B4D72F /* ObjectUIDs.h */,
 				4536364A16F1113600B4D72F /* Overlay */,
 				4536365516F1113600B4D72F /* Physics */,
-				4536367416F1113600B4D72F /* Platform.h */,
 				4536367516F1113600B4D72F /* Random */,
 				4536367B16F1113600B4D72F /* Resource */,
 				453636AC16F1113600B4D72F /* Scene */,
@@ -1827,6 +1829,8 @@
 		4536377316F1113600B4D72F /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
+				45DD7A4F16FB0C7C005AA431 /* ViewOGL.h */,
+				45DD7A5016FB0C7C005AA431 /* ViewOGL.mm */,
 				4555B48116F7760900FDAFF3 /* ExtensionsOGLIOS.cpp */,
 				4555B48216F7760900FDAFF3 /* ExtensionsOGLIOS.h */,
 				4555B48316F7760900FDAFF3 /* RenderWindowOGLIOS.h */,
@@ -1865,7 +1869,6 @@
 		45877D9C16F09F5B00B4252B = {
 			isa = PBXGroup;
 			children = (
-				45ADCBAA16F7CF00005FE8A0 /* OpenGLES.framework */,
 				454427F216F28A6F00E1A5DB /* libjpeglib.a */,
 				454427F316F28A6F00E1A5DB /* libpnglib.a */,
 				454427F416F28A6F00E1A5DB /* libtinyxml.a */,
@@ -2189,6 +2192,7 @@
 				45ADCBA416F7C955005FE8A0 /* MemoryIOS.cpp in Sources */,
 				45ADCBA916F7CB23005FE8A0 /* DebugIOS.mm in Sources */,
 				45EBD4D616FA625F002F583D /* AppDelegate.mm in Sources */,
+				45DD7A5116FB0C7C005AA431 /* ViewOGL.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

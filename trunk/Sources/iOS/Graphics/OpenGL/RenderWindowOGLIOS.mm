@@ -1,13 +1,23 @@
-#include "Core/Application/Application.h"
 #include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
+#include "EGEApplication.h"
 #include "EGEMath.h"
 #include "EGEDevice.h"
 #include "EGEDebug.h"
+#import <UIKit/UIWindow.h>
+#import <UIKit/UIScreen.h>
+#import "iOS/Graphics/OpenGL/ViewOGL.h"
+
+#if EGE_RENDER_OPENGL_FIXED
+  #import <OpenGLES/ES1/glext.h>
+#endif // EGE_RENDER_OPENGL_FIXED
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderWindowOGLIOS::RenderWindowOGLIOS(Application* app, const Dictionary& params) : RenderWindow(app, params)
+RenderWindowOGLIOS::RenderWindowOGLIOS(Application* app, const Dictionary& params) : RenderWindow(app, params),
+                                                                                     m_view(NULL),
+                                                                                     m_window(NULL),
+                                                                                     m_EAGLContext(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -18,38 +28,63 @@ RenderWindowOGLIOS::~RenderWindowOGLIOS()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
 {
-  bool error = false;
+//  bool error = false;
 
+  // get screen size
+  CGRect screenBounds = [[UIScreen mainScreen] bounds];
+  
+  // create full screen view
+  m_view = [[[OGLView alloc] initWithFrame: screenBounds] autorelease];
+  if (NULL == m_view)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+  
+  // create window
+  m_window = [[[UIWindow alloc] initWithFrame: screenBounds] autorelease];
+  if (NULL == m_window)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+  
+  // attach view to window
+  m_window.backgroundColor = [UIColor whiteColor];
+  [m_window addSubview: m_view];
+  
+  // create rendering context
+  EAGLRenderingAPI api = kEAGLRenderingAPIOpenGLES1;
+  m_EAGLContext = [[EAGLContext alloc] initWithAPI: api];
+  if (NULL == m_EAGLContext)
+  {
+    // error!
+    return EGE_ERROR;
+  }
+  
+  // make it current
+  if (NO == [EAGLContext setCurrentContext: m_EAGLContext])
+  {
+    // error!
+    return EGE_ERROR;
+  }
+  
+  // detect capabilities
+  detectCapabilities();
+  
+//  glGenRenderbuffers(1, &mColorRenderBuffer);
+//  glBindRenderbuffer(GL_RENDERBUFFER, mColorRenderBuffer);
+//  [mEAGLContext renderbufferStorage: GL_RENDERBUFFER fromDrawable: mEAGLLayer];
+  
+  // make it visible
+  [m_window makeKeyAndVisible];
+  
   // register for surface orientation changes
 //  if (S3E_RESULT_SUCCESS != s3eSurfaceRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB, this))
 //  {
 //    // error!
 //    egeWarning() << "Count not register surface orientation change callback.";
 //  }
-
-  // decompose param list
-  Dictionary::const_iterator iterColorBits = params.find(EGE_RENDER_TARGET_PARAM_COLOR_BITS);
-  Dictionary::const_iterator iterDepthBits = params.find(EGE_RENDER_WINDOW_PARAM_DEPTH_BITS);
-  Dictionary::const_iterator iterLandscape = params.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
-
-  // check if required parameters are NOT present
-  if (iterColorBits == params.end() || iterDepthBits == params.end())
-  {
-    // error!
-    return EGE_ERROR;
-  }
-
-  bool landscape = (iterLandscape != params.end()) ? iterLandscape->second.toBool(&error) : false;
-
-  // set default paramerter values
-  s32 colorBits = iterColorBits->second.toInt(&error);
-  s32 depthBits = iterDepthBits->second.toInt(&error);
-
-  if (error)
-  {
-    // error!
-    return EGE_ERROR;
-  }
 
   // get device screen dimensions
   m_physicalWidth  = Device::SurfaceWidth();
@@ -191,6 +226,14 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderWindowOGLIOS::destroy()
 {
+  [m_EAGLContext release];
+  [m_view release];
+  [m_window release];
+  
+  m_view        = nil;
+  m_window      = nil;
+  m_EAGLContext = nil;
+  
   // unregister surface orientation change callback
 //  s3eSurfaceUnRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB);
 //
@@ -218,7 +261,7 @@ bool RenderWindowOGLIOS::isValid() const
     return false;
   }
 
-  return false;//(EGL_NO_SURFACE != m_eglSurface) && (EGL_NO_CONTEXT != m_eglContext) && (EGL_NO_DISPLAY != m_eglDisplay);
+  return (nil != m_view) && (nil != m_window) && (nil != m_EAGLContext);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult RenderWindowOGLIOS::enableFullScreen(s32 width, s32 height, bool enable)
@@ -261,6 +304,125 @@ bool RenderWindowOGLIOS::requiresTextureFlipping() const
 //
 //  return 0;
 //}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+OGLView* RenderWindowOGLIOS::view() const
+{
+  return m_view;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderWindowOGLIOS::detectCapabilities()
+{
+  // get list of all extensions
+  String extensionString(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
+  StringArray extensionArray = extensionString.split(" ");
+  
+  for (StringArray::const_iterator it = extensionArray.begin(); it != extensionArray.end(); ++it)
+  {
+    egeDebug() << "Available OGL extension:" << *it;
+  }
+  
+	GLint value;
+  
+  // get number of texture units
+	glGetIntegerv(GL_MAX_TEXTURE_UNITS, &value);
+  Device::SetTextureUnitsCount(static_cast<u32>(value));
+  
+  // detect maximal texture size
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &value);
+  Device::SetTextureMaxSize(static_cast<u32>(value));
+  
+  // multitexturing is supported by default
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE, true);
+  
+  // VBO is supported by default
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VBO, true);
+
+  // combine texture environment mode is supported by default
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_COMBINE_TEXTURE_ENV, true);
+  
+  // point sprites are not available by default
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE, false);
+  
+  // point sprite size array is not supported by default
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE_SIZE, false);
+  
+  // check if FBO is supported
+#if GL_OES_framebuffer_object
+  glBindFramebuffer         = ::glBindFramebufferOES;
+  glDeleteFramebuffers      = ::glDeleteFramebuffersOES;
+  glGenFramebuffers         = ::glGenFramebuffersOES;
+  glCheckFramebufferStatus  = ::glCheckFramebufferStatusOES;
+  glFramebufferTexture2D    = ::glFramebufferTexture2DOES;
+  
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
+#else
+  glBindFramebuffer         = ::glBindFramebuffer;
+  glDeleteFramebuffers      = ::glDeleteFramebuffers;
+  glGenFramebuffers         = ::glGenFramebuffers;
+  glCheckFramebufferStatus  = ::glCheckFramebufferStatus;
+  glFramebufferTexture2D    = ::glFramebufferTexture2D;
+
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
+#endif // GL_OES_framebuffer_object
+
+  // check if map buffer is supported
+#if GL_OES_mapbuffer
+  glMapBuffer   = ::glMapBufferOES;
+  glUnmapBuffer = ::glUnmapBufferOES;
+    
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER, true);
+#endif // GL_OES_mapbuffer
+  
+  // blending functions are supported
+#if GL_OES_blend_subtract
+  glBlendEquation = ::glBlendEquationOES;
+#else
+  glBlendEquation = ::glBlendEquation;
+#endif // GL_OES_blend_subtract
+
+#if GL_OES_blend_func_separate
+  glBlendFuncSeparate = ::glBlendFuncSeparateOES;
+#else
+  glBlendFuncSeparate = ::glBlendFuncSeparate;
+#endif // GL_OES_blend_func_separate
+  
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_BLEND_MINMAX, true);
+      
+  // check for texture compressions support
+#if GL_IMG_texture_compression_pvrtc
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC, true);
+#endif // GL_IMG_texture_compression_pvrtc
+  
+#if !EGE_RENDER_OPENGL_FIXED
+  glCreateShaderObject  = ::glCreateShader;
+  glShaderSource        = ::glShaderSource;
+  glCompileShader       = ::glCompileShader;
+  glCreateProgramObject = ::glCreateProgram;
+  glAttachObject        = ::glAttachShader;
+  glLinkProgram         = ::glLinkProgram;
+  glUseProgramObject    = ::glUseProgram;
+  glGetUniformLocation  = ::glGetUniformLocation;
+  glUniform1f           = ::glUniform1f;
+  glUniform2f           = ::glUniform2f;
+  glUniform3f           = ::glUniform3f;
+  glUniform4f           = ::glUniform4f;
+  glUniform1i           = ::glUniform1i;
+  glUniform2i           = ::glUniform2i;
+  glUniform3i           = ::glUniform3i;
+  glUniform4i           = ::glUniform4i;
+  glUniformMatrix2fv    = ::glUniformMatrix2fv;
+  glUniformMatrix3fv    = ::glUniformMatrix3fv;
+  glUniformMatrix4fv    = ::glUniformMatrix4fv;
+
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_SHADER, true);
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FRAGMENT_SHADER, true);
+#endif // !EGE_RENDER_OPENGL_FIXED
+
+  // check 32bit indexing support
+#if GL_OES_element_index_uint
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT, true);
+#endif // GL_OES_element_index_uint
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

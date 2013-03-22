@@ -2,8 +2,14 @@
 #define EGE_IOS_RENDERWINDOWOGL_H
 
 #include "EGE.h"
-//#include <GLES/egl.h>
+#include "EGEOpenGL.h"
 #include "Core/Graphics/Render/RenderWindow.h"
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+@class OGLView;
+@class UIWindow;
+@class EAGLContext;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_BEGIN
 
@@ -17,7 +23,9 @@ class RenderWindowOGLIOS : public RenderWindow
 
     /*! Creates object. */
     EGEResult construct(const Dictionary& params);
-
+    /*! Returns iOS view object. */
+    OGLView* view() const;
+  
   private:
 
     /*! Destorys Airplay OpenGL window. */
@@ -34,6 +42,8 @@ class RenderWindowOGLIOS : public RenderWindow
 		bool requiresTextureFlipping() const override;
     /*! RenderWindow override. Shows frame buffer. */
     virtual void showFrameBuffer() override;
+    /*! Detects rendering capabilities. */
+    void detectCapabilities();
 
   private:
 
@@ -42,12 +52,14 @@ class RenderWindowOGLIOS : public RenderWindow
 
   private:
 
-    /*! OpenGLES display device. */
-//    EGLDisplay m_eglDisplay;
-//    /*! OpengGLES context. */
-//    EGLContext m_eglContext;
-//    /*! OpenGLES display surface. */
-//    EGLSurface m_eglSurface;
+    /*! iOS window view. */
+    OGLView* m_view;
+    /*! iOS window. */
+    UIWindow* m_window;
+    /*! Apple EGL context. */
+    EAGLContext* m_EAGLContext;
+    /*! Main window color buffer id. */
+    GLuint m_colorRenderBuffer;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

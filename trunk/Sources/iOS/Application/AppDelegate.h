@@ -14,6 +14,4 @@
   EGE::Application* egeApplication;
 }
 
-@property (strong, nonatomic) UIWindow *window;
-
 @end
