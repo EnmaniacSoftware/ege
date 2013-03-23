@@ -20,6 +20,8 @@ class FilePrivate
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+    EGE_DECLARE_PUBLIC_IMPLEMENTATION(File)
+  
     /*! Returns TRUE if object is valid. */
     bool isValid() const;
     /*! Opens the given file with requested mode. */
@@ -49,10 +51,8 @@ class FilePrivate
 
   private:
 
-    /*! Pointer to base. */
-    File* m_base;
     /*! File handle. */
-   // s3eFile* m_file;
+    void* m_file;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

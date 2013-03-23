@@ -1,6 +1,8 @@
 #include "iOS/File/FileIOS_p.h"
 #include "Core/Math/Math.h"
 #include "EGEDebug.h"
+#import <Foundation/NSFileHandle.h>
+#import <Foundation/NSFileManager.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -8,7 +10,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(FilePrivate)
 EGE_DEFINE_DELETE_OPERATORS(FilePrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FilePrivate::FilePrivate(File* base) : m_base(base)
+FilePrivate::FilePrivate(File* base) : m_d(base),
+                                       m_file(nil)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,36 +29,39 @@ EGEResult FilePrivate::open(EGEFile::EMode mode)
 {
   close();
 
-  // map mode
-  String modeInternal;
+  // convert file path
+  NSString* filePath = [NSString stringWithCString: d_func()->filePath().c_str() encoding: NSASCIIStringEncoding];
+  
+  // open file
   switch (mode)
   {
-    case EGEFile::MODE_READ_ONLY:  modeInternal = "rb"; break;
-    case EGEFile::MODE_WRITE_ONLY: modeInternal = "wb"; break;
-    case EGEFile::MODE_APPEND:     modeInternal = "a+"; break;
+    case EGEFile::MODE_READ_ONLY:
+      
+      m_file = [NSFileHandle fileHandleForReadingAtPath: filePath];
+      break;
+      
+    case EGEFile::MODE_WRITE_ONLY:
+    
+      m_file = [NSFileHandle fileHandleForWritingAtPath: filePath];
+      break;
+    
+    case EGEFile::MODE_APPEND:
+      
+      m_file = [NSFileHandle fileHandleForUpdatingAtPath: filePath];
+      break;
 
     default:
 
       return EGE_ERROR_BAD_PARAM;
   }
 
-  // open file
-//  if (NULL == (m_file = s3eFileOpen(m_base->filePath().c_str(), modeInternal.c_str())))
-//  {
-//    // error!
-//    return EGE_ERROR_IO;
-//  }
-
-  return EGE_SUCCESS;
+  return (nil != m_file) ? EGE_SUCCESS : EGE_ERROR_IO;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void FilePrivate::close()
 {
-//  if (NULL != m_file)
-//  {
-//    s3eFileClose(m_file);
-//    m_file = NULL;
-//  }
+  [(id) m_file closeFile];
+  m_file = nil;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
@@ -65,7 +71,7 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
   // store current write offset in data buffer
   s64 writeOffset = dst->writeOffset();
 
-  if (!isOpen())
+  if ( ! isOpen())
   {
     // error!
     return 0;
@@ -79,22 +85,22 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
   }
 
   // read data into buffer
-  size_t readCount;
-//  if ((readCount = s3eFileRead(dst->data(writeOffset), 1, (size_t) size, m_file)) < size)
-//  {
-//    // check if EOF found
-//    if (s3eFileEOF(m_file))
-//    {
-//      // this is not error, however, we need to reflect real number of bytes read in buffer itself
-//      // NOTE: call below should never fail as we r effectively shirnking the data size
-//      EGE_ASSERT(EGE_SUCCESS == dst->setSize((s64) readCount));
-//    }
-//    else
-//    {
-//      // error!
-//      return 0;
-//    }
-//  }
+  NSData* data = [(id) m_file readDataOfLength: size];
+  
+  // retrieve number of bytes read
+  s64 readCount = [data length];
+  
+  // check if EOF reached
+  if (readCount < size)
+  {
+    // this is not error, however, we need to reflect real number of bytes read in buffer itself
+    // NOTE: call below should never fail as we are effectively shirnking the data size
+    EGEResult result = dst->setSize(writeOffset + readCount);
+    EGE_ASSERT(EGE_SUCCESS == result);
+  }
+  
+  // copy data into destination buffer
+  EGE_MEMCPY(dst->data(writeOffset), [data bytes], readCount);
 
   // manually update write offset in buffer
   if (writeOffset != dst->setWriteOffset(writeOffset + readCount))
@@ -103,21 +109,21 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
     return 0;
   }
 
-  return (s64) readCount;
+  return readCount;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::write(const PDataBuffer& src, s64 size)
 {
   EGE_ASSERT(src);
 
-  if (-1 == size)
+  if (0 > size)
   {
     size = src->size();
   }
 
   EGE_ASSERT(0 <= size);
 
-  if (!isOpen())
+  if ( ! isOpen())
   {
     // error!
     return 0;
@@ -129,61 +135,90 @@ s64 FilePrivate::write(const PDataBuffer& src, s64 size)
   // dont allow to read beyond the size boundary of buffer
   size = Math::Min(size, src->size() - src->readOffset());
 
-  return (s64) 0;//s3eFileWrite(src->data(readOffset), 1, (size_t) size, m_file);
+  // convert data
+  NSData* data = [NSData dataWithBytes: src->data(readOffset) length: size];
+  
+  // get current file position
+  s64 curPos = tell();
+  
+  // store to file
+  @try
+  {
+    [(id) m_file writeData: data];
+  }
+  @catch (NSException *exception)
+  {
+    return 0;
+  }
+  
+  return tell() - curPos;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::seek(s64 offset, EGEFile::ESeekMode mode) 
 {
-  if (!isOpen())
+  if ( ! isOpen())
   {
     // error!
     return -1;
   }
 
-  // map mode
-//  s3eFileSeekOrigin modeInternal;
-//  switch (mode)
-//  {
-//    case EGEFile::SEEK_MODE_BEGIN:   modeInternal = S3E_FILESEEK_SET; break;
-//    case EGEFile::SEEK_MODE_CURRENT: modeInternal = S3E_FILESEEK_CUR; break;
-//    case EGEFile::SEEK_MODE_END:     modeInternal = S3E_FILESEEK_END; break;
-//
-//    default:
-//
-//      return -1;
-//  }
-//
-//  // store current position
-//  s64 curPos = tell();
-//
-//  // try to change position
-//  if ((-1 == curPos) || (S3E_RESULT_SUCCESS != s3eFileSeek(m_file, (int32) offset, modeInternal)))
-//  {
-//    // error!
-//    return -1;
-//  }
+  // move position
+  @try
+  {
+    switch (mode)
+    {
+      case EGEFile::SEEK_MODE_BEGIN:
+        
+        [(id) m_file seekToFileOffset: offset];
+        break;
+        
+      case EGEFile::SEEK_MODE_CURRENT:
+        
+        [(id) m_file seekToFileOffset: tell() + offset];
+        break;
+        
+      case EGEFile::SEEK_MODE_END:
+        
+        [(id) m_file seekToFileOffset: size() + offset];
+        break;
+        
+      default:
+        
+        return -1;
+    }
+    
+  }
+  @catch (NSException *exception)
+  {
+    return -1;
+  }
 
-  return 0;//curPos;
+  return tell();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::tell()
 {
-  if (!isOpen())
+  if ( ! isOpen())
   {
     // error!
     return -1;
   }
 
-  return 0;//s3eFileTell(m_file);
+  return [(id) m_file offsetInFile];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool FilePrivate::isOpen() const
 {
-  return false;//NULL != m_file;
+  return (nil != m_file);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::size()
 {
+  if ( ! isOpen())
+  {
+    return -1;
+  }
+  
   // store current file position
   s64 curPos = tell();
   
@@ -205,12 +240,20 @@ s64 FilePrivate::size()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool FilePrivate::exists() const
 {
-  return 0;//S3E_TRUE == s3eFileCheckExists(m_base->filePath().c_str());
+  // convert file path
+  NSString* filePath = [NSString stringWithCString: d_func()->filePath().c_str() encoding: NSASCIIStringEncoding];
+  
+  // check if exists
+  return (YES == [[NSFileManager defaultManager] fileExistsAtPath: filePath]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool FilePrivate::remove()
 {
-  return 0;//(S3E_RESULT_SUCCESS == s3eFileDelete(m_base->filePath().c_str()));
+  // convert file path
+  NSString* filePath = [NSString stringWithCString: d_func()->filePath().c_str() encoding: NSASCIIStringEncoding];
+  
+  // remove file
+  return (YES == [[NSFileManager defaultManager] removeItemAtPath: filePath error: nil]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

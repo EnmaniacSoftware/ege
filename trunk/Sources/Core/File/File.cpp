@@ -3,11 +3,11 @@
 #include "Core/Data/DataBuffer.h"
 
 #ifdef EGE_PLATFORM_WIN32
-#include "Win32/File/FileWin32_p.h"
+  #include "Win32/File/FileWin32_p.h"
 #elif EGE_PLATFORM_AIRPLAY
-#include "Airplay/File/FileAirplay_p.h"
+  #include "Airplay/File/FileAirplay_p.h"
 #elif EGE_PLATFORM_IOS
-#include "iOS/File/FileIOS_p.h"
+  #include "iOS/File/FileIOS_p.h"
 #endif
 
 EGE_NAMESPACE_BEGIN
