@@ -146,9 +146,9 @@ void TextOverlay::updateRenderData()
         pos.y += height;
         pos.x = startPosX;
       }
-    }
 
-    m_renderData->vertexBuffer()->unlock(data - 1);
+      m_renderData->vertexBuffer()->unlock(data - 1);
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -20,37 +20,33 @@ class FilePrivate
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Returns TRUE if object is valid. */
+    EGE_DECLARE_PUBLIC_IMPLEMENTATION(File)
+
+    /*! @see File::isValid. */
     bool isValid() const;
-    /*! Opens the given file with requested mode. */
+    /*! @see File::open. */
     EGEResult open(EGEFile::EMode mode);
-    /*! Closes file. */
+    /*! @see File::close. */
     void close();
-    /*! Reads given amount of data into destination buffer.
-     *  @return Returns number of bytes read.
-     */
+    /*! @see File::read. */
     s64 read(const PDataBuffer& dst, s64 size);
-    /*! Writes given amount of data from destination buffer.
-     *  @return Returns number of bytes written.
-     */
+    /*! @see File::write. */
     s64 write(const PDataBuffer& src, s64 size);
-    /*! Sets new position within file. Returns old position or -1 if error occured. */
+    /*! @see File::seek. */
     s64 seek(s64 offset, EGEFile::ESeekMode mode);
-    /*! Returns current position in file. Returns -1 if error occured. */
+    /*! @see File::tell. */
     s64 tell();
-    /*! Returns TRUE if file is opened. */
+    /*! @see File::isOpen. */
     bool isOpen() const;
-    /*! Returns file size. Returns -1 if error occured. */
+    /*! @see File::size. */
     s64 size();
-    /*! Returns TRUE if file exists. */
+    /*! @see File::exists. */
     bool exists() const;
-    /*! Removes file if possible. */
+    /*! @see File::remove. */
     bool remove();
 
   private:
 
-    /*! Pointer to base. */
-    File* m_base;
     /*! File handle. */
     FILE* m_file;
 };

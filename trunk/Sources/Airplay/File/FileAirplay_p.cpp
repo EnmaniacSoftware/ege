@@ -8,7 +8,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(FilePrivate)
 EGE_DEFINE_DELETE_OPERATORS(FilePrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FilePrivate::FilePrivate(File* base) : m_base(base), 
+FilePrivate::FilePrivate(File* base) : m_d(base), 
                                        m_file(NULL)
 {
 }
@@ -41,7 +41,7 @@ EGEResult FilePrivate::open(EGEFile::EMode mode)
   }
 
   // open file
-  if (NULL == (m_file = s3eFileOpen(m_base->filePath().c_str(), modeInternal.c_str())))
+  if (NULL == (m_file = s3eFileOpen(d_func()->filePath().c_str(), modeInternal.c_str())))
   {
     // error!
     return EGE_ERROR_IO;
@@ -66,7 +66,7 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
   // store current write offset in data buffer
   s64 writeOffset = dst->writeOffset();
 
-  if (!isOpen())
+  if ( ! isOpen())
   {
     // error!
     return 0;
@@ -88,7 +88,8 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
     {
       // this is not error, however, we need to reflect real number of bytes read in buffer itself
       // NOTE: call below should never fail as we r effectively shirnking the data size
-      EGE_ASSERT(EGE_SUCCESS == dst->setSize((s64) readCount));
+      EGEResult result = dst->setSize(writeOffset + readCount);
+      EGE_ASSERT(EGE_SUCCESS == result);
     }
     else
     {
@@ -104,21 +105,21 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
     return 0;
   }
 
-  return (s64) readCount;
+  return static_cast<s64>(readCount);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::write(const PDataBuffer& src, s64 size)
 {
   EGE_ASSERT(src);
 
-  if (-1 == size)
+  if (0 > size)
   {
     size = src->size();
   }
 
   EGE_ASSERT(0 <= size);
 
-  if (!isOpen())
+  if ( ! isOpen())
   {
     // error!
     return 0;
@@ -130,12 +131,12 @@ s64 FilePrivate::write(const PDataBuffer& src, s64 size)
   // dont allow to read beyond the size boundary of buffer
   size = Math::Min(size, src->size() - src->readOffset());
 
-  return (s64) s3eFileWrite(src->data(readOffset), 1, (size_t) size, m_file);
+  return static_cast<s64>(s3eFileWrite(src->data(readOffset), 1, (size_t) size, m_file));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::seek(s64 offset, EGEFile::ESeekMode mode) 
 {
-  if (!isOpen())
+  if ( ! isOpen())
   {
     // error!
     return -1;
@@ -169,7 +170,7 @@ s64 FilePrivate::seek(s64 offset, EGEFile::ESeekMode mode)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::tell()
 {
-  if (!isOpen())
+  if ( ! isOpen())
   {
     // error!
     return -1;
@@ -180,11 +181,17 @@ s64 FilePrivate::tell()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool FilePrivate::isOpen() const
 {
-  return NULL != m_file;
+  return (NULL != m_file);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::size()
 {
+  if ( ! isOpen())
+  {
+    // error!
+    return -1;
+  }
+
   // store current file position
   s64 curPos = tell();
   

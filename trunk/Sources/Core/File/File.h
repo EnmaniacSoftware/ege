@@ -42,6 +42,7 @@ class File : public Object
     s64 read(const PDataBuffer& dst, s64 size);
     /*! Writes given amount of data from destination buffer.
      *  @return Returns number of bytes written.
+     *  @note If size is negative all data from source buffer is written.
      */
     s64 write(const PDataBuffer& src, s64 size = -1);
     /*! Sets new position within file. Returns old position or -1 if error occured. */
