@@ -90,12 +90,12 @@ METHODDEF(boolean) fill_input_buffer(j_decompress_ptr cinfo)
   {
     case EGE_OBJECT_UID_FILE:
 
-      bytesRead = ege_cast<EGE::File*>(src->source)->read(buffer, INPUT_BUF_SIZE);
+      bytesRead = static_cast<EGE::File*>(src->source)->read(buffer, INPUT_BUF_SIZE);
       break;
 
     case EGE_OBJECT_UID_DATA_BUFFER:
 
-      bytesRead = ege_cast<EGE::DataBuffer*>(src->source)->read(buffer, INPUT_BUF_SIZE);
+      bytesRead = static_cast<EGE::DataBuffer*>(src->source)->read(buffer, INPUT_BUF_SIZE);
       break;
   }
 

@@ -258,7 +258,7 @@ PObject UIScrollablePageView::object(const String& name) const
       {
         case EGE_OBJECT_UID_OVERLAY_TEXT:
           {
-            TextOverlay* overlay = ege_cast<TextOverlay*>((*itList).object());
+            TextOverlay* overlay = ege_cast<TextOverlay*>(*itList);
           
             // check if found
             if (overlay->name() == name)
@@ -271,7 +271,7 @@ PObject UIScrollablePageView::object(const String& name) const
 
         case EGE_OBJECT_UID_OVERLAY_IMAGE:
           {
-            ImageOverlay* overlay = ege_cast<ImageOverlay*>((*itList).object());
+            ImageOverlay* overlay = ege_cast<ImageOverlay*>(*itList);
           
             // check if found
             if (overlay->name() == name)
