@@ -1,55 +1,63 @@
 #include "Core/Device/Device.h"
 #include "EGEDebug.h"
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#import <mach/mach.h>
+#import <mach/mach_host.h>
 #import <UIKit/UIScreen.h>
 #import <CoreGraphics/CGGeometry.h>
+#import <Foundation/NSThread.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct DeviceInfo
 {
-  const char* marmaladeDeviceId;
+  NSString* deviceId;
   
   EGEDevice::Device egeDevice;
 };
 
 static DeviceInfo l_iOSDeviceInfoMap[] = { 
-  { "iPhone1,1",  EGEDevice::DEVICE_IPHONE },
-  { "iPhone1,2",  EGEDevice::DEVICE_IPHONE_3G },
-  { "iPhone2,1",  EGEDevice::DEVICE_IPHONE_3GS },
-  { "iPhone3,1",  EGEDevice::DEVICE_IPHONE_4 },
-  { "iPhone3,2",  EGEDevice::DEVICE_IPHONE_4 },
-  { "iPhone3,3",  EGEDevice::DEVICE_IPHONE_4 },
-  { "iPhone4,1",  EGEDevice::DEVICE_IPHONE_4S },
-  { "iPhone5,1",  EGEDevice::DEVICE_IPHONE_5 },
-  { "iPhone5,2",  EGEDevice::DEVICE_IPHONE_5 },
-  { "iPod1,1",    EGEDevice::DEVICE_IPOD_TOUCH_1 },
-  { "iPod2,1",    EGEDevice::DEVICE_IPOD_TOUCH_2 },
-  { "iPod3,1",    EGEDevice::DEVICE_IPOD_TOUCH_3 },
-  { "iPod4,1",    EGEDevice::DEVICE_IPOD_TOUCH_4 },
-  { "iPod5,1",    EGEDevice::DEVICE_IPOD_TOUCH_5 },
-  { "iPad1,1",    EGEDevice::DEVICE_IPAD },
-  { "iPad2,1",    EGEDevice::DEVICE_IPAD_2 },
-  { "iPad2,2",    EGEDevice::DEVICE_IPAD_2 },
-  { "iPad2,3",    EGEDevice::DEVICE_IPAD_2 },
-  { "iPad2,4",    EGEDevice::DEVICE_IPAD_2 },
-  { "iPad2,5",    EGEDevice::DEVICE_IPAD_MINI },
-  { "iPad3,1",    EGEDevice::DEVICE_IPAD_3 },
-  { "iPad3,2",    EGEDevice::DEVICE_IPAD_3 },
-  { "iPad3,3",    EGEDevice::DEVICE_IPAD_3 },
-  { "iPad3,4",    EGEDevice::DEVICE_IPAD_4 }
+  { @"iPhone1,1",  EGEDevice::DEVICE_IPHONE },
+  { @"iPhone1,2",  EGEDevice::DEVICE_IPHONE_3G },
+  { @"iPhone2,1",  EGEDevice::DEVICE_IPHONE_3GS },
+  { @"iPhone3,1",  EGEDevice::DEVICE_IPHONE_4 },
+  { @"iPhone3,2",  EGEDevice::DEVICE_IPHONE_4 },
+  { @"iPhone3,3",  EGEDevice::DEVICE_IPHONE_4 },
+  { @"iPhone4,1",  EGEDevice::DEVICE_IPHONE_4S },
+  { @"iPhone5,1",  EGEDevice::DEVICE_IPHONE_5 },
+  { @"iPhone5,2",  EGEDevice::DEVICE_IPHONE_5 },
+  { @"iPod1,1",    EGEDevice::DEVICE_IPOD_TOUCH_1 },
+  { @"iPod2,1",    EGEDevice::DEVICE_IPOD_TOUCH_2 },
+  { @"iPod3,1",    EGEDevice::DEVICE_IPOD_TOUCH_3 },
+  { @"iPod4,1",    EGEDevice::DEVICE_IPOD_TOUCH_4 },
+  { @"iPod5,1",    EGEDevice::DEVICE_IPOD_TOUCH_5 },
+  { @"iPad1,1",    EGEDevice::DEVICE_IPAD },
+  { @"iPad2,1",    EGEDevice::DEVICE_IPAD_2 },
+  { @"iPad2,2",    EGEDevice::DEVICE_IPAD_2 },
+  { @"iPad2,3",    EGEDevice::DEVICE_IPAD_2 },
+  { @"iPad2,4",    EGEDevice::DEVICE_IPAD_2 },
+  { @"iPad2,5",    EGEDevice::DEVICE_IPAD_MINI },
+  { @"iPad3,1",    EGEDevice::DEVICE_IPAD_3 },
+  { @"iPad3,2",    EGEDevice::DEVICE_IPAD_3 },
+  { @"iPad3,3",    EGEDevice::DEVICE_IPAD_3 },
+  { @"iPad3,4",    EGEDevice::DEVICE_IPAD_4 }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function determining iOS device from string value. */
 static EGEDevice::Device GetIOSDevice(const String& deviceId)
-{  
+{
+  // convert
+  NSString* deviceIdentifier = [NSString stringWithCString: deviceId.c_str() encoding: NSASCIIStringEncoding];
+  
   // go thru all iOS devices
   for (u32 i = 0; i < sizeof (l_iOSDeviceInfoMap) / sizeof (l_iOSDeviceInfoMap[0]); ++i)
   {
     const DeviceInfo& deviceInfo = l_iOSDeviceInfoMap[i];
 
     // check if found
-    if (deviceInfo.marmaladeDeviceId == deviceId)
+    if (YES == [deviceInfo.deviceId isEqualToString: deviceIdentifier])
     {
       // found
       return deviceInfo.egeDevice;
@@ -59,6 +67,37 @@ static EGEDevice::Device GetIOSDevice(const String& deviceId)
   return EGEDevice::DEVICE_GENERIC;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function calculating memory statistics. */
+void GetMemoryStatistics(u64& availableRAM, u64& totalRAM)
+{
+  mach_port_t host_port;
+  mach_msg_type_number_t host_size;
+  
+  host_port = mach_host_self();
+  host_size = sizeof (vm_statistics_data_t) / sizeof (integer_t);
+  
+  // get memory page size
+  vm_size_t pagesize;
+  host_page_size(host_port, &pagesize);
+
+  // retrieve virtual memory data
+  vm_statistics_data_t vm_stat;
+  if (KERN_SUCCESS != host_statistics(host_port, HOST_VM_INFO, (host_info_t) &vm_stat, &host_size))
+  {
+    // error!
+    egeWarning() << "Could not retreve memory statistics";
+    
+    availableRAM = 0;
+    totalRAM = 0;
+  }
+  else
+  {
+    natural_t mem_used = (vm_stat.active_count + vm_stat.inactive_count + vm_stat.wire_count) * pagesize;
+    availableRAM = vm_stat.free_count * pagesize;
+    totalRAM = mem_used + availableRAM;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEDevice::OS Device::GetOS()
 {
   return EGEDevice::OS_IOS;
@@ -66,34 +105,16 @@ EGEDevice::OS Device::GetOS()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEDevice::Device Device::GetDevice()
 {
- // const String deviceName = s3eDeviceGetString(S3E_DEVICE_ID);
+  // retrieve device name
+  char modelName[64] = "\0";
+  size_t size = sizeof (modelName) - 1;
+  sysctlbyname("hw.machine", modelName, &size, NULL, 0);
 
-  EGEDevice::Device deviceId = EGEDevice::DEVICE_GENERIC;
+  String deviceName(modelName);
+  EGEDevice::Device deviceId = GetIOSDevice(deviceName);
 
-//  egeDebug() << "Device ID:" << deviceName << s3eDeviceGetInt(S3E_DEVICE_OS);
-//
-//  // get OS ID
-//  EGEDevice::OS osId = Device::GetOS();
-//  switch (osId)
-//  {
-//    // for iOS
-//    case EGEDevice::OS_IOS:
-//
-//      // try to get it from string representation
-//      deviceId = GetIOSDevice(deviceName);
-//      break;
-//
-//    // for Windows
-//    case EGEDevice::OS_WINDOWS:
-//
-//      deviceId = EGEDevice::DEVICE_EMULATOR;
-//      break;
-//
-//    default:
-//
-//      egeWarning() << "Unknown OS" << osId;
-//  }
-
+  egeDebug() << "Device ID:" << deviceName << deviceId;
+  
   return deviceId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -118,22 +139,37 @@ s32 Device::AudioOutputFrequency()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Device::Sleep(u32 ms)
 {
-  //s3eDeviceYield(ms);
+  [NSThread sleepForTimeInterval: ms * 0.001];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u64 Device::AvailableMemory()
 {
-  return 0;//static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_MEM_FREE));
+  u64 availableRAM;
+  u64 totalRAM;
+  
+  GetMemoryStatistics(availableRAM, totalRAM);
+  
+  return availableRAM;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u64 Device::TotalMemory()
 {
-  return 0;//static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_MEM_TOTAL));
+  u64 availableRAM;
+  u64 totalRAM;
+  
+  GetMemoryStatistics(availableRAM, totalRAM);
+  
+  return totalRAM;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String Device::GetUniqueId()
 {
-  return 0;//s3eDeviceGetString(S3E_DEVICE_UNIQUE_ID);
+  CFUUIDRef theUUID = CFUUIDCreate(NULL);
+  CFStringRef string = CFUUIDCreateString(NULL, theUUID);
+  CFRelease(theUUID);
+  
+  String uniqueId = CFStringGetCStringPtr(string, kCFStringEncodingASCII);
+  return uniqueId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

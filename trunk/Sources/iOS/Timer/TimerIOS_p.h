@@ -2,6 +2,7 @@
 #define EGE_IOS_TIMER_PRIVATE_H
 
 #include "EGE.h"
+#include <mach/mach_time.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -9,7 +10,7 @@ EGE_NAMESPACE_BEGIN
 class TimerPrivate
 {
   public:
-
+  
     /*! Returns number of miliseconds passed since system start-up. */
     static s64 GetMiliseconds();
     /*! Returns number of microseconds since system start-up.
@@ -20,7 +21,7 @@ class TimerPrivate
     static bool IsHighResolution();
 
     /*! Resets timer. */
-    static void Reset(); 
+    static void Reset();
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

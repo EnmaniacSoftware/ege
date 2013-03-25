@@ -1,5 +1,6 @@
 #include "Core/Application/Application.h"
 #include "iOS/Input/PointerIOS_p.h"
+#include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
 #include "Core/Graphics/Graphics.h"
 #include "EGEInput.h"
 
@@ -15,38 +16,16 @@ EGE_DEFINE_DELETE_OPERATORS(PointerPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PointerPrivate::PointerPrivate(Pointer* base) : m_d(base)
 {
-/*  bool multitouchSupported = s3ePointerGetInt(S3E_POINTER_MULTI_TOUCH_AVAILABLE) ? true : false;
-
-  if (multitouchSupported)
-  {
-    s3ePointerRegister(S3E_POINTER_TOUCH_EVENT, (s3eCallback) MultiTouchButtonCB, this);
-    s3ePointerRegister(S3E_POINTER_TOUCH_MOTION_EVENT, (s3eCallback) MultiTouchMotionCB, this);
-  }
-  else
-  {
-    s3ePointerRegister(S3E_POINTER_BUTTON_EVENT, (s3eCallback) SingleTouchButtonCB, this);
-    s3ePointerRegister(S3E_POINTER_MOTION_EVENT, (s3eCallback) SingleTouchMotionCB, this);
-  }*/
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PointerPrivate::~PointerPrivate()
 {
- /* bool multitouchSupported = s3ePointerGetInt(S3E_POINTER_MULTI_TOUCH_AVAILABLE) ? true : false;
-
-  if (multitouchSupported)
-  {
-    s3ePointerUnRegister(S3E_POINTER_TOUCH_EVENT, (s3eCallback) MultiTouchButtonCB);
-    s3ePointerUnRegister(S3E_POINTER_TOUCH_MOTION_EVENT, (s3eCallback) MultiTouchMotionCB);
-  }
-  else
-  {
-    s3ePointerUnRegister(S3E_POINTER_BUTTON_EVENT, (s3eCallback) SingleTouchButtonCB);
-    s3ePointerUnRegister(S3E_POINTER_MOTION_EVENT, (s3eCallback) SingleTouchMotionCB);
-  }*/
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult PointerPrivate::construct()
 {
+  //RenderWindowOGLIOS* renderWindow = RenderWindowOGLIOS*>(d_func()->app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME).object());
+  
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
