@@ -271,10 +271,12 @@ void Application::update()
 {
   // get current time
   Time time(Timer::GetMicroseconds());
-
+  
   // calculate time passed
   Time timeInterval = time - m_lastUpdateTime;
 
+ // egeDebug() << "Timestamp:" << time.microseconds() << "Time interval:" << timeInterval.seconds();
+ 
   // dont allow to long changes
   if (0.25f < timeInterval.seconds())
   {

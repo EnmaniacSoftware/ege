@@ -23,19 +23,9 @@ ApplicationPrivate::~ApplicationPrivate()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ApplicationPrivate::run()
 {
-
-  
-  Time startTime;
-  Time endTime;
-  Time yieldTime;
-
-  
-  // app loop
-  while (Application::STATE_QUIT != d_func()->state())
+  // check if running
+  if (Application::STATE_QUIT != d_func()->state())
   {
-    // store this loop start time
-    startTime.fromMicroseconds(Timer::GetMicroseconds());
-
     // update
     d_func()->update();
    
@@ -44,13 +34,6 @@ EGEResult ApplicationPrivate::run()
 
     // send end of frame event
     d_func()->eventManager()->send(EGE_EVENT_ID_CORE_FRAME_END);
-
-    // stat this loop end time
-    endTime.fromMicroseconds(Timer::GetMicroseconds());
-
-    // give some time for OS
-    yieldTime = d_func()->m_renderInterval - (endTime - startTime);
-    //s3eDeviceYield(Math::Max((s32) 0, static_cast<s32>(yieldTime.miliseconds())));
   }
 
   return EGE_SUCCESS;

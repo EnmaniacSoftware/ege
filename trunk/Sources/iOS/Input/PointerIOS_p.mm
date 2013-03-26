@@ -1,12 +1,7 @@
 #include "Core/Application/Application.h"
+#include "Core/Input/Pointer.h"
 #include "iOS/Input/PointerIOS_p.h"
-#include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
-#include "Core/Graphics/Graphics.h"
-#include "EGEInput.h"
-
-//#include <EGEString.h>
-//#include <EGEResources.h>
-//#include <EGEOverlay.h>
+#include "Core/ListenerContainer.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -20,137 +15,39 @@ PointerPrivate::PointerPrivate(Pointer* base) : m_d(base)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PointerPrivate::~PointerPrivate()
 {
+  d_func()->app()->eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult PointerPrivate::construct()
 {
-  //RenderWindowOGLIOS* renderWindow = RenderWindowOGLIOS*>(d_func()->app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME).object());
+  // subscribe for notifications
+  if ( ! d_func()->app()->eventManager()->addListener(this))
+  {
+    // error!
+    return EGE_ERROR;
+  }
   
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*void PointerPrivate::MultiTouchButtonCB(s3ePointerTouchEvent* event, void* data)
+void PointerPrivate::onEventRecieved(PEvent event)
 {
-  PointerPrivate* me = (PointerPrivate*) data;
-
-  // report as left button
-  Button button = BUTTON_LEFT;
-
-  // map action
-  Action action = (0 != event->m_Pressed) ? ACTION_BUTTON_DOWN : ACTION_BUTTON_UP;
-
-  //PTextOverlay overlay = me->m_base->app()->overlayManager()->overlay("pointer");
-  //if (NULL == overlay)
-  //{
-  //  overlay = me->m_base->app()->overlayManager()->addTextOverlay("pointer");
-  //  PResourceFont fontResource = me->m_base->app()->resourceManager()->resource("font", "ingame");
-  //  overlay->setFont(fontResource->font());
-  //  overlay->physics()->setPosition(TVector4f(0, 0, 0, 0));
-  //}
-  //overlay->setText(EGEText::Format("X: %d Y: %d T: %d", event->m_x, event->m_y, event->m_TouchID));
-
-  s32 x = event->m_x;
-  s32 y = event->m_y;
-
   // check if quitting already
-  if (me->d_func()->app()->isQuitting())
+  if (d_func()->app()->isQuitting())
   {
     // do not propagate
     return;
   }
-
-  // send event
-  emit me->d_func()->eventSignal(ege_new PointerData(action, button, KM_NONE, x, y, event->m_TouchID));
-  //me->base()->app()->eventManager()->send(EGE_EVENT_ID_CORE_POINTER_DATA, ege_new PointerData(action, button, x, y, event->m_TouchID));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PointerPrivate::MultiTouchMotionCB(s3ePointerTouchMotionEvent* event, void* data)
-{
-  PointerPrivate* me = (PointerPrivate*) data;
-
-  s32 x = event->m_x;
-  s32 y = event->m_y;
-
-  // check if quitting already
-  if (me->d_func()->app()->isQuitting())
+  
+  switch (event->id())
   {
-    // do not propagate
-    return;
-  }
-
-  // send event
-  emit me->d_func()->eventSignal(ege_new PointerData(ACTION_MOVE, BUTTON_NONE, KM_NONE, x, y, event->m_TouchID));
-  //me->base()->app()->eventManager()->send(EGE_EVENT_ID_CORE_POINTER_DATA, 
-  //                                        ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, event->m_TouchID));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PointerPrivate::SingleTouchButtonCB(s3ePointerEvent* event, void* data)
-{
-  PointerPrivate* me = (PointerPrivate*) data;
-
-  // map button
-  Button button;
-  switch (event->m_Button)
-  {
-    case S3E_POINTER_BUTTON_LEFTMOUSE:      button = BUTTON_LEFT; break;
-    case S3E_POINTER_BUTTON_RIGHTMOUSE:     button = BUTTON_RIGHT; break;
-    case S3E_POINTER_BUTTON_MOUSEWHEELUP:   button = BUTTON_WHEEL_UP; break;
-    case S3E_POINTER_BUTTON_MOUSEWHEELDOWN: button = BUTTON_WHEEL_DOWN; break;
-
-    default:
-
-      button = BUTTON_LEFT;
+    case EGE_EVENT_ID_INTERNAL_POINTER_DATA:
+      
+      // emit signal
+      emit d_func()->eventSignal(event->data());
       break;
   }
-
-  //PTextOverlay overlay = me->m_base->app()->overlayManager()->overlay("pointer");
-  //if (NULL == overlay)
-  //{
-  //  overlay = me->m_base->app()->overlayManager()->addTextOverlay("pointer");
-  //  PResourceFont fontResource = me->m_base->app()->resourceManager()->resource("font", "ingame");
-  //  overlay->setFont(fontResource->font());
-  //  overlay->physics()->setPosition(TVector4f(0, 0, 0, 0));
-  //}
-  //overlay->setText(EGEText::Format("X: %d Y: %d", event->m_x, event->m_y));
-
-  // map action
-  Action action = (0 != event->m_Pressed) ? ACTION_BUTTON_DOWN : ACTION_BUTTON_UP;
-
-  s32 x = event->m_x;
-  s32 y = event->m_y;
-
-  // check if quitting already
-  if (me->d_func()->app()->isQuitting())
-  {
-    // do not propagate
-    return;
-  }
-
-  // send event
-  emit me->d_func()->eventSignal(ege_new PointerData(action, button, KM_NONE, x, y, 0));
-
-  //me->base()->app()->eventManager()->send(EGE_EVENT_ID_CORE_POINTER_DATA, ege_new PointerData(action, button, x, y, 0));
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PointerPrivate::SingleTouchMotionCB(s3ePointerMotionEvent* event, void* data)
-{
-  PointerPrivate* me = (PointerPrivate*) data;
-
-  s32 x = event->m_x;
-  s32 y = event->m_y;
-
-  // check if quitting already
-  if (me->d_func()->app()->isQuitting())
-  {
-    // do not propagate
-    return;
-  }
-
-  // send event
-  emit me->d_func()->eventSignal(ege_new PointerData(ACTION_MOVE, BUTTON_NONE, KM_NONE, x, y, 0));
-  //me->base()->app()->eventManager()->send(EGE_EVENT_ID_CORE_POINTER_DATA, 
-  //                                        ege_new PointerData(EGEInput::ACTION_MOVE, EGEInput::BUTTON_NONE, x, y, 0));
-}*/
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

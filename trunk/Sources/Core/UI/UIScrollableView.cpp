@@ -215,7 +215,7 @@ void UIScrollableView::recaluclateContentSize()
       case EGE_OBJECT_UID_OVERLAY_TEXT:
       case EGE_OBJECT_UID_OVERLAY_IMAGE:
         {
-          Overlay* overlay = ege_cast<Overlay*>((*it).object());
+          Overlay* overlay = ege_cast<Overlay*>(*it);
 
           // update content size
           newContentSize.x = Math::Max(newContentSize.x, overlay->physics()->position().x + overlay->size().x);
@@ -259,7 +259,7 @@ PObject UIScrollableView::object(const String& name) const
       case EGE_OBJECT_UID_OVERLAY_TEXT:
       case EGE_OBJECT_UID_OVERLAY_IMAGE:
         {
-          Overlay* overlay = ege_cast<Overlay*>((*it).object());
+          Overlay* overlay = ege_cast<Overlay*>(*it);
           
           // check if found
           if (overlay->name() == name)
@@ -286,7 +286,7 @@ void UIScrollableView::setAlpha(float32 alpha)
       case EGE_OBJECT_UID_OVERLAY_TEXT:
       case EGE_OBJECT_UID_OVERLAY_IMAGE:
         {
-          Overlay* overlay = ege_cast<Overlay*>((*it).object());
+          Overlay* overlay = ege_cast<Overlay*>(*it);
           overlay->renderData()->material()->setDiffuseAlpha(alpha);
         }
         break;

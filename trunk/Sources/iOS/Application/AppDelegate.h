@@ -11,6 +11,7 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
+  /*! Application object. */
   EGE::Application* egeApplication;
 }
 

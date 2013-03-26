@@ -34,7 +34,7 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
   CGRect screenBounds = [[UIScreen mainScreen] bounds];
   
   // create full screen view
-  m_view = [[[OGLView alloc] initWithFrame: screenBounds] autorelease];
+  m_view = [[OGLView alloc] initWithFrame: screenBounds];
   if (NULL == m_view)
   {
     // error!
@@ -42,7 +42,7 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
   }
   
   // create window
-  m_window = [[[UIWindow alloc] initWithFrame: screenBounds] autorelease];
+  m_window = [[UIWindow alloc] initWithFrame: screenBounds];
   if (NULL == m_window)
   {
     // error!

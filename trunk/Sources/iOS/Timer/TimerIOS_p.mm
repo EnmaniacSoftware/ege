@@ -17,8 +17,9 @@ void Initialize()
   mach_timebase_info(&info);
   
   // calculate conversion factors
-  l_nanoToMicro = 1e3 * info.numer / info.denom;
-  l_nanoToMili  = 1e6 * info.numer / info.denom;
+  // NOTE: info.numer / info.denom convert mach_absolute_time() value to nanoseconds (10e9)
+  l_nanoToMicro = info.numer / (1000.0 * info.denom);
+  l_nanoToMili  = l_nanoToMicro / 1000.0;
 
   // set flag
   l_initialized = true;
