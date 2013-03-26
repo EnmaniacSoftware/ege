@@ -215,25 +215,31 @@ void RenderSystem::setViewport(const PViewport& viewport)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderSystem::addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix)
 {
-  EGE_ASSERT(component);
+  bool result = true;
 
-  // check if no queue with such priority exists yet
-  if ( ! m_renderQueues.contains(component->priority()))
+  // check if component is meaningful
+  if (0 < component->vertexBuffer()->vertexCount())
   {
-    // create new queue
-    PRenderQueue queue = ege_new RenderQueue(app());
-    if (NULL == queue)
+    // check if no queue with such priority exists yet
+    if ( ! m_renderQueues.contains(component->priority()))
     {
-      // error!
-      return false;
+      // create new queue
+      PRenderQueue queue = ege_new RenderQueue(app());
+      if (NULL == queue)
+      {
+        // error!
+        return false;
+      }
+
+      // add it into queues
+      m_renderQueues.insert(component->priority(), queue);
     }
 
-    // add it into queues
-    m_renderQueues.insert(component->priority(), queue);
+    // add data into queue
+    result = m_renderQueues[component->priority()]->addForRendering(component, worldMatrix);
   }
 
-  // add data into queue
-  return m_renderQueues[component->priority()]->addForRendering(component, worldMatrix);
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystem::setProjectionMatrix(const Matrix4f& matrix)

@@ -35,7 +35,7 @@ bool VertexBufferVA::setSize(u32 count)
   }
 
   // allocate buffer
-  if (!reallocateBuffer(count))
+  if ( ! reallocateBuffer(count))
   {
     // error!
     return false;

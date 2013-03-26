@@ -155,7 +155,7 @@ void TextOverlay::updateRenderData()
 const Vector2f& TextOverlay::size() const
 {
   // check if text data is invalid
-  if (!m_textDataValid)
+  if ( ! m_textDataValid)
   {
     // NOTE: nasty, but find it less obscure than mutabling everything around
 
@@ -174,9 +174,18 @@ void TextOverlay::initialize()
   // call base class
   Overlay::initialize();
 
-  m_renderData  = RenderObjectFactory::CreateQuadXY(app(), "overlay-" + name(), Vector4f::ZERO, Vector2f::ONE, ALIGN_TOP_LEFT, false, false, 
-                                                    EGEVertexBuffer::ST_V2_T2, EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLES,
-                                                    EGEVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
+  // create render buffer
+  m_renderData  = ege_new RenderComponent(app(), "overlay-" + name(), EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLES,
+                                          EGEVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
+  if (NULL != m_renderData)
+  {
+    // add render buffers
+    if ( ! m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2))
+    {
+      // error!
+      m_renderData = NULL;
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void TextOverlay::updateTextData()
@@ -257,7 +266,7 @@ void TextOverlay::addForRendering(IRenderer* renderer, const Matrix4f& transform
   if (visible())
   {
     // check if text data needs updating
-    if (!m_textDataValid)
+    if ( ! m_textDataValid)
     {
       // update text data
       updateTextData();

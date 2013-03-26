@@ -6,6 +6,7 @@
 #include "Core/Components/Component.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Crypto/Hash.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -24,12 +25,20 @@ RenderComponent::RenderComponent(Application* app, const String& name, s32 prior
   m_pointSize(1.0f),
   m_lineWidth(1.0f)
 {
+  EGE_ASSERT(app);
+  EGE_ASSERT(app->graphics());
+  EGE_ASSERT(app->graphics()->hardwareResourceProvider());
+
   m_indexBuffer  = app->graphics()->hardwareResourceProvider()->createIndexBuffer(indexUsage);
   m_vertexBuffer = app->graphics()->hardwareResourceProvider()->createVertexBuffer(vertexUsage);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderComponent::~RenderComponent()
 {
+  EGE_ASSERT(app());
+  EGE_ASSERT(app()->graphics());
+  EGE_ASSERT(app()->graphics()->hardwareResourceProvider());
+
   app()->graphics()->hardwareResourceProvider()->destroyIndexBuffer(m_indexBuffer);
   app()->graphics()->hardwareResourceProvider()->destroyVertexBuffer(m_vertexBuffer);
 

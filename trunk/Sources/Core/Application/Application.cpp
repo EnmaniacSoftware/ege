@@ -60,14 +60,14 @@ Application::~Application()
   EGE_DELETE(m_imageLoader);
   EGE_DELETE(m_sceneManager);
   EGE_DELETE(m_imageLoader);
-  EGE_DELETE(m_graphics);
   EGE_DELETE(m_screenManager);
-  EGE_DELETE(m_audioManager);
   EGE_DELETE(m_overlayManager);
+  EGE_DELETE(m_resourceManager);
+  EGE_DELETE(m_graphics);
   EGE_DELETE(m_pointer);
   EGE_DELETE(m_physicsManager);
+  EGE_DELETE(m_audioManager);
   EGE_DELETE(m_deviceServices);
-  EGE_DELETE(m_resourceManager);
   EGE_DELETE(m_eventManager);
 
   EGE_DELETE(m_p);
