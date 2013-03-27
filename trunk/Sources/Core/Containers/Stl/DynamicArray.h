@@ -44,7 +44,7 @@ DynamicArray<T>::DynamicArray()
 template <typename T>
 DynamicArray<T>::DynamicArray(const T& object)
 {
-  push_back(object);
+  this->push_back(object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
@@ -53,7 +53,7 @@ void DynamicArray<T>::remove(const T object)
   typename DynamicArray<T>::iterator it = std::find(this->begin(), this->end(), object);
   if (it != this->end())
   {
-    erase(it);
+    this->erase(it);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
