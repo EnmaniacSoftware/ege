@@ -172,6 +172,13 @@ void* VertexBufferVBO::lock(u32 offset, u32 count)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void VertexBufferVBO::unlock(void* data)
 {
+  // check if nothing locked
+  if ( ! m_locked)
+  {
+    // do nothing
+    return;
+  }
+
 	glBindBuffer(GL_ARRAY_BUFFER, m_id);
   OGL_CHECK();
 
@@ -226,7 +233,7 @@ void VertexBufferVBO::unlock(void* data)
     // unmap
     glUnmapBuffer(GL_ARRAY_BUFFER);
     OGL_CHECK();
-  
+
     // clean up
     m_mapping = NULL;
   }
