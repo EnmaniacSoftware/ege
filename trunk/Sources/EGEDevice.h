@@ -14,7 +14,8 @@ namespace EGEDevice
   {
     OS_UNKOWN = 0,
     OS_IOS,
-    OS_WINDOWS
+    OS_WINDOWS,
+    OS_MACOS
   };
 
   /*! Devices available. */

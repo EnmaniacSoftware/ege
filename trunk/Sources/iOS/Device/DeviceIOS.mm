@@ -7,6 +7,7 @@
 #import <UIKit/UIScreen.h>
 #import <CoreGraphics/CGGeometry.h>
 #import <Foundation/NSThread.h>
+#import <UIKit/UIDevice.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -19,30 +20,32 @@ struct DeviceInfo
 };
 
 static DeviceInfo l_iOSDeviceInfoMap[] = { 
-  { @"iPhone1,1",  EGEDevice::DEVICE_IPHONE },
-  { @"iPhone1,2",  EGEDevice::DEVICE_IPHONE_3G },
-  { @"iPhone2,1",  EGEDevice::DEVICE_IPHONE_3GS },
-  { @"iPhone3,1",  EGEDevice::DEVICE_IPHONE_4 },
-  { @"iPhone3,2",  EGEDevice::DEVICE_IPHONE_4 },
-  { @"iPhone3,3",  EGEDevice::DEVICE_IPHONE_4 },
-  { @"iPhone4,1",  EGEDevice::DEVICE_IPHONE_4S },
-  { @"iPhone5,1",  EGEDevice::DEVICE_IPHONE_5 },
-  { @"iPhone5,2",  EGEDevice::DEVICE_IPHONE_5 },
-  { @"iPod1,1",    EGEDevice::DEVICE_IPOD_TOUCH_1 },
-  { @"iPod2,1",    EGEDevice::DEVICE_IPOD_TOUCH_2 },
-  { @"iPod3,1",    EGEDevice::DEVICE_IPOD_TOUCH_3 },
-  { @"iPod4,1",    EGEDevice::DEVICE_IPOD_TOUCH_4 },
-  { @"iPod5,1",    EGEDevice::DEVICE_IPOD_TOUCH_5 },
-  { @"iPad1,1",    EGEDevice::DEVICE_IPAD },
-  { @"iPad2,1",    EGEDevice::DEVICE_IPAD_2 },
-  { @"iPad2,2",    EGEDevice::DEVICE_IPAD_2 },
-  { @"iPad2,3",    EGEDevice::DEVICE_IPAD_2 },
-  { @"iPad2,4",    EGEDevice::DEVICE_IPAD_2 },
-  { @"iPad2,5",    EGEDevice::DEVICE_IPAD_MINI },
-  { @"iPad3,1",    EGEDevice::DEVICE_IPAD_3 },
-  { @"iPad3,2",    EGEDevice::DEVICE_IPAD_3 },
-  { @"iPad3,3",    EGEDevice::DEVICE_IPAD_3 },
-  { @"iPad3,4",    EGEDevice::DEVICE_IPAD_4 }
+  { @"iPhone1,1",   EGEDevice::DEVICE_IPHONE },
+  { @"iPhone1,2",   EGEDevice::DEVICE_IPHONE_3G },
+  { @"iPhone2,1",   EGEDevice::DEVICE_IPHONE_3GS },
+  { @"iPhone3,1",   EGEDevice::DEVICE_IPHONE_4 },
+  { @"iPhone3,2",   EGEDevice::DEVICE_IPHONE_4 },
+  { @"iPhone3,3",   EGEDevice::DEVICE_IPHONE_4 },
+  { @"iPhone4,1",   EGEDevice::DEVICE_IPHONE_4S },
+  { @"iPhone5,1",   EGEDevice::DEVICE_IPHONE_5 },
+  { @"iPhone5,2",   EGEDevice::DEVICE_IPHONE_5 },
+  { @"iPod1,1",     EGEDevice::DEVICE_IPOD_TOUCH_1 },
+  { @"iPod2,1",     EGEDevice::DEVICE_IPOD_TOUCH_2 },
+  { @"iPod3,1",     EGEDevice::DEVICE_IPOD_TOUCH_3 },
+  { @"iPod4,1",     EGEDevice::DEVICE_IPOD_TOUCH_4 },
+  { @"iPod5,1",     EGEDevice::DEVICE_IPOD_TOUCH_5 },
+  { @"iPad1,1",     EGEDevice::DEVICE_IPAD },
+  { @"iPad2,1",     EGEDevice::DEVICE_IPAD_2 },
+  { @"iPad2,2",     EGEDevice::DEVICE_IPAD_2 },
+  { @"iPad2,3",     EGEDevice::DEVICE_IPAD_2 },
+  { @"iPad2,4",     EGEDevice::DEVICE_IPAD_2 },
+  { @"iPad2,5",     EGEDevice::DEVICE_IPAD_MINI },
+  { @"iPad3,1",     EGEDevice::DEVICE_IPAD_3 },
+  { @"iPad3,2",     EGEDevice::DEVICE_IPAD_3 },
+  { @"iPad3,3",     EGEDevice::DEVICE_IPAD_3 },
+  { @"iPad3,4",     EGEDevice::DEVICE_IPAD_4 },
+  { @"i386",        EGEDevice::DEVICE_EMULATOR },
+  { @"x86_64",      EGEDevice::DEVICE_EMULATOR }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function determining iOS device from string value. */
@@ -50,7 +53,7 @@ static EGEDevice::Device GetIOSDevice(const String& deviceId)
 {
   // convert
   NSString* deviceIdentifier = [NSString stringWithCString: deviceId.c_str() encoding: NSASCIIStringEncoding];
-  
+    
   // go thru all iOS devices
   for (u32 i = 0; i < sizeof (l_iOSDeviceInfoMap) / sizeof (l_iOSDeviceInfoMap[0]); ++i)
   {
@@ -59,7 +62,43 @@ static EGEDevice::Device GetIOSDevice(const String& deviceId)
     // check if found
     if (YES == [deviceInfo.deviceId isEqualToString: deviceIdentifier])
     {
-      // found
+      // check if SIMULATOR
+      // NOTE: in case of native simulator we want to mimic the exact device class
+      if (EGEDevice::DEVICE_EMULATOR == deviceInfo.egeDevice)
+      {
+        // determine device class based on resolution
+        s32 width   = Device::SurfaceWidth();
+        s32 height  = Device::SurfaceHeight();
+        
+        // 320x480 device (iPhone 3GS)
+        if ((320 == width) && (480 == height))
+        {
+          return EGEDevice::DEVICE_IPHONE_3GS;
+        }
+        // 640x960 device (iPhone 4)
+        else if ((640 == width) && (960 == height))
+        {
+          return EGEDevice::DEVICE_IPHONE_4;
+        }
+        // 640x1136 device (iPhone 5)
+        else if ((640 == width) && (1136 == height))
+        {
+          return EGEDevice::DEVICE_IPHONE_5;
+        }
+        // 1024x768 device (iPad)
+        else if ((1024 == width) && (768 == height))
+        {
+          return EGEDevice::DEVICE_IPAD_2;
+        }
+        // 2048x1536 device (iPad retina)
+        else if ((2048 == width) && (1536 == height))
+        {
+          return EGEDevice::DEVICE_IPAD_4;
+        }
+        
+        EGE_ASSERT(false && "Unsupported!");
+      }
+      
       return deviceInfo.egeDevice;
     }
   }
@@ -100,7 +139,11 @@ void GetMemoryStatistics(u64& availableRAM, u64& totalRAM)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEDevice::OS Device::GetOS()
 {
+#if TARGET_IPHONE_SIMULATOR
+  return EGEDevice::OS_MACOS;
+#else
   return EGEDevice::OS_IOS;
+#endif // TARGET_IPHONE_SIMULATOR
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEDevice::Device Device::GetDevice()
@@ -120,16 +163,42 @@ EGEDevice::Device Device::GetDevice()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 Device::SurfaceWidth()
 {
-  CGRect screenBounds = [[UIScreen mainScreen] bounds];
+  float32 scale = 1.0f;
+ 
+  // get main screen
+  UIScreen* screen = [UIScreen mainScreen];
   
-  return static_cast<s32>(screenBounds.size.width);
+  // get screen bounds
+  CGRect screenBounds = [screen bounds];
+  
+  // check if scle selector is present
+  if ([screen respondsToSelector: @selector(scale)])
+  {
+    // get scale factor
+    scale = screen.scale;
+  }
+  
+  return static_cast<s32>(screenBounds.size.width * scale);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 Device::SurfaceHeight()
 {
-  CGRect screenBounds = [[UIScreen mainScreen] bounds];
+  float32 scale = 1.0f;
   
-  return static_cast<s32>(screenBounds.size.height);
+  // get main screen
+  UIScreen* screen = [UIScreen mainScreen];
+  
+  // get screen bounds
+  CGRect screenBounds = [screen bounds];
+  
+  // check if scle selector is present
+  if ([screen respondsToSelector: @selector(scale)])
+  {
+    // get scale factor
+    scale = screen.scale;
+  }
+  
+  return static_cast<s32>(screenBounds.size.height * scale);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 Device::AudioOutputFrequency()
