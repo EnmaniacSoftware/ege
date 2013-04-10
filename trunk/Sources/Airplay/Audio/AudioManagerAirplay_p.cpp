@@ -6,6 +6,8 @@
 #include <s3eSound.h>
 #include <s3eAudio.h>
 #include <s3e.h>
+#include <s3eIOSAudioRoute.h>
+#include <s3eIOSBackgroundAudio.h>
 #include <EGEAudio.h>
 #include <EGEDebug.h>
 #include <EGEMath.h>
@@ -29,6 +31,13 @@ AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base)
   {
     s3eSoundChannelSetInt(channel, S3E_CHANNEL_RATE, 22050);
     s3eSoundChannelPlay(channel, l_emptySoundSampleData, 1, 1, 0);
+  }
+
+  // check if audio routing is available
+  if (s3eIOSAudioRouteAvailable())
+  {
+    s3eIOSAudioRouteSetCategory(S3E_IOSAUDIOROUTE_CATEGORY_AMBIENT);
+    s3eIOSBackgroundAudioSetMix(true);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

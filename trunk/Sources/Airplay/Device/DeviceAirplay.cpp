@@ -33,6 +33,8 @@ static DeviceInfo l_iOSDeviceInfoMap[] = {
   { "iPad2,3",    EGEDevice::DEVICE_IPAD_2 },
   { "iPad2,4",    EGEDevice::DEVICE_IPAD_2 },
   { "iPad2,5",    EGEDevice::DEVICE_IPAD_MINI },
+  { "iPad2,6",    EGEDevice::DEVICE_IPAD_MINI },
+  { "iPad2,7",    EGEDevice::DEVICE_IPAD_MINI },
   { "iPad3,1",    EGEDevice::DEVICE_IPAD_3 },
   { "iPad3,2",    EGEDevice::DEVICE_IPAD_3 },
   { "iPad3,3",    EGEDevice::DEVICE_IPAD_3 },
@@ -125,12 +127,12 @@ void Device::Sleep(u32 ms)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u64 Device::AvailableMemory()
 {
-  return static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_MEM_FREE));
+  return static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_MEM_FREE) * 1024);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u64 Device::TotalMemory()
 {
-  return static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_MEM_TOTAL));
+  return static_cast<u64>(s3eDeviceGetInt(S3E_DEVICE_MEM_TOTAL) * 1024);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String Device::GetUniqueId()

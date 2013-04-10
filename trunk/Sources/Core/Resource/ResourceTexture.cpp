@@ -184,10 +184,10 @@ EGEResult ResourceTexture::create2D()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceTexture::unload() 
 { 
-  if (group()->name() == "main-menu-screen")
-  {
-    int a = 1;
-  }
+  //if (group()->name() == "main-menu-screen")
+  //{
+  //  int a = 1;
+  //}
 
   if (STATE_LOADED == m_state)
   {

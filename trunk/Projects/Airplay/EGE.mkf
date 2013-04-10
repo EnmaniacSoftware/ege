@@ -781,6 +781,12 @@ subprojects
   tinyxmlstl
 }
 
+# TAGE - shoulf somehow be flagged as it is iOS specific
+subprojects
+{
+  s3eIOSAudioRoute
+}
+
 if {{defined EGE_SOCIAL_PLATFORM_GAMECENTER}}
 {
   subproject s3eIOSGameCenter
