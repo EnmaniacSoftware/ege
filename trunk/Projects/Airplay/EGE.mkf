@@ -81,6 +81,7 @@ files
   EGESpriteAnimation.h
   EGEString.h
   EGEStringArray.h
+  EGEStringBuffer.h
   EGEStringList.h
   EGEStringUtils.h
   EGEText.h
@@ -219,6 +220,7 @@ files
 	DataBuffer.h
   Node.cpp
   Node.h
+  Serializable.h
 
 	["Core/Debug"]
  	(../../Sources/Core/Debug)
@@ -577,6 +579,8 @@ files
 
 	["Core/String"]
   (../../Sources/Core/String)
+  StringBuffer.cpp
+  StringBuffer.h
   StringUtils.cpp
   StringUtils.h
 
@@ -609,6 +613,7 @@ files
 
 	["Core/Timer"]
   (../../Sources/Core/Timer)
+  Time.cpp
 	Time.h
   TimeLine.cpp
   TimeLine.h
