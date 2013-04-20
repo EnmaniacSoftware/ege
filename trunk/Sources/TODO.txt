@@ -16,6 +16,9 @@ FEATURES:
 
 * Overlays/UI
   - Layouts
+  
+* Strings
+  - Abstract C string operations ie strlen
 
 OPTIMIZATIONS:
 

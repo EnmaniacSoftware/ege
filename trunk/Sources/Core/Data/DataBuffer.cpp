@@ -185,19 +185,19 @@ void DataBuffer::setByteOrdering(Endianness ordering)
   m_byteOrdering = ordering;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator << (u8 value)
+ISerializable& DataBuffer::operator << (u8 value)
 {
   write(&value, sizeof (value));
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator << (s8 value)
+ISerializable& DataBuffer::operator << (s8 value)
 {
   write(&value, sizeof (value));
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator << (u16 value)
+ISerializable& DataBuffer::operator << (u16 value)
 {
   u8 data[2];
   ByteOrder::Convert(data, value, byteOrdering());
@@ -206,7 +206,7 @@ DataBuffer& DataBuffer::operator << (u16 value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator << (s16 value)
+ISerializable& DataBuffer::operator << (s16 value)
 {
   u8 data[2];
   ByteOrder::Convert(data, value, byteOrdering());
@@ -215,7 +215,7 @@ DataBuffer& DataBuffer::operator << (s16 value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator << (u32 value)
+ISerializable& DataBuffer::operator << (u32 value)
 {
   u8 data[4];
   ByteOrder::Convert(data, value, byteOrdering());
@@ -224,7 +224,7 @@ DataBuffer& DataBuffer::operator << (u32 value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator << (s32 value)
+ISerializable& DataBuffer::operator << (s32 value)
 {
   u8 data[4];
   ByteOrder::Convert(data, value, byteOrdering());
@@ -233,7 +233,7 @@ DataBuffer& DataBuffer::operator << (s32 value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator << (u64 value)
+ISerializable& DataBuffer::operator << (u64 value)
 {
   u8 data[8];
   ByteOrder::Convert(data, value, byteOrdering());
@@ -242,7 +242,7 @@ DataBuffer& DataBuffer::operator << (u64 value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator << (s64 value)
+ISerializable& DataBuffer::operator << (s64 value)
 {
   u8 data[8];
   ByteOrder::Convert(data, value, byteOrdering());
@@ -251,36 +251,53 @@ DataBuffer& DataBuffer::operator << (s64 value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator << (bool value)
+ISerializable& DataBuffer::operator << (bool value)
 {
   return this->operator<< ((u8)(value ? 1 : 0));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator << (float32 value)
+ISerializable& DataBuffer::operator << (float32 value)
 {
   write(&value, sizeof (value));
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator << (float64 value)
+ISerializable& DataBuffer::operator << (float64 value)
 {
   write(&value, sizeof (value));
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator >> (u8& value)
+ISerializable& DataBuffer::operator << (const char* value)
+{
+  EGE_UNUSED(value);
+  
+  EGE_ASSERT(false && "Unsupported");
+  
+  return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ISerializable& DataBuffer::operator << (const String& value)
+{
+  EGE_UNUSED(value);
+
+  EGE_ASSERT(false && "Unsupported");
+  return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ISerializable& DataBuffer::operator >> (u8& value)
 {
   read(&value, sizeof (value));
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator >> (s8& value)
+ISerializable& DataBuffer::operator >> (s8& value)
 {
   read(&value, sizeof (value));
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator >> (u16& value)
+ISerializable& DataBuffer::operator >> (u16& value)
 {
   u8 data[2];
   if (sizeof (value) == read(data, sizeof (value)))
@@ -291,7 +308,7 @@ DataBuffer& DataBuffer::operator >> (u16& value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator >> (s16& value)
+ISerializable& DataBuffer::operator >> (s16& value)
 {
   u8 data[2];
   if (sizeof (value) == read(data, sizeof (value)))
@@ -302,7 +319,7 @@ DataBuffer& DataBuffer::operator >> (s16& value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator >> (u32& value)
+ISerializable& DataBuffer::operator >> (u32& value)
 {
   u8 data[4];
   if (sizeof (value) == read(data, sizeof (value)))
@@ -313,7 +330,7 @@ DataBuffer& DataBuffer::operator >> (u32& value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator >> (s32& value)
+ISerializable& DataBuffer::operator >> (s32& value)
 {
   u8 data[4];
   if (sizeof (value) == read(data, sizeof (value)))
@@ -324,7 +341,7 @@ DataBuffer& DataBuffer::operator >> (s32& value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator >> (u64& value)
+ISerializable& DataBuffer::operator >> (u64& value)
 {
   u8 data[8];
   if (sizeof (value) == read(data, sizeof (value)))
@@ -335,7 +352,7 @@ DataBuffer& DataBuffer::operator >> (u64& value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator >> (s64& value)
+ISerializable& DataBuffer::operator >> (s64& value)
 {
   u8 data[8];
   if (sizeof (value) == read(data, sizeof (value)))
@@ -346,7 +363,7 @@ DataBuffer& DataBuffer::operator >> (s64& value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator >> (bool& value)
+ISerializable& DataBuffer::operator >> (bool& value)
 {
   u8 data;
   this->operator>>(data);
@@ -355,15 +372,32 @@ DataBuffer& DataBuffer::operator >> (bool& value)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator >> (float32& value)
+ISerializable& DataBuffer::operator >> (float32& value)
 {
   read(&value, sizeof (value));
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer& DataBuffer::operator >> (float64& value)
+ISerializable& DataBuffer::operator >> (float64& value)
 {
   read(&value, sizeof (value));
+  return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ISerializable& DataBuffer::operator >> (const char* value)
+{
+  EGE_UNUSED(value);
+  
+  EGE_ASSERT(false && "Unsupported");
+  
+  return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ISerializable& DataBuffer::operator >> (String& value)
+{
+  EGE_UNUSED(value);
+  
+  EGE_ASSERT(false && "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

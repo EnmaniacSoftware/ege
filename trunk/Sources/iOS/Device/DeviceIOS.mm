@@ -40,6 +40,8 @@ static DeviceInfo l_iOSDeviceInfoMap[] = {
   { @"iPad2,3",     EGEDevice::DEVICE_IPAD_2 },
   { @"iPad2,4",     EGEDevice::DEVICE_IPAD_2 },
   { @"iPad2,5",     EGEDevice::DEVICE_IPAD_MINI },
+  { @"iPad2,6",     EGEDevice::DEVICE_IPAD_MINI },
+  { @"iPad2,7",     EGEDevice::DEVICE_IPAD_MINI },
   { @"iPad3,1",     EGEDevice::DEVICE_IPAD_3 },
   { @"iPad3,2",     EGEDevice::DEVICE_IPAD_3 },
   { @"iPad3,3",     EGEDevice::DEVICE_IPAD_3 },
@@ -233,11 +235,30 @@ u64 Device::TotalMemory()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String Device::GetUniqueId()
 {
-  CFUUIDRef theUUID = CFUUIDCreate(NULL);
-  CFStringRef string = CFUUIDCreateString(NULL, theUUID);
-  CFRelease(theUUID);
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
   
-  String uniqueId = CFStringGetCStringPtr(string, kCFStringEncodingASCII);
+  NSString* UUIDString = @"";
+
+  // check if no UUID generated yet
+  if ( ! [defaults valueForKey:@"UUID"])
+  {
+    // generate
+    CFUUIDRef theUUID = CFUUIDCreate(NULL);
+    CFStringRef string = CFUUIDCreateString(NULL, theUUID);
+    CFRelease(theUUID);
+    
+    // store
+    UUIDString = [NSString stringWithFormat: @"%@", string];
+    [defaults setObject: UUIDString forKey: @"UUID"];
+  }
+  else
+  {
+    // retrieve
+    UUIDString = [defaults valueForKey: @"UUID"];
+  }
+  
+  // convert to EGE format
+  String uniqueId = [UUIDString cStringUsingEncoding: NSASCIIStringEncoding];
   return uniqueId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

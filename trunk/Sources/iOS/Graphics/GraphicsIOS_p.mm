@@ -1,6 +1,5 @@
 #include "Core/Graphics/Graphics.h"
 #include "iOS/Graphics/GraphicsIOS_p.h"
-#include "EGEDevice.h"
 
 #if EGE_RENDERING_OPENGL_FIXED
  #include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"

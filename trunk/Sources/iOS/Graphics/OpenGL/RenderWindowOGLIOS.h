@@ -3,18 +3,21 @@
 
 #include "EGE.h"
 #include "EGEOpenGL.h"
+#include "EGEEvent.h"
+#include "EGEDevice.h"
 #include "Core/Graphics/Render/RenderWindow.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 @class OGLView;
 @class UIWindow;
 @class EAGLContext;
+@class ViewController;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RenderWindowOGLIOS : public RenderWindow
+class RenderWindowOGLIOS : public RenderWindow, public IEventListener
 {
   public:
 
@@ -46,20 +49,28 @@ class RenderWindowOGLIOS : public RenderWindow
     void detectCapabilities();
 
   private:
-
-    /*! Orientation change callback. */
-    //static int32 OrientationChangeCB(void* systemData, void* data);
-
+  
+    /*! @see IEventListener::onEventRecieved. */
+    void onEventRecieved(PEvent event) override;
+    /*! Sets new orientation. */
+    void setOrientation(EGEDevice::Orientation orientation);
+  
   private:
 
     /*! iOS window view. */
     OGLView* m_view;
+    /*! iOS view controller. */
+    ViewController* m_viewController;
     /*! iOS window. */
     UIWindow* m_window;
     /*! Apple EGL context. */
     EAGLContext* m_EAGLContext;
     /*! Main window color buffer id. */
-    GLuint m_colorRenderBuffer;
+    GLuint m_colorBuffer;
+    /*! Main window depth buffer id. */
+    GLuint m_depthBuffer;
+    /*! Main window framebuffer id. */
+    GLuint m_frameBuffer;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

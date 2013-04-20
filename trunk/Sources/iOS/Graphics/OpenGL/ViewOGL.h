@@ -1,0 +1,22 @@
+//
+//  ViewOGL.h
+//  EGE Framework
+//
+//  Created by enmaniac on 21/03/13.
+//  Copyright (c) 2013 Little Bee Studios. All rights reserved.
+//
+
+#import <UIKit/UIView.h>
+#import <QuartzCore/QuartzCore.h>
+
+@interface OGLView : UIView
+{
+  /*! OpenGLES drawing layer. */
+  CAEAGLLayer* mEAGLLayer;
+}
+
+@property (nonatomic, readonly) CAEAGLLayer* mEAGLLayer;
+
+- (id) initWithFrame: (CGRect) frame andPixelFormat: (NSString*) format;
+
+@end

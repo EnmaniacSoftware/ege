@@ -3,13 +3,14 @@
 
 #include "EGE.h"
 #include "EGEByteOrder.h"
+#include "Core/Data/Serializable.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class DataBuffer : public Object
+class DataBuffer : public Object, public ISerializable
 {
   public:
 
@@ -67,28 +68,33 @@ class DataBuffer : public Object
     /*! Returns current byte ordering. */
     Endianness byteOrdering() const { return m_byteOrdering; }
 
-    DataBuffer& operator << (u8 value);
-    DataBuffer& operator << (s8 value);
-    DataBuffer& operator << (u16 value);
-    DataBuffer& operator << (s16 value);
-    DataBuffer& operator << (u32 value);
-    DataBuffer& operator << (s32 value);
-    DataBuffer& operator << (u64 value);
-    DataBuffer& operator << (s64 value);
-    DataBuffer& operator << (bool value);
-    DataBuffer& operator << (float32 value);
-    DataBuffer& operator << (float64 value);
-    DataBuffer& operator >> (u8& value);
-    DataBuffer& operator >> (s8& value);
-    DataBuffer& operator >> (u16& value);
-    DataBuffer& operator >> (s16& value);
-    DataBuffer& operator >> (u32& value);
-    DataBuffer& operator >> (s32& value);
-    DataBuffer& operator >> (u64& value);
-    DataBuffer& operator >> (s64& value);
-    DataBuffer& operator >> (bool& value);
-    DataBuffer& operator >> (float32& value);
-    DataBuffer& operator >> (float64& value);
+    ISerializable& operator << (u8 value) override;
+    ISerializable& operator << (s8 value) override;
+    ISerializable& operator << (u16 value) override;
+    ISerializable& operator << (s16 value) override;
+    ISerializable& operator << (u32 value) override;
+    ISerializable& operator << (s32 value) override;
+    ISerializable& operator << (u64 value) override;
+    ISerializable& operator << (s64 value) override;
+    ISerializable& operator << (bool value) override;
+    ISerializable& operator << (float32 value) override;
+    ISerializable& operator << (float64 value) override;
+    ISerializable& operator << (const char* value) override;
+    ISerializable& operator << (const String& value) override;
+  
+    ISerializable& operator >> (u8& value) override;
+    ISerializable& operator >> (s8& value) override;
+    ISerializable& operator >> (u16& value) override;
+    ISerializable& operator >> (s16& value) override;
+    ISerializable& operator >> (u32& value) override;
+    ISerializable& operator >> (s32& value) override;
+    ISerializable& operator >> (u64& value) override;
+    ISerializable& operator >> (s64& value) override;
+    ISerializable& operator >> (bool& value) override;
+    ISerializable& operator >> (float32& value) override;
+    ISerializable& operator >> (float64& value) override;
+    ISerializable& operator >> (const char* value) override;
+    ISerializable& operator >> (String& value) override;
 
   private:
 

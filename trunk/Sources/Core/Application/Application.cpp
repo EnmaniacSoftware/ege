@@ -268,24 +268,22 @@ EGEResult Application::construct(const Dictionary& params)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Application::update()
-{
+{ 
   // get current time
   Time time(Timer::GetMicroseconds());
-  
+    
   // calculate time passed
   Time timeInterval = time - m_lastUpdateTime;
-
- // egeDebug() << "Timestamp:" << time.microseconds() << "Time interval:" << timeInterval.seconds();
- 
+  
+  // store frame current time
+  m_lastUpdateTime = time;
+  
   // dont allow to long changes
   if (0.25f < timeInterval.seconds())
   {
     timeInterval = 0.25f;
   }
-
-  // store frame current time
-  m_lastUpdateTime = time;
-
+  
   // check if quitting
   if (STATE_QUITTING == m_state)
   {
@@ -379,7 +377,10 @@ void Application::render()
 EGEResult Application::run()
 {
   // initialize update timer (to smooth out first update)
-  m_lastUpdateTime.fromMicroseconds(Timer::GetMicroseconds());
+  if (0 == m_lastUpdateTime.microseconds())
+  {
+    m_lastUpdateTime.fromMicroseconds(Timer::GetMicroseconds());
+  }
 
   // set state
   m_state = STATE_RUNNING;

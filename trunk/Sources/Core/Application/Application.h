@@ -116,11 +116,11 @@ class Application : public IEventListener
     virtual void update(const Time& time);
     /*! Application renderer. */
     virtual void render();
+    /*! @see IEventListener::onEventRecieved. */
+    void onEventRecieved(PEvent pEvent) override;
 
   private:
 
-    /*! @see IEventListener::onEventRecieved. */
-    void onEventRecieved(PEvent pEvent) override;
     /*! Application internal updater. */
     void update();
 

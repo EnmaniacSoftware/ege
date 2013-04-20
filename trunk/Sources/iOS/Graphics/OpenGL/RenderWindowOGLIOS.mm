@@ -1,4 +1,5 @@
 #include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
+#include "Core/ComplexTypes.h"
 #include "EGEApplication.h"
 #include "EGEMath.h"
 #include "EGEDevice.h"
@@ -6,6 +7,7 @@
 #import <UIKit/UIWindow.h>
 #import <UIKit/UIScreen.h>
 #import "iOS/Graphics/OpenGL/ViewOGL.h"
+#import "iOS/Application/ViewController.h"
 
 #if EGE_RENDER_OPENGL_FIXED
   #import <OpenGLES/ES1/glext.h>
@@ -16,8 +18,12 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderWindowOGLIOS::RenderWindowOGLIOS(Application* app, const Dictionary& params) : RenderWindow(app, params),
                                                                                      m_view(NULL),
+                                                                                     m_viewController(NULL),
                                                                                      m_window(NULL),
-                                                                                     m_EAGLContext(NULL)
+                                                                                     m_EAGLContext(NULL),
+                                                                                     m_colorBuffer(0),
+                                                                                     m_depthBuffer(0),
+                                                                                     m_frameBuffer(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,18 +34,39 @@ RenderWindowOGLIOS::~RenderWindowOGLIOS()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
 {
-//  bool error = false;
+  bool error = false;
 
+  // decompose param list
+  Dictionary::const_iterator iterColorBits = params.find(EGE_RENDER_TARGET_PARAM_COLOR_BITS);
+  Dictionary::const_iterator iterDepthBits = params.find(EGE_RENDER_WINDOW_PARAM_DEPTH_BITS);
+  
+  // set default paramerter values
+  s32 colorBits = iterColorBits->second.toInt(&error);
+  s32 depthBits = iterDepthBits->second.toInt(&error);
+  
+  if (error)
+  {
+    // error!
+    return EGE_ERROR;
+  }
+  
   // get screen size
   CGRect screenBounds = [[UIScreen mainScreen] bounds];
   
   // create full screen view
-  m_view = [[OGLView alloc] initWithFrame: screenBounds];
+  NSString* pixelFormat = (16 >= colorBits) ? kEAGLColorFormatRGB565 : kEAGLColorFormatRGBA8;
+  m_view = [[OGLView alloc] initWithFrame: screenBounds andPixelFormat: pixelFormat];
   if (NULL == m_view)
   {
-    // error!
+    // error!r
     return EGE_ERROR_NO_MEMORY;
   }
+
+  // create controller view
+  //m_viewController = [[ViewController alloc] init];
+  
+  // assign view
+ // m_viewController.view = m_view;
   
   // create window
   m_window = [[UIWindow alloc] initWithFrame: screenBounds];
@@ -52,6 +79,10 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
   // attach view to window
   m_window.backgroundColor = [UIColor whiteColor];
   [m_window addSubview: m_view];
+  
+ // m_window.rootViewController = m_viewController;
+  
+  //[m_viewController loadView];
   
   // create rendering context
   EAGLRenderingAPI api = kEAGLRenderingAPIOpenGLES1;
@@ -71,125 +102,55 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
   
   // detect capabilities
   detectCapabilities();
+
+  // generate window color buffer
+  glGenRenderbuffers(1, &m_colorBuffer);
+  OGL_CHECK();
+  glBindRenderbuffer(GL_RENDERBUFFER, m_colorBuffer);
+  OGL_CHECK();
+
+  // bind it to drawing layer
+  [m_EAGLContext renderbufferStorage: GL_RENDERBUFFER fromDrawable: m_view.mEAGLLayer];
   
-//  glGenRenderbuffers(1, &mColorRenderBuffer);
-//  glBindRenderbuffer(GL_RENDERBUFFER, mColorRenderBuffer);
-//  [mEAGLContext renderbufferStorage: GL_RENDERBUFFER fromDrawable: mEAGLLayer];
+  // retrieve render buffer dimensions
+  glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &m_physicalWidth);
+  glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &m_physicalHeight);
+  
+  // get current orientation screen dimensions
+  m_width  = m_physicalWidth;
+  m_height = m_physicalHeight;
+  
+  // generate window depth buffer if requested
+  if (0 != depthBits)
+  {
+    glGenRenderbuffers(1, &m_depthBuffer);
+    OGL_CHECK();
+		glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuffer);
+    OGL_CHECK();
+
+    // convert to native depth format
+    GLenum depthFormat = (0 != depthBits) ? GL_DEPTH_COMPONENT16 : 0;
+    
+    //		if( multiSampling_ )
+//			glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER_OES, samplesToUse_, depthFormat_,backingWidth_, backingHeight_);
+//		else
+    glRenderbufferStorage(GL_RENDERBUFFER, depthFormat, m_physicalWidth, m_physicalHeight);
+    OGL_CHECK();
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
+		OGL_CHECK();
+  }
+    
+  // generate main frame buffer
+  glGenFramebuffers(1, &m_frameBuffer);
+  OGL_CHECK();
+  glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
+  OGL_CHECK();
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, m_colorBuffer);
+  OGL_CHECK();
   
   // make it visible
   [m_window makeKeyAndVisible];
   
-  // register for surface orientation changes
-//  if (S3E_RESULT_SUCCESS != s3eSurfaceRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB, this))
-//  {
-//    // error!
-//    egeWarning() << "Count not register surface orientation change callback.";
-//  }
-
-  // get device screen dimensions
-  m_physicalWidth  = Device::SurfaceWidth();
-  m_physicalHeight = Device::SurfaceHeight();
-
-  // get current orientation screen dimensions
-//  m_width  = s3eSurfaceGetInt(S3E_SURFACE_WIDTH);
-//  m_height = s3eSurfaceGetInt(S3E_SURFACE_HEIGHT);
-
-  // determine initial screen orientation
-//  switch (s3eSurfaceGetInt(S3E_SURFACE_DEVICE_BLIT_DIRECTION))
-//  {
-//    case S3E_SURFACE_BLIT_DIR_NORMAL: m_orientationRotation.fromDegrees(0.0f); break;
-//    case S3E_SURFACE_BLIT_DIR_ROT90:  m_orientationRotation.fromDegrees(90.0f); break;
-//    case S3E_SURFACE_BLIT_DIR_ROT180: m_orientationRotation.fromDegrees(180.0f); break;
-//    case S3E_SURFACE_BLIT_DIR_ROT270: m_orientationRotation.fromDegrees(270.0f); break;
-//
-//    default:
-//
-//      egeWarning() << "Unknown blit direction!";
-//      break;
-//  }
-
-  //EGE_PRINT("Pwidth: %d Pheight: %d width: %d height: %d orient: %f", m_physicalWidth, m_physicalHeight, m_width, m_height, m_orientationRotation.degrees());
-
-  // apply dimensions according to landscape requirement
-  //if (landscape)
-  //{
-  //  m_height = Math::Min(m_physicalWidth, m_physicalHeight);
-  //  m_width  = Math::Max(m_physicalWidth, m_physicalHeight);
-
-  //  // check if rotation from portrait to landscape is needed for render target
-  //  if (m_physicalWidth != m_width)
-  //  {
-  //    m_orientationRotation.fromDegrees(-90);
-  //  }
-  //}
-  //else
-  //{
-  //  m_height = Math::Max(m_physicalWidth, m_physicalHeight);
-  //  m_width  = Math::Min(m_physicalWidth, m_physicalHeight);
-
-  //  // check if rotation from landscape to portrait is needed for render target
-  //  if (m_physicalWidth != m_width)
-  //  {
-  //    m_orientationRotation.fromDegrees(90);
-  //  }
-  //}
-
-//  static const EGLint configAttribs[] =
-//  {
-//    EGL_RED_SIZE,       colorBits / 3,
-//    EGL_GREEN_SIZE,     colorBits / 3,
-//    EGL_BLUE_SIZE,      colorBits / 3,
-//    EGL_DEPTH_SIZE,     depthBits,
-//    EGL_ALPHA_SIZE,     EGL_DONT_CARE,
-//    EGL_STENCIL_SIZE,   EGL_DONT_CARE,
-//    EGL_SURFACE_TYPE,   EGL_WINDOW_BIT,
-//    EGL_NONE
-//  };
-//
-//  EGLBoolean success;
-//
-//  EGLint numConfigs;
-//  EGLint majorVersion;
-//  EGLint minorVersion;
-//
-//  EGLConfig sEglConfig;
-//
-//  m_eglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-//
-//  success = eglInitialize(m_eglDisplay, &majorVersion, &minorVersion);
-//  if (EGL_FALSE != success)
-//  {
-//    success = eglGetConfigs(m_eglDisplay, NULL, 0, &numConfigs);
-//  }
-//
-//  if (EGL_FALSE != success)
-//  {
-//    success = eglChooseConfig(m_eglDisplay, configAttribs, &sEglConfig, 1, &numConfigs);
-//  }
-//
-//  if (EGL_FALSE != success)
-//  {
-//    m_eglSurface = eglCreateWindowSurface(m_eglDisplay, sEglConfig, s3eGLGetNativeWindow(), NULL);
-//    if (m_eglSurface == EGL_NO_SURFACE)
-//    {
-//      success = EGL_FALSE;
-//    }
-//  }
-//  
-//  if (EGL_FALSE != success)
-//  {
-//    m_eglContext = eglCreateContext(m_eglDisplay, sEglConfig, NULL, NULL);
-//    if (m_eglContext == EGL_NO_CONTEXT)
-//    {
-//      success = EGL_FALSE;
-//    }
-//  }
-//
-//  if (EGL_FALSE != success)
-//  {
-//    success = eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext);
-//  }
-//
 //  // obtain a detailed description of surface pixel format
 //  if (EGL_FALSE != success)
 //  {
@@ -221,36 +182,55 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
 //    return EGE_ERROR;
 //  }
 
+  // register for events
+  if ( ! app()->eventManager()->addListener(this))
+  {
+    // error!
+    return EGE_ERROR;
+  }
+  
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderWindowOGLIOS::destroy()
 {
+  // unregister from events
+  app()->eventManager()->removeListener(this);
+  
+  if (0 != m_frameBuffer)
+  {
+    glDeleteFramebuffers(1, &m_frameBuffer);
+    m_frameBuffer = 0;
+  }
+
+  if (0 != m_colorBuffer)
+  {
+    glDeleteBuffers(1, &m_colorBuffer);
+    m_colorBuffer = 0;
+  }
+
+  if (0 != m_depthBuffer)
+  {
+    glDeleteBuffers(1, &m_depthBuffer);
+    m_depthBuffer = 0;
+  }
+  
+  [EAGLContext setCurrentContext: nil];
   [m_EAGLContext release];
+  m_EAGLContext = nil;
+  
+  [m_viewController release];
   [m_view release];
   [m_window release];
   
-  m_view        = nil;
-  m_window      = nil;
-  m_EAGLContext = nil;
-  
-  // unregister surface orientation change callback
-//  s3eSurfaceUnRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB);
-//
-//  eglMakeCurrent(m_eglDisplay, NULL, NULL, NULL);
-//
-//  eglDestroyContext(m_eglDisplay, m_eglContext);
-//  eglDestroySurface(m_eglDisplay, m_eglSurface);
-//  eglTerminate(m_eglDisplay);
-//
-//  m_eglDisplay = EGL_NO_DISPLAY;
-//  m_eglContext = EGL_NO_CONTEXT;
-//  m_eglSurface = EGL_NO_SURFACE;
+  m_view            = nil;
+  m_viewController  = nil;
+  m_window          = nil;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderWindowOGLIOS::showFrameBuffer()
 {
-  //eglSwapBuffers(m_eglDisplay, m_eglSurface);
+  [m_EAGLContext presentRenderbuffer: GL_RENDERBUFFER];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderWindowOGLIOS::isValid() const
@@ -353,6 +333,7 @@ void RenderWindowOGLIOS::detectCapabilities()
   glGenFramebuffers         = ::glGenFramebuffersOES;
   glCheckFramebufferStatus  = ::glCheckFramebufferStatusOES;
   glFramebufferTexture2D    = ::glFramebufferTexture2DOES;
+  glRenderbufferStorage     = ::glRenderbufferStorageOES;
   
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
 #else
@@ -361,6 +342,7 @@ void RenderWindowOGLIOS::detectCapabilities()
   glGenFramebuffers         = ::glGenFramebuffers;
   glCheckFramebufferStatus  = ::glCheckFramebufferStatus;
   glFramebufferTexture2D    = ::glFramebufferTexture2D;
+  glRenderbufferStorage     = ::glRenderbufferStorage;
 
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
 #endif // GL_OES_framebuffer_object
@@ -422,6 +404,73 @@ void RenderWindowOGLIOS::detectCapabilities()
 #if GL_OES_element_index_uint
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT, true);
 #endif // GL_OES_element_index_uint
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderWindowOGLIOS::onEventRecieved(PEvent event)
+{
+  // process
+  switch (event->id())
+  {
+    case EGE_EVENT_ID_INTERNAL_ORIENTATION_CHANGED:
+      
+      setOrientation(static_cast<EGEDevice::Orientation>(ege_cast<Integer*>(event->data())->value()));
+      break;
+      
+    default:
+      break;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderWindowOGLIOS::setOrientation(EGEDevice::Orientation orientation)
+{
+  // process accroding to blit direction
+  switch (orientation)
+  {
+    case EGEDevice::EOrientationPortrait:
+    
+      m_orientationRotation.fromDegrees(0.0f);
+      m_width   = m_physicalWidth;
+      m_height  = m_physicalHeight;
+      break;
+    
+    case EGEDevice::EOrientationPortraitUpsideDown:
+    
+      m_orientationRotation.fromDegrees(180.0f);
+      m_width   = m_physicalWidth;
+      m_height  = m_physicalHeight;
+      break;
+
+    case EGEDevice::EOrientationLandscapeLeft:
+    
+      m_orientationRotation.fromDegrees(90.0f);
+      m_width   = m_physicalHeight;
+      m_height  = m_physicalWidth;
+      break;
+    
+    case EGEDevice::EOrientationLandscapeRight:
+    
+      m_orientationRotation.fromDegrees(270.0f);
+      m_width   = m_physicalHeight;
+      m_height  = m_physicalWidth;
+      break;
+    
+    case EGEDevice::EOrientationFaceUp:
+    case EGEDevice::EOrientationFaceDown:
+    
+      m_orientationRotation.fromDegrees(0.0f);
+      m_width   = m_physicalWidth;
+      m_height  = m_physicalHeight;
+      break;
+      
+    default:
+
+      egeWarning() << "Unknown orientation!";
+      break;
+  }
+  
+  // propagate to rest of the framework
+  EGE_ASSERT(app() && app()->eventManager());
+  app()->eventManager()->send(EGE_EVENT_ID_CORE_ORIENTATION_CHANGED);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

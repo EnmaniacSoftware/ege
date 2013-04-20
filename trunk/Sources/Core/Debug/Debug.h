@@ -5,7 +5,7 @@
  */
 
 #include "EGE.h"
-#include "EGEString.h"
+#include "EGEStringBuffer.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
@@ -17,8 +17,8 @@ class Debug
 
     Debug(DebugMsgType type);
     Debug(const Debug& other);
-   ~Debug();
-
+    virtual ~Debug();
+  
     Debug& operator << (bool t);
     Debug& operator << (char t);
     Debug& operator << (Char t);
@@ -33,6 +33,7 @@ class Debug
     Debug& operator << (const char* t);
     Debug& operator << (const String& t);
     Debug& operator << (const void* t);
+    Debug& operator = (const Debug& other);
 
     /*! Enables spaces insertions after each logged message. */
     Debug& space();
@@ -57,9 +58,7 @@ class Debug
   private:
 
     /*! Internal buffer. */
-    String m_buffer;
-    /*! Reference counter. */
-    int m_referenceCounter;
+    PStringBuffer m_buffer;
     /*! Flag indicating output should be directed to console. */
     bool m_consoleOutput;
     /*! Flag indicating if space should be added after each partial print. */
@@ -83,8 +82,6 @@ class NoDebug
     inline NoDebug& operator << (const T&) { return *this; }
 }; 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define EGE_NO_DEBUG_MACRO while (false) egeDebug
-
 #ifdef EGE_FEATURE_DEBUG
 
 inline Debug egeDebug() { return Debug(DMT_NORMAL); }
@@ -92,6 +89,8 @@ inline Debug egeWarning() { return Debug(DMT_WARNING); }
 inline Debug egeCritical() { return Debug(DMT_CRITICAL); }
 
 #else // EGE_FEATURE_DEBUG
+
+#define EGE_NO_DEBUG_MACRO while (false) egeDebug
 
 #undef egeDebug
 inline EGE::NoDebug egeDebug() { return EGE::NoDebug(); }

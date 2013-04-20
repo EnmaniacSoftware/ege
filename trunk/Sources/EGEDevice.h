@@ -61,6 +61,18 @@ namespace EGEDevice
     RENDER_CAPS_ELEMENT_INDEX_UINT,                       /*!< Indexing vertices with Uint32 support (GL_OES_element_index_uint). */
     RENDER_CAPS_COUNT
   };
+  
+  /*! Available orientations. */
+  enum Orientation
+  {
+    EOrientationUnknown = 0,                              /*!< The orientation of the device cannot be determined. */
+    EOrientationPortrait,                                 /*!< The device is in portrait mode. */
+    EOrientationPortraitUpsideDown,                       /*!< The device is in portrait mode but upside down. */
+    EOrientationLandscapeLeft,                            /*!< The device is in landscape mode, portrait rotateted 90degs counter-clockwise. */
+    EOrientationLandscapeRight,                           /*!< The device is in landscape mode, portrait rotateted 90degs clockwise. */
+    EOrientationFaceUp,                                   /*!< The device is held parallel to the ground with the screen facing upwards. */
+    EOrientationFaceDown                                  /*!< The device is held parallel to the ground with the screen facing downwards. */
+  };
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

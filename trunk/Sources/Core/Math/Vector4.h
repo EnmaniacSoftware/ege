@@ -254,7 +254,7 @@ inline TVector4<T> operator - (const TVector4<T>& left, const TVector4<T>& right
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline Debug& operator << (Debug& debug, const TVector4<T>& obj)
+inline Debug operator << (Debug debug, const TVector4<T>& obj)
 {
   debug.nospace() << "Vector4(" << obj.x << ", " << obj.y << ", " << obj.z << ", " << obj.w << ")";
   return debug.space();

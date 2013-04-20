@@ -6,6 +6,7 @@
 */
 
 #include "EGETypes.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -14,43 +15,46 @@ class Time
 {
   public:
 
-    Time() : m_time(0) {}
-    Time(s64 microseconds) : m_time(microseconds) {}
-    Time(const Time& time) : m_time(time.m_time) {}
-    Time(float32 seconds) : m_time(static_cast<s64>(seconds * 1000000LL)) {}
-
-    bool operator > (const Time& time) const { return m_time > time.m_time; }
-    bool operator >= (const Time& time) const { return m_time >= time.m_time; }
-    bool operator < (const Time& time) const { return m_time < time.m_time; }
-    bool operator <= (const Time& time) const { return m_time <= time.m_time; }
-    bool operator == (const Time& time) { return m_time == time.m_time; }
-    bool operator != (const Time& time) { return m_time != time.m_time; }
-    Time& operator = (float32 seconds) { m_time = static_cast<s64>(seconds * 1000000LL); return *this; }
-    inline Time& operator = (s64 microseconds) { m_time = microseconds; return *this; }
-
-    Time& operator += (const Time& time) { m_time += time.m_time; return *this; }
-    Time& operator -= (const Time& time) { m_time -= time.m_time; return *this; }
-
-    /*! Sets time from given microseconds. */
-    void fromMicroseconds(s64 microseconds) { m_time = microseconds; }
-    /*! Sets time from given miliseconds. */
-    void fromMiliseconds(s64 miliseconds) { m_time = miliseconds * 1000LL; }
-    /*! Sets time from given seconds. */
-    void fromSeconds(float32 seconds) { m_time = static_cast<s64>(seconds * 1000000LL); }
-
-    /*! Returns time duration in microseconds. */
-    s64 microseconds() const { return m_time; }
-    /*! Returns time duration in miliseconds. */
-    s64 miliseconds() const { return m_time / 1000; }
-    /*! Returns time duration in seconds (with fractions). */
-    float32 seconds() const { return m_time / 1000000.0f; }
-    /*! Returns time duration in minutes (with fractions). */
-    float32 minutes() const { return m_time / 60000000.0f; }
+    Time();
+    Time(s64 microseconds);
+    Time(const Time& time);
+    Time(float32 seconds);
 
   public:
-
+  
     /*! Returns Time object from given seconds. */
-    static Time FromSeconds(float32 seconds) { Time time(seconds); return time; }
+    static Time FromSeconds(float32 seconds);
+
+  public:
+  
+    bool operator > (const Time& time) const;
+    bool operator >= (const Time& time) const;
+    bool operator < (const Time& time) const;
+    bool operator <= (const Time& time) const;
+    bool operator == (const Time& time);
+    bool operator != (const Time& time);
+  
+    Time& operator = (float32 seconds);
+    Time& operator = (const Time& time);
+    Time& operator = (s64 microseconds);
+    Time& operator += (const Time& time);
+    Time& operator -= (const Time& time);
+
+    /*! Sets time from given microseconds. */
+    void fromMicroseconds(s64 microseconds);
+    /*! Sets time from given miliseconds. */
+    void fromMiliseconds(s64 miliseconds);
+    /*! Sets time from given seconds. */
+    void fromSeconds(float32 seconds);
+
+    /*! Returns time duration in microseconds. */
+    s64 microseconds() const;
+    /*! Returns time duration in miliseconds. */
+    s64 miliseconds() const;
+    /*! Returns time duration in seconds (with fractions). */
+    float32 seconds() const;
+    /*! Returns time duration in minutes (with fractions). */
+    float32 minutes() const;
 
   private:
 
@@ -76,6 +80,12 @@ inline Time operator/(const Time& left, float32 factor)
 inline Time operator*(const Time& left, float32 factor)
 {
   return Time(left.seconds() * factor);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline Debug operator << (Debug debug, const Time& obj)
+{
+  debug.nospace() << "Time(" << obj.seconds() << " secs)";
+  return debug.space();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

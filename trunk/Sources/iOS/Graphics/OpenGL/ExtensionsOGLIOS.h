@@ -35,19 +35,23 @@ extern PFNGLGETSTRINGIPROC glGetStringi;
 #define GL_FRAMEBUFFER_BINDING  0x8CA6
 #define GL_FRAMEBUFFER_COMPLETE 0x8CD5
 #define GL_COLOR_ATTACHMENT0    0x8CE0
+#define GL_DEPTH_ATTACHMENT     0x8D00
 #define GL_FRAMEBUFFER          0x8D40
+#define GL_DEPTH_COMPONENT16    0x81A5
 
 typedef void (GL_APIENTRYP PFNGLGENFRAMEBUFFERSPROC) (GLsizei n, GLuint *framebuffers);
 typedef void (GL_APIENTRYP PFNGLDELETEFRAMEBUFFERSPROC) (GLsizei n, const GLuint *framebuffers);
 typedef void (GL_APIENTRYP PFNGLBINDFRAMEBUFFERPROC) (GLenum target, GLuint framebuffer);
 typedef GLenum (GL_APIENTRYP PFNGLCHECKFRAMEBUFFERSTATUSPROC) (GLenum target);
 typedef void (GL_APIENTRYP PFNGLFRAMEBUFFERTEXTURE2DPROC) (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+typedef GLvoid (GL_APIENTRYP PFNGLRENDERBUFFERSTORAGEPROC) (GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
 
 extern PFNGLGENFRAMEBUFFERSPROC glGenFramebuffers;
 extern PFNGLDELETEFRAMEBUFFERSPROC glDeleteFramebuffers;
 extern PFNGLBINDFRAMEBUFFERPROC glBindFramebuffer;
 extern PFNGLCHECKFRAMEBUFFERSTATUSPROC glCheckFramebufferStatus;
 extern PFNGLFRAMEBUFFERTEXTURE2DPROC glFramebufferTexture2D;
+extern PFNGLRENDERBUFFERSTORAGEPROC glRenderbufferStorage;
 
 // GL_OES_mapbuffer
 typedef GLvoid* (GL_APIENTRYP PFNGLMAPBUFFERPROC) (GLenum target, GLenum access);

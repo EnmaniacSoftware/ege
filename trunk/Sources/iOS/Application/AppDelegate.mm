@@ -18,11 +18,13 @@
 #include "EGEGraphics.h"
 #include "EGEEvent.h"
 #include "EGEInput.h"
+#include "EGEDevice.h"
 
 EGE_NAMESPACE
 
 @implementation AppDelegate
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) dealloc
 {
   // clean up
@@ -33,9 +35,91 @@ EGE_NAMESPACE
   
   [super dealloc];
 }
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+- (CGPoint) transformTouchPoint: (CGPoint) point
+{
+  // get current UI orientation
+  UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
 
+  // transform due to current UI orientation
+  CGPoint newPoint = point;
+    
+  if (UIInterfaceOrientationLandscapeRight == orientation)
+  {
+    newPoint.x = point.y;
+    newPoint.y = Device::SurfaceWidth() - point.x;
+  }
+  else if (UIInterfaceOrientationLandscapeLeft == orientation)
+  {
+    newPoint.x = Device::SurfaceHeight() - point.y;
+    newPoint.y = point.x;
+  }
+  
+  return newPoint;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+- (void) registerForOrientationChanges: (UIApplication*) application
+{
+  UIDevice* device = [UIDevice currentDevice];
+  
+  // enable device orientation events
+  [device beginGeneratingDeviceOrientationNotifications];
+
+  // register for notifications
+  NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+	[notificationCenter addObserver: self selector: @selector(onOrientationChanged:) name: UIDeviceOrientationDidChangeNotification object: device];
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+- (void) onOrientationChanged: (NSNotification*) notification
+{
+  // get orientation value
+  int nativeOrientation = [[notification object] orientation];
+  
+  NSLog(@"Orientation  has changed: %d", nativeOrientation);
+  
+  assert(egeApplication);
+  
+  // send event
+  EventManager* eventManager = egeApplication->eventManager();
+  if (NULL != eventManager)
+  {
+    // map orientation to EGE compilant value
+    s32 orientation;
+    switch (nativeOrientation)
+    {
+      case UIDeviceOrientationPortrait:           orientation = EGEDevice::EOrientationPortrait; break;
+      case UIDeviceOrientationPortraitUpsideDown: orientation = EGEDevice::EOrientationPortraitUpsideDown; break;
+      case UIDeviceOrientationLandscapeLeft:      orientation = EGEDevice::EOrientationLandscapeLeft; break;
+      case UIDeviceOrientationLandscapeRight:     orientation = EGEDevice::EOrientationLandscapeRight; break;
+      case UIDeviceOrientationFaceUp:             orientation = EGEDevice::EOrientationFaceUp; break;
+      case UIDeviceOrientationFaceDown:           orientation = EGEDevice::EOrientationFaceDown; break;
+      
+      default:
+      
+        orientation = EGEDevice::EOrientationUnknown;
+        break;
+    }
+    
+    eventManager->send(EGE_EVENT_ID_INTERNAL_ORIENTATION_CHANGED, orientation);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (BOOL) application: (UIApplication*) application didFinishLaunchingWithOptions: (NSDictionary*) launchOptions
 {
+  // hide status bar
+  application.statusBarHidden = YES;
+
+  // register for orientation changes
+  [self registerForOrientationChanges: application];
+  
+  // check current directory
+  NSLog(@"Current dir: %@", [[NSFileManager defaultManager] currentDirectoryPath]);
+
+  // force change to bundle current directory
+  [[NSFileManager defaultManager] changeCurrentDirectoryPath: [[NSBundle mainBundle] bundlePath]];
+
+  NSLog(@"Current dir (after change): %@", [[NSFileManager defaultManager] currentDirectoryPath]);
+  
   // process command line 
 	NSArray* commandLineArguments = [[NSProcessInfo processInfo] arguments];
 
@@ -69,10 +153,11 @@ EGE_NAMESPACE
   // setup ticking
   CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget: self selector:@selector(tick:)];
   [displayLink addToRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
-  
+  [displayLink setFrameInterval: 1];
+    
   return YES;
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) applicationWillResignActive: (UIApplication*) application
 {
   // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -87,18 +172,18 @@ EGE_NAMESPACE
     eventManager->send(EGE_EVENT_ID_CORE_APP_PAUSE);
   }
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) applicationDidEnterBackground: (UIApplication*) application
 {
   // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
   // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) applicationWillEnterForeground: (UIApplication*) application
 {
   // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) applicationDidBecomeActive: (UIApplication*) application
 {
   // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
@@ -112,68 +197,69 @@ EGE_NAMESPACE
     eventManager->send(EGE_EVENT_ID_CORE_APP_RESUME);
   }
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) applicationWillTerminate: (UIApplication*) application
 {
   // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+ 
+  // disable orientation events
+  [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) touchesBegan: (NSSet*) touches withEvent: (UIEvent*) event
 {
-  OGLView* view = ege_cast<RenderWindowOGLIOS*>(egeApplication->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME))->view();
-  
   // go thru all touches
   for (UITouch* touch in touches)
   {
     // get location within view
-    CGPoint touchPoint = [touch locationInView: view];
+    CGPoint point = [touch locationInView: nil];
+    point = [self transformTouchPoint: point];
     
     // send pointer event
-    [self notifyPointerEvent: ACTION_BUTTON_UP withButton: BUTTON_LEFT atPoint: touchPoint];
+    [self notifyPointerEvent: ACTION_BUTTON_DOWN withButton: BUTTON_LEFT atPoint: point];
     
-    egeDebug() << "Touch began at" << touchPoint.x << touchPoint.y;
+    egeDebug() << "Touch began at" << point.x << point.y;
   }
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) touchesEnded: (NSSet*) touches withEvent: (UIEvent*) event
 {
-  OGLView* view = ege_cast<RenderWindowOGLIOS*>(egeApplication->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME))->view();
-  
   // go thru all touches
   for (UITouch* touch in touches)
   {
     // get location within view
-    CGPoint touchPoint = [touch locationInView: view];
+    CGPoint point = [touch locationInView: nil];
+    point = [self transformTouchPoint: point];
     
     // send pointer event
-    [self notifyPointerEvent: ACTION_BUTTON_DOWN withButton: BUTTON_LEFT atPoint: touchPoint];
+    [self notifyPointerEvent: ACTION_BUTTON_UP withButton: BUTTON_LEFT atPoint: point];
     
-    egeDebug() << "Touch ended at" << touchPoint.x << touchPoint.y;
+    egeDebug() << "Touch ended at" << point.x << point.y;
   }
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) touchesCancelled: (NSSet*) touches withEvent: (UIEvent*) event
 {
-  
+  // process as touch end
+  [self touchesEnded: touches withEvent: event];
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) touchesMoved: (NSSet*) touches withEvent: (UIEvent*) event
 {
-  OGLView* view = ege_cast<RenderWindowOGLIOS*>(egeApplication->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME))->view();
-
   // go thru all touches
   for (UITouch* touch in touches)
   {
     // get location within view
-    CGPoint touchPoint = [touch locationInView: view];
-     
+    CGPoint point = [touch locationInView: nil];
+    point = [self transformTouchPoint: point];
+    
     // send pointer event
-    [self notifyPointerEvent: ACTION_MOVE withButton: BUTTON_LEFT atPoint: touchPoint];
+    [self notifyPointerEvent: ACTION_MOVE withButton: BUTTON_LEFT atPoint: point];
      
-    egeDebug() << "Touch moved at" << touchPoint.x << touchPoint.y;
+    egeDebug() << "Touch moved at" << point.x << point.y;
   }
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sends internal pointer notification. */
 - (void) notifyPointerEvent: (Action) action withButton: (Button) button atPoint: (CGPoint) point
 {
@@ -183,18 +269,19 @@ EGE_NAMESPACE
   {
     // detrmine current keyboard modifiers
     KeyboardModifiers keyboardModifiers = KM_NONE;
-  
+    
     // send pointer event
     eventManager->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA,
                        ege_new PointerData(action, button, keyboardModifiers, (s32) point.x, (s32) point.y, 0));
   }
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Method called due to timer ticks. */
 - (void) tick: (CADisplayLink*) displayLink
 {
   // NOTE: this call returns
   egeApplication->run();
 }
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @end

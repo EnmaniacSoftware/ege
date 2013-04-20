@@ -231,7 +231,7 @@ inline TVector2<T> operator * (const TVector2<T>& left, const TVector2<T>& right
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline Debug& operator << (Debug& debug, const TVector2<T>& obj)
+inline Debug operator << (Debug debug, const TVector2<T>& obj)
 {
   debug.nospace() << "Vector2(" << obj.x << ", " << obj.y << ")";
   return debug.space();

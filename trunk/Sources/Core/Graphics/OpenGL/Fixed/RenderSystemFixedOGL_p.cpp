@@ -227,14 +227,16 @@ void RenderSystemPrivate::flush()
     {
       const RenderQueue::SRENDERDATA& data = it->second;
       
-      //if (data.component->name() == "level-meter-classic")
-      //{
-      //  int a = 1;
-      //}
-
       PVertexBuffer vertexBuffer = data.component->vertexBuffer();
       PIndexBuffer indexBuffer   = data.component->indexBuffer();
       PMaterial material         = data.component->material();
+
+//      if (data.component->name() == "menu-button-button-home")
+//      {
+//          int a = 1;
+//        material->setDstBlendFactor(EGEGraphics::BF_ZERO);
+//        material->setSrcBlendFactor(EGEGraphics::BF_ZERO);
+//      }
 
       // determine number of texture arrays
       s32 textureArraysCount = vertexBuffer->arrayCount(EGEVertexBuffer::AT_TEXTURE_UV);
