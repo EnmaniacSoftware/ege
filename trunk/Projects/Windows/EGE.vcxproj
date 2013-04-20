@@ -179,6 +179,7 @@
     <ClCompile Include="..\..\Sources\Core\Services\SocialServicesNull_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\String.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\Text.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\StringBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\StringUtils.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\Mutex.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\MutexLocker.cpp" />
@@ -187,6 +188,7 @@
     <ClCompile Include="..\..\Sources\Core\Threading\PThread\WaitCondition_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\Thread.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\WaitCondition.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Timer\Time.cpp" />
     <ClCompile Include="..\..\Sources\Core\Timer\TimeLine.cpp" />
     <ClCompile Include="..\..\Sources\Core\Timer\Timer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Tools\ByteOrder.cpp" />
@@ -242,6 +244,7 @@
     <ClInclude Include="..\..\Sources\Core\Crypto\CryptographicHash_p.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Hash.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\md5\md5.h" />
+    <ClInclude Include="..\..\Sources\Core\Data\Serializable.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\EngineInfo.h" />
@@ -324,6 +327,7 @@
     <ClInclude Include="..\..\Sources\Core\Services\PurchaseServicesNull_p.h" />
     <ClInclude Include="..\..\Sources\Core\Services\SocialServices.h" />
     <ClInclude Include="..\..\Sources\Core\Services\SocialServicesNull_p.h" />
+    <ClInclude Include="..\..\Sources\Core\String\StringBuffer.h" />
     <ClInclude Include="..\..\Sources\Core\String\StringUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\Mutex.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\MutexLocker.h" />
@@ -510,6 +514,7 @@
     <ClInclude Include="..\..\Sources\EGESpriteAnimation.h" />
     <ClInclude Include="..\..\Sources\EGEString.h" />
     <ClInclude Include="..\..\Sources\EGEStringArray.h" />
+    <ClInclude Include="..\..\Sources\EGEStringBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEStringList.h" />
     <ClInclude Include="..\..\Sources\EGEStringUtils.h" />
     <ClInclude Include="..\..\Sources\EGEText.h" />

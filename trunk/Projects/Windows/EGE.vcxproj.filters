@@ -831,6 +831,12 @@
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.cpp">
       <Filter>Win32\Graphics\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\StringBuffer.cpp">
+      <Filter>Core\String</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Timer\Time.cpp">
+      <Filter>Core\Timer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1609,6 +1615,13 @@
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.h">
       <Filter>Win32\Graphics\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\String\StringBuffer.h">
+      <Filter>Core\String</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Data\Serializable.h">
+      <Filter>Core\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEStringBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">
