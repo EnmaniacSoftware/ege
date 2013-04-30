@@ -21,7 +21,7 @@ class SoundEffect : public Object
 
     virtual ~SoundEffect() {}
 
-  signals:
+  public signals:
 
     /*! Signal emitted when effect came to completion. 
      *  @param effect Effect which is finished.

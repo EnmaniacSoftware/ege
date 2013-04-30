@@ -29,7 +29,7 @@ class Widget : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  signals:
+  public signals:
 
     /*! Signal emitted when size of the widget changes. */
     Signal1<const Vector2f&> sizeChanged;

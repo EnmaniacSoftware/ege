@@ -30,7 +30,7 @@ class IHardwareResourceProvider
     IHardwareResourceProvider() {}
     virtual ~IHardwareResourceProvider() {}
 
-  signals:
+  public signals:
 
     /*! Signal emitted when request has been completed. 
      *  @param  requestId   ID of the request.

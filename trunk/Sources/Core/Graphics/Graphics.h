@@ -30,7 +30,7 @@ class Graphics : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  signals:
+  public signals:
 
     /*! Signal emitted just before target is rendered. 
      *  @param renderTarget Render target for which the rendering will be done.

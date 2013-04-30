@@ -53,16 +53,25 @@ class ScreenManager : public Object
      *        If popped screen is opaque and top screen is transparent then cover all transparent ones going from top to bottom
      */
     void hide();
+    /*! Hides all screens. */
+    void hideAll();
     /*! Removes given screen from stack. 
      *  @note This does not call leave on screen being removed.
      */
     void remove(PScreen screen);
+    /*! Remoes all screens from stack. 
+     *  @note This does not call leave on screens being removed.
+     */
+    void removeAll();
+
     /*! Returns first screen with given name. */
     PScreen screen(const String& name) const;
     /*! Returns top screen. */
     PScreen top() const;
     /*! Returns TRUE if given screen is visible. */
     bool isVisible(const PScreen& screen) const;
+    /*! Returns current number of screens on stack. */
+    u32 screenCount() const;
 
   private slots:
 

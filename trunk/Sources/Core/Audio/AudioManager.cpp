@@ -141,23 +141,12 @@ EGEResult AudioManager::play(const PSound& sound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool AudioManager::isPlaying(const String& soundName) const
 {
-  // look for the sound in the active pool
-  for (SoundList::const_iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
-  {
-    const PSound& sound = *it;
-    if (sound->name() == soundName)
-    {
-      return isPlaying(sound);
-    }
-  }
-
-  // propagate to implementation
   return p_func()->isPlaying(soundName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool AudioManager::isPlaying(const PSound& sound) const
 {
-  if (sound)
+  if (NULL != sound)
   {
     return p_func()->isPlaying(sound);
   }
@@ -167,16 +156,7 @@ bool AudioManager::isPlaying(const PSound& sound) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioManager::stop(const String& soundName)
 {
-  // look for the sound in the active pool
-  for (SoundList::const_iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
-  {
-    const PSound& sound = *it;
-    if (sound->name() == soundName)
-    {
-      // stop
-      stop(sound);
-    }
-  }
+  p_func()->stop(soundName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioManager::stop(PSound sound)
@@ -198,38 +178,16 @@ void AudioManager::stop(PSound sound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 List<PSound> AudioManager::sounds(const String& soundName) const
 {
-  List<PSound> list;
-
-  // go thru all active sounds
-  for (SoundList::const_iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
-  {
-    const PSound& sound = *it;
-    if (sound->name() == soundName)
-    {
-      // append
-      list << sound;
-    }
-  }
-
-  return list;
+  // call implementation
+  return p_func()->sounds(soundName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioManager::setEnable(bool set)
 {
   if (set != m_enabled)
   {
-    // check if disabling
-    if (!set)
-    {
-      // stop all active sounds
-      // NOTE: make a copy of all sounds first as there is no guarantee on when sounds will be removed from pool
-      SoundList soundsToStop(m_sounds);
-      for (SoundList::iterator it = soundsToStop.begin(); it != soundsToStop.end(); ++it)
-      {
-        // stop
-        stop(*it);
-      }
-    }
+    // call implementation
+    p_func()->setEnable(set);
 
     // store flag
     m_enabled = set;
@@ -238,32 +196,18 @@ void AudioManager::setEnable(bool set)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult AudioManager::pause(const String& soundName)
 {
-  // look for the sound in the active pool
-  for (SoundList::const_iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
-  {
-    const PSound& sound = *it;
-    if (sound->name() == soundName)
-    {
-      // pause
-      if (EGE_SUCCESS != pause(sound))
-      {
-        // error!
-        return EGE_ERROR;
-      }
-    }
-  }
-
-  return EGE_SUCCESS;
+  // call implementation
+  return p_func()->pause(soundName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult AudioManager::pause(const PSound& sound)
 {
   EGEResult result = EGE_ERROR;
 
-  if (sound)
+  if (NULL != sound)
   {
     // check if disabled
-    if (!isEnabled())
+    if ( ! isEnabled())
     {
       // done
       return EGE_SUCCESS;
@@ -278,17 +222,7 @@ EGEResult AudioManager::pause(const PSound& sound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool AudioManager::isPaused(const String& soundName) const
 {
-  // look for the sound in the active pool
-  for (SoundList::const_iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
-  {
-    const PSound& sound = *it;
-    if (sound->name() == soundName)
-    {
-      return isPaused(sound);
-    }
-  }
-
-  return false;
+  return p_func()->isPaused(soundName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool AudioManager::isPaused(const PSound& sound) const
@@ -323,6 +257,11 @@ void AudioManager::shutDown()
 void AudioManager::onStopped(PSound sound)
 {
   ege_disconnect(sound, stopped, this, AudioManager::onStopped);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+AudioManager::State AudioManager::state() const 
+{ 
+  return m_state; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

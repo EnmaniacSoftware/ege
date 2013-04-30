@@ -75,10 +75,13 @@ ResourceManager::ResourceManager(Application* app) : Object(app),
                                                      m_totalResourcesToProcess(0),
                                                      m_processedResourcesCount(0)
 {
+  ege_connect(app, frameEnd, this, ResourceManager::onFrameEnd);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::~ResourceManager()
 {
+  ege_disconnect(app(), frameEnd, this, ResourceManager::onFrameEnd);
+
   // NOTE: all groups should be already removed
   EGE_ASSERT(m_groups.empty());
 
@@ -698,14 +701,6 @@ void ResourceManager::onEventRecieved(PEvent event)
         shutDown();
       }
       break;
-
-    case EGE_EVENT_ID_CORE_FRAME_END:
-
-      if (STATE_READY == p_func()->state())
-      {
-        processCommands();
-      }
-      break;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -727,6 +722,14 @@ ResourceManager::ResourceProcessPolicy ResourceManager::resourceProcessPolicy() 
 ResourceManager::State ResourceManager::state() const
 {
   return p_func()->state();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManager::onFrameEnd()
+{
+  if (STATE_READY == p_func()->state())
+  {
+    processCommands();
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

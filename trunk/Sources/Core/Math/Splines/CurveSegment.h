@@ -17,7 +17,7 @@ class CurveSegment
     CurveSegment();
    ~CurveSegment();
 
-  signals:
+  public signals:
 
     /*! Signal emitted when one of the segments points is changed. 
      *  @param segment Segment for which point has changed.

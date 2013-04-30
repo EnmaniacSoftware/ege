@@ -130,6 +130,12 @@ EGEResult Application::construct(const Dictionary& params)
     return EGE_ERROR_NO_MEMORY;
   }
 
+  if (EGE_SUCCESS != (result = m_eventManager->construct()))
+  {
+    // error!
+    return result;
+  }
+
   // create image loader
   m_imageLoader = ege_new ImageLoader(this);
   if (NULL == m_imageLoader)
@@ -284,6 +290,9 @@ void Application::update()
     timeInterval = 0.25f;
   }
   
+  // always update event manager first so all event are delivered
+  eventManager()->update(m_updateInterval);
+
   // check if quitting
   if (STATE_QUITTING == m_state)
   {

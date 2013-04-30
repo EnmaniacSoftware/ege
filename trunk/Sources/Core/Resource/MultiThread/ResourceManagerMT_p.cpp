@@ -99,7 +99,7 @@ void ResourceManagerPrivate::update(const Time& time)
 
           case RT_PROGRESS:
 
-            egeCritical() << "Processed" << request.count << "out of" << request.total;
+            //egeCritical() << "Processed" << request.count << "out of" << request.total;
 
            // emit d_func()->processingStatusUpdated(request.count, request.total);
             break;
@@ -487,7 +487,7 @@ void ResourceManagerPrivate::onResourceLoaded(const PResource& resource)
   // signal
   emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
 
-  egeDebug() << "Progress" << d_func()->m_processedResourcesCount << "/" << d_func()->m_totalResourcesToProcess;
+//  egeDebug() << "Progress" << d_func()->m_processedResourcesCount << "/" << d_func()->m_totalResourcesToProcess;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerPrivate::onResourceUnloaded(const PResource& resource)
@@ -500,7 +500,7 @@ void ResourceManagerPrivate::onResourceUnloaded(const PResource& resource)
   // signal
   emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
 
-  egeDebug() << "Progress" << d_func()->m_processedResourcesCount << "/" << d_func()->m_totalResourcesToProcess;
+//  egeDebug() << "Progress" << d_func()->m_processedResourcesCount << "/" << d_func()->m_totalResourcesToProcess;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

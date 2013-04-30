@@ -29,8 +29,12 @@ class ResourceCurve : public IResource
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  public:
+
     /*! Creates instance of resource. This method is a registration method for manager. */
     static PResource Create(Application* app, ResourceGroup* group);
+
+  public:
 
     /*! @see IResource::name. */
     const String& name() const override;

@@ -44,7 +44,7 @@ class PhysicsComponent : public IComponent
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  signals:
+  public signals:
 
     /*! Signal emitted when any of transformation values have been changed (position, scale or orientation). */
     Signal0<> transformationChanged;

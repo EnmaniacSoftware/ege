@@ -3,6 +3,7 @@
 
 #include "EGE.h"
 #include "EGETime.h"
+#include "EGESignal.h"
 #include "EGEDictionary.h"
 #include "Core/Event/EventListener.h"
 
@@ -28,6 +29,13 @@ class Application : public IEventListener
 
     Application();
     virtual ~Application();
+
+  public signals:
+
+    /*! Signal sent at the begining of a frame. */
+    Signal0<> frameBegin;
+    /*! Signal sent at the end of a frame. */
+    Signal0<> frameEnd;
 
   public:
 

@@ -4,8 +4,8 @@
 #include "Core/Audio/OpenAL/AudioManagerOpenAL_p.h"
 #include "Core/Audio/OpenAL/SoundOpenAL_p.h"
 #include "Core/Audio/OpenAL/AudioThreadOpenAL.h"
-#include <EGEAudio.h>
-#include <EGEDebug.h>
+#include "EGEAudio.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE
 
@@ -169,6 +169,18 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool AudioManagerPrivate::isPlaying(const String& soundName) const
 {
+  MutexLocker locker(m_mutex);
+
+  // look for the sound in the active pool
+  for (AudioManager::SoundList::const_iterator it = d_func()->m_sounds.begin(); it != d_func()->m_sounds.end(); ++it)
+  {
+    const PSound& sound = *it;
+    if (sound->name() == soundName)
+    {
+      return true;
+    }
+  }
+
   // look for the sounds-to-be-played pool
   for (AudioManager::SoundList::const_iterator it = m_soundsToPlay.begin(); it != m_soundsToPlay.end(); ++it)
   {
@@ -211,14 +223,87 @@ EGEResult AudioManagerPrivate::stop(const PSound& sound)
   return sound->p_func()->stop();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void AudioManagerPrivate::stop(const String& soundName)
+{
+  MutexLocker locker(m_mutex);
+
+  // look for the sound in the active pool
+  for (AudioManager::SoundList::const_iterator it = d_func()->m_sounds.begin(); it != d_func()->m_sounds.end(); ++it)
+  {
+    const PSound& sound = *it;
+    if (sound->name() == soundName)
+    {
+      // stop
+      stop(sound);
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+List<PSound> AudioManagerPrivate::sounds(const String& soundName) const
+{
+  List<PSound> list;
+
+  // go thru all active sounds
+  for (AudioManager::SoundList::const_iterator it = d_func()->m_sounds.begin(); it != d_func()->m_sounds.end(); ++it)
+  {
+    const PSound& sound = *it;
+    if (sound->name() == soundName)
+    {
+      // append
+      list << sound;
+    }
+  }
+
+  return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool AudioManagerPrivate::isPlaying(const PSound& sound) const
 {
   return m_soundsToPlay.contains(sound) || sound->p_func()->isPlaying();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult AudioManagerPrivate::pause(const String& soundName)
+{
+  MutexLocker locker(m_mutex);
+
+  // look for the sound in the active pool
+  for (AudioManager::SoundList::const_iterator it = d_func()->m_sounds.begin(); it != d_func()->m_sounds.end(); ++it)
+  {
+    const PSound& sound = *it;
+    if (sound->name() == soundName)
+    {
+      // pause
+      if (EGE_SUCCESS != pause(sound))
+      {
+        // error!
+        return EGE_ERROR;
+      }
+    }
+  }
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult AudioManagerPrivate::pause(const PSound& sound)
 {
   return sound->p_func()->pause();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool AudioManagerPrivate::isPaused(const String& soundName) const
+{
+  MutexLocker locker(m_mutex);
+
+  // look for the sound in the active pool
+  for (AudioManager::SoundList::const_iterator it = d_func()->m_sounds.begin(); it != d_func()->m_sounds.end(); ++it)
+  {
+    const PSound& sound = *it;
+    if (sound->name() == soundName)
+    {
+      return isPaused(sound);
+    }
+  }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool AudioManagerPrivate::isPaused(const PSound& sound) const
@@ -266,6 +351,24 @@ void AudioManagerPrivate::onThreadFinished(const PThread& thread)
   EGE_UNUSED(thread);
 
   d_func()->m_state = AudioManager::STATE_CLOSED;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void AudioManagerPrivate::setEnable(bool set)
+{
+  // check if disabling
+  if ( ! set)
+  {
+    // stop all active sounds
+    // NOTE: make a copy of all sounds first as there is no guarantee on when sounds will be removed from pool
+    m_mutex->lock();
+    AudioManager::SoundList soundsToStop(d_func()->m_sounds);
+    m_mutex->unlock();
+    for (AudioManager::SoundList::iterator it = soundsToStop.begin(); it != soundsToStop.end(); ++it)
+    {
+      // stop
+      stop(*it);
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

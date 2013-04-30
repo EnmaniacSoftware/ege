@@ -7,6 +7,7 @@
 #include "EGE.h"
 #include "EGETime.h"
 #include "EGEList.h"
+#include "Core/Audio/Sound.h"
 #include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN
@@ -41,7 +42,7 @@ class AudioManager : public Object, public IEventListener
     /*! Creates object. */
     EGEResult construct();
     /*! Returns current state. */
-    State state() const { return m_state; }
+    State state() const;
     /*! Updates manager. */
     void update(const Time& time);
     /*! Plays sound with given name. 

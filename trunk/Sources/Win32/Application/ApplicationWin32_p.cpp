@@ -43,14 +43,17 @@ EGEResult ApplicationPrivate::run()
     // store this loop start time
     startTime.fromMicroseconds(Timer::GetMicroseconds());
 
+    // send begin of frame signal
+    emit d_func()->frameBegin();
+
     // update
     d_func()->update();
 
     // render
     d_func()->render();
 
-    // send end of frame event
-    d_func()->eventManager()->send(EGE_EVENT_ID_CORE_FRAME_END);
+    // send end of frame signal
+    emit d_func()->frameEnd();
 
     // stat this loop end time
     endTime.fromMicroseconds(Timer::GetMicroseconds());

@@ -1174,7 +1174,7 @@ PTexture2D RenderSystemPrivate::createTexture2D(const String& name, const PImage
   bindTexture(GL_TEXTURE_2D, 0);
 
   s64 endTime = Timer::GetMicroseconds();
-  egeWarning() << "Texture" << name << "uploaded:" << endTime - startTime << "microseconds";
+  egeDebug() << "Texture" << name << "uploaded:" << endTime - startTime << "microseconds";
 
   return texture;
 }

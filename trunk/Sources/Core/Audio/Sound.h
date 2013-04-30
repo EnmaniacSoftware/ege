@@ -30,7 +30,7 @@ class Sound : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  signals:
+  public signals:
 
     /*! Signal emitted when sound playback has come to an end. */
     Signal1<PSound> finished;

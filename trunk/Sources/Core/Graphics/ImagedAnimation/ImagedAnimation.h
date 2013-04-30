@@ -38,7 +38,7 @@ class ImagedAnimation : public Object, public IAnimation
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  signals:
+  public signals:
     
     /*! Signal emitted on frame change.
      *  @param sprite     ImagedAnimation object for which frame changed.

@@ -30,7 +30,7 @@ class TimeLine : public Object
       STATE_RUNNING
     };
 
-  signals:
+  public signals:
 
     /*! Signal emitted when frame changes. 
      *  @param s32 Frame to which change occured. 

@@ -26,7 +26,7 @@ class ImageLoader : public Object, public IEventListener
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  signals:
+  public signals:
 
     /*! Signal is emitted when image has been loaded. 
      *  @param image    Instance of the loaded image.

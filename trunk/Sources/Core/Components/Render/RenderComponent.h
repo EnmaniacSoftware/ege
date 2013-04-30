@@ -28,7 +28,7 @@ class RenderComponent : public IComponent
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  signals:
+  public signals:
 
     /*! Signal emitted when render priority changes.
      *  @param  Sender Sender object.

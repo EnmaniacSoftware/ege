@@ -30,7 +30,7 @@ class PushButton : public Widget
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  signals:
+  public signals:
 
     /*! Signal emitted when pointer is released over the button. */
     Signal1<const PPushButton&> clicked;

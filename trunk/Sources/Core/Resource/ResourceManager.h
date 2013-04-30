@@ -38,7 +38,7 @@ class ResourceManager : public Object, public IEventListener
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  signals:
+  public signals:
 
     /*! Signal emitted when group has been loaded. 
      *  @param name Name of a group which has been loaded.
@@ -117,6 +117,11 @@ class ResourceManager : public Object, public IEventListener
     PResource createResource(const String& typeName, ResourceGroup* group);
     /*! Returns resource processing policy. */
     ResourceProcessPolicy resourceProcessPolicy() const;
+
+  protected slots:
+
+    /*! Slot called at end of the frame. */
+    void onFrameEnd();
 
   private:
     

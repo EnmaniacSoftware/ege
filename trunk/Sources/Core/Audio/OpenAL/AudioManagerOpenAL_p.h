@@ -3,10 +3,10 @@
 
 #ifdef EGE_AUDIO_OPENAL
 
-#include <EGE.h>
-#include <EGETime.h>
-#include <EGEThread.h>
-#include <EGEMutex.h>
+#include "EGE.h"
+#include "EGETime.h"
+#include "EGEThread.h"
+#include "EGEMutex.h"
 #include "Core/Audio/AudioManager.h"
 #include <al.h>
 #include <alc.h>
@@ -50,15 +50,33 @@ class AudioManagerPrivate
     bool isPlaying(const String& soundName) const;
     /*! Stops playback of the given sound. */
     EGEResult stop(const PSound& sound);
+    /*! Stops playback of all sounds with a given name. */
+    void stop(const String& soundName);
+    /*! Pauses sound with given name. 
+     *  @param soundName   Name of the sound to pause.
+     *  @return  Returns EGE_SUCCESS if sound is sucessfully paused, EGE_ERROR_NOT_FOUND if sound could not be found or EGE_ERROR if sound could not be paused.
+     */
+    EGEResult pause(const String& soundName);
     /*! Pauses given sound.
      *  @param sound Sound to pause.
      *  @return  Returns EGE_SUCCESS if sound is sucessfully paused or EGE_ERROR if sound could not be paused.
      */
     EGEResult pause(const PSound& sound);
+    /*! Returns TRUE if sound of a given name is paused. */
+    bool isPaused(const String& soundName) const;
     /*! Returns TRUE if given sound is paused. */
     bool isPaused(const PSound& sound) const;
     /*! Returns TRUE if given sound is stopped. */
     bool isStopped(const PSound& sound) const;
+
+    /*! Returns list of sounds being played with the given name. */
+    List<PSound> sounds(const String& soundName) const;
+
+    /*! Enables/disables manager. 
+     *  @note Disabling manager stops all currently played sounds and prevents any sound from being played. Enabling manager will allow sound to be played.
+     *        However, it will not resume playback of any sounds stopped during last disabling request.
+     */
+    void setEnable(bool set);
 
     /*! Shuts manager down. */
     void shutDown();

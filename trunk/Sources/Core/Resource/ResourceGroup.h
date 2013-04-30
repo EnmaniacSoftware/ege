@@ -30,7 +30,7 @@ class ResourceGroup : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  signals:
+  public signals:
 
     /*! Signal emitted when resource has been loaded. 
      *  @param resource Resource which has been loaded.

@@ -17,6 +17,9 @@ ScreenManager::ScreenManager(Application* app) : Object(app)
 ScreenManager::~ScreenManager()
 {
   ege_disconnect(app()->pointer(), eventSignal, this, ScreenManager::pointerEvent);
+
+  // remove all
+  removeAll();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ScreenManager::construct()
@@ -140,6 +143,15 @@ void ScreenManager::hide()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ScreenManager::hideAll()
+{
+  // hide all
+  while ( ! m_screens.empty())
+  {
+    hide();
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ScreenManager::render(Viewport* viewport, IRenderer* renderer)
 {
   // go thru all screens from top to bottom
@@ -194,6 +206,15 @@ void ScreenManager::remove(PScreen screen)
   {
     // remove
     m_screens.remove(screen);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ScreenManager::removeAll()
+{
+  // remove all
+  while ( ! m_screens.empty())
+  {
+    remove(top());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -265,6 +286,11 @@ bool ScreenManager::isVisible(const PScreen& screen) const
 
   // not found, not visible
   return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 ScreenManager::screenCount() const
+{
+  return static_cast<u32>(m_screens.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

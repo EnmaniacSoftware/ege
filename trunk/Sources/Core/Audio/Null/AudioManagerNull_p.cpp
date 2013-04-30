@@ -2,7 +2,7 @@
 
 #include "Core/Application/Application.h"
 #include "Core/Audio/Null/AudioManagerNull_p.h"
-#include "Core/Audio/AudioManager.h"
+#include "Core/Audio/Null/SoundNull_p.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE
@@ -35,6 +35,11 @@ EGEResult AudioManagerPrivate::play(const PSound& sound)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void AudioManagerPrivate::stop(const String& soundName)
+{
+  EGE_UNUSED(soundName)
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult AudioManagerPrivate::stop(const PSound& sound)
 {
   EGE_UNUSED(sound)
@@ -52,11 +57,25 @@ bool AudioManagerPrivate::isPlaying(const String& soundName) const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult AudioManagerPrivate::pause(const String& soundName)
+{
+  EGE_UNUSED(soundName)
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult AudioManagerPrivate::pause(const PSound& sound)
 {
   EGE_UNUSED(sound)
 
   return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool AudioManagerPrivate::isPaused(const String& soundName) const
+{
+  EGE_UNUSED(soundName)
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool AudioManagerPrivate::isPaused(const PSound& sound) const
@@ -76,6 +95,19 @@ bool AudioManagerPrivate::isStopped(const PSound& sound) const
 void AudioManagerPrivate::shutDown() 
 {
   d_func()->m_state = AudioManager::STATE_CLOSED;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+List<PSound> AudioManagerPrivate::sounds(const String& soundName) const
+{
+  EGE_UNUSED(soundName);
+
+  List<PSound> list;
+  return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void AudioManagerPrivate::setEnable(bool set)
+{
+  EGE_UNUSED(set)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

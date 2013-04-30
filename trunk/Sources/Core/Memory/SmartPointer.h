@@ -12,7 +12,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Object;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 class SmartPointer
 {
   public:
@@ -21,7 +21,7 @@ class SmartPointer
     /*! Constructor for wrapping stack allocated objects into their P-class representation. This conversion does not allow wrapped object to be deallocated. */
     SmartPointer(T& object);
     SmartPointer(const SmartPointer<T>& other);
-    template <typename U>
+    template <class U>
     SmartPointer(const SmartPointer<U>& other);
 
    ~SmartPointer();
@@ -29,7 +29,7 @@ class SmartPointer
     T& operator=(T* object);
     T& operator=(const SmartPointer<T>& other);
 
-    template <typename U>
+    template <class U>
     T& operator=(const SmartPointer<U>& other);
 
     T* operator->() const;
@@ -72,38 +72,38 @@ class SmartPointer
     bool m_deallocable;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 SmartPointer<T>::SmartPointer(T* object) : m_object(object), m_deallocable(true)
 {
   incrementReference(object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 SmartPointer<T>::SmartPointer(T& object) : m_object(&object), m_deallocable(false)
 {
   // NOTE: do not increment ref counter
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 SmartPointer<T>::SmartPointer(const SmartPointer<T>& other) : m_object(other.object()), m_deallocable(other.m_deallocable)
 {
   incrementReference(m_object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-template <typename U>
+template <class T>
+template <class U>
 SmartPointer<T>::SmartPointer(const SmartPointer<U>& other) : m_object(reinterpret_cast<T*>(other.object())), m_deallocable(other.isDeallocable())
 {
   incrementReference(m_object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 SmartPointer<T>::~SmartPointer()
 {
   decrementReference(reinterpret_cast<Object*>(m_object));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 inline T& SmartPointer<T>::operator = (T* object)
 {
   // NOTE: use it for heap allocated objects only
@@ -114,7 +114,7 @@ inline T& SmartPointer<T>::operator = (T* object)
   return *m_object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 inline T& SmartPointer<T>::operator = (const SmartPointer<T>& other)
 {
   decrementReference(m_object);
@@ -124,8 +124,8 @@ inline T& SmartPointer<T>::operator = (const SmartPointer<T>& other)
   return *m_object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-template <typename U>
+template <class T>
+template <class U>
 inline T& SmartPointer<T>::operator = (const SmartPointer<U>& other)
 {
   decrementReference(m_object);
@@ -135,19 +135,19 @@ inline T& SmartPointer<T>::operator = (const SmartPointer<U>& other)
   return *m_object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 inline T* SmartPointer<T>::operator -> () const
 {
   return m_object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 inline T* SmartPointer<T>::object() const
 {
   return m_object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 inline T& SmartPointer<T>::objectRef() const
 {
   return *m_object;

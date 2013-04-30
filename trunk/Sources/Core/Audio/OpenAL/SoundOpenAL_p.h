@@ -3,8 +3,8 @@
 
 #ifdef EGE_AUDIO_OPENAL
 
-#include <EGE.h>
-#include <EGEDataBuffer.h>
+#include "EGE.h"
+#include "EGEDataBuffer.h"
 #include <al.h>
 #include <alc.h>
 

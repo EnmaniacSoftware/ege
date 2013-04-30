@@ -20,7 +20,7 @@ class Pointer : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  signals:
+  public signals:
 
     /*! Signal emited on any pointer event. 
      *  @param pointerData Data describing pointer event.
