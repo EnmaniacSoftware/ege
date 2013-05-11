@@ -7,25 +7,25 @@
 //
 
 #import "ViewController.h"
-#import "iOS/Graphics/OpenGL/ViewOGL.h"
 
 @implementation ViewController
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-- (void) loadView
-{
-  // get screen size
-  CGRect screenBounds = [[UIScreen mainScreen] bounds];
-  
-  OGLView* viewOGL = [[OGLView alloc] initWithFrame: screenBounds];
-
-  self.view = viewOGL;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-- (BOOL) shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation) interfaceOrientation
-{
-  return (UIInterfaceOrientationLandscapeLeft == interfaceOrientation) || (UIInterfaceOrientationLandscapeRight == interfaceOrientation);
-}
+//- (BOOL) shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation) interfaceOrientation
+//{
+//  return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+//}
+////--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//- (NSUInteger) supportedInterfaceOrientations
+//{
+//  return UIInterfaceOrientationMaskLandscape;
+//}
+////--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//- (BOOL) shouldAutorotate
+//{
+//  return YES;
+//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @end
+	

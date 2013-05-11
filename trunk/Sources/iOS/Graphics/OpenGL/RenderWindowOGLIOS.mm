@@ -17,10 +17,10 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderWindowOGLIOS::RenderWindowOGLIOS(Application* app, const Dictionary& params) : RenderWindow(app, params),
-                                                                                     m_view(NULL),
-                                                                                     m_viewController(NULL),
-                                                                                     m_window(NULL),
-                                                                                     m_EAGLContext(NULL),
+                                                                                     m_view(nil),
+                                                                                     m_viewController(nil),
+                                                                                     m_window(nil),
+                                                                                     m_EAGLContext(nil),
                                                                                      m_colorBuffer(0),
                                                                                      m_depthBuffer(0),
                                                                                      m_frameBuffer(0)
@@ -56,21 +56,29 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
   // create full screen view
   NSString* pixelFormat = (16 >= colorBits) ? kEAGLColorFormatRGB565 : kEAGLColorFormatRGBA8;
   m_view = [[OGLView alloc] initWithFrame: screenBounds andPixelFormat: pixelFormat];
-  if (NULL == m_view)
+  if (nil == m_view)
   {
     // error!r
     return EGE_ERROR_NO_MEMORY;
   }
 
   // create controller view
-  //m_viewController = [[ViewController alloc] init];
+  m_viewController = [[ViewController alloc] initWithNibName: nil bundle: nil];
+  if (nil == m_view)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
   
-  // assign view
- // m_viewController.view = m_view;
+  // make sure to grab entire screen
+  m_viewController.wantsFullScreenLayout = YES;
   
+	// set view controller's view
+	[m_viewController setView: m_view];
+	 
   // create window
   m_window = [[UIWindow alloc] initWithFrame: screenBounds];
-  if (NULL == m_window)
+  if (nil == m_window)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
@@ -78,16 +86,12 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
   
   // attach view to window
   m_window.backgroundColor = [UIColor whiteColor];
-  [m_window addSubview: m_view];
-  
- // m_window.rootViewController = m_viewController;
-  
-  //[m_viewController loadView];
+  m_window.rootViewController = m_viewController;
   
   // create rendering context
   EAGLRenderingAPI api = kEAGLRenderingAPIOpenGLES1;
   m_EAGLContext = [[EAGLContext alloc] initWithAPI: api];
-  if (NULL == m_EAGLContext)
+  if (nil == m_EAGLContext)
   {
     // error!
     return EGE_ERROR;

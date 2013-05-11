@@ -108,7 +108,8 @@ EGE_NAMESPACE
 {
   // hide status bar
   application.statusBarHidden = YES;
-
+  //application.statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
+  
   // register for orientation changes
   [self registerForOrientationChanges: application];
   
@@ -149,6 +150,9 @@ EGE_NAMESPACE
     // error!
     return NO;
   }
+  
+	// disable screen dimming
+	[UIApplication sharedApplication].idleTimerDisabled = YES;
   
   // setup ticking
   CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget: self selector:@selector(tick:)];
@@ -218,7 +222,7 @@ EGE_NAMESPACE
     // send pointer event
     [self notifyPointerEvent: ACTION_BUTTON_DOWN withButton: BUTTON_LEFT atPoint: point];
     
-    egeDebug() << "Touch began at" << point.x << point.y;
+    egeDebug() << "Touch began at" << point.x << point.y << (float32) touch.timestamp;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -234,7 +238,7 @@ EGE_NAMESPACE
     // send pointer event
     [self notifyPointerEvent: ACTION_BUTTON_UP withButton: BUTTON_LEFT atPoint: point];
     
-    egeDebug() << "Touch ended at" << point.x << point.y;
+    egeDebug() << "Touch ended at" << point.x << point.y << (float32) touch.timestamp;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -256,7 +260,7 @@ EGE_NAMESPACE
     // send pointer event
     [self notifyPointerEvent: ACTION_MOVE withButton: BUTTON_LEFT atPoint: point];
      
-    egeDebug() << "Touch moved at" << point.x << point.y;
+    egeDebug() << "Touch moved at" << point.x << point.y << (float32) touch.timestamp;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -271,8 +275,8 @@ EGE_NAMESPACE
     KeyboardModifiers keyboardModifiers = KM_NONE;
     
     // send pointer event
-    eventManager->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA,
-                       ege_new PointerData(action, button, keyboardModifiers, (s32) point.x, (s32) point.y, 0));
+    PObject data = ege_new PointerData(action, button, keyboardModifiers, (s32) point.x, (s32) point.y, 0);
+    eventManager->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, data);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

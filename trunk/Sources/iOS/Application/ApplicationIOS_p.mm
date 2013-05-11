@@ -26,14 +26,17 @@ EGEResult ApplicationPrivate::run()
   // check if running
   if (Application::STATE_QUIT != d_func()->state())
   {
+    // emit frame begin
+    emit d_func()->frameBegin();
+    
     // update
     d_func()->update();
    
     // render
     d_func()->render();
 
-    // send end of frame event
-    d_func()->eventManager()->send(EGE_EVENT_ID_CORE_FRAME_END);
+    // emit frame end
+    emit d_func()->frameEnd();
   }
 
   return EGE_SUCCESS;
