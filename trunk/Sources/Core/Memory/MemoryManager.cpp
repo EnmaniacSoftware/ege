@@ -11,7 +11,7 @@ EGE_NAMESPACE_BEGIN
 #define ORDERING 1
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static MemoryManager* l_instance = NULL;
-static PMutex l_mutex = NULL;
+static PMutex l_mutex;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MemoryManager::MemoryManager() :  m_allocs(NULL), 
                                   m_allocCount(0), 
@@ -46,7 +46,7 @@ bool MemoryManager::Initialize()
 void MemoryManager::Deinitialize()
 {
   EGE_DELETE(l_instance);
-  EGE_DELETE(l_mutex);
+  l_mutex = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void* MemoryManager::Malloc(size_t size, const char* fileName, int line)

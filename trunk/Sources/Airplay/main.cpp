@@ -30,10 +30,10 @@ int main(int argc, char** argv)
 
     // clean up
     Application::DestroyInstance(application);
-
-    // deinitialize memory manager
-    MemoryManager::Deinitialize();
   }
+
+  // deinitialize memory manager
+  MemoryManager::Deinitialize();
 
   return (EGE_SUCCESS == result) ? 0 : 1;
 }
