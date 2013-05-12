@@ -30,7 +30,8 @@ MutexPrivate::MutexPrivate(Mutex* base, EGEMutex::EType type)
   pthread_mutexattr_settype(&attributes, attrValue);
 
   // initialize mutex
-  pthread_mutex_init(&m_mutex, &attributes);
+  int result = pthread_mutex_init(&m_mutex, &attributes);
+  EGE_ASSERT(0 == result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MutexPrivate::~MutexPrivate()

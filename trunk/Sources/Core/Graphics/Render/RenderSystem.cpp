@@ -105,6 +105,12 @@ void RenderSystem::update()
 
         // signal
         emit requestComplete(request.id, texture);
+
+        if (texture.object()->referenceCount() == 1)
+        {
+          // some one didnt consumed ???
+          int a = 1;
+        }
       }
       else if (REQUEST_DESTROY_TEXTURE_2D == request.type)
       {

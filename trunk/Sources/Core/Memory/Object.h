@@ -54,20 +54,17 @@ inline void Object::addReference()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline void Object::release() 
 { 
-  if (0 < m_references) 
+  if (0 == (--m_references)) 
   { 
-    if (--m_references == 0) 
-    { 
-      if (m_deleteFunc) 
-      {
-        m_deleteFunc(this); 
-      }
-      else 
-      {
-        delete this; 
-      } 
+    if (NULL != m_deleteFunc) 
+    {
+      m_deleteFunc(this); 
+    }
+    else 
+    {
+      delete this; 
     } 
-  }
+  } 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline Application* Object::app() const 
