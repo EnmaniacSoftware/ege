@@ -8,29 +8,33 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR strCmdLine, INT)
 {
-  // process command line
-  CommandLineParser commandLineParser(strCmdLine);
-
   EGEResult result = EGE_ERROR;
 
-  // create application instance
-  Application* application = Application::CreateInstance();
-  if (NULL != application)
+  // initialize memory manager
+  if (MemoryManager::Initialize())
   {
-    // construct application
-    result = application->construct(commandLineParser.dictionary());
-    if (EGE_SUCCESS == result)
+    // process command line
+    CommandLineParser commandLineParser(strCmdLine);
+
+    // create application instance
+    Application* application = Application::CreateInstance();
+    if (NULL != application)
     {
-      // run application
-      result = application->run();
+      // construct application
+      result = application->construct(commandLineParser.dictionary());
+      if (EGE_SUCCESS == result)
+      {
+        // run application
+        result = application->run();
+      }
     }
+
+    // clean up
+    Application::DestroyInstance(application);
+
+    // deinitialize memory manager
+    MemoryManager::Deinitialize();
   }
-
-  // clean up
-  Application::DestroyInstance(application);
-
-  // deinitialize memory manager
-  MemoryManager::Deinit();
 
   return (EGE_SUCCESS == result) ? 0 : 1;
 }

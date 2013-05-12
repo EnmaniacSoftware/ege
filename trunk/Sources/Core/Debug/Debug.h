@@ -44,9 +44,6 @@ class Debug
 
     /*! Performs assertion. */
     static void Assert(const char* assertion, const char* file, int line);
-
-  private:
-
     /*! Prints given c-string to output. */
     static void Print(const char* string);
 

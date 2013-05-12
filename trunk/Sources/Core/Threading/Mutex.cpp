@@ -11,10 +11,10 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Mutex)
 EGE_DEFINE_DELETE_OPERATORS(Mutex)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Mutex::Mutex(Application* app) : Object(app, EGE_OBJECT_UID_MUTEX),
-                                 m_locked(false)
+Mutex::Mutex(Application* app, EGEMutex::EType type) : Object(app, EGE_OBJECT_UID_MUTEX),
+                                                       m_locked(false)
 {
-  m_p = ege_new MutexPrivate(this);
+  m_p = ege_new MutexPrivate(this, type);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Mutex::~Mutex()

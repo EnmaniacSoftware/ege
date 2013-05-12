@@ -1,4 +1,5 @@
 #include "Core/Threading/PThread/Mutex_p.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -6,9 +7,30 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(MutexPrivate)
 EGE_DEFINE_DELETE_OPERATORS(MutexPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-MutexPrivate::MutexPrivate(Mutex* base)
+MutexPrivate::MutexPrivate(Mutex* base, EGEMutex::EType type)
 {
-  pthread_mutex_init(&m_mutex, NULL);
+  pthread_mutexattr_t attributes;
+
+  // initialize mutex attributes
+  pthread_mutexattr_init(&attributes);
+
+  // convert type
+  int attrValue = 0;
+  switch (type)
+  {
+    case EGEMutex::Normal:    attrValue = PTHREAD_MUTEX_NORMAL; break;
+    case EGEMutex::Recursive: attrValue = PTHREAD_MUTEX_RECURSIVE; break;
+
+    default:
+
+      EGE_ASSERT(false && "Unknown mutex type");
+      break;
+  }
+
+  pthread_mutexattr_settype(&attributes, attrValue);
+
+  // initialize mutex
+  pthread_mutex_init(&m_mutex, &attributes);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MutexPrivate::~MutexPrivate()

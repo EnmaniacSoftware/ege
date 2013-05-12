@@ -4,12 +4,11 @@
 /*! PThreads implementation of Mutex. */
 
 #include "EGE.h"
+#include "EGEMutex.h"
 #include <pthread.h>
 
 EGE_NAMESPACE_BEGIN
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Mutex;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class MutexPrivate
 {
@@ -18,7 +17,7 @@ class MutexPrivate
 
   public:
 
-    MutexPrivate(Mutex* base);
+    MutexPrivate(Mutex* base, EGEMutex::EType type);
    ~MutexPrivate();
 
     EGE_DECLARE_NEW_OPERATORS

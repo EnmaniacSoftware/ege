@@ -31,7 +31,7 @@ EGE_NAMESPACE
   Application::DestroyInstance(egeApplication);
   
   // deinitialize memory manager
-  MemoryManager::Deinit();
+  MemoryManager::Deinitialize();
   
   [super dealloc];
 }
@@ -106,60 +106,68 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (BOOL) application: (UIApplication*) application didFinishLaunchingWithOptions: (NSDictionary*) launchOptions
 {
-  // hide status bar
-  application.statusBarHidden = YES;
-  //application.statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
-  
-  // register for orientation changes
-  [self registerForOrientationChanges: application];
-  
-  // check current directory
-  NSLog(@"Current dir: %@", [[NSFileManager defaultManager] currentDirectoryPath]);
+  BOOL result = NO;
 
-  // force change to bundle current directory
-  [[NSFileManager defaultManager] changeCurrentDirectoryPath: [[NSBundle mainBundle] bundlePath]];
-
-  NSLog(@"Current dir (after change): %@", [[NSFileManager defaultManager] currentDirectoryPath]);
-  
-  // process command line 
-	NSArray* commandLineArguments = [[NSProcessInfo processInfo] arguments];
-
-  StringList argumentList;
-  for (NSString* argument in commandLineArguments)
+  // initialize memory manager
+  if (MemoryManager::Initialize())
   {
-    const char* arg = [argument cStringUsingEncoding: NSASCIIStringEncoding];
-    argumentList << arg;
-  }
-  
-  // parse command line
-  CommandLineParser commandLineParser(argumentList);
-  
-  EGEResult result = EGE_ERROR;
+    result = YES;
 
-  // create application instance
-  egeApplication = Application::CreateInstance();
-  if (NULL != egeApplication)
-  {
-    // construct application
-    result = egeApplication->construct(commandLineParser.dictionary());
+    // hide status bar
+    application.statusBarHidden = YES;
+    //application.statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
+  
+    // register for orientation changes
+    [self registerForOrientationChanges: application];
+  
+    // check current directory
+    NSLog(@"Current dir: %@", [[NSFileManager defaultManager] currentDirectoryPath]);
+
+    // force change to bundle current directory
+    [[NSFileManager defaultManager] changeCurrentDirectoryPath: [[NSBundle mainBundle] bundlePath]];
+
+    NSLog(@"Current dir (after change): %@", [[NSFileManager defaultManager] currentDirectoryPath]);
+  
+    // process command line 
+	  NSArray* commandLineArguments = [[NSProcessInfo processInfo] arguments];
+
+    StringList argumentList;
+    for (NSString* argument in commandLineArguments)
+    {
+      const char* arg = [argument cStringUsingEncoding: NSASCIIStringEncoding];
+      argumentList << arg;
+    }
+  
+    // parse command line
+    CommandLineParser commandLineParser(argumentList);
+  
+    EGEResult result = EGE_ERROR;
+
+    // create application instance
+    egeApplication = Application::CreateInstance();
+    if (NULL != egeApplication)
+    {
+      // construct application
+      result = egeApplication->construct(commandLineParser.dictionary());
+    }
+
+    // check for error
+    if (EGE_SUCCESS != result)
+    {
+      // error!
+      result = NO;
+    }
+  
+	  // disable screen dimming
+	  [UIApplication sharedApplication].idleTimerDisabled = YES;
+  
+    // setup ticking
+    CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget: self selector:@selector(tick:)];
+    [displayLink addToRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
+    [displayLink setFrameInterval: 1];
   }
 
-  // check for error
-  if (EGE_SUCCESS != result)
-  {
-    // error!
-    return NO;
-  }
-  
-	// disable screen dimming
-	[UIApplication sharedApplication].idleTimerDisabled = YES;
-  
-  // setup ticking
-  CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget: self selector:@selector(tick:)];
-  [displayLink addToRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
-  [displayLink setFrameInterval: 1];
-    
-  return YES;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) applicationWillResignActive: (UIApplication*) application
