@@ -217,7 +217,7 @@ bool FilePrivate::exists() const
   bool exists = false;
 
   // try to open file
-  FILE* file;
+  FILE* file = NULL;
   if (0 == fopen_s(&file, d_func()->filePath().c_str(), "r"))
   {
     // exists

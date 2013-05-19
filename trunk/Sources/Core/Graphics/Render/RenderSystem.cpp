@@ -139,9 +139,9 @@ void RenderSystem::update()
       else if (REQUEST_CREATE_PROGRAM == request.type)
       {
         List<PShader> shadersList;
-        for (ObjectList::const_iterator it = request.objects.begin(); it != request.objects.end(); ++it)
+        for (ObjectList::const_iterator itObject = request.objects.begin(); itObject != request.objects.end(); ++itObject)
         {
-          shadersList << *it;
+          shadersList << *itObject;
         }
 
         PProgram program = createProgram(request.name, shadersList);

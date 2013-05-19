@@ -124,7 +124,10 @@ Debug& Debug::operator << (const String& t)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (const void* t) 
 { 
-  *m_buffer << t;
+  // TAGE - proper implementation needed once ISerializable is fxed
+  EGE_ASSERT(4 == sizeof (t));
+  *m_buffer << reinterpret_cast<u32>(t);
+
   return maybeSpace();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
