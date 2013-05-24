@@ -27,7 +27,9 @@ class RenderTextureCopyOGL : public RenderTarget
     void unbind() override;
     /*! @see RenderTarget::requiresTextureFlipping. */
 		bool requiresTextureFlipping() const override;
-
+    /*! @see RenderTarget::isAutoRotated. */
+    bool isAutoRotated() const override;
+  
     /*! Returns associated texture id. */
     GLuint textureId() const { return m_textureId; }
     /*! Returns texture target. */

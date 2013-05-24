@@ -17,6 +17,11 @@
 
 @property (nonatomic, readonly) CAEAGLLayer* mEAGLLayer;
 
+/*! Initializes object. 
+ *  @param  frame   Frame rectangle the view should cover.
+ *  @param  format  String constant describing pixel format.
+ *  @return Created object.
+ */
 - (id) initWithFrame: (CGRect) frame andPixelFormat: (NSString*) format;
 
 @end

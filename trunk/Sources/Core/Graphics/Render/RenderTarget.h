@@ -45,7 +45,9 @@ class RenderTarget : public Object
     virtual void unbind() = 0;
     /*! Returns TRUE if texture flipping is required for this render target. */
 		virtual bool requiresTextureFlipping() const = 0;
-
+    /*! Returns TRUE if target is auto-rotated and does not need manual position recalculations. */
+    virtual bool isAutoRotated() const = 0;
+  
     /*! Returns target name. */
     const String& name() const { return m_name; } 
     /*! Adds new viewport for target associated with given camera. */

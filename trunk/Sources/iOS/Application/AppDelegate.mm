@@ -58,7 +58,7 @@ EGE_NAMESPACE
   return newPoint;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-- (void) registerForOrientationChanges: (UIApplication*) application
+- (void) registerForDeviceOrientationChanges: (UIApplication*) application
 {
   UIDevice* device = [UIDevice currentDevice];
   
@@ -67,16 +67,16 @@ EGE_NAMESPACE
 
   // register for notifications
   NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
-	[notificationCenter addObserver: self selector: @selector(onOrientationChanged:) name: UIDeviceOrientationDidChangeNotification object: device];
+	[notificationCenter addObserver: self selector: @selector(onDeviceOrientationChanged:) name: UIDeviceOrientationDidChangeNotification object: device];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-- (void) onOrientationChanged: (NSNotification*) notification
+- (void) onDeviceOrientationChanged: (NSNotification*) notification
 {
   // get orientation value
   int nativeOrientation = [[notification object] orientation];
   
-  NSLog(@"Orientation  has changed: %d", nativeOrientation);
-  
+  egeDebug() << "Device orientation has changed:" << nativeOrientation;
+
   assert(egeApplication);
   
   // send event
@@ -117,8 +117,8 @@ EGE_NAMESPACE
     application.statusBarHidden = YES;
     //application.statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
   
-    // register for orientation changes
-    [self registerForOrientationChanges: application];
+    // register for device orientation changes
+    //[self registerForDeviceOrientationChanges: application];
   
     // check current directory
     NSLog(@"Current dir: %@", [[NSFileManager defaultManager] currentDirectoryPath]);
@@ -141,18 +141,18 @@ EGE_NAMESPACE
     // parse command line
     CommandLineParser commandLineParser(argumentList);
   
-    EGEResult result = EGE_ERROR;
+    EGEResult value = EGE_ERROR;
 
     // create application instance
     egeApplication = Application::CreateInstance();
     if (NULL != egeApplication)
     {
       // construct application
-      result = egeApplication->construct(commandLineParser.dictionary());
+      value = egeApplication->construct(commandLineParser.dictionary());
     }
 
     // check for error
-    if (EGE_SUCCESS != result)
+    if (EGE_SUCCESS != value)
     {
       // error!
       result = NO;

@@ -63,7 +63,7 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
   }
 
   // create controller view
-  m_viewController = [[ViewController alloc] initWithNibName: nil bundle: nil];
+  m_viewController = [[ViewController alloc] initWithApplication: app()];
   if (nil == m_view)
   {
     // error!
@@ -123,26 +123,6 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
   // get current orientation screen dimensions
   m_width  = m_physicalWidth;
   m_height = m_physicalHeight;
-  
-  // generate window depth buffer if requested
-  if (0 != depthBits)
-  {
-    glGenRenderbuffers(1, &m_depthBuffer);
-    OGL_CHECK();
-		glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuffer);
-    OGL_CHECK();
-
-    // convert to native depth format
-    GLenum depthFormat = (0 != depthBits) ? GL_DEPTH_COMPONENT16 : 0;
-    
-    //		if( multiSampling_ )
-//			glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER_OES, samplesToUse_, depthFormat_,backingWidth_, backingHeight_);
-//		else
-    glRenderbufferStorage(GL_RENDERBUFFER, depthFormat, m_physicalWidth, m_physicalHeight);
-    OGL_CHECK();
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
-		OGL_CHECK();
-  }
     
   // generate main frame buffer
   glGenFramebuffers(1, &m_frameBuffer);
@@ -151,6 +131,23 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
   OGL_CHECK();
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, m_colorBuffer);
   OGL_CHECK();
+  
+  // generate window depth buffer if requested
+  if (0 != depthBits)
+  {
+    glGenRenderbuffers(1, &m_depthBuffer);
+    OGL_CHECK();
+		glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuffer);
+    OGL_CHECK();
+    
+    //		if( multiSampling_ )
+    //			glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER_OES, samplesToUse_, depthFormat_,backingWidth_, backingHeight_);
+    //		else
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, m_physicalWidth, m_physicalHeight);
+    OGL_CHECK();
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
+		OGL_CHECK();
+  }
   
   // make it visible
   [m_window makeKeyAndVisible];
@@ -192,6 +189,11 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
     // error!
     return EGE_ERROR;
   }
+  
+  // set initial orientation
+  UIInterfaceOrientation nativeOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+  int orientation = [m_viewController convertUIOrientation: nativeOrientation];
+  setOrientation(static_cast<EGEDevice::Orientation>(orientation));
   
   return EGE_SUCCESS;
 }
@@ -262,32 +264,10 @@ bool RenderWindowOGLIOS::requiresTextureFlipping() const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//int32 RenderWindowOGLIOS::OrientationChangeCB(void* systemData, void* userData)
-//{
-//  s3eSurfaceOrientation* so  = reinterpret_cast<s3eSurfaceOrientation*>(systemData);
-//  RenderWindowOGLAirplay* me = reinterpret_cast<RenderWindowOGLAirplay*>(userData);
-//
-//  // process accroding to blit direction
-//  switch (so->m_DeviceBlitDirection)
-//  {
-//    case S3E_SURFACE_BLIT_DIR_NORMAL: me->m_orientationRotation.fromDegrees(0.0f); break;
-//    case S3E_SURFACE_BLIT_DIR_ROT90:  me->m_orientationRotation.fromDegrees(90.0f); break;
-//    case S3E_SURFACE_BLIT_DIR_ROT180: me->m_orientationRotation.fromDegrees(180.0f); break;
-//    case S3E_SURFACE_BLIT_DIR_ROT270: me->m_orientationRotation.fromDegrees(270.0f); break;
-//
-//    default:
-//
-//      egeWarning() << "Unknown blit direction!";
-//      break;
-//  }
-//
-//  int32 bd = s3eSurfaceGetInt(S3E_SURFACE_BLIT_DIRECTION);
-//  int32 dbd = s3eSurfaceGetInt(S3E_SURFACE_DEVICE_BLIT_DIRECTION);
-//
-////  EGE_PRINT("ORIENTATION %d %f   bd: %d dbd: %d w: %d h: %d", so->m_DeviceBlitDirection, me->m_orientationRotation.degrees(), bd, dbd, s3eSurfaceGetInt(S3E_SURFACE_WIDTH), s3eSurfaceGetInt(S3E_SURFACE_HEIGHT));
-//
-//  return 0;
-//}
+bool RenderWindowOGLIOS::isAutoRotated() const override
+{
+  return true;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 OGLView* RenderWindowOGLIOS::view() const
 {
@@ -427,54 +407,107 @@ void RenderWindowOGLIOS::onEventRecieved(PEvent event)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderWindowOGLIOS::setOrientation(EGEDevice::Orientation orientation)
 {
-  // process accroding to blit direction
-  switch (orientation)
+  // resize render buffers
+  resizeRenderBuffers();
+  
+  // check if NOT auto-rotated
+  if ( ! isAutoRotated())
   {
-    case EGEDevice::EOrientationPortrait:
+    // process accroding to blit direction
+    switch (orientation)
+    {
+      case EGEDevice::EOrientationPortrait:
     
-      m_orientationRotation.fromDegrees(0.0f);
-      m_width   = m_physicalWidth;
-      m_height  = m_physicalHeight;
-      break;
+        m_orientationRotation.fromDegrees(0.0f);
+        m_width   = m_physicalWidth;
+        m_height  = m_physicalHeight;
+        break;
     
-    case EGEDevice::EOrientationPortraitUpsideDown:
+      case EGEDevice::EOrientationPortraitUpsideDown:
     
-      m_orientationRotation.fromDegrees(180.0f);
-      m_width   = m_physicalWidth;
-      m_height  = m_physicalHeight;
-      break;
+        m_orientationRotation.fromDegrees(180.0f);
+        m_width   = m_physicalWidth;
+        m_height  = m_physicalHeight;
+        break;
 
-    case EGEDevice::EOrientationLandscapeLeft:
+      case EGEDevice::EOrientationLandscapeLeft:
     
-      m_orientationRotation.fromDegrees(90.0f);
-      m_width   = m_physicalHeight;
-      m_height  = m_physicalWidth;
-      break;
+        m_orientationRotation.fromDegrees(90.0f);
+        m_width   = m_physicalHeight;
+        m_height  = m_physicalWidth;
+        break;
     
-    case EGEDevice::EOrientationLandscapeRight:
+      case EGEDevice::EOrientationLandscapeRight:
     
-      m_orientationRotation.fromDegrees(270.0f);
-      m_width   = m_physicalHeight;
-      m_height  = m_physicalWidth;
-      break;
+        m_orientationRotation.fromDegrees(270.0f);
+        m_width   = m_physicalHeight;
+        m_height  = m_physicalWidth;
+        break;
     
-    case EGEDevice::EOrientationFaceUp:
-    case EGEDevice::EOrientationFaceDown:
+      case EGEDevice::EOrientationFaceUp:
+      case EGEDevice::EOrientationFaceDown:
     
-      m_orientationRotation.fromDegrees(0.0f);
-      m_width   = m_physicalWidth;
-      m_height  = m_physicalHeight;
-      break;
+        m_orientationRotation.fromDegrees(0.0f);
+        m_width   = m_physicalWidth;
+        m_height  = m_physicalHeight;
+        break;
       
-    default:
+      default:
 
-      egeWarning() << "Unknown orientation!";
-      break;
+        egeWarning() << "Unknown orientation!";
+        break;
+    }
+  }
+  else
+  {
+    // with auto-rotation physical size is the same as logical one
+    m_orientationRotation.fromDegrees(0.0f);
+    m_width   = m_physicalWidth;
+    m_height  = m_physicalHeight;
   }
   
   // propagate to rest of the framework
   EGE_ASSERT(app() && app()->eventManager());
   app()->eventManager()->send(EGE_EVENT_ID_CORE_ORIENTATION_CHANGED);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderWindowOGLIOS::resizeRenderBuffers()
+{
+	// this effectively updates render buffer size
+  glBindRenderbuffer(GL_RENDERBUFFER, m_colorBuffer);
+  OGL_CHECK();
+  
+  // rebind buffers to EAGL layer
+  [m_EAGLContext renderbufferStorage: GL_RENDERBUFFER fromDrawable: m_view.mEAGLLayer];
+
+  // retrieve render buffer dimensions
+  glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &m_physicalWidth);
+  glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &m_physicalHeight);
+	
+  // generate window depth buffer if requested
+  if (0 != m_depthBuffer)
+  {
+    // TAGE - should we delete old one ?
+    
+    glGenRenderbuffers(1, &m_depthBuffer);
+    OGL_CHECK();
+		glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuffer);
+    OGL_CHECK();
+    
+    //		if( multiSampling_ )
+    //			glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER_OES, samplesToUse_, depthFormat_,backingWidth_, backingHeight_);
+    //		else
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, m_physicalWidth, m_physicalHeight);
+    OGL_CHECK();
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
+		OGL_CHECK();
+  }
+
+  // check frame buffer integrity
+  if (GL_FRAMEBUFFER_COMPLETE != glCheckFramebufferStatus(GL_FRAMEBUFFER))
+	{
+    egeCritical() << "Could not resize render buffers!";
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

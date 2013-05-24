@@ -180,7 +180,10 @@ void RenderSystemPrivate::clearViewport(const PViewport& viewport)
     bits |= GL_DEPTH_BUFFER_BIT;
   }
 
-  glClear(bits);
+  if (0 != bits)
+  {
+    glClear(bits);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::setViewport(const PViewport& viewport)
@@ -189,19 +192,20 @@ void RenderSystemPrivate::setViewport(const PViewport& viewport)
 
   // set viewport area
   Rectf actualRect = viewport->physicalRect();
-
+  
   if ( ! target->requiresTextureFlipping())
   {
     // convert "upper-left" corner to "lower-left"
-    actualRect.y = target->physicalHeight() - actualRect.height - actualRect.y;
+    actualRect.y = target->height() - actualRect.height - actualRect.y;
   }
-
+  
   // set viewport to physical region occupied by render target
-  glViewport(static_cast<GLint>(actualRect.x), static_cast<GLint>(actualRect.y), 
+  // NOTE: auto-rotation does not affect viewports. They always works in portrait mode.
+  glViewport(static_cast<GLint>(actualRect.x), static_cast<GLint>(actualRect.y),
              static_cast<GLsizei>(actualRect.width), static_cast<GLsizei>(actualRect.height));
-
+    
   // set scissor
-  glScissor(static_cast<GLint>(actualRect.x), static_cast<GLint>(actualRect.y), 
+  glScissor(static_cast<GLint>(actualRect.x), static_cast<GLint>(actualRect.y),
             static_cast<GLsizei>(actualRect.width), static_cast<GLsizei>(actualRect.height));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -210,8 +214,14 @@ void RenderSystemPrivate::flush()
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
-  // NOTE: actual OGLES rotation should be opposite
-  glRotatef(-d_func()->m_renderTarget->orientationRotation().degrees(), 0, 0, 1);
+  // check if not auto-rotated
+  if ( ! d_func()->m_renderTarget->isAutoRotated())
+  {
+    // apply rotation
+    // NOTE: actual OGLES rotation should be opposite
+    glRotatef(-d_func()->m_renderTarget->orientationRotation().degrees(), 0, 0, 1);
+  }
+  
   glMultMatrixf(d_func()->m_projectionMatrix.data);
 
  // EGE_LOG("---------------------- Render Flush begin ----------------------");
@@ -696,16 +706,20 @@ void RenderSystemPrivate::applyGeneralParams(const PRenderComponent& component)
     glEnable(GL_SCISSOR_TEST);
 
     Rectf clipRect = component->clipRect();
-
+    
     // check if conversion from "upper-left" corner to "lower-left" for current orientation is necessary
-    if (!d_func()->m_renderTarget->requiresTextureFlipping())
+    if ( ! d_func()->m_renderTarget->requiresTextureFlipping())
     {
       // convert "upper-left" corner to "lower-left"
       clipRect.y = d_func()->m_renderTarget->height() - clipRect.height - clipRect.y;
     }
 
-    // apply opposite rotation to rectangle to convert it into native (non-transformed) coordinate
-    clipRect = d_func()->applyRotation(clipRect, d_func()->m_renderTarget->orientationRotation());
+    // check if not auto-rotated
+    if ( ! d_func()->m_renderTarget->isAutoRotated())
+    {
+      // apply opposite rotation to rectangle to convert it into native (non-transformed) coordinate
+      clipRect = d_func()->applyRotation(clipRect, d_func()->m_renderTarget->orientationRotation());
+    }
 
     // apply zoom
     float32 zoom = d_func()->m_renderTarget->zoom();

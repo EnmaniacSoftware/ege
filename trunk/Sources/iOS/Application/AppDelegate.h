@@ -7,15 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "iOS/Application/ViewController.h"
-#include "Core/Application/Application.h"
+#include "EGEApplication.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
-  /*! Application object. */
+  /*! Pointer to application object. */
   EGE::Application* egeApplication;
-  /*! View controller. */
-  ViewController* viewController;
 }
 
 @end

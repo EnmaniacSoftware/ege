@@ -43,6 +43,9 @@ class RenderWindowOGLIOS : public RenderWindow, public IEventListener
     EGEResult enableFullScreen(s32 width, s32 height, bool enable) override;
     /*! RenderTarget override. Returns TRUE if texture flipping is required for this render target. */
 		bool requiresTextureFlipping() const override;
+    /*! @see RenderTarget::isAutoRotated. */
+    bool isAutoRotated() const override;
+ 
     /*! RenderWindow override. Shows frame buffer. */
     virtual void showFrameBuffer() override;
     /*! Detects rendering capabilities. */
@@ -54,6 +57,8 @@ class RenderWindowOGLIOS : public RenderWindow, public IEventListener
     void onEventRecieved(PEvent event) override;
     /*! Sets new orientation. */
     void setOrientation(EGEDevice::Orientation orientation);
+    /*! Resizes render buffers. */
+    void resizeRenderBuffers();
   
   private:
 
