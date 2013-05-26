@@ -14,13 +14,15 @@ class MutexLocker
 {
   public:
 
-    MutexLocker(PMutex mutex);
+    MutexLocker(PMutex mutex, bool debug = false);
    ~MutexLocker();
 
   private:
 
     /*! Mutex object for handling. */
     PMutex m_mutex;
+    /*! Debug flag, */
+    bool m_debug;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

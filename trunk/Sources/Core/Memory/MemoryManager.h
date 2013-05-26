@@ -77,13 +77,6 @@ class MemoryManager
 
   private:
 
-    /*! Prints message to output. 
-     *  @note Other means of logging ie Debug class should be avoided here as they internall allocate memory and can cause the recursive loops.
-     */
-    static void ShowMessage(const char* text, ...);
-
-  private:
-
     /*! Logs allocation.
      *  @param  data      Pointer to allocated space.
      *  @param  size      Number of bytes to allocate.

@@ -4,6 +4,8 @@
 #include <fstream>
 #include <stdarg.h>
 
+#include "EGEThread.h"
+
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -65,12 +67,12 @@ void* MemoryManager::Malloc(size_t size, const char* fileName, int line)
     else
     {
       // report allocate out of manager scope
-      ShowMessage("WARNING: Out of scope allocation %p in %s @ %d (%u bytes)", data, fileName, line, static_cast<u32>(size));
+      Debug::PrintWithArgs("WARNING: Out of scope allocation %p in %s @ %d (%u bytes)", data, fileName, line, static_cast<u32>(size));
     }
   }
   else
   {
-    ShowMessage("WARNING: Could not allocate memory: %u in %s @ %d", static_cast<u32>(size), fileName, line);
+    Debug::PrintWithArgs("WARNING: Could not allocate memory: %u in %s @ %d", static_cast<u32>(size), fileName, line);
   }
 #endif // EGE_FEATURE_MEMORY_DEBUG
 
@@ -101,7 +103,7 @@ void* MemoryManager::Realloc(void* data, size_t size, const char* fileName, int 
       else
       {
         // report reallocation out of manager scope
-        ShowMessage("WARNING: Out of scope reallocation %p in %s @ %d (%u bytes)", data, fileName, line, static_cast<u32>(size));
+        Debug::PrintWithArgs("WARNING: Out of scope reallocation %p in %s @ %d (%u bytes)", data, fileName, line, static_cast<u32>(size));
       }
     }
   }
@@ -109,7 +111,7 @@ void* MemoryManager::Realloc(void* data, size_t size, const char* fileName, int 
 #if EGE_FEATURE_MEMORY_DEBUG
   if (NULL == newData)
   {
-    ShowMessage("WARNING: Could not reallocate memory: %u in %s @ %d", static_cast<u32>(size), fileName, line);
+    Debug::PrintWithArgs("WARNING: Could not reallocate memory: %u in %s @ %d", static_cast<u32>(size), fileName, line);
   }
 #endif // EGE_FEATURE_MEMORY_DEBUG
 
@@ -126,7 +128,7 @@ void MemoryManager::Free(void* data)
   else
   {
     // report freeing out of manager scope
-    ShowMessage("WARNING: Out of scope deallocation %p", data);
+    Debug::PrintWithArgs("WARNING: Out of scope deallocation %p", data);
   }
 
   MemoryManager::DoFree(data);
@@ -141,7 +143,7 @@ u64 MemoryManager::BytesAllocated()
 bool MemoryManager::addAlloc(void* data, size_t size, const char* fileName, int line)
 {
   MutexLocker lock(l_mutex);
-
+  
   // check if reallocation is needed
   if (m_allocCount == m_allocUsed)
   {
@@ -287,18 +289,6 @@ bool MemoryManager::internalRealloc(int newSize)
   }
 
   return false;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void MemoryManager::ShowMessage(const char* text, ...)
-{
-  char buffer[256];
-
-	va_list arg;
-	va_start(arg, text);
-	vsprintf(buffer, text, arg);
-	va_end(arg);
-
-  Debug::Print(buffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

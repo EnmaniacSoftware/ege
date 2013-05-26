@@ -61,7 +61,7 @@ EGEResult AudioManagerPrivate::construct()
   ege_connect(m_thread, finished, this, AudioManagerPrivate::onThreadFinished);
 
   // create access mutex
-  m_mutex = ege_new Mutex(d_func()->app());
+  m_mutex = ege_new Mutex(d_func()->app(), EGEMutex::Recursive);
   if (NULL == m_mutex)
   {
     // error!
@@ -154,8 +154,17 @@ void AudioManagerPrivate::threadUpdate(const Time& time)
       d_func()->m_sounds.push_back(sound);
     }
   }
-
   m_soundsToPlay.clear();
+
+  // stop playbacks
+  for (AudioManager::SoundList::iterator it = m_soundsToStop.begin(); it != m_soundsToStop.end(); ++it)
+  {
+    const PSound& sound = *it;
+
+    // play
+    doStop(sound);
+  }
+  m_soundsToStop.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult AudioManagerPrivate::play(const PSound& sound)
@@ -220,7 +229,11 @@ ALuint AudioManagerPrivate::availableChannel() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult AudioManagerPrivate::stop(const PSound& sound)
 {
-  return sound->p_func()->stop();
+  // add to pool for later stop
+  MutexLocker locker(m_mutex);
+  m_soundsToStop.push_back(sound);
+
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioManagerPrivate::stop(const String& soundName)
@@ -336,6 +349,11 @@ EGEResult AudioManagerPrivate::doPlay(const PSound& sound)
   }
 
   return EGE_ERROR;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void AudioManagerPrivate::doStop(const PSound& sound)
+{
+  sound->p_func()->stop();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioManagerPrivate::shutDown() 

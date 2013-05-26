@@ -229,6 +229,9 @@
     <Filter Include="Core\Graphics\OpenGL\Fixed">
       <UniqueIdentifier>{2736de3a-5cff-4e6f-ab45-abde106a81a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Win32\Threading">
+      <UniqueIdentifier>{686887ab-fec0-47ff-bcba-08ebe23e27c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -836,6 +839,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Timer\Time.cpp">
       <Filter>Core\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Threading\AtomicWin32.cpp">
+      <Filter>Win32\Threading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1622,6 +1628,7 @@
       <Filter>Core\Data</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEStringBuffer.h" />
+    <ClInclude Include="..\..\Sources\EGEAtomic.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

@@ -46,6 +46,8 @@ class Debug
     static void Assert(const char* assertion, const char* file, int line);
     /*! Prints given c-string to output. */
     static void Print(const char* string);
+    /*! Prints given c-string to output. */
+    static void PrintWithArgs(const char* string, ...);
 
   private:
 

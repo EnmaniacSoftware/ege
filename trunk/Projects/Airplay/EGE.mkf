@@ -766,6 +766,10 @@ files
   SocialServicesGameCenterAirplay_p.cpp
   SocialServicesGameCenterAirplay_p.h
 
+	["Airplay/Threading"]
+	(../../Sources/Airplay/Threading)
+	AtomicAirplay.cpp
+
 	["Airplay/Timer"]
 	(../../Sources/Airplay/Timer)
 	TimerAirplay_p.cpp

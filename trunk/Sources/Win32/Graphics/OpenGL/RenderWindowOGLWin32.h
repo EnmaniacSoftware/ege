@@ -34,6 +34,8 @@ class RenderWindowOGLWin32 : public RenderWindow
     EGEResult setupPixelFormat(const Dictionary& params);
     /*! Detects rendering capabilities. */
     void detectCapabilities();
+    /*! @see RenderWindow::isAutoRotated. */
+    bool isAutoRotated() const override;
       
   private:
 

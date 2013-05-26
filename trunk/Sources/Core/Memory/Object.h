@@ -2,6 +2,7 @@
 #define EGE_CORE_OBJECT_H
 
 #include "EGETypes.h"
+#include "EGEAtomic.h"
 #include "Core/ObjectUIDs.h"
 
 EGE_NAMESPACE_BEGIN
@@ -49,12 +50,15 @@ inline u32 Object::uid() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline void Object::addReference() 
 { 
-  ++m_references; 
+  //++m_references; 
+  egeAtomicIncrement(m_references);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline void Object::release() 
 { 
-  if (0 == (--m_references)) 
+  //--m_references;
+  egeAtomicDecrement(m_references);
+  if (0 == m_references) 
   { 
     if (NULL != m_deleteFunc) 
     {

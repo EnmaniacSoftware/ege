@@ -90,8 +90,17 @@ class AudioManagerPrivate
 
     /*! Returns first available channel. */
     ALuint availableChannel() const;
-    /*! Starts playback of a given sound. */
+    /*! Starts playback of a given sound. 
+     *  @param  sound Sound to start.
+     *  @note This method is called from audio manager's thread.
+     *  @return EGE_SUCCESS if playback has been started successfully.
+     */
     EGEResult doPlay(const PSound& sound);
+    /*! Stops playback of a given sound. 
+     *  @param  sound Sound to stop.
+     *  @note This method is called from audio manager's thread.
+     */
+    void doStop(const PSound& sound);
 
   private:
 
@@ -103,6 +112,8 @@ class AudioManagerPrivate
     ALuint m_channels[CHANNELS_COUNT];
     /*! List of sounds to start playing. */
     AudioManager::SoundList m_soundsToPlay;
+    /*! List of sounds to stop playing. */
+    AudioManager::SoundList m_soundsToStop;
     /*! Audio thread. */
     PThread m_thread;
     /*! Data access mutex. */

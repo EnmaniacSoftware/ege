@@ -1,4 +1,5 @@
 #include "Core/Debug/Debug.h"
+#include <stdarg.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -164,6 +165,18 @@ Debug& Debug::maybeSpace()
   }
   
   return *this; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Debug::PrintWithArgs(const char* string, ...)
+{
+  char buffer[256];
+
+	va_list arg;
+	va_start(arg, string);
+	vsprintf(buffer, string, arg);
+	va_end(arg);
+
+  Print(buffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

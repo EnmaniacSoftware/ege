@@ -685,5 +685,10 @@ void RenderWindowOGLWin32::detectCapabilities()
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT, true);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool RenderWindowOGLWin32::isAutoRotated() const
+{
+  return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
