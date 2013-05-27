@@ -3,9 +3,9 @@
 #include "Core/Application/Application.h"
 #include "Core/Audio/OpenAL/AudioThreadOpenAL.h"
 #include "Core/Audio/OpenAL/AudioManagerOpenAL_p.h"
-#include <EGEDevice.h>
-#include <EGETime.h>
-#include <EGEDebug.h>
+#include "EGEDevice.h"
+#include "EGETime.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE
 

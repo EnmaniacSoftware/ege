@@ -205,6 +205,7 @@
 		4555B48616F7760900FDAFF3 /* RenderWindowOGLIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4555B48416F7760900FDAFF3 /* RenderWindowOGLIOS.mm */; };
 		4555B48A16F77A4900FDAFF3 /* PointerIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4555B48916F77A4900FDAFF3 /* PointerIOS_p.mm */; };
 		4555B48E16F77C7E00FDAFF3 /* MessageBoxIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4555B48D16F77C7E00FDAFF3 /* MessageBoxIOS_p.mm */; };
+		4564E3DE17527F6C0077A46C /* AtomicIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4564E3DD17527F6C0077A46C /* AtomicIOS.cpp */; };
 		45792302171DDB77003127A1 /* Time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45792301171DDB77003127A1 /* Time.cpp */; };
 		45877DA916F09F5B00B4252B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45877DA816F09F5B00B4252B /* Foundation.framework */; };
 		45ADCBA116F7C94F005FE8A0 /* DeviceIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45ADCBA016F7C94F005FE8A0 /* DeviceIOS.mm */; };
@@ -751,6 +752,8 @@
 		4555B48916F77A4900FDAFF3 /* PointerIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PointerIOS_p.mm; sourceTree = "<group>"; };
 		4555B48C16F77C7E00FDAFF3 /* MessageBoxIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoxIOS_p.h; sourceTree = "<group>"; };
 		4555B48D16F77C7E00FDAFF3 /* MessageBoxIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MessageBoxIOS_p.mm; sourceTree = "<group>"; };
+		4564E3D517527E570077A46C /* EGEAtomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGEAtomic.h; sourceTree = "<group>"; };
+		4564E3DD17527F6C0077A46C /* AtomicIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AtomicIOS.cpp; sourceTree = "<group>"; };
 		45792301171DDB77003127A1 /* Time.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Time.cpp; sourceTree = "<group>"; };
 		45877DA516F09F5B00B4252B /* libEGE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEGE.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		45877DA816F09F5B00B4252B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -800,6 +803,7 @@
 		4536352416F110F000B4D72F /* EGE */ = {
 			isa = PBXGroup;
 			children = (
+				4564E3D517527E570077A46C /* EGEAtomic.h */,
 				4536371616F1113600B4D72F /* EGE.h */,
 				4536371716F1113600B4D72F /* EGEAlignment.h */,
 				4536371816F1113600B4D72F /* EGEAngle.h */,
@@ -1794,6 +1798,7 @@
 		4536376916F1113600B4D72F /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				4564E3DC17527F6C0077A46C /* Threading */,
 				45ADCBA716F7CB23005FE8A0 /* Debug */,
 				45ADCBA216F7C955005FE8A0 /* Memory */,
 				45ADCB9F16F7C94F005FE8A0 /* Device */,
@@ -1881,6 +1886,14 @@
 				4555B48D16F77C7E00FDAFF3 /* MessageBoxIOS_p.mm */,
 			);
 			path = NativeUI;
+			sourceTree = "<group>";
+		};
+		4564E3DC17527F6C0077A46C /* Threading */ = {
+			isa = PBXGroup;
+			children = (
+				4564E3DD17527F6C0077A46C /* AtomicIOS.cpp */,
+			);
+			path = Threading;
 			sourceTree = "<group>";
 		};
 		45877D9C16F09F5B00B4252B = {
@@ -2213,6 +2226,7 @@
 				451DE2E2171C94920022EE8A /* StringBuffer.cpp in Sources */,
 				45792302171DDB77003127A1 /* Time.cpp in Sources */,
 				45BC64C017209B6600A449EF /* ViewController.mm in Sources */,
+				4564E3DE17527F6C0077A46C /* AtomicIOS.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2286,7 +2300,7 @@
 					EGE_RENDERING_OPENGL_FIXED,
 					EGE_THREAD_PTHREAD,
 					EGE_RANDOM_STDC,
-					EGE_AUDIO_NULL,
+					EGE_AUDIO_OPENAL,
 					EGE_XML_TINYXML,
 					EGE_CONTAINERS_STL,
 					EGE_STRING_STL,
@@ -2320,7 +2334,7 @@
 					EGE_RENDERING_OPENGL_FIXED,
 					EGE_THREAD_PTHREAD,
 					EGE_RANDOM_STDC,
-					EGE_AUDIO_NULL,
+					EGE_AUDIO_OPENAL,
 					EGE_XML_TINYXML,
 					EGE_CONTAINERS_STL,
 					EGE_STRING_STL,

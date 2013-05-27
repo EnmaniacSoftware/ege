@@ -8,8 +8,14 @@
 #include "EGEThread.h"
 #include "EGEMutex.h"
 #include "Core/Audio/AudioManager.h"
+
+#ifdef EGE_PLATFORM_WIN32
 #include <al.h>
 #include <alc.h>
+#elif EGE_PLATFORM_IOS
+#import <OpenAL/al.h>
+#import <OpenAL/alc.h>
+#endif // EGE_PLATFORM_WIN32
 
 EGE_NAMESPACE_BEGIN
 

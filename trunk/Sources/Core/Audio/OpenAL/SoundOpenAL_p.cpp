@@ -3,7 +3,7 @@
 #include "Core/Audio/OpenAL/SoundOpenAL_p.h"
 #include "Core/Audio/Sound.h"
 #include "Core/Audio/AudioCodec.h"
-#include <EGEDebug.h>
+#include "EGEDebug.h"
 
 EGE_NAMESPACE
 
@@ -46,7 +46,6 @@ EGEResult SoundPrivate::construct()
   }
   
  	// determine OpenAL buffer format
-  ALenum format = AL_FORMAT_STEREO16;
   switch (d_func()->codec()->bitsPerSample())
   {
     case 8:

@@ -6,7 +6,7 @@
 
 #ifdef EGE_AUDIO_OPENAL
 
-#include <EGEThread.h>
+#include "EGEThread.h"
 
 EGE_NAMESPACE_BEGIN
 
