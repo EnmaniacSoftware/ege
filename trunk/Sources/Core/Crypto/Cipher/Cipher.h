@@ -10,12 +10,17 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Cipher
+EGE_DECLARE_SMART_CLASS(Cipher, PCipher)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class Cipher : public Object
 {
   public:
 
     Cipher(EGECipher::Algorithm algorithm, EGECipher::Direction direction, const PCipherKey& key);
    ~Cipher();
+
+    EGE_DECLARE_NEW_OPERATORS
+    EGE_DECLARE_DELETE_OPERATORS
 
     /*! Returns TRUE if object is valid. */
     bool isValid() const;

@@ -177,7 +177,9 @@ EGEResult ResourceTexture::create2D()
   m_resourceRequestId = app()->graphics()->hardwareResourceProvider()->requestCreateTexture2D(name(), image);
 
   // connect for notification
+  egeDebug() << "Pre con";
   ege_connect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
+  egeDebug() << "Posy con";
 
   return EGE_SUCCESS;
 }

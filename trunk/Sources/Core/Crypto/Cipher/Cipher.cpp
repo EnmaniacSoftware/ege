@@ -4,7 +4,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Cipher::Cipher(EGECipher::Algorithm algorithm, EGECipher::Direction direction, const PCipherKey& key) : m_p(NULL)
+EGE_DEFINE_NEW_OPERATORS(Cipher)
+EGE_DEFINE_DELETE_OPERATORS(Cipher)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Cipher::Cipher(EGECipher::Algorithm algorithm, EGECipher::Direction direction, const PCipherKey& key) : Object(NULL),
+                                                                                                        m_p(NULL)
 {
   switch (algorithm)
   {
