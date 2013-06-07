@@ -6,8 +6,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-namespace EGEAudio
+namespace Audio
 {
   /*! Available stream types. */
   enum StreamType
@@ -46,13 +45,11 @@ namespace EGEAudio
     s32 size;               /*!< This is size of sound data (in bytes). */
   };
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include "Core/Audio/AudioUtils.h"
 #include "Core/Audio/SoundEffect.h"
 #include "Core/Audio/SoundEffectFadeOut.h"
@@ -60,7 +57,6 @@ EGE_NAMESPACE_END
 #include "Core/Audio/Sound.h"
 #include "Core/Audio/AudioManager.h"
 #include "Core/Audio/AudioCodec.h"
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_AUDIO_H

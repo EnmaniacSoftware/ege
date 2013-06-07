@@ -1,23 +1,21 @@
-#ifndef EGE_CORE_AUDIO_THREAD_OPENAL_H
-#define EGE_CORE_AUDIO_THREAD_OPENAL_H
+#ifndef EGE_CORE_AUDIO_OPENAL_AUDIOTHREADOPENAL_H
+#define EGE_CORE_AUDIO_OPENAL_AUDIOTHREADOPENAL_H
 
 /*! Audio thread for OpenAL implementation
  */
-
-#ifdef EGE_AUDIO_OPENAL
 
 #include "EGEThread.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AudioManagerPrivate;
+class AudioManagerOpenAL;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AudioThreadOpenAL : public Thread
 {
   public:
 
-    AudioThreadOpenAL(Application* app, AudioManagerPrivate* manager);
+    AudioThreadOpenAL(Application* app, AudioManagerOpenAL* manager);
    ~AudioThreadOpenAL();
 
   private:
@@ -28,12 +26,10 @@ class AudioThreadOpenAL : public Thread
   private:
 
     /* Audio manager instance. */
-    AudioManagerPrivate* m_manager;
+    AudioManagerOpenAL* m_manager;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_AUDIO_OPENAL
-
-#endif // EGE_CORE_AUDIO_THREAD_OPENAL_H
+#endif // EGE_CORE_AUDIO_OPENAL_AUDIOTHREADOPENAL_H

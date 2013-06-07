@@ -20,8 +20,8 @@ class SceneManager;
 class OverlayManager;
 class Debug;
 class DeviceServices;
-class AudioManager;
 class ImageLoader;
+class IAudioManager;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Application : public IEventListener
 {
@@ -96,7 +96,7 @@ class Application : public IEventListener
     /*! Returns screen manager. */
     ScreenManager* screenManager() const;
     /*! Returns audio manager. */
-    AudioManager* audioManager() const;
+    IAudioManager* audioManager() const;
     /*! Returns debug object. */
     Debug* debug() const;
     /*! Returns device services object. */
@@ -153,7 +153,7 @@ class Application : public IEventListener
     /*! Screen manager. */
     ScreenManager* m_screenManager;
     /*! Audio manager. */
-    AudioManager* m_audioManager;
+    IAudioManager* m_audioManager;
     /*! Image loader. */
     ImageLoader* m_imageLoader;
     /*! Debug object. */
@@ -226,7 +226,7 @@ inline ScreenManager* Application::screenManager() const
   return m_screenManager; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline AudioManager* Application::audioManager() const 
+inline IAudioManager* Application::audioManager() const 
 { 
   return m_audioManager; 
 }

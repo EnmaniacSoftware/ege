@@ -117,8 +117,8 @@ PSound ResourceSound::createInstance()
   }
 
   // create sound object from data
-  PSound object = ege_new Sound(name(), m_data);
-  if ((NULL == object) || (EGE_SUCCESS != object->construct()))
+  PSound object = app()->audioManager()->createSound(name(), m_data);
+  if ((NULL == object))
   {
     // error!
     return NULL;

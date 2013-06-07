@@ -15,17 +15,21 @@
 #include "Core/Screen/ScreenManager.h"
 #include "Core/Services/DeviceServices.h"
 #include "Core/Audio/AudioManager.h"
+#include "Core/Audio/Null/AudioManagerNull.h"
 #include "Core/Graphics/Image/ImageLoader.h"
 #include "Core/Debug/Debug.h"
 #include "Core/Debug/EngineInfo.h"
 #include "EGETimer.h"
 
 #ifdef EGE_PLATFORM_WIN32
-#include "Win32/Application/ApplicationWin32_p.h"
+  #include "Win32/Application/ApplicationWin32_p.h"
+  #include "Core/Audio/OpenAL/AudioManagerOpenAL.h"
 #elif EGE_PLATFORM_AIRPLAY
-#include "Airplay/Application/ApplicationAirplay_p.h"
+  #include "Airplay/Application/ApplicationAirplay_p.h"
+  #include "Airplay/Audio/AudioManagerAirplay.h"
 #elif EGE_PLATFORM_IOS
-#include "iOS/Application/ApplicationIOS_p.h"
+  #include "iOS/Application/ApplicationIOS_p.h"
+  #include "iOS/Audio/OpenAL/AudioManagerOpenALIOS.h"
 #endif
 
 EGE_NAMESPACE_BEGIN
@@ -250,12 +254,18 @@ EGEResult Application::construct(const Dictionary& params)
   }
 
   // create audio manager
-  m_audioManager = ege_new AudioManager(this);
-  if (NULL == m_audioManager)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
+  // TAGE - make a decision based on some data, to figure out yet
+#if EGE_AUDIO_NULL
+  m_audioManager = ege_new AudioManagerNull(this);
+#elif EGE_AUDIO_OPENAL
+  #if EGE_PLATFORM_IOS
+    m_audioManager = ege_new AudioManagerOpenALIOS(this);
+  #else
+    m_audioManager = ege_new AudioManagerOpenAL(this);
+  #endif // EGE_PLATFORM_IOS
+#else
+  m_audioManager = ege_new AudioManagerAirplay(this);
+#endif // EGE_AUDIO_NULL
 
   if (EGE_SUCCESS != (result = m_audioManager->construct()))
   {
@@ -304,7 +314,7 @@ void Application::update()
 
     // check if ready to quit
     if ((ResourceManager::STATE_CLOSED == resourceManager()->state()) &&
-        (AudioManager::STATE_CLOSED == audioManager()->state()) &&
+        (IAudioManager::StateClosed == audioManager()->state()) &&
         (ImageLoader::STATE_CLOSED == imageLoader()->state()) &&
         (RenderSystem::STATE_CLOSED == graphics()->renderSystem()->state()))
     {

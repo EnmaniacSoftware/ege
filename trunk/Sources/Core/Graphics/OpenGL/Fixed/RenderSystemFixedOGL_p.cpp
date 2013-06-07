@@ -189,24 +189,15 @@ void RenderSystemPrivate::clearViewport(const PViewport& viewport)
 void RenderSystemPrivate::setViewport(const PViewport& viewport)
 {
   RenderTarget* target = viewport->renderTarget();
-
-  // set viewport area
-  Rectf actualRect = viewport->physicalRect();
   
-  if ( ! target->requiresTextureFlipping())
-  {
-    // convert "upper-left" corner to "lower-left"
-    actualRect.y = target->height() - actualRect.height - actualRect.y;
-  }
-  
-  // set viewport to physical region occupied by render target
   // NOTE: auto-rotation does not affect viewports. They always works in portrait mode.
+
+  Rectf actualRect = viewport->physicalRect();
+
+  // NOTE: arguments of viewport should be in physical window-coordinate space ie not affected by zoom
   glViewport(static_cast<GLint>(actualRect.x), static_cast<GLint>(actualRect.y),
              static_cast<GLsizei>(actualRect.width), static_cast<GLsizei>(actualRect.height));
-    
-  // set scissor
-  glScissor(static_cast<GLint>(actualRect.x), static_cast<GLint>(actualRect.y),
-            static_cast<GLsizei>(actualRect.width), static_cast<GLsizei>(actualRect.height));
+  OGL_CHECK()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::flush()
@@ -722,6 +713,7 @@ void RenderSystemPrivate::applyGeneralParams(const PRenderComponent& component)
     }
 
     // apply zoom
+    // NOTE: this is necessary as logical content may be ie bigger than physical window and because glScissor works in physical window-coordinate space
     float32 zoom = d_func()->m_renderTarget->zoom();
 
     clipRect.x      *= zoom;

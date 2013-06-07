@@ -13,10 +13,9 @@ class AudioUtils
   public:
 
     /*! Detects stream type of given data. */
-    static EGEAudio::StreamType DetectStreamType(const PDataBuffer& data);
+    static Audio::StreamType DetectStreamType(const PDataBuffer& data);
     /*! Retrieves WAV stream headers. */
-    static void ReadWavHeaders(const PDataBuffer& data, EGEAudio::WaveRiffHeader& riffHeader, EGEAudio::WaveFmtHeader& fmtHeader, 
-                               EGEAudio::WaveDataHeader& dataHeader);
+    static void ReadWavHeaders(const PDataBuffer& data, Audio::WaveRiffHeader& riffHeader, Audio::WaveFmtHeader& fmtHeader, Audio::WaveDataHeader& dataHeader);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

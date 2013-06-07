@@ -33,11 +33,11 @@ class AudioCodecWav : public AudioCodec
     /*! Stream data size left (in bytes). */
     s32 m_streamSizeLeft;
     /*! Riff chunk header. */
-    EGEAudio::WaveRiffHeader m_riffHeader;
+    Audio::WaveRiffHeader m_riffHeader;
     /*! Fmt chunk header. */
-    EGEAudio::WaveFmtHeader m_fmtHeader;
+    Audio::WaveFmtHeader m_fmtHeader;
     /*! Data chunk header. */
-    EGEAudio::WaveDataHeader m_dataHeader;
+    Audio::WaveDataHeader m_dataHeader;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -2,7 +2,7 @@
 
 #include "Core/Application/Application.h"
 #include "Core/Audio/OpenAL/AudioThreadOpenAL.h"
-#include "Core/Audio/OpenAL/AudioManagerOpenAL_p.h"
+#include "Core/Audio/OpenAL/AudioManagerOpenAL.h"
 #include "EGEDevice.h"
 #include "EGETime.h"
 #include "EGEDebug.h"
@@ -12,8 +12,8 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define UPDATE_PERIOD (20)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioThreadOpenAL::AudioThreadOpenAL(Application* app, AudioManagerPrivate* manager) : Thread(app), 
-                                                                                       m_manager(manager)
+AudioThreadOpenAL::AudioThreadOpenAL(Application* app, AudioManagerOpenAL* manager) : Thread(app), 
+                                                                                      m_manager(manager)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,7 +21,6 @@ AudioThreadOpenAL::~AudioThreadOpenAL()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Thread override. Work method. */
 s32 AudioThreadOpenAL::run()
 {
   Time updateTime;

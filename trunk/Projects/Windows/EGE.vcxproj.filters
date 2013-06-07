@@ -534,18 +534,6 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSound.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\AudioManager.cpp">
-      <Filter>Core\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL_p.cpp">
-      <Filter>Core\Audio\OpenAL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\Sound.cpp">
-      <Filter>Core\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL_p.cpp">
-      <Filter>Core\Audio\OpenAL</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Audio\AudioUtils.cpp">
       <Filter>Core\Audio</Filter>
     </ClCompile>
@@ -714,15 +702,6 @@
     <ClCompile Include="..\..\Sources\Core\NativeUI\MessageBox.cpp">
       <Filter>Core\NativeUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\Null\AudioManagerNull_p.cpp">
-      <Filter>Core\Audio\Null</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\Null\SoundNull_p.cpp">
-      <Filter>Core\Audio\Null</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioThreadOpenAL.cpp">
-      <Filter>Core\Audio\OpenAL</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\Resource.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
@@ -842,6 +821,24 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Threading\AtomicWin32.cpp">
       <Filter>Win32\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Null\AudioManagerNull.cpp">
+      <Filter>Core\Audio\Null</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Null\SoundNull.cpp">
+      <Filter>Core\Audio\Null</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Sound.cpp">
+      <Filter>Core\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL.cpp">
+      <Filter>Core\Audio\OpenAL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL.cpp">
+      <Filter>Core\Audio\OpenAL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioThreadOpenAL.cpp">
+      <Filter>Core\Audio\OpenAL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1276,14 +1273,8 @@
     <ClInclude Include="..\..\Sources\Core\Audio\AudioManager.h">
       <Filter>Core\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL_p.h">
-      <Filter>Core\Audio\OpenAL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Audio\Sound.h">
       <Filter>Core\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL_p.h">
-      <Filter>Core\Audio\OpenAL</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Audio\AudioUtils.h">
       <Filter>Core\Audio</Filter>
@@ -1490,15 +1481,6 @@
       <Filter>Win32\NativeUI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGELog.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\Null\AudioManagerNull_p.h">
-      <Filter>Core\Audio\Null</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\Null\SoundNull_p.h">
-      <Filter>Core\Audio\Null</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioThreadOpenAL.h">
-      <Filter>Core\Audio\OpenAL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\SingleThread\ResourceManagerST_p.h">
       <Filter>Core\Resource\Single Thread</Filter>
     </ClInclude>
@@ -1629,6 +1611,24 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEStringBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEAtomic.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Null\AudioManagerNull.h">
+      <Filter>Core\Audio\Null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Null\SoundNull.h">
+      <Filter>Core\Audio\Null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\AudioManagerBase.h">
+      <Filter>Core\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL.h">
+      <Filter>Core\Audio\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL.h">
+      <Filter>Core\Audio\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioThreadOpenAL.h">
+      <Filter>Core\Audio\OpenAL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

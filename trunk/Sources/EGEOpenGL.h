@@ -22,8 +22,8 @@
   #define OGL_CHECK() if (GL_NO_ERROR != glGetError()) { egeCritical() << "OpenGL error" << __FILE__ << __LINE__; }
   #define OGL_CHECK_RESULT(result) if (GL_NO_ERROR != (result = glGetError())) { egeCritical() << "OpenGL error" << __FILE__ << __LINE__; }
 #else
-  #define OGL_CHECK() ege_noop()
-  #define OGL_CHECK_RESULT(result) ege_noop()
+  #define OGL_CHECK() ege_noop();
+  #define OGL_CHECK_RESULT(result) ege_noop();
 #endif // EGE_FEATURE_OPENGL_DEBUG
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

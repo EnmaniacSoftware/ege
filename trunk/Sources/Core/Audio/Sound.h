@@ -1,30 +1,28 @@
-#ifndef EGE_CORE_SOUND_H
-#define EGE_CORE_SOUND_H
+#ifndef EGE_CORE_AUDIO_SOUND_H
+#define EGE_CORE_AUDIO_SOUND_H
 
-/** Objects of this class represents discreet sound effect.
+/** This class represents public interface for Sound object.
 */
 
 #include "EGE.h"
-#include "EGEList.h"
-#include "EGEDataBuffer.h"
 #include "EGEString.h"
 #include "EGESignal.h"
 #include "EGETime.h"
+#include "EGEDataBuffer.h"
+#include "EGEList.h"
 #include "Core/Audio/SoundEffect.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AudioCodec;
+class Application;
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Sound : public Object
 {
-  friend class AudioManagerPrivate;
-
   public:
 
-    Sound(const String& name, const PDataBuffer& data);
     virtual ~Sound();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -32,47 +30,79 @@ class Sound : public Object
 
   public signals:
 
-    /*! Signal emitted when sound playback has come to an end. */
+    /*! Signal emitted when sound playback has come to an end. 
+     *  @note Signal is NOT guaranteed to be sent from main thread.
+     */
     Signal1<PSound> finished;
-    /*! Signal emitted when sound playback has been stopped (by any means). */
+    /*! Signal emitted when sound playback has been stopped (by any means). 
+     *  @note Signal is NOT guaranteed to be sent from main thread.
+     */
     Signal1<PSound> stopped;
     /*! Signal emitted when volume changes. 
      *  @param  Sound for which volume has changed.
      *  @param  oldVolume Old volume level.
+     *  @note Signal is NOT guaranteed to be sent from main thread.
      */
     Signal2<PSound, float32> volumeChanged;
 
   public:
 
+    /*! Convinient method for creating and playing sound of a given name.
+     *  @param  application Pointer to application.
+     *  @param  name        Sound name to play.
+     *  @param  repeatCount Number of time sound should be repeated.
+     *  @param  groupName   Name of the resource group.
+     *  @return If successful, returns created sound.
+     */
+    static PSound CreateAndPlay(Application* application, const String& name, s32 repeatCount = 0, const String& groupName = "");
+
+  public:
+
     /*! Constructs object. */
-    EGEResult construct();
-    /*! Updates object. */
-    void update(const Time& time);
-    /*! Returns name. */
-    const String& name() const { return m_name; }
+    virtual EGEResult construct() = 0;
     /*! Sets pitch value. */
-    void setPitch(float32 value);
+    virtual void setPitch(float32 value) = 0;
     /*! Returns pitch value. */
-    inline float32 pitch() const { return m_pitch; }
-    /*! Sets repeat count. */
-    void setRepeatCount(s32 count);
-    /*! Returns number of repeats left. */
-    s32 repeatsLeft() const { return m_repeatsLeft; }
-    /*! Returns codec. */
-    inline AudioCodec* codec() const { return m_codec; }
+    virtual float32 pitch() const = 0;
     /*! Sets volume. */
-    void setVolume(float32 volume);
+    virtual void setVolume(float32 volume) = 0;
     /*! Returns current volume. */
-    inline float32 volume() const { return m_volume; }
-    /*! Adds sound effect. 
+    virtual float32 volume() const = 0;
+    
+    /*! Starts playback. 
+     *  @param repeatCount  Number of time the playback should be repeated. Negative for infinite number of repetitions.
+     *  @return EGE_SUCCESS on success. EGE_ERROR_ALREADY_EXISTS is returned when sound is already being played.
+     *  @note If sound was paused, repeatCount is not taken into account.
+     */
+    virtual EGEResult play(s32 repeatCount = 0) = 0;
+    /*! Returns TRUE if sound is being played. */
+    virtual bool isPlaying() const = 0;
+    /*! Returns TRUE if sound is paused. */
+    virtual bool isPaused() const = 0;
+    /*! Stops playback. */
+    virtual void stop() = 0;
+    /*! Pauses the playback. */
+    virtual void pause() = 0;
+
+    /*! Updates object. */
+    virtual void update(const Time& time);
+
+    /*! Attaches effect to sound. 
+     *  @param  effect  Effect to attach to sound.
+     *  @return TRUE if attached successfully.
      *  @note Effect is removed when finished.
      */
     bool addEffect(PSoundEffect effect);
     /*! Returns list of sound effects of a given type. */
     SoundEffectList effects(u32 uid) const;
 
-  private:
+    /*! Returns name. */
+    const String& name() const;
 
+  protected:
+
+    /*! Constructor available only for actual implementations. */
+    Sound(Application* app, const String& name, PDataBuffer& data);
     /*! Notifies sound has finished playback. */
     void notifyFinished();
     /*! Notifies sound has stopped playback. */
@@ -82,27 +112,24 @@ class Sound : public Object
     /*! Updates sound effects. */
     void updateSoundEffects(const Time& time);
 
-  private:
+  protected:
 
-    EGE_DECLARE_PRIVATE_IMPLEMENTATION(Sound);
+    /*! Audio codec. */
+    AudioCodec* m_codec;
+
+  private:
 
     /*! Name. */
     String m_name;
-    /*! Pitch value. Each reduction by 50% repesents 1 octave reduction. Each doubling represents 1 octave increase. */
-    float32 m_pitch;
-    /*! Number of repeats left. */
-    s32 m_repeatsLeft;
-    /*! Audio codec. */
-    AudioCodec* m_codec;
-    /*! Volume in [0-1] range. */
-    float32 m_volume;
-    /*! List of all sound effects attached. */
-    SoundEffectList m_effects;
     /*! Data buffer. */
     PDataBuffer m_data;
+    /*! List of attached effects. */
+    SoundEffectList m_effects;
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+typedef List<PSound> SoundList;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_SOUND_H
+#endif // EGE_CORE_AUDIO_SOUND_H
