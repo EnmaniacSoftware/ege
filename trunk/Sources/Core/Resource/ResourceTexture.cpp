@@ -64,6 +64,7 @@ ResourceTexture::~ResourceTexture()
 
   if ((NULL != app()->graphics()) && (NULL != app()->graphics()->hardwareResourceProvider()))
   {
+    egeDebug() << "Disconnecting" << group()->name() << "for" << m_resourceRequestId;
     ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
   }
 }
@@ -177,9 +178,8 @@ EGEResult ResourceTexture::create2D()
   m_resourceRequestId = app()->graphics()->hardwareResourceProvider()->requestCreateTexture2D(name(), image);
 
   // connect for notification
-  egeDebug() << "Pre con";
+  egeDebug() << "Awaiting" << group()->name() << "for" << m_resourceRequestId;
   ege_connect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
-  egeDebug() << "Posy con";
 
   return EGE_SUCCESS;
 }
@@ -214,6 +214,7 @@ void ResourceTexture::onRequestComplete(u32 handle, PObject object)
     m_texture = object;
 
     // disconnect
+    egeDebug() << "Aquired" << group()->name() << "for" << m_resourceRequestId;
     ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
     m_resourceRequestId = 0;
 

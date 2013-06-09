@@ -106,10 +106,11 @@ void RenderSystem::update()
         // signal
         emit requestComplete(request.id, texture);
 
-        if (texture.object()->referenceCount() == 1)
+        // check if no one interested so far
+        if (1 == texture.object()->referenceCount())
         {
-          // some one didnt consumed ???
-          int a = 1;
+          // delete it
+          destroyTexture2D(texture);
         }
       }
       else if (REQUEST_DESTROY_TEXTURE_2D == request.type)
