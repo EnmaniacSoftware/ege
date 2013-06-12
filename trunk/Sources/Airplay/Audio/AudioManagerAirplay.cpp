@@ -1,6 +1,6 @@
 #include "Core/Application/Application.h"
 #include "Airplay/Audio/AudioManagerAirplay.h"
-#include "Airplay/Audio/SoundAirplay.h"
+#include "Airplay/Audio/SoundOpenAirplay.h"
 #include "Core/Audio/Sound.h"
 #include "EGEEvent.h"
 #include "EGEDebug.h"
@@ -58,7 +58,7 @@ EGEResult AudioManagerAirplay::construct()
     // error!
     return EGE_ERROR;
   }
-  
+
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ void AudioManagerAirplay::update(const Time& time)
   // go thru all sounds
   for (SoundList::iterator it = m_sounds.begin(); it != m_sounds.end();)
   {
-    SoundAirplay* sound = ege_cast<SoundAirplay*>(*it);
+    SoundOpenAirplay* sound = ege_cast<SoundOpenAirplay*>(*it);
 
     // update sound
     sound->update(time);
@@ -115,7 +115,7 @@ bool AudioManagerAirplay::isEnabled() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PSound AudioManagerAirplay::createSound(const String& name, PDataBuffer& data) const
 {
-  SoundAirplay* object = ege_new SoundAirplay(const_cast<AudioManagerAirplay*>(this), name, data);
+  SoundOpenAirplay* object = ege_new SoundOpenAirplay(const_cast<AudioManagerAirplay*>(this), name, data);
   if ((NULL == object) || (EGE_SUCCESS != object->construct()))
   {
     // error!
@@ -143,28 +143,5 @@ void AudioManagerAirplay::onEventRecieved(PEvent event)
       }
       break;
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult AudioManagerAirplay::requestPlay(PSound sound)
-{
-  // just add sound into the pool for updating
-  // NOTE: This method is only called from Sound itself and all logic is done there
-  m_sounds.push_back(sound);
-
-  return EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void AudioManagerAirplay::requestStop(PSound sound)
-{
-  EGE_UNUSED(sound);
-  
-  // no need to do anything
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void AudioManagerAirplay::requestPause(PSound sound)
-{
-  EGE_UNUSED(sound);
-
-  // no need to do anything
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

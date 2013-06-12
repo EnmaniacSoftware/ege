@@ -76,22 +76,22 @@ class SoundOpenAL : public Sound
      *  @return TRUE if successfully started.
      *  @note This is for AudioManager use.
      */
-    bool doPlay(ALuint channel);
+    virtual bool doPlay(ALuint channel);
     /*! Stop playback.
      *  @return TRUE if successfully stopped.
      *  @note This is for AudioManager use.
      */
-    bool doStop();
+    virtual bool doStop();
     /*! Pauses playback. 
      *  @return TRUE if successfully paused.
      *  @note This is for AudioManager use.
      */
-    bool doPause();
+    virtual bool doPause();
     /*! Resumes playback. 
      *  @return TRUE if successfully resumed.
      *  @note This is for AudioManager use.
      */
-    bool doResume();
+    virtual bool doResume();
 
   protected:
 
