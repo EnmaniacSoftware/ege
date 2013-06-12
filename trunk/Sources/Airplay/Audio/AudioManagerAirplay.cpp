@@ -1,26 +1,30 @@
-#if EGE_AUDIO_AIRPLAY && !EGE_AIRPLAY_AUDIO_SOFTWARE
-
 #include "Core/Application/Application.h"
-#include "Airplay/Audio/AudioManagerAirplay_p.h"
-#include "Airplay/Audio/SoundAirplay_p.h"
+#include "Airplay/Audio/AudioManagerAirplay.h"
+#include "Airplay/Audio/SoundAirplay.h"
+#include "Core/Audio/Sound.h"
+#include "EGEEvent.h"
+#include "EGEDebug.h"
 #include <s3eSound.h>
 #include <s3eAudio.h>
 #include <s3e.h>
 #include <s3eIOSAudioRoute.h>
 #include <s3eIOSBackgroundAudio.h>
-#include <EGEAudio.h>
-#include <EGEDebug.h>
-#include <EGEMath.h>
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static s16 l_emptySoundSampleData[1];
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(AudioManagerPrivate)
-EGE_DEFINE_DELETE_OPERATORS(AudioManagerPrivate)
+EGE_DEFINE_NEW_OPERATORS(AudioManagerAirplay)
+EGE_DEFINE_DELETE_OPERATORS(AudioManagerAirplay)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base)
+AudioManagerAirplay::AudioManagerAirplay(Application* app) : Object(app),
+                                                             IAudioManagerBase(),
+                                                             IAudioManager(),
+                                                             m_state(IAudioManager::StateNone),
+                                                             m_enabled(true)
+
+
 {
   // NOTE: we set an empty sound to be played here so Airplay sound system gets initialized
   l_emptySoundSampleData[0] = 0;
@@ -41,95 +45,126 @@ AudioManagerPrivate::AudioManagerPrivate(AudioManager* base) : m_d(base)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioManagerPrivate::~AudioManagerPrivate()
+AudioManagerAirplay::~AudioManagerAirplay()
 {
+  app()->eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Constructs object. */
-EGEResult AudioManagerPrivate::construct()
+EGEResult AudioManagerAirplay::construct()
 {
+  // subscribe for event notifications
+  if ( ! app()->eventManager()->addListener(this))
+  {
+    // error!
+    return EGE_ERROR;
+  }
+  
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void AudioManagerPrivate::update(const Time& time)
+void AudioManagerAirplay::update(const Time& time)
 {
   // go thru all sounds
-  // NOTE: no const iterator due to GCC compiler complaints
-  for (AudioManager::SoundList::iterator it = d_func()->m_sounds.begin(); it != d_func()->m_sounds.end();)
+  for (SoundList::iterator it = m_sounds.begin(); it != m_sounds.end();)
   {
-    const PSound& sound = *it;
-
-    //egeDebug()  << "Updating sound" << sound->name();
-
-    // check if sound is stopped
-    if (isStopped(sound))
-    {
-      d_func()->m_sounds.erase(it++);
-      continue;
-    }
+    SoundAirplay* sound = ege_cast<SoundAirplay*>(*it);
 
     // update sound
     sound->update(time);
-    ++it;
+
+    // check if sound is stopped
+    if (sound->isStopped())
+    {
+      // remove from list
+      it = m_sounds.erase(it);
+    }
+    else
+    {
+      ++it;
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult AudioManagerPrivate::play(const PSound& sound)
+void AudioManagerAirplay::setEnable(bool set)
 {
-  EGEResult result = EGE_ERROR;
-
-  // try to start
-  if (EGE_SUCCESS == (result = sound->p_func()->play()))
+  if (m_enabled != set)
   {
-    // connect
-    ege_connect(sound, stopped, d_func(), AudioManager::onStopped);
+    // check if disabling
+    if ( ! set)
+    {
+      // queue all currently played sounds for stop
+      for (SoundList::iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
+      {
+        PSound sound = *it;
 
-    // add to pool
-    d_func()->m_sounds.push_back(sound);
+        // stop
+        sound->stop();
+      }
+      m_sounds.clear();
+    }
+
+    // set flag
+    m_enabled = set;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool AudioManagerAirplay::isEnabled() const
+{
+  return m_enabled;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PSound AudioManagerAirplay::createSound(const String& name, PDataBuffer& data) const
+{
+  SoundAirplay* object = ege_new SoundAirplay(const_cast<AudioManagerAirplay*>(this), name, data);
+  if ((NULL == object) || (EGE_SUCCESS != object->construct()))
+  {
+    // error!
+    object = NULL;
   }
 
-  return result;
+  return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult AudioManagerPrivate::stop(const PSound& sound)
+IAudioManager::EState AudioManagerAirplay::state() const
 {
-  return sound->p_func()->stop();
+  return m_state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool AudioManagerPrivate::isPlaying(const PSound& sound) const
+void AudioManagerAirplay::onEventRecieved(PEvent event)
 {
-  return sound->p_func()->isPlaying();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool AudioManagerPrivate::isPlaying(const String& soundName) const
-{
-  EGE_UNUSED(soundName);
+  switch (event->id())
+  {
+    case EGE_EVENT_ID_CORE_QUIT_REQUEST:
 
-  // nothing to do, all is already done in AudioManager
-  return false;
+      if ((StateClosing != state()) && (StateClosed != state()))
+      {
+        // set state
+        m_state = IAudioManager::StateClosed;
+      }
+      break;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult AudioManagerPrivate::pause(const PSound& sound)
+EGEResult AudioManagerAirplay::requestPlay(PSound sound)
 {
-  return sound->p_func()->pause();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool AudioManagerPrivate::isPaused(const PSound& sound) const
-{
-  return sound->p_func()->isPaused();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool AudioManagerPrivate::isStopped(const PSound& sound) const
-{
-  return sound->p_func()->isStopped();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void AudioManagerPrivate::shutDown() 
-{ 
-  d_func()->m_state = AudioManager::STATE_CLOSED;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // just add sound into the pool for updating
+  // NOTE: This method is only called from Sound itself and all logic is done there
+  m_sounds.push_back(sound);
 
-EGE_NAMESPACE_END
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void AudioManagerAirplay::requestStop(PSound sound)
+{
+  EGE_UNUSED(sound);
+  
+  // no need to do anything
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void AudioManagerAirplay::requestPause(PSound sound)
+{
+  EGE_UNUSED(sound);
 
-#endif // EGE_AUDIO_AIRPLAY && !EGE_AIRPLAY_AUDIO_SOFTWARE
+  // no need to do anything
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
