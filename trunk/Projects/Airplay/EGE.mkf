@@ -129,8 +129,8 @@ files
   AudioCodecOgg.h
   AudioCodecWav.cpp
   AudioCodecWav.h
-  AudioManager.cpp
   AudioManager.h
+  AudioManagerBase.h
   AudioUtils.cpp
   AudioUtils.h
   Sound.cpp
@@ -144,10 +144,10 @@ files
 
 	["Core/Audio/Null"]
 	(../../Sources/Core/Audio/NUll)
-  AudioManagerNull_p.cpp
-  AudioManagerNull_p.h
-  SoundNull_p.cpp
-  SoundNull_p.h
+  AudioManagerNull.cpp
+  AudioManagerNull.h
+  SoundNull.cpp
+  SoundNull.h
 
 	["Core/Components"]
  	(../../Sources/Core/Components)
@@ -705,14 +705,10 @@ files
 
 	["Airplay/Audio"]
 	(../../Sources/Airplay/Audio)
-  AudioManagerAirplay_p.cpp
-  AudioManagerAirplay_p.h
-  SoundAirplay_p.cpp
-  SoundAirplay_p.h
-  AudioManagerSoftwareAirplay_p.cpp
-  AudioManagerSoftwareAirplay_p.h
-  SoundSoftwareAirplay_p.cpp
-  SoundSoftwareAirplay_p.h
+  AudioManagerAirplay.cpp
+  AudioManagerAirplay.h
+  SoundAirplay.cpp
+  SoundAirplay.h
 
 	["Airplay/Debug"]
 	(../../Sources/Airplay/Debug)

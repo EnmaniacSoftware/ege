@@ -47,6 +47,9 @@ EGEResult ApplicationPrivate::run()
     // store this loop start time
     startTime.fromMicroseconds(Timer::GetMicroseconds());
 
+    // send begining of frame event
+    emit d_func()->frameBegin();
+
     // update pointer
     s3ePointerUpdate();
 
@@ -57,7 +60,7 @@ EGEResult ApplicationPrivate::run()
     d_func()->render();
 
     // send end of frame event
-    d_func()->eventManager()->send(EGE_EVENT_ID_CORE_FRAME_END);
+    emit d_func()->frameEnd();
 
     // stat this loop end time
     endTime.fromMicroseconds(Timer::GetMicroseconds());

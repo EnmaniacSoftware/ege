@@ -36,6 +36,8 @@ class RenderWindowOGLAirplay : public RenderWindow
     virtual void showFrameBuffer() override;
     /*! Detects rendering capabilities. */
     void detectCapabilities();
+    /*! Returns TRUE if target is auto-rotated and does not need manual position recalculations. */
+    bool isAutoRotated() const;
 
   private:
 
