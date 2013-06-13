@@ -1,6 +1,11 @@
 #include "Airplay/Audio/SoundAirplay.h"
 #include "Airplay/Audio/AudioManagerAirplay.h"
+#include "Core/Audio/AudioCodecWav.h"
+#include "Core/Audio/AudioCodecMp3.h"
 #include "EGEMath.h"
+#include <s3eSound.h>
+#include <s3eAudio.h>
+#include <s3e.h>
 
 EGE_NAMESPACE
 
@@ -15,7 +20,7 @@ SoundAirplay::SoundAirplay(AudioManagerAirplay* manager, const String& name, PDa
                                                                                                   m_manager(manager),
                                                                                                   m_channel(NO_CHANNEL_ID),
                                                                                                   m_pitch(1.0f),
-                                                                                                  m_volume(0.0f)
+                                                                                                  m_volume(1.0f)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -87,14 +92,12 @@ EGEResult SoundAirplay::play(s32 repeatCount)
     // check if not playing
     if ( ! isPlaying())
     {
-      AudioCodec* codec = d_func()->codec();
-
-      const PObject& stream = codec->stream();
+      const PObject& stream = m_codec->stream();
 
       result = EGE_SUCCESS;
 
       // check if MP3 (or other supported compressed audio)
-      if (EGE_OBJECT_UID_AUDIO_CODEC_MP3 == codec->uid())
+      if (EGE_OBJECT_UID_AUDIO_CODEC_MP3 == m_codec->uid())
       {
         // process according to stream type
         switch (stream->uid())
@@ -122,12 +125,11 @@ EGEResult SoundAirplay::play(s32 repeatCount)
           m_channel = COMPRESSED_CHANNEL_ID;
 
           // connect for sound volume changes
-          ege_connect(d_func(), volumeChanged, this, SoundPrivate::onSoundVolumeChanged);
-          d_func()->setVolume(d_func()->volume());
+          s3eAudioSetInt(S3E_AUDIO_VOLUME, static_cast<int32>(S3E_AUDIO_MAX_VOLUME * volume()));
         }
       }
       // check if WAV file
-      else if (EGE_OBJECT_UID_AUDIO_CODEC_WAV == codec->uid())
+      else if (EGE_OBJECT_UID_AUDIO_CODEC_WAV == m_codec->uid())
       {
         // get free channel
         m_channel = s3eSoundGetFreeChannel();
@@ -137,20 +139,19 @@ EGEResult SoundAirplay::play(s32 repeatCount)
 
           // setup playback data
           // NOTE: first set channel frequency and then pitch as setting channel frequency modifies pitch
-          s3eSoundChannelSetInt(m_channel, S3E_CHANNEL_RATE, codec->frequency());
+          s3eSoundChannelSetInt(m_channel, S3E_CHANNEL_RATE, m_codec->frequency());
           s3eSoundChannelSetInt(m_channel, S3E_CHANNEL_PITCH, static_cast<int32>(s3eSoundChannelGetInt(m_channel, S3E_CHANNEL_PITCH) * pitch()));
 
           // play sound
           if (S3E_RESULT_ERROR == s3eSoundChannelPlay(m_channel, reinterpret_cast<int16*>(dataBuffer->data(dataBuffer->readOffset())),
-                                                      reinterpret_cast<AudioCodecWav*>(codec)->remainingSamplesCount(), repeatCount + 1, 0))
+                                                      reinterpret_cast<AudioCodecWav*>(m_codec)->remainingSamplesCount(), repeatCount + 1, 0))
           {
             // error!
             result = EGE_ERROR;
           }
 
-          // connect for sound volume changes
-          ege_connect(d_func(), volumeChanged, this, SoundPrivate::onSoundVolumeChanged);
-          d_func()->setVolume(d_func()->volume());
+          // set volume
+          s3eSoundChannelSetInt(m_channel, S3E_CHANNEL_VOLUME, static_cast<int32>(S3E_SOUND_MAX_VOLUME * volume()));
         }
         else
         {
@@ -159,11 +160,11 @@ EGEResult SoundAirplay::play(s32 repeatCount)
         }
       }
 
-      // check if success
+      // check if started successfully
       if (EGE_SUCCESS == result)
       {
-        // set state
-        setState(StatePlaying);
+        // add to managers pool
+        m_manager->requestPlay(this);
       }
     }
   }
@@ -227,6 +228,11 @@ void SoundAirplay::stop()
       // NOTE: due to nature of Airplay these are asynchronous requests rather than immediate state changes
       s3eSoundChannelStop(m_channel);
     }
+
+    // reset state
+    m_channel = NO_CHANNEL_ID;
+    m_codec->reset();
+    m_volume = 1.0f;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
