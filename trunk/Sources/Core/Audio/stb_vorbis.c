@@ -882,11 +882,6 @@ static void *setup_malloc(vorb *f, int sz)
       return p;
    }
 
-   if (sz == 384 || sz == 192 || sz == 96)
-   {
-     int a = 1;
-   }
-
    return sz ?/* MemoryManager::Malloc(sz, fileName, lineNo)*/EGE_MALLOC(sz) : NULL;
 }
 

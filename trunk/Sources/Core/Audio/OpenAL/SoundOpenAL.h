@@ -46,15 +46,15 @@ class SoundOpenAL : public Sound
   public:
 
     /*! @see Sound::construct. */
-    EGEResult construct() override;
+    virtual EGEResult construct() override;
     /*! @see Sound::update. */
-    void update(const Time& time) override;
+    virtual void update(const Time& time) override;
     /*! @see Sound::setPitch. */
     void setPitch(float32 value) override;
     /*! @see Sound::pitch. */
     float32 pitch() const override;
     /*! @see Sound::setVolume. */
-    void setVolume(float32 volume) override;
+    virtual void setVolume(float32 volume) override;
     /*! @see Sound::volume. */
     float32 volume() const override;
     /*! @see Sound::play. */
@@ -99,7 +99,11 @@ class SoundOpenAL : public Sound
      *  @param  state New state to set.
      */
     void setState(State state);
-
+    /*! Returns pointer to manager. */
+    AudioManagerOpenAL* manager() const;
+    /*! Returns repeat count. */
+    s32 repeatCount() const;
+  
   private:
 
     /*! Updates sound buffers. */

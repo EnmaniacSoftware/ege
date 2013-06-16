@@ -188,8 +188,6 @@ void RenderSystemPrivate::clearViewport(const PViewport& viewport)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::setViewport(const PViewport& viewport)
 {
-  RenderTarget* target = viewport->renderTarget();
-  
   // NOTE: auto-rotation does not affect viewports. They always works in portrait mode.
 
   Rectf actualRect = viewport->physicalRect();

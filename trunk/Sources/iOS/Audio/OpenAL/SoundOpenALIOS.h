@@ -4,6 +4,11 @@
 #include "EGE.h"
 #include "Core/Audio/OpenAL/SoundOpenAL.h"
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+@class SoundDelegate;
+@class AVAudioPlayer;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -19,8 +24,13 @@ class SoundOpenALIOS : public SoundOpenAL
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  public:
+    /*! @see SoundOpenAL::construct. */
+    EGEResult construct() override;
 
+  private:
+
+    /*! @see SoundOpenAL::update. */
+    void update(const Time& time) override;
     /*! @see SoundOpenAL::doPlay. */
     bool doPlay(ALuint channel) override;
     /*! @see SoundOpenAL::doStop. */
@@ -29,6 +39,15 @@ class SoundOpenALIOS : public SoundOpenAL
     bool doPause() override;
     /*! @see SoundOpenAL::doResume. */
     bool doResume() override;
+    /*! @see SoundOpenAL::setVolume. */
+    void setVolume(float32 volume) override;
+  
+  private:
+  
+    /*! Audio player. */
+    AVAudioPlayer* m_audioPlayer;
+    /*! Delegate. */
+    SoundDelegate* m_delegate;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

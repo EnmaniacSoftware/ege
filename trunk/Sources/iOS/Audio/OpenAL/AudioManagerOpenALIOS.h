@@ -7,6 +7,8 @@
 #include "EGE.h"
 #include "Core/Audio/OpenAL/AudioManagerOpenAL.h"
 
+EGE_NAMESPACE_BEGIN
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AudioManagerOpenALIOS : public AudioManagerOpenAL
 {
