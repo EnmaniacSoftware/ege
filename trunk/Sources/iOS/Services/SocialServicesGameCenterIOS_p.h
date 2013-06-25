@@ -3,8 +3,12 @@
 
 /*! \brief Game Center implementation for social platform. */
 
+#if EGE_SOCIAL_PLATFORM_GAMECENTER
+
 #include "EGE.h"
 #include "EGEList.h"
+#include "EGEString.h"
+#include "EGESocialServices.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -40,27 +44,24 @@ class SocialServicesPrivate
 
   private:
 
-    ///*! Authentication callback. */
-    //static void AuthenticationCallback(s3eIOSGameCenterError* error, void* userData);
-    ///*! Achievement list load callback. */
-    //static void LoadAchievementsCallback(s3eIOSGameCenterAchievementList* list);
-    ///*! Achievement save callback. */
-    //static void AchievementSaveCallback(s3eIOSGameCenterError* error);
-    ///*! Score save callback. */
-    //static void ScoreSaveCallback(s3eIOSGameCenterError* error);
-
-  private:
-
     /*! Saves next achievement from first session. */
     EGEResult saveNextAchievement();
 
   private:
 
+    /*! Game center delegate. */
+    void* m_delegate;
+    /*! Game center controller. */
+    void* m_gameCenterController;
+    /*! Last authenticated user name. */
+    String m_userId;
     /*! List of pending achievements to be saved. */
     AchievementDataList m_pendingAchievementSaveList;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // EGE_SOCIAL_PLATFORM_GAMECENTER
 
 #endif // EGE_IOS_SERVICES_SOCIALSERVICES_PRIVATE_H

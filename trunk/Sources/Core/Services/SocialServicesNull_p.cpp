@@ -1,3 +1,5 @@
+#if EGE_SOCIAL_PLATFORM_NULL
+
 #include "Core/Services/SocialServices.h"
 #include "Core/Services/SocialServicesNull_p.h"
 
@@ -51,3 +53,5 @@ EGEResult SocialServicesPrivate::showScores(const String& scoreTable)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // EGE_SOCIAL_PLATFORM_NULL

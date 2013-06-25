@@ -22,6 +22,7 @@ inline void ege_noop() {}
 // EGE_THREAD_PTHREAD
 
 // Available social platforms
+// EGE_SOCIAL_PLATFORM_NULL
 // EGE_SOCIAL_PLATFORM_GAMECENTER
 
 // Available sound APIs

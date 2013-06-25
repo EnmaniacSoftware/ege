@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4504254B16F29F6D007699A6 /* TimerIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4504254A16F29F6D007699A6 /* TimerIOS_p.mm */; };
 		451DE2E2171C94920022EE8A /* StringBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451DE2E1171C94920022EE8A /* StringBuffer.cpp */; };
+		4527A0FA176FA398006B88E0 /* GameCenterDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4527A0F9176FA398006B88E0 /* GameCenterDelegate.mm */; };
 		4536377C16F1113600B4D72F /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536352916F1113500B4D72F /* Application.cpp */; };
 		4536378B16F1113600B4D72F /* ComplexTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536354C16F1113500B4D72F /* ComplexTypes.cpp */; };
 		4536378C16F1113600B4D72F /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536354F16F1113500B4D72F /* Component.cpp */; };
@@ -241,6 +242,8 @@
 		451DE2E0171C93E00022EE8A /* StringBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringBuffer.h; sourceTree = "<group>"; };
 		451DE2E1171C94920022EE8A /* StringBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringBuffer.cpp; sourceTree = "<group>"; };
 		451DE2E3171C96190022EE8A /* EGEStringBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EGEStringBuffer.h; sourceTree = "<group>"; };
+		4527A0F8176FA398006B88E0 /* GameCenterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterDelegate.h; sourceTree = "<group>"; };
+		4527A0F9176FA398006B88E0 /* GameCenterDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameCenterDelegate.mm; sourceTree = "<group>"; };
 		4536352716F1113500B4D72F /* IAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAnimation.h; sourceTree = "<group>"; };
 		4536352916F1113500B4D72F /* Application.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Application.cpp; sourceTree = "<group>"; };
 		4536352A16F1113500B4D72F /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
@@ -1986,6 +1989,8 @@
 		45DED89316F7847E00623923 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				4527A0F8176FA398006B88E0 /* GameCenterDelegate.h */,
+				4527A0F9176FA398006B88E0 /* GameCenterDelegate.mm */,
 				45DED89416F7847E00623923 /* DeviceServicesIOS_p.h */,
 				45DED89516F7847E00623923 /* DeviceServicesIOS_p.mm */,
 				45DED89616F7847E00623923 /* PurchaseServicesAppStoreIOS_p.h */,
@@ -2263,6 +2268,7 @@
 				453902911769264800FFA73E /* SoundEffectFadeIn.cpp in Sources */,
 				453902921769264800FFA73E /* SoundEffectFadeOut.cpp in Sources */,
 				45C68FCC176A6C2B002A7F7A /* SoundDelegate.mm in Sources */,
+				4527A0FA176FA398006B88E0 /* GameCenterDelegate.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2341,6 +2347,7 @@
 					EGE_CONTAINERS_STL,
 					EGE_STRING_STL,
 					EGE_FEATURE_OPENGL_DEBUG,
+					EGE_SOCIAL_PLATFORM_GAMECENTER,
 					TIXML_USE_STL,
 				);
 				HEADER_SEARCH_PATHS = (
@@ -2374,6 +2381,7 @@
 					EGE_XML_TINYXML,
 					EGE_CONTAINERS_STL,
 					EGE_STRING_STL,
+					EGE_SOCIAL_PLATFORM_GAMECENTER,
 					TIXML_USE_STL,
 				);
 				HEADER_SEARCH_PATHS = (

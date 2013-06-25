@@ -3,6 +3,8 @@
 
 /*! \brief Null (mock) implementation for social platform. */
 
+#if EGE_SOCIAL_PLATFORM_NULL
+
 #include "EGE.h"
 
 EGE_NAMESPACE_BEGIN
@@ -40,5 +42,7 @@ class SocialServicesPrivate
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // EGE_SOCIAL_PLATFORM_NULL
 
 #endif // EGE_CORE_SERVICES_SOCIALSERVICES_PRIVATE_H

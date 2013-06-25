@@ -1,15 +1,21 @@
 #include "Core/Services/SocialServices.h"
 #include "EGEDebug.h"
 
-#ifdef EGE_SOCIAL_PLATFORM_GAMECENTER
-  #ifdef EGE_PLATFORM_AIRPLAY
+#ifdef EGE_PLATFORM_WIN32
+  #include "Core/Services/SocialServicesNull_p.h"
+#elif EGE_PLATFORM_AIRPLAY
+  #if EGE_SOCIAL_PLATFORM_GAMECENTER
     #include "Airplay/Services/SocialServicesGameCenterAirplay_p.h"
   #else
-    #error NO GAME CENTER IMPLEMENTATION AVAILABLE ?
-  #endif // EGE_PLATFORM_AIRPLAY
-#else
-  #include "Core/Services/SocialServicesNull_p.h"
-#endif // EGE_SOCIAL_PLATFORM_GAMECENTER
+    #include "Core/Services/SocialServicesNull_p.h"
+  #endif // EGE_SOCIAL_PLATFORM_GAMECENTER
+#elif EGE_PLATFORM_IOS
+  #if EGE_SOCIAL_PLATFORM_GAMECENTER
+    #include "iOS/Services/SocialServicesGameCenterIOS_p.h"
+  #else
+    #include "Core/Services/SocialServicesNull_p.h"
+  #endif // EGE_SOCIAL_PLATFORM_GAMECENTER
+#endif
 
 EGE_NAMESPACE_BEGIN
 
@@ -73,6 +79,11 @@ EGEResult SocialServices::saveScore(const String& scoreTable, s32 score)
 EGEResult SocialServices::showScores(const String& scoreTable)
 {
   return p_func()->showScores(scoreTable);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool SocialServices::isAuthenticated() const
+{
+  return m_authenticated;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

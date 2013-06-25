@@ -211,4 +211,7 @@ void SoundOpenALIOS::setVolume(float32 volume)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+void SoundOpenALIOS::setState(State state)
+{
+  SoundOpenAL::setState(state);
+}

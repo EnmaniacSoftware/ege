@@ -28,6 +28,8 @@ class RenderWindowOGLIOS : public RenderWindow, public IEventListener
     EGEResult construct(const Dictionary& params);
     /*! Returns iOS view object. */
     OGLView* view() const;
+    /*! Returns application window. */
+    UIWindow* window() const;
   
   private:
 

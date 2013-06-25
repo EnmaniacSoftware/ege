@@ -98,7 +98,7 @@ class SoundOpenAL : public Sound
     /*! Sets state. 
      *  @param  state New state to set.
      */
-    void setState(State state);
+    virtual void setState(State state);
     /*! Returns pointer to manager. */
     AudioManagerOpenAL* manager() const;
     /*! Returns repeat count. */

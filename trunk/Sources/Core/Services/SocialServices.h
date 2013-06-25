@@ -56,7 +56,9 @@ class SocialServices : public Object
     EGEResult saveScore(const String& scoreTable, s32 score);
     /*! Shows scores. */
     EGEResult showScores(const String& scoreTable);
-
+    /*! Returns TRUE if services are authenticated and ready to be used. */
+    bool isAuthenticated() const;
+  
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(SocialServices)

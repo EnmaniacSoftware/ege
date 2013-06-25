@@ -1,226 +1,273 @@
+#if EGE_SOCIAL_PLATFORM_GAMECENTER
+
+#include "EGEApplication.h"
+#include "EGEGraphics.h"
 #include "Core/Services/SocialServices.h"
 #include "iOS/Services/SocialServicesGameCenterIOS_p.h"
+#include "iOS/Services/GameCenterDelegate.h"
+#include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
 #include "EGEDebug.h"
+#import <GameKit/GameKit.h>
+#import <UIKit/UIKit.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static SocialServicesPrivate* l_instance = NULL;
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(SocialServicesPrivate)
 EGE_DEFINE_DELETE_OPERATORS(SocialServicesPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SocialServicesPrivate::SocialServicesPrivate(SocialServices* base) : m_d(base)
+SocialServicesPrivate::SocialServicesPrivate(SocialServices* base) : m_d(base),
+                                                                     m_delegate(NULL),
+                                                                     m_gameCenterController(NULL)
 {
-  // NOTE: this is due to Airplay API limitation where it is not possible to add user data to callbacks
-  //       Do not create more that one instance of this class
-  l_instance = this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SocialServicesPrivate::~SocialServicesPrivate()
 {
+  [(GameCenterDelegate*) m_delegate release];
+  m_delegate = nil;
+  
+  [(GKGameCenterViewController*) m_gameCenterController release];
+  m_gameCenterController = nil;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult SocialServicesPrivate::construct()
 {
-  // check if supported
- /* if ( ! s3eIOSGameCenterAvailable())
+  m_delegate = [[GameCenterDelegate alloc] initWithObject: this];
+  if (nil == m_delegate)
   {
     // error!
-    return EGE_ERROR_NOT_SUPPORTED;
-  }*/
-
+    return EGE_ERROR_NO_MEMORY;
+  }
+  
+  m_gameCenterController = [[GKGameCenterViewController alloc] init];
+  if (nil == m_gameCenterController)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+  
+  // set delegate
+  ((GKGameCenterViewController*) m_gameCenterController).gameCenterDelegate = (GameCenterDelegate*) m_delegate;
+  
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult SocialServicesPrivate::startAuthentication()
 {
-  // check if supported
-  /*if ( ! s3eIOSGameCenterAvailable())
-  {
-    // error!
-    return EGE_ERROR_NOT_SUPPORTED;
-  }
-
-  // check if authenticated already
-  if (s3eIOSGameCenterGetInt(S3E_IOSGAMECENTER_LOCAL_PLAYER_IS_AUTHENTICATED))
-  {
-    // done
-    // TAGE - should be emit ?
-    return EGE_SUCCESS;
-  }*/
-
+  GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
+  
   // start authentication
-  return EGE_ERROR;// (S3E_RESULT_SUCCESS == s3eIOSGameCenterAuthenticate(AuthenticationCallback, NULL)) ? EGE_SUCCESS : EGE_ERROR;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*void SocialServicesPrivate::AuthenticationCallback(s3eIOSGameCenterError* error, void* userData)
-{
-  EGEResult result = EGE_ERROR;
-
-  // map error code to framework values
-  switch (*error)
+  // NOTE: this is asynchronous call
+  localPlayer.authenticateHandler = ^(UIViewController* viewController, NSError* error)
   {
-    case S3E_IOSGAMECENTER_ERR_NONE:        result = EGE_SUCCESS; break;
-    case S3E_IOSGAMECENTER_ERR_UNSUPPORTED: result = EGE_ERROR_NOT_SUPPORTED; break;
-  }
+    // check if authentication window is required
+    if (nil != viewController)
+    {
+      // show window
+      RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(d_func()->app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
+      
+      UIWindow* window = renderWindow->window();
+      
+      // show view
+      [window.rootViewController presentViewController: viewController animated: YES completion: nil];
+    }
+    else if (localPlayer.isAuthenticated)
+    {
+      // authenticated
+      d_func()->m_authenticated = true;
 
-  egeWarning() << EGE_FUNC_INFO << *error;
+      // store user id
+      m_userId = [localPlayer.playerID UTF8String];
 
-  // store flag
-  l_instance->d_func()->m_authenticated = (EGE_SUCCESS == result);
+      egeDebug() << "User authenticated:" << m_userId;
+      
+      // emit
+      emit d_func()->authenticated(EGE_SUCCESS);
+    }
+    else
+    {
+      // cound not authenticate
+      d_func()->m_authenticated = false;
+      
+      egeWarning() << "User authentication failed.";
 
-  // emit
-  emit l_instance->d_func()->authenticated(result);
-}*/
+      // emit
+      emit d_func()->authenticated(EGE_ERROR);
+    }
+  };
+  
+  return EGE_SUCCESS;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult SocialServicesPrivate::loadAchievements()
 {
-  // check if supported
- /* if ( ! s3eIOSGameCenterAvailable())
-  {
-    // error!
-    return EGE_ERROR_NOT_SUPPORTED;
-  }
-  */
-  // request achievement list
-  return EGE_ERROR;//(S3E_RESULT_SUCCESS == s3eIOSGameCenterLoadAchievements(LoadAchievementsCallback)) ? EGE_SUCCESS : EGE_ERROR;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*void SocialServicesPrivate::LoadAchievementsCallback(s3eIOSGameCenterAchievementList* list)
-{
   EGEResult result = EGE_ERROR;
-
-  AchievementDataList achievementsList;
-
-  // map error code to framework values
-  switch (list->m_Error)
+  
+  // check if authenticated
+  if (d_func()->isAuthenticated())
   {
-    case S3E_IOSGAMECENTER_ERR_NONE: result = EGE_SUCCESS; break;
-  }
-
-  // process achievements if successful
-  if (EGE_SUCCESS == result)
-  {
-    for (int i = 0; i < list->m_AchievementCount; ++i)
+    result = EGE_SUCCESS;
+    
+    [GKAchievement loadAchievementsWithCompletionHandler:^(NSArray* achievements, NSError* error)
     {
-      AchievementData achievementData;
-      achievementData.name               = list->m_Achievements[i].m_Identifier;
-      achievementData.percentageComplete = list->m_Achievements[i].m_PercentComplete;
-
-      achievementsList.push_back(achievementData);
-    }
+      AchievementDataList achievementsList;
+      
+      EGEResult result = EGE_ERROR;
+      
+      // check if any achievements reported
+      if ((nil == error) && (nil != achievements))
+      {
+        // go thru all reported achievements
+        for (GKAchievement* achievement in achievements)
+        {
+          AchievementData data;
+         
+          data.name               = [[achievement identifier] UTF8String];
+          data.percentageComplete = static_cast<s32>([achievement percentComplete]);
+          
+          achievementsList.push_back(data);
+        }
+      }
+      
+      // emit
+      emit d_func()->achievementsLoaded(result, achievementsList);      
+    }];
+    
   }
 
-  // emit
-  emit l_instance->d_func()->achievementsLoaded(result, achievementsList);
-}*/
+  return result;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult SocialServicesPrivate::saveAchievements(const AchievementDataList& achievements)
 {
-  // check if supported
- /* if ( ! s3eIOSGameCenterAvailable())
+  EGEResult result = EGE_ERROR;
+  
+  // check if authenticated
+  if (d_func()->isAuthenticated())
   {
-    // error!
-    return EGE_ERROR_NOT_SUPPORTED;
-  }*/
+    result = EGE_SUCCESS;
 
-//  egeDebug() << "Adding" << achievements.size() << "achievements for submission";
+    // append
+    m_pendingAchievementSaveList << achievements;
 
-  // append
-  m_pendingAchievementSaveList << achievements;
-
-  // process next achievement
-  return ((m_pendingAchievementSaveList.size() == achievements.size()) && ! achievements.empty()) ? saveNextAchievement() : EGE_SUCCESS;
+    // process next achievement
+    result = ((m_pendingAchievementSaveList.size() == achievements.size()) && ! achievements.empty()) ? saveNextAchievement() : EGE_SUCCESS;
+  }
+  
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult SocialServicesPrivate::saveNextAchievement()
 {
+  EGEResult result = EGE_ERROR;
+  
   AchievementData achievementData = m_pendingAchievementSaveList.front();
   m_pendingAchievementSaveList.pop_front();
 
   egeDebug() << "Submitting achievement" << achievementData.name << "completion" << achievementData.percentageComplete;
 
-  // submit achievement
- // s3eResult result = s3eIOSGameCenterReportAchievement(achievementData.name.toAscii(), achievementData.percentageComplete, AchievementSaveCallback);
-  return EGE_SUCCESS;//(S3E_RESULT_SUCCESS == result) ? EGE_SUCCESS : EGE_ERROR;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*void SocialServicesPrivate::AchievementSaveCallback(s3eIOSGameCenterError* error)
-{
-  EGEResult result = EGE_ERROR;
+  NSString* identifier = [NSString stringWithCString: achievementData.name.c_str() encoding: NSASCIIStringEncoding];
 
-  // map error code to framework values
-  switch (*error)
+  GKAchievement* achievement = [[GKAchievement alloc] initWithIdentifier: identifier];
+  if (nil != achievement)
   {
-    case S3E_IOSGAMECENTER_ERR_NONE: result = EGE_SUCCESS; break;
-  }
-
-  // check if error
-  if (EGE_SUCCESS != result)
-  {
-    // clean up pending queue
-    l_instance->m_pendingAchievementSaveList.clear();
-
-    // emit
-    emit l_instance->d_func()->achievementsSaved(result);
-  }
-  else
-  {
-    // check if any achievement still in queue
-    if ( ! l_instance->m_pendingAchievementSaveList.empty())
+    result = EGE_SUCCESS;
+    
+    achievement.percentComplete = static_cast<float>(achievementData.percentageComplete);
+    [achievement reportAchievementWithCompletionHandler:^(NSError* error)
     {
-      // proceed
-      if (EGE_SUCCESS != (result = l_instance->saveNextAchievement()))
+      EGEResult result = EGE_ERROR;
+      
+      // check if error
+      if (nil != error)
       {
         // clean up pending queue
-        l_instance->m_pendingAchievementSaveList.clear();
-
+        m_pendingAchievementSaveList.clear();
+        
         // emit
-        emit l_instance->d_func()->achievementsSaved(result);
+        emit d_func()->achievementsSaved(result);
       }
-    }
-    else
-    {
-      // done, emit
-      emit l_instance->d_func()->achievementsSaved(result);
-    }
+      else
+      {
+        // check if any achievement still in queue
+        if ( ! m_pendingAchievementSaveList.empty())
+        {
+          // proceed
+          if (EGE_SUCCESS != (result = saveNextAchievement()))
+          {
+            // clean up pending queue
+            m_pendingAchievementSaveList.clear();
+            
+            // emit
+            emit d_func()->achievementsSaved(result);
+          }
+        }
+        else
+        {
+          // done, emit
+          emit d_func()->achievementsSaved(result);
+        }
+      }
+    }];
   }
-}*/
+  
+  return result;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult SocialServicesPrivate::saveScore(const String& scoreTable, s32 score)
 {
-  // check if supported
-/*  if ( ! s3eIOSGameCenterAvailable())
+  EGEResult result = EGE_SUCCESS;
+  
+  // check if authenticated
+  if (d_func()->isAuthenticated())
   {
-    // error!
-    return EGE_ERROR_NOT_SUPPORTED;
-  }*/
-
-  // submit achievement
-  //s3eResult result = s3eIOSGameCenterReportScore(score, scoreTable.toAscii(), ScoreSaveCallback);
-  return EGE_ERROR;//(S3E_RESULT_SUCCESS == result) ? EGE_SUCCESS : EGE_ERROR;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*void SocialServicesPrivate::ScoreSaveCallback(s3eIOSGameCenterError* error)
-{
-  EGEResult result = EGE_ERROR;
-
-  // map error code to framework values
-  switch (*error)
-  {
-    case S3E_IOSGAMECENTER_ERR_NONE: result = EGE_SUCCESS; break;
+    result = EGE_SUCCESS;
+    
+    NSString* category = [NSString stringWithCString: scoreTable.c_str() encoding: NSASCIIStringEncoding];
+    
+    GKScore* scoreReporter = [[GKScore alloc] initWithCategory: category];
+    scoreReporter.value = score;
+    scoreReporter.context = 0;
+  
+    [scoreReporter reportScoreWithCompletionHandler:^(NSError* error)
+    {
+      EGEResult result = (nil == error) ? EGE_SUCCESS : EGE_ERROR;
+      
+      // emit
+      emit d_func()->scoreSaved(result);
+    }];
   }
 
-  // emit
-  emit l_instance->d_func()->scoreSaved(result);
-}*/
+  return result;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult SocialServicesPrivate::showScores(const String& scoreTable)
 {
-  //s3eResult result = s3eIOSGameCenterLeaderboardShowGUI(scoreTable.toAscii(), S3E_IOSGAMECENTER_PLAYER_SCOPE_ALL_TIME);
-  return EGE_ERROR;//(S3E_RESULT_SUCCESS == result) ? EGE_SUCCESS : EGE_ERROR;
+  EGEResult result = EGE_ERROR;
+
+  // check if authenticated
+  if (d_func()->isAuthenticated())
+  {
+    result = EGE_SUCCESS;
+
+    NSString* leaderboardID = [NSString stringWithCString: scoreTable.c_str() encoding: NSASCIIStringEncoding];
+
+    // retrieve root view controller
+    UIViewController* rootController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+
+    ((GKGameCenterViewController*) m_gameCenterController).viewState            = GKGameCenterViewControllerStateLeaderboards;
+    ((GKGameCenterViewController*) m_gameCenterController).leaderboardTimeScope = GKLeaderboardTimeScopeAllTime;
+    ((GKGameCenterViewController*) m_gameCenterController).leaderboardCategory  = leaderboardID;
+ 
+    // show view
+    [rootController presentViewController: (GKGameCenterViewController*) m_gameCenterController animated: YES completion: nil];
+  }
+  
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // EGE_SOCIAL_PLATFORM_GAMECENTER

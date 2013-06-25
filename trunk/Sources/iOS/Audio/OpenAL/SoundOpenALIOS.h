@@ -26,6 +26,8 @@ class SoundOpenALIOS : public SoundOpenAL
 
     /*! @see SoundOpenAL::construct. */
     EGEResult construct() override;
+    /*! @see SoundOpenAL::setState. */
+    void setState(State state) override;
 
   private:
 
