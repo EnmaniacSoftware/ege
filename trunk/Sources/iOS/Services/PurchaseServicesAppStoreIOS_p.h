@@ -3,8 +3,12 @@
 
 /*! \brief App Store implementation for social platform. */
 
+#if EGE_PURCHASE_SERVICES_APPSTORE
+
 #include "EGE.h"
 #include "EGEList.h"
+#include "EGEString.h"
+#include "EGEStringList.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -31,11 +35,35 @@ class PurchaseServicesPrivate
     EGEResult purchase(const String& product);
     /*! Restores all purchases made for so far. */
     EGEResult restoreAll();
-
+    /*! Requests processing of next pending purchese. */
+    void processNextPurchase();
+    /*! Called when purchasing of item is done.
+     *  @param  result      Result of purchase.
+     *  @param  productName Product purchased.
+     */
+    void onProductPurchased(EGEResult result, const String& productName);
+    /*! Called when restoration of item is done.
+     *  @param  result      Result of restoration.
+     *  @param  productName Product restored.
+     */
+    void onProductRestored(EGEResult result, const String& productName);
+  
   private:
+  
+    /*! Returns TRUE if purchasing is enabled. */
+    bool isAvailable() const;
+  
+  private:
+  
+    /*! Transaction observer. */
+    void* m_observer;
+    /*! Purchase pending pool. */
+    StringList m_pendingPurchases;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // EGE_PURCHASE_SERVICES_APPSTORE
 
 #endif // EGE_IOS_SERVICES_PURCHASESERVICES_PRIVATE_H

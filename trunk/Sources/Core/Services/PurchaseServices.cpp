@@ -1,15 +1,12 @@
 #include "Core/Services/PurchaseServices.h"
+#include "Core/Services/PurchaseServicesNull_p.h"
 #include "EGEDebug.h"
 
-#ifdef EGE_PURCHASES_APPSTORE
-  #ifdef EGE_PLATFORM_AIRPLAY
-    #include "Airplay/Services/PurchaseServicesAppStoreAirplay_p.h"
-  #else
-    #error NO APP STORE IMPLEMENTATION AVAILABLE ?
-  #endif // EGE_PLATFORM_AIRPLAY
-#else
-  #include "Core/Services/PurchaseServicesNull_p.h"
-#endif // EGE_SOCIAL_PLATFORM_GAMECENTER
+#if EGE_PLATFORM_AIRPLAY
+  #include "Airplay/Services/PurchaseServicesAppStoreAirplay_p.h"
+#elif EGE_PLATFORM_IOS
+  #include "iOS/Services/PurchaseServicesAppStoreIOS_p.h"
+#endif // EGE_PLATFORM_AIRPLAY
 
 EGE_NAMESPACE_BEGIN
 

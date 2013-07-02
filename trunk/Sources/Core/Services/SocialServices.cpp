@@ -1,21 +1,12 @@
 #include "Core/Services/SocialServices.h"
+#include "Core/Services/SocialServicesNull_p.h"
 #include "EGEDebug.h"
 
-#ifdef EGE_PLATFORM_WIN32
-  #include "Core/Services/SocialServicesNull_p.h"
-#elif EGE_PLATFORM_AIRPLAY
-  #if EGE_SOCIAL_PLATFORM_GAMECENTER
-    #include "Airplay/Services/SocialServicesGameCenterAirplay_p.h"
-  #else
-    #include "Core/Services/SocialServicesNull_p.h"
-  #endif // EGE_SOCIAL_PLATFORM_GAMECENTER
+#if EGE_PLATFORM_AIRPLAY
+  #include "Airplay/Services/SocialServicesGameCenterAirplay_p.h"
 #elif EGE_PLATFORM_IOS
-  #if EGE_SOCIAL_PLATFORM_GAMECENTER
-    #include "iOS/Services/SocialServicesGameCenterIOS_p.h"
-  #else
-    #include "Core/Services/SocialServicesNull_p.h"
-  #endif // EGE_SOCIAL_PLATFORM_GAMECENTER
-#endif
+  #include "iOS/Services/SocialServicesGameCenterIOS_p.h"
+#endif // EGE_PLATFORM_AIRPLAY
 
 EGE_NAMESPACE_BEGIN
 

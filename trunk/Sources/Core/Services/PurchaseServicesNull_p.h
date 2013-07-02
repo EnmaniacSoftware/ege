@@ -3,6 +3,8 @@
 
 /*! \brief Null (mock) implementation for purchases. */
 
+#if EGE_PURCHASE_SERVICES_NULL
+
 #include "EGE.h"
 
 EGE_NAMESPACE_BEGIN
@@ -34,5 +36,7 @@ class PurchaseServicesPrivate
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // EGE_PURCHASE_SERVICES_NULL
 
 #endif // EGE_CORE_SERVICES_PURCHASESERVICESS_PRIVATE_H

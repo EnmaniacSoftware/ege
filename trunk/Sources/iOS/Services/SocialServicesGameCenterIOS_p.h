@@ -3,7 +3,7 @@
 
 /*! \brief Game Center implementation for social platform. */
 
-#if EGE_SOCIAL_PLATFORM_GAMECENTER
+#if EGE_SOCIAL_SERVICES_GAMECENTER
 
 #include "EGE.h"
 #include "EGEList.h"
@@ -62,6 +62,6 @@ class SocialServicesPrivate
 
 EGE_NAMESPACE_END
 
-#endif // EGE_SOCIAL_PLATFORM_GAMECENTER
+#endif // EGE_SOCIAL_SERVICES_GAMECENTER
 
 #endif // EGE_IOS_SERVICES_SOCIALSERVICES_PRIVATE_H

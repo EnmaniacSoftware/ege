@@ -1,3 +1,5 @@
+#if EGE_PURCHASE_SERVICES_NULL
+
 #include "Core/Services/PurchaseServices.h"
 #include "Core/Services/PurchaseServicesNull_p.h"
 
@@ -33,3 +35,5 @@ EGEResult PurchaseServicesPrivate::restoreAll()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // EGE_PURCHASE_SERVICES_NULL

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4504254B16F29F6D007699A6 /* TimerIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4504254A16F29F6D007699A6 /* TimerIOS_p.mm */; };
+		4505E1A2177A27E600D6D5EE /* AppStoreTransactionObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4505E1A1177A27E600D6D5EE /* AppStoreTransactionObserver.mm */; };
 		451DE2E2171C94920022EE8A /* StringBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451DE2E1171C94920022EE8A /* StringBuffer.cpp */; };
 		4527A0FA176FA398006B88E0 /* GameCenterDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4527A0F9176FA398006B88E0 /* GameCenterDelegate.mm */; };
 		4536377C16F1113600B4D72F /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536352916F1113500B4D72F /* Application.cpp */; };
@@ -238,6 +239,8 @@
 /* Begin PBXFileReference section */
 		4504254916F29F6D007699A6 /* TimerIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerIOS_p.h; sourceTree = "<group>"; };
 		4504254A16F29F6D007699A6 /* TimerIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimerIOS_p.mm; sourceTree = "<group>"; };
+		4505E1A0177A27E600D6D5EE /* AppStoreTransactionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppStoreTransactionObserver.h; sourceTree = "<group>"; };
+		4505E1A1177A27E600D6D5EE /* AppStoreTransactionObserver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppStoreTransactionObserver.mm; sourceTree = "<group>"; };
 		451DE2DF171C8FC70022EE8A /* Serializable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Serializable.h; sourceTree = "<group>"; };
 		451DE2E0171C93E00022EE8A /* StringBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringBuffer.h; sourceTree = "<group>"; };
 		451DE2E1171C94920022EE8A /* StringBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringBuffer.cpp; sourceTree = "<group>"; };
@@ -912,7 +915,6 @@
 		4536352516F1113500B4D72F /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				453902661769264800FFA73E /* Audio */,
 				4536354C16F1113500B4D72F /* ComplexTypes.cpp */,
 				4536354D16F1113500B4D72F /* ComplexTypes.h */,
 				4536355D16F1113500B4D72F /* ConfigParams.h */,
@@ -923,6 +925,7 @@
 				4536359616F1113500B4D72F /* FeatureList.txt */,
 				4536352616F1113500B4D72F /* Animation */,
 				4536352816F1113500B4D72F /* Application */,
+				453902661769264800FFA73E /* Audio */,
 				4536354E16F1113500B4D72F /* Components */,
 				4536355E16F1113500B4D72F /* Containers */,
 				4536356616F1113500B4D72F /* Crypto */,
@@ -1989,6 +1992,8 @@
 		45DED89316F7847E00623923 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				4505E1A0177A27E600D6D5EE /* AppStoreTransactionObserver.h */,
+				4505E1A1177A27E600D6D5EE /* AppStoreTransactionObserver.mm */,
 				4527A0F8176FA398006B88E0 /* GameCenterDelegate.h */,
 				4527A0F9176FA398006B88E0 /* GameCenterDelegate.mm */,
 				45DED89416F7847E00623923 /* DeviceServicesIOS_p.h */,
@@ -2269,6 +2274,7 @@
 				453902921769264800FFA73E /* SoundEffectFadeOut.cpp in Sources */,
 				45C68FCC176A6C2B002A7F7A /* SoundDelegate.mm in Sources */,
 				4527A0FA176FA398006B88E0 /* GameCenterDelegate.mm in Sources */,
+				4505E1A2177A27E600D6D5EE /* AppStoreTransactionObserver.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2347,7 +2353,8 @@
 					EGE_CONTAINERS_STL,
 					EGE_STRING_STL,
 					EGE_FEATURE_OPENGL_DEBUG,
-					EGE_SOCIAL_PLATFORM_GAMECENTER,
+					EGE_SOCIAL_SERVICES_GAMECENTER,
+					EGE_PURCHASE_SERVICES_APPSTORE,
 					TIXML_USE_STL,
 				);
 				HEADER_SEARCH_PATHS = (
@@ -2381,7 +2388,8 @@
 					EGE_XML_TINYXML,
 					EGE_CONTAINERS_STL,
 					EGE_STRING_STL,
-					EGE_SOCIAL_PLATFORM_GAMECENTER,
+					EGE_SOCIAL_SERVICES_GAMECENTER,
+					EGE_PURCHASE_SERVICES_APPSTORE,
 					TIXML_USE_STL,
 				);
 				HEADER_SEARCH_PATHS = (

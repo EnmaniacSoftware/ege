@@ -1,4 +1,4 @@
-#if EGE_SOCIAL_PLATFORM_GAMECENTER
+#if EGE_SOCIAL_SERVICES_GAMECENTER
 
 #include "EGEApplication.h"
 #include "EGEGraphics.h"
@@ -270,4 +270,4 @@ EGEResult SocialServicesPrivate::showScores(const String& scoreTable)
 
 EGE_NAMESPACE_END
 
-#endif // EGE_SOCIAL_PLATFORM_GAMECENTER
+#endif // EGE_SOCIAL_SERVICES_GAMECENTER

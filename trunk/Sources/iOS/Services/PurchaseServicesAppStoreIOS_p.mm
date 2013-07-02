@@ -1,8 +1,12 @@
+#if EGE_PURCHASE_SERVICES_APPSTORE
+
 #include "Core/Services/PurchaseServices.h"
 #include "iOS/Services/PurchaseServicesAppStoreIOS_p.h"
 #include "EGEMath.h"
 #include "EGEMemory.h"
 #include "EGEDebug.h"
+#import <StoreKit/StoreKit.h>
+#import "iOS/Services/AppStoreTransactionObserver.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -10,123 +14,129 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(PurchaseServicesPrivate)
 EGE_DEFINE_DELETE_OPERATORS(PurchaseServicesPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PurchaseServicesPrivate::PurchaseServicesPrivate(PurchaseServices* base) : m_d(base)
+PurchaseServicesPrivate::PurchaseServicesPrivate(PurchaseServices* base) : m_d(base),
+                                                                           m_observer(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PurchaseServicesPrivate::~PurchaseServicesPrivate()
 {
-  //s3eIOSAppStoreBillingStop();
+  [[SKPaymentQueue defaultQueue] removeTransactionObserver: (AppStoreTransactionObserver*) m_observer];
+  
+  [(AppStoreTransactionObserver*) m_observer release];
+  m_observer = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult PurchaseServicesPrivate::construct()
 {
-  // check if supported
- /* if ( ! s3eIOSAppStoreBillingAvailable())
+  // create transaction observer
+  m_observer = [[AppStoreTransactionObserver alloc] initWithObject: this];
+  if (nil == m_observer)
   {
     // error!
-    return EGE_ERROR_NOT_SUPPORTED;
-  }*/
-
-  // register callbacks
-  return EGE_ERROR;//(S3E_RESULT_SUCCESS == s3eIOSAppStoreBillingStart(ProductInfoCallback, TransactionUpdateCallback, this)) ? EGE_SUCCESS : EGE_ERROR;
+    return EGE_ERROR_NO_MEMORY;
+  }
+  
+  // register transaction observer
+  [[SKPaymentQueue defaultQueue] addTransactionObserver: (AppStoreTransactionObserver*) m_observer];
+ 
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*void PurchaseServicesPrivate::ProductInfoCallback(s3eProductInformation* productInfo, void* userData)
+bool PurchaseServicesPrivate::isAvailable() const
 {
-  PurchaseServicesPrivate* me = static_cast<PurchaseServicesPrivate*>(userData);
-
-  // process accroding to status
-  switch (productInfo->m_ProductStoreStatus)
-  {
-    case S3E_PRODUCT_STORE_STATUS_RESTORE_COMPLETED:
-
-      // emit
-      emit me->d_func()->restored(EGE_SUCCESS);
-      break;
-
-    case S3E_PRODUCT_STORE_STATUS_RESTORE_FAILED:
-
-      // emit
-      emit me->d_func()->restored(EGE_ERROR);
-      break;
-  }
+  return (YES == [SKPaymentQueue canMakePayments]);
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PurchaseServicesPrivate::TransactionUpdateCallback(s3ePaymentTransaction* transaction, void* userData)
-{
-  PurchaseServicesPrivate* me = static_cast<PurchaseServicesPrivate*>(userData);
-
-  EGEResult result = EGE_ERROR;
-
-  egeDebug() << "TRANSACTION UPDATE" << transaction->m_TransactionStatus;
-
-  // process accroding to status
-  switch (transaction->m_TransactionStatus)
-  {
-    case S3E_PAYMENT_STATUS_PENDING:
-
-      result = EGE_WAIT;
-      break;
-
-    case S3E_PAYMENT_STATUS_PURCHASED:
-    case S3E_PAYMENT_STATUS_RESTORED:
-
-      result = EGE_SUCCESS;
-      break;
-
-    case S3E_PAYMENT_STATUS_FAILED_CLIENT_INVALID:
-
-      result = EGE_ERROR;
-      break;
-
-    case S3E_PAYMENT_STATUS_FAILED_PAYMENT_CANCELLED:
-
-      result = EGE_ERROR;
-      break;
-
-    case S3E_PAYMENT_STATUS_FAILED_PAYMENT_INVALID:
-
-      result = EGE_ERROR;
-      break;
-
-    case S3E_PAYMENT_STATUS_FAILED_PAYMENT_NOT_ALLOWED:
-
-      result = EGE_ERROR;
-      break;
-
-    default:
-
-      result = EGE_ERROR;
-      break;
-  }
-
-  // emit if done
-  if (EGE_WAIT != result)
-  {
-    // emit
-    emit me->d_func()->purchased(result, transaction->m_Request->m_ProductID);
-  }
-}*/
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult PurchaseServicesPrivate::purchase(const String& product)
 {
+  EGEResult result = EGE_ERROR;
+  
   egeDebug() << "Initiating purchase of" << product;
 
-/*  s3ePaymentRequest paymentRequest;
-  
-  EGE_MEMCPY(paymentRequest.m_ProductID, product.toAscii(), Math::Min(product.length() + 1, sizeof (paymentRequest.m_ProductID)));
-  paymentRequest.m_Quantity  = 1;
-  */
-  return EGE_ERROR;//(S3E_RESULT_SUCCESS == s3eIOSAppStoreBillingRequestPayment(&paymentRequest)) ?  EGE_SUCCESS : EGE_ERROR;
+  if (isAvailable())
+  {
+    result = EGE_SUCCESS;
+    
+    // add to pool
+    m_pendingPurchases << product;
+    
+    // check if first item added
+    if (1 == m_pendingPurchases.size())
+    {
+      // process immediately
+      processNextPurchase();
+    }
+  }
+
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult PurchaseServicesPrivate::restoreAll()
 {
+  EGEResult result = EGE_ERROR;
+  
   egeDebug() << "Initiating purchase restoration";
+  
+  if (isAvailable())
+  {
+    result = EGE_SUCCESS;
 
-  return EGE_ERROR;//(S3E_RESULT_SUCCESS == s3eIOSAppStoreBillingRestoreCompletedTransactions()) ?  EGE_SUCCESS : EGE_ERROR;
+    [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
+  }
+  
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void PurchaseServicesPrivate::processNextPurchase()
+{
+  const String product = m_pendingPurchases.front();
+  
+  // convert product name
+  NSString* identifier = [NSString stringWithCString: product.c_str() encoding: NSASCIIStringEncoding];
+  
+  // check if purchase data is NOT available yet
+  SKProduct* registeredProduct = [(AppStoreTransactionObserver*) m_observer findProduct: identifier];
+  if (nil == registeredProduct)
+  {
+    // request purchase data
+    SKProductsRequest* request = [[SKProductsRequest alloc] initWithProductIdentifiers: [NSSet setWithObject: identifier]];
+    request.delegate = (AppStoreTransactionObserver*) m_observer;
+    [request start];
+  }
+  else
+  {
+    // purchase
+    // NOTE: use SKMutablePayment for quantity > 1
+    SKPayment* payment = [SKPayment paymentWithProduct: registeredProduct];
+    [[SKPaymentQueue defaultQueue] addPayment: payment];
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void PurchaseServicesPrivate::onProductPurchased(EGEResult result, const String& productName)
+{
+  EGE_ASSERT(m_pendingPurchases.front() == productName);
+  
+  // remove from pool
+  m_pendingPurchases.pop_front();
+  
+  // emit
+  emit d_func()->purchased(result, productName);
+  
+  // check if more items to purchase
+  if ( ! m_pendingPurchases.empty())
+  {
+    processNextPurchase();
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void PurchaseServicesPrivate::onProductRestored(EGEResult result, const String& productName)
+{
+  // emit
+  emit d_func()->purchased(result, productName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+
+#endif // EGE_PURCHASE_SERVICES_APPSTORE

@@ -22,8 +22,12 @@ inline void ege_noop() {}
 // EGE_THREAD_PTHREAD
 
 // Available social platforms
-// EGE_SOCIAL_PLATFORM_NULL
-// EGE_SOCIAL_PLATFORM_GAMECENTER
+// EGE_SOCIAL_SERVICES_NULL
+// EGE_SOCIAL_SERVICES_GAMECENTER
+
+// Available purchase platforms
+// EGE_PURCHASE_SERVICES_NULL
+// EGE_PURCHASE_SERVICES_APPSTORE
 
 // Available sound APIs
 // EGE_AUDIO_NULL
