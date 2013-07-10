@@ -90,6 +90,7 @@ EGE_NAMESPACE_END
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Graphics/Render/Renderer.h"
 #include "Core/Graphics/RenderObjectFactory.h"
+#include "Core/Graphics/HardwareResourceProvider.h"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_GRAPHICS_H

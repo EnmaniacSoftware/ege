@@ -59,13 +59,13 @@ class IResource : public Object
     const String& typeName() const;
     /*! Returns TRUE if resource is manual. */
     bool isManual() const;
+    /*! Returns path to resource. */
+    const String& path() const;
 
   protected:
 
     /*! Returns pointer to owning group. */
     ResourceGroup* group() const;
-    /*! Returns path to resource. */
-    const String& path() const;
 
   protected:
 
