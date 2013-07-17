@@ -1,5 +1,6 @@
 #include "Core/UI/WidgetFrame.h"
 #include "EGETexture.h"
+#include "EGERenderer.h"
 
 EGE_NAMESPACE_BEGIN
 

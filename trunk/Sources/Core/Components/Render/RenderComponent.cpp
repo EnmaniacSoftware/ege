@@ -62,7 +62,7 @@ bool RenderComponent::isValid() const
   return (NULL != m_indexBuffer) && m_indexBuffer->isValid() && (NULL != m_vertexBuffer) && m_vertexBuffer->isValid();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderComponent::setPriority(s32 priority)
+void RenderComponent::setPriority(u32 priority)
 {
   if (m_priority != priority)
   {
@@ -99,20 +99,20 @@ void RenderComponent::calculateHash()
   u32 hash = 0;
 
   // determine hash component from semantics
-  // NOTE: generated value is from range [0 - 100000) - first 16 bits
+  // NOTE: generated value is from range [0 - 100000)
   // NOTE: max occurences of a particular array is 9
-  //const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& semantics = vertexBuffer()->semantics();
-  //for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator it = semantics.begin(); it != semantics.end(); ++it)
-  //{
-  //  switch (it->type)
-  //  {
-  //    case EGEVertexBuffer::ARRAY_TYPE_POSITION_XYZ:  hash += 1; break;
-  //    case EGEVertexBuffer::ARRAY_TYPE_COLOR_RGBA:    hash += 10; break;
-  //    case EGEVertexBuffer::ARRAY_TYPE_NORMAL:        hash += 100; break;
-  //    case EGEVertexBuffer::ARRAY_TYPE_TEXTURE_UV:    hash += 1000; break;
-  //    case EGEVertexBuffer::ARRAY_TYPE_TANGENT:       hash += 10000; break;
-  //  }
-  //}
+  const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& semantics = vertexBuffer()->semantics();
+  for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator it = semantics.begin(); it != semantics.end(); ++it)
+  {
+    switch (it->type)
+    {
+      case EGEVertexBuffer::AT_POSITION_XYZ:  hash += 1; break;
+      case EGEVertexBuffer::AT_COLOR_RGBA:    hash += 10; break;
+      case EGEVertexBuffer::AT_NORMAL:        hash += 100; break;
+      case EGEVertexBuffer::AT_TEXTURE_UV:    hash += 1000; break;
+      case EGEVertexBuffer::AT_TANGENT:       hash += 10000; break;
+    }
+  }
 
   //// determine hash component from index buffer - bit no 17
   //if (indexBuffer())
@@ -134,11 +134,11 @@ void RenderComponent::calculateHash()
         the first 2 gives us the most benefit for now.
     */
 
-    PObject texture1;// = material()->texture(0);
-    PObject texture2;// = material()->texture(1);
+    //PObject texture1;// = material()->texture(0);
+    //PObject texture2;// = material()->texture(1);
 
-    hash = (material()->passCount() << 28) | ((reinterpret_cast<u32>(texture2.m_object) & 0x00003fff) << 14) | 
-           (reinterpret_cast<u32>(texture1.m_object) & 0x00003fff);
+  //  hash = (material()->passCount() << 28) | ((reinterpret_cast<u32>(texture2.m_object) & 0x00003fff) << 14) | 
+       //    (reinterpret_cast<u32>(texture1.m_object) & 0x00003fff);
   }
   
   // store new hash

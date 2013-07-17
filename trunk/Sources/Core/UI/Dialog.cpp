@@ -3,6 +3,7 @@
 #include "EGEApplication.h"
 #include "EGEResources.h"
 #include "EGEGraphics.h"
+#include "EGERenderer.h"
 #include "EGEStringUtils.h"
 
 EGE_NAMESPACE_BEGIN

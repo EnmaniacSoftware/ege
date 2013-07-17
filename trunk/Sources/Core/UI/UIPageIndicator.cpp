@@ -1,6 +1,7 @@
 #include "Core/UI/UIPageIndicator.h"
 #include "EGEOverlay.h"
 #include "EGEMath.h"
+#include "EGERenderer.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN

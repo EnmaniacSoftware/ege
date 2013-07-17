@@ -57,6 +57,7 @@ Application::Application() : IEventListener(),
                              m_fps(0), 
                              m_rendersCount()
 {
+  ege_connect(this, frameEnd, &EngineInfo::Instance(), EngineInfo::onReset);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Application::~Application()
@@ -333,8 +334,6 @@ void Application::update()
       m_updateAccumulator -= m_updateInterval;
       physicsManager()->update(m_updateInterval);
     }
-
-    EngineInfo::Instance().update(m_updateInterval);
 
     graphics()->update();
     imageLoader()->update(m_updateInterval);

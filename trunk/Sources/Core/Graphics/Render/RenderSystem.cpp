@@ -7,11 +7,12 @@
 #include "Core/Graphics/IndexBuffer.h"
 #include "Core/Graphics/VertexBuffer.h"
 #include "Core/Graphics/Material.h"
-#include "Core/Graphics/Render/RenderQueue.h"
 #include "Core/Event/Event.h"
 #include "Core/Event/EventIDs.h"
 #include "Core/Event/EventManager.h"
 #include "Core/Resource/ResourceManager.h"
+#include "Core/Graphics/Render/Implementation/SimpleRenderQueue.h"
+#include "Core/Graphics/Render/Implementation/BatchedRenderQueue.h"
 #include "EGEOpenGL.h"
 
 #if EGE_RENDERING_OPENGL_FIXED
@@ -20,6 +21,18 @@
 
 EGE_NAMESPACE_BEGIN
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Function calculating render queues hash.
+ *  @param  priority      Priority of render component.
+ *  @param  primitiveType Primitive type to be rendered.
+ *  @return Calculated hash value.
+ */
+u32 CalculateRenderQueueHash(u32 priority, EGEGraphics::RenderPrimitiveType primitiveType)
+{
+  // NOTE: priority is stored in upper 24 bits while primitive is stored in least significant 8 bits.
+  //       Due to such composition priority is always leading as rendering is supposed to following priority settings.
+  return (priority << 8) | primitiveType;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(RenderSystem)
 EGE_DEFINE_DELETE_OPERATORS(RenderSystem)
@@ -227,11 +240,14 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
   // check if component is meaningful
   if (0 < component->vertexBuffer()->vertexCount())
   {
-    // check if no queue with such priority exists yet
-    if ( ! m_renderQueues.contains(component->priority()))
+    // calculate hash
+    u32 hash = CalculateRenderQueueHash(component->priority(), component->primitiveType());
+
+    // check if no queue with such hash value exists yet
+    if ( ! m_renderQueues.contains(hash))
     {
       // create new queue
-      PRenderQueue queue = ege_new RenderQueue(app());
+      PRenderQueue queue = ege_new BatchedRenderQueue(app());
       if (NULL == queue)
       {
         // error!
@@ -239,11 +255,11 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
       }
 
       // add it into queues
-      m_renderQueues.insert(component->priority(), queue);
+      m_renderQueues.insert(hash, queue);
     }
 
     // add data into queue
-    result = m_renderQueues[component->priority()]->addForRendering(component, worldMatrix);
+    result = m_renderQueues[hash]->addForRendering(component, worldMatrix);
   }
 
   return result;

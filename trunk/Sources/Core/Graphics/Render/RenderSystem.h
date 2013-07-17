@@ -7,7 +7,7 @@
 #include "EGEMutex.h"
 #include "EGEObjectList.h"
 #include "Core/Graphics/HardwareResourceProvider.h"
-#include "Core/Graphics/Render/Renderer.h"
+#include "Core/Graphics/Render/Interface/Renderer.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Event/EventListener.h"
 
@@ -235,7 +235,7 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     u32 requestDestroyProgram(PProgram program) override;
     /*! @see IEventListener::onEventRecieved. */
     void onEventRecieved(PEvent event) override;
-
+    
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(RenderSystem);

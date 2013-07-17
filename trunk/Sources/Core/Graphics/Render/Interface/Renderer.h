@@ -1,6 +1,8 @@
 #ifndef EGE_CORE_GRAPHICS_RENDER_RENDERER_H
 #define EGE_CORE_GRAPHICS_RENDER_RENDERER_H
 
+/*! @brief This class represents public interface of any renderer. */
+
 #include "EGE.h"
 #include "EGEMatrix.h"
 

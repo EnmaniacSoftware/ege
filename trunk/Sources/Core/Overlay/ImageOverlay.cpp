@@ -1,9 +1,9 @@
 #include "Core/Application/Application.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Overlay/ImageOverlay.h"
-#include "Core/Graphics/Render/Renderer.h"
 #include "Core/Resource/ResourceMaterial.h"
 #include "EGEResources.h"
+#include "EGERenderer.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -57,3 +57,4 @@ ISSUES:
  - PhysicsComponent -> TransformComponent
  - When getting positions the alignment (if present, make it always present ?) should be taken into considereation
  - Empty XML attribute value report error ?
+ - Design public and internal interfaces in general

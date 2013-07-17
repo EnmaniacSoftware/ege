@@ -18,25 +18,40 @@ class EngineInfo
     EngineInfo();
    ~EngineInfo();
 
+  public:
+
     /*! Returns instance to object. */
     static EngineInfo& Instance();
 
-    /*! Updates object. */
-    void update(const Time& time);
+  public slots:
+
+    /*! Slot called when reset of data is requested. */
+    void onReset();
 
   public:
 
-    /*! Number of glBufferData calls in current frame. */
-    u32 m_VBOBufferDataCalls;
-    /*! Number of glBufferSubData calls in current frame. */
-    u32 m_VBOBufferSubDataCalls;
+    /*! Data structure for callecting API calls statistics. */
+    struct DataCalls
+    {
+      u32 m_VBOBufferDataCalls;     /*!< Number of glBufferData calls in current frame. */
+      u32 m_VBOBufferSubDataCalls;  /*!< Number of glBufferSubData calls in current frame. */
+      u32 m_drawElementsCalls;      /*!< Number of glDrawElements calls in current frame. */
+      u32 m_drawArraysCalls;        /*!< Number of glDrawArrays calls in current frame. */
+    };
+
+  public:
+
+    /*! Current frame calls. */
+    DataCalls m_current;
+    /*! Last frame calls. */
+    DataCalls m_last;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #if EGE_FEATURE_ENGINE_INFO
-#define ENGINE_INFO(command) EngineInfo::Instance().##command
+#define ENGINE_INFO(command) EngineInfo::Instance().m_current.##command
 #else
-#define ENGINE_INFO(command) ege_noop()
+#define CURRENTENGINE_INFO(command) ege_noop()
 #endif // EGE_FEATURE_ENGINE_INFO
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

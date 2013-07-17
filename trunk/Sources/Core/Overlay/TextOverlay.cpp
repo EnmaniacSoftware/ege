@@ -1,5 +1,5 @@
 #include "Core/Overlay/TextOverlay.h"
-#include "Core/Graphics/Render/Renderer.h"
+#include "EGERenderer.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -1,5 +1,6 @@
 #include "Core/Graphics/Particle/ParticleEmitter.h"
 #include "EGEGraphics.h"
+#include "EGERenderer.h"
 #include "EGEStringUtils.h"
 #include "EGEDebug.h"
 

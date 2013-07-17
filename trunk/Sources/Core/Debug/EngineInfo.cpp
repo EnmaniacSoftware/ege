@@ -10,21 +10,19 @@ EngineInfo& EngineInfo::Instance()
   return l_instance;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EngineInfo::EngineInfo() : m_VBOBufferDataCalls(0),
-                           m_VBOBufferSubDataCalls(0)
+EngineInfo::EngineInfo()
 {
+  onReset();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EngineInfo::~EngineInfo()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void EngineInfo::update(const Time& time)
+void EngineInfo::onReset()
 {
-  EGE_UNUSED(time);
-
-  m_VBOBufferDataCalls = 0;
-  m_VBOBufferSubDataCalls = 0;
+  EGE_MEMCPY(&m_last, &m_current, sizeof (DataCalls));
+  EGE_MEMSET(&m_current, 0, sizeof (DataCalls));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

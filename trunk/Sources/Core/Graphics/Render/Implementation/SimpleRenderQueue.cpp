@@ -1,24 +1,25 @@
-#include "Core/Graphics/Render/RenderQueue.h"
-  
+#include "Core/Graphics/Render/Implementation/SimpleRenderQueue.h"
+#include "Core/Graphics/Render/Implementation/ComponentRenderer.h"
+
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(RenderQueue)
-EGE_DEFINE_DELETE_OPERATORS(RenderQueue)
+EGE_DEFINE_NEW_OPERATORS(SimpleRenderQueue)
+EGE_DEFINE_DELETE_OPERATORS(SimpleRenderQueue)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderQueue::RenderQueue(Application* app) : Object(app)
+SimpleRenderQueue::SimpleRenderQueue(Application* app) : RenderQueue(app)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderQueue::~RenderQueue()
+SimpleRenderQueue::~SimpleRenderQueue()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool RenderQueue::addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix)
+bool SimpleRenderQueue::addForRendering(const PRenderComponent& component, const Matrix4f& modelMatrix)
 {
   SRENDERDATA data;
 
-  data.worldMatrix  = worldMatrix;
+  data.modelMatrix  = modelMatrix;
   data.component    = component;
 
   m_renderData.insert(component->hash(), data);
@@ -26,14 +27,19 @@ bool RenderQueue::addForRendering(const PRenderComponent& component, const Matri
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderQueue::clear()
+void SimpleRenderQueue::clear()
 {
   m_renderData.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const MultiMap<u32, RenderQueue::SRENDERDATA>& RenderQueue::renderData() const
+void SimpleRenderQueue::render(IComponentRenderer& renderer)
 {
-  return m_renderData;
+  for (RenderDataMap::const_iterator it = m_renderData.begin(); it != m_renderData.end(); ++it)
+  {
+    const SRENDERDATA& data = it->second;
+
+    renderer.renderComponent(data.component, data.modelMatrix);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

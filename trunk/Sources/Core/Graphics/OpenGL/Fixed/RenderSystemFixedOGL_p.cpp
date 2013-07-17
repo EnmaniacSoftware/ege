@@ -16,7 +16,8 @@
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Graphics/TextureImage.h"
-#include "Core/Graphics/Render/RenderQueue.h"
+#include "Core/Graphics/Render/Implementation/RenderQueue.h"
+#include "Core/Debug/EngineInfo.h"
 #include "EGEOpenGL.h"
 #include "EGETimer.h"
 #include "EGEDevice.h"
@@ -220,262 +221,8 @@ void RenderSystemPrivate::flush()
   {
     RenderQueue* queue = itQueue->second;
 
-    // go thru all render data within current queue
-    const MultiMap<u32, RenderQueue::SRENDERDATA>& renderData = queue->renderData();
-    for (MultiMap<u32, RenderQueue::SRENDERDATA>::const_iterator it = renderData.begin(); it != renderData.end(); ++it)
-    {
-      const RenderQueue::SRENDERDATA& data = it->second;
-      
-      PVertexBuffer vertexBuffer = data.component->vertexBuffer();
-      PIndexBuffer indexBuffer   = data.component->indexBuffer();
-      PMaterial material         = data.component->material();
-
-//      if (data.component->name() == "menu-button-button-home")
-//      {
-//          int a = 1;
-//        material->setDstBlendFactor(EGEGraphics::BF_ZERO);
-//        material->setSrcBlendFactor(EGEGraphics::BF_ZERO);
-//      }
-
-      // determine number of texture arrays
-      s32 textureArraysCount = vertexBuffer->arrayCount(EGEVertexBuffer::AT_TEXTURE_UV);
-
-      // bind vertex and index buffers
-      void* vertexData = bindVertexBuffer(vertexBuffer);
-      void* indexData  = bindIndexBuffer(indexBuffer);
-
-      // apply general params
-      applyGeneralParams(data.component);
-
-      // go thru all passes
-      // NOTE: if there is no material, we consider it 1 pass
-      u32 passes = material ? material->passCount() : 1;
-      for (u32 pass = 0; pass < passes; ++pass)
-      {
-        const RenderPass* renderPass = material ? material->pass(pass) : NULL;
-
-        // check if there is anything to be rendered
-        // TAGE - is it overhead setting up whole geometry for each pass ? or should it be done only once ? what with texturing ?
-        if (0 != vertexBuffer->vertexCount())
-        {
-          const EGEVertexBuffer::SemanticArray& semantics = vertexBuffer->semantics();
-
-          // apply pass related params
-          applyPassParams(data.component, material, renderPass);
-        
-          // NOTE: change to modelview after material is applied as it may change current matrix mode
-          glMatrixMode(GL_MODELVIEW);
-
-          // determine texture count
-          s32 textureCount = renderPass ? renderPass->textureCount() : 0;
-
-          u32 value = (0 < indexBuffer->indexCount()) ? indexBuffer->indexCount() : vertexBuffer->vertexCount();
-
-          d_func()->m_vertexCount += value;
-          d_func()->m_batchCount++;
-
-          // go thru all buffers
-          s32 textureUnitsActivated = 0;
-          for (EGEVertexBuffer::SemanticArray::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
-          {
-            // set according to buffer type
-            switch (itSemantic->type)
-            {
-              case EGEVertexBuffer::AT_POSITION_XYZ:
-
-                glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                OGL_CHECK();
-                glEnableClientState(GL_VERTEX_ARRAY);
-                OGL_CHECK();
-                break;
-
-              case EGEVertexBuffer::AT_POSITION_XY:
-
-                glVertexPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                OGL_CHECK();
-                glEnableClientState(GL_VERTEX_ARRAY);
-                OGL_CHECK();
-                break;
-
-              case EGEVertexBuffer::AT_NORMAL:
-
-                glNormalPointer(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                OGL_CHECK();
-                glEnableClientState(GL_NORMAL_ARRAY);
-                OGL_CHECK();
-                break;
-
-              case EGEVertexBuffer::AT_COLOR_RGBA:
-
-                glColorPointer(4, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                OGL_CHECK();
-                glEnableClientState(GL_COLOR_ARRAY);
-                OGL_CHECK();
-                break;
-      
-              case EGEVertexBuffer::AT_TEXTURE_UV:
-
-                // check if number of texture arrays is exactly the same as texture units in a current pass
-                if (textureArraysCount == textureCount)
-                {
-                  if (glClientActiveTexture)
-                  {
-                    glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                    OGL_CHECK();
-                  }
-
-                  glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                  OGL_CHECK();
-                  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-                  OGL_CHECK();
-
-                  ++textureUnitsActivated;
-                }
-                // check if there is more texture arrays than texture units
-                else if (textureArraysCount > textureCount)
-                {
-                  // check if still some texture unit is to be set
-                  if (textureUnitsActivated < textureCount)
-                  {
-                    if (glClientActiveTexture)
-                    {
-                      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                      OGL_CHECK();
-                    }
-
-                    glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                    OGL_CHECK();
-                    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-                    OGL_CHECK();
-
-                    ++textureUnitsActivated;
-                  }
-                }
-                // check if there are more texture units than texture arrays
-                else if (textureArraysCount < textureCount)
-                {
-                  // check if this is last texture array
-                  if ((textureUnitsActivated + 1) == textureArraysCount)
-                  {
-                    // set current texture array to all remaining texture units
-                    while (textureUnitsActivated != textureCount)
-                    {
-                      if (glClientActiveTexture)
-                      {
-                        glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                        OGL_CHECK();
-                      }
-
-                      glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                      OGL_CHECK();
-                      glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-                      OGL_CHECK();
-
-                      ++textureUnitsActivated;
-                    }
-                  }
-                  else
-                  {
-                    // set current texture array to corresponding texture unit
-                    if (glClientActiveTexture)
-                    {
-                      glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                      OGL_CHECK();
-                    }
-
-                    glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
-                    OGL_CHECK();
-                    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-                    OGL_CHECK();
-
-                    ++textureUnitsActivated;
-                  }
-                }
-                break;
-                
-              default:
-                break;
-
-              //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
-
-              //  // TANGENT is binded to GL_TEXTURE6
-              //  glClientActiveTexture( GL_TEXTURE6 );
-              //  glTexCoordPointer( 3, GL_FLOAT, cRenderOp.getVertexBuffer()->getVertexSize(), 
-              //                     static_cast<char*>( vertexData )+iter->uiOffset );
-              //  glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-              //  break;
-            }
-          }
-
-          // TAGE - might be necessary
-	        //if (multitexturing)
-	        //  glClientActiveTexture(GL_TEXTURE0);
-
-          // set model-view matrix
-          glLoadMatrixf(d_func()->m_viewMatrix.multiply(data.worldMatrix).data);
-          OGL_CHECK();
-
-          // check if INDICIES are to be used
-          if (0 < indexBuffer->indexCount())
-          {
-            // render only if there is anything to render
-            glDrawElements(MapPrimitiveType(data.component->primitiveType()), indexBuffer->indexCount(), MapIndexSize(indexBuffer->size()), indexData);
-            OGL_CHECK();
-          }
-          else
-          {
-            // render only if there is anything to render
-            glDrawArrays(MapPrimitiveType(data.component->primitiveType()), 0, vertexBuffer->vertexCount());
-            OGL_CHECK();
-          }
-
-          // disable all actived texture units
-          for (DynamicArray<u32>::const_iterator itTextureUnit = m_activeTextureUnits.begin(); itTextureUnit != m_activeTextureUnits.end(); ++itTextureUnit)
-          {
-            // disable texturing on server side
-            activateTextureUnit(*itTextureUnit);
-            glDisable(GL_TEXTURE_2D);
-            OGL_CHECK();
-
-            // disable texturing data on client side
-            if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
-            {
-              glClientActiveTexture(GL_TEXTURE0 + *itTextureUnit);
-              OGL_CHECK();
-            }
-            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-            OGL_CHECK();
-
-            // disable point sprites
-            if (EGEGraphics::RPT_POINTS == data.component->primitiveType())
-            {
-              if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
-              {
-                glDisable(GL_POINT_SPRITE);
-                OGL_CHECK();
-              }
-            }
-          }
-          m_activeTextureUnits.clear();
-
-          // clean up
-          activateTextureUnit(0);
-          glClientActiveTexture(GL_TEXTURE0);
-          glDisableClientState(GL_VERTEX_ARRAY);
-          OGL_CHECK();
-          glDisableClientState(GL_NORMAL_ARRAY);
-          OGL_CHECK();
-          glDisableClientState(GL_COLOR_ARRAY);
-          OGL_CHECK();
-          glDisable(GL_BLEND);
-          OGL_CHECK();
-        }
-      }
-
-      // unbind vertex and index buffers
-      unbindVertexBuffer(vertexBuffer);
-      unbindIndexBuffer(indexBuffer);
-    }
+    // render queue
+    queue->render(*this);
 
     // clear render queue
     queue->clear();
@@ -1118,5 +865,265 @@ void RenderSystemPrivate::destroyProgram(PProgram program)
   EGE_UNUSED(program);
 
   // not available
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::renderComponent(const PRenderComponent& component, const Matrix4f& modelMatrix)
+{
+  PVertexBuffer vertexBuffer = component->vertexBuffer();
+  PIndexBuffer indexBuffer   = component->indexBuffer();
+  PMaterial material         = component->material();
+
+//      if (data.component->name() == "menu-button-button-home")
+//      {
+//          int a = 1;
+//        material->setDstBlendFactor(EGEGraphics::BF_ZERO);
+//        material->setSrcBlendFactor(EGEGraphics::BF_ZERO);
+//      }
+
+  // determine number of texture arrays
+  s32 textureArraysCount = vertexBuffer->arrayCount(EGEVertexBuffer::AT_TEXTURE_UV);
+
+  // bind vertex and index buffers
+  void* vertexData = bindVertexBuffer(vertexBuffer);
+  void* indexData  = bindIndexBuffer(indexBuffer);
+
+  // apply general params
+  applyGeneralParams(component);
+
+  // go thru all passes
+  // NOTE: if there is no material, we consider it 1 pass
+  u32 passes = material ? material->passCount() : 1;
+  for (u32 pass = 0; pass < passes; ++pass)
+  {
+    const RenderPass* renderPass = material ? material->pass(pass) : NULL;
+
+    // check if there is anything to be rendered
+    // TAGE - is it overhead setting up whole geometry for each pass ? or should it be done only once ? what with texturing ?
+    if (0 != vertexBuffer->vertexCount())
+    {
+      const EGEVertexBuffer::SemanticArray& semantics = vertexBuffer->semantics();
+
+      // apply pass related params
+      applyPassParams(component, material, renderPass);
+        
+      // NOTE: change to modelview after material is applied as it may change current matrix mode
+      glMatrixMode(GL_MODELVIEW);
+
+      // determine texture count
+      s32 textureCount = renderPass ? renderPass->textureCount() : 0;
+
+      u32 value = (0 < indexBuffer->indexCount()) ? indexBuffer->indexCount() : vertexBuffer->vertexCount();
+
+      d_func()->m_vertexCount += value;
+      d_func()->m_batchCount++;
+
+      // go thru all buffers
+      s32 textureUnitsActivated = 0;
+      for (EGEVertexBuffer::SemanticArray::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
+      {
+        // set according to buffer type
+        switch (itSemantic->type)
+        {
+          case EGEVertexBuffer::AT_POSITION_XYZ:
+
+            glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+            OGL_CHECK();
+            glEnableClientState(GL_VERTEX_ARRAY);
+            OGL_CHECK();
+            break;
+
+          case EGEVertexBuffer::AT_POSITION_XY:
+
+            glVertexPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+            OGL_CHECK();
+            glEnableClientState(GL_VERTEX_ARRAY);
+            OGL_CHECK();
+            break;
+
+          case EGEVertexBuffer::AT_NORMAL:
+
+            glNormalPointer(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+            OGL_CHECK();
+            glEnableClientState(GL_NORMAL_ARRAY);
+            OGL_CHECK();
+            break;
+
+          case EGEVertexBuffer::AT_COLOR_RGBA:
+
+            glColorPointer(4, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+            OGL_CHECK();
+            glEnableClientState(GL_COLOR_ARRAY);
+            OGL_CHECK();
+            break;
+      
+          case EGEVertexBuffer::AT_TEXTURE_UV:
+
+            // check if number of texture arrays is exactly the same as texture units in a current pass
+            // TAGE - glClientActiveTexture selects bind point for glTexCoordPointer!!!!!
+            if (textureArraysCount == textureCount)
+            {
+              if (glClientActiveTexture)
+              {
+                glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                OGL_CHECK();
+              }
+
+              glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+              OGL_CHECK();
+              glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+              OGL_CHECK();
+
+              ++textureUnitsActivated;
+            }
+            // check if there is more texture arrays than texture units
+            else if (textureArraysCount > textureCount)
+            {
+              // check if still some texture unit is to be set
+              if (textureUnitsActivated < textureCount)
+              {
+                if (glClientActiveTexture)
+                {
+                  glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                  OGL_CHECK();
+                }
+
+                glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                OGL_CHECK();
+                glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                OGL_CHECK();
+
+                ++textureUnitsActivated;
+              }
+            }
+            // check if there are more texture units than texture arrays
+            else if (textureArraysCount < textureCount)
+            {
+              // check if this is last texture array
+              if ((textureUnitsActivated + 1) == textureArraysCount)
+              {
+                // set current texture array to all remaining texture units
+                while (textureUnitsActivated != textureCount)
+                {
+                  if (glClientActiveTexture)
+                  {
+                    glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                    OGL_CHECK();
+                  }
+
+                  glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                  OGL_CHECK();
+                  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                  OGL_CHECK();
+
+                  ++textureUnitsActivated;
+                }
+              }
+              else
+              {
+                // set current texture array to corresponding texture unit
+                if (glClientActiveTexture)
+                {
+                  glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
+                  OGL_CHECK();
+                }
+
+                glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                OGL_CHECK();
+                glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+                OGL_CHECK();
+
+                ++textureUnitsActivated;
+              }
+            }
+            break;
+                
+          default:
+            break;
+
+          //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
+
+          //  // TANGENT is binded to GL_TEXTURE6
+          //  glClientActiveTexture( GL_TEXTURE6 );
+          //  glTexCoordPointer( 3, GL_FLOAT, cRenderOp.getVertexBuffer()->getVertexSize(), 
+          //                     static_cast<char*>( vertexData )+iter->uiOffset );
+          //  glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+          //  break;
+        }
+      }
+
+      // TAGE - might be necessary
+	    //if (multitexturing)
+	    //  glClientActiveTexture(GL_TEXTURE0);
+
+      // set model-view matrix
+      glLoadMatrixf(d_func()->m_viewMatrix.multiply(modelMatrix).data);
+      OGL_CHECK();
+
+      // check if INDICIES are to be used
+      if (0 < indexBuffer->indexCount())
+      {
+        // render only if there is anything to render
+        glDrawElements(MapPrimitiveType(component->primitiveType()), indexBuffer->indexCount(), MapIndexSize(indexBuffer->size()), indexData);
+        OGL_CHECK();
+
+        // update engine info
+        ENGINE_INFO(m_drawElementsCalls++);
+      }
+      else
+      {
+        // render only if there is anything to render
+        glDrawArrays(MapPrimitiveType(component->primitiveType()), 0, vertexBuffer->vertexCount());
+        OGL_CHECK();
+
+        // update engine info
+        ENGINE_INFO(m_drawArraysCalls++);
+      }
+
+      // disable all actived texture units
+      for (DynamicArray<u32>::const_iterator itTextureUnit = m_activeTextureUnits.begin(); itTextureUnit != m_activeTextureUnits.end(); ++itTextureUnit)
+      {
+        // disable texturing on server side
+        activateTextureUnit(*itTextureUnit);
+        glDisable(GL_TEXTURE_2D);
+        OGL_CHECK();
+
+        // disable texturing data on client side
+        if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
+        {
+          glClientActiveTexture(GL_TEXTURE0 + *itTextureUnit);
+          OGL_CHECK();
+        }
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        OGL_CHECK();
+
+        // disable point sprites
+        if (EGEGraphics::RPT_POINTS == component->primitiveType())
+        {
+          if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
+          {
+            glDisable(GL_POINT_SPRITE);
+            OGL_CHECK();
+          }
+        }
+      }
+      m_activeTextureUnits.clear();
+
+      // clean up
+      activateTextureUnit(0);
+      glClientActiveTexture(GL_TEXTURE0);
+      glDisableClientState(GL_VERTEX_ARRAY);
+      OGL_CHECK();
+      glDisableClientState(GL_NORMAL_ARRAY);
+      OGL_CHECK();
+      glDisableClientState(GL_COLOR_ARRAY);
+      OGL_CHECK();
+      glDisable(GL_BLEND);
+      OGL_CHECK();
+    }
+  }
+
+  // unbind vertex and index buffers
+  unbindVertexBuffer(vertexBuffer);
+  unbindIndexBuffer(indexBuffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

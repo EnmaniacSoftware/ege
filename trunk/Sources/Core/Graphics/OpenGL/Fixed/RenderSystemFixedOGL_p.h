@@ -8,6 +8,7 @@
 #include "EGEOpenGL.h"
 #include "EGEDynamicArray.h"
 #include "Core/Graphics/Render/RenderSystem.h"
+#include "Core/Graphics/Render/Implementation/ComponentRenderer.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -21,17 +22,22 @@ EGE_DECLARE_SMART_CLASS(Shader, PShader)
 EGE_DECLARE_SMART_CLASS(Program, PProgram)
 EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RenderSystemPrivate
+class RenderSystemPrivate : public IComponentRenderer
 {
   public:
 
     RenderSystemPrivate(RenderSystem* base);
-   ~RenderSystemPrivate();
+    virtual ~RenderSystemPrivate();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(RenderSystem)
+
+  private:
+
+    /*! @see IComponentRenderer::renderComponent. */
+    void renderComponent(const PRenderComponent& component, const Matrix4f& modelMatrix) override;
 
   protected:
  

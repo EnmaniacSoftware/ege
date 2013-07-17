@@ -44,9 +44,9 @@ class RenderComponent : public IComponent
     /*! Returns vertex buffer. */  
     PVertexBuffer vertexBuffer() const { return m_vertexBuffer; }
     /*! Sets render priority. */
-    void setPriority(s32 priority);
+    void setPriority(u32 priority);
     /*! Returns render priority. */
-    s32 priority() const { return m_priority; }
+    u32 priority() const { return m_priority; }
     /*! Returns render primitive type. */
     EGEGraphics::RenderPrimitiveType primitiveType() const { return m_primitiveType; }
     /*! Returns render material. */
@@ -86,7 +86,7 @@ class RenderComponent : public IComponent
     /*! Vertex buffer. */
     PVertexBuffer m_vertexBuffer;
     /*! Render priority. */
-    s32 m_priority;
+    u32 m_priority;
     /*! Render primitive type. */
     EGEGraphics::RenderPrimitiveType m_primitiveType;
     /*! Render material. */

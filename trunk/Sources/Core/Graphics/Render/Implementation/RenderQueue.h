@@ -1,5 +1,7 @@
-#ifndef EGE_CORE_RENDERQUEUE_H
-#define EGE_CORE_RENDERQUEUE_H
+#ifndef EGE_CORE_GRAPHICS_RENDER_RENDERQUEUE_H
+#define EGE_CORE_GRAPHICS_RENDER_RENDERQUEUE_H
+
+/*! @brief  This class represents base class for more specialized render queues. */
 
 #include "EGE.h"
 #include "Core/Math/Matrix4.h"
@@ -9,46 +11,27 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Application;
+class IComponentRenderer;
 EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderQueue : public Object
 {
   public:
 
-    RenderQueue(Application* app);
-   ~RenderQueue();
-
-    EGE_DECLARE_NEW_OPERATORS
-    EGE_DECLARE_DELETE_OPERATORS
-
-  public:
-
-    /*! Render data structure. */
-    struct SRENDERDATA
-    {
-      PRenderComponent component;   /*< Render component. */
-      
-      Matrix4f worldMatrix;         /*< World transformation matrix. */
-    };
-
-    typedef MultiMap<u32, SRENDERDATA> RenderDataMap;
+    RenderQueue(Application* app) : Object(app) {}
+    virtual ~RenderQueue() {}
 
   public:
 
     /*! Adds given data for rendering. */
-    bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY);
+    virtual bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY) = 0;
     /*! Clears (empties) queue. */
-    void clear();
-    /*! Returns map of render data structures. */
-    const RenderDataMap& renderData() const;
-
-  private:
-
-    /*! Render data sorted by component hash. */
-    RenderDataMap m_renderData;
+    virtual void clear() = 0;
+    /*! Renders queue. */
+    virtual void render(IComponentRenderer& renderer) = 0;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_RENDERQUEUE_H
+#endif // EGE_CORE_GRAPHICS_RENDER_RENDERQUEUE_H

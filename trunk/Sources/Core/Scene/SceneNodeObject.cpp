@@ -1,9 +1,9 @@
 #include "Core/Scene/SceneNodeObject.h"
-#include "Core/Graphics/Render/Renderer.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 #include "Core/Graphics/IndexBuffer.h"
 #include "Core/Graphics/VertexBuffer.h"
 #include "Core/Graphics/Material.h"
+#include "EGERenderer.h"
 
 EGE_NAMESPACE_BEGIN
 
