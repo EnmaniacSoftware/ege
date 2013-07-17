@@ -103,8 +103,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Program.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\RenderObjectFactory.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\BatchedRenderQueue.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\SimpleRenderQueue.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderPass.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderQueue.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderSystem.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderTarget.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderWindow.cpp" />
@@ -283,9 +284,12 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleFactory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Program.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\RenderObjectFactory.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\Render\IRenderable.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\BatchedRenderQueue.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\ComponentRenderer.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderQueue.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\SimpleRenderQueue.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\Renderer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderPass.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderSystem.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Shader.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.h" />
@@ -432,7 +436,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Material.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Renderer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderTarget.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderWindow.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\TextureImage.h" />

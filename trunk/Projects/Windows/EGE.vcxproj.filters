@@ -232,6 +232,12 @@
     <Filter Include="Win32\Threading">
       <UniqueIdentifier>{686887ab-fec0-47ff-bcba-08ebe23e27c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Graphics\Render\Implementation">
+      <UniqueIdentifier>{3acc5b22-0ed5-4d32-8a2d-d7dd5f5998d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\Render\Interface">
+      <UniqueIdentifier>{e2653272-d817-4792-8690-b2f6657ffeb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
@@ -455,9 +461,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Texture2D.cpp">
       <Filter>Core\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderQueue.cpp">
-      <Filter>Core\Graphics\Render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Device\Device.cpp">
       <Filter>Core\Device</Filter>
@@ -840,6 +843,12 @@
     <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioThreadOpenAL.cpp">
       <Filter>Core\Audio\OpenAL</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\BatchedRenderQueue.cpp">
+      <Filter>Core\Graphics\Render\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\SimpleRenderQueue.cpp">
+      <Filter>Core\Graphics\Render\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -895,9 +904,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Texture2DOGL.h">
       <Filter>Core\Graphics\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Renderer.h">
-      <Filter>Core\Graphics\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderTarget.h">
       <Filter>Core\Graphics\Render</Filter>
@@ -1185,9 +1191,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h">
       <Filter>Core\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderQueue.h">
-      <Filter>Core\Graphics\Render</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\Image.h">
       <Filter>Core\Graphics\Image</Filter>
     </ClInclude>
@@ -1408,9 +1411,6 @@
     <ClInclude Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.h">
       <Filter>Core\Random\StdC</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\Render\IRenderable.h">
-      <Filter>Core\Graphics\Render</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsJointAttractNull_p.h">
       <Filter>Core\Physics\Null</Filter>
     </ClInclude>
@@ -1628,6 +1628,21 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioThreadOpenAL.h">
       <Filter>Core\Audio\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\BatchedRenderQueue.h">
+      <Filter>Core\Graphics\Render\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderQueue.h">
+      <Filter>Core\Graphics\Render\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\Renderer.h">
+      <Filter>Core\Graphics\Render\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\ComponentRenderer.h">
+      <Filter>Core\Graphics\Render\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\SimpleRenderQueue.h">
+      <Filter>Core\Graphics\Render\Implementation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

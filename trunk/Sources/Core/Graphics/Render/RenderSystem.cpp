@@ -247,7 +247,8 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
     if ( ! m_renderQueues.contains(hash))
     {
       // create new queue
-      PRenderQueue queue = ege_new BatchedRenderQueue(app());
+      PRenderQueue queue = ege_new SimpleRenderQueue(app());
+      //PRenderQueue queue = ege_new BatchedRenderQueue(app());
       if (NULL == queue)
       {
         // error!
