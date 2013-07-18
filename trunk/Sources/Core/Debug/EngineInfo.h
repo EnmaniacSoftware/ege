@@ -51,7 +51,7 @@ class EngineInfo
 #if EGE_FEATURE_ENGINE_INFO
 #define ENGINE_INFO(command) EngineInfo::Instance().m_current.##command
 #else
-#define CURRENTENGINE_INFO(command) ege_noop()
+#define ENGINE_INFO(command) ege_noop()
 #endif // EGE_FEATURE_ENGINE_INFO
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
