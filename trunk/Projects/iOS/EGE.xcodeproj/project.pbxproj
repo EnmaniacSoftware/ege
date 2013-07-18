@@ -70,7 +70,6 @@
 		453637C916F1113600B4D72F /* ParticleFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635F316F1113600B4D72F /* ParticleFactory.cpp */; };
 		453637CA16F1113600B4D72F /* Program.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635F516F1113600B4D72F /* Program.cpp */; };
 		453637CB16F1113600B4D72F /* RenderPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635FA16F1113600B4D72F /* RenderPass.cpp */; };
-		453637CC16F1113600B4D72F /* RenderQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635FC16F1113600B4D72F /* RenderQueue.cpp */; };
 		453637CD16F1113600B4D72F /* RenderSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453635FE16F1113600B4D72F /* RenderSystem.cpp */; };
 		453637CE16F1113600B4D72F /* RenderTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536360016F1113600B4D72F /* RenderTarget.cpp */; };
 		453637CF16F1113600B4D72F /* RenderWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536360216F1113600B4D72F /* RenderWindow.cpp */; };
@@ -214,6 +213,8 @@
 		45ADCBA116F7C94F005FE8A0 /* DeviceIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45ADCBA016F7C94F005FE8A0 /* DeviceIOS.mm */; };
 		45ADCBA416F7C955005FE8A0 /* MemoryIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45ADCBA316F7C955005FE8A0 /* MemoryIOS.cpp */; };
 		45ADCBA916F7CB23005FE8A0 /* DebugIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45ADCBA816F7CB23005FE8A0 /* DebugIOS.mm */; };
+		45AFD2191798637C0063AC4D /* BatchedRenderQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45AFD2131798637C0063AC4D /* BatchedRenderQueue.cpp */; };
+		45AFD21A1798637C0063AC4D /* SimpleRenderQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45AFD2171798637C0063AC4D /* SimpleRenderQueue.cpp */; };
 		45BC64C017209B6600A449EF /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45BC64BF17209B6600A449EF /* ViewController.mm */; };
 		45C68FCC176A6C2B002A7F7A /* SoundDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C68FCB176A6C2B002A7F7A /* SoundDelegate.mm */; };
 		45DD7A5116FB0C7C005AA431 /* ViewOGL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DD7A5016FB0C7C005AA431 /* ViewOGL.mm */; };
@@ -379,12 +380,8 @@
 		453635F416F1113600B4D72F /* ParticleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleFactory.h; sourceTree = "<group>"; };
 		453635F516F1113600B4D72F /* Program.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Program.cpp; sourceTree = "<group>"; };
 		453635F616F1113600B4D72F /* Program.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Program.h; sourceTree = "<group>"; };
-		453635F816F1113600B4D72F /* IRenderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRenderable.h; sourceTree = "<group>"; };
-		453635F916F1113600B4D72F /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
 		453635FA16F1113600B4D72F /* RenderPass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderPass.cpp; sourceTree = "<group>"; };
 		453635FB16F1113600B4D72F /* RenderPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderPass.h; sourceTree = "<group>"; };
-		453635FC16F1113600B4D72F /* RenderQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderQueue.cpp; sourceTree = "<group>"; };
-		453635FD16F1113600B4D72F /* RenderQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderQueue.h; sourceTree = "<group>"; };
 		453635FE16F1113600B4D72F /* RenderSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderSystem.cpp; sourceTree = "<group>"; };
 		453635FF16F1113600B4D72F /* RenderSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderSystem.h; sourceTree = "<group>"; };
 		4536360016F1113600B4D72F /* RenderTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderTarget.cpp; sourceTree = "<group>"; };
@@ -774,6 +771,13 @@
 		45ADCBA016F7C94F005FE8A0 /* DeviceIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DeviceIOS.mm; sourceTree = "<group>"; };
 		45ADCBA316F7C955005FE8A0 /* MemoryIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryIOS.cpp; sourceTree = "<group>"; };
 		45ADCBA816F7CB23005FE8A0 /* DebugIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DebugIOS.mm; sourceTree = "<group>"; };
+		45AFD2131798637C0063AC4D /* BatchedRenderQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BatchedRenderQueue.cpp; sourceTree = "<group>"; };
+		45AFD2141798637C0063AC4D /* BatchedRenderQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BatchedRenderQueue.h; sourceTree = "<group>"; };
+		45AFD2151798637C0063AC4D /* ComponentRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComponentRenderer.h; sourceTree = "<group>"; };
+		45AFD2161798637C0063AC4D /* RenderQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderQueue.h; sourceTree = "<group>"; };
+		45AFD2171798637C0063AC4D /* SimpleRenderQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleRenderQueue.cpp; sourceTree = "<group>"; };
+		45AFD2181798637C0063AC4D /* SimpleRenderQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleRenderQueue.h; sourceTree = "<group>"; };
+		45AFD21C179863860063AC4D /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
 		45BC64BE17209B6500A449EF /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		45BC64BF17209B6600A449EF /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		45C68FCA176A6C2B002A7F7A /* SoundDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundDelegate.h; sourceTree = "<group>"; };
@@ -1302,12 +1306,10 @@
 		453635F716F1113600B4D72F /* Render */ = {
 			isa = PBXGroup;
 			children = (
-				453635F816F1113600B4D72F /* IRenderable.h */,
-				453635F916F1113600B4D72F /* Renderer.h */,
+				45AFD21B179863860063AC4D /* Interface */,
+				45AFD2121798637C0063AC4D /* Implementation */,
 				453635FA16F1113600B4D72F /* RenderPass.cpp */,
 				453635FB16F1113600B4D72F /* RenderPass.h */,
-				453635FC16F1113600B4D72F /* RenderQueue.cpp */,
-				453635FD16F1113600B4D72F /* RenderQueue.h */,
 				453635FE16F1113600B4D72F /* RenderSystem.cpp */,
 				453635FF16F1113600B4D72F /* RenderSystem.h */,
 				4536360016F1113600B4D72F /* RenderTarget.cpp */,
@@ -1989,6 +1991,27 @@
 			path = Debug;
 			sourceTree = "<group>";
 		};
+		45AFD2121798637C0063AC4D /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				45AFD2131798637C0063AC4D /* BatchedRenderQueue.cpp */,
+				45AFD2141798637C0063AC4D /* BatchedRenderQueue.h */,
+				45AFD2151798637C0063AC4D /* ComponentRenderer.h */,
+				45AFD2161798637C0063AC4D /* RenderQueue.h */,
+				45AFD2171798637C0063AC4D /* SimpleRenderQueue.cpp */,
+				45AFD2181798637C0063AC4D /* SimpleRenderQueue.h */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		45AFD21B179863860063AC4D /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				45AFD21C179863860063AC4D /* Renderer.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
 		45DED89316F7847E00623923 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -2124,7 +2147,6 @@
 				453637C916F1113600B4D72F /* ParticleFactory.cpp in Sources */,
 				453637CA16F1113600B4D72F /* Program.cpp in Sources */,
 				453637CB16F1113600B4D72F /* RenderPass.cpp in Sources */,
-				453637CC16F1113600B4D72F /* RenderQueue.cpp in Sources */,
 				453637CD16F1113600B4D72F /* RenderSystem.cpp in Sources */,
 				453637CE16F1113600B4D72F /* RenderTarget.cpp in Sources */,
 				453637CF16F1113600B4D72F /* RenderWindow.cpp in Sources */,
@@ -2275,6 +2297,8 @@
 				45C68FCC176A6C2B002A7F7A /* SoundDelegate.mm in Sources */,
 				4527A0FA176FA398006B88E0 /* GameCenterDelegate.mm in Sources */,
 				4505E1A2177A27E600D6D5EE /* AppStoreTransactionObserver.mm in Sources */,
+				45AFD2191798637C0063AC4D /* BatchedRenderQueue.cpp in Sources */,
+				45AFD21A1798637C0063AC4D /* SimpleRenderQueue.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
