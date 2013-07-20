@@ -14,30 +14,72 @@ BatchedRenderQueue::~BatchedRenderQueue()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool BatchedRenderQueue::addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix)
+EGEResult BatchedRenderQueue::addForRendering(const PRenderComponent& component, const Matrix4f& modelMatrix)
 {
-  EGE_ASSERT((EGEGraphics::RPT_TRIANGLES == component->primitiveType()) || (EGEGraphics::RPT_TRIANGLE_STRIPS == component->primitiveType()));
+  EGEResult result = EGE_SUCCESS;
 
-  // calculate hash
-  u32 hash = component->hash();
+  // check if not allocated yet
+  if (NULL == m_renderData)
+  {
+    // allocate
+    if ( ! allocateMasterRenderComponent(component))
+    {
+      // failed
+      result = EGE_ERROR;
+    }
+  }
+  else
+  {
+    // verify if component is compatible
+    // NOTE: Materials must be the same:
+    //       - textures
+    //       - shaders
+    //       - blend operators
+    //
+    //       Vertex semantics must be the same.
+    //if (component->vertexBuffer()->semantics() 
+  }
 
-  SRENDERDATA data;
+  if (EGE_SUCCESS == result)
+  {
+    // append component
+    result = appendComponent(component) ? EGE_SUCCESS : EGE_ERROR;
+  }
 
-  data.worldMatrix  = worldMatrix;
-  data.component    = component;
-
-  m_renderData.insert(component->hash(), data);
-
-  return true;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void BatchedRenderQueue::clear()
 {
-  m_renderData.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void BatchedRenderQueue::render(IComponentRenderer& renderer)
 {
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool BatchedRenderQueue::allocateMasterRenderComponent(const PRenderComponent& component)
+{
+  bool result = false;
+
+  // allocate master component
+  m_renderData = ege_new RenderComponent(app(), String::Format("BatchedRenderQueue@%d", component->priority()), component->vertexBuffer()->vertexDeclaration(), 
+                                         component->priority(), component->primitiveType(), NVertexBuffer::UT_DYNAMIC_WRITE);
+  if (NULL != m_renderData)
+  {
+    // setup vertex buffer semantics
+    if (m_renderData->isValid())
+    {
+      // error!
+      return NULL;
+    }
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool BatchedRenderQueue::appendComponent(const PRenderComponent& component)
+{
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

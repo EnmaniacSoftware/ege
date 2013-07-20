@@ -20,7 +20,7 @@ class VertexBufferVBO : public VertexBuffer
 
   public:
 
-    VertexBufferVBO(Application* app, EGEVertexBuffer::UsageType usage);
+    VertexBufferVBO(Application* app, NVertexBuffer::UsageType usage);
    ~VertexBufferVBO();
 
     EGE_DECLARE_NEW_OPERATORS

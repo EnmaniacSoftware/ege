@@ -25,28 +25,26 @@ class BatchedRenderQueue : public RenderQueue
   private:
 
     /*! @see RenderQueue::addForRendering. */
-    bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY) override;
+    EGEResult addForRendering(const PRenderComponent& component, const Matrix4f& modelMatrix = Matrix4f::IDENTITY) override;
     /*! @see RenderQueue::clear. */
     void clear() override;
     /*! @see RenderQueue::render. */
     void render(IComponentRenderer& renderer) override;
-
-  public:
-
-    /*! Render data structure. */
-    struct SRENDERDATA
-    {
-      PRenderComponent component;   /*< Render component. */
-      
-      Matrix4f worldMatrix;         /*< World transformation matrix. */
-    };
-
-    typedef MultiMap<u32, SRENDERDATA> RenderDataMap;
+    /*! Allocates master render component for a given component. 
+     *  @param  component Component for which master component should be used. It is used as a template.
+     *  @return TRUE if master component has been allocated successfully.
+     */
+    bool allocateMasterRenderComponent(const PRenderComponent& component);
+    /*! Appends component to master one. 
+     *  @param  component Component which should be appended to master one.
+     *  @return TRUE if component has been sucessfully appened.
+     */
+    bool appendComponent(const PRenderComponent& component);
 
   private:
 
-    /*! Render data sorted by component hash. */
-    RenderDataMap m_renderData;
+    /*! Master render component. */
+    PRenderComponent m_renderData;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

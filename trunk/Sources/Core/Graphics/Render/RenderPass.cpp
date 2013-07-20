@@ -164,5 +164,31 @@ void RenderPass::setProgram(const PProgram& program)
   m_program = program;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool RenderPass::operator == (const RenderPass& other) const
+{
+  bool result = false;
+
+  // check if same blending factors, number of textures
+  if ((m_srcBlendFactor == other.m_srcBlendFactor) && (m_dstBlendFactor == other.m_dstBlendFactor) && (m_textures.size() == other.m_textures.size()))
+  {
+    result = true;
+
+    // check if textures are different
+    for (s32 i = 0; i < static_cast<s32>(m_textures.size()); ++i)
+    {
+      if (m_textures[i] != other.m_textures[i])
+      {
+        // different
+        result = false;
+
+        // done
+        break;
+      }
+    }
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

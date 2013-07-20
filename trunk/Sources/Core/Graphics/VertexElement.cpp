@@ -1,45 +1,36 @@
-#include "Core/Memory/MemoryManager.h"
-#include <windows.h>
+#include "Core/Graphics/VertexElement.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void* MemoryManager::DoMalloc(size_t size)
+VertexElement::VertexElement(NVertexBuffer::VertexElementSemantic semantic, u32 offset, u32 index) : m_semantic(semantic)
+                                                                                                   , m_offset(offset)
+                                                                                                   , m_index(index)
 {
-  return malloc(size);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void* MemoryManager::DoRealloc(void* data, size_t size)
+VertexElement::~VertexElement()
 {
-  return realloc(data, size);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void MemoryManager::DoFree(void* data)
+bool VertexElement::operator == (const VertexElement& other) const
 {
-  if (data)
-  {
-    free(data);
-  }
+  return (m_semantic == other.m_semantic) && (m_offset == other.m_offset) && (m_index == other.m_index);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void* MemoryManager::MemCpy(void* dst, const void* src, size_t size)
+NVertexBuffer::VertexElementSemantic VertexElement::semantic() const
 {
-  return memcpy(dst, src, size);
+  return m_semantic;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void* MemoryManager::MemMove(void* dst, const void* src, size_t size)
+u32 VertexElement::offset() const
 {
-  return memmove(dst, src, size);
+  return m_offset;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void* MemoryManager::MemSet(void* dst, int c, size_t size)
+u32 VertexElement::index() const
 {
-  return memset(dst, c, size);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s32 MemoryManager::MemCmp(const void* ptr1, const void* ptr2, size_t size)
-{
-  return memcmp(ptr1, ptr2, size);
+  return m_index;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

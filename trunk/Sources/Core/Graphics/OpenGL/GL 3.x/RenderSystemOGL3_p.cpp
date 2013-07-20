@@ -251,7 +251,7 @@ void RenderSystemPrivate::flush()
       PMaterial& material         = data.component->material();
 
       // determine number of texture arrays
-      s32 textureArraysCount = vertexBuffer->arrayCount(EGEVertexBuffer::AT_TEXTURE_UV);
+      s32 textureArraysCount = vertexBuffer->elementCount(NVertexBuffer::VES_TEXTURE_UV);
 
       // bind vertex and index buffers
       void* vertexData = bindVertexBuffer(vertexBuffer);
@@ -271,7 +271,7 @@ void RenderSystemPrivate::flush()
         // TAGE - is it overhead setting up whole geometry for each pass ? or should it be done only once ? what with texturing ?
         if (0 != vertexBuffer->vertexCount())
         {
-          const EGEVertexBuffer::SemanticArray& semantics = vertexBuffer->semantics();
+          const VertexBuffer::SemanticArray& semantics = vertexBuffer->semantics();
 
           // apply pass related params
           applyPassParams(data.component, material, renderPass);
@@ -286,12 +286,12 @@ void RenderSystemPrivate::flush()
 
           // go thru all buffers
           s32 textureUnitsActivated = 0;
-          for (EGEVertexBuffer::SemanticArray::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
+          for (VertexBuffer::SemanticArray::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
           {
             // set according to buffer type
             switch (itSemantic->type)
             {
-              case EGEVertexBuffer::AT_POSITION_XYZ:
+              case NVertexBuffer::VES_POSITION_XYZ:
 
                 glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
                 OGL_CHECK();
@@ -299,7 +299,7 @@ void RenderSystemPrivate::flush()
                 OGL_CHECK();
                 break;
 
-              case EGEVertexBuffer::AT_POSITION_XY:
+              case NVertexBuffer::VES_POSITION_XY:
 
                 glEnableVertexAttribArray(0);
                 OGL_CHECK();
@@ -307,7 +307,7 @@ void RenderSystemPrivate::flush()
                 OGL_CHECK();
                 break;
 
-              case EGEVertexBuffer::AT_NORMAL:
+              case NVertexBuffer::VES_NORMAL:
 
                 glNormalPointer(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
                 OGL_CHECK();
@@ -315,7 +315,7 @@ void RenderSystemPrivate::flush()
                 OGL_CHECK();
                 break;
 
-              case EGEVertexBuffer::AT_COLOR_RGBA:
+              case NVertexBuffer::VES_COLOR_RGBA:
 
                 glColorPointer(4, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
                 OGL_CHECK();
@@ -323,7 +323,7 @@ void RenderSystemPrivate::flush()
                 OGL_CHECK();
                 break;
       
-              case EGEVertexBuffer::AT_TEXTURE_UV:
+              case NVertexBuffer::VES_TEXTURE_UV:
 
                 // check if number of texture arrays is exactly the same as texture units in a current pass
                // if (textureArraysCount == textureCount)
@@ -408,7 +408,7 @@ void RenderSystemPrivate::flush()
                 //}
                 break;
 
-              //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
+              //case VertexBuffer::ARRAY_TYPE_TANGENT:
 
               //  // TANGENT is binded to GL_TEXTURE6
               //  glClientActiveTexture( GL_TEXTURE6 );
@@ -1066,7 +1066,7 @@ void RenderSystemPrivate::unbindIndexBuffer(PIndexBuffer& buffer) const
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PVertexBuffer RenderSystemPrivate::createVertexBuffer(EGEVertexBuffer::UsageType usage) const
+PVertexBuffer RenderSystemPrivate::createVertexBuffer(NVertexBuffer::UsageType usage) const
 {
   PVertexBuffer buffer;
 

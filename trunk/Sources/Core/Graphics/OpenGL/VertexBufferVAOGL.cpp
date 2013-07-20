@@ -28,7 +28,7 @@ bool VertexBufferVA::setSize(u32 count)
   EGE_ASSERT(!m_locked);
 
   // check if there is NO buffer to be created
-  if (m_semantics.empty())
+  if (vertexDeclaration().vertexElements().empty())
   {
     // error!
     return false;
@@ -60,13 +60,13 @@ void* VertexBufferVA::lock(u32 offset, u32 count)
   if (0 < count)
   {
     // check if inside the buffer
-    if ((offset + count) * vertexSize() <= m_buffer->size())
+    if ((offset + count) * vertexDeclaration().vertexSize() <= m_buffer->size())
     {
       // set lock flag
       m_locked = true;
 
       // return begining of the block
-      return reinterpret_cast<void*>(reinterpret_cast<u8*>(m_buffer->data()) + offset * vertexSize());
+      return reinterpret_cast<void*>(reinterpret_cast<u8*>(m_buffer->data()) + offset * vertexDeclaration().vertexSize());
     }
   }
 
@@ -77,7 +77,7 @@ void VertexBufferVA::unlock(void* data)
 {
   if (data)
   {
-    EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_buffer->data()) + vertexCount() * vertexSize());
+    EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_buffer->data()) + vertexCount() * vertexDeclaration().vertexSize());
   }
 
   m_locked = false;
@@ -85,13 +85,13 @@ void VertexBufferVA::unlock(void* data)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 VertexBufferVA::vertexCount() const
 {
-  return (m_buffer) ? static_cast<u32>(m_buffer->size() / vertexSize()) : 0;
+  return (m_buffer) ? static_cast<u32>(m_buffer->size() / vertexDeclaration().vertexSize()) : 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool VertexBufferVA::reallocateBuffer(u32 count)
 {
   // allocate buffer for requested indicies
-  if (EGE_SUCCESS != m_buffer->setSize(vertexSize() * count))
+  if (EGE_SUCCESS != m_buffer->setSize(vertexDeclaration().vertexSize() * count))
   {
     // error!
     return false;

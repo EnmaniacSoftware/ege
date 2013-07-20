@@ -74,6 +74,7 @@ class MemoryManager
     static void* MemCpy(void* dst, const void* src, size_t size);
     static void* MemMove(void* dst, const void* src, size_t size);
     static void* MemSet(void* dst, int c, size_t size);
+    static s32   MemCmp(const void* ptr1, const void* ptr2, size_t size);
 
   private:
 

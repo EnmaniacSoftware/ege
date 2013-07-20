@@ -114,6 +114,8 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Texture2D.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\TextureImage.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\VertexBuffer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\VertexDeclaration.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\VertexElement.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Viewport.cpp" />
     <ClCompile Include="..\..\Sources\Core\Input\Pointer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Input\PointerData.cpp" />
@@ -294,7 +296,8 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Shader.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\VertexBufferTypes.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\VertexDeclaration.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\VertexElement.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Circle.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Complex.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Splines\CubicSpline.h" />

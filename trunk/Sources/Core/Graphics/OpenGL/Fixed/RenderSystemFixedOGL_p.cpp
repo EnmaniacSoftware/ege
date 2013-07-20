@@ -217,15 +217,21 @@ void RenderSystemPrivate::flush()
  // EGE_LOG("---------------------- Render Flush begin ----------------------");
 
   // go thru all render queues
-  for (Map<s32, PRenderQueue>::const_iterator itQueue = d_func()->m_renderQueues.begin(); itQueue != d_func()->m_renderQueues.end(); ++itQueue)
+  for (Map<s32, List<PRenderQueue> >::const_iterator itQueue = d_func()->m_renderQueues.begin(); itQueue != d_func()->m_renderQueues.end(); ++itQueue)
   {
-    RenderQueue* queue = itQueue->second;
+    const List<PRenderQueue>& queueList = itQueue->second;
 
-    // render queue
-    queue->render(*this);
+    // render queue list
+    for (List<PRenderQueue>::const_iterator it = queueList.begin(); it != queueList.end(); ++it)
+    {
+      PRenderQueue queue = *it;
 
-    // clear render queue
-    queue->clear();
+      // render queue
+      queue->render(*this);
+
+      // clear queue
+      queue->clear();
+    }
   }
 
   //EGE_LOG("---------------------- Render Flush end ----------------------");
@@ -601,7 +607,7 @@ void RenderSystemPrivate::unbindIndexBuffer(PIndexBuffer& buffer) const
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PVertexBuffer RenderSystemPrivate::createVertexBuffer(EGEVertexBuffer::UsageType usage) const
+PVertexBuffer RenderSystemPrivate::createVertexBuffer(NVertexBuffer::UsageType usage) const
 {
   PVertexBuffer buffer;
 
@@ -881,7 +887,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
 //      }
 
   // determine number of texture arrays
-  s32 textureArraysCount = vertexBuffer->arrayCount(EGEVertexBuffer::AT_TEXTURE_UV);
+  s32 textureArraysCount = vertexBuffer->vertexDeclaration().elementCount(NVertexBuffer::VES_TEXTURE_UV);
 
   // bind vertex and index buffers
   void* vertexData = bindVertexBuffer(vertexBuffer);
@@ -901,7 +907,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
     // TAGE - is it overhead setting up whole geometry for each pass ? or should it be done only once ? what with texturing ?
     if (0 != vertexBuffer->vertexCount())
     {
-      const EGEVertexBuffer::SemanticArray& semantics = vertexBuffer->semantics();
+      const VertexElementArray& vertexElements = vertexBuffer->vertexDeclaration().vertexElements();
 
       // apply pass related params
       applyPassParams(component, material, renderPass);
@@ -919,44 +925,44 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
 
       // go thru all buffers
       s32 textureUnitsActivated = 0;
-      for (EGEVertexBuffer::SemanticArray::const_iterator itSemantic = semantics.begin(); itSemantic != semantics.end(); ++itSemantic)
+      for (VertexElementArray::const_iterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
       {
         // set according to buffer type
-        switch (itSemantic->type)
+        switch (itElement->semantic())
         {
-          case EGEVertexBuffer::AT_POSITION_XYZ:
+          case NVertexBuffer::VES_POSITION_XYZ:
 
-            glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+            glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
             OGL_CHECK();
             glEnableClientState(GL_VERTEX_ARRAY);
             OGL_CHECK();
             break;
 
-          case EGEVertexBuffer::AT_POSITION_XY:
+          case NVertexBuffer::VES_POSITION_XY:
 
-            glVertexPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+            glVertexPointer(2, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
             OGL_CHECK();
             glEnableClientState(GL_VERTEX_ARRAY);
             OGL_CHECK();
             break;
 
-          case EGEVertexBuffer::AT_NORMAL:
+          case NVertexBuffer::VES_NORMAL:
 
-            glNormalPointer(GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+            glNormalPointer(GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
             OGL_CHECK();
             glEnableClientState(GL_NORMAL_ARRAY);
             OGL_CHECK();
             break;
 
-          case EGEVertexBuffer::AT_COLOR_RGBA:
+          case NVertexBuffer::VES_COLOR_RGBA:
 
-            glColorPointer(4, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+            glColorPointer(4, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
             OGL_CHECK();
             glEnableClientState(GL_COLOR_ARRAY);
             OGL_CHECK();
             break;
       
-          case EGEVertexBuffer::AT_TEXTURE_UV:
+          case NVertexBuffer::VES_TEXTURE_UV:
 
             // check if number of texture arrays is exactly the same as texture units in a current pass
             // TAGE - glClientActiveTexture selects bind point for glTexCoordPointer!!!!!
@@ -968,7 +974,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
                 OGL_CHECK();
               }
 
-              glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+              glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
               OGL_CHECK();
               glEnableClientState(GL_TEXTURE_COORD_ARRAY);
               OGL_CHECK();
@@ -987,7 +993,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
                   OGL_CHECK();
                 }
 
-                glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
                 OGL_CHECK();
                 glEnableClientState(GL_TEXTURE_COORD_ARRAY);
                 OGL_CHECK();
@@ -1010,7 +1016,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
                     OGL_CHECK();
                   }
 
-                  glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                  glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
                   OGL_CHECK();
                   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
                   OGL_CHECK();
@@ -1027,7 +1033,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
                   OGL_CHECK();
                 }
 
-                glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexSize(), static_cast<s8*>(vertexData) + itSemantic->offset);
+                glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
                 OGL_CHECK();
                 glEnableClientState(GL_TEXTURE_COORD_ARRAY);
                 OGL_CHECK();
@@ -1040,7 +1046,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
           default:
             break;
 
-          //case EGEVertexBuffer::ARRAY_TYPE_TANGENT:
+          //case VertexBuffer::ARRAY_TYPE_TANGENT:
 
           //  // TANGENT is binded to GL_TEXTURE6
           //  glClientActiveTexture( GL_TEXTURE6 );

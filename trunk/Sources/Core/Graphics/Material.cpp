@@ -236,5 +236,32 @@ PMaterial Material::clone() const
   return material;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Material::operator == (const Material& other) const
+{
+  bool result = false;
+
+  // same number of passes
+  if (passCount() == other.passCount())
+  {
+    result = true;
+
+    // go thru all passes
+    for (s32 i = 0; i < static_cast<s32>(m_passes.size()); ++i)
+    {
+      // check if passes differ
+      if (m_passes[i] != other.m_passes[i])
+      {
+        // different
+        result = false;
+
+        // done
+        break;
+      }
+    }
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

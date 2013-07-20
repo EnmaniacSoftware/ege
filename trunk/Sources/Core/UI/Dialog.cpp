@@ -17,38 +17,35 @@ static const Rectf l_defaultTextAreaRect  = Rectf(0, 0.2f, 1.0f, 0.8f);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Dialog::Dialog(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(app, name, EGE_OBJECT_UID_UI_DIALOG, deleteFunc)
 {
-  // create tail render data
-  m_tailRenderData  = ege_new RenderComponent(app, "dialog-tail" + name, EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLE_STRIPS, 
-                                              EGEVertexBuffer::UT_STATIC_WRITE);
-  if (m_tailRenderData)
+  // create vertex declaration
+  VertexDeclaration declaration;
+  if (declaration.addElement(NVertexBuffer::VES_POSITION_XY) && declaration.addElement(NVertexBuffer::VES_TEXTURE_UV))
   {
-    if (!m_tailRenderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2))
-    {
-      // error!
-      m_tailRenderData = NULL;
-    }
-  }
+    // create tail render data
+    m_tailRenderData  = ege_new RenderComponent(app, "dialog-tail" + name, declaration, EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLE_STRIPS, 
+                                                NVertexBuffer::UT_STATIC_WRITE);
 
-  PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
-  if (fontResource)
-  {
-    m_titleFont = fontResource->font();
-    m_textFont  = fontResource->font();
-
-    // title label
-    PLabel label = app->graphics()->widgetFactory()->createWidget("label", "title");
-    if (label)
+    PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
+    if (fontResource)
     {
-      label->setFont(m_titleFont);
-      addChild(label);
-    }
+      m_titleFont = fontResource->font();
+      m_textFont  = fontResource->font();
 
-    // text label
-    label = app->graphics()->widgetFactory()->createWidget("label", "text");
-    if (label)
-    {
-      label->setFont(m_textFont);
-      addChild(label);
+      // title label
+      PLabel label = app->graphics()->widgetFactory()->createWidget("label", "title");
+      if (label)
+      {
+        label->setFont(m_titleFont);
+        addChild(label);
+      }
+
+      // text label
+      label = app->graphics()->widgetFactory()->createWidget("label", "text");
+      if (label)
+      {
+        label->setFont(m_textFont);
+        addChild(label);
+      }
     }
   }
 }

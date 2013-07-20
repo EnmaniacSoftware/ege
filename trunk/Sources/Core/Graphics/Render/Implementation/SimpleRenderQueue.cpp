@@ -15,7 +15,7 @@ SimpleRenderQueue::~SimpleRenderQueue()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool SimpleRenderQueue::addForRendering(const PRenderComponent& component, const Matrix4f& modelMatrix)
+EGEResult SimpleRenderQueue::addForRendering(const PRenderComponent& component, const Matrix4f& modelMatrix)
 {
   SRENDERDATA data;
 
@@ -24,7 +24,7 @@ bool SimpleRenderQueue::addForRendering(const PRenderComponent& component, const
 
   m_renderData.insert(component->hash(), data);
 
-  return true;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void SimpleRenderQueue::clear()

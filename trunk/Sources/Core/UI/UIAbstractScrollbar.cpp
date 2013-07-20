@@ -127,8 +127,16 @@ EGEResult UIAbstractScrollbar::construct()
   material->setDstBlendFactor(EGEGraphics::BF_ONE_MINUS_SRC_ALPHA);
   material->setDiffuseColor(Color::NONE);
     
+  // create vertex declaration
+  VertexDeclaration declaration;
+  if ( ! declaration.addElement(NVertexBuffer::VES_POSITION_XY))
+  {
+    // error!
+    return EGE_ERROR;
+  }
+
   // create render data
-  m_renderData = ege_new RenderComponent(app(), "scrollbar", EGEGraphics::RP_MAIN + 1, EGEGraphics::RPT_TRIANGLES);
+  m_renderData = ege_new RenderComponent(app(), "scrollbar", declaration, EGEGraphics::RP_MAIN + 1, EGEGraphics::RPT_TRIANGLES);
   if (NULL == m_renderData)
   {
     // error!
@@ -136,11 +144,6 @@ EGEResult UIAbstractScrollbar::construct()
   }
 
   m_renderData->setMaterial(material);
-  if (!m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2))
-  {
-    // error!
-    return EGE_ERROR;
-  }
 
   return EGE_SUCCESS;
 }

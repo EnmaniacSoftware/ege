@@ -10,14 +10,14 @@ EGE_DEFINE_DELETE_OPERATORS(WidgetFrame)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 WidgetFrame::WidgetFrame(Application* app) : m_renderDataInvalid(true)
 {
-  m_renderData  = ege_new RenderComponent(app, "widget-frame", EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES, EGEVertexBuffer::UT_STATIC_WRITE);
-  if (m_renderData)
+  // create vertex declaration
+  VertexDeclaration declaration;
+  if (declaration.addElement(NVertexBuffer::VES_POSITION_XY) && declaration.addElement(NVertexBuffer::VES_TEXTURE_UV))
   {
-    m_renderData->indexBuffer()->setIndexSize(EGEIndexBuffer::IS_8BIT);
-    if (!m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2))
+    m_renderData  = ege_new RenderComponent(app, "widget-frame", declaration, EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES, NVertexBuffer::UT_STATIC_WRITE);
+    if (m_renderData)
     {
-      // error!
-      m_renderData = NULL;
+      m_renderData->indexBuffer()->setIndexSize(EGEIndexBuffer::IS_8BIT);
     }
   }
 }

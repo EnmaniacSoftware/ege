@@ -110,8 +110,8 @@ void UIPageIndicator::updateRenderData()
     Vector2f size(static_cast<float32>(m_indicatorSize), static_cast<float32>(m_indicatorSize));
     String renderDataName = String::Format("page-indicator-%d-%s", i, name().toAscii());
     PRenderComponent renderData = RenderObjectFactory::CreateQuadXY(app(), renderDataName, Vector4f::ZERO, size, ALIGN_TOP_LEFT, false, false, 
-                                                                    EGEVertexBuffer::ST_V2_T2, m_renderPriority, EGEGraphics::RPT_TRIANGLE_STRIPS, 
-                                                                    EGEVertexBuffer::UT_STATIC_WRITE);
+                                                                    RenderObjectFactory::VS_V2_T2, m_renderPriority, EGEGraphics::RPT_TRIANGLE_STRIPS, 
+                                                                    NVertexBuffer::UT_STATIC_WRITE);
 
     if (NULL == renderData)
     {

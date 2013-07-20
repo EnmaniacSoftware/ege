@@ -849,6 +849,12 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\SimpleRenderQueue.cpp">
       <Filter>Core\Graphics\Render\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\VertexDeclaration.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\VertexElement.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1306,9 +1312,6 @@
       <Filter>Core\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEIndexBuffer.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\VertexBufferTypes.h">
-      <Filter>Core\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVAOGL.h">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClInclude>
@@ -1643,6 +1646,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\SimpleRenderQueue.h">
       <Filter>Core\Graphics\Render\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\VertexDeclaration.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\VertexElement.h">
+      <Filter>Core\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

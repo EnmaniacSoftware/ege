@@ -7,11 +7,24 @@
  */
 
 #include "EGE.h"
-#include "EGEList.h"
-#include "Core/Graphics/VertexBufferTypes.h"
+#include "Core/Graphics/VertexDeclaration.h"
 
 EGE_NAMESPACE_BEGIN
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+namespace NVertexBuffer
+{
+  /*! Buffer available usages. */
+  enum UsageType
+  {
+    UT_STATIC_WRITE   = 1,                  /*!< Created once, used many times. Data will be sent from application to GL. */
+    UT_DYNAMIC_WRITE  = 2,                  /*!< Frequently changable. Data will be sent from application to GL. */
+    UT_DISCARDABLE    = 4,                  /*!< Flag indicating that content before it is overwritten is completely out-of-interest to us. 
+                                                 This allows for some optimization. Makes sense with UT_DYNAMIC_WRITE. */   
+    
+    UT_DYNAMIC_WRITE_DONT_CARE = UT_DYNAMIC_WRITE | UT_DISCARDABLE
+  };
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -25,7 +38,7 @@ class VertexBuffer : public Object
     virtual bool isValid() const = 0;
     /*! Sets buffer to given size. 
      *  @param count Number of vertices buffer should contain.
-     *  @return Returns TRUE if success. Otherwise, FALSE.
+     *  @return Returns TRU33E if success. Otherwise, FALSE.
      */
     virtual bool setSize(u32 count) = 0;
 
@@ -39,22 +52,13 @@ class VertexBuffer : public Object
     /*! Unlocks buffer. */
     virtual void unlock(void* data) = 0;
 
-    /*! Adds given array type to overall semantics. */
-    bool addArray(EGEVertexBuffer::ArrayType type);
-    /*! Sets semantics to given type. */
-    bool setSemantics(EGEVertexBuffer::SemanticType type);
-    /*! Sets semantics to a given set of array types. */
-    bool setSemantics(const List<EGEVertexBuffer::ArrayType>& types);
-    /*! Returns number of arrays of given type in semantics. */
-    s32 arrayCount(EGEVertexBuffer::ArrayType type) const;
-
-    /*! Returns current array semantics. */
-    const EGEVertexBuffer::SemanticArray& semantics() const;
+    /*! Returns vertex declaration. */
+    const VertexDeclaration& vertexDeclaration() const;
+    /*! Sets vertex declaration. */
+    void setVertexDeclaration(const VertexDeclaration& vertexDeclaration);
 
     /*! Returns number of vertices currently in use. */
     virtual u32 vertexCount() const = 0;
-    /*! Returns vertex size for current semantics (in bytes). */
-    u32 vertexSize() const;
 
   protected:
 
@@ -67,12 +71,10 @@ class VertexBuffer : public Object
 
     /*! TRUE if buffer is locked. */
     bool m_locked;
-    /*! Cached vertex size (in bytes), 0 if not calculated yet. */
-    mutable u32 m_vertexSize;
-    /*! Buffer semantics. */
-    EGEVertexBuffer::SemanticArray m_semantics;
+    /*! Vertex declaration. */
+    VertexDeclaration m_vertexDeclaration;
     /*! Usage. */
-    EGEVertexBuffer::UsageType m_usage;
+    NVertexBuffer::UsageType m_usage;
 
   private:
 

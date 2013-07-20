@@ -7,40 +7,33 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU,
-                                                   bool flipV, EGEVertexBuffer::SemanticType semantics, s32 priority, 
-                                                   EGEGraphics::RenderPrimitiveType primitive, EGEVertexBuffer::UsageType vertexUsage)
+PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, 
+                                                   bool flipV, VertexDeclarationSymbol vertexDeclaration, s32 priority, 
+                                                   EGEGraphics::RenderPrimitiveType primitive, NVertexBuffer::UsageType vertexUsage)
 {
-  PRenderComponent object = ege_new RenderComponent(app, name, priority, primitive, vertexUsage);
-  if (NULL != object)
-  {
-    // setup vertex buffer semantics
-    if (!object->isValid() || !object->vertexBuffer()->setSemantics(semantics))
-    {
-      // error!
-      return NULL;
-    }
+  PRenderComponent component;
 
-    if ( ! DoCreateQuadXY(object, position, size, origin, primitive, flipU, flipV))
-    {
-      // error!
-      return NULL;
-    }
+  // convert vertex semantics
+  VertexDeclaration declaration = ConvertVertexDeclarationSymbol(vertexDeclaration);
+  if (0 != declaration.vertexSize())
+  {
+    // create quad
+    component = CreateQuadXY(app, name, position, size, origin, flipU, flipV, declaration, priority, primitive, vertexUsage);
   }
 
-  return object;
+  return component;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, 
-                                                   bool flipV, const List<EGEVertexBuffer::ArrayType>& semantics, s32 priority, 
-                                                   EGEGraphics::RenderPrimitiveType primitive, EGEVertexBuffer::UsageType vertexUsage)
+                                                   bool flipV, const VertexDeclaration& vertexDeclaration, s32 priority, 
+                                                   EGEGraphics::RenderPrimitiveType primitive, NVertexBuffer::UsageType vertexUsage)
 
 {
-  PRenderComponent object = ege_new RenderComponent(app, name, priority, primitive, vertexUsage);
+  PRenderComponent object = ege_new RenderComponent(app, name, vertexDeclaration, priority, primitive, vertexUsage);
   if (NULL != object)
   {
     // setup vertex buffer semantics
-    if (!object->isValid() || !object->vertexBuffer()->setSemantics(semantics))
+    if ( ! object->isValid())
     {
       // error!
       return NULL;
@@ -156,31 +149,31 @@ bool RenderObjectFactory::DoCreateQuadXY(PRenderComponent& component, Vector4f p
     const VertexData& vertex = vertices[*it];
 
     // go thru all vertex arrays one by one
-    const EGEVertexBuffer::SemanticArray& semantics = component->vertexBuffer()->semantics();
-    for (EGEVertexBuffer::SemanticArray::const_iterator itSem = semantics.begin(); itSem != semantics.end(); ++itSem)
+    const VertexElementArray& vertexElements = component->vertexBuffer()->vertexDeclaration().vertexElements();
+    for (VertexElementArray::const_iterator it = vertexElements.begin(); it != vertexElements.end(); ++it)
     {
-      switch ((*itSem).type)
+      switch (it->semantic())
       {
-        case EGEVertexBuffer::AT_POSITION_XYZ:
+        case NVertexBuffer::VES_POSITION_XYZ:
 
           *data++ = vertex.pos.x;
           *data++ = vertex.pos.y;
           *data++ = vertex.pos.z;
           break;
 
-        case EGEVertexBuffer::AT_POSITION_XY:
+        case NVertexBuffer::VES_POSITION_XY:
 
           *data++ = vertex.pos.x;
           *data++ = vertex.pos.y;
           break;
 
-        case EGEVertexBuffer::AT_TEXTURE_UV:
+        case NVertexBuffer::VES_TEXTURE_UV:
 
           *data++ = vertex.uv.x;
           *data++ = vertex.uv.y;
           break;
 
-        case EGEVertexBuffer::AT_COLOR_RGBA:
+        case NVertexBuffer::VES_COLOR_RGBA:
 
           *data++ = 1.0f;
           *data++ = 1.0f;
@@ -202,15 +195,31 @@ bool RenderObjectFactory::DoCreateQuadXY(PRenderComponent& component, Vector4f p
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Application* app, const String& name, Vector4f offset,
+                                             VertexDeclarationSymbol vertexDeclaration, s32 priority)
+{
+  PRenderComponent component;
+
+  // convert vertex semantics
+  VertexDeclaration declaration = ConvertVertexDeclarationSymbol(vertexDeclaration);
+  if (0 != declaration.vertexSize())
+  {
+    // create quad
+    component = Create(spline, app, name, offset, declaration, priority);
+  }
+
+  return component;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Application* app, const String& name, Vector4f offset, 
-                                             EGEVertexBuffer::SemanticType semantics, s32 priority)
+                                             const VertexDeclaration& vertexDeclaration, s32 priority)
 {
   s32 vertexCount = 25;
 
-  PRenderComponent component = ege_new RenderComponent(app, name, priority, EGEGraphics::RPT_LINES);
+  PRenderComponent component = ege_new RenderComponent(app, name, vertexDeclaration, priority, EGEGraphics::RPT_LINES);
   if ((NULL != component) && component->isValid())
   {
-    if (component->vertexBuffer()->setSemantics(semantics) && component->vertexBuffer()->setSize(vertexCount * 2))
+    if (component->vertexBuffer()->setSize(vertexCount * 2))
     {
       float32* data = reinterpret_cast<float32*>(component->vertexBuffer()->lock(0, vertexCount * 2));
       if (NULL == data)
@@ -290,6 +299,77 @@ PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Applicat
   }
 
   return component;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+VertexDeclaration RenderObjectFactory::ConvertVertexDeclarationSymbol(VertexDeclarationSymbol vertexDeclaration)
+{
+  VertexDeclaration declaration;
+
+  bool result = true;
+
+  // process according to type
+  switch (vertexDeclaration)
+  {
+    case VS_V3:
+
+      result |= declaration.addElement(NVertexBuffer::VES_POSITION_XYZ);
+      break;
+
+    case VS_V3_T2:
+
+      result |= declaration.addElement(NVertexBuffer::VES_POSITION_XYZ);
+      result |= declaration.addElement(NVertexBuffer::VES_TEXTURE_UV);
+      break;
+
+    case VS_V3_T2_C4:
+
+      result |= declaration.addElement(NVertexBuffer::VES_POSITION_XYZ);
+      result |= declaration.addElement(NVertexBuffer::VES_TEXTURE_UV);
+      result |= declaration.addElement(NVertexBuffer::VES_COLOR_RGBA);
+      break;
+
+    case VS_V3_C4:
+
+      result |= declaration.addElement(NVertexBuffer::VES_POSITION_XYZ);
+      result |= declaration.addElement(NVertexBuffer::VES_COLOR_RGBA);
+      break;
+
+    case VS_V2:
+
+      result |= declaration.addElement(NVertexBuffer::VES_POSITION_XY);
+      break;
+
+    case VS_V2_T2:
+
+      result |= declaration.addElement(NVertexBuffer::VES_POSITION_XY);
+      result |= declaration.addElement(NVertexBuffer::VES_TEXTURE_UV);
+      break;
+
+    case VS_V2_T2_C4:
+
+      result |= declaration.addElement(NVertexBuffer::VES_POSITION_XY);
+      result |= declaration.addElement(NVertexBuffer::VES_TEXTURE_UV);
+      result |= declaration.addElement(NVertexBuffer::VES_COLOR_RGBA);
+      break;
+
+    case VS_V2_C4:
+
+      result |= declaration.addElement(NVertexBuffer::VES_POSITION_XY);
+      result |= declaration.addElement(NVertexBuffer::VES_COLOR_RGBA);
+      break;
+
+    default:
+
+      EGE_ASSERT(false && "Implement?");
+  }
+
+  // check if error
+  if ( ! result)
+  {
+    declaration.clear();
+  }
+
+  return declaration;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

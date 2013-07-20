@@ -13,12 +13,12 @@ EGE_DEFINE_NEW_OPERATORS(VertexBufferVBO)
 EGE_DEFINE_DELETE_OPERATORS(VertexBufferVBO)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps vertex buffer usage type to OpenGL compilant one. */
-static GLenum MapUsageType(EGEVertexBuffer::UsageType type)
+static GLenum MapUsageType(NVertexBuffer::UsageType type)
 {
   switch (type)
   {
-    case EGEVertexBuffer::UT_STATIC_WRITE:  return GL_STATIC_DRAW;
-    case EGEVertexBuffer::UT_DYNAMIC_WRITE: return GL_DYNAMIC_DRAW;
+    case NVertexBuffer::UT_STATIC_WRITE:  return GL_STATIC_DRAW;
+    case NVertexBuffer::UT_DYNAMIC_WRITE: return GL_DYNAMIC_DRAW;
       
     default:
       break;
@@ -28,12 +28,12 @@ static GLenum MapUsageType(EGEVertexBuffer::UsageType type)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps vertex buffer usage type appriopriate OpenGL compilant access type. */
-static GLenum MapUsageTypeToAccessType(EGEVertexBuffer::UsageType type)
+static GLenum MapUsageTypeToAccessType(NVertexBuffer::UsageType type)
 {
   switch (type)
   {
-    case EGEVertexBuffer::UT_STATIC_WRITE:
-    case EGEVertexBuffer::UT_DYNAMIC_WRITE: 
+    case NVertexBuffer::UT_STATIC_WRITE:
+    case NVertexBuffer::UT_DYNAMIC_WRITE: 
       
       return GL_WRITE_ONLY;
       
@@ -44,7 +44,7 @@ static GLenum MapUsageTypeToAccessType(EGEVertexBuffer::UsageType type)
   return GL_WRITE_ONLY;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBufferVBO::VertexBufferVBO(Application* app, EGEVertexBuffer::UsageType usage) : VertexBuffer(app, EGE_OBJECT_UID_VERTEX_BUFFER_VBO),
+VertexBufferVBO::VertexBufferVBO(Application* app, NVertexBuffer::UsageType usage) : VertexBuffer(app, EGE_OBJECT_UID_VERTEX_BUFFER_VBO),
                                                                                        m_id(0),
                                                                                        m_vertexCount(0),
                                                                                        m_vertexCapacity(0),
@@ -85,7 +85,7 @@ bool VertexBufferVBO::setSize(u32 count)
   EGE_ASSERT(!m_locked);
 
   // check if there is NO buffer to be created
-  if (m_semantics.empty())
+  if (vertexDeclaration().vertexElements().empty())
   {
     // error!
     return false;
@@ -120,7 +120,7 @@ void* VertexBufferVBO::lock(u32 offset, u32 count)
       if (NULL != m_shadowBuffer)
       {
         // return pointer to requested offset
-        buffer = m_shadowBuffer->data(static_cast<s64>(offset) * vertexSize());
+        buffer = m_shadowBuffer->data(static_cast<s64>(offset) * vertexDeclaration().vertexSize());
       }
       else
       {
@@ -128,10 +128,10 @@ void* VertexBufferVBO::lock(u32 offset, u32 count)
         OGL_CHECK();
 
         // check if content is discardable
-	      if (m_usage & EGEVertexBuffer::UT_DISCARDABLE)
+	      if (m_usage & NVertexBuffer::UT_DISCARDABLE)
 	      {
 	  	    // discard the buffer
-	  	    glBufferData(GL_ARRAY_BUFFER, vertexCount() * vertexSize(), NULL, MapUsageType(m_usage));
+	  	    glBufferData(GL_ARRAY_BUFFER, vertexCount() * vertexDeclaration().vertexSize(), NULL, MapUsageType(m_usage));
           OGL_CHECK();
 
           // update engine info
@@ -148,7 +148,7 @@ void* VertexBufferVBO::lock(u32 offset, u32 count)
         if (NULL != buffer)            
         {                  
 	        // return offsetted
-	        buffer = static_cast<void*>(static_cast<u8*>(buffer) + offset * vertexSize());
+	        buffer = static_cast<void*>(static_cast<u8*>(buffer) + offset * vertexDeclaration().vertexSize());
         }
         else
         {
@@ -188,14 +188,14 @@ void VertexBufferVBO::unlock(void* data)
     // sanity (in range) check 
     if (NULL != data)
     {
-      EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_shadowBuffer->data()) + vertexCount() * vertexSize());
+      EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_shadowBuffer->data()) + vertexCount() * vertexDeclaration().vertexSize());
     }
 
     // check if content is discardable
-	  if (m_usage & EGEVertexBuffer::UT_DISCARDABLE)
+	  if (m_usage & NVertexBuffer::UT_DISCARDABLE)
 	  {
 	  	// discard the buffer
-	  	glBufferData(GL_ARRAY_BUFFER, vertexCount() * vertexSize(), NULL, MapUsageType(m_usage));
+	  	glBufferData(GL_ARRAY_BUFFER, vertexCount() * vertexDeclaration().vertexSize(), NULL, MapUsageType(m_usage));
       OGL_CHECK();
 
       // update engine info
@@ -214,8 +214,8 @@ void VertexBufferVBO::unlock(void* data)
     }
     else
     {
-      glBufferSubData(GL_ARRAY_BUFFER, m_lockOffset * vertexSize(), m_lockLength * vertexSize(), 
-                      m_shadowBuffer->data(static_cast<s64>(m_lockOffset) * vertexSize()));
+      glBufferSubData(GL_ARRAY_BUFFER, m_lockOffset * vertexDeclaration().vertexSize(), m_lockLength * vertexDeclaration().vertexSize(), 
+                      m_shadowBuffer->data(static_cast<s64>(m_lockOffset) * vertexDeclaration().vertexSize()));
       OGL_CHECK();
 
       // update engine info
@@ -227,7 +227,7 @@ void VertexBufferVBO::unlock(void* data)
     // sanity (in range) check 
     if (NULL != data)
     {
-      EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_mapping) + vertexCount() * vertexSize());
+      EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_mapping) + vertexCount() * vertexDeclaration().vertexSize());
     }
 
     // unmap
@@ -252,7 +252,7 @@ bool VertexBufferVBO::reallocateBuffer(u32 count)
     OGL_CHECK();
 
     // allocate enough space
-    glBufferData(GL_ARRAY_BUFFER, count * vertexSize(), NULL, MapUsageType(m_usage));
+    glBufferData(GL_ARRAY_BUFFER, count * vertexDeclaration().vertexSize(), NULL, MapUsageType(m_usage));
     OGL_CHECK();
 
     // update engine info
@@ -262,7 +262,7 @@ bool VertexBufferVBO::reallocateBuffer(u32 count)
     if (NULL != m_shadowBuffer)
     {
       // allocate shadow buffer
-      if (EGE_SUCCESS != m_shadowBuffer->setSize(static_cast<s64>(count) * vertexSize()))
+      if (EGE_SUCCESS != m_shadowBuffer->setSize(static_cast<s64>(count) * vertexDeclaration().vertexSize()))
       {
         // error!
         return false;

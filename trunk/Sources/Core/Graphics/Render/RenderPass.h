@@ -28,6 +28,8 @@ class RenderPass : public Object
 
   public:
 
+    bool operator == (const RenderPass& other) const;
+
     /*! Adds new texture. */
     EGEResult addTexture(PTextureImage texture);
     /*! Sets new texture at given index. Can only succeed when setting texture within range. */

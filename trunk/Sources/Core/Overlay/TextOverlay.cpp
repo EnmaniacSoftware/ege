@@ -174,17 +174,13 @@ void TextOverlay::initialize()
   // call base class
   Overlay::initialize();
 
-  // create render buffer
-  m_renderData  = ege_new RenderComponent(app(), "overlay-" + name(), EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLES,
-                                          EGEVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
-  if (NULL != m_renderData)
+  // create vertex declaration
+  VertexDeclaration declaration;
+  if (declaration.addElement(NVertexBuffer::VES_POSITION_XY) && declaration.addElement(NVertexBuffer::VES_TEXTURE_UV))
   {
-    // add render buffers
-    if ( ! m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2))
-    {
-      // error!
-      m_renderData = NULL;
-    }
+    // create render buffer
+    m_renderData  = ege_new RenderComponent(app(), "overlay-" + name(), declaration, EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLES,
+                                            NVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

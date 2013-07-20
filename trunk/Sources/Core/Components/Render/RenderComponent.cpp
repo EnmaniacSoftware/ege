@@ -1,11 +1,11 @@
 #include "Core/Application/Application.h"
 #include "Core/Graphics/IndexBuffer.h"
-#include "Core/Graphics/VertexBuffer.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Components/Component.h"
 #include "Core/Components/Render/RenderComponent.h"
 #include "Core/Crypto/Hash.h"
+#include "EGEVertexBuffer.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
@@ -14,8 +14,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(RenderComponent)
 EGE_DEFINE_DELETE_OPERATORS(RenderComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderComponent::RenderComponent(Application* app, const String& name, s32 priority, EGEGraphics::RenderPrimitiveType primitive, 
-                                 EGEVertexBuffer::UsageType vertexUsage, EGEIndexBuffer::UsageType indexUsage) 
+RenderComponent::RenderComponent(Application* app, const String& name, const VertexDeclaration& vertexDeclaration, s32 priority, 
+                                 EGEGraphics::RenderPrimitiveType primitive, NVertexBuffer::UsageType vertexUsage, EGEIndexBuffer::UsageType indexUsage) 
 : IComponent(app, EGE_OBJECT_UID_RENDER_COMPONENT, name), 
   m_priority(priority), 
   m_primitiveType(primitive), 
@@ -31,6 +31,11 @@ RenderComponent::RenderComponent(Application* app, const String& name, s32 prior
 
   m_indexBuffer  = app->graphics()->hardwareResourceProvider()->createIndexBuffer(indexUsage);
   m_vertexBuffer = app->graphics()->hardwareResourceProvider()->createVertexBuffer(vertexUsage);
+
+  if (NULL != m_vertexBuffer)
+  {
+    m_vertexBuffer->setVertexDeclaration(vertexDeclaration);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderComponent::~RenderComponent()
@@ -101,16 +106,16 @@ void RenderComponent::calculateHash()
   // determine hash component from semantics
   // NOTE: generated value is from range [0 - 100000)
   // NOTE: max occurences of a particular array is 9
-  const DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>& semantics = vertexBuffer()->semantics();
-  for (DynamicArray<EGEVertexBuffer::SARRAYSEMANTIC>::const_iterator it = semantics.begin(); it != semantics.end(); ++it)
+  const VertexElementArray& vertexElementArray = vertexBuffer()->vertexDeclaration().vertexElements();
+  for (VertexElementArray::const_iterator it = vertexElementArray.begin(); it != vertexElementArray.end(); ++it)
   {
-    switch (it->type)
+    switch (it->semantic())
     {
-      case EGEVertexBuffer::AT_POSITION_XYZ:  hash += 1; break;
-      case EGEVertexBuffer::AT_COLOR_RGBA:    hash += 10; break;
-      case EGEVertexBuffer::AT_NORMAL:        hash += 100; break;
-      case EGEVertexBuffer::AT_TEXTURE_UV:    hash += 1000; break;
-      case EGEVertexBuffer::AT_TANGENT:       hash += 10000; break;
+      case NVertexBuffer::VES_POSITION_XYZ:  hash += 1; break;
+      case NVertexBuffer::VES_COLOR_RGBA:    hash += 10; break;
+      case NVertexBuffer::VES_NORMAL:        hash += 100; break;
+      case NVertexBuffer::VES_TEXTURE_UV:    hash += 1000; break;
+      case NVertexBuffer::VES_TANGENT:       hash += 10000; break;
     }
   }
 

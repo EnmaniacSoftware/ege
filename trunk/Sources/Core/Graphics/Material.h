@@ -23,6 +23,10 @@ class Material : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  public:
+
+    bool operator == (const Material& other) const;
+
     /*! Returns TRUE if material is valid. 
      *  @note Material is considered valid if at least one pass is defined.
      */

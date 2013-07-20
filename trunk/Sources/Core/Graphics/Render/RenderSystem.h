@@ -6,6 +6,8 @@
 #include "EGEMatrix.h"
 #include "EGEMutex.h"
 #include "EGEObjectList.h"
+#include "EGEList.h"
+#include "EGEMap.h"
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include "Core/Graphics/Render/Interface/Renderer.h"
 #include "Core/Components/Render/RenderComponent.h"
@@ -117,8 +119,8 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     u32 m_batchCount;
     /*! Number of vertices rendered. */
     u32 m_vertexCount;
-    /*! Map of rendering queues sorted by render priority. */
-    Map<s32, PRenderQueue> m_renderQueues;
+    /*! Map of list of rendering queues sorted by hash value. */
+    Map<s32, List<PRenderQueue> > m_renderQueues;
 
 
    // std::vector<PRenderComponent> m_components;     // components pool
@@ -194,7 +196,7 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     /*! @see IRenderer::currentRenderTarget. */
     PRenderTarget currentRenderTarget() const override;
     /*! @see IHardwareResourceProvider::createVertexBuffer. */
-    PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const override;
+    PVertexBuffer createVertexBuffer(NVertexBuffer::UsageType usage) const override;
     /*! @see IHardwareResourceProvider::destroyVertexBuffer. */
     void destroyVertexBuffer(PVertexBuffer object) const override;
     /*! @see IHardwareResourceProvider::requestDestroyVertexBuffer. */

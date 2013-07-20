@@ -29,7 +29,7 @@ void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2C
   {
     float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
+    component->vertexBuffer()->setSemantics(RenderObjectFactory::VS_V3_C4);
 
     // TAGE - set buffer size
     float32* data = (float32*) component->vertexBuffer()->lock(0, vertexCount);
@@ -68,8 +68,8 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
   {
     float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component_fill->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
-    component_frame->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
+    component_fill->vertexBuffer()->setSemantics(RenderObjectFactory::VS_V3_C4);
+    component_frame->vertexBuffer()->setSemantics(RenderObjectFactory::VS_V3_C4);
     
     // TAGE - set buffer size
     float32* data_fill  = (float32*) component_fill->vertexBuffer()->lock(0, vertexCount);
@@ -114,7 +114,7 @@ void DebugDraw::DrawCircle(const b2Vec2& center, EGE::float32 radius, const b2Co
 
     float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
+    component->vertexBuffer()->setSemantics(RenderObjectFactory::VS_V3_C4);
 
     // TAGE - set buffer size
     float32* data = (float32*) component->vertexBuffer()->lock(0, (u32) k_segments);
@@ -161,8 +161,8 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
 
     float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component_fill->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
-    component_frame->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
+    component_fill->vertexBuffer()->setSemantics(RenderObjectFactory::VS_V3_C4);
+    component_frame->vertexBuffer()->setSemantics(RenderObjectFactory::VS_V3_C4);
     
     // TAGE - set buffer size
     float32* data_fill  = (float32*) component_fill->vertexBuffer()->lock(0, (u32) k_segments);
@@ -213,7 +213,7 @@ void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& c
   {
     float32 scale = manager()->simulationToWorldScaleFactor();
  
-    component->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4);
+    component->vertexBuffer()->setSemantics(RenderObjectFactory::VS_V3_C4);
 
     // TAGE - set buffer size
     float32* data = (float32*) component->vertexBuffer()->lock(0, 2);

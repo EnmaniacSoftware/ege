@@ -240,27 +240,72 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
   // check if component is meaningful
   if (0 < component->vertexBuffer()->vertexCount())
   {
+    bool added = false;
+
     // calculate hash
+    // NOTE: at this stage components are separated into unique priorities and primitive types
     u32 hash = CalculateRenderQueueHash(component->priority(), component->primitiveType());
 
-    // check if no queue with such hash value exists yet
-    if ( ! m_renderQueues.contains(hash))
-    {
-      // create new queue
-      PRenderQueue queue = ege_new SimpleRenderQueue(app());
-      //PRenderQueue queue = ege_new BatchedRenderQueue(app());
-      if (NULL == queue)
-      {
-        // error!
-        return false;
-      }
+    // check if proper queue exists already
+    List<PRenderQueue> emptyList;
+    List<PRenderQueue> queueList = m_renderQueues.value(hash, emptyList);
 
-      // add it into queues
-      m_renderQueues.insert(hash, queue);
+    // try to add to one of the existing render queues
+    for (List<PRenderQueue>::iterator it = queueList.begin(); it != queueList.end(); ++it)
+    {
+      PRenderQueue& queue = *it;
+
+      // add data into queue
+      EGEResult addResult = queue->addForRendering(component, worldMatrix);
+      if (EGE_SUCCESS == addResult)
+      {
+        // set flag
+        added = true;
+
+        // done
+        break;
+      }
+      else if (EGE_ERROR == addResult)
+      {
+        // general failure
+        result = false;
+
+        // done
+        break;
+      }
     }
 
-    // add data into queue
-    result = m_renderQueues[hash]->addForRendering(component, worldMatrix);
+    // check if no suitable queue has been found (but no error occured)
+    if (result && ! added)
+    {
+      result = false;
+
+      // create appriopriate queue
+      PRenderQueue queue;
+
+      // if material has only 1 pass defined it is suitable for batching
+      //if (1 == component->material()->passCount())
+      //{
+      //  queue = ege_new BatchedRenderQueue(app());
+      //}
+      //else
+      {        
+        queue = ege_new SimpleRenderQueue(app());
+      }
+
+      // check if properly allocated
+      if (NULL != queue)
+      {
+        // add to newly created queue
+        result = (EGE_SUCCESS == queue->addForRendering(component, worldMatrix));
+      }
+
+      // add it into pool if ok
+      if (result)
+      {
+        m_renderQueues.insert(hash, queue);
+      }
+    }
   }
 
   return result;
@@ -341,7 +386,7 @@ Rectf RenderSystem::applyRotation(const Rectf& rect, const Angle& angle) const
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PVertexBuffer RenderSystem::createVertexBuffer(EGEVertexBuffer::UsageType usage) const
+PVertexBuffer RenderSystem::createVertexBuffer(NVertexBuffer::UsageType usage) const
 {
   return p_func()->createVertexBuffer(usage);
 }

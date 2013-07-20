@@ -19,9 +19,9 @@ class RenderComponent : public IComponent
 {
   public:
 
-    RenderComponent(Application* app, const String& name, s32 priority = EGEGraphics::RP_MAIN, 
-                    EGEGraphics::RenderPrimitiveType primitive = EGEGraphics::RPT_TRIANGLES, 
-                    EGEVertexBuffer::UsageType vertexUsage = EGEVertexBuffer::UT_DYNAMIC_WRITE,
+    RenderComponent(Application* app, const String& name, const VertexDeclaration& vertexDeclaration, s32 priority = EGEGraphics::RP_MAIN, 
+                    EGEGraphics::RenderPrimitiveType primitive = EGEGraphics::RPT_TRIANGLES,
+                    NVertexBuffer::UsageType vertexUsage = NVertexBuffer::UT_DYNAMIC_WRITE,
                     EGEIndexBuffer::UsageType indexUsage = EGEIndexBuffer::UT_DYNAMIC_WRITE);
    ~RenderComponent();
 

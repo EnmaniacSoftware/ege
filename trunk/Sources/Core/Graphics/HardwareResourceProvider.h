@@ -44,7 +44,7 @@ class IHardwareResourceProvider
     /*! Creates vertex buffer object. 
      *  @param  usage Intended usage hint.
      */
-    virtual PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const = 0;
+    virtual PVertexBuffer createVertexBuffer(NVertexBuffer::UsageType usage) const = 0;
     /*! Destroys vertex buffer object. 
      *  @param  object Object to destroy.
      */

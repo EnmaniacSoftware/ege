@@ -79,7 +79,7 @@ class RenderSystemPrivate : public IComponentRenderer
      */
     PTexture2D createEmptyTexture(const String& name);
     /*! @see RenderSystem::createVertexBuffer. */
-    PVertexBuffer createVertexBuffer(EGEVertexBuffer::UsageType usage) const;
+    PVertexBuffer createVertexBuffer(NVertexBuffer::UsageType usage) const;
     /*! @see RenderSystem::destroyVertexBuffer. */
     void destroyVertexBuffer(PVertexBuffer object) const;
     /*! @see RenderSystem::createIndexBuffer. */

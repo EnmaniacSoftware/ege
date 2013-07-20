@@ -6,6 +6,8 @@
 
 EGE_NAMESPACE_BEGIN
 
+using NVertexBuffer::VertexElementSemanticArray;
+
   // TAGE
   static bool pointSprite = false;
 
@@ -23,32 +25,38 @@ ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNo
   Dictionary params;
   initialize(params);
 
-  // create render data
-  m_renderData = ege_new RenderComponent(app, name, EGEGraphics::RP_MAIN, pointSprite ? EGEGraphics::RPT_POINTS : EGEGraphics::RPT_TRIANGLES, 
-                                         EGEVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
-  if (NULL != m_renderData)
+  VertexDeclaration declaration;
+
+  if (pointSprite)
   {
-    if (pointSprite)
+    // Point sprites have:
+    // - position
+    // - color
+    // - size (optionally, 1 float)
+    if ( ! declaration.addElement(NVertexBuffer::VES_POSITION_XYZ) ||
+         ! declaration.addElement(NVertexBuffer::VES_COLOR_RGBA) || 
+         ! declaration.addElement(NVertexBuffer::VES_POINT_SPRITE_SIZE))
     {
-      // Point sprites have:
-      // - position
-      // - color
-      // - size (optionally, 1 float)
-      if ( ! m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_C4) || 
-           ! m_renderData->vertexBuffer()->addArray(EGEVertexBuffer::AT_POINT_SPRITE_SIZE))
-      {
-        // error!
-        m_renderData = NULL;
-      }
+      // error!
+      declaration.clear();
     }
-    else
+  }
+  else
+  {
+    if ( ! declaration.addElement(NVertexBuffer::VES_POSITION_XYZ) ||
+         ! declaration.addElement(NVertexBuffer::VES_TEXTURE_UV) ||
+         ! declaration.addElement(NVertexBuffer::VES_COLOR_RGBA))
     {
-      if ( ! m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_T2_C4))
-      {
-        // error!
-        m_renderData = NULL;
-      }
+      // error!
+      declaration.clear();
     }
+  }
+
+  // create render data
+  if (0 != declaration.vertexSize())
+  {
+    m_renderData = ege_new RenderComponent(app, name, declaration, EGEGraphics::RP_MAIN, pointSprite ? EGEGraphics::RPT_POINTS : EGEGraphics::RPT_TRIANGLES,
+                                           NVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
