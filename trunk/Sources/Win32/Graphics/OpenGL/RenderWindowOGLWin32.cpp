@@ -594,7 +594,8 @@ void RenderWindowOGLWin32::detectCapabilities()
     if ((NULL != glGenBuffers) && (NULL != glBindBuffer) && (NULL != glBufferData) && (NULL != glBufferSubData) && (NULL != glDeleteBuffers) && 
         (NULL != glMapBuffer) && (NULL != glUnmapBuffer))
     {
-      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VBO, true);
+      // TAGE - stick to VA as VBO seems not to work well with batching. Once code changes for batching try again.
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VBO, false);
       Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER, true);
     }
   }

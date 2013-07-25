@@ -29,6 +29,7 @@ class RenderPass : public Object
   public:
 
     bool operator == (const RenderPass& other) const;
+    bool operator != (const RenderPass& other) const;
 
     /*! Adds new texture. */
     EGEResult addTexture(PTextureImage texture);

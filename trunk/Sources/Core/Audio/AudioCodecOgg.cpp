@@ -63,7 +63,7 @@ bool AudioCodecOgg::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
   PDataBuffer stream;
   if (EGE_OBJECT_UID_DATA_BUFFER == m_stream->uid())
   {
-    stream = m_stream;
+    stream = ege_pcast<PDataBuffer>(m_stream);
 
     // check if there are some overflous samples present from last decompression interation
     if (0 < m_overflousDecodedSamples.size())
@@ -205,7 +205,7 @@ bool AudioCodecOgg::reset()
   PDataBuffer stream;
   if (EGE_OBJECT_UID_DATA_BUFFER == m_stream->uid())
   {
-    stream = m_stream;
+    stream = ege_pcast<PDataBuffer>(m_stream);
         
     // initially supply up to 1024 bytes
     s32 dataLength = Math::Min(static_cast<s32>(1024), static_cast<s32>(stream->size()));

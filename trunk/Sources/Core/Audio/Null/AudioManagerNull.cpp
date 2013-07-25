@@ -2,6 +2,7 @@
 #include "Core/Audio/Null/AudioManagerNull.h"
 #include "Core/Audio/Null/SoundNull.h"
 #include "Core/Audio/Sound.h"
+#include "EGEEvent.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE

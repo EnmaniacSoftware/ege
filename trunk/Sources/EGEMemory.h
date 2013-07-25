@@ -15,7 +15,8 @@ EGE_DECLARE_SMART_CLASS(Object, PObject)
 template <class T, class U>
 inline T ege_cast(SmartPointer<U> object)
 {
-  return static_cast<T>(object.object());
+  // NOTE: deliberately reinterpret_cast is used. Use this with caution.
+  return reinterpret_cast<T>(object.object());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <class T, class U>

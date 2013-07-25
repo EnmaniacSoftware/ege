@@ -247,31 +247,34 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
     u32 hash = CalculateRenderQueueHash(component->priority(), component->primitiveType());
 
     // check if proper queue exists already
-    List<PRenderQueue> emptyList;
-    List<PRenderQueue> queueList = m_renderQueues.value(hash, emptyList);
-
-    // try to add to one of the existing render queues
-    for (List<PRenderQueue>::iterator it = queueList.begin(); it != queueList.end(); ++it)
+    bool renderQueueForHashPresent = m_renderQueues.contains(hash);
+    if (renderQueueForHashPresent)
     {
-      PRenderQueue& queue = *it;
+      List<PRenderQueue>& queueList = m_renderQueues.at(hash);
 
-      // add data into queue
-      EGEResult addResult = queue->addForRendering(component, worldMatrix);
-      if (EGE_SUCCESS == addResult)
+      // try to add to one of the existing render queues
+      for (List<PRenderQueue>::iterator it = queueList.begin(); it != queueList.end(); ++it)
       {
-        // set flag
-        added = true;
+        PRenderQueue& queue = *it;
 
-        // done
-        break;
-      }
-      else if (EGE_ERROR == addResult)
-      {
-        // general failure
-        result = false;
+        // add data into queue
+        EGEResult addResult = queue->addForRendering(component, worldMatrix);
+        if (EGE_SUCCESS == addResult)
+        {
+          // set flag
+          added = true;
 
-        // done
-        break;
+          // done
+          break;
+        }
+        else if (EGE_ERROR == addResult)
+        {
+          // general failure
+          result = false;
+
+          // done
+          break;
+        }
       }
     }
 
@@ -284,11 +287,12 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
       PRenderQueue queue;
 
       // if material has only 1 pass defined it is suitable for batching
-      //if (1 == component->material()->passCount())
-      //{
-      //  queue = ege_new BatchedRenderQueue(app());
-      //}
-      //else
+      // batch only really small buffers
+      if ((1 == component->material()->passCount()) && (10 > component->vertexBuffer()->vertexCount()))
+      {
+        queue = ege_new BatchedRenderQueue(app());
+      }
+      else
       {        
         queue = ege_new SimpleRenderQueue(app());
       }
@@ -303,7 +307,14 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
       // add it into pool if ok
       if (result)
       {
-        m_renderQueues.insert(hash, queue);
+        if (renderQueueForHashPresent)
+        {
+          m_renderQueues.at(hash).push_back(queue);
+        }
+        else
+        {
+          m_renderQueues.insert(hash, queue);
+        }
       }
     }
   }

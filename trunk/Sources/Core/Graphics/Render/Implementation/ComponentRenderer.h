@@ -23,7 +23,7 @@ class IComponentRenderer
      *  @param  component   Component to render.
      *  @param  modelMatrix Model transformation matrix.
      */
-    virtual void renderComponent(const PRenderComponent& component, const Matrix4f& modelMatrix) = 0;
+    virtual void renderComponent(const PRenderComponent& component, const Matrix4f& modelMatrix = Matrix4f::IDENTITY) = 0;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

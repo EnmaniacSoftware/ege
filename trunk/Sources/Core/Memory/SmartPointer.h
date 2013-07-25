@@ -73,26 +73,30 @@ class SmartPointer
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <class T>
-SmartPointer<T>::SmartPointer(T* object) : m_object(object), m_deallocable(true)
+SmartPointer<T>::SmartPointer(T* object) : m_object(object), 
+                                           m_deallocable(true)
 {
   incrementReference(object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <class T>
-SmartPointer<T>::SmartPointer(T& object) : m_object(&object), m_deallocable(false)
+SmartPointer<T>::SmartPointer(T& object) : m_object(&object), 
+                                           m_deallocable(false)
 {
   // NOTE: do not increment ref counter
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <class T>
-SmartPointer<T>::SmartPointer(const SmartPointer<T>& other) : m_object(other.object()), m_deallocable(other.m_deallocable)
+SmartPointer<T>::SmartPointer(const SmartPointer<T>& other) : m_object(other.object()), 
+                                                              m_deallocable(other.m_deallocable)
 {
   incrementReference(m_object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <class T>
 template <class U>
-SmartPointer<T>::SmartPointer(const SmartPointer<U>& other) : m_object(reinterpret_cast<T*>(other.object())), m_deallocable(other.isDeallocable())
+SmartPointer<T>::SmartPointer(const SmartPointer<U>& other) : m_object(static_cast<T*>(other.object())), 
+                                                              m_deallocable(other.isDeallocable())
 {
   incrementReference(m_object);
 }
@@ -100,7 +104,7 @@ SmartPointer<T>::SmartPointer(const SmartPointer<U>& other) : m_object(reinterpr
 template <class T>
 SmartPointer<T>::~SmartPointer()
 {
-  decrementReference(reinterpret_cast<Object*>(m_object));
+  decrementReference(static_cast<Object*>(m_object));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <class T>

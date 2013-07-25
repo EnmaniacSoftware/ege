@@ -468,7 +468,9 @@ bool ResourceManager::createDefaultResources()
     return false;
   }
 
-  if (EGE_SUCCESS != renderPass->addTexture(texture))
+  // create texture image
+  PTextureImage textureImage = ege_new TextureImage(texture);
+  if (EGE_SUCCESS != renderPass->addTexture(textureImage))
   {
     // error!
     return false;

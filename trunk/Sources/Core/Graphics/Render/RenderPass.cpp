@@ -134,10 +134,13 @@ RenderPass* RenderPass::clone() const
   RenderPass* pass = ege_new RenderPass(app());
   if (NULL != pass)
   {
-    // TAGE - probably there is no need to clone textures too unless we need to modify textures as well
+    // clone texture images
     for (TextureImageArray::const_iterator it = m_textures.begin(); it != m_textures.end(); ++it)
     {
-      pass->m_textures.push_back(*it);
+      const PTextureImage& currentTextureImage = *it;
+
+      PTextureImage textureImage = ege_new TextureImage(*currentTextureImage);
+      pass->m_textures.push_back(textureImage);
     }
 
     pass->m_srcBlendFactor        = m_srcBlendFactor;
@@ -176,7 +179,7 @@ bool RenderPass::operator == (const RenderPass& other) const
     // check if textures are different
     for (s32 i = 0; i < static_cast<s32>(m_textures.size()); ++i)
     {
-      if (m_textures[i] != other.m_textures[i])
+      if (m_textures[i]->texture() != other.m_textures[i]->texture())
       {
         // different
         result = false;
@@ -188,6 +191,11 @@ bool RenderPass::operator == (const RenderPass& other) const
   }
 
   return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool RenderPass::operator != (const RenderPass& other) const
+{
+  return ! (*this == other);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -73,11 +73,11 @@ void* VertexBufferVA::lock(u32 offset, u32 count)
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void VertexBufferVA::unlock(void* data)
+void VertexBufferVA::unlock(const void* data)
 {
   if (data)
   {
-    EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_buffer->data()) + vertexCount() * vertexDeclaration().vertexSize());
+    EGE_ASSERT(reinterpret_cast<const u8*>(data) < reinterpret_cast<u8*>(m_buffer->data()) + vertexCount() * vertexDeclaration().vertexSize());
   }
 
   m_locked = false;

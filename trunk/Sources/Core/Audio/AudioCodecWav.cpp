@@ -24,7 +24,7 @@ bool AudioCodecWav::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
   PDataBuffer stream;
   if (EGE_OBJECT_UID_DATA_BUFFER == m_stream->uid())
   {
-    stream = m_stream;
+    stream = ege_pcast<PDataBuffer>(m_stream);
 
     // apply current stream offset
     // NOTE: multiple codecs can re-use same stream
@@ -60,7 +60,7 @@ bool AudioCodecWav::reset()
   PDataBuffer stream;
   if (EGE_OBJECT_UID_DATA_BUFFER == m_stream->uid())
   {
-    stream = m_stream;
+    stream = ege_pcast<PDataBuffer>(m_stream);
 
     stream->setReadOffset(0);
 

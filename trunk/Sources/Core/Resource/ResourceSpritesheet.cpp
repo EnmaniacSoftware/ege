@@ -93,7 +93,7 @@ EGEResult ResourceSpritesheet::load()
         }
 
         // store texture
-        m_texture = ege_new TextureImage(app(), textureResource->texture(), Rectf(0, 0, 1.0f, 1.0f));
+        m_texture = ege_new TextureImage(ege_pcast<PTexture2D>(textureResource->texture()), Rectf(0, 0, 1.0f, 1.0f));
       }
       else
       {

@@ -28,6 +28,11 @@ bool VertexDeclaration::operator == (const VertexDeclaration& other) const
   return (m_vertexSize == other.m_vertexSize) && (m_vertexElements == other.m_vertexElements);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool VertexDeclaration::operator != (const VertexDeclaration& other) const
+{
+  return ! (*this == other);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool VertexDeclaration::addElement(NVertexBuffer::VertexElementSemantic semantic)
 {
   u32 offset = 0;
@@ -75,7 +80,7 @@ s32 VertexDeclaration::elementCount(NVertexBuffer::VertexElementSemantic semanti
   s32 count = 0;
   for (VertexElementArray::const_iterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
   {
-    if (iter->semantic() == semantic)
+    if (semantic == iter->semantic())
     {
       ++count;
     }
@@ -124,6 +129,48 @@ void VertexDeclaration::clear()
 {
   m_vertexSize = 0;
   m_vertexElements.clear();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const VertexElement* VertexDeclaration::vertexElement(NVertexBuffer::VertexElementSemantic semantic, u32 index) const
+{
+  const VertexElement* element = NULL;
+
+  // go thru all elements
+  for (VertexElementArray::const_iterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
+  {
+    const VertexElement& current = *iter;
+
+    // check if found
+    if ((semantic == current.semantic()) && (index == current.index()))
+    {
+      // found
+      element = &current;
+      break;
+    }
+  }
+
+  return element;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+NVertexBuffer::VertexElementSemantic VertexDeclaration::findPositionSemantic() const
+{
+  NVertexBuffer::VertexElementSemantic semantic = NVertexBuffer::VES_NONE;
+
+  // go thru all elements
+  for (VertexElementArray::const_iterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
+  {
+    const VertexElement& current = *iter;
+
+    // check if found
+    if ((NVertexBuffer::VES_POSITION_XY == current.semantic()) || (NVertexBuffer::VES_POSITION_XYZ == current.semantic()))
+    {
+      // found
+      semantic = current.semantic();
+      break;
+    }
+  }
+
+  return semantic;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

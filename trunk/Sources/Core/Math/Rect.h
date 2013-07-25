@@ -67,10 +67,13 @@ class TRect
   public:
 
     static const TRect<T> INVALID;
+    static const TRect<T> UNIT;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 const TRect<T> TRect<T>::INVALID = TRect<T>(0, 0, -1, -1);
+template <typename T>
+const TRect<T> TRect<T>::UNIT = TRect<T>(0, 0, 1, 1);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 TRect<T>::TRect(T x, T y, T w, T h ) : x(x), y(y), width(w), height(h)

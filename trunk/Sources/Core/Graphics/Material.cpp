@@ -249,7 +249,7 @@ bool Material::operator == (const Material& other) const
     for (s32 i = 0; i < static_cast<s32>(m_passes.size()); ++i)
     {
       // check if passes differ
-      if (m_passes[i] != other.m_passes[i])
+      if (*m_passes[i] != *other.m_passes[i])
       {
         // different
         result = false;
@@ -261,6 +261,11 @@ bool Material::operator == (const Material& other) const
   }
 
   return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Material::operator != (const Material& other) const
+{
+  return ! (*this == other);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

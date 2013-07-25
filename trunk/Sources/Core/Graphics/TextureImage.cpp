@@ -12,27 +12,18 @@ TextureImage::TextureImage(Application* app) : Object(app, EGE_OBJECT_UID_TEXTUR
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureImage::TextureImage(Application* app, PObject texture, const Rectf& rect) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE), 
-                                                                                   m_texture(texture), 
-                                                                                   m_rect(rect),
-                                                                                   m_envMode(EGETexture::EM_MODULATE)
+TextureImage::TextureImage(const PTexture2D& texture, Rectf rect) : Object(texture->app(), EGE_OBJECT_UID_TEXTURE_IMAGE), 
+                                                                    m_texture(texture),
+                                                                    m_name(texture->name()),
+                                                                    m_rect(rect),
+                                                                    m_envMode(EGETexture::EM_MODULATE)
 {
-  // inherit name from texture
-  if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
-  {
-    PTexture2D tex2D = texture;
-    m_name = tex2D->name();
-  }
-  else
-  {
-    EGE_ASSERT(false && "Implement!");
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureImage::TextureImage(Application* app, const PTextureImage& texture, const Rectf& rect) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE), 
-                                                                                                m_name(texture->name()), 
-                                                                                                m_texture(texture->m_texture), 
-                                                                                                m_envMode(texture->m_envMode)
+TextureImage::TextureImage(const PTextureImage& texture, const Rectf& rect) : Object(texture->app(), EGE_OBJECT_UID_TEXTURE_IMAGE), 
+                                                                              m_name(texture->name()), 
+                                                                              m_texture(texture->m_texture), 
+                                                                              m_envMode(texture->m_envMode)
 {
   // NOTE: rect is in local space of this object, combine these for final local space coords
   m_rect = texture->m_rect.combine(rect);
@@ -44,7 +35,7 @@ TextureImage::~TextureImage()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool TextureImage::isValid() const
 {
-  return (NULL != m_texture) && !m_rect.isEmpty() && !m_rect.isNull();
+  return (NULL != m_texture) && ! m_rect.isEmpty() && ! m_rect.isNull();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void TextureImage::setEnvironmentMode(EGETexture::EnvironmentMode mode)
@@ -52,9 +43,19 @@ void TextureImage::setEnvironmentMode(EGETexture::EnvironmentMode mode)
   m_envMode = mode;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void TextureImage::setTexture(const PObject& texture)
+EGETexture::EnvironmentMode TextureImage::environmentMode() const 
+{ 
+  return m_envMode; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void TextureImage::setTexture(const PTexture2D& texture)
 {
   m_texture = texture;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PTexture2D TextureImage::texture() const 
+{ 
+  return m_texture; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void TextureImage::setRect(const Rectf& rect)
@@ -62,9 +63,19 @@ void TextureImage::setRect(const Rectf& rect)
   m_rect = rect;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const Rectf& TextureImage::rect() const 
+{ 
+  return m_rect; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void TextureImage::setName(const String& name)
 {
   m_name = name;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const String& TextureImage::name() const 
+{ 
+  return m_name; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void TextureImage::copy(const TextureImage* other)
@@ -117,6 +128,11 @@ s32 TextureImage::height() const
 void TextureImage::setRotationAngle(const Angle& angle)
 {
   m_rotationAngle = angle;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const Angle& TextureImage::rotationAngle() const 
+{ 
+  return m_rotationAngle; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

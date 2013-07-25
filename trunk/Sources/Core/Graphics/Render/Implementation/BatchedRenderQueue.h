@@ -36,10 +36,35 @@ class BatchedRenderQueue : public RenderQueue
      */
     bool allocateMasterRenderComponent(const PRenderComponent& component);
     /*! Appends component to master one. 
-     *  @param  component Component which should be appended to master one.
+     *  @param  component   Component which should be appended to master one.
+     *  @param  modelMatrix Model transformation matrix.
      *  @return TRUE if component has been sucessfully appened.
      */
-    bool appendComponent(const PRenderComponent& component);
+    bool appendComponent(const PRenderComponent& component, const Matrix4f& modelMatrix);
+    /*! Appends vertex buffer to master one.
+     *  @param  buffer      Vertex buffer which should be appended to master one.
+     *  @param  modelMatrix Model transformation matrix.
+     *  @return TRUE if component has been sucessfully appened.
+     */
+    bool appendBuffer(const PVertexBuffer& buffer, const Rectf& textureRect, const Matrix4f& modelMatrix);
+    /*! Appends index buffer to master one.
+     *  @param  buffer  Index buffer which should be appended to master one.
+     *  @return TRUE if component has been sucessfully appened.
+     */
+    bool appendBuffer(const PIndexBuffer& buffer);
+
+
+    void convertVertices(float32* outData, const float32* inData, u32 count, const Rectf& textureRect, const Matrix4f& modelMatrix) const;
+
+    /*! Checks if given material is compatible with master one.
+     *  @param  material  Material to check.
+     *  @return TRUE if material is compatible.
+     */
+    bool isMaterialCompatible(const PMaterial& material) const;
+    /*! Prepares master component based on given one.
+     *  @param  component Reference component based on which master one should be prepared.
+     */
+    void prepare(const PRenderComponent& component);
 
   private:
 

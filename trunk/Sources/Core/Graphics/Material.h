@@ -26,6 +26,7 @@ class Material : public Object
   public:
 
     bool operator == (const Material& other) const;
+    bool operator != (const Material& other) const;
 
     /*! Returns TRUE if material is valid. 
      *  @note Material is considered valid if at least one pass is defined.

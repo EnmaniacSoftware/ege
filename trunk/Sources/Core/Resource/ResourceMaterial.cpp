@@ -610,7 +610,7 @@ EGEResult ResourceMaterial::loadDependencies()
         }
 
         // store referred texture
-        texture = textureImage.texture();
+        texture = ege_pcast<PObject>(textureImage.texture());
 
         // set new texture space in use
         texRect = textureImage.rect();
@@ -644,7 +644,7 @@ EGEResult ResourceMaterial::loadDependencies()
       // calculate final referred rectangle
       Rectf finalRect = texRect.combine(textureImageData.rect);
 
-      textureImageData.textureImage = ege_new TextureImage(app(), texture, finalRect);
+      textureImageData.textureImage = ege_new TextureImage(ege_pcast<PTexture2D>(texture), finalRect);
       if ((NULL == textureImageData.textureImage) || ! textureImageData.textureImage->isValid())
       {
         // error!

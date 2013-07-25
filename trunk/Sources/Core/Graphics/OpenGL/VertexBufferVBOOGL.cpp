@@ -170,7 +170,7 @@ void* VertexBufferVBO::lock(u32 offset, u32 count)
   return buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void VertexBufferVBO::unlock(void* data)
+void VertexBufferVBO::unlock(const void* data)
 {
   // check if nothing locked
   if ( ! m_locked)
@@ -188,7 +188,7 @@ void VertexBufferVBO::unlock(void* data)
     // sanity (in range) check 
     if (NULL != data)
     {
-      EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_shadowBuffer->data()) + vertexCount() * vertexDeclaration().vertexSize());
+      EGE_ASSERT(reinterpret_cast<const u8*>(data) < reinterpret_cast<u8*>(m_shadowBuffer->data()) + vertexCount() * vertexDeclaration().vertexSize());
     }
 
     // check if content is discardable
@@ -227,7 +227,7 @@ void VertexBufferVBO::unlock(void* data)
     // sanity (in range) check 
     if (NULL != data)
     {
-      EGE_ASSERT(reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(m_mapping) + vertexCount() * vertexDeclaration().vertexSize());
+      EGE_ASSERT(reinterpret_cast<const u8*>(data) < reinterpret_cast<u8*>(m_mapping) + vertexCount() * vertexDeclaration().vertexSize());
     }
 
     // unmap

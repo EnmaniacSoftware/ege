@@ -38,7 +38,7 @@ class VertexBuffer : public Object
     virtual bool isValid() const = 0;
     /*! Sets buffer to given size. 
      *  @param count Number of vertices buffer should contain.
-     *  @return Returns TRU33E if success. Otherwise, FALSE.
+     *  @return Returns TRUE if success. Otherwise, FALSE.
      */
     virtual bool setSize(u32 count) = 0;
 
@@ -50,7 +50,7 @@ class VertexBuffer : public Object
      */
     virtual void* lock(u32 offset, u32 count) = 0;
     /*! Unlocks buffer. */
-    virtual void unlock(void* data) = 0;
+    virtual void unlock(const void* data) = 0;
 
     /*! Returns vertex declaration. */
     const VertexDeclaration& vertexDeclaration() const;
