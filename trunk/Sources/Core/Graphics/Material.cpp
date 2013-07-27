@@ -222,7 +222,7 @@ PMaterial Material::clone() const
     // clone passes
     for (PassArray::const_iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
-      RenderPass* clonedPass = (*it)->clone();
+      PRenderPass clonedPass = (*it)->clone();
       if (NULL == clonedPass)
       {
         // error!

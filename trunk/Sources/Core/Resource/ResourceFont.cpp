@@ -10,7 +10,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ResourceFont)
 EGE_DEFINE_DELETE_OPERATORS(ResourceFont)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceFont::ResourceFont(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_FONT)
+ResourceFont::ResourceFont(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_FONT),
+                                                                     m_height(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -32,6 +33,7 @@ PResource ResourceFont::Create(Application* app, ResourceGroup* group, const Str
     resource->m_name    = name;
     resource->m_font    = font;
     resource->m_manual  = true;
+    resource->m_height  = font->height();
   }
 
   return resource;
@@ -111,13 +113,6 @@ EGEResult ResourceFont::load()
 
   if (STATE_LOADED != m_state)
   {
-    PFont font = ege_new Font(app(), height(), m_glyphs);
-    if (NULL == font)
-    {
-      // error!
-      return EGE_ERROR_NO_MEMORY;
-    }
-
     // get material
     PResourceMaterial materialResource = group()->manager()->resource(RESOURCE_NAME_MATERIAL, materialName());
     if (materialResource)
@@ -134,6 +129,13 @@ EGEResult ResourceFont::load()
       {
         // error!
         return EGE_ERROR;
+      }
+
+      PFont font = ege_new Font(app(), height(), m_glyphs);
+      if (NULL == font)
+      {
+        // error!
+        return EGE_ERROR_NO_MEMORY;
       }
 
       // set font material

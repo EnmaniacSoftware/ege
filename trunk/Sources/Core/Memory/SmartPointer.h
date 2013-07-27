@@ -34,7 +34,6 @@ class SmartPointer
 
     T* operator->() const;
     T* object() const;
-    T& objectRef() const;
 
     operator T*() const { return m_object; }
 
@@ -50,21 +49,8 @@ class SmartPointer
 
   private:
 
-    inline void incrementReference(Object* object)
-    {
-      if (object && m_deallocable)
-      {
-        object->addReference();
-      }
-    }
-
-    inline void decrementReference(Object* object)
-    {
-      if (object && m_deallocable)
-      {
-        object->release();
-      }
-    }
+    void incrementReference(Object* object);
+    void decrementReference(Object* object);
 
   private:
 
@@ -152,9 +138,21 @@ inline T* SmartPointer<T>::object() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <class T>
-inline T& SmartPointer<T>::objectRef() const
+inline void SmartPointer<T>::incrementReference(Object* object)
 {
-  return *m_object;
+  if ((NULL != object) && m_deallocable)
+  {
+    object->addReference();
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <class T>
+inline void SmartPointer<T>::decrementReference(Object* object)
+{
+  if ((NULL != object) && m_deallocable)
+  {
+    object->release();
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

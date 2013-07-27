@@ -51,6 +51,10 @@ static EGETexture::AddressingMode MapTextureAddressingName(const String& name, E
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceTexture::ResourceTexture(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_TEXTURE),
+                                                                           m_minFilter(EGETexture::BILINEAR),
+                                                                           m_magFilter(EGETexture::BILINEAR),
+                                                                           m_addressingModeS(EGETexture::AM_REPEAT),
+                                                                           m_addressingModeT(EGETexture::AM_REPEAT),
                                                                            m_resourceRequestId(0)
 {
 }
@@ -64,7 +68,6 @@ ResourceTexture::~ResourceTexture()
 
   if ((NULL != app()->graphics()) && (NULL != app()->graphics()->hardwareResourceProvider()))
   {
-    egeDebug() << "Disconnecting" << group()->name() << "for" << m_resourceRequestId;
     ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
   }
 }
@@ -80,9 +83,15 @@ PResource ResourceTexture::Create(Application* app, ResourceGroup* group, const 
   PResourceTexture resource = Create(app, group);
   if (resource)
   {
-    resource->m_name        = name;
-    resource->m_texture     = texture;
-    resource->m_manual      = true;
+    resource->m_name    = name;
+    resource->m_texture = texture;
+    resource->m_manual  = true;
+    resource->m_state   = STATE_LOADED;
+
+    if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
+    {
+      resource->m_type = "2d";
+    }
   }
 
   return resource;

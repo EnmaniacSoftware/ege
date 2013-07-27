@@ -14,6 +14,7 @@ BatchedRenderQueue::BatchedRenderQueue(Application* app) : RenderQueue(app)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 BatchedRenderQueue::~BatchedRenderQueue()
 {
+  m_renderData = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult BatchedRenderQueue::addForRendering(const PRenderComponent& component, const Matrix4f& modelMatrix)

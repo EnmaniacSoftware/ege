@@ -7,6 +7,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(RenderPass)
 EGE_DEFINE_DELETE_OPERATORS(RenderPass)
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderPass::RenderPass(Application* app) : Object(app), 
                                            m_diffuseColor(Color::WHITE), 
@@ -21,6 +22,7 @@ RenderPass::RenderPass(Application* app) : Object(app),
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderPass::~RenderPass()
 {
+  m_textures.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult RenderPass::addTexture(PTextureImage texture)
@@ -129,9 +131,9 @@ void RenderPass::setEmissionColor(const Color& color)
   m_emissionColor = color;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderPass* RenderPass::clone() const
+PRenderPass RenderPass::clone() const
 {
-  RenderPass* pass = ege_new RenderPass(app());
+  PRenderPass pass = ege_new RenderPass(app());
   if (NULL != pass)
   {
     // clone texture images
@@ -139,7 +141,7 @@ RenderPass* RenderPass::clone() const
     {
       const PTextureImage& currentTextureImage = *it;
 
-      PTextureImage textureImage = ege_new TextureImage(*currentTextureImage);
+      PTextureImage textureImage = ege_new TextureImage(currentTextureImage->texture(), currentTextureImage->rect());
       pass->m_textures.push_back(textureImage);
     }
 

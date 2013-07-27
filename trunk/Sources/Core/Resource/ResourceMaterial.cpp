@@ -468,7 +468,7 @@ EGEResult ResourceMaterial::setInstance(const PMaterial& instance) const
     const PassData& pass = *it;
 
     // add new pass
-    RenderPass* renderPass = instance->addPass(NULL);
+    PRenderPass renderPass = instance->addPass(NULL);
     if (NULL == renderPass)
     {
       // error!

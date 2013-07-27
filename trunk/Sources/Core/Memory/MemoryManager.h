@@ -2,6 +2,7 @@
 #define EGE_CORE_MEMORYMANAGER_H
 
 #include "EGE.h"
+#include <map>
 
 EGE_NAMESPACE_BEGIN
 
@@ -83,16 +84,14 @@ class MemoryManager
      *  @param  size      Number of bytes to allocate.
      *  @param  fileName  Name of the file where allocation takes place.
      *  @param  line      Line number in the file where allocation takes place.
-     *  @return TRUE if allocation has been sucessfully registered.
      */
-    bool addAlloc(void* data, size_t size, const char* fileName, int line);
+    void addAlloc(void* data, size_t size, const char* fileName, int line);
     /*! Logs reallocation.
      *  @param  data    Pointer to previously allocated space.
      *  @param  newData Pointer to reallocated space.
      *  @param  size    Number of bytes to allocate.
-     *  @return TRUE if reallocation has been sucessfully registered.
      */
-    bool doRealloc(void* data, void* newData, size_t size);
+    void doRealloc(void* data, void* newData, size_t size);
     /*! Logs deallocation.
      *  @param  data  Pointer to deallocated space.
      */
@@ -101,32 +100,25 @@ class MemoryManager
      *  @note This function generates the log file with all unfreed allocations.
      */
     void finalize();
-    /*! Reallocates internal buffer. 
-     *  @param  newSize New size of internal buffer (allocation counts).
-     *  @return TRUE if successful.
-     */
-    bool internalRealloc(int newSize);
 
   private:
 
     /*! Data structure with allocation information. */
-    struct SALLOCDATA
+    struct SAllocData
     {
-      void* data;                   /*!< Pointer to allocated space. */
       size_t size;                  /*!< Size of allocated space (in bytes). */
       const char* fileName;         /*!< File name where allocation took place. */
       s32 line;                     /*!< Line within the file where allocation took place. */
       s32 count;                    /*!< Number of same allocation which took place so far. */
     };
 
-   private:
+    /*! Allocation map sorted by allocated pointers. */
+    typedef std::map<void*, SAllocData> AllocationMap;
+   
+  private:
 
-    /*! Allocations buffer. */
-    SALLOCDATA* m_allocs;
-    /*! Size of m_allocs buffer. */
-    s32 m_allocCount;
-    /*! Number of used entries in m_allocs buffer. */ 
-    s32 m_allocUsed;
+    /*! Allocations pool. */
+    AllocationMap m_allocations;
     /*! Cached value of total number of bytes allocated so far. */
     u64 m_bytesAllocated;
 };

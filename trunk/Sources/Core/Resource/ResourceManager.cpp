@@ -461,7 +461,7 @@ bool ResourceManager::createDefaultResources()
   }
 
   // add empty render pass
-  RenderPass* renderPass = material->addPass(NULL);
+  PRenderPass renderPass = material->addPass(NULL);
   if (NULL == renderPass)
   {
     // error!
@@ -510,7 +510,7 @@ bool ResourceManager::createDefaultResources()
     // error!
     return false;
   }
-
+  
   if (EGE_SUCCESS != group->addResource(fontResource))
   {
     // error!
@@ -549,7 +549,7 @@ void ResourceManager::destroyDefaultResources()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::unloadAll()
 {
-  destroyDefaultResources();
+ // destroyDefaultResources();
 
   // go thru all groups
   for (GroupList::iterator it = m_groups.begin(); it != m_groups.end(); )

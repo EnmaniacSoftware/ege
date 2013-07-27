@@ -1,26 +1,18 @@
 #include "Core/Memory/MemoryManager.h"
 #include "EGEDebug.h"
 #include "EGEMutex.h"
+#include <list>
 #include <fstream>
 #include <stdarg.h>
-
-#include "EGEThread.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define INTEGRITY_CHECK 1
-#define ORDERING 1
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static MemoryManager* l_instance = NULL;
 static PMutex l_mutex;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-MemoryManager::MemoryManager() :  m_allocs(NULL), 
-                                  m_allocCount(0), 
-                                  m_allocUsed(0),
-                                  m_bytesAllocated(0)
+MemoryManager::MemoryManager() : m_bytesAllocated(0)
 {
-  internalRealloc(1000);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MemoryManager::~MemoryManager()
@@ -61,8 +53,7 @@ void* MemoryManager::Malloc(size_t size, const char* fileName, int line)
     // check if manager is up
     if (NULL != MemoryManager::GetInstance())
     {
-      bool result = MemoryManager::GetInstance()->addAlloc(data, size, fileName, line);
-      EGE_ASSERT(result);
+      MemoryManager::GetInstance()->addAlloc(data, size, fileName, line);
     }
     else
     {
@@ -140,93 +131,69 @@ u64 MemoryManager::BytesAllocated()
   return MemoryManager::GetInstance()->m_bytesAllocated;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool MemoryManager::addAlloc(void* data, size_t size, const char* fileName, int line)
+void MemoryManager::addAlloc(void* data, size_t size, const char* fileName, int line)
 {
   MutexLocker lock(l_mutex);
-  
-  // check if reallocation is needed
-  if (m_allocCount == m_allocUsed)
-  {
-    // reallocate internal buffer
-    if ( ! internalRealloc(m_allocCount * 2))
-    { 
-      // error!
-      return false;
-    }
-  }
 
-#if INTEGRITY_CHECK
-  for (int i = 0; i < m_allocUsed; ++i)
-  {
-    SALLOCDATA* allocData = &m_allocs[i];
+  EGE_ASSERT(m_allocations.end() == m_allocations.find(data));
 
-    if ((reinterpret_cast<u8*>(data) >= reinterpret_cast<u8*>(allocData->data)) && 
-        (reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(allocData->data) + allocData->size))
-    {
-      EGE_ASSERT("Overlapping!");
-    }
-  }
-#endif // INTEGRITY_CHECK
-
-  int i = m_allocUsed;
-#if ORDERING
-  for (i = 0; i < m_allocUsed; ++i)
-  {
-    SALLOCDATA* allocData = &m_allocs[i];
-
-    if (reinterpret_cast<u8*>(data) < reinterpret_cast<u8*>(allocData->data))
-    {
-      MemoryManager::MemMove(&m_allocs[i + 1], &m_allocs[i], sizeof (SALLOCDATA) * (m_allocUsed - i));
-      break;
-    }
-  }
-#endif // ORDERING
-
-  m_allocs[i].count     = 1;
-  m_allocs[i].fileName  = fileName;
-  m_allocs[i].line      = line;
-  m_allocs[i].size      = size;
-  m_allocs[i].data      = data;
-
-  m_allocUsed++;
+  // update statistics
   m_bytesAllocated += size;
 
-  return true;
+  // add allocation to pool
+  SAllocData allocData;
+
+  allocData.count     = 1;
+  allocData.fileName  = fileName;
+  allocData.line      = line;
+  allocData.size      = size;
+
+  m_allocations.insert(std::pair<void*, SAllocData>(data, allocData));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool MemoryManager::doRealloc(void* data, void* newData, size_t size)
+void MemoryManager::doRealloc(void* data, void* newData, size_t size)
 {
   MutexLocker lock(l_mutex);
 
-  for (int i = 0; i < m_allocUsed; ++i)
-  {
-    if (m_allocs[i].data == data)
-    {
-      m_allocs[i].data = newData;
-      m_bytesAllocated -= m_allocs[i].size;
-      m_bytesAllocated += size;
-      return true;
-    }
-  }
+  // locate allocation
+  AllocationMap::iterator it = m_allocations.find(data);
 
-  return false;
+  EGE_ASSERT(m_allocations.end() != it);
+
+  // get copy of allocation data
+  SAllocData allocData = it->second;
+
+  // remove it from pool
+  m_allocations.erase(it);
+
+  // update statics
+  m_bytesAllocated -= allocData.size;
+  m_bytesAllocated += size;
+
+  // update
+  allocData.size = size;
+
+  // add to pool again
+  m_allocations.insert(std::pair<void*, SAllocData>(newData, allocData));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MemoryManager::removeAlloc(void* data)
 {
   MutexLocker lock(l_mutex);
 
-  for (int i = 0; i < m_allocUsed; ++i)
-  {
-    if (m_allocs[i].data == data)
-    {
-      m_bytesAllocated -= m_allocs[i].size;
-      MemoryManager::MemMove(&m_allocs[i], &m_allocs[i + 1], sizeof (SALLOCDATA) * (m_allocUsed - i - 1));
-      m_allocUsed--;
+  // locate allocation
+  AllocationMap::iterator it = m_allocations.find(data);
 
-      return;
-    }
-  }
+  EGE_ASSERT(m_allocations.end() != it);
+
+  // get alloc data
+  SAllocData& allocData = it->second;
+
+  // update statistics
+  m_bytesAllocated -= allocData.size;
+
+  // remove from pool
+  m_allocations.erase(it);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MemoryManager::finalize()
@@ -236,59 +203,56 @@ void MemoryManager::finalize()
   std::ofstream logFile;
   logFile.open("ege_memoryleak.log");
 
+  std::list<SAllocData> leaks;
+
   // flatten all results from the same place into 1 entry
-  for (int i = 0; i < m_allocUsed; ++i)
+  while ( ! m_allocations.empty())
   {
-    SALLOCDATA* allocData1 = &m_allocs[i];
+    // take first available allocation out
+    SAllocData allocData = m_allocations.begin()->second;
 
-    for (int j = i + 1; j < m_allocUsed; ++j)
+    // remove it from pool
+    m_allocations.erase(m_allocations.begin());
+
+    // go thru the rest and locate allocation at the same place
+    for (AllocationMap::const_iterator it = m_allocations.begin(); it != m_allocations.end(); )
     {
-      SALLOCDATA* allocData2 = &m_allocs[j];
-      
-      if ((allocData1->fileName == allocData2->fileName) && (allocData1->line == allocData2->line) && (0 != allocData2->count))
-      {
-        allocData1->count++;
-        allocData1->size += allocData2->size;
+      const SAllocData& currentAllocData = it->second;
 
-        allocData2->count = 0;
+      // is the same place ?
+      if ((currentAllocData.fileName == allocData.fileName) && (currentAllocData.line == allocData.line))
+      {
+        // add allocation data
+        allocData.size += currentAllocData.size;
+        allocData.count++;
+
+        // remove from pool
+        it = m_allocations.erase(it);
       }
+      else
+      {
+        ++it;
+      }
+    }
+
+    // check if any leaks
+    if (0 < allocData.size)
+    {
+      // add to pool of leaked allocations
+      leaks.push_back(allocData);
     }
   }
 
   // show all unique entries
-  for (int i = 0; i < m_allocUsed; ++i)
+  for (std::list<SAllocData>::const_iterator it = leaks.begin(); it != leaks.end(); ++it)
   {
-    const SALLOCDATA* allocData = &m_allocs[i];
+    const SAllocData& allocData = *it;
   
-    if (0 != allocData->count)
-    {
-      logFile << "Leak: " << allocData->size << " bytes (" << allocData->count << " times) in " << allocData->fileName;
-      logFile << ", line: " << allocData->line << "\n";
-    }
+    logFile << "Leak: " << allocData.size << " bytes (" << allocData.count << " times) in " << allocData.fileName;
+    logFile << ", line: " << allocData.line << "\n";
   }
 
   logFile.close();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool MemoryManager::internalRealloc(int newSize)
-{
-  MutexLocker lock(l_mutex);
-
-  if (newSize <= m_allocCount)
-  {
-    // do nothing
-    return true;
-  }
-
-  SALLOCDATA* newAllocs = reinterpret_cast<SALLOCDATA*>(MemoryManager::DoRealloc(m_allocs, sizeof(SALLOCDATA) * newSize));
-  if (NULL != newAllocs)
-  {
-    m_allocs     = newAllocs;
-    m_allocCount = newSize;
-    return true;
-  }
-
-  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -89,7 +89,7 @@ class RenderPass : public Object
     /*! Returns current diffuse color transformation. */
     const ColorTransform& diffuseColorTransformation() const;
     /*! Returns cloned instance of this object. */
-    RenderPass* clone() const;
+    PRenderPass clone() const;
 
   private:
 
