@@ -12,6 +12,11 @@ TextureImage::TextureImage(Application* app) : Object(app, EGE_OBJECT_UID_TEXTUR
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TextureImage::TextureImage(const TextureImage& textureImage) : Object(textureImage.app(), EGE_OBJECT_UID_TEXTURE_IMAGE)
+{
+  *this = textureImage; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextureImage::TextureImage(const PTexture2D& texture, Rectf rect) : Object(texture->app(), EGE_OBJECT_UID_TEXTURE_IMAGE), 
                                                                     m_texture(texture),
                                                                     m_name(texture->name()),
@@ -20,13 +25,13 @@ TextureImage::TextureImage(const PTexture2D& texture, Rectf rect) : Object(textu
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureImage::TextureImage(const PTextureImage& texture, const Rectf& rect) : Object(texture->app(), EGE_OBJECT_UID_TEXTURE_IMAGE), 
-                                                                              m_name(texture->name()), 
-                                                                              m_texture(texture->m_texture), 
-                                                                              m_envMode(texture->m_envMode)
+TextureImage::TextureImage(const TextureImage& texture, const Rectf& rect) : Object(texture.app(), EGE_OBJECT_UID_TEXTURE_IMAGE), 
+                                                                             m_name(texture.name()), 
+                                                                             m_texture(texture.m_texture), 
+                                                                             m_envMode(texture.m_envMode)
 {
   // NOTE: rect is in local space of this object, combine these for final local space coords
-  m_rect = texture->m_rect.combine(rect);
+  m_rect = texture.m_rect.combine(rect);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextureImage::~TextureImage()
@@ -133,6 +138,20 @@ void TextureImage::setRotationAngle(const Angle& angle)
 const Angle& TextureImage::rotationAngle() const 
 { 
   return m_rotationAngle; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TextureImage& TextureImage::operator = (const TextureImage& other)
+{
+  if (this != &other)
+  {
+    m_name          = other.m_name;
+    m_texture       = other.m_texture;
+    m_rect          = other.m_rect;
+    m_envMode       = other.m_envMode;
+    m_rotationAngle = m_rotationAngle;
+  }
+
+  return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

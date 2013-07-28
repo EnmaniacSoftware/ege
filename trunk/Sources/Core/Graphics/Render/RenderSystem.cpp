@@ -288,7 +288,9 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
 
       // if material has only 1 pass defined it is suitable for batching
       // batch only really small buffers
-      if ((1 == component->material()->passCount()) && (10 > component->vertexBuffer()->vertexCount()))
+      // only components with the same amount of texture as UV components can be batched, NOTE: this is will be major thing to refactor for OGLES 2.0 due to texture matrices
+      if ((1 == component->material()->passCount()) && (10 > component->vertexBuffer()->vertexCount()) &&
+          (component->material()->pass(0)->textureCount() == component->vertexBuffer()->vertexDeclaration().elementCount(NVertexBuffer::VES_TEXTURE_UV)))
       {
         queue = ege_new BatchedRenderQueue(app());
       }

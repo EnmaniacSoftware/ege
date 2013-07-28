@@ -2,6 +2,7 @@
 #define EGE_CORE_GRAPHICS_RENDER_BATCHEDRENDERQUEUE_H
 
 #include "EGE.h"
+#include "EGEList.h"
 #include "Core/Math/Matrix4.h"
 #include "Core/Graphics/Render/Implementation/RenderQueue.h"
 #include "Core/Components/Render/RenderComponent.h"
@@ -42,20 +43,25 @@ class BatchedRenderQueue : public RenderQueue
      */
     bool appendComponent(const PRenderComponent& component, const Matrix4f& modelMatrix);
     /*! Appends vertex buffer to master one.
-     *  @param  buffer      Vertex buffer which should be appended to master one.
-     *  @param  modelMatrix Model transformation matrix.
+     *  @param  buffer        Vertex buffer which should be appended to master one.
+     *  @param  textureRects  List of pointers to texture rectangles.  
+     *  @param  modelMatrix   Model transformation matrix.
      *  @return TRUE if component has been sucessfully appened.
      */
-    bool appendBuffer(const PVertexBuffer& buffer, const Rectf& textureRect, const Matrix4f& modelMatrix);
+    bool appendBuffer(const PVertexBuffer& buffer, const List<const Rectf*>& textureRects, const Matrix4f& modelMatrix);
     /*! Appends index buffer to master one.
      *  @param  buffer  Index buffer which should be appended to master one.
      *  @return TRUE if component has been sucessfully appened.
      */
     bool appendBuffer(const PIndexBuffer& buffer);
-
-
-    void convertVertices(float32* outData, const float32* inData, u32 count, const Rectf& textureRect, const Matrix4f& modelMatrix) const;
-
+    /*! Converts vertices.
+     *  @param  outData       Buffer to write converted vertices into.
+     *  @param  inData        Buffer to read vertices from for conversion.
+     *  @param  count         Number of vertices to convert.
+     *  @param  textureRects  List of pointers to texture rectangles for texture coords conversions.
+     *  @param  modelMatrix   Model matrix used to convert vertex positions.
+     */
+    void convertVertices(float32* outData, const float32* inData, u32 count, const List<const Rectf*>& textureRects, const Matrix4f& modelMatrix) const;
     /*! Checks if given material is compatible with master one.
      *  @param  material  Material to check.
      *  @return TRUE if material is compatible.

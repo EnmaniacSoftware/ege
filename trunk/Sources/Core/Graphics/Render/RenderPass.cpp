@@ -139,9 +139,9 @@ PRenderPass RenderPass::clone() const
     // clone texture images
     for (TextureImageArray::const_iterator it = m_textures.begin(); it != m_textures.end(); ++it)
     {
-      const PTextureImage& currentTextureImage = *it;
+      const TextureImage& currentTextureImage = *it->object();
 
-      PTextureImage textureImage = ege_new TextureImage(currentTextureImage->texture(), currentTextureImage->rect());
+      PTextureImage textureImage = ege_new TextureImage(currentTextureImage);
       pass->m_textures.push_back(textureImage);
     }
 
@@ -181,7 +181,10 @@ bool RenderPass::operator == (const RenderPass& other) const
     // check if textures are different
     for (s32 i = 0; i < static_cast<s32>(m_textures.size()); ++i)
     {
-      if (m_textures[i]->texture() != other.m_textures[i]->texture())
+      // NOTE: assuptions:
+      //       - textures can be compared by pointer
+      //       - texture images has same environment modes
+      if ((m_textures[i]->texture() != other.m_textures[i]->texture()) || (m_textures[i]->environmentMode() != other.m_textures[i]->environmentMode()))
       {
         // different
         result = false;

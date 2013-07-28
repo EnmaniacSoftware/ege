@@ -20,7 +20,8 @@ class TextureImage : public Object
 
     explicit TextureImage(Application* app);
     explicit TextureImage(const PTexture2D& texture, Rectf rect = Rectf(0, 0, 1.0f, 1.0f));
-    TextureImage(const PTextureImage& texture, const Rectf& rect);
+    explicit TextureImage(const TextureImage& textureImage);
+    TextureImage(const TextureImage& texture, const Rectf& rect);
    ~TextureImage();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -63,6 +64,10 @@ class TextureImage : public Object
     s32 width() const;
     /*! Returns height (in texels). */
     s32 height() const;
+
+  private:
+
+    TextureImage& operator = (const TextureImage& other);
 
   private:
 

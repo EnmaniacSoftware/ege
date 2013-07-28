@@ -879,12 +879,10 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
   PIndexBuffer indexBuffer   = component->indexBuffer();
   PMaterial material         = component->material();
 
-//      if (data.component->name() == "menu-button-button-home")
-//      {
-//          int a = 1;
-//        material->setDstBlendFactor(EGEGraphics::BF_ZERO);
-//        material->setSrcBlendFactor(EGEGraphics::BF_ZERO);
-//      }
+  //if (component->name() == "level-meter-classic")
+  //{
+  //    int a = 1;
+  //}
 
   // determine number of texture arrays
   s32 textureArraysCount = vertexBuffer->vertexDeclaration().elementCount(NVertexBuffer::VES_TEXTURE_UV);

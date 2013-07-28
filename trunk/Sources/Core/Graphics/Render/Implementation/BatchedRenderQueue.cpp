@@ -49,7 +49,8 @@ EGEResult BatchedRenderQueue::addForRendering(const PRenderComponent& component,
   //       4. Materials must be the same:
   //          - textures
   //          - shaders
-  //          - blend operators   
+  //          - blend operators
+  //       5. Seperate texture for each UV semantic type
   if (component->vertexBuffer()->vertexDeclaration() != m_renderData->vertexBuffer()->vertexDeclaration())
   {
     // reject
@@ -66,6 +67,11 @@ EGEResult BatchedRenderQueue::addForRendering(const PRenderComponent& component,
     result = EGE_ERROR_NOT_SUPPORTED;
   }
   else if ( ! isMaterialCompatible(component->material()))
+  {
+    // reject
+    result = EGE_ERROR_NOT_SUPPORTED;
+  }
+  else if (component->material()->pass(0)->textureCount() != component->vertexBuffer()->vertexDeclaration().elementCount(NVertexBuffer::VES_TEXTURE_UV))
   {
     // reject
     result = EGE_ERROR_NOT_SUPPORTED;
@@ -135,18 +141,18 @@ bool BatchedRenderQueue::appendComponent(const PRenderComponent& component, cons
   // get texture rectangle
   Rectf textureRect = Rectf::UNIT;
 
-  // get texture
-  PTextureImage textureImage = component->material()->pass(0)->texture(0);
-  if (NULL != textureImage)
-  {
-    EGE_ASSERT(textureImage->uid() == EGE_OBJECT_UID_TEXTURE_IMAGE);
+  // number of texture coords must EQUAL number of textures images for proper UV conversion
+  EGE_ASSERT(component->material()->pass(0)->textureCount() == component->vertexBuffer()->vertexDeclaration().elementCount(NVertexBuffer::VES_TEXTURE_UV));
 
-    // get texture rectangle
-    textureRect = textureImage->rect();
+  // get texture transformations
+  List<const Rectf*> textureRects;
+  for (u32 i = 0 ; i < component->material()->pass(0)->textureCount(); ++i)
+  {
+    textureRects.push_back(&component->material()->pass(0)->texture(i)->rect());
   }
 
   // append vertex buffer first
-  if (appendBuffer(component->vertexBuffer(), textureRect, modelMatrix))
+  if (appendBuffer(component->vertexBuffer(), textureRects, modelMatrix))
   {
     // append index buffer
     result = appendBuffer(component->indexBuffer());
@@ -155,7 +161,7 @@ bool BatchedRenderQueue::appendComponent(const PRenderComponent& component, cons
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool BatchedRenderQueue::appendBuffer(const PVertexBuffer& buffer, const Rectf& textureRect, const Matrix4f& modelMatrix)
+bool BatchedRenderQueue::appendBuffer(const PVertexBuffer& buffer, const List<const Rectf*>& textureRects, const Matrix4f& modelMatrix)
 {
   bool result = false;
 
@@ -207,7 +213,7 @@ bool BatchedRenderQueue::appendBuffer(const PVertexBuffer& buffer, const Rectf& 
         case EGEGraphics::RPT_TRIANGLES:
 
           // convert all incoming vertices
-          convertVertices(reinterpret_cast<float32*>(outData), reinterpret_cast<const float32*>(inData), verticesToProcess, textureRect, modelMatrix);
+          convertVertices(reinterpret_cast<float32*>(outData), reinterpret_cast<const float32*>(inData), verticesToProcess, textureRects, modelMatrix);
           break;
 
         case EGEGraphics::RPT_TRIANGLE_STRIPS:
@@ -217,12 +223,15 @@ bool BatchedRenderQueue::appendBuffer(const PVertexBuffer& buffer, const Rectf& 
           {
             u8* duplicateVertexData = outData - vertexBufferOut->vertexDeclaration().vertexSize();
 
+            List<const Rectf*> textureRect;
+            textureRect.push_back(&Rectf::UNIT);
+
             // duplicate last vertex
-            convertVertices(reinterpret_cast<float32*>(outData), reinterpret_cast<const float32*>(duplicateVertexData), 1, Rectf::UNIT, Matrix4f::IDENTITY);
+            convertVertices(reinterpret_cast<float32*>(outData), reinterpret_cast<const float32*>(duplicateVertexData), 1, textureRect, Matrix4f::IDENTITY);
             outData += vertexBufferOut->vertexDeclaration().vertexSize();
 
             // duplicate first vertex from input buffer
-            convertVertices(reinterpret_cast<float32*>(outData), reinterpret_cast<const float32*>(inData), 1, Rectf::UNIT, modelMatrix);
+            convertVertices(reinterpret_cast<float32*>(outData), reinterpret_cast<const float32*>(inData), 1, textureRect, modelMatrix);
             outData += vertexBufferOut->vertexDeclaration().vertexSize();
 
             // update number of vertices to be converted
@@ -230,7 +239,7 @@ bool BatchedRenderQueue::appendBuffer(const PVertexBuffer& buffer, const Rectf& 
           }
 
           // convert all incoming vertices
-          convertVertices(reinterpret_cast<float32*>(outData), reinterpret_cast<const float32*>(inData), verticesToProcess, textureRect, modelMatrix);
+          convertVertices(reinterpret_cast<float32*>(outData), reinterpret_cast<const float32*>(inData), verticesToProcess, textureRects, modelMatrix);
           break;
           
         default:
@@ -354,7 +363,8 @@ bool BatchedRenderQueue::appendBuffer(const PIndexBuffer& buffer)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void BatchedRenderQueue::convertVertices(float32* outData, const float32* inData, u32 count, const Rectf& textureRect, const Matrix4f& modelMatrix) const
+void BatchedRenderQueue::convertVertices(float32* outData, const float32* inData, u32 count, const List<const Rectf*>& textureRects, 
+                                         const Matrix4f& modelMatrix) const
 {
   Vector4f position;
 
@@ -364,6 +374,9 @@ void BatchedRenderQueue::convertVertices(float32* outData, const float32* inData
   // go thru all vertices
   for (u32 i = 0; i < count; ++i)
   {
+    // point to first texture coords
+    List<const Rectf*>::const_iterator itTextureRect = textureRects.begin();
+  
     VertexElementArray::const_iterator itLast = vertexElements.end();
     for (VertexElementArray::const_iterator it = vertexElements.begin(); it != itLast; ++it)
     {
@@ -405,8 +418,11 @@ void BatchedRenderQueue::convertVertices(float32* outData, const float32* inData
 
         case NVertexBuffer::VES_TEXTURE_UV:
 
-          *outData++ = textureRect.x + (*inData++) * textureRect.width;
-          *outData++ = textureRect.y + (*inData++) * textureRect.height;
+          *outData++ = (*itTextureRect)->x + (*inData++) * (*itTextureRect)->width;
+          *outData++ = (*itTextureRect)->y + (*inData++) * (*itTextureRect)->height;
+
+          // update number of processed coords
+          ++itTextureRect;
           break;
 
         case NVertexBuffer::VES_COLOR_RGBA:
@@ -439,9 +455,7 @@ void BatchedRenderQueue::convertVertices(float32* outData, const float32* inData
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool BatchedRenderQueue::isMaterialCompatible(const PMaterial& material) const
 {
-  bool result = (*material == *m_renderData->material());
-
-  return result;
+  return (*material == *m_renderData->material());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void BatchedRenderQueue::prepare(const PRenderComponent& component)
@@ -449,12 +463,15 @@ void BatchedRenderQueue::prepare(const PRenderComponent& component)
   // clone initial material
   PMaterial newMaterial = component->material()->clone();
 
-  // check if texture is present
-  PTextureImage textureImage = newMaterial->pass(0)->texture(0);
-  if (NULL != textureImage)
+  // reset texture matrices
+  for (u32 i = 0; i < newMaterial->pass(0)->textureCount(); ++i)
   {
-    // reset texture rectangle as all texture coordinates will be recalculated
-    textureImage->setRect(Rectf::UNIT);
+    PTextureImage textureImage = newMaterial->pass(0)->texture(i);
+    if (NULL != textureImage)
+    {
+      // reset texture rectangle as all texture coordinates will be recalculated
+      textureImage->setRect(Rectf::UNIT);
+    }
   }
 
   // set new material
