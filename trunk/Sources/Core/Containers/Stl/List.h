@@ -39,7 +39,7 @@ List<T>::List()
 template <typename T>
 List<T>::List(const T& object)
 {
-  push_back(object);
+  this->push_back(object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

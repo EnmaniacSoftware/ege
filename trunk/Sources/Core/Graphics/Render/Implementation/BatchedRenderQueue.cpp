@@ -172,9 +172,6 @@ bool BatchedRenderQueue::appendBuffer(const PVertexBuffer& buffer, const List<co
 
   // check if no data yet
   bool firstAppend = (0 == vertexBufferOut->vertexCount());
-
-  // get vertex elements
-  const VertexElementArray& vertexElements = vertexBufferOut->vertexDeclaration().vertexElements();
      
   // calculate number of vertices to process
   u32 verticesToProcess = 0;

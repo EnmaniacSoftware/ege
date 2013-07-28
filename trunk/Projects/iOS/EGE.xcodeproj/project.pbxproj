@@ -216,6 +216,8 @@
 		45AFD2191798637C0063AC4D /* BatchedRenderQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45AFD2131798637C0063AC4D /* BatchedRenderQueue.cpp */; };
 		45AFD21A1798637C0063AC4D /* SimpleRenderQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45AFD2171798637C0063AC4D /* SimpleRenderQueue.cpp */; };
 		45BC64C017209B6600A449EF /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45BC64BF17209B6600A449EF /* ViewController.mm */; };
+		45BD237517A57042007EA381 /* VertexDeclaration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BD237117A57042007EA381 /* VertexDeclaration.cpp */; };
+		45BD237617A57042007EA381 /* VertexElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BD237317A57042007EA381 /* VertexElement.cpp */; };
 		45C68FCC176A6C2B002A7F7A /* SoundDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C68FCB176A6C2B002A7F7A /* SoundDelegate.mm */; };
 		45DD7A5116FB0C7C005AA431 /* ViewOGL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DD7A5016FB0C7C005AA431 /* ViewOGL.mm */; };
 		45DED89A16F7847E00623923 /* DeviceServicesIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DED89516F7847E00623923 /* DeviceServicesIOS_p.mm */; };
@@ -400,7 +402,6 @@
 		4536360E16F1113600B4D72F /* TextureImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureImage.h; sourceTree = "<group>"; };
 		4536360F16F1113600B4D72F /* VertexBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexBuffer.cpp; sourceTree = "<group>"; };
 		4536361016F1113600B4D72F /* VertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBuffer.h; sourceTree = "<group>"; };
-		4536361116F1113600B4D72F /* VertexBufferTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBufferTypes.h; sourceTree = "<group>"; };
 		4536361216F1113600B4D72F /* Viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Viewport.cpp; sourceTree = "<group>"; };
 		4536361316F1113600B4D72F /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
 		4536361516F1113600B4D72F /* Pointer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pointer.cpp; sourceTree = "<group>"; };
@@ -780,6 +781,10 @@
 		45AFD21C179863860063AC4D /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
 		45BC64BE17209B6500A449EF /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		45BC64BF17209B6600A449EF /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		45BD237117A57042007EA381 /* VertexDeclaration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexDeclaration.cpp; sourceTree = "<group>"; };
+		45BD237217A57042007EA381 /* VertexDeclaration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexDeclaration.h; sourceTree = "<group>"; };
+		45BD237317A57042007EA381 /* VertexElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexElement.cpp; sourceTree = "<group>"; };
+		45BD237417A57042007EA381 /* VertexElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexElement.h; sourceTree = "<group>"; };
 		45C68FCA176A6C2B002A7F7A /* SoundDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundDelegate.h; sourceTree = "<group>"; };
 		45C68FCB176A6C2B002A7F7A /* SoundDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SoundDelegate.mm; sourceTree = "<group>"; };
 		45DD7A4F16FB0C7C005AA431 /* ViewOGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewOGL.h; sourceTree = "<group>"; };
@@ -1168,6 +1173,10 @@
 		4536359B16F1113500B4D72F /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				45BD237117A57042007EA381 /* VertexDeclaration.cpp */,
+				45BD237217A57042007EA381 /* VertexDeclaration.h */,
+				45BD237317A57042007EA381 /* VertexElement.cpp */,
+				45BD237417A57042007EA381 /* VertexElement.h */,
 				4536359C16F1113500B4D72F /* Camera.cpp */,
 				453635A316F1113500B4D72F /* Font.cpp */,
 				453635A516F1113500B4D72F /* Frustum.cpp */,
@@ -1197,7 +1206,6 @@
 				4536360C16F1113600B4D72F /* Texture2D.h */,
 				4536360E16F1113600B4D72F /* TextureImage.h */,
 				4536361016F1113600B4D72F /* VertexBuffer.h */,
-				4536361116F1113600B4D72F /* VertexBufferTypes.h */,
 				4536361316F1113600B4D72F /* Viewport.h */,
 				4536359E16F1113500B4D72F /* Color */,
 				453635AA16F1113500B4D72F /* Image */,
@@ -2299,6 +2307,8 @@
 				4505E1A2177A27E600D6D5EE /* AppStoreTransactionObserver.mm in Sources */,
 				45AFD2191798637C0063AC4D /* BatchedRenderQueue.cpp in Sources */,
 				45AFD21A1798637C0063AC4D /* SimpleRenderQueue.cpp in Sources */,
+				45BD237517A57042007EA381 /* VertexDeclaration.cpp in Sources */,
+				45BD237617A57042007EA381 /* VertexElement.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

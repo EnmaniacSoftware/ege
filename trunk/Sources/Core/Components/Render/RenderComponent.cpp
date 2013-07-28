@@ -116,6 +116,11 @@ void RenderComponent::calculateHash()
       case NVertexBuffer::VES_NORMAL:        hash += 100; break;
       case NVertexBuffer::VES_TEXTURE_UV:    hash += 1000; break;
       case NVertexBuffer::VES_TANGENT:       hash += 10000; break;
+      
+      default:
+     
+        // TAGE - use all possible values ?
+        break;
     }
   }
 
