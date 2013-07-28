@@ -10,6 +10,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceSpriteAnimationDebugName = "EGEResourceSpriteAnimation";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_SEQUENCE "sequence"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceSpriteAnimation)
@@ -51,7 +53,7 @@ EGEResult ResourceSpriteAnimation::create(const String& path, const PXmlElement&
   if (error || m_name.empty() || m_sheetName.empty())
   {
     // error!
-    egeWarning() << "Failed for name:" << m_name;
+    egeWarning(KResourceSpriteAnimationDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 

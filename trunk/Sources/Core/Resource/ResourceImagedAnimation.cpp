@@ -10,6 +10,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceImagedAnimationDebugName = "EGEResourceImagedAnimation";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_OBJECT   "object"
 #define NODE_FRAME    "frame"
 #define NODE_ACTION   "action"
@@ -54,7 +56,7 @@ EGEResult ResourceImagedAnimation::create(const String& path, const PXmlElement&
   if (error || m_name.empty())
   {
     // error!
-    egeWarning() << "Failed for name:" << m_name;
+    egeWarning(KResourceImagedAnimationDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 

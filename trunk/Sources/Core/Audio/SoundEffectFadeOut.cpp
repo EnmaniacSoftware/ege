@@ -1,6 +1,5 @@
 #include "Core/Audio/SoundEffectFadeOut.h"
 #include "Core/Audio/Sound.h"
-#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -12,12 +11,10 @@ SoundEffectFadeOut::SoundEffectFadeOut(const Time& duration) : SoundEffect(EGE_O
                                                                m_duration(duration),
                                                                m_time(0.0f)
 {
-  egeDebug() << "Creating sound effect: EGE_OBJECT_UID_SOUND_EFFECT_FADE_OUT" << duration.seconds() << this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SoundEffectFadeOut::~SoundEffectFadeOut()
 {
-  egeDebug() << "Destroying sound effect: EGE_OBJECT_UID_SOUND_EFFECT_FADE_OUT" << this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool SoundEffectFadeOut::update(const Time& time, PSound sound)

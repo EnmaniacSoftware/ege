@@ -6,6 +6,8 @@
 
 #include "EGE.h"
 #include "EGEStringBuffer.h"
+#include "EGEString.h"
+#include "EGEStringList.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
@@ -15,10 +17,12 @@ class Debug
 {
   public:
 
-    Debug(DebugMsgType type);
+    Debug(DebugMsgType type, const String& name);
     Debug(const Debug& other);
     virtual ~Debug();
   
+  public:
+
     Debug& operator << (bool t);
     Debug& operator << (char t);
     Debug& operator << (Char t);
@@ -48,6 +52,10 @@ class Debug
     static void Print(const char* string);
     /*! Prints given c-string to output. */
     static void PrintWithArgs(const char* string, ...);
+    /*! Enables given debug names. 
+     *  @param names  Debug names to enable. All debugging with these names will be visible.
+     */
+    static void EnableNames(const StringList& names);
 
   private:
 
@@ -64,6 +72,8 @@ class Debug
     bool m_spaceSeperated;
     /*! Message type. */
     DebugMsgType m_type;
+    /*! Enable flag. Only if set debug will be output. */
+    bool m_enabled;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class NoDebug
@@ -83,18 +93,18 @@ class NoDebug
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #ifdef EGE_FEATURE_DEBUG
 
-inline Debug egeDebug() { return Debug(DMT_NORMAL); }
-inline Debug egeWarning() { return Debug(DMT_WARNING); }
-inline Debug egeCritical() { return Debug(DMT_CRITICAL); }
+inline Debug egeDebug(const String& name) { return Debug(DMT_NORMAL, name); }
+inline Debug egeWarning(const String& name) { return Debug(DMT_WARNING, name); }
+inline Debug egeCritical(const String& name) { return Debug(DMT_CRITICAL, name); }
 
 #else // EGE_FEATURE_DEBUG
 
 #define EGE_NO_DEBUG_MACRO while (false) egeDebug
 
 #undef egeDebug
-inline EGE::NoDebug egeDebug() { return EGE::NoDebug(); }
-inline EGE::NoDebug egeWarning() { return EGE::NoDebug(); }
-inline EGE::NoDebug egeCritical() { return EGE::NoDebug(); }
+inline EGE::NoDebug egeDebug(const String& name) { return EGE::NoDebug(); }
+inline EGE::NoDebug egeWarning(const String& name) { return EGE::NoDebug(); }
+inline EGE::NoDebug egeCritical(const String& name) { return EGE::NoDebug(); }
 #define egeDebug EGE_NO_DEBUG_MACRO
 
 #endif // EGE_FEATURE_DEBUG

@@ -91,7 +91,7 @@ EGEResult Texture2DPrivate::create(const PDataBuffer& buffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult Texture2DPrivate::create(const PImage& image)
 {
-  egeDebug() << "Creating texture" << image->width() << image->height() << image->format();
+  egeDebug(KOpenGLDebugName) << "Creating texture" << image->width() << image->height() << image->format();
 
   // set texture data
   d_func()->m_width  = image->width();
@@ -231,7 +231,7 @@ EGEResult Texture2DPrivate::create(const PImage& image)
   m_internalFormat = internalFormat;
   m_typeFormat     = type;
 
-  egeDebug() << "Creating texture done" << m_id;
+  egeDebug(KOpenGLDebugName) << "Creating texture done" << m_id;
 
   // check for error
   OGL_CHECK();

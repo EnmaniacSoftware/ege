@@ -9,6 +9,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceSoundDebugName = "EGEResourceSound";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceSound)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -45,7 +47,7 @@ EGEResult ResourceSound::create(const String& path, const PXmlElement& tag)
   if (m_name.empty() || m_path.empty() || error)
   {
     // error!
-    egeWarning() << "Failed for name:" << m_name;
+    egeWarning(KResourceSoundDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 

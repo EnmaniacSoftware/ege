@@ -8,6 +8,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceSpriteSheetDebugName = "EGEResourceSpriteSheet";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceSpritesheet)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSpritesheet)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -49,7 +51,7 @@ EGEResult ResourceSpritesheet::create(const String& path, const PXmlElement& tag
   if (error || m_name.empty() || m_textureName.empty())
   {
     // error!
-    egeWarning() << "Failed for name:" << m_name;
+    egeWarning(KResourceSpriteSheetDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 

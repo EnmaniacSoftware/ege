@@ -136,7 +136,7 @@ void ProgramPrivate::printInfoLog()
     {
       // retrieve log
       glGetProgramInfoLog(m_id, logLength, &charsWritten, log);
-      egeCritical() << log;
+      egeCritical(KOpenGLDebugName) << log;
     }
 
     // clean up

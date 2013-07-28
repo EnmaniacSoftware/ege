@@ -14,6 +14,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KImageLoaderDebugName = "EGEImageLoader";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ImageLoader)
 EGE_DEFINE_DELETE_OPERATORS(ImageLoader)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,7 +45,7 @@ EGEResult ImageLoader::construct()
   if ( ! app()->eventManager()->addListener(this))
   {
     // error!
-    egeCritical() << EGE_FUNC_INFO << "Could not register for notifications!";
+    egeCritical(KImageLoaderDebugName) << EGE_FUNC_INFO << "Could not register for notifications!";
     return EGE_ERROR;
   }
 

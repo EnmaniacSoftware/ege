@@ -7,6 +7,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceFontDebugName = "EGEResourceFont";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceFont)
 EGE_DEFINE_DELETE_OPERATORS(ResourceFont)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -61,7 +63,7 @@ EGEResult ResourceFont::create(const String& path, const PXmlElement& tag)
   if (m_name.empty() || m_materialName.empty() || error)
   {
     // error!
-    egeDebug() << "Failed for name:" << m_name;
+    egeDebug(KResourceFontDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 

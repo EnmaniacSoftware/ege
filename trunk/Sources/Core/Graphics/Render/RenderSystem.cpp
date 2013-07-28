@@ -22,6 +22,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KRenderSystemDebugName = "EGERenderSystem";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Function calculating render queues hash.
  *  @param  priority      Priority of render component.
  *  @param  primitiveType Primitive type to be rendered.
@@ -79,7 +81,7 @@ EGEResult RenderSystem::construct()
   if ( ! app()->eventManager()->addListener(this))
   {
     // error!
-    egeCritical() << EGE_FUNC_INFO << "Could not register for notifications!";
+    egeCritical(KRenderSystemDebugName) << EGE_FUNC_INFO << "Could not register for notifications!";
     return EGE_ERROR;
   }
 
@@ -393,7 +395,7 @@ Rectf RenderSystem::applyRotation(const Rectf& rect, const Angle& angle) const
   }
   else
   {
-    egeWarning() << "Unsupported angle:" << angle.degrees();
+    egeWarning(KRenderSystemDebugName) << "Unsupported angle:" << angle.degrees();
   }
 
   return out;
@@ -501,7 +503,7 @@ u32 RenderSystem::requestDestroyTexture2D(PTexture2D texture)
   MutexLocker locker(m_requestsMutex);
   m_requests.push_back(request);
 
-  egeDebug() << "Requested texture destroy:" << texture->name();
+  egeDebug(KRenderSystemDebugName) << "Requested texture destroy:" << texture->name();
 
   return request.id;
 }

@@ -7,6 +7,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceGroupDebugName = "EGEResourceGroup";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceGroup)
 EGE_DEFINE_DELETE_OPERATORS(ResourceGroup)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,7 +45,7 @@ EGEResult ResourceGroup::create(const String& path,  const PXmlElement& tag)
   if (m_name.empty() || error)
   {
     // error!
-    egeWarning() << "Failed for name:" << m_name;
+    egeWarning(KResourceGroupDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -113,7 +115,7 @@ EGEResult ResourceGroup::load()
         if ((EGE_SUCCESS != result) && (EGE_WAIT != result))
         {
           // error!
-          egeWarning() << "Load failed:" << resource->name();
+          egeWarning(KResourceGroupDebugName) << "Load failed:" << resource->name();
           break;
         }
 
@@ -314,7 +316,7 @@ EGEResult ResourceGroup::addDependancy(const PXmlElement& tag)
   // check if such dependancy already exists
   if (m_dependancies.contains(name))
   {
-    egeWarning() << "Dependancy" << name << "already exists.";
+    egeWarning(KResourceGroupDebugName) << "Dependancy" << name << "already exists.";
   }
   else
   {
@@ -354,7 +356,7 @@ EGEResult ResourceGroup::overrideBy(const PResourceGroup& group)
       if ((resource->name() == incomingResource->name()) && (resource->typeName() == incomingResource->typeName()))
       {
         // override
-        egeWarning() << "Overriding resource" << incomingResource->name();
+        egeWarning(KResourceGroupDebugName) << "Overriding resource" << incomingResource->name();
         itRes->second = incomingResource;
 
         // override group

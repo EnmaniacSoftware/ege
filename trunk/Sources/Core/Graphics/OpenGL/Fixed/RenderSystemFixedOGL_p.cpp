@@ -715,7 +715,7 @@ PTexture2D RenderSystemPrivate::createTexture2D(const String& name, const PImage
   bindTexture(GL_TEXTURE_2D, 0);
 
   s64 endTime = Timer::GetMicroseconds();
-  egeDebug() << "Texture" << name << "uploaded:" << endTime - startTime << "microseconds";
+  egeDebug(KOpenGLDebugName) << "Texture" << name << "uploaded:" << endTime - startTime << "microseconds";
 
   return texture;
 }
@@ -791,7 +791,7 @@ PTexture2D RenderSystemPrivate::createRenderTexture(const String& name, s32 widt
     return NULL;
   }
 
-  egeWarning() << "Creating render target done" << texture->m_target;
+  egeWarning(KOpenGLDebugName) << "Creating render target done" << texture->m_target;
 
   // add into render targets
   d_func()->app()->graphics()->registerRenderTarget(texture->m_target);
@@ -803,7 +803,7 @@ void RenderSystemPrivate::destroyTexture2D(PTexture2D texture)
 {
   if (0 != texture->p_func()->m_id)
   {
-    egeDebug() << "Destroying texture" << texture->p_func()->m_id << texture->name();
+    egeDebug(KOpenGLDebugName) << "Destroying texture" << texture->p_func()->m_id << texture->name();
   
     glDeleteTextures(1, &texture->p_func()->m_id);
     OGL_CHECK();

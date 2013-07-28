@@ -4,6 +4,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KTextOverlayDebugName = "EGETextOverlay";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(TextOverlay)
 EGE_DEFINE_DELETE_OPERATORS(TextOverlay)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -232,7 +234,7 @@ void TextOverlay::updateTextData()
     }
     else
     {
-      egeWarning() << "Undefined character found:" << (s32) *it;
+      egeWarning(KTextOverlayDebugName) << "Undefined character found:" << (s32) *it;
       continue;
     }
 

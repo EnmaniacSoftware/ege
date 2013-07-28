@@ -5,6 +5,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KSoundOpenALDebugName = "EGESoundOpenAL";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(SoundOpenAL)
 EGE_DEFINE_DELETE_OPERATORS(SoundOpenAL)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -37,7 +39,7 @@ EGEResult SoundOpenAL::construct()
     if (IS_OAL_ERROR())
     {
       // error!
-      egeCritical() << "[OAL] Could not generate audio buffers.";
+      egeCritical(KSoundOpenALDebugName) << "[OAL] Could not generate audio buffers.";
       EGE_MEMSET(m_buffers, 0, sizeof (m_buffers));
       return EGE_ERROR;
     }
@@ -82,7 +84,7 @@ void SoundOpenAL::update(const Time& time)
     if (IS_OAL_ERROR())
     {
       // error!
-      egeCritical() << "[OAL] Could not retrieve state.";
+      egeCritical(KSoundOpenALDebugName) << "[OAL] Could not retrieve state.";
       return;
     }
 
@@ -97,7 +99,7 @@ void SoundOpenAL::update(const Time& time)
         if (IS_OAL_ERROR())
         {
           // error!
-          egeCritical() << "[OAL] Could not query queued buffers.";
+          egeCritical(KSoundOpenALDebugName) << "[OAL] Could not query queued buffers.";
           return;
         }
 
@@ -108,7 +110,7 @@ void SoundOpenAL::update(const Time& time)
           if (IS_OAL_ERROR())
           {
             // error!
-            egeCritical() << "[OAL] Could not start channel.";
+            egeCritical(KSoundOpenALDebugName) << "[OAL] Could not start channel.";
           }
 		    }
 		    else
@@ -155,7 +157,7 @@ void SoundOpenAL::setVolume(float32 volume)
 	  if (IS_OAL_ERROR())
     {
       // error!
-      egeCritical() << "[OAL] Could not set volume! @" << name();
+      egeCritical(KSoundOpenALDebugName) << "[OAL] Could not set volume! @" << name();
 	  }
   }
 }
@@ -277,7 +279,7 @@ bool SoundOpenAL::doPlay(ALuint channel)
 	if (IS_OAL_ERROR())
   {
     // error!
-    egeCritical() << "[OAL] Could not start playback!";
+    egeCritical(KSoundOpenALDebugName) << "[OAL] Could not start playback!";
     return false;
 	}
 
@@ -286,11 +288,11 @@ bool SoundOpenAL::doPlay(ALuint channel)
   if (IS_OAL_ERROR())
   {
     // error!
-    egeCritical() << "[OAL] Could not retrieve channel state.";
+    egeCritical(KSoundOpenALDebugName) << "[OAL] Could not retrieve channel state.";
   }
   else
   {
-    egeDebug() << "[OAL] Starting sound" << name() << "at channel" << channel;
+    egeDebug(KSoundOpenALDebugName) << "[OAL] Starting sound" << name() << "at channel" << channel;
   }
 
   // set state
@@ -320,11 +322,11 @@ bool SoundOpenAL::doStop()
 	  if (IS_OAL_ERROR())
     {
       // error!
-      egeCritical() << "[OAL] Could not stop playback.";
+      egeCritical(KSoundOpenALDebugName) << "[OAL] Could not stop playback.";
       return false;
 	  }
 
-    egeDebug() << "[OAL] Stopped" << name() << "at channel" << m_channel;
+    egeDebug(KSoundOpenALDebugName) << "[OAL] Stopped" << name() << "at channel" << m_channel;
 
     // reset data
     m_channel = 0;
@@ -336,7 +338,7 @@ bool SoundOpenAL::doStop()
   }
   else
   {
-    egeDebug() << "[OAL] Could not stop" << name() << "at channel" << m_channel;
+    egeDebug(KSoundOpenALDebugName) << "[OAL] Could not stop" << name() << "at channel" << m_channel;
   }
 
   // set state
@@ -351,7 +353,7 @@ bool SoundOpenAL::doPause()
 	if (IS_OAL_ERROR())
   {
     // error!
-    egeCritical() << "[OAL] Could not pause playback!";
+    egeCritical(KSoundOpenALDebugName) << "[OAL] Could not pause playback!";
     return false;
 	}
 
@@ -376,7 +378,7 @@ void SoundOpenAL::updateSoundBuffers()
   if (IS_OAL_ERROR())
   {
     // error!
-    egeCritical() << "[OAL] Could not retrive channel type.";
+    egeCritical(KSoundOpenALDebugName) << "[OAL] Could not retrive channel type.";
     return;
   }
 
@@ -393,7 +395,7 @@ void SoundOpenAL::updateSoundBuffers()
     if (IS_OAL_ERROR())
     {
       // error!
-      egeCritical() << "[OAL] Could not retrive number of processed buffers.";
+      egeCritical(KSoundOpenALDebugName) << "[OAL] Could not retrive number of processed buffers.";
       return;
     }
   }
@@ -413,7 +415,7 @@ void SoundOpenAL::updateSoundBuffers()
       if (IS_OAL_ERROR())
       {
         // error!
-        egeCritical() << "[OAL] Could not get processed buffers.";
+        egeCritical(KSoundOpenALDebugName) << "[OAL] Could not get processed buffers.";
       }
     }
 
@@ -429,7 +431,7 @@ void SoundOpenAL::updateSoundBuffers()
       if (IS_OAL_ERROR())
       {
         // error!
-        egeCritical() << "[OAL] Could not bind data to buffer at channel" << m_channel;
+        egeCritical(KSoundOpenALDebugName) << "[OAL] Could not bind data to buffer at channel" << m_channel;
       }
 
 			// add buffer to channel
@@ -437,7 +439,7 @@ void SoundOpenAL::updateSoundBuffers()
       if (IS_OAL_ERROR())
       {
         // error!
-        egeCritical() << "[OAL] Could not queue buffer to channel @" << m_channel;
+        egeCritical(KSoundOpenALDebugName) << "[OAL] Could not queue buffer to channel @" << m_channel;
       }
     }
   

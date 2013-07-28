@@ -10,6 +10,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceTextureImageDebugName = "EGEResourceTextureImage";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceTextureImage)
 EGE_DEFINE_DELETE_OPERATORS(ResourceTextureImage)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -49,7 +51,7 @@ EGEResult ResourceTextureImage::create(const String& path, const PXmlElement& ta
   if (error || m_name.empty() || m_textureName.empty())
   {
     // error!
-    egeWarning() << "Failed for name:" << m_name;
+    egeWarning(KResourceTextureImageDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -86,7 +88,7 @@ EGEResult ResourceTextureImage::load()
     }
     else
     {
-      egeWarning() << "ResourceTextureImage::load - Could not find texture resource - " << m_textureName;
+      egeWarning(KResourceTextureImageDebugName) << "ResourceTextureImage::load - Could not find texture resource - " << m_textureName;
     }
   }
 

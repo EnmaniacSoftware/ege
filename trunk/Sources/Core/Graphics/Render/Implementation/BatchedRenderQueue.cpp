@@ -113,8 +113,6 @@ bool BatchedRenderQueue::allocateMasterRenderComponent(const PRenderComponent& c
   bool result = true;
 
   // allocate master component
-  egeDebug() << "[BatchedRenderQueue] - Allocating" << component->priority() << component->primitiveType();
-
   m_renderData = ege_new RenderComponent(app(), String::Format("BatchedRenderQueue@%d", component->priority()), component->vertexBuffer()->vertexDeclaration(), 
                                          component->priority(), component->primitiveType(), NVertexBuffer::UT_DYNAMIC_WRITE);
   if ((NULL == m_renderData) || ! m_renderData->isValid())

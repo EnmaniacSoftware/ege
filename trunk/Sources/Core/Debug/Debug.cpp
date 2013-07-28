@@ -1,25 +1,35 @@
 #include "Core/Debug/Debug.h"
+#include "EGEMap.h"
 #include <stdarg.h>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Debug::Debug(DebugMsgType type) : m_consoleOutput(true),
-                                  m_spaceSeperated(true),
-                                  m_type(type)
+static StringList l_enabledName;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Debug::Debug(DebugMsgType type, const String& name) : m_consoleOutput(true),
+                                                      m_spaceSeperated(true),
+                                                      m_type(type),
+                                                      m_enabled(false)
 {
-  // allocate buffer
-  m_buffer = ege_new StringBuffer();
-  if (NULL != m_buffer)
+  // check if enabled
+  if (l_enabledName.contains(name))
   {
-    // init depending on type
-    switch (m_type)
+    m_enabled = true;
+
+    // allocate buffer
+    m_buffer = ege_new StringBuffer();
+    if (NULL != m_buffer)
     {
-      case DMT_WARNING:   *m_buffer << "WARNING: "; break;
-      case DMT_CRITICAL:  *m_buffer << "CRITICAL: "; break;
+      // init depending on type
+      switch (m_type)
+      {
+        case DMT_WARNING:   *m_buffer << "WARNING: "; break;
+        case DMT_CRITICAL:  *m_buffer << "CRITICAL: "; break;
       
-      default:
-        break;
+        default:
+          break;
+      }
     }
   }
 }
@@ -35,7 +45,7 @@ Debug::~Debug()
   if ((NULL != m_buffer) && (1 == m_buffer->referenceCount()))
   {
     // check if printable to console
-    if (m_consoleOutput)
+    if (m_consoleOutput && m_enabled)
     {
       Print(m_buffer->string().toAscii());
     }
@@ -47,43 +57,71 @@ Debug::~Debug()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (bool t)
 { 
-  *m_buffer << t;
+  if (m_enabled)
+  {
+    *m_buffer << t;
+  }
+
   return maybeSpace();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (char t)
 { 
-  *m_buffer << t;
+  if (m_enabled)
+  {
+    *m_buffer << t;
+  }
+
   return maybeSpace();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (Char t) 
 { 
-  *m_buffer << t;
+  if (m_enabled)
+  {
+    *m_buffer << t;
+  }
+
   return maybeSpace();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (s16 t) 
 { 
-  *m_buffer << t;
+  if (m_enabled)
+  {
+    *m_buffer << t;
+  }
+
   return maybeSpace();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (u16 t) 
 { 
-  *m_buffer << t;
+  if (m_enabled)
+  {
+    *m_buffer << t;
+  }
+    
   return maybeSpace();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (s32 t) 
 { 
-  *m_buffer << t;
+  if (m_enabled)
+  {
+    *m_buffer << t;
+  }
+
   return maybeSpace();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (u32 t) 
 { 
-  *m_buffer << t;
+  if (m_enabled)
+  {
+    *m_buffer << t;
+  }
+
   return maybeSpace();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -95,39 +133,62 @@ Debug& Debug::operator << (u32 t)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (s64 t) 
 { 
-  *m_buffer << t;
+  if (m_enabled)
+  {
+    *m_buffer << t;
+  }
+
   return maybeSpace();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (u64 t) 
 { 
-  *m_buffer << t;
+  if (m_enabled)
+  {
+    *m_buffer << t;
+  }
+
   return maybeSpace();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (float32 t) 
 { 
-  *m_buffer << t;
+  if (m_enabled)
+  {
+    *m_buffer << t;
+  }
+
   return maybeSpace();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (const char* t) 
 { 
-  *m_buffer << t;
+  if (m_enabled)
+  {
+    *m_buffer << t;
+  }
+
   return maybeSpace();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (const String& t)
 {
-  *m_buffer << t;
+  if (m_enabled)
+  {
+    *m_buffer << t;
+  }
+
   return maybeSpace();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (const void* t) 
 { 
-  // TAGE - proper implementation needed once ISerializable is fxed
-  EGE_ASSERT(4 == sizeof (t));
-  *m_buffer << reinterpret_cast<u32>(t);
+  if (m_enabled)
+  {
+    // TAGE - proper implementation needed once ISerializable is fxed
+    EGE_ASSERT(4 == sizeof (t));
+    *m_buffer << reinterpret_cast<u32>(t);
+  }
 
   return maybeSpace();
 }
@@ -140,6 +201,7 @@ Debug& Debug::operator = (const Debug& other)
     m_consoleOutput   = other.m_consoleOutput;
     m_spaceSeperated  = other.m_spaceSeperated;
     m_type            = other.m_type;
+    m_enabled         = other.m_enabled;
   }
   
   return *this;
@@ -159,7 +221,7 @@ Debug& Debug::nospace()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::maybeSpace() 
 { 
-  if (m_spaceSeperated)
+  if (m_enabled && m_spaceSeperated)
   {
     *m_buffer << " ";
   }
@@ -177,6 +239,18 @@ void Debug::PrintWithArgs(const char* string, ...)
 	va_end(arg);
 
   Print(buffer);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Debug::EnableNames(const StringList& names)
+{
+  for (StringList::const_iterator it = names.begin(); it != names.end(); ++it)
+  {
+    if ( ! l_enabledName.contains(*it))
+    {
+      // add to pool
+      l_enabledName.push_back(*it);
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

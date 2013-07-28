@@ -5,6 +5,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KAudioCodecWavDebugName = "EGEAudioCodecWav";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(AudioCodecWav)
 EGE_DEFINE_DELETE_OPERATORS(AudioCodecWav)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -38,7 +40,7 @@ bool AudioCodecWav::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
     if (out->write(stream, samplesDecoded * sampleSize) != samplesDecoded * sampleSize)
     {
       // error!
-      egeCritical() << "Error decoding!";
+      egeCritical(KAudioCodecWavDebugName) << "Error decoding!";
     }
 
     // update stream offset

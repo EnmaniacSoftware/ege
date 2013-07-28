@@ -12,6 +12,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceMaterialDebugName = "EGEResourceMaterial";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_TEXTURE      "texture"
 #define NODE_PASS         "pass"
 #define NODE_PROGRAM_REF  "program-ref"
@@ -152,7 +154,7 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
   if (error || m_name.empty())
   {
     // error!
-    egeWarning() << "Failed for name:" << m_name;
+    egeWarning(KResourceMaterialDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -352,7 +354,7 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag, PassData& pass)
   if (error || textureData.name.empty())
   {
     // error!
-    egeWarning() << "Failed for name:" << name();
+    egeWarning(KResourceMaterialDebugName) << "Failed for name:" << name();
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -637,7 +639,7 @@ EGEResult ResourceMaterial::loadDependencies()
       if (NULL == texture)
       {
         // texture not found
-        egeWarning() << "Material texture not found:" << textureImageData.name;
+        egeWarning(KResourceMaterialDebugName) << "Material texture not found:" << textureImageData.name;
         return EGE_ERROR;
       }
 

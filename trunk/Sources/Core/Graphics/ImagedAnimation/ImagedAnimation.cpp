@@ -11,6 +11,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KImagedAnimationDebugName = "EGEImagedAnimation";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ImagedAnimation)
 EGE_DEFINE_DELETE_OPERATORS(ImagedAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -299,7 +301,7 @@ void ImagedAnimation::addSequencer(const PSequencer& sequencer)
   if (NULL != this->sequencer(sequencer->name()))
   {
     // cannot add
-    egeWarning() << "Sequencer with name:" << sequencer->name() << "already exists";
+    egeWarning(KImagedAnimationDebugName) << "Sequencer with name:" << sequencer->name() << "already exists";
     return;
   }
 

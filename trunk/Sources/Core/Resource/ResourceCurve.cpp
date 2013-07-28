@@ -11,6 +11,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceGroupDebugName = "EGEResourceCurve";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceCurve)
 EGE_DEFINE_DELETE_OPERATORS(ResourceCurve)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -73,7 +75,7 @@ EGEResult ResourceCurve::create(const String& path, const PXmlElement& tag)
   if (error || m_name.empty())
   {
     // error!
-    egeWarning() << "Failed for name:" << m_name;
+    egeWarning(KResourceGroupDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -97,7 +99,7 @@ EGEResult ResourceCurve::create(const String& path, const PXmlElement& tag)
       if (error)
       {
         // error!
-        egeWarning() << "Failed for name (2):" << m_name;
+        egeWarning(KResourceGroupDebugName) << "Failed for name (2):" << m_name;
         result = EGE_ERROR_BAD_PARAM;
         break;
       }

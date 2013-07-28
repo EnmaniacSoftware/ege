@@ -532,7 +532,7 @@ void RenderWindowOGLWin32::detectCapabilities()
 
   for (StringArray::const_iterator it = extensionArray.begin(); it != extensionArray.end(); ++it)
   {
-    egeDebug() << "Available OGL extension:" << *it;
+    egeDebug(KOpenGLDebugName) << "Available OGL extension:" << *it;
   }
 
 	GLint value;

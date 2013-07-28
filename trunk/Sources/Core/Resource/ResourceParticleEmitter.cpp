@@ -9,6 +9,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceParticleEmitterDebugName = "EGEResourceParticleEmitter";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_AFFECTOR "affector"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceParticleEmitter)
@@ -53,7 +55,7 @@ EGEResult ResourceParticleEmitter::create(const String& path, const PXmlElement&
   if (!m_parameters.contains("name") || !m_parameters.contains("type") || !m_parameters.contains("material"))
   {
     // error!
-    egeWarning() << "Failed for name:" << m_name;
+    egeWarning(KResourceParticleEmitterDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -127,7 +129,7 @@ EGEResult ResourceParticleEmitter::load()
         if (EGE_SUCCESS != (result = affectorResource->load()))
         {
           // error!
-          egeWarning() << "Could not load!";
+          egeWarning(KResourceParticleEmitterDebugName) << "Could not load!";
           return result;
         }
       }
@@ -164,7 +166,7 @@ PParticleEmitter ResourceParticleEmitter::createInstance()
     if (!object->initialize(m_parameters))
     {
       // error!
-      egeWarning() << "Could not initialize!";
+      egeWarning(KResourceParticleEmitterDebugName) << "Could not initialize!";
       object = NULL;
     }
 

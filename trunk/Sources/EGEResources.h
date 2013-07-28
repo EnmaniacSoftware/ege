@@ -6,7 +6,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #define DEFAULT_GROUP_NAME              "default-group"
 
 #define RESOURCE_NAME_TEXTURE           "texture"
@@ -30,13 +29,12 @@ EGE_NAMESPACE_BEGIN
 #define TR(app, name)     (app)->resourceManager()->textResource((name))->text()
 #define TRN(app, name, n) (app)->resourceManager()->textResource((name))->text((n))
 
+extern const char* KResourceManagerDebugName;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-// TAGE - is this all needed ?
 #include "Core/Resource/Resource.h"
 #include "Core/Resource/ResourceData.h"
 #include "Core/Resource/ResourceMaterial.h"
@@ -54,7 +52,6 @@ EGE_NAMESPACE_END
 #include "Core/Resource/ResourceImagedAnimation.h"
 #include "Core/Resource/ResourceGroup.h"
 #include "Core/Resource/ResourceManager.h"
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_RESOURCES_H

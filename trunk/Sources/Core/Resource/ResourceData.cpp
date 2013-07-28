@@ -6,6 +6,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceDataDebugName = "ResourceData";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceData)
 EGE_DEFINE_DELETE_OPERATORS(ResourceData)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -42,7 +44,7 @@ EGEResult ResourceData::create(const String& path, const PXmlElement& tag)
   if (m_name.empty() || m_path.empty() || error)
   {
     // error!
-    egeWarning() << "Failed for name:" << m_name;
+    egeWarning(KResourceDataDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 

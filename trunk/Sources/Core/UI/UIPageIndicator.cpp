@@ -2,7 +2,6 @@
 #include "EGEOverlay.h"
 #include "EGEMath.h"
 #include "EGERenderer.h"
-#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -115,7 +114,6 @@ void UIPageIndicator::updateRenderData()
 
     if (NULL == renderData)
     {
-      egeWarning() << "Could not create render data!";
       continue;
     }
 

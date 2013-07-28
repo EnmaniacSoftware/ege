@@ -10,6 +10,7 @@
 #include "EGEThread.h"
 #include "EGEAudio.h"
 #include "Core/Audio/AudioManagerBase.h"
+#include "Core/Debug/DebugIds.h"
 
 #ifdef EGE_PLATFORM_WIN32
   #include <al.h>
@@ -23,7 +24,7 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #ifdef EGE_FEATURE_DEBUG
-  #define OAL_CHECK() if (AL_NO_ERROR != alGetError()) { egeCritical() << "[OAL] Error" << __FILE__ << __LINE__; }
+  #define OAL_CHECK() if (AL_NO_ERROR != alGetError()) { egeCritical("EGEOpenAL") << "[OAL] Error" << __FILE__ << __LINE__; }
   #define IS_OAL_ERROR() (AL_NO_ERROR != alGetError())
 #else
   #define OAL_CHECK() ege_noop();

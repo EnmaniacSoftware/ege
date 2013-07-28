@@ -146,7 +146,7 @@ void* IndexBufferVBO::lock(u32 offset, u32 count)
         }
         else
         {
-          egeWarning() << "Mapping failed!";
+          egeWarning(KOpenGLDebugName) << "Mapping failed!";
         }
       }
 

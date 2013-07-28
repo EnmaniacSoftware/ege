@@ -1,6 +1,5 @@
 #include "Core/Timer/TimeLine.h"
 #include "EGEMath.h"
-#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -30,7 +29,6 @@ void TimeLine::setDuration(const Time& time)
 {
   if (0 >= time.microseconds())
   {
-    egeWarning() << "TimeLine::setDuration - Invalid value";
     return;
   }
 

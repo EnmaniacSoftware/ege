@@ -106,7 +106,7 @@ void ResourceManagerPrivate::update(const Time& time)
 
           default:
 
-            egeWarning() << "Unknown request type. Skipping.";
+            egeWarning(KResourceManagerDebugName) << "Unknown request type. Skipping.";
             break;
         }
       }
@@ -160,7 +160,7 @@ EGEResult ResourceManagerPrivate::loadGroup(const String& name)
       else
       {
         // already scheduled
-        egeWarning() << "Group" << name << "already scheduled for loading!";
+        egeWarning(KResourceManagerDebugName) << "Group" << name << "already scheduled for loading!";
         return EGE_SUCCESS;
       }
     }
@@ -202,7 +202,7 @@ void ResourceManagerPrivate::unloadGroup(const String& name)
       else
       {
         // already scheduled
-        egeWarning() << "Group" << name << "already scheduled for loading!";
+        egeWarning(KResourceManagerDebugName) << "Group" << name << "already scheduled for loading!";
         return;
       }
     }
@@ -269,7 +269,7 @@ void ResourceManagerPrivate::appendBatchesForProcessing(ProcessingBatchList& bat
     if ( ! d_func()->buildDependacyList(batch.groups, groupName))
     {
       // error!
-      egeWarning() << "Could not build dependancy list for group" << groupName;
+      egeWarning(KResourceManagerDebugName) << "Could not build dependancy list for group" << groupName;
       continue;
     }
 
@@ -283,7 +283,7 @@ void ResourceManagerPrivate::appendBatchesForProcessing(ProcessingBatchList& bat
       if (NULL == group)
       {
         // error!
-        egeWarning() << "Group" << *itGroup << "not found!";
+        egeWarning(KResourceManagerDebugName) << "Group" << *itGroup << "not found!";
         continue;
       }
 
@@ -297,7 +297,7 @@ void ResourceManagerPrivate::appendBatchesForProcessing(ProcessingBatchList& bat
     // add to pending list
     m_pendingList.push_back(batch);
 
-    egeDebug() << "Group scheduled for" << ((batch.load) ? "loading:" : "unloading:") << groupName;
+    egeDebug(KResourceManagerDebugName) << "Group scheduled for" << ((batch.load) ? "loading:" : "unloading:") << groupName;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -421,7 +421,7 @@ void ResourceManagerPrivate::onGroupLoaded(const PResourceGroup& group)
   // check if expected group has been loaded
   if (group->name() == data.groups.front())
   {
-    egeDebug() << "Group loaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
+    egeDebug(KResourceManagerDebugName) << "Group loaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
 
     // remove it from batch pool
     data.groups.pop_front();
@@ -455,7 +455,7 @@ void ResourceManagerPrivate::onGroupUnloaded(const PResourceGroup& group)
   // check if expected group has been loaded
   if (group->name() == data.groups.front())
   {
-    egeDebug() << "Group unloaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
+    egeDebug(KResourceManagerDebugName) << "Group unloaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
 
     // remove it from batch pool
     data.groups.pop_front();

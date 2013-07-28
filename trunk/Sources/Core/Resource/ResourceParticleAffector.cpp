@@ -9,6 +9,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceParticleAffectorDebugName = "EGEResourceParticleAffector";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceParticleAffector)
 EGE_DEFINE_DELETE_OPERATORS(ResourceParticleAffector)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -51,7 +53,7 @@ EGEResult ResourceParticleAffector::create(const String& path, const PXmlElement
   if (!m_parameters.contains("name") || !m_parameters.contains("type"))
   {
     // error!
-    egeDebug() << "Failed for name:" << m_name;
+    egeDebug(KResourceParticleAffectorDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -92,7 +94,7 @@ PParticleAffector ResourceParticleAffector::createInstance()
     if (!object->initialize(m_parameters))
     {
       // error!
-      egeWarning() << "Could not initialize!";
+      egeWarning(KResourceParticleAffectorDebugName) << "Could not initialize!";
       object = NULL;
     }
   }

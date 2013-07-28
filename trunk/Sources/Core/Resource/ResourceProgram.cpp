@@ -14,6 +14,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceProgramDebugName = "EGEResourceProgram";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_SHADER_REF "shader-ref"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceProgram)
@@ -53,7 +55,7 @@ EGEResult ResourceProgram::create(const String& path, const PXmlElement& tag)
   if (m_name.empty())
   {
     // error!
-    egeWarning() << "Failed for name:" << m_name;
+    egeWarning(KResourceProgramDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 

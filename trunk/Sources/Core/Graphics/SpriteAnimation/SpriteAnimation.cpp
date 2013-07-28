@@ -11,6 +11,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KSpriteAnimationDebugName = "EGESpriteAnimation";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(SpriteAnimation)
 EGE_DEFINE_DELETE_OPERATORS(SpriteAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -231,7 +233,7 @@ void SpriteAnimation::addSequencer(const PSequencer& sequencer)
   if (NULL != this->sequencer(sequencer->name()))
   {
     // cannot add
-    egeWarning() << "Sequencer with name:" << sequencer->name() << "already exists";
+    egeWarning(KSpriteAnimationDebugName) << "Sequencer with name:" << sequencer->name() << "already exists";
     return;
   }
 

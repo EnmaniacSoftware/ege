@@ -38,6 +38,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const char* KResourceManagerDebugName = "EGEResourceManager";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceManager)
 EGE_DEFINE_DELETE_OPERATORS(ResourceManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -117,7 +119,7 @@ EGEResult ResourceManager::construct()
     if (EGE_SUCCESS != (result = registerResource(resource.name, resource.pfCreateFunc)))
     {
       // error!
-      egeCritical() << EGE_FUNC_INFO << "Could not register resource";
+      egeCritical(KResourceManagerDebugName) << EGE_FUNC_INFO << "Could not register resource";
       return result;
     }
   }
@@ -126,7 +128,7 @@ EGEResult ResourceManager::construct()
   if ( ! createDefaultResources())
   {
     // error!
-    egeCritical() << EGE_FUNC_INFO << "Could not create default resources!";
+    egeCritical(KResourceManagerDebugName) << EGE_FUNC_INFO << "Could not create default resources!";
     return EGE_ERROR;
   }
 
@@ -134,7 +136,7 @@ EGEResult ResourceManager::construct()
   if ( ! app()->eventManager()->addListener(this))
   {
     // error!
-    egeCritical() << EGE_FUNC_INFO << "Could not register for notifications!";
+    egeCritical(KResourceManagerDebugName) << EGE_FUNC_INFO << "Could not register for notifications!";
     return EGE_ERROR;
   }
 
@@ -191,7 +193,7 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
   // convert separators
   filePath = Dir::FromNativeSeparators(filePath);
 
-  egeDebug() << "Adding resources:" << filePath;
+  egeDebug(KResourceManagerDebugName) << "Adding resources:" << filePath;
 
   // try to locate resource file in each data location
   // NOTE: if no AUTO-DETECTION is set we do exactly one search with a given filePath
@@ -211,7 +213,7 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
     if ((NULL == resourcesNode) || ! resourcesNode->isValid())
     {
       // error!
-      egeWarning() << "Resource file" << fullPath << "has no" << NODE_RESOURCES << "tag";
+      egeWarning(KResourceManagerDebugName) << "Resource file" << fullPath << "has no" << NODE_RESOURCES << "tag";
       result = EGE_ERROR;
       break;
     }
@@ -318,7 +320,7 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
   result = newGroup->create(filePath, tag);
   if (EGE_SUCCESS == result)
   {
-    egeDebug() << newGroup->name();
+    egeDebug(KResourceManagerDebugName) << newGroup->name();
 
     // check if such group DOES NOT exists
     PResourceGroup existingGroup = group(newGroup->name());
@@ -340,12 +342,12 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
       if (EGE_ERROR_NOT_SUPPORTED == result)
       {
         // error!
-        egeWarning() << "Attempt to override non-overridable group" << existingGroup->name();
+        egeWarning(KResourceManagerDebugName) << "Attempt to override non-overridable group" << existingGroup->name();
       }
       else if (EGE_ERROR_ALREADY_EXISTS == result)
       {
         // NOTE: we quitely omit group duplicates so it is valid to ie. INCLUDE the same group multiple times
-        egeWarning() << "Group" << newGroup->name() << "already exists. Skipping.";
+        egeWarning(KResourceManagerDebugName) << "Group" << newGroup->name() << "already exists. Skipping.";
         result = EGE_SUCCESS;
       }
     }
@@ -627,7 +629,7 @@ EGEResult ResourceManager::processInclude(const String& filePath, const PXmlElem
     return EGE_ERROR;
   }
 
-  egeDebug() << "Including" << path;
+  egeDebug(KResourceManagerDebugName) << "Including" << path;
 
   // check if not autodetecting
   // NOTE: in this case we assume path is with respect to current directory
@@ -653,7 +655,7 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
   if (NULL == groupResource)
   {
     // error!
-    egeWarning() << "Could not find group:" << groupName;
+    egeWarning(KResourceManagerDebugName) << "Could not find group:" << groupName;
     return false;
   }
 
@@ -664,7 +666,7 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
     if (NULL == groupResourceDependancy)
     {
       // error!
-      egeWarning() << "Could not find dependancy group:" << (*it);
+      egeWarning(KResourceManagerDebugName) << "Could not find dependancy group:" << (*it);
       return false;
     }
 
@@ -676,7 +678,7 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
     }
     else
     {
-      egeWarning() << "Dependancy group already in list:" << *it << "Circular dependancy possible.";
+      egeWarning(KResourceManagerDebugName) << "Dependancy group already in list:" << *it << "Circular dependancy possible.";
       continue;
     }
 

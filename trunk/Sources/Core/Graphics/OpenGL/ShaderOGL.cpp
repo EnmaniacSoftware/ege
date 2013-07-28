@@ -75,7 +75,7 @@ void ShaderPrivate::printInfoLog()
     {
       // retrieve log
       glGetShaderInfoLog(m_id, logLength, &charsWritten, log);
-      egeCritical() << log;
+      egeCritical(KOpenGLDebugName) << log;
     }
 
     // clean up

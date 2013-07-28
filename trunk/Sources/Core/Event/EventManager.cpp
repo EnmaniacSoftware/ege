@@ -7,6 +7,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const char* KEventManagerDebugName = "EGEEventManager";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(EventManager)
 EGE_DEFINE_DELETE_OPERATORS(EventManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -46,7 +48,7 @@ void EventManager::update(const Time& time)
     if ( ! m_mutex->lock())
     {
       // damn...
-      egeCritical() << EGE_FUNC_INFO << "Could not lock mutex!!!";
+      egeCritical(KEventManagerDebugName) << EGE_FUNC_INFO << "Could not lock mutex!!!";
     }
 
     localList.copy(m_pendingEvents);
@@ -55,7 +57,7 @@ void EventManager::update(const Time& time)
     if ( ! m_mutex->unlock())
     {
       // damn...
-      egeCritical() << EGE_FUNC_INFO << "Could not unlock mutex!!!";
+      egeCritical(KEventManagerDebugName) << EGE_FUNC_INFO << "Could not unlock mutex!!!";
     }
     
     // propagate

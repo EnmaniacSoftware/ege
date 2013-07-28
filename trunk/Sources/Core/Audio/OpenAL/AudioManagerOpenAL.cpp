@@ -9,6 +9,8 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KAudioManagerOpenALDebugName = "EGEAudioManagerOpenAL";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(AudioManagerOpenAL)
 EGE_DEFINE_DELETE_OPERATORS(AudioManagerOpenAL)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -87,7 +89,7 @@ EGEResult AudioManagerOpenAL::construct()
   alGenSources(CHANNELS_COUNT, m_channels);
   if (IS_OAL_ERROR())
   {
-    egeCritical() << "[OAL] Could not generate sources.";
+    egeCritical(KAudioManagerOpenALDebugName) << "[OAL] Could not generate sources.";
     EGE_MEMSET(m_channels, 0, sizeof (m_channels));
 
     return EGE_ERROR;
@@ -336,7 +338,7 @@ ALuint AudioManagerOpenAL::findAvailableChannel() const
     if (IS_OAL_ERROR())
     {
       // error!
-      egeCritical() << "[OAL] Could not retrieve channel state:" << m_channels[i] << "at index" << i;
+      egeCritical(KAudioManagerOpenALDebugName) << "[OAL] Could not retrieve channel state:" << m_channels[i] << "at index" << i;
       continue;
     }
 

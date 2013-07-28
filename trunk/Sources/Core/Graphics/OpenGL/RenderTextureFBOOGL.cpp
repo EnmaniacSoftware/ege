@@ -30,7 +30,7 @@ RenderTextureFBOOGL::RenderTextureFBOOGL(Application* app, const Dictionary& par
     GLuint state = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if (GL_FRAMEBUFFER_COMPLETE != state)
     {
-      egeWarning() << "RenderTextureFBOOGL::RenderTextureFBOOGL Failed with error" << state;
+      egeWarning(KOpenGLDebugName) << "RenderTextureFBOOGL::RenderTextureFBOOGL Failed with error" << state;
     }
 
     // unbind for the time being
@@ -45,7 +45,7 @@ RenderTextureFBOOGL::RenderTextureFBOOGL(Application* app, const Dictionary& par
   m_physicalWidth  = (iterWidth != params.end()) ? iterWidth->second.toInt() : 0;
   m_physicalHeight = (iterHeight != params.end()) ? iterHeight->second.toInt() : 0;
 
-  egeDebug() << "Creating FBO:" << m_physicalWidth << m_physicalHeight << m_defaultFBOId << m_frameBufferObjectId;
+  egeDebug(KOpenGLDebugName) << "Creating FBO:" << m_physicalWidth << m_physicalHeight << m_defaultFBOId << m_frameBufferObjectId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderTextureFBOOGL::~RenderTextureFBOOGL()

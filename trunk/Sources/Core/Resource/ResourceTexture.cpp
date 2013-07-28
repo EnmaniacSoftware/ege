@@ -13,6 +13,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceTextureDebugName = "EGEResourceTexture";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceTexture)
 EGE_DEFINE_DELETE_OPERATORS(ResourceTexture)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -122,7 +124,7 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   if (m_name.empty() || m_path.empty() || m_type.empty() || error)
   {
     // error!
-    egeWarning() << "Failed for name:" << m_name;
+    egeWarning(KResourceTextureDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
@@ -187,7 +189,7 @@ EGEResult ResourceTexture::create2D()
   m_resourceRequestId = app()->graphics()->hardwareResourceProvider()->requestCreateTexture2D(name(), image);
 
   // connect for notification
-  egeDebug() << "Awaiting" << group()->name() << "for" << m_resourceRequestId;
+  egeDebug(KResourceTextureDebugName) << "Awaiting" << group()->name() << "for" << m_resourceRequestId;
   ege_connect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
 
   return EGE_SUCCESS;
@@ -223,7 +225,7 @@ void ResourceTexture::onRequestComplete(u32 handle, PObject object)
     m_texture = object;
 
     // disconnect
-    egeDebug() << "Aquired" << group()->name() << "for" << m_resourceRequestId;
+    egeDebug(KResourceTextureDebugName) << "Aquired" << group()->name() << "for" << m_resourceRequestId;
     ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
     m_resourceRequestId = 0;
 

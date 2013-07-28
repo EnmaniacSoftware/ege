@@ -1,6 +1,5 @@
 #include "Core/Threading/PThread/Thread_p.h"
 #include "Core/Threading/Thread.h"
-#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -90,7 +89,6 @@ void ThreadPrivate::cancel()
 {
   int result = pthread_cancel(m_thread);
   EGE_MEMSET(&m_thread, 0, sizeof (m_thread));
-  egeDebug() << "Canceling:" << this << "result code:" << result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void* Thread::CurrentId()

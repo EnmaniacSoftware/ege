@@ -15,6 +15,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KResourceShaderDebugName = "EGEResourceShader";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceShader)
 EGE_DEFINE_DELETE_OPERATORS(ResourceShader)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -71,7 +73,7 @@ EGEResult ResourceShader::create(const String& path, const PXmlElement& tag)
   if (m_name.empty() || m_path.empty() || (EGEGraphics::UNKNOWN_SHADER == m_type) || error)
   {
     // error!
-    egeWarning() << "Failed for name:" << m_name;
+    egeWarning(KResourceShaderDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
 
