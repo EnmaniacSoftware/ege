@@ -149,7 +149,7 @@ void ImageUtils::Fill(PImage& dst, const Recti& dstRect, const Color& color)
 
     default:
 
-      EGE_ASSERT(false && "Unsupported!");
+      EGE_ASSERT_X(false, "Unsupported!");
       break;
   }
 

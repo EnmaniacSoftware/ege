@@ -3,8 +3,9 @@
 #include "Core/Resource/MultiThread/ResourceManagerMT_p.h"
 #include "Core/Resource/MultiThread/ResourceManagerWorkThread.h"
 #include "Core/Resource/ResourceGroup.h"
-#include <EGETimer.h>
-#include <EGEDebug.h>
+#include "EGEResources.h"
+#include "EGETimer.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE
 

@@ -61,7 +61,7 @@ void CubicSpline::setType(EGESpline::Type type)
         
       default:
         
-        EGE_ASSERT(false && "Unknown spline type");
+        EGE_ASSERT_X(false, "Unknown spline type");
         break;
     }
 

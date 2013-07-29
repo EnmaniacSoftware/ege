@@ -147,7 +147,7 @@ bool AudioCodecOgg::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
   }
   else
   {
-    EGE_ASSERT("Not supported");
+    EGE_ASSERT_X(false, "Not supported");
   }
 
   return false;
@@ -246,7 +246,7 @@ bool AudioCodecOgg::reset()
   }
   else
   {
-      EGE_ASSERT("Not supported");
+      EGE_ASSERT_X(false, "Not supported");
   }
 
   // retrive stream data

@@ -226,7 +226,7 @@ Alignment StringUtils::ToAlignment(const String& string, bool* error)
     }
     else
     {
-      EGE_ASSERT("Unknown alignment string");
+      EGE_ASSERT_X(false, "Unknown alignment string");
     }
   }
 

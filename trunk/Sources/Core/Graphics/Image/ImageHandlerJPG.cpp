@@ -59,7 +59,7 @@ bool ImageHandlerJPG::IsValidFormat(PObject buffer)
   }
   else
   {
-    EGE_ASSERT(false && "Unsupported buffer type.");
+    EGE_ASSERT_X(false, "Unsupported buffer type.");
   }
 
   return false;
@@ -144,7 +144,7 @@ EGEResult ImageHandlerJPG::Save(PImage image, const String& fileName, PixelForma
   EGE_UNUSED(fileName);
   EGE_UNUSED(format);
 
-  EGE_ASSERT(false && "Implement");
+  EGE_ASSERT_X(false, "Implement");
 
   return EGE_ERROR;
 }

@@ -188,7 +188,7 @@ bool BatchedRenderQueue::appendBuffer(const PVertexBuffer& buffer, const List<co
 
     default:
 
-      EGE_ASSERT(false && "Implement");
+      EGE_ASSERT_X(false, "Implement");
       break;
   }
 
@@ -239,7 +239,7 @@ bool BatchedRenderQueue::appendBuffer(const PVertexBuffer& buffer, const List<co
           
         default:
 
-          EGE_ASSERT(false && "Implement");
+          EGE_ASSERT_X(false, "Implement");
           break;
       }
 
@@ -284,7 +284,7 @@ bool BatchedRenderQueue::appendBuffer(const PIndexBuffer& buffer)
 
     default:
 
-      EGE_ASSERT(false && "Implement");
+      EGE_ASSERT_X(false, "Implement");
       break;
   }
 
@@ -323,7 +323,7 @@ bool BatchedRenderQueue::appendBuffer(const PIndexBuffer& buffer)
 
             default:
 
-              EGE_ASSERT(false && "WOOT");
+              EGE_ASSERT_X(false, "WOOT");
               break;
           }
         }
@@ -344,7 +344,7 @@ bool BatchedRenderQueue::appendBuffer(const PIndexBuffer& buffer)
 
         default:
 
-          EGE_ASSERT(false && "WOOT");
+          EGE_ASSERT_X(false, "WOOT");
           break;
       }
     }
@@ -441,7 +441,7 @@ void BatchedRenderQueue::convertVertices(float32* outData, const float32* inData
 
         default:
 
-          EGE_ASSERT(false && "Implement!!!");
+          EGE_ASSERT_X(false, "Implement!!!");
           break;
       }
     }

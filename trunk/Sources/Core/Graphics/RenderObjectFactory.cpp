@@ -124,7 +124,7 @@ bool RenderObjectFactory::DoCreateQuadXY(PRenderComponent& component, Vector4f p
 
     default:
 
-      EGE_ASSERT(false && "Not supported!");
+      EGE_ASSERT_X(false, "Not supported!");
       return NULL;
   }
 
@@ -183,7 +183,7 @@ bool RenderObjectFactory::DoCreateQuadXY(PRenderComponent& component, Vector4f p
 
         default:
 
-          EGE_ASSERT(false && "Not supported!");
+          EGE_ASSERT_X(false, "Not supported!");
           return NULL;
       }
     }
@@ -360,7 +360,8 @@ VertexDeclaration RenderObjectFactory::ConvertVertexDeclarationSymbol(VertexDecl
 
     default:
 
-      EGE_ASSERT(false && "Implement?");
+      EGE_ASSERT_X(false, "Implement?");
+      break;
   }
 
   // check if error

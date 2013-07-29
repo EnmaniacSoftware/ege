@@ -63,7 +63,7 @@ bool ImageHandlerPVR::IsValidFormat(PObject buffer)
   }
   else
   {
-    EGE_ASSERT(false && "Unsupported source type.");
+    EGE_ASSERT_X(false, "Unsupported source type.");
     return NULL;
   }
 
@@ -172,7 +172,7 @@ PImage ImageHandlerPVR::Load(PObject buffer, PixelFormat format)
   }
   else
   {
-    EGE_ASSERT(false && "Unsupported source type.");
+    EGE_ASSERT_X(false, "Unsupported source type.");
     return NULL;
   }
 
@@ -238,7 +238,7 @@ PImage ImageHandlerPVR::Load(PObject buffer, PixelFormat format)
     else
     {
       // Unsupported format
-      EGE_ASSERT(false && "Unsupported format");
+      EGE_ASSERT_X(false, "Unsupported format");
       return NULL;
     }
   }

@@ -680,7 +680,7 @@ void RenderSystemPrivate::bindTexture(GLenum target, GLuint textureId)
 
     default:
 
-      EGE_ASSERT(false && "Incorrect texture binding!");
+      EGE_ASSERT_X(false, "Incorrect texture binding!");
       return;
   }
 
@@ -974,7 +974,7 @@ void* RenderSystemPrivate::bindVertexBuffer(PVertexBuffer& buffer) const
 
       default:
 
-        EGE_ASSERT(false && "Invalid vertex buffer type");
+        EGE_ASSERT_X(false, "Invalid vertex buffer type");
         data = NULL;
         break;
     }
@@ -1002,7 +1002,7 @@ void RenderSystemPrivate::unbindVertexBuffer(PVertexBuffer& buffer) const
 
     default:
 
-      EGE_ASSERT(false && "Invalid vertex buffer type");
+      EGE_ASSERT_X(false, "Invalid vertex buffer type");
       break;
   }
 }
@@ -1034,7 +1034,7 @@ void* RenderSystemPrivate::bindIndexBuffer(PIndexBuffer& buffer) const
 
       default:
 
-        EGE_ASSERT(false && "Invalid index buffer type");
+        EGE_ASSERT_X(false, "Invalid index buffer type");
         break;
     }
   }
@@ -1061,7 +1061,7 @@ void RenderSystemPrivate::unbindIndexBuffer(PIndexBuffer& buffer) const
 
     default:
 
-      EGE_ASSERT(false && "Invalid index buffer type");
+      EGE_ASSERT_X(false, "Invalid index buffer type");
       break;
   }
 }

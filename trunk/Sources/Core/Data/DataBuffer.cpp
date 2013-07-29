@@ -272,7 +272,7 @@ ISerializable& DataBuffer::operator << (const char* value)
 {
   EGE_UNUSED(value);
   
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   
   return *this;
 }
@@ -281,7 +281,7 @@ ISerializable& DataBuffer::operator << (const String& value)
 {
   EGE_UNUSED(value);
 
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -388,7 +388,7 @@ ISerializable& DataBuffer::operator >> (const char* value)
 {
   EGE_UNUSED(value);
   
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   
   return *this;
 }
@@ -397,7 +397,7 @@ ISerializable& DataBuffer::operator >> (String& value)
 {
   EGE_UNUSED(value);
   
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

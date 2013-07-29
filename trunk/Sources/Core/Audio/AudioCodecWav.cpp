@@ -48,7 +48,7 @@ bool AudioCodecWav::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
   }
   else
   {
-    EGE_ASSERT("Not supported");
+    EGE_ASSERT_X(false, "Not supported");
   }
 
   // update stream size left indicator
@@ -72,7 +72,7 @@ bool AudioCodecWav::reset()
   }
   else
   {
-    EGE_ASSERT("Not supported");
+    EGE_ASSERT_X(false, "Not supported");
   }
 
   // store data

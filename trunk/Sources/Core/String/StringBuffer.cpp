@@ -101,91 +101,91 @@ ISerializable& StringBuffer::operator << (const String& value)
 ISerializable& StringBuffer::operator >> (u8& value)
 {
   EGE_UNUSED(value);
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ISerializable& StringBuffer::operator >> (s8& value)
 {
   EGE_UNUSED(value);
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ISerializable& StringBuffer::operator >> (u16& value)
 {
   EGE_UNUSED(value);
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ISerializable& StringBuffer::operator >> (s16& value)
 {
   EGE_UNUSED(value);
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ISerializable& StringBuffer::operator >> (u32& value)
 {
   EGE_UNUSED(value);
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ISerializable& StringBuffer::operator >> (s32& value)
 {
   EGE_UNUSED(value);
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ISerializable& StringBuffer::operator >> (u64& value)
 {
   EGE_UNUSED(value);
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ISerializable& StringBuffer::operator >> (s64& value)
 {
   EGE_UNUSED(value);
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ISerializable& StringBuffer::operator >> (bool& value)
 {
   EGE_UNUSED(value);
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ISerializable& StringBuffer::operator >> (float32& value)
 {
   EGE_UNUSED(value);
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ISerializable& StringBuffer::operator >> (float64& value)
 {
   EGE_UNUSED(value);
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ISerializable& StringBuffer::operator >> (const char* value)
 {
   EGE_UNUSED(value);
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ISerializable& StringBuffer::operator >> (String& value)
 {
   EGE_UNUSED(value);
-  EGE_ASSERT(false && "Unsupported");
+  EGE_ASSERT_X(false, "Unsupported");
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

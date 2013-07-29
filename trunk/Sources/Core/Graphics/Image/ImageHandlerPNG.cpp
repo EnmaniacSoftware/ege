@@ -121,7 +121,7 @@ bool ImageHandlerPNG::IsValidFormat(PObject buffer)
   }
   else
   {
-    EGE_ASSERT(false && "Unsupported buffer type.");
+    EGE_ASSERT_X(false, "Unsupported buffer type.");
   }
 
   return false;
@@ -158,7 +158,7 @@ PImage ImageHandlerPNG::Load(PObject buffer, PixelFormat format)
   }
   else
   {
-    EGE_ASSERT(false && "Unsupported source type.");
+    EGE_ASSERT_X(false, "Unsupported source type.");
     return NULL;
   }
 
@@ -323,7 +323,7 @@ EGEResult ImageHandlerPNG::Save(PImage image, const String& fileName, PixelForma
     default:
 
       // error!
-      EGE_ASSERT(false && "Format not supported!");
+      EGE_ASSERT_X(false, "Format not supported!");
       png_destroy_read_struct(&pngWriteStruct, &pngInfoStruct, png_infopp_NULL);
       return EGE_ERROR_IO;
   }

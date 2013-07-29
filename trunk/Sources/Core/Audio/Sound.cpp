@@ -76,7 +76,7 @@ EGEResult Sound::construct()
 
     default:
 
-      EGE_ASSERT("Unsupported audio format!");
+      EGE_ASSERT_X(false, "Unsupported audio format!");
       return EGE_ERROR_NOT_SUPPORTED;
   }
 

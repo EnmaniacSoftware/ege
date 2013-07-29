@@ -54,7 +54,7 @@ bool VertexDeclaration::addElement(NVertexBuffer::VertexElementSemantic semantic
         
       default:
         
-        EGE_ASSERT(false && "Unknown array type");
+        EGE_ASSERT_X(false, "Unknown array type");
         break;
     }
 
@@ -109,7 +109,7 @@ u32 VertexDeclaration::vertexSize() const
           
         default:
           
-          EGE_ASSERT(false && "Unknown array type");
+          EGE_ASSERT_X(false, "Unknown array type");
           break;
       }
     }

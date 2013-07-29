@@ -19,13 +19,13 @@ enum DebugMsgType
 EGE_NAMESPACE_END
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #ifdef EGE_FEATURE_DEBUG
-#define EGE_ASSERT(cond) ((!(cond)) ? Debug::Assert(#cond, __FILE__, __LINE__) : ege_noop())
+  #define EGE_ASSERT(cond) ((!(cond)) ? Debug::Assert(NULL, __FILE__, __LINE__) : ege_noop())
+  #define EGE_ASSERT_X(cond, reason) ((!(cond)) ? Debug::Assert(#reason, __FILE__, __LINE__) : ege_noop())
 #else
-#define EGE_ASSERT(cond) ege_noop()
+  #define EGE_ASSERT(cond) ege_noop()
+  #define EGE_ASSERT_X(cond, reason) ege_noop()
 #endif // EGE_FEATURE_DEBUG
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include "Core/Debug/Debug.h"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

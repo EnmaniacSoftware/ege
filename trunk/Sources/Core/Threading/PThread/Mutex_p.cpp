@@ -23,7 +23,7 @@ MutexPrivate::MutexPrivate(Mutex* base, EGEMutex::EType type)
 
     default:
 
-      EGE_ASSERT(false && "Unknown mutex type");
+      EGE_ASSERT_X(false, "Unknown mutex type");
       break;
   }
 

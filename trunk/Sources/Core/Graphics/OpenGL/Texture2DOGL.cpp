@@ -151,7 +151,7 @@ EGEResult Texture2DPrivate::create(const PImage& image)
     
     default:
 
-      EGE_ASSERT(false && "Invalid format");
+      EGE_ASSERT_X(false, "Invalid format");
       return EGE_ERROR_NOT_SUPPORTED;
   }
  // }
