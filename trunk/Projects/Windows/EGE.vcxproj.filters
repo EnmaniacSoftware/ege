@@ -855,6 +855,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\VertexElement.cpp">
       <Filter>Core\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderQueueFactory.cpp">
+      <Filter>Core\Graphics\Render\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">
@@ -1635,9 +1638,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\BatchedRenderQueue.h">
       <Filter>Core\Graphics\Render\Implementation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderQueue.h">
-      <Filter>Core\Graphics\Render\Implementation</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\Renderer.h">
       <Filter>Core\Graphics\Render\Interface</Filter>
     </ClInclude>
@@ -1652,6 +1652,13 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexElement.h">
       <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\RenderQueueFactory.h">
+      <Filter>Core\Graphics\Render\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGERenderQueues.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\RenderQueue.h">
+      <Filter>Core\Graphics\Render\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

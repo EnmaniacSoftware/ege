@@ -18,7 +18,7 @@ class RenderQueue : public Object
 {
   public:
 
-    RenderQueue(Application* app) : Object(app) {}
+    RenderQueue(Application* app, u32 uid) : Object(app, uid) {}
     virtual ~RenderQueue() {}
 
   public:

@@ -3,7 +3,7 @@
 
 #include "EGE.h"
 #include "Core/Math/Matrix4.h"
-#include "Core/Graphics/Render/Implementation/RenderQueue.h"
+#include "Core/Graphics/Render/Interface/RenderQueue.h"
 #include "Core/Components/Render/RenderComponent.h"
 
 EGE_NAMESPACE_BEGIN

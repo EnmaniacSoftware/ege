@@ -104,6 +104,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Program.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\RenderObjectFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\BatchedRenderQueue.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderQueueFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\SimpleRenderQueue.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderPass.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderSystem.cpp" />
@@ -288,9 +289,10 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\RenderObjectFactory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\BatchedRenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\ComponentRenderer.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\SimpleRenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\Renderer.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\RenderQueue.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\RenderQueueFactory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderPass.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderSystem.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Shader.h" />
@@ -396,6 +398,7 @@
     <ClInclude Include="..\..\Sources\EGEQuaternion.h" />
     <ClInclude Include="..\..\Sources\EGERenderComponent.h" />
     <ClInclude Include="..\..\Sources\EGERenderer.h" />
+    <ClInclude Include="..\..\Sources\EGERenderQueues.h" />
     <ClInclude Include="..\..\Sources\EGERenderSystem.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />

@@ -8,7 +8,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(BatchedRenderQueue)
 EGE_DEFINE_DELETE_OPERATORS(BatchedRenderQueue)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-BatchedRenderQueue::BatchedRenderQueue(Application* app) : RenderQueue(app)
+BatchedRenderQueue::BatchedRenderQueue(Application* app) : RenderQueue(app, EGE_OBJECT_UID_BACTHED_RENDER_QUEUE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

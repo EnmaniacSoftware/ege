@@ -7,7 +7,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(SimpleRenderQueue)
 EGE_DEFINE_DELETE_OPERATORS(SimpleRenderQueue)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SimpleRenderQueue::SimpleRenderQueue(Application* app) : RenderQueue(app)
+SimpleRenderQueue::SimpleRenderQueue(Application* app) : RenderQueue(app, EGE_OBJECT_UID_SIMPLE_RENDER_QUEUE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
