@@ -193,6 +193,8 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     Rectf applyRotation(const Rectf& rect, const Angle& angle) const;
     /*! @see IRenderer::addForRendering. */
     bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY) override;
+    /*! @see IRenderer::addForRendering. */
+    bool addForRendering(const PRenderQueue& queue) override;
     /*! @see IRenderer::currentRenderTarget. */
     PRenderTarget currentRenderTarget() const override;
     /*! @see IHardwareResourceProvider::createVertexBuffer. */

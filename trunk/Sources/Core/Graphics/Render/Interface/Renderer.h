@@ -10,6 +10,7 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
+EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
 EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IRenderer
@@ -21,6 +22,8 @@ class IRenderer
 
     /*! Adds given data for rendering. */
     virtual bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY) = 0;
+    /*! Adds given render queue for rendering. */
+    virtual bool addForRendering(const PRenderQueue& queue) = 0;
     /*! Returns view matrix. */
     virtual const Matrix4f& viewMatrix() const = 0;
     /*! Returns number of batches rendered last frame. */

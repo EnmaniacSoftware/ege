@@ -15,7 +15,7 @@ class SimpleRenderQueue : public RenderQueue
 {
   public:
 
-    SimpleRenderQueue(Application* app);
+    SimpleRenderQueue(Application* app, u32 priority, EGEGraphics::RenderPrimitiveType primitiveType);
     virtual ~SimpleRenderQueue();
 
     EGE_DECLARE_NEW_OPERATORS

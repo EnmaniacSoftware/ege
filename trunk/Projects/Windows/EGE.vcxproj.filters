@@ -858,6 +858,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderQueueFactory.cpp">
       <Filter>Core\Graphics\Render\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderQueue.cpp">
+      <Filter>Core\Graphics\Render\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Components\Component.h">

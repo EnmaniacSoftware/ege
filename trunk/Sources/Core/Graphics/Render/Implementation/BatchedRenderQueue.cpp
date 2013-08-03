@@ -8,7 +8,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(BatchedRenderQueue)
 EGE_DEFINE_DELETE_OPERATORS(BatchedRenderQueue)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-BatchedRenderQueue::BatchedRenderQueue(Application* app) : RenderQueue(app, EGE_OBJECT_UID_BACTHED_RENDER_QUEUE)
+BatchedRenderQueue::BatchedRenderQueue(Application* app, u32 priority, EGEGraphics::RenderPrimitiveType primitiveType) 
+: RenderQueue(app, EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, priority, primitiveType)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -17,12 +18,39 @@ BatchedRenderQueue::~BatchedRenderQueue()
   m_renderData = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool BatchedRenderQueue::IsSuitable(const PRenderComponent& component)
+{
+  bool result = true;
+
+  // only components with the same amount of texture as UV components can be batched
+  // NOTE: this is will be major thing to refactor for OGLES 2.0 due to texture matrices
+  const u32 textureUVElements = component->vertexBuffer()->vertexDeclaration().elementCount(NVertexBuffer::VES_TEXTURE_UV);
+  for (u32 i = 0; i < component->material()->passCount() && result; ++i)
+  {
+    // check if number of texture UV elements DO NOT match number of texture units
+    if (textureUVElements != component->material()->pass(i)->textureCount())
+    {
+      // batching not possible
+      result = false;
+    }
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult BatchedRenderQueue::addForRendering(const PRenderComponent& component, const Matrix4f& modelMatrix)
 {
   EGEResult result = EGE_SUCCESS;
 
   // NOTE: add support for point sizes and line widths if necessary
   EGE_ASSERT((1.0f == component->pointSize()) && (1.0f == component->lineWidth()));
+
+  // check if priorities does not match
+  if (component->priority() != priority())
+  {
+    // reject
+    return EGE_ERROR_NOT_SUPPORTED;
+  }
 
   // check if not allocated yet
   if (NULL == m_renderData)
@@ -88,24 +116,30 @@ EGEResult BatchedRenderQueue::addForRendering(const PRenderComponent& component,
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void BatchedRenderQueue::clear()
 {
-  // reset vertex and index data
-  m_renderData->vertexBuffer()->setSize(0);
-
-  if (0 != m_renderData->indexBuffer()->indexSize())
+  if (NULL != m_renderData)
   {
-    m_renderData->indexBuffer()->setSize(0);
+    // reset vertex and index data
+    m_renderData->vertexBuffer()->setSize(0);
+
+    if (0 != m_renderData->indexBuffer()->indexSize())
+    {
+      m_renderData->indexBuffer()->setSize(0);
+    }
+
+    // reset material
+    m_renderData->setMaterial(NULL);
+
+    // reset clip region
+    m_renderData->setClipRect(Rectf::INVALID);
   }
-
-  // reset material
-  m_renderData->setMaterial(NULL);
-
-  // reset clip region
-  m_renderData->setClipRect(Rectf::INVALID);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void BatchedRenderQueue::render(IComponentRenderer& renderer)
 {
-  renderer.renderComponent(m_renderData);
+  if (NULL != m_renderData)
+  {
+    renderer.renderComponent(m_renderData);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool BatchedRenderQueue::allocateMasterRenderComponent(const PRenderComponent& component)
@@ -459,13 +493,17 @@ void BatchedRenderQueue::prepare(const PRenderComponent& component)
   PMaterial newMaterial = component->material()->clone();
 
   // reset texture matrices
-  for (u32 i = 0; i < newMaterial->pass(0)->textureCount(); ++i)
+  for (u32 pass = 0; pass < newMaterial->passCount(); ++pass)
   {
-    PTextureImage textureImage = newMaterial->pass(0)->texture(i);
-    if (NULL != textureImage)
+    u32 textureCount = newMaterial->pass(pass)->textureCount();
+    for (u32 i = 0; i < textureCount; ++i)
     {
-      // reset texture rectangle as all texture coordinates will be recalculated
-      textureImage->setRect(Rectf::UNIT);
+      PTextureImage textureImage = newMaterial->pass(pass)->texture(i);
+      if (NULL != textureImage)
+      {
+        // reset texture rectangle as all texture coordinates will be recalculated
+        textureImage->setRect(Rectf::UNIT);
+      }
     }
   }
 

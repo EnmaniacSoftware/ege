@@ -214,12 +214,15 @@ void RenderSystemPrivate::flush()
   
   glMultMatrixf(d_func()->m_projectionMatrix.data);
 
- // EGE_LOG("---------------------- Render Flush begin ----------------------");
-
   // go thru all render queues
   for (Map<s32, List<PRenderQueue> >::const_iterator itQueue = d_func()->m_renderQueues.begin(); itQueue != d_func()->m_renderQueues.end(); ++itQueue)
   {
     const List<PRenderQueue>& queueList = itQueue->second;
+
+    if (5 < queueList.size())
+    {
+      egeWarning(KOpenGLDebugName) << "Possible batch optimization. Hash:" << itQueue->first;
+    }
 
     // render queue list
     for (List<PRenderQueue>::const_iterator it = queueList.begin(); it != queueList.end(); ++it)
@@ -233,8 +236,6 @@ void RenderSystemPrivate::flush()
       queue->clear();
     }
   }
-
-  //EGE_LOG("---------------------- Render Flush end ----------------------");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass* pass)

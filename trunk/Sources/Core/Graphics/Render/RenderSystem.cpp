@@ -11,8 +11,8 @@
 #include "Core/Event/EventIDs.h"
 #include "Core/Event/EventManager.h"
 #include "Core/Resource/ResourceManager.h"
-#include "Core/Graphics/Render/Implementation/SimpleRenderQueue.h"
-#include "Core/Graphics/Render/Implementation/BatchedRenderQueue.h"
+#include "Core/ObjectUIDs.h"
+#include "EGERenderQueues.h"
 #include "EGEOpenGL.h"
 
 #if EGE_RENDERING_OPENGL_FIXED
@@ -288,17 +288,14 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
       // create appriopriate queue
       PRenderQueue queue;
 
-      // if material has only 1 pass defined it is suitable for batching
       // batch only really small buffers
-      // only components with the same amount of texture as UV components can be batched, NOTE: this is will be major thing to refactor for OGLES 2.0 due to texture matrices
-      if ((1 == component->material()->passCount()) && (10 > component->vertexBuffer()->vertexCount()) &&
-          (component->material()->pass(0)->textureCount() == component->vertexBuffer()->vertexDeclaration().elementCount(NVertexBuffer::VES_TEXTURE_UV)))
+      if ((10 > component->vertexBuffer()->vertexCount()) && RenderQueue::IsSuitable(EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, component))
       {
-        queue = ege_new BatchedRenderQueue(app());
+        queue = RenderQueueFactory::Create(app(), EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, component->priority(), component->primitiveType());
       }
       else
       {        
-        queue = ege_new SimpleRenderQueue(app());
+        queue = RenderQueueFactory::Create(app(), EGE_OBJECT_UID_SIMPLE_RENDER_QUEUE, component->priority(), component->primitiveType());
       }
 
       // check if properly allocated
@@ -321,6 +318,59 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
         }
       }
     }
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool RenderSystem::addForRendering(const PRenderQueue& queue)
+{
+  bool result = false;
+ 
+  // calculate hash
+  // NOTE: at this stage components are separated into unique priorities and primitive types
+  u32 hash = CalculateRenderQueueHash(queue->priority(), queue->primitiveType());
+
+  // check if some queues exist already
+  bool renderQueueForHashPresent = m_renderQueues.contains(hash);
+  if (renderQueueForHashPresent)
+  {
+    List<PRenderQueue>& queueList = m_renderQueues.at(hash);
+
+    // try to find the same queue
+    for (List<PRenderQueue>::iterator it = queueList.begin(); it != queueList.end(); ++it)
+    {
+      PRenderQueue& curQueue = *it;
+
+      // check if the same
+      if (curQueue == queue)
+      {
+        // substitute
+        curQueue = queue;
+
+        // done
+        result = true;
+        break;
+      }
+    }
+
+    // check if not found yet
+    if ( ! result)
+    {
+      // add to list
+      queueList.push_back(queue);
+
+      // done
+      result = true;
+    }
+  }
+  else
+  {
+    // insert into pool
+    m_renderQueues.insert(hash, queue);
+
+    // done
+    result = true;
   }
 
   return result;

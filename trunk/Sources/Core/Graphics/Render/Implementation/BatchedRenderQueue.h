@@ -17,11 +17,19 @@ class BatchedRenderQueue : public RenderQueue
 {
   public:
 
-    BatchedRenderQueue(Application* app);
+    BatchedRenderQueue(Application* app, u32 priority, EGEGraphics::RenderPrimitiveType primitiveType);
     virtual ~BatchedRenderQueue();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
+
+    /*! Checks if given component is suitable for insertion. 
+     *  @param  component Component to test.
+     *  @return TRUE if component is suitable for insertion.
+     */
+    static bool IsSuitable(const PRenderComponent& component);
 
   private:
 
