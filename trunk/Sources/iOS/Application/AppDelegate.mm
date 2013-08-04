@@ -25,6 +25,8 @@ EGE_NAMESPACE
 @implementation AppDelegate
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const char* KAppDelegateDebugName = "EGEAppDelegate";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) dealloc
 {
   // clean up
@@ -75,7 +77,7 @@ EGE_NAMESPACE
   // get orientation value
   int nativeOrientation = [[notification object] orientation];
   
-  egeDebug() << "Device orientation has changed:" << nativeOrientation;
+  egeDebug(KAppDelegateDebugName) << "Device orientation has changed:" << nativeOrientation;
 
   assert(egeApplication);
   
@@ -230,7 +232,7 @@ EGE_NAMESPACE
     // send pointer event
     [self notifyPointerEvent: ACTION_BUTTON_DOWN withButton: BUTTON_LEFT atPoint: point];
     
-    egeDebug() << "Touch began at" << point.x << point.y << (float32) touch.timestamp;
+    egeDebug(KAppDelegateDebugName) << "Touch began at" << point.x << point.y << (float32) touch.timestamp;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -246,7 +248,7 @@ EGE_NAMESPACE
     // send pointer event
     [self notifyPointerEvent: ACTION_BUTTON_UP withButton: BUTTON_LEFT atPoint: point];
     
-    egeDebug() << "Touch ended at" << point.x << point.y << (float32) touch.timestamp;
+    egeDebug(KAppDelegateDebugName) << "Touch ended at" << point.x << point.y << (float32) touch.timestamp;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -268,7 +270,7 @@ EGE_NAMESPACE
     // send pointer event
     [self notifyPointerEvent: ACTION_MOVE withButton: BUTTON_LEFT atPoint: point];
      
-    egeDebug() << "Touch moved at" << point.x << point.y << (float32) touch.timestamp;
+    egeDebug(KAppDelegateDebugName) << "Touch moved at" << point.x << point.y << (float32) touch.timestamp;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

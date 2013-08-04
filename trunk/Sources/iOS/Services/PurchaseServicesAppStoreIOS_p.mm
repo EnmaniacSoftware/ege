@@ -4,6 +4,7 @@
 #include "iOS/Services/PurchaseServicesAppStoreIOS_p.h"
 #include "EGEMath.h"
 #include "EGEMemory.h"
+#include "EGEPurchaseServices.h"
 #include "EGEDebug.h"
 #import <StoreKit/StoreKit.h>
 #import "iOS/Services/AppStoreTransactionObserver.h"
@@ -52,7 +53,7 @@ EGEResult PurchaseServicesPrivate::purchase(const String& product)
 {
   EGEResult result = EGE_ERROR;
   
-  egeDebug() << "Initiating purchase of" << product;
+  egeDebug(KPurchaseServicesDebugName) << "Initiating purchase of" << product;
 
   if (isAvailable())
   {
@@ -76,7 +77,7 @@ EGEResult PurchaseServicesPrivate::restoreAll()
 {
   EGEResult result = EGE_ERROR;
   
-  egeDebug() << "Initiating purchase restoration";
+  egeDebug(KPurchaseServicesDebugName) << "Initiating purchase restoration";
   
   if (isAvailable())
   {

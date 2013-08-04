@@ -21,7 +21,7 @@
 #include "EGEOpenGL.h"
 #include "EGETimer.h"
 #include "EGEDevice.h"
-#include "EGELog.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE
 
@@ -241,15 +241,23 @@ void RenderSystemPrivate::flush()
 void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass* pass)
 {
   // disable blending by default
-  glDisable(GL_BLEND);
-
+  if (d_func()->m_blendEnabled)
+  {
+    glDisable(GL_BLEND);
+    d_func()->m_blendEnabled = false;
+  }
+  
   if (NULL != pass)
   {
     // enable blending if necessary
     if ((EGEGraphics::BF_ONE != pass->srcBlendFactor()) || (EGEGraphics::BF_ZERO != pass->dstBlendFactor()))
     {
-      glEnable(GL_BLEND);
-
+      if ( ! d_func()->m_blendEnabled)
+      {
+        glEnable(GL_BLEND);
+        d_func()->m_blendEnabled = true;
+      }
+      
       //if (pass->srcBlendFactor() == EGEGraphics::BF_SRC_ALPHA && pass->dstBlendFactor() == EGEGraphics::BF_ONE_MINUS_SRC_ALPHA)
       //{
       //  glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
@@ -1072,7 +1080,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
         OGL_CHECK();
 
         // update engine info
-        ENGINE_INFO(m_drawElementsCalls++);
+        ENGINE_INFO(drawElementsCalls++);
       }
       else
       {
@@ -1081,7 +1089,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
         OGL_CHECK();
 
         // update engine info
-        ENGINE_INFO(m_drawArraysCalls++);
+        ENGINE_INFO(drawArraysCalls++);
       }
 
       // disable all actived texture units
@@ -1115,7 +1123,6 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
 
       // clean up
       activateTextureUnit(0);
-      glClientActiveTexture(GL_TEXTURE0);
       glDisableClientState(GL_VERTEX_ARRAY);
       OGL_CHECK();
       glDisableClientState(GL_NORMAL_ARRAY);

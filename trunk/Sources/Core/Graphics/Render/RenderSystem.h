@@ -262,6 +262,8 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     RequestDataList m_requests;
     /*! Request data list mutex. */
     PMutex m_requestsMutex;
+    /*! Blend enabled flag. */
+    bool m_blendEnabled;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

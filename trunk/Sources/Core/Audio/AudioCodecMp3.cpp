@@ -28,7 +28,7 @@ bool AudioCodecMp3::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool AudioCodecMp3::reset()
 {
-  EGE_ASSERT_X(false, "Not implemened!");
+  //EGE_ASSERT_X(false, "Not implemened!");
 
   // TAGE - for the time being this is only a stub 
   return true;

@@ -236,6 +236,7 @@ void RenderWindowOGLIOS::destroy()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderWindowOGLIOS::showFrameBuffer()
 {
+  // present render buffer
   [m_EAGLContext presentRenderbuffer: GL_RENDERBUFFER];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -282,7 +283,7 @@ void RenderWindowOGLIOS::detectCapabilities()
   
   for (StringArray::const_iterator it = extensionArray.begin(); it != extensionArray.end(); ++it)
   {
-    egeDebug() << "Available OGL extension:" << *it;
+    egeDebug(KOpenGLDebugName) << "Available OGL extension:" << *it;
   }
   
 	GLint value;
@@ -299,7 +300,8 @@ void RenderWindowOGLIOS::detectCapabilities()
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE, true);
   
   // VBO is supported by default
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VBO, true);
+  // TAGE - disable for time being until VBO implementation is more efficient
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VBO, false);
 
   // combine texture environment mode is supported by default
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_COMBINE_TEXTURE_ENV, true);
@@ -454,7 +456,7 @@ void RenderWindowOGLIOS::setOrientation(EGEDevice::Orientation orientation)
       
       default:
 
-        egeWarning() << "Unknown orientation!";
+        egeWarning(KOpenGLDebugName) << "Unknown orientation!";
         break;
     }
   }
@@ -506,7 +508,7 @@ void RenderWindowOGLIOS::resizeRenderBuffers()
   // check frame buffer integrity
   if (GL_FRAMEBUFFER_COMPLETE != glCheckFramebufferStatus(GL_FRAMEBUFFER))
 	{
-    egeCritical() << "Could not resize render buffers!";
+    egeCritical(KOpenGLDebugName) << "Could not resize render buffers!";
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

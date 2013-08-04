@@ -2,11 +2,11 @@
 
 #include "EGEApplication.h"
 #include "EGEGraphics.h"
-#include "Core/Services/SocialServices.h"
+#include "EGESocialServices.h"
+#include "EGEDebug.h"
 #include "iOS/Services/SocialServicesGameCenterIOS_p.h"
 #include "iOS/Services/GameCenterDelegate.h"
 #include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
-#include "EGEDebug.h"
 #import <GameKit/GameKit.h>
 #import <UIKit/UIKit.h>
 
@@ -80,7 +80,7 @@ EGEResult SocialServicesPrivate::startAuthentication()
       // store user id
       m_userId = [localPlayer.playerID UTF8String];
 
-      egeDebug() << "User authenticated:" << m_userId;
+      egeDebug(KSocialServicesDebugName) << "User authenticated:" << m_userId;
       
       // emit
       emit d_func()->authenticated(EGE_SUCCESS);
@@ -90,7 +90,7 @@ EGEResult SocialServicesPrivate::startAuthentication()
       // cound not authenticate
       d_func()->m_authenticated = false;
       
-      egeWarning() << "User authentication failed.";
+      egeWarning(KSocialServicesDebugName) << "User authentication failed.";
 
       // emit
       emit d_func()->authenticated(EGE_ERROR);
@@ -165,7 +165,7 @@ EGEResult SocialServicesPrivate::saveNextAchievement()
   AchievementData achievementData = m_pendingAchievementSaveList.front();
   m_pendingAchievementSaveList.pop_front();
 
-  egeDebug() << "Submitting achievement" << achievementData.name << "completion" << achievementData.percentageComplete;
+  egeDebug(KSocialServicesDebugName) << "Submitting achievement" << achievementData.name << "completion" << achievementData.percentageComplete;
 
   NSString* identifier = [NSString stringWithCString: achievementData.name.c_str() encoding: NSASCIIStringEncoding];
 

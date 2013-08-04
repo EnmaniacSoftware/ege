@@ -1,19 +1,12 @@
 #ifndef EGE_PURCHASESERVICES_H
 #define EGE_PURCHASESERVICES_H
 
-#include <EGEString.h>
-#include <EGEList.h>
+#include "Core/Platform.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//struct AchievementData
-//{
-//  String name;                /*!< Achievement identifier. */
-//  s32 percentageComplete;     /*!< Percentage complete. */
-//};
-//
-//typedef List<AchievementData> AchievementDataList;
+extern const char* KPurchaseServicesDebugName;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

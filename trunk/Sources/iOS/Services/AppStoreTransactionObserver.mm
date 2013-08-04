@@ -1,5 +1,6 @@
 #include "Core/Services/PurchaseServices.h"
 #import "iOS/Services/AppStoreTransactionObserver.h"
+#include "EGEPurchaseServices.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE
@@ -59,7 +60,7 @@ EGE_NAMESPACE
         
       case SKPaymentTransactionStatePurchasing:
       
-        egeDebug() << "[AppStoreTransactionObserver] Purchasing:" << [transaction.payment.productIdentifier UTF8String];
+        egeDebug(KPurchaseServicesDebugName) << "[AppStoreTransactionObserver] Purchasing:" << [transaction.payment.productIdentifier UTF8String];
         break;
         
       default:

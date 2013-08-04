@@ -135,7 +135,7 @@ void* VertexBufferVBO::lock(u32 offset, u32 count)
           OGL_CHECK();
 
           // update engine info
-          ENGINE_INFO(m_VBOBufferDataCalls++);
+          ENGINE_INFO(VBOBufferDataCalls++);
         }
 
         // map the buffer
@@ -199,7 +199,7 @@ void VertexBufferVBO::unlock(const void* data)
       OGL_CHECK();
 
       // update engine info
-      ENGINE_INFO(m_VBOBufferDataCalls++);
+      ENGINE_INFO(VBOBufferDataCalls++);
 	  }
 
     // check if entire buffer was locked
@@ -210,7 +210,7 @@ void VertexBufferVBO::unlock(const void* data)
       OGL_CHECK();
 
       // update engine info
-      ENGINE_INFO(m_VBOBufferDataCalls++);
+      ENGINE_INFO(VBOBufferDataCalls++);
     }
     else
     {
@@ -219,7 +219,7 @@ void VertexBufferVBO::unlock(const void* data)
       OGL_CHECK();
 
       // update engine info
-      ENGINE_INFO(m_VBOBufferSubDataCalls++);
+      ENGINE_INFO(VBOBufferSubDataCalls++);
     }
   }
   else
@@ -256,7 +256,7 @@ bool VertexBufferVBO::reallocateBuffer(u32 count)
     OGL_CHECK();
 
     // update engine info
-    ENGINE_INFO(m_VBOBufferDataCalls++);
+    ENGINE_INFO(VBOBufferDataCalls++);
 
     // allocate enough space in shadow buffer if required
     if (NULL != m_shadowBuffer)

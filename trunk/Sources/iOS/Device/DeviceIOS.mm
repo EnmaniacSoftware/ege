@@ -4,9 +4,9 @@
 #include <sys/sysctl.h>
 #import <mach/mach.h>
 #import <mach/mach_host.h>
-#import <UIKit/UIScreen.h>
 #import <CoreGraphics/CGGeometry.h>
 #import <Foundation/NSThread.h>
+#import <UIKit/UIScreen.h>
 #import <UIKit/UIDevice.h>
 
 EGE_NAMESPACE_BEGIN
@@ -126,7 +126,7 @@ void GetMemoryStatistics(u64& availableRAM, u64& totalRAM)
   if (KERN_SUCCESS != host_statistics(host_port, HOST_VM_INFO, (host_info_t) &vm_stat, &host_size))
   {
     // error!
-    egeWarning() << "Could not retreve memory statistics";
+    egeWarning(KDeviceDebugName) << "Could not retreve memory statistics";
     
     availableRAM = 0;
     totalRAM = 0;
@@ -158,7 +158,7 @@ EGEDevice::Device Device::GetDevice()
   String deviceName(modelName);
   EGEDevice::Device deviceId = GetIOSDevice(deviceName);
 
-  egeDebug() << "Device ID:" << deviceName << deviceId;
+  egeDebug(KDeviceDebugName) << "Device ID:" << deviceName << deviceId;
   
   return deviceId;
 }

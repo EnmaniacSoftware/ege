@@ -109,6 +109,7 @@ class RenderSystemPrivate : public IComponentRenderer
     u32 m_activeTextureUnit;
     /*! Pool of all currently active texture units. */
     DynamicArray<u32> m_activeTextureUnits;
+  
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

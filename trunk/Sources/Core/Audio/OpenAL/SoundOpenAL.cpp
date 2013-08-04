@@ -59,7 +59,7 @@ EGEResult SoundOpenAL::construct()
 
       default:
 
-        EGE_ASSERT_X(false, "Invalid bits per sample!");
+        //EGE_ASSERT_X(false, "Invalid bits per sample!");
         return EGE_ERROR_NOT_SUPPORTED;
     }
   }
