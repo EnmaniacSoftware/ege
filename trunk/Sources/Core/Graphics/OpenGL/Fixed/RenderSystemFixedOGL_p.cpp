@@ -156,8 +156,13 @@ static GLint MapTextureAddressingMode(EGETexture::AddressingMode mode)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderSystemPrivate::RenderSystemPrivate(RenderSystem* base) : m_d(base), 
-                                                               m_activeTextureUnit(0xffffffff)
+                                                               m_activeTextureUnit(0)
 {
+  m_blendEnabled = (GL_TRUE == glIsEnabled(GL_BLEND));
+  OGL_CHECK();
+  
+  glGetIntegerv(GL_MATRIX_MODE, &m_matrixMode);
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderSystemPrivate::~RenderSystemPrivate()
@@ -201,7 +206,7 @@ void RenderSystemPrivate::setViewport(const PViewport& viewport)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::flush()
 {
-  glMatrixMode(GL_PROJECTION);
+  setMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
   // check if not auto-rotated
@@ -238,143 +243,140 @@ void RenderSystemPrivate::flush()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass* pass)
+void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass& pass)
 {
-  // disable blending by default
-  if (d_func()->m_blendEnabled)
+  // enable blending if necessary
+  if ((EGEGraphics::BF_ONE != pass.srcBlendFactor()) || (EGEGraphics::BF_ZERO != pass.dstBlendFactor()))
   {
-    glDisable(GL_BLEND);
-    d_func()->m_blendEnabled = false;
-  }
-  
-  if (NULL != pass)
-  {
-    // enable blending if necessary
-    if ((EGEGraphics::BF_ONE != pass->srcBlendFactor()) || (EGEGraphics::BF_ZERO != pass->dstBlendFactor()))
-    {
-      if ( ! d_func()->m_blendEnabled)
-      {
-        glEnable(GL_BLEND);
-        d_func()->m_blendEnabled = true;
-      }
+    setBlendEnabled(true);
       
-      //if (pass->srcBlendFactor() == EGEGraphics::BF_SRC_ALPHA && pass->dstBlendFactor() == EGEGraphics::BF_ONE_MINUS_SRC_ALPHA)
+    //if (pass->srcBlendFactor() == EGEGraphics::BF_SRC_ALPHA && pass->dstBlendFactor() == EGEGraphics::BF_ONE_MINUS_SRC_ALPHA)
+    //{
+    //  glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    //}
+    //else
+    glBlendFunc(MapBlendFactor(pass.srcBlendFactor()), MapBlendFactor(pass.dstBlendFactor()));
+  }
+  else
+  {
+    setBlendEnabled(false);
+  }
+
+  // set vertex color
+  // NOTE: this will be overriden if color array is activated
+  Color color = pass.diffuseColorTransformation().transform(pass.diffuseColor());
+  glColor4f(color.red, color.green, color.blue, color.alpha);
+
+  // get nimber of available texture array elements
+  u32 textureCoordsCount = component->vertexBuffer()->vertexDeclaration().elementCount(NVertexBuffer::VES_TEXTURE_UV);
+
+  // go thru all textures
+  for (u32 i = 0; i < pass.textureCount(); ++i)
+  {
+    PTextureImage textureImage = pass.texture(i);
+
+    EGE_ASSERT(EGE_OBJECT_UID_TEXTURE_2D != textureImage->uid());
+
+    // set texture coord array index to be used by current texture unit
+    m_textureCoordIndices.push_back(Math::Min(i, textureCoordsCount));
+
+    // check if 2D texture
+    //if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
+    //{
+    //  Texture2D* tex2d = (Texture2D*) texture;
+
+    //  activateTextureUnit(i);
+    //  bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
+
+    //  glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(tex2d->m_minFilter));
+	   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(tex2d->m_magFilter));
+	   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(tex2d->m_addressingModeS));
+	   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(tex2d->m_addressingModeT));
+
+    //  setMatrixMode(GL_TEXTURE);
+    //  glLoadIdentity();
+    //}
+
+    // check if texture image
+    if (EGE_OBJECT_UID_TEXTURE_IMAGE == textureImage->uid())
+    {
+      PTexture2D tex2d = textureImage->texture();
+
+      activateTextureUnit(i);
+
+      // NOTE: it is possible texure object might be not present ie when it is manual and hasnt been set yet
+      if (NULL != tex2d)
+      {
+        bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
+      }
+
+      //if (texImg->environmentMode() == EGETexture::EM_DECAL)
       //{
-      //  glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_MODULATE);   //Interpolate RGB with RGB
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_PREVIOUS);
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_TEXTURE);
+      //     //GL_CONSTANT refers to the call we make with glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor)
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_RGB, GL_CONSTANT);
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_RGB, GL_CONSTANT );
+      //     //------------------------
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_INTERPOLATE);   //Interpolate ALPHA with ALPHA
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_PREVIOUS);
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_TEXTURE);
+      //     //GL_CONSTANT refers to the call we make with glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor)
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_ALPHA, GL_CONSTANT);
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, GL_SRC_ALPHA);
+      //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_ALPHA, GL_SRC_ALPHA);
+
+      //     static float a = 0.0f;
+      //     a += 0.01f;
+      //     if (a > 1)
+      //     {
+      //       a = 0;
+      //     }
+
+      //    float mycolor[4];
+      //     mycolor[0]=mycolor[1]=mycolor[2]=0.0;    //RGB doesn't matter since we are not using it
+      //     mycolor[3]=0.5;                         //Set the blend factor with this
+      //     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor);
       //}
       //else
-      glBlendFunc(MapBlendFactor(pass->srcBlendFactor()), MapBlendFactor(pass->dstBlendFactor()));
+      glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MapPrimitiveType(textureImage->environmentMode()));
+
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(tex2d->m_minFilter));
+	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(tex2d->m_magFilter));
+	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(tex2d->m_addressingModeS));
+	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(tex2d->m_addressingModeT));
+
+      setMatrixMode(GL_TEXTURE);
+      glLoadIdentity();
+
+      float32 degrees = textureImage->rotationAngle().degrees();
+
+      if (0.0f != degrees)
+      {
+        glTranslatef(textureImage->rect().x + textureImage->rect().width * 0.5f, textureImage->rect().y + textureImage->rect().height * 0.5f, 0.0f);
+        glRotatef(degrees, 0.0f, 0.0f, 1.0f);
+        glTranslatef(-(textureImage->rect().x + textureImage->rect().width * 0.5f), -(textureImage->rect().y + textureImage->rect().height * 0.5f), 0.0f);
+      }
+
+      glTranslatef(textureImage->rect().x, textureImage->rect().y, 0.0f);
+      glScalef(textureImage->rect().width, textureImage->rect().height, 1.0f);
     }
 
-    // set vertex color
-    // NOTE: this will be overriden if color array is activated
-    Color color = pass->diffuseColorTransformation().transform(pass->diffuseColor());
-    glColor4f(color.red, color.green, color.blue, color.alpha);
-
-    // go thru all textures
-    for (u32 i = 0; i < pass->textureCount(); ++i)
+    // check if points are be rendered
+    if (EGEGraphics::RPT_POINTS == component->primitiveType())
     {
-      Object* texture = pass->texture(i).object();
-
-      // check if 2D texture
-      if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
+      // check if point sprites are supported
+      if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
       {
-        Texture2D* tex2d = (Texture2D*) texture;
-
-        activateTextureUnit(i);
-        bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
-
-        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(tex2d->m_minFilter));
-	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(tex2d->m_magFilter));
-	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(tex2d->m_addressingModeS));
-	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(tex2d->m_addressingModeT));
-
-        glMatrixMode(GL_TEXTURE);
-        glLoadIdentity();
-      }
-      // check if texture image
-      else if (EGE_OBJECT_UID_TEXTURE_IMAGE == texture->uid())
-      {
-        TextureImage* texImg = (TextureImage*) texture;
-        Texture2D* tex2d = (Texture2D*) texImg->texture().object();
-
-        activateTextureUnit(i);
-
-        // NOTE: it is possible texure object might be not present ie when it is manual and hasnt been set yet
-        if (tex2d)
-        {
-          bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
-        }
-
-        //if (texImg->environmentMode() == EGETexture::EM_DECAL)
-        //{
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_MODULATE);   //Interpolate RGB with RGB
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_PREVIOUS);
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_TEXTURE);
-        //     //GL_CONSTANT refers to the call we make with glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor)
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_RGB, GL_CONSTANT);
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_RGB, GL_CONSTANT );
-        //     //------------------------
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_INTERPOLATE);   //Interpolate ALPHA with ALPHA
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_PREVIOUS);
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_TEXTURE);
-        //     //GL_CONSTANT refers to the call we make with glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor)
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_ALPHA, GL_CONSTANT);
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, GL_SRC_ALPHA);
-        //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_ALPHA, GL_SRC_ALPHA);
-
-        //     static float a = 0.0f;
-        //     a += 0.01f;
-        //     if (a > 1)
-        //     {
-        //       a = 0;
-        //     }
-
-        //    float mycolor[4];
-        //     mycolor[0]=mycolor[1]=mycolor[2]=0.0;    //RGB doesn't matter since we are not using it
-        //     mycolor[3]=0.5;                         //Set the blend factor with this
-        //     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor);
-        //}
-        //else
-        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MapPrimitiveType(texImg->environmentMode()));
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(tex2d->m_minFilter));
-	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(tex2d->m_magFilter));
-	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(tex2d->m_addressingModeS));
-	      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(tex2d->m_addressingModeT));
-
-        glMatrixMode(GL_TEXTURE);
-        glLoadIdentity();
-
-        float32 degrees = texImg->rotationAngle().degrees();
-
-        if (0.0f != degrees)
-        {
-          glTranslatef(texImg->rect().x + texImg->rect().width * 0.5f, texImg->rect().y + texImg->rect().height * 0.5f, 0.0f);
-          glRotatef(degrees, 0.0f, 0.0f, 1.0f);
-          glTranslatef(-(texImg->rect().x + texImg->rect().width * 0.5f), -(texImg->rect().y + texImg->rect().height * 0.5f), 0.0f);
-        }
-
-        glTranslatef(texImg->rect().x, texImg->rect().y, 0.0f);
-        glScalef(texImg->rect().width, texImg->rect().height, 1.0f);
-      }
-
-      // check if points are be rendered
-      if (EGEGraphics::RPT_POINTS == component->primitiveType())
-      {
-        // check if point sprites are supported
-        if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
-        {
-          glEnable(GL_POINT_SPRITE);
-
-          glTexEnvf(GL_POINT_SPRITE, GL_COORD_REPLACE, GL_TRUE);
-        }
+        glEnable(GL_POINT_SPRITE);
+        glTexEnvf(GL_POINT_SPRITE, GL_COORD_REPLACE, GL_TRUE);
       }
     }
   }
@@ -382,31 +384,19 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::activateTextureUnit(u32 unit)
 {
-  // check if unit available
-  if (unit < Device::TextureUnitsCount())
+  if (unit != m_activeTextureUnit)
   {
-    // add to active texture units pool if not present there yet
-    // NOTE: we add it here and not on GL call cause if we are about to activate same texture unit as current one we dont want GL code to be executed
-    //       Though, we want to know it was requested to be activated for further use
-    if (!m_activeTextureUnits.contains(unit))
-    {
-      m_activeTextureUnits.push_back(unit);
-    }
+    EGE_ASSERT_X(Device::TextureUnitsCount() > unit, "Activating texture unit outside of available range!");
 
-    // check if currently selected other texture unit
-    if (m_activeTextureUnit != unit)
+    // check if unit available
+    if (unit < Device::TextureUnitsCount())
     {
       // check if multitexture available
       if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
       {
         glActiveTexture(GL_TEXTURE0 + unit);
-        m_activeTextureUnit = unit;
-
         OGL_CHECK();
-      }
-      else if (0 == unit)
-      {
-        // unit 0 is the only valid option if no multitexturing is present. Thus, no special activation is required
+
         m_activeTextureUnit = unit;
       }
     }
@@ -888,13 +878,13 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
   PIndexBuffer indexBuffer   = component->indexBuffer();
   PMaterial material         = component->material();
 
+  EGE_ASSERT_X(NULL != material, "Component must have material attached.");
+  EGE_ASSERT_X(0 < vertexBuffer->vertexCount(), "No vertices to render!");
+
   //if (component->name() == "level-meter-classic")
   //{
   //    int a = 1;
   //}
-
-  // determine number of texture arrays
-  s32 textureArraysCount = vertexBuffer->vertexDeclaration().elementCount(NVertexBuffer::VES_TEXTURE_UV);
 
   // bind vertex and index buffers
   void* vertexData = bindVertexBuffer(vertexBuffer);
@@ -904,238 +894,204 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
   applyGeneralParams(component);
 
   // go thru all passes
-  // NOTE: if there is no material, we consider it 1 pass
-  u32 passes = material ? material->passCount() : 1;
-  for (u32 pass = 0; pass < passes; ++pass)
+  for (u32 pass = 0; pass < material->passCount(); ++pass)
   {
-    const RenderPass* renderPass = material ? material->pass(pass) : NULL;
+    const PRenderPass renderPass = material->pass(pass);
 
-    // check if there is anything to be rendered
-    // TAGE - is it overhead setting up whole geometry for each pass ? or should it be done only once ? what with texturing ?
-    if (0 != vertexBuffer->vertexCount())
+    // apply pass related params
+    applyPassParams(component, material, *renderPass);
+
+    // apply vertex arrays
+    applyVertexArrays(vertexBuffer->vertexDeclaration(), vertexData);
+
+    // NOTE: change to modelview after material is applied as it may change current matrix mode
+    setMatrixMode(GL_MODELVIEW);
+
+    u32 value = (0 < indexBuffer->indexCount()) ? indexBuffer->indexCount() : vertexBuffer->vertexCount();
+
+    d_func()->m_vertexCount += value;
+    d_func()->m_batchCount++;
+
+    // TAGE - might be necessary
+	  //if (multitexturing)
+	  //  glClientActiveTexture(GL_TEXTURE0);
+
+    // set model-view matrix
+    glLoadMatrixf(d_func()->m_viewMatrix.multiply(modelMatrix).data);
+    OGL_CHECK();
+
+    // check if INDICIES are to be used
+    if (0 < indexBuffer->indexCount())
     {
-      const VertexElementArray& vertexElements = vertexBuffer->vertexDeclaration().vertexElements();
-
-      // apply pass related params
-      applyPassParams(component, material, renderPass);
-        
-      // NOTE: change to modelview after material is applied as it may change current matrix mode
-      glMatrixMode(GL_MODELVIEW);
-
-      // determine texture count
-      s32 textureCount = renderPass ? renderPass->textureCount() : 0;
-
-      u32 value = (0 < indexBuffer->indexCount()) ? indexBuffer->indexCount() : vertexBuffer->vertexCount();
-
-      d_func()->m_vertexCount += value;
-      d_func()->m_batchCount++;
-
-      // go thru all buffers
-      s32 textureUnitsActivated = 0;
-      for (VertexElementArray::const_iterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
-      {
-        // set according to buffer type
-        switch (itElement->semantic())
-        {
-          case NVertexBuffer::VES_POSITION_XYZ:
-
-            glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
-            OGL_CHECK();
-            glEnableClientState(GL_VERTEX_ARRAY);
-            OGL_CHECK();
-            break;
-
-          case NVertexBuffer::VES_POSITION_XY:
-
-            glVertexPointer(2, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
-            OGL_CHECK();
-            glEnableClientState(GL_VERTEX_ARRAY);
-            OGL_CHECK();
-            break;
-
-          case NVertexBuffer::VES_NORMAL:
-
-            glNormalPointer(GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
-            OGL_CHECK();
-            glEnableClientState(GL_NORMAL_ARRAY);
-            OGL_CHECK();
-            break;
-
-          case NVertexBuffer::VES_COLOR_RGBA:
-
-            glColorPointer(4, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
-            OGL_CHECK();
-            glEnableClientState(GL_COLOR_ARRAY);
-            OGL_CHECK();
-            break;
-      
-          case NVertexBuffer::VES_TEXTURE_UV:
-
-            // check if number of texture arrays is exactly the same as texture units in a current pass
-            // TAGE - glClientActiveTexture selects bind point for glTexCoordPointer!!!!!
-            if (textureArraysCount == textureCount)
-            {
-              if (glClientActiveTexture)
-              {
-                glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                OGL_CHECK();
-              }
-
-              glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
-              OGL_CHECK();
-              glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-              OGL_CHECK();
-
-              ++textureUnitsActivated;
-            }
-            // check if there is more texture arrays than texture units
-            else if (textureArraysCount > textureCount)
-            {
-              // check if still some texture unit is to be set
-              if (textureUnitsActivated < textureCount)
-              {
-                if (glClientActiveTexture)
-                {
-                  glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                  OGL_CHECK();
-                }
-
-                glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
-                OGL_CHECK();
-                glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-                OGL_CHECK();
-
-                ++textureUnitsActivated;
-              }
-            }
-            // check if there are more texture units than texture arrays
-            else if (textureArraysCount < textureCount)
-            {
-              // check if this is last texture array
-              if ((textureUnitsActivated + 1) == textureArraysCount)
-              {
-                // set current texture array to all remaining texture units
-                while (textureUnitsActivated != textureCount)
-                {
-                  if (glClientActiveTexture)
-                  {
-                    glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                    OGL_CHECK();
-                  }
-
-                  glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
-                  OGL_CHECK();
-                  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-                  OGL_CHECK();
-
-                  ++textureUnitsActivated;
-                }
-              }
-              else
-              {
-                // set current texture array to corresponding texture unit
-                if (glClientActiveTexture)
-                {
-                  glClientActiveTexture(GL_TEXTURE0 + textureUnitsActivated);
-                  OGL_CHECK();
-                }
-
-                glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
-                OGL_CHECK();
-                glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-                OGL_CHECK();
-
-                ++textureUnitsActivated;
-              }
-            }
-            break;
-                
-          default:
-            break;
-
-          //case VertexBuffer::ARRAY_TYPE_TANGENT:
-
-          //  // TANGENT is binded to GL_TEXTURE6
-          //  glClientActiveTexture( GL_TEXTURE6 );
-          //  glTexCoordPointer( 3, GL_FLOAT, cRenderOp.getVertexBuffer()->getVertexSize(), 
-          //                     static_cast<char*>( vertexData )+iter->uiOffset );
-          //  glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-          //  break;
-        }
-      }
-
-      // TAGE - might be necessary
-	    //if (multitexturing)
-	    //  glClientActiveTexture(GL_TEXTURE0);
-
-      // set model-view matrix
-      glLoadMatrixf(d_func()->m_viewMatrix.multiply(modelMatrix).data);
+      // render only if there is anything to render
+      glDrawElements(MapPrimitiveType(component->primitiveType()), indexBuffer->indexCount(), MapIndexSize(indexBuffer->size()), indexData);
       OGL_CHECK();
 
-      // check if INDICIES are to be used
-      if (0 < indexBuffer->indexCount())
-      {
-        // render only if there is anything to render
-        glDrawElements(MapPrimitiveType(component->primitiveType()), indexBuffer->indexCount(), MapIndexSize(indexBuffer->size()), indexData);
-        OGL_CHECK();
+      // update engine info
+      ENGINE_INFO(drawElementsCalls++);
+    }
+    else
+    {
+      // render only if there is anything to render
+      glDrawArrays(MapPrimitiveType(component->primitiveType()), 0, vertexBuffer->vertexCount());
+      OGL_CHECK();
 
-        // update engine info
-        ENGINE_INFO(drawElementsCalls++);
+      // update engine info
+      ENGINE_INFO(drawArraysCalls++);
+    }
+
+    // clean up
+    for (s32 i = m_textureCoordIndices.size() - 1; i >= 0; --i)
+    {
+      // disable texturing on server side
+      activateTextureUnit(i);
+      glDisable(GL_TEXTURE_2D);
+      OGL_CHECK();
+
+      // disable texturing data on client side
+      if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
+      {
+        glClientActiveTexture(GL_TEXTURE0 + i);
+        OGL_CHECK();
       }
-      else
+      glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+      OGL_CHECK();
+
+      // disable point sprites
+      if (EGEGraphics::RPT_POINTS == component->primitiveType())
       {
-        // render only if there is anything to render
-        glDrawArrays(MapPrimitiveType(component->primitiveType()), 0, vertexBuffer->vertexCount());
-        OGL_CHECK();
-
-        // update engine info
-        ENGINE_INFO(drawArraysCalls++);
-      }
-
-      // disable all actived texture units
-      for (DynamicArray<u32>::const_iterator itTextureUnit = m_activeTextureUnits.begin(); itTextureUnit != m_activeTextureUnits.end(); ++itTextureUnit)
-      {
-        // disable texturing on server side
-        activateTextureUnit(*itTextureUnit);
-        glDisable(GL_TEXTURE_2D);
-        OGL_CHECK();
-
-        // disable texturing data on client side
-        if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
+        if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
         {
-          glClientActiveTexture(GL_TEXTURE0 + *itTextureUnit);
+          glDisable(GL_POINT_SPRITE);
           OGL_CHECK();
         }
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-        OGL_CHECK();
-
-        // disable point sprites
-        if (EGEGraphics::RPT_POINTS == component->primitiveType())
-        {
-          if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
-          {
-            glDisable(GL_POINT_SPRITE);
-            OGL_CHECK();
-          }
-        }
       }
-      m_activeTextureUnits.clear();
-
-      // clean up
-      activateTextureUnit(0);
-      glDisableClientState(GL_VERTEX_ARRAY);
-      OGL_CHECK();
-      glDisableClientState(GL_NORMAL_ARRAY);
-      OGL_CHECK();
-      glDisableClientState(GL_COLOR_ARRAY);
-      OGL_CHECK();
-      glDisable(GL_BLEND);
-      OGL_CHECK();
     }
+    m_textureCoordIndices.clear();
   }
 
   // unbind vertex and index buffers
   unbindVertexBuffer(vertexBuffer);
   unbindIndexBuffer(indexBuffer);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::setBlendEnabled(bool set)
+{
+  if (set != m_blendEnabled)
+  {
+    if (set)
+    {
+      glEnable(GL_BLEND);
+    }
+    else
+    {
+      glDisable(GL_BLEND);
+    }
+
+    m_blendEnabled = set;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::setClientStateEnabled(u32 state, bool set)
+{
+  bool isSet = m_activeClientStates.contains(state);
+
+  if (set && ! isSet)
+  {
+    glEnableClientState(static_cast<GLenum>(state));
+    OGL_CHECK();
+    m_activeClientStates.push_back(state);
+  }
+  else if ( ! set && isSet)
+  {
+    glDisableClientState(static_cast<GLenum>(state));
+    OGL_CHECK();
+    m_activeClientStates.remove(state);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::applyVertexArrays(const VertexDeclaration& vertexDeclaration, void* vertexData)
+{
+  bool vertexPointerInUse = false;
+  bool normalPointerInUse = false;
+  bool colorPointerInUse  = false;
+
+  // go thru all arrays
+  const VertexElementArray& vertexElements = vertexDeclaration.vertexElements();
+  for (VertexElementArray::const_iterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
+  {
+    // set according to buffer type
+    switch (itElement->semantic())
+    {
+      case NVertexBuffer::VES_POSITION_XYZ:
+
+        glVertexPointer(3, GL_FLOAT, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
+        OGL_CHECK();
+        vertexPointerInUse = true;
+        break;
+
+      case NVertexBuffer::VES_POSITION_XY:
+
+        glVertexPointer(2, GL_FLOAT, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
+        OGL_CHECK();
+        vertexPointerInUse = true;
+        break;
+
+      case NVertexBuffer::VES_NORMAL:
+
+        glNormalPointer(GL_FLOAT, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
+        OGL_CHECK();
+        normalPointerInUse = true;
+        break;
+
+      case NVertexBuffer::VES_COLOR_RGBA:
+
+        glColorPointer(4, GL_FLOAT, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
+        OGL_CHECK();
+        colorPointerInUse = true;
+        break;
+
+      case NVertexBuffer::VES_TEXTURE_UV:
+
+        for (u32 i = 0; i < static_cast<u32>(m_textureCoordIndices.size()); ++i)
+        {
+          // set only texture units which are to use current texture coords array
+          if (m_textureCoordIndices[i] == itElement->index())
+          {
+            if (glClientActiveTexture)
+            {
+              glClientActiveTexture(GL_TEXTURE0 + i);
+              OGL_CHECK();
+            }
+
+            glTexCoordPointer(2, GL_FLOAT, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
+            OGL_CHECK();
+
+            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+            OGL_CHECK();
+          }
+        }
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  // enable/disable vertex pointers
+  setClientStateEnabled(GL_VERTEX_ARRAY, vertexPointerInUse);
+  setClientStateEnabled(GL_NORMAL_ARRAY, normalPointerInUse);
+  setClientStateEnabled(GL_COLOR_ARRAY, colorPointerInUse);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::setMatrixMode(s32 mode)
+{
+  if (mode != m_matrixMode)
+  {
+    glMatrixMode(mode);
+    OGL_CHECK();
+
+    m_matrixMode = mode;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

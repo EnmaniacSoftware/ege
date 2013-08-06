@@ -75,9 +75,9 @@ bool VertexDeclaration::addElement(NVertexBuffer::VertexElementSemantic semantic
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s32 VertexDeclaration::elementCount(NVertexBuffer::VertexElementSemantic semantic) const
+u32 VertexDeclaration::elementCount(NVertexBuffer::VertexElementSemantic semantic) const
 {
-  s32 count = 0;
+  u32 count = 0;
   for (VertexElementArray::const_iterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
   {
     if (semantic == iter->semantic())
@@ -171,6 +171,26 @@ NVertexBuffer::VertexElementSemantic VertexDeclaration::findPositionSemantic() c
   }
 
   return semantic;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+VertexElementArray VertexDeclaration::vertexElements(NVertexBuffer::VertexElementSemantic semantic) const
+{
+  VertexElementArray array;
+
+  // go thru all elements
+  for (VertexElementArray::const_iterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
+  {
+    const VertexElement& current = *iter;
+
+    // check if found
+    if (semantic == current.semantic())
+    {
+      // found
+      array << current;
+    }
+  }
+
+  return array;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

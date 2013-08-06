@@ -45,6 +45,12 @@ class RenderSystemPrivate : public IComponentRenderer
     void setViewport(const PViewport& viewport);
     /*! Clears given viewport. */
     void clearViewport(const PViewport& viewport);
+    /*! Enables/disables blending. */
+    void setBlendEnabled(bool set);
+    /*! Enables/disables given client state. */
+    void setClientStateEnabled(u32 state, bool set);
+    /*! Sets current matrix mode. */
+    void setMatrixMode(s32 mode);
     /*! Sends all geometry through the geometry pipeline to hardware. */
     void flush();
     /*! Activates given texture unit. */
@@ -56,8 +62,13 @@ class RenderSystemPrivate : public IComponentRenderer
      */
     void applyGeneralParams(const PRenderComponent& component);
     /*! Applies parameters for given pass. */
-    void applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass* pass);
-
+    void applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass& pass);
+    /*! Applies vertex arrays. 
+     *  @param  vertexDeclaration  Vertex buffer which arrays should be applied.
+     *  @param  vertexData
+     *  @note All arrays are processed except texture ones. These needs to be processed on per render pass basis.
+     */
+    void applyVertexArrays(const VertexDeclaration& vertexDeclaration, void* vertexData);
     /*! Binds given vertex buffer.
      *  @param buffer  Vertex buffer to bind.
      *  @return Returns base value pointing to begining of buffer data.
@@ -107,9 +118,14 @@ class RenderSystemPrivate : public IComponentRenderer
 
     /*! Texture unit currently active. */
     u32 m_activeTextureUnit;
-    /*! Pool of all currently active texture units. */
-    DynamicArray<u32> m_activeTextureUnits;
-  
+    /*! Blend enabled flag. */
+    bool m_blendEnabled;
+    /*! Current matrix mode. */
+    s32 m_matrixMode;
+    /*! Array of texture coord sets each unit uses. Counted from texture 0. */
+    DynamicArray<u32> m_textureCoordIndices;
+    /*! Active client states. */
+    DynamicArray<u32> m_activeClientStates;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

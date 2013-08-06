@@ -136,7 +136,7 @@ void BatchedRenderQueue::clear()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void BatchedRenderQueue::render(IComponentRenderer& renderer)
 {
-  if (NULL != m_renderData)
+  if ((NULL != m_renderData) && (NULL != m_renderData->material()) && (0 < m_renderData->vertexBuffer()->vertexCount()))
   {
     renderer.renderComponent(m_renderData);
   }

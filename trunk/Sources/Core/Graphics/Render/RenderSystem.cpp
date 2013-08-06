@@ -48,8 +48,7 @@ RenderSystem::RenderSystem(Application* app) : Object(app),
                                                m_textureMagFilter(EGETexture::BILINEAR),
                                                m_textureAddressingModeS(EGETexture::AM_CLAMP),
                                                m_textureAddressingModeT(EGETexture::AM_CLAMP),
-                                               m_nextRequestID(1),
-                                               m_blendEnabled(false)
+                                               m_nextRequestID(1)
 {
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -24,7 +24,7 @@ class VertexDeclaration
     /*! Adds given element to overall semantics. */
     bool addElement(NVertexBuffer::VertexElementSemantic semantic);
     /*! Returns number of elements of given type in semantics. */
-    s32 elementCount(NVertexBuffer::VertexElementSemantic semantic) const;
+    u32 elementCount(NVertexBuffer::VertexElementSemantic semantic) const;
     /*! Returns vertex size for current semantics (in bytes). */
     u32 vertexSize() const;
     /*! Clears vertex declaration. */
@@ -38,6 +38,8 @@ class VertexDeclaration
     const VertexElement* vertexElement(NVertexBuffer::VertexElementSemantic semantic, u32 index = 0) const;
     /*! Returns array of vertex elements. */
     const VertexElementArray& vertexElements() const;
+    /*! Returns array of vertex elements of a given semantic. */
+    VertexElementArray vertexElements(NVertexBuffer::VertexElementSemantic semantic) const;
 
     /*! Helper method returning position semantic. 
      *  @return Position semantic present. If none is defined, returns VES_NONE.
