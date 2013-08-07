@@ -171,7 +171,7 @@ RenderSystemPrivate::RenderSystemPrivate(RenderSystem* base) : m_d(base),
   
   TextureUnitState defaultUnitState;
   defaultUnitState.m_textureCoordIndex = 0;
-  for (s32 i = 0; i < Device::TextureUnitsCount(); ++i)
+  for (u32 i = 0; i < Device::TextureUnitsCount(); ++i)
   {
     m_textureUnitStates.push_back(defaultUnitState);
   }

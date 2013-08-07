@@ -272,6 +272,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\SingleThread\ImageLoaderST_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\IndexBufferTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\TextureUnitState.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.h" />
