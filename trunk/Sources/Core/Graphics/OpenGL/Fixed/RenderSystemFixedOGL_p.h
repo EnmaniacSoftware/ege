@@ -9,6 +9,7 @@
 #include "EGEDynamicArray.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Graphics/Render/Implementation/ComponentRenderer.h"
+#include "Core/Graphics/OpenGL/Fixed/TextureUnitState.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -47,14 +48,18 @@ class RenderSystemPrivate : public IComponentRenderer
     void clearViewport(const PViewport& viewport);
     /*! Enables/disables blending. */
     void setBlendEnabled(bool set);
+    /*! Enables/disables scissor testing. */
+    void setScissorTestEnabled(bool set);
     /*! Enables/disables given client state. */
     void setClientStateEnabled(u32 state, bool set);
     /*! Sets current matrix mode. */
     void setMatrixMode(s32 mode);
     /*! Sends all geometry through the geometry pipeline to hardware. */
     void flush();
-    /*! Activates given texture unit. */
+    /*! Activates given texture unit for server side. */
     void activateTextureUnit(u32 unit);
+    /*! Activates given texture unit for client side. */
+    void activateClientTextureUnit(u32 unit);
     /*! Binds texture to target. */
     void bindTexture(GLenum target, GLuint textureId);
     /*! Applies general parameters. 
@@ -116,14 +121,20 @@ class RenderSystemPrivate : public IComponentRenderer
 
   protected:
 
-    /*! Texture unit currently active. */
+    /*! Server side, currenty active texture unit. */
     u32 m_activeTextureUnit;
+    /*! Client side, currenty active texture unit. */
+    u32 m_activeClientTextureUnit;
     /*! Blend enabled flag. */
     bool m_blendEnabled;
+    /*! Scissor test enabled flag. */
+    bool m_scissorTestEnabled;
     /*! Current matrix mode. */
     s32 m_matrixMode;
-    /*! Array of texture coord sets each unit uses. Counted from texture 0. */
-    DynamicArray<u32> m_textureCoordIndices;
+    /*! Array of texture unit states. */
+    DynamicArray<TextureUnitState> m_textureUnitStates;
+    /*! */
+    u32 m_activeTextureUnitsCount;
     /*! Active client states. */
     DynamicArray<u32> m_activeClientStates;
 };

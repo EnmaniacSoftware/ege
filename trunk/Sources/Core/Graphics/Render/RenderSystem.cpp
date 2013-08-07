@@ -289,11 +289,11 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
       PRenderQueue queue;
 
       // batch only really small buffers
-//      if ((10 > component->vertexBuffer()->vertexCount()) && RenderQueue::IsSuitable(EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, component))
-//      {
-//        queue = RenderQueueFactory::Create(app(), EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, component->priority(), component->primitiveType());
-//      }
-//      else
+      if ((10 > component->vertexBuffer()->vertexCount()) && RenderQueue::IsSuitable(EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, component))
+      {
+        queue = RenderQueueFactory::Create(app(), EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, component->priority(), component->primitiveType());
+      }
+      else
       {
         queue = RenderQueueFactory::Create(app(), EGE_OBJECT_UID_SIMPLE_RENDER_QUEUE, component->priority(), component->primitiveType());
       }

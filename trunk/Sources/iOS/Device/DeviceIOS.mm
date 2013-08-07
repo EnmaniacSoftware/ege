@@ -249,6 +249,7 @@ String Device::GetUniqueId()
     
     // store
     UUIDString = [NSString stringWithFormat: @"%@", string];
+    CFRelease(string);
     [defaults setObject: UUIDString forKey: @"UUID"];
   }
   else

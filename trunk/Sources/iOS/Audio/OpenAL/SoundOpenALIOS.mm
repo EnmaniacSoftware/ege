@@ -84,7 +84,8 @@ bool SoundOpenALIOS::doPlay(ALuint channel)
         
           // create audio player
           m_audioPlayer = [[AVAudioPlayer alloc] initWithData: data error: &error];
-        
+          [data release];
+          
           // check if error
           if (nil != error)
           {

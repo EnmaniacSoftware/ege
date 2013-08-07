@@ -195,8 +195,8 @@ void AudioCodecOgg::uploadStereoChannels(const PDataBuffer& out, s32 outCount, s
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool AudioCodecOgg::reset()
 {
-  int error;
-  int streamDataUsed;
+  int error = VORBIS__no_error;
+  int streamDataUsed = 0;
 
   // close any opened stream
   // TAGE - perhaps there is a way to reset if it is too expensive to close/reopen

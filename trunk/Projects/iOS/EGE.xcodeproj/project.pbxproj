@@ -798,6 +798,7 @@
 		45DED89916F7847E00623923 /* SocialServicesGameCenterIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SocialServicesGameCenterIOS_p.mm; sourceTree = "<group>"; };
 		45EBD4D416FA625F002F583D /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		45EBD4D516FA625F002F583D /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		45EC5BFD17B2BFA70078F1B2 /* TextureUnitState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextureUnitState.h; sourceTree = "<group>"; };
 		45FC679916F7C6F200E9EDCF /* StringUtilsIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtilsIOS.cpp; sourceTree = "<group>"; };
 		45FE3C0217AD6785009A5841 /* RenderQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderQueue.cpp; sourceTree = "<group>"; };
 		45FE3C0317AD6785009A5841 /* RenderQueueFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderQueueFactory.cpp; sourceTree = "<group>"; };
@@ -1921,6 +1922,7 @@
 			children = (
 				4555B47E16F775AC00FDAFF3 /* RenderSystemFixedOGL_p.cpp */,
 				4555B47F16F775AC00FDAFF3 /* RenderSystemFixedOGL_p.h */,
+				45EC5BFD17B2BFA70078F1B2 /* TextureUnitState.h */,
 			);
 			path = Fixed;
 			sourceTree = "<group>";

@@ -156,13 +156,25 @@ static GLint MapTextureAddressingMode(EGETexture::AddressingMode mode)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderSystemPrivate::RenderSystemPrivate(RenderSystem* base) : m_d(base), 
-                                                               m_activeTextureUnit(0)
+                                                               m_activeTextureUnit(0),
+                                                               m_activeClientTextureUnit(0),
+                                                               m_activeTextureUnitsCount(0)
 {
   m_blendEnabled = (GL_TRUE == glIsEnabled(GL_BLEND));
   OGL_CHECK();
   
+  m_scissorTestEnabled = (GL_TRUE == glIsEnabled(GL_SCISSOR_TEST));
+  OGL_CHECK();
+  
   glGetIntegerv(GL_MATRIX_MODE, &m_matrixMode);
   OGL_CHECK();
+  
+  TextureUnitState defaultUnitState;
+  defaultUnitState.m_textureCoordIndex = 0;
+  for (s32 i = 0; i < Device::TextureUnitsCount(); ++i)
+  {
+    m_textureUnitStates.push_back(defaultUnitState);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderSystemPrivate::~RenderSystemPrivate()
@@ -278,7 +290,7 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
     EGE_ASSERT(EGE_OBJECT_UID_TEXTURE_2D != textureImage->uid());
 
     // set texture coord array index to be used by current texture unit
-    m_textureCoordIndices.push_back(Math::Min(i, textureCoordsCount));
+    m_textureUnitStates[i].m_textureCoordIndex = Math::Min(i, textureCoordsCount);
 
     // check if 2D texture
     //if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
@@ -380,6 +392,9 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
       }
     }
   }
+  
+  // disable rest texture units
+  m_activeTextureUnitsCount = pass.textureCount();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::activateTextureUnit(u32 unit)
@@ -400,6 +415,20 @@ void RenderSystemPrivate::activateTextureUnit(u32 unit)
         m_activeTextureUnit = unit;
       }
     }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::activateClientTextureUnit(u32 unit)
+{
+  if (unit != m_activeClientTextureUnit)
+  {
+    if (glClientActiveTexture)
+    {
+      glClientActiveTexture(GL_TEXTURE0 + unit);
+      OGL_CHECK();
+    }
+    
+    m_activeClientTextureUnit = unit;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -440,11 +469,11 @@ void RenderSystemPrivate::applyGeneralParams(const PRenderComponent& component)
   // apply scissor test
   if (component->clipRect().isNull())
   {
-    glDisable(GL_SCISSOR_TEST);
+    setScissorTestEnabled(false);
   }
   else
   {
-    glEnable(GL_SCISSOR_TEST);
+    setScissorTestEnabled(true);
 
     Rectf clipRect = component->clipRect();
     
@@ -941,7 +970,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
     }
 
     // clean up
-    for (s32 i = m_textureCoordIndices.size() - 1; i >= 0; --i)
+    for (s32 i = static_cast<s32>(m_textureUnitStates.size()) - 1; i >= 0; --i)
     {
       // disable texturing on server side
       activateTextureUnit(i);
@@ -949,11 +978,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
       OGL_CHECK();
 
       // disable texturing data on client side
-      if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
-      {
-        glClientActiveTexture(GL_TEXTURE0 + i);
-        OGL_CHECK();
-      }
+      activateClientTextureUnit(i);
       glDisableClientState(GL_TEXTURE_COORD_ARRAY);
       OGL_CHECK();
 
@@ -967,7 +992,6 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
         }
       }
     }
-    m_textureCoordIndices.clear();
   }
 
   // unbind vertex and index buffers
@@ -990,6 +1014,23 @@ void RenderSystemPrivate::setBlendEnabled(bool set)
 
     m_blendEnabled = set;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::setScissorTestEnabled(bool set)
+{
+  if (set != m_scissorTestEnabled)
+  {
+    if (set)
+    {
+      glEnable(GL_SCISSOR_TEST);
+    }
+    else
+    {
+      glDisable(GL_SCISSOR_TEST);
+    }
+    
+    m_scissorTestEnabled = set;
+  }  
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::setClientStateEnabled(u32 state, bool set)
@@ -1053,16 +1094,12 @@ void RenderSystemPrivate::applyVertexArrays(const VertexDeclaration& vertexDecla
 
       case NVertexBuffer::VES_TEXTURE_UV:
 
-        for (u32 i = 0; i < static_cast<u32>(m_textureCoordIndices.size()); ++i)
+        for (u32 i = 0; i < m_activeTextureUnitsCount; ++i)
         {
           // set only texture units which are to use current texture coords array
-          if (m_textureCoordIndices[i] == itElement->index())
+          if (m_textureUnitStates[i].m_textureCoordIndex == itElement->index())
           {
-            if (glClientActiveTexture)
-            {
-              glClientActiveTexture(GL_TEXTURE0 + i);
-              OGL_CHECK();
-            }
+            activateClientTextureUnit(i);
 
             glTexCoordPointer(2, GL_FLOAT, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
             OGL_CHECK();

@@ -146,8 +146,6 @@ EGEResult SocialServicesPrivate::saveAchievements(const AchievementDataList& ach
   // check if authenticated
   if (d_func()->isAuthenticated())
   {
-    result = EGE_SUCCESS;
-
     // append
     m_pendingAchievementSaveList << achievements;
 

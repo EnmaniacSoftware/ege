@@ -11,12 +11,12 @@ PhysicsJoint::PhysicsJoint(Application* app, PPhysicsComponent bodyA, PPhysicsCo
                                                                                                           m_bodyB(bodyB)
 {
   // associate joint with bodies
-  if (NULL == m_bodyA)
+  if (NULL != m_bodyA)
   {
     m_bodyA->m_joints.push_back(this);
   }
 
-  if (NULL == m_bodyB)
+  if (NULL != m_bodyB)
   {
     m_bodyB->m_joints.push_back(this);
   }
@@ -24,13 +24,13 @@ PhysicsJoint::PhysicsJoint(Application* app, PPhysicsComponent bodyA, PPhysicsCo
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsJoint::~PhysicsJoint()
 {
-  if (NULL == m_bodyA)
+  if (NULL != m_bodyA)
   {
     m_bodyA->m_joints.remove(this);
     m_bodyA = NULL;
   }
 
-  if (NULL == m_bodyB)
+  if (NULL != m_bodyB)
   {
     m_bodyB->m_joints.remove(this);
     m_bodyB = NULL;
