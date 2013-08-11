@@ -215,7 +215,8 @@ void MemoryManager::finalize()
     m_allocations.erase(m_allocations.begin());
 
     // go thru the rest and locate allocation at the same place
-    for (AllocationMap::const_iterator it = m_allocations.begin(); it != m_allocations.end(); )
+    // NOTE: do not use const_iterator due to STL implementation for Airplay
+    for (AllocationMap::iterator it = m_allocations.begin(); it != m_allocations.end(); )
     {
       const SAllocData& currentAllocData = it->second;
 
@@ -227,7 +228,7 @@ void MemoryManager::finalize()
         allocData.count++;
 
         // remove from pool
-        it = m_allocations.erase(it);
+        m_allocations.erase(it++);
       }
       else
       {

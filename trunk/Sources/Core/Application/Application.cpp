@@ -35,6 +35,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const char* KApplicationDebugName = "EGEApplication";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Application::Application() : IEventListener(),
                              m_p(NULL),
                              m_sceneManager(NULL), 
@@ -265,6 +267,7 @@ EGEResult Application::construct(const Dictionary& params)
     m_audioManager = ege_new AudioManagerOpenAL(this);
   #endif // EGE_PLATFORM_IOS
 #else
+  egeDebug(KApplicationDebugName) << "WOOOHOOOO!!!!";
   m_audioManager = ege_new AudioManagerAirplay(this);
 #endif // EGE_AUDIO_NULL
 

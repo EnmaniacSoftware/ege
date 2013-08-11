@@ -1,6 +1,6 @@
 #include "Core/Application/Application.h"
 #include "Airplay/Audio/AudioManagerAirplay.h"
-#include "Airplay/Audio/SoundOpenAirplay.h"
+#include "Airplay/Audio/SoundAirplay.h"
 #include "Core/Audio/Sound.h"
 #include "EGEEvent.h"
 #include "EGEDebug.h"
@@ -12,6 +12,8 @@
 
 EGE_NAMESPACE
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KAudioManagerAirplay = "EGEAudioManagerAirplay";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static s16 l_emptySoundSampleData[1];
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -64,10 +66,12 @@ EGEResult AudioManagerAirplay::construct()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioManagerAirplay::update(const Time& time)
 {
+  egeDebug(KAudioManagerAirplay) << "Updating" << (s32) m_sounds.size() << "sounds.";
+
   // go thru all sounds
   for (SoundList::iterator it = m_sounds.begin(); it != m_sounds.end();)
   {
-    SoundOpenAirplay* sound = ege_cast<SoundOpenAirplay*>(*it);
+    SoundAirplay* sound = ege_cast<SoundAirplay*>(*it);
 
     // update sound
     sound->update(time);
@@ -115,7 +119,7 @@ bool AudioManagerAirplay::isEnabled() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PSound AudioManagerAirplay::createSound(const String& name, PDataBuffer& data) const
 {
-  SoundOpenAirplay* object = ege_new SoundOpenAirplay(const_cast<AudioManagerAirplay*>(this), name, data);
+  SoundAirplay* object = ege_new SoundAirplay(const_cast<AudioManagerAirplay*>(this), name, data);
   if ((NULL == object) || (EGE_SUCCESS != object->construct()))
   {
     // error!
@@ -143,5 +147,26 @@ void AudioManagerAirplay::onEventRecieved(PEvent event)
       }
       break;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult AudioManagerAirplay::requestPlay(PSound sound)
+{
+  // add to pool
+  m_sounds.push_back(sound);
+
+  return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void AudioManagerAirplay::requestStop(PSound sound)
+{
+  // remove from pool
+  m_sounds.remove(sound);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void AudioManagerAirplay::requestPause(PSound sound)
+{
+  EGE_UNUSED(sound);
+
+  // nothing to do
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

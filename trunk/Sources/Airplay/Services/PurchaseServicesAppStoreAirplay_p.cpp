@@ -2,6 +2,7 @@
 #include "Airplay/Services/PurchaseServicesAppStoreAirplay_p.h"
 #include <EGEMath.h>
 #include <EGEMemory.h>
+#include <EGEPurchaseServices.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
@@ -59,7 +60,7 @@ void PurchaseServicesPrivate::TransactionUpdateCallback(s3ePaymentTransaction* t
 
   EGEResult result = EGE_ERROR;
 
-  egeDebug() << "TRANSACTION UPDATE" << transaction->m_TransactionStatus;
+  egeDebug(KPurchaseServicesDebugName) << "TRANSACTION UPDATE" << transaction->m_TransactionStatus;
 
   // process accroding to status
   switch (transaction->m_TransactionStatus)
@@ -111,7 +112,7 @@ void PurchaseServicesPrivate::TransactionUpdateCallback(s3ePaymentTransaction* t
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult PurchaseServicesPrivate::purchase(const String& product)
 {
-  egeDebug() << "Initiating purchase of" << product;
+  egeDebug(KPurchaseServicesDebugName) << "Initiating purchase of" << product;
 
   s3ePaymentRequest paymentRequest;
   
@@ -123,7 +124,7 @@ EGEResult PurchaseServicesPrivate::purchase(const String& product)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult PurchaseServicesPrivate::restoreAll()
 {
-  egeDebug() << "Initiating purchase restoration";
+  egeDebug(KPurchaseServicesDebugName) << "Initiating purchase restoration";
 
   return (S3E_RESULT_SUCCESS == s3eIOSAppStoreBillingRestoreCompletedTransactions()) ?  EGE_SUCCESS : EGE_ERROR;
 }

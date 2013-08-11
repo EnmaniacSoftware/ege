@@ -1,4 +1,4 @@
-#include "Core/Application/Application.h"
+#include <EGEApplication.h>
 #include "Airplay/Application/ApplicationAirplay_p.h"
 #include <EGEEvent.h>
 #include <EGETimer.h>
@@ -19,12 +19,12 @@ ApplicationPrivate::ApplicationPrivate(Application* base) : m_d(base)
   // register for pause/resume notifications
   if (S3E_RESULT_SUCCESS != s3eDeviceRegister(S3E_DEVICE_PAUSE, ApplicationPrivate::PauseCB, this))
   {
-    egeWarning() << "Could not install PAUSE callback!";
+    egeWarning(KApplicationDebugName) << "Could not install PAUSE callback!";
   }
 
   if (S3E_RESULT_SUCCESS != s3eDeviceRegister(S3E_DEVICE_UNPAUSE, ApplicationPrivate::ResumeCB, this))
   {
-    egeWarning() << "Could not install RESUME callback!";
+    egeWarning(KApplicationDebugName) << "Could not install RESUME callback!";
   }
 }
 //------------------------------------------------------------------------  --------------------------------------------------------------------------------------

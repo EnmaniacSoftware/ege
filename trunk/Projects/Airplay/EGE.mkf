@@ -24,6 +24,7 @@ files
   EGEAngle.h
   EGEAnimation.h
   EGEApplication.h
+  EGEAtomic.h
   EGEAudio.h
   EGEByteOrder.h
   EGECipher.h
@@ -69,6 +70,7 @@ files
   EGERect.h
   EGERenderComponent.h
   EGERenderer.h
+  EGERenderQueues.h
   EGERenderSystem.h
   EGEResources.h
   EGEScene.h
@@ -140,7 +142,6 @@ files
   SoundEffectFadeIn.h
   SoundEffectFadeOut.cpp
   SoundEffectFadeOut.h
-  wsfir.h
 
 	["Core/Audio/Null"]
 	(../../Sources/Core/Audio/NUll)
@@ -288,7 +289,10 @@ files
   TextureImage.h
 	VertexBuffer.cpp
 	VertexBuffer.h
-	VertexBufferTypes.h
+	VertexDeclaration.cpp
+	VertexDeclaration.h
+	VertexElement.cpp
+	VertexElement.h
   Viewport.cpp
 	Viewport.h
 
@@ -356,17 +360,30 @@ files
 
 	["Core/Graphics/Render"]
   (../../Sources/Core/Graphics/Render)
-	Renderer.h
   RenderPass.cpp
   RenderPass.h
-  RenderQueue.cpp
-  RenderQueue.h
   RenderSystem.cpp
   RenderSystem.h
 	RenderTarget.cpp
 	RenderTarget.h
 	RenderWindow.cpp
 	RenderWindow.h
+
+	["Core/Graphics/Render/Implementation"]
+  (../../Sources/Core/Graphics/Render/Implementation)
+	BatchedRenderQueue.cpp
+  BatchedRenderQueue.h
+  ComponentRenderer.h
+  RenderQueue.cpp
+  RenderQueueFactory.cpp
+	SimpleRenderQueue.cpp
+  SimpleRenderQueue.h
+
+	["Core/Graphics/Render/Interface"]
+  (../../Sources/Core/Graphics/Render/Interface)
+	Renderer.h
+  RenderQueue.h
+  RenderQueueFactory.h
 
 	["Core/Graphics/SpriteAnimation"]
  	(../../Sources/Core/Graphics/SpriteAnimation)
@@ -681,12 +698,9 @@ if {{defined EGE_RENDERING_OPENGL_FIXED}}
   {
 	  ["Core/Graphics/OpenGL/Fixed"]
     ("../../Sources/Core/Graphics/OpenGL/Fixed")
-#  ProgramOGLES1_p.cpp
-#  ProgramOGLES1_p.h
 	  RenderSystemFixedOGL_p.cpp
 	  RenderSystemFixedOGL_p.h
-#  ShaderOGLES1_p.cpp
-#  ShaderOGLES1_p.h
+    TextureUnitState.h
   }
 }
 

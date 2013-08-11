@@ -78,7 +78,7 @@ EGEDevice::Device Device::GetDevice()
 
   EGEDevice::Device deviceId = EGEDevice::DEVICE_GENERIC;
 
-  egeDebug() << "Device ID:" << deviceName << s3eDeviceGetInt(S3E_DEVICE_OS);
+  egeDebug(KDeviceDebugName) << "Device ID:" << deviceName << s3eDeviceGetInt(S3E_DEVICE_OS);
 
   // get OS ID
   EGEDevice::OS osId = Device::GetOS();
@@ -99,7 +99,8 @@ EGEDevice::Device Device::GetDevice()
 
     default:
 
-      egeWarning() << "Unknown OS" << osId;
+      egeWarning(KDeviceDebugName) << "Unknown OS" << osId;
+      break;
   }
 
   return deviceId;

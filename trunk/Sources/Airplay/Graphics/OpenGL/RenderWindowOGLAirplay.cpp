@@ -29,7 +29,7 @@ EGEResult RenderWindowOGLAirplay::construct(const Dictionary& params)
   if (S3E_RESULT_SUCCESS != s3eSurfaceRegister(S3E_SURFACE_SCREENSIZE, RenderWindowOGLAirplay::OrientationChangeCB, this))
   {
     // error!
-    egeWarning() << "Count not register surface orientation change callback.";
+    egeWarning(KOpenGLDebugName) << "Count not register surface orientation change callback.";
   }
 
   // decompose param list
@@ -74,7 +74,7 @@ EGEResult RenderWindowOGLAirplay::construct(const Dictionary& params)
 
     default:
 
-      egeWarning() << "Unknown blit direction!";
+      egeWarning(KOpenGLDebugName) << "Unknown blit direction!";
       break;
   }
 
@@ -258,7 +258,7 @@ int32 RenderWindowOGLAirplay::OrientationChangeCB(void* systemData, void* userDa
 
     default:
 
-      egeWarning() << "Unknown blit direction!";
+      egeWarning(KOpenGLDebugName) << "Unknown blit direction!";
       break;
   }
 
@@ -278,7 +278,7 @@ void RenderWindowOGLAirplay::detectCapabilities()
 
   for (StringArray::const_iterator it = extensionArray.begin(); it != extensionArray.end(); ++it)
   {
-    egeDebug() << "Available OGL extension:" << *it;
+    egeDebug(KOpenGLDebugName) << "Available OGL extension:" << *it;
   }
 
 	GLint value;

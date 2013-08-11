@@ -1,5 +1,6 @@
 #include "Core/Services/SocialServices.h"
 #include "Airplay/Services/SocialServicesGameCenterAirplay_p.h"
+#include <EGESocialServices.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE_BEGIN
@@ -65,7 +66,7 @@ void SocialServicesPrivate::AuthenticationCallback(s3eIOSGameCenterError* error,
     case S3E_IOSGAMECENTER_ERR_UNSUPPORTED: result = EGE_ERROR_NOT_SUPPORTED; break;
   }
 
-  egeWarning() << EGE_FUNC_INFO << *error;
+  egeWarning(KSocialServicesDebugName) << EGE_FUNC_INFO << *error;
 
   // store flag
   l_instance->d_func()->m_authenticated = (EGE_SUCCESS == result);
@@ -125,7 +126,7 @@ EGEResult SocialServicesPrivate::saveAchievements(const AchievementDataList& ach
     return EGE_ERROR_NOT_SUPPORTED;
   }
 
-  egeDebug() << "Adding" << achievements.size() << "achievements for submission";
+  egeDebug(KSocialServicesDebugName) << "Adding" << achievements.size() << "achievements for submission";
 
   // append
   m_pendingAchievementSaveList << achievements;
@@ -139,7 +140,7 @@ EGEResult SocialServicesPrivate::saveNextAchievement()
   AchievementData achievementData = m_pendingAchievementSaveList.front();
   m_pendingAchievementSaveList.pop_front();
 
-  egeDebug() << "Submitting achievement" << achievementData.name << "completion" << achievementData.percentageComplete;
+  egeDebug(KSocialServicesDebugName) << "Submitting achievement" << achievementData.name << "completion" << achievementData.percentageComplete;
 
   // submit achievement
   s3eResult result = s3eIOSGameCenterReportAchievement(achievementData.name.toAscii(), achievementData.percentageComplete, AchievementSaveCallback);
