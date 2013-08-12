@@ -7,7 +7,6 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(RenderPass)
 EGE_DEFINE_DELETE_OPERATORS(RenderPass)
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderPass::RenderPass(Application* app) : Object(app), 
                                            m_diffuseColor(Color::WHITE), 
@@ -173,8 +172,10 @@ bool RenderPass::operator == (const RenderPass& other) const
 {
   bool result = false;
 
-  // check if same blending factors, number of textures
-  if ((m_srcBlendFactor == other.m_srcBlendFactor) && (m_dstBlendFactor == other.m_dstBlendFactor) && (m_textures.size() == other.m_textures.size()))
+  // check if same blending factors, number of textures, same colors
+  if ((m_srcBlendFactor == other.m_srcBlendFactor) && (m_dstBlendFactor == other.m_dstBlendFactor) && (m_textures.size() == other.m_textures.size()) &&
+      (m_ambientColor == other.m_ambientColor) && (m_diffuseColor == other.m_diffuseColor) && (m_diffuseColorTransform == other.m_diffuseColorTransform) &&
+      (m_emissionColor == other.m_emissionColor) && (m_shininess == other.m_shininess))
   {
     result = true;
 

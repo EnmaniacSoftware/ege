@@ -15,6 +15,13 @@ class ColorTransform
     ColorTransform(const Color& addition, const Color& multiplication);
    ~ColorTransform();
 
+  public:
+
+    bool operator == (const ColorTransform& other) const;
+    bool operator != (const ColorTransform& other) const;
+
+  public:
+
     /*! Sets addition color transformation. 
      *  @param color Color to add to base color. 
      */

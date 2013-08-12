@@ -30,5 +30,15 @@ Color ColorTransform::transform(const Color& color) const
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ColorTransform::operator == (const ColorTransform& other) const
+{
+  return (m_additionComponent == other.m_additionComponent) && (m_multiplicationComponent == other.m_multiplicationComponent);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ColorTransform::operator != (const ColorTransform& other) const
+{
+  return ! (*this == other);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
