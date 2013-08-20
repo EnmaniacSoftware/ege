@@ -184,6 +184,9 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
   if (NULL != eventManager)
   {
     eventManager->send(EGE_EVENT_ID_CORE_APP_PAUSE);
+    
+    // disable rendering
+    egeApplication->graphics()->setRenderingEnabled(false);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -209,6 +212,9 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
   if (NULL != eventManager)
   {
     eventManager->send(EGE_EVENT_ID_CORE_APP_RESUME);
+
+    // enable rendering
+    egeApplication->graphics()->setRenderingEnabled(true);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
