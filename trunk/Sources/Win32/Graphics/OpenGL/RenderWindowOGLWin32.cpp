@@ -153,7 +153,15 @@ EGEResult RenderWindowOGLWin32::construct(const Dictionary& params)
     return EGE_ERROR;
   }
 
-#if EGE_RENDERING_OPENGL_3
+#if EGE_RENDERING_OPENGL_FIXED
+  // requesting 1.5 context via extension
+  int attributes[] = 
+  {  
+    WGL_CONTEXT_MAJOR_VERSION_ARB, 1,
+    WGL_CONTEXT_MINOR_VERSION_ARB, 5,
+    0  
+  };  
+#else
   // requesting 3.x+ context via extension
   int attributes[] = 
   {  
@@ -162,6 +170,7 @@ EGEResult RenderWindowOGLWin32::construct(const Dictionary& params)
     WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
     0  
   };  
+#endif // EGE_RENDERING_OPENGL_FIXED
 
   // retrieve required wiggle function pointer
   wglCreateContextAttribs = reinterpret_cast<PFNWGLCREATECONTEXTATTRIBSARBPROC>(wglGetProcAddress("wglCreateContextAttribsARB"));
@@ -195,9 +204,6 @@ EGEResult RenderWindowOGLWin32::construct(const Dictionary& params)
     destroy();
     return EGE_ERROR;
   }
-#else
-  m_hRC = hRC;
-#endif // EGE_RENDERING_OPENGL_3
 
   // detect capabilities
   detectCapabilities();
@@ -526,9 +532,31 @@ bool RenderWindowOGLWin32::requiresTextureFlipping() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderWindowOGLWin32::detectCapabilities()
 {
+  StringArray extensionArray;
+
   // get list of all extensions
   String extensionString(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
-  StringArray extensionArray = extensionString.split(" ");
+  if ( ! extensionString.empty())
+  {
+    extensionArray = extensionString.split(" ");
+  }
+  else
+  {
+    // determine if glGetStringi is available
+    glGetStringi = reinterpret_cast<PFNGLGETSTRINGIPROC>(wglGetProcAddress("glGetStringi"));
+    if (NULL != glGetStringi)
+    {
+      // get number of extensions
+      GLint extensionsCount;
+      glGetIntegerv(GL_NUM_EXTENSIONS, &extensionsCount);
+
+      // process extensions
+      for (GLint i = 0; i < extensionsCount; ++i)
+      {
+        extensionArray.push_back(reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i)));
+      }
+    }
+  }
 
   for (StringArray::const_iterator it = extensionArray.begin(); it != extensionArray.end(); ++it)
   {
@@ -646,25 +674,30 @@ void RenderWindowOGLWin32::detectCapabilities()
   // check shader objects support
   if (extensionArray.contains("GL_ARB_shader_objects"))
   {
-    glCreateShaderObject  = reinterpret_cast<PFNGLCREATESHADEROBJECTARBPROC>(wglGetProcAddress("glCreateShaderObject"));
-    glShaderSource        = reinterpret_cast<PFNGLSHADERSOURCEARBPROC>(wglGetProcAddress("glShaderSource"));
-    glCompileShader       = reinterpret_cast<PFNGLCOMPILESHADERARBPROC>(wglGetProcAddress("glCompileShader"));
-    glCreateProgramObject = reinterpret_cast<PFNGLCREATEPROGRAMOBJECTARBPROC>(wglGetProcAddress("glCreateProgramObject"));
-    glAttachObject        = reinterpret_cast<PFNGLATTACHOBJECTARBPROC>(wglGetProcAddress("glAttachObject"));
-    glLinkProgram         = reinterpret_cast<PFNGLLINKPROGRAMARBPROC>(wglGetProcAddress("glLinkProgram"));
-    glUseProgramObject    = reinterpret_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(wglGetProcAddress("glUseProgramObject"));
-    glGetUniformLocation  = reinterpret_cast<PFNGLGETUNIFORMLOCATIONARBPROC>(wglGetProcAddress("glGetUniformLocation"));
-    glUniform1f           = reinterpret_cast<PFNGLUNIFORM1FARBPROC>(wglGetProcAddress("glUniform1f"));
-    glUniform2f           = reinterpret_cast<PFNGLUNIFORM2FARBPROC>(wglGetProcAddress("glUniform2f"));
-    glUniform3f           = reinterpret_cast<PFNGLUNIFORM3FARBPROC>(wglGetProcAddress("glUniform3f"));
-    glUniform4f           = reinterpret_cast<PFNGLUNIFORM4FARBPROC>(wglGetProcAddress("glUniform4f"));
-    glUniform1i           = reinterpret_cast<PFNGLUNIFORM1IARBPROC>(wglGetProcAddress("glUniform1i"));
-    glUniform2i           = reinterpret_cast<PFNGLUNIFORM2IARBPROC>(wglGetProcAddress("glUniform2i"));
-    glUniform3i           = reinterpret_cast<PFNGLUNIFORM3IARBPROC>(wglGetProcAddress("glUniform3i"));
-    glUniform4i           = reinterpret_cast<PFNGLUNIFORM4IARBPROC>(wglGetProcAddress("glUniform4i"));
-    glUniformMatrix2fv    = reinterpret_cast<PFNGLUNIFORMMATRIX2FVARBPROC>(wglGetProcAddress("glUniformMatrix2fvARB"));
-    glUniformMatrix3fv    = reinterpret_cast<PFNGLUNIFORMMATRIX3FVARBPROC>(wglGetProcAddress("glUniformMatrix3fvARB"));
-    glUniformMatrix4fv    = reinterpret_cast<PFNGLUNIFORMMATRIX4FVARBPROC>(wglGetProcAddress("glUniformMatrix4fvARB"));
+    glCreateShaderObject   = reinterpret_cast<PFNGLCREATESHADEROBJECTARBPROC>(wglGetProcAddress("glCreateShaderObjectARB"));
+    glDeleteObject         = reinterpret_cast<PFNGLDELETEOBJECTARBPROC>(wglGetProcAddress("glDeleteObjectARB"));
+    glDetachObject         = reinterpret_cast<PFNGLDETACHOBJECTARBPROC>(wglGetProcAddress("glDetachObjectARB"));
+    glShaderSource         = reinterpret_cast<PFNGLSHADERSOURCEARBPROC>(wglGetProcAddress("glShaderSource"));
+    glCompileShader        = reinterpret_cast<PFNGLCOMPILESHADERARBPROC>(wglGetProcAddress("glCompileShader"));
+    glCreateProgramObject  = reinterpret_cast<PFNGLCREATEPROGRAMOBJECTARBPROC>(wglGetProcAddress("glCreateProgramObjectARB"));
+    glAttachObject         = reinterpret_cast<PFNGLATTACHOBJECTARBPROC>(wglGetProcAddress("glAttachObjectARB"));
+    glLinkProgram          = reinterpret_cast<PFNGLLINKPROGRAMARBPROC>(wglGetProcAddress("glLinkProgram"));
+    glUseProgramObject     = reinterpret_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(wglGetProcAddress("glUseProgramObjectARB"));
+    glGetUniformLocation   = reinterpret_cast<PFNGLGETUNIFORMLOCATIONARBPROC>(wglGetProcAddress("glGetUniformLocation"));
+    glGetActiveUniform     = reinterpret_cast<PFNGLGETACTIVEUNIFORMPROC>(wglGetProcAddress("glGetActiveUniform"));
+    glUniform1f            = reinterpret_cast<PFNGLUNIFORM1FARBPROC>(wglGetProcAddress("glUniform1f"));
+    glUniform2f            = reinterpret_cast<PFNGLUNIFORM2FARBPROC>(wglGetProcAddress("glUniform2f"));
+    glUniform3f            = reinterpret_cast<PFNGLUNIFORM3FARBPROC>(wglGetProcAddress("glUniform3f"));
+    glUniform4f            = reinterpret_cast<PFNGLUNIFORM4FARBPROC>(wglGetProcAddress("glUniform4f"));
+    glUniform1i            = reinterpret_cast<PFNGLUNIFORM1IARBPROC>(wglGetProcAddress("glUniform1i"));
+    glUniform2i            = reinterpret_cast<PFNGLUNIFORM2IARBPROC>(wglGetProcAddress("glUniform2i"));
+    glUniform3i            = reinterpret_cast<PFNGLUNIFORM3IARBPROC>(wglGetProcAddress("glUniform3i"));
+    glUniform4i            = reinterpret_cast<PFNGLUNIFORM4IARBPROC>(wglGetProcAddress("glUniform4i"));
+    glUniformMatrix2fv     = reinterpret_cast<PFNGLUNIFORMMATRIX2FVARBPROC>(wglGetProcAddress("glUniformMatrix2fvARB"));
+    glUniformMatrix3fv     = reinterpret_cast<PFNGLUNIFORMMATRIX3FVARBPROC>(wglGetProcAddress("glUniformMatrix3fvARB"));
+    glUniformMatrix4fv     = reinterpret_cast<PFNGLUNIFORMMATRIX4FVARBPROC>(wglGetProcAddress("glUniformMatrix4fvARB"));
+    glGetObjectParameterfv = reinterpret_cast<PFNGLGETOBJECTPARAMETERFVARBPROC>(wglGetProcAddress("glGetObjectParameterfvARB"));
+    glGetObjectParameteriv = reinterpret_cast<PFNGLGETOBJECTPARAMETERIVARBPROC>(wglGetProcAddress("glGetObjectParameterivARB"));
   }
 
   // check vertex shader support

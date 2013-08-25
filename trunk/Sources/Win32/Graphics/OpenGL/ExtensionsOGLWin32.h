@@ -168,6 +168,8 @@ extern PFNGLGETOBJECTPARAMETERFVARBPROC glGetObjectParameterfv;
 extern PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameteriv;
 
 // ARB_vertex_shader
+#define GL_VERTEX_SHADER 0x8B31
+
 typedef void (GL_APIENTRYP PFNGLDISABLEVERTEXATTRIBARRAYPROC) (GLuint index);
 typedef void (GL_APIENTRYP PFNGLENABLEVERTEXATTRIBARRAYPROC) (GLuint index);
 typedef GLint (GL_APIENTRYP PFNGLGETATTRIBLOCATIONPROC) (GLuint program, const GLchar *name);
@@ -181,9 +183,10 @@ extern PFNGLVERTEXATTRIBPOINTERARBPROC glVertexAttribPointer;
 // ARB_fragment_shader
 
 // ARB_vertex_array_object
-#define GL_VERTEX_ARRAY_BINDING     0x85B5
-#define GL_WRITE_ONLY               0x88B9
-#define GL_ELEMENT_ARRAY_BUFFER_ARB 0x8893
+#define GL_VERTEX_ARRAY_BINDING 0x85B5
+#define GL_WRITE_ONLY           0x88B9
+#define GL_ELEMENT_ARRAY_BUFFER 0x8893
+#define GL_FRAGMENT_SHADER      0x8B30
 
 typedef void (GL_APIENTRYP PFNGLBINDVERTEXARRAYARBPROC) (GLuint array);
 typedef void (GL_APIENTRYP PFNGLDELETEVERTEXARRAYSARBPROC) (GLsizei n, const GLuint *arrays);

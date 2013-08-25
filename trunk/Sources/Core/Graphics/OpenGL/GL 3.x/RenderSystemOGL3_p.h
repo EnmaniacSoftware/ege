@@ -1,13 +1,14 @@
 #ifndef EGE_CORE_GRAPHICS_OPENGL3X_RENDERSYSTEM_PRIVATE_H
 #define EGE_CORE_GRAPHICS_OPENGL3X_RENDERSYSTEM_PRIVATE_H
 
-#if EGE_RENDERING_OPENGL_3
+/*! This class is a base class for private implementations of OpenGL(ES) rendering systems based on programmable pipeline architecture.
+ */
 
-#include <EGE.h>
-#include <EGEOpenGL.h>
-#include <EGEDynamicArray.h>
+#include "EGE.h"
+#include "EGEOpenGL.h"
+#include "EGEDynamicArray.h"
 #include "Core/Graphics/Render/RenderSystem.h"
-#include "Core/Components/Render/RenderComponent.h"
+#include "Core/Graphics/Render/Implementation/ComponentRenderer.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -18,45 +19,60 @@ EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
 EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
 EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
 EGE_DECLARE_SMART_CLASS(Shader, PShader)
+EGE_DECLARE_SMART_CLASS(Program, PProgram)
+EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RenderSystemPrivate
+class RenderSystemPrivate : public IComponentRenderer
 {
   public:
 
     RenderSystemPrivate(RenderSystem* base);
-   ~RenderSystemPrivate();
+    virtual ~RenderSystemPrivate();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(RenderSystem)
 
+  private:
+
+    /*! @see IComponentRenderer::renderComponent. */
+    void renderComponent(const PRenderComponent& component, const Matrix4f& modelMatrix) override;
+
+  protected:
+
     /*! Sets given viewport. */
     void setViewport(const PViewport& viewport);
     /*! Clears given viewport. */
     void clearViewport(const PViewport& viewport);
+    /*! Enables/disables blending. */
+    void setBlendEnabled(bool set);
+    /*! Enables/disables scissor testing. */
+    void setScissorTestEnabled(bool set);
+    /*! Enables/disables given client state. */
+    void setClientStateEnabled(u32 state, bool set);
+    /*! Sets current matrix mode. */
+    void setMatrixMode(s32 mode);
     /*! Sends all geometry through the geometry pipeline to hardware. */
     void flush();
-
-  private:
-
-    /*! Detects rendering capabilities. */
-    void detectCapabilities();
-    /*! Activates given texture unit. */
+    /*! Activates given texture unit for server side. */
     void activateTextureUnit(u32 unit);
-    /*! Checks if given extension is supported. */
-    bool isExtensionSupported(const char* extension) const;
+    /*! Activates given texture unit for client side. */
+    void activateClientTextureUnit(u32 unit);
     /*! Binds texture to target. */
     void bindTexture(GLenum target, GLuint textureId);
-    /*! Sets render target. */
-    void setRenderTarget(const PRenderTarget& renderTarget);
     /*! Applies general parameters. 
      *  @note General parameters are the ones that require only one setup before component is rendered. 
      */
     void applyGeneralParams(const PRenderComponent& component);
     /*! Applies parameters for given pass. */
-    void applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass* pass);
-
+    void applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass& pass);
+    /*! Applies vertex arrays. 
+     *  @param  vertexDeclaration  Vertex buffer which arrays should be applied.
+     *  @param  vertexData
+     *  @note All arrays are processed except texture ones. These needs to be processed on per render pass basis.
+     */
+    void applyVertexArrays(const VertexDeclaration& vertexDeclaration, void* vertexData);
     /*! Binds given vertex buffer.
      *  @param buffer  Vertex buffer to bind.
      *  @return Returns base value pointing to begining of buffer data.
@@ -102,19 +118,25 @@ class RenderSystemPrivate
     /*! @see RenderSystem::destroyProgram. */
     void destroyProgram(PProgram program);
 
-  private:
+  protected:
 
-    /*! Texture unit currently active. */
+    /*! Server side, currenty active texture unit. */
     u32 m_activeTextureUnit;
-    /*! Pool of all currently active texture units. */
-    DynamicArray<u32> m_activeTextureUnits;
-    /*! Array of all extensions. */
-    StringArray m_extensionArray;
+    /*! Client side, currenty active texture unit. */
+    u32 m_activeClientTextureUnit;
+    /*! Blend enabled flag. */
+    bool m_blendEnabled;
+    /*! Scissor test enabled flag. */
+    bool m_scissorTestEnabled;
+    /*! Current matrix mode. */
+    s32 m_matrixMode;
+    /*! */
+    u32 m_activeTextureUnitsCount;
+    /*! Active client states. */
+    DynamicArray<u32> m_activeClientStates;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
-
-#endif // EGE_RENDERING_OPENGL_3
 
 #endif // EGE_CORE_GRAPHICS_OPENGL3X_RENDERSYSTEM_PRIVATE_H

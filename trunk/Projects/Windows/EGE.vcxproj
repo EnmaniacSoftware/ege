@@ -85,8 +85,15 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\IndexBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Material.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - GL3x MT|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - GL3x MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - OGL FPL MT|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - OGL FPL ST|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - OGL FPL MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ProgramOGL.cpp" />
@@ -271,9 +278,19 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\SingleThread\ImageLoaderST_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\IndexBufferTypes.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\TextureUnitState.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - GL3x MT|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - GL3x MT|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\TextureUnitState.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - GL3x MT|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - GL3x MT|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - OGL FPL MT|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - OGL FPL ST|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - OGL FPL MT|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ProgramOGL.h" />
@@ -679,7 +696,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_3;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_DEBUG;EGE_FEATURE_MEMORY_DEBUG;EGE_FEATURE_OPENGL_DEBUG;EGE_FEATURE_ENGINE_INFO;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_3;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_OPENGL_DEBUG;EGE_FEATURE_ENGINE_INFO;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;EGE_SOCIAL_SERVICES_NULL;EGE_PURCHASE_SERVICES_NULL;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>

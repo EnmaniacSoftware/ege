@@ -17,6 +17,8 @@
 
 #if EGE_RENDERING_OPENGL_FIXED
   #include "Core/Graphics/OpenGL/Fixed/RenderSystemFixedOGL_p.h"
+#else
+  #include "Core/Graphics/OpenGL/GL 3.x/RenderSystemOGL3_p.h"
 #endif // EGE_RENDERING_OPENGL_FIXED
 
 EGE_NAMESPACE_BEGIN
