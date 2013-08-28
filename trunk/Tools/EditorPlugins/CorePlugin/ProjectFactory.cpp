@@ -78,7 +78,7 @@ QModelIndex ProjectFactory::parent(const QModelIndex& index) const
 /*! QAbstractItemModel override. Returns the index of the item in the model specified by the given row, column and parent index. */
 QModelIndex ProjectFactory::index(int row, int column, const QModelIndex& parent) const
 {
-  return createIndex(row, column, NULL);
+  return createIndex(row, column);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! QAbstractItemModel override. Returns the data stored under the given role for the item referred to by the index. */

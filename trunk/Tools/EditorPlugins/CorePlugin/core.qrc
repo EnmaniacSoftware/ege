@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="configuration-add">Resources/icons/add.png</file>
+        <file alias="configuration-remove">Resources/icons/cancel.png</file>
+    </qresource>
+</RCC>

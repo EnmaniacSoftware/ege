@@ -1,4 +1,6 @@
-CONFIG      += plugin
+#CONFIG      += plugin
+
+QT          += widgets
 
 TARGET      = $$qtLibraryTarget($$TARGET)
 TEMPLATE    = lib
@@ -9,7 +11,7 @@ HEADERS     = IResourceLibrary.h \
               ResourceItemContainer.h \
               ResourceItemFactory.h \
               ResourceItemImage.h \
-              ResourceLibararyDataModel.h \
+              ResourceLibraryDataModel.h \
               ResourceLibraryItemDelegate.h \
               ResourceLibraryPlugin.h \
               ResourceLibraryWindow.h
@@ -23,11 +25,12 @@ SOURCES     = ResourceItem.cpp \
               ResourceLibraryPlugin.cpp \
               ResourceLibraryWindow.cpp
 
-FORMS       = ResourceLibraryWindow.ui
+FORMS       += ResourceLibraryWindow.ui
 
 INCLUDEPATH += ../../EGEEditor/src \
-              "../../EGE Editor Plugins/CorePlugin"
+               ../../EditorPlugins/CorePlugin
 
-DEFINES += override=""
+DEFINES += override="" \
+           RESOUCELIBRARYPLUGIN_EXPORT=1
 
 INSTALLS += target

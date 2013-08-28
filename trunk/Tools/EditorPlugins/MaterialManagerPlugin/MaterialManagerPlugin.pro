@@ -1,5 +1,7 @@
 CONFIG      += plugin
 
+QT          += widgets
+
 TARGET      = $$qtLibraryTarget($$TARGET)
 TEMPLATE    = lib
 
@@ -14,9 +16,9 @@ SOURCES     = MaterialManagerPlugin.cpp \
 FORMS       = MaterialManagerWindow.ui
 
 INCLUDEPATH += ../../EGEEditor/src \
-               "../../EGE Editor Plugins/CorePlugin" \
-               "../../EGE Editor Plugins/ResourceLibraryPlugin"
+               ../../EditorPlugins/CorePlugin \
+               ../../EditorPlugins/ResourceLibraryPlugin
 
-DEFINES += override=""
+DEFINES += override="" MATERIALMANAGERPLUGIN_EXPORT
 
 INSTALLS += target

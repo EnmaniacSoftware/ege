@@ -5,5 +5,5 @@ SUBDIRS += CorePlugin \
            ResourceLibraryPlugin \
            MaterialManagerPlugin \
            ImagedAnimationPlugin \
-           JuiceJumpersProjectPlugin \
+           JuiceJumpersProjectPlugin
 

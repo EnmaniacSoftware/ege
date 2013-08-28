@@ -10,9 +10,9 @@ SOURCES     = JuiceJumpersProjectPlugin.cpp \
               ProjectJuiceJumpers.cpp
 
 INCLUDEPATH += ../../EGEEditor/src \
-               "../../EGE Editor Plugins/CorePlugin" \
-               "../../EGE Editor Plugins/ResourceLibraryPlugin"
+               ../../EditorPlugins/CorePlugin \
+               ../../EditorPlugins/ResourceLibraryPlugin
 
-DEFINES += override=""
+DEFINES += override="" JUICEJUMPERSPROJECTPLUGIN_EXPORT
 
 INSTALLS += target

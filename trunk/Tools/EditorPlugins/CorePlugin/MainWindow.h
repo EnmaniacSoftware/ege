@@ -3,7 +3,7 @@
 
 /*! Application main window. */
 
-#include <QMainWindow>
+#include <QtWidgets/QMainWindow>
 #include "coreplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

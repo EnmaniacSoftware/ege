@@ -3,9 +3,8 @@
 
 /*! Imaged animation module window. */
 
-#include <QDialog>
+#include <QtWidgets/QDialog>
 #include "Serializer.h"
-#include "SwfmillToEgeConverter.h"
 #include "imagedanimationplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -41,7 +40,7 @@ class IMAGEDANIMATIONPLUGIN_API ImagedAnimationWindow : public QDialog, public I
     /*! Imaged animation window UI. */
     Ui_ImagedAnimation* m_ui;
     /*! SWFMILL XML to EGE framework XML converter. */
-    SwfMillToEgeConverter m_converter;
+    //SwfMillToEgeConverter m_converter;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

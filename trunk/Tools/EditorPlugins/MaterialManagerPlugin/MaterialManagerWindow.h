@@ -1,7 +1,7 @@
 #ifndef MATERIALMANAGERWINDOW_H
 #define MATERIALMANAGERWINDOW_H
 
-#include <QDialog>
+#include <QtWidgets/QDialog>
 #include "Serializer.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,4 +1,6 @@
-CONFIG      += plugin
+#CONFIG      += plugin
+
+QT          += widgets
 
 TARGET      = $$qtLibraryTarget($$TARGET)
 TEMPLATE    = lib
@@ -12,9 +14,10 @@ SOURCES     = FontManagerPlugin.cpp \
               ResourceItemFont.cpp
 
 INCLUDEPATH += ../../EGEEditor/src \
-               "../../EGE Editor Plugins/CorePlugin" \
-               "../../EGE Editor Plugins/ResourceLibraryPlugin"
+               ../../EditorPlugins/CorePlugin \
+               ../../EditorPlugins/ResourceLibraryPlugin
 
-DEFINES += override=""
+DEFINES += override="" \
+           FONTMANAGERPLUGIN_EXPORT=1
 
 INSTALLS += target

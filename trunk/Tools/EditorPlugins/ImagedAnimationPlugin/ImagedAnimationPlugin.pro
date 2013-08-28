@@ -1,5 +1,7 @@
 CONFIG      += plugin
 
+QT          += widgets
+
 TARGET      = $$qtLibraryTarget($$TARGET)
 TEMPLATE    = lib
 
@@ -12,9 +14,9 @@ SOURCES     = ImagedAnimationPlugin.cpp \
 FORMS       = imagedanimationwindow.ui
 
 INCLUDEPATH += ../../EGEEditor/src \
-               "../../EGE Editor Plugins/CorePlugin" \
-               "../../EGE Editor Plugins/ResourceLibraryPlugin"
+               ../../EditorPlugins/CorePlugin \
+               ../../EditorPlugins/ResourceLibraryPlugin
 
-DEFINES += override=""
+DEFINES += override="" IMAGEDANIMATIONPLUGIN_EXPORT
 
 INSTALLS += target

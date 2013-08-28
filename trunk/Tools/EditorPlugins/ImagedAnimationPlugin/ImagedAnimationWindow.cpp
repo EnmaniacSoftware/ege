@@ -142,7 +142,7 @@ ImagedAnimationWindow::ImagedAnimationWindow(QWidget* parent) : QDialog(parent),
       QXmlStreamWriter output(&outXml);
       output.setAutoFormatting(true);
 
-      m_converter.convert(input, output, string, scales[i]);
+   //   m_converter.convert(input, output, string, scales[i]);
 
       QFile fileOut(QString("ege_%1_%2.xml").arg(string).arg(QString::number(scales[i]).remove(",")));
       fileOut.open(QIODevice::Text | QIODevice::WriteOnly);

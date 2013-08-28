@@ -54,11 +54,11 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
 {
   QRect rect(option.rect.x() + ICON_OFFSET, option.rect.y() + ((option.rect.height() - m_containerTypePixmap.size().height()) >> 1), 
              m_containerTypePixmap.size().width(), m_containerTypePixmap.size().height());
-  painter->drawPixmap(rect.intersect(option.rect), m_containerTypePixmap);
+  painter->drawPixmap(rect.intersected(option.rect), m_containerTypePixmap);
 
   rect.translate(option.rect.height() + CONTAINER_TYPE_TEXT_OFFSET, 0);
   rect.setWidth(option.fontMetrics.width(item->name()));
-  painter->drawText(rect.intersect(option.rect), Qt::AlignCenter, item->name());
+  painter->drawText(rect.intersected(option.rect), Qt::AlignCenter, item->name());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Paint image type. */
@@ -67,12 +67,12 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
   int thumbSize = qMax(item->thumbnailImage().size().height(), THUMBNAIL_SIZE);
 
   QRect rect(option.rect.x() + ICON_OFFSET, option.rect.y(), thumbSize, thumbSize);
-  painter->drawImage(rect.intersect(option.rect), item->thumbnailImage());
+  painter->drawImage(rect.intersected(option.rect), item->thumbnailImage());
 
   rect.translate(THUMBNAIL_SIZE + CONTAINER_TYPE_TEXT_OFFSET, 0);
   rect.setWidth(qMax(option.fontMetrics.width(item->name()), option.fontMetrics.width(item->path())));
-  painter->drawText(rect.intersect(option.rect), Qt::AlignTop, item->name());
-  painter->drawText(rect.intersect(option.rect), Qt::AlignBottom, item->path());
+  painter->drawText(rect.intersected(option.rect), Qt::AlignTop, item->name());
+  painter->drawText(rect.intersected(option.rect), Qt::AlignBottom, item->path());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! QStyledItemDelegate override. Returns the widget used to edit the item specified by index for editing. 
