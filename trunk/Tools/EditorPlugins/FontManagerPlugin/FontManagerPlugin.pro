@@ -1,8 +1,7 @@
-#CONFIG      += plugin
+CONFIG      += plugin
 
 QT          += widgets
 
-TARGET      = $$qtLibraryTarget($$TARGET)
 TEMPLATE    = lib
 
 HEADERS     = FontManagerPlugin.h \
@@ -20,4 +19,6 @@ INCLUDEPATH += ../../EGEEditor/src \
 DEFINES += override="" \
            FONTMANAGERPLUGIN_EXPORT=1
 
-INSTALLS += target
+LIBS += -L$$PWD/../../bin -lCorePlugin -lResourceLibraryPlugin
+
+DESTDIR = $$PWD/../../bin

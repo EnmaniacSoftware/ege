@@ -2,7 +2,6 @@ CONFIG      += plugin
 
 QT          += widgets
 
-TARGET      = $$qtLibraryTarget($$TARGET)
 TEMPLATE    = lib
 
 HEADERS     = MaterialManagerPlugin.h \
@@ -19,6 +18,9 @@ INCLUDEPATH += ../../EGEEditor/src \
                ../../EditorPlugins/CorePlugin \
                ../../EditorPlugins/ResourceLibraryPlugin
 
-DEFINES += override="" MATERIALMANAGERPLUGIN_EXPORT
+DEFINES += override="" \
+           MATERIALMANAGERPLUGIN_EXPORT
 
-INSTALLS += target
+LIBS += -L$$PWD/../../bin -lCorePlugin
+
+DESTDIR = $$PWD/../../bin

@@ -1,6 +1,5 @@
 CONFIG      += plugin
 
-TARGET      = $$qtLibraryTarget($$TARGET)
 TEMPLATE    = lib
 
 HEADERS     = JuiceJumpersProjectPlugin.h \
@@ -15,4 +14,6 @@ INCLUDEPATH += ../../EGEEditor/src \
 
 DEFINES += override="" JUICEJUMPERSPROJECTPLUGIN_EXPORT
 
-INSTALLS += target
+LIBS += -L$$PWD/../../bin -lCorePlugin
+
+DESTDIR = $$PWD/../../bin

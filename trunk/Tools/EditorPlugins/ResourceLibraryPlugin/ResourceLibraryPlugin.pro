@@ -1,8 +1,7 @@
-#CONFIG      += plugin
+CONFIG      += plugin
 
 QT          += widgets
 
-TARGET      = $$qtLibraryTarget($$TARGET)
 TEMPLATE    = lib
 
 HEADERS     = IResourceLibrary.h \
@@ -33,4 +32,6 @@ INCLUDEPATH += ../../EGEEditor/src \
 DEFINES += override="" \
            RESOUCELIBRARYPLUGIN_EXPORT=1
 
-INSTALLS += target
+LIBS += -L$$PWD/../../bin -lCorePlugin
+
+DESTDIR = $$PWD/../../bin

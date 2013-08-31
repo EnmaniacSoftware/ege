@@ -2,7 +2,6 @@ CONFIG      += plugin
 
 QT          += widgets
 
-TARGET      = $$qtLibraryTarget($$TARGET)
 TEMPLATE    = lib
 
 HEADERS     = ImagedAnimationPlugin.h \
@@ -17,6 +16,9 @@ INCLUDEPATH += ../../EGEEditor/src \
                ../../EditorPlugins/CorePlugin \
                ../../EditorPlugins/ResourceLibraryPlugin
 
-DEFINES += override="" IMAGEDANIMATIONPLUGIN_EXPORT
+DEFINES += override="" \
+           IMAGEDANIMATIONPLUGIN_EXPORT
 
-INSTALLS += target
+LIBS += -L$$PWD/../../bin -lCorePlugin
+
+DESTDIR = $$PWD/../../bin

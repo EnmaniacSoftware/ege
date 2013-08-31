@@ -1,8 +1,8 @@
-#CONFIG      += plugin
+CONFIG      += plugin
 
 QT          += widgets
 
-TARGET      = $$qtLibraryTarget($$TARGET)
+#TARGET      = $$qtLibraryTarget($$TARGET)
 TEMPLATE    = lib
 
 HEADERS     += AddConfigurationWindow.h \
@@ -39,4 +39,4 @@ INCLUDEPATH += ../../EGEEditor/src
 DEFINES += override="" \
            COREPLUGIN_EXPORT=1
 
-#INSTALLS += target
+DESTDIR = $$PWD/../../bin
