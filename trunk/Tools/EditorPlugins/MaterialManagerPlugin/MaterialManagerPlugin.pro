@@ -21,6 +21,6 @@ INCLUDEPATH += ../../EGEEditor/src \
 DEFINES += override="" \
            MATERIALMANAGERPLUGIN_EXPORT
 
-LIBS += -L$$PWD/../../bin -lCorePlugin
+LIBS += -L$$PWD/../../bin -lCorePlugin -lResourceLibraryPlugin
 
 DESTDIR = $$PWD/../../bin
