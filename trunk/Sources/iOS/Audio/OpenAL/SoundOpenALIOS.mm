@@ -116,6 +116,9 @@ bool SoundOpenALIOS::doPlay(ALuint channel)
         
         // set state
         setState(StatePlaying);
+        
+        // set result
+        result = true;
         break;
             
       default:
