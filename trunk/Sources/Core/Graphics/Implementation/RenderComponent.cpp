@@ -2,7 +2,7 @@
 #include "Core/Graphics/IndexBuffer.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/Render/RenderSystem.h"
-#include "Core/Components/Interface/Component.h"
+#include "Core/Component/Interface/Component.h"
 #include "Core/Graphics/Interface/RenderComponent.h"
 #include "Core/Crypto/Hash.h"
 #include "EGEVertexBuffer.h"

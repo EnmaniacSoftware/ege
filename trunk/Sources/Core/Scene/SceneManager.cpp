@@ -4,7 +4,7 @@
 #include "Core/Graphics/Camera.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Scene/SceneNode.h"
-#include "Core/Components/Physics/PhysicsComponent.h"
+#include "Core/Component/Physics/PhysicsComponent.h"
 #include "Core/Overlay/OverlayManager.h"
 #include "EGEGraphics.h"
 

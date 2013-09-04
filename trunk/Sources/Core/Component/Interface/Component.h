@@ -5,7 +5,7 @@
 
 #include "EGE.h"
 #include "EGEString.h"
-#include "Core/Components/Interface/ComponentHost.h"
+#include "Core/Component/Interface/ComponentHost.h"
 
 EGE_NAMESPACE_BEGIN
 

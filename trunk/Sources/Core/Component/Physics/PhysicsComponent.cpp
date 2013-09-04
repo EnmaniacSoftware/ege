@@ -3,9 +3,9 @@
 #include "EGEDebug.h"
 
 #if EGE_PHYSICS_BOX2D
-#include "Core/Components/Physics/Box2D/PhysicsComponentBox2D_p.h"
+#include "Core/Component/Physics/Box2D/PhysicsComponentBox2D_p.h"
 #elif EGE_PHYSICS_NULL
-#include "Core/Components/Physics/Null/PhysicsComponentNull_p.h"
+#include "Core/Component/Physics/Null/PhysicsComponentNull_p.h"
 #endif // EGE_PHYSICS_BOX2D
 
 EGE_NAMESPACE_BEGIN

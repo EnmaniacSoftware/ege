@@ -1,8 +1,8 @@
 #ifndef EGE_COMPONENT_H
 #define EGE_COMPONENT_H
 
-#include "Core/Components/Interface/Component.h"
-#include "Core/Components/Interface/ComponentHost.h"
+#include "Core/Component/Interface/Component.h"
+#include "Core/Component/Interface/ComponentHost.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

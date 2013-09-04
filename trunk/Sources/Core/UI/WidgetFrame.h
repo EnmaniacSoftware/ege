@@ -8,7 +8,7 @@
 
 #include "EGEMath.h"
 #include "EGERenderComponent.h"
-#include "Core/Components/Physics/PhysicsComponent.h"
+#include "Core/Component/Physics/PhysicsComponent.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -15,7 +15,7 @@
 #include "EGE.h"
 #include "EGEList.h"
 #include "Core/Math/Matrix4.h"
-#include "Core/Components/Physics/PhysicsComponent.h"
+#include "Core/Component/Physics/PhysicsComponent.h"
 
 EGE_NAMESPACE_BEGIN
 

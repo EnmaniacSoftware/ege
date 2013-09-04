@@ -12,7 +12,7 @@
 #include "EGESignal.h"
 #include "EGERenderComponent.h"
 #include "Core/UI/Widget.h"
-#include "Core/Components/Physics/PhysicsComponent.h"
+#include "Core/Component/Physics/PhysicsComponent.h"
 
 EGE_NAMESPACE_BEGIN
 

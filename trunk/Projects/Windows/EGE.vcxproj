@@ -44,11 +44,11 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - OGL FPL MT|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\ComplexTypes.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Components\Implementation\Component.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Components\Implementation\ComponentHost.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Component\Implementation\Component.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Component\Implementation\ComponentHost.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Component\Physics\Box2D\PhysicsComponentBox2D_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Component\Physics\Null\PhysicsComponentNull_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Component\Physics\PhysicsComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Cipher\Cipher.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Cipher\CipherKey.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Cipher\Cipher_p.cpp" />
@@ -253,9 +253,11 @@
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffect.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeOut.h" />
-    <ClInclude Include="..\..\Sources\Core\Components\Interface\Component.h" />
-    <ClInclude Include="..\..\Sources\Core\Components\Interface\ComponentHost.h" />
-    <ClInclude Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Component\Interface\Component.h" />
+    <ClInclude Include="..\..\Sources\Core\Component\Interface\ComponentHost.h" />
+    <ClInclude Include="..\..\Sources\Core\Component\Physics\Box2D\PhysicsComponentBox2D_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Component\Physics\Null\PhysicsComponentNull_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Component\Physics\PhysicsComponent.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Cipher\Cipher.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Cipher\CipherKey.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Cipher\Cipher_p.h" />
@@ -437,8 +439,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Application\Application.h" />
     <ClInclude Include="..\..\Sources\Core\ComplexTypes.h" />
-    <ClInclude Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.h" />
-    <ClInclude Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.h" />
     <ClInclude Include="..\..\Sources\Core\ConfigParams.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\DynamicArray.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\List.h" />

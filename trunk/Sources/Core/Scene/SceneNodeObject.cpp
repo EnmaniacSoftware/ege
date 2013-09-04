@@ -1,5 +1,5 @@
 #include "Core/Scene/SceneNodeObject.h"
-#include "Core/Components/Physics/PhysicsComponent.h"
+#include "Core/Component/Physics/PhysicsComponent.h"
 #include "Core/Graphics/IndexBuffer.h"
 #include "Core/Graphics/VertexBuffer.h"
 #include "Core/Graphics/Material.h"

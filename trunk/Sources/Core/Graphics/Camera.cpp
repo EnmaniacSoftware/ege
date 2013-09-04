@@ -1,7 +1,7 @@
 #include "Core/Graphics/Camera.h"
 #include "Core/Scene/SceneManager.h"
 #include "Core/Physics/PhysicsManager.h"
-#include "Core/Components/Physics/PhysicsComponent.h"
+#include "Core/Component/Physics/PhysicsComponent.h"
 #include "Core/Graphics/Viewport.h"
 
 EGE_NAMESPACE_BEGIN

@@ -1,7 +1,7 @@
 #include "EGEApplication.h"
 #include "EGERenderComponent.h"
 #include "Core/Graphics/Render/RenderSystem.h"
-#include "Core/Components/Physics/PhysicsComponent.h"
+#include "Core/Component/Physics/PhysicsComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
 #include "Core/Graphics/IndexBuffer.h"

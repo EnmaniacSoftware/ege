@@ -1,4 +1,4 @@
-#include "Core/Components/Interface/Component.h"
+#include "Core/Component/Interface/Component.h"
 
 EGE_NAMESPACE
 

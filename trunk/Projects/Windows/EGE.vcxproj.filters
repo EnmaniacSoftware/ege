@@ -7,15 +7,6 @@
     <Filter Include="Core\Application">
       <UniqueIdentifier>{d704e1fa-c528-4f1b-8bda-60c491ab0080}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Components">
-      <UniqueIdentifier>{d12c2078-c4de-4927-9438-0f1cc13522c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Components\Physics">
-      <UniqueIdentifier>{8178366c-c228-477d-9591-bd9734228970}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Components\Physics\Box2D">
-      <UniqueIdentifier>{647532df-4074-46b1-bcb5-39c78f24525f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Data">
       <UniqueIdentifier>{f7c03ef9-2265-42df-95c4-47c1bd3edec3}</UniqueIdentifier>
     </Filter>
@@ -172,9 +163,6 @@
     <Filter Include="Core\Physics\Null">
       <UniqueIdentifier>{595662c9-fce8-45c5-844d-5b67cd2af04d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Components\Physics\Null">
-      <UniqueIdentifier>{000e664f-b486-4705-956a-d82be8dd5948}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Math\Tweeners">
       <UniqueIdentifier>{bafdcfb4-1648-43bf-9ce1-fa7db79a2489}</UniqueIdentifier>
     </Filter>
@@ -241,20 +229,26 @@
     <Filter Include="Core\Graphics\Interface">
       <UniqueIdentifier>{de94a0f0-311b-4136-acab-3fe98f4b98ad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Components\Interface">
+    <Filter Include="Core\Component">
+      <UniqueIdentifier>{d12c2078-c4de-4927-9438-0f1cc13522c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Component\Physics">
+      <UniqueIdentifier>{8178366c-c228-477d-9591-bd9734228970}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Component\Physics\Box2D">
+      <UniqueIdentifier>{647532df-4074-46b1-bcb5-39c78f24525f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Component\Physics\Null">
+      <UniqueIdentifier>{000e664f-b486-4705-956a-d82be8dd5948}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Component\Interface">
       <UniqueIdentifier>{ac9e7a15-4a7a-45e4-b43a-629a5197645c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Components\Implementation">
+    <Filter Include="Core\Component\Implementation">
       <UniqueIdentifier>{f6fe4a40-9d2c-4874-9740-3fcbbba60d80}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.cpp">
-      <Filter>Core\Components\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.cpp">
-      <Filter>Core\Components\Physics\Box2D</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
       <Filter>Core\Data</Filter>
     </ClCompile>
@@ -657,9 +651,6 @@
     <ClCompile Include="..\..\Sources\Core\Physics\Null\PhysicsManagerNull_p.cpp">
       <Filter>Core\Physics\Null</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.cpp">
-      <Filter>Core\Components\Physics\Null</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Math\Tweeners\LinearTweener.cpp">
       <Filter>Core\Math\Tweeners</Filter>
     </ClCompile>
@@ -867,20 +858,23 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Implementation\RenderComponent.cpp">
       <Filter>Core\Graphics\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Components\Implementation\Component.cpp">
-      <Filter>Core\Components\Implementation</Filter>
+    <ClCompile Include="..\..\Sources\Core\Component\Implementation\Component.cpp">
+      <Filter>Core\Component\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Components\Implementation\ComponentHost.cpp">
-      <Filter>Core\Components\Implementation</Filter>
+    <ClCompile Include="..\..\Sources\Core\Component\Implementation\ComponentHost.cpp">
+      <Filter>Core\Component\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Component\Physics\PhysicsComponent.cpp">
+      <Filter>Core\Component\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Component\Physics\Null\PhysicsComponentNull_p.cpp">
+      <Filter>Core\Component\Physics\Null</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Component\Physics\Box2D\PhysicsComponentBox2D_p.cpp">
+      <Filter>Core\Component\Physics\Box2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.h">
-      <Filter>Core\Components\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.h">
-      <Filter>Core\Components\Physics\Box2D</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h">
       <Filter>Core\Data</Filter>
     </ClInclude>
@@ -1438,9 +1432,6 @@
     <ClInclude Include="..\..\Sources\Core\Physics\Null\PhysicsManagerNull_p.h">
       <Filter>Core\Physics\Null</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.h">
-      <Filter>Core\Components\Physics\Null</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGETweener.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tweeners\ITweener.h">
       <Filter>Core\Math\Tweeners</Filter>
@@ -1675,13 +1666,22 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Interface\RenderComponent.h">
       <Filter>Core\Graphics\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Components\Interface\ComponentHost.h">
-      <Filter>Core\Components\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Components\Interface\Component.h">
-      <Filter>Core\Components\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEComponent.h" />
+    <ClInclude Include="..\..\Sources\Core\Component\Interface\Component.h">
+      <Filter>Core\Component\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Component\Interface\ComponentHost.h">
+      <Filter>Core\Component\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Component\Physics\PhysicsComponent.h">
+      <Filter>Core\Component\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Component\Physics\Null\PhysicsComponentNull_p.h">
+      <Filter>Core\Component\Physics\Null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Component\Physics\Box2D\PhysicsComponentBox2D_p.h">
+      <Filter>Core\Component\Physics\Box2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

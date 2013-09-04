@@ -9,7 +9,7 @@
 #include "Core/Physics/PhysicsJointDistance.h"
 #include "Core/Physics/PhysicsJointAttract.h"
 #include "Core/Physics/PhysicsJointPulley.h"
-#include "Core/Components/Physics/PhysicsComponent.h"
+#include "Core/Component/Physics/PhysicsComponent.h"
 
 EGE_NAMESPACE_BEGIN
 
