@@ -5,7 +5,7 @@
 #include "EGEGraphics.h"
 #include "EGEVertexBuffer.h"
 #include "EGESignal.h"
-#include "Core/Components/Component.h"
+#include "EGEComponent.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -15,7 +15,7 @@ EGE_DECLARE_SMART_CLASS(Material, PMaterial)
 EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
 EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RenderComponent : public IComponent
+class RenderComponent : public Component
 {
   public:
 
@@ -37,8 +37,8 @@ class RenderComponent : public IComponent
 
   public:
 
-    /*! @see IComponent::isValid. */
-    bool isValid() const override;
+    /*! @see Component::isValid. */
+    bool isValid() const;
     /*! Returns index buffer. */
     PIndexBuffer indexBuffer() const { return m_indexBuffer; }
     /*! Returns vertex buffer. */  

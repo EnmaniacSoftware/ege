@@ -10,7 +10,7 @@
 #include "EGEMap.h"
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include "Core/Graphics/Render/Interface/Renderer.h"
-#include "Core/Components/Render/RenderComponent.h"
+#include "Core/Graphics/Interface/RenderComponent.h"
 #include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN

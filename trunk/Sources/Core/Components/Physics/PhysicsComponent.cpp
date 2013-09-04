@@ -15,7 +15,7 @@ EGE_DEFINE_NEW_OPERATORS(PhysicsComponent)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Constructor used to create non-managable component. */
-PhysicsComponent::PhysicsComponent() : IComponent(NULL, EGE_OBJECT_UID_PHYSICS_COMPONENT, ""),
+PhysicsComponent::PhysicsComponent() : Component(NULL, EGE_OBJECT_UID_PHYSICS_COMPONENT, ""),
                                        m_p(NULL),
                                        m_type(EGEPhysics::COMPONENT_STATIC), 
                                        m_position(Vector4f::ZERO), 
@@ -34,7 +34,7 @@ PhysicsComponent::PhysicsComponent() : IComponent(NULL, EGE_OBJECT_UID_PHYSICS_C
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Constructor used to create managable component. */
 PhysicsComponent::PhysicsComponent(Application* app, const String& name, EGEPhysics::ComponentType type) 
-: IComponent(app, EGE_OBJECT_UID_PHYSICS_COMPONENT, name), 
+: Component(app, EGE_OBJECT_UID_PHYSICS_COMPONENT, name), 
   m_type(type), 
   m_position(Vector4f::ZERO), 
   m_linearVelocity(Vector4f::ZERO), 

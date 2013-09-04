@@ -44,11 +44,11 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - OGL FPL MT|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\ComplexTypes.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Components\Component.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Components\Implementation\Component.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Components\Implementation\ComponentHost.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Components\Render\RenderComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Cipher\Cipher.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Cipher\CipherKey.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Cipher\Cipher_p.cpp" />
@@ -82,6 +82,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageLoader.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageUtils.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\SingleThread\ImageLoaderST_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Implementation\RenderComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\IndexBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Material.cpp" />
@@ -252,6 +253,8 @@
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffect.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeOut.h" />
+    <ClInclude Include="..\..\Sources\Core\Components\Interface\Component.h" />
+    <ClInclude Include="..\..\Sources\Core\Components\Interface\ComponentHost.h" />
     <ClInclude Include="..\..\Sources\Core\Components\Physics\Null\PhysicsComponentNull_p.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Cipher\Cipher.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Cipher\CipherKey.h" />
@@ -278,6 +281,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\SingleThread\ImageLoaderST_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\IndexBufferTypes.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Interface\RenderComponent.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - GL3x MT|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - GL3x MT|Win32'">true</ExcludedFromBuild>
@@ -398,6 +402,7 @@
     <ClInclude Include="..\..\Sources\EGEColorTransform.h" />
     <ClInclude Include="..\..\Sources\EGECommandLine.h" />
     <ClInclude Include="..\..\Sources\EGEComplex.h" />
+    <ClInclude Include="..\..\Sources\EGEComponent.h" />
     <ClInclude Include="..\..\Sources\EGEDeviceServices.h" />
     <ClInclude Include="..\..\Sources\EGEDictionary.h" />
     <ClInclude Include="..\..\Sources\EGEFlags.h" />
@@ -432,10 +437,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Application\Application.h" />
     <ClInclude Include="..\..\Sources\Core\ComplexTypes.h" />
-    <ClInclude Include="..\..\Sources\Core\Components\Component.h" />
     <ClInclude Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.h" />
-    <ClInclude Include="..\..\Sources\Core\Components\Render\RenderComponent.h" />
     <ClInclude Include="..\..\Sources\Core\ConfigParams.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\DynamicArray.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\List.h" />

@@ -5,8 +5,8 @@
 
 #include "EGE.h"
 #include "EGEGraphics.h"
+#include "EGERenderComponent.h"
 #include "Core/Math/Matrix4.h"
-#include "Core/Components/Render/RenderComponent.h"
 
 EGE_NAMESPACE_BEGIN
 

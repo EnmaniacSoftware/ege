@@ -2,9 +2,9 @@
 #define EGE_CORE_GRAPHICS_RENDER_SIMPLERENDERQUEUE_H
 
 #include "EGE.h"
+#include "EGERenderComponent.h"
 #include "Core/Math/Matrix4.h"
 #include "Core/Graphics/Render/Interface/RenderQueue.h"
-#include "Core/Components/Render/RenderComponent.h"
 
 EGE_NAMESPACE_BEGIN
 

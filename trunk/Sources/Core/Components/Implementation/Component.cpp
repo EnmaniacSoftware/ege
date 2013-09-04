@@ -1,15 +1,20 @@
-//#include "Core/EGEngine.h"
-#include "Core/Components/Component.h"
+#include "Core/Components/Interface/Component.h"
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IComponent::IComponent(Application* app, u32 uid, const String& name) : Object(app, uid)
+Component::Component(Application* app, u32 uid, const String& name) : Object(app, uid),
+                                                                      ComponentHost()
 {
   m_name = name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IComponent::~IComponent()
+Component::~Component()
 {
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const String& Component::name() const
+{
+  return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

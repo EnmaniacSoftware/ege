@@ -6,7 +6,7 @@
 */
 
 #include "EGE.h"
-#include "Core/Components/Component.h"
+#include "EGEComponent.h"
 #include "Core/Math/Quaternion.h"
 #include "Core/Math/Vector4.h"
 #include "Core/Math/Matrix4.h"
@@ -24,7 +24,7 @@ class PhysicsManager;
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 EGE_DECLARE_SMART_CLASS(PhysicsJoint, PPhysicsJoint)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class PhysicsComponent : public IComponent
+class PhysicsComponent : public Component
 {
     /* For access to private implementation. */
     friend class PhysicsJointDistancePrivate;
@@ -49,8 +49,8 @@ class PhysicsComponent : public IComponent
     /*! Signal emitted when any of transformation values have been changed (position, scale or orientation). */
     Signal0<> transformationChanged;
 
-    /*! @see IComponent::isValid. */
-    bool isValid() const override;
+    /*! @see Component::isValid. */
+    bool isValid() const;
     /*! Returns component type. */
     EGEPhysics::ComponentType type() const { return m_type; }
     /*! Sets position vector. */

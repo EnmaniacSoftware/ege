@@ -3,7 +3,6 @@
 
 #include "EGE.h"
 #include "EGEMatrix.h"
-#include "Core/Components/Render/RenderComponent.h"
 #include "Core/Scene/SceneNode.h"
 
 EGE_NAMESPACE_BEGIN

@@ -1,7 +1,7 @@
 #ifndef EGE_RENDERCOMPONENT_H
 #define EGE_RENDERCOMPONENT_H
 
-#include "Core/Components/Render/RenderComponent.h"
+#include "Core/Graphics/Interface/RenderComponent.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -8,8 +8,8 @@
 #include "EGETime.h"
 #include "EGEAlignment.h"
 #include "EGEMap.h"
+#include "EGERenderComponent.h"
 #include "Core/UI/Widget.h"
-#include "Core/Components/Render/RenderComponent.h"
 #include "Core/Components/Physics/PhysicsComponent.h"
 
 EGE_NAMESPACE_BEGIN

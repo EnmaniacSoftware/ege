@@ -16,6 +16,7 @@
 #include "EGEScene.h"
 #include "EGEParticle.h"
 #include "EGESignal.h"
+#include "EGEMaterial.h"
 
 EGE_NAMESPACE_BEGIN
 

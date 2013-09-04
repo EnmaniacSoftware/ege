@@ -2,8 +2,8 @@
 #include "Core/Graphics/IndexBuffer.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/Render/RenderSystem.h"
-#include "Core/Components/Component.h"
-#include "Core/Components/Render/RenderComponent.h"
+#include "Core/Components/Interface/Component.h"
+#include "Core/Graphics/Interface/RenderComponent.h"
 #include "Core/Crypto/Hash.h"
 #include "EGEVertexBuffer.h"
 #include "EGEDebug.h"
@@ -16,7 +16,7 @@ EGE_DEFINE_DELETE_OPERATORS(RenderComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderComponent::RenderComponent(Application* app, const String& name, const VertexDeclaration& vertexDeclaration, s32 priority, 
                                  EGEGraphics::RenderPrimitiveType primitive, NVertexBuffer::UsageType vertexUsage, EGEIndexBuffer::UsageType indexUsage) 
-: IComponent(app, EGE_OBJECT_UID_RENDER_COMPONENT, name), 
+: Component(app, EGE_OBJECT_UID_RENDER_COMPONENT, name), 
   m_priority(priority), 
   m_primitiveType(primitive), 
   m_hash(0), 

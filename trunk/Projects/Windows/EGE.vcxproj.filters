@@ -16,9 +16,6 @@
     <Filter Include="Core\Components\Physics\Box2D">
       <UniqueIdentifier>{647532df-4074-46b1-bcb5-39c78f24525f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Components\Render">
-      <UniqueIdentifier>{49202581-b9f8-48f3-b952-c66900bd55f7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Data">
       <UniqueIdentifier>{f7c03ef9-2265-42df-95c4-47c1bd3edec3}</UniqueIdentifier>
     </Filter>
@@ -238,19 +235,25 @@
     <Filter Include="Core\Graphics\Render\Interface">
       <UniqueIdentifier>{e2653272-d817-4792-8690-b2f6657ffeb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Graphics\Implementation">
+      <UniqueIdentifier>{889199c0-5853-45ed-9092-ab0df912b5df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\Interface">
+      <UniqueIdentifier>{de94a0f0-311b-4136-acab-3fe98f4b98ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Components\Interface">
+      <UniqueIdentifier>{ac9e7a15-4a7a-45e4-b43a-629a5197645c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Components\Implementation">
+      <UniqueIdentifier>{f6fe4a40-9d2c-4874-9740-3fcbbba60d80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Sources\Core\Components\Component.cpp">
-      <Filter>Core\Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.cpp">
       <Filter>Core\Components\Physics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.cpp">
       <Filter>Core\Components\Physics\Box2D</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Components\Render\RenderComponent.cpp">
-      <Filter>Core\Components\Render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
       <Filter>Core\Data</Filter>
@@ -861,19 +864,22 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderQueue.cpp">
       <Filter>Core\Graphics\Render\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Implementation\RenderComponent.cpp">
+      <Filter>Core\Graphics\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Components\Implementation\Component.cpp">
+      <Filter>Core\Components\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Components\Implementation\ComponentHost.cpp">
+      <Filter>Core\Components\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Sources\Core\Components\Component.h">
-      <Filter>Core\Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Components\Physics\PhysicsComponent.h">
       <Filter>Core\Components\Physics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Components\Physics\Box2D\PhysicsComponentBox2D_p.h">
       <Filter>Core\Components\Physics\Box2D</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Components\Render\RenderComponent.h">
-      <Filter>Core\Components\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h">
       <Filter>Core\Data</Filter>
@@ -1666,6 +1672,16 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\TextureUnitState.h">
       <Filter>Core\Graphics\OpenGL\Fixed</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Interface\RenderComponent.h">
+      <Filter>Core\Graphics\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Components\Interface\ComponentHost.h">
+      <Filter>Core\Components\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Components\Interface\Component.h">
+      <Filter>Core\Components\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

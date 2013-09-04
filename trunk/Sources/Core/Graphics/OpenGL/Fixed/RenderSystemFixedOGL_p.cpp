@@ -1,6 +1,6 @@
 #include "EGEApplication.h"
 #include "Core/Graphics/OpenGL/Fixed/RenderSystemFixedOGL_p.h"
-#include "Core/Components/Render/RenderComponent.h"
+#include "Core/Graphics/Interface/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
 #include "Core/Graphics/Graphics.h"
