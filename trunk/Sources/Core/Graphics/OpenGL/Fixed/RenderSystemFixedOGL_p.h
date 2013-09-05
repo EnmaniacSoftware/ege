@@ -74,20 +74,6 @@ class RenderSystemPrivate : public IComponentRenderer
      *  @note All arrays are processed except texture ones. These needs to be processed on per render pass basis.
      */
     void applyVertexArrays(const VertexDeclaration& vertexDeclaration, void* vertexData);
-    /*! Binds given vertex buffer.
-     *  @param buffer  Vertex buffer to bind.
-     *  @return Returns base value pointing to begining of buffer data.
-     */
-    void* bindVertexBuffer(PVertexBuffer& buffer) const;
-    /*! Unbinds given vertex buffer. */
-    void unbindVertexBuffer(PVertexBuffer& buffer) const;
-    /*! Binds given index buffer.
-     *  @param buffer  Index buffer to bind.
-     *  @return Returns base value pointing to begining of buffer data.
-     */
-    void* bindIndexBuffer(PIndexBuffer& buffer) const;
-    /*! Unbinds given index buffer. */
-    void unbindIndexBuffer(PIndexBuffer& buffer) const;
 
     /*! Creates empty 2D texture. 
      *  @param  name  Texture name.

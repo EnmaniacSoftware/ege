@@ -31,9 +31,17 @@ class VertexBufferVA : public VertexBuffer
     void* lock(u32 offset, u32 count) override;
     /*! @see VertexBuffer::unlock. */
     void unlock(const void* data) override;
-
+    
+    /*! @see VertexBuffer::bind. */
+    void bind() override;
+    /*! @see VertexBuffer::unbind. */
+    void unbind() override;
+    
     /*! @see VertexBuffer::vertexCount. */
     u32 vertexCount() const override;
+
+    /*! @see VertexBuffer::offset. */
+    void* offset() const override;
 
   private:
 

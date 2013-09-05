@@ -44,7 +44,7 @@ static GLenum MapUsageTypeToAccessType(NVertexBuffer::UsageType type)
   return GL_WRITE_ONLY;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBufferVBO::VertexBufferVBO(Application* app, NVertexBuffer::UsageType usage) : VertexBuffer(app, EGE_OBJECT_UID_VERTEX_BUFFER_VBO),
+VertexBufferVBO::VertexBufferVBO(Application* app, NVertexBuffer::UsageType usage) : VertexBuffer(app, EGE_OBJECT_UID_VERTEX_BUFFER),
                                                                                        m_id(0),
                                                                                        m_vertexCount(0),
                                                                                        m_vertexCapacity(0),
@@ -292,6 +292,11 @@ void VertexBufferVBO::destroy()
 {
   // call base class
   VertexBuffer::destroy();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void* VertexBufferVBO::offset() const
+{
+  return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

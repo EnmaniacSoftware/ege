@@ -8,7 +8,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(IndexBufferVA)
 EGE_DEFINE_DELETE_OPERATORS(IndexBufferVA)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IndexBufferVA::IndexBufferVA(Application* app) : IndexBuffer(app, EGE_OBJECT_UID_INDEX_BUFFER_VA)
+IndexBufferVA::IndexBufferVA(Application* app) : IndexBuffer(app, EGE_OBJECT_UID_INDEX_BUFFER)
 {
   m_buffer = ege_new DataBuffer();
 }
@@ -92,6 +92,21 @@ bool IndexBufferVA::reallocateBuffer(u32 count)
   }
 
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void IndexBufferVA::bind()
+{
+  // do nothing
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void IndexBufferVA::unbind()
+{
+  // do nothig
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void* IndexBufferVA::offset() const
+{
+  return m_buffer->data();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

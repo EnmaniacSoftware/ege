@@ -42,10 +42,13 @@ class VertexBufferVBO : public VertexBuffer
     /*! @see VertexBuffer::vertexCapacity. */
     u32 vertexCapacity() const;
 
-    /*! Binds buffer. */
-    void bind();
-    /*! Unbinds buffer. */
-    void unbind();
+    /*! @see VertexBuffer::bind. */
+    void bind() override;
+    /*! @see VertexBuffer::unbind. */
+    void unbind() override;
+
+    /*! @see VertexBuffer::offset. */
+    void* offset() const override;
 
   private:
 

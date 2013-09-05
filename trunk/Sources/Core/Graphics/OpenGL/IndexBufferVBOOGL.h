@@ -42,15 +42,16 @@ class IndexBufferVBO : public IndexBuffer
     /*! @see IndexBuffer::indexCapacity. */
     u32 indexCapacity() const;
 
-    /*! Binds buffer. */
-    void bind();
-    /*! Unbinds buffer. */
-    void unbind();
+    /*! @see IndexBuffer::bind. */
+    void bind() override;
+    /*! @see IndexBuffer::unbind. */
+    void unbind() override;
+
+    /*! @see IndexBuffer::offset. */
+    void* offset() const override;
 
   private:
 
-    /*! @see IndexBuffer::destroy. */
-    void destroy() override;
     /*! Reallocates internal buffer to accomodate given number of vertices. */
     bool reallocateBuffer(u32 count);
 

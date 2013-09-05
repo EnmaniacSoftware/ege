@@ -9,7 +9,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(VertexBufferVA)
 EGE_DEFINE_DELETE_OPERATORS(VertexBufferVA)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBufferVA::VertexBufferVA(Application* app) : VertexBuffer(app, EGE_OBJECT_UID_VERTEX_BUFFER_VA)
+VertexBufferVA::VertexBufferVA(Application* app) : VertexBuffer(app, EGE_OBJECT_UID_VERTEX_BUFFER)
 {
   m_buffer = ege_new DataBuffer();
 }
@@ -98,6 +98,21 @@ bool VertexBufferVA::reallocateBuffer(u32 count)
   }
 
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void VertexBufferVA::bind()
+{
+  // do nothing
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void VertexBufferVA::unbind()
+{
+  // do nothig
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void* VertexBufferVA::offset() const
+{
+  return m_buffer->data();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

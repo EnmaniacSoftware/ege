@@ -7,6 +7,7 @@
  */
 
 #include "EGE.h"
+#include "EGEComponent.h"
 #include "Core/Graphics/VertexDeclaration.h"
 
 EGE_NAMESPACE_BEGIN
@@ -28,7 +29,7 @@ namespace NVertexBuffer
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class VertexBuffer : public Object
+class VertexBuffer : public Component
 {
   public:
 
@@ -51,6 +52,14 @@ class VertexBuffer : public Object
     virtual void* lock(u32 offset, u32 count) = 0;
     /*! Unlocks buffer. */
     virtual void unlock(const void* data) = 0;
+
+    /*! Binds buffer for rendering. */
+    virtual void bind() = 0;
+    /*! Unbinds buffer from rendering. */
+    virtual void unbind() = 0;
+
+    /*! Returns pointer to begining of data buffer. */
+    virtual void* offset() const = 0;
 
     /*! Returns vertex declaration. */
     const VertexDeclaration& vertexDeclaration() const;

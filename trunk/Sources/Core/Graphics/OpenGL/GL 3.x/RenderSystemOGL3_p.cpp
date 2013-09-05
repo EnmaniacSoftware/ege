@@ -1,6 +1,6 @@
 #include "EGEApplication.h"
 #include "Core/Graphics/OpenGL/GL 3.x/RenderSystemOGL3_p.h"
-#include "Core/Components/Render/RenderComponent.h"
+#include "Core/Graphics/Interface/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
 #include "Core/Graphics/Graphics.h"
@@ -506,125 +506,6 @@ void RenderSystemPrivate::applyGeneralParams(const PRenderComponent& component)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void* RenderSystemPrivate::bindVertexBuffer(PVertexBuffer& buffer) const
-{
-  void* data = NULL;
-
-  // process if any vertices exist
-  if (0 < buffer->vertexCount())
-  {
-    // process according to buffer type
-    switch (buffer->uid())
-    {
-      case EGE_OBJECT_UID_VERTEX_BUFFER_VA:
-
-        // lock buffer to get pointer to first element
-        data = buffer->lock(0, buffer->vertexCount());
-        break;
-
-      case EGE_OBJECT_UID_VERTEX_BUFFER_VBO:
-
-        // bind VBO
-        static_cast<VertexBufferVBO*>(buffer.object())->bind();
-
-        // set vertex data base to 0 as for VBO we use offsets
-        data = 0;
-        break;
-
-      default:
-
-        EGE_ASSERT_X(false, "Invalid vertex buffer type");
-        data = NULL;
-        break;
-    }
-  }
-
-  return data;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::unbindVertexBuffer(PVertexBuffer& buffer) const
-{
-  // process according to buffer type
-  switch (buffer->uid())
-  {
-    case EGE_OBJECT_UID_VERTEX_BUFFER_VA:
-
-      // unlock buffer
-      buffer->unlock(NULL);
-      break;
-
-    case EGE_OBJECT_UID_VERTEX_BUFFER_VBO:
-
-      // unbind VBO
-      static_cast<VertexBufferVBO*>(buffer.object())->unbind();
-      break;
-
-    default:
-
-      EGE_ASSERT_X(false, "Invalid vertex buffer type");
-      break;
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void* RenderSystemPrivate::bindIndexBuffer(PIndexBuffer& buffer) const
-{
-  void* data = NULL;
-
-  // process if any indicies exist
-  if (0 < buffer->indexCount())
-  {
-    // process according to buffer type
-    switch (buffer->uid())
-    {
-      case EGE_OBJECT_UID_INDEX_BUFFER_VA:
-
-        // lock buffer to get pointer to first element
-        data = buffer->lock(0, buffer->indexCount());
-        break;
-
-      case EGE_OBJECT_UID_INDEX_BUFFER_VBO:
-
-        // bind VBO
-        static_cast<IndexBufferVBO*>(buffer.object())->bind();
-
-        // set index data base to 0 as for VBO we use offsets
-        data = 0;
-        break;
-
-      default:
-
-        EGE_ASSERT_X(false, "Invalid index buffer type");
-        break;
-    }
-  }
-
-  return data;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::unbindIndexBuffer(PIndexBuffer& buffer) const
-{
-  // process according to buffer type
-  switch (buffer->uid())
-  {
-    case EGE_OBJECT_UID_INDEX_BUFFER_VA:
-
-      // unlock buffer
-      buffer->unlock(NULL);
-      break;
-
-    case EGE_OBJECT_UID_INDEX_BUFFER_VBO:
-
-      // unbind VBO
-      static_cast<IndexBufferVBO*>(buffer.object())->unbind();
-      break;
-
-    default:
-
-      EGE_ASSERT_X(false, "Invalid index buffer type");
-      break;
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PVertexBuffer RenderSystemPrivate::createVertexBuffer(NVertexBuffer::UsageType usage) const
 {
   PVertexBuffer buffer;
@@ -658,7 +539,7 @@ PVertexBuffer RenderSystemPrivate::createVertexBuffer(NVertexBuffer::UsageType u
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::destroyVertexBuffer(PVertexBuffer object) const
 {
-  if (EGE_OBJECT_UID_VERTEX_BUFFER_VBO == object->uid())
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     VertexBufferVBO* bufferVBO = ege_cast<EGE::VertexBufferVBO*>(object);
  
@@ -701,7 +582,7 @@ PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType us
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::destroyIndexBuffer(PIndexBuffer object) const
 {
-  if (EGE_OBJECT_UID_INDEX_BUFFER_VBO == object->uid())
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
   {
     IndexBufferVBO* bufferVBO = ege_cast<EGE::IndexBufferVBO*>(object);
  
@@ -982,8 +863,8 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
   //}
 
   // bind vertex and index buffers
-  void* vertexData = bindVertexBuffer(vertexBuffer);
-  void* indexData  = bindIndexBuffer(indexBuffer);
+  vertexBuffer->bind();
+  indexBuffer->bind();
 
   // apply general params
   applyGeneralParams(component);
@@ -997,7 +878,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
     applyPassParams(component, material, *renderPass);
 
     // apply vertex arrays
-    applyVertexArrays(vertexBuffer->vertexDeclaration(), vertexData);
+    applyVertexArrays(vertexBuffer->vertexDeclaration(), vertexBuffer->offset());
 
     // NOTE: change to modelview after material is applied as it may change current matrix mode
     setMatrixMode(GL_MODELVIEW);
@@ -1019,7 +900,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
     if (0 < indexBuffer->indexCount())
     {
       // render only if there is anything to render
-      glDrawElements(MapPrimitiveType(component->primitiveType()), indexBuffer->indexCount(), MapIndexSize(indexBuffer->size()), indexData);
+      glDrawElements(MapPrimitiveType(component->primitiveType()), indexBuffer->indexCount(), MapIndexSize(indexBuffer->size()), indexBuffer->offset());
       OGL_CHECK();
 
       // update engine info
@@ -1061,8 +942,8 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
   }
 
   // unbind vertex and index buffers
-  unbindVertexBuffer(vertexBuffer);
-  unbindIndexBuffer(indexBuffer);
+  vertexBuffer->unbind();
+  indexBuffer->unbind();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::setBlendEnabled(bool set)

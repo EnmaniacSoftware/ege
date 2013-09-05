@@ -6,7 +6,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBuffer::VertexBuffer(Application* app, u32 uid) : Object(app, uid), 
+VertexBuffer::VertexBuffer(Application* app, u32 uid) : Component(app, uid, ""), 
                                                         m_locked(false), 
                                                         m_usage(NVertexBuffer::UT_STATIC_WRITE)
 {

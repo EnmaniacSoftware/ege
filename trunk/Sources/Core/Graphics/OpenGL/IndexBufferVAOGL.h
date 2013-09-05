@@ -32,6 +32,14 @@ class IndexBufferVA : public IndexBuffer
     /*! @see IndexBuffer::unlock. */
     void unlock(void* data) override;
 
+    /*! @see IndexBuffer::bind. */
+    void bind() override;
+    /*! @see IndexBuffer::unbind. */
+    void unbind() override;
+
+    /*! @see IndexBuffer::offset. */
+    void* offset() const override;
+
     /*! @see IndexBuffer::indexCount. */
     u32 indexCount() const override;
 

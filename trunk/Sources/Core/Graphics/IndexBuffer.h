@@ -6,6 +6,7 @@
  */
 
 #include "EGE.h"
+#include "EGEComponent.h"
 #include "EGEIndexBuffer.h"
 
 EGE_NAMESPACE_BEGIN
@@ -13,7 +14,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class IndexBuffer : public Object
+class IndexBuffer : public Component
 {
   public:
 
@@ -36,6 +37,14 @@ class IndexBuffer : public Object
     virtual void* lock(u32 offset, u32 count) = 0;
     /*! Unlocks buffer. */
     virtual void unlock(void* data) = 0;
+
+    /*! Binds buffer for rendering. */
+    virtual void bind() = 0;
+    /*! Unbinds buffer from rendering. */
+    virtual void unbind() = 0;
+
+    /*! Returns pointer to begining of data buffer. */
+    virtual void* offset() const = 0;
 
     /*! Returns number of allocated indicies. */
     virtual u32 indexCount() const = 0;
