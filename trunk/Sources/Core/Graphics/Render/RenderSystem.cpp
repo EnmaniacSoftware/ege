@@ -14,6 +14,7 @@
 #include "Core/ObjectUIDs.h"
 #include "EGERenderQueues.h"
 #include "EGEOpenGL.h"
+#include "EGEDevice.h"
 
 #if EGE_RENDERING_OPENGL_FIXED
   #include "Core/Graphics/OpenGL/Fixed/RenderSystemFixedOGL_p.h"
@@ -175,22 +176,6 @@ void RenderSystem::update()
         // signal
         emit requestComplete(request.id, NULL);
       }
-      else if (REQUEST_DESTROY_VERTEX_BUFFER == request.type)
-      {
-        PVertexBuffer object = request.objects.front();
-        destroyVertexBuffer(object);
-
-        // signal
-        emit requestComplete(request.id, NULL);
-      }
-      else if (REQUEST_DESTROY_INDEX_BUFFER == request.type)
-      {
-        PIndexBuffer object = request.objects.front();
-        destroyIndexBuffer(object);
-
-        // signal
-        emit requestComplete(request.id, NULL);
-      }
     }
   }
   else if (STATE_CLOSING == m_state)
@@ -291,7 +276,10 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
       PRenderQueue queue;
 
       // batch only really small buffers
-      if ((10 > component->vertexBuffer()->vertexCount()) && RenderQueue::IsSuitable(EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, component))
+      // NOTE: batching enabled only for non-VBO rendering due to issues with updating batch data ie no way to get vertex data from VBO in write-only mode
+      if ((10 > component->vertexBuffer()->vertexCount()) && 
+          ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT) && 
+          RenderQueue::IsSuitable(EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, component))
       {
         queue = RenderQueueFactory::Create(app(), EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, component->priority(), component->primitiveType());
       }
@@ -451,56 +439,6 @@ Rectf RenderSystem::applyRotation(const Rectf& rect, const Angle& angle) const
   }
 
   return out;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PVertexBuffer RenderSystem::createVertexBuffer(NVertexBuffer::UsageType usage) const
-{
-  return p_func()->createVertexBuffer(usage);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystem::destroyVertexBuffer(PVertexBuffer object) const
-{
-  p_func()->destroyVertexBuffer(object);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-u32 RenderSystem::requestDestroyVertexBuffer(PVertexBuffer object)
-{
-  // create request
-  RequestData request;
-  request.type  = REQUEST_DESTROY_VERTEX_BUFFER;
-  request.id    = m_nextRequestID++;
-  request.objects << object;
-
-  // queue it
-  MutexLocker locker(m_requestsMutex);
-  m_requests.push_back(request);
-
-  return request.id;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PIndexBuffer RenderSystem::createIndexBuffer(EGEIndexBuffer::UsageType usage) const
-{
-  return p_func()->createIndexBuffer(usage);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystem::destroyIndexBuffer(PIndexBuffer object) const
-{
-  p_func()->destroyIndexBuffer(object);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-u32 RenderSystem::requestDestroyIndexBuffer(PIndexBuffer object)
-{
-  // create request
-  RequestData request;
-  request.type  = REQUEST_DESTROY_INDEX_BUFFER;
-  request.id    = m_nextRequestID++;
-  request.objects << object;
-
-  // queue it
-  MutexLocker locker(m_requestsMutex);
-  m_requests.push_back(request);
-
-  return request.id;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PTexture2D RenderSystem::createTexture2D(const String& name, const PImage& image)
@@ -698,6 +636,13 @@ void RenderSystem::onEventRecieved(PEvent event)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool RenderSystem::registerComponent(PRenderComponent& component, NVertexBuffer::UsageType vertexUsage, const VertexDeclaration& vertexDeclaration, 
+                                     EGEIndexBuffer::UsageType indexUsage)
+{
+  return p_func()->registerComponent(component, vertexUsage, vertexDeclaration, indexUsage);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //// Constructors

@@ -20,7 +20,7 @@ class IndexBufferVBO : public IndexBuffer
 
   public:
 
-    IndexBufferVBO(Application* app, EGEIndexBuffer::UsageType usage);
+    IndexBufferVBO(Application* app, const String& name, EGEIndexBuffer::UsageType usage);
    ~IndexBufferVBO();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -71,6 +71,8 @@ class IndexBufferVBO : public IndexBuffer
     u32 m_lockLength;
     /*! Begining of mapped memory. Used in lock/unlock periods. */
     void* m_mapping;
+    /*! Usage. */
+    EGEIndexBuffer::UsageType m_usage;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline u32 IndexBufferVBO::indexCount() const 

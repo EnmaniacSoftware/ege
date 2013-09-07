@@ -39,6 +39,8 @@ class RenderComponent : public Component
 
     /*! @see Component::isValid. */
     bool isValid() const;
+    /*! @see ComponentHost::addComponent. */
+    EGEResult addComponent(const PComponent& component) override;
     /*! Returns index buffer. */
     PIndexBuffer indexBuffer() const { return m_indexBuffer; }
     /*! Returns vertex buffer. */  

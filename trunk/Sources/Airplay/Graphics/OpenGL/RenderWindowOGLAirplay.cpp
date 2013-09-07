@@ -370,6 +370,20 @@ void RenderWindowOGLAirplay::detectCapabilities()
   {
     Device::SetRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT, true);
   }
+
+  // check vertex array objects support
+  if (extensionArray.contains("GL_OES_vertex_array_object"))
+  {
+    glBindVertexArray     = reinterpret_cast<PFNGLBINDVERTEXARRAYARBPROC>(wglGetProcAddress("glBindVertexArrayOES"));
+    glDeleteVertexArrays  = reinterpret_cast<PFNGLDELETEVERTEXARRAYSARBPROC>(wglGetProcAddress("glDeleteVertexArraysOES"));
+    glGenVertexArrays     = reinterpret_cast<PFNGLGENVERTEXARRAYSARBPROC>(wglGetProcAddress("glGenVertexArraysOES"));
+    glIsVertexArray       = reinterpret_cast<PFNGLISVERTEXARRAYARBPROC>(wglGetProcAddress("glIsVertexArrayOES"));
+
+    if ((NULL != glIsVertexArray) && (NULL != glGenVertexArrays) && (NULL != glDeleteVertexArrays) && (NULL != glBindVertexArray))
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECTS, true);
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderWindowOGLAirplay::isAutoRotated() const

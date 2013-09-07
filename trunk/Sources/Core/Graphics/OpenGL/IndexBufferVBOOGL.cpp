@@ -44,28 +44,34 @@ static GLenum MapUsageTypeToAccessType(EGEIndexBuffer::UsageType type)
   return GL_WRITE_ONLY;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IndexBufferVBO::IndexBufferVBO(Application* app, EGEIndexBuffer::UsageType usage) : IndexBuffer(app, EGE_OBJECT_UID_INDEX_BUFFER),
-                                                                                    m_id(0),
-                                                                                    m_indexCount(0),
-                                                                                    m_indexCapacity(0),
-                                                                                    m_lockOffset(0),
-                                                                                    m_lockLength(0),
-                                                                                    m_mapping(NULL)
+IndexBufferVBO::IndexBufferVBO(Application* app, const String& name, EGEIndexBuffer::UsageType usage) : IndexBuffer(app, name),
+                                                                                                        m_id(0),
+                                                                                                        m_indexCount(0),
+                                                                                                        m_indexCapacity(0),
+                                                                                                        m_lockOffset(0),
+                                                                                                        m_lockLength(0),
+                                                                                                        m_mapping(NULL),
+                                                                                                        m_usage(usage)
 {
-  // set usage
-  m_usage = usage;
-
   // allocate shadow buffer if no mapping is supported
   if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER))
   {
     m_shadowBuffer = ege_new DataBuffer();
   }
+
+  // generate OGL buffer
+  glGenBuffers(1, &m_id);
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 IndexBufferVBO::~IndexBufferVBO()
 {
-  // NOTE: at this point object should be deallocated
-  EGE_ASSERT(0 == m_id);
+  if (0 != m_id)
+  {
+    glDeleteBuffers(1, &m_id);
+    OGL_CHECK();
+    m_id = 0;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool IndexBufferVBO::isValid() const

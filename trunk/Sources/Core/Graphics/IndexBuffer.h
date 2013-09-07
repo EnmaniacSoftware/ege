@@ -60,7 +60,7 @@ class IndexBuffer : public Component
   protected:
 
     /*! Constructing only via RenderSystem. */
-    IndexBuffer(Application* app, u32 uid);
+    IndexBuffer(Application* app, const String& name);
     /*! Destroys buffer. */
     virtual void destroy();
 
@@ -70,8 +70,6 @@ class IndexBuffer : public Component
     EGEIndexBuffer::IndexSize m_indexSize;
     /*! TRUE if buffer is locked. */
     bool m_locked;
-    /*! Usage. */
-    EGEIndexBuffer::UsageType m_usage;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

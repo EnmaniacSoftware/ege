@@ -1,38 +1,36 @@
-#include "Core/Graphics/VertexBuffer.h"
-#include "Core/Data/DataBuffer.h"
-#include "EGEList.h"
+#include "Core/Graphics/OpenGL/Implementation/VertexArrayObject.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBuffer::VertexBuffer(Application* app, const String& name, const VertexDeclaration& vertexDeclaration) 
-: Component(app, EGE_OBJECT_UID_VERTEX_BUFFER, name), 
-  m_locked(false), 
-  m_vertexDeclaration(vertexDeclaration)
+VertexArrayObject::VertexArrayObject(Application* app, const String& name) : Component(app, EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT, name),
+                                                                             m_id(0)
 {
+  glGenVertexArrays(1, &m_id);
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBuffer::~VertexBuffer()
+VertexArrayObject::~VertexArrayObject()
 {
-  destroy();
+  if (0 != m_id)
+  {
+    glDeleteVertexArrays(1, &m_id);
+    OGL_CHECK();
+    m_id = 0;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const VertexDeclaration& VertexBuffer::vertexDeclaration() const
+void VertexArrayObject::bind()
 {
-  return m_vertexDeclaration;
+  glBindVertexArray(m_id);
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void VertexBuffer::destroy()
+void VertexArrayObject::unbind()
 {
-  clear();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void VertexBuffer::clear()
-{
-  m_locked = false;
-
-  m_vertexDeclaration.clear();
+  glBindVertexArray(0);
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

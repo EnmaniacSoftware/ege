@@ -3,7 +3,7 @@
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Component/Interface/Component.h"
-#include "Core/Graphics/Interface/RenderComponent.h"
+#include "Core/Graphics/Render/Interface/RenderComponent.h"
 #include "Core/Crypto/Hash.h"
 #include "EGEVertexBuffer.h"
 #include "EGEDebug.h"
@@ -29,24 +29,14 @@ RenderComponent::RenderComponent(Application* app, const String& name, const Ver
   EGE_ASSERT(app->graphics());
   EGE_ASSERT(app->graphics()->hardwareResourceProvider());
 
-  m_indexBuffer  = app->graphics()->hardwareResourceProvider()->createIndexBuffer(indexUsage);
-  m_vertexBuffer = app->graphics()->hardwareResourceProvider()->createVertexBuffer(vertexUsage);
-
-  if (NULL != m_vertexBuffer)
-  {
-    m_vertexBuffer->setVertexDeclaration(vertexDeclaration);
-  }
+  // register self in render system
+  // NOTE: unregistration is done automatically
+  PRenderComponent me(*this);
+  app->graphics()->hardwareResourceProvider()->registerComponent(me, vertexUsage, vertexDeclaration, indexUsage);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderComponent::~RenderComponent()
 {
-  EGE_ASSERT(app());
-  EGE_ASSERT(app()->graphics());
-  EGE_ASSERT(app()->graphics()->hardwareResourceProvider());
-
-  app()->graphics()->hardwareResourceProvider()->destroyIndexBuffer(m_indexBuffer);
-  app()->graphics()->hardwareResourceProvider()->destroyVertexBuffer(m_vertexBuffer);
-
   m_indexBuffer  = NULL;
   m_vertexBuffer = NULL;
   m_material     = NULL;
@@ -170,6 +160,32 @@ void RenderComponent::setLineWidth(float32 width)
 {
   EGE_ASSERT(0 <= width);
   m_lineWidth = width;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult RenderComponent::addComponent(const PComponent& component)
+{
+  EGEResult result = EGE_SUCCESS;
+
+  // add apprioprietly
+  switch (component->uid())
+  {
+    case EGE_OBJECT_UID_VERTEX_BUFFER: 
+      
+      m_vertexBuffer = component; 
+      break;
+    
+    case EGE_OBJECT_UID_INDEX_BUFFER: 
+      
+      m_indexBuffer = component; 
+      break;
+
+    default:
+
+      result = Component::addComponent(component);
+      break;
+  }
+
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

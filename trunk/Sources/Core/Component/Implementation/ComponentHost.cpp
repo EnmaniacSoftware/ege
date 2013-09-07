@@ -41,3 +41,12 @@ EGEResult ComponentHost::addComponent(const PComponent& component)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+List<PComponent> ComponentHost::components(u32 type) const
+{
+  List<PComponent> list;
+
+  m_pool.values(type, list);
+
+  return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -19,6 +19,8 @@ class List : public std::list<T>
 
     /*! Removes object at given index. */
     void removeAt(s32 index);
+    /*! Returns first element. If list is empty, default value is returned. */
+    const T first(const T& defaultValue) const;
     /*! Returns last element. If list is empty, default value is returned. */
     const T last(const T& defaultValue) const;
     /*! Returns TRUE if given object is present. */
@@ -65,6 +67,12 @@ void List<T>::removeAt(s32 index)
 
     this->erase(it);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+const T List<T>::first(const T& defaultValue) const
+{
+  return (0 == this->size()) ? defaultValue : this->front();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

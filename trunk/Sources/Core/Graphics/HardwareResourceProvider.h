@@ -21,6 +21,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
+EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 EGE_DECLARE_SMART_CLASS(Object, PObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IHardwareResourceProvider
@@ -41,36 +42,16 @@ class IHardwareResourceProvider
 
   public:
 
-    /*! Creates vertex buffer object. 
-     *  @param  usage Intended usage hint.
+    /*! Registers render component. 
+     *  @param  component         Component to register.
+     *  @param  vertexUsage       Vertex buffer usage hint.
+     *  @param  vertexDeclaration Vertex semantics declaration.
+     *  @param  indexUsage        Index buffer usage hint.
+     *  @return TRUE on success.
      */
-    virtual PVertexBuffer createVertexBuffer(NVertexBuffer::UsageType usage) const = 0;
-    /*! Destroys vertex buffer object. 
-     *  @param  object Object to destroy.
-     */
-    virtual void destroyVertexBuffer(PVertexBuffer object) const = 0;
-    /*! Reqeusts deletion of vertex buffer object. 
-     *  @param  object Object to destroy.
-     *  @return Returns ID of the request for further delivery check.
-     *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
-     *        Upon completion result will be signalled by requestComplete.
-     */
-    virtual u32 requestDestroyVertexBuffer(PVertexBuffer object) = 0;
-    /*! Creates index buffer object. 
-     *  @param  usage Intended usage hint.
-     */
-    virtual PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const = 0;
-    /*! Destroys index buffer object. 
-     *  @param  object Object to destroy.
-     */
-    virtual void destroyIndexBuffer(PIndexBuffer object) const = 0;
-    /*! Reqeusts deletion of index buffer object. 
-     *  @param  object Object to destroy.
-     *  @return Returns ID of the request for further delivery check.
-     *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
-     *        Upon completion result will be signalled by requestComplete.
-     */
-    virtual u32 requestDestroyIndexBuffer(PIndexBuffer object) = 0;
+    virtual bool registerComponent(PRenderComponent& component, NVertexBuffer::UsageType vertexUsage, const VertexDeclaration& vertexDeclaration, 
+                                   EGEIndexBuffer::UsageType indexUsage) = 0;
+
     /*! Creates 2D texture from given image. 
      *  @param  name  Name of the object.
      *  @param  image Image data for texture.

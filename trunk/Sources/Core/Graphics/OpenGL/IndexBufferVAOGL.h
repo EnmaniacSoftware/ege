@@ -17,7 +17,7 @@ class IndexBufferVA : public IndexBuffer
 {
   public:
 
-    IndexBufferVA(Application* app);
+    IndexBufferVA(Application* app, const String& name);
     virtual ~IndexBufferVA();
 
     EGE_DECLARE_NEW_OPERATORS

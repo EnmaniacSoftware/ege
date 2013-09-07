@@ -44,28 +44,35 @@ static GLenum MapUsageTypeToAccessType(NVertexBuffer::UsageType type)
   return GL_WRITE_ONLY;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBufferVBO::VertexBufferVBO(Application* app, NVertexBuffer::UsageType usage) : VertexBuffer(app, EGE_OBJECT_UID_VERTEX_BUFFER),
-                                                                                       m_id(0),
-                                                                                       m_vertexCount(0),
-                                                                                       m_vertexCapacity(0),
-                                                                                       m_lockOffset(0),
-                                                                                       m_lockLength(0),
-                                                                                       m_mapping(NULL)
+VertexBufferVBO::VertexBufferVBO(Application* app, const String& name, const VertexDeclaration& vertexDeclaration, NVertexBuffer::UsageType usage) 
+: VertexBuffer(app, name, vertexDeclaration),
+  m_id(0),
+  m_vertexCount(0),
+  m_vertexCapacity(0),
+  m_lockOffset(0),
+  m_lockLength(0),
+  m_mapping(NULL),
+  m_usage(usage)
 {
-  // set usage
-  m_usage = usage;
-
   // allocate shadow buffer if no mapping is supported
   if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER))
   {
     m_shadowBuffer = ege_new DataBuffer();
   }
+
+  // generate OGL buffer
+  glGenBuffers(1, &m_id);
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 VertexBufferVBO::~VertexBufferVBO()
 {
-  // NOTE: at this point object should be deallocated
-  EGE_ASSERT(0 == m_id);
+  if (0 != m_id)
+  {
+    glDeleteBuffers(1, &m_id);
+    OGL_CHECK();
+    m_id = 0;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool VertexBufferVBO::isValid() const

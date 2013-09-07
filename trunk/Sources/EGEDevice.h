@@ -46,7 +46,7 @@ namespace EGEDevice
     RENDER_CAPS_APPLE_LIMITED_NPOT_TEXTURE = 0,           /*!< Limited non-power of two 2D texture extension for iOS. */
     RENDER_CAPS_MULTITEXTURE,                             /*!< Multitexturing supported (GL_ARB_multitexture). */
     RENDER_CAPS_FBO,                                      /*!< Frame buffer object supported (GL_EXT_framebuffer_object). */
-    RENDER_CAPS_VBO,                                      /*!< Vertex buffer object supported (GL_ARB_vertex_buffer_object). */
+    RENDER_CAPS_VERTEX_BUFFER_OBJECT,                                      /*!< Vertex buffer object supported (GL_ARB_vertex_buffer_object). */
     RENDER_CAPS_COMBINE_TEXTURE_ENV,                      /*!< Combine texture environment mode supported (GL_ARB_texture_env_combine). */
     RENDER_CAPS_POINT_SPRITE,                             /*!< Point sprite supported (GL_ARB_point_sprite && GL_ARB_point_parameters). */
     RENDER_CAPS_POINT_SPRITE_SIZE,                        /*!< Point sprite size array supported (ie. glPointSizePointerOES). */
@@ -56,7 +56,7 @@ namespace EGEDevice
     RENDER_CAPS_TEXTURE_COMPRESSION_S3TC,                 /*!< Tetxure compression using S3TC (GL_EXT_texture_compression_s3tc). */
     RENDER_CAPS_VERTEX_SHADER,                            /*!< Vertex shader support (GL_ARB_vertex_shader). */
     RENDER_CAPS_FRAGMENT_SHADER,                          /*!< Fragment shader support (GL_ARB_fragment_shader). */
-    RENDER_CAPS_VERTEX_ARRAY_OBJECTS,                     /*!< Vertex array objects support (GL_ARB_vertex_array_object). */
+    RENDER_CAPS_VERTEX_ARRAY_OBJECT,                     /*!< Vertex array objects support (GL_ARB_vertex_array_object). */
     RENDER_CAPS_ELEMENT_INDEX_UINT,                       /*!< Indexing vertices with Uint32 support (GL_OES_element_index_uint). */
     RENDER_CAPS_COUNT
   };

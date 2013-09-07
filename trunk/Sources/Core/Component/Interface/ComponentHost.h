@@ -7,6 +7,7 @@
 #include "EGE.h"
 #include "EGEString.h"
 #include "EGEMap.h"
+#include "EGEList.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -22,11 +23,17 @@ class ComponentHost
 
     /*! Adds given component to pool.
      *  @param  Component Component to be added.
-     *  @return EGE_SUCCESS if component has been added. EGE_ERROR_ALREADY_EXISTS if component with given name and type is already in the pool.
+     *  @return EGE_SUCCESS if component has been added. 
+     *          EGE_ERROR_ALREADY_EXISTS if component with given name and type is already in the pool.
      *  @note Derived classes may change the behavior ie put the restriction on number of instances of the given type or refuse to add certain types of 
      *        components.
      */
     virtual EGEResult addComponent(const PComponent& component);
+    /*! Returns the list of components of a given type. 
+     *  @param  type  Component type to return.
+     *  @return List of all attached components of the given type.
+     */
+    List<PComponent> components(u32 type) const;
 
   protected:
 

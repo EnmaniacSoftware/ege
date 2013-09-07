@@ -20,7 +20,7 @@ class VertexBufferVBO : public VertexBuffer
 
   public:
 
-    VertexBufferVBO(Application* app, NVertexBuffer::UsageType usage);
+    VertexBufferVBO(Application* app, const String& name, const VertexDeclaration& vertexDeclaration, NVertexBuffer::UsageType usage);
    ~VertexBufferVBO();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -73,6 +73,8 @@ class VertexBufferVBO : public VertexBuffer
     u32 m_lockLength;
     /*! Begining of mapped memory. Used in lock/unlock periods. */
     void* m_mapping;
+    /*! Usage. */
+    NVertexBuffer::UsageType m_usage;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline u32 VertexBufferVBO::vertexCount() const 

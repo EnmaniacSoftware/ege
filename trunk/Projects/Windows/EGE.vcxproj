@@ -82,7 +82,6 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageLoader.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageUtils.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\SingleThread\ImageLoaderST_p.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Graphics\Implementation\RenderComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\IndexBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\JpegDataSrcFile.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Material.cpp" />
@@ -95,6 +94,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - OGL FPL ST|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - OGL FPL MT|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Implementation\VertexArrayObject.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ProgramOGL.cpp" />
@@ -112,6 +112,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Program.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\RenderObjectFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\BatchedRenderQueue.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderQueue.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderQueueFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\SimpleRenderQueue.cpp" />
@@ -283,7 +284,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\SingleThread\ImageLoaderST_p.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\IndexBufferTypes.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\Interface\RenderComponent.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - GL3x MT|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - GL3x MT|Win32'">true</ExcludedFromBuild>
@@ -297,6 +297,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - OGL FPL ST|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - OGL FPL MT|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Implementation\VertexArrayObject.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVAOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\IndexBufferVBOOGL.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ProgramOGL.h" />
@@ -315,6 +316,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\BatchedRenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\ComponentRenderer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\SimpleRenderQueue.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\RenderComponent.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\Renderer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\RenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\RenderQueueFactory.h" />

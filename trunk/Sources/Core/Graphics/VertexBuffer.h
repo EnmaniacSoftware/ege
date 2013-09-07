@@ -63,8 +63,6 @@ class VertexBuffer : public Component
 
     /*! Returns vertex declaration. */
     const VertexDeclaration& vertexDeclaration() const;
-    /*! Sets vertex declaration. */
-    void setVertexDeclaration(const VertexDeclaration& vertexDeclaration);
 
     /*! Returns number of vertices currently in use. */
     virtual u32 vertexCount() const = 0;
@@ -72,7 +70,7 @@ class VertexBuffer : public Component
   protected:
 
     /*! Constructing only via RenderSystem. */
-    VertexBuffer(Application* app, u32 uid);
+    VertexBuffer(Application* app, const String& name, const VertexDeclaration& vertexDeclaration);
     /*! Destroys buffer. */
     virtual void destroy();
 
@@ -82,8 +80,6 @@ class VertexBuffer : public Component
     bool m_locked;
     /*! Vertex declaration. */
     VertexDeclaration m_vertexDeclaration;
-    /*! Usage. */
-    NVertexBuffer::UsageType m_usage;
 
   private:
 

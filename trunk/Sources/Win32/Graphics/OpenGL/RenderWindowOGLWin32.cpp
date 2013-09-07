@@ -622,8 +622,7 @@ void RenderWindowOGLWin32::detectCapabilities()
     if ((NULL != glGenBuffers) && (NULL != glBindBuffer) && (NULL != glBufferData) && (NULL != glBufferSubData) && (NULL != glDeleteBuffers) && 
         (NULL != glMapBuffer) && (NULL != glUnmapBuffer))
     {
-      // TAGE - stick to VA as VBO seems not to work well with batching. Once code changes for batching try again.
-      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VBO, false);
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT, true);
       Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER, true);
     }
   }
@@ -710,6 +709,20 @@ void RenderWindowOGLWin32::detectCapabilities()
   if (extensionArray.contains("GL_ARB_fragment_shader"))
   {
     Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FRAGMENT_SHADER, true);
+  }
+  
+  // check vertex array objects support
+  if (extensionArray.contains("GL_ARB_vertex_array_object"))
+  {
+    glBindVertexArray     = reinterpret_cast<PFNGLBINDVERTEXARRAYARBPROC>(wglGetProcAddress("glBindVertexArray"));
+    glDeleteVertexArrays  = reinterpret_cast<PFNGLDELETEVERTEXARRAYSARBPROC>(wglGetProcAddress("glDeleteVertexArrays"));
+    glGenVertexArrays     = reinterpret_cast<PFNGLGENVERTEXARRAYSARBPROC>(wglGetProcAddress("glGenVertexArrays"));
+    glIsVertexArray       = reinterpret_cast<PFNGLISVERTEXARRAYARBPROC>(wglGetProcAddress("glIsVertexArray"));
+
+    if ((NULL != glIsVertexArray) && (NULL != glGenVertexArrays) && (NULL != glDeleteVertexArrays) && (NULL != glBindVertexArray))
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECT, true);
+    }
   }
 
   // Point sprite size array is not supported by default

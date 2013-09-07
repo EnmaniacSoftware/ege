@@ -18,6 +18,7 @@ class RenderSystem;
 
 EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
 EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
+EGE_DECLARE_SMART_CLASS(VertexArrayObject, PVertexArrayObject)
 EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
 EGE_DECLARE_SMART_CLASS(Shader, PShader)
 EGE_DECLARE_SMART_CLASS(Program, PProgram)
@@ -39,6 +40,12 @@ class RenderSystemPrivate : public IComponentRenderer
 
     /*! @see IComponentRenderer::renderComponent. */
     void renderComponent(const PRenderComponent& component, const Matrix4f& modelMatrix) override;
+    /*! Setup vertex array object.
+     *  @param  vertexArrayObject Vertex array object to setup.
+     *  @param  vertexBuffer      Vertex buffer used for setup.
+     *  @param  indexBuffer       Index buffer used for setup.
+     */
+    void setupVAO(PVertexArrayObject& vertexArrayObject, const PVertexBuffer& vertexBuffer, const PIndexBuffer& indexBuffer);
 
   protected:
  
@@ -80,14 +87,24 @@ class RenderSystemPrivate : public IComponentRenderer
      *  @return Returns created texture. NULL if failed.
      */
     PTexture2D createEmptyTexture(const String& name);
-    /*! @see RenderSystem::createVertexBuffer. */
-    PVertexBuffer createVertexBuffer(NVertexBuffer::UsageType usage) const;
-    /*! @see RenderSystem::destroyVertexBuffer. */
-    void destroyVertexBuffer(PVertexBuffer object) const;
-    /*! @see RenderSystem::createIndexBuffer. */
-    PIndexBuffer createIndexBuffer(EGEIndexBuffer::UsageType usage) const;
-    /*! @see RenderSystem::destroyIndexBuffer. */
-    void destroyIndexBuffer(PIndexBuffer object) const;
+
+    /*! @see RenderSystem::registerComponent. */
+    bool registerComponent(PRenderComponent& component, NVertexBuffer::UsageType vertexUsage, const VertexDeclaration& vertexDeclaration, 
+                           EGEIndexBuffer::UsageType indexUsage);
+    /*! Creates appripriate vertex buffer object. 
+     *  @param  name              Name of the vertex buffer component.
+     *  @param  vertexDeclaration Vertex semantics declaration.
+     *  @param  usage             Usage hint.
+     *  @return On success created component. Otherwise, NULL.
+     */
+    PVertexBuffer createVertexBuffer(const String& name, const VertexDeclaration& vertexDeclaration, NVertexBuffer::UsageType usage) const;
+    /*! Creates appripriate index buffer object. 
+     *  @param  name  Name of the index buffer component.
+     *  @param  usage Usage hint.
+     *  @return On success created component. Otherwise, NULL.
+     */
+    PIndexBuffer createIndexBuffer(const String& name, EGEIndexBuffer::UsageType usage) const;
+
     /*! @see RenderSystem::createTexture2D. */
     PTexture2D createTexture2D(const String& name, const PImage& image);
     /*! @see RenderSystem::createTexture2D. */

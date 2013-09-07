@@ -510,7 +510,7 @@ PVertexBuffer RenderSystemPrivate::createVertexBuffer(NVertexBuffer::UsageType u
 {
   PVertexBuffer buffer;
 
-  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
   {
     buffer = ege_new VertexBufferVBO(d_func()->app(), usage);
     if (NULL != buffer)
@@ -539,7 +539,7 @@ PVertexBuffer RenderSystemPrivate::createVertexBuffer(NVertexBuffer::UsageType u
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::destroyVertexBuffer(PVertexBuffer object) const
 {
-  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
   {
     VertexBufferVBO* bufferVBO = ege_cast<EGE::VertexBufferVBO*>(object);
  
@@ -553,7 +553,7 @@ PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType us
 {
   PIndexBuffer buffer;
 
-  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
   {
     buffer = ege_new IndexBufferVBO(d_func()->app(), usage);
     if (NULL != buffer)
@@ -582,7 +582,7 @@ PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType us
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::destroyIndexBuffer(PIndexBuffer object) const
 {
-  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VBO))
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
   {
     IndexBufferVBO* bufferVBO = ege_cast<EGE::IndexBufferVBO*>(object);
  

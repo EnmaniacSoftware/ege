@@ -223,12 +223,6 @@
     <Filter Include="Core\Graphics\Render\Interface">
       <UniqueIdentifier>{e2653272-d817-4792-8690-b2f6657ffeb3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Graphics\Implementation">
-      <UniqueIdentifier>{889199c0-5853-45ed-9092-ab0df912b5df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Graphics\Interface">
-      <UniqueIdentifier>{de94a0f0-311b-4136-acab-3fe98f4b98ad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Component">
       <UniqueIdentifier>{d12c2078-c4de-4927-9438-0f1cc13522c9}</UniqueIdentifier>
     </Filter>
@@ -246,6 +240,9 @@
     </Filter>
     <Filter Include="Core\Component\Implementation">
       <UniqueIdentifier>{f6fe4a40-9d2c-4874-9740-3fcbbba60d80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\OpenGL\Implementation">
+      <UniqueIdentifier>{f4d72714-f50c-49f5-9722-a06714e2f85e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -855,9 +852,6 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderQueue.cpp">
       <Filter>Core\Graphics\Render\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\Implementation\RenderComponent.cpp">
-      <Filter>Core\Graphics\Implementation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Component\Implementation\Component.cpp">
       <Filter>Core\Component\Implementation</Filter>
     </ClCompile>
@@ -872,6 +866,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Component\Physics\Box2D\PhysicsComponentBox2D_p.cpp">
       <Filter>Core\Component\Physics\Box2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Implementation\VertexArrayObject.cpp">
+      <Filter>Core\Graphics\OpenGL\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderComponent.cpp">
+      <Filter>Core\Graphics\Render\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1663,9 +1663,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\TextureUnitState.h">
       <Filter>Core\Graphics\OpenGL\Fixed</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\Interface\RenderComponent.h">
-      <Filter>Core\Graphics\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEComponent.h" />
     <ClInclude Include="..\..\Sources\Core\Component\Interface\Component.h">
       <Filter>Core\Component\Interface</Filter>
@@ -1681,6 +1678,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Component\Physics\Box2D\PhysicsComponentBox2D_p.h">
       <Filter>Core\Component\Physics\Box2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Implementation\VertexArrayObject.h">
+      <Filter>Core\Graphics\OpenGL\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\RenderComponent.h">
+      <Filter>Core\Graphics\Render\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

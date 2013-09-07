@@ -17,7 +17,7 @@ class VertexBufferVA : public VertexBuffer
 {
   public:
 
-    VertexBufferVA(Application* app);
+    VertexBufferVA(Application* app, const String& name, const VertexDeclaration& vertexDeclaration);
     virtual ~VertexBufferVA();
 
     EGE_DECLARE_NEW_OPERATORS
