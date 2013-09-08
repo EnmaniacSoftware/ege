@@ -1,6 +1,5 @@
 #include "EGEApplication.h"
 #include "Core/Graphics/OpenGL/GL 3.x/RenderSystemOGL3_p.h"
-#include "Core/Graphics/Interface/RenderComponent.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
 #include "Core/Graphics/Graphics.h"
@@ -14,6 +13,7 @@
 #include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
 #include "Core/Graphics/OpenGL/RenderTextureCopyOGL.h"
 #include "Core/Graphics/OpenGL/RenderTextureFBOOGL.h"
+#include "Core/Graphics/OpenGL/Implementation/VertexArrayObject.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/Render/RenderWindow.h"
@@ -23,6 +23,7 @@
 #include "EGEOpenGL.h"
 #include "EGETimer.h"
 #include "EGEDevice.h"
+#include "EGERenderComponent.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE
@@ -506,90 +507,51 @@ void RenderSystemPrivate::applyGeneralParams(const PRenderComponent& component)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PVertexBuffer RenderSystemPrivate::createVertexBuffer(NVertexBuffer::UsageType usage) const
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PVertexBuffer RenderSystemPrivate::createVertexBuffer(const String& name, const VertexDeclaration& vertexDeclaration, NVertexBuffer::UsageType usage) const
 {
   PVertexBuffer buffer;
 
   if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
   {
-    buffer = ege_new VertexBufferVBO(d_func()->app(), usage);
-    if (NULL != buffer)
+    VertexBufferVBO* vertexBuffer = ege_new VertexBufferVBO(d_func()->app(), name, vertexDeclaration, usage);
+    if ((NULL == vertexBuffer) || (0 == vertexBuffer->m_id))
     {
-      VertexBufferVBO* bufferVBO = ege_cast<EGE::VertexBufferVBO*>(buffer);
-
-      // generate OGL buffer
-      glGenBuffers(1, &bufferVBO->m_id);
-      OGL_CHECK();
-
-      // check if failed
-      if (0 == bufferVBO->m_id)
-      {
-        // error!
-        buffer = NULL;
-      }
+      // error!
+      EGE_DELETE(vertexBuffer);
     }
+
+    buffer = vertexBuffer;
   }
   else
   {
-    buffer = ege_new VertexBufferVA(d_func()->app());
+    buffer = ege_new VertexBufferVA(d_func()->app(), name, vertexDeclaration);
   }
 
   return buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::destroyVertexBuffer(PVertexBuffer object) const
-{
-  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
-  {
-    VertexBufferVBO* bufferVBO = ege_cast<EGE::VertexBufferVBO*>(object);
- 
-    glDeleteBuffers(1, &bufferVBO->m_id);
-    OGL_CHECK();
-    bufferVBO->m_id = 0;
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PIndexBuffer RenderSystemPrivate::createIndexBuffer(EGEIndexBuffer::UsageType usage) const
+PIndexBuffer RenderSystemPrivate::createIndexBuffer(const String& name, EGEIndexBuffer::UsageType usage) const
 {
   PIndexBuffer buffer;
 
   if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
   {
-    buffer = ege_new IndexBufferVBO(d_func()->app(), usage);
-    if (NULL != buffer)
+    IndexBufferVBO* indexBuffer = ege_new IndexBufferVBO(d_func()->app(), name, usage);
+    if ((NULL == indexBuffer) || (0 == indexBuffer->m_id))
     {
-      IndexBufferVBO* bufferVBO = ege_cast<EGE::IndexBufferVBO*>(buffer);
-
-      // generate OGL buffer
-      glGenBuffers(1, &bufferVBO->m_id);
-      OGL_CHECK();
-
-      // check if failed
-      if (0 == bufferVBO->m_id)
-      {
-        // error!
-        buffer = NULL;
-      }
+      // error!
+      EGE_DELETE(indexBuffer);
     }
+
+    buffer = indexBuffer;
   }
   else
   {
-    buffer = ege_new IndexBufferVA(d_func()->app());
+    buffer = ege_new IndexBufferVA(d_func()->app(), name);
   }
 
   return buffer;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::destroyIndexBuffer(PIndexBuffer object) const
-{
-  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
-  {
-    IndexBufferVBO* bufferVBO = ege_cast<EGE::IndexBufferVBO*>(object);
- 
-    glDeleteBuffers(1, &bufferVBO->m_id);
-    OGL_CHECK();
-    bufferVBO->m_id = 0;
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PTexture2D RenderSystemPrivate::createTexture2D(const String& name, const PImage& image)
@@ -853,6 +815,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
   PVertexBuffer vertexBuffer = component->vertexBuffer();
   PIndexBuffer indexBuffer   = component->indexBuffer();
   PMaterial material         = component->material();
+  PVertexArrayObject vao     = component->components(EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT).first(NULL);
 
   EGE_ASSERT_X(NULL != material, "Component must have material attached.");
   EGE_ASSERT_X(0 < vertexBuffer->vertexCount(), "No vertices to render!");
@@ -863,8 +826,16 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
   //}
 
   // bind vertex and index buffers
-  vertexBuffer->bind();
-  indexBuffer->bind();
+  if (NULL != vao)
+  {
+    vao->bind();
+  }
+  else
+  {
+    // bind vertex and index buffers
+    vertexBuffer->bind();
+    indexBuffer->bind();
+  }
 
   // apply general params
   applyGeneralParams(component);
@@ -878,7 +849,10 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
     applyPassParams(component, material, *renderPass);
 
     // apply vertex arrays
-    applyVertexArrays(vertexBuffer->vertexDeclaration(), vertexBuffer->offset());
+    if (NULL == vao)
+    {
+      applyVertexArrays(vertexBuffer->vertexDeclaration(), vertexBuffer->offset());
+    }
 
     // NOTE: change to modelview after material is applied as it may change current matrix mode
     setMatrixMode(GL_MODELVIEW);
@@ -941,9 +915,16 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
     //}
   }
 
-  // unbind vertex and index buffers
-  vertexBuffer->unbind();
-  indexBuffer->unbind();
+  if (NULL != vao)
+  {
+    vao->unbind();
+  }
+  else
+  {
+    // unbind vertex and index buffers
+    vertexBuffer->unbind();
+    indexBuffer->unbind();
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::setBlendEnabled(bool set)
@@ -1077,5 +1058,112 @@ void RenderSystemPrivate::setMatrixMode(s32 mode)
 
     m_matrixMode = mode;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool RenderSystemPrivate::registerComponent(PRenderComponent& component, NVertexBuffer::UsageType vertexUsage, const VertexDeclaration& vertexDeclaration, 
+                                            EGEIndexBuffer::UsageType indexUsage)
+{
+  bool result = false;
+
+  // add index buffer component
+  if (EGE_SUCCESS == component->addComponent(createIndexBuffer(component->name() + "-ib", indexUsage)))
+  {
+    // add vertex buffer component
+    if (EGE_SUCCESS == component->addComponent(createVertexBuffer(component->name() + "-vb", vertexDeclaration, vertexUsage)))
+    {
+      // check if VAO is supported and can be used ie VBO is supported
+      if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECT) && Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
+      {
+        // add vertex array object component
+        if (EGE_SUCCESS == component->addComponent(new VertexArrayObject(d_func()->app(), component->name() + "-vao")))
+        {
+          // setup vertex array object
+          List<PComponent> list = component->components(EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT);
+          EGE_ASSERT_X(1 == list.size(), "There should be exactly one VAO component attached!");
+
+          PVertexArrayObject vao = list.front();
+          setupVAO(vao, component->vertexBuffer(), component->indexBuffer());
+          result = true;
+        }
+      }
+      else
+      {
+        result = true;
+      }
+    }
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::setupVAO(PVertexArrayObject& vertexArrayObject, const PVertexBuffer& vertexBuffer, const PIndexBuffer& indexBuffer)
+{
+  // bind VAO
+  // NOTE: Currently, all vertex states are stored within VAO rather than in OpenGL state machine, so there is no need to unbind anything 
+  vertexArrayObject->bind();
+
+  // bind VBO
+  vertexBuffer->bind();
+
+  // go thru all arrays
+  s32 textureCoordIndex = 0;
+  const VertexElementArray& vertexElements = vertexBuffer->vertexDeclaration().vertexElements();
+  for (VertexElementArray::const_iterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
+  {
+    // set according to buffer type
+    switch (itElement->semantic())
+    {
+      case NVertexBuffer::VES_POSITION_XYZ:
+
+        glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
+        OGL_CHECK();
+        glEnableClientState(GL_VERTEX_ARRAY);
+        OGL_CHECK();
+        break;
+
+      case NVertexBuffer::VES_POSITION_XY:
+
+        glVertexPointer(2, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
+        OGL_CHECK();
+        glEnableClientState(GL_VERTEX_ARRAY);
+        OGL_CHECK();
+        break;
+
+      case NVertexBuffer::VES_NORMAL:
+
+        glNormalPointer(GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
+        OGL_CHECK();
+        glEnableClientState(GL_NORMAL_ARRAY);
+        OGL_CHECK();
+        break;
+
+      case NVertexBuffer::VES_COLOR_RGBA:
+
+        glColorPointer(4, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
+        OGL_CHECK();
+        glEnableClientState(GL_COLOR_ARRAY);
+        OGL_CHECK();
+        break;
+
+      case NVertexBuffer::VES_TEXTURE_UV:
+
+        activateClientTextureUnit(textureCoordIndex);
+
+        glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
+        OGL_CHECK();
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        OGL_CHECK();
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  // bind IBO
+  indexBuffer->bind();
+
+  // unbind VAO
+  vertexArrayObject->unbind();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -753,13 +753,12 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
   EGE_ASSERT_X(NULL != material, "Component must have material attached.");
   EGE_ASSERT_X(0 < vertexBuffer->vertexCount(), "No vertices to render!");
 
-  //if (component->name() == "level-meter-classic")
+  //if (component->name() == "droplet-11")
   //{
-  //    int a = 1;
+  //  int a = 1;
   //}
 
   // setup vertex array object
-
   if (NULL != vao)
   {
     vao->bind();
