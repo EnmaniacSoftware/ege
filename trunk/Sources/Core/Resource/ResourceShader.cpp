@@ -151,6 +151,7 @@ void ResourceShader::unload()
 { 
   if (STATE_LOADED == m_state)
   {
+    // schedule for destroy
     app()->graphics()->hardwareResourceProvider()->requestDestroyShader(m_shader);
 
     // clean up

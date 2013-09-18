@@ -17,10 +17,6 @@ class IHardwareResourceProvider;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Shader : public Object
 {
-  /* For accessing private data. */
-  friend class RenderSystemPrivate;
-  friend class ProgramPrivate;
-
   public:
 
     virtual ~Shader();
@@ -31,15 +27,11 @@ class Shader : public Object
   public:
 
     /*! Returns TRUE if object is valid. */
-    bool isValid() const;
+    virtual bool isValid() const = 0;
     /*! Returns name. */
     const String& name() const;
     /*! Returns shader type. */
     EGEGraphics::ShaderType type() const;
-    /*! Creates shader from given buffer. 
-     *  @note Calling thread must be able to issue underlying 3D API commands.
-     */
-    EGEResult create(const PDataBuffer& buffer);
 
   protected:
 
@@ -47,8 +39,6 @@ class Shader : public Object
     Shader(Application* app, const String& name, EGEGraphics::ShaderType type, IHardwareResourceProvider* provider);
 
   private:
-
-    EGE_DECLARE_PRIVATE_IMPLEMENTATION(Shader);
 
     /*! Name. */
     String m_name; 

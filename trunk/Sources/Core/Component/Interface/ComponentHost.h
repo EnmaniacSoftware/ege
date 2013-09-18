@@ -34,6 +34,10 @@ class ComponentHost
      *  @return List of all attached components of the given type.
      */
     List<PComponent> components(u32 type) const;
+    /*! Removes given component. 
+     *  @param  component Component to remove.
+     */
+    void removeComponent(const PComponent& component);
 
   protected:
 

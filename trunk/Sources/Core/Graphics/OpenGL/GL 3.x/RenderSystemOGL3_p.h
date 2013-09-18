@@ -43,8 +43,13 @@ class RenderSystemPrivate : public IComponentRenderer
      *  @param  vertexArrayObject Vertex array object to setup.
      *  @param  vertexBuffer      Vertex buffer used for setup.
      *  @param  indexBuffer       Index buffer used for setup.
+     *  @param  program           Shader program used for setup.
      */
-    void setupVAO(PVertexArrayObject& vertexArrayObject, const PVertexBuffer& vertexBuffer, const PIndexBuffer& indexBuffer);
+    void setupVAO(PVertexArrayObject& vertexArrayObject, const PVertexBuffer& vertexBuffer, const PIndexBuffer& indexBuffer, const PProgram& program);
+    /*! Creates VAOs and sets them up if necessary. 
+     *  @param  component Render component for which to setup VAOs.
+     */
+    void createAndSetupVAOs(PRenderComponent component);
 
   protected:
 
@@ -58,8 +63,6 @@ class RenderSystemPrivate : public IComponentRenderer
     void setScissorTestEnabled(bool set);
     /*! Enables/disables given client state. */
     void setClientStateEnabled(u32 state, bool set);
-    /*! Sets current matrix mode. */
-    void setMatrixMode(s32 mode);
     /*! Sends all geometry through the geometry pipeline to hardware. */
     void flush();
     /*! Activates given texture unit for server side. */
@@ -114,12 +117,8 @@ class RenderSystemPrivate : public IComponentRenderer
     void destroyTexture2D(PTexture2D texture);
     /*! @see RenderSystem::createShader. */
     PShader createShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data);
-    /*! @see RenderSystem::destroyShader. */
-    void destroyShader(PShader shader);
     /*! @see RenderSystem::createProgram. */
     PProgram createProgram(const String& name, const List<PShader>& shaders);
-    /*! @see RenderSystem::destroyProgram. */
-    void destroyProgram(PProgram program);
 
   protected:
 
@@ -131,12 +130,12 @@ class RenderSystemPrivate : public IComponentRenderer
     bool m_blendEnabled;
     /*! Scissor test enabled flag. */
     bool m_scissorTestEnabled;
-    /*! Current matrix mode. */
-    s32 m_matrixMode;
     /*! */
     u32 m_activeTextureUnitsCount;
     /*! Active client states. */
     DynamicArray<u32> m_activeClientStates;
+    /*! Projection matrix. */
+    Matrix4f m_projectionMatrix;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

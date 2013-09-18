@@ -8,56 +8,86 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(ProgramPrivate)
-EGE_DEFINE_DELETE_OPERATORS(ProgramPrivate)
+EGE_DEFINE_NEW_OPERATORS(ProgramOGL)
+EGE_DEFINE_DELETE_OPERATORS(ProgramOGL)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ProgramPrivate::ProgramPrivate(Program* base) : m_d(base),
-                                                m_id(0),
-                                                m_linked(false)
+ProgramOGL::ProgramOGL(Application* app, const String& name, IHardwareResourceProvider* provider) : Program(app, name, provider),
+                                                                                                    m_id(0),
+                                                                                                    m_linked(false)
 {
+  egeDebug(KOpenGLDebugName) << glCreateProgram;
+  m_id = glCreateProgram();
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ProgramPrivate::~ProgramPrivate()
+ProgramOGL::~ProgramOGL()
 {
-  // NOTE: at this point object should be deallocated
-  EGE_ASSERT(0 == m_id);
+  if (0 != m_id)
+  {
+    // detach shaders
+    detachAll();
+
+    // delete program
+    glDeleteProgram(m_id);
+    OGL_CHECK();
+    m_id = 0;
+  }
+
+  m_linked = false;
+  m_uniforms.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ProgramPrivate::isValid() const
+bool ProgramOGL::isValid() const
 {
-  return (0 != m_id) && m_linked;
+  return (0 != m_id);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ProgramPrivate::attach(const PShader& shader)
+bool ProgramOGL::attach(const PShader& shader)
 {
+  ShaderOGL* shaderOGL = ege_cast<ShaderOGL*>(shader);
+
   GLenum result = GL_NO_ERROR;
 
-  glAttachObject(m_id, shader->p_func()->id());
+  glAttachShader(m_id, shaderOGL->id());
   OGL_CHECK_RESULT(result);
+
+  if (GL_NO_ERROR == result)
+  {
+    // call base class
+    result = Program::attach(shader) ? GL_NO_ERROR : GL_OUT_OF_MEMORY;
+  }
 
   return (GL_NO_ERROR == result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ProgramPrivate::detach(const PShader& shader)
+bool ProgramOGL::detach(const PShader& shader)
 {
+  ShaderOGL* shaderOGL = ege_cast<ShaderOGL*>(shader);
+
   GLenum result = GL_NO_ERROR;
 
-  glDetachObject(m_id, shader->p_func()->id());
+  glDetachShader(m_id, shaderOGL->id());
   OGL_CHECK_RESULT(result);
+
+  if (GL_NO_ERROR == result)
+  {
+    // call base class
+    result = Program::detach(shader) ? GL_NO_ERROR : GL_OUT_OF_MEMORY;
+  }
 
   return (GL_NO_ERROR == result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ProgramPrivate::link()
+bool ProgramOGL::link()
 {
   // link
   glLinkProgram(m_id);
 
   // validate
-  //glValidateProgram(m_id);
+  glValidateProgram(m_id);
 
   int linkResult;
-  glGetObjectParameteriv(m_id, GL_OBJECT_LINK_STATUS, &linkResult);
+  glGetProgramiv(m_id, GL_LINK_STATUS, &linkResult);
   if (GL_TRUE != linkResult)
   {
     // error!
@@ -66,11 +96,10 @@ bool ProgramPrivate::link()
   }
 
   // bind it so uniforms can be quereied
-  glUseProgramObject(m_id);
-  OGL_CHECK();
+  bind();
 
-  // retrieve uniform data
-  if ( ! buildUniformsList())
+  // retrieve uniform and attributes data
+  if ( ! buildUniformsList() || ! buildAttributesList())
   {
     // error!
     return false;
@@ -80,17 +109,18 @@ bool ProgramPrivate::link()
   m_linked = true;
 
   // unbind
-  glUseProgramObject(0);
-  OGL_CHECK();
+  unbind();
 
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ProgramPrivate::buildUniformsList()
+bool ProgramOGL::buildUniformsList()
 {
   // retrive number of uniforms
   GLint total = 0;
-  glGetObjectParameteriv(m_id, GL_OBJECT_ACTIVE_UNIFORMS, &total); 
+  glGetProgramiv(m_id, GL_ACTIVE_UNIFORMS, &total); 
+  OGL_CHECK();
+
   for (GLint i = 0; i < total; ++i)  
   {
     GLsizei nameLength = -1;
@@ -102,32 +132,60 @@ bool ProgramPrivate::buildUniformsList()
 
     // get uniform data
     glGetActiveUniform(m_id, i, sizeof(name) - 1, &nameLength, &num, &type, name);
-
-    // zero terminate
-    name[nameLength] = 0;
+    OGL_CHECK();
 
     // retrieve location
-    GLuint location = 0;
+    GLint location = 0;
     location = glGetUniformLocation(m_id, name);
+    OGL_CHECK();
 
     // add to pool
     m_uniforms.insert(name, location);
   }
 
-  // TAGE - for attribs
-  // glGetAttribLocation
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ProgramOGL::buildAttributesList()
+{
+  // retrive number of uniforms
+  GLint total = 0;
+  glGetProgramiv(m_id, GL_ACTIVE_ATTRIBUTES, &total); 
+  OGL_CHECK();
+
+  for (GLint i = 0; i < total; ++i)  
+  {
+    GLsizei nameLength = -1;
+    GLint num = -1;
+
+    GLenum type = GL_ZERO;
+    
+    GLchar name[128];
+
+    // get uniform data
+    glGetActiveAttrib(m_id, i, sizeof(name) - 1, &nameLength, &num, &type, name);
+    OGL_CHECK();
+
+    // retrieve location
+    GLuint location = 0;
+    location = glGetAttribLocation(m_id, name);
+    OGL_CHECK();
+
+    // add to pool
+    m_attributes.insert(name, location);
+  }
 
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ProgramPrivate::printInfoLog()
+void ProgramOGL::printInfoLog()
 {
   int logLength = 0;
   int charsWritten  = 0;
   char* log;
 
   // get log length
-  glGetObjectParameteriv(m_id, GL_OBJECT_INFO_LOG_LENGTH, &logLength);
+  glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &logLength);
   if (0 < logLength)
   {
     // allocate space for the log
@@ -142,6 +200,29 @@ void ProgramPrivate::printInfoLog()
     // clean up
   	EGE_FREE(log);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ProgramOGL::bind()
+{
+  glUseProgram(m_id);
+  OGL_CHECK();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ProgramOGL::unbind()
+{
+  // unbind
+  glUseProgram(0);
+  OGL_CHECK();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+GLuint ProgramOGL::uniformLocation(const String& name) const
+{
+  return m_uniforms.value(name, -1);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+GLuint ProgramOGL::attributeLocation(const String& name) const
+{
+  return m_attributes.value(name, -1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

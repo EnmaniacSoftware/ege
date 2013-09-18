@@ -80,6 +80,15 @@ class RenderComponent : public Component
     bool isHashInvalid() const { return m_hashInvalid; }
     /*! Calculates hash. */
     void calculateHash();
+    /*! Removes all vertex array objects. */
+    void removeAllVertexArrayObjects();
+
+  private slots:
+
+    /*! Slot called when program for given render pass has changed. 
+     *  @param  pass  Render pass for which program has changed.
+     */
+    void onProgramChanged(PRenderPass pass);
 
   private:
 

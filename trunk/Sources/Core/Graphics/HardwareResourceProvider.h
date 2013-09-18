@@ -107,10 +107,6 @@ class IHardwareResourceProvider
      *        Upon completion result will be signalled by requestComplete.
      */
     virtual u32 requestCreateShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data) = 0;
-    /*! Destroys shader. 
-     *  @param  shader Shader to destroy.
-     */
-    virtual void destroyShader(PShader shader) = 0;
     /*! Requests deletion of shader. 
      *  @param  shader  Shader to destroy.
      *  @return Returns ID of the request for further delivery check.
@@ -132,10 +128,6 @@ class IHardwareResourceProvider
      *        Upon completion result will be signalled by requestComplete.
      */
     virtual u32 requestCreateProgram(const String& name, const List<PShader>& shaders) = 0;
-    /*! Destroys program. 
-     *  @param  program Program to destroy.
-     */
-    virtual void destroyProgram(PProgram program) = 0;
     /*! Requests deletion of program. 
      *  @param  program  Program to destroy.
      *  @return Returns ID of the request for further delivery check.

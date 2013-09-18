@@ -149,8 +149,9 @@ void RenderSystem::update()
       }
       else if (REQUEST_DESTROY_SHADER == request.type)
       {
-        PShader shader = request.objects.front();
-        destroyShader(shader);
+        // NOTE: if the last remaining instance, underlying object will be destroyed here
+        //       This is safe as this function is called from main thread
+        request.objects.clear();
 
         // signal
         emit requestComplete(request.id, NULL);
@@ -170,8 +171,9 @@ void RenderSystem::update()
       }
       else if (REQUEST_DESTROY_PROGRAM == request.type)
       {
-        PProgram program = request.objects.front();
-        destroyProgram(program);
+        // NOTE: if the last remaining instance, underlying object will be destroyed here
+        //       This is safe as this function is called from main thread
+        request.objects.clear();
 
         // signal
         emit requestComplete(request.id, NULL);
@@ -520,11 +522,6 @@ u32 RenderSystem::requestCreateShader(EGEGraphics::ShaderType type, const String
   return request.id;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystem::destroyShader(PShader shader)
-{
-  p_func()->destroyShader(shader);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 RenderSystem::requestDestroyShader(PShader shader)
 {
   // create request
@@ -563,11 +560,6 @@ u32 RenderSystem::requestCreateProgram(const String& name, const List<PShader>& 
   m_requests.push_back(request);
 
   return request.id;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystem::destroyProgram(PProgram program)
-{
-  return p_func()->destroyProgram(program);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 RenderSystem::requestDestroyProgram(PProgram program)

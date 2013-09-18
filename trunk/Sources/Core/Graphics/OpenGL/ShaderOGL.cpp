@@ -1,33 +1,53 @@
 #include "EGEDataBuffer.h"
 #include "EGEOpenGL.h"
 #include "Core/Graphics/OpenGL/ShaderOGL.h"
-#include "EGEShader.h"
 #include "EGEDevice.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(ShaderPrivate)
-EGE_DEFINE_DELETE_OPERATORS(ShaderPrivate)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ShaderPrivate::ShaderPrivate(Shader* base) : m_d(base),
-                                             m_id(0)
+/*! Maps shader type to OpenGL compilant one. */
+static GLenum MapShaderType(EGEGraphics::ShaderType type)
 {
+  GLenum result = 0;
+
+  switch (type)
+  {
+    case EGEGraphics::FRAGMENT_SHADER:  result = GL_FRAGMENT_SHADER; break;
+    case EGEGraphics::VERTEX_SHADER:    result = GL_VERTEX_SHADER; break;
+  }
+
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ShaderPrivate::~ShaderPrivate()
+EGE_DEFINE_NEW_OPERATORS(ShaderOGL)
+EGE_DEFINE_DELETE_OPERATORS(ShaderOGL)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ShaderOGL::ShaderOGL(Application* app, const String& name, EGEGraphics::ShaderType type, IHardwareResourceProvider* provider) 
+: Shader(app, name, type, provider),
+  m_id(0)
 {
-  // NOTE: at this point object should be deallocated
-  EGE_ASSERT(0 == m_id);
+  m_id = glCreateShader(MapShaderType(type));
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ShaderPrivate::isValid() const
+ShaderOGL::~ShaderOGL()
+{
+  if (0 != m_id)
+  {
+    glDeleteShader(m_id);
+    OGL_CHECK();
+    m_id = 0;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ShaderOGL::isValid() const
 {
   return (0 != m_id);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ShaderPrivate::create(const PDataBuffer& buffer)
+EGEResult ShaderOGL::create(const PDataBuffer& buffer)
 {
   GLint length = static_cast<GLint>(buffer->size() - buffer->readOffset());
   const GLchar* source = reinterpret_cast<GLchar*>(buffer->data(buffer->readOffset()));
@@ -48,7 +68,7 @@ EGEResult ShaderPrivate::create(const PDataBuffer& buffer)
   glCompileShader(m_id);
 
   int compileResult;
-  glGetObjectParameteriv(m_id, GL_OBJECT_COMPILE_STATUS, &compileResult);
+  glGetShaderiv(m_id, GL_COMPILE_STATUS, &compileResult);
   if (GL_TRUE != compileResult)
   {
     // error!
@@ -59,14 +79,14 @@ EGEResult ShaderPrivate::create(const PDataBuffer& buffer)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ShaderPrivate::printInfoLog()
+void ShaderOGL::printInfoLog()
 {
   int logLength = 0;
   int charsWritten  = 0;
   char* log;
 
   // get log length
-  glGetObjectParameteriv(m_id, GL_OBJECT_INFO_LOG_LENGTH, &logLength);
+  glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &logLength);
   if (0 < logLength)
   {
     // allocate space for the log
@@ -81,6 +101,11 @@ void ShaderPrivate::printInfoLog()
     // clean up
   	EGE_FREE(log);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+GLhandle ShaderOGL::id() const
+{
+  return m_id;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

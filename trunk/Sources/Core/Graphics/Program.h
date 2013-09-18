@@ -8,6 +8,7 @@
 #include "EGEString.h"
 #include "EGEShader.h"
 #include "EGEList.h"
+#include "EGEComponent.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -16,40 +17,32 @@ EGE_DECLARE_SMART_CLASS(Shader, PShader)
 EGE_DECLARE_SMART_CLASS(Program, PProgram)
 class IHardwareResourceProvider;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Program : public Object
+class Program : public Component
 {
-  /* For accessing private data. */
-  friend class RenderSystemPrivate;
-  
   public:
 
     virtual ~Program();
 
-    EGE_DECLARE_NEW_OPERATORS
-    EGE_DECLARE_DELETE_OPERATORS
-
   public:
 
     /*! Returns TRUE if object is valid. */
-    bool isValid() const;
-    /*! Returns name. */
-    const String& name() const;
+    virtual bool isValid() const = 0;
     /*! Attaches given shader. 
      *  @note Calling thread must be able to issue underlying 3D API commands.
      */
-    bool attach(const PShader& shader);
+    virtual bool attach(const PShader& shader);
     /*! Detaches given shader. 
      *  @note Calling thread must be able to issue underlying 3D API commands.
      */
-    bool detach(const PShader& shader);
+    virtual bool detach(const PShader& shader);
     /*! Detaches all shaders. 
      *  @note Calling thread must be able to issue underlying 3D API commands.
      */
     bool detachAll();
-    /*! Links the program. 
-     *  @note Calling thread must be able to issue underlying 3D API commands.
-     */
-    bool link();
+    /*! Binds program to GPU. */
+    virtual void bind() = 0;
+    /*! Unbinds program from GPU. */
+    virtual void unbind() = 0;
     
   protected:
 
@@ -58,20 +51,11 @@ class Program : public Object
 
   private:
 
-    EGE_DECLARE_PRIVATE_IMPLEMENTATION(Program);
-
-    /*! Name. */
-    String m_name; 
     /*! Resource provider used to create program. */
     IHardwareResourceProvider* m_provider;
     /*! List of attached shaders. */
     List<PShader> m_attachedShaders;
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline const String& Program::name() const 
-{ 
-  return m_name; 
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

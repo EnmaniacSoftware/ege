@@ -49,6 +49,9 @@ void RenderComponent::setMaterial(const PMaterial& material)
     m_material = material;
 
     invalidateHash();
+
+    // invalidate VAOs
+    removeAllVertexArrayObjects();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -171,12 +174,26 @@ EGEResult RenderComponent::addComponent(const PComponent& component)
   {
     case EGE_OBJECT_UID_VERTEX_BUFFER: 
       
-      m_vertexBuffer = component; 
+      // NOTE: pointer check
+      if (m_vertexBuffer != component)
+      {
+        m_vertexBuffer = component;
+
+        // invalidate VAOs
+        removeAllVertexArrayObjects();
+      }
       break;
     
     case EGE_OBJECT_UID_INDEX_BUFFER: 
       
-      m_indexBuffer = component; 
+      // NOTE: pointer check
+      if (m_indexBuffer != component)
+      {
+        m_indexBuffer = component; 
+
+        // invalidate VAOs
+        removeAllVertexArrayObjects();
+      }
       break;
 
     default:
@@ -186,6 +203,21 @@ EGEResult RenderComponent::addComponent(const PComponent& component)
   }
 
   return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderComponent::onProgramChanged(PRenderPass pass)
+{
+  // remove all vertex array objects
+  removeAllVertexArrayObjects();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderComponent::removeAllVertexArrayObjects()
+{
+  List<PComponent> list = components(EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT);
+  for (List<PComponent>::const_iterator it = list.begin(); it != list.end(); ++it)
+  {
+    removeComponent(*it);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

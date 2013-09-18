@@ -7,6 +7,7 @@
 #include "EGE.h"
 #include "EGEGraphics.h"
 #include "EGEColorTransform.h"
+#include "EGESignal.h"
 #include "Core/Graphics/TextureImage.h"
 #include "Core/Graphics/Program.h"
 
@@ -25,6 +26,15 @@ class RenderPass : public Object
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public signals:
+
+    // TAGE - binding to RenderComponent is required
+
+    /*! Signal emitter when program has changed. 
+     *  @param  renderPass  Render pass for which program has changed.
+     */
+    Signal1<PRenderPass> programChanged;
 
   public:
 

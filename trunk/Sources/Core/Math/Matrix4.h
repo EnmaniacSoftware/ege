@@ -29,6 +29,7 @@ class TMatrix4
 
 		TMatrix4&   operator+=(const TMatrix4& matrix);
 	  TMatrix4&   operator-=(const TMatrix4& matrix);
+	  TMatrix4&   operator*=(const TMatrix4& matrix);
     const T&    operator()(u32 column, u32 row) const;
     T&          operator()(u32 column, u32 row);
 		T*          operator[](u32 column);
@@ -142,6 +143,13 @@ inline TMatrix4<T>& TMatrix4<T>::operator-=(const TMatrix4<T>& matrix)
     data[entry] -= matrix.data[entry];
   }
 
+  return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+inline TMatrix4<T>& TMatrix4<T>::operator*=(const TMatrix4<T>& matrix)
+{
+  *this = multiply(matrix);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

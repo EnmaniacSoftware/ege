@@ -16,6 +16,8 @@ class MultiMap : public std::multimap<T, U>
     void insert(const T& key, const U& value);
     /*! Fills given list with all objects of a given key. */
     void values(const T& key, List<U>& list) const;
+    /*! Removes entry with a given value. Returns TRUE if entry has been removed. */
+    bool removeByValue(const U value);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>
@@ -35,6 +37,21 @@ void MultiMap<T, U>::values(const T& key, List<U>& list) const
   {
     list.push_back(it->second);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+bool MultiMap<T, U>::removeByValue(const U value)
+{
+  for (typename MultiMap<T, U>::iterator it = this->begin(); it != this->end(); ++it)
+  {
+    if (it->second == value)
+    {
+      this->erase(it);
+      return true;
+    }
+  }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -165,7 +165,14 @@ void RenderPass::setDiffuseColorTransformation(const ColorTransform& transformat
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderPass::setProgram(const PProgram& program)
 {
-  m_program = program;
+  // NOTE: pointer check
+  if (m_program != program)
+  {
+    m_program = program;
+
+    // emit
+    emit programChanged(this);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderPass::operator == (const RenderPass& other) const

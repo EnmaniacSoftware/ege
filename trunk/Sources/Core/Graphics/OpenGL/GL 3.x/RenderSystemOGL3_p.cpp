@@ -158,20 +158,6 @@ static GLint MapTextureAddressingMode(EGETexture::AddressingMode mode)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Maps shader type to OpenGL compilant one. */
-static GLenum MapShaderType(EGEGraphics::ShaderType type)
-{
-  GLenum result = 0;
-
-  switch (type)
-  {
-    case EGEGraphics::FRAGMENT_SHADER:  result = GL_FRAGMENT_SHADER; break;
-    case EGEGraphics::VERTEX_SHADER:    result = GL_VERTEX_SHADER; break;
-  }
-
-  return result;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderSystemPrivate::RenderSystemPrivate(RenderSystem* base) : m_d(base), 
                                                                m_activeTextureUnit(0),
                                                                m_activeClientTextureUnit(0),
@@ -181,9 +167,6 @@ RenderSystemPrivate::RenderSystemPrivate(RenderSystem* base) : m_d(base),
   OGL_CHECK();
   
   m_scissorTestEnabled = (GL_TRUE == glIsEnabled(GL_SCISSOR_TEST));
-  OGL_CHECK();
-  
-  glGetIntegerv(GL_MATRIX_MODE, &m_matrixMode);
   OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -228,18 +211,21 @@ void RenderSystemPrivate::setViewport(const PViewport& viewport)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::flush()
 {
-   setMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
+  // prepare projection matrix
+  m_projectionMatrix = d_func()->m_projectionMatrix;
 
   // check if not auto-rotated
   if ( ! d_func()->m_renderTarget->isAutoRotated())
   {
     // apply rotation
     // NOTE: actual OGLES rotation should be opposite
-    glRotatef(-d_func()->m_renderTarget->orientationRotation().degrees(), 0, 0, 1);
+    Quaternionf rotation(Vector3f(0, 0, 1), -d_func()->m_renderTarget->orientationRotation());
+
+    Matrix4f matrix;
+    Math::Convert(&matrix, &rotation);
+
+    m_projectionMatrix *= matrix;
   }
-  
-  glMultMatrixf(d_func()->m_projectionMatrix.data);
 
   // go thru all render queues
   for (Map<s32, List<PRenderQueue> >::const_iterator itQueue = d_func()->m_renderQueues.begin(); itQueue != d_func()->m_renderQueues.end(); ++itQueue)
@@ -267,8 +253,10 @@ void RenderSystemPrivate::flush()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass& pass)
 {
-  Color color = pass.diffuseColorTransformation().transform(pass.diffuseColor());
-  glColor4f(color.red, color.green, color.blue, color.alpha);
+  // TAGE - port
+  //Color color = pass.diffuseColorTransformation().transform(pass.diffuseColor());
+  //glColor4f(color.red, color.green, color.blue, color.alpha);
+  //OGL_CHECK();
 
   // get nimber of available texture array elements
   u32 textureCoordsCount = component->vertexBuffer()->vertexDeclaration().elementCount(NVertexBuffer::VES_TEXTURE_UV);
@@ -356,20 +344,21 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
 	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(tex2d->m_addressingModeS));
 	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(tex2d->m_addressingModeT));
 
-      setMatrixMode(GL_TEXTURE);
-      glLoadIdentity();
+      // TAGE - port
+      //setMatrixMode(GL_TEXTURE);
+      //glLoadIdentity();
 
-      float32 degrees = textureImage->rotationAngle().degrees();
+      //float32 degrees = textureImage->rotationAngle().degrees();
 
-      if (0.0f != degrees)
-      {
-        glTranslatef(textureImage->rect().x + textureImage->rect().width * 0.5f, textureImage->rect().y + textureImage->rect().height * 0.5f, 0.0f);
-        glRotatef(degrees, 0.0f, 0.0f, 1.0f);
-        glTranslatef(-(textureImage->rect().x + textureImage->rect().width * 0.5f), -(textureImage->rect().y + textureImage->rect().height * 0.5f), 0.0f);
-      }
+      //if (0.0f != degrees)
+      //{
+      //  glTranslatef(textureImage->rect().x + textureImage->rect().width * 0.5f, textureImage->rect().y + textureImage->rect().height * 0.5f, 0.0f);
+      //  glRotatef(degrees, 0.0f, 0.0f, 1.0f);
+      //  glTranslatef(-(textureImage->rect().x + textureImage->rect().width * 0.5f), -(textureImage->rect().y + textureImage->rect().height * 0.5f), 0.0f);
+      //}
 
-      glTranslatef(textureImage->rect().x, textureImage->rect().y, 0.0f);
-      glScalef(textureImage->rect().width, textureImage->rect().height, 1.0f);
+      //glTranslatef(textureImage->rect().x, textureImage->rect().y, 0.0f);
+      //glScalef(textureImage->rect().width, textureImage->rect().height, 1.0f);
     }
 
     // check if points are be rendered
@@ -425,10 +414,6 @@ void RenderSystemPrivate::activateClientTextureUnit(u32 unit)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::bindTexture(GLenum target, GLuint textureId)
 {
-  // enable target first
-  glEnable(target);
-  OGL_CHECK();
-
   // map texture target into texture binding query value
   GLenum textureBinding;
   switch (target)
@@ -506,7 +491,6 @@ void RenderSystemPrivate::applyGeneralParams(const PRenderComponent& component)
     glLineWidth(component->lineWidth());
   }
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PVertexBuffer RenderSystemPrivate::createVertexBuffer(const String& name, const VertexDeclaration& vertexDeclaration, NVertexBuffer::UsageType usage) const
 {
@@ -713,124 +697,80 @@ PShader RenderSystemPrivate::createShader(EGEGraphics::ShaderType type, const St
   }
 
   // create shader
-  PShader shader = ege_new Shader(d_func()->app(), name, type, d_func());
-  if ((NULL == shader) || (NULL == shader->p_func()))
+  ShaderOGL* shader = ege_new ShaderOGL(d_func()->app(), name, type, d_func());
+  if ((NULL == shader) || ! shader->isValid())
   {
     // error!
-    return NULL;
+    EGE_DELETE(shader);
   }
-
-  // create shader object
-  shader->p_func()->m_id = glCreateShaderObject(MapShaderType(type));
-  if (0 == shader->p_func()->m_id)
+  else
   {
-    // error!
-    return NULL;
-  }
-
-  // create it from data source
-  if (EGE_SUCCESS != shader->create(data))
-  {
-    // error!
-    destroyShader(shader);
-    return NULL;
+    // create it from data source
+    if (EGE_SUCCESS != shader->create(data))
+    {
+      // error!
+      EGE_DELETE(shader);
+    }
   }
 
   return shader;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::destroyShader(PShader shader)
-{
-  if (0 != shader->p_func()->m_id)
-  {
-    egeDebug(KOpenGLDebugName) << "Destroying shader" << shader->p_func()->m_id << shader->name();
-  
-    glDeleteObject(shader->p_func()->m_id);
-    OGL_CHECK();
-    shader->p_func()->m_id = 0;
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PProgram RenderSystemPrivate::createProgram(const String& name, const List<PShader>& shaders)
 {
-  // create shader
-  PProgram program = ege_new Program(d_func()->app(), name, d_func());
-  if ((NULL == program) || (NULL == program->p_func()))
+  // create shader program
+  ProgramOGL* program = ege_new ProgramOGL(d_func()->app(), name, d_func());
+  if ((NULL == program) || ! program->isValid())
   {
     // error!
-    return NULL;
+    EGE_DELETE(program);
   }
-
-  // create shader object
-  program->p_func()->m_id = glCreateProgramObject();
-  if (0 == program->p_func()->m_id)
+  else
   {
-    // error!
-    return NULL;
-  }
+    // attach shaders
+    for (List<PShader>::const_iterator it = shaders.begin(); it != shaders.end(); ++it)
+    {
+      const PShader& shader = *it;
 
-  // attach shaders
-  for (List<PShader>::const_iterator it = shaders.begin(); it != shaders.end(); ++it)
-  {
-    const PShader& shader = *it;
+      if ( ! program->attach(shader))
+      {
+        // error!
+        EGE_DELETE(program);
+        break;
+      }
+    }
 
-    if ( ! program->attach(shader))
+    // link
+    if ((NULL != program) && ! program->link())
     {
       // error!
-      return NULL;
+      EGE_DELETE(program);
     }
-  }
-
-  // link
-  if ( ! program->link())
-  {
-    // error!
-    destroyProgram(program);
-    return NULL;
   }
 
   return program;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::destroyProgram(PProgram program)
-{
-  if (0 != program->p_func()->m_id)
-  {
-    egeDebug(KOpenGLDebugName) << "Destroying program" << program->p_func()->m_id << program->name();
-  
-    // detach shaders
-    program->detachAll();
-
-    // delete program
-    glDeleteObject(program->p_func()->m_id);
-    OGL_CHECK();
-    program->p_func()->m_id = 0;
-    program->p_func()->m_linked = false;
-    program->p_func()->m_uniforms.clear();
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::renderComponent(const PRenderComponent& component, const Matrix4f& modelMatrix)
 {
-  PVertexBuffer vertexBuffer = component->vertexBuffer();
-  PIndexBuffer indexBuffer   = component->indexBuffer();
-  PMaterial material         = component->material();
-  PVertexArrayObject vao     = component->components(EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT).first(NULL);
+  PVertexBuffer vertexBuffer  = component->vertexBuffer();
+  PIndexBuffer indexBuffer    = component->indexBuffer();
+  PMaterial material          = component->material();
 
   EGE_ASSERT_X(NULL != material, "Component must have material attached.");
   EGE_ASSERT_X(0 < vertexBuffer->vertexCount(), "No vertices to render!");
+
+  // make sure VAOs are created and set up
+  createAndSetupVAOs(component);
+  
+  List<PComponent> vaos = component->components(EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT);
 
   //if (component->name() == "level-meter-classic")
   //{
   //    int a = 1;
   //}
 
-  // bind vertex and index buffers
-  if (NULL != vao)
-  {
-    vao->bind();
-  }
-  else
+  if (vaos.empty())
   {
     // bind vertex and index buffers
     vertexBuffer->bind();
@@ -845,30 +785,42 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
   {
     const PRenderPass renderPass = material->pass(pass);
 
+    ProgramOGL* programOGL = ege_cast<ProgramOGL*>(renderPass->program());
+
+    // get first vao from the list and shrink the list
+    PVertexArrayObject vao = vaos.first(NULL);
+    vaos.pop_front();
+
     // apply pass related params
     applyPassParams(component, material, *renderPass);
+
+    // setup program if any
+    if (NULL != programOGL)
+    {
+      // bind
+      programOGL->bind();
+
+      // set model-view matrix
+      glUniformMatrix4fv(programOGL->uniformLocation("u_mvpMatrix"), 1, GL_FALSE, 
+                         d_func()->m_viewMatrix.multiply(modelMatrix).multiply(m_projectionMatrix).data);
+      OGL_CHECK();
+    }
 
     // apply vertex arrays
     if (NULL == vao)
     {
       applyVertexArrays(vertexBuffer->vertexDeclaration(), vertexBuffer->offset());
     }
-
-    // NOTE: change to modelview after material is applied as it may change current matrix mode
-    setMatrixMode(GL_MODELVIEW);
+    else
+    {
+      // bind vao
+      vao->bind();
+    }
 
     u32 value = (0 < indexBuffer->indexCount()) ? indexBuffer->indexCount() : vertexBuffer->vertexCount();
 
     d_func()->m_vertexCount += value;
     d_func()->m_batchCount++;
-
-    // TAGE - might be necessary
-	  //if (multitexturing)
-	  //  glClientActiveTexture(GL_TEXTURE0);
-
-    // set model-view matrix
-    glLoadMatrixf(d_func()->m_viewMatrix.multiply(modelMatrix).data);
-    OGL_CHECK();
 
     // check if INDICIES are to be used
     if (0 < indexBuffer->indexCount())
@@ -888,6 +840,18 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
 
       // update engine info
       ENGINE_INFO(drawArraysCalls++);
+    }
+
+    if (NULL != vao)
+    {
+      // unbind vao
+      vao->unbind();
+    }
+
+    // unbind program
+    if (NULL != renderPass->program())
+    {
+      renderPass->program()->unbind();
     }
 
     // clean up
@@ -915,11 +879,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
     //}
   }
 
-  if (NULL != vao)
-  {
-    vao->unbind();
-  }
-  else
+  if (vaos.empty())
   {
     // unbind vertex and index buffers
     vertexBuffer->unbind();
@@ -1049,17 +1009,6 @@ void RenderSystemPrivate::applyVertexArrays(const VertexDeclaration& vertexDecla
   setClientStateEnabled(GL_COLOR_ARRAY, colorPointerInUse);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::setMatrixMode(s32 mode)
-{
-  if (mode != m_matrixMode)
-  {
-    glMatrixMode(mode);
-    OGL_CHECK();
-
-    m_matrixMode = mode;
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderSystemPrivate::registerComponent(PRenderComponent& component, NVertexBuffer::UsageType vertexUsage, const VertexDeclaration& vertexDeclaration, 
                                             EGEIndexBuffer::UsageType indexUsage)
 {
@@ -1071,39 +1020,29 @@ bool RenderSystemPrivate::registerComponent(PRenderComponent& component, NVertex
     // add vertex buffer component
     if (EGE_SUCCESS == component->addComponent(createVertexBuffer(component->name() + "-vb", vertexDeclaration, vertexUsage)))
     {
-      // check if VAO is supported and can be used ie VBO is supported
-      if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECT) && Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
-      {
-        // add vertex array object component
-        if (EGE_SUCCESS == component->addComponent(new VertexArrayObject(d_func()->app(), component->name() + "-vao")))
-        {
-          // setup vertex array object
-          List<PComponent> list = component->components(EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT);
-          EGE_ASSERT_X(1 == list.size(), "There should be exactly one VAO component attached!");
-
-          PVertexArrayObject vao = list.front();
-          setupVAO(vao, component->vertexBuffer(), component->indexBuffer());
-          result = true;
-        }
-      }
-      else
-      {
-        result = true;
-      }
+      // done
+      result = true;
     }
   }
 
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::setupVAO(PVertexArrayObject& vertexArrayObject, const PVertexBuffer& vertexBuffer, const PIndexBuffer& indexBuffer)
+void RenderSystemPrivate::setupVAO(PVertexArrayObject& vertexArrayObject, const PVertexBuffer& vertexBuffer, const PIndexBuffer& indexBuffer, 
+                                   const PProgram& program)
 {
+  EGE_ASSERT(NULL != program);
+
+  ProgramOGL* programOGL = ege_cast<ProgramOGL*>(program);
+
   // bind VAO
   // NOTE: Currently, all vertex states are stored within VAO rather than in OpenGL state machine, so there is no need to unbind anything 
   vertexArrayObject->bind();
 
   // bind VBO
   vertexBuffer->bind();
+
+  GLuint location;
 
   // go thru all arrays
   s32 textureCoordIndex = 0;
@@ -1115,43 +1054,56 @@ void RenderSystemPrivate::setupVAO(PVertexArrayObject& vertexArrayObject, const 
     {
       case NVertexBuffer::VES_POSITION_XYZ:
 
-        glVertexPointer(3, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
+        location = programOGL->attributeLocation("a_position");
+        EGE_ASSERT(0 <= location);
+
+        glEnableVertexAttribArray(location);
         OGL_CHECK();
-        glEnableClientState(GL_VERTEX_ARRAY);
+        glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
         OGL_CHECK();
         break;
 
       case NVertexBuffer::VES_POSITION_XY:
 
-        glVertexPointer(2, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
+        location = programOGL->attributeLocation("a_position");
+        EGE_ASSERT(0 <= location);
+
+        glEnableVertexAttribArray(location);
         OGL_CHECK();
-        glEnableClientState(GL_VERTEX_ARRAY);
+        glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
         OGL_CHECK();
         break;
 
       case NVertexBuffer::VES_NORMAL:
 
-        glNormalPointer(GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
+        location = programOGL->attributeLocation("a_normal");
+        EGE_ASSERT(0 <= location);
+
+        glEnableVertexAttribArray(location);
         OGL_CHECK();
-        glEnableClientState(GL_NORMAL_ARRAY);
+        glVertexAttribPointer(location, 4, GL_FLOAT, GL_FALSE, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
         OGL_CHECK();
         break;
 
       case NVertexBuffer::VES_COLOR_RGBA:
 
-        glColorPointer(4, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
+        location = programOGL->attributeLocation("a_color");
+        EGE_ASSERT(0 <= location);
+
+        glEnableVertexAttribArray(location);
         OGL_CHECK();
-        glEnableClientState(GL_COLOR_ARRAY);
+        glVertexAttribPointer(location, 4, GL_FLOAT, GL_FALSE, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
         OGL_CHECK();
         break;
 
       case NVertexBuffer::VES_TEXTURE_UV:
 
-        activateClientTextureUnit(textureCoordIndex);
+        location = programOGL->attributeLocation(String::Format("a_texture%1", textureCoordIndex));
+        EGE_ASSERT(0 <= location);
 
-        glTexCoordPointer(2, GL_FLOAT, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
+        glEnableVertexAttribArray(location);
         OGL_CHECK();
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, vertexBuffer->vertexDeclaration().vertexSize(), static_cast<s8*>(vertexBuffer->offset()) + itElement->offset());
         OGL_CHECK();
         break;
 
@@ -1162,8 +1114,47 @@ void RenderSystemPrivate::setupVAO(PVertexArrayObject& vertexArrayObject, const 
 
   // bind IBO
   indexBuffer->bind();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemPrivate::createAndSetupVAOs(PRenderComponent component)
+{
+  bool result = true;
 
-  // unbind VAO
-  vertexArrayObject->unbind();
+  PMaterial material    = component->material();
+  List<PComponent> vaos = component->components(EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT);
+
+  // check if VAO is supported and can be used ie VBO is supported
+  if (vaos.empty() && Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECT) && 
+      Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
+  {
+    for (u32 pass = 0; (pass < material->passCount()) && result; ++pass)
+    {
+      // create vao
+      PVertexArrayObject vao = new VertexArrayObject(d_func()->app(), component->name() + String::Format("-vao-%1", pass));
+      if ((NULL == vao) || (EGE_SUCCESS != component->addComponent(vao)))
+      {
+        // error!
+        result = false;
+      }
+      else
+      {
+        // add to local pool
+        vaos.push_back(vao);
+
+        // set it up
+        setupVAO(vao, component->vertexBuffer(), component->indexBuffer(), material->pass(pass)->program());
+      }
+    }
+  }
+
+  // check if failed
+  if ( ! result)
+  {
+    // remove all VAOs
+    for (List<PComponent> ::const_iterator it = vaos.begin(); it != vaos.end(); ++it)
+    {
+      component->removeComponent(*it);
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

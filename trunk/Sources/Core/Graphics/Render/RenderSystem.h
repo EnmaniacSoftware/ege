@@ -212,16 +212,12 @@ class RenderSystem : public Object, public IRenderer, public IHardwareResourcePr
     PShader createShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data) override;
     /*! @see IHardwareResourceProvider::requestCreateShader. */
     u32 requestCreateShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data) override;
-    /*! @see IHardwareResourceProvider::destroyShader. */
-    void destroyShader(PShader shader) override;
     /*! @see IHardwareResourceProvider::requestDestroyShader. */
     u32 requestDestroyShader(PShader shader) override;
     /*! @see IHardwareResourceProvider::createProgram. */
     PProgram createProgram(const String& name, const List<PShader>& shaders) override;
     /*! @see IHardwareResourceProvider::requestCreateProgram. */
     u32 requestCreateProgram(const String& name, const List<PShader>& shaders) override;
-    /*! @see IHardwareResourceProvider::destroyProgram. */
-    void destroyProgram(PProgram program) override;
     /*! @see IHardwareResourceProvider::requestDestroyProgram. */
     u32 requestDestroyProgram(PProgram program) override;
     /*! @see IEventListener::onEventRecieved. */

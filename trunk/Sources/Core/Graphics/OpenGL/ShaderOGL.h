@@ -3,6 +3,7 @@
 
 #include "EGE.h"
 #include "EGEOpenGL.h"
+#include "EGEShader.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -10,21 +11,18 @@ EGE_NAMESPACE_BEGIN
 class Shader;
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ShaderPrivate
+class ShaderOGL : public Shader
 {
-  /* For accessing private data. */
-  friend class RenderSystemPrivate;
-
   public:
 
-    ShaderPrivate(Shader* base);
-   ~ShaderPrivate();
+    ShaderOGL(Application* app, const String& name, EGEGraphics::ShaderType type, IHardwareResourceProvider* provider);
+    virtual ~ShaderOGL();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
     /*! @see Shader::isValid. */
-    bool isValid() const;
+    bool isValid() const override;
     /*! @see Shader::create. */
     EGEResult create(const PDataBuffer& buffer);
     /*! Returns id. */
@@ -37,16 +35,9 @@ class ShaderPrivate
 
   private:
 
-    EGE_DECLARE_PUBLIC_IMPLEMENTATION(Shader);
-
     /*! Shader id. */
     GLhandle m_id;
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline GLhandle ShaderPrivate::id() const
-{
-  return m_id;
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

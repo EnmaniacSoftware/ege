@@ -25,18 +25,15 @@ PRenderPass Material::addPass(const PRenderPass& pass)
   RenderPass* renderPass = pass;
 
   // check if existing one should be added
-  if (NULL != renderPass)
-  {
-    m_passes.push_back(renderPass);
-  }
-  else
+  if (NULL == renderPass)
   {
     // create new
     renderPass = ege_new RenderPass(app());
-    if (renderPass)
-    {
-      m_passes.push_back(renderPass);
-    }
+  }
+
+  if (NULL != renderPass)
+  {
+    m_passes.push_back(renderPass);
   }
 
   return renderPass;

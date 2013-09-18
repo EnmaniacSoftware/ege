@@ -5,12 +5,6 @@
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include "EGEDebug.h"
 
-//#if EGE_RENDERING_OPENGL_3 || EGE_RENDERING_OPENGL_FIXED
-#include "Core/Graphics/OpenGL/ShaderOGL.h"
-//#elif EGE_RENDERING_OPENGLES_1
-//#include "Core/Graphics/OpenGL/ES 1.0/ShaderOGLES1_p.h"
-//#endif // EGE_RENDERING_OPENGL_3 || EGE_RENDERING_OPENGL_FIXED
-
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -22,22 +16,10 @@ Shader::Shader(Application* app, const String& name, EGEGraphics::ShaderType typ
                                                                                                                           m_type(type),
                                                                                                                           m_provider(provider)
 {
-  m_p = ege_new ShaderPrivate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Shader::~Shader()
 {
-  EGE_DELETE(m_p);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Shader::isValid() const
-{
-  return (NULL != m_p) && m_p->isValid();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Shader::create(const PDataBuffer& buffer)
-{
-  return p_func()->create(buffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

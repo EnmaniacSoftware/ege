@@ -673,16 +673,20 @@ void RenderWindowOGLWin32::detectCapabilities()
   // check shader objects support
   if (extensionArray.contains("GL_ARB_shader_objects"))
   {
-    glCreateShaderObject   = reinterpret_cast<PFNGLCREATESHADEROBJECTARBPROC>(wglGetProcAddress("glCreateShaderObjectARB"));
-    glDeleteObject         = reinterpret_cast<PFNGLDELETEOBJECTARBPROC>(wglGetProcAddress("glDeleteObjectARB"));
-    glDetachObject         = reinterpret_cast<PFNGLDETACHOBJECTARBPROC>(wglGetProcAddress("glDetachObjectARB"));
-    glShaderSource         = reinterpret_cast<PFNGLSHADERSOURCEARBPROC>(wglGetProcAddress("glShaderSource"));
+    glCreateShader         = reinterpret_cast<PFNGLCREATESHADERPROC>(wglGetProcAddress("glCreateShader"));
+    glDeleteShader         = reinterpret_cast<PFNGLDELETESHADERPROC>(wglGetProcAddress("glDeleteShader"));
+    glAttachShader         = reinterpret_cast<PFNGLATTACHSHADERPROC>(wglGetProcAddress("glAttachShader"));
+    glDetachShader         = reinterpret_cast<PFNGLDETACHSHADERPROC>(wglGetProcAddress("glDetachShader"));
+    glShaderSource         = reinterpret_cast<PFNGLGETSHADERSOURCEPROC>(wglGetProcAddress("glShaderSource"));
     glCompileShader        = reinterpret_cast<PFNGLCOMPILESHADERARBPROC>(wglGetProcAddress("glCompileShader"));
-    glCreateProgramObject  = reinterpret_cast<PFNGLCREATEPROGRAMOBJECTARBPROC>(wglGetProcAddress("glCreateProgramObjectARB"));
-    glAttachObject         = reinterpret_cast<PFNGLATTACHOBJECTARBPROC>(wglGetProcAddress("glAttachObjectARB"));
+    glGetShaderiv          = reinterpret_cast<PFNGLGETSHADERIVPROC>(wglGetProcAddress("glGetShaderiv"));
+    glCreateProgram        = reinterpret_cast<PFNGLCREATEPROGRAMPROC>(wglGetProcAddress("glCreateProgram"));
+    glDeleteProgram        = reinterpret_cast<PFNGLDELETEPROGRAMPROC>(wglGetProcAddress("glDeleteProgram"));
     glLinkProgram          = reinterpret_cast<PFNGLLINKPROGRAMARBPROC>(wglGetProcAddress("glLinkProgram"));
-    glUseProgramObject     = reinterpret_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(wglGetProcAddress("glUseProgramObjectARB"));
-    glGetUniformLocation   = reinterpret_cast<PFNGLGETUNIFORMLOCATIONARBPROC>(wglGetProcAddress("glGetUniformLocation"));
+    glValidateProgram      = reinterpret_cast<PFNGLVALIDATEPROGRAMARBPROC>(wglGetProcAddress("glValidateProgram"));
+    glUseProgram           = reinterpret_cast<PFNGLUSEPROGRAMPROC>(wglGetProcAddress("glUseProgram"));
+    glGetProgramiv         = reinterpret_cast<PFNGLGETPROGRAMIVPROC>(wglGetProcAddress("glGetProgramiv"));
+    glGetUniformLocation   = reinterpret_cast<PFNGLGETUNIFORMLOCATIONPROC>(wglGetProcAddress("glGetUniformLocation"));
     glGetActiveUniform     = reinterpret_cast<PFNGLGETACTIVEUNIFORMPROC>(wglGetProcAddress("glGetActiveUniform"));
     glUniform1f            = reinterpret_cast<PFNGLUNIFORM1FARBPROC>(wglGetProcAddress("glUniform1f"));
     glUniform2f            = reinterpret_cast<PFNGLUNIFORM2FARBPROC>(wglGetProcAddress("glUniform2f"));
@@ -695,14 +699,22 @@ void RenderWindowOGLWin32::detectCapabilities()
     glUniformMatrix2fv     = reinterpret_cast<PFNGLUNIFORMMATRIX2FVARBPROC>(wglGetProcAddress("glUniformMatrix2fvARB"));
     glUniformMatrix3fv     = reinterpret_cast<PFNGLUNIFORMMATRIX3FVARBPROC>(wglGetProcAddress("glUniformMatrix3fvARB"));
     glUniformMatrix4fv     = reinterpret_cast<PFNGLUNIFORMMATRIX4FVARBPROC>(wglGetProcAddress("glUniformMatrix4fvARB"));
-    glGetObjectParameterfv = reinterpret_cast<PFNGLGETOBJECTPARAMETERFVARBPROC>(wglGetProcAddress("glGetObjectParameterfvARB"));
-    glGetObjectParameteriv = reinterpret_cast<PFNGLGETOBJECTPARAMETERIVARBPROC>(wglGetProcAddress("glGetObjectParameterivARB"));
   }
 
   // check vertex shader support
   if (extensionArray.contains("GL_ARB_vertex_shader"))
   {
-    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_SHADER, true);
+    glDisableVertexAttribArray  = reinterpret_cast<PFNGLDISABLEVERTEXATTRIBARRAYPROC>(wglGetProcAddress("glDisableVertexAttribArray"));
+    glEnableVertexAttribArray   = reinterpret_cast<PFNGLENABLEVERTEXATTRIBARRAYPROC>(wglGetProcAddress("glEnableVertexAttribArray"));
+    glGetAttribLocation         = reinterpret_cast<PFNGLGETATTRIBLOCATIONPROC>(wglGetProcAddress("glGetAttribLocation"));
+    glVertexAttribPointer       = reinterpret_cast<PFNGLVERTEXATTRIBPOINTERARBPROC>(wglGetProcAddress("glVertexAttribPointer"));
+    glGetActiveAttrib           = reinterpret_cast<PFNGLGETACTIVEATTRIBPROC>(wglGetProcAddress("glGetActiveAttrib"));
+
+    if ((NULL != glDisableVertexAttribArray) && (NULL != glEnableVertexAttribArray) && (NULL != glGetAttribLocation) && 
+        (NULL != glVertexAttribPointer) && (NULL != glGetActiveAttrib))
+    {
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_SHADER, true);
+    }
   }
 
   // check fragment shader support

@@ -91,7 +91,7 @@ EGEResult ResourceProgram::load()
 {
   EGEResult result = EGE_SUCCESS;
 
-  if (STATE_LOADED != m_state)
+  if (STATE_UNLOADED == m_state)
   {
     // try to load all dependencies
     result = loadDependencies();
@@ -118,6 +118,12 @@ EGEResult ResourceProgram::load()
     }
   }
 
+  // check if still loading
+  if (STATE_LOADING == m_state)
+  {
+    result = EGE_WAIT;
+  }
+
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -138,6 +144,7 @@ void ResourceProgram::unload()
       it->second = NULL;
     }
 
+    // schedule for destroy
     app()->graphics()->hardwareResourceProvider()->requestDestroyProgram(m_program);
 
     // clean up
