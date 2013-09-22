@@ -386,6 +386,15 @@ void RenderWindowOGLIOS::detectCapabilities()
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FRAGMENT_SHADER, true);
 #endif // !EGE_RENDER_OPENGL_FIXED
 
+#if GL_OES_vertex_array_object
+  glGenVertexArrays     = ::glGenVertexArraysOES;
+  glIsVertexArray       = ::glIsVertexArrayOES;
+  glDeleteVertexArrays  = ::glDeleteVertexArraysOES;
+  glBindVertexArray     = ::glBindVertexArrayOES;
+  
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECTS, true);
+#endif // GL_OES_vertex_array_object
+  
   // check 32bit indexing support
 #if GL_OES_element_index_uint
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT, true);
