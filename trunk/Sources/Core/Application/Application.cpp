@@ -107,6 +107,9 @@ EGEResult Application::construct(const Dictionary& params)
     m_landscapeMode = iterLandscape->second.toBool();
   }
   
+  // load configuration
+  loadConfig();
+
   // create private implementation
   m_p = ege_new ApplicationPrivate(this);
   if (NULL == m_p)
@@ -457,6 +460,55 @@ void Application::onEventRecieved(PEvent event)
       }
       break;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Application::loadConfig()
+{
+  const char* KConfigFileName     = "config.xml";
+  const char* KRootElement        = "config";
+  const char* KLogElement         = "log";
+  const char* KLogNameAttribute   = "name";
+  const char* KLogEnableAttribute = "enabled";
+
+  StringList enabledDebugNames;
+
+  XmlDocument xml;
+  if (EGE_SUCCESS == xml.load(KConfigFileName))
+  {
+    // find the root element
+    PXmlElement root = xml.firstChild(KRootElement);
+    if ((NULL != root) && root->isValid())
+    {
+      // go thru all children and read as much as we can
+      PXmlElement child = root->firstChild();
+      while (child->isValid())
+      {
+        // get child name
+        const String childName = child->name();
+
+        // check if LOG node
+        if (KLogElement == childName)
+        {
+          // process data
+          String sectionName = child->attribute(KLogNameAttribute, "");
+          bool enabled       = child->attribute(KLogEnableAttribute, false);
+
+          // check if section is enabled
+          if (enabled)
+          {
+            // add to pool
+            enabledDebugNames << sectionName;
+          }
+        }
+  
+        // go to next child
+        child = child->nextChild();
+      }
+    }
+  }
+
+  // enable debug info
+  Debug::EnableNames(enabledDebugNames);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

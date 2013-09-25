@@ -131,6 +131,8 @@ class Application : public IEventListener
 
     /*! Application internal updater. */
     void update();
+    /*! Loads extra configuration from the file. */
+    void loadConfig();
 
   private:
 
