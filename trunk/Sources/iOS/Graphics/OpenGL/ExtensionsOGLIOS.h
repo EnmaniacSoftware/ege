@@ -74,26 +74,30 @@ extern PFNGLBLENDFUNCSEPARATEPROC glBlendFuncSeparate;
 #define GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG			0x8C03
 
 // GL_ARB_shader_objects
-#define GL_OBJECT_COMPILE_STATUS  0x8B81
-#define GL_OBJECT_LINK_STATUS     0x8B82
-#define GL_OBJECT_INFO_LOG_LENGTH 0x8B84
-#define GL_OBJECT_ACTIVE_UNIFORMS 0x8B86
+#define GL_COMPILE_STATUS    0x8B81
+#define GL_LINK_STATUS       0x8B82
+#define GL_INFO_LOG_LENGTH   0x8B84
+#define GL_ACTIVE_UNIFORMS   0x8B86
+#define GL_ACTIVE_ATTRIBUTES 0x8B89
+#define GL_CURRENT_PROGRAM   0x8B8D
 
 typedef char GLchar;
 typedef GLuint GLhandle;
 
-typedef GLhandle (GL_APIENTRYP PFNGLCREATESHADEROBJECTARBPROC) (GLenum shaderType);
-typedef void (GL_APIENTRYP PFNGLDELETEOBJECTARBPROC) (GLhandle obj);
-typedef void (GL_APIENTRYP PFNGLDETACHOBJECTARBPROC) (GLhandle containerObj, GLhandle attachedObj);
-typedef void (GL_APIENTRYP PFNGLSHADERSOURCEARBPROC) (GLhandle shaderObj, GLsizei count, const GLchar* *string, const GLint *length);
+typedef GLhandle (GL_APIENTRYP PFNGLCREATESHADERPROC) (GLenum shaderType);
+typedef void (GL_APIENTRYP PFNGLDELETESHADERPROC) (GLhandle obj);
+typedef void (GL_APIENTRYP PFNGLDETACHSHADERPROC) (GLhandle containerObj, GLhandle attachedObj);
+typedef void (GL_APIENTRYP PFNGLGETSHADERSOURCEPROC) (GLhandle shaderObj, GLsizei count, const GLchar* *string, const GLint *length);
 typedef void (GL_APIENTRYP PFNGLCOMPILESHADERARBPROC) (GLhandle shaderObj);
-typedef GLhandle (GL_APIENTRYP PFNGLCREATEPROGRAMOBJECTARBPROC) (void);
+typedef void (GL_APIENTRYP PFNGLGETSHADERIVPROC) (GLuint shader, GLenum pname, GLint* params);
+typedef GLhandle (GL_APIENTRYP PFNGLCREATEPROGRAMPROC) (void);
+typedef void (GL_APIENTRYP PFNGLDELETEPROGRAMPROC) (GLhandle program);
 typedef void (GL_APIENTRYP PFNGLGETPROGRAMIVPROC) (GLuint program, GLenum pname, GLint *params);
-typedef void (GL_APIENTRYP PFNGLATTACHOBJECTARBPROC) (GLhandle containerObj, GLhandle obj);
+typedef void (GL_APIENTRYP PFNGLATTACHSHADERPROC) (GLhandle containerObj, GLhandle obj);
 typedef void (GL_APIENTRYP PFNGLLINKPROGRAMARBPROC) (GLhandle programObj);
 typedef void (GL_APIENTRYP PFNGLVALIDATEPROGRAMARBPROC) (GLhandle programObj);
-typedef void (GL_APIENTRYP PFNGLUSEPROGRAMOBJECTARBPROC) (GLhandle programObj);
-typedef GLint (GL_APIENTRYP PFNGLGETUNIFORMLOCATIONARBPROC) (GLhandle programObj, const GLchar*name);
+typedef void (GL_APIENTRYP PFNGLUSEPROGRAMPROC) (GLhandle programObj);
+typedef GLint (GL_APIENTRYP PFNGLGETUNIFORMLOCATIONPROC) (GLhandle programObj, const GLchar*name);
 typedef void (GL_APIENTRYP PFNGLGETACTIVEUNIFORMPROC) (GLuint program, GLuint index, GLsizei bufSize, GLsizei *length, GLint *size, GLenum *type, GLchar *name);
 typedef void (GL_APIENTRYP PFNGLUNIFORM1FARBPROC) (GLint location, GLfloat v0);
 typedef void (GL_APIENTRYP PFNGLUNIFORM2FARBPROC) (GLint location, GLfloat v0, GLfloat v1);
@@ -106,21 +110,22 @@ typedef void (GL_APIENTRYP PFNGLUNIFORM4IARBPROC) (GLint location, GLint v0, GLi
 typedef void (GL_APIENTRYP PFNGLUNIFORMMATRIX2FVARBPROC) (GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 typedef void (GL_APIENTRYP PFNGLUNIFORMMATRIX3FVARBPROC) (GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 typedef void (GL_APIENTRYP PFNGLUNIFORMMATRIX4FVARBPROC) (GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
-typedef void (GL_APIENTRYP PFNGLGETOBJECTPARAMETERFVARBPROC) (GLhandle obj, GLenum pname, GLfloat *params);
-typedef void (GL_APIENTRYP PFNGLGETOBJECTPARAMETERIVARBPROC) (GLhandle obj, GLenum pname, GLint *params);
 
-extern PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObject;
-extern PFNGLDELETEOBJECTARBPROC glDeleteObject;
-extern PFNGLDETACHOBJECTARBPROC glDetachObject;
-extern PFNGLSHADERSOURCEARBPROC glShaderSource;
+extern PFNGLCREATESHADERPROC glCreateShader;
+extern PFNGLDELETESHADERPROC glDeleteShader;
+extern PFNGLATTACHSHADERPROC glAttachShader;
+extern PFNGLDETACHSHADERPROC glDetachShader;
+extern PFNGLGETSHADERSOURCEPROC glShaderSource;
 extern PFNGLCOMPILESHADERARBPROC glCompileShader;
-extern PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObject;
-extern PFNGLGETPROGRAMIVPROC glGetProgramiv;
-extern PFNGLATTACHOBJECTARBPROC glAttachObject;
-extern PFNGLLINKPROGRAMARBPROC glLinkProgram;
+extern PFNGLGETSHADERIVPROC glGetShaderiv;
+extern PFNGLCREATEPROGRAMPROC glCreateProgram;
+extern PFNGLDELETEPROGRAMPROC glDeleteProgram;
 extern PFNGLVALIDATEPROGRAMARBPROC glValidateProgram;
-extern PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObject;
-extern PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocation;
+extern PFNGLGETPROGRAMIVPROC glGetProgramiv;
+extern PFNGLLINKPROGRAMARBPROC glLinkProgram;
+extern PFNGLUSEPROGRAMPROC glUseProgram;
+
+extern PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
 extern PFNGLGETACTIVEUNIFORMPROC glGetActiveUniform;
 extern PFNGLUNIFORM1FARBPROC glUniform1f;
 extern PFNGLUNIFORM2FARBPROC glUniform2f;
@@ -133,26 +138,29 @@ extern PFNGLUNIFORM4IARBPROC glUniform4i;
 extern PFNGLUNIFORMMATRIX2FVARBPROC glUniformMatrix2fv;
 extern PFNGLUNIFORMMATRIX3FVARBPROC glUniformMatrix3fv;
 extern PFNGLUNIFORMMATRIX4FVARBPROC glUniformMatrix4fv;
-extern PFNGLGETOBJECTPARAMETERFVARBPROC glGetObjectParameterfv;
-extern PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameteriv;
 
 // ARB_vertex_shader
+#define GL_VERTEX_SHADER 0x8B31
+
 typedef void (GL_APIENTRYP PFNGLDISABLEVERTEXATTRIBARRAYPROC) (GLuint index);
 typedef void (GL_APIENTRYP PFNGLENABLEVERTEXATTRIBARRAYPROC) (GLuint index);
 typedef GLint (GL_APIENTRYP PFNGLGETATTRIBLOCATIONPROC) (GLuint program, const GLchar *name);
 typedef void (GL_APIENTRYP PFNGLVERTEXATTRIBPOINTERARBPROC) (GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid *pointer);
+typedef void (GL_APIENTRYP PFNGLGETACTIVEATTRIBPROC) (GLuint program, GLuint index, GLsizei bufSize, GLsizei *length, GLint *size, GLenum *type, GLchar *name);
 
 extern PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray;
 extern PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray;
 extern PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation;
 extern PFNGLVERTEXATTRIBPOINTERARBPROC glVertexAttribPointer;
+extern PFNGLGETACTIVEATTRIBPROC glGetActiveAttrib;
 
 // ARB_fragment_shader
 
 // ARB_vertex_array_object
-#define GL_VERTEX_ARRAY_BINDING     0x85B5
-#define GL_WRITE_ONLY               0x88B9
-#define GL_ELEMENT_ARRAY_BUFFER_ARB 0x8893
+#define GL_VERTEX_ARRAY_BINDING 0x85B5
+#define GL_WRITE_ONLY           0x88B9
+#define GL_ELEMENT_ARRAY_BUFFER 0x8893
+#define GL_FRAGMENT_SHADER      0x8B30
 
 typedef void (GL_APIENTRYP PFNGLBINDVERTEXARRAYARBPROC) (GLuint array);
 typedef void (GL_APIENTRYP PFNGLDELETEVERTEXARRAYSARBPROC) (GLsizei n, const GLuint *arrays);

@@ -9,15 +9,15 @@
 /* Begin PBXBuildFile section */
 		4504254B16F29F6D007699A6 /* TimerIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4504254A16F29F6D007699A6 /* TimerIOS_p.mm */; };
 		4505E1A2177A27E600D6D5EE /* AppStoreTransactionObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4505E1A1177A27E600D6D5EE /* AppStoreTransactionObserver.mm */; };
+		450C808117EF94DF005E185F /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 450C807317EF94DF005E185F /* Component.cpp */; };
+		450C808217EF94DF005E185F /* ComponentHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 450C807417EF94DF005E185F /* ComponentHost.cpp */; };
+		450C808317EF94DF005E185F /* PhysicsComponentBox2D_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 450C807A17EF94DF005E185F /* PhysicsComponentBox2D_p.cpp */; };
+		450C808417EF94DF005E185F /* PhysicsComponentNull_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 450C807D17EF94DF005E185F /* PhysicsComponentNull_p.cpp */; };
+		450C808517EF94DF005E185F /* PhysicsComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 450C807F17EF94DF005E185F /* PhysicsComponent.cpp */; };
 		451DE2E2171C94920022EE8A /* StringBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451DE2E1171C94920022EE8A /* StringBuffer.cpp */; };
 		4527A0FA176FA398006B88E0 /* GameCenterDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4527A0F9176FA398006B88E0 /* GameCenterDelegate.mm */; };
 		4536377C16F1113600B4D72F /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536352916F1113500B4D72F /* Application.cpp */; };
 		4536378B16F1113600B4D72F /* ComplexTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536354C16F1113500B4D72F /* ComplexTypes.cpp */; };
-		4536378C16F1113600B4D72F /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536354F16F1113500B4D72F /* Component.cpp */; };
-		4536378D16F1113600B4D72F /* PhysicsComponentBox2D_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536355316F1113500B4D72F /* PhysicsComponentBox2D_p.cpp */; };
-		4536378E16F1113600B4D72F /* PhysicsComponentNull_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536355616F1113500B4D72F /* PhysicsComponentNull_p.cpp */; };
-		4536378F16F1113600B4D72F /* PhysicsComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536355816F1113500B4D72F /* PhysicsComponent.cpp */; };
-		4536379016F1113600B4D72F /* RenderComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536355B16F1113500B4D72F /* RenderComponent.cpp */; };
 		4536379116F1113600B4D72F /* Cipher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536356816F1113500B4D72F /* Cipher.cpp */; };
 		4536379216F1113600B4D72F /* CipherKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536356A16F1113500B4D72F /* CipherKey.cpp */; };
 		4536379316F1113600B4D72F /* Cipher_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536356C16F1113500B4D72F /* Cipher_p.cpp */; };
@@ -218,6 +218,8 @@
 		45BC64C017209B6600A449EF /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45BC64BF17209B6600A449EF /* ViewController.mm */; };
 		45BD237517A57042007EA381 /* VertexDeclaration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BD237117A57042007EA381 /* VertexDeclaration.cpp */; };
 		45BD237617A57042007EA381 /* VertexElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BD237317A57042007EA381 /* VertexElement.cpp */; };
+		45C58F8F17F0B7C400C730FA /* RenderComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45C58F8E17F0B7C400C730FA /* RenderComponent.cpp */; };
+		45C58F9317F0BB4400C730FA /* VertexArrayObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45C58F9117F0BB4400C730FA /* VertexArrayObject.cpp */; };
 		45C68FCC176A6C2B002A7F7A /* SoundDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C68FCB176A6C2B002A7F7A /* SoundDelegate.mm */; };
 		45DD7A5116FB0C7C005AA431 /* ViewOGL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DD7A5016FB0C7C005AA431 /* ViewOGL.mm */; };
 		45DED89A16F7847E00623923 /* DeviceServicesIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DED89516F7847E00623923 /* DeviceServicesIOS_p.mm */; };
@@ -246,6 +248,17 @@
 		4504254A16F29F6D007699A6 /* TimerIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimerIOS_p.mm; sourceTree = "<group>"; };
 		4505E1A0177A27E600D6D5EE /* AppStoreTransactionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppStoreTransactionObserver.h; sourceTree = "<group>"; };
 		4505E1A1177A27E600D6D5EE /* AppStoreTransactionObserver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppStoreTransactionObserver.mm; sourceTree = "<group>"; };
+		450C807017EF8FD6005E185F /* EGEComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGEComponent.h; sourceTree = "<group>"; };
+		450C807317EF94DF005E185F /* Component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Component.cpp; sourceTree = "<group>"; };
+		450C807417EF94DF005E185F /* ComponentHost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComponentHost.cpp; sourceTree = "<group>"; };
+		450C807617EF94DF005E185F /* Component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
+		450C807717EF94DF005E185F /* ComponentHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComponentHost.h; sourceTree = "<group>"; };
+		450C807A17EF94DF005E185F /* PhysicsComponentBox2D_p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicsComponentBox2D_p.cpp; sourceTree = "<group>"; };
+		450C807B17EF94DF005E185F /* PhysicsComponentBox2D_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsComponentBox2D_p.h; sourceTree = "<group>"; };
+		450C807D17EF94DF005E185F /* PhysicsComponentNull_p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicsComponentNull_p.cpp; sourceTree = "<group>"; };
+		450C807E17EF94DF005E185F /* PhysicsComponentNull_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsComponentNull_p.h; sourceTree = "<group>"; };
+		450C807F17EF94DF005E185F /* PhysicsComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicsComponent.cpp; sourceTree = "<group>"; };
+		450C808017EF94DF005E185F /* PhysicsComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsComponent.h; sourceTree = "<group>"; };
 		451DE2DF171C8FC70022EE8A /* Serializable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Serializable.h; sourceTree = "<group>"; };
 		451DE2E0171C93E00022EE8A /* StringBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringBuffer.h; sourceTree = "<group>"; };
 		451DE2E1171C94920022EE8A /* StringBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringBuffer.cpp; sourceTree = "<group>"; };
@@ -257,16 +270,6 @@
 		4536352A16F1113500B4D72F /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
 		4536354C16F1113500B4D72F /* ComplexTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComplexTypes.cpp; sourceTree = "<group>"; };
 		4536354D16F1113500B4D72F /* ComplexTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComplexTypes.h; sourceTree = "<group>"; };
-		4536354F16F1113500B4D72F /* Component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Component.cpp; sourceTree = "<group>"; };
-		4536355016F1113500B4D72F /* Component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
-		4536355316F1113500B4D72F /* PhysicsComponentBox2D_p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicsComponentBox2D_p.cpp; sourceTree = "<group>"; };
-		4536355416F1113500B4D72F /* PhysicsComponentBox2D_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsComponentBox2D_p.h; sourceTree = "<group>"; };
-		4536355616F1113500B4D72F /* PhysicsComponentNull_p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicsComponentNull_p.cpp; sourceTree = "<group>"; };
-		4536355716F1113500B4D72F /* PhysicsComponentNull_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsComponentNull_p.h; sourceTree = "<group>"; };
-		4536355816F1113500B4D72F /* PhysicsComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicsComponent.cpp; sourceTree = "<group>"; };
-		4536355916F1113500B4D72F /* PhysicsComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsComponent.h; sourceTree = "<group>"; };
-		4536355B16F1113500B4D72F /* RenderComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderComponent.cpp; sourceTree = "<group>"; };
-		4536355C16F1113500B4D72F /* RenderComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderComponent.h; sourceTree = "<group>"; };
 		4536355D16F1113500B4D72F /* ConfigParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigParams.h; sourceTree = "<group>"; };
 		4536356016F1113500B4D72F /* DynamicArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicArray.h; sourceTree = "<group>"; };
 		4536356116F1113500B4D72F /* List.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = List.h; sourceTree = "<group>"; };
@@ -786,6 +789,10 @@
 		45BD237217A57042007EA381 /* VertexDeclaration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexDeclaration.h; sourceTree = "<group>"; };
 		45BD237317A57042007EA381 /* VertexElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexElement.cpp; sourceTree = "<group>"; };
 		45BD237417A57042007EA381 /* VertexElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexElement.h; sourceTree = "<group>"; };
+		45C58F8D17F0B7BA00C730FA /* RenderComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderComponent.h; sourceTree = "<group>"; };
+		45C58F8E17F0B7C400C730FA /* RenderComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderComponent.cpp; sourceTree = "<group>"; };
+		45C58F9117F0BB4400C730FA /* VertexArrayObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexArrayObject.cpp; sourceTree = "<group>"; };
+		45C58F9217F0BB4400C730FA /* VertexArrayObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexArrayObject.h; sourceTree = "<group>"; };
 		45C68FCA176A6C2B002A7F7A /* SoundDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundDelegate.h; sourceTree = "<group>"; };
 		45C68FCB176A6C2B002A7F7A /* SoundDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SoundDelegate.mm; sourceTree = "<group>"; };
 		45DD7A4F16FB0C7C005AA431 /* ViewOGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewOGL.h; sourceTree = "<group>"; };
@@ -831,9 +838,67 @@
 			path = Timer;
 			sourceTree = "<group>";
 		};
+		450C807117EF94DF005E185F /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				450C807217EF94DF005E185F /* Implementation */,
+				450C807517EF94DF005E185F /* Interface */,
+				450C807817EF94DF005E185F /* Physics */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		450C807217EF94DF005E185F /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				450C807317EF94DF005E185F /* Component.cpp */,
+				450C807417EF94DF005E185F /* ComponentHost.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		450C807517EF94DF005E185F /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				450C807617EF94DF005E185F /* Component.h */,
+				450C807717EF94DF005E185F /* ComponentHost.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		450C807817EF94DF005E185F /* Physics */ = {
+			isa = PBXGroup;
+			children = (
+				450C807917EF94DF005E185F /* Box2D */,
+				450C807C17EF94DF005E185F /* Null */,
+				450C807F17EF94DF005E185F /* PhysicsComponent.cpp */,
+				450C808017EF94DF005E185F /* PhysicsComponent.h */,
+			);
+			path = Physics;
+			sourceTree = "<group>";
+		};
+		450C807917EF94DF005E185F /* Box2D */ = {
+			isa = PBXGroup;
+			children = (
+				450C807A17EF94DF005E185F /* PhysicsComponentBox2D_p.cpp */,
+				450C807B17EF94DF005E185F /* PhysicsComponentBox2D_p.h */,
+			);
+			path = Box2D;
+			sourceTree = "<group>";
+		};
+		450C807C17EF94DF005E185F /* Null */ = {
+			isa = PBXGroup;
+			children = (
+				450C807D17EF94DF005E185F /* PhysicsComponentNull_p.cpp */,
+				450C807E17EF94DF005E185F /* PhysicsComponentNull_p.h */,
+			);
+			path = Null;
+			sourceTree = "<group>";
+		};
 		4536352416F110F000B4D72F /* EGE */ = {
 			isa = PBXGroup;
 			children = (
+				450C807017EF8FD6005E185F /* EGEComponent.h */,
 				4564E3D517527E570077A46C /* EGEAtomic.h */,
 				4536371616F1113600B4D72F /* EGE.h */,
 				4536371716F1113600B4D72F /* EGEAlignment.h */,
@@ -930,6 +995,7 @@
 		4536352516F1113500B4D72F /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				450C807117EF94DF005E185F /* Component */,
 				4536354C16F1113500B4D72F /* ComplexTypes.cpp */,
 				4536354D16F1113500B4D72F /* ComplexTypes.h */,
 				4536355D16F1113500B4D72F /* ConfigParams.h */,
@@ -941,7 +1007,6 @@
 				4536352616F1113500B4D72F /* Animation */,
 				4536352816F1113500B4D72F /* Application */,
 				453902661769264800FFA73E /* Audio */,
-				4536354E16F1113500B4D72F /* Components */,
 				4536355E16F1113500B4D72F /* Containers */,
 				4536356616F1113500B4D72F /* Crypto */,
 				4536357A16F1113500B4D72F /* Data */,
@@ -989,55 +1054,6 @@
 				4536352A16F1113500B4D72F /* Application.h */,
 			);
 			path = Application;
-			sourceTree = "<group>";
-		};
-		4536354E16F1113500B4D72F /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				4536354F16F1113500B4D72F /* Component.cpp */,
-				4536355016F1113500B4D72F /* Component.h */,
-				4536355116F1113500B4D72F /* Physics */,
-				4536355A16F1113500B4D72F /* Render */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		4536355116F1113500B4D72F /* Physics */ = {
-			isa = PBXGroup;
-			children = (
-				4536355216F1113500B4D72F /* Box2D */,
-				4536355516F1113500B4D72F /* Null */,
-				4536355816F1113500B4D72F /* PhysicsComponent.cpp */,
-				4536355916F1113500B4D72F /* PhysicsComponent.h */,
-			);
-			path = Physics;
-			sourceTree = "<group>";
-		};
-		4536355216F1113500B4D72F /* Box2D */ = {
-			isa = PBXGroup;
-			children = (
-				4536355316F1113500B4D72F /* PhysicsComponentBox2D_p.cpp */,
-				4536355416F1113500B4D72F /* PhysicsComponentBox2D_p.h */,
-			);
-			path = Box2D;
-			sourceTree = "<group>";
-		};
-		4536355516F1113500B4D72F /* Null */ = {
-			isa = PBXGroup;
-			children = (
-				4536355616F1113500B4D72F /* PhysicsComponentNull_p.cpp */,
-				4536355716F1113500B4D72F /* PhysicsComponentNull_p.h */,
-			);
-			path = Null;
-			sourceTree = "<group>";
-		};
-		4536355A16F1113500B4D72F /* Render */ = {
-			isa = PBXGroup;
-			children = (
-				4536355B16F1113500B4D72F /* RenderComponent.cpp */,
-				4536355C16F1113500B4D72F /* RenderComponent.h */,
-			);
-			path = Render;
 			sourceTree = "<group>";
 		};
 		4536355E16F1113500B4D72F /* Containers */ = {
@@ -1277,6 +1293,7 @@
 		453635C516F1113600B4D72F /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
+				45C58F9017F0BB4400C730FA /* Implementation */,
 				4555B47D16F775AC00FDAFF3 /* Fixed */,
 				453635D816F1113600B4D72F /* IndexBufferVAOGL.cpp */,
 				453635D916F1113600B4D72F /* IndexBufferVAOGL.h */,
@@ -2009,6 +2026,7 @@
 		45AFD2121798637C0063AC4D /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				45C58F8E17F0B7C400C730FA /* RenderComponent.cpp */,
 				45AFD2131798637C0063AC4D /* BatchedRenderQueue.cpp */,
 				45FE3C0217AD6785009A5841 /* RenderQueue.cpp */,
 				45FE3C0317AD6785009A5841 /* RenderQueueFactory.cpp */,
@@ -2023,11 +2041,21 @@
 		45AFD21B179863860063AC4D /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				45C58F8D17F0B7BA00C730FA /* RenderComponent.h */,
 				45FE3C0617AD67AF009A5841 /* RenderQueue.h */,
 				45FE3C0717AD67AF009A5841 /* RenderQueueFactory.h */,
 				45AFD21C179863860063AC4D /* Renderer.h */,
 			);
 			path = Interface;
+			sourceTree = "<group>";
+		};
+		45C58F9017F0BB4400C730FA /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				45C58F9117F0BB4400C730FA /* VertexArrayObject.cpp */,
+				45C58F9217F0BB4400C730FA /* VertexArrayObject.h */,
+			);
+			path = Implementation;
 			sourceTree = "<group>";
 		};
 		45DED89316F7847E00623923 /* Services */ = {
@@ -2108,11 +2136,6 @@
 			files = (
 				4536377C16F1113600B4D72F /* Application.cpp in Sources */,
 				4536378B16F1113600B4D72F /* ComplexTypes.cpp in Sources */,
-				4536378C16F1113600B4D72F /* Component.cpp in Sources */,
-				4536378D16F1113600B4D72F /* PhysicsComponentBox2D_p.cpp in Sources */,
-				4536378E16F1113600B4D72F /* PhysicsComponentNull_p.cpp in Sources */,
-				4536378F16F1113600B4D72F /* PhysicsComponent.cpp in Sources */,
-				4536379016F1113600B4D72F /* RenderComponent.cpp in Sources */,
 				4536379116F1113600B4D72F /* Cipher.cpp in Sources */,
 				4536379216F1113600B4D72F /* CipherKey.cpp in Sources */,
 				4536379316F1113600B4D72F /* Cipher_p.cpp in Sources */,
@@ -2321,6 +2344,13 @@
 				45BD237617A57042007EA381 /* VertexElement.cpp in Sources */,
 				45FE3C0417AD6785009A5841 /* RenderQueue.cpp in Sources */,
 				45FE3C0517AD6785009A5841 /* RenderQueueFactory.cpp in Sources */,
+				450C808117EF94DF005E185F /* Component.cpp in Sources */,
+				450C808217EF94DF005E185F /* ComponentHost.cpp in Sources */,
+				450C808317EF94DF005E185F /* PhysicsComponentBox2D_p.cpp in Sources */,
+				450C808417EF94DF005E185F /* PhysicsComponentNull_p.cpp in Sources */,
+				450C808517EF94DF005E185F /* PhysicsComponent.cpp in Sources */,
+				45C58F8F17F0B7C400C730FA /* RenderComponent.cpp in Sources */,
+				45C58F9317F0BB4400C730FA /* VertexArrayObject.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

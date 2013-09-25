@@ -146,7 +146,12 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
     // this is not error, however, we need to reflect real number of bytes read in buffer itself
     // NOTE: call below should never fail as we are effectively shirnking the data size
     EGEResult result = dst->setSize(writeOffset + readCount);
-    EGE_ASSERT(EGE_SUCCESS == result);
+    if (EGE_SUCCESS != result)
+    {
+      // error!
+      EGE_ASSERT(EGE_SUCCESS == result);
+      return 0;
+    }
   }
   
   // copy data into destination buffer

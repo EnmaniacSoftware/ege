@@ -301,7 +301,7 @@ void RenderWindowOGLIOS::detectCapabilities()
   
   // VBO is supported by default
   // TAGE - disable for time being until VBO implementation is more efficient
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VBO, false);
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT, false);
 
   // combine texture environment mode is supported by default
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_COMBINE_TEXTURE_ENV, true);
@@ -362,25 +362,30 @@ void RenderWindowOGLIOS::detectCapabilities()
 #endif // GL_IMG_texture_compression_pvrtc
   
 #if !EGE_RENDER_OPENGL_FIXED
-  glCreateShaderObject  = ::glCreateShader;
-  glShaderSource        = ::glShaderSource;
-  glCompileShader       = ::glCompileShader;
-  glCreateProgramObject = ::glCreateProgram;
-  glAttachObject        = ::glAttachShader;
-  glLinkProgram         = ::glLinkProgram;
-  glUseProgramObject    = ::glUseProgram;
-  glGetUniformLocation  = ::glGetUniformLocation;
-  glUniform1f           = ::glUniform1f;
-  glUniform2f           = ::glUniform2f;
-  glUniform3f           = ::glUniform3f;
-  glUniform4f           = ::glUniform4f;
-  glUniform1i           = ::glUniform1i;
-  glUniform2i           = ::glUniform2i;
-  glUniform3i           = ::glUniform3i;
-  glUniform4i           = ::glUniform4i;
-  glUniformMatrix2fv    = ::glUniformMatrix2fv;
-  glUniformMatrix3fv    = ::glUniformMatrix3fv;
-  glUniformMatrix4fv    = ::glUniformMatrix4fv;
+  glCreateShader              = ::glCreateShader;
+  glShaderSource              = ::glShaderSource;
+  glCompileShader             = ::glCompileShader;
+  glCreateProgram             = ::glCreateProgram;
+  glAttachShader              = ::glAttachShader;
+  glLinkProgram               = ::glLinkProgram;
+  glUseProgram                = ::glUseProgram;
+  glGetUniformLocation        = ::glGetUniformLocation;
+  glUniform1f                 = ::glUniform1f;
+  glUniform2f                 = ::glUniform2f;
+  glUniform3f                 = ::glUniform3f;
+  glUniform4f                 = ::glUniform4f;
+  glUniform1i                 = ::glUniform1i;
+  glUniform2i                 = ::glUniform2i;
+  glUniform3i                 = ::glUniform3i;
+  glUniform4i                 = ::glUniform4i;
+  glUniformMatrix2fv          = ::glUniformMatrix2fv;
+  glUniformMatrix3fv          = ::glUniformMatrix3fv;
+  glUniformMatrix4fv          = ::glUniformMatrix4fv;
+  glDisableVertexAttribArray  = ::glDisableVertexAttribArray;
+  glEnableVertexAttribArray   = ::glEnableVertexAttribArray;
+  glGetAttribLocation         = ::glGetAttribLocation;
+  glVertexAttribPointer       = ::glVertexAttribPointer;
+  glGetActiveAttrib           = ::glGetActiveAttrib;
 
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_SHADER, true);
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FRAGMENT_SHADER, true);
@@ -392,22 +397,13 @@ void RenderWindowOGLIOS::detectCapabilities()
   glDeleteVertexArrays  = ::glDeleteVertexArraysOES;
   glBindVertexArray     = ::glBindVertexArrayOES;
   
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECTS, true);
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECT, true);
 #endif // GL_OES_vertex_array_object
   
   // check 32bit indexing support
 #if GL_OES_element_index_uint
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT, true);
 #endif // GL_OES_element_index_uint
-
-#if GL_OES_vertex_array_object
-  glGenVertexArrays     = ::glGenVertexArraysOES;
-  glIsVertexArray       = ::glIsVertexArrayOES;
-  glDeleteVertexArrays  = ::glDeleteVertexArraysOES;
-  glBindVertexArray     = ::glBindVertexArrayOES;
-  
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECTS, true);
-#endif // GL_OES_vertex_array_object
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderWindowOGLIOS::onEventRecieved(PEvent event)

@@ -30,10 +30,10 @@ template <typename T, typename U>
 void MultiMap<T, U>::values(const T& key, List<U>& list) const
 {
   // retrieve all entries with a given key
-  std::pair<std::multimap<T, U>::const_iterator, std::multimap<T, U>::const_iterator> range = this->equal_range(key);
+  std::pair<typename std::multimap<T, U>::const_iterator, typename std::multimap<T, U>::const_iterator> range = this->equal_range(key);
 
   // add values into list
-  for (std::multimap<T, U>::const_iterator it = range.first; it != range.second; ++it)
+  for (typename std::multimap<T, U>::const_iterator it = range.first; it != range.second; ++it)
   {
     list.push_back(it->second);
   }

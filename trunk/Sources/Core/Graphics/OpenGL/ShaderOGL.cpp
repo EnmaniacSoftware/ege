@@ -16,6 +16,11 @@ static GLenum MapShaderType(EGEGraphics::ShaderType type)
   {
     case EGEGraphics::FRAGMENT_SHADER:  result = GL_FRAGMENT_SHADER; break;
     case EGEGraphics::VERTEX_SHADER:    result = GL_VERTEX_SHADER; break;
+    
+    default:
+    
+      EGE_ASSERT_X(false, "Unsupported shader type");
+      break;
   }
 
   return result;
