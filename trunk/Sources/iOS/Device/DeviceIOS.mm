@@ -88,17 +88,17 @@ static EGEDevice::Device GetIOSDevice(const String& deviceId)
           return EGEDevice::DEVICE_IPHONE_5;
         }
         // 1024x768 device (iPad)
-        else if ((1024 == width) && (768 == height))
+        else if ((768 == width) && (1024 == height))
         {
           return EGEDevice::DEVICE_IPAD_2;
         }
         // 2048x1536 device (iPad retina)
-        else if ((2048 == width) && (1536 == height))
+        else if ((1536 == width) && (2048 == height))
         {
           return EGEDevice::DEVICE_IPAD_4;
         }
         
-        EGE_ASSERT(false && "Unsupported!");
+        EGE_ASSERT_X(false, "Unsupported device!");
       }
       
       return deviceInfo.egeDevice;

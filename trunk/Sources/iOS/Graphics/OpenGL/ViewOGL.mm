@@ -6,8 +6,10 @@
 //  Copyright (c) 2013 Little Bee Studios. All rights reserved.
 //
 
+#include "EGE.h"
 #import "iOS/Graphics/OpenGL/ViewOGL.h"
 #import <OpenGLES/EAGL.h>
+#import <UIKit/UIScreen.h>
 
 @implementation OGLView
 
@@ -28,6 +30,20 @@
     mEAGLLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
                                      format, kEAGLDrawablePropertyColorFormat,
                                      nil];
+    
+    CGFloat scale = 1.0f;
+    
+    // get main screen
+    UIScreen* screen = [UIScreen mainScreen];
+    
+    // check if scle selector is present
+    if ([screen respondsToSelector: @selector(scale)])
+    {
+      // get scale factor
+      scale = screen.scale;
+    }
+    
+    [self setContentScaleFactor: scale];
   }
   
   return self;

@@ -50,9 +50,10 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
     return EGE_ERROR;
   }
   
-  // get screen size
+  // get screen size unaffected by scale factor
+  // NOTE: scale factor will be adjusted during UIView initialization
   CGRect screenBounds = [[UIScreen mainScreen] bounds];
-  
+
   // create full screen view
   NSString* pixelFormat = (16 >= colorBits) ? kEAGLColorFormatRGB565 : kEAGLColorFormatRGBA8;
   m_view = [[OGLView alloc] initWithFrame: screenBounds andPixelFormat: pixelFormat];
