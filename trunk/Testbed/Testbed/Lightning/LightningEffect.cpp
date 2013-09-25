@@ -4,7 +4,7 @@
 #include <EGEResources.h>
 #include <EGEOverlay.h>
 #include <EGEApplication.h>
-#include <gl/GL.h>
+//#include <gl/GL.h>
 
 EGE_NAMESPACE
 
@@ -12,6 +12,29 @@ EGE_NAMESPACE
 LightningEffect::LightningEffect(Application* app) : SceneNodeObject("lightning-effect"), 
                                                      m_app(app)
 {
+    // setup vertex declaration
+    VertexDeclaration vertexDeclaration;
+    if ( ! vertexDeclaration.addElement(NVertexBuffer::VES_POSITION_XYZ))
+    {
+      // error!
+      EGE_DELETE(object);
+      return NULL;
+    }
+
+    if (uv && ! vertexDeclaration.addElement(NVertexBuffer::VES_TEXTURE_UV))
+    {
+      // error!
+      EGE_DELETE(object);
+      return NULL;
+    }
+
+    if (color && ! vertexDeclaration.addElement(NVertexBuffer::VES_COLOR_RGBA))
+    {
+      // error!
+      EGE_DELETE(object);
+      return NULL;
+    }
+
   m_renderData = ege_new RenderComponent(app, "lightning-effect-lines", EGEGraphics::RP_MAIN, EGEGraphics::RPT_LINES);
   m_renderDataQuad = ege_new RenderComponent(app, "lightning-effect-quads-1", EGEGraphics::RP_MAIN + 1, EGEGraphics::RPT_TRIANGLES);
   m_renderDataQuad2 = ege_new RenderComponent(app, "lightning-effect-quads-2", EGEGraphics::RP_MAIN + 1, EGEGraphics::RPT_TRIANGLES);
@@ -42,7 +65,7 @@ LightningEffect::~LightningEffect()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! SceneNodeObject override. Adds object render data for rendering with given renderer. */
-bool LightningEffect::addForRendering(Renderer* renderer, const Matrix4f& transform)
+bool LightningEffect::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   if (m_fadeTime.seconds() < 1.0f)
   {

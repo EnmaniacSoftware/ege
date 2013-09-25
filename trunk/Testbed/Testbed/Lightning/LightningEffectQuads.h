@@ -51,7 +51,7 @@ class LightningEffectQuads
     /* Updates effect. */
     void update(const EGE::Time& time);
     /* Renders object. */
-    void render(EGE::Renderer* renderer);
+    void render(EGE::IRenderer* renderer);
     /*! Returns render data. */
     inline EGE::PRenderComponent renderData() const { return m_renderData; }
     /* Sets maximum segment midpoint offset. */

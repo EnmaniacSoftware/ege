@@ -9,11 +9,8 @@
 #include <EGEDynamicArray.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 #define RIPPLE_COUNT 3
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class RippleEffect : public EGE::SceneNodeObject
 {
   public:
@@ -44,7 +41,7 @@ class RippleEffect : public EGE::SceneNodeObject
   private:
 
     /* SceneNodeObject override. Adds object render data for rendering with given renderer. */
-    bool addForRendering(EGE::Renderer* renderer, const EGE::Matrix4f& transform = EGE::Matrix4f::IDENTITY) override;
+    bool addForRendering(EGE::IRenderer* renderer, const EGE::Matrix4f& transform = EGE::Matrix4f::IDENTITY) override;
     /* Computes the distance of the given window coordinate to the nearest window corner (in pixels). */
     EGE::s32 rippleMaxDistance(const EGE::Vector2i& pos) const;
     /* Precalculates data. */
@@ -90,7 +87,6 @@ class RippleEffect : public EGE::SceneNodeObject
     /*! Array of precomputed amplitudes values. */
     EGE::DynamicArray<EGE::float32> m_amplitudes;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // RIPPLEEFFECT_H

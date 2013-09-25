@@ -6,7 +6,6 @@
 #include <EGEMatrix.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class RenderObject : public EGE::SceneNodeObject
 {
   public:
@@ -16,9 +15,9 @@ class RenderObject : public EGE::SceneNodeObject
    
   public:
 
-    /* Creates instance representing the triangle. */
+    /*! Creates instance representing the triangle. */
     static RenderObject* CreateTriangle(EGE::Application* app, const EGE::String& name, EGE::s32 size, bool color, bool uv);
-    /* Creates instance representing the triangle. */
+    /*! Creates instance representing the triangle. */
     static RenderObject* CreateRectangle(EGE::Application* app, const EGE::String& name, EGE::s32 width, EGE::s32 height, bool color, bool uv, 
                                          const EGE::Vector2i& segments = EGE::Vector2i::ONE);
 
@@ -30,7 +29,7 @@ class RenderObject : public EGE::SceneNodeObject
   private:
 
     /* SceneNodeObject override. Adds object render data for rendering with given renderer. */
-    bool addForRendering(EGE::Renderer* renderer, const EGE::Matrix4f& transform = EGE::Matrix4f::IDENTITY) override;
+    bool addForRendering(EGE::IRenderer* renderer, const EGE::Matrix4f& transform = EGE::Matrix4f::IDENTITY) override;
 
   private:
 
@@ -42,7 +41,6 @@ class RenderObject : public EGE::SceneNodeObject
     /*! Render data. */
     EGE::PRenderComponent m_renderData;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // RENDER_OBJECT_H

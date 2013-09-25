@@ -5,7 +5,7 @@
 #include <EGEInput.h>
 #include <EGEEvent.h>
 #include <EGEOverlay.h>
-#include "Core/Components/Render/RenderComponent.h"
+#include <EGERenderComponent.h>
 #include "RenderToTexture/RenderToTextureTest.h"
 #include "Timeline/TimeLineTest.h"
 #include "Curves/CurvesTest.h"
@@ -44,8 +44,10 @@ App::~App()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool App::start()
+EGEResult App::construct(const Dictionary& commandLineParams)
 {
+  EGEResult result = EGE_SUCCESS;
+
   Dictionary paramList;
 
   // setup params for render window
@@ -59,9 +61,11 @@ bool App::start()
   paramList[EGE_ENGINE_PARAM_UPDATES_PER_SECOND]  = "25";
   paramList[EGE_ENGINE_PARAM_LANDSCAPE_MODE]      = "true";
 
-  if (EGE_SUCCESS != initialize(paramList))
+  // initialize engine
+  if (EGE_SUCCESS != (result = Application::construct(paramList)))
   {
-    return false;
+    // error!
+    return result;
   }
 
   // initialize resource manager
@@ -73,7 +77,7 @@ bool App::start()
   if (EGE_SUCCESS != resourceManager()->addResources("resources.xml"))
   {
     // error!
-    return false;
+    return EGE_ERROR;
   }
 
   PResourceFont fontResource = resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
@@ -110,12 +114,12 @@ bool App::start()
 
   ege_connect(pointer(), eventSignal, this, App::pointerEvent);
 
-  if (EGE_SUCCESS != run())
+  if (EGE_SUCCESS != (result = run()))
   {
-    return false;
+    return result;
   }
 
-  return true;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Selects test. */

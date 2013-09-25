@@ -1,5 +1,8 @@
 #include "RenderObject.h"
 #include "App.h"
+#include <EGERenderComponent.h>
+#include <EGEVertexBuffer.h>
+#include <EGERenderer.h>
 #include <EGEDebug.h>
 
 EGE_NAMESPACE
@@ -19,43 +22,43 @@ RenderObject* RenderObject::CreateBase(Application* app, const String& name, boo
   RenderObject* object = ege_new RenderObject(app, name);
   if (object)
   {
-    object->m_renderData = ege_new RenderComponent(app, name, EGEGraphics::RP_MAIN);
-    if (object->m_renderData)
+    // setup vertex declaration
+    VertexDeclaration vertexDeclaration;
+    if ( ! vertexDeclaration.addElement(NVertexBuffer::VES_POSITION_XYZ))
     {
-      // add render buffers
-      if (!object->m_renderData->vertexBuffer()->addArray(EGEVertexBuffer::AT_POSITION_XYZ))
-      {
-        // error!
-        EGE_DELETE(object);
-        return NULL;
-      }
-    
-      if (uv)
-      {
-        if (!object->m_renderData->vertexBuffer()->addArray(EGEVertexBuffer::AT_TEXTURE_UV))
-        {
-          // error!
-          EGE_DELETE(object);
-          return NULL;
-        }
-      }
+      // error!
+      EGE_DELETE(object);
+      return NULL;
+    }
 
-      if (color)
-      {
-        if (!object->m_renderData->vertexBuffer()->addArray(EGEVertexBuffer::AT_COLOR_RGBA))
-        {
-          // error!
-          EGE_DELETE(object);
-          return NULL;
-        }
-      }
+    if (uv && ! vertexDeclaration.addElement(NVertexBuffer::VES_TEXTURE_UV))
+    {
+      // error!
+      EGE_DELETE(object);
+      return NULL;
+    }
+
+    if (color && ! vertexDeclaration.addElement(NVertexBuffer::VES_COLOR_RGBA))
+    {
+      // error!
+      EGE_DELETE(object);
+      return NULL;
+    }
+
+    // create render data
+    object->m_renderData = ege_new RenderComponent(app, name, vertexDeclaration, EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES, 
+                                                   NVertexBuffer::UT_DYNAMIC_WRITE);
+    if (NULL == object->m_renderData)
+    {
+      // error!
+      EGE_DELETE(object);
+      return NULL;
     }
   }
 
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance representing the triangle. */
 RenderObject* RenderObject::CreateTriangle(Application* app, const String& name, s32 size, bool color, bool uv)
 {
   RenderObject* object = CreateBase(app, name, color, uv);
@@ -126,7 +129,6 @@ RenderObject* RenderObject::CreateTriangle(Application* app, const String& name,
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance representing the triangle. */
 RenderObject* RenderObject::CreateRectangle(Application* app, const String& name, s32 width, s32 height, bool color, bool uv, const EGE::Vector2i& segments)
 {
   RenderObject* object = CreateBase(app, name, color, uv);
@@ -293,7 +295,7 @@ RenderObject* RenderObject::CreateRectangle(Application* app, const String& name
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! SceneNodeObject override. Adds object render data for rendering with given renderer. */
-bool RenderObject::addForRendering(EGE::Renderer* renderer, const Matrix4f& transform)
+bool RenderObject::addForRendering(EGE::IRenderer* renderer, const Matrix4f& transform)
 {
   return renderer->addForRendering(m_renderData, parentNode()->worldMatrix().multiply(transform));
 }

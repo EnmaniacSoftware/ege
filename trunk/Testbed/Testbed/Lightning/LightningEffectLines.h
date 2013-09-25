@@ -29,7 +29,7 @@ class LightningEffectLines : public EGE::SceneNodeObject
   private:
 
     /* SceneNodeObject override. Adds object render data for rendering with given renderer. */
-    bool addForRendering(EGE::Renderer* renderer, const EGE::Matrix4f& transform = EGE::Matrix4f::IDENTITY) override;
+    bool addForRendering(EGE::IRenderer* renderer, const EGE::Matrix4f& transform = EGE::Matrix4f::IDENTITY) override;
 
   private:
 

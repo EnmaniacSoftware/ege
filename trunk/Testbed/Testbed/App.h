@@ -8,13 +8,15 @@
 #include "Test.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class App : public EGE::Application
 {
   public:
 
     App();
     virtual ~App();
+
+    /*! @see Application::construct. */
+    EGE::EGEResult construct(const EGE::Dictionary& commandLineParams) override;
 
     bool start();
 
@@ -38,7 +40,6 @@ class App : public EGE::Application
     /*! List of all tests. */
     EGE::List<Test*> m_tests;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGEAPP_H

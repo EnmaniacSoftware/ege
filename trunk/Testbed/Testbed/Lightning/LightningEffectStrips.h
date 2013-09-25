@@ -55,7 +55,7 @@ class LightningEffectStrips : public EGE::Object
     /* Updates effect. */
     void update(const EGE::Time& time);
     /* Renders object. */
-    void render(EGE::Renderer* renderer);
+    void render(EGE::IRenderer* renderer);
     /* Sets maximum segment midpoint offset. */
     void setMaxSegmentOffset(EGE::float32 offset);
     /* Sets offshot angle. */
