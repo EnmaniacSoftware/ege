@@ -362,7 +362,7 @@ void RenderWindowOGLIOS::detectCapabilities()
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC, true);
 #endif // GL_IMG_texture_compression_pvrtc
   
-#if !EGE_RENDER_OPENGL_FIXED
+#if !EGE_RENDERING_OPENGL_FIXED
   glCreateShader              = ::glCreateShader;
   glShaderSource              = ::glShaderSource;
   glCompileShader             = ::glCompileShader;
@@ -390,7 +390,7 @@ void RenderWindowOGLIOS::detectCapabilities()
 
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_SHADER, true);
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FRAGMENT_SHADER, true);
-#endif // !EGE_RENDER_OPENGL_FIXED
+#endif // !EGE_RENDERING_OPENGL_FIXED
 
 #if GL_OES_vertex_array_object
   glGenVertexArrays     = ::glGenVertexArraysOES;
