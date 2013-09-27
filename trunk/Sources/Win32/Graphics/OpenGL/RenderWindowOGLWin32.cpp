@@ -678,7 +678,7 @@ void RenderWindowOGLWin32::detectCapabilities()
     glAttachShader         = reinterpret_cast<PFNGLATTACHSHADERPROC>(wglGetProcAddress("glAttachShader"));
     glDetachShader         = reinterpret_cast<PFNGLDETACHSHADERPROC>(wglGetProcAddress("glDetachShader"));
     glShaderSource         = reinterpret_cast<PFNGLGETSHADERSOURCEPROC>(wglGetProcAddress("glShaderSource"));
-    glCompileShader        = reinterpret_cast<PFNGLCOMPILESHADERARBPROC>(wglGetProcAddress("glCompileShader"));
+    glCompileShader        = reinterpret_cast<PFNGLCOMPILESHADERPROC>(wglGetProcAddress("glCompileShader"));
     glGetShaderiv          = reinterpret_cast<PFNGLGETSHADERIVPROC>(wglGetProcAddress("glGetShaderiv"));
     glCreateProgram        = reinterpret_cast<PFNGLCREATEPROGRAMPROC>(wglGetProcAddress("glCreateProgram"));
     glDeleteProgram        = reinterpret_cast<PFNGLDELETEPROGRAMPROC>(wglGetProcAddress("glDeleteProgram"));
