@@ -27,7 +27,7 @@
 #include "Core/Event/EventIDs.h"
 #include "Core/Event/EventManager.h"
 #include "EGEXml.h"
-#include "EGEDir.h"
+#include "EGEDirectory.h"
 
 #if EGE_RESOURCEMANAGER_SINGLE_THREAD
 #include "Core/Resource/SingleThread/ResourceManagerST_p.h"
@@ -191,7 +191,7 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
   bool atLeastOneResourceAddedSucessfully = false;
 
   // convert separators
-  filePath = Dir::FromNativeSeparators(filePath);
+  filePath = Directory::FromNativeSeparators(filePath);
 
   egeDebug(KResourceManagerDebugName) << "Adding resources:" << filePath;
 
@@ -221,7 +221,7 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
     // process RESOURCES tag
     String path;
     String file;
-    Dir::DecomposePath(fullPath, path, file);
+    Directory::DecomposePath(fullPath, path, file);
     if (EGE_SUCCESS != (result = processResourcesTag(path, resourcesNode)))
     {
       // error!

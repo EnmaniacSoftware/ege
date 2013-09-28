@@ -1,8 +1,8 @@
-#ifndef EGE_DIR_H
-#define EGE_DIR_H
+#ifndef EGE_DIRECTORY_H
+#define EGE_DIRECTORY_H
 
-#include "Core/Dir/Dir.h"
+#include "Core/Directory/Interface/Directory.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // EGE_DIR_H
+#endif // EGE_DIRECTORY_H

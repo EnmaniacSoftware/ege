@@ -1,9 +1,9 @@
-#include "Core/Dir/Dir.h"
+#include "Core/Directory/Interface/Directory.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-String Dir::FromNativeSeparators(const String& path)
+String Directory::FromNativeSeparators(const String& path)
 {
   String result = path;
 
@@ -16,7 +16,7 @@ String Dir::FromNativeSeparators(const String& path)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Dir::DecomposePath(const String& fullPath, String& path, String& fileName)
+void Directory::DecomposePath(const String& fullPath, String& path, String& fileName)
 {
   path.clear();
 
