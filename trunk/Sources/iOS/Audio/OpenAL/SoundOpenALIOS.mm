@@ -52,6 +52,7 @@ void SoundOpenALIOS::update(const Time& time)
   // check if MP3 (or other supported compressed audio)
   if (EGE_OBJECT_UID_AUDIO_CODEC_MP3 == m_codec->uid())
   {
+    Sound::update(time);
   }
   else
   {
