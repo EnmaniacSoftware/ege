@@ -11,6 +11,7 @@
 #include "EGEDataBuffer.h"
 #include "EGEFile.h"
 #include "EGEDebug.h"
+#include "EGEDirectory.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -78,7 +79,7 @@ EGEResult ResourceShader::create(const String& path, const PXmlElement& tag)
   }
 
   // compose absolute path
-  m_path = path + "/" + m_path;
+  m_path = Directory::Join(path, m_path);
 
   // set state
   m_state = STATE_UNLOADED;

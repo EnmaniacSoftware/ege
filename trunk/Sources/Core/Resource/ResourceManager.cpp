@@ -30,9 +30,9 @@
 #include "EGEDirectory.h"
 
 #if EGE_RESOURCEMANAGER_SINGLE_THREAD
-#include "Core/Resource/SingleThread/ResourceManagerST_p.h"
+  #include "Core/Resource/SingleThread/ResourceManagerST_p.h"
 #elif EGE_RESOURCEMANAGER_MULTI_THREAD
-#include "Core/Resource/MultiThread/ResourceManagerMT_p.h"
+  #include "Core/Resource/MultiThread/ResourceManagerMT_p.h"
 #endif // EGE_RESOURCE_MANAGER_SINGLE_THREAD
 
 EGE_NAMESPACE_BEGIN
@@ -199,7 +199,7 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
   // NOTE: if no AUTO-DETECTION is set we do exactly one search with a given filePath
   for (StringList::const_iterator it = m_dataDirs.begin(); (it != m_dataDirs.end() && ((it == m_dataDirs.begin() && !autoDetect) || autoDetect)); ++it)
   {
-    String fullPath = autoDetect ? (*it + "/" + filePath) : filePath;
+    String fullPath = autoDetect ? Directory::Join(*it, filePath) : filePath;
 
     XmlDocument xml;
     if (EGE_SUCCESS != (result = xml.load(fullPath)))
@@ -636,7 +636,7 @@ EGEResult ResourceManager::processInclude(const String& filePath, const PXmlElem
   if (!autoDetect)
   {
     // compose absolute path
-    path = filePath + "/" + path;
+    path = Directory::Join(filePath, path);
   }
 
   // add new resource

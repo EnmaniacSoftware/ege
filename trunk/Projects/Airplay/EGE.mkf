@@ -38,7 +38,7 @@ files
   EGEDevice.h
   EGEDeviceServices.h
   EGEDictionary.h
-  EGEDir.h
+  EGEDirectory.h
   EGEDynamicArray.h
   EGEEvent.h
   EGEFile.h
@@ -240,10 +240,11 @@ files
   Device.cpp
   Device.h
 
-  ["Core/Dir"]
-  (../../Sources/Core/Dir)
-  Dir.cpp
-  Dir.h
+  ["Core/Directory"]
+  (../../Sources/Core/Directory/Implementation)
+  Directory.cpp
+  (../../Sources/Core/Directory/Interface)
+  Directory.h
 
 	["Core/Event"]
  	(../../Sources/Core/Event)
@@ -731,6 +732,10 @@ files
   ["Airplay/Device"]
   (../../Sources/Airplay/Device)
   DeviceAirplay.cpp
+
+  ["Airplay/Directory"]
+  (../../Sources/Airplay/Directory/Implementation)
+  DirectoryAirplay.cpp
 
 	["Airplay/File"]
 	(../../Sources/Airplay/File)

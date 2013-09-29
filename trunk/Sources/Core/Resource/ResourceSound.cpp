@@ -5,6 +5,7 @@
 #include "EGEXml.h"
 #include "EGEDebug.h"
 #include "EGEResources.h"
+#include "EGEDirectory.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -52,7 +53,7 @@ EGEResult ResourceSound::create(const String& path, const PXmlElement& tag)
   }
 
   // compose full path
-  m_path = path + "/" + m_path;
+  m_path = Directory::Join(path, m_path);
 
   // check if success
   if (EGE_SUCCESS == result)

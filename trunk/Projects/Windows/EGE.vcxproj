@@ -64,7 +64,7 @@
     <ClCompile Include="..\..\Sources\Core\Debug\EngineInfo.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Logger.cpp" />
     <ClCompile Include="..\..\Sources\Core\Device\Device.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Dir\Dir.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Directory\Implementation\Directory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Event\Event.cpp" />
     <ClCompile Include="..\..\Sources\Core\Event\EventManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\File\File.cpp" />
@@ -231,6 +231,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Application\ApplicationWin32_p.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Directory\Implementation\DirectoryWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\main.cpp" />
@@ -272,6 +273,7 @@
     <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\EngineInfo.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
+    <ClInclude Include="..\..\Sources\Core\Directory\Interface\Directory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\Color.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\ColorTransform.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\HardwareResourceProvider.h" />
@@ -409,6 +411,7 @@
     <ClInclude Include="..\..\Sources\EGEComponent.h" />
     <ClInclude Include="..\..\Sources\EGEDeviceServices.h" />
     <ClInclude Include="..\..\Sources\EGEDictionary.h" />
+    <ClInclude Include="..\..\Sources\EGEDirectory.h" />
     <ClInclude Include="..\..\Sources\EGEFlags.h" />
     <ClInclude Include="..\..\Sources\EGEHash.h" />
     <ClInclude Include="..\..\Sources\EGEImagedAnimation.h" />
@@ -451,7 +454,6 @@
     <ClInclude Include="..\..\Sources\Core\Data\Node.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Debug.h" />
     <ClInclude Include="..\..\Sources\Core\Device\Device.h" />
-    <ClInclude Include="..\..\Sources\Core\Dir\Dir.h" />
     <ClInclude Include="..\..\Sources\Core\Event\Event.h" />
     <ClInclude Include="..\..\Sources\Core\Event\EventIDs.h" />
     <ClInclude Include="..\..\Sources\Core\Event\EventListener.h" />
@@ -529,7 +531,6 @@
     <ClInclude Include="..\..\Sources\EGEDataBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEDebug.h" />
     <ClInclude Include="..\..\Sources\EGEDevice.h" />
-    <ClInclude Include="..\..\Sources\EGEDir.h" />
     <ClInclude Include="..\..\Sources\EGEDynamicArray.h" />
     <ClInclude Include="..\..\Sources\EGEEvent.h" />
     <ClInclude Include="..\..\Sources\EGEFile.h" />

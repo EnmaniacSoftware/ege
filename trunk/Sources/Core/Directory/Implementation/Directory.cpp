@@ -3,18 +3,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-String Directory::FromNativeSeparators(const String& path)
-{
-  String result = path;
-
-  size_t pos = 0;
-  while (std::string::npos != (pos = result.find("\\", pos)))
-  {
-    result.replace(pos, 1, "/");
-  }
-
-  return result;
-}
+static const char* KPathSeparator = "/";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Directory::DecomposePath(const String& fullPath, String& path, String& fileName)
 {
@@ -23,7 +12,7 @@ void Directory::DecomposePath(const String& fullPath, String& path, String& file
   fileName = fullPath;
 
   // find last separator
-  size_t pos = fullPath.find_last_of("/");
+  size_t pos = fullPath.find_last_of(PathSeparator());
   if (std::string::npos != pos)
   {
     // store everything before separator as path
@@ -32,6 +21,30 @@ void Directory::DecomposePath(const String& fullPath, String& path, String& file
     // store everything after separator as file name
     fileName = fullPath.substr(pos + 1);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+String Directory::Join(const String& path1, const String& path2)
+{
+  String out = path1;
+
+  // check if first path ends with separator already
+  if (path1.endsWith(PathSeparator()))
+  {
+    // just add second path
+    out += path2;
+  }
+  else
+  {
+    // add separator and second path
+    out += (PathSeparator() + path2);
+  }
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+String Directory::PathSeparator()
+{
+  return String(KPathSeparator);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

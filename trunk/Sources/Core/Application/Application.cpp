@@ -20,6 +20,7 @@
 #include "Core/Debug/Debug.h"
 #include "Core/Debug/EngineInfo.h"
 #include "EGETimer.h"
+#include "EGEDirectory.h"
 
 #ifdef EGE_PLATFORM_WIN32
   #include "Win32/Application/ApplicationWin32_p.h"
@@ -472,8 +473,11 @@ void Application::loadConfig()
 
   StringList enabledDebugNames;
 
+  // compose path to potential config file
+  String configPath = Directory::Join(Directory::Path(Directory::KDocuments), String(KConfigFileName));
+
   XmlDocument xml;
-  if (EGE_SUCCESS == xml.load(KConfigFileName))
+  if (EGE_SUCCESS == xml.load(configPath))
   {
     // find the root element
     PXmlElement root = xml.firstChild(KRootElement);

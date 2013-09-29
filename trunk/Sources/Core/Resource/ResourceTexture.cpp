@@ -8,6 +8,7 @@
 #include "EGEXml.h"
 #include "EGEResources.h"
 #include "EGEStringUtils.h"
+#include "EGEDirectory.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
@@ -129,7 +130,7 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   }
 
   // compose absolute path
-  m_path = path + "/" + m_path;
+  m_path = Directory::Join(path, m_path);
 
   // set state
   m_state = STATE_UNLOADED;

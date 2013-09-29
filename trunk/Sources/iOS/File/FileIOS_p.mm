@@ -1,16 +1,12 @@
 #include "iOS/File/FileIOS_p.h"
 #include "Core/Math/Math.h"
 #include "EGEDebug.h"
+#include "EGEDirectory.h"
 #import <Foundation/NSFileHandle.h>
 #import <Foundation/NSFileManager.h>
 
 EGE_NAMESPACE_BEGIN
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Path to application folder. */
-static String l_applicationFolderPath;
-/*! Path to documents folder. */
-static String l_documentsFolderPath;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(FilePrivate)
 EGE_DEFINE_DELETE_OPERATORS(FilePrivate)
@@ -19,7 +15,7 @@ EGE_DEFINE_DELETE_OPERATORS(FilePrivate)
 NSString* FilePathToNative(const String& path, const String& root)
 {
   // compose full path
-  String fullPath = root + "/" + path;
+  String fullPath = Directory::Join(root, path);
   
   // convert file path
   NSString* filePath = [NSString stringWithCString: fullPath.c_str() encoding: NSASCIIStringEncoding];
@@ -30,22 +26,6 @@ NSString* FilePathToNative(const String& path, const String& root)
 FilePrivate::FilePrivate(File* base) : m_d(base),
                                        m_file(nil)
 {
-  if (l_documentsFolderPath.empty())
-  {
-    // get the documents directory
-    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString* path = [paths objectAtIndex: 0];
-  
-    l_documentsFolderPath = [path cStringUsingEncoding: NSASCIIStringEncoding];
-  }
-  
-  if (l_applicationFolderPath.empty())
-  {
-    // get application directory
-    NSString* path = [[NSBundle mainBundle] bundlePath];
-  
-    l_applicationFolderPath = [path cStringUsingEncoding: NSASCIIStringEncoding];
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 FilePrivate::~FilePrivate()
@@ -63,8 +43,8 @@ EGEResult FilePrivate::open(EGEFile::EMode mode)
   close();
 
   // convert file path
-  NSString* documentsFilePath   = FilePathToNative(d_func()->filePath(), l_documentsFolderPath);
-  NSString* applicationFilePath = FilePathToNative(d_func()->filePath(), l_applicationFolderPath);
+  NSString* documentsFilePath   = FilePathToNative(d_func()->filePath(), Directory::Path(Directory::EDocuments));
+  NSString* applicationFilePath = FilePathToNative(d_func()->filePath(), Directory::Path(Directory::EApplication));
   
   // open file
   switch (mode)
@@ -275,8 +255,8 @@ s64 FilePrivate::size()
   }
   
   // convert file path
-  NSString* documentsFilePath   = FilePathToNative(d_func()->filePath(), l_documentsFolderPath);
-  NSString* applicationFilePath = FilePathToNative(d_func()->filePath(), l_applicationFolderPath);
+  NSString* documentsFilePath   = FilePathToNative(d_func()->filePath(), Directory::Path(Directory::EDocuments));
+  NSString* applicationFilePath = FilePathToNative(d_func()->filePath(), Directory::Path(Directory::EApplication));
     
   // first try to retrieve file info from documents folder
   NSDictionary* dict = [[NSFileManager defaultManager] attributesOfItemAtPath: documentsFilePath error: nil];
@@ -304,8 +284,8 @@ s64 FilePrivate::size()
 bool FilePrivate::exists() const
 {
   // convert file path
-  NSString* documentsFilePath   = FilePathToNative(d_func()->filePath(), l_documentsFolderPath);
-  NSString* applicationFilePath = FilePathToNative(d_func()->filePath(), l_applicationFolderPath);
+  NSString* documentsFilePath   = FilePathToNative(d_func()->filePath(), Directory::Path(Directory::EDocuments));
+  NSString* applicationFilePath = FilePathToNative(d_func()->filePath(), Directory::Path(Directory::EApplication));
   
   // check if exists
   return (YES == [[NSFileManager defaultManager] fileExistsAtPath: documentsFilePath]) ||
@@ -316,7 +296,7 @@ bool FilePrivate::remove()
 {
   // convert file path
   // NOTE: removing can be done in documents folder
-  NSString* documentsFilePath = FilePathToNative(d_func()->filePath(), l_documentsFolderPath);
+  NSString* documentsFilePath = FilePathToNative(d_func()->filePath(), Directory::Path(Directory::EDocuments));
   
   // remove file
   return (YES == [[NSFileManager defaultManager] removeItemAtPath: documentsFilePath error: nil]);

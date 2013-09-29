@@ -2,6 +2,7 @@
 #include "Core/Resource/ResourceManager.h"
 #include "EGEFile.h"
 #include "EGEResources.h"
+#include "EGEDirectory.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -49,7 +50,7 @@ EGEResult ResourceData::create(const String& path, const PXmlElement& tag)
   }
 
   // compose full path
-  m_path = path + "/" + m_path;
+  m_path = Directory::Join(path, m_path);
 
   // set state
   m_state = STATE_UNLOADED;

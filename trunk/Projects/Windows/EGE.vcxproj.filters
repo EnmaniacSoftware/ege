@@ -85,9 +85,6 @@
     <Filter Include="Win32\Input">
       <UniqueIdentifier>{3275639c-3718-4f0b-9f6f-10ea15417f7f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Dir">
-      <UniqueIdentifier>{573caef8-8803-453f-a2da-654ab1620e63}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Containers">
       <UniqueIdentifier>{8af4c0e9-7344-417c-85c3-aa9aeab5db9c}</UniqueIdentifier>
     </Filter>
@@ -244,6 +241,21 @@
     <Filter Include="Core\Graphics\OpenGL\Implementation">
       <UniqueIdentifier>{f4d72714-f50c-49f5-9722-a06714e2f85e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Directory">
+      <UniqueIdentifier>{573caef8-8803-453f-a2da-654ab1620e63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Directory\Implementation">
+      <UniqueIdentifier>{47901364-c26e-4b9b-a61d-ea776bcf85e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Directory\Interface">
+      <UniqueIdentifier>{a1ee7faf-1e03-42c2-b263-b39a949fb997}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Directory">
+      <UniqueIdentifier>{9797bd69-b7c8-457b-8255-caf3f97414a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Directory\Implementation">
+      <UniqueIdentifier>{faf1312f-f92f-48a0-92d2-a0159e8bc6a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
@@ -392,9 +404,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Input\PointerData.cpp">
       <Filter>Core\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Dir\Dir.cpp">
-      <Filter>Core\Dir</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceFont.cpp">
       <Filter>Core\Resource</Filter>
@@ -873,6 +882,12 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderComponent.cpp">
       <Filter>Core\Graphics\Render\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Directory\Implementation\Directory.cpp">
+      <Filter>Core\Directory\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Directory\Implementation\DirectoryWin32.cpp">
+      <Filter>Win32\Directory\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h">
@@ -1101,10 +1116,6 @@
     <ClInclude Include="..\..\Sources\Core\Resource\Resource.h">
       <Filter>Core\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Dir\Dir.h">
-      <Filter>Core\Dir</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\EGEDir.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\List.h">
       <Filter>Core\Containers\stl</Filter>
     </ClInclude>
@@ -1684,6 +1695,10 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\RenderComponent.h">
       <Filter>Core\Graphics\Render\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEDirectory.h" />
+    <ClInclude Include="..\..\Sources\Core\Directory\Interface\Directory.h">
+      <Filter>Core\Directory\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
