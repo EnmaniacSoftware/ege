@@ -33,7 +33,6 @@
 		4536379D16F1113600B4D72F /* EngineInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536358516F1113500B4D72F /* EngineInfo.cpp */; };
 		4536379E16F1113600B4D72F /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536358716F1113500B4D72F /* Logger.cpp */; };
 		4536379F16F1113600B4D72F /* Device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536358A16F1113500B4D72F /* Device.cpp */; };
-		453637A016F1113600B4D72F /* Dir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536358D16F1113500B4D72F /* Dir.cpp */; };
 		453637A116F1113600B4D72F /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536359016F1113500B4D72F /* Event.cpp */; };
 		453637A216F1113600B4D72F /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536359416F1113500B4D72F /* EventManager.cpp */; };
 		453637A316F1113600B4D72F /* File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4536359816F1113500B4D72F /* File.cpp */; };
@@ -225,6 +224,8 @@
 		45DED89A16F7847E00623923 /* DeviceServicesIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DED89516F7847E00623923 /* DeviceServicesIOS_p.mm */; };
 		45DED89B16F7847E00623923 /* PurchaseServicesAppStoreIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DED89716F7847E00623923 /* PurchaseServicesAppStoreIOS_p.mm */; };
 		45DED89C16F7847E00623923 /* SocialServicesGameCenterIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DED89916F7847E00623923 /* SocialServicesGameCenterIOS_p.mm */; };
+		45EA8E4C17F7AF120046CE71 /* Directory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45EA8E4917F7AF120046CE71 /* Directory.cpp */; };
+		45EA8E5017F7AF1E0046CE71 /* DirectoryIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45EA8E4F17F7AF1E0046CE71 /* DirectoryIOS.mm */; };
 		45EBD4D616FA625F002F583D /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45EBD4D516FA625F002F583D /* AppDelegate.mm */; };
 		45FC679A16F7C6F200E9EDCF /* StringUtilsIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45FC679916F7C6F200E9EDCF /* StringUtilsIOS.cpp */; };
 		45FE3C0417AD6785009A5841 /* RenderQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45FE3C0217AD6785009A5841 /* RenderQueue.cpp */; };
@@ -308,8 +309,6 @@
 		4536358816F1113500B4D72F /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
 		4536358A16F1113500B4D72F /* Device.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Device.cpp; sourceTree = "<group>"; };
 		4536358B16F1113500B4D72F /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
-		4536358D16F1113500B4D72F /* Dir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dir.cpp; sourceTree = "<group>"; };
-		4536358E16F1113500B4D72F /* Dir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dir.h; sourceTree = "<group>"; };
 		4536359016F1113500B4D72F /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Event.cpp; sourceTree = "<group>"; };
 		4536359116F1113500B4D72F /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		4536359216F1113500B4D72F /* EventIDs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventIDs.h; sourceTree = "<group>"; };
@@ -647,7 +646,6 @@
 		4536372516F1113600B4D72F /* EGEDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGEDevice.h; sourceTree = "<group>"; };
 		4536372616F1113600B4D72F /* EGEDeviceServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGEDeviceServices.h; sourceTree = "<group>"; };
 		4536372716F1113600B4D72F /* EGEDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGEDictionary.h; sourceTree = "<group>"; };
-		4536372816F1113600B4D72F /* EGEDir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGEDir.h; sourceTree = "<group>"; };
 		4536372916F1113600B4D72F /* EGEDynamicArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGEDynamicArray.h; sourceTree = "<group>"; };
 		4536372A16F1113600B4D72F /* EGEEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGEEvent.h; sourceTree = "<group>"; };
 		4536372B16F1113600B4D72F /* EGEFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGEFile.h; sourceTree = "<group>"; };
@@ -801,6 +799,9 @@
 		45DED89716F7847E00623923 /* PurchaseServicesAppStoreIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PurchaseServicesAppStoreIOS_p.mm; sourceTree = "<group>"; };
 		45DED89816F7847E00623923 /* SocialServicesGameCenterIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServicesGameCenterIOS_p.h; sourceTree = "<group>"; };
 		45DED89916F7847E00623923 /* SocialServicesGameCenterIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SocialServicesGameCenterIOS_p.mm; sourceTree = "<group>"; };
+		45EA8E4917F7AF120046CE71 /* Directory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Directory.cpp; sourceTree = "<group>"; };
+		45EA8E4B17F7AF120046CE71 /* Directory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Directory.h; sourceTree = "<group>"; };
+		45EA8E4F17F7AF1E0046CE71 /* DirectoryIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DirectoryIOS.mm; sourceTree = "<group>"; };
 		45EBD4D416FA625F002F583D /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		45EBD4D516FA625F002F583D /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		45EC5BFD17B2BFA70078F1B2 /* TextureUnitState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextureUnitState.h; sourceTree = "<group>"; };
@@ -916,7 +917,6 @@
 				4536372516F1113600B4D72F /* EGEDevice.h */,
 				4536372616F1113600B4D72F /* EGEDeviceServices.h */,
 				4536372716F1113600B4D72F /* EGEDictionary.h */,
-				4536372816F1113600B4D72F /* EGEDir.h */,
 				4536372916F1113600B4D72F /* EGEDynamicArray.h */,
 				4536372A16F1113600B4D72F /* EGEEvent.h */,
 				4536372B16F1113600B4D72F /* EGEFile.h */,
@@ -1010,7 +1010,7 @@
 				4536357A16F1113500B4D72F /* Data */,
 				4536357F16F1113500B4D72F /* Debug */,
 				4536358916F1113500B4D72F /* Device */,
-				4536358C16F1113500B4D72F /* Dir */,
+				45EA8E4717F7AF120046CE71 /* Directory */,
 				4536358F16F1113500B4D72F /* Event */,
 				4536359716F1113500B4D72F /* File */,
 				4536359B16F1113500B4D72F /* Graphics */,
@@ -1157,15 +1157,6 @@
 				4536358B16F1113500B4D72F /* Device.h */,
 			);
 			path = Device;
-			sourceTree = "<group>";
-		};
-		4536358C16F1113500B4D72F /* Dir */ = {
-			isa = PBXGroup;
-			children = (
-				4536358D16F1113500B4D72F /* Dir.cpp */,
-				4536358E16F1113500B4D72F /* Dir.h */,
-			);
-			path = Dir;
 			sourceTree = "<group>";
 		};
 		4536358F16F1113500B4D72F /* Event */ = {
@@ -1794,21 +1785,22 @@
 		4536376916F1113600B4D72F /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				4539025D17691F7C00FFA73E /* Audio */,
-				4564E3DC17527F6C0077A46C /* Threading */,
-				45ADCBA716F7CB23005FE8A0 /* Debug */,
-				45ADCBA216F7C955005FE8A0 /* Memory */,
-				45ADCB9F16F7C94F005FE8A0 /* Device */,
-				45FC679816F7C6F200E9EDCF /* String */,
-				45DED89316F7847E00623923 /* Services */,
-				4555B48B16F77C7E00FDAFF3 /* NativeUI */,
-				4555B48716F77A4900FDAFF3 /* Input */,
-				4504254816F29F6D007699A6 /* Timer */,
+				4536377816F1113600B4D72F /* TypesIOS.h */,
+				4536377716F1113600B4D72F /* main.mm */,
 				4536376A16F1113600B4D72F /* Application */,
+				4539025D17691F7C00FFA73E /* Audio */,
+				45ADCBA716F7CB23005FE8A0 /* Debug */,
+				45ADCB9F16F7C94F005FE8A0 /* Device */,
+				45EA8E4D17F7AF1E0046CE71 /* Directory */,
 				4536376D16F1113600B4D72F /* File */,
 				4536377016F1113600B4D72F /* Graphics */,
-				4536377716F1113600B4D72F /* main.mm */,
-				4536377816F1113600B4D72F /* TypesIOS.h */,
+				4555B48716F77A4900FDAFF3 /* Input */,
+				45ADCBA216F7C955005FE8A0 /* Memory */,
+				4555B48B16F77C7E00FDAFF3 /* NativeUI */,
+				45DED89316F7847E00623923 /* Services */,
+				45FC679816F7C6F200E9EDCF /* String */,
+				4564E3DC17527F6C0077A46C /* Threading */,
+				4504254816F29F6D007699A6 /* Timer */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -2071,6 +2063,47 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		45EA8E4717F7AF120046CE71 /* Directory */ = {
+			isa = PBXGroup;
+			children = (
+				45EA8E4817F7AF120046CE71 /* Implementation */,
+				45EA8E4A17F7AF120046CE71 /* Interface */,
+			);
+			path = Directory;
+			sourceTree = "<group>";
+		};
+		45EA8E4817F7AF120046CE71 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				45EA8E4917F7AF120046CE71 /* Directory.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		45EA8E4A17F7AF120046CE71 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				45EA8E4B17F7AF120046CE71 /* Directory.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		45EA8E4D17F7AF1E0046CE71 /* Directory */ = {
+			isa = PBXGroup;
+			children = (
+				45EA8E4E17F7AF1E0046CE71 /* Implementation */,
+			);
+			path = Directory;
+			sourceTree = "<group>";
+		};
+		45EA8E4E17F7AF1E0046CE71 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				45EA8E4F17F7AF1E0046CE71 /* DirectoryIOS.mm */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
 		45FC679816F7C6F200E9EDCF /* String */ = {
 			isa = PBXGroup;
 			children = (
@@ -2147,7 +2180,6 @@
 				4536379D16F1113600B4D72F /* EngineInfo.cpp in Sources */,
 				4536379E16F1113600B4D72F /* Logger.cpp in Sources */,
 				4536379F16F1113600B4D72F /* Device.cpp in Sources */,
-				453637A016F1113600B4D72F /* Dir.cpp in Sources */,
 				453637A116F1113600B4D72F /* Event.cpp in Sources */,
 				453637A216F1113600B4D72F /* EventManager.cpp in Sources */,
 				453637A316F1113600B4D72F /* File.cpp in Sources */,
@@ -2347,6 +2379,8 @@
 				45C58F8F17F0B7C400C730FA /* RenderComponent.cpp in Sources */,
 				45C58F9317F0BB4400C730FA /* VertexArrayObject.cpp in Sources */,
 				45D7E10D17F6E8880017EB83 /* AudioCodecOgg.cpp in Sources */,
+				45EA8E4C17F7AF120046CE71 /* Directory.cpp in Sources */,
+				45EA8E5017F7AF1E0046CE71 /* DirectoryIOS.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

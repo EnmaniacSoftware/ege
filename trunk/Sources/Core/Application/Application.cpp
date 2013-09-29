@@ -441,8 +441,6 @@ void Application::onEventRecieved(PEvent event)
     case EGE_EVENT_ID_CORE_QUIT_REQUEST:
 
       m_state = STATE_QUITTING;
-      // TAGE - for testing
-      //m_state = STATE_QUIT;
       break;
       
     case EGE_EVENT_ID_CORE_APP_PAUSE:
@@ -474,7 +472,7 @@ void Application::loadConfig()
   StringList enabledDebugNames;
 
   // compose path to potential config file
-  String configPath = Directory::Join(Directory::Path(Directory::KDocuments), String(KConfigFileName));
+  String configPath = Directory::Join(Directory::Path(Directory::EDocuments), String(KConfigFileName));
 
   XmlDocument xml;
   if (EGE_SUCCESS == xml.load(configPath))

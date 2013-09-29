@@ -14,8 +14,8 @@ class Directory
     /*! Predefined directories. */
     enum DirectoryType
     {
-      KApplication = 0,     /*!< Application root directory. Usually not writable. */
-      KDocuments,           /*!< Application documents directory. Writable. */
+      EApplication = 0,     /*!< Application root directory. Usually not writable. */
+      EDocuments,           /*!< Application documents directory. Writable. */
     };
 
   public:

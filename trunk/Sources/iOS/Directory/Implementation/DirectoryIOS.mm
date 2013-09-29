@@ -1,4 +1,5 @@
 #include "EGEDirectory.h"
+#include "EGEDebug.h"
 #import <Foundation/NSFileHandle.h>
 #import <Foundation/NSFileManager.h>
 
@@ -23,7 +24,7 @@ String Directory::Path(DirectoryType directory)
   // proccess according to type
   switch (directory)
   {
-    case KApplication:
+    case EApplication:
 
       if (l_applicationFolderPath.empty())
       {
@@ -36,7 +37,7 @@ String Directory::Path(DirectoryType directory)
       out = l_applicationFolderPath;
       break;
 
-    case KDocuments:
+    case EDocuments:
 
       if (l_documentsFolderPath.empty())
       {

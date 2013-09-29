@@ -38,28 +38,6 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
   [super dealloc];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-- (CGPoint) transformTouchPoint: (CGPoint) point
-{
-  // get current UI orientation
-  UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-
-  // transform due to current UI orientation
-  CGPoint newPoint = point;
-    
-  if (UIInterfaceOrientationLandscapeRight == orientation)
-  {
-    newPoint.x = point.y;
-    newPoint.y = Device::SurfaceWidth() - point.x;
-  }
-  else if (UIInterfaceOrientationLandscapeLeft == orientation)
-  {
-    newPoint.x = Device::SurfaceHeight() - point.y;
-    newPoint.y = point.x;
-  }
-  
-  return newPoint;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) registerForDeviceOrientationChanges: (UIApplication*) application
 {
   UIDevice* device = [UIDevice currentDevice];
@@ -167,6 +145,17 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
     CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget: self selector:@selector(tick:)];
     [displayLink addToRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
     [displayLink setFrameInterval: 1];
+    
+    // determine display scale factor
+    if ([[UIScreen mainScreen] respondsToSelector: @selector(scale)])
+    {
+      // get scale factor
+      scaleFactor = [UIScreen mainScreen].scale;
+    }
+    else
+    {
+      scaleFactor = 1.0f;
+    }
   }
 
   return result;
@@ -174,7 +163,8 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) applicationWillResignActive: (UIApplication*) application
 {
-  // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+  // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming
+  // phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
   // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 
   assert(egeApplication);
@@ -192,7 +182,8 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) applicationDidEnterBackground: (UIApplication*) application
 {
-  // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+  // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application
+  // to its current state in case it is terminated later.
   // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -203,7 +194,8 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) applicationDidBecomeActive: (UIApplication*) application
 {
-  // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+  // Restart any tasks that were paused (or not yet started) while the application was inactive.
+  // If the application was previously in the background, optionally refresh the user interface.
 
   assert(egeApplication);
   
@@ -228,33 +220,45 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) touchesBegan: (NSSet*) touches withEvent: (UIEvent*) event
 {
+  RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(egeApplication->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
+  assert(renderWindow);
+  
   // go thru all touches
   for (UITouch* touch in touches)
   {
     // get location within view
-    CGPoint point = [touch locationInView: nil];
-    point = [self transformTouchPoint: point];
+    CGPoint point = [touch locationInView: renderWindow->view()];
+    
+    // NOTE: Coordinates returned by view are non-retina. They need to be scaled up if necessary.
+    point.x *= scaleFactor;
+    point.y *= scaleFactor;
     
     // send pointer event
     [self notifyPointerEvent: ACTION_BUTTON_DOWN withButton: BUTTON_LEFT atPoint: point];
     
-    egeDebug(KAppDelegateDebugName) << "Touch began at" << point.x << point.y << (float32) touch.timestamp;
+    egeDebug(KAppDelegateDebugName) << "Touch began at" << point.x << point.y << static_cast<float32>(touch.timestamp);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) touchesEnded: (NSSet*) touches withEvent: (UIEvent*) event
 {
+  RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(egeApplication->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
+  assert(renderWindow);
+ 
   // go thru all touches
   for (UITouch* touch in touches)
   {
     // get location within view
-    CGPoint point = [touch locationInView: nil];
-    point = [self transformTouchPoint: point];
+    CGPoint point = [touch locationInView: renderWindow->view()];
     
+    // NOTE: Coordinates returned by view are non-retina. They need to be scaled up if necessary.
+    point.x *= scaleFactor;
+    point.y *= scaleFactor;
+        
     // send pointer event
     [self notifyPointerEvent: ACTION_BUTTON_UP withButton: BUTTON_LEFT atPoint: point];
     
-    egeDebug(KAppDelegateDebugName) << "Touch ended at" << point.x << point.y << (float32) touch.timestamp;
+    egeDebug(KAppDelegateDebugName) << "Touch ended at" << point.x << point.y << static_cast<float32>(touch.timestamp);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -266,17 +270,23 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) touchesMoved: (NSSet*) touches withEvent: (UIEvent*) event
 {
+  RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(egeApplication->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
+  assert(renderWindow);
+
   // go thru all touches
   for (UITouch* touch in touches)
   {
     // get location within view
-    CGPoint point = [touch locationInView: nil];
-    point = [self transformTouchPoint: point];
+    CGPoint point = [touch locationInView: renderWindow->view()];
+    
+    // NOTE: Coordinates returned by view are non-retina. They need to be scaled up if necessary.
+    point.x *= scaleFactor;
+    point.y *= scaleFactor;
     
     // send pointer event
     [self notifyPointerEvent: ACTION_MOVE withButton: BUTTON_LEFT atPoint: point];
      
-    egeDebug(KAppDelegateDebugName) << "Touch moved at" << point.x << point.y << (float32) touch.timestamp;
+    egeDebug(KAppDelegateDebugName) << "Touch moved at" << point.x << point.y << static_cast<float32>(touch.timestamp);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -291,7 +301,7 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
     KeyboardModifiers keyboardModifiers = KM_NONE;
     
     // send pointer event
-    PObject data = ege_new PointerData(action, button, keyboardModifiers, (s32) point.x, (s32) point.y, 0);
+    PObject data = ege_new PointerData(action, button, keyboardModifiers, static_cast<s32>(point.x), static_cast<s32>(point.y), 0);
     eventManager->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, data);
   }
 }

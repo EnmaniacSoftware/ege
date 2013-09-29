@@ -13,6 +13,8 @@
 {
   /*! Pointer to application object. */
   EGE::Application* egeApplication;
+  /*! Display scale factor. */
+  EGE::float32 scaleFactor;
 }
 
 @end
