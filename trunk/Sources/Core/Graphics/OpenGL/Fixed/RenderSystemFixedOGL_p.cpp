@@ -291,7 +291,7 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
     EGE_ASSERT(EGE_OBJECT_UID_TEXTURE_2D != textureImage->uid());
 
     // set texture coord array index to be used by current texture unit
-    m_textureUnitStates[i].m_textureCoordIndex = Math::Min(i, textureCoordsCount);
+    m_textureUnitStates[i].m_textureCoordIndex = Math::Min(i, textureCoordsCount - 1);
 
     // check if 2D texture
     //if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
@@ -753,7 +753,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
   EGE_ASSERT_X(NULL != material, "Component must have material attached.");
   EGE_ASSERT_X(0 < vertexBuffer->vertexCount(), "No vertices to render!");
 
-  //if (component->name() == "droplet-11")
+  //if (component->name() == "level-meter-classic")
   //{
   //  int a = 1;
   //}
