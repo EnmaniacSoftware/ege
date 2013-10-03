@@ -27,11 +27,26 @@ bool BatchedRenderQueue::IsSuitable(const PRenderComponent& component)
   const u32 textureUVElements = component->vertexBuffer()->vertexDeclaration().elementCount(NVertexBuffer::VES_TEXTURE_UV);
   for (u32 i = 0; i < component->material()->passCount() && result; ++i)
   {
+    const PRenderPass& pass = component->material()->pass(i);
+
     // check if number of texture UV elements DO NOT match number of texture units
-    if (textureUVElements != component->material()->pass(i)->textureCount())
+    if (textureUVElements != pass->textureCount())
     {
       // batching not possible
       result = false;
+    }
+
+    // check if same textures
+    // NOTE: compare all texture in current pass to first texture in first pass
+    for (u32 textureIndex = 0; textureIndex < pass->textureCount() && result; ++textureIndex)
+    {
+      // check if same texture
+      // TAGE - check if possible to compare just texture objects instead of names
+      if (component->material()->pass(0)->texture(0)->name() != pass->texture(textureIndex)->name())
+      {
+        // batching not possible
+        result = false;
+      }
     }
   }
 
