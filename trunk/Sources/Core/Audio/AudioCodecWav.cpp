@@ -64,9 +64,8 @@ bool AudioCodecWav::reset()
   {
     stream = ege_pcast<PDataBuffer>(m_stream);
 
+    // reset stream to begining
     stream->setReadOffset(0);
-
-    m_streamOffset = 0;
 
     AudioUtils::ReadWavHeaders(stream, m_riffHeader, m_fmtHeader, m_dataHeader);
   }
@@ -80,6 +79,9 @@ bool AudioCodecWav::reset()
   m_frequency       = m_fmtHeader.sampleRate;
   m_bitsPerSample   = m_fmtHeader.bitsPerSample;
   m_streamSizeLeft  = m_dataHeader.size;
+
+  // set read offset at the begining of wave data
+  m_streamOffset = m_dataHeader.offset;
 
   return true;
 }

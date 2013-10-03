@@ -66,8 +66,9 @@ void AudioUtils::ReadWavHeaders(const PDataBuffer& data, Audio::WaveRiffHeader& 
 
         case WAVE_DATA_HEADER_ID:
 
-          dataHeader.id   = chunkId;
-          dataHeader.size = chunkSize;
+          dataHeader.id     = chunkId;
+          dataHeader.size   = chunkSize;
+          dataHeader.offset = static_cast<u32>(data->readOffset());
           break;
 
         default:
