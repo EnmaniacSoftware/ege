@@ -41,7 +41,9 @@ class SocialServices : public Object
      *  @param result Result code of submission.
      */
     Signal1<EGEResult> scoreSaved;
-
+    /*! Signal emitted when social screen is dismissed. */
+    Signal0<> screenDismissed;
+  
   public:
 
     /*! Constructs object. */

@@ -51,8 +51,6 @@ class SocialServicesPrivate
 
     /*! Game center delegate. */
     void* m_delegate;
-    /*! Game center controller. */
-    void* m_gameCenterController;
     /*! Last authenticated user name. */
     String m_userId;
     /*! List of pending achievements to be saved. */

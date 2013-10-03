@@ -229,7 +229,7 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
   bool result = true;
 
   // check if component is meaningful
-  if (0 < component->vertexBuffer()->vertexCount())
+  if ((0 < component->vertexBuffer()->vertexCount()) && (NULL != component->material()))
   {
     bool added = false;
 

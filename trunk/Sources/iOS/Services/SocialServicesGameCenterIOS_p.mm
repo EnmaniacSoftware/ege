@@ -17,8 +17,7 @@ EGE_DEFINE_NEW_OPERATORS(SocialServicesPrivate)
 EGE_DEFINE_DELETE_OPERATORS(SocialServicesPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SocialServicesPrivate::SocialServicesPrivate(SocialServices* base) : m_d(base),
-                                                                     m_delegate(NULL),
-                                                                     m_gameCenterController(NULL)
+                                                                     m_delegate(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,9 +25,6 @@ SocialServicesPrivate::~SocialServicesPrivate()
 {
   [(GameCenterDelegate*) m_delegate release];
   m_delegate = nil;
-  
-  [(GKGameCenterViewController*) m_gameCenterController release];
-  m_gameCenterController = nil;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult SocialServicesPrivate::construct()
@@ -39,16 +35,6 @@ EGEResult SocialServicesPrivate::construct()
     // error!
     return EGE_ERROR_NO_MEMORY;
   }
-  
-  m_gameCenterController = [[GKGameCenterViewController alloc] init];
-  if (nil == m_gameCenterController)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-  
-  // set delegate
-  ((GKGameCenterViewController*) m_gameCenterController).gameCenterDelegate = (GameCenterDelegate*) m_delegate;
   
   return EGE_SUCCESS;
 }
@@ -248,18 +234,33 @@ EGEResult SocialServicesPrivate::showScores(const String& scoreTable)
   if (d_func()->isAuthenticated())
   {
     result = EGE_SUCCESS;
-
+    
     NSString* leaderboardID = [NSString stringWithCString: scoreTable.c_str() encoding: NSASCIIStringEncoding];
 
-    // retrieve root view controller
-    UIViewController* rootController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-
-    ((GKGameCenterViewController*) m_gameCenterController).viewState            = GKGameCenterViewControllerStateLeaderboards;
-    ((GKGameCenterViewController*) m_gameCenterController).leaderboardTimeScope = GKLeaderboardTimeScopeAllTime;
-    ((GKGameCenterViewController*) m_gameCenterController).leaderboardCategory  = leaderboardID;
- 
-    // show view
-    [rootController presentViewController: (GKGameCenterViewController*) m_gameCenterController animated: YES completion: nil];
+    // show window
+    RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(d_func()->app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
+    EGE_ASSERT(NULL != renderWindow);
+    
+    UIWindow* window = renderWindow->window();
+    
+    // create controller
+    GKGameCenterViewController* gameCenterController = [[GKGameCenterViewController alloc] init];
+    if (nil == gameCenterController)
+    {
+      result = EGE_ERROR_NO_MEMORY;
+    }
+    else
+    {
+      // setup controller
+      gameCenterController.gameCenterDelegate   = (GameCenterDelegate*) m_delegate;
+      gameCenterController.viewState            = GKGameCenterViewControllerStateLeaderboards;
+      gameCenterController.leaderboardTimeScope = GKLeaderboardTimeScopeAllTime;
+      gameCenterController.leaderboardCategory  = leaderboardID;
+      gameCenterController.modalPresentationStyle = UIModalPresentationFullScreen;
+      
+      // show view
+      [window.rootViewController presentViewController: gameCenterController animated: YES completion: nil];
+    }
   }
   
   return result;
