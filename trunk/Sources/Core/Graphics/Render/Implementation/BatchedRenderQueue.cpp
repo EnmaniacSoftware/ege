@@ -22,6 +22,13 @@ bool BatchedRenderQueue::IsSuitable(const PRenderComponent& component)
 {
   bool result = true;
 
+  // check if more than one pass
+  // TAGE - need to think about it, perhaps it will be possible to cache these as well
+  if (1 < component->material()->passCount())
+  {
+    result = false;
+  }
+
   // only components with the same amount of texture as UV components can be batched
   // NOTE: this is will be major thing to refactor for OGLES 2.0 due to texture matrices
   const u32 textureUVElements = component->vertexBuffer()->vertexDeclaration().elementCount(NVertexBuffer::VES_TEXTURE_UV);
@@ -60,8 +67,8 @@ EGEResult BatchedRenderQueue::addForRendering(const PRenderComponent& component,
   // NOTE: add support for point sizes and line widths if necessary
   EGE_ASSERT((1.0f == component->pointSize()) && (1.0f == component->lineWidth()));
 
-  // check if priorities does not match
-  if (component->priority() != priority())
+  // check if priorities does not match or not suitable
+  if ((component->priority() != priority()) || ! IsSuitable(component))
   {
     // reject
     return EGE_ERROR_NOT_SUPPORTED;
