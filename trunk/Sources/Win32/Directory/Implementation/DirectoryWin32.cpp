@@ -22,7 +22,7 @@ String Directory::Path(DirectoryType directory)
   EGE_UNUSED(directory);
 
   // get current directory
-  TCHAR szPath[MAX_PATH];
+  CHAR szPath[MAX_PATH];
   DWORD dwLength = GetCurrentDirectoryA(MAX_PATH, szPath);
 
   // convert to framework layout

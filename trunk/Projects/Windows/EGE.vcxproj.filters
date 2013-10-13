@@ -256,6 +256,15 @@
     <Filter Include="Win32\Directory\Implementation">
       <UniqueIdentifier>{faf1312f-f92f-48a0-92d2-a0159e8bc6a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Version">
+      <UniqueIdentifier>{bcbfcab0-218d-47f6-b35f-47bd90f08ea8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Version\Implementation">
+      <UniqueIdentifier>{6a471f32-9ab2-4614-b7a5-773a9eda10be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Version\Interface">
+      <UniqueIdentifier>{515a5ace-f58a-4386-855e-0ebf57957e98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
@@ -887,6 +896,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Directory\Implementation\DirectoryWin32.cpp">
       <Filter>Win32\Directory\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Version\Implementation\Version.cpp">
+      <Filter>Core\Version\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1700,6 +1712,10 @@
     <ClInclude Include="..\..\Sources\Core\Directory\Interface\Directory.h">
       <Filter>Core\Directory\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Version\Interface\Version.h">
+      <Filter>Core\Version\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEVersion.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

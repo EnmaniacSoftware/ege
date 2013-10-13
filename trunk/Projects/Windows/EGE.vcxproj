@@ -224,6 +224,7 @@
     <ClCompile Include="..\..\Sources\Core\UI\Widget.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\WidgetFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\WidgetFrame.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Version\Implementation\Version.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlAttributeTinyXml_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlDocumentTinyXml_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlElementTinyXml_p.cpp" />
@@ -395,6 +396,7 @@
     <ClInclude Include="..\..\Sources\Core\UI\Widget.h" />
     <ClInclude Include="..\..\Sources\Core\UI\WidgetFactory.h" />
     <ClInclude Include="..\..\Sources\Core\UI\WidgetFrame.h" />
+    <ClInclude Include="..\..\Sources\Core\Version\Interface\Version.h" />
     <ClInclude Include="..\..\Sources\Core\XML\TinyXml\XmlAttributeTinyXml_p.h" />
     <ClInclude Include="..\..\Sources\Core\XML\XmlAttribute.h" />
     <ClInclude Include="..\..\Sources\EGEAlignment.h" />
@@ -571,6 +573,7 @@
     <ClInclude Include="..\..\Sources\EGETypes.h" />
     <ClInclude Include="..\..\Sources\EGEUI.h" />
     <ClInclude Include="..\..\Sources\EGEVector.h" />
+    <ClInclude Include="..\..\Sources\EGEVersion.h" />
     <ClInclude Include="..\..\Sources\EGEVertexBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEWaitCondition.h" />
     <ClInclude Include="..\..\Sources\EGEXml.h" />

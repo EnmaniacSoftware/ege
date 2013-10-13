@@ -5,6 +5,7 @@
 #include "EGETime.h"
 #include "EGESignal.h"
 #include "EGEDictionary.h"
+#include "EGEVersion.h"
 #include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN
@@ -70,6 +71,8 @@ class Application : public IEventListener
     virtual EGEResult construct(const Dictionary& params);
     /*! Starts engine work. */
     virtual EGEResult run();
+    /*! Returns application version. */
+    virtual Version version() const = 0;
 
     /*! Returns current state. */
     State state() const;

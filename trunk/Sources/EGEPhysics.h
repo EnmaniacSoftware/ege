@@ -30,7 +30,7 @@ namespace EGEPhysics
        *   0 - collide exactly according to settings. 
        *   1 - Always collide. Discard rest of data.
        */
-      u16 policy;
+      s16 policy;
     };
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

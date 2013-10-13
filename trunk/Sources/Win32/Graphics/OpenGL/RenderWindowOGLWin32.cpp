@@ -622,7 +622,7 @@ void RenderWindowOGLWin32::detectCapabilities()
     if ((NULL != glGenBuffers) && (NULL != glBindBuffer) && (NULL != glBufferData) && (NULL != glBufferSubData) && (NULL != glDeleteBuffers) && 
         (NULL != glMapBuffer) && (NULL != glUnmapBuffer))
     {
-      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT, true);
+      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT, false);
       Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER, true);
     }
   }
