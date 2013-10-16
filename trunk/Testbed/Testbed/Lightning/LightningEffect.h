@@ -8,6 +8,7 @@
 #include <EGEInput.h>
 #include <EGEDynamicArray.h>
 #include <EGERandom.h>
+#include <EGERenderer.h>
 
 struct Segment
 {

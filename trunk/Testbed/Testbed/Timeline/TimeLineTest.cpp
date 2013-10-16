@@ -71,13 +71,13 @@ void TimeLineTest::update(const Time& time)
 /*! Slot called when time line frame has been changed. */
 void TimeLineTest::frameChanged(s32 frame)
 {
-  EGE_PRINT("Frame changed to: %d", frame);
+//  EGE_PRINT("Frame changed to: %d", frame);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Slot called when time line finishes. */
 void TimeLineTest::finished()
 {
-  EGE_PRINT("Done!");
+  //EGE_PRINT("Done!");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Pointer event receiver. */

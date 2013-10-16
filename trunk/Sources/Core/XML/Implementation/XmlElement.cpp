@@ -1,9 +1,9 @@
-#include "Core/Xml/XmlElement.h"
-#include "Core/Xml/XmlAttribute.h"
+#include "Core/Xml/Interface/XmlElement.h"
+#include "Core/Xml/Interface/XmlAttribute.h"
 #include "EGEStringUtils.h"
 
 #if EGE_XML_TINYXML
-  #include "Core/XML/TinyXml/XMLElementTinyXML_p.h"
+  #include "Core/XML/Implementation/TinyXml/XMLElementTinyXML_p.h"
 #endif // EGE_XML_TINYXML
 
 EGE_NAMESPACE_BEGIN

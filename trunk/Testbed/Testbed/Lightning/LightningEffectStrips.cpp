@@ -2,6 +2,8 @@
 #include <EGEMath.h>
 #include <EGEDebug.h>
 #include <EGEResources.h>
+#include <EGERenderComponent.h>
+#include <EGERenderer.h>
 #include "LightningEffectStrips.h"
 
 EGE_NAMESPACE
@@ -34,7 +36,7 @@ bool LightningEffectStrips::isValid() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Renders object. */
-void LightningEffectStrips::render(Renderer* renderer)
+void LightningEffectStrips::render(IRenderer* renderer)
 {
   if (STATE_BUSY == m_state)
   {
@@ -212,15 +214,6 @@ void LightningEffectStrips::create(const List<Vector2f>& points, s32 steps, bool
         segment.randomization       = 0.0f;
         segment.randomizationNormal = Vector2f::ZERO;
 
-        // check if 
-        Vector2f aaa = (oldSegment.end - midPoint).perpendicular().normalized();
-        float32 dot = aaa.dotProduct(segment.normal);
-        EGE_PRINT("%.2f %.2f %.2f %.2f DOT: %f", segment.normal.x, segment.normal.y, aaa.x, aaa.y, Math::RadiansToDegrees(Math::ACos(dot)));
-        if (dot < -0.9f)
-        {
-          int a = 1;
-        }
-
         // update current segment to second subsegment
         oldSegment.start = midPoint;
         oldSegment.end  = oldSegment.end;
@@ -294,14 +287,14 @@ void LightningEffectStrips::generateRenderData()
   {
     Beam& beam = *it;
 
-    // create render data
-    beam.renderData = ege_new RenderComponent(app(), "lightning-effect-lines", m_renderPriority, EGEGraphics::RPT_TRIANGLE_STRIPS);
-    if (!beam.renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2_C4))
-    {
-      // error!
-      return;
-    }
+    // setup vertex declaration
+    VertexDeclaration vertexDeclaration;
+    vertexDeclaration.addElement(NVertexBuffer::VES_POSITION_XY);
+    vertexDeclaration.addElement(NVertexBuffer::VES_TEXTURE_UV);
+    vertexDeclaration.addElement(NVertexBuffer::VES_COLOR_RGBA);
 
+    // create render data
+    beam.renderData = ege_new RenderComponent(app(), "lightning-effect-lines", vertexDeclaration, m_renderPriority, EGEGraphics::RPT_TRIANGLE_STRIPS);
     beam.renderData->setMaterial(m_material);
 
     Vector2f startPosNegative;

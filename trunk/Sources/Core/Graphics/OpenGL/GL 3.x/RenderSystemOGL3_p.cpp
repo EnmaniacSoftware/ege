@@ -789,7 +789,10 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
 
     // get first vao from the list and shrink the list
     PVertexArrayObject vao = vaos.first(NULL);
-    vaos.pop_front();
+    if ( ! vaos.empty())
+    {
+      vaos.pop_front();
+    }
 
     // apply pass related params
     applyPassParams(component, material, *renderPass);

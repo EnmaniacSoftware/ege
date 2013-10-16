@@ -7,6 +7,7 @@
 #include <EGETime.h>
 #include <EGEInput.h>
 #include <EGEDynamicArray.h>
+#include <EGERenderer.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define RIPPLE_COUNT 3

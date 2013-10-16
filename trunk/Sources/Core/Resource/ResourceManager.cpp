@@ -519,6 +519,8 @@ bool ResourceManager::createDefaultResources()
     return false;
   }
 
+  // Default material resource...
+
   // add to pool
   m_groups.push_back(group);
 

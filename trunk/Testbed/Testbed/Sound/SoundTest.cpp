@@ -126,18 +126,14 @@ void SoundTest::pointerEvent(PPointerData data)
       }
     }
 
-    PResourceSound soundRes = app()->resourceManager()->soundResource(name);
-    if (soundRes)
+    PSound sound = Sound::CreateAndPlay(app(), name, 0);
+    if (sound)
     {
-      PSound sound = soundRes->createInstance();
-
       PTextOverlay overlay = app()->overlayManager()->overlay("sound-info");
       if (overlay)
       {
-        overlay->setText(Text::Format("Playing %s. Channels: %d. Freq: %dHz", name.toAscii(), sound->codec()->channels(), sound->codec()->frequency()));
+        overlay->setText(Text::Format("Playing %s. Channels: %d. Freq: %dHz", name.toAscii(), 0, 0 /*sound->codec()->channels(), sound->codec()->frequency()*/));
       }
-
-      app()->audioManager()->play(sound);
     }
   }
 }

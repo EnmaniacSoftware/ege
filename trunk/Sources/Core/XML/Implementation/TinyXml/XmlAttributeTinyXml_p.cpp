@@ -1,58 +1,70 @@
-#include "Core/Xml/XmlAttribute.h"
-
-#if EGE_XML_TINYXML
-  #include "Core/XML/TinyXml/XMLAttributeTinyXML_p.h"
-#endif // EGE_XML_TINYXML
+#include "Core/XML/Implementation/TinyXml/XmlAttributeTinyXml_p.h"
+#include "Core/XML/Interface/XmlAttribute.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(XmlAttribute)
-EGE_DEFINE_DELETE_OPERATORS(XmlAttribute)
+EGE_DEFINE_NEW_OPERATORS(XmlAttributePrivate)
+EGE_DEFINE_DELETE_OPERATORS(XmlAttributePrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlAttribute::XmlAttribute() : Object(NULL)
+XmlAttributePrivate::XmlAttributePrivate(XmlAttribute* base) : m_base(base), 
+                                                               m_attribute(NULL)
 {
-  m_p = ege_new XmlAttributePrivate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlAttribute::~XmlAttribute()
+XmlAttributePrivate::~XmlAttributePrivate()
 {
-  EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool XmlAttribute::isValid() const
-{
-  return (NULL != m_p) && m_p->isValid();
+bool XmlAttributePrivate::isValid() const 
+{ 
+  return (NULL != m_attribute); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-String XmlAttribute::name() const
+String XmlAttributePrivate::name() const
 {
   if (isValid())
   {
-    return p_func()->name();
+    return m_attribute->Name();
   }
 
   return String();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-String XmlAttribute::value() const
+String XmlAttributePrivate::value() const
 {
   if (isValid())
   {
-    return p_func()->value();
+    return m_attribute->Value();
   }
 
   return String();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PXmlAttribute XmlAttribute::next() const
+PXmlAttribute XmlAttributePrivate::next() const
 {
+  PXmlAttribute attribute;
+
   if (isValid())
   {
-    return p_func()->next();
+    TiXmlAttribute* next = m_attribute->Next();
+    if (next)
+    {
+      attribute = ege_new XmlAttribute();
+      if (attribute)
+      {
+        attribute->p_func()->setAttribute(next);
+      }
+    }
   }
 
-  return NULL;
+  return attribute;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void XmlAttributePrivate::setAttribute(TiXmlAttribute* attribute)
+{
+  m_attribute = attribute;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

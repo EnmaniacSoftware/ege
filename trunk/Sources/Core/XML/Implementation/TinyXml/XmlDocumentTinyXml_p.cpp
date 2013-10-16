@@ -1,7 +1,7 @@
-#include "Core/XML/XmlDocument.h"
-#include "Core/XML/TinyXml/XmlDocumentTinyXml_p.h"
-#include "Core/XML/XmlElement.h"
-#include "Core/XML/TinyXml/XmlElementTinyXml_p.h"
+#include "Core/XML/Interface/XmlDocument.h"
+#include "Core/XML/Interface/XmlElement.h"
+#include "Core/XML/Implementation/TinyXml/XmlDocumentTinyXml_p.h"
+#include "Core/XML/Implementation/TinyXml/XmlElementTinyXml_p.h"
 #include "Core/Data/DataBuffer.h"
 #include "EGEFile.h"
 
@@ -55,10 +55,10 @@ PXmlElement XmlDocumentPrivate::firstChild(const String& name)
   {
     TiXmlElement* elem = node->ToElement();
 
-    if (elem)
+    if (NULL != elem)
     {
       element = ege_new XmlElement();
-      if (element)
+      if (NULL != element)
       {
         element->p_func()->setElement(elem);
       }
@@ -125,8 +125,7 @@ EGEResult XmlDocumentPrivate::save(const PDataBuffer& buffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool XmlDocumentPrivate::appendElement(const PXmlElement& element)
 {
-  // NOTE: TiXmlDocument takes ownership of element
-  return (NULL != m_xml.LinkEndChild(element->p_func()->element(true)));
+  return (NULL != m_xml.InsertEndChild(*element->p_func()->element(false)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PXmlElement XmlDocumentPrivate::rootElement()

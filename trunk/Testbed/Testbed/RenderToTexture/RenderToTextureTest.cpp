@@ -1,5 +1,7 @@
 #include "App.h"
 #include "RenderToTextureTest.h"
+#include <EGEGraphics.h>
+#include <EGERenderSystem.h>
 #include <EGESignal.h>
 
 EGE_NAMESPACE
@@ -71,8 +73,18 @@ bool RenderToTextureTest::initialize()
   node->physics()->setPosition(Vector4f(window->width() - RENDER_TEXTURE_WINDOW_SIZE / 2.0f, window->height() - RENDER_TEXTURE_WINDOW_SIZE / 2.0f, 0));
 
   // create render texture
-  m_texture = Texture2D::CreateRenderTexture(app(), "rttTex", 512, 512, PF_RGB_888);
+
+  // TAGE - for the time being set to CLAMP so we non-power of 2 render textures can be created for iOS
+  app()->graphics()->renderSystem()->setTextureAddressingModeS(EGETexture::AM_CLAMP);
+  app()->graphics()->renderSystem()->setTextureAddressingModeT(EGETexture::AM_CLAMP);
+  app()->graphics()->renderSystem()->setTextureMagFilter(EGETexture::BILINEAR);
+  app()->graphics()->renderSystem()->setTextureMinFilter(EGETexture::BILINEAR);
   
+  // create render texture
+  m_texture = app()->graphics()->hardwareResourceProvider()->createRenderTexture("rttTex", 512, 512, PF_RGB_888);
+
+  PTextureImage textureImage = ege_new TextureImage(m_texture);
+
   // create material with render texture for render texture object
   PMaterial material = ege_new Material(app());
   RenderPass* pass = material->addPass(NULL);
@@ -83,7 +95,7 @@ bool RenderToTextureTest::initialize()
   }
 
   material->setDiffuseColor(Color::GREEN);
-  pass->addTexture(m_texture);
+  pass->addTexture(textureImage);
   m_sceneObjectRenderTexture->renderData()->setMaterial(material);
 
   // setup render texture

@@ -1,9 +1,9 @@
 #ifndef EGE_XML_H
 #define EGE_XML_H
 
-#include "Core/XML/XMLAttribute.h"
-#include "Core/XML/XMLElement.h"
-#include "Core/XML/XMLDocument.h"
+#include "Core/XML/Interface/XMLAttribute.h"
+#include "Core/XML/Interface/XMLElement.h"
+#include "Core/XML/Interface/XMLDocument.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

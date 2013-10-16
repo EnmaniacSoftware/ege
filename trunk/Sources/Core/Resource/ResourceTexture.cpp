@@ -114,6 +114,7 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   // get data
   m_name            = tag->attribute("name");
   m_path            = tag->attribute("path");
+  m_dataType        = tag->attribute("data");
   m_type            = tag->attribute("type").toLower();
   m_minFilter       = MapFilterName(tag->attribute("min-filter").toLower(), EGETexture::BILINEAR);
   m_magFilter       = MapFilterName(tag->attribute("mag-filter").toLower(), EGETexture::BILINEAR);
@@ -121,6 +122,7 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   m_addressingModeT = MapTextureAddressingName(tag->attribute("mode-t").toLower(), EGETexture::AM_REPEAT);
   m_rotation        = StringUtils::ToAngle(tag->attribute("rotation", "0"), &error);
 
+  
   // check if obligatory data is wrong
   if (m_name.empty() || m_path.empty() || m_type.empty() || error)
   {

@@ -49,9 +49,6 @@
     <Filter Include="Core\XML">
       <UniqueIdentifier>{544e98df-3ece-4500-a86c-f5e560734d1b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\XML\TinyXML">
-      <UniqueIdentifier>{c9e4b8b7-ffbd-44be-b06f-d790a31e3050}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Win32">
       <UniqueIdentifier>{e0a2b4ec-3b04-4a2d-9ff1-239bc82d068f}</UniqueIdentifier>
     </Filter>
@@ -265,6 +262,15 @@
     <Filter Include="Core\Version\Interface">
       <UniqueIdentifier>{515a5ace-f58a-4386-855e-0ebf57957e98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\XML\Interface">
+      <UniqueIdentifier>{fd5affed-93bd-461f-9384-409ba85334e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\XML\Implementation">
+      <UniqueIdentifier>{78157a3f-2e15-4466-81a0-4011dcd58bc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\XML\Implementation\TinyXml">
+      <UniqueIdentifier>{25263c0e-805c-4b47-958e-108500ce1a11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
@@ -390,18 +396,6 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceData.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\XML\XmlDocument.cpp">
-      <Filter>Core\XML</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\XML\XmlElement.cpp">
-      <Filter>Core\XML</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlDocumentTinyXml_p.cpp">
-      <Filter>Core\XML\TinyXML</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlElementTinyXml_p.cpp">
-      <Filter>Core\XML\TinyXML</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Device\DeviceWin32.cpp">
       <Filter>Win32\Device</Filter>
     </ClCompile>
@@ -521,12 +515,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.cpp">
       <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\XML\XmlAttribute.cpp">
-      <Filter>Core\XML</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\XML\TinyXml\XmlAttributeTinyXml_p.cpp">
-      <Filter>Core\XML\TinyXML</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterPoint.cpp">
       <Filter>Core\Graphics\Particle</Filter>
@@ -900,6 +888,24 @@
     <ClCompile Include="..\..\Sources\Core\Version\Implementation\Version.cpp">
       <Filter>Core\Version\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\XML\Implementation\XmlAttribute.cpp">
+      <Filter>Core\XML\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\XML\Implementation\XmlDocument.cpp">
+      <Filter>Core\XML\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\XML\Implementation\XmlElement.cpp">
+      <Filter>Core\XML\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\XML\Implementation\TinyXml\XmlAttributeTinyXml_p.cpp">
+      <Filter>Core\XML\Implementation\TinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\XML\Implementation\TinyXml\XmlDocumentTinyXml_p.cpp">
+      <Filter>Core\XML\Implementation\TinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\XML\Implementation\TinyXml\XmlElementTinyXml_p.cpp">
+      <Filter>Core\XML\Implementation\TinyXml</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h">
@@ -1094,18 +1100,6 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceData.h">
       <Filter>Core\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\XML\XmlDocument.h">
-      <Filter>Core\XML</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\XML\XmlElement.h">
-      <Filter>Core\XML</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\XML\TinyXml\XmlDocumentTinyXml_p.h">
-      <Filter>Core\XML\TinyXML</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\XML\TinyXml\XmlElementTinyXml_p.h">
-      <Filter>Core\XML\TinyXML</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEDebug.h" />
     <ClInclude Include="..\..\Sources\Core\Device\Device.h">
       <Filter>Core\Device</Filter>
@@ -1281,12 +1275,6 @@
       <Filter>Core\Resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEDictionary.h" />
-    <ClInclude Include="..\..\Sources\Core\XML\XmlAttribute.h">
-      <Filter>Core\XML</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\XML\TinyXml\XmlAttributeTinyXml_p.h">
-      <Filter>Core\XML\TinyXML</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterPoint.h">
       <Filter>Core\Graphics\Particle</Filter>
     </ClInclude>
@@ -1716,6 +1704,24 @@
       <Filter>Core\Version\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEVersion.h" />
+    <ClInclude Include="..\..\Sources\Core\XML\Interface\XmlAttribute.h">
+      <Filter>Core\XML\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\XML\Interface\XmlDocument.h">
+      <Filter>Core\XML\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\XML\Interface\XmlElement.h">
+      <Filter>Core\XML\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\XML\Implementation\TinyXml\XmlAttributeTinyXml_p.h">
+      <Filter>Core\XML\Implementation\TinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\XML\Implementation\TinyXml\XmlDocumentTinyXml_p.h">
+      <Filter>Core\XML\Implementation\TinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\XML\Implementation\TinyXml\XmlElementTinyXml_p.h">
+      <Filter>Core\XML\Implementation\TinyXml</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

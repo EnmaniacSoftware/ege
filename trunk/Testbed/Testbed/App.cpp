@@ -29,6 +29,19 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGE_DEFINE_NEW_OPERATORS(App)
+EGE_DEFINE_DELETE_OPERATORS(App)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Application* Application::CreateInstance()
+{
+  return ege_new App();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Application::DestroyInstance(Application* instance)
+{
+  delete instance;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 App::App() : Application(), 
              m_activeTest(NULL)
 {
@@ -104,20 +117,15 @@ EGEResult App::construct(const Dictionary& commandLineParams)
   m_tests.push_back(new LightningTest(this));
   m_tests.push_back(new ThreadsTest(this));
   m_tests.push_back(new LocalizationTest(this));
-  m_tests.push_back(new CurvesTest(this));
-  m_tests.push_back(new UIScrollablePageViewTest(this));
-  m_tests.push_back(new UIScrollableViewTest(this));
   m_tests.push_back(new ImagedAnimationTest(this));
+  m_tests.push_back(new UIScrollableViewTest(this));
+  m_tests.push_back(new UIScrollablePageViewTest(this));
+  m_tests.push_back(new CurvesTest(this));
 
   // select test to run
   selectTest();
 
   ege_connect(pointer(), eventSignal, this, App::pointerEvent);
-
-  if (EGE_SUCCESS != (result = run()))
-  {
-    return result;
-  }
 
   return EGE_SUCCESS;
 }
@@ -133,6 +141,9 @@ bool App::selectTest()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void App::update(const Time& time)
 {
+  // call base class
+  Application::update(time);
+  
   PTextOverlay overlay = overlayManager()->overlay("fps");
   if (overlay)
   {
@@ -158,5 +169,10 @@ void App::pointerEvent(PPointerData data)
   {
     m_activeTest->pointerEvent(data);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Version App::version() const
+{
+  return Version(0, 1, 1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,6 +1,8 @@
 #include "RippleEffect.h"
 #include <EGEMath.h>
 #include <EGEDebug.h>
+#include <EGEApplication.h>
+#include <EGERenderSystem.h>
 
 EGE_NAMESPACE
 
@@ -30,7 +32,15 @@ bool RippleEffect::initialize(s32 width, s32 height, const Vector2i& gridSize, P
   m_defaultTextureCoords.resize(m_gridSize.x * m_gridSize.y);
 
   // create render texture
-  m_texture = Texture2D::CreateRenderTexture(m_app, "RippleEffect::rttTex", width, height, PF_RGB_888);
+
+  // TAGE - for the time being set to CLAMP so we non-power of 2 render textures can be created for iOS
+  app()->graphics()->renderSystem()->setTextureAddressingModeS(EGETexture::AM_CLAMP);
+  app()->graphics()->renderSystem()->setTextureAddressingModeT(EGETexture::AM_CLAMP);
+  app()->graphics()->renderSystem()->setTextureMagFilter(EGETexture::BILINEAR);
+  app()->graphics()->renderSystem()->setTextureMinFilter(EGETexture::BILINEAR);
+  
+  // create render texture
+  m_texture = app()->graphics()->hardwareResourceProvider()->createRenderTexture("RippleEffect::rttTex", m_width, m_height, PF_RGB_888);
 
   // setup render texture
   PRenderTarget renderTarget = m_texture->renderTarget();
@@ -48,10 +58,16 @@ bool RippleEffect::initialize(s32 width, s32 height, const Vector2i& gridSize, P
   }
 
   // create render data
-  m_renderData = ege_new RenderComponent(m_app, name(), EGEGraphics::RP_MAIN);
+  VertexDeclaration declaration;
+  if ( ! declaration.addElement(NVertexBuffer::VES_POSITION_XYZ) || ! declaration.addElement(NVertexBuffer::VES_TEXTURE_UV))
+  {
+    // error!
+    return false;
+  }
+
+  m_renderData = ege_new RenderComponent(m_app, name(), declaration, EGEGraphics::RP_MAIN);
   m_renderData->indexBuffer()->setIndexSize(EGEIndexBuffer::IS_16BIT);
-  if ((NULL == m_renderData) || !m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V3_T2) ||
-      !m_renderData->indexBuffer()->setSize(6 * (m_gridSize.x - 1) * (m_gridSize.y - 1)))
+  if ((NULL == m_renderData) || ! m_renderData->indexBuffer()->setSize(6 * (m_gridSize.x - 1) * (m_gridSize.y - 1)))
   {
     // error!
     return false;
@@ -83,7 +99,9 @@ bool RippleEffect::initialize(s32 width, s32 height, const Vector2i& gridSize, P
     return false;
   }
 
-  pass->addTexture(m_texture);
+  PTextureImage textureImage = ege_new TextureImage(m_texture);
+
+  pass->addTexture(textureImage);
   m_renderData->setMaterial(material);
 
   // initialize ripple data
@@ -121,7 +139,7 @@ bool RippleEffect::initialize(s32 width, s32 height, const Vector2i& gridSize, P
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! SceneNodeObject override. Adds object render data for rendering with given renderer. */
-bool RippleEffect::addForRendering(Renderer* renderer, const Matrix4f& transform)
+bool RippleEffect::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   return renderer->addForRendering(m_renderData, parentNode()->worldMatrix().multiply(transform));
 }

@@ -3,6 +3,7 @@
 #include <EGESignal.h>
 #include <EGEResources.h>
 #include <EGEOverlay.h>
+#include <EGERenderer.h>
 
 EGE_NAMESPACE
 
@@ -112,10 +113,14 @@ void UIScrollableViewTest::groupLoadComplete(const String& name)
     m_area->setPosition(position);
     m_area->setSize(size);
 
+    // setup vertex declaration
+    VertexDeclaration vertexDeclaration;
+    vertexDeclaration.addElement(NVertexBuffer::VES_POSITION_XY);
+
     // create scrollable area background object
-    m_areaBackground = RenderObjectFactory::CreateQuadXY(app(), "background",position, size, 
-                                                         ALIGN_TOP_LEFT, EGEVertexBuffer::ST_V2, 1, EGEGraphics::RPT_TRIANGLE_STRIPS, 
-                                                         EGEVertexBuffer::UT_STATIC_WRITE);
+    m_areaBackground = RenderObjectFactory::CreateQuadXY(app(), "background", position, size, 
+                                                         ALIGN_TOP_LEFT, false, false, vertexDeclaration, 1, EGEGraphics::RPT_TRIANGLE_STRIPS, 
+                                                         NVertexBuffer::UT_STATIC_WRITE);
 
     // get material resource
     PResourceMaterial resource = app()->resourceManager()->resource(RESOURCE_NAME_MATERIAL, "background", "scrollable-area-test");

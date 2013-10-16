@@ -4,6 +4,8 @@
 #include <EGEResources.h>
 #include <EGEOverlay.h>
 #include <EGEApplication.h>
+#include <EGERenderComponent.h>
+#include <EGERenderer.h>
 
 EGE_NAMESPACE
 
@@ -11,10 +13,14 @@ EGE_NAMESPACE
 LightningEffectLines::LightningEffectLines(Application* app) : SceneNodeObject("lightning-effect-lines"), 
                                                                m_app(app)
 {
-  m_renderData = ege_new RenderComponent(app, "lightning-effect-lines", EGEGraphics::RP_MAIN, EGEGraphics::RPT_LINES);
+  // setup vertex declaration
+  VertexDeclaration vertexDeclaration;
+  vertexDeclaration.addElement(NVertexBuffer::VES_POSITION_XY);
+  vertexDeclaration.addElement(NVertexBuffer::VES_COLOR_RGBA);
+
+  m_renderData = ege_new RenderComponent(app, "lightning-effect-lines", vertexDeclaration, EGEGraphics::RP_MAIN, EGEGraphics::RPT_LINES);
   if (m_renderData)
   {
-    m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_C4);
     m_renderData->setLineWidth(2.0f);
 
     PMaterial material = ege_new Material(app);
@@ -30,7 +36,7 @@ LightningEffectLines::~LightningEffectLines()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! SceneNodeObject override. Adds object render data for rendering with given renderer. */
-bool LightningEffectLines::addForRendering(Renderer* renderer, const Matrix4f& transform)
+bool LightningEffectLines::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   if (m_fadeTime.seconds() < 1.0f)
   {

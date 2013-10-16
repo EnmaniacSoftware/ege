@@ -4,7 +4,7 @@
 #include <EGEResources.h>
 #include <EGEOverlay.h>
 #include <EGEApplication.h>
-//#include <gl/GL.h>
+#include <EGERenderComponent.h>
 
 EGE_NAMESPACE
 
@@ -12,37 +12,22 @@ EGE_NAMESPACE
 LightningEffect::LightningEffect(Application* app) : SceneNodeObject("lightning-effect"), 
                                                      m_app(app)
 {
-    // setup vertex declaration
-    VertexDeclaration vertexDeclaration;
-    if ( ! vertexDeclaration.addElement(NVertexBuffer::VES_POSITION_XYZ))
-    {
-      // error!
-      EGE_DELETE(object);
-      return NULL;
-    }
+  // setup vertex declarations
+  VertexDeclaration vertexDeclaration;
+  vertexDeclaration.addElement(NVertexBuffer::VES_POSITION_XY);
+  vertexDeclaration.addElement(NVertexBuffer::VES_COLOR_RGBA);
 
-    if (uv && ! vertexDeclaration.addElement(NVertexBuffer::VES_TEXTURE_UV))
-    {
-      // error!
-      EGE_DELETE(object);
-      return NULL;
-    }
+  VertexDeclaration vertexDeclaration2;
+  vertexDeclaration2.addElement(NVertexBuffer::VES_POSITION_XY);
+  vertexDeclaration2.addElement(NVertexBuffer::VES_TEXTURE_UV);
+  vertexDeclaration2.addElement(NVertexBuffer::VES_COLOR_RGBA);
 
-    if (color && ! vertexDeclaration.addElement(NVertexBuffer::VES_COLOR_RGBA))
-    {
-      // error!
-      EGE_DELETE(object);
-      return NULL;
-    }
-
-  m_renderData = ege_new RenderComponent(app, "lightning-effect-lines", EGEGraphics::RP_MAIN, EGEGraphics::RPT_LINES);
-  m_renderDataQuad = ege_new RenderComponent(app, "lightning-effect-quads-1", EGEGraphics::RP_MAIN + 1, EGEGraphics::RPT_TRIANGLES);
-  m_renderDataQuad2 = ege_new RenderComponent(app, "lightning-effect-quads-2", EGEGraphics::RP_MAIN + 1, EGEGraphics::RPT_TRIANGLES);
+  m_renderData = ege_new RenderComponent(app, "lightning-effect-lines", vertexDeclaration, EGEGraphics::RP_MAIN, EGEGraphics::RPT_LINES);
+  m_renderDataQuad = ege_new RenderComponent(app, "lightning-effect-quads-1", vertexDeclaration2, EGEGraphics::RP_MAIN + 1, EGEGraphics::RPT_TRIANGLES);
+  m_renderDataQuad2 = ege_new RenderComponent(app, "lightning-effect-quads-2", vertexDeclaration2, EGEGraphics::RP_MAIN + 1, EGEGraphics::RPT_TRIANGLES);
+  
   if (m_renderData)
   {
-    m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_C4);
-    m_renderDataQuad->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2_C4);
-    m_renderDataQuad2->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2_C4);
     m_renderData->setLineWidth(2.0f);
 
     PMaterial material = ege_new Material(app);

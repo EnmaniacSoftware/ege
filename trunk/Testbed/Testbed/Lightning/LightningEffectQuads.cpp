@@ -2,6 +2,8 @@
 #include <EGEMath.h>
 #include <EGEDebug.h>
 #include <EGEResources.h>
+#include <EGERenderComponent.h>
+#include <EGERenderer.h>
 #include "LightningEffectQuads.h"
 
 EGE_NAMESPACE
@@ -17,16 +19,16 @@ LightningEffectQuads::LightningEffectQuads(Application* app) : m_app(app),
                                                                m_state(STATE_NONE),
                                                                m_width(1.0f)
 {
+  // setup vertex declaration
+  VertexDeclaration vertexDeclaration;
+  vertexDeclaration.addElement(NVertexBuffer::VES_POSITION_XY);
+  vertexDeclaration.addElement(NVertexBuffer::VES_COLOR_RGBA);
+
   // create render data
-  m_renderData = ege_new RenderComponent(app, "lightning-effect-lines", EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES);
+  m_renderData = ege_new RenderComponent(app, "lightning-effect-lines", vertexDeclaration, EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES);
   if (m_renderData)
   {
     m_renderData->indexBuffer()->setIndexSize(EGEIndexBuffer::IS_16BIT);
-    if (!m_renderData->vertexBuffer()->setSemantics(EGEVertexBuffer::ST_V2_T2_C4))
-    {
-      // error!
-      m_renderData = NULL;
-    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -35,14 +37,12 @@ LightningEffectQuads::~LightningEffectQuads()
   clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if object is valid. */
 bool LightningEffectQuads::isValid() const
 {
   return (NULL != m_renderData);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Renders object. */
-void LightningEffectQuads::render(Renderer* renderer)
+void LightningEffectQuads::render(IRenderer* renderer)
 {
   if (STATE_BUSY == m_state)
   {
@@ -50,7 +50,6 @@ void LightningEffectQuads::render(Renderer* renderer)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates effect. */
 void LightningEffectQuads::update(const Time& time)
 {
   if (STATE_BUSY == m_state)

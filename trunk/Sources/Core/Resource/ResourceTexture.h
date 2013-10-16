@@ -72,6 +72,8 @@ class ResourceTexture : public IResource
     String m_name;
     /*! Texture type. */
     String m_type;
+    /*! Data type. Can be empty if actual file is referred. */
+    String m_dataType;
     /*! Texture minifying function. */
     EGETexture::Filter m_minFilter;
     /*! Texture magnification function. */

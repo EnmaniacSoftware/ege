@@ -30,9 +30,9 @@ class ThreadsTest : public Test
   private slots:
 
     /* Slot called then thread has finished. */
-    void onThreadFinished(const EGE::Thread* thread);
+    void onThreadFinished(const EGE::PThread& thread);
     /* Slot called then thread has started. */
-    void onThreadStarted(const EGE::Thread* thread);
+    void onThreadStarted(const EGE::PThread& thread);
 
   private:
 

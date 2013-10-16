@@ -15,8 +15,13 @@ class App : public EGE::Application
     App();
     virtual ~App();
 
+    EGE_DECLARE_NEW_OPERATORS
+    EGE_DECLARE_DELETE_OPERATORS
+
     /*! @see Application::construct. */
     EGE::EGEResult construct(const EGE::Dictionary& commandLineParams) override;
+    /*! @see Application::version. */
+    EGE::Version version() const override;
 
     bool start();
 
