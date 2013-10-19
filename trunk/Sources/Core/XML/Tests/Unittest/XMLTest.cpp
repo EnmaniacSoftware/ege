@@ -163,6 +163,77 @@ TEST_F(XMLTest, DecodeElements)
   EXPECT_FALSE(nonExistingElement->isValid());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(XMLTest, DecodeAttributes)
+{
+  // load from file
+  XmlDocument document;
+  EXPECT_TRUE(document.isValid());
+  EXPECT_EQ(EGE_SUCCESS, document.load("Xml-test/valid.xml"));
+  EXPECT_TRUE(NULL != document.rootElement());
+
+  // get element without attributes
+  PXmlElement element = document.rootElement()->firstChild("second-level-element-2");
+  EXPECT_TRUE(NULL != element);
+  EXPECT_TRUE(element->isValid());
+  EXPECT_EQ("second-level-element-2", element->name());
+
+  // get first attribute
+  PXmlAttribute attribute = element->firstAttribute();
+  EXPECT_TRUE(NULL == attribute);
+
+  // get element with attributes
+  element = document.rootElement()->firstChild("second-level-element-1");
+  EXPECT_TRUE(NULL != element);
+  EXPECT_TRUE(element->isValid());
+  EXPECT_EQ("second-level-element-1", element->name());
+
+  // check if attributes exist
+  EXPECT_TRUE(element->hasAttribute("attribute-1"));
+  EXPECT_TRUE(element->hasAttribute("attribute-2"));
+  EXPECT_TRUE(element->hasAttribute("attribute-3"));
+  EXPECT_TRUE(element->hasAttribute("attribute-4"));
+  EXPECT_FALSE(element->hasAttribute("attribute-0"));
+
+  // get first attribute
+  attribute = element->firstAttribute();
+  EXPECT_TRUE(NULL != attribute);
+  EXPECT_TRUE(attribute->isValid());
+  EXPECT_TRUE(("attribute-1" == attribute->name()) || ("attribute-2" == attribute->name()) || 
+              ("attribute-3" == attribute->name()) || ("attribute-4" == attribute->name()));
+
+  // go to next attribute
+  attribute = attribute->next();
+  EXPECT_TRUE(NULL != attribute);
+  EXPECT_TRUE(attribute->isValid());
+  EXPECT_TRUE(("attribute-1" == attribute->name()) || ("attribute-2" == attribute->name()) || 
+              ("attribute-3" == attribute->name()) || ("attribute-4" == attribute->name()));
+
+  // go to next attribute
+  attribute = attribute->next();
+  EXPECT_TRUE(NULL != attribute);
+  EXPECT_TRUE(attribute->isValid());
+  EXPECT_TRUE(("attribute-1" == attribute->name()) || ("attribute-2" == attribute->name()) || 
+              ("attribute-3" == attribute->name()) || ("attribute-4" == attribute->name()));
+
+  // go to next attribute
+  attribute = attribute->next();
+  EXPECT_TRUE(NULL != attribute);
+  EXPECT_TRUE(attribute->isValid());
+  EXPECT_TRUE(("attribute-1" == attribute->name()) || ("attribute-2" == attribute->name()) || 
+              ("attribute-3" == attribute->name()) || ("attribute-4" == attribute->name()));
+
+  // go to next attribute (non existing one)
+  attribute = attribute->next();
+  EXPECT_TRUE(NULL == attribute);
+
+  // retrive values of attributes
+  EXPECT_EQ("text", element->attribute("attribute-1", String("none")));
+  EXPECT_EQ("text", element->attribute("attribute-1", "none"));
+  EXPECT_EQ(1, element->attribute("attribute-2", 0));
+  EXPECT_EQ(2.5f, element->attribute("attribute-3", 0.0f));
+  EXPECT_EQ(true, element->attribute("attribute-4", false));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(XMLTest, LoadDocumentFromEmptyBuffer)
 {
   PDataBuffer buffer;

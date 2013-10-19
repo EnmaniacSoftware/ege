@@ -1,7 +1,7 @@
 <?xml version="1.0"  standalone='no'?>
 
 <top-element>
-  <second-level-element-1 attribute-1='text' attribute-2='1'/>
+  <second-level-element-1 attribute-1='text' attribute-2='1' attribute-3='2.5' attribute-4='true'/>
   <second-level-element-2>
     <third-level-element>
     </third-level-element>
