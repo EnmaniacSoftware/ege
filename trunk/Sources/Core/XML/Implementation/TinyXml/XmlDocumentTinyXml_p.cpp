@@ -99,7 +99,7 @@ EGEResult XmlDocumentPrivate::save(const PDataBuffer& buffer)
 {
   // add declaration to the front
   TiXmlDeclaration decl("1.0", "", "no");
-  m_xml.InsertBeforeChild(m_xml.FirstChild(), decl);
+  TiXmlNode* declarationNode = m_xml.InsertBeforeChild(m_xml.FirstChild(), decl);
 
   TiXmlPrinter printer;
 
@@ -119,6 +119,9 @@ EGEResult XmlDocumentPrivate::save(const PDataBuffer& buffer)
     // error!
     return EGE_ERROR_NO_MEMORY;
   }
+
+  // remove declaration node so next time save is requested it is not duplicated
+  m_xml.RemoveChild(declarationNode);
 
   return EGE_SUCCESS;
 }

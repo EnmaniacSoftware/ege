@@ -41,10 +41,14 @@ void XMLTest::TearDownTestCase()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void XMLTest::SetUp()
 {
+  // cleanup
+  remove("Xml-test/generated.xml");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void XMLTest::TearDown()
 {
+  // cleanup
+  remove("Xml-test/generated.xml");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PDataBuffer XMLTest::loadFileToBuffer(const String& fileName) const
@@ -254,5 +258,48 @@ TEST_F(XMLTest, LoadDocumentFromBuffer)
   XmlDocument document;
   EXPECT_TRUE(document.isValid());
   EXPECT_EQ(EGE_SUCCESS, document.load(buffer));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(XMLTest, SaveDocument)
+{
+  // create root element
+  XmlElement rootElement("root");
+  
+  // create element without attributes
+  XmlElement elementLvl1NoAttribs("level-1-element-1");
+
+  // create element with attributes
+  XmlElement elementLvl1Attribs("level-1-element-2");
+  
+  EXPECT_TRUE(elementLvl1Attribs.setAttribute("attribute-1", "text"));
+  EXPECT_TRUE(elementLvl1Attribs.setAttribute("attribute-2", String("text")));
+  EXPECT_TRUE(elementLvl1Attribs.setAttribute("attribute-3", 1));
+  EXPECT_TRUE(elementLvl1Attribs.setAttribute("attribute-4", 2.5f));
+  EXPECT_TRUE(elementLvl1Attribs.setAttribute("attribute-5", true));
+
+  // create element with no attributes
+  XmlElement elementLvl2NoAttribs("level-2-element-1");
+
+  // add elements to root element
+  EXPECT_TRUE(rootElement.appendChildElement(elementLvl1NoAttribs));
+  EXPECT_TRUE(rootElement.appendChildElement(elementLvl1Attribs));
+  EXPECT_TRUE(elementLvl1Attribs.appendChildElement(elementLvl2NoAttribs));
+
+  // add root element to document
+  XmlDocument xml;
+  EXPECT_TRUE(xml.appendElement(rootElement));
+
+  // generate XML into file and buffer
+  DataBuffer buffer;
+  EXPECT_EQ(EGE_SUCCESS, xml.save(buffer));
+  EXPECT_EQ(EGE_SUCCESS, xml.save("Xml-test/generated.xml"));
+
+  // load generated file content
+  PDataBuffer fileBuffer = loadFileToBuffer("Xml-test/generated.xml");
+  EXPECT_TRUE(NULL != fileBuffer);
+
+  // compare loaded content and the one in the buffer
+  EXPECT_EQ(fileBuffer->size(), buffer.size());
+  EXPECT_EQ(0, EGE_MEMCMP(fileBuffer->data(), buffer.data(), fileBuffer->size()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
