@@ -81,7 +81,7 @@ class XmlElement : public Object
 
     /*! Returns first child element. If any name is given returned will be first element with given name. */
     PXmlElement firstChild(const String& name = "") const;
-    /*! Returns next child element. If any name is given returned will be next element with given name. */
+    /*! Returns next child (sibling) element. If any name is given returned will be next element with given name. */
     PXmlElement nextChild(const String& name = "") const;
     /*! Appends new child element. */
     bool appendChildElement(const PXmlElement& element);
