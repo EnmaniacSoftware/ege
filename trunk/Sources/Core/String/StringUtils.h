@@ -17,6 +17,13 @@ class StringUtils
 
     static s32 ToInt(const char* text, bool* error = NULL);
     static s64 ToInt64(const char* text, bool* error = NULL);
+    
+    /*! Converts given hex value into integer representation. 
+     *  @param  hexInText Textual representation of hexadecimal number which is to be converted.
+     *  @param  error     Option placeholder for error value.
+     *  @param  Returns converted value. This value is only reliable if there were no errors during the conversion.
+     */
+    static s32 FromHex(const char* hexInText, bool* error = NULL);
 
     /*! Converts string to color. 
      *  @param  string  String to convert.

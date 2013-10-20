@@ -5,6 +5,20 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+s32 StringUtils::FromHex(const char* hexInText, bool* error)
+{
+  // convert
+  s32 value = static_cast<s32>(strtol(hexInText, NULL, 16));
+
+  // check for error if necessary
+  if (error)
+  {
+    *error = (errno == ERANGE);
+  }
+
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Color StringUtils::ToColor(const String& string, bool* error)
 {
   if (string.empty())
