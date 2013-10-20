@@ -79,6 +79,9 @@ class XmlElement : public Object
     /*! Returns first attribute. */
     PXmlAttribute firstAttribute() const;
 
+    /*! Gets element's text. */
+    String text() const;
+
     /*! Returns first child element. If any name is given returned will be first element with given name. */
     PXmlElement firstChild(const String& name = "") const;
     /*! Returns next child (sibling) element. If any name is given returned will be next element with given name. */

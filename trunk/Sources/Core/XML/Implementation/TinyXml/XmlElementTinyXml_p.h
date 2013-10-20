@@ -52,6 +52,9 @@ class XmlElementPrivate
     /*! Appends new child element. */
     bool appendChildElement(const XmlElementPrivate* element);
 
+    /*! @see XmlElement::text(). */
+    String text() const;
+
     /*! Returns element name. */
     String name() const;
 

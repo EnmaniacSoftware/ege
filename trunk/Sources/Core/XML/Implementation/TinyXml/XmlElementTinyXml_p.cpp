@@ -132,5 +132,31 @@ PXmlAttribute XmlElementPrivate::firstAttribute() const
   return attribute;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+String XmlElementPrivate::text() const
+{
+  EGE_ASSERT(isValid());
+
+  String text;
+
+  if (NULL != m_element)
+  {
+    // go thru all child siblings
+	  for (TiXmlNode* node = m_element->FirstChild(); NULL != node; node = node->NextSibling()) 
+	  {
+      // check if text node
+      if (TiXmlNode::TINYXML_TEXT == node->Type())
+      {
+        // get text
+        text = node->ToText()->Value();
+      
+        // done
+        break;
+      }
+    }
+  }
+
+  return text;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

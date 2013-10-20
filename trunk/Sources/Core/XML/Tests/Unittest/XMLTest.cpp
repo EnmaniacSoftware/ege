@@ -238,6 +238,31 @@ TEST_F(XMLTest, DecodeAttributes)
   EXPECT_EQ(true, element->attribute("attribute-4", false));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(XMLTest, DecodeText)
+{
+  // load from file
+  XmlDocument document;
+  EXPECT_TRUE(document.isValid());
+  EXPECT_EQ(EGE_SUCCESS, document.load("Xml-test/valid.xml"));
+  EXPECT_TRUE(NULL != document.rootElement());
+
+  // get element without text
+  PXmlElement element = document.rootElement()->firstChild("second-level-element-2");
+  EXPECT_TRUE(NULL != element);
+  EXPECT_TRUE(element->isValid());
+  EXPECT_EQ("second-level-element-2", element->name());
+
+  EXPECT_EQ("", element->text());
+
+  // get element with text
+  element = element->firstChild("third-level-element");
+  EXPECT_TRUE(NULL != element);
+  EXPECT_TRUE(element->isValid());
+  EXPECT_EQ("third-level-element", element->name());
+
+  EXPECT_EQ("This is some text", element->text());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(XMLTest, LoadDocumentFromEmptyBuffer)
 {
   PDataBuffer buffer;
@@ -300,6 +325,6 @@ TEST_F(XMLTest, SaveDocument)
 
   // compare loaded content and the one in the buffer
   EXPECT_EQ(fileBuffer->size(), buffer.size());
-  EXPECT_EQ(0, EGE_MEMCMP(fileBuffer->data(), buffer.data(), fileBuffer->size()));
+  EXPECT_EQ(0, EGE_MEMCMP(fileBuffer->data(), buffer.data(), static_cast<size_t>(fileBuffer->size())));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
