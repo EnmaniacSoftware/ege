@@ -18,6 +18,7 @@
 #include "Core/Resource/ResourceSequencer.h"
 #include "Core/Resource/ResourceShader.h"
 #include "Core/Resource/ResourceProgram.h"
+#include "Core/Resource/Implementation/DefaultGroup.h"
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Graphics/Font.h"
@@ -421,110 +422,33 @@ PResource ResourceManager::resource(const String& typeName, const String& name, 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceManager::createDefaultResources()
 {
-  // create and add default resource group
-  PResourceGroup group = ege_new ResourceGroup(app(), this, DEFAULT_GROUP_NAME);
-  if (NULL == group)
+  // wrap default group into data buffer
+  DataBuffer buffer(const_cast<void*>(reinterpret_cast<const void*>(KDefaultResourceGroup.toAscii())), KDefaultResourceGroup.length());
+
+  // load is as XML
+  XmlDocument document;
+  if ((EGE_SUCCESS != document.load(buffer)) || (NULL == document.rootElement()) || ! document.rootElement().isValid())
   {
     // error!
     return false;
   }
 
-  // wrap texture data into buffer and create texture from it
-  DataBuffer textureData(DebugFontData, DEBUG_FONT_LEN);
-
-  // create debug font texture
-  PTexture2D texture = app()->graphics()->hardwareResourceProvider()->createTexture2D("debug-font", textureData);
-  if (NULL == texture)
+  // locate group element
+  PXmlElement groupTag = document.rootElement()->firstChild(NODE_GROUP);
+  if ((NULL == groupTag) || ! groupTag->isValid())
   {
     // error!
     return false;
   }
 
-  // create texture resource and manually assign texture to it
-  PResourceTexture textureResource = ResourceTexture::Create(app(), group, texture->name(), texture);
-  if (NULL == textureResource)
+  // create new group
+  if (EGE_SUCCESS != addGroup("", groupTag))
   {
     // error!
     return false;
   }
 
-  if (EGE_SUCCESS != group->addResource(textureResource))
-  {
-    // error!
-    return false;
-  }
-
-  // create font material and assign texture to it
-  PMaterial material = ege_new Material(app());
-  if (NULL == material)
-  {
-    // error!
-    return false;
-  }
-
-  // add empty render pass
-  PRenderPass renderPass = material->addPass(NULL);
-  if (NULL == renderPass)
-  {
-    // error!
-    return false;
-  }
-
-  // create texture image
-  PTextureImage textureImage = ege_new TextureImage(texture);
-  if (EGE_SUCCESS != renderPass->addTexture(textureImage))
-  {
-    // error!
-    return false;
-  }
-
-  renderPass->setSrcBlendFactor(EGEGraphics::BF_ONE);
-  renderPass->setDstBlendFactor(EGEGraphics::BF_ONE);
-
-  // setup glyphs data (all 256)
-  Map<Char, GlyphData> glyphs;
-  const float32 cellSize = 1.0f / 16.0f;
-  for (s32 i = 0; i < 256; i++)
-  {
-    GlyphData data;
-
-    data.m_textureRect = Rectf((i % 16) * cellSize, (i / 16) * cellSize, cellSize, cellSize);
-    data.m_width       = 16;
-
-    glyphs.insert(static_cast<Char>(i), data);
-  }
-
-  // create font from glyphs
-  PFont font = ege_new Font(app(), 16, glyphs);
-  if (NULL == font)
-  {
-    // error!
-    return false;
-  }
-
-  // assign font material
-  font->setMaterial(material);
-
-  // create font resource and manually assign font to it
-  PResourceFont fontResource = ResourceFont::Create(app(), group, texture->name(), font);
-  if (NULL == fontResource)
-  {
-    // error!
-    return false;
-  }
-  
-  if (EGE_SUCCESS != group->addResource(fontResource))
-  {
-    // error!
-    return false;
-  }
-
-  // Default material resource...
-
-  // add to pool
-  m_groups.push_back(group);
-
-  return true;
+  return (EGE_SUCCESS == loadGroup(DEFAULT_GROUP_NAME));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::destroyDefaultResources()

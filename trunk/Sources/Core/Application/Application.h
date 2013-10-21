@@ -71,6 +71,8 @@ class Application : public IEventListener
     virtual EGEResult construct(const Dictionary& params);
     /*! Starts engine work. */
     virtual EGEResult run();
+    /*! Called when application has been initialized. */
+    virtual void onInitialized() = 0;
     /*! Returns application version. */
     virtual Version version() const = 0;
 
@@ -136,6 +138,13 @@ class Application : public IEventListener
     void update();
     /*! Loads extra configuration from the file. */
     void loadConfig();
+
+  private slots:
+
+    /*! Slot called when resource group has been loaded. */
+    void onGroupLoadComplete(const String& name);
+    /*! Slot called when resource group could not be loaded. */
+    void onGroupLoadError(const String& name);
 
   private:
 

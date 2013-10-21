@@ -122,9 +122,19 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   m_addressingModeT = MapTextureAddressingName(tag->attribute("mode-t").toLower(), EGETexture::AM_REPEAT);
   m_rotation        = StringUtils::ToAngle(tag->attribute("rotation", "0"), &error);
 
-  
+  // check if any embedded data type
+  if ( ! m_dataType.empty())
+  {
+    // load texture data from XML
+    if (EGE_SUCCESS != (result = loadTextureData(tag)))
+    {
+      // error!
+      return result;
+    }
+  }
+
   // check if obligatory data is wrong
-  if (m_name.empty() || m_path.empty() || m_type.empty() || error)
+  if (m_name.empty() || m_type.empty() || error || (m_path.empty() && m_dataType.empty()))
   {
     // error!
     egeWarning(KResourceTextureDebugName) << "Failed for name:" << m_name;
@@ -170,7 +180,7 @@ EGEResult ResourceTexture::load()
 EGEResult ResourceTexture::create2D()
 {
   // load image data
-  PImage image = Image::Load(path());
+  PImage image = (NULL != m_data) ? Image::Load(m_data) : Image::Load(path());
   if (NULL == image)
   {
     // error!
@@ -235,6 +245,77 @@ void ResourceTexture::onRequestComplete(u32 handle, PObject object)
     // set state
     m_state = STATE_LOADED;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult ResourceTexture::loadTextureData(const PXmlElement& tag)
+{
+  EGEResult result = EGE_SUCCESS;
+
+  // get XML element text
+  String text = tag->text();
+
+  // remove all spaces
+  text.replaceAll(" ", "");
+
+  // get length of data
+  u32 length = static_cast<u32>(text.length());
+
+  // allocate buffer
+  PDataBuffer buffer = ege_new DataBuffer();
+  if (NULL == buffer)
+  {
+    // error!
+    result = EGE_ERROR_NO_MEMORY;
+  }
+
+  // convert according to data type
+  if ((EGE_SUCCESS == result) && ("hex" == m_dataType))
+  {
+    // NOTE: Hex data type consists of a series of 2-character words where each encodes a single byte.    
+
+    // check if length is odd
+    if (length & 0x1)
+    {
+      // error!
+      result = EGE_ERROR;
+    }
+    else
+    {
+      // allocate sufficient memory in a buffer
+      result = buffer->setSize(static_cast<s64>(length) / 2);
+    }
+
+    if (EGE_SUCCESS == result)
+    {
+      u8* data = reinterpret_cast<u8*>(buffer->data());
+
+      // decode data
+      bool error = false;
+      for (u32 i = 0; (i < length) && ! error; i += 2)
+      {
+        // decode
+        char encodedByte[3] = { text[i], text[i + 1], 0 };
+        u8 byte = StringUtils::FromHex(encodedByte, &error);
+
+        // store
+        *data++ = byte;
+      }
+
+      // check for error
+      if (error)
+      {
+        // error!
+        result = EGE_ERROR;
+      }
+      else
+      {
+        // set data buffer
+        m_data = buffer;
+      }
+    }
+  }
+
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

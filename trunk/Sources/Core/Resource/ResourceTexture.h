@@ -60,6 +60,8 @@ class ResourceTexture : public IResource
     EGETexture::AddressingMode adressingModeS() const { return m_addressingModeS; }
     /*! Gets texture addressing mode for T coordinate. */
     EGETexture::AddressingMode adressingModeT() const { return m_addressingModeT; }
+    /*! Creates and loads texture data from XML text. */
+    EGEResult loadTextureData(const PXmlElement& tag);
 
   private slots:
 
@@ -74,6 +76,10 @@ class ResourceTexture : public IResource
     String m_type;
     /*! Data type. Can be empty if actual file is referred. */
     String m_dataType;
+    /*! Data buffer. 
+     *  @note Only available if m_dataType is set.
+     */
+    PDataBuffer m_data;
     /*! Texture minifying function. */
     EGETexture::Filter m_minFilter;
     /*! Texture magnification function. */

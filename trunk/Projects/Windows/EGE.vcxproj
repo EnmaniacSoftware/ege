@@ -349,6 +349,7 @@
     <ClInclude Include="..\..\Sources\Core\Physics\PhysicsJointPulley.h" />
     <ClInclude Include="..\..\Sources\Core\Random\RandomGenerator.h" />
     <ClInclude Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\DefaultGroup.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\MultiThread\ResourceManagerMT_p.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\MultiThread\ResourceManagerWorkThread.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceCurve.h" />

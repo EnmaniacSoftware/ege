@@ -21,6 +21,7 @@
 #include "Core/Debug/EngineInfo.h"
 #include "EGETimer.h"
 #include "EGEDirectory.h"
+#include "EGEResources.h"
 
 #ifdef EGE_PLATFORM_WIN32
   #include "Win32/Application/ApplicationWin32_p.h"
@@ -288,6 +289,10 @@ EGEResult Application::construct(const Dictionary& params)
     return EGE_ERROR;
   }
 
+  // connect for notifications
+  ege_connect(resourceManager(), groupLoadComplete, this, Application::onGroupLoadComplete);
+  ege_connect(resourceManager(), groupLoadError, this, Application::onGroupLoadError);
+
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -511,6 +516,22 @@ void Application::loadConfig()
 
   // enable debug info
   Debug::EnableNames(enabledDebugNames);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Application::onGroupLoadComplete(const String& name)
+{
+  if (DEFAULT_GROUP_NAME == name)
+  {
+    onInitialized();
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Application::onGroupLoadError(const String& name)
+{
+  if (DEFAULT_GROUP_NAME == name)
+  {
+    quit();
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

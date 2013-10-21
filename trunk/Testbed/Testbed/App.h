@@ -22,6 +22,8 @@ class App : public EGE::Application
     EGE::EGEResult construct(const EGE::Dictionary& commandLineParams) override;
     /*! @see Application::version. */
     EGE::Version version() const override;
+    /*! @see Application::onInitialized. */
+    void onInitialized() override;
 
     bool start();
 
@@ -35,7 +37,7 @@ class App : public EGE::Application
 
   private slots:
 
-    /* Pointer event receiver. */
+    /*! Pointer event receiver. */
     void pointerEvent(EGE::PPointerData data);
 
 	private:

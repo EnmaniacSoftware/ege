@@ -93,40 +93,6 @@ EGEResult App::construct(const Dictionary& commandLineParams)
     return EGE_ERROR;
   }
 
-  PResourceFont fontResource = resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
-  if (fontResource)
-  {
-    PTextOverlay overlay = ege_new TextOverlay(this, "fps");
-    overlay->setFont(fontResource->font());
-    overlayManager()->add(overlay);
-    overlay->physics()->setPosition(Vector4f(0, 20, 0));
-
-    overlay = ege_new TextOverlay(this, "info");
-    overlay->setFont(fontResource->font());
-    overlayManager()->add(overlay);
-  }
-
-  // create tests
-  m_tests.push_back(new RenderToTextureTest(this));
-  m_tests.push_back(new TimeLineTest(this));
-  m_tests.push_back(new RipplesTest(this));
-  m_tests.push_back(new ParticleTest(this));
-  m_tests.push_back(new SoundTest(this));
-  m_tests.push_back(new FontsTest(this));
-  m_tests.push_back(new DialogTest(this));
-  m_tests.push_back(new LightningTest(this));
-  m_tests.push_back(new ThreadsTest(this));
-  m_tests.push_back(new LocalizationTest(this));
-  m_tests.push_back(new ImagedAnimationTest(this));
-  m_tests.push_back(new UIScrollableViewTest(this));
-  m_tests.push_back(new UIScrollablePageViewTest(this));
-  m_tests.push_back(new CurvesTest(this));
-
-  // select test to run
-  selectTest();
-
-  ege_connect(pointer(), eventSignal, this, App::pointerEvent);
-
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -174,5 +140,42 @@ void App::pointerEvent(PPointerData data)
 Version App::version() const
 {
   return Version(0, 1, 1);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void App::onInitialized()
+{
+  PResourceFont fontResource = resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
+  if (fontResource)
+  {
+    PTextOverlay overlay = ege_new TextOverlay(this, "fps");
+    overlay->setFont(fontResource->font());
+    overlayManager()->add(overlay);
+    overlay->physics()->setPosition(Vector4f(0, 20, 0));
+
+    overlay = ege_new TextOverlay(this, "info");
+    overlay->setFont(fontResource->font());
+    overlayManager()->add(overlay);
+  }
+
+  // create tests
+  m_tests.push_back(new RenderToTextureTest(this));
+  m_tests.push_back(new TimeLineTest(this));
+  m_tests.push_back(new RipplesTest(this));
+  m_tests.push_back(new ParticleTest(this));
+  m_tests.push_back(new SoundTest(this));
+  m_tests.push_back(new FontsTest(this));
+  m_tests.push_back(new DialogTest(this));
+  m_tests.push_back(new LightningTest(this));
+  m_tests.push_back(new ThreadsTest(this));
+  m_tests.push_back(new LocalizationTest(this));
+  m_tests.push_back(new ImagedAnimationTest(this));
+  m_tests.push_back(new UIScrollableViewTest(this));
+  m_tests.push_back(new UIScrollablePageViewTest(this));
+  m_tests.push_back(new CurvesTest(this));
+
+  // select test to run
+  selectTest();
+
+  ege_connect(pointer(), eventSignal, this, App::pointerEvent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

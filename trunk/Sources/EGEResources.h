@@ -7,6 +7,7 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define DEFAULT_GROUP_NAME              "default-group"
+#define DEFAULT_MATERIAL_NAME           "default"
 
 #define RESOURCE_NAME_TEXTURE           "texture"
 #define RESOURCE_NAME_TEXTURE_IMAGE     "texture-image"

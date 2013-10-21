@@ -271,6 +271,12 @@
     <Filter Include="Core\XML\Implementation\TinyXml">
       <UniqueIdentifier>{25263c0e-805c-4b47-958e-108500ce1a11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Resource\Implementation">
+      <UniqueIdentifier>{04e6c8fd-2b56-4b64-811d-e1c13d193991}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Resource\Interface">
+      <UniqueIdentifier>{fcc5c01a-6698-481a-8ba7-0434c6586360}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
@@ -1721,6 +1727,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\XML\Implementation\TinyXml\XmlElementTinyXml_p.h">
       <Filter>Core\XML\Implementation\TinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\DefaultGroup.h">
+      <Filter>Core\Resource\Implementation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

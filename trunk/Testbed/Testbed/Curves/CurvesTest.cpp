@@ -3,6 +3,7 @@
 #include <EGESignal.h>
 #include <EGEResources.h>
 #include <EGERenderer.h>
+#include <EGERenderComponent.h>
 
 EGE_NAMESPACE
 
@@ -98,10 +99,26 @@ void CurvesTest::preRender(PRenderTarget target)
 {
   EGE_UNUSED(target);
 
-  app()->graphics()->renderer()->addForRendering(RenderObjectFactory::Create(&m_splines[0], app(), "0", Vector4f::ZERO, RenderObjectFactory::VS_V3_C4, 50));
-  app()->graphics()->renderer()->addForRendering(RenderObjectFactory::Create(&m_splines[1], app(), "1", Vector4f::ZERO, RenderObjectFactory::VS_V3_C4, 50));
-  app()->graphics()->renderer()->addForRendering(RenderObjectFactory::Create(&m_splines[2], app(), "2", Vector4f::ZERO, RenderObjectFactory::VS_V3_C4, 50));
-  app()->graphics()->renderer()->addForRendering(RenderObjectFactory::Create(&m_splines[3], app(), "3", Vector4f::ZERO, RenderObjectFactory::VS_V3_C4, 50));
+  PRenderComponent renderComponent;
+
+  PResourceMaterial materialResource = app()->resourceManager()->resource(RESOURCE_NAME_MATERIAL, DEFAULT_MATERIAL_NAME, DEFAULT_GROUP_NAME);
+  PMaterial material = materialResource->createInstance();
+
+  renderComponent = RenderObjectFactory::Create(&m_splines[0], app(), "0", Vector4f::ZERO, RenderObjectFactory::VS_V3_C4, 50);
+  renderComponent->setMaterial(material);
+  app()->graphics()->renderer()->addForRendering(renderComponent);
+
+  renderComponent = RenderObjectFactory::Create(&m_splines[1], app(), "1", Vector4f::ZERO, RenderObjectFactory::VS_V3_C4, 50);
+  renderComponent->setMaterial(material);
+  app()->graphics()->renderer()->addForRendering(renderComponent);
+
+  renderComponent = RenderObjectFactory::Create(&m_splines[2], app(), "2", Vector4f::ZERO, RenderObjectFactory::VS_V3_C4, 50);
+  renderComponent->setMaterial(material);
+  app()->graphics()->renderer()->addForRendering(renderComponent);
+
+  renderComponent = RenderObjectFactory::Create(&m_splines[3], app(), "3", Vector4f::ZERO, RenderObjectFactory::VS_V3_C4, 50);
+  renderComponent->setMaterial(material);
+  app()->graphics()->renderer()->addForRendering(renderComponent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Test override. Pointer event receiver. */

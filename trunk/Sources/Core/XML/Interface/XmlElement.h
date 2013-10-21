@@ -79,7 +79,9 @@ class XmlElement : public Object
     /*! Returns first attribute. */
     PXmlAttribute firstAttribute() const;
 
-    /*! Gets element's text. */
+    /*! Gets element's text. 
+     *  @note Any whitespaces occurring between seperate lines are replaced by single space character.
+     */
     String text() const;
 
     /*! Returns first child element. If any name is given returned will be first element with given name. */

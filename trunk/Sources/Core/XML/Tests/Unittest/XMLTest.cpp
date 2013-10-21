@@ -260,7 +260,7 @@ TEST_F(XMLTest, DecodeText)
   EXPECT_TRUE(element->isValid());
   EXPECT_EQ("third-level-element", element->name());
 
-  EXPECT_EQ("This is some text", element->text());
+  EXPECT_EQ("This is some text And even more text here", element->text());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(XMLTest, LoadDocumentFromEmptyBuffer)
