@@ -70,6 +70,13 @@ class String : public std::string
     StringArray split(const String& separator) const;
     /*! Returns a string that has whitespace removed from the start and the end. */
     String trimmed() const;
+    /*! Replaces all occurences of the string with another string. 
+     *  @param  before String to be replaced.
+     *  @param  after  String to be placed.
+     *  @return Reference to self.
+     */
+    String& replaceAll(const String& before, const String& after);
+    String& replaceAll(const char* before, const char* after);
 
   private:
 

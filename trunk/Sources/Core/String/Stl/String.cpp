@@ -452,5 +452,32 @@ String String::trimmed() const
   return String(std::string(startPos, endPos + 1));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+String& String::replaceAll(const String& before, const String& after)
+{
+  // find first occurence
+  size_t pos = this->find(before);
+  while (std::string::npos != pos)
+  {
+    // erase
+    this->erase(pos, before.length());
+
+    // insert
+    this->insert(pos, after);
+
+    // locate next occurence
+    pos = this->find(before, pos + 1);
+  }
+
+  return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+String& String::replaceAll(const char* before, const char* after)
+{
+  const String beforeString(before);
+  const String afterString(after);
+
+  return replaceAll(beforeString, afterString);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
