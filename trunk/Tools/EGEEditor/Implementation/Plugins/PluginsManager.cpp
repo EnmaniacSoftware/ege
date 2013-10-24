@@ -1,5 +1,5 @@
-#include "PluginsManager.h"
-#include "IPlugin.h"
+#include "Plugins/PluginsManager.h"
+#include "Plugins/Plugin.h"
 #include <QDir>
 #include <QLibrary>
 #include <QDebug>
