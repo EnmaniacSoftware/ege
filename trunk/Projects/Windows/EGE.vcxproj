@@ -271,7 +271,6 @@
     <ClInclude Include="..\..\Sources\Core\Crypto\md5\md5.h" />
     <ClInclude Include="..\..\Sources\Core\Data\Serializable.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Console.h" />
-    <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\EngineInfo.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Logger.h" />
     <ClInclude Include="..\..\Sources\Core\Directory\Interface\Directory.h" />

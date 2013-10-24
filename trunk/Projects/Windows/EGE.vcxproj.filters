@@ -1250,9 +1250,6 @@
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEOpenGL.h" />
-    <ClInclude Include="..\..\Sources\Core\Debug\DebugFont.h">
-      <Filter>Core\Debug</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Debug\Console.h">
       <Filter>Core\Debug</Filter>
     </ClInclude>
