@@ -1,16 +1,19 @@
-#ifndef EDITOR_CONFIG_H
-#define EDITOR_CONFIG_H
+#ifndef EDITOR_FSUTILS_H
+#define EDITOR_FSUTILS_H
 
-#include <QSettings>
+/*! Helper class regarding File System area.
+ */
+
+#include <QString>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Config : public QSettings
+class FSUtils
 {
   public:
 
-    Config(QObject* parent = NULL);
-   ~Config();
+    /*! Removes invalid characters from given file name. */
+    static QString ValidateFileName(const QString& fileName);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // EDITOR_CONFIG_H
+#endif // EDITOR_FSUTILS_H

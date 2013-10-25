@@ -1,10 +1,9 @@
-#include <QApplication>
-#include "Plugins/PluginsManager.h"
+#include "Application.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  QApplication a(argc, argv);
+  Application application(argc, argv);
 
   // register resources
 ///*  if (!QResource::registerResource("res/resources.rcc"))
@@ -14,20 +13,14 @@ int main(int argc, char *argv[])
 //  }
 //
 
-  PluginsManager pluginManager;
-  QStringList pluginPaths;
-  pluginPaths << "Plugins";
-  pluginManager.setPluginPaths(pluginPaths);
-  if (!pluginManager.loadPlugins())
+  int result = 1;
+
+  // initialize application
+  if (application.initialize())
   {
-    // error!
-    return -1;
+    // run it
+    result = application.exec();
   }
-
-  // run
-  int result = a.exec();
-
-  pluginManager.unloadPlugins();
 
   return result;
 }

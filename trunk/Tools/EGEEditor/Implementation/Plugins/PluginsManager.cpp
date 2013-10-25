@@ -15,9 +15,6 @@ PluginsManager::~PluginsManager()
   unloadPlugins();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#include <Windows.h>
-
-/*! Loads plugins. */
 bool PluginsManager::loadPlugins()
 {
   // go thru all plugin paths
@@ -119,7 +116,6 @@ bool PluginsManager::loadPlugins()
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unloads plugins. */
 void PluginsManager::unloadPlugins()
 {
   // deinitialize plugins in reverse order
@@ -138,13 +134,11 @@ void PluginsManager::unloadPlugins()
   m_plugins.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets plugin directories. */
 void PluginsManager::setPluginPaths(const QStringList& paths)
 {
   m_paths = paths;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Generates load queue from all plugins. */
 QList<PluginsManager::PluginData*> PluginsManager::loadQueue() const
 {
   QList<PluginsManager::PluginData*> queue;
@@ -159,7 +153,6 @@ QList<PluginsManager::PluginData*> PluginsManager::loadQueue() const
   return queue;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Processes given plugin resolving its dependencies and updating load queue. */
 bool PluginsManager::loadQueue(PluginData* plugin, QList<PluginsManager::PluginData*>& queue, QList<PluginsManager::PluginData*>& loopQueue) const
 {
   // check if already in load queue

@@ -1,5 +1,7 @@
-#ifndef PLUGIN_INTERFACE_H
-#define PLUGIN_INTERFACE_H
+#ifndef EDITOR_PLUGINS_PLUGIN_H
+#define EDITOR_PLUGINS_PLUGIN_H
+
+/*! Interface for editor plugin. */
 
 #include <QObject>
 #include <qplugin.h>
@@ -8,6 +10,8 @@
 class IPlugin
 {
   public:
+
+    virtual ~IPlugin() {}
 
     /*! Initialized plugin. */
     virtual bool initialize() = 0;
@@ -23,4 +27,4 @@ Q_DECLARE_INTERFACE(IPlugin, "com.littlebeestudios.plugin.iplugin/1.0")
 typedef QT_PREPEND_NAMESPACE(QObject)*  (*PFPLUGININSTANCE) ();
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // PLUGIN_INTERFACE_H
+#endif // EDITOR_PLUGINS_PLUGIN_H

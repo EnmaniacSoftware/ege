@@ -1,5 +1,5 @@
-#ifndef PLUGINS_MANAGER_H
-#define PLUGINS_MANAGER_H
+#ifndef EDITOR_PLUGINS_PLUGINSMANAGER_H
+#define EDITOR_PLUGINS_PLUGINSMANAGER_H
 
 #include <QStringList>
 #include <QMap>
@@ -14,12 +14,12 @@ class PluginsManager : public QObject
     explicit PluginsManager(QObject* parent = NULL);
     ~PluginsManager();
 
-    /* Sets plugin directories. */
+    /*! Sets plugin directories. */
     void setPluginPaths(const QStringList& paths);
 
-    /* Loads plugins. */
+    /*! Loads plugins. */
     bool loadPlugins();
-    /* Unloads plugins. */
+    /*! Unloads plugins. */
     void unloadPlugins();
     
   private:
@@ -35,9 +35,9 @@ class PluginsManager : public QObject
 
   private:
 
-    /* Generates load queue from all plugins. */
+    /*! Generates load queue from all plugins. */
     QList<PluginData*> loadQueue() const;
-    /* Processes given plugin resolving its dependencies and updating load queue. */
+    /*! Processes given plugin resolving its dependencies and updating load queue. */
     bool loadQueue(PluginData* plugin, QList<PluginData*>& queue, QList<PluginsManager::PluginData*>& loopQueue) const;
 
   private:
@@ -49,4 +49,4 @@ class PluginsManager : public QObject
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // PLUGINS_MANAGER_H
+#endif // EDITOR_PLUGINS_PLUGINSMANAGER_H
