@@ -1,7 +1,7 @@
 #include "NewProjectWindow.h"
 #include "MainWindow.h"
 #include <FileSystemUtils.h>
-//#include "ProjectFactory.h"
+#include <Projects/ProjectFactory.h>
 #include <ObjectPool.h>
 #include <QFileDialog.h>
 #include <QMessageBox>
@@ -32,10 +32,10 @@ NewProjectWindow::~NewProjectWindow()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void NewProjectWindow::populateProjectTypeList()
 {
-  //ProjectFactory* projectFactory = ObjectPool::Instance()->getObject<ProjectFactory>();
-  //Q_ASSERT(projectFactory);
+  ProjectFactory* projectFactory = ObjectPool::Instance()->getObject<ProjectFactory>();
+  Q_ASSERT(NULL != projectFactory);
 
-  //projectListView->setModel(projectFactory);
+  projectListView->setModel(projectFactory);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void NewProjectWindow::on_projectListView_clicked(const QModelIndex& index)
@@ -48,8 +48,8 @@ void NewProjectWindow::on_projectListView_clicked(const QModelIndex& index)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void NewProjectWindow::accept()
 {
-  // ProjectFactory* projectFactory = ObjectPool::Instance()->getObject<ProjectFactory>();
-  //Q_ASSERT(projectFactory);
+  ProjectFactory* projectFactory = ObjectPool::Instance()->getObject<ProjectFactory>();
+  Q_ASSERT(NULL != projectFactory);
 
   QModelIndex index = projectListView->selectionModel()->selectedIndexes().first();
   if ( ! index.isValid())
@@ -59,23 +59,23 @@ void NewProjectWindow::accept()
   }
 
   // check if project already exists at specified destination
-  //  if (projectExists(projectName->text(), projectLocation->text()))
-  //  {
-  //    // prompt
-  //    if (QMessageBox::No == QMessageBox::warning(this, windowTitle(), tr("Project already exists at given destination.\n\nDo you want to overwrite ?"),
-  //                                                QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
-  //    {
-  //      // do nothing
-  //      return;
-  //    }
-  //  }
+  if (projectExists(projectName->text(), projectLocation->text()))
+  {
+    // prompt
+    if (QMessageBox::No == QMessageBox::warning(this, windowTitle(), tr("Project already exists at given destination.\n\nDo you want to overwrite ?"),
+                                                QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
+    {
+      // do nothing
+      return;
+    }
+  }
 
-  //  // create new project
-  //  Project* project = projectFactory->createProject(index.data(Qt::DisplayRole).toString(), projectName->text(), projectLocation->text(), NULL);
-  //  Q_ASSERT(project);
+  // create new project
+  Project* project = projectFactory->createProject(index.data(Qt::DisplayRole).toString(), projectName->text(), projectLocation->text(), NULL);
+  Q_ASSERT(NULL != project);
 
-  //  // emit
-  //  emit projectCreated(project);
+  // emit
+  emit projectCreated(project);
 
   // call base class
   QDialog::accept();

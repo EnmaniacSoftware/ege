@@ -12,7 +12,7 @@ ProjectFactory::~ProjectFactory()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ProjectFactory::registerProject(PFPROJECTTYPENAMEFUNC typeNameFunc, PFPROJECTCREATEFUNC createFunc)
 {
-  Q_ASSERT(typeNameFunc && createFunc);
+  Q_ASSERT((NULL != typeNameFunc) && (NULL != createFunc));
 
   // check if project with such a name exists already
   if (isProjectRegistered(typeNameFunc()))
