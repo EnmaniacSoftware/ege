@@ -1,19 +1,10 @@
 include(JuiceJumpersProjectPlugin.pri)
-include(../../Extras.pri)
+include(../PluginExtras.pri)
 
-TEMPLATE = lib
-
-CONFIG += plugin
-
-INCLUDEPATH += Interface \
-               ../CorePlugin/Interface \
+INCLUDEPATH += ../CorePlugin/Interface \
                ../../EGEEditor/Interface
 
-win32
-{
-}
 DEFINES += JUICEJUMPERSPROJECTPLUGIN_EXPORT
 
-LIBS += -L$$PWD/../../bin -lCorePlugin
+LIBS += -lCorePlugin
 
-DESTDIR = $$PWD/../../bin

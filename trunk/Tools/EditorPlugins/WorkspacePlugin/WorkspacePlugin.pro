@@ -1,21 +1,11 @@
 include(WorkspacePlugin.pri)
-include(../../Extras.pri)
-
-TEMPLATE = lib
-
-CONFIG += plugin
+include(../PluginExtras.pri)
 
 QT += core gui widgets
 
 INCLUDEPATH += Interface \
-               ../CorePlugin/Interface \
-               ../../EGEEditor/Interface
-
-Debug:UI_DIR   = debug/.ui
-Release:UI_DIR = release/.ui
+               ../CorePlugin/Interface
 
 DEFINES +=  WORKSPACEPLUGIN_EXPORT=1
 
-LIBS += -L$$PWD/../../bin -lCorePlugin
-
-DESTDIR = $$PWD/../../bin
+LIBS += -lCorePlugin
