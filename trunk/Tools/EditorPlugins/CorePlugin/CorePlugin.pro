@@ -1,4 +1,5 @@
 include(CorePlugin.pri)
+include(../../Extras.pri)
 
 TEMPLATE = lib
 
@@ -9,7 +10,6 @@ QT += widgets
 INCLUDEPATH += Interface \
                ../../EGEEditor/Interface
 
-DEFINES += override="" \
-           COREPLUGIN_EXPORT=1
+DEFINES += COREPLUGIN_EXPORT=1
 
 DESTDIR = $$PWD/../../bin

@@ -1,4 +1,5 @@
 include(JuiceJumpersProjectPlugin.pri)
+include(../../Extras.pri)
 
 TEMPLATE = lib
 
@@ -11,8 +12,7 @@ INCLUDEPATH += Interface \
 win32
 {
 }
-DEFINES += override="" \
-           JUICEJUMPERSPROJECTPLUGIN_EXPORT
+DEFINES += JUICEJUMPERSPROJECTPLUGIN_EXPORT
 
 LIBS += -L$$PWD/../../bin -lCorePlugin
 

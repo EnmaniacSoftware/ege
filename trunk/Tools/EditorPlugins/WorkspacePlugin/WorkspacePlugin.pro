@@ -1,4 +1,5 @@
 include(WorkspacePlugin.pri)
+include(../../Extras.pri)
 
 TEMPLATE = lib
 
@@ -13,8 +14,7 @@ INCLUDEPATH += Interface \
 Debug:UI_DIR   = debug/.ui
 Release:UI_DIR = release/.ui
 
-DEFINES += override="" \
-           WORKSPACEPLUGIN_EXPORT=1
+DEFINES +=  WORKSPACEPLUGIN_EXPORT=1
 
 LIBS += -L$$PWD/../../bin -lCorePlugin
 

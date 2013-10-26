@@ -2,7 +2,7 @@ include(EGEEditor.pri)
 
 TEMPLATE = app
 
-QT += core gui widgets
+QT += core widgets
 
 INCLUDEPATH	+= Interface
 
