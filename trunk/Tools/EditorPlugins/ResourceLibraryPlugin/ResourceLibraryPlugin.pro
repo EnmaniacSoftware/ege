@@ -26,7 +26,7 @@ SOURCES     = ResourceItem.cpp \
 
 FORMS       += ResourceLibraryWindow.ui
 
-INCLUDEPATH += ../../EGEEditor/src \
+INCLUDEPATH += ../../EGEEditor/Interface \
                ../../EditorPlugins/CorePlugin
 
 DEFINES += override="" \

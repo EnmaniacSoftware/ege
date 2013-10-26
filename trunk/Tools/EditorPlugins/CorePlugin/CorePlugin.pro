@@ -1,40 +1,13 @@
-CONFIG      += plugin
+include(CorePlugin.pri)
 
-QT          += widgets
+TEMPLATE = lib
 
-#TARGET      = $$qtLibraryTarget($$TARGET)
-TEMPLATE    = lib
+CONFIG += plugin
 
-HEADERS     += AddConfigurationWindow.h \
-               Configuration.h \
-               CoreConstants.h \
-               CorePlugin.h \
-               FSUtils.h \
-               MainWindow.h \
-               NewProjectWindow.h \
-               ObjectPool.h \
-               Project.h \
-               ProjectFactory.h \
-               Serializer.h
+QT += widgets
 
-SOURCES     += AddConfigurationWindow.cpp \
-               Configuration.cpp \
-               CorePlugin.cpp \
-               FSUtils.cpp \
-               MainWindow.cpp \
-               NewProjectWindow.cpp \
-               ObjectPool.cpp \
-               Project.cpp \
-               ProjectFactory.cpp
-
-FORMS       += addconfiguration.ui \
-               configuration.ui \
-               mainwindow.ui \
-               newproject.ui
-
-RESOURCES   += core.qrc
-
-INCLUDEPATH += ../../EGEEditor/src
+INCLUDEPATH += Interface \
+               ../../EGEEditor/Interface
 
 DEFINES += override="" \
            COREPLUGIN_EXPORT=1

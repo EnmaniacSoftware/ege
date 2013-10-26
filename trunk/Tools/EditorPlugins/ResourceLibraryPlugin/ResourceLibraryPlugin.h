@@ -1,7 +1,7 @@
 #ifndef RESOUCELIBRARYPLUGIN_H
 #define RESOUCELIBRARYPLUGIN_H
 
-#include <Plugins/IPlugin.h>
+#include <Plugins/Plugin.h>
 #include "resoucelibraryplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

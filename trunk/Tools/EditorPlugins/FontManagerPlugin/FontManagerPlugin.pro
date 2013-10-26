@@ -12,7 +12,7 @@ SOURCES     = FontManagerPlugin.cpp \
 #              FontManagerWindow.cpp \
               ResourceItemFont.cpp
 
-INCLUDEPATH += ../../EGEEditor/src \
+INCLUDEPATH += ../../EGEEditor/Interface \
                ../../EditorPlugins/CorePlugin \
                ../../EditorPlugins/ResourceLibraryPlugin
 

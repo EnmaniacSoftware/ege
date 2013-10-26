@@ -14,7 +14,7 @@ SOURCES     = MaterialManagerPlugin.cpp \
 
 FORMS       = MaterialManagerWindow.ui
 
-INCLUDEPATH += ../../EGEEditor/src \
+INCLUDEPATH += ../../EGEEditor/Interface \
                ../../EditorPlugins/CorePlugin \
                ../../EditorPlugins/ResourceLibraryPlugin
 

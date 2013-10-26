@@ -36,29 +36,9 @@ Application::~Application(void)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Application::initialize()
 {
-  // initialize main window first
-  bool result = m_mainWindow.initialize();
-
-  // add project factory to pool
-  if (result)
-  {
-    result = m_objectPool.addObject(&m_projectFactory);
-  }
-
   // load plugins
-  if (result)
-  {
-    result = m_pluginManager.loadPlugins();
-  }
-
-  // show window
-  m_mainWindow.show();
+  bool result = m_pluginManager.loadPlugins();
 
   return result;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ObjectPool& Application::objectPool()
-{
-  return m_objectPool;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

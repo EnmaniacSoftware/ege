@@ -1,18 +1,20 @@
-include(JuiceJumpersProjectPlugin.pri)
+include(WorkspacePlugin.pri)
 
 TEMPLATE = lib
 
 CONFIG += plugin
 
+QT += core gui widgets
+
 INCLUDEPATH += Interface \
                ../CorePlugin/Interface \
                ../../EGEEditor/Interface
 
-win32
-{
-}
+Debug:UI_DIR   = debug/.ui
+Release:UI_DIR = release/.ui
+
 DEFINES += override="" \
-           JUICEJUMPERSPROJECTPLUGIN_EXPORT
+           WORKSPACEPLUGIN_EXPORT=1
 
 LIBS += -L$$PWD/../../bin -lCorePlugin
 

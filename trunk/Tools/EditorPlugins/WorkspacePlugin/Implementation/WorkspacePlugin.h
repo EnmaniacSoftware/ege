@@ -1,34 +1,32 @@
-#ifndef IMAGEDANIMATIONPLUGIN_H
-#define IMAGEDANIMATIONPLUGIN_H
+#ifndef WORKSPACE_WORKSPACEPLUGIN_H
+#define WORKSPACE_WORKSPACEPLUGIN_H
 
 #include <Plugins/Plugin.h>
-#include "imagedanimationplugin_global.h"
+#include "WorkspacePlugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ImagedAnimationWindow;
+class MainWindow;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class IMAGEDANIMATIONPLUGIN_API ImagedAnimationPlugin : public QObject, public IPlugin
+class WORKSPACEPLUGIN_API WorkspacePlugin : public QObject, public IPlugin
 {
   Q_OBJECT
   Q_INTERFACES(IPlugin)
 
   public:
   
-    explicit ImagedAnimationPlugin(QObject* parent = NULL);
-    ~ImagedAnimationPlugin();
+    explicit WorkspacePlugin(QObject* parent = NULL);
+    ~WorkspacePlugin();
 
-  private:
-
-    /* IPlugin override. Initialized plugin. */
+    /*! @see IPlugin::initialize. */
     bool initialize() override;
-    /* IPlugin override. Deinitializes plugin. */
+    /*! @see IPlugin::deinitialize. */
     void deinitialize() override;
 
   private:
 
-    /*! Module window. */
-    ImagedAnimationWindow* m_window;
+    /*! Main window. */
+    MainWindow* m_mainWindow;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // IMAGEDANIMATIONPLUGIN_H
+#endif // WORKSPACE_WORKSPACEPLUGIN_H

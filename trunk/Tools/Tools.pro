@@ -1,8 +1,8 @@
 TEMPLATE = subdirs
 
-CONFIG += debug_and_release
+CONFIG += debug_and_release \
+          ordered
 
-SUBDIRS += EGEEditor \
-           EditorPlugins
+SUBDIRS += EditorPlugins \
+           EGEEditor
 
-EGEEditor.depends = EditorPlugins

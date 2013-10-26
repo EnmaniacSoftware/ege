@@ -12,7 +12,7 @@ SOURCES     = ImagedAnimationPlugin.cpp \
 
 FORMS       = imagedanimationwindow.ui
 
-INCLUDEPATH += ../../EGEEditor/src \
+INCLUDEPATH += ../../EGEEditor/Interface \
                ../../EditorPlugins/CorePlugin \
                ../../EditorPlugins/ResourceLibraryPlugin
 

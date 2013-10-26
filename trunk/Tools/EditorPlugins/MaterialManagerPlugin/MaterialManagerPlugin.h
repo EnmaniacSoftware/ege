@@ -1,7 +1,7 @@
 #ifndef MATERIALMANAGERPLUGIN_H
 #define MATERIALMANAGERPLUGIN_H
 
-#include <Plugins/IPlugin.h>
+#include <Plugins/Plugin.h>
 #include "materialmanagerplugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,14 +1,17 @@
 TEMPLATE = subdirs
 
-SUBDIRS +=  CorePlugin \
-            FontManagerPlugin \
-            ResourceLibraryPlugin \
-            MaterialManagerPlugin \
-            ImagedAnimationPlugin \
-            JuiceJumpersProjectPlugin
+CONFIG += ordered
 
-ResourceLibraryPlugin.depends     = CorePlugin
-FontManagerPlugin.depends         = CorePlugin ResourceLibraryPlugin
-MaterialManagerPlugin.depends     = CorePlugin
-ImagedAnimationPlugin.depends     = CorePlugin
-JuiceJumpersProjectPlugin.depends = CorePlugin
+SUBDIRS += CorePlugin \
+           WorkspacePlugin \
+           JuiceJumpersProjectPlugin
+            #FontManagerPlugin \
+            #ResourceLibraryPlugin \
+            #MaterialManagerPlugin \
+            #ImagedAnimationPlugin \
+
+#ResourceLibraryPlugin.depends     = CorePlugin
+#FontManagerPlugin.depends         = CorePlugin ResourceLibraryPlugin
+#MaterialManagerPlugin.depends     = CorePlugin
+#ImagedAnimationPlugin.depends     = CorePlugin
+#JuiceJumpersProjectPlugin.depends = CorePlugin
