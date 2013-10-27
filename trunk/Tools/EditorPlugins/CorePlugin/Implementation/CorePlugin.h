@@ -4,8 +4,8 @@
 #include <Plugins/Plugin.h>
 #include "CorePlugin_global.h"
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ProjectFactory;
-//class Configuration;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class COREPLUGIN_API CorePlugin : public QObject, public IPlugin
 {
@@ -24,12 +24,8 @@ class COREPLUGIN_API CorePlugin : public QObject, public IPlugin
 
   private:
 
-    /*! Main window. */
-    //MainWindow* m_mainWindow;
     /*! Project factory. */
     ProjectFactory* m_projectFactory;
-    /*! Configuration. */
-   // Configuration* m_configuration;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

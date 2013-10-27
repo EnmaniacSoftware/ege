@@ -6,7 +6,8 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CorePlugin::CorePlugin(QObject* parent) : QObject(parent)
+CorePlugin::CorePlugin(QObject* parent) : QObject(parent),
+                                          m_projectFactory(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -19,39 +20,26 @@ bool CorePlugin::initialize()
   // register resources
   Q_INIT_RESOURCE(core);
 
-//  m_mainWindow      = new MainWindow();
-  m_projectFactory  = new ProjectFactory();
- // m_configuration   = new Configuration();
-
-  // initialize main window
-//  if (!m_mainWindow->initialize())
-//  {
-//    // error!
-//    return false;
-//  }
+  // create objectss
+  m_projectFactory = new ProjectFactory();
 
   // add to pool
-  if (/*!ObjectPool::Instance()->addObject(m_mainWindow) ||*/
-//      !ObjectPool::Instance()->addObject(m_configuration) ||
-      !ObjectPool::Instance()->addObject(m_projectFactory))
-  {
-    // error!
-    return false;
-  }
+  bool result = ObjectPool::Instance()->addObject(m_projectFactory);
 
-//  m_mainWindow->show();
-
-  return true;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void CorePlugin::deinitialize()
 {
   if (NULL != m_projectFactory)
   {
+    ObjectPool::Instance()->removeObject(m_projectFactory);
+
     delete m_projectFactory;
     m_projectFactory = NULL;
   }
 
+  // clean up resources
   Q_CLEANUP_RESOURCE(core);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

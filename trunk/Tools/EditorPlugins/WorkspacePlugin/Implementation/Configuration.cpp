@@ -10,9 +10,9 @@ Configuration::Configuration(QWidget* parent) : QWidget(parent)
   // setup UI
   setupUi(this);
    
-  // setup
-  add->setIcon(QIcon(":/configuration-add"));
-  remove->setIcon(QIcon(":/configuration-remove"));
+  // setup icons
+  add->setIcon(QIcon(":/core/configuration-add"));
+  remove->setIcon(QIcon(":/core/configuration-remove"));
 
   onSelectionChanged();
 

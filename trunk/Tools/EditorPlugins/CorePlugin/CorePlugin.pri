@@ -11,9 +11,4 @@ SOURCES += Implementation/CorePlugin.cpp \
            Implementation/Projects/Project.cpp \
            Implementation/Projects/ProjectFactory.cpp
 
-#FORMS       += addconfiguration.ui \
-#               configuration.ui \
-#               mainwindow.ui \
-#               newproject.ui
-
-RESOURCES += core.qrc
+RESOURCES += Resources/core.qrc
