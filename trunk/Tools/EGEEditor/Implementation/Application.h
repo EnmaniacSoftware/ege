@@ -5,7 +5,6 @@
 
 #include <QApplication>
 #include "Plugins/PluginsManager.h"
-#include "Config.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Application : public QApplication
@@ -24,8 +23,6 @@ class Application : public QApplication
 
     /*! Plugin manager object. */
     PluginsManager m_pluginManager;
-    /*! Configuration object. */
-    Config m_config;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

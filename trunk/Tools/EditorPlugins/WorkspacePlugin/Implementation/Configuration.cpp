@@ -1,6 +1,8 @@
 #include "Configuration.h"
 #include "MainWindow.h"
 #include "AddConfigurationWindow.h"
+#include <Projects/Project.h>
+#include <ObjectPool.h>
 #include <QStatusBar>
 #include <QMessageBox>
 
@@ -20,6 +22,11 @@ Configuration::Configuration(QWidget* parent) : QWidget(parent)
   connect(add, SIGNAL(clicked(bool)), this, SLOT(onAddClicked()));
   connect(remove, SIGNAL(clicked(bool)), this, SLOT(onRemoveClicked()));
   connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSelectionChanged()));
+  connect(ObjectPool::Instance(), SIGNAL(objectAdded(QObject*)), this, SLOT(onObjectAdded(QObject*)));
+  connect(ObjectPool::Instance(), SIGNAL(objectRemoved(QObject*)), this, SLOT(onObjectRemoved(QObject*)));
+
+  // initially disable all
+  setEnabled(false);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Configuration::onAddClicked()
@@ -60,5 +67,25 @@ void Configuration::onAddConfiguration(const QString& name)
 
   // add to pool
   comboBox->addItem(name);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Configuration::onObjectAdded(QObject* object)
+{
+  // check if project added
+  if (qobject_cast<Project*>(object))
+  {
+    // enable
+    setEnabled(true);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Configuration::onObjectRemoved(QObject* object)
+{
+  // check if project removed
+  if (qobject_cast<Project*>(object))
+  {
+    // disable
+    setEnabled(false);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
