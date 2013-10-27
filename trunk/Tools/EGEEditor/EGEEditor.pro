@@ -6,4 +6,9 @@ QT += core widgets
 
 INCLUDEPATH	+= Interface
 
-#INSTALLS += target
+# plugins installation
+win32:plugins.files += ../bin/*.dll
+linux:plugins.files += ../bin/*.so
+plugins.path = Plugins
+
+INSTALLS += plugins
