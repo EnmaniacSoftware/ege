@@ -1,4 +1,0 @@
-<plugin name="MaterialManagerPlugin">
-  <dependency name="CorePlugin" />
-  <dependency name="ResourceLibraryPlugin" />
-</plugin>
