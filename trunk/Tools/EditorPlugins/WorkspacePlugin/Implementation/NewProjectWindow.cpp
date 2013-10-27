@@ -92,7 +92,7 @@ void NewProjectWindow::on_projectLocationBrowse_clicked()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool NewProjectWindow::projectExists(const QString& name, const QString& path) const
 {
-  return QFile::exists(path + "/" + name + ".ege");
+  return QFile::exists(path + "/" + name + ".egeproj");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void NewProjectWindow::projectNameTextEdited(const QString& text)
@@ -124,7 +124,10 @@ void NewProjectWindow::updateUI()
   else
   {
     // check if proper project name
-    if (projectName->text() != FileSystemUtils::ValidateFileName(projectName->text()))
+    const QString currentName = projectName->text();
+    const QString validatedName = FileSystemUtils::ValidateFileName(currentName);
+
+    if (currentName == validatedName)
     {
       // enable OK button
       buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
