@@ -6,6 +6,7 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class MainWindow;
+class Configuration;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class WORKSPACEPLUGIN_API WorkspacePlugin : public QObject, public IPlugin
 {
@@ -26,6 +27,8 @@ class WORKSPACEPLUGIN_API WorkspacePlugin : public QObject, public IPlugin
 
     /*! Main window. */
     MainWindow* m_mainWindow;
+    /*! Configuration window. */
+    Configuration* m_configuration;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

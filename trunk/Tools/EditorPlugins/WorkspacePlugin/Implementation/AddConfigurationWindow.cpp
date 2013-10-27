@@ -1,34 +1,30 @@
 #include "AddConfigurationWindow.h"
-#include "ui_addconfiguration.h"
 #include <QPushButton>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AddConfigurationWindow::AddConfigurationWindow(QWidget* parent) : QDialog(parent),
-                                                                  m_ui(new Ui_AddConfiguration())
+AddConfigurationWindow::AddConfigurationWindow(QWidget* parent) : QDialog(parent)
 {
   // setup
-  m_ui->setupUi(this);
+  setupUi(this);
 
-  onTextChanged(m_ui->nameEdit->text());
+  onTextChanged(nameEdit->text());
 
   // connect
   connect(this, SIGNAL(accepted()), this, SLOT(onAccepted()));
-  connect(m_ui->nameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onTextChanged(const QString&)));
+  connect(nameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onTextChanged(const QString&)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when dialog was accepted. */
 void AddConfigurationWindow::onAccepted()
 {
-  emit accepted(m_ui->nameEdit->text());
+  emit accepted(nameEdit->text());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when text in edit changes. */
 void AddConfigurationWindow::onTextChanged(const QString& text)
 {
-  QPushButton* button = m_ui->buttonBox->button(QDialogButtonBox::Ok);
-  if (button)
+  QPushButton* button = buttonBox->button(QDialogButtonBox::Ok);
+  if (NULL != button)
   {
-    button->setEnabled(!text.isEmpty());
+    button->setEnabled( ! text.isEmpty());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

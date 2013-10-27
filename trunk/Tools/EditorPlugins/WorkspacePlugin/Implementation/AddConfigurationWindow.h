@@ -1,13 +1,11 @@
-#ifndef ADD_CONFIGURATION_WINDOW_H
-#define ADD_CONFIGURATION_WINDOW_H
+#ifndef WORKSPACE_ADDCONFIGURATIONWINDOW_H
+#define WORKSPACE_ADDCONFIGURATIONWINDOW_H
 
 #include <QDialog>
-#include "coreplugin_global.h"
+#include "ui_addconfiguration.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Ui_AddConfiguration;
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class COREPLUGIN_API AddConfigurationWindow : public QDialog
+class AddConfigurationWindow : public QDialog, public Ui::AddConfiguration
 {
   Q_OBJECT
 
@@ -22,16 +20,11 @@ class COREPLUGIN_API AddConfigurationWindow : public QDialog
 
   private slots:
 
-    /* Slot called when dialog was accepted. */
+    /*! Slot called when dialog was accepted. */
     void onAccepted();
-    /* Slot called when text in edit changes. */
+    /*! Slot called when text in edit changes. */
     void onTextChanged(const QString& text);
-
-  private:
-
-    /*! UI. */
-    Ui_AddConfiguration* m_ui;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // ADD_CONFIGURATION_WINDOW_H
+#endif // WORKSPACE_ADDCONFIGURATIONWINDOW_H
