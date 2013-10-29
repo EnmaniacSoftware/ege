@@ -79,6 +79,9 @@ void NewProjectWindow::accept()
   // add to object pool
   ObjectPool::Instance()->addObject(project);
 
+  //  set dirty flag
+  project->setDirty(true);
+
   // call base class
   QDialog::accept();
 }

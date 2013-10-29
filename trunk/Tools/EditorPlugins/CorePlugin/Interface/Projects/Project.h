@@ -29,18 +29,16 @@ class COREPLUGIN_API Project : public QObject, public ISerializer
   public:
 
     /*! Returns type name. */
-    inline const QString& typeName() const { return m_typeName; }
+    const QString& typeName() const;
     /*! Returns name. */
-    inline const QString& name() const { return m_name; }
+    const QString& name() const;
     /*! Returns path. */
-    inline const QString& path() const { return m_path; }
-    /*! Returns full path to project file. */
-    inline QString fullPath() const { return m_path + "/" + m_name + ".ege"; }
+    const QString& path() const;
 
     /*! Marks/unmarks project content as dirty. */
     void setDirty(bool set);
     /*! Returns dirty flag. */
-    inline bool isDirty() const { return m_dirty; }
+    bool isDirty() const;
     
     /*! Returns resource library item delegate. */
   //  inline ResourceLibraryItemDelegate* resourceLibraryItemDelegate() const { return m_resourceLibraryItemDelegate; }

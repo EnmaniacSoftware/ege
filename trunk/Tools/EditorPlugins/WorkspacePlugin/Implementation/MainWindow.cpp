@@ -1,8 +1,9 @@
 #include "MainWindow.h"
 #include "NewProjectWindow.h"
 #include <Projects/Project.h>
+#include <Projects/ProjectFactory.h>
 #include <ObjectPool.h>
-//#include "ProjectFactory.h"
+#include <FileSystemUtils.h>
 //#include "Resources/ResourceLibrary.h"
 //#include "Resources/ResourceItemFactory.h"
 //#include "Resources/ResourceLibraryDataModel.h"
@@ -18,8 +19,15 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define MAJOR_VERSION 0
-#define MINOR_VERSION 1
+static const int KMajorVersion    = 0;
+static const int KMinorVersion    = 1;
+static const int KRevisionVersion = 1;
+static QString KWorkspaceTag              = "workspace";
+static QString KProjectTag                = "project";
+static QString KMajorVersionAttribute     = "version-major";
+static QString KMinorVersionAttribute     = "version-minor";
+static QString KRevisionVersionAttribute  = "version-revision";
+static QString KProjectFileExtension      = "egeproj";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MainWindow::MainWindow() : QMainWindow()
                            /*m_resourceItemFactory(NULL),
@@ -114,112 +122,103 @@ void MainWindow::on_ActionFileNew_triggered(bool checked)
 void MainWindow::on_ActionFileOpen_triggered(bool checked)
 {
   Q_UNUSED(checked);
-  
-//  ObjectPool* pool = ObjectPool::Instance();
 
-//  ProjectFactory* projectFactory = pool->findChild<ProjectFactory*>();
-//  if (NULL == projectFactory)
-//  {
-//    // done
-//    qWarning() << Q_FUNC_INFO << "No ProjectFactory found";
-//    return;
-//  }
+  // TAGE - check if any project is active and close it
+  Q_ASSERT(NULL == ObjectPool::Instance()->getObject<Project>());
 
-//  Project* project = NULL;
+  ProjectFactory* projectFactory = ObjectPool::Instance()->getObject<ProjectFactory>();
+  if (NULL == projectFactory)
+  {
+    // done
+    qWarning() << Q_FUNC_INFO << "No ProjectFactory found";
+    return;
+  }
 
-//  // prepare filters
-//	QString filters = tr("Projects");
-//	filters += QLatin1String(" (*.ege)");
+  Project* project = NULL;
 
-//  // open file selection dialog
-//	QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), QString(), filters);
-//  if (fileName.isEmpty())
-//  {
-//    // do nothing
-//    return;
-//  }
+  // prepare filters
+  QString filters = tr("Projects");
+  filters += QString(" (*." + KProjectFileExtension + ")");
 
-//  QFile file(fileName);
-//  if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-//  {
-//    // error!
-//    QMessageBox::warning(this, tr("Open Project error"), tr("Could not open project file!"), QMessageBox::Ok);
-//    return;
-//  }
+  // open file selection dialog
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), QString(), filters);
+  if (fileName.isEmpty())
+  {
+    // do nothing
+    return;
+  }
 
-//  // process input data
-//  QXmlStreamReader stream(&file);
-//  while (!stream.atEnd())
-//  {
-//    QXmlStreamReader::TokenType token = stream.readNext();
-//    switch (token)
-//    {
-//      case QXmlStreamReader::StartElement:
+  QFile file(fileName);
+  if ( ! file.open(QIODevice::ReadOnly | QIODevice::Text))
+  {
+    // error!
+    QMessageBox::warning(this, tr("Open Project error"), tr("Could not open project file!"), QMessageBox::Ok);
+    return;
+  }
 
-//        // check if workspace element
-//        if ("workspace" == stream.name())
-//        {
-//          // check file version
-//          QString version = stream.attributes().value("version").toString();
+  // process input data
+  QXmlStreamReader stream(&file);
+  while ( ! stream.atEnd())
+  {
+    QXmlStreamReader::TokenType token = stream.readNext();
+    switch (token)
+    {
+      case QXmlStreamReader::StartElement:
 
-//          int major = version.section(".", 0, -2).toInt();
-//          int minor = version.section(".", 1).toInt();
+        // check if workspace element
+        if (KWorkspaceTag == stream.name())
+        {
+          // check file version
+          const int majorVersion    = stream.attributes().value(KMajorVersionAttribute).toInt();
+          const int minorVersion    = stream.attributes().value(KMinorVersionAttribute).toInt();
+          const int revisionVersion = stream.attributes().value(KRevisionVersionAttribute).toInt();
 
-//          if ((MAJOR_VERSION != major) || (MINOR_VERSION != minor))
-//          {
-//            // error!
-//            QMessageBox::warning(this, tr("Open Project error"), tr("Invalid project version!"), QMessageBox::Ok);
-//            return;
-//          }
-//        }
-//        // check if project element
-//        else if ("project" == stream.name())
-//        {
-//          // try to create project
-//          project = projectFactory->createProject(stream.attributes().value("type").toString(), stream.attributes().value("name").toString(),
-//                                                  stream.attributes().value("path").toString(), this);
+          if ((KMajorVersion != majorVersion) || (KMinorVersion != minorVersion) || (KRevisionVersion != revisionVersion))
+          {
+            // error!
+            QMessageBox::warning(this, tr("Open Project error"), tr("Invalid project version!"), QMessageBox::Ok);
+            return;
+          }
+        }
+        // check if project element
+        else if (KProjectTag == stream.name())
+        {
+          Q_ASSERT(NULL == project);
 
-//          if (NULL == project)
-//          {
-//            // error!
-//            QMessageBox::warning(this, tr("Open Project error"), tr("Could not create project!"), QMessageBox::Ok);
-//            return;
-//          }
+          // try to create project
+          project = projectFactory->createProject(stream.attributes().value("type").toString(), stream.attributes().value("name").toString(),
+                                                  stream.attributes().value("path").toString(), this);
 
-//          // deserialize project
-//          if (!project->unserialize(stream))
-//          {
-//            // error!
-//            delete project;
-//            return;
-//          }
-//        }
-//        break;
-//    }
-//  }
+          if (NULL == project)
+          {
+            // error!
+            QMessageBox::warning(this, tr("Open Project error"),
+                                 tr("Unknown project type") + ": " + stream.attributes().value("type").toString(), QMessageBox::Ok);
+            return;
+          }
 
-//  if (stream.hasError())
-//  {
-//    // error!
-//    QMessageBox::warning(this, tr("Open Project error"), tr("Could not open project file!"), QMessageBox::Ok);
-//    close();
-//    return;
-//  }
+          // deserialize project
+          if ( ! project->unserialize(stream))
+          {
+            // error!
+            delete project;
+            project = NULL;
+          }
+        }
+        break;
+    }
+  }
 
-  //// store project
-  //m_project = project;
+  if ((NULL == project) || stream.hasError())
+  {
+    // error!
+    QMessageBox::warning(this, tr("Open Project error"), tr("Could not open project file!"), QMessageBox::Ok);
+    close();
+    return;
+  }
 
-  //// connect
-  //connect(m_project, SIGNAL(dirtyFlagChanged()), this, SLOT(updateTitleBar()));
-
-  //// reset dirty flag
-  //m_project->setDirty(false);
-
-  // update menus
-  //updateMenus();
-
-  //// emit
-  //emit projectOpened(m_project);*/
+  // add project to pool
+  ObjectPool::Instance()->addObject(project);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::on_ActionFileClose_triggered(bool checked)
@@ -252,43 +251,50 @@ void MainWindow::on_ActionFileSave_triggered(bool checked)
 {
   Q_UNUSED(checked);
 
-//  Project* project = ObjectPool::Instance()->getObject<Project>();
-//  Q_ASSERT(project);
+  Project* project = ObjectPool::Instance()->getObject<Project>();
+  Q_ASSERT(project);
 
-//  QString output;
-//  QXmlStreamWriter stream(&output);
-//  stream.setAutoFormatting(true);
-//  stream.writeStartDocument();
-//  stream.writeStartElement("workspace");
-//  stream.writeAttribute("version", QString("%1.%2").arg(MAJOR_VERSION).arg(MINOR_VERSION));
-//  bool result = !stream.hasError();
-//  if (result)
-//  {
-//    // save project
-//    result = project->serialize(stream);
+  QString output;
+  QXmlStreamWriter stream(&output);
+  stream.setAutoFormatting(true);
+  stream.writeStartDocument();
+  stream.writeStartElement("workspace");
+  stream.writeAttribute("version-major", QString("%1").arg(KMajorVersion));
+  stream.writeAttribute("version-minor", QString("%1").arg(KMinorVersion));
+  stream.writeAttribute("version-revision", QString("%1").arg(KRevisionVersion));
+  bool result = ! stream.hasError();
+  if (result)
+  {
+    // save project
+    result = project->serialize(stream);
 
-//    stream.writeEndElement();
-//    stream.writeEndDocument();
-//  }
+    stream.writeEndElement();
+    stream.writeEndDocument();
+  }
 
-//  if (result)
-//  {
-//    // save it to file
-//    QFile file(project->fullPath());
-//    result = file.open(QIODevice::WriteOnly | QIODevice::Text);
-//    if (result)
-//    {
-//      QTextStream out(&file);
-//      out << output;
-//    }
-//  }
+  if (result)
+  {
+    // save it to file
+    QFile file(FileSystemUtils::Join(project->path(), project->name() + "." + KProjectFileExtension));
+    result = file.open(QIODevice::WriteOnly | QIODevice::Text);
+    if (result)
+    {
+      QTextStream out(&file);
+      out << output;
+    }
+  }
 
-//  // check for errors
-//  if (!result)
-//  {
-//    // error!
-//    QMessageBox::critical(this, tr("Save Error!"), tr("Error occured during the save process!"));
-//  }
+  // check for errors
+  if ( ! result)
+  {
+    // error!
+    QMessageBox::critical(this, tr("Save Error!"), tr("Error occured during the save process!"));
+  }
+  else
+  {
+    // validate project
+    project->setDirty(false);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::onObjectAdded(QObject* object)

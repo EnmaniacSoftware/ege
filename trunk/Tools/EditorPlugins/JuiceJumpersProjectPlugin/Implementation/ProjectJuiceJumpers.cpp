@@ -34,7 +34,7 @@ bool ProjectJuiceJumpers::serialize(QXmlStreamWriter& stream) const
 
   // serialize resources
 //  IResourceLibrary* resourceLibrary = ObjectPool::Instance()->getObject<IResourceLibrary>();
-  bool result = false;//resourceLibrary->serialize(stream);
+  bool result = true;//resourceLibrary->serialize(stream);
 
   stream.writeEndElement();
 
@@ -50,7 +50,7 @@ bool ProjectJuiceJumpers::unserialize(QXmlStreamReader& stream)
 {
   // unserialize resources
 //  IResourceLibrary* resourceLibrary = ObjectPool::Instance()->getObject<IResourceLibrary>();
-  bool result = false;//resourceLibrary->unserialize(stream);
+  bool result = true;//resourceLibrary->unserialize(stream);
 
   return ! stream.hasError() && result;
 }
