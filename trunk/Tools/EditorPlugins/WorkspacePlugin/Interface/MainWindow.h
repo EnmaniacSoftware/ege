@@ -22,12 +22,28 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
 
   public:
 
+    /*! Available menu types. */
+    enum Menu
+    {
+      EFile = 0,
+      EView,
+      EActions,
+      EProject
+    };
+
+  public:
+
     /*! Initializes object. */
     bool initialize();
     /*! Adds child window. */
     void addChildWindow(QWidget* widget);
     /*! Removes child window. */
     void removeChildWindow(QWidget* widget);
+    /*! Returns pointer given menu.
+     *  @param  menu  Kind of menu to retrive.
+     *  @return Pointer to given menu. NULL if error occured.
+     */
+    QMenu* menu(Menu menu) const;
 
   //  /*! Returns pointer to resource item factory. */
   //  inline ResourceItemFactory* resourceItemFactory() const { return m_resourceItemFactory; }
@@ -56,8 +72,8 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
 
     /*! Updates title bar. */
     void updateTitleBar();
-  //  /* Updates menus. */
-  //  void updateMenus();
+    /*! Updates menus. */
+    void updateMenus();
   //  /* Slot called when dock widget changes visibility. */
   //  void onDockWidgetVisibilityChanged(bool visible);
 
@@ -70,9 +86,10 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
     /*! Event called on application close request. */
     void closeEvent(QCloseEvent *event);
     /*! Closes the project.
-     *  @note  If project is to be saved, prompt is shown.
+     *  @return TRUE if project has been sucessfully closed. Otherwise FALSE.
+     *  @note If project is to be saved, prompt is shown. Project is deleted and removed from ObjectPool.
      */
-    bool close();
+    bool closeProject();
   //  /* Returns MDI subwindow with the given name. */
   //  QMdiSubWindow* findMdiChild(const QString& name) const;
 

@@ -8,8 +8,6 @@ Project::Project(QObject* parent, const QString& typeName, const QString& name, 
                                                                                                         m_path(path),
                                                                                                         m_dirty(true)
 {
-  // add self to pool
-  ObjectPool::Instance()->addObject(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Project::~Project()

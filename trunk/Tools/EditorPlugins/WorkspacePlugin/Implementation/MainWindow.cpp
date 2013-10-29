@@ -28,6 +28,13 @@ MainWindow::MainWindow() : QMainWindow()
 {
   // setup UI
   setupUi(this);
+
+  // connect
+  connect(ObjectPool::Instance(), SIGNAL(objectAdded(QObject*)), this, SLOT(onObjectAdded(QObject*)));
+  connect(ObjectPool::Instance(), SIGNAL(objectRemoved(QObject*)), this, SLOT(onObjectRemoved(QObject*)));
+
+  // do inital title bar update
+  updateTitleBar();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MainWindow::~MainWindow()
@@ -38,9 +45,6 @@ MainWindow::~MainWindow()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool MainWindow::initialize()
 {
-  connect(ObjectPool::Instance(), SIGNAL(objectAdded(QObject*)), this, SLOT(onObjectAdded(QObject*)));
-  connect(ObjectPool::Instance(), SIGNAL(objectRemoved(QObject*)), this, SLOT(onObjectRemoved(QObject*)));
-
   //if (NULL == (m_resourceLibraryWindow = new ResourceLibraryWindow(this)))
   //{
   //  // error!
@@ -85,8 +89,8 @@ bool MainWindow::initialize()
   //  return false;
   //}
 
-  // do inital title bar update
-  updateTitleBar();
+//  // do inital title bar update
+//  updateTitleBar();
 
   //// load settings
   //loadSettings();
@@ -99,6 +103,9 @@ void MainWindow::on_ActionFileNew_triggered(bool checked)
   Q_UNUSED(checked);
 
   NewProjectWindow dlg(this);
+
+  // connect
+  connect(&dlg, SIGNAL(projectCreated(Project*)), this, SLOT(updateTitleBar()));
 
   // show dialog
   dlg.exec();
@@ -218,38 +225,15 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
 void MainWindow::on_ActionFileClose_triggered(bool checked)
 {
   Q_UNUSED(checked);
-  /*
+
+  Project* project = ObjectPool::Instance()->getObject<Project>();
+  Q_ASSERT(project);
+
   // save settings
-  saveSettings();
+  //saveSettings();
 
   // close project
-  if (m_project)
-  {
-    // show warning
-    if (m_project->isDirty())
-    {
-      // prompt
-      if (QMessageBox::No == QMessageBox::warning(this, tr("Project not saved"), 
-                                                  tr("Project contains changes which have not been saved yet!\n\nDo you want to close anyway ?"),
-                                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
-      {
-        // dont close
-        return;
-      }
-    }
-
-    delete m_project;
-    m_project = NULL;
-
-    // update title bar
-    updateTitleBar();
-
-    // update menus
-    updateMenus();
-
-    // emit
-    emit projectClosed();
-  }*/
+  closeProject();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::on_ActionFileExit_triggered(bool checked)
@@ -257,7 +241,7 @@ void MainWindow::on_ActionFileExit_triggered(bool checked)
   Q_UNUSED(checked);
 
   // close project
-  if (close())
+  if (closeProject())
   {
     // quit
     qApp->quit();
@@ -312,7 +296,14 @@ void MainWindow::onObjectAdded(QObject* object)
   // check if project added
   if (qobject_cast<Project*>(object))
   {
+    // connect for notification
     connect(object, SIGNAL(dirtyFlagChanged()), this, SLOT(updateTitleBar()));
+
+    // update title bar
+    updateTitleBar();
+
+    // update menus
+    updateMenus();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -323,6 +314,9 @@ void MainWindow::onObjectRemoved(QObject* object)
   {
     // update title
     updateTitleBar();
+
+    // update menus
+    updateMenus();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -355,41 +349,41 @@ void MainWindow::removeChildWindow(QWidget* widget)
   mdiArea->removeSubWindow(widget);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//void MainWindow::updateMenus()
-//{
-//  // File menu
-//  QMenu* menu = menuBar()->findChild<QMenu*>("fileMenu");
-//  Q_ASSERT(menu);
-//
-//  QList<QAction*> actions = menu->actions();
-//  foreach (QAction* action, actions)
-//  {
-//    if (("ActionFileClose" == action->objectName()) ||
-//        ("ActionFileSave" == action->objectName()))
-//    {
-//      action->setEnabled(NULL != m_project);
-//    }
-//  }
-//
-//  // Project menu
-//  menu = menuBar()->findChild<QMenu*>("projectMenu");
-//  Q_ASSERT(menu);
-//  menu->setEnabled(NULL != m_project);
-//
-//  actions = menu->actions();
-//  foreach (QAction* action, actions)
-//  {
-//    //if (("ActionFileClose" == action->objectName()) ||
-//    //    ("ActionFileSave" == action->objectName()))
-//    //{
-//    //  action->setEnabled(NULL != m_project);
-//    //}
-//  }
-//
-//  // View menu
+void MainWindow::updateMenus()
+{
+  Project* project = ObjectPool::Instance()->getObject<Project>();
+
+  // File menu
+  QMenu* menu = this->menu(EFile);
+
+  QList<QAction*> actions = menu->actions();
+  foreach (QAction* action, actions)
+  {
+    if (("ActionFileClose" == action->objectName()) ||
+        ("ActionFileSave" == action->objectName()))
+    {
+      action->setEnabled(NULL != project);
+    }
+  }
+
+  // Project menu
+  menu =this->menu(EProject);
+  menu->setEnabled(NULL != project);
+
+  actions = menu->actions();
+  foreach (QAction* action, actions)
+  {
+    //if (("ActionFileClose" == action->objectName()) ||
+    //    ("ActionFileSave" == action->objectName()))
+    //{
+    //  action->setEnabled(NULL != m_project);
+    //}
+  }
+
+  // View menu
 //  menu = menuBar()->findChild<QMenu*>("viewMenu");
 //  Q_ASSERT(menu);
-//
+
 //  actions = menu->actions();
 //  foreach (QAction* action, actions)
 //  {
@@ -398,7 +392,7 @@ void MainWindow::removeChildWindow(QWidget* widget)
 //      action->setChecked(m_resourceLibraryWindow->isVisible());
 //    }
 //  }
-//}
+}
 ////--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //void MainWindow::on_ActionViewResourceLibrary_triggered(bool checked)
 //{
@@ -435,7 +429,7 @@ void MainWindow::removeChildWindow(QWidget* widget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-  if ( ! close())
+  if ( ! closeProject())
   {
     event->ignore();
   }
@@ -483,7 +477,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 //  return NULL;
 //}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool MainWindow::close()
+bool MainWindow::closeProject()
 {
   Project* project = ObjectPool::Instance()->getObject<Project>();
 
@@ -511,5 +505,25 @@ bool MainWindow::close()
   }
 
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QMenu* MainWindow::menu(Menu menu) const
+{
+  QString menuName;
+  switch (menu)
+  {
+    case EFile:    menuName = "fileMenu"; break;
+    case EView:    menuName = "viewMenu"; break;
+    case EActions: menuName = "actionsMenu"; break;
+    case EProject: menuName = "projectMenu"; break;
+
+    default:
+      break;
+  }
+
+  QMenu* menuObject = menuBar()->findChild<QMenu*>(menuName);
+  Q_ASSERT(menuObject);
+
+  return menuObject;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

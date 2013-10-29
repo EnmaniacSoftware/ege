@@ -2,6 +2,7 @@
 #include "MainWindow.h"
 #include <FileSystemUtils.h>
 #include <Projects/ProjectFactory.h>
+#include <Projects/Project.h>
 #include <ObjectPool.h>
 #include <QFileDialog.h>
 #include <QMessageBox>
@@ -71,11 +72,12 @@ void NewProjectWindow::accept()
   }
 
   // create new project
+  // NOTE: created object will add itself to pool
   Project* project = projectFactory->createProject(index.data(Qt::DisplayRole).toString(), projectName->text(), projectLocation->text(), NULL);
   Q_ASSERT(NULL != project);
 
-  // emit
-  emit projectCreated(project);
+  // add to object pool
+  ObjectPool::Instance()->addObject(project);
 
   // call base class
   QDialog::accept();
