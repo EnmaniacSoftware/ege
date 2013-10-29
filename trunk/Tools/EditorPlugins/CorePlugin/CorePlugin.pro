@@ -1,5 +1,5 @@
 include(CorePlugin.pri)
-include(../../Extras.pri)
+include(../PluginExtras.pri)
 
 TEMPLATE = lib
 

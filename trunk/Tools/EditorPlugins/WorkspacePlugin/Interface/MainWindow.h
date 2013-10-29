@@ -33,8 +33,6 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
 
   public:
 
-    /*! Initializes object. */
-    bool initialize();
     /*! Adds child window. */
     void addChildWindow(QWidget* widget);
     /*! Removes child window. */
@@ -79,10 +77,10 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
 
   private:
 
-  //  /* Saves settings. */
-  //  void saveSettings();
-  //  /* Loads settings. */
-  //  void loadSettings();
+    /*! Saves settings. */
+    void saveSettings();
+    /*! Loads settings. */
+    void loadSettings();
     /*! Event called on application close request. */
     void closeEvent(QCloseEvent *event);
     /*! Closes the project.
@@ -92,15 +90,6 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
     bool closeProject();
   //  /* Returns MDI subwindow with the given name. */
   //  QMdiSubWindow* findMdiChild(const QString& name) const;
-
-  private:
-
-  //  /*! Resource item factory. */
-  //  ResourceItemFactory* m_resourceItemFactory;
-  //  /*! Config. */
-  //  Config* m_config;
-  //  /*! Font manager. */
-  //  FontManagerWindow* m_fontManagerWindow;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -1,14 +1,10 @@
 #include "MainWindow.h"
 #include "NewProjectWindow.h"
-#include <Projects/Project.h>
-#include <Projects/ProjectFactory.h>
 #include <ObjectPool.h>
 #include <FileSystemUtils.h>
-//#include "Resources/ResourceLibrary.h"
-//#include "Resources/ResourceItemFactory.h"
-//#include "Resources/ResourceLibraryDataModel.h"
-//#include "Modules/Fonts/FontManagerWindow.h"
-//#include "Config.h"
+#include <Settings.h>
+#include <Projects/Project.h>
+#include <Projects/ProjectFactory.h>
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QMenu>
@@ -30,9 +26,6 @@ static QString KRevisionVersionAttribute  = "version-revision";
 static QString KProjectFileExtension      = "egeproj";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MainWindow::MainWindow() : QMainWindow()
-                           /*m_resourceItemFactory(NULL),
-                           m_config(NULL),
-                           m_fontManagerWindow(NULL)*/
 {
   // setup UI
   setupUi(this);
@@ -43,67 +36,15 @@ MainWindow::MainWindow() : QMainWindow()
 
   // do inital title bar update
   updateTitleBar();
+
+  // load settings
+  loadSettings();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MainWindow::~MainWindow()
 {
   // save settings
-  //saveSettings();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool MainWindow::initialize()
-{
-  //if (NULL == (m_resourceLibraryWindow = new ResourceLibraryWindow(this)))
-  //{
-  //  // error!
-  //  return false;
-  //}
-
-  //addDockWidget(Qt::LeftDockWidgetArea, m_resourceLibraryWindow);
-  //connect(m_resourceLibraryWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(onDockWidgetVisibilityChanged(bool)));
-
-  //if (NULL == (m_config = new Config(this)))
-  //{
-  //  // error!
-  //  return false;
-  //}
-
-  //if (NULL == (m_resourceItemFactory = new ResourceItemFactory(this)))
-  //{
-  //  // error!
-  //  return false;
-  //}
-
-  //if (NULL == (m_projectFactory = new ProjectFactory(this)))
-  //{
-  //  // error!
-  //  return false;
-  //}
-
-  //if (NULL == (m_pluginsManager = new PluginsManager(this)))
-  //{
-  //  // error!
-  //  return false;
-  //}
-
-  //QStringList pluginPaths;
-  //pluginPaths << "Plugins";
-  //m_pluginsManager->setPluginPaths(pluginPaths);
-  //m_pluginsManager->loadPlugins();
-
-  //if (NULL == (m_fontManagerWindow = new FontManagerWindow(m_resourceLibraryWindow->model())))
-  //{
-  //  // error!
-  //  return false;
-  //}
-
-//  // do inital title bar update
-//  updateTitleBar();
-
-  //// load settings
-  //loadSettings();
-
-  return true;
+  saveSettings();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::on_ActionFileNew_triggered(bool checked)
@@ -262,6 +203,7 @@ void MainWindow::on_ActionFileSave_triggered(bool checked)
   stream.writeAttribute("version-major", QString("%1").arg(KMajorVersion));
   stream.writeAttribute("version-minor", QString("%1").arg(KMinorVersion));
   stream.writeAttribute("version-revision", QString("%1").arg(KRevisionVersion));
+
   bool result = ! stream.hasError();
   if (result)
   {
@@ -404,34 +346,40 @@ void MainWindow::updateMenus()
 //{
 //  m_resourceLibraryWindow->setVisible(checked);
 //}
-////--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//void MainWindow::saveSettings()
-//{
-//  m_config->beginGroup("main-window");
-//  m_config->setValue("geometry", saveGeometry());
-//  m_config->setValue("state", saveState());
-//  m_config->endGroup();
-//
-//  // save resource library setting
-//  m_resourceLibraryWindow->saveSettings(m_config);
-//
-//  // sync
-//  m_config->sync();
-//}
-////--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//void MainWindow::loadSettings()
-//{
-//  m_config->beginGroup("main-window");
-//  restoreGeometry(m_config->value("geometry").toByteArray());
-//  restoreState(m_config->value("state").toByteArray());
-//  m_config->endGroup();
-//
-//  // load resource library setting
-//  m_resourceLibraryWindow->loadSettings(m_config);
-//
-//  // sync
-//  m_config->sync();
-//}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void MainWindow::saveSettings()
+{
+  Settings* settings = ObjectPool::Instance()->getObject<Settings>();
+  Q_ASSERT(NULL != settings);
+
+  if (NULL != settings)
+  {
+    settings->beginGroup("main-window");
+    settings->setValue("geometry", saveGeometry());
+    settings->setValue("state", saveState());
+    settings->endGroup();
+
+    // sync
+    settings->sync();
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void MainWindow::loadSettings()
+{
+  Settings* settings = ObjectPool::Instance()->getObject<Settings>();
+  Q_ASSERT(NULL != settings);
+
+  if (NULL != settings)
+  {
+    settings->beginGroup("main-window");
+    restoreGeometry(settings->value("geometry").toByteArray());
+    restoreState(settings->value("state").toByteArray());
+    settings->endGroup();
+
+    // sync
+    settings->sync();
+  }
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::closeEvent(QCloseEvent *event)
 {

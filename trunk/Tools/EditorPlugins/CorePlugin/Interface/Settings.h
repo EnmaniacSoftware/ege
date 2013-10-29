@@ -1,19 +1,19 @@
-#include "Application.h"
+#ifndef CORE_CONFIG_H
+#define CORE_CONFIG_H
+
+#include <QSettings>
+#include "CorePlugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-int main(int argc, char *argv[])
+class COREPLUGIN_API Settings : public QSettings
 {
-  Application application(argc, argv);
+  Q_OBJECT
 
-  int result = 1;
+  public:
 
-  // initialize application
-  if (application.initialize())
-  {
-    // run it
-    result = application.exec();
-  }
-
-  return result;
-}
+   explicit Settings(QObject* parent = NULL);
+   ~Settings();
+};
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#endif // CORE_CONFIG_H

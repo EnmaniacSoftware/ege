@@ -92,7 +92,7 @@ bool PluginsManager::loadPlugins()
   foreach (PluginData* pluginData, queue)
   {
     // load plugin
-    const QString libraryFullPath = pluginData->path + QDir::separator() + pluginData->name;
+    const QString libraryFullPath = QDir::toNativeSeparators(pluginData->path + QDir::separator() + pluginData->name);
     QLibrary library(libraryFullPath, this);
       
     // resolve

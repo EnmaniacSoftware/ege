@@ -1,19 +1,11 @@
-#include "Application.h"
+#include "Settings.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-int main(int argc, char *argv[])
+Settings::Settings(QObject* parent) : QSettings("settings.dat", QSettings::IniFormat, parent)
 {
-  Application application(argc, argv);
-
-  int result = 1;
-
-  // initialize application
-  if (application.initialize())
-  {
-    // run it
-    result = application.exec();
-  }
-
-  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Settings::~Settings()
+{
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -22,14 +22,8 @@ bool WorkspacePlugin::initialize()
   m_mainWindow = new MainWindow();
   m_configuration = new Configuration();
 
-  // initialize and add to pool
-  bool result = m_mainWindow->initialize();
-
   // add to pool
-  if (result)
-  {
-    result = ObjectPool::Instance()->addObject(m_mainWindow) && ObjectPool::Instance()->addObject(m_configuration);
-  }
+  bool result = ObjectPool::Instance()->addObject(m_mainWindow) && ObjectPool::Instance()->addObject(m_configuration);
 
   // add configuration to main window
   m_mainWindow->statusBar()->addPermanentWidget(m_configuration);
