@@ -1,5 +1,5 @@
-#ifndef RESOUCELIBRARYPLUGIN_H
-#define RESOUCELIBRARYPLUGIN_H
+#ifndef RESOURCELIBRARY_RESOUCELIBRARYPLUGIN_H
+#define RESOURCELIBRARY_RESOUCELIBRARYPLUGIN_H
 
 #include <Plugins/Plugin.h>
 #include "resoucelibraryplugin_global.h"
@@ -7,6 +7,7 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceLibraryWindow;
 class ResourceItemFactory;
+class QAction;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPlugin
 {
@@ -20,9 +21,9 @@ class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPl
 
   private:
 
-    /* IPlugin override. Initialized plugin. */
+    /*! @see IPlugin::initialize. */
     bool initialize() override;
-    /* IPlugin override. Deinitializes plugin. */
+    /*! @see IPlugin::deinitialize. */
     void deinitialize() override;
 
   private:
@@ -31,7 +32,9 @@ class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPl
     ResourceLibraryWindow* m_window;
     /*! Resource item factory. */
     ResourceItemFactory* m_resourceItemFactory;
+    /*! View menu action. */
+    QAction* m_viewAction;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // RESOUCELIBRARYPLUGIN_H
+#endif // RESOURCELIBRARY_RESOUCELIBRARYPLUGIN_H

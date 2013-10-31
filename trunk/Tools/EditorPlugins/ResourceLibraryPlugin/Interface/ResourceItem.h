@@ -1,14 +1,14 @@
-#ifndef RESOURCEITEM_H
-#define RESOURCEITEM_H
+#ifndef RESOURCELIBRARY_RESOURCEITEM_H
+#define RESOURCELIBRARY_RESOURCEITEM_H
 
-/*! Generic resource item. */
+/*! Generic resource item. This is the base for all resource items. */
 
 #include <QList>
 #include <QString>
 #include <QVariant>
 #include <QSize>
-#include "Serializer.h"
-#include "resoucelibraryplugin_global.h"
+#include <Serializer.h>
+#include "ResouceLibraryPlugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RESOUCELIBRARYPLUGIN_API ResourceItem : public ISerializer
@@ -18,65 +18,65 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public ISerializer
     ResourceItem();
     virtual ~ResourceItem();
 
-    /* Sets name. */
+    /*! Sets name. */
     void setName(const QString& name);
     /*! Returns name. */
-    inline const QString& name() const { return m_name; }
+    const QString& name() const;
     
-    /* Returns type name. */
+    /*! Returns type name. */
     virtual QString type() const;
 
-    /* Sets parent. */
+    /*! Sets parent. */
     void setParent(ResourceItem* parent);
     /*! Returns parent. */
-    inline ResourceItem* parent() const { return m_parent; }
+    ResourceItem* parent() const;
 
-    /* Returns number of columns. */
+    /*! Returns number of columns. */
     int columnCount() const;
 
-    /* Returns children count. */
+    /*! Returns children count. */
     int childCount() const;
 
-    /* Returns child at given index. */
+    /*! Returns child at given index. */
     ResourceItem* child(int index) const;
-    /* Returns index of a given child. */
+    /*! Returns index of a given child. */
     int childIndex(ResourceItem* item) const;
-    /* Adds child to the end of pool. */
+    /*! Adds child to the end of pool. */
     void addChild(ResourceItem* item);
 
-    /* Sets child item. */
+    /*! Sets child item. */
     void setChild(int index, ResourceItem* item);
-    /* Removes given child. */
+    /*! Removes given child. */
     void removeChild(ResourceItem* item);
-    /* Removes all children. */
+    /*! Removes all children. */
     void removeChildren();
 
-    /* Returns row index at which current item is placed within parent. */
+    /*! Returns row index at which current item is placed within parent. */
     int row() const;
-    /* Returns data for a given column and role. 
-     * @param columnIndex Column index for which data is to be retrieved.
-     * @param role        Role for which data is to be retrieved.
-     * @return Returns data associated with a given role at given column. If no valid data is present returns empty QVariant.
+    /*! Returns data for a given column and role.
+     *  @param columnIndex Column index for which data is to be retrieved.
+     *  @param role        Role for which data is to be retrieved.
+     *  @return Returns data associated with a given role at given column. If no valid data is present returns empty QVariant.
      */
     virtual QVariant data(int columnIndex, int role) const;
-    /* Sets the role data.
+    /*! Sets the role data.
      *  @param value  Value to be set.
      *  @param role   Role for which data is set.
      *  @return Returns TRUE if data has been changed. Otherwise FALSE.
      */
     virtual bool setData(const QVariant &value, int role);
-    /* Inserts children. */
+    /*! Inserts children. */
     bool insertChildren(int position, int count, int columns);
 
-    /* Returns the item flags for the given item. */
+    /*! Returns the item flags for the given item. */
     virtual Qt::ItemFlags flags() const;
 
-    /* ISerializer override. Serializes into given stream. */
+    /*! @see ISerializer::serialize. */
     bool serialize(QXmlStreamWriter& stream) const override;
-    /* ISerializer override. Unserializes from given data stream. */
+    /*! @see ISerializer::unserialize. */
     bool unserialize(QXmlStreamReader& stream) override;
 
-    /* Returns size hint. */
+    /*! Returns size hint. */
     virtual QSize sizeHint() const;
 
   protected:
@@ -93,4 +93,4 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public ISerializer
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // RESOURCEITEM_H
+#endif // RESOURCELIBRARY_RESOURCEITEM_H

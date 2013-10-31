@@ -1,10 +1,11 @@
-#ifndef RESOURCE_ITEM_CONTAINER_H
-#define RESOURCE_ITEM_CONTAINER_H
+#ifndef RESOURCELIBRARY_RESOURCEITEMCONTAINER_H
+#define RESOURCELIBRARY_RESOURCEITEMCONTAINER_H
+
+/*! Specialization of resource item. This class serves as a container for other types of resource items, including other containers. */
 
 #include "ResourceItem.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Container resource item. */
 class ResourceItemContainer : public ResourceItem
 {
   public:
@@ -14,22 +15,22 @@ class ResourceItemContainer : public ResourceItem
 
   public:
 
-    /* Creates instance of resource item. This method is a registration method for factory. */
+    /*! Creates instance of resource item. This method is a registration method for factory. */
     static ResourceItem* Create();
 
   private:
 
-    /* ResourceItem override. Returns the item flags for the given item. */
+    /*! @see ResourceItem::flags. */
     Qt::ItemFlags flags() const override;
-    /*! ResourceItem override. Returns type name. */
+    /*! @see ResourceItem::type. */
     QString type() const override;
-    /* ResourceItem override. Serializes into given stream. */
+    /*! @see ResourceItem::serialize. */
     bool serialize(QXmlStreamWriter& stream) const override;
-    /* ResourceItem override. Unserializes from given data stream. */
+    /*! @see ResourceItem::unserialize. */
     bool unserialize(QXmlStreamReader& stream) override;
-    /* ResourceItem override. Returns size hint. */
+    /*! @see ResourceItem::sizeHint. */
     QSize sizeHint() const override;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // RESOURCE_ITEM_CONTAINER_H
+#endif // RESOURCELIBRARY_RESOURCEITEMCONTAINER_H

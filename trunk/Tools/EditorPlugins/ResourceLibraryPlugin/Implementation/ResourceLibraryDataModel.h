@@ -1,5 +1,5 @@
-#ifndef RESOURCE_LIBRARY_DATA_MODEL_H
-#define RESOURCE_LIBRARY_DATA_MODEL_H
+#ifndef RESOURCELIBRARY_RESOURCELIBRARYDATAMODEL_H
+#define RESOURCELIBRARY_RESOURCELIBRARYDATAMODEL_H
 
 /*! Resource library data model class. 
  */
@@ -7,21 +7,20 @@
 #include <QAbstractItemModel>
 #include <QModelIndex>
 #include <QVariant>
-#include "Serializer.h"
-#include "IResourceLibraryDataModel.h"
+#include <Serializer.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceItem;
 class ResourceItemFactory;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceLibraryDataModel : public QAbstractItemModel, public IResourceLibraryDataModel, public ISerializer
+class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
 {
   Q_OBJECT
 
   public:
 
-    ResourceLibraryDataModel(QObject* parent = NULL);
-    virtual ~ResourceLibraryDataModel();
+    explicit ResourceLibraryDataModel(QObject* parent = NULL);
+   ~ResourceLibraryDataModel();
 
   public:
 
@@ -34,50 +33,51 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public IResourceLibr
 
   signals:
 
-    /*! IResourceLibraryDataModel override. Signal emitted when given item has been added to model. */
+    /*! Signal emitted when given item has been added to model. */
     void onItemAdded(ResourceItem* item);
-    /*! IResourceLibraryDataModel override. Signal emitted when given item has been removed from model. */
+    /*! Signal emitted when given item has been removed from model. */
     void onItemRemoved(ResourceItem* item);
 
   public:
 
-    /* Clears data. */
+    /*! Clears data. */
     void clear();
 
-    /* QAbstractItemModel override. Sets the role data for the item at index to value.*/
+    /*! @see QAbstractItemModel::setData. */
     bool setData(const QModelIndex& index, const QVariant& value, int role) override;
 
-    /* Serializes into given stream. */
+    /*! @see ISerializer::serialize. */
     bool serialize(QXmlStreamWriter& stream) const override;
-    /* Unserializes from given data stream. */
+    /*! @see ISerializer::unserialize. */
     bool unserialize(QXmlStreamReader& stream) override;
 
-    /* Removes entry associated with given index. */
+    /*! Removes entry associated with given index. */
     void removeItem(const QModelIndex& index);
-    /* Inserts item after given index. */
+    /*! Inserts item after given index. */
     QModelIndex insertItem(const QModelIndex& index, ResourceItem* item);
 
   private:
 
-    /* QAbstractItemModel override. Returns the parent of the model item with the given index. If the item has no parent, an invalid QModelIndex is returned. */
+    /*! @see QAbstractItemModel::parent. */
     QModelIndex parent(const QModelIndex& index) const override;
-    /* QAbstractItemModel override. Returns the data stored under the given role for the item referred to by the index. */
+    /*! @see QAbstractItemModel::data. */
     QVariant data(const QModelIndex& index, int role) const override;
-    /* QAbstractItemModel override. Returns the number of rows under the given parent. */
+    /*! @see QAbstractItemModel::rowCount. */
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    /* QAbstractItemModel override. Returns the item flags for the given index. */
+    /*! @see QAbstractItemModel::flags. */
     Qt::ItemFlags flags(const QModelIndex& index) const override;
-    /* QAbstractItemModel override. Returns the number of columns for the children of the given parent. */
+    /*! @see QAbstractItemModel::columnCount. */
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
-    /* QAbstractItemModel override. Returns the index of the item in the model specified by the given row, column and parent index. */
+    /*! @see QAbstractItemModel::index. */
     QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
-    /* Returns resource library item connected for given model index. */
+
+    /*! Returns resource library item connected for given model index. */
     ResourceItem* getItem(const QModelIndex& index) const;
     /*! Returns root item. */
-    inline ResourceItem* root() const { return m_root; }
-    /* IResourceLibraryDataModel override. Returns list of all items in the model. */
+    ResourceItem* root() const;
+    /*! Returns list of all items in the model. */
     QList<ResourceItem*> allItems() const;
-    /* Adds children of given resource item to the list. */
+    /*! Adds children of given resource item to the list. */
     void addChildren(ResourceItem* item, QList<ResourceItem*>& list) const;
 
   private:
@@ -87,4 +87,4 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public IResourceLibr
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // RESOURCE_LIBRARY_DATA_MODEL_H
+#endif // RESOURCELIBRARY_RESOURCELIBRARYDATAMODEL_H

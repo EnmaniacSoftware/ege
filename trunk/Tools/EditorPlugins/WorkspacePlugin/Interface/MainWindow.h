@@ -4,14 +4,14 @@
 /*! Application's main window. */
 
 #include <QtWidgets/QMainWindow>
-#include "ui_mainwindow.h"
+#include "WorkspacePlugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Project;
-class Config;
 class QCloseEvent;
+class Ui_MainWindow;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class MainWindow : public QMainWindow, public Ui::MainWindow
+class WORKSPACEPLUGIN_API MainWindow : public QMainWindow
 {
   Q_OBJECT
 
@@ -28,7 +28,8 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
       EFile = 0,
       EView,
       EActions,
-      EProject
+      EProject,
+      EProjectModules
     };
 
   public:
@@ -90,6 +91,11 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
     bool closeProject();
   //  /* Returns MDI subwindow with the given name. */
   //  QMdiSubWindow* findMdiChild(const QString& name) const;
+
+  private:
+
+    /*! UI. */
+    Ui_MainWindow* m_ui;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

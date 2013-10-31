@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "NewProjectWindow.h"
+#include "ui_mainwindow.h"
 #include <ObjectPool.h>
 #include <FileSystemUtils.h>
 #include <Settings.h>
@@ -25,10 +26,11 @@ static QString KMinorVersionAttribute     = "version-minor";
 static QString KRevisionVersionAttribute  = "version-revision";
 static QString KProjectFileExtension      = "egeproj";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-MainWindow::MainWindow() : QMainWindow()
+MainWindow::MainWindow() : QMainWindow(),
+                           m_ui(new Ui_MainWindow())
 {
   // setup UI
-  setupUi(this);
+  m_ui->setupUi(this);
 
   // connect
   connect(ObjectPool::Instance(), SIGNAL(objectAdded(QObject*)), this, SLOT(onObjectAdded(QObject*)));
@@ -289,12 +291,12 @@ void MainWindow::updateTitleBar()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::addChildWindow(QWidget* widget)
 {
-  mdiArea->addSubWindow(widget);
+  m_ui->mdiArea->addSubWindow(widget);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::removeChildWindow(QWidget* widget)
 {
-  mdiArea->removeSubWindow(widget);
+  m_ui->mdiArea->removeSubWindow(widget);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::updateMenus()
@@ -466,10 +468,11 @@ QMenu* MainWindow::menu(Menu menu) const
   QString menuName;
   switch (menu)
   {
-    case EFile:    menuName = "fileMenu"; break;
-    case EView:    menuName = "viewMenu"; break;
-    case EActions: menuName = "actionsMenu"; break;
-    case EProject: menuName = "projectMenu"; break;
+    case EFile:           menuName = "fileMenu"; break;
+    case EView:           menuName = "viewMenu"; break;
+    case EActions:        menuName = "actionsMenu"; break;
+    case EProject:        menuName = "projectMenu"; break;
+    case EProjectModules: menuName = "menuModules"; break;
 
     default:
       break;

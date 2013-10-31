@@ -1,5 +1,5 @@
-#ifndef RESOURCE_ITEM_IMAGE_H
-#define RESOURCE_ITEM_IMAGE_H
+#ifndef RESOURCELIBRARY_RESOURCEITEMIMAGE_H
+#define RESOURCELIBRARY_RESOURCEITEMIMAGE_H
 
 #include <QImage>
 #include "ResourceItem.h"
@@ -14,41 +14,33 @@ class ResourceItemImage : public ResourceItem
 
   public:
 
-    /* Creates instance of resource item. This method is a registration method for factory. */
+    /*! Creates instance of resource item. This method is a registration method for factory. */
     static ResourceItem* Create();
 
   public:
 
-    /* Returns thumbnail image. 
-     * @note Generates thumbnail image if required. 
+    /*! Returns thumbnail image.
+     *  @note Generates thumbnail image if required.
      */
     const QImage& thumbnailImage() const;
-    /* Sets path. */
+    /*! Sets path. */
     void setPath(const QString& path);
     /*! Returns path to asset. */
-    inline const QString& path() const { return m_path; }
+    const QString& path() const;
 
   private:
 
-    /* ResourceItem override. Returns type name. */
+    /*! @see ResourceItem::type. */
     QString type() const override;
-    /* ResourceItem override. Returns size hint. */
+    /*! @see ResourceItem::sizeHint. */
     QSize sizeHint() const override;
-    /* ResourceItem override. Serializes into given stream. */
+    /*! @see ResourceItem::serialize. */
     bool serialize(QXmlStreamWriter& stream) const override;
-    /* ResourceItem override. Unserializes from given data stream. */
+    /*! @see ResourceItem::unserialize. */
     bool unserialize(QXmlStreamReader& stream) override;
-    /* ResourceItem override. Returns data for a given column and role. 
-     * @param columnIndex Column index for which data is to be retrieved.
-     * @param role        Role for which data is to be retrieved.
-     * @return Returns data associated with a given role at given column. If no valid data is present returns empty QVariant.
-     */
+    /*! @see ResourceItem::data. */
     QVariant data(int columnIndex, int role) const override;
-    /* ResourceItem override. Sets the role data.
-     *  @param value  Value to be set.
-     *  @param role   Role for which data is set.
-     *  @return Returns TRUE if data has been changed. Otherwise FALSE.
-     */
+    /*! @see ResourceItem::setData. */
     bool setData(const QVariant &value, int role) override;
 
   private:
@@ -60,4 +52,4 @@ class ResourceItemImage : public ResourceItem
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // RESOURCE_ITEM_IMAGE_H
+#endif // RESOURCELIBRARY_RESOURCEITEMIMAGE_H

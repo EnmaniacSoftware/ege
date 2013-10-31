@@ -1,49 +1,45 @@
-#ifndef RESOURCE_LIBRARY_ITEM_DELEGATE_H
-#define RESOURCE_LIBRARY_ITEM_DELEGATE_H
+#ifndef RESOURCELIBRARY_RESOURCELIBRARYITEMDELEGATE_H
+#define RESOURCELIBRARY_RESOURCELIBRARYITEMDELEGATE_H
+
+/*! Resource item render delegate. This is base class for all more sophosticated delegates.
+ */
 
 #include <QStyledItemDelegate>
 #include <QWidget>
-#include "resoucelibraryplugin_global.h"
+#include "ResouceLibraryPlugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class ResourceItem;
 class ResourceItemContainer;
 class ResourceItemImage;
 class QTreeView;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! */
 class RESOUCELIBRARYPLUGIN_API ResourceLibraryItemDelegate : public QStyledItemDelegate
 {
   Q_OBJECT
 
   public:
 
-    ResourceLibraryItemDelegate(QObject* parent);
+    explicit ResourceLibraryItemDelegate(QObject* parent = NULL);
    ~ResourceLibraryItemDelegate();
 
-    // Sets view. */
+    /*! Sets view. */
     void setView(QTreeView* view);
 
   private:
 
-    /* QStyledItemDelegate override. Renders the delegate using the given painter and style option for the item specified by index. */
+    /*! @see QStyledItemDelegate::paint. */
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
-    /* QStyledItemDelegate override. Returns the widget used to edit the item specified by index for editing. 
-     * The parent widget and style option are used to control how the editor widget appears.
-     */
+    /*! @see QStyledItemDelegate::createEditor. */
   	QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
-    /* QStyledItemDelegate override. Returns the size needed by the delegate to display the item specified by index, taking into account the style information 
-     * provided by option. 
-     */
+    /*! @see QStyledItemDelegate::sizeHint. */
     QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
-    /* QStyledItemDelegate override. Updates the editor for the item specified by index according to the style option given. */
+    /*! @see QStyledItemDelegate::updateEditorGeometry. */
     void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
-    /* Paint container type. */
+    /*! Paints container type. */
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemContainer* item) const;
-    /* Paint image type. */
+    /*! Paints image type. */
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemImage* item) const;
 
   private:
@@ -56,4 +52,4 @@ class RESOUCELIBRARYPLUGIN_API ResourceLibraryItemDelegate : public QStyledItemD
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // RESOURCE_LIBRARY_ITEM_DELEGATE_H
+#endif // RESOURCELIBRARY_RESOURCELIBRARYITEMDELEGATE_H

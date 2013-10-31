@@ -1,37 +1,13 @@
-CONFIG      += plugin
+include(ResourceLibraryPlugin.pri)
+include(../PluginExtras.pri)
 
-QT          += widgets
+QT += widgets
 
-TEMPLATE    = lib
+INCLUDEPATH += Interface \
+            ../CorePlugin/Interface \
+            ../WorkspacePlugin/Interface
 
-HEADERS     = IResourceLibrary.h \
-              IResourceLibraryDataModel.h \
-              ResourceItem.h \
-              ResourceItemContainer.h \
-              ResourceItemFactory.h \
-              ResourceItemImage.h \
-              ResourceLibraryDataModel.h \
-              ResourceLibraryItemDelegate.h \
-              ResourceLibraryPlugin.h \
-              ResourceLibraryWindow.h
+DEFINES += RESOUCELIBRARYPLUGIN_EXPORT=1
 
-SOURCES     = ResourceItem.cpp \
-              ResourceItemContainer.cpp \
-              ResourceItemFactory.cpp \
-              ResourceItemImage.cpp \
-              ResourceLibraryDataModel.cpp \
-              ResourceLibraryItemDelegate.cpp \
-              ResourceLibraryPlugin.cpp \
-              ResourceLibraryWindow.cpp
+LIBS += -lWorkspacePlugin -lCorePlugin
 
-FORMS       += ResourceLibraryWindow.ui
-
-INCLUDEPATH += ../../EGEEditor/Interface \
-               ../../EditorPlugins/CorePlugin
-
-DEFINES += override="" \
-           RESOUCELIBRARYPLUGIN_EXPORT=1
-
-LIBS += -L$$PWD/../../bin -lCorePlugin
-
-DESTDIR = $$PWD/../../bin

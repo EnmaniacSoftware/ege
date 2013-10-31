@@ -10,8 +10,7 @@
 #include "CorePlugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//class MainWindow;
-//class ResourceLibraryItemDelegate;
+class QStyledItemDelegate;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class COREPLUGIN_API Project : public QObject, public ISerializer
 {
@@ -41,7 +40,7 @@ class COREPLUGIN_API Project : public QObject, public ISerializer
     bool isDirty() const;
     
     /*! Returns resource library item delegate. */
-  //  inline ResourceLibraryItemDelegate* resourceLibraryItemDelegate() const { return m_resourceLibraryItemDelegate; }
+    virtual QStyledItemDelegate* resourceLibraryItemDelegate() const = 0;
     
   public slots:
 
@@ -50,15 +49,8 @@ class COREPLUGIN_API Project : public QObject, public ISerializer
 
   protected:
 
-    /*! Returns pointer to main window object. */
-    //inline MainWindow* mainWindow() const { return reinterpret_cast<MainWindow*>(parent()); }
-
-  protected:
-
     /*! Constructor. */
     Project(QObject* parent, const QString& typeName, const QString& name, const QString& path);
-    /*! Resource library item delegate. */
-   // ResourceLibraryItemDelegate* m_resourceLibraryItemDelegate;
 
   private:
 

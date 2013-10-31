@@ -1,15 +1,12 @@
 #include "ResourceLibraryWindow.h"
 #include "ui_ResourceLibraryWindow.h"
-#include "Config.h"
 #include "ResourceLibraryDataModel.h"
 #include "ResourceLibraryItemDelegate.h"
 #include "ResourceItem.h"
 #include "ResourceItemFactory.h"
-#include <Project.h>
+#include <Projects/Project.h>
 #include <MainWindow.h>
-#include <CoreConstants.h>
 #include <ObjectPool.h>
-#include <QMenu>
 #include <QMenuBar>
 #include <QFile>
 #include <QFileDialog>
@@ -23,19 +20,12 @@ ResourceLibraryWindow::ResourceLibraryWindow(QWidget* parent) : QDockWidget(pare
   // setup UI
   m_ui->setupUi(this);
   
+  // connect
+  connect(ObjectPool::Instance(), SIGNAL(objectAdded(QObject*)), this, SLOT(onObjectAdded(QObject*)));
+  connect(ObjectPool::Instance(), SIGNAL(objectRemoved(QObject*)), this, SLOT(onObjectRemoved(QObject*)));
+
   // set view model
   m_ui->view->setModel(m_model);
-
- // connect(Core::Instance(), SIGNAL(projectCreated(Project*)), this, SLOT(onProjectCreated(Project*)));
-  //connect(Core::Instance(), SIGNAL(projectOpened(Project*)), this, SLOT(onProjectCreated(Project*)));
-	//connect(Core::Instance(), SIGNAL(projectClosed()), this, SLOT(onProjectClosed()));
-
-  MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
-  if (mainWindow)
-  {
-    // initial placement
-    mainWindow->addDockWidget(Qt::LeftDockWidgetArea, this);
-  }
   
   // update menus
   updateMenus();
@@ -43,26 +33,16 @@ ResourceLibraryWindow::ResourceLibraryWindow(QWidget* parent) : QDockWidget(pare
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryWindow::~ResourceLibraryWindow()
 {
-  if (m_ui)
-  {
-    delete m_ui;
-    m_ui = NULL;
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Saves settings. */
-void ResourceLibraryWindow::saveSettings(Config* config)
+void ResourceLibraryWindow::saveSettings()
 {
-  Q_ASSERT(config);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Loads settings. */
-void ResourceLibraryWindow::loadSettings(Config* config)
+void ResourceLibraryWindow::loadSettings()
 {
-  Q_ASSERT(config);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when context menu is requested. */
 void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
 {
   QMenu menu(this);
@@ -93,56 +73,62 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
     action = menu.addAction(tr("Remove"), this, SLOT(onRemoveItems()));
   }
 
-	if (!menu.isEmpty())
+  if ( ! menu.isEmpty())
   {
-		menu.exec(m_ui->view->mapToGlobal(pos));
+    menu.exec(m_ui->view->mapToGlobal(pos));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when new project has been created/opened. */
-void ResourceLibraryWindow::onProjectCreated(Project* project)
+void ResourceLibraryWindow::onObjectAdded(QObject* object)
 {
-  // set view delegate
-  ResourceLibraryItemDelegate* delegate = NULL;//mainWindow()->project()->resourceLibraryItemDelegate();
-  delegate->setView(m_ui->view);
+  // check if project added
+  Project* project = qobject_cast<Project*>(object);
+  if (NULL != project)
+  {
+    // set view delegate
+    ResourceLibraryItemDelegate* delegate = NULL;//mainWindow()->project()->resourceLibraryItemDelegate();
+    delegate->setView(m_ui->view);
 
-  m_ui->view->setItemDelegate(delegate);
+    m_ui->view->setItemDelegate(delegate);
 
-  // establish connections
-	connect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
-  connect(m_model, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), project, SLOT(onProjectDataChanged()));
-  connect(m_model, SIGNAL(rowsInserted(const QModelIndex&, int, int)), project, SLOT(onProjectDataChanged()));
-  connect(m_model, SIGNAL(rowsMoved(const QModelIndex&, int, int, const QModelIndex&, int)), project, SLOT(onProjectDataChanged()));
-  connect(m_model, SIGNAL(rowsRemoved(const QModelIndex&, int, int)), project, SLOT(onProjectDataChanged()));
+    // establish connections
+    connect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
+    connect(m_model, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), project, SLOT(onProjectDataChanged()));
+    connect(m_model, SIGNAL(rowsInserted(const QModelIndex&, int, int)), project, SLOT(onProjectDataChanged()));
+    connect(m_model, SIGNAL(rowsMoved(const QModelIndex&, int, int, const QModelIndex&, int)), project, SLOT(onProjectDataChanged()));
+    connect(m_model, SIGNAL(rowsRemoved(const QModelIndex&, int, int)), project, SLOT(onProjectDataChanged()));
 
-  // show resources page
-  m_ui->stackedWidget->setCurrentIndex(1);
+    // show resources page
+    m_ui->stackedWidget->setCurrentIndex(1);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when project has been closed. */
-void ResourceLibraryWindow::onProjectClosed()
+void ResourceLibraryWindow::onObjectRemoved(QObject* object)
 {
-  // reset view delegate
-  m_ui->view->setItemDelegate(NULL);
+  // check if project removed
+  if (qobject_cast<Project*>(object))
+  {
+    // reset view delegate
+    m_ui->view->setItemDelegate(NULL);
 
-  // clean up model
-  m_model->clear();
+    // clean up model
+    m_model->clear();
 
-  // make disconnections
-	disconnect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
+    // make disconnections
+    disconnect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
 
-  // hide resources page
-  m_ui->stackedWidget->setCurrentIndex(0);
+    // hide resources page
+    m_ui->stackedWidget->setCurrentIndex(0);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when container is requested to be added. */
 void ResourceLibraryWindow::onAddContainer()
 {
   ResourceItem* item;
 
   // get current seclection index
   QModelIndexList list = m_ui->view->selectionModel()->selectedIndexes();
-  QModelIndex index = !list.isEmpty() ? list.front() : QModelIndex();
+  QModelIndex index = ! list.isEmpty() ? list.front() : QModelIndex();
 
   ResourceItem* newItem = NULL;//app->resourceItemFactory()->createItem("container", tr("No name"));
   if (newItem)
@@ -151,7 +137,6 @@ void ResourceLibraryWindow::onAddContainer()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when resource is requested to be added. */
 void ResourceLibraryWindow::onAddResource()
 {
   QModelIndex index = m_ui->view->selectionModel()->selectedIndexes().first();
@@ -162,7 +147,7 @@ void ResourceLibraryWindow::onAddResource()
 
   // open file selection dialog
 	QStringList list = QFileDialog::getOpenFileNames(this, tr("Add resource"), QString(), filters);
-  if (!list.isEmpty())
+  if ( !list.isEmpty())
   {
     // go thru all items
     for (int i = 0; i < list.size(); ++i)
@@ -182,7 +167,6 @@ void ResourceLibraryWindow::onAddResource()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Slot called when resource item is requested to be removed. */
 void ResourceLibraryWindow::onRemoveItems()
 {
   QModelIndexList indexList = m_ui->view->selectionModel()->selectedIndexes();
@@ -192,7 +176,6 @@ void ResourceLibraryWindow::onRemoveItems()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ISerializer override. Serializes into given stream. */
 bool ResourceLibraryWindow::serialize(QXmlStreamWriter& stream) const
 {
   stream.writeStartElement("resources");
@@ -205,7 +188,6 @@ bool ResourceLibraryWindow::serialize(QXmlStreamWriter& stream) const
   return result && !stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ISerializer override. Unserializes from given data stream. */
 bool ResourceLibraryWindow::unserialize(QXmlStreamReader& stream)
 {
   // unserialize model
@@ -214,7 +196,6 @@ bool ResourceLibraryWindow::unserialize(QXmlStreamReader& stream)
   return result && !stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Updates menus. */
 void ResourceLibraryWindow::updateMenus()
 {
   MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
@@ -224,13 +205,10 @@ void ResourceLibraryWindow::updateMenus()
     qWarning() << Q_FUNC_INFO << "No MainWindow found!";
     return;
   }
- 
-  QMenu* menu = mainWindow->menuBar()->findChild<QMenu*>(MENU_MODULE);
-  Q_ASSERT(menu);
-
-  QAction* action = new QAction(tr("Resource library"), menu);
-  action->setShortcut(QKeySequence("Ctrl+Shift+R"));
-  connect(action, SIGNAL(triggered()), this, SLOT(show()));
-  menu->addAction(action);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceLibraryDataModel* ResourceLibraryWindow::model() const
+{
+  return m_model;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

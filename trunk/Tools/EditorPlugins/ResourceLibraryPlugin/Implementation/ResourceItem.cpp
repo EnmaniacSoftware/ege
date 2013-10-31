@@ -16,19 +16,16 @@ ResourceItem::~ResourceItem()
   m_children.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns number of columns. */
 int ResourceItem::columnCount() const
 {
   return 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns children count. */
 int ResourceItem::childCount() const
 {
   return m_children.count();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns row index at which current item is placed withing parent. */
 int ResourceItem::row() const
 {
   if (NULL != m_parent)
@@ -39,11 +36,6 @@ int ResourceItem::row() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns data for a given column and role. 
- *  @param columnIndex Column index for which data is to be retrieved.
- *  @param role        Role for which data is to be retrieved.
- *  @return Returns data associated with a given role at given column. If no valid data is present returns empty QVariant.
- */
 QVariant ResourceItem::data(int columnIndex, int role) const
 {
   // process according to role
@@ -62,11 +54,6 @@ QVariant ResourceItem::data(int columnIndex, int role) const
   return QVariant();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets the role data. 
- *  @param value  Value to be set.
- *  @param role   Role for which data is set.
- *  @return Returns TRUE if data has been changed. Otherwise FALSE.
- */
 bool ResourceItem::setData(const QVariant &value, int role)
 {
   // process according to role
@@ -87,13 +74,11 @@ bool ResourceItem::setData(const QVariant &value, int role)
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns child at given index. */
 ResourceItem* ResourceItem::child(int index) const
 {
   return ((0 <= index) && (index < childCount())) ? m_children[index] : NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Inserts children. */
 bool ResourceItem::insertChildren(int position, int count, int columns)
 {
   // check if insertion within proper range
@@ -122,19 +107,21 @@ bool ResourceItem::insertChildren(int position, int count, int columns)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets name. */
 void ResourceItem::setName(const QString& name)
 {
   m_name = name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns the item flags for the given item. */
+const QString& ResourceItem::name() const
+{
+  return m_name;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Qt::ItemFlags ResourceItem::flags() const
 {
   return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ISerializer override. Serializes into given stream. */
 bool ResourceItem::serialize(QXmlStreamWriter& stream) const
 {
   stream.writeStartElement("resource-item");
@@ -157,7 +144,6 @@ bool ResourceItem::serialize(QXmlStreamWriter& stream) const
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ISerializer override. Unserializes from given data stream. */
 bool ResourceItem::unserialize(QXmlStreamReader& stream)
 {
   QString name = stream.attributes().value("name").toString();
@@ -218,32 +204,32 @@ bool ResourceItem::unserialize(QXmlStreamReader& stream)
   return !stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets parent. */
 void ResourceItem::setParent(ResourceItem* parent)
 {
   m_parent = parent;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns type name. */
+ResourceItem* ResourceItem::parent() const
+{
+  return m_parent;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceItem::type() const
 {
   return "generic";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets child item. */
 void ResourceItem::setChild(int index, ResourceItem* item)
 {
   Q_ASSERT(index < m_children.size());
   m_children[index] = item;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns size hint. */
 QSize ResourceItem::sizeHint() const
 {
   return QSize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes given child. */
 void ResourceItem::removeChild(ResourceItem* item)
 {
   int index = m_children.indexOf(item);
@@ -253,13 +239,11 @@ void ResourceItem::removeChild(ResourceItem* item)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns index of a given child. */
 int ResourceItem::childIndex(ResourceItem* item) const
 {
   return m_children.indexOf(item);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds child to the end of pool. */
 void ResourceItem::addChild(ResourceItem* item)
 {
   // set child's parent
@@ -269,7 +253,6 @@ void ResourceItem::addChild(ResourceItem* item)
   m_children.append(item);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes all children. */
 void ResourceItem::removeChildren()
 {
   qDeleteAll(m_children);

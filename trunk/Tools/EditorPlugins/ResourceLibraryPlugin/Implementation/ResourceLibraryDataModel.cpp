@@ -1,37 +1,31 @@
 #include "ResourceLibraryDataModel.h"
 #include "ResourceItem.h"
-#include "ResourceItemFactory.h"
-#include <MainWindow.h>
 #include <QFile>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceLibraryDataModel::ResourceLibraryDataModel(QObject* parent) : QAbstractItemModel(parent), IResourceLibraryDataModel(this)
+ResourceLibraryDataModel::ResourceLibraryDataModel(QObject* parent) : QAbstractItemModel(parent),
+                                                                      m_root(new ResourceItem())
 {
-  m_root = new ResourceItem();
-  if (m_root)
-  {
-    m_root->setName("root");
-  }
+  m_root->setName("root");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryDataModel::~ResourceLibraryDataModel()
 {
   clear();
 
-  if (m_root)
+  if (NULL != m_root)
   {
     delete m_root;
     m_root = NULL;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! QAbstractItemModel override. Returns the parent of the model item with the given index. If the item has no parent, an invalid QModelIndex is returned. */
 QModelIndex ResourceLibraryDataModel::parent(const QModelIndex& index) const
 {
-  if (!index.isValid())
+  if ( ! index.isValid())
   {
     return QModelIndex();
   }
@@ -47,7 +41,6 @@ QModelIndex ResourceLibraryDataModel::parent(const QModelIndex& index) const
   return createIndex(parentItem->row(), 0, parentItem);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! QAbstractItemModel override. Returns the index of the item in the model specified by the given row, column and parent index. */
 QModelIndex ResourceLibraryDataModel::index(int row, int column, const QModelIndex& parent) const
 {
   ResourceItem* parentItem;
@@ -69,7 +62,6 @@ QModelIndex ResourceLibraryDataModel::index(int row, int column, const QModelInd
   return createIndex(row, column, item);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! QAbstractItemModel override. Returns the data stored under the given role for the item referred to by the index. */
 QVariant ResourceLibraryDataModel::data(const QModelIndex& index, int role) const
 {
   // check if invalid index
@@ -84,7 +76,6 @@ QVariant ResourceLibraryDataModel::data(const QModelIndex& index, int role) cons
   return item->data(index.column(), role);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! QAbstractItemModel override. Returns the number of columns for the children of the given parent. */
 int ResourceLibraryDataModel::columnCount(const QModelIndex& parent) const
 {
   if (parent.isValid())
@@ -95,7 +86,6 @@ int ResourceLibraryDataModel::columnCount(const QModelIndex& parent) const
   return m_root->columnCount();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! QAbstractItemModel override. Returns the number of rows under the given parent. */
 int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
 {
   ResourceItem* parentItem = NULL;
@@ -117,7 +107,6 @@ int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
   return parentItem->childCount();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Clears data. */
 void ResourceLibraryDataModel::clear()
 {
   if (m_root && (0 < m_root->childCount()))
@@ -128,7 +117,6 @@ void ResourceLibraryDataModel::clear()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! QAbstractItemModel override. Returns the item flags for the given index. */
 Qt::ItemFlags ResourceLibraryDataModel::flags(const QModelIndex& index) const
 {
   if (!index.isValid())
@@ -140,7 +128,6 @@ Qt::ItemFlags ResourceLibraryDataModel::flags(const QModelIndex& index) const
   return item->flags();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns resource library item connected for given model index. */
 ResourceItem* ResourceLibraryDataModel::getItem(const QModelIndex& index) const
 {
   if (index.isValid()) 
@@ -152,7 +139,6 @@ ResourceItem* ResourceLibraryDataModel::getItem(const QModelIndex& index) const
   return m_root;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! QAbstractItemModel override. Sets the role data for the item at index to value.*/
 bool ResourceLibraryDataModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
   ResourceItem* item = getItem(index);
@@ -169,7 +155,6 @@ bool ResourceLibraryDataModel::setData(const QModelIndex& index, const QVariant&
   return success;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Serializes into given stream. */
 bool ResourceLibraryDataModel::serialize(QXmlStreamWriter& stream) const
 {
   // serialize root
@@ -178,7 +163,6 @@ bool ResourceLibraryDataModel::serialize(QXmlStreamWriter& stream) const
   return result && !stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Unserializes from given data stream. */
 bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
 {
   bool done = false;
@@ -215,7 +199,6 @@ bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
   return !stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Removes entry associated with given index. */
 void ResourceLibraryDataModel::removeItem(const QModelIndex& index)
 {
   // get item form model
@@ -230,7 +213,6 @@ void ResourceLibraryDataModel::removeItem(const QModelIndex& index)
   delete item;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Inserts item after given index. */
 QModelIndex ResourceLibraryDataModel::insertItem(const QModelIndex& index, ResourceItem* item)
 {
   // get item form model
@@ -246,7 +228,6 @@ QModelIndex ResourceLibraryDataModel::insertItem(const QModelIndex& index, Resou
   return createIndex(parentItem->childCount() - 1, 0, item);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IResourceLibraryDataModel override. Returns list of all items in the model. */
 QList<ResourceItem*> ResourceLibraryDataModel::allItems() const
 {
   QList<ResourceItem*> list;
@@ -256,7 +237,6 @@ QList<ResourceItem*> ResourceLibraryDataModel::allItems() const
   return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds children of given resource item to the list. */
 void ResourceLibraryDataModel::addChildren(ResourceItem* item, QList<ResourceItem*>& list) const
 {
   for (int i = 0; i < item->childCount(); ++i)
@@ -269,5 +249,10 @@ void ResourceLibraryDataModel::addChildren(ResourceItem* item, QList<ResourceIte
     // add child
     list.append(child);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceItem* ResourceLibraryDataModel::root() const
+{
+  return m_root;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

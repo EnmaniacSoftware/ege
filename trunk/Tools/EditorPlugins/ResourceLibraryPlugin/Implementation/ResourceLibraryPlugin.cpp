@@ -1,15 +1,17 @@
 #include "ResourceLibraryPlugin.h"
 #include "ResourceLibraryWindow.h"
 #include "ResourceItemFactory.h"
-#include <QtPlugin>
-#include <QDebug>
 #include <MainWindow.h>
 #include <ObjectPool.h>
+#include <QtPlugin>
+#include <QDebug>
+#include <QMenu>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResouceLibraryPlugin::ResouceLibraryPlugin(QObject* parent) : QObject(parent),
                                                               m_window(NULL),
-                                                              m_resourceItemFactory(NULL)
+                                                              m_resourceItemFactory(NULL),
+                                                              m_viewAction(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -17,10 +19,11 @@ ResouceLibraryPlugin::~ResouceLibraryPlugin()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IPlugin override. Initialized plugin. */
 bool ResouceLibraryPlugin::initialize()
 {
   MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
+  Q_ASSERT(NULL != mainWindow);
+
   if (NULL == mainWindow)
   {
     // error!
@@ -32,30 +35,65 @@ bool ResouceLibraryPlugin::initialize()
   m_resourceItemFactory = new ResourceItemFactory();
 
   // add to pool
-  if (!ObjectPool::Instance()->addObject(m_window) || !ObjectPool::Instance()->addObject(m_resourceItemFactory))
+  bool result = ObjectPool::Instance()->addObject(m_window) && ObjectPool::Instance()->addObject(m_resourceItemFactory);
+  if (result)
   {
-    // error!
-    return false;
+    // initial placement
+    mainWindow->addDockWidget(Qt::LeftDockWidgetArea, m_window);
   }
 
-  return true;
+  // create menu entries
+  QMenu* menu = mainWindow->menu(MainWindow::EView);
+  Q_ASSERT(menu);
+
+  // create actions
+  m_viewAction = new QAction(tr("Resource library"), menu);
+
+  // setup actions
+  m_viewAction->setShortcut(QKeySequence("Ctrl+Shift+R"));
+  connect(m_viewAction, SIGNAL(triggered()), m_window, SLOT(show()));
+
+  // add actions to menu
+  menu->addAction(m_viewAction);
+
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! IPlugin override. Deinitializes plugin. */
 void ResouceLibraryPlugin::deinitialize()
 {
-  if (m_resourceItemFactory)
-  {
-    //ObjectPool::Instance()->removeObject(m_resourceItemFactory);
+  MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
+  Q_ASSERT(NULL != mainWindow);
 
+  // delete menu actions
+  QMenu* menu = mainWindow->menu(MainWindow::EView);
+  Q_ASSERT(menu);
+
+  if (NULL != m_viewAction)
+  {
+    // remove from menu
+    menu->removeAction(m_viewAction);
+
+    // delete
+    delete m_viewAction;
+    m_viewAction = NULL;
+  }
+
+  if (NULL != m_resourceItemFactory)
+  {
+    // remove from pool
+    ObjectPool::Instance()->removeObject(m_resourceItemFactory);
+
+    // delete
     delete m_resourceItemFactory;
     m_resourceItemFactory = NULL;
   }
 
-  if (m_window)
+  if (NULL != m_window)
   {
-   // ObjectPool::Instance()->removeObject(m_window);
+    // remove from pool
+    ObjectPool::Instance()->removeObject(m_window);
 
+    // delete
     delete m_window;
     m_window = NULL;
   }

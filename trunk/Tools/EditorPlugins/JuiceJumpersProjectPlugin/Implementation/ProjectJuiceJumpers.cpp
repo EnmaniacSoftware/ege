@@ -55,3 +55,8 @@ bool ProjectJuiceJumpers::unserialize(QXmlStreamReader& stream)
   return ! stream.hasError() && result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QStyledItemDelegate* ProjectJuiceJumpers::resourceLibraryItemDelegate() const
+{
+  return NULL;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

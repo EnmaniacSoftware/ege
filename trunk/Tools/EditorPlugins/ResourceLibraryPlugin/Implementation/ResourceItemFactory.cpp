@@ -29,7 +29,6 @@ ResourceItemFactory::~ResourceItemFactory()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Registeres custom resource item type. */
 bool ResourceItemFactory::registerItem(const QString& typeName, FPRESOURCEITEMCREATEFUNC createFunc)
 {
   // check if resource with such a name exists already
@@ -45,18 +44,17 @@ bool ResourceItemFactory::registerItem(const QString& typeName, FPRESOURCEITEMCR
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource item of the type given by name. */
 ResourceItem* ResourceItemFactory::createItem(const QString& typeName, const QString& name, ResourceItem* parent) const
 {
   ResourceItem* item = NULL;
 
   // get resource item create function for a given type name
   FPRESOURCEITEMCREATEFUNC createFunc = m_registeredItems.value(typeName, NULL);
-  if (createFunc)
+  if (NULL != createFunc)
   {
     // create instance
     item = createFunc();
-    if (item)
+    if (NULL != item)
     {
       item->setParent(parent);
       item->setName(name);
@@ -66,7 +64,6 @@ ResourceItem* ResourceItemFactory::createItem(const QString& typeName, const QSt
   return item;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns TRUE if given resource item type is registered. */
 bool ResourceItemFactory::isItemRegistered(const QString& typeName) const
 {
   return m_registeredItems.contains(typeName);

@@ -1,7 +1,5 @@
 #include "ResourceItemImage.h"
 #include "ResourceLibraryDataModel.h"
-#include "ResourceItemFactory.h"
-#include "MainWindow.h"
 #include <QImageReader>
 #include <QDebug>
 
@@ -14,15 +12,11 @@ ResourceItemImage::~ResourceItemImage()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates instance of resource item. This method is a registration method for factory. */
 ResourceItem* ResourceItemImage::Create()
 {
   return new ResourceItemImage();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns thumbnail image. 
- *  @note Generates thumbnail image if required. 
- */
 const QImage& ResourceItemImage::thumbnailImage() const
 {
   // check if thumbnail is to be generated
@@ -38,19 +32,16 @@ const QImage& ResourceItemImage::thumbnailImage() const
   return m_thumbnail;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ResourceItem override. Returns type name. */
 QString ResourceItemImage::type() const
 {
   return "image";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ResourceItem override. Returns size hint. */
 QSize ResourceItemImage::sizeHint() const
 {
   return QSize(200, 40);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ResourceItem override. Serializes into given stream. */
 bool ResourceItemImage::serialize(QXmlStreamWriter& stream) const
 {
   stream.writeStartElement("resource-item");
@@ -73,7 +64,6 @@ bool ResourceItemImage::serialize(QXmlStreamWriter& stream) const
   return !stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ResourceItem override. Unserializes from given data stream. */
 bool ResourceItemImage::unserialize(QXmlStreamReader& stream)
 {
   // retrieve data
@@ -82,17 +72,16 @@ bool ResourceItemImage::unserialize(QXmlStreamReader& stream)
   return !stream.hasError() && ResourceItem::unserialize(stream);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Sets path. */
 void ResourceItemImage::setPath(const QString& path)
 {
   m_path = path;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ResourceItem override. Returns data for a given column and role. 
- *  @param columnIndex Column index for which data is to be retrieved.
- *  @param role        Role for which data is to be retrieved.
- *  @return Returns data associated with a given role at given column. If no valid data is present returns empty QVariant.
- */
+const QString& ResourceItemImage::path() const
+{
+  return m_path;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QVariant ResourceItemImage::data(int columnIndex, int role) const
 {
   // call base class first
@@ -110,11 +99,6 @@ QVariant ResourceItemImage::data(int columnIndex, int role) const
   return variant;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! ResourceItem override. Sets the role data.
- *  @param value  Value to be set.
- *  @param role   Role for which data is set.
- *  @return Returns TRUE if data has been changed. Otherwise FALSE.
- */
 bool ResourceItemImage::setData(const QVariant &value, int role)
 {
   // process according to role

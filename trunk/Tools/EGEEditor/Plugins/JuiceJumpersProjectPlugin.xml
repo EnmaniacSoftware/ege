@@ -1,4 +1,5 @@
 <plugin name="JuiceJumpersProjectPlugin">
   <dependency name="CorePlugin" />
-  <!-- <dependency name="ResourceLibraryPlugin" /> -->
+  <dependency name="WorkspacePlugin" />
+  <dependency name="ResourceLibraryPlugin" />
 </plugin>

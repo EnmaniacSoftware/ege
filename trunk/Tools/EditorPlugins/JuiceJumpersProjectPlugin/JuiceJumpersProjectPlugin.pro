@@ -1,10 +1,9 @@
 include(JuiceJumpersProjectPlugin.pri)
 include(../PluginExtras.pri)
 
-INCLUDEPATH += ../CorePlugin/Interface \
-               ../../EGEEditor/Interface
+INCLUDEPATH += ../CorePlugin/Interface
 
-DEFINES += JUICEJUMPERSPROJECTPLUGIN_EXPORT
+DEFINES += JUICEJUMPERSPROJECTPLUGIN_EXPORT=1
 
 LIBS += -lCorePlugin
 

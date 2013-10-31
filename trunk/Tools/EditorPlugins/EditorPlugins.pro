@@ -4,9 +4,10 @@ CONFIG += ordered
 
 SUBDIRS += CorePlugin \
            WorkspacePlugin \
+           ResourceLibraryPlugin \
            JuiceJumpersProjectPlugin
+
             #FontManagerPlugin \
-            #ResourceLibraryPlugin \
             #MaterialManagerPlugin \
             #ImagedAnimationPlugin \
 

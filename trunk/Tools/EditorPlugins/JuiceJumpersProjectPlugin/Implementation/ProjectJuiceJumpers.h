@@ -25,6 +25,8 @@ class ProjectJuiceJumpers : public Project
     bool serialize(QXmlStreamWriter& stream) const override;
     /*! @see Project::unserialize. */
     bool unserialize(QXmlStreamReader& stream) override;
+    /*! @see Project::resourceLibraryItemDelegate. */
+    QStyledItemDelegate* resourceLibraryItemDelegate() const override;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

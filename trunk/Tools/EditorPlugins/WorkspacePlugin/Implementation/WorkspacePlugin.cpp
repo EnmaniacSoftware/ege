@@ -1,6 +1,7 @@
 #include "WorkspacePlugin.h"
 #include "MainWindow.h"
 #include "Configuration.h"
+#include <QStatusBar>
 #include <ObjectPool.h>
 #include <QtPlugin>
 #include <QDebug>

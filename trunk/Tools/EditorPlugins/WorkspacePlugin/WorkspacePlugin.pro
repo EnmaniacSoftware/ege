@@ -6,6 +6,6 @@ QT += core gui widgets
 INCLUDEPATH += Interface \
                ../CorePlugin/Interface
 
-DEFINES +=  WORKSPACEPLUGIN_EXPORT=1
+DEFINES += WORKSPACEPLUGIN_EXPORT=1
 
 LIBS += -lCorePlugin
