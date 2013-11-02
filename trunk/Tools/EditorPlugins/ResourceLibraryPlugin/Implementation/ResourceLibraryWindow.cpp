@@ -86,7 +86,7 @@ void ResourceLibraryWindow::onObjectAdded(QObject* object)
   if (NULL != project)
   {
     // set view delegate
-    ResourceLibraryItemDelegate* delegate = NULL;//mainWindow()->project()->resourceLibraryItemDelegate();
+    ResourceLibraryItemDelegate* delegate = static_cast<ResourceLibraryItemDelegate*>(project->resourceLibraryItemDelegate());
     delegate->setView(m_ui->view);
 
     m_ui->view->setItemDelegate(delegate);

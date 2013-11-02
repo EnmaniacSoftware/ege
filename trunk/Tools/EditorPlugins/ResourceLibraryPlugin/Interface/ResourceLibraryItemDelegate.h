@@ -4,8 +4,7 @@
 /*! Resource item render delegate. This is base class for all more sophosticated delegates.
  */
 
-#include <QStyledItemDelegate>
-#include <QWidget>
+#include <QtWidgets/QStyledItemDelegate>
 #include "ResouceLibraryPlugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -48,7 +47,6 @@ class RESOUCELIBRARYPLUGIN_API ResourceLibraryItemDelegate : public QStyledItemD
     QTreeView* m_view;
     /*! Container type pixmap. */
     QPixmap m_containerTypePixmap;
-
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

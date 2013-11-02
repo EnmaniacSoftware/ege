@@ -9,3 +9,6 @@ INCLUDEPATH += Interface \
 DEFINES += WORKSPACEPLUGIN_EXPORT=1
 
 LIBS += -lCorePlugin
+
+target.path = ../../EGEEditor/Plugins
+INSTALLS += target

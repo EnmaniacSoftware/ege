@@ -1,5 +1,5 @@
 #include "JuiceJumpersProjectPlugin.h"
-#include "ProjectJuiceJumpers.h"
+#include "JuiceJumpersProject.h"
 #include <Projects/ProjectFactory.h>
 #include <ObjectPool.h>
 #include <QtPlugin>
@@ -20,7 +20,7 @@ bool JuiceJumpersProjectPlugin::initialize()
   ProjectFactory* projectFactory = ObjectPool::Instance()->getObject<ProjectFactory>();
   if (NULL != projectFactory)
   {
-    return projectFactory->registerProject(ProjectJuiceJumpers::TypeName, ProjectJuiceJumpers::Create);
+    return projectFactory->registerProject(JuiceJumpersProject::TypeName, JuiceJumpersProject::Create);
   }
 
   return false;

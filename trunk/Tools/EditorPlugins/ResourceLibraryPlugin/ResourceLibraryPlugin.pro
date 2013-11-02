@@ -11,3 +11,5 @@ DEFINES += RESOUCELIBRARYPLUGIN_EXPORT=1
 
 LIBS += -lWorkspacePlugin -lCorePlugin
 
+target.path = ../../EGEEditor/Plugins
+INSTALLS += target

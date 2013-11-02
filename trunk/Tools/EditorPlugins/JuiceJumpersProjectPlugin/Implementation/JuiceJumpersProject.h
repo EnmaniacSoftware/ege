@@ -7,12 +7,14 @@
 #include <Projects/Project.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ProjectJuiceJumpers : public Project
+class JuiceJumpersResourceLibraryItemDelegate;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class JuiceJumpersProject : public Project
 {
   public:
 
-    ProjectJuiceJumpers(QObject* parent, const QString& name, const QString& path);
-   ~ProjectJuiceJumpers();
+    JuiceJumpersProject(QObject* parent, const QString& name, const QString& path);
+   ~JuiceJumpersProject();
 
     /*! Create method. */
     static Project* Create(QObject* parent, const QString& name, const QString& path);
@@ -27,6 +29,11 @@ class ProjectJuiceJumpers : public Project
     bool unserialize(QXmlStreamReader& stream) override;
     /*! @see Project::resourceLibraryItemDelegate. */
     QStyledItemDelegate* resourceLibraryItemDelegate() const override;
+
+  private:
+
+    /*! Resource library item delegate. */
+    JuiceJumpersResourceLibraryItemDelegate* m_resourceItemDelegate;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
