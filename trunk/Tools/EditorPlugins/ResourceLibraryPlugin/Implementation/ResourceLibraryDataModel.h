@@ -1,7 +1,9 @@
 #ifndef RESOURCELIBRARY_RESOURCELIBRARYDATAMODEL_H
 #define RESOURCELIBRARY_RESOURCELIBRARYDATAMODEL_H
 
-/*! Resource library data model class. 
+/*! Resource library data model class.
+ *  Entire model's layout is 2D grid like with exactly one column (0 index).
+ *  Each item corresponds to the row index which is based on the actual position within parent's children list.
  */
 
 #include <QAbstractItemModel>
@@ -55,6 +57,9 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
     void removeItem(const QModelIndex& index);
     /*! Inserts item after given index. */
     QModelIndex insertItem(const QModelIndex& index, ResourceItem* item);
+
+    /*! Returns TRUE if model is empty. */
+    bool isEmpty() const;
 
   private:
 

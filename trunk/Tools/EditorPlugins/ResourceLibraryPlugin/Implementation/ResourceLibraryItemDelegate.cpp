@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QTreeView>
 #include <QLineEdit>
+#include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const int KIconOffset = 2;
@@ -62,11 +63,19 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemImage* item) const
 {
+  // determine thumbnail image size
   int thumbSize = qMax(item->thumbnailImage().size().height(), KThumbnailSize);
 
-  QRect rect(option.rect.x() + KIconOffset, option.rect.y(), thumbSize, thumbSize);
+  // determine centered region where drawing is going to take place
+  const int offset = (option.rect.height() - thumbSize) / 2;
+  QRect rect(option.rect.x() + KIconOffset, option.rect.y() + offset, thumbSize, thumbSize);
+
+  // paint thumbnail
   painter->drawImage(rect.intersected(option.rect), item->thumbnailImage());
 
+  //qDebug() << rect << option.rect << rect.intersected(option.rect);
+
+  // paint text fields
   rect.translate(KThumbnailSize + KContainerTypeTextOffset, 0);
   rect.setWidth(qMax(option.fontMetrics.width(item->name()), option.fontMetrics.width(item->path())));
   painter->drawText(rect.intersected(option.rect), Qt::AlignTop, item->name());

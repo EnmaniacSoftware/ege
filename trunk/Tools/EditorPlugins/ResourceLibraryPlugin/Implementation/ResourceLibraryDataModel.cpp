@@ -30,8 +30,8 @@ QModelIndex ResourceLibraryDataModel::parent(const QModelIndex& index) const
     return QModelIndex();
   }
 
-  ResourceItem* childItem = static_cast<ResourceItem*>(index.internalPointer());
-  ResourceItem* parentItem = (childItem) ? childItem->parent() : NULL;
+  ResourceItem* childItem  = static_cast<ResourceItem*>(index.internalPointer());
+  ResourceItem* parentItem = (NULL != childItem) ? childItem->parent() : NULL;
 
   if ((parentItem == m_root) || (NULL == parentItem))
   {
@@ -46,6 +46,11 @@ QModelIndex ResourceLibraryDataModel::index(int row, int column, const QModelInd
   ResourceItem* parentItem;
   ResourceItem* item;
 
+  if ( ! hasIndex(row, column, parent))
+  {
+    return QModelIndex();
+  }
+
   // check if parent invalid
   if ( ! parent.isValid())
   {
@@ -58,6 +63,7 @@ QModelIndex ResourceLibraryDataModel::index(int row, int column, const QModelInd
 
   // get proper child
   item = parentItem->child(row);
+  Q_ASSERT(NULL != item);
 
   return createIndex(row, column, item);
 }
@@ -73,6 +79,8 @@ QVariant ResourceLibraryDataModel::data(const QModelIndex& index, int role) cons
 
   // get item form model
   ResourceItem* item = getItem(index);
+  Q_ASSERT(NULL != item);
+
   return item->data(index.column(), role);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -90,21 +98,22 @@ int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
 {
   ResourceItem* parentItem = NULL;
 
-  if (0 < parent.column())
-  {
-    return 0;
-  }
-
   if ( ! parent.isValid())
   {
     parentItem = m_root;
   }
   else
   {
+    Q_ASSERT(0 == parent.column());
     parentItem = static_cast<ResourceItem*>(parent.internalPointer());
   }
 
-  return parentItem->childCount();
+  // get number of children/rows
+  int rowCount = parentItem->childCount();
+
+ //qDebug() << Q_FUNC_INFO << "count" << rowCount << "for" << parent;
+
+  return rowCount;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryDataModel::clear()
@@ -125,6 +134,8 @@ Qt::ItemFlags ResourceLibraryDataModel::flags(const QModelIndex& index) const
   }
 
   ResourceItem* item = getItem(index);
+  Q_ASSERT(NULL != item);
+
   return item->flags();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -255,5 +266,10 @@ void ResourceLibraryDataModel::addChildren(ResourceItem* item, QList<ResourceIte
 ResourceItem* ResourceLibraryDataModel::root() const
 {
   return m_root;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ResourceLibraryDataModel::isEmpty() const
+{
+  return (0 == m_root->childCount());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

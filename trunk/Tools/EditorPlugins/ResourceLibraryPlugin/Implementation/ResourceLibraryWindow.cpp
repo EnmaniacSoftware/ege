@@ -14,6 +14,10 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const int KStackedPageIndexResourcesNotAvailable = 0;
+static const int KStackedPageIndexAddResources          = 1;
+static const int KStackedPageIndexResourcesView         = 2;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryWindow::ResourceLibraryWindow(QWidget* parent) : QDockWidget(parent),
                                                                 m_ui(new Ui_ResourceLibrary()),
                                                                 m_model(new ResourceLibraryDataModel(this))
@@ -100,7 +104,7 @@ void ResourceLibraryWindow::onObjectAdded(QObject* object)
     connect(m_model, SIGNAL(rowsRemoved(const QModelIndex&, int, int)), project, SLOT(onProjectDataChanged()));
 
     // show resources page
-    m_ui->stackedWidget->setCurrentIndex(1);
+    m_ui->stackedWidget->setCurrentIndex(KStackedPageIndexAddResources);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -119,7 +123,7 @@ void ResourceLibraryWindow::onObjectRemoved(QObject* object)
     disconnect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
 
     // hide resources page
-    m_ui->stackedWidget->setCurrentIndex(0);
+    m_ui->stackedWidget->setCurrentIndex(KStackedPageIndexResourcesNotAvailable);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -139,6 +143,9 @@ void ResourceLibraryWindow::onAddContainer()
     if (NULL != newItem)
     {
       m_model->insertItem(index, newItem);
+
+      // show resources view
+      m_ui->stackedWidget->setCurrentIndex(KStackedPageIndexResourcesView);
     }
   }
 }
@@ -186,6 +193,13 @@ void ResourceLibraryWindow::onRemoveItems()
   foreach (const QModelIndex& index, indexList)
   {
     m_model->removeItem(index);
+  }
+
+  // check if no resources available
+  if (m_model->isEmpty())
+  {
+    // change stacked page
+    m_ui->stackedWidget->setCurrentIndex(KStackedPageIndexAddResources);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
