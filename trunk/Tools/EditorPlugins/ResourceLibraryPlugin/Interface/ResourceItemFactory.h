@@ -5,14 +5,15 @@
  */
 
 #include <QString>
-#include <QMap>
+#include <QList>
 #include <QObject>
 #include "ResouceLibraryPlugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceItem;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef ResourceItem* (*FPRESOURCEITEMCREATEFUNC) ();
+typedef ResourceItem* (*FPRESOURCEITEMCREATEFUNC) (const QString& name, ResourceItem* parent);
+typedef QString       (*FPRESOURCEITEMTYPENAMEFUNC) ();
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RESOUCELIBRARYPLUGIN_API ResourceItemFactory : public QObject
 {
@@ -24,7 +25,7 @@ class RESOUCELIBRARYPLUGIN_API ResourceItemFactory : public QObject
    ~ResourceItemFactory();
 
     /*! Registeres custom resource item type. */
-    bool registerItem(const QString& typeName, FPRESOURCEITEMCREATEFUNC createFunc);
+    bool registerItem(FPRESOURCEITEMTYPENAMEFUNC typeNameFunc, FPRESOURCEITEMCREATEFUNC createFunc);
     /*! Creates instance of resource item of the type given by name. */
     ResourceItem* createItem(const QString& typeName, const QString& name, ResourceItem* parent = NULL) const;
     /*! Returns TRUE if given resource item type is registered. */
@@ -32,12 +33,19 @@ class RESOUCELIBRARYPLUGIN_API ResourceItemFactory : public QObject
 
   private:
 
-    typedef QMap<QString, FPRESOURCEITEMCREATEFUNC> ResourceItemRegisterMap;
+    /*! Data struct of registered items. */
+    struct ItemData
+    {
+      FPRESOURCEITEMTYPENAMEFUNC typeNameFunc;  /*!< Item type name function. */
+      FPRESOURCEITEMCREATEFUNC   createFunc;    /*!< Item create function. */
+    };
+
+    typedef QList<ItemData> ItemRegisterList;
 
   private:
 
-    /*! Registered items sorted by type name. */
-    ResourceItemRegisterMap m_registeredItems;
+    /*! List of registered items. */
+    ItemRegisterList m_registeredItems;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

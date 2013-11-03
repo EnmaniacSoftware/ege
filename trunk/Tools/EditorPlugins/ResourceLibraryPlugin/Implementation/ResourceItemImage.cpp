@@ -1,5 +1,6 @@
 #include "ResourceItemImage.h"
 #include "ResourceLibraryDataModel.h"
+#include <FileSystemUtils.h>
 #include <QImageReader>
 #include <QDebug>
 
@@ -8,22 +9,31 @@ ResourceItemImage::ResourceItemImage() : ResourceItem()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceItemImage::ResourceItemImage(const QString& name, ResourceItem* parent) : ResourceItem(name, parent)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemImage::~ResourceItemImage()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItem* ResourceItemImage::Create()
+ResourceItem* ResourceItemImage::Create(const QString& name, ResourceItem* parent)
 {
-  return new ResourceItemImage();
+  return new ResourceItemImage(name, parent);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QString ResourceItemImage::TypeName()
+{
+  return "image";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const QImage& ResourceItemImage::thumbnailImage() const
 {
   // check if thumbnail is to be generated
-  if (m_thumbnail.isNull() && !m_path.isEmpty() && !m_name.isEmpty())
+  if (m_thumbnail.isNull() && ! m_path.isEmpty() && ! m_name.isEmpty())
   {
     // generate
-    QImageReader imageReader(m_path + "/" + m_name);
+    QImageReader imageReader(FileSystemUtils::Join(m_path, m_name));
 
     imageReader.setScaledSize(QSize(32, 32));
     imageReader.read(&m_thumbnail);
@@ -34,7 +44,7 @@ const QImage& ResourceItemImage::thumbnailImage() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceItemImage::type() const
 {
-  return "image";
+  return ResourceItemImage::TypeName();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QSize ResourceItemImage::sizeHint() const
@@ -53,7 +63,7 @@ bool ResourceItemImage::serialize(QXmlStreamWriter& stream) const
   // serialize children
   foreach (const ResourceItem* item, m_children)
   {
-    if (!item->serialize(stream))
+    if ( ! item->serialize(stream))
     {
       // error!
       return false;
@@ -61,7 +71,7 @@ bool ResourceItemImage::serialize(QXmlStreamWriter& stream) const
   }
 
   stream.writeEndElement();
-  return !stream.hasError();
+  return ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceItemImage::unserialize(QXmlStreamReader& stream)
@@ -69,7 +79,7 @@ bool ResourceItemImage::unserialize(QXmlStreamReader& stream)
   // retrieve data
   m_path = stream.attributes().value("path").toString();
 
-  return !stream.hasError() && ResourceItem::unserialize(stream);
+  return ! stream.hasError() && ResourceItem::unserialize(stream);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItemImage::setPath(const QString& path)

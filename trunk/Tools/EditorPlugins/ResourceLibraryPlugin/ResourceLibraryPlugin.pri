@@ -18,3 +18,5 @@ SOURCES = Implementation/ResourceLibraryPlugin.cpp \
           Implementation/ResourceLibraryItemDelegate.cpp
 
 FORMS += Forms/ResourceLibraryWindow.ui
+
+RESOURCES += Resources/resources.qrc

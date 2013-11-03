@@ -16,6 +16,7 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public ISerializer
   public:
 
     ResourceItem();
+    ResourceItem(const QString& name, ResourceItem* parent);
     virtual ~ResourceItem();
 
     /*! Sets name. */

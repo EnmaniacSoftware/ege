@@ -1,5 +1,6 @@
 #include "FileSystemUtils.h"
 #include <QRegExp>
+#include <QDir>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString FileSystemUtils::ValidateFileName(const QString& fileName)
@@ -23,6 +24,6 @@ QString FileSystemUtils::ValidateFileName(const QString& fileName)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString FileSystemUtils::Join(const QString& path1, const QString& path2)
 {
-  return path1 + "/" + path2;
+  return QDir::toNativeSeparators(path1 + "/" + path2);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

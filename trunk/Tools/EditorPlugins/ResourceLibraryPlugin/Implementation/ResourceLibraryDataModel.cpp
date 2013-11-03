@@ -47,7 +47,7 @@ QModelIndex ResourceLibraryDataModel::index(int row, int column, const QModelInd
   ResourceItem* item;
 
   // check if parent invalid
-  if (!parent.isValid())
+  if ( ! parent.isValid())
   {
     parentItem = m_root;
   }
@@ -65,7 +65,7 @@ QModelIndex ResourceLibraryDataModel::index(int row, int column, const QModelInd
 QVariant ResourceLibraryDataModel::data(const QModelIndex& index, int role) const
 {
   // check if invalid index
-  if (!index.isValid())
+  if ( ! index.isValid())
   {
     // done
     return QVariant();
@@ -95,7 +95,7 @@ int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
     return 0;
   }
 
-  if (!parent.isValid())
+  if ( ! parent.isValid())
   {
     parentItem = m_root;
   }
@@ -109,7 +109,7 @@ int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryDataModel::clear()
 {
-  if (m_root && (0 < m_root->childCount()))
+  if ((NULL != m_root) && (0 < m_root->childCount()))
   {
 	  beginRemoveRows(QModelIndex(), 0, m_root->childCount() - 1);
     m_root->removeChildren();
@@ -119,7 +119,7 @@ void ResourceLibraryDataModel::clear()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Qt::ItemFlags ResourceLibraryDataModel::flags(const QModelIndex& index) const
 {
-  if (!index.isValid())
+  if ( ! index.isValid())
   {
     return 0;
   }
@@ -160,13 +160,13 @@ bool ResourceLibraryDataModel::serialize(QXmlStreamWriter& stream) const
   // serialize root
   bool result = m_root->serialize(stream);
 
-  return result && !stream.hasError();
+  return result && ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
 {
   bool done = false;
-  while (!stream.atEnd() && !done)
+  while ( ! stream.atEnd() && ! done)
   {
     QXmlStreamReader::TokenType token = stream.readNext();
     switch (token)
@@ -174,9 +174,10 @@ bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
       case QXmlStreamReader::StartElement:
 
         // check if root element
-        if ("resource-item" == stream.name() && stream.attributes().value("type") == m_root->type() && stream.attributes().value("name") == m_root->name())
+        if (("resource-item" == stream.name()) && (stream.attributes().value("type") == m_root->type()) &&
+            (stream.attributes().value("name") == m_root->name()))
         {
-          if (!m_root->unserialize(stream))
+          if ( ! m_root->unserialize(stream))
           {
             // error!
             return false;
@@ -196,14 +197,14 @@ bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
     }
   }
 
-  return !stream.hasError();
+  return ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryDataModel::removeItem(const QModelIndex& index)
 {
   // get item form model
   ResourceItem* item = getItem(index);
-  Q_ASSERT(item && item->parent());
+  Q_ASSERT((NULL != item) && item->parent());
 
   beginRemoveRows(index.parent(), item->row(), item->row());
   item->parent()->removeChild(item);

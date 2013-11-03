@@ -11,12 +11,15 @@ class ResourceItemContainer : public ResourceItem
   public:
 
     ResourceItemContainer();
+    ResourceItemContainer(const QString& name, ResourceItem* parent);
    ~ResourceItemContainer();
 
   public:
 
     /*! Creates instance of resource item. This method is a registration method for factory. */
-    static ResourceItem* Create();
+    static ResourceItem* Create(const QString& name, ResourceItem* parent);
+    /*! Returns item type name. */
+    static QString TypeName();
 
   private:
 

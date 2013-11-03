@@ -6,12 +6,12 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct BuiltInResourceItem
 {
-  const char* name;
+  FPRESOURCEITEMTYPENAMEFUNC pfTypeNameFunc;
   FPRESOURCEITEMCREATEFUNC pfCreateFunc;
 };
 
-static BuiltInResourceItem l_resourceItemsToRegister[] = {  { "container", ResourceItemContainer::Create },
-                                                            { "image", ResourceItemImage::Create }
+static BuiltInResourceItem l_resourceItemsToRegister[] = {  { ResourceItemContainer::TypeName, ResourceItemContainer::Create },
+                                                            { ResourceItemImage::TypeName, ResourceItemImage::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemFactory::ResourceItemFactory(QObject* parent) : QObject(parent)
@@ -21,7 +21,7 @@ ResourceItemFactory::ResourceItemFactory(QObject* parent) : QObject(parent)
   {
     const BuiltInResourceItem& item = l_resourceItemsToRegister[i];
 
-    registerItem(item.name, item.pfCreateFunc);
+    registerItem(item.pfTypeNameFunc, item.pfCreateFunc);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -29,17 +29,23 @@ ResourceItemFactory::~ResourceItemFactory()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ResourceItemFactory::registerItem(const QString& typeName, FPRESOURCEITEMCREATEFUNC createFunc)
+bool ResourceItemFactory::registerItem(FPRESOURCEITEMTYPENAMEFUNC typeNameFunc, FPRESOURCEITEMCREATEFUNC createFunc)
 {
+  Q_ASSERT((NULL != typeNameFunc) && (NULL != createFunc));
+
   // check if resource with such a name exists already
-  if (isItemRegistered(typeName))
+  if (isItemRegistered(typeNameFunc()))
   {
     // error!
     return false;
   }
 
   // register
-  m_registeredItems.insert(typeName, createFunc);
+  ItemData data;
+  data.createFunc   = createFunc;
+  data.typeNameFunc = typeNameFunc;
+
+  m_registeredItems.append(data);
 
   return true;
 }
@@ -49,15 +55,13 @@ ResourceItem* ResourceItemFactory::createItem(const QString& typeName, const QSt
   ResourceItem* item = NULL;
 
   // get resource item create function for a given type name
-  FPRESOURCEITEMCREATEFUNC createFunc = m_registeredItems.value(typeName, NULL);
-  if (NULL != createFunc)
+  foreach (const ItemData& itemData, m_registeredItems)
   {
-    // create instance
-    item = createFunc();
-    if (NULL != item)
+    if (itemData.typeNameFunc() == typeName)
     {
-      item->setParent(parent);
-      item->setName(name);
+      // create instance
+      item = itemData.createFunc(name, parent);
+      break;
     }
   }
 
@@ -66,6 +70,15 @@ ResourceItem* ResourceItemFactory::createItem(const QString& typeName, const QSt
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceItemFactory::isItemRegistered(const QString& typeName) const
 {
-  return m_registeredItems.contains(typeName);
+  foreach (const ItemData& itemData, m_registeredItems)
+  {
+    if (itemData.typeNameFunc() == typeName)
+    {
+      // found
+      return true;
+    }
+  }
+
+  return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

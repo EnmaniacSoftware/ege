@@ -5,6 +5,7 @@
 #include <ObjectPool.h>
 #include <QtPlugin>
 #include <QDebug>
+#include <QResource>
 #include <QMenu>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,6 +22,9 @@ ResouceLibraryPlugin::~ResouceLibraryPlugin()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResouceLibraryPlugin::initialize()
 {
+  // register resources
+  Q_INIT_RESOURCE(resources);
+
   MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
   Q_ASSERT(NULL != mainWindow);
 
@@ -97,6 +101,9 @@ void ResouceLibraryPlugin::deinitialize()
     delete m_window;
     m_window = NULL;
   }
+
+  // clean up resources
+  Q_CLEANUP_RESOURCE(resources);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

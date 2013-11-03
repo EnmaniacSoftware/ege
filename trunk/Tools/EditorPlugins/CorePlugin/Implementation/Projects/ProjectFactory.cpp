@@ -51,7 +51,6 @@ Project* ProjectFactory::createProject(const QString& typeName, const QString& n
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ProjectFactory::isProjectRegistered(const QString& typeName) const
 {
-  // get project create function for a given type name
   foreach (const ProjectData& projectData, m_registeredProjects)
   {
     if (projectData.typeNameFunc() == typeName)

@@ -4,6 +4,7 @@
 #include "ResourceLibraryItemDelegate.h"
 #include "ResourceItem.h"
 #include "ResourceItemFactory.h"
+#include "ResourceItemContainer.h"
 #include <Projects/Project.h>
 #include <MainWindow.h>
 #include <ObjectPool.h>
@@ -60,7 +61,7 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
     QModelIndex modelIndex = indexList.front();
     ResourceItem* item = static_cast<ResourceItem*>(modelIndex.internalPointer());
 
-    if ("container" == item->type())
+    if (ResourceItemContainer::TypeName() == item->type())
     {
       action = menu.addAction(tr("Add container"), this, SLOT(onAddContainer()));
       action = menu.addAction(tr("Add resource"), this, SLOT(onAddResource()));
@@ -124,16 +125,21 @@ void ResourceLibraryWindow::onObjectRemoved(QObject* object)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryWindow::onAddContainer()
 {
-  ResourceItem* item;
-
   // get current seclection index
   QModelIndexList list = m_ui->view->selectionModel()->selectedIndexes();
   QModelIndex index = ! list.isEmpty() ? list.front() : QModelIndex();
 
-  ResourceItem* newItem = NULL;//app->resourceItemFactory()->createItem("container", tr("No name"));
-  if (newItem)
+  // create container item
+  ResourceItemFactory* factory = ObjectPool::Instance()->getObject<ResourceItemFactory>();
+  Q_ASSERT(NULL != factory);
+
+  if (NULL != factory)
   {
-    m_model->insertItem(index, newItem);
+    ResourceItem* newItem = factory->createItem(ResourceItemContainer::TypeName(), tr("No name"));
+    if (NULL != newItem)
+    {
+      m_model->insertItem(index, newItem);
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -149,19 +155,26 @@ void ResourceLibraryWindow::onAddResource()
 	QStringList list = QFileDialog::getOpenFileNames(this, tr("Add resource"), QString(), filters);
   if ( !list.isEmpty())
   {
-    // go thru all items
-    for (int i = 0; i < list.size(); ++i)
+    // create container item
+    ResourceItemFactory* factory = ObjectPool::Instance()->getObject<ResourceItemFactory>();
+    Q_ASSERT(NULL != factory);
+
+    if (NULL != factory)
     {
-      QString item = QDir::fromNativeSeparators(list[i]);
-      QString name = item.section("/", -1);
-      QString path = item.section("/", 0, -2);
-
-      ResourceItem* newItem = NULL;//app->resourceItemFactory()->createItem("image", name);
-      if (newItem)
+      // go thru all items
+      for (int i = 0; i < list.size(); ++i)
       {
-        QModelIndex childIndex = m_model->insertItem(index, newItem);
+        QString item = QDir::fromNativeSeparators(list[i]);
+        QString name = item.section("/", -1);
+        QString path = item.section("/", 0, -2);
 
-        m_model->setData(childIndex, QVariant(path), ResourceLibraryDataModel::PathRole);
+        ResourceItem* newItem = factory->createItem("image", name);
+        if (NULL != newItem)
+        {
+          QModelIndex childIndex = m_model->insertItem(index, newItem);
+
+          m_model->setData(childIndex, QVariant(path), ResourceLibraryDataModel::PathRole);
+        }
       }
     }
   }

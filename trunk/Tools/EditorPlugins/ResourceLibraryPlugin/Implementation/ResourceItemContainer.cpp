@@ -6,13 +6,22 @@ ResourceItemContainer::ResourceItemContainer() : ResourceItem()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceItemContainer::ResourceItemContainer(const QString& name, ResourceItem* parent) : ResourceItem(name, parent)
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemContainer::~ResourceItemContainer()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItem* ResourceItemContainer::Create()
+ResourceItem* ResourceItemContainer::Create(const QString& name, ResourceItem* parent)
 {
-  return new ResourceItemContainer();
+  return new ResourceItemContainer(name, parent);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QString ResourceItemContainer::TypeName()
+{
+  return "container";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Qt::ItemFlags ResourceItemContainer::flags() const
@@ -22,7 +31,7 @@ Qt::ItemFlags ResourceItemContainer::flags() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceItemContainer::type() const
 {
-  return "container";
+  return ResourceItemContainer::TypeName();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceItemContainer::serialize(QXmlStreamWriter& stream) const
@@ -35,7 +44,7 @@ bool ResourceItemContainer::serialize(QXmlStreamWriter& stream) const
   // serialize children
   foreach (const ResourceItem* item, m_children)
   {
-    if (!item->serialize(stream))
+    if ( ! item->serialize(stream))
     {
       // error!
       return false;

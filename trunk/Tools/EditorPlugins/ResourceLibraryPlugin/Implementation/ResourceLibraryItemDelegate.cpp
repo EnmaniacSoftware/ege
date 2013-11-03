@@ -15,7 +15,8 @@ static const int KThumbnailSize = 32;
 ResourceLibraryItemDelegate::ResourceLibraryItemDelegate(QObject* parent) : QStyledItemDelegate(parent),
                                                                             m_view(NULL)
 {
-  m_containerTypePixmap.load(":/small:folder");
+  bool result = m_containerTypePixmap.load(":/resourcelibrary/folder");
+  Q_ASSERT(result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryItemDelegate::~ResourceLibraryItemDelegate()
@@ -35,7 +36,7 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
   m_view->style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, m_view);
 
   // process according to type
-  if ("container" == item->type())
+  if (ResourceItemContainer::TypeName() == item->type())
   {
     paint(painter, option, reinterpret_cast<ResourceItemContainer*>(item));
   }
@@ -85,7 +86,7 @@ void ResourceLibraryItemDelegate::updateEditorGeometry(QWidget* editor, const QS
   ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
 
   // process according to type
-  if ("container" == item->type())
+  if (ResourceItemContainer::TypeName() == item->type())
   {
     editor->move(option.rect.x() + KIconOffset + option.rect.height() + KContainerTypeTextOffset, option.rect.y());
     editor->resize(editor->size().width(), option.rect.size().height());

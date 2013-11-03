@@ -20,7 +20,7 @@ class COREPLUGIN_API FileSystemUtils
     /*! Joins given path elements together.
      *  @param  path1 First path to join.
      *  @param  path2 Second path to join.
-     *  @return Joint path.
+     *  @return Joint path with native separators.
      */
     static QString Join(const QString& path1, const QString& path2);
 };
