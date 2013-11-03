@@ -4,6 +4,7 @@
 /*! Project factory object.
  *  It is possible to register custom project types with the factory.
  *  It can also serve as data model.
+ *  Factory is also responsible managing project loading/saving.
  */
 
 #include <QString>
@@ -11,6 +12,8 @@
 #include <QAbstractItemModel>
 #include <QModelIndex>
 #include <QVariant>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
 #include "CorePlugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -27,6 +30,21 @@ class COREPLUGIN_API ProjectFactory : public QAbstractItemModel
 
     ProjectFactory(QObject* parent = NULL);
    ~ProjectFactory();
+
+  public slots:
+
+  private slots:
+
+    /*! Slot called when project saving is required.
+     *  @param  stream  XML stream where data is to be saved.
+     */
+    void onSaveData(QXmlStreamWriter& stream);
+    /*! Slot called when project loading is required.
+     *  @param  stream  XML stream where data is to be saved.
+     */
+    void onLoadData(QXmlStreamReader& stream);
+
+  public:
 
     /*! Registeres custom project type. */
     bool registerProject(PFPROJECTTYPENAMEFUNC typeNameFunc, PFPROJECTCREATEFUNC createFunc);

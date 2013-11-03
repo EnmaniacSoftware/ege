@@ -4,6 +4,7 @@
 /*! Application's main window. */
 
 #include <QtWidgets/QMainWindow>
+#include <QXmlStreamWriter>
 #include "WorkspacePlugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -44,8 +45,16 @@ class WORKSPACEPLUGIN_API MainWindow : public QMainWindow
      */
     QMenu* menu(Menu menu) const;
 
-  //  /*! Returns pointer to resource item factory. */
-  //  inline ResourceItemFactory* resourceItemFactory() const { return m_resourceItemFactory; }
+  signals:
+
+    /*! Signal emitted when saving is required.
+     *  @param  stream  XML stream where data is to be saved.
+     */
+    void saveData(QXmlStreamWriter& stream);
+    /*! Signal emitted when loading is required.
+     *  @param  stream  XML stream where data is to be taken from.
+     */
+    void loadData(QXmlStreamReader& stream);
 
   private slots:
 

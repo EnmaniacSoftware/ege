@@ -19,12 +19,11 @@
 static const int KMajorVersion    = 0;
 static const int KMinorVersion    = 1;
 static const int KRevisionVersion = 1;
-static QString KWorkspaceTag              = "workspace";
-static QString KProjectTag                = "project";
-static QString KMajorVersionAttribute     = "version-major";
-static QString KMinorVersionAttribute     = "version-minor";
-static QString KRevisionVersionAttribute  = "version-revision";
-static QString KProjectFileExtension      = "egeproj";
+static const QString KWorkspaceTag              = "workspace";
+static const QString KMajorVersionAttribute     = "version-major";
+static const QString KMinorVersionAttribute     = "version-minor";
+static const QString KRevisionVersionAttribute  = "version-revision";
+static const QString KProjectFileExtension      = "egeproj";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MainWindow::MainWindow() : QMainWindow(),
                            m_ui(new Ui_MainWindow())
@@ -77,8 +76,6 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
     return;
   }
 
-  Project* project = NULL;
-
   // prepare filters
   QString filters = tr("Projects");
   filters += QString(" (*." + KProjectFileExtension + ")");
@@ -123,45 +120,23 @@ void MainWindow::on_ActionFileOpen_triggered(bool checked)
             return;
           }
         }
-        // check if project element
-        else if (KProjectTag == stream.name())
+        else
         {
-          Q_ASSERT(NULL == project);
-
-          // try to create project
-          project = projectFactory->createProject(stream.attributes().value("type").toString(), stream.attributes().value("name").toString(),
-                                                  stream.attributes().value("path").toString(), this);
-
-          if (NULL == project)
-          {
-            // error!
-            QMessageBox::warning(this, tr("Open Project error"),
-                                 tr("Unknown project type") + ": " + stream.attributes().value("type").toString(), QMessageBox::Ok);
-            return;
-          }
-
-          // deserialize project
-          if ( ! project->unserialize(stream))
-          {
-            // error!
-            delete project;
-            project = NULL;
-          }
+          // allow others to process element
+          emit loadData(stream);
         }
         break;
     }
   }
 
+  // get project (ie check if was created successfully)
+  Project* project = ObjectPool::Instance()->getObject<Project>();
   if ((NULL == project) || stream.hasError())
   {
     // error!
     QMessageBox::warning(this, tr("Open Project error"), tr("Could not open project file!"), QMessageBox::Ok);
-    close();
-    return;
+    closeProject();
   }
-
-  // add project to pool
-  ObjectPool::Instance()->addObject(project);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::on_ActionFileClose_triggered(bool checked)
@@ -197,6 +172,7 @@ void MainWindow::on_ActionFileSave_triggered(bool checked)
   Project* project = ObjectPool::Instance()->getObject<Project>();
   Q_ASSERT(project);
 
+  // save workspace data first
   QString output;
   QXmlStreamWriter stream(&output);
   stream.setAutoFormatting(true);
@@ -206,16 +182,15 @@ void MainWindow::on_ActionFileSave_triggered(bool checked)
   stream.writeAttribute("version-minor", QString("%1").arg(KMinorVersion));
   stream.writeAttribute("version-revision", QString("%1").arg(KRevisionVersion));
 
+  // emit signal so other components can save data as well
+  emit saveData(stream);
+
+  // finalize workspace data block
+  stream.writeEndElement();
+  stream.writeEndDocument();
+
+  // check save status
   bool result = ! stream.hasError();
-  if (result)
-  {
-    // save project
-    result = project->serialize(stream);
-
-    stream.writeEndElement();
-    stream.writeEndDocument();
-  }
-
   if (result)
   {
     // save it to file
@@ -244,7 +219,7 @@ void MainWindow::on_ActionFileSave_triggered(bool checked)
 void MainWindow::onObjectAdded(QObject* object)
 {
   // check if project added
-  if (qobject_cast<Project*>(object))
+  if (NULL != qobject_cast<Project*>(object))
   {
     // connect for notification
     connect(object, SIGNAL(dirtyFlagChanged()), this, SLOT(updateTitleBar()));

@@ -29,18 +29,9 @@ QString JuiceJumpersProject::TypeName()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool JuiceJumpersProject::serialize(QXmlStreamWriter& stream) const
 {
-  stream.writeStartElement("project");
-  
-  // project data
-  stream.writeAttribute("name", name());
-  stream.writeAttribute("path", path());
-  stream.writeAttribute("type", TypeName());
-
   // serialize resources
 //  IResourceLibrary* resourceLibrary = ObjectPool::Instance()->getObject<IResourceLibrary>();
   bool result = true;//resourceLibrary->serialize(stream);
-
-  stream.writeEndElement();
 
   bool success = !stream.hasError() && result;
 

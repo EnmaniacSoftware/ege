@@ -43,6 +43,8 @@ int ResourceItem::row() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QVariant ResourceItem::data(int columnIndex, int role) const
 {
+  Q_UNUSED(columnIndex);
+
   // process according to role
   switch (role)
   {
@@ -86,6 +88,8 @@ ResourceItem* ResourceItem::child(int index) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceItem::insertChildren(int position, int count, int columns)
 {
+  Q_UNUSED(columns);
+
   // check if insertion within proper range
   if ((0 > position) || (position > m_children.size()))
   {

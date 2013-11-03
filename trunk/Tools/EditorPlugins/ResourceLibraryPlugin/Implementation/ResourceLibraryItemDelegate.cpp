@@ -109,6 +109,8 @@ void ResourceLibraryItemDelegate::setView(QTreeView* view)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QSize ResourceLibraryItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+  Q_UNUSED(option);
+
   ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
 
   return item->sizeHint();

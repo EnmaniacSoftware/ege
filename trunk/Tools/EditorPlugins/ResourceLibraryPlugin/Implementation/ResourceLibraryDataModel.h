@@ -36,9 +36,9 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
   signals:
 
     /*! Signal emitted when given item has been added to model. */
-    void onItemAdded(ResourceItem* item);
+    void itemAdded(ResourceItem* item);
     /*! Signal emitted when given item has been removed from model. */
-    void onItemRemoved(ResourceItem* item);
+    void itemRemoved(ResourceItem* item);
 
   public:
 

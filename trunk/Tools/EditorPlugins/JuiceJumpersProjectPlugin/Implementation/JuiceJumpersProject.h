@@ -16,6 +16,8 @@ class JuiceJumpersProject : public Project
     JuiceJumpersProject(QObject* parent, const QString& name, const QString& path);
    ~JuiceJumpersProject();
 
+  public:
+
     /*! Create method. */
     static Project* Create(QObject* parent, const QString& name, const QString& path);
     /*! Returns type name. */

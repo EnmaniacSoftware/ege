@@ -3,6 +3,7 @@
 #include "Configuration.h"
 #include <QStatusBar>
 #include <ObjectPool.h>
+#include <Projects/ProjectFactory.h>
 #include <QtPlugin>
 #include <QDebug>
 
@@ -25,12 +26,26 @@ bool WorkspacePlugin::initialize()
 
   // add to pool
   bool result = ObjectPool::Instance()->addObject(m_mainWindow) && ObjectPool::Instance()->addObject(m_configuration);
+  if (result)
+  {
+    // get project factory
+    ProjectFactory* projectFactory = ObjectPool::Instance()->getObject<ProjectFactory>();
+    Q_ASSERT(NULL != projectFactory);
 
-  // add configuration to main window
-  m_mainWindow->statusBar()->addPermanentWidget(m_configuration);
+    result = (NULL != projectFactory);
+    if (result)
+    {
+      // connect for notifications
+      connect(m_mainWindow, SIGNAL(saveData(QXmlStreamWriter&)), projectFactory, SLOT(onSaveData(QXmlStreamWriter&)));
+      connect(m_mainWindow, SIGNAL(loadData(QXmlStreamReader&)), projectFactory, SLOT(onLoadData(QXmlStreamReader&)));
 
-  // show main window
-  m_mainWindow->show();
+      // add configuration to main window
+      m_mainWindow->statusBar()->addPermanentWidget(m_configuration);
+
+      // show main window
+      m_mainWindow->show();
+    }
+  }
 
   return result;
 }

@@ -1,6 +1,9 @@
 #include "Projects/ProjectFactory.h"
 #include "Projects/Project.h"
+#include "ObjectPool.h"
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const QString KProjectTag = "project";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ProjectFactory::ProjectFactory(QObject* parent) : QAbstractItemModel(parent)
 {
@@ -72,6 +75,8 @@ QModelIndex ProjectFactory::parent(const QModelIndex& index) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QModelIndex ProjectFactory::index(int row, int column, const QModelIndex& parent) const
 {
+  Q_UNUSED(parent);
+
   return createIndex(row, column);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -95,11 +100,59 @@ QVariant ProjectFactory::data(const QModelIndex& index, int role) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 int ProjectFactory::columnCount(const QModelIndex& parent) const
 {
+  Q_UNUSED(parent);
+
   return 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 int ProjectFactory::rowCount(const QModelIndex& parent) const
 {
+  Q_UNUSED(parent);
+
   return m_registeredProjects.count();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ProjectFactory::onSaveData(QXmlStreamWriter& stream)
+{
+  Project* project = ObjectPool::Instance()->getObject<Project>();
+  Q_ASSERT(NULL != project);
+
+  // store initial project data
+  stream.writeStartElement("project");
+
+  stream.writeAttribute("name", project->name());
+  stream.writeAttribute("path", project->path());
+  stream.writeAttribute("type", project->typeName());
+
+  // serialize project
+  project->serialize(stream);
+
+  // finalize
+  stream.writeEndElement();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ProjectFactory::onLoadData(QXmlStreamReader& stream)
+{
+  // check if project element
+  if (KProjectTag == stream.name())
+  {
+    // try to create project
+    Project* project = createProject(stream.attributes().value("type").toString(), stream.attributes().value("name").toString(),
+                                     stream.attributes().value("path").toString(), this);
+    Q_ASSERT(NULL != project);
+
+    // deserialize project
+    if ((NULL == project) || ! project->unserialize(stream))
+    {
+      // error!
+      delete project;
+      project = NULL;
+    }
+    else
+    {
+      // add project to pool
+      ObjectPool::Instance()->addObject(project);
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
