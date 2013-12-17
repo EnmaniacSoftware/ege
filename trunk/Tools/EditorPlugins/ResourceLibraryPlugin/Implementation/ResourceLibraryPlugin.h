@@ -7,6 +7,7 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceLibraryWindow;
 class ResourceItemFactory;
+class ResourceLibrary;
 class QAction;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPlugin
@@ -30,6 +31,8 @@ class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPl
 
     /*! Module window. */
     ResourceLibraryWindow* m_window;
+    /*! Resource library. */
+    ResourceLibrary* m_library;
     /*! Resource item factory. */
     ResourceItemFactory* m_resourceItemFactory;
     /*! View menu action. */

@@ -5,6 +5,8 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const QString KPathArrtibute = "path";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemImage::ResourceItemImage() : ResourceItem()
 {
 }
@@ -54,32 +56,27 @@ QSize ResourceItemImage::sizeHint() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceItemImage::serialize(QXmlStreamWriter& stream) const
 {
-  stream.writeStartElement("resource-item");
-  
-  stream.writeAttribute("type", type());
-  stream.writeAttribute("name", name());
-  stream.writeAttribute("path", path());
+  bool result = false;
 
-  // serialize children
-  foreach (const ResourceItem* item, m_children)
+  // begin serialization
+  if (beginSerialize(stream))
   {
-    if ( ! item->serialize(stream))
-    {
-      // error!
-      return false;
-    }
+    // store path
+    stream.writeAttribute(KPathArrtibute, path());
+
+    // end serialization
+    result = endSerialize(stream);
   }
 
-  stream.writeEndElement();
-  return ! stream.hasError();
+  return result && ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceItemImage::unserialize(QXmlStreamReader& stream)
 {
   // retrieve data
-  m_path = stream.attributes().value("path").toString();
+  m_path = stream.attributes().value(KPathArrtibute).toString();
 
-  return ! stream.hasError() && ResourceItem::unserialize(stream);
+  return ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItemImage::setPath(const QString& path)

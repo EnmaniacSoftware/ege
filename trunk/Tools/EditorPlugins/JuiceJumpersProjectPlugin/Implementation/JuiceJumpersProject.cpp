@@ -3,18 +3,14 @@
 #include <ObjectPool.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-JuiceJumpersProject::JuiceJumpersProject(QObject* parent, const QString& name, const QString& path) : Project(parent, TypeName(), name, path)
+JuiceJumpersProject::JuiceJumpersProject(QObject* parent, const QString& name, const QString& path)
+: Project(parent, TypeName(), name, path),
+  m_resourceItemDelegate(new JuiceJumpersResourceLibraryItemDelegate(this))
 {
-  m_resourceItemDelegate = new JuiceJumpersResourceLibraryItemDelegate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 JuiceJumpersProject::~JuiceJumpersProject()
 {
-  if (NULL != m_resourceItemDelegate)
-  {
-    delete m_resourceItemDelegate;
-    m_resourceItemDelegate = NULL;
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Project* JuiceJumpersProject::Create(QObject* parent, const QString& name, const QString& path)

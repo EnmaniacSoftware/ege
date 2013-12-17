@@ -61,14 +61,15 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
     /*! Returns TRUE if model is empty. */
     bool isEmpty() const;
 
+    /*! @see QAbstractItemModel::rowCount. */
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+
   private:
 
     /*! @see QAbstractItemModel::parent. */
     QModelIndex parent(const QModelIndex& index) const override;
     /*! @see QAbstractItemModel::data. */
     QVariant data(const QModelIndex& index, int role) const override;
-    /*! @see QAbstractItemModel::rowCount. */
-    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     /*! @see QAbstractItemModel::flags. */
     Qt::ItemFlags flags(const QModelIndex& index) const override;
     /*! @see QAbstractItemModel::columnCount. */

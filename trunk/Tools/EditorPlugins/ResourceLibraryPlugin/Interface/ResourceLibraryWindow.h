@@ -4,14 +4,12 @@
 /*! Resource library window. */
 
 #include <QDockWidget>
-#include <Serializer.h>
 #include "ui_ResourceLibraryWindow.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceLibraryDataModel;
 class Ui_ResourceLibrary;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceLibraryWindow : public QDockWidget, public ISerializer
+class ResourceLibraryWindow : public QDockWidget
 {
   Q_OBJECT
 
@@ -24,14 +22,6 @@ class ResourceLibraryWindow : public QDockWidget, public ISerializer
     void saveSettings();
     /*! Loads settings. */
     void loadSettings();
-
-    /*! @see ISerializer::serialize. */
-    bool serialize(QXmlStreamWriter& stream) const override;
-    /*! @see ISerializer::unserialize. */
-    bool unserialize(QXmlStreamReader& stream) override;
-
-    /*! Returns model. */
-    ResourceLibraryDataModel* model() const;
 
   private slots:
 
@@ -47,6 +37,10 @@ class ResourceLibraryWindow : public QDockWidget, public ISerializer
     void onObjectAdded(QObject* object);
     /*! Slot called when object is about to be removed from pool. */
     void onObjectRemoved(QObject* object);
+    /*! Slot called when library data has been loaded.
+     *  @param  count Number of items in library.
+     */
+    void onLibraryLoaded(int count);
 
   private:
 
@@ -57,8 +51,6 @@ class ResourceLibraryWindow : public QDockWidget, public ISerializer
 
     /*! UI. */
     Ui_ResourceLibrary* m_ui;
-    /*! Data model. */
-    ResourceLibraryDataModel* m_model;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

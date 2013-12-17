@@ -6,6 +6,11 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+// TAGE - duplicate in ResourceLibraryDataModel :/
+static const QString KResourceItemTag = "ResourceItem";
+static const QString KTypeAttribute   = "type";
+static const QString KNameAttribute   = "name";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItem::ResourceItem() : m_parent(NULL)
 {
 }
@@ -131,86 +136,32 @@ Qt::ItemFlags ResourceItem::flags() const
   return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ResourceItem::serialize(QXmlStreamWriter& stream) const
+bool ResourceItem::beginSerialize(QXmlStreamWriter& stream) const
 {
-  stream.writeStartElement("resource-item");
+  stream.writeStartElement(KResourceItemTag);
   
-  stream.writeAttribute("type", type());
-  stream.writeAttribute("name", name());
+  stream.writeAttribute(KTypeAttribute, type());
+  stream.writeAttribute(KNameAttribute, name());
 
+  return ! stream.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ResourceItem::endSerialize(QXmlStreamWriter& stream) const
+{
   // serialize children
   foreach (const ResourceItem* item, m_children)
   {
-    if (!item->serialize(stream))
+    if ( ! item->serialize(stream))
     {
       // error!
       return false;
     }
   }
 
+  // finalize
   stream.writeEndElement();
 
-  return true;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ResourceItem::unserialize(QXmlStreamReader& stream)
-{
-  QString name = stream.attributes().value("name").toString();
-  QString type = stream.attributes().value("type").toString();
-
-  //Q_ASSERT((m_name == stream.attributes().value("name")) && (type() == stream.attributes().value("type")));
-
-  // process children
-  bool done = false;
-  while (!stream.atEnd() && !done)
-  {
-    QXmlStreamReader::TokenType token = stream.readNext();
-    switch (token)
-    {
-      case QXmlStreamReader::StartElement:
-
-        // check if resource item element
-        if ("resource-item" == stream.name())
-        {
-          // create proper item
-          ResourceItem* item = NULL;//app->resourceItemFactory()->createItem(stream.attributes().value("type").toString(), 
-                                      //                                stream.attributes().value("name").toString(), this);
-
-          // check if processing an item already
-          if (NULL != item)
-          {
-            // let item unserialize
-            if (!item->unserialize(stream))
-            {
-              // error!
-              delete item;
-              return false;
-            }
- 
-            // add to pool
-            m_children.push_back(item);
-          }
-          else
-          {
-            // error!
-            return false;
-          }
-        }
-        else
-        {
-          qWarning() << "Skipping data: " << stream.name();
-        }
-        break;
-
-      case QXmlStreamReader::EndElement:
-
-        // done
-        done = true;
-        break;
-    }
-  }
-
-  return !stream.hasError();
+  return ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItem::setParent(ResourceItem* parent)
@@ -266,5 +217,25 @@ void ResourceItem::removeChildren()
 {
   qDeleteAll(m_children);
   m_children.clear();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ResourceItem::serialize(QXmlStreamWriter& stream) const
+{
+  Q_UNUSED(stream);
+
+  // This method should never be called
+  Q_ASSERT(false);
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ResourceItem::unserialize(QXmlStreamReader& stream)
+{
+  Q_UNUSED(stream);
+
+  // This method should never be called
+  Q_ASSERT(false);
+
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

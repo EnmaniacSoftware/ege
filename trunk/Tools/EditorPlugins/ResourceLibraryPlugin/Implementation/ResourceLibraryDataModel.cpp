@@ -1,10 +1,16 @@
 #include "ResourceLibraryDataModel.h"
 #include "ResourceItem.h"
+#include "ResourceItemFactory.h"
 #include <QFile>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
+#include <QStack>
 #include <QDebug>
+#include <ObjectPool.h>
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+// TAGE - duplicate in ResourceItem :/
+static const QString KResourceItemTag = "ResourceItem";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryDataModel::ResourceLibraryDataModel(QObject* parent) : QAbstractItemModel(parent),
                                                                       m_root(new ResourceItem())
@@ -168,42 +174,75 @@ bool ResourceLibraryDataModel::setData(const QModelIndex& index, const QVariant&
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceLibraryDataModel::serialize(QXmlStreamWriter& stream) const
 {
-  // serialize root
-  bool result = m_root->serialize(stream);
+  bool result = true;
+
+  // serialize root's items (without root itself)
+  const int children = m_root->childCount();
+  for (int i = 0; (i < children) && result; ++i)
+  {
+    const ResourceItem* child = m_root->child(i);
+    Q_ASSERT(NULL != child);
+
+    // serialize current child
+    result = child->serialize(stream);
+  }
 
   return result && ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
 {
-  bool done = false;
-  while ( ! stream.atEnd() && ! done)
+  // create container item
+  ResourceItemFactory* factory = ObjectPool::Instance()->getObject<ResourceItemFactory>();
+  Q_ASSERT(NULL != factory);
+
+  // NOTE: ResourceItem stack is used to track the parents of deserialized items
+  QStack<ResourceItem*> itemStack;
+  itemStack.push_back(m_root);
+
+  while ( ! stream.atEnd())
   {
     QXmlStreamReader::TokenType token = stream.readNext();
     switch (token)
     {
       case QXmlStreamReader::StartElement:
 
-        // check if root element
-        if (("resource-item" == stream.name()) && (stream.attributes().value("type") == m_root->type()) &&
-            (stream.attributes().value("name") == m_root->name()))
+        // check if resource item tag
+        if (KResourceItemTag == stream.name())
         {
-          if ( ! m_root->unserialize(stream))
+          // get resource item required data
+          const QString type = stream.attributes().value("type").toString();
+          const QString name = stream.attributes().value("name").toString();
+
+          // create given resource item
+          ResourceItem* item = factory->createItem(type, name, itemStack.top());
+          Q_ASSERT(NULL != item);
+
+          // unserialize item
+          if (item->unserialize(stream))
+          {
+            // add to parent
+            itemStack.top()->addChild(item);
+
+            // add this item to local stack
+            itemStack.push_back(item);
+          }
+          else
           {
             // error!
-            return false;
+            qWarning() << tr("Could not unserialize resource item of name:") << name << tr("and type:") << type;
           }
-        }
-        else
-        {
-          qWarning() << "Skipping data: " << stream.name();
         }
         break;
 
       case QXmlStreamReader::EndElement:
 
-        // done
-        done = true;
+        // check if resource item tag
+        if (KResourceItemTag == stream.name())
+        {
+          // pop from local item stack
+          itemStack.pop_back();
+        }
         break;
     }
   }

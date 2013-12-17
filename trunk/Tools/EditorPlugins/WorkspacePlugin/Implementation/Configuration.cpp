@@ -74,6 +74,9 @@ void Configuration::onObjectAdded(QObject* object)
   // check if project added
   if (qobject_cast<Project*>(object))
   {
+    // TAGE - populate configuration list taken from project
+    // ...
+
     // enable
     setEnabled(true);
   }
@@ -84,8 +87,25 @@ void Configuration::onObjectRemoved(QObject* object)
   // check if project removed
   if (qobject_cast<Project*>(object))
   {
+    // remove all configurations
+    removeAll();
+
     // disable
     setEnabled(false);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Configuration::removeAll()
+{
+  // remove all configurations
+  comboBox->clear();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Configuration::createDefault()
+{
+  static const QString KDefaultConfigurationName = tr("Default");
+
+  // add default configuration
+  onAddConfiguration(KDefaultConfigurationName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -19,7 +19,7 @@
 static const int KMajorVersion    = 0;
 static const int KMinorVersion    = 1;
 static const int KRevisionVersion = 1;
-static const QString KWorkspaceTag              = "workspace";
+static const QString KWorkspaceTag              = "Workspace";
 static const QString KMajorVersionAttribute     = "version-major";
 static const QString KMinorVersionAttribute     = "version-minor";
 static const QString KRevisionVersionAttribute  = "version-revision";

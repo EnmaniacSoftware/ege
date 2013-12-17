@@ -1,4 +1,5 @@
 #include "ResourceLibraryPlugin.h"
+#include "ResourceLibrary.h"
 #include "ResourceLibraryWindow.h"
 #include "ResourceItemFactory.h"
 #include <MainWindow.h>
@@ -11,6 +12,7 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResouceLibraryPlugin::ResouceLibraryPlugin(QObject* parent) : QObject(parent),
                                                               m_window(NULL),
+                                                              m_library(NULL),
                                                               m_resourceItemFactory(NULL),
                                                               m_viewAction(NULL)
 {
@@ -37,13 +39,20 @@ bool ResouceLibraryPlugin::initialize()
   // create objects
   m_window              = new ResourceLibraryWindow(mainWindow);
   m_resourceItemFactory = new ResourceItemFactory();
+  m_library             = new ResourceLibrary();
 
   // add to pool
-  bool result = ObjectPool::Instance()->addObject(m_window) && ObjectPool::Instance()->addObject(m_resourceItemFactory);
+  bool result = ObjectPool::Instance()->addObject(m_window) && ObjectPool::Instance()->addObject(m_resourceItemFactory) &&
+                ObjectPool::Instance()->addObject(m_library);
   if (result)
   {
     // initial placement
     mainWindow->addDockWidget(Qt::LeftDockWidgetArea, m_window);
+
+    // connect for notifications
+    connect(mainWindow, SIGNAL(saveData(QXmlStreamWriter&)), m_library, SLOT(onSaveData(QXmlStreamWriter&)));
+    connect(mainWindow, SIGNAL(loadData(QXmlStreamReader&)), m_library, SLOT(onLoadData(QXmlStreamReader&)));
+    connect(m_library, SIGNAL(loaded(int)), m_window, SLOT(onLibraryLoaded(int)));
   }
 
   // create menu entries
@@ -100,6 +109,16 @@ void ResouceLibraryPlugin::deinitialize()
     // delete
     delete m_window;
     m_window = NULL;
+  }
+
+  if (NULL != m_library)
+  {
+    // remove from pool
+    ObjectPool::Instance()->removeObject(m_library);
+
+    // delete
+    delete m_library;
+    m_library = NULL;
   }
 
   // clean up resources

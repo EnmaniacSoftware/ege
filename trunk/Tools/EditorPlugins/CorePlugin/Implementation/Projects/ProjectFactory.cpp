@@ -3,7 +3,7 @@
 #include "ObjectPool.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static const QString KProjectTag = "project";
+static const QString KProjectTag = "Project";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ProjectFactory::ProjectFactory(QObject* parent) : QAbstractItemModel(parent)
 {
@@ -118,7 +118,7 @@ void ProjectFactory::onSaveData(QXmlStreamWriter& stream)
   Q_ASSERT(NULL != project);
 
   // store initial project data
-  stream.writeStartElement("project");
+  stream.writeStartElement(KProjectTag);
 
   stream.writeAttribute("name", project->name());
   stream.writeAttribute("path", project->path());

@@ -29,6 +29,13 @@ class WORKSPACEPLUGIN_API Configuration : public QWidget, public Ui::Configurati
     void onObjectAdded(QObject* object);
     /*! Slot called when object is about to be removed from pool. */
     void onObjectRemoved(QObject* object);
+
+  private:
+
+    /*! Removes all defined configurations. */
+    void removeAll();
+    /*! Creates default configuration. */
+    void createDefault();
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

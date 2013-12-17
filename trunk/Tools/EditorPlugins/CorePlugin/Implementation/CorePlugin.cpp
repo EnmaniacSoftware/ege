@@ -23,8 +23,8 @@ bool CorePlugin::initialize()
   Q_INIT_RESOURCE(core);
 
   // create objectss
-  m_projectFactory = new ProjectFactory();
-  m_settings = new Settings();
+  m_projectFactory  = new ProjectFactory();
+  m_settings        = new Settings();
 
   // add to pool
   bool result = ObjectPool::Instance()->addObject(m_projectFactory) && ObjectPool::Instance()->addObject(m_settings);

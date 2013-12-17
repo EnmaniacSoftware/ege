@@ -21,7 +21,7 @@ WorkspacePlugin::~WorkspacePlugin()
 bool WorkspacePlugin::initialize()
 {
   // create objects
-  m_mainWindow = new MainWindow();
+  m_mainWindow    = new MainWindow();
   m_configuration = new Configuration();
 
   // add to pool

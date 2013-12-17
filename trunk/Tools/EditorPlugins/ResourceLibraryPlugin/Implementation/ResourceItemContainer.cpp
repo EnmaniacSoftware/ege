@@ -36,28 +36,24 @@ QString ResourceItemContainer::type() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceItemContainer::serialize(QXmlStreamWriter& stream) const
 {
-  stream.writeStartElement("resource-item");
-  
-  stream.writeAttribute("type", type());
-  stream.writeAttribute("name", name());
+  bool result = false;
 
-  // serialize children
-  foreach (const ResourceItem* item, m_children)
+  // begin serialization
+  if (beginSerialize(stream))
   {
-    if ( ! item->serialize(stream))
-    {
-      // error!
-      return false;
-    }
+    // end serialization
+    result = endSerialize(stream);
   }
 
-  stream.writeEndElement();
-  return !stream.hasError();
+  return result && ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceItemContainer::unserialize(QXmlStreamReader& stream)
 {
-  return ResourceItem::unserialize(stream);
+  Q_UNUSED(stream);
+
+  // nothing to do
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QSize ResourceItemContainer::sizeHint() const

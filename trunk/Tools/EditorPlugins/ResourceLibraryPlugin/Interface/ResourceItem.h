@@ -72,13 +72,28 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public ISerializer
     /*! Returns the item flags for the given item. */
     virtual Qt::ItemFlags flags() const;
 
+    /*! Returns size hint. */
+    virtual QSize sizeHint() const;
+
     /*! @see ISerializer::serialize. */
     bool serialize(QXmlStreamWriter& stream) const override;
     /*! @see ISerializer::unserialize. */
     bool unserialize(QXmlStreamReader& stream) override;
 
-    /*! Returns size hint. */
-    virtual QSize sizeHint() const;
+  protected:
+
+    /*! Begins serialization.
+     *  @param  stream  Data stream serialization is to be done to.
+     *  @return TRUE on success.
+     *  @note This method begins serialization of any derived class. It must be called before any item can be properly serialized.
+     */
+    bool beginSerialize(QXmlStreamWriter& stream) const;
+    /*! Ends serialization.
+     *  @param  stream  Data stream serialization is to be done to.
+     *  @return TRUE on success.
+     *  @note This method ends serialization of any derived class. It must be called after item has been serialized.
+     */
+    bool endSerialize(QXmlStreamWriter& stream) const;
 
   protected:
 
