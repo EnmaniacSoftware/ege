@@ -38,6 +38,8 @@ bool WorkspacePlugin::initialize()
       // connect for notifications
       connect(m_mainWindow, SIGNAL(saveData(QXmlStreamWriter&)), projectFactory, SLOT(onSaveData(QXmlStreamWriter&)));
       connect(m_mainWindow, SIGNAL(loadData(QXmlStreamReader&)), projectFactory, SLOT(onLoadData(QXmlStreamReader&)));
+      connect(m_mainWindow, SIGNAL(saveData(QXmlStreamWriter&)), m_configuration, SLOT(onSaveData(QXmlStreamWriter&)));
+      connect(m_mainWindow, SIGNAL(loadData(QXmlStreamReader&)), m_configuration, SLOT(onLoadData(QXmlStreamReader&)));
 
       // add configuration to main window
       m_mainWindow->statusBar()->addPermanentWidget(m_configuration);

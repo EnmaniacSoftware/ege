@@ -122,6 +122,31 @@ int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
   return rowCount;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QList<ResourceItem*> ResourceLibraryDataModel::items(const QString& typeName) const
+{
+  QList<ResourceItem*> list = allItems();
+
+  // go thru the list and remove invalid types
+  for (QList<ResourceItem*>::iterator it = list.begin(); it != list.end();)
+  {
+    const ResourceItem* item = *it;
+
+    // check if invalid type
+    if (item->type() != typeName)
+    {
+      // remove it
+      it = list.erase(it);
+    }
+    else
+    {
+      // go on
+      ++it;
+    }
+  }
+
+  return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryDataModel::clear()
 {
   if ((NULL != m_root) && (0 < m_root->childCount()))

@@ -29,7 +29,7 @@ void ResourceLibrary::onSaveData(QXmlStreamWriter& stream)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibrary::onLoadData(QXmlStreamReader& stream)
 {
-  // check if project element
+  // check if proper element
   if (KResourceLibraryTag == stream.name())
   {
     // unserialize model

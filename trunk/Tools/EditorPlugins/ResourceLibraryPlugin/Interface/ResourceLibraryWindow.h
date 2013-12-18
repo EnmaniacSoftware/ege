@@ -27,8 +27,8 @@ class ResourceLibraryWindow : public QDockWidget
 
     /*! Slot called when context menu is requested. */
 		void onQueueContextMenuRequested(const QPoint& pos);
-    /*! Slot called when container is requested to be added. */
-    void onAddContainer();
+    /*! Slot called when resource group is requested to be added. */
+    void onAddGroup();
     /*! Slot called when resource is requested to be added. */
     void onAddResource();
     /*! Slot called when resource items are requested to be removed. */
@@ -46,6 +46,10 @@ class ResourceLibraryWindow : public QDockWidget
 
     /*! Updates menus. */
     void updateMenus();
+    /*! Generates valid group name.
+     *  @note There can be no duplicate names within same configuration.
+     */
+    QString generateGroupName() const;
 
   private:
 

@@ -7,6 +7,9 @@
 #include <QMessageBox>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const QString KConfigurationTag = "Configuration";
+static const QString KNameAttribute    = "name";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Configuration::Configuration(QWidget* parent) : QWidget(parent)
 {
   // setup UI
@@ -48,11 +51,22 @@ void Configuration::onRemoveClicked()
 
   // remove
   comboBox->removeItem(comboBox->currentIndex());
+
+  // update UI
+  updateUI();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Configuration::onSelectionChanged()
 {
-  remove->setEnabled(0 <= comboBox->currentIndex());
+  // update UI
+  updateUI();
+
+  // check if anything selected
+  if (0 <= comboBox->currentIndex())
+  {
+    // emit
+    emit changed(comboBox->currentText());
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Configuration::onAddConfiguration(const QString& name)
@@ -67,6 +81,9 @@ void Configuration::onAddConfiguration(const QString& name)
 
   // add to pool
   comboBox->addItem(name);
+
+  // update UI
+  updateUI();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Configuration::onObjectAdded(QObject* object)
@@ -74,8 +91,8 @@ void Configuration::onObjectAdded(QObject* object)
   // check if project added
   if (qobject_cast<Project*>(object))
   {
-    // TAGE - populate configuration list taken from project
-    // ...
+    // create default configuration
+    createDefault();
 
     // enable
     setEnabled(true);
@@ -107,5 +124,40 @@ void Configuration::createDefault()
 
   // add default configuration
   onAddConfiguration(KDefaultConfigurationName);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Configuration::onSaveData(QXmlStreamWriter& stream)
+{
+  // go thru all configurations
+  const int count = comboBox->count();
+  for (int i = 0; i < count; ++i)
+  {
+    const QString name = comboBox->currentText();
+
+    stream.writeStartElement(KConfigurationTag);
+
+    stream.writeAttribute(KNameAttribute, name);
+
+    // finalize
+    stream.writeEndElement();
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Configuration::onLoadData(QXmlStreamReader& stream)
+{
+  // check if proper element
+  if (KConfigurationTag == stream.name())
+  {
+    const QString name = stream.attributes().value(KNameAttribute).toString();
+
+    // add new configuration
+    onAddConfiguration(name);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Configuration::updateUI()
+{
+  // enable REMOVE button only if more than 1 item
+  remove->setEnabled(1 < comboBox->count());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

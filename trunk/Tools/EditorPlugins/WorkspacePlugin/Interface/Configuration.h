@@ -7,6 +7,9 @@
 #include "ui_configuration.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class QXmlStreamWriter;
+class QXmlStreamReader;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class WORKSPACEPLUGIN_API Configuration : public QWidget, public Ui::Configuration
 {
   Q_OBJECT
@@ -14,6 +17,13 @@ class WORKSPACEPLUGIN_API Configuration : public QWidget, public Ui::Configurati
   public:
 
     Configuration(QWidget* parent = NULL);
+
+  signals:
+
+    /*! Signal emitted when current configuration changes.
+     *  @param  name  Name of current configuration.
+     */
+    void changed(const QString& name);
 
   private slots:
 
@@ -29,6 +39,14 @@ class WORKSPACEPLUGIN_API Configuration : public QWidget, public Ui::Configurati
     void onObjectAdded(QObject* object);
     /*! Slot called when object is about to be removed from pool. */
     void onObjectRemoved(QObject* object);
+    /*! Slot called when saving is required.
+     *  @param  stream  XML stream where data is to be saved.
+     */
+    void onSaveData(QXmlStreamWriter& stream);
+    /*! Slot called when loading is required.
+     *  @param  stream  XML stream where data is to be saved.
+     */
+    void onLoadData(QXmlStreamReader& stream);
 
   private:
 
@@ -36,6 +54,8 @@ class WORKSPACEPLUGIN_API Configuration : public QWidget, public Ui::Configurati
     void removeAll();
     /*! Creates default configuration. */
     void createDefault();
+    /*! Updates UI. */
+    void updateUI();
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

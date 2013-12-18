@@ -55,7 +55,7 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
 
   if (0 == indexList.size())
   {
-    action = menu.addAction(tr("Add container"), this, SLOT(onAddContainer()));
+    action = menu.addAction(tr("Add group"), this, SLOT(onAddGroup()));
   }
   else if (1 == indexList.size())
   {
@@ -64,7 +64,6 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
 
     if (ResourceItemContainer::TypeName() == item->type())
     {
-      action = menu.addAction(tr("Add container"), this, SLOT(onAddContainer()));
       action = menu.addAction(tr("Add resource"), this, SLOT(onAddResource()));
     }
 
@@ -144,7 +143,7 @@ void ResourceLibraryWindow::onLibraryLoaded(int count)
   m_ui->stackedWidget->setCurrentIndex((0 == count) ? KStackedPageIndexAddResources : KStackedPageIndexResourcesView);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceLibraryWindow::onAddContainer()
+void ResourceLibraryWindow::onAddGroup()
 {
   ResourceLibrary* library = ObjectPool::Instance()->getObject<ResourceLibrary>();
   Q_ASSERT(NULL != library);
@@ -159,7 +158,7 @@ void ResourceLibraryWindow::onAddContainer()
 
   if (NULL != factory)
   {
-    ResourceItem* newItem = factory->createItem(ResourceItemContainer::TypeName(), tr("No name"));
+    ResourceItem* newItem = factory->createItem(ResourceItemContainer::TypeName(), generateGroupName());
     if (NULL != newItem)
     {
       library->model()->insertItem(index, newItem);
@@ -229,29 +228,50 @@ void ResourceLibraryWindow::onRemoveItems()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//bool ResourceLibraryWindow::serialize(QXmlStreamWriter& stream) const
-//{
-//  stream.writeStartElement("resources");
-  
-//  // serialize model
-//  bool result = m_model->serialize(stream);
-
-//  stream.writeEndElement();
-
-//  return result && !stream.hasError();
-//}
-////--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//bool ResourceLibraryWindow::unserialize(QXmlStreamReader& stream)
-//{
-//  // unserialize model
-//  bool result = m_model->unserialize(stream);
- 
-//  return result && !stream.hasError();
-//}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryWindow::updateMenus()
 {
   MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
   Q_ASSERT(NULL != mainWindow);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QString ResourceLibraryWindow::generateGroupName() const
+{
+  ResourceLibrary* library = ObjectPool::Instance()->getObject<ResourceLibrary>();
+  Q_ASSERT(NULL != library);
+  Q_ASSERT(NULL != library->model());
+
+  QString name;
+
+  // get all present groups
+  QList<ResourceItem*> availableGroups = library->model()->items(ResourceItemContainer::TypeName());
+
+  int index = 1;
+  while (true)
+  {
+    // generate temporary name
+    name = tr("Group %1").arg(index++);
+
+    // check if does not exist
+    bool found = false;
+    foreach (const ResourceItem* item, availableGroups)
+    {
+      // check if found
+      if (item->name() == name)
+      {
+        // done
+        found = true;
+        break;
+      }
+    }
+
+    // check if not found
+    if ( ! found)
+    {
+      // we are done
+      break;
+    }
+  }
+
+  return name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

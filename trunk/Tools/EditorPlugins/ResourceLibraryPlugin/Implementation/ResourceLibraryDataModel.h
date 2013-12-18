@@ -10,6 +10,7 @@
 #include <QModelIndex>
 #include <QVariant>
 #include <Serializer.h>
+#include <QList>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceItem;
@@ -63,6 +64,12 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
 
     /*! @see QAbstractItemModel::rowCount. */
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+
+    /*! Returns all resource items of a given type.
+     *  @param  typeName  Name of the type of objects to return.
+     *  @return List of pointers to objects of a given type currently present in the model.
+     */
+    QList<ResourceItem*> items(const QString& typeName) const;
 
   private:
 
