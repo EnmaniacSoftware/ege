@@ -6,12 +6,19 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct BuiltInResourceItem
 {
-  FPRESOURCEITEMTYPENAMEFUNC pfTypeNameFunc;
-  FPRESOURCEITEMCREATEFUNC pfCreateFunc;
+  FPRESOURCEITEMTYPENAMEFUNC                 pfTypeNameFunc;
+  FPRESOURCEITEMCREATEFUNC                   pfCreateFunc;
+  FPRESOURCEITEMRESLIBWNDCONTEXTMENUHOOKFUNC pfResourceLibraryWindowHookFunc;
 };
 
-static BuiltInResourceItem l_resourceItemsToRegister[] = {  { ResourceItemContainer::TypeName, ResourceItemContainer::Create },
-                                                            { ResourceItemImage::TypeName, ResourceItemImage::Create }
+static BuiltInResourceItem l_resourceItemsToRegister[] = {  { ResourceItemContainer::TypeName,
+                                                              ResourceItemContainer::Create,
+                                                              ResourceItemContainer::ResourceLibraryWindowHook
+                                                            },
+                                                            { ResourceItemImage::TypeName,
+                                                              ResourceItemImage::Create,
+                                                              ResourceItemImage::ResourceLibraryWindowHook
+                                                            }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemFactory::ResourceItemFactory(QObject* parent) : QObject(parent)
@@ -21,7 +28,7 @@ ResourceItemFactory::ResourceItemFactory(QObject* parent) : QObject(parent)
   {
     const BuiltInResourceItem& item = l_resourceItemsToRegister[i];
 
-    registerItem(item.pfTypeNameFunc, item.pfCreateFunc);
+    registerItem(item.pfTypeNameFunc, item.pfCreateFunc, item.pfResourceLibraryWindowHookFunc);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -29,9 +36,10 @@ ResourceItemFactory::~ResourceItemFactory()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ResourceItemFactory::registerItem(FPRESOURCEITEMTYPENAMEFUNC typeNameFunc, FPRESOURCEITEMCREATEFUNC createFunc)
+bool ResourceItemFactory::registerItem(FPRESOURCEITEMTYPENAMEFUNC typeNameFunc, FPRESOURCEITEMCREATEFUNC createFunc,
+                                       FPRESOURCEITEMRESLIBWNDCONTEXTMENUHOOKFUNC resourceLibraryWindowHookFunc)
 {
-  Q_ASSERT((NULL != typeNameFunc) && (NULL != createFunc));
+  Q_ASSERT((NULL != typeNameFunc) && (NULL != createFunc) && (NULL != resourceLibraryWindowHookFunc));
 
   // check if resource with such a name exists already
   if (isItemRegistered(typeNameFunc()))
@@ -42,8 +50,9 @@ bool ResourceItemFactory::registerItem(FPRESOURCEITEMTYPENAMEFUNC typeNameFunc, 
 
   // register
   ItemData data;
-  data.createFunc   = createFunc;
-  data.typeNameFunc = typeNameFunc;
+  data.createFunc                    = createFunc;
+  data.typeNameFunc                  = typeNameFunc;
+  data.resourceLibraryWindowHookFunc = resourceLibraryWindowHookFunc;
 
   m_registeredItems.append(data);
 
@@ -80,5 +89,10 @@ bool ResourceItemFactory::isItemRegistered(const QString& typeName) const
   }
 
   return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const QList<ResourceItemFactory::ItemData>& ResourceItemFactory::items() const
+{
+  return m_registeredItems;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

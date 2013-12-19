@@ -2,6 +2,7 @@
 #include "ResourceLibrary.h"
 #include "ResourceLibraryWindow.h"
 #include "ResourceItemFactory.h"
+#include "ResourceLibraryWindowGroupAdder.h"
 #include <MainWindow.h>
 #include <ObjectPool.h>
 #include <QtPlugin>
@@ -37,13 +38,14 @@ bool ResouceLibraryPlugin::initialize()
   }
 
   // create objects
-  m_window              = new ResourceLibraryWindow(mainWindow);
-  m_resourceItemFactory = new ResourceItemFactory();
   m_library             = new ResourceLibrary();
+  m_window              = new ResourceLibraryWindow(m_library, mainWindow);
+  m_resourceItemFactory = new ResourceItemFactory();
+  m_windowGroupAdder    = new ResourceLibraryWindowGroupAdder();
 
   // add to pool
   bool result = ObjectPool::Instance()->addObject(m_window) && ObjectPool::Instance()->addObject(m_resourceItemFactory) &&
-                ObjectPool::Instance()->addObject(m_library);
+                ObjectPool::Instance()->addObject(m_library) && ObjectPool::Instance()->addObject(m_windowGroupAdder);
   if (result)
   {
     // initial placement
@@ -89,6 +91,16 @@ void ResouceLibraryPlugin::deinitialize()
     // delete
     delete m_viewAction;
     m_viewAction = NULL;
+  }
+
+  if (NULL != m_windowGroupAdder)
+  {
+    // remove from pool
+    ObjectPool::Instance()->removeObject(m_windowGroupAdder);
+
+    // delete
+    delete m_windowGroupAdder;
+    m_windowGroupAdder = NULL;
   }
 
   if (NULL != m_resourceItemFactory)

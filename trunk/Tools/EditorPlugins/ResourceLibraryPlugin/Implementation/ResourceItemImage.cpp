@@ -3,6 +3,7 @@
 #include <FileSystemUtils.h>
 #include <QImageReader>
 #include <QDebug>
+#include <QMenu>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const QString KPathArrtibute = "path";
@@ -27,6 +28,10 @@ ResourceItem* ResourceItemImage::Create(const QString& name, ResourceItem* paren
 QString ResourceItemImage::TypeName()
 {
   return "image";
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemImage::ResourceLibraryWindowHook(QMenu& menu, const QString& selectedType)
+{
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const QImage& ResourceItemImage::thumbnailImage() const

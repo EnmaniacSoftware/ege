@@ -7,7 +7,8 @@ HEADERS = Implementation/ResourceLibraryPlugin.h \
           Interface/ResourceItemImage.h \
           Interface/ResourceItemFactory.h \
           Interface/ResouceLibraryPlugin_global.h \
-    Interface/ResourceLibrary.h
+    Interface/ResourceLibrary.h \
+    Implementation/ResourceLibraryWindowGroupAdder.h
 
 SOURCES = Implementation/ResourceLibraryPlugin.cpp \
           Implementation/ResourceLibraryWindow.cpp \
@@ -17,7 +18,8 @@ SOURCES = Implementation/ResourceLibraryPlugin.cpp \
           Implementation/ResourceItemImage.cpp \
           Implementation/ResourceLibraryDataModel.cpp \
           Implementation/ResourceLibraryItemDelegate.cpp \
-    Implementation/ResourceLibrary.cpp
+    Implementation/ResourceLibrary.cpp \
+    Implementation/ResourceLibraryWindowGroupAdder.cpp
 
 FORMS += Forms/ResourceLibraryWindow.ui
 

@@ -5,6 +5,8 @@
 #include "ResourceItem.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class QMenu;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceItemImage : public ResourceItem
 {
   public:
@@ -19,6 +21,11 @@ class ResourceItemImage : public ResourceItem
     static ResourceItem* Create(const QString& name, ResourceItem* parent);
     /*! Returns item type name. */
     static QString TypeName();
+    /*! Hooks into Resource Library Window context menu.
+     *  @param  menu          Menu to hook into.
+     *  @param  selectedType  Name of the type of resource item for which context menu is being built.
+     */
+    static void ResourceLibraryWindowHook(QMenu& menu, const QString& selectedType);
 
   public:
 

@@ -11,8 +11,10 @@
 #include "ResouceLibraryPlugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RESOUCELIBRARYPLUGIN_API ResourceItem : public ISerializer
+class RESOUCELIBRARYPLUGIN_API ResourceItem : public QObject, public ISerializer
 {
+  Q_OBJECT
+
   public:
 
     ResourceItem();

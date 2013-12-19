@@ -217,7 +217,6 @@ bool ResourceLibraryDataModel::serialize(QXmlStreamWriter& stream) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
 {
-  // create container item
   ResourceItemFactory* factory = ObjectPool::Instance()->getObject<ResourceItemFactory>();
   Q_ASSERT(NULL != factory);
 

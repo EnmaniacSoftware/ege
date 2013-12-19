@@ -1,5 +1,8 @@
 #include "ResourceItemContainer.h"
+#include "ResourceLibraryWindowGroupAdder.h"
+#include <ObjectPool.h>
 #include <QDebug>
+#include <QMenu>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemContainer::ResourceItemContainer() : ResourceItem()
@@ -22,6 +25,17 @@ ResourceItem* ResourceItemContainer::Create(const QString& name, ResourceItem* p
 QString ResourceItemContainer::TypeName()
 {
   return "container";
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemContainer::ResourceLibraryWindowHook(QMenu& menu, const QString& selectedType)
+{
+  if (selectedType.isEmpty() || (selectedType == TypeName()))
+  {
+    ResourceLibraryWindowGroupAdder* adder = ObjectPool::Instance()->getObject<ResourceLibraryWindowGroupAdder>();
+    Q_ASSERT(NULL != adder);
+
+    menu.addAction(tr("Add group"), adder, SLOT(onAdd()));
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Qt::ItemFlags ResourceItemContainer::flags() const

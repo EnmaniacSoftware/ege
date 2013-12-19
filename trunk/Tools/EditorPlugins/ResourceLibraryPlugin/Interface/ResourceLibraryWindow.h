@@ -8,6 +8,7 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Ui_ResourceLibrary;
+class ResourceLibrary;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceLibraryWindow : public QDockWidget
 {
@@ -15,7 +16,7 @@ class ResourceLibraryWindow : public QDockWidget
 
   public:
 
-    explicit ResourceLibraryWindow(QWidget* parent = NULL);
+    ResourceLibraryWindow(ResourceLibrary* library, QWidget* parent = NULL);
    ~ResourceLibraryWindow();
 
     /*! Saves settings. */
@@ -23,12 +24,15 @@ class ResourceLibraryWindow : public QDockWidget
     /*! Loads settings. */
     void loadSettings();
 
+    /*! Returns list of selected indicies.
+     *  @note List contains no duplicates and is not sorted.
+     */
+    QModelIndexList selectedIndexes() const;
+
   private slots:
 
     /*! Slot called when context menu is requested. */
 		void onQueueContextMenuRequested(const QPoint& pos);
-    /*! Slot called when resource group is requested to be added. */
-    void onAddGroup();
     /*! Slot called when resource is requested to be added. */
     void onAddResource();
     /*! Slot called when resource items are requested to be removed. */
@@ -41,20 +45,20 @@ class ResourceLibraryWindow : public QDockWidget
      *  @param  count Number of items in library.
      */
     void onLibraryLoaded(int count);
+    /*! Slot called when model data has changed. */
+    void onModelChanged();
 
   private:
 
     /*! Updates menus. */
     void updateMenus();
-    /*! Generates valid group name.
-     *  @note There can be no duplicate names within same configuration.
-     */
-    QString generateGroupName() const;
 
   private:
 
     /*! UI. */
     Ui_ResourceLibrary* m_ui;
+    /*! Pointer to resource library being used. */
+    ResourceLibrary* m_resourceLibrary;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
