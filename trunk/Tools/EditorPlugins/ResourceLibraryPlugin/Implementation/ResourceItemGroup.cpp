@@ -1,35 +1,36 @@
-#include "ResourceItemContainer.h"
+#include "ResourceItemGroup.h"
 #include "ResourceLibraryWindowGroupAdder.h"
 #include <ObjectPool.h>
 #include <QDebug>
 #include <QMenu>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemContainer::ResourceItemContainer() : ResourceItem()
+ResourceItemGroup::ResourceItemGroup() : ResourceItem()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemContainer::ResourceItemContainer(const QString& name, ResourceItem* parent) : ResourceItem(name, parent)
+ResourceItemGroup::ResourceItemGroup(const QString& name, ResourceItem* parent) : ResourceItem(name, parent)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemContainer::~ResourceItemContainer()
+ResourceItemGroup::~ResourceItemGroup()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItem* ResourceItemContainer::Create(const QString& name, ResourceItem* parent)
+ResourceItem* ResourceItemGroup::Create(const QString& name, ResourceItem* parent)
 {
-  return new ResourceItemContainer(name, parent);
+  return new ResourceItemGroup(name, parent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QString ResourceItemContainer::TypeName()
+QString ResourceItemGroup::TypeName()
 {
   return "container";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceItemContainer::ResourceLibraryWindowHook(QMenu& menu, const QString& selectedType)
+void ResourceItemGroup::ResourceLibraryWindowHook(QMenu& menu, const QString& selectedType)
 {
-  if (selectedType.isEmpty() || (selectedType == TypeName()))
+  // only allow for top level items
+  if (selectedType.isEmpty())// || (selectedType == TypeName()))
   {
     ResourceLibraryWindowGroupAdder* adder = ObjectPool::Instance()->getObject<ResourceLibraryWindowGroupAdder>();
     Q_ASSERT(NULL != adder);
@@ -38,17 +39,17 @@ void ResourceItemContainer::ResourceLibraryWindowHook(QMenu& menu, const QString
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Qt::ItemFlags ResourceItemContainer::flags() const
+Qt::ItemFlags ResourceItemGroup::flags() const
 {
   return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QString ResourceItemContainer::type() const
+QString ResourceItemGroup::type() const
 {
-  return ResourceItemContainer::TypeName();
+  return ResourceItemGroup::TypeName();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ResourceItemContainer::serialize(QXmlStreamWriter& stream) const
+bool ResourceItemGroup::serialize(QXmlStreamWriter& stream) const
 {
   bool result = false;
 
@@ -62,7 +63,7 @@ bool ResourceItemContainer::serialize(QXmlStreamWriter& stream) const
   return result && ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ResourceItemContainer::unserialize(QXmlStreamReader& stream)
+bool ResourceItemGroup::unserialize(QXmlStreamReader& stream)
 {
   Q_UNUSED(stream);
 
@@ -70,7 +71,7 @@ bool ResourceItemContainer::unserialize(QXmlStreamReader& stream)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QSize ResourceItemContainer::sizeHint() const
+QSize ResourceItemGroup::sizeHint() const
 {
   return QSize(200, 20);
 }

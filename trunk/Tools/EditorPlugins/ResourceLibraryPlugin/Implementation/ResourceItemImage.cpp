@@ -1,5 +1,6 @@
 #include "ResourceItemImage.h"
 #include "ResourceLibraryDataModel.h"
+#include "ResourceItemGroup.h"
 #include <FileSystemUtils.h>
 #include <QImageReader>
 #include <QDebug>
@@ -32,6 +33,14 @@ QString ResourceItemImage::TypeName()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItemImage::ResourceLibraryWindowHook(QMenu& menu, const QString& selectedType)
 {
+  // only allow for group resources
+  if (selectedType == ResourceItemGroup::TypeName())
+  {
+//    ResourceLibraryWindowGroupAdder* adder = ObjectPool::Instance()->getObject<ResourceLibraryWindowGroupAdder>();
+//    Q_ASSERT(NULL != adder);
+
+//    menu.addAction(tr("Add group"), adder, SLOT(onAdd()));
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const QImage& ResourceItemImage::thumbnailImage() const

@@ -9,7 +9,7 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceItem;
-class ResourceItemContainer;
+class ResourceItemGroup;
 class ResourceItemImage;
 class QTreeView;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ class RESOUCELIBRARYPLUGIN_API ResourceLibraryItemDelegate : public QStyledItemD
     void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
     /*! Paints container type. */
-    void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemContainer* item) const;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemGroup* item) const;
     /*! Paints image type. */
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemImage* item) const;
 

@@ -8,13 +8,13 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class QMenu;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceItemContainer : public ResourceItem
+class ResourceItemGroup : public ResourceItem
 {
   public:
 
-    ResourceItemContainer();
-    ResourceItemContainer(const QString& name, ResourceItem* parent);
-   ~ResourceItemContainer();
+    ResourceItemGroup();
+    ResourceItemGroup(const QString& name, ResourceItem* parent);
+   ~ResourceItemGroup();
 
   public:
 

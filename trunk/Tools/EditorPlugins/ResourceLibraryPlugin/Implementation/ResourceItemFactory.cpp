@@ -1,6 +1,6 @@
 #include "ResourceItemFactory.h"
 #include "ResourceItem.h"
-#include "ResourceItemContainer.h"
+#include "ResourceItemGroup.h"
 #include "ResourceItemImage.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -11,9 +11,9 @@ struct BuiltInResourceItem
   FPRESOURCEITEMRESLIBWNDCONTEXTMENUHOOKFUNC pfResourceLibraryWindowHookFunc;
 };
 
-static BuiltInResourceItem l_resourceItemsToRegister[] = {  { ResourceItemContainer::TypeName,
-                                                              ResourceItemContainer::Create,
-                                                              ResourceItemContainer::ResourceLibraryWindowHook
+static BuiltInResourceItem l_resourceItemsToRegister[] = {  { ResourceItemGroup::TypeName,
+                                                              ResourceItemGroup::Create,
+                                                              ResourceItemGroup::ResourceLibraryWindowHook
                                                             },
                                                             { ResourceItemImage::TypeName,
                                                               ResourceItemImage::Create,

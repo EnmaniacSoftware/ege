@@ -2,7 +2,7 @@
 #include "ResourceLibrary.h"
 #include "ResourceLibraryWindow.h"
 #include "ResourceItemFactory.h"
-#include "ResourceItemContainer.h"
+#include "ResourceItemGroup.h"
 #include "ResourceLibraryDataModel.h"
 #include <ObjectPool.h>
 
@@ -32,7 +32,7 @@ void ResourceLibraryWindowGroupAdder::onAdd()
 
   if (NULL != factory)
   {
-    ResourceItem* newItem = factory->createItem(ResourceItemContainer::TypeName(), generateGroupName());
+    ResourceItem* newItem = factory->createItem(ResourceItemGroup::TypeName(), generateGroupName());
     if (NULL != newItem)
     {
       library->model()->insertItem(index, newItem);
@@ -52,7 +52,7 @@ QString ResourceLibraryWindowGroupAdder::generateGroupName() const
   QString name;
 
   // get all present groups
-  QList<ResourceItem*> availableGroups = library->model()->items(ResourceItemContainer::TypeName());
+  QList<ResourceItem*> availableGroups = library->model()->items(ResourceItemGroup::TypeName());
 
   int index = 1;
   while (true)

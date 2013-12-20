@@ -4,7 +4,7 @@
 #include "ResourceLibraryItemDelegate.h"
 #include "ResourceItem.h"
 #include "ResourceItemFactory.h"
-#include "ResourceItemContainer.h"
+#include "ResourceItemGroup.h"
 #include "ResourceLibrary.h"
 #include <Projects/Project.h>
 #include <MainWindow.h>

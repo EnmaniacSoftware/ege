@@ -1,6 +1,6 @@
 #include "ResourceLibraryItemDelegate.h"
 #include "ResourceItem.h"
-#include "ResourceItemContainer.h"
+#include "ResourceItemGroup.h"
 #include "ResourceItemImage.h"
 #include "ResourceLibraryDataModel.h"
 #include <QPainter>
@@ -37,9 +37,9 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
   m_view->style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, m_view);
 
   // process according to type
-  if (ResourceItemContainer::TypeName() == item->type())
+  if (ResourceItemGroup::TypeName() == item->type())
   {
-    paint(painter, option, reinterpret_cast<ResourceItemContainer*>(item));
+    paint(painter, option, reinterpret_cast<ResourceItemGroup*>(item));
   }
   else if ("image" == item->type())
   {
@@ -50,7 +50,7 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
   painter->restore();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemContainer* item) const
+void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemGroup* item) const
 {
   QRect rect(option.rect.x() + KIconOffset, option.rect.y() + ((option.rect.height() - m_containerTypePixmap.size().height()) >> 1),
              m_containerTypePixmap.size().width(), m_containerTypePixmap.size().height());
@@ -95,7 +95,7 @@ void ResourceLibraryItemDelegate::updateEditorGeometry(QWidget* editor, const QS
   ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
 
   // process according to type
-  if (ResourceItemContainer::TypeName() == item->type())
+  if (ResourceItemGroup::TypeName() == item->type())
   {
     editor->move(option.rect.x() + KIconOffset + option.rect.height() + KContainerTypeTextOffset, option.rect.y());
     editor->resize(editor->size().width(), option.rect.size().height());
