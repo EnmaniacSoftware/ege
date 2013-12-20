@@ -1,5 +1,9 @@
-#ifndef RESOURCELIBRARY_RESOURCEITEMIMAGE_H
-#define RESOURCELIBRARY_RESOURCEITEMIMAGE_H
+#ifndef RESOURCELIBRARY_RESOURCEITEMTEXTURE_H
+#define RESOURCELIBRARY_RESOURCEITEMTEXTURE_H
+
+/*! Specialization of resource item.
+ *  Class representing any kind of texture within Resource Library.
+ */
 
 #include <QImage>
 #include "ResourceItem.h"
@@ -7,13 +11,13 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class QMenu;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceItemImage : public ResourceItem
+class ResourceItemTexture : public ResourceItem
 {
   public:
 
-    ResourceItemImage();
-    ResourceItemImage(const QString& name, ResourceItem* parent);
-   ~ResourceItemImage();
+    ResourceItemTexture();
+    ResourceItemTexture(const QString& name, ResourceItem* parent);
+   ~ResourceItemTexture();
 
   public:
 
@@ -62,4 +66,4 @@ class ResourceItemImage : public ResourceItem
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // RESOURCELIBRARY_RESOURCEITEMIMAGE_H
+#endif // RESOURCELIBRARY_RESOURCEITEMTEXTURE_H

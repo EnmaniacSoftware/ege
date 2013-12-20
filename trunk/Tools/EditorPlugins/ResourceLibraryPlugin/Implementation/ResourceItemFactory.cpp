@@ -1,7 +1,7 @@
 #include "ResourceItemFactory.h"
 #include "ResourceItem.h"
 #include "ResourceItemGroup.h"
-#include "ResourceItemImage.h"
+#include "ResourceItemTexture.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct BuiltInResourceItem
@@ -15,9 +15,9 @@ static BuiltInResourceItem l_resourceItemsToRegister[] = {  { ResourceItemGroup:
                                                               ResourceItemGroup::Create,
                                                               ResourceItemGroup::ResourceLibraryWindowHook
                                                             },
-                                                            { ResourceItemImage::TypeName,
-                                                              ResourceItemImage::Create,
-                                                              ResourceItemImage::ResourceLibraryWindowHook
+                                                            { ResourceItemTexture::TypeName,
+                                                              ResourceItemTexture::Create,
+                                                              ResourceItemTexture::ResourceLibraryWindowHook
                                                             }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

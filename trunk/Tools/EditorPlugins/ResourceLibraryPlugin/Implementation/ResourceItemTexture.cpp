@@ -1,7 +1,9 @@
-#include "ResourceItemImage.h"
+#include "ResourceItemTexture.h"
 #include "ResourceLibraryDataModel.h"
 #include "ResourceItemGroup.h"
+#include "ResourceLibraryWindowResourceInserter.h"
 #include <FileSystemUtils.h>
+#include <ObjectPool.h>
 #include <QImageReader>
 #include <QDebug>
 #include <QMenu>
@@ -9,41 +11,41 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const QString KPathArrtibute = "path";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemImage::ResourceItemImage() : ResourceItem()
+ResourceItemTexture::ResourceItemTexture() : ResourceItem()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemImage::ResourceItemImage(const QString& name, ResourceItem* parent) : ResourceItem(name, parent)
+ResourceItemTexture::ResourceItemTexture(const QString& name, ResourceItem* parent) : ResourceItem(name, parent)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemImage::~ResourceItemImage()
+ResourceItemTexture::~ResourceItemTexture()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItem* ResourceItemImage::Create(const QString& name, ResourceItem* parent)
+ResourceItem* ResourceItemTexture::Create(const QString& name, ResourceItem* parent)
 {
-  return new ResourceItemImage(name, parent);
+  return new ResourceItemTexture(name, parent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QString ResourceItemImage::TypeName()
+QString ResourceItemTexture::TypeName()
 {
   return "image";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceItemImage::ResourceLibraryWindowHook(QMenu& menu, const QString& selectedType)
+void ResourceItemTexture::ResourceLibraryWindowHook(QMenu& menu, const QString& selectedType)
 {
   // only allow for group resources
   if (selectedType == ResourceItemGroup::TypeName())
   {
-//    ResourceLibraryWindowGroupAdder* adder = ObjectPool::Instance()->getObject<ResourceLibraryWindowGroupAdder>();
-//    Q_ASSERT(NULL != adder);
+    ResourceLibraryWindowResourceInserter* helper = ObjectPool::Instance()->getObject<ResourceLibraryWindowResourceInserter>();
+    Q_ASSERT(NULL != helper);
 
-//    menu.addAction(tr("Add group"), adder, SLOT(onAdd()));
+    menu.addAction(tr("Add 2D texture"), helper, SLOT(onAddTexture2D()));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const QImage& ResourceItemImage::thumbnailImage() const
+const QImage& ResourceItemTexture::thumbnailImage() const
 {
   // check if thumbnail is to be generated
   if (m_thumbnail.isNull() && ! m_path.isEmpty() && ! m_name.isEmpty())
@@ -58,17 +60,17 @@ const QImage& ResourceItemImage::thumbnailImage() const
   return m_thumbnail;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QString ResourceItemImage::type() const
+QString ResourceItemTexture::type() const
 {
-  return ResourceItemImage::TypeName();
+  return ResourceItemTexture::TypeName();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QSize ResourceItemImage::sizeHint() const
+QSize ResourceItemTexture::sizeHint() const
 {
   return QSize(200, 40);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ResourceItemImage::serialize(QXmlStreamWriter& stream) const
+bool ResourceItemTexture::serialize(QXmlStreamWriter& stream) const
 {
   bool result = false;
 
@@ -85,7 +87,7 @@ bool ResourceItemImage::serialize(QXmlStreamWriter& stream) const
   return result && ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ResourceItemImage::unserialize(QXmlStreamReader& stream)
+bool ResourceItemTexture::unserialize(QXmlStreamReader& stream)
 {
   // retrieve data
   m_path = stream.attributes().value(KPathArrtibute).toString();
@@ -93,17 +95,17 @@ bool ResourceItemImage::unserialize(QXmlStreamReader& stream)
   return ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceItemImage::setPath(const QString& path)
+void ResourceItemTexture::setPath(const QString& path)
 {
   m_path = path;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const QString& ResourceItemImage::path() const
+const QString& ResourceItemTexture::path() const
 {
   return m_path;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QVariant ResourceItemImage::data(int columnIndex, int role) const
+QVariant ResourceItemTexture::data(int columnIndex, int role) const
 {
   // call base class first
   QVariant variant = ResourceItem::data(columnIndex, role);
@@ -120,7 +122,7 @@ QVariant ResourceItemImage::data(int columnIndex, int role) const
   return variant;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ResourceItemImage::setData(const QVariant &value, int role)
+bool ResourceItemTexture::setData(const QVariant &value, int role)
 {
   // process according to role
   switch (role)

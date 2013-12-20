@@ -1,4 +1,4 @@
-#include "ResourceLibraryWindowGroupAdder.h"
+#include "ResourceLibraryWindowResourceInserter.h"
 #include "ResourceLibrary.h"
 #include "ResourceLibraryWindow.h"
 #include "ResourceItemFactory.h"
@@ -7,52 +7,44 @@
 #include <ObjectPool.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceLibraryWindowGroupAdder::ResourceLibraryWindowGroupAdder()
+ResourceLibraryWindowResourceInserter::ResourceLibraryWindowResourceInserter(ResourceLibrary* library, ResourceLibraryWindow* libraryWindow,
+                                                                             ResourceItemFactory* factory)
+  : m_library(library),
+    m_window(libraryWindow),
+    m_factory(factory)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceLibraryWindowGroupAdder::~ResourceLibraryWindowGroupAdder()
+ResourceLibraryWindowResourceInserter::~ResourceLibraryWindowResourceInserter()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceLibraryWindowGroupAdder::onAdd()
+void ResourceLibraryWindowResourceInserter::onAddGroup()
 {
-  ResourceLibrary* library = ObjectPool::Instance()->getObject<ResourceLibrary>();
-  Q_ASSERT(NULL != library);
-
-  ResourceLibraryWindow* window = ObjectPool::Instance()->getObject<ResourceLibraryWindow>();
-  Q_ASSERT(NULL != window);
-
-  ResourceItemFactory* factory = ObjectPool::Instance()->getObject<ResourceItemFactory>();
-  Q_ASSERT(NULL != factory);
-
   // get current seclection index
-  QModelIndexList list = window->selectedIndexes();
+  QModelIndexList list = m_window->selectedIndexes();
   QModelIndex index = ! list.isEmpty() ? list.front() : QModelIndex();
 
-  if (NULL != factory)
+  ResourceItem* newItem = m_factory->createItem(ResourceItemGroup::TypeName(), generateGroupName());
+  if (NULL != newItem)
   {
-    ResourceItem* newItem = factory->createItem(ResourceItemGroup::TypeName(), generateGroupName());
-    if (NULL != newItem)
-    {
-      library->model()->insertItem(index, newItem);
-
-      // show resources view
-      //m_ui->stackedWidget->setCurrentIndex(KStackedPageIndexResourcesView);
-    }
+    m_library->model()->insertItem(index, newItem);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QString ResourceLibraryWindowGroupAdder::generateGroupName() const
+void ResourceLibraryWindowResourceInserter::onAddTexture2D()
 {
-  ResourceLibrary* library = ObjectPool::Instance()->getObject<ResourceLibrary>();
-  Q_ASSERT(NULL != library);
-  Q_ASSERT(NULL != library->model());
+
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QString ResourceLibraryWindowResourceInserter::generateGroupName() const
+{
+  Q_ASSERT(NULL != m_library->model());
 
   QString name;
 
   // get all present groups
-  QList<ResourceItem*> availableGroups = library->model()->items(ResourceItemGroup::TypeName());
+  QList<ResourceItem*> availableGroups = m_library->model()->items(ResourceItemGroup::TypeName());
 
   int index = 1;
   while (true)

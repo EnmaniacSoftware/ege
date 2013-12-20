@@ -2,7 +2,7 @@
 #include "ResourceLibrary.h"
 #include "ResourceLibraryWindow.h"
 #include "ResourceItemFactory.h"
-#include "ResourceLibraryWindowGroupAdder.h"
+#include "ResourceLibraryWindowResourceInserter.h"
 #include <MainWindow.h>
 #include <ObjectPool.h>
 #include <QtPlugin>
@@ -38,14 +38,14 @@ bool ResouceLibraryPlugin::initialize()
   }
 
   // create objects
-  m_library             = new ResourceLibrary();
-  m_window              = new ResourceLibraryWindow(m_library, mainWindow);
-  m_resourceItemFactory = new ResourceItemFactory();
-  m_windowGroupAdder    = new ResourceLibraryWindowGroupAdder();
+  m_library                 = new ResourceLibrary();
+  m_window                  = new ResourceLibraryWindow(m_library, mainWindow);
+  m_resourceItemFactory     = new ResourceItemFactory();
+  m_windowResourceInserter  = new ResourceLibraryWindowResourceInserter(m_library, m_window, m_resourceItemFactory);
 
   // add to pool
   bool result = ObjectPool::Instance()->addObject(m_window) && ObjectPool::Instance()->addObject(m_resourceItemFactory) &&
-                ObjectPool::Instance()->addObject(m_library) && ObjectPool::Instance()->addObject(m_windowGroupAdder);
+                ObjectPool::Instance()->addObject(m_library) && ObjectPool::Instance()->addObject(m_windowResourceInserter);
   if (result)
   {
     // initial placement
@@ -93,14 +93,14 @@ void ResouceLibraryPlugin::deinitialize()
     m_viewAction = NULL;
   }
 
-  if (NULL != m_windowGroupAdder)
+  if (NULL != m_windowResourceInserter)
   {
     // remove from pool
-    ObjectPool::Instance()->removeObject(m_windowGroupAdder);
+    ObjectPool::Instance()->removeObject(m_windowResourceInserter);
 
     // delete
-    delete m_windowGroupAdder;
-    m_windowGroupAdder = NULL;
+    delete m_windowResourceInserter;
+    m_windowResourceInserter = NULL;
   }
 
   if (NULL != m_resourceItemFactory)

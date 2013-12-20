@@ -1,7 +1,7 @@
 #include "ResourceLibraryItemDelegate.h"
 #include "ResourceItem.h"
 #include "ResourceItemGroup.h"
-#include "ResourceItemImage.h"
+#include "ResourceItemTexture.h"
 #include "ResourceLibraryDataModel.h"
 #include <QPainter>
 #include <QTreeView>
@@ -43,7 +43,7 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
   }
   else if ("image" == item->type())
   {
-    paint(painter, option, reinterpret_cast<ResourceItemImage*>(item));
+    paint(painter, option, reinterpret_cast<ResourceItemTexture*>(item));
   }
 
   // restore painter state to original
@@ -61,7 +61,7 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
   painter->drawText(rect.intersected(option.rect), Qt::AlignCenter, item->name());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemImage* item) const
+void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemTexture* item) const
 {
   // determine thumbnail image size
   int thumbSize = qMax(item->thumbnailImage().size().height(), KThumbnailSize);

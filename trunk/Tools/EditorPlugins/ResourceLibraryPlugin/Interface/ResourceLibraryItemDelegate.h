@@ -10,7 +10,7 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceItem;
 class ResourceItemGroup;
-class ResourceItemImage;
+class ResourceItemTexture;
 class QTreeView;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RESOUCELIBRARYPLUGIN_API ResourceLibraryItemDelegate : public QStyledItemDelegate
@@ -39,7 +39,7 @@ class RESOUCELIBRARYPLUGIN_API ResourceLibraryItemDelegate : public QStyledItemD
     /*! Paints container type. */
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemGroup* item) const;
     /*! Paints image type. */
-    void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemImage* item) const;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemTexture* item) const;
 
   private:
 

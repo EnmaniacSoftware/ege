@@ -1,5 +1,5 @@
 #include "ResourceItemGroup.h"
-#include "ResourceLibraryWindowGroupAdder.h"
+#include "ResourceLibraryWindowResourceInserter.h"
 #include <ObjectPool.h>
 #include <QDebug>
 #include <QMenu>
@@ -30,12 +30,12 @@ QString ResourceItemGroup::TypeName()
 void ResourceItemGroup::ResourceLibraryWindowHook(QMenu& menu, const QString& selectedType)
 {
   // only allow for top level items
-  if (selectedType.isEmpty())// || (selectedType == TypeName()))
+  if (selectedType.isEmpty())
   {
-    ResourceLibraryWindowGroupAdder* adder = ObjectPool::Instance()->getObject<ResourceLibraryWindowGroupAdder>();
-    Q_ASSERT(NULL != adder);
+    ResourceLibraryWindowResourceInserter* helper = ObjectPool::Instance()->getObject<ResourceLibraryWindowResourceInserter>();
+    Q_ASSERT(NULL != helper);
 
-    menu.addAction(tr("Add group"), adder, SLOT(onAdd()));
+    menu.addAction(tr("Add group"), helper, SLOT(onAddGroup()));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

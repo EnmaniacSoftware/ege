@@ -1,7 +1,9 @@
 #ifndef RESOURCELIBRARY_RESOURCEITEMCONTAINER_H
 #define RESOURCELIBRARY_RESOURCEITEMCONTAINER_H
 
-/*! Specialization of resource item. This class serves as a container for other types of resource items, including other containers. */
+/*! Specialization of resource item.
+ *  This class serves as a container (group) for other types of resource items.
+ */
 
 #include "ResourceItem.h"
 

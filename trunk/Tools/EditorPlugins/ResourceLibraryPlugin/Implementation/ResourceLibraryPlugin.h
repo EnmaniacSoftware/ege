@@ -8,7 +8,7 @@
 class ResourceLibraryWindow;
 class ResourceItemFactory;
 class ResourceLibrary;
-class ResourceLibraryWindowGroupAdder;
+class ResourceLibraryWindowResourceInserter;
 class QAction;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPlugin
@@ -36,8 +36,8 @@ class RESOUCELIBRARYPLUGIN_API ResouceLibraryPlugin : public QObject, public IPl
     ResourceLibrary* m_library;
     /*! Resource item factory. */
     ResourceItemFactory* m_resourceItemFactory;
-    /*! Helper class for adding group resources by means of ResourceLibraryWindow's context menu. */
-    ResourceLibraryWindowGroupAdder* m_windowGroupAdder;
+    /*! Helper class for adding resources by means of ResourceLibraryWindow's context menu. */
+    ResourceLibraryWindowResourceInserter* m_windowResourceInserter;
     /*! View menu action. */
     QAction* m_viewAction;
 };
