@@ -1,11 +1,12 @@
 #include <QtGui>
-#include "TextureAddressingModeSelectorWidget.h"
+#include "TextureSettingsWidget.h"
+#include "ui_widget.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureAddressingModeSelectorWidget::TextureAddressingModeSelectorWidget(QWidget *parent) : QComboBox(parent)
+TextureSettingsWidget::TextureSettingsWidget(QWidget *parent) : QWidget(parent),
+                                                                 m_ui(new Ui_TextureSettings())
 {
-  // populate
-  addItem("Clamp", "clamp");
-  addItem("Repeat", "repeat");
+  // setup UI
+  m_ui->setupUi(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

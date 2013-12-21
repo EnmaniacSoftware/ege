@@ -1,17 +1,18 @@
-#ifndef TEXTUREFILTERMODESELECTORWIDGETPLUGIN_H
-#define TEXTUREFILTERMODESELECTORWIDGETPLUGIN_H
+#ifndef TEXTURESETTINGS_TEXTURESETTINGSWIDGETPLUGIN_H
+#define TEXTURESETTINGS_TEXTURESETTINGSWIDGETPLUGIN_H
 
 #include <QDesignerCustomWidgetInterface>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class TextureFilterModeSelectorWidgetPlugin : public QObject, public QDesignerCustomWidgetInterface
+class TextureSettingsWidgetPlugin : public QObject, public QDesignerCustomWidgetInterface
 {
   Q_OBJECT
   Q_INTERFACES(QDesignerCustomWidgetInterface)
+  Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QDesignerCustomWidgetInterface" FILE "texturesettingswidget.json")
 
   public:
 
-    TextureFilterModeSelectorWidgetPlugin(QObject *parent = NULL);
+    TextureSettingsWidgetPlugin(QObject* parent = NULL);
 
     bool isContainer() const;
     bool isInitialized() const;
@@ -22,8 +23,8 @@ class TextureFilterModeSelectorWidgetPlugin : public QObject, public QDesignerCu
     QString name() const;
     QString toolTip() const;
     QString whatsThis() const;
-    QWidget *createWidget(QWidget *parent);
-    void initialize(QDesignerFormEditorInterface *core);
+    QWidget *createWidget(QWidget* parent);
+    void initialize(QDesignerFormEditorInterface* core);
 
   private:
   
@@ -32,4 +33,4 @@ class TextureFilterModeSelectorWidgetPlugin : public QObject, public QDesignerCu
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#endif // TEXTUREFILTERMODESELECTORWIDGETPLUGIN_H
+#endif // TEXTURESETTINGS_TEXTURESETTINGSWIDGETPLUGIN_H
