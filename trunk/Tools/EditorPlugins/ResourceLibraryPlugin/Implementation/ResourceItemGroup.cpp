@@ -24,7 +24,7 @@ ResourceItem* ResourceItemGroup::Create(const QString& name, ResourceItem* paren
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceItemGroup::TypeName()
 {
-  return "container";
+  return "group";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItemGroup::ResourceLibraryWindowHook(QMenu& menu, const QString& selectedType)
@@ -44,7 +44,7 @@ Qt::ItemFlags ResourceItemGroup::flags() const
   return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QString ResourceItemGroup::type() const
+QString ResourceItemGroup::typeName() const
 {
   return ResourceItemGroup::TypeName();
 }

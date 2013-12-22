@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/resourcelibrary">
         <file alias="folder">icons/folder.png</file>
+		<file alias="image-add">icons/image_add.png</file>
     </qresource>
 </RCC>

@@ -60,7 +60,7 @@ QVariant ResourceItem::data(int columnIndex, int role) const
 
     case ResourceLibraryDataModel::TypeRole:
 
-      return type();
+      return typeName();
   }
 
   return QVariant();
@@ -140,7 +140,7 @@ bool ResourceItem::beginSerialize(QXmlStreamWriter& stream) const
 {
   stream.writeStartElement(KResourceItemTag);
   
-  stream.writeAttribute(KTypeAttribute, type());
+  stream.writeAttribute(KTypeAttribute, typeName());
   stream.writeAttribute(KNameAttribute, name());
 
   return ! stream.hasError();
@@ -174,7 +174,7 @@ ResourceItem* ResourceItem::parent() const
   return m_parent;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QString ResourceItem::type() const
+QString ResourceItem::typeName() const
 {
   return "generic";
 }

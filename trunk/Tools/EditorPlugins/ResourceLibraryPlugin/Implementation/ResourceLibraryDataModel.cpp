@@ -132,7 +132,7 @@ QList<ResourceItem*> ResourceLibraryDataModel::items(const QString& typeName) co
     const ResourceItem* item = *it;
 
     // check if invalid type
-    if (item->type() != typeName)
+    if (item->typeName() != typeName)
     {
       // remove it
       it = list.erase(it);

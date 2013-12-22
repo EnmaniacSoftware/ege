@@ -1,4 +1,4 @@
-HEADERS     += Implementation/TextureSettingsWidget.h \
+HEADERS     += Interface/TextureSettingsWidget.h \
                Interface/TextureSettingsWidgetPlugin.h
 
 SOURCES     += Implementation/TextureSettingsWidget.cpp \

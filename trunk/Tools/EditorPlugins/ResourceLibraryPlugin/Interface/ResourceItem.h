@@ -27,7 +27,7 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public QObject, public ISerializer
     const QString& name() const;
     
     /*! Returns type name. */
-    virtual QString type() const;
+    virtual QString typeName() const;
 
     /*! Sets parent. */
     void setParent(ResourceItem* parent);

@@ -9,6 +9,12 @@
 #include "ResourceItem.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+enum TextureType
+{
+  EInvalidTexture,
+  ETexture2D
+};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class QMenu;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceItemTexture : public ResourceItem
@@ -41,11 +47,13 @@ class ResourceItemTexture : public ResourceItem
     void setPath(const QString& path);
     /*! Returns path to asset. */
     const QString& path() const;
+    /*! Sets texture type. */
+    void setType(TextureType type);
 
   private:
 
-    /*! @see ResourceItem::type. */
-    QString type() const override;
+    /*! @see ResourceItem::typeName. */
+    QString typeName() const override;
     /*! @see ResourceItem::sizeHint. */
     QSize sizeHint() const override;
     /*! @see ResourceItem::serialize. */
@@ -56,6 +64,10 @@ class ResourceItemTexture : public ResourceItem
     QVariant data(int columnIndex, int role) const override;
     /*! @see ResourceItem::setData. */
     bool setData(const QVariant &value, int role) override;
+    /*! Returns texture type as string. */
+    QString textureTypeName() const;
+    /*! Returns texture type from string. */
+    TextureType textureTypeFromString(const QString& typeName) const;
 
   private:
 
@@ -63,6 +75,8 @@ class ResourceItemTexture : public ResourceItem
     mutable QImage m_thumbnail;
     /*! Path to asset. */
     QString m_path;
+    /*! Texture type. */
+    TextureType m_type;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

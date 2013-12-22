@@ -37,11 +37,11 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
   m_view->style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, m_view);
 
   // process according to type
-  if (ResourceItemGroup::TypeName() == item->type())
+  if (ResourceItemGroup::TypeName() == item->typeName())
   {
     paint(painter, option, reinterpret_cast<ResourceItemGroup*>(item));
   }
-  else if ("image" == item->type())
+  else if (ResourceItemTexture::TypeName() == item->typeName())
   {
     paint(painter, option, reinterpret_cast<ResourceItemTexture*>(item));
   }
@@ -95,7 +95,7 @@ void ResourceLibraryItemDelegate::updateEditorGeometry(QWidget* editor, const QS
   ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
 
   // process according to type
-  if (ResourceItemGroup::TypeName() == item->type())
+  if (ResourceItemGroup::TypeName() == item->typeName())
   {
     editor->move(option.rect.x() + KIconOffset + option.rect.height() + KContainerTypeTextOffset, option.rect.y());
     editor->resize(editor->size().width(), option.rect.size().height());

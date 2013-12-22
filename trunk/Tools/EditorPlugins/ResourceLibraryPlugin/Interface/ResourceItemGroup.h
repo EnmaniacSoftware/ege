@@ -34,8 +34,8 @@ class ResourceItemGroup : public ResourceItem
 
     /*! @see ResourceItem::flags. */
     Qt::ItemFlags flags() const override;
-    /*! @see ResourceItem::type. */
-    QString type() const override;
+    /*! @see ResourceItem::typeName. */
+    QString typeName() const override;
     /*! @see ResourceItem::serialize. */
     bool serialize(QXmlStreamWriter& stream) const override;
     /*! @see ResourceItem::unserialize. */

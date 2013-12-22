@@ -75,7 +75,7 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
   const QList<ResourceItemFactory::ItemData>& registeredItems = factory->items();
   foreach (const ResourceItemFactory::ItemData& item, registeredItems)
   {
-    item.resourceLibraryWindowHookFunc(menu, (NULL != selectedItem) ? selectedItem->type() : QString());
+    item.resourceLibraryWindowHookFunc(menu, (NULL != selectedItem) ? selectedItem->typeName() : QString());
   }
 
   //action = menu.addAction(tr("Remove"), this, SLOT(onRemoveItems()));

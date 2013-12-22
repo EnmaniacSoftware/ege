@@ -10,12 +10,25 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const QString KPathArrtibute = "path";
+static const QString KTypeArrtibute = "type";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemTexture::ResourceItemTexture() : ResourceItem()
+struct TextureTypeMap
+{
+  const QString name;
+  const TextureType type;
+};
+
+static const TextureTypeMap l_textureTypeMappings[] = { { "none", EInvalidTexture },
+                                                        { "2D", ETexture2D }
+};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceItemTexture::ResourceItemTexture() : ResourceItem(),
+                                             m_type(EInvalidTexture)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemTexture::ResourceItemTexture(const QString& name, ResourceItem* parent) : ResourceItem(name, parent)
+ResourceItemTexture::ResourceItemTexture(const QString& name, ResourceItem* parent) : ResourceItem(name, parent),
+                                                                                      m_type(EInvalidTexture)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -30,7 +43,7 @@ ResourceItem* ResourceItemTexture::Create(const QString& name, ResourceItem* par
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceItemTexture::TypeName()
 {
-  return "image";
+  return "texture";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItemTexture::ResourceLibraryWindowHook(QMenu& menu, const QString& selectedType)
@@ -60,7 +73,7 @@ const QImage& ResourceItemTexture::thumbnailImage() const
   return m_thumbnail;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QString ResourceItemTexture::type() const
+QString ResourceItemTexture::typeName() const
 {
   return ResourceItemTexture::TypeName();
 }
@@ -77,7 +90,8 @@ bool ResourceItemTexture::serialize(QXmlStreamWriter& stream) const
   // begin serialization
   if (beginSerialize(stream))
   {
-    // store path
+    // store data
+    stream.writeAttribute(KTypeArrtibute, textureTypeName());
     stream.writeAttribute(KPathArrtibute, path());
 
     // end serialization
@@ -91,6 +105,7 @@ bool ResourceItemTexture::unserialize(QXmlStreamReader& stream)
 {
   // retrieve data
   m_path = stream.attributes().value(KPathArrtibute).toString();
+  m_type = textureTypeFromString(stream.attributes().value(KTypeArrtibute).toString());
 
   return ! stream.hasError();
 }
@@ -103,6 +118,11 @@ void ResourceItemTexture::setPath(const QString& path)
 const QString& ResourceItemTexture::path() const
 {
   return m_path;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::setType(TextureType type)
+{
+  m_type = type;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QVariant ResourceItemTexture::data(int columnIndex, int role) const
@@ -135,5 +155,49 @@ bool ResourceItemTexture::setData(const QVariant &value, int role)
 
   // call base class
   return ResourceItem::setData(value, role);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QString ResourceItemTexture::textureTypeName() const
+{
+  QString textureTypeName;
+
+  // determine type name
+  for (int i = 0; i < sizeof (l_textureTypeMappings) / sizeof (l_textureTypeMappings[0]); ++i)
+  {
+    const TextureTypeMap& mapping = l_textureTypeMappings[i];
+
+    // check if type found in map table
+    if (mapping.type == m_type)
+    {
+      // found
+      textureTypeName = mapping.name;
+      break;
+    }
+  }
+
+  Q_ASSERT( ! textureTypeName.isEmpty());
+
+  return textureTypeName;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TextureType ResourceItemTexture::textureTypeFromString(const QString& typeName) const
+{
+  TextureType textureType = EInvalidTexture;
+
+  // determine type
+  for (int i = 0; i < sizeof (l_textureTypeMappings) / sizeof (l_textureTypeMappings[0]); ++i)
+  {
+    const TextureTypeMap& mapping = l_textureTypeMappings[i];
+
+    // check if name found in map table
+    if (mapping.name == typeName)
+    {
+      // found
+      textureType = mapping.type;
+      break;
+    }
+  }
+
+  return textureType;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
