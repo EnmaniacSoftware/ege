@@ -5,11 +5,12 @@
 #include <QMenu>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemGroup::ResourceItemGroup() : ResourceItem()
-{
-}
+//ResourceItemGroup::ResourceItemGroup() : ResourceItem()
+//{
+//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemGroup::ResourceItemGroup(const QString& name, ResourceItem* parent) : ResourceItem(name, parent)
+ResourceItemGroup::ResourceItemGroup(const QString& name, const QString& configurationName, ResourceItem* parent)
+  : ResourceItem(name, configurationName, parent)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -17,9 +18,9 @@ ResourceItemGroup::~ResourceItemGroup()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItem* ResourceItemGroup::Create(const QString& name, ResourceItem* parent)
+ResourceItem* ResourceItemGroup::Create(const QString& name, const QString& configurationName, ResourceItem* parent)
 {
-  return new ResourceItemGroup(name, parent);
+  return new ResourceItemGroup(name, configurationName, parent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceItemGroup::TypeName()

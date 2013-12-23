@@ -14,14 +14,12 @@ class ResourceItemGroup : public ResourceItem
 {
   public:
 
-    ResourceItemGroup();
-    ResourceItemGroup(const QString& name, ResourceItem* parent);
    ~ResourceItemGroup();
 
   public:
 
     /*! Creates instance of resource item. This method is a registration method for factory. */
-    static ResourceItem* Create(const QString& name, ResourceItem* parent);
+    static ResourceItem* Create(const QString& name, const QString& configurationName, ResourceItem* parent);
     /*! Returns item type name. */
     static QString TypeName();
     /*! Hooks into Resource Library Window context menu.
@@ -31,6 +29,8 @@ class ResourceItemGroup : public ResourceItem
     static void ResourceLibraryWindowHook(QMenu& menu, const QString& selectedType);
 
   private:
+
+    ResourceItemGroup(const QString& name, const QString& configurationName, ResourceItem* parent);
 
     /*! @see ResourceItem::flags. */
     Qt::ItemFlags flags() const override;

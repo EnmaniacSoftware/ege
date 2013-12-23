@@ -59,7 +59,7 @@ bool ResourceItemFactory::registerItem(FPRESOURCEITEMTYPENAMEFUNC typeNameFunc, 
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItem* ResourceItemFactory::createItem(const QString& typeName, const QString& name, ResourceItem* parent) const
+ResourceItem* ResourceItemFactory::createItem(const QString& typeName, const QString& name, const QString& configurationName, ResourceItem* parent) const
 {
   ResourceItem* item = NULL;
 
@@ -69,7 +69,7 @@ ResourceItem* ResourceItemFactory::createItem(const QString& typeName, const QSt
     if (itemData.typeNameFunc() == typeName)
     {
       // create instance
-      item = itemData.createFunc(name, parent);
+      item = itemData.createFunc(name, configurationName, parent);
       break;
     }
   }

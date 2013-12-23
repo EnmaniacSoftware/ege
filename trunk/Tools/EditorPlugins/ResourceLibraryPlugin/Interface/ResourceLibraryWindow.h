@@ -4,11 +4,11 @@
 /*! Resource library window. */
 
 #include <QDockWidget>
-#include "ui_ResourceLibraryWindow.h"
+#include <QModelIndex>
+#include <QAbstractItemView>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Ui_ResourceLibrary;
-class ResourceLibrary;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceLibraryWindow : public QDockWidget
 {
@@ -16,7 +16,7 @@ class ResourceLibraryWindow : public QDockWidget
 
   public:
 
-    ResourceLibraryWindow(ResourceLibrary* library, QWidget* parent = NULL);
+    explicit ResourceLibraryWindow(QWidget* parent = NULL);
    ~ResourceLibraryWindow();
 
     /*! Saves settings. */
@@ -29,12 +29,18 @@ class ResourceLibraryWindow : public QDockWidget
      */
     QModelIndexList selectedIndexes() const;
 
+    /*! Returns pointer to model view. */
+    QAbstractItemView* view() const;
+
+  public slots:
+
+    /*! Slot called when model data has changed. */
+    void onModelChanged();
+
   private slots:
 
     /*! Slot called when context menu is requested. */
 		void onQueueContextMenuRequested(const QPoint& pos);
-    /*! Slot called when resource is requested to be added. */
-    void onAddResource();
     /*! Slot called when resource items are requested to be removed. */
     void onRemoveItems();
     /*! Slot called when new object has been added into the pool. */
@@ -45,8 +51,6 @@ class ResourceLibraryWindow : public QDockWidget
      *  @param  count Number of items in library.
      */
     void onLibraryLoaded(int count);
-    /*! Slot called when model data has changed. */
-    void onModelChanged();
 
   private:
 
@@ -57,8 +61,6 @@ class ResourceLibraryWindow : public QDockWidget
 
     /*! UI. */
     Ui_ResourceLibrary* m_ui;
-    /*! Pointer to resource library being used. */
-    ResourceLibrary* m_resourceLibrary;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -22,13 +22,14 @@ static const TextureTypeMap l_textureTypeMappings[] = { { "none", EInvalidTextur
                                                         { "2D", ETexture2D }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemTexture::ResourceItemTexture() : ResourceItem(),
-                                             m_type(EInvalidTexture)
-{
-}
+//ResourceItemTexture::ResourceItemTexture() : ResourceItem(),
+//                                             m_type(EInvalidTexture)
+//{
+//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemTexture::ResourceItemTexture(const QString& name, ResourceItem* parent) : ResourceItem(name, parent),
-                                                                                      m_type(EInvalidTexture)
+ResourceItemTexture::ResourceItemTexture(const QString& name, const QString& configurationName, ResourceItem* parent)
+  : ResourceItem(name, configurationName, parent),
+    m_type(EInvalidTexture)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -36,9 +37,9 @@ ResourceItemTexture::~ResourceItemTexture()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItem* ResourceItemTexture::Create(const QString& name, ResourceItem* parent)
+ResourceItem* ResourceItemTexture::Create(const QString& name, const QString& configurationName, ResourceItem* parent)
 {
-  return new ResourceItemTexture(name, parent);
+  return new ResourceItemTexture(name, configurationName, parent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceItemTexture::TypeName()

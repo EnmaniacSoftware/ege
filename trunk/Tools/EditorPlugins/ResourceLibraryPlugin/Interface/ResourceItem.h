@@ -17,8 +17,8 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public QObject, public ISerializer
 
   public:
 
-    ResourceItem();
-    ResourceItem(const QString& name, ResourceItem* parent);
+    //ResourceItem(const QString& configurationName);
+    ResourceItem(const QString& name, const QString& configurationName, ResourceItem* parent);
     virtual ~ResourceItem();
 
     /*! Sets name. */
@@ -67,7 +67,7 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public QObject, public ISerializer
      *  @param role   Role for which data is set.
      *  @return Returns TRUE if data has been changed. Otherwise FALSE.
      */
-    virtual bool setData(const QVariant &value, int role);
+    virtual bool setData(const QVariant& value, int role);
     /*! Inserts children. */
     bool insertChildren(int position, int count, int columns);
 
@@ -108,6 +108,8 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public QObject, public ISerializer
 
     /*! Parent. */
     ResourceItem* m_parent;
+    /*! Configuration name item is bound to. */
+    QString m_configurationName;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

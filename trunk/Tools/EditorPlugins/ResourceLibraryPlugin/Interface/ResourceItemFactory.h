@@ -13,7 +13,7 @@
 class ResourceItem;
 class QMenu;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef ResourceItem* (*FPRESOURCEITEMCREATEFUNC) (const QString& name, ResourceItem* parent);
+typedef ResourceItem* (*FPRESOURCEITEMCREATEFUNC) (const QString& name, const QString& configurationName, ResourceItem* parent);
 typedef QString       (*FPRESOURCEITEMTYPENAMEFUNC) ();
 typedef void          (*FPRESOURCEITEMRESLIBWNDCONTEXTMENUHOOKFUNC) (QMenu& menu, const QString& selectedType);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -45,10 +45,18 @@ class RESOUCELIBRARYPLUGIN_API ResourceItemFactory : public QObject
      */
     bool registerItem(FPRESOURCEITEMTYPENAMEFUNC typeNameFunc, FPRESOURCEITEMCREATEFUNC createFunc,
                       FPRESOURCEITEMRESLIBWNDCONTEXTMENUHOOKFUNC resourceLibraryWindowHookFunc);
-    /*! Creates instance of resource item of the type given by name. */
-    ResourceItem* createItem(const QString& typeName, const QString& name, ResourceItem* parent = NULL) const;
     /*! Returns TRUE if given resource item type is registered. */
     bool isItemRegistered(const QString& typeName) const;
+
+    /*! Creates instance of resource item.
+     *  @param  typeName          Type of the item to be created.
+     *  @param  name              Name of the item.
+     *  @param  configurationName Name of the configuration for which item is being created.
+     *  @param  parent            Parent item.
+     *  @return Created item. NULL for failure.
+     */
+    ResourceItem* createItem(const QString& typeName, const QString& name, const QString& configurationName, ResourceItem* parent = NULL) const;
+
     /*! Returns list of registred items. */
     const QList<ItemData>& items() const;
 

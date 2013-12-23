@@ -4,13 +4,13 @@
 #include <QWidget>
 #include <QString>
 #include "WorkspacePlugin_global.h"
-#include "ui_configuration.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class QXmlStreamWriter;
 class QXmlStreamReader;
+class Ui_Configuration;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class WORKSPACEPLUGIN_API Configuration : public QWidget, public Ui::Configuration
+class WORKSPACEPLUGIN_API Configuration : public QWidget
 {
   Q_OBJECT
 
@@ -24,6 +24,11 @@ class WORKSPACEPLUGIN_API Configuration : public QWidget, public Ui::Configurati
      *  @param  name  Name of current configuration.
      */
     void changed(const QString& name);
+
+  public:
+
+    /*! Returns name of currently selected configuration. */
+    QString current() const;
 
   private slots:
 
@@ -56,6 +61,11 @@ class WORKSPACEPLUGIN_API Configuration : public QWidget, public Ui::Configurati
     void createDefault();
     /*! Updates UI. */
     void updateUI();
+
+  private:
+
+    /*! UI. */
+    Ui_Configuration* m_ui;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -38,8 +38,8 @@ bool ResouceLibraryPlugin::initialize()
   }
 
   // create objects
-  m_library                 = new ResourceLibrary();
-  m_window                  = new ResourceLibraryWindow(m_library, mainWindow);
+  m_window                  = new ResourceLibraryWindow(mainWindow);
+  m_library                 = new ResourceLibrary(m_window);
   m_resourceItemFactory     = new ResourceItemFactory();
   m_windowResourceInserter  = new ResourceLibraryWindowResourceInserter(m_library, m_window, m_resourceItemFactory);
 

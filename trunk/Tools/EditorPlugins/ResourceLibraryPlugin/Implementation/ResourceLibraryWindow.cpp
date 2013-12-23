@@ -1,11 +1,11 @@
 #include "ResourceLibraryWindow.h"
-#include "ui_ResourceLibraryWindow.h"
 #include "ResourceLibraryDataModel.h"
 #include "ResourceLibraryItemDelegate.h"
 #include "ResourceItem.h"
 #include "ResourceItemFactory.h"
 #include "ResourceItemGroup.h"
 #include "ResourceLibrary.h"
+#include "ui_ResourceLibraryWindow.h"
 #include <Projects/Project.h>
 #include <MainWindow.h>
 #include <ObjectPool.h>
@@ -19,21 +19,15 @@ static const int KStackedPageIndexResourcesNotAvailable = 0;
 static const int KStackedPageIndexAddResources          = 1;
 static const int KStackedPageIndexResourcesView         = 2;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceLibraryWindow::ResourceLibraryWindow(ResourceLibrary* library, QWidget* parent) : QDockWidget(parent),
-                                                                                          m_ui(new Ui_ResourceLibrary()),
-                                                                                          m_resourceLibrary(library)
+ResourceLibraryWindow::ResourceLibraryWindow(QWidget* parent) : QDockWidget(parent),
+                                                                m_ui(new Ui_ResourceLibrary())
 {
   // setup UI
   m_ui->setupUi(this);
 
-  // set view model
-  m_ui->view->setModel(library->model());
-
   // connect
   connect(ObjectPool::Instance(), SIGNAL(objectAdded(QObject*)), this, SLOT(onObjectAdded(QObject*)));
   connect(ObjectPool::Instance(), SIGNAL(objectRemoved(QObject*)), this, SLOT(onObjectRemoved(QObject*)));
-
-  connect(m_resourceLibrary->model(), SIGNAL(rowsInserted(const QModelIndex&, int, int)), this, SLOT(onModelChanged()));
 
   // update menus
   updateMenus();
@@ -78,32 +72,6 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
     item.resourceLibraryWindowHookFunc(menu, (NULL != selectedItem) ? selectedItem->typeName() : QString());
   }
 
-  //action = menu.addAction(tr("Remove"), this, SLOT(onRemoveItems()));
-
-/*
-  if (0 == indexList.size())
-  {
-    action = menu.addAction(tr("Add group"), this, SLOT(onAddGroup()));
-  }
-  else if (1 == indexList.size())
-  {
-    QModelIndex modelIndex = indexList.front();
-    ResourceItem* selectedItem = static_cast<ResourceItem*>(modelIndex.internalPointer());
-
-    // let registered items hook up to context menu
-    const QList<ResourceItemFactory::ItemData>& registeredItems = factory->items();
-    foreach (const ResourceItemFactory::ItemData& item, registeredItems)
-    {
-      item.resourceLibraryWindowHookFunc(menu, selectedItem->type());
-    }
-
-    action = menu.addAction(tr("Remove"), this, SLOT(onRemoveItems()));
-  }
-  else
-  {
-    action = menu.addAction(tr("Remove"), this, SLOT(onRemoveItems()));
-  }*/
-
   if ( ! menu.isEmpty())
   {
     menu.exec(m_ui->view->mapToGlobal(pos));
@@ -125,11 +93,6 @@ void ResourceLibraryWindow::onObjectAdded(QObject* object)
     // establish connections
     connect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
 
-    connect(m_resourceLibrary->model(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), project, SLOT(onProjectDataChanged()));
-    connect(m_resourceLibrary->model(), SIGNAL(rowsInserted(const QModelIndex&, int, int)), project, SLOT(onProjectDataChanged()));
-    connect(m_resourceLibrary->model(), SIGNAL(rowsMoved(const QModelIndex&, int, int, const QModelIndex&, int)), project, SLOT(onProjectDataChanged()));
-    connect(m_resourceLibrary->model(), SIGNAL(rowsRemoved(const QModelIndex&, int, int)), project, SLOT(onProjectDataChanged()));
-
     // set resource page
     m_ui->stackedWidget->setCurrentIndex(KStackedPageIndexAddResources);
   }
@@ -142,9 +105,6 @@ void ResourceLibraryWindow::onObjectRemoved(QObject* object)
   {
     // reset view delegate
     m_ui->view->setItemDelegate(NULL);
-
-    // clean up model
-    m_resourceLibrary->model()->clear();
 
     // make disconnections
     disconnect(m_ui->stackedWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(onQueueContextMenuRequested(const QPoint&)));
@@ -160,53 +120,10 @@ void ResourceLibraryWindow::onLibraryLoaded(int count)
   Q_UNUSED(count);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceLibraryWindow::onAddResource()
-{
-  ResourceLibrary* library = ObjectPool::Instance()->getObject<ResourceLibrary>();
-  Q_ASSERT(NULL != library);
-
-  QModelIndex index = m_ui->view->selectionModel()->selectedIndexes().first();
-
-  // prepare filters
-	QString filters = tr("Images");
-	filters += QLatin1String(" (*.png *.jpg)");
-
-  // open file selection dialog
-	QStringList list = QFileDialog::getOpenFileNames(this, tr("Add resource"), QString(), filters);
-  if ( ! list.isEmpty())
-  {
-    // create container item
-    ResourceItemFactory* factory = ObjectPool::Instance()->getObject<ResourceItemFactory>();
-    Q_ASSERT(NULL != factory);
-
-    if (NULL != factory)
-    {
-      // go thru all items
-      for (int i = 0; i < list.size(); ++i)
-      {
-        QString item = QDir::fromNativeSeparators(list[i]);
-        QString name = item.section("/", -1);
-        QString path = item.section("/", 0, -2);
-
-        ResourceItem* newItem = factory->createItem("image", name);
-        if (NULL != newItem)
-        {
-          QModelIndex childIndex = library->model()->insertItem(index, newItem);
-
-          library->model()->setData(childIndex, QVariant(path), ResourceLibraryDataModel::PathRole);
-        }
-      }
-    }
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryWindow::onRemoveItems()
 {
-  QModelIndexList indexList = m_ui->view->selectionModel()->selectedIndexes();
-  foreach (const QModelIndex& index, indexList)
-  {
-    m_resourceLibrary->model()->removeItem(index);
-  }
+  // TAGE - implement
+  //m_resourceLibrary->removeSelectedItems();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryWindow::updateMenus()
@@ -220,8 +137,16 @@ QModelIndexList ResourceLibraryWindow::selectedIndexes() const
   return m_ui->view->selectionModel()->selectedIndexes();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QAbstractItemView*ResourceLibraryWindow::view() const
+{
+  return m_ui->view;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryWindow::onModelChanged()
 {
+  ResourceLibrary* library = ObjectPool::Instance()->getObject<ResourceLibrary>();
+  Q_ASSERT(NULL != library);
+
   Project* project = ObjectPool::Instance()->getObject<Project>();
 
   // update stack widget page
@@ -233,7 +158,7 @@ void ResourceLibraryWindow::onModelChanged()
 
   if (NULL != project)
   {
-    stackedPageToSet = m_resourceLibrary->model()->isEmpty() ? KStackedPageIndexAddResources : KStackedPageIndexResourcesView;
+    stackedPageToSet = library->isEmpty() ? KStackedPageIndexAddResources : KStackedPageIndexResourcesView;
   }
 
   m_ui->stackedWidget->setCurrentIndex(stackedPageToSet);

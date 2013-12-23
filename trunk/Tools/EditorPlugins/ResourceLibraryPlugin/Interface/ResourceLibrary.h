@@ -2,13 +2,15 @@
 #define RESOURCELIBRARY_RESOURCELIBRARY_H
 
 /*! Resource library. This object contains a collection of resource items available to current project.
- *  Contained resources are shared between all configurations.
  */
 
 #include <QObject>
+#include <QSortFilterProxyModel>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceLibraryDataModel;
+class ResourceLibraryWindow;
+class ResourceItem;
 class QXmlStreamWriter;
 class QXmlStreamReader;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -18,7 +20,7 @@ class ResourceLibrary : public QObject
 
   public:
 
-    explicit ResourceLibrary(QObject* parent = NULL);
+    explicit ResourceLibrary(ResourceLibraryWindow* window, QObject* parent = NULL);
    ~ResourceLibrary();
 
   signals:
@@ -30,8 +32,18 @@ class ResourceLibrary : public QObject
 
   public:
 
-    /*! Returns model. */
-    ResourceLibraryDataModel* model() const;
+    /*! Inserts given item into the model at current selection.
+     *  @param  item  Item to be inserted into the model.
+     */
+    void insertItem(ResourceItem* item);
+    /*! Removes currently selected items. */
+    // TAGE - make it slot ?
+    void removeSelectedItems();
+
+    /*! Returns TRUE if model is empty.
+     *  @note Test is done for current configuration only.
+     */
+    bool isEmpty() const;
 
   private slots:
 
@@ -43,11 +55,28 @@ class ResourceLibrary : public QObject
      *  @param  stream  XML stream where data is to be saved.
      */
     void onLoadData(QXmlStreamReader& stream);
+    /*! Slot called when configuration selection has changed.
+        @param  name  New configuration name.
+     */
+    void onConfigurationChanged(const QString& name);
+    /*! Slot called when new object has been added into the pool. */
+    void onObjectAdded(QObject* object);
+    /*! Slot called when object is about to be removed from pool. */
+    void onObjectRemoved(QObject* object);
+
+  private:
+
+    /*! Returns proxy model. */
+    QAbstractProxyModel* proxyModel() const;
+    /*! Returns model. */
+    ResourceLibraryDataModel* model() const;
 
   private:
 
     /*! Data model. */
     ResourceLibraryDataModel* m_model;
+    /*! Proxy model for filtering. */
+    QAbstractProxyModel* m_filterProxy;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

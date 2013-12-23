@@ -6,6 +6,7 @@
 #include "ResourceItemTexture.h"
 #include "ResourceLibraryDataModel.h"
 #include <ObjectPool.h>
+#include <Configuration.h>
 #include <QFileDialog>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -23,19 +24,21 @@ ResourceLibraryWindowResourceInserter::~ResourceLibraryWindowResourceInserter()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryWindowResourceInserter::onAddGroup()
 {
-  // get current seclection index
-  QModelIndexList list = m_window->selectedIndexes();
-  QModelIndex index = ! list.isEmpty() ? list.front() : QModelIndex();
+  Configuration* configuration = ObjectPool::Instance()->getObject<Configuration>();
+  Q_ASSERT(NULL != configuration);
 
-  ResourceItem* newItem = m_factory->createItem(ResourceItemGroup::TypeName(), generateGroupName());
+  ResourceItem* newItem = m_factory->createItem(ResourceItemGroup::TypeName(), generateGroupName(), configuration->current());
   if (NULL != newItem)
   {
-    m_library->model()->insertItem(index, newItem);
+    m_library->insertItem(newItem);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryWindowResourceInserter::onAddTexture2D()
 {
+  Configuration* configuration = ObjectPool::Instance()->getObject<Configuration>();
+  Q_ASSERT(NULL != configuration);
+
   QModelIndex index = m_window->selectedIndexes().first();
 
   // prepare filters
@@ -53,7 +56,7 @@ void ResourceLibraryWindowResourceInserter::onAddTexture2D()
       QString name = item.section("/", -1);
       QString path = item.section("/", 0, -2);
 
-      ResourceItemTexture* newItem = static_cast<ResourceItemTexture*>(m_factory->createItem(ResourceItemTexture::TypeName(), name));
+      ResourceItemTexture* newItem = static_cast<ResourceItemTexture*>(m_factory->createItem(ResourceItemTexture::TypeName(), name, configuration->current()));
       Q_ASSERT(NULL != newItem);
 
       if (NULL != newItem)
@@ -61,9 +64,11 @@ void ResourceLibraryWindowResourceInserter::onAddTexture2D()
         // set texture type
         newItem->setType(ETexture2D);
 
+        // set path
+        newItem->setPath(path);
+
         // add to model
-        QModelIndex childIndex = m_library->model()->insertItem(index, newItem);
-        m_library->model()->setData(childIndex, QVariant(path), ResourceLibraryDataModel::PathRole);
+        m_library->insertItem(newItem);
       }
     }
   }
@@ -71,12 +76,13 @@ void ResourceLibraryWindowResourceInserter::onAddTexture2D()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceLibraryWindowResourceInserter::generateGroupName() const
 {
-  Q_ASSERT(NULL != m_library->model());
+  //Q_ASSERT(NULL != m_library->model());
 
   QString name;
 
   // get all present groups
-  QList<ResourceItem*> availableGroups = m_library->model()->items(ResourceItemGroup::TypeName());
+  // TAGE - implement
+  QList<ResourceItem*> availableGroups;// = m_library->model()->items(ResourceItemGroup::TypeName());
 
   int index = 1;
   while (true)

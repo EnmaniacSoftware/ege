@@ -2,7 +2,7 @@
 #define RESOURCELIBRARY_RESOURCELIBRARYDATAMODEL_H
 
 /*! Resource library data model class.
- *  Entire model's layout is 2D grid like with exactly one column (0 index).
+ *  Entire model's layout is 2D grid like with exactly one column.
  *  Each item corresponds to the row index which is based on the actual position within parent's children list.
  */
 
@@ -31,7 +31,8 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
     enum ResourceLibraryModelRole
     {
       TypeRole = Qt::UserRole,                  /*!< Resource item type. */
-      PathRole                                  /*!< Resource item path. Only valid for certain types. */
+      PathRole,                                 /*!< Resource item path. Only valid for certain types. */
+      ConfigRole                                /*!< Configuration item is bound to. */
     };
 
   signals:

@@ -21,14 +21,12 @@ class ResourceItemTexture : public ResourceItem
 {
   public:
 
-    ResourceItemTexture();
-    ResourceItemTexture(const QString& name, ResourceItem* parent);
    ~ResourceItemTexture();
 
   public:
 
     /*! Creates instance of resource item. This method is a registration method for factory. */
-    static ResourceItem* Create(const QString& name, ResourceItem* parent);
+    static ResourceItem* Create(const QString& name, const QString& configurationName, ResourceItem* parent);
     /*! Returns item type name. */
     static QString TypeName();
     /*! Hooks into Resource Library Window context menu.
@@ -51,6 +49,8 @@ class ResourceItemTexture : public ResourceItem
     void setType(TextureType type);
 
   private:
+
+    ResourceItemTexture(const QString& name, const QString& configurationName, ResourceItem* parent);
 
     /*! @see ResourceItem::typeName. */
     QString typeName() const override;

@@ -7,16 +7,18 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // TAGE - duplicate in ResourceLibraryDataModel :/
-static const QString KResourceItemTag = "ResourceItem";
-static const QString KTypeAttribute   = "type";
-static const QString KNameAttribute   = "name";
+static const QString KResourceItemTag         = "ResourceItem";
+static const QString KTypeAttribute           = "type";
+static const QString KNameAttribute           = "name";
+static const QString KConfigurationAttribute  = "configuration";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItem::ResourceItem() : m_parent(NULL)
-{
-}
+//ResourceItem::ResourceItem() : m_parent(NULL)
+//{
+//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItem::ResourceItem(const QString& name, ResourceItem* parent) : m_name(name),
-                                                                        m_parent(parent)
+ResourceItem::ResourceItem(const QString& name, const QString& configurationName, ResourceItem* parent) : m_name(name),
+                                                                                                          m_parent(parent),
+                                                                                                          m_configurationName(configurationName)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -50,23 +52,32 @@ QVariant ResourceItem::data(int columnIndex, int role) const
 {
   Q_UNUSED(columnIndex);
 
+  QVariant value;
+
   // process according to role
   switch (role)
   {
     case Qt::DisplayRole:
     case Qt::EditRole:
 
-      return name();
+      value = name();
+      break;
 
     case ResourceLibraryDataModel::TypeRole:
 
-      return typeName();
+      value = typeName();
+      break;
+
+    case ResourceLibraryDataModel::ConfigRole:
+
+      value = m_configurationName;
+      break;
   }
 
-  return QVariant();
+  return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ResourceItem::setData(const QVariant &value, int role)
+bool ResourceItem::setData(const QVariant& value, int role)
 {
   // process according to role
   switch (role)
@@ -80,6 +91,11 @@ bool ResourceItem::setData(const QVariant &value, int role)
     case ResourceLibraryDataModel::TypeRole:
 
       // just return success
+      return true;
+
+    case ResourceLibraryDataModel::ConfigRole:
+
+      m_configurationName = value.toString();
       return true;
   }
 
@@ -104,7 +120,8 @@ bool ResourceItem::insertChildren(int position, int count, int columns)
 
   for (int row = 0; row < count; ++row)
   {
-    ResourceItem* object = new ResourceItem();
+    // TAGE - Check it...
+    ResourceItem* object = NULL;// = new ResourceItem();
     if (NULL == object)
     {
       // error!
@@ -142,6 +159,7 @@ bool ResourceItem::beginSerialize(QXmlStreamWriter& stream) const
   
   stream.writeAttribute(KTypeAttribute, typeName());
   stream.writeAttribute(KNameAttribute, name());
+  stream.writeAttribute(KConfigurationAttribute, m_configurationName);
 
   return ! stream.hasError();
 }

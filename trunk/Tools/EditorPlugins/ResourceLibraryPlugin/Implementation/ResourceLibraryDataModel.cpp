@@ -13,9 +13,8 @@
 static const QString KResourceItemTag = "ResourceItem";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryDataModel::ResourceLibraryDataModel(QObject* parent) : QAbstractItemModel(parent),
-                                                                      m_root(new ResourceItem())
+                                                                      m_root(new ResourceItem("root", "", NULL))
 {
-  m_root->setName("root");
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryDataModel::~ResourceLibraryDataModel()
@@ -115,9 +114,7 @@ int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
   }
 
   // get number of children/rows
-  int rowCount = parentItem->childCount();
-
- //qDebug() << Q_FUNC_INFO << "count" << rowCount << "for" << parent;
+  int rowCount = (NULL != parentItem) ? parentItem->childCount() : 0;
 
   return rowCount;
 }
@@ -235,11 +232,12 @@ bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
         if (KResourceItemTag == stream.name())
         {
           // get resource item required data
-          const QString type = stream.attributes().value("type").toString();
-          const QString name = stream.attributes().value("name").toString();
+          const QString type          = stream.attributes().value("type").toString();
+          const QString name          = stream.attributes().value("name").toString();
+          const QString configuration = stream.attributes().value("configuration").toString();
 
           // create given resource item
-          ResourceItem* item = factory->createItem(type, name, itemStack.top());
+          ResourceItem* item = factory->createItem(type, name, configuration, itemStack.top());
           Q_ASSERT(NULL != item);
 
           // unserialize item
