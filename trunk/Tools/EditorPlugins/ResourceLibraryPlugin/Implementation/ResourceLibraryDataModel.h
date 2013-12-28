@@ -49,6 +49,8 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
 
     /*! @see QAbstractItemModel::setData. */
     bool setData(const QModelIndex& index, const QVariant& value, int role) override;
+    /*! @see QAbstractItemModel::index. */
+    QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
 
     /*! @see ISerializer::serialize. */
     bool serialize(QXmlStreamWriter& stream) const override;
@@ -82,8 +84,6 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
     Qt::ItemFlags flags(const QModelIndex& index) const override;
     /*! @see QAbstractItemModel::columnCount. */
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
-    /*! @see QAbstractItemModel::index. */
-    QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
 
     /*! Returns resource library item connected for given model index. */
     ResourceItem* getItem(const QModelIndex& index) const;

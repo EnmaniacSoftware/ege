@@ -55,7 +55,7 @@ void ResourceLibraryWindow::onQueueContextMenuRequested(const QPoint& pos)
   QMenu menu(this);
 
   // get selected indicies
-  QModelIndexList indexList = m_ui->view->selectionModel()->selectedIndexes();
+  QModelIndexList indexList = selectedIndexes();
 
   // check if anything selected
   if ( ! indexList.empty())
@@ -134,7 +134,26 @@ void ResourceLibraryWindow::updateMenus()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QModelIndexList ResourceLibraryWindow::selectedIndexes() const
 {
-  return m_ui->view->selectionModel()->selectedIndexes();
+  // get selected indicies
+  // NOTE: this may return indicies in proxy model or non-proxied model
+  QModelIndexList list = m_ui->view->selectionModel()->selectedIndexes();
+
+  // make sure indicies are of original model
+  for (int i = 0; i < list.count(); ++i)
+  {
+    QModelIndex& index = list[i];
+
+    const QAbstractProxyModel* proxyModel = qobject_cast<const QAbstractProxyModel*>(index.model());
+
+    // check if index is part of any proxy model
+    if (NULL != proxyModel)
+    {
+      // convert index to source
+      index = proxyModel->mapToSource(index);
+    }
+  }
+
+  return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QAbstractItemView*ResourceLibraryWindow::view() const

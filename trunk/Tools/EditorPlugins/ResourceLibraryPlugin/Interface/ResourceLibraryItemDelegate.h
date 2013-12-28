@@ -11,7 +11,7 @@
 class ResourceItem;
 class ResourceItemGroup;
 class ResourceItemTexture;
-class QTreeView;
+class QAbstractItemView;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RESOUCELIBRARYPLUGIN_API ResourceLibraryItemDelegate : public QStyledItemDelegate
 {
@@ -23,7 +23,7 @@ class RESOUCELIBRARYPLUGIN_API ResourceLibraryItemDelegate : public QStyledItemD
    ~ResourceLibraryItemDelegate();
 
     /*! Sets view. */
-    void setView(QTreeView* view);
+    void setView(QAbstractItemView* view);
 
   private:
 
@@ -41,10 +41,13 @@ class RESOUCELIBRARYPLUGIN_API ResourceLibraryItemDelegate : public QStyledItemD
     /*! Paints image type. */
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemTexture* item) const;
 
+    /*! Converts given model index into underlying model's index. */
+    QModelIndex convertModelIndex(QModelIndex index) const;
+
   private:
 
     /*! View control where drawing takes place. */
-    QTreeView* m_view;
+    QAbstractItemView* m_view;
     /*! Container type pixmap. */
     QPixmap m_containerTypePixmap;
 };

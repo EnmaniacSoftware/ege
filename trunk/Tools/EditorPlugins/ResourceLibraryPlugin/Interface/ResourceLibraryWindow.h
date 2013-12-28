@@ -25,7 +25,7 @@ class ResourceLibraryWindow : public QDockWidget
     void loadSettings();
 
     /*! Returns list of selected indicies.
-     *  @note List contains no duplicates and is not sorted.
+     *  @note List contains no duplicates and is not sorted. Indicies are of original model.
      */
     QModelIndexList selectedIndexes() const;
 

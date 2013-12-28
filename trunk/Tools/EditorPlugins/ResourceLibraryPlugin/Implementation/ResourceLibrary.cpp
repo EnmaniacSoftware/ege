@@ -6,6 +6,7 @@
 #include <Configuration.h>
 #include <ObjectPool.h>
 #include <QList>
+#include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const QString KResourceLibraryTag = "ResourceLibrary";
@@ -17,17 +18,18 @@ ResourceLibrary::ResourceLibrary(ResourceLibraryWindow* window, QObject* parent)
   Configuration* configuration = ObjectPool::Instance()->getObject<Configuration>();
   Q_ASSERT(NULL != configuration);
 
+  // bind original model to proxy
+  m_filterProxy->setSourceModel(m_model);
+
+  // set view model
+  window->view()->setModel(m_filterProxy);
+
   // connect
+  // NOTE: make sure onModelChanged is connected AFTER source model is attached to proxy so proxy is notified first about the changes
   connect(ObjectPool::Instance(), SIGNAL(objectAdded(QObject*)), this, SLOT(onObjectAdded(QObject*)));
   connect(ObjectPool::Instance(), SIGNAL(objectRemoved(QObject*)), this, SLOT(onObjectRemoved(QObject*)));
   connect(configuration, SIGNAL(changed(QString)), this, SLOT(onConfigurationChanged(QString)));
   connect(m_model, SIGNAL(rowsInserted(const QModelIndex&, int, int)), window, SLOT(onModelChanged()));
-
-  // set view model
-  window->view()->setModel(model());//proxyModel());
-
-  // bind original model to proxy
-  m_filterProxy->setSourceModel(model());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibrary::~ResourceLibrary()
@@ -76,13 +78,12 @@ void ResourceLibrary::insertItem(ResourceItem* item)
   ResourceLibraryWindow* window = ObjectPool::Instance()->getObject<ResourceLibraryWindow>();
   Q_ASSERT(NULL != window);
 
-  // get current seclection index
+  // get current selection index
   QModelIndexList list = window->selectedIndexes();
   QModelIndex index = ! list.isEmpty() ? list.front() : QModelIndex();
 
+  // add item into model
   model()->insertItem(index, item);
-  // TAGE - proxy model
-//  model()->insertItem(proxyModel()->mapToSource(index), item);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibrary::removeSelectedItems()
@@ -94,18 +95,15 @@ void ResourceLibrary::removeSelectedItems()
   foreach (const QModelIndex& index, indexList)
   {
     // remove in source model
-    // TAGE - proxy model
-//    model()->removeItem(proxyModel()->mapToSource(index));
     model()->removeItem(index);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceLibrary::isEmpty() const
 {
-  int a = proxyModel()->rowCount();
-  int b = model()->rowCount();
+  qDebug() << "PROXY ROW COUNT" << proxyModel()->rowCount();
 
-  return (0 == model()->rowCount());
+  return (0 == proxyModel()->rowCount());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibrary::onObjectAdded(QObject* object)

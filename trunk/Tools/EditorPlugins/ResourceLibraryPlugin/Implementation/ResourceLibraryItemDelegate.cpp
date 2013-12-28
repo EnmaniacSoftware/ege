@@ -6,6 +6,8 @@
 #include <QPainter>
 #include <QTreeView>
 #include <QLineEdit>
+#include <QAbstractProxyModel>
+#include <ObjectPool.h>
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,7 +30,7 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
 {
   Q_ASSERT(m_view);
 
-  ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
+  ResourceItem* item = static_cast<ResourceItem*>(convertModelIndex(index).internalPointer());
 
   // store painter state
   painter->save();
@@ -82,17 +84,31 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
   painter->drawText(rect.intersected(option.rect), Qt::AlignBottom, item->path());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QModelIndex ResourceLibraryItemDelegate::convertModelIndex(QModelIndex index) const
+{
+  const QAbstractProxyModel* proxyModel = qobject_cast<const QAbstractProxyModel*>(index.model());
+
+  // check if index is part of any proxy model
+  if (NULL != proxyModel)
+  {
+    // convert index to source
+    index = proxyModel->mapToSource(index);
+  }
+
+  return index;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QWidget* ResourceLibraryItemDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
 	// create editor
-	QWidget* editor = QStyledItemDelegate::createEditor(parent, option, index);
+  QWidget* editor = QStyledItemDelegate::createEditor(parent, option, convertModelIndex(index));
   
 	return editor;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryItemDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-  ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
+  ResourceItem* item = static_cast<ResourceItem*>(convertModelIndex(index).internalPointer());
 
   // process according to type
   if (ResourceItemGroup::TypeName() == item->typeName())
@@ -102,7 +118,7 @@ void ResourceLibraryItemDelegate::updateEditorGeometry(QWidget* editor, const QS
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceLibraryItemDelegate::setView(QTreeView* view)
+void ResourceLibraryItemDelegate::setView(QAbstractItemView* view)
 {
   m_view = view;
 }
@@ -111,8 +127,10 @@ QSize ResourceLibraryItemDelegate::sizeHint(const QStyleOptionViewItem& option, 
 {
   Q_UNUSED(option);
 
-  ResourceItem* item = static_cast<ResourceItem*>(index.internalPointer());
+  qDebug() << index.model();
 
-  return item->sizeHint();
+  ResourceItem* item = static_cast<ResourceItem*>(convertModelIndex(index).internalPointer());
+
+  return (NULL != item) ? item->sizeHint() : QStyledItemDelegate::sizeHint(option, index);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

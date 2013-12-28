@@ -116,6 +116,8 @@ int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
   // get number of children/rows
   int rowCount = (NULL != parentItem) ? parentItem->childCount() : 0;
 
+  qDebug() << "ROW COUNT" << rowCount << "for" << parentItem;
+
   return rowCount;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -278,7 +280,7 @@ void ResourceLibraryDataModel::removeItem(const QModelIndex& index)
   ResourceItem* item = getItem(index);
   Q_ASSERT((NULL != item) && item->parent());
 
-  beginRemoveRows(index.parent(), item->row(), item->row());
+  beginRemoveRows(index, item->row(), item->row());
   item->parent()->removeChild(item);
 	endRemoveRows();
 
@@ -291,8 +293,8 @@ QModelIndex ResourceLibraryDataModel::insertItem(const QModelIndex& index, Resou
   // get item form model
   ResourceItem* parentItem = getItem(index);
 
-  // add to the end of the pool
-  beginInsertRows(index.parent(), parentItem->childCount(), parentItem->childCount());
+  // add to the end of the pool of a given index
+  beginInsertRows(index, parentItem->childCount(), parentItem->childCount());
   parentItem->addChild(item);
   endInsertRows();
 
