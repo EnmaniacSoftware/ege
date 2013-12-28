@@ -1,5 +1,6 @@
 #include "ResourceLibraryWindow.h"
 #include "ResourceLibraryDataModel.h"
+#include "ResourceLibraryDataModelProxy.h"
 #include "ResourceLibraryItemDelegate.h"
 #include "ResourceItem.h"
 #include "ResourceItemFactory.h"
@@ -143,7 +144,7 @@ QModelIndexList ResourceLibraryWindow::selectedIndexes() const
   {
     QModelIndex& index = list[i];
 
-    const QAbstractProxyModel* proxyModel = qobject_cast<const QAbstractProxyModel*>(index.model());
+    const ResourceLibraryDataModelProxy* proxyModel = qobject_cast<const ResourceLibraryDataModelProxy*>(index.model());
 
     // check if index is part of any proxy model
     if (NULL != proxyModel)

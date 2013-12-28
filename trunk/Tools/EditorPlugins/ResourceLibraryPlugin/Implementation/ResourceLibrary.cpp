@@ -1,9 +1,9 @@
 #include "ResourceLibrary.h"
 #include "ResourceLibraryDataModel.h"
+#include "ResourceLibraryDataModelProxy.h"
 #include "ResourceItem.h"
 #include "ResourceLibraryWindow.h"
 #include <Projects/Project.h>
-#include <Configuration.h>
 #include <ObjectPool.h>
 #include <QList>
 #include <QDebug>
@@ -13,11 +13,8 @@ static const QString KResourceLibraryTag = "ResourceLibrary";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibrary::ResourceLibrary(ResourceLibraryWindow* window, QObject* parent) : QObject(parent),
                                                                                    m_model(new ResourceLibraryDataModel(this)),
-                                                                                   m_filterProxy(new QSortFilterProxyModel(this))
+                                                                                   m_filterProxy(new ResourceLibraryDataModelProxy(this))
 {
-  Configuration* configuration = ObjectPool::Instance()->getObject<Configuration>();
-  Q_ASSERT(NULL != configuration);
-
   // bind original model to proxy
   m_filterProxy->setSourceModel(m_model);
 
@@ -28,8 +25,8 @@ ResourceLibrary::ResourceLibrary(ResourceLibraryWindow* window, QObject* parent)
   // NOTE: make sure onModelChanged is connected AFTER source model is attached to proxy so proxy is notified first about the changes
   connect(ObjectPool::Instance(), SIGNAL(objectAdded(QObject*)), this, SLOT(onObjectAdded(QObject*)));
   connect(ObjectPool::Instance(), SIGNAL(objectRemoved(QObject*)), this, SLOT(onObjectRemoved(QObject*)));
-  connect(configuration, SIGNAL(changed(QString)), this, SLOT(onConfigurationChanged(QString)));
   connect(m_model, SIGNAL(rowsInserted(const QModelIndex&, int, int)), window, SLOT(onModelChanged()));
+  connect(m_filterProxy, SIGNAL(filterChanged()), window, SLOT(onModelChanged()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibrary::~ResourceLibrary()
@@ -59,11 +56,6 @@ void ResourceLibrary::onLoadData(QXmlStreamReader& stream)
     // emit
     emit loaded(model()->rowCount());
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceLibrary::onConfigurationChanged(const QString& name)
-{
-
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryDataModel* ResourceLibrary::model() const
@@ -129,7 +121,7 @@ void ResourceLibrary::onObjectRemoved(QObject* object)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QAbstractProxyModel* ResourceLibrary::proxyModel() const
+ResourceLibraryDataModelProxy* ResourceLibrary::proxyModel() const
 {
   return m_filterProxy;
 }

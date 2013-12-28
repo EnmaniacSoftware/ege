@@ -5,10 +5,10 @@
  */
 
 #include <QObject>
-#include <QSortFilterProxyModel>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceLibraryDataModel;
+class ResourceLibraryDataModelProxy;
 class ResourceLibraryWindow;
 class ResourceItem;
 class QXmlStreamWriter;
@@ -55,10 +55,6 @@ class ResourceLibrary : public QObject
      *  @param  stream  XML stream where data is to be saved.
      */
     void onLoadData(QXmlStreamReader& stream);
-    /*! Slot called when configuration selection has changed.
-        @param  name  New configuration name.
-     */
-    void onConfigurationChanged(const QString& name);
     /*! Slot called when new object has been added into the pool. */
     void onObjectAdded(QObject* object);
     /*! Slot called when object is about to be removed from pool. */
@@ -67,7 +63,7 @@ class ResourceLibrary : public QObject
   private:
 
     /*! Returns proxy model. */
-    QAbstractProxyModel* proxyModel() const;
+    ResourceLibraryDataModelProxy* proxyModel() const;
     /*! Returns model. */
     ResourceLibraryDataModel* model() const;
 
@@ -76,7 +72,7 @@ class ResourceLibrary : public QObject
     /*! Data model. */
     ResourceLibraryDataModel* m_model;
     /*! Proxy model for filtering. */
-    QAbstractProxyModel* m_filterProxy;
+    ResourceLibraryDataModelProxy* m_filterProxy;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
