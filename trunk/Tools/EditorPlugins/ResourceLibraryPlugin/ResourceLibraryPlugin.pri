@@ -9,7 +9,7 @@ HEADERS = Implementation/ResourceLibraryPlugin.h \
           Interface/ResourceLibrary.h \
           Interface/ResourceItemGroup.h \
           Implementation/ResourceLibraryWindowResourceInserter.h \
-    Implementation/ResourceLibraryDataModelProxy.h
+          Implementation/ResourceLibraryDataModelProxy.h
 
 SOURCES = Implementation/ResourceLibraryPlugin.cpp \
           Implementation/ResourceLibraryWindow.cpp \
@@ -21,9 +21,9 @@ SOURCES = Implementation/ResourceLibraryPlugin.cpp \
           Implementation/ResourceLibrary.cpp \
           Implementation/ResourceItemGroup.cpp \
           Implementation/ResourceLibraryWindowResourceInserter.cpp \
-    Implementation/ResourceLibraryDataModelProxy.cpp
+          Implementation/ResourceLibraryDataModelProxy.cpp
 
 FORMS += Forms/ResourceLibraryWindow.ui \
-    Forms/TexturePropertiesDialog.ui
+         Forms/TexturePropertiesWindow.ui
 
 RESOURCES += Resources/resources.qrc

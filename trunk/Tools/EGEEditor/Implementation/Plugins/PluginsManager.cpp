@@ -96,13 +96,16 @@ bool PluginsManager::loadPlugins()
     QLibrary library(libraryFullPath, this);
       
     // resolve
-    PFPLUGININSTANCE instance = (PFPLUGININSTANCE) library.resolve("ege_plugin_instance");
-
-    if ((NULL == instance))
+    PFPLUGININSTANCE instance = reinterpret_cast<PFPLUGININSTANCE>(library.resolve("ege_plugin_instance"));
+    if (NULL == instance)
     {
       // error!
       qDebug() << Q_FUNC_INFO << QString("Could not resolve for plugin: %1...").arg(libraryFullPath);
       continue;
+    }
+    else
+    {
+      qDebug() << Q_FUNC_INFO << QString("Plugin instance created: %1...").arg(libraryFullPath);
     }
 
     // create instance
@@ -120,11 +123,11 @@ void PluginsManager::unloadPlugins()
 {
   // deinitialize plugins in reverse order
   QList<PluginData*> queue = loadQueue();
-  while (!queue.isEmpty())
+  while ( ! queue.isEmpty())
   {
     PluginData* pluginData = queue.takeLast();
 
-    if (m_plugins.contains(pluginData->name))
+    if ((NULL != pluginData->instance) && m_plugins.contains(pluginData->name))
     {
       pluginData->instance->deinitialize();
     }

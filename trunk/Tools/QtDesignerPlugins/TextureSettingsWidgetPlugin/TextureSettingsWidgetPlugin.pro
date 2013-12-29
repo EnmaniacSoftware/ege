@@ -1,12 +1,7 @@
 include(TextureSettingsWidgetPlugin.pri)
-
-CONFIG      += plugin release
-
-QT          += widgets designer
+include(../PluginExtras.pri)
 
 INCLUDEPATH += Interface
-
-TEMPLATE    = lib
 
 target.path += $$[QT_INSTALL_PLUGINS]/designer \
 #target.path += $$[QT_INSTALL_PREFIX]/../../Tools/QtCreator/bin/plugins/designer

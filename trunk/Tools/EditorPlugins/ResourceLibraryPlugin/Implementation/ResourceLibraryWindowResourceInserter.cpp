@@ -5,7 +5,7 @@
 #include "ResourceItemGroup.h"
 #include "ResourceItemTexture.h"
 #include "ResourceLibraryDataModel.h"
-#include "ui_TexturePropertiesDialog.h"
+#include "ui_TexturePropertiesWindow.h"
 #include <MainWindow.h>
 #include <ObjectPool.h>
 #include <Configuration.h>
@@ -83,9 +83,13 @@ void ResourceLibraryWindowResourceInserter::onShowTextureProperties()
 
   QModelIndex index = m_window->selectedIndexes().first();
 
+  QWidget* widget = new QWidget;
+  Ui_TexturePropertiesWindow* ui = new Ui_TexturePropertiesWindow();
+
+  ui->setupUi(widget);
 
   // show settings window
-  mainWindow->addChildWindow(settingsWindow);
+  mainWindow->addChildWindow(widget);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceLibraryWindowResourceInserter::generateGroupName() const

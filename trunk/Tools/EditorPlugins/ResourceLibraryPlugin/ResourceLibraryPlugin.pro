@@ -1,8 +1,6 @@
 include(ResourceLibraryPlugin.pri)
 include(../PluginExtras.pri)
 
-CONFIG += TextureSettingsWidgetPlugin
-
 QT += widgets
 
 INCLUDEPATH += Interface \
@@ -12,7 +10,7 @@ INCLUDEPATH += Interface \
 
 DEFINES += RESOUCELIBRARYPLUGIN_EXPORT=1
 
-LIBS += -lWorkspacePlugin -lCorePlugin
+LIBS += -lWorkspacePlugin -lCorePlugin -lTextureSettingsWidgetPlugin
 
 target.path = ../../EGEEditor/Plugins
 INSTALLS += target
