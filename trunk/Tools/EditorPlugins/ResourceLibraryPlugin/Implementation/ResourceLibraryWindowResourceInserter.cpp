@@ -5,6 +5,8 @@
 #include "ResourceItemGroup.h"
 #include "ResourceItemTexture.h"
 #include "ResourceLibraryDataModel.h"
+#include "ui_TexturePropertiesDialog.h"
+#include <MainWindow.h>
 #include <ObjectPool.h>
 #include <Configuration.h>
 #include <QFileDialog>
@@ -74,15 +76,24 @@ void ResourceLibraryWindowResourceInserter::onAddTexture2D()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceLibraryWindowResourceInserter::onShowTextureProperties()
+{
+  MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
+  Q_ASSERT(NULL != mainWindow);
+
+  QModelIndex index = m_window->selectedIndexes().first();
+
+
+  // show settings window
+  mainWindow->addChildWindow(settingsWindow);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceLibraryWindowResourceInserter::generateGroupName() const
 {
-  //Q_ASSERT(NULL != m_library->model());
-
   QString name;
 
   // get all present groups
-  // TAGE - implement
-  QList<ResourceItem*> availableGroups;// = m_library->model()->items(ResourceItemGroup::TypeName());
+  QList<ResourceItem*> availableGroups = m_library->items(ResourceItemGroup::TypeName());
 
   int index = 1;
   while (true)

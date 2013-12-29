@@ -17,7 +17,6 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public QObject, public ISerializer
 
   public:
 
-    //ResourceItem(const QString& configurationName);
     ResourceItem(const QString& name, const QString& configurationName, ResourceItem* parent);
     virtual ~ResourceItem();
 
@@ -29,13 +28,13 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public QObject, public ISerializer
     /*! Returns type name. */
     virtual QString typeName() const;
 
+    /*! Returns configuration name object belongs to. */
+    const QString& configurationName() const;
+
     /*! Sets parent. */
     void setParent(ResourceItem* parent);
     /*! Returns parent. */
     ResourceItem* parent() const;
-
-    /*! Returns number of columns. */
-    int columnCount() const;
 
     /*! Returns children count. */
     int childCount() const;

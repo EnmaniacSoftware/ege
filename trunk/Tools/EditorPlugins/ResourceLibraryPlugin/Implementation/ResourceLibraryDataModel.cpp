@@ -90,13 +90,10 @@ QVariant ResourceLibraryDataModel::data(const QModelIndex& index, int role) cons
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 int ResourceLibraryDataModel::columnCount(const QModelIndex& parent) const
-{
-  if (parent.isValid())
-  {
-    return static_cast<ResourceItem*>(parent.internalPointer())->columnCount();
-  }
-  
-  return m_root->columnCount();
+{ 
+  Q_UNUSED(parent);
+
+  return 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
@@ -116,7 +113,7 @@ int ResourceLibraryDataModel::rowCount(const QModelIndex& parent) const
   // get number of children/rows
   int rowCount = (NULL != parentItem) ? parentItem->childCount() : 0;
 
-  qDebug() << "ROW COUNT" << rowCount << "for" << parentItem;
+  //qDebug() << "ROW COUNT" << rowCount << "for" << parentItem;
 
   return rowCount;
 }

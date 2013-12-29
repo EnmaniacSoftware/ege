@@ -12,10 +12,6 @@ static const QString KTypeAttribute           = "type";
 static const QString KNameAttribute           = "name";
 static const QString KConfigurationAttribute  = "configuration";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//ResourceItem::ResourceItem() : m_parent(NULL)
-//{
-//}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItem::ResourceItem(const QString& name, const QString& configurationName, ResourceItem* parent) : m_name(name),
                                                                                                           m_parent(parent),
                                                                                                           m_configurationName(configurationName)
@@ -26,11 +22,6 @@ ResourceItem::~ResourceItem()
 {
   qDeleteAll(m_children);
   m_children.clear();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-int ResourceItem::columnCount() const
-{
-  return 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 int ResourceItem::childCount() const
@@ -195,6 +186,11 @@ ResourceItem* ResourceItem::parent() const
 QString ResourceItem::typeName() const
 {
   return "generic";
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const QString&ResourceItem::configurationName() const
+{
+  return m_configurationName;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItem::setChild(int index, ResourceItem* item)

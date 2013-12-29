@@ -5,10 +5,6 @@
 #include <QMenu>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//ResourceItemGroup::ResourceItemGroup() : ResourceItem()
-//{
-//}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemGroup::ResourceItemGroup(const QString& name, const QString& configurationName, ResourceItem* parent)
   : ResourceItem(name, configurationName, parent)
 {

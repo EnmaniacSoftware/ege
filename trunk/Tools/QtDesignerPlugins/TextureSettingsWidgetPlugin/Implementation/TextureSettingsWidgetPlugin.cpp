@@ -57,13 +57,13 @@ QString TextureSettingsWidgetPlugin::whatsThis() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool TextureSettingsWidgetPlugin::isContainer() const
 {
-  return false;
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString TextureSettingsWidgetPlugin::domXml() const
 {
   return "<ui language=\"c++\">\n"
-         " <widget class=\"TextureSettingsWidget\" name=\"TextureSettingsWidget\">\n"
+         " <widget class=\"TextureSettingsWidget\" name=\"textureSettings\">\n"
          "  <property name=\"geometry\">\n"
          "   <rect>\n"
          "    <x>0</x>\n"

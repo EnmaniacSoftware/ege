@@ -23,6 +23,7 @@ SOURCES = Implementation/ResourceLibraryPlugin.cpp \
           Implementation/ResourceLibraryWindowResourceInserter.cpp \
     Implementation/ResourceLibraryDataModelProxy.cpp
 
-FORMS += Forms/ResourceLibraryWindow.ui
+FORMS += Forms/ResourceLibraryWindow.ui \
+    Forms/TexturePropertiesDialog.ui
 
 RESOURCES += Resources/resources.qrc

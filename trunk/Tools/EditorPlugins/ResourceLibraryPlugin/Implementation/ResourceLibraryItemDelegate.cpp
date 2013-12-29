@@ -127,8 +127,6 @@ QSize ResourceLibraryItemDelegate::sizeHint(const QStyleOptionViewItem& option, 
 {
   Q_UNUSED(option);
 
-  qDebug() << index.model();
-
   ResourceItem* item = static_cast<ResourceItem*>(convertModelIndex(index).internalPointer());
 
   return (NULL != item) ? item->sizeHint() : QStyledItemDelegate::sizeHint(option, index);

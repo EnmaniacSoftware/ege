@@ -27,6 +27,8 @@ class ResourceLibraryWindowResourceInserter : public QObject
     void onAddGroup();
     /*! Slot called when new 2D texture resource is to be added. */
     void onAddTexture2D();
+    /*! Slot called when texture property window is to be opened. */
+    void onShowTextureProperties();
 
   private:
 

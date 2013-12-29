@@ -45,6 +45,13 @@ class ResourceLibrary : public QObject
      */
     bool isEmpty() const;
 
+    /*! Returns all resource items of a given type.
+     *  @param  typeName  Name of the type of objects to return.
+     *  @return List of pointers to objects of a given type currently present in the model.
+     *  @note Only items belonging to current configuration are returned.
+     */
+    QList<ResourceItem*> items(const QString& typeName) const;
+
   private slots:
 
     /*! Slot called when library saving is required.

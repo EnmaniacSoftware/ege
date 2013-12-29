@@ -4,6 +4,7 @@
 #include "ResourceItem.h"
 #include "ResourceLibraryWindow.h"
 #include <Projects/Project.h>
+#include <Configuration.h>
 #include <ObjectPool.h>
 #include <QList>
 #include <QDebug>
@@ -93,9 +94,38 @@ void ResourceLibrary::removeSelectedItems()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceLibrary::isEmpty() const
 {
-  qDebug() << "PROXY ROW COUNT" << proxyModel()->rowCount();
+  qDebug() << "Row count:" << proxyModel() << proxyModel()->rowCount() << model() << model()->rowCount();
 
   return (0 == proxyModel()->rowCount());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QList<ResourceItem*> ResourceLibrary::items(const QString& typeName) const
+{
+  Configuration* configuration = ObjectPool::Instance()->getObject<Configuration>();
+  Q_ASSERT(NULL != configuration);
+
+  // get all items of a given type from model
+  QList<ResourceItem*> list = model()->items(typeName);
+
+  // leave only ones belonging to current configuration
+  for (QList<ResourceItem*>::iterator it = list.begin(); it != list.end();)
+  {
+    const ResourceItem* item = *it;
+
+    // check if invalid type
+    if (item->configurationName() != configuration->current())
+    {
+      // remove it
+      it = list.erase(it);
+    }
+    else
+    {
+      // go on
+      ++it;
+    }
+  }
+
+  return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibrary::onObjectAdded(QObject* object)

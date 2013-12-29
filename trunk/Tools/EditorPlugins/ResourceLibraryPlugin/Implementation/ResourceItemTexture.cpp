@@ -22,11 +22,6 @@ static const TextureTypeMap l_textureTypeMappings[] = { { "none", EInvalidTextur
                                                         { "2D", ETexture2D }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//ResourceItemTexture::ResourceItemTexture() : ResourceItem(),
-//                                             m_type(EInvalidTexture)
-//{
-//}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemTexture::ResourceItemTexture(const QString& name, const QString& configurationName, ResourceItem* parent)
   : ResourceItem(name, configurationName, parent),
     m_type(EInvalidTexture)
@@ -49,13 +44,21 @@ QString ResourceItemTexture::TypeName()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItemTexture::ResourceLibraryWindowHook(QMenu& menu, const QString& selectedType)
 {
-  // only allow for group resources
+  // allow adding only for group resources
   if (selectedType == ResourceItemGroup::TypeName())
   {
     ResourceLibraryWindowResourceInserter* helper = ObjectPool::Instance()->getObject<ResourceLibraryWindowResourceInserter>();
     Q_ASSERT(NULL != helper);
 
     menu.addAction(tr("Add 2D texture"), helper, SLOT(onAddTexture2D()));
+  }
+  // allow properties for texture items only
+  else if (selectedType == ResourceItemTexture::TypeName())
+  {
+    ResourceLibraryWindowResourceInserter* helper = ObjectPool::Instance()->getObject<ResourceLibraryWindowResourceInserter>();
+    Q_ASSERT(NULL != helper);
+
+    menu.addAction(tr("Properties"), helper, SLOT(onShowTextureProperties()));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
