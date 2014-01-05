@@ -266,7 +266,13 @@ void MainWindow::updateTitleBar()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::addChildWindow(QWidget* widget)
 {
-  m_ui->mdiArea->addSubWindow(widget);
+  QMdiSubWindow* window = m_ui->mdiArea->addSubWindow(widget);
+  Q_ASSERT(NULL != window);
+
+  if (NULL != window)
+  {
+    window->show();
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::removeChildWindow(QWidget* widget)

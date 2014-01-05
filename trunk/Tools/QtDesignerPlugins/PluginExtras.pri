@@ -3,7 +3,7 @@ include(../Extras.pri)
 # common setup for all plugins
 TEMPLATE = lib
 
-CONFIG += plugin release
+CONFIG += plugin release debug
 
 QT     += widgets designer
 

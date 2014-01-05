@@ -1,5 +1,6 @@
 include(TextureSettingsWidgetPlugin.pri)
 include(../PluginExtras.pri)
+include(../../External/QtSolutions/qtpropertybrowser/src/qtpropertybrowser.pri)
 
 INCLUDEPATH += Interface
 

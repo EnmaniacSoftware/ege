@@ -1,5 +1,6 @@
 include(WorkspacePlugin.pri)
 include(../PluginExtras.pri)
+include(../../External/QtSolutions/qtpropertybrowser/src/qtpropertybrowser.pri)
 
 QT += core gui widgets
 
