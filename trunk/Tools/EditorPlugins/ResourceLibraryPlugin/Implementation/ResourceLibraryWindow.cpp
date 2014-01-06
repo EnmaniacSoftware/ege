@@ -157,7 +157,7 @@ QModelIndexList ResourceLibraryWindow::selectedIndexes() const
   return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QAbstractItemView*ResourceLibraryWindow::view() const
+QAbstractItemView* ResourceLibraryWindow::view() const
 {
   return m_ui->view;
 }

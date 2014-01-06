@@ -161,6 +161,20 @@ bool ResourceItemTexture::setData(const QVariant &value, int role)
   return ResourceItem::setData(value, role);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QList<NPropertyObject::PropertyDefinition> ResourceItemTexture::propertiesDefinition() const
+{
+  QList<NPropertyObject::PropertyDefinition> list;
+
+  // create general group
+  NPropertyObject::PropertyDefinition generalGroup(tr("General"), NPropertyObject::EGroup);
+
+
+  // add groups to list
+  list.push_back(generalGroup);
+
+  return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceItemTexture::textureTypeName() const
 {
   QString textureTypeName;

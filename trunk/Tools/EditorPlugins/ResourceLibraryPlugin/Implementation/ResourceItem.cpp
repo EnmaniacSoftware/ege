@@ -173,6 +173,23 @@ bool ResourceItem::endSerialize(QXmlStreamWriter& stream) const
   return ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QList<NPropertyObject::PropertyDefinition> ResourceItem::propertiesDefinition() const
+{
+  QList<NPropertyObject::PropertyDefinition> list;
+
+  // create general group
+  NPropertyObject::PropertyDefinition generalGroup(tr("General"), NPropertyObject::EGroup);
+
+  // add name
+  NPropertyObject::PropertyDefinition generalName(tr("Name"), NPropertyObject::EString);
+  generalGroup.addChildProperty(generalName);
+
+  // add groups to list
+  list.push_back(generalGroup);
+
+  return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItem::setParent(ResourceItem* parent)
 {
   m_parent = parent;

@@ -3,6 +3,7 @@
 #include "ResourceLibraryDataModelProxy.h"
 #include "ResourceItem.h"
 #include "ResourceLibraryWindow.h"
+#include <PropertiesWindow.h>
 #include <Projects/Project.h>
 #include <Configuration.h>
 #include <ObjectPool.h>
@@ -28,6 +29,8 @@ ResourceLibrary::ResourceLibrary(ResourceLibraryWindow* window, QObject* parent)
   connect(ObjectPool::Instance(), SIGNAL(objectRemoved(QObject*)), this, SLOT(onObjectRemoved(QObject*)));
   connect(m_model, SIGNAL(rowsInserted(const QModelIndex&, int, int)), window, SLOT(onModelChanged()));
   connect(m_filterProxy, SIGNAL(filterChanged()), window, SLOT(onModelChanged()));
+  connect(window->view()->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
+          this, SLOT(onSelectionChanged(QItemSelection, QItemSelection)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibrary::~ResourceLibrary()
@@ -154,5 +157,27 @@ void ResourceLibrary::onObjectRemoved(QObject* object)
 ResourceLibraryDataModelProxy* ResourceLibrary::proxyModel() const
 {
   return m_filterProxy;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceLibrary::onSelectionChanged(const QItemSelection& selectedItems, const QItemSelection& deselectedItems)
+{
+  PropertiesWindow* window = ObjectPool::Instance()->getObject<PropertiesWindow>();
+  Q_ASSERT(NULL != window);
+
+  QModelIndexList indexList = selectedItems.indexes();
+  foreach (const QModelIndex& index, indexList)
+  {
+    const ResourceLibraryDataModelProxy* proxyModel = qobject_cast<const ResourceLibraryDataModelProxy*>(index.model());
+
+    // check if index is part of any proxy model
+    if (NULL != proxyModel)
+    {
+      // convert index to source
+      QModelIndex sourceIndex = proxyModel->mapToSource(index);
+
+      ResourceItem* selectedItem = static_cast<ResourceItem*>(sourceIndex.internalPointer());
+      window->attach(selectedItem);
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

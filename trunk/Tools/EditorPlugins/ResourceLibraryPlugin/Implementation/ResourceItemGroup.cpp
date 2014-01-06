@@ -73,3 +73,11 @@ QSize ResourceItemGroup::sizeHint() const
   return QSize(200, 20);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QList<NPropertyObject::PropertyDefinition> ResourceItemGroup::propertiesDefinition() const
+{
+  // call base class first
+  QList<NPropertyObject::PropertyDefinition> list = ResourceItem::propertiesDefinition();
+
+  return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

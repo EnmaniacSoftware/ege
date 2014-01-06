@@ -5,6 +5,7 @@
  */
 
 #include <QObject>
+#include <QItemSelection>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceLibraryDataModel;
@@ -66,6 +67,8 @@ class ResourceLibrary : public QObject
     void onObjectAdded(QObject* object);
     /*! Slot called when object is about to be removed from pool. */
     void onObjectRemoved(QObject* object);
+    /*! Slot called when selection changes. */
+    void onSelectionChanged(const QItemSelection& selectedItems, const QItemSelection& deselectedItems);
 
   private:
 

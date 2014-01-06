@@ -8,10 +8,11 @@
 #include <QVariant>
 #include <QSize>
 #include <Serializer.h>
+#include <PropertyObject.h>
 #include "ResouceLibraryPlugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RESOUCELIBRARYPLUGIN_API ResourceItem : public QObject, public ISerializer
+class RESOUCELIBRARYPLUGIN_API ResourceItem : public NPropertyObject::PropertyObject, public ISerializer
 {
   Q_OBJECT
 
@@ -95,6 +96,9 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public QObject, public ISerializer
      *  @note This method ends serialization of any derived class. It must be called after item has been serialized.
      */
     bool endSerialize(QXmlStreamWriter& stream) const;
+
+    /*! @see PropertyObject::propertiesDefinition. */
+    virtual QList<NPropertyObject::PropertyDefinition> propertiesDefinition() const override;
 
   protected:
 

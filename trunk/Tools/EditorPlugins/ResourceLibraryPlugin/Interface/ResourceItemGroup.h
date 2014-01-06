@@ -42,6 +42,8 @@ class ResourceItemGroup : public ResourceItem
     bool unserialize(QXmlStreamReader& stream) override;
     /*! @see ResourceItem::sizeHint. */
     QSize sizeHint() const override;
+    /*! @see ResourceItem::propertiesDefinition. */
+    QList<NPropertyObject::PropertyDefinition> propertiesDefinition() const override;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
