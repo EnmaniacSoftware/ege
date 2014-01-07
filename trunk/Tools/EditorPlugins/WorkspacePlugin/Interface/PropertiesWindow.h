@@ -18,6 +18,7 @@ class QtSizePropertyManager;
 class QtRectPropertyManager;
 class QtEnumPropertyManager;
 class QtGroupPropertyManager;
+class QtProperty;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class WORKSPACEPLUGIN_API PropertiesWindow : public QDockWidget
 {
@@ -44,6 +45,19 @@ class WORKSPACEPLUGIN_API PropertiesWindow : public QDockWidget
      *  @param  properties  List of property definitions used with population of a view.
      */
     void populateFromDefinition(const QList<NPropertyObject::PropertyDefinition>& properties);
+    /*! Creates property based on given definition including all children.
+     *  @param  definition  Property definition based on which new view property is created.
+     *  @return Property object created from definition. NULL if error occured.
+     *  @note Created property object is hierarchical in the same manner as its definition.
+     */
+    QtProperty* createAndPopulatePropertyFromDefinition(const NPropertyObject::PropertyDefinition& definition) const;
+    /*! Creates property from given data.
+     *  @param  type  Property type to create.
+     *  @param  name  Property name.
+     *  @param  value Property value.
+     *  @return Created property object. NULL if error occured.
+     */
+    QtProperty* createProperty(const NPropertyObject::PropertyType& type, const QString& name, const QString& value) const;
 
   private:
 

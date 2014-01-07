@@ -3,14 +3,16 @@
 using namespace NPropertyObject;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PropertyDefinition::PropertyDefinition(const QString& name, PropertyType type) : m_name(name),
-                                                                                 m_type(type),
-                                                                                 m_parent(NULL)
+PropertyDefinition::PropertyDefinition(const QString& name, PropertyType type, const QString& value) : m_name(name),
+                                                                                                       m_value(value),
+                                                                                                       m_type(type),
+                                                                                                       m_parent(NULL)
 {
 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PropertyDefinition::PropertyDefinition(const PropertyDefinition& other) : m_name(other.name()),
+                                                                          m_value(other.value()),
                                                                           m_type(other.type()),
                                                                           m_parent(other.parent()),
                                                                           m_children(other.children())
@@ -24,6 +26,11 @@ PropertyDefinition::~PropertyDefinition()
 const QString&PropertyDefinition::name() const
 {
   return m_name;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const QString&PropertyDefinition::value() const
+{
+  return m_value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PropertyType PropertyDefinition::type() const

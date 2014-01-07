@@ -27,12 +27,14 @@ class WORKSPACEPLUGIN_API PropertyDefinition
 {
   public:
 
-    PropertyDefinition(const QString& name, PropertyType type);
+    PropertyDefinition(const QString& name, PropertyType type, const QString& value = "");
     PropertyDefinition(const PropertyDefinition& other);
    ~PropertyDefinition();
 
     /*! Returns property name. */
     const QString& name() const;
+    /*! Returns property value. */
+    const QString& value() const;
     /*! Returns type of property. */
     PropertyType type() const;
     /*! Returns parent property definition. */
@@ -50,6 +52,8 @@ class WORKSPACEPLUGIN_API PropertyDefinition
 
     /*! Property name. */
     QString m_name;
+    /*! Property value. */
+    QString m_value;
     /*! Type of property. */
     PropertyType m_type;
     /*! Parent property.

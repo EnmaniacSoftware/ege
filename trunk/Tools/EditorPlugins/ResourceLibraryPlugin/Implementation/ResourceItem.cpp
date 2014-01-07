@@ -181,7 +181,7 @@ QList<NPropertyObject::PropertyDefinition> ResourceItem::propertiesDefinition() 
   NPropertyObject::PropertyDefinition generalGroup(tr("General"), NPropertyObject::EGroup);
 
   // add name
-  NPropertyObject::PropertyDefinition generalName(tr("Name"), NPropertyObject::EString);
+  NPropertyObject::PropertyDefinition generalName(tr("Name"), NPropertyObject::EString, name());
   generalGroup.addChildProperty(generalName);
 
   // add groups to list

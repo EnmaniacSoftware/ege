@@ -179,5 +179,11 @@ void ResourceLibrary::onSelectionChanged(const QItemSelection& selectedItems, co
       window->attach(selectedItem);
     }
   }
+
+  if (indexList.isEmpty())
+  {
+    // detach
+    window->attach(NULL);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
