@@ -66,6 +66,8 @@ class ResourceItemTexture : public ResourceItem
     bool setData(const QVariant &value, int role) override;
     /*! @see ResourceItem::propertiesDefinition. */
     QList<NPropertyObject::PropertyDefinition> propertiesDefinition() const override;
+    /*! @see ResourceItem::update. */
+    void update(const QString& name, const QVariant& value) override;
     /*! Returns texture type as string. */
     QString textureTypeName() const;
     /*! Returns texture type from string. */

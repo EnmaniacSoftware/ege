@@ -28,6 +28,7 @@ ResourceLibrary::ResourceLibrary(ResourceLibraryWindow* window, QObject* parent)
   connect(ObjectPool::Instance(), SIGNAL(objectAdded(QObject*)), this, SLOT(onObjectAdded(QObject*)));
   connect(ObjectPool::Instance(), SIGNAL(objectRemoved(QObject*)), this, SLOT(onObjectRemoved(QObject*)));
   connect(m_model, SIGNAL(rowsInserted(const QModelIndex&, int, int)), window, SLOT(onModelChanged()));
+  connect(m_model, SIGNAL(itemChanged(const ResourceItem*)), this, SLOT(onItemChanged(const ResourceItem*)));
   connect(m_filterProxy, SIGNAL(filterChanged()), window, SLOT(onModelChanged()));
   connect(window->view()->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
           this, SLOT(onSelectionChanged(QItemSelection, QItemSelection)));
@@ -185,5 +186,20 @@ void ResourceLibrary::onSelectionChanged(const QItemSelection& selectedItems, co
     // detach
     window->attach(NULL);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceLibrary::onItemChanged(const ResourceItem* item)
+{
+  Q_UNUSED(item);
+
+  ResourceLibraryWindow* window = ObjectPool::Instance()->getObject<ResourceLibraryWindow>();
+  Q_ASSERT(NULL != window);
+
+  // get current selection index
+  QModelIndexList list = window->selectedIndexes();
+  QModelIndex index = ! list.isEmpty() ? list.front() : QModelIndex();
+
+  // propagate
+  emit model()->dataChanged(index, index);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

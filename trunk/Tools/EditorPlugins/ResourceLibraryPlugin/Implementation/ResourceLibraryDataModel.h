@@ -41,6 +41,8 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
     void itemAdded(ResourceItem* item);
     /*! Signal emitted when given item has been removed from model. */
     void itemRemoved(ResourceItem* item);
+    /*! Signal emitted when given item has changed. */
+    void itemChanged(const ResourceItem* item);
 
   public:
 

@@ -175,6 +175,12 @@ QList<NPropertyObject::PropertyDefinition> ResourceItemTexture::propertiesDefini
   return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::update(const QString& name, const QVariant& value)
+{
+  // call base class
+  ResourceItem::update(name, value);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceItemTexture::textureTypeName() const
 {
   QString textureTypeName;

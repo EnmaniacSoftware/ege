@@ -33,8 +33,8 @@ class RESOUCELIBRARYPLUGIN_API ResourceLibraryItemDelegate : public QStyledItemD
   	QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
     /*! @see QStyledItemDelegate::sizeHint. */
     QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
-    /*! @see QStyledItemDelegate::updateEditorGeometry. */
-    void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    ///*! @see QStyledItemDelegate::updateEditorGeometry. */
+    //void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
     /*! Paints container type. */
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemGroup* item) const;

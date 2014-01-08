@@ -21,6 +21,15 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public NPropertyObject::PropertyOb
     ResourceItem(const QString& name, const QString& configurationName, ResourceItem* parent);
     virtual ~ResourceItem();
 
+  signals:
+
+    /*! Signal emitted when internal data has changed.
+     *  @param  item  Pointer to self.
+     */
+    void changed(const ResourceItem* item);
+
+  public:
+
     /*! Sets name. */
     void setName(const QString& name);
     /*! Returns name. */
@@ -99,6 +108,8 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public NPropertyObject::PropertyOb
 
     /*! @see PropertyObject::propertiesDefinition. */
     virtual QList<NPropertyObject::PropertyDefinition> propertiesDefinition() const override;
+    /*! @see PropertyObject::update. */
+    virtual void update(const QString& name, const QVariant& value) override;
 
   protected:
 

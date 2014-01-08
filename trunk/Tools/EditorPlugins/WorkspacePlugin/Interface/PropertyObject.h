@@ -24,6 +24,11 @@ class WORKSPACEPLUGIN_API PropertyObject : public QObject
 
     /*! Returns list of property definitions describing the object. */
     virtual QList<PropertyDefinition> propertiesDefinition() const = 0;
+    /*! Updates object data.
+     *  @param  name  Name of the property to update.
+     *  @param  value Value of the updated property.
+     */
+    virtual void update(const QString& name, const QVariant& value) = 0;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 }

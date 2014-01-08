@@ -281,7 +281,13 @@ void ResourceLibraryDataModel::removeItem(const QModelIndex& index)
   item->parent()->removeChild(item);
 	endRemoveRows();
 
+  // disconnect
+  disconnect(item, SIGNAL(changed(const ResourceItem*)), this, SIGNAL(itemChanged(const ResourceItem*)));
+
+  // notify
   emit itemRemoved(item);
+
+  // delete
   delete item;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -295,7 +301,11 @@ QModelIndex ResourceLibraryDataModel::insertItem(const QModelIndex& index, Resou
   parentItem->addChild(item);
   endInsertRows();
 
+  // notify
   emit itemAdded(item);
+
+  // connect
+  connect(item, SIGNAL(changed(const ResourceItem*)), this, SIGNAL(itemChanged(const ResourceItem*)));
 
   return createIndex(parentItem->childCount() - 1, 0, item);
 }

@@ -76,7 +76,7 @@ bool ResourceItem::setData(const QVariant& value, int role)
     case Qt::DisplayRole:
     case Qt::EditRole:
 
-      m_name = value.toString();
+      setName(value.toString());
       return true;
 
     case ResourceLibraryDataModel::TypeRole:
@@ -131,7 +131,13 @@ bool ResourceItem::insertChildren(int position, int count, int columns)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItem::setName(const QString& name)
 {
-  m_name = name;
+  if (m_name != name)
+  {
+    m_name = name;
+
+    // emit
+    emit changed(this);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const QString& ResourceItem::name() const
@@ -188,6 +194,16 @@ QList<NPropertyObject::PropertyDefinition> ResourceItem::propertiesDefinition() 
   list.push_back(generalGroup);
 
   return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItem::update(const QString& name, const QVariant& value)
+{
+  if (name == tr("Name"))
+  {
+    Q_ASSERT(value.canConvert(QVariant::String));
+
+    setName(value.toString());
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItem::setParent(ResourceItem* parent)

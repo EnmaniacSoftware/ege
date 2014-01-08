@@ -59,6 +59,13 @@ class WORKSPACEPLUGIN_API PropertiesWindow : public QDockWidget
      */
     QtProperty* createProperty(const NPropertyObject::PropertyType& type, const QString& name, const QString& value) const;
 
+  private slots:
+
+    /*! Slot called when property changes.
+     *  @param  property  Property which got changed.
+     */
+    void onPropertyChanged(QtProperty* property);
+
   private:
 
     /*! UI. */
@@ -77,6 +84,8 @@ class WORKSPACEPLUGIN_API PropertiesWindow : public QDockWidget
     QtEnumPropertyManager* m_enumManager;
     /*! Property manager for group types. */
     QtGroupPropertyManager* m_groupManager;
+    /*! Property object being viewed. */
+    NPropertyObject::PropertyObject* m_propertyObject;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
