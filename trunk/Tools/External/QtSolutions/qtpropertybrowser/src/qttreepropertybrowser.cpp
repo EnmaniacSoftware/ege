@@ -78,6 +78,8 @@ public:
     bool lastColumn(int column) const;
     void disableItem(QTreeWidgetItem *item) const;
     void enableItem(QTreeWidgetItem *item) const;
+    // TAGE - support for editability
+    void setEditability(QTreeWidgetItem* item, bool enable);
     bool hasValue(QTreeWidgetItem *item) const;
 
     void slotCollapsed(const QModelIndex &index);
@@ -566,6 +568,23 @@ void QtTreePropertyBrowserPrivate::enableItem(QTreeWidgetItem *item) const
     }
 }
 
+// TAGE - support for editability
+void QtTreePropertyBrowserPrivate::setEditability(QTreeWidgetItem* item, bool enable)
+{
+  Qt::ItemFlags flags = item->flags();
+
+  if (enable)
+  {
+    flags |= Qt::ItemIsEditable;
+    item->setFlags(flags);
+  }
+  else
+  {
+    flags &= ~Qt::ItemIsEditable;
+    item->setFlags(flags);
+  }
+}
+
 bool QtTreePropertyBrowserPrivate::hasValue(QTreeWidgetItem *item) const
 {
     QtBrowserItem *browserItem = m_itemToIndex.value(item);
@@ -653,6 +672,14 @@ void QtTreePropertyBrowserPrivate::updateItem(QTreeWidgetItem *item)
         else
             disableItem(item);
     }
+
+    // TAGE - support for editability
+    bool wasEditable = item->flags() & Qt::ItemIsEditable;
+    bool isEditable = property->isEditable();
+    if (wasEditable != isEditable) {
+        setEditability(item, isEditable);
+    }
+
     m_treeWidget->viewport()->update();
 }
 

@@ -59,6 +59,8 @@ public:
     QtPropertyPrivate(QtAbstractPropertyManager *manager)
         : m_enabled(true),
           m_modified(false),
+          // TAGE - support for editability
+          m_editable(true),
           m_manager(manager) {}
     QtProperty *q_ptr;
 
@@ -71,6 +73,8 @@ public:
     QString m_name;
     bool m_enabled;
     bool m_modified;
+    // TAGE - support for editability
+    bool m_editable;
 
     QtAbstractPropertyManager * const m_manager;
 };
@@ -254,6 +258,12 @@ bool QtProperty::isEnabled() const
     return d_ptr->m_enabled;
 }
 
+// TAGE - support for editability
+bool QtProperty::isEditable() const
+{
+  return d_ptr->m_editable;
+}
+
 /*!
     Returns whether the property is modified.
 
@@ -383,6 +393,16 @@ void QtProperty::setEnabled(bool enable)
 
     d_ptr->m_enabled = enable;
     propertyChanged();
+}
+
+// TAGE - support for editability
+void QtProperty::setEditable(bool enable)
+{
+  if (d_ptr->m_editable == enable)
+      return;
+
+  d_ptr->m_editable = enable;
+  propertyChanged();
 }
 
 /*!

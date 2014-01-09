@@ -85,6 +85,8 @@ public:
     QString whatsThis() const;
     QString propertyName() const;
     bool isEnabled() const;
+    // TAGE - support for editability
+    bool isEditable() const;
     bool isModified() const;
 
     bool hasValue() const;
@@ -97,6 +99,8 @@ public:
     void setWhatsThis(const QString &text);
     void setPropertyName(const QString &text);
     void setEnabled(bool enable);
+    // TAGE - support for editability
+    void setEditable(bool enable);
     void setModified(bool modified);
 
     void addSubProperty(QtProperty *property);
