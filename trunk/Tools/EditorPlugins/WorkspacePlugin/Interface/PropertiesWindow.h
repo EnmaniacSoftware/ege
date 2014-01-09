@@ -29,6 +29,15 @@ class WORKSPACEPLUGIN_API PropertiesWindow : public QDockWidget
     explicit PropertiesWindow(QWidget* parent = NULL);
    ~PropertiesWindow();
 
+  signals:
+
+    /*! Signal emitted when object data has changed.
+     *  @param  object  Object which data has changed.
+     */
+    void objectChanged(NPropertyObject::PropertyObject* object);
+
+  public:
+
     /*! Attaches given property object for display and manipulation.
      *  @param  object  Object to be attached to window.
      */

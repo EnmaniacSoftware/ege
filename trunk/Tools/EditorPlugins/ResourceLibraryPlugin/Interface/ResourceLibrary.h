@@ -69,8 +69,8 @@ class ResourceLibrary : public QObject
     void onObjectRemoved(QObject* object);
     /*! Slot called when selection changes. */
     void onSelectionChanged(const QItemSelection& selectedItems, const QItemSelection& deselectedItems);
-    /*! Slot called when item data in the model has changed. */
-    void onItemChanged(const ResourceItem* item);
+    /*! Slot called when currently selected item needs update. */
+    void onUpdateSelection();
 
   private:
 

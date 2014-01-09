@@ -208,7 +208,10 @@ void PropertiesWindow::onPropertyChanged(QtProperty* property)
 
   value = property->displayText();
 
-  // propagate
+  // propagate change to object
   m_propertyObject->update(property->propertyName(), value);
+
+  // notify
+  emit objectChanged(m_propertyObject);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
