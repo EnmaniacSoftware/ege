@@ -24,8 +24,11 @@ static const TextureTypeMap l_textureTypeMappings[] = { { "none", EInvalidTextur
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemTexture::ResourceItemTexture(const QString& name, const QString& configurationName, ResourceItem* parent)
   : ResourceItem(name, configurationName, parent),
-    m_type(EInvalidTexture)
+    m_type(EInvalidTexture),
+    m_size(QSize(0, 0)),
+    m_imageFormat(QImage::Format_Invalid)
 {
+  connect(this, SIGNAL(changed(const ResourceItem*)), this, SLOT(onInvalidate()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemTexture::~ResourceItemTexture()
@@ -116,7 +119,13 @@ bool ResourceItemTexture::unserialize(QXmlStreamReader& stream)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItemTexture::setPath(const QString& path)
 {
-  m_path = path;
+  if (m_path != path)
+  {
+    m_path = path;
+
+    // emit
+    emit changed(this);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const QString& ResourceItemTexture::path() const
@@ -153,7 +162,7 @@ bool ResourceItemTexture::setData(const QVariant &value, int role)
   {
     case ResourceLibraryDataModel::PathRole:
 
-      m_path = value.toString();
+      setPath(value.toString());
       return true;
   }
 
@@ -168,6 +177,10 @@ QList<NPropertyObject::PropertyDefinition> ResourceItemTexture::propertiesDefini
   // create general group
   NPropertyObject::PropertyDefinition generalGroup(tr("General"), NPropertyObject::EGroup);
 
+  // add width, height and bpp
+  generalGroup.addChildProperty(NPropertyObject::PropertyDefinition(tr("Width"), NPropertyObject::EString, QString("%1 px").arg(size().width()), true));
+  generalGroup.addChildProperty(NPropertyObject::PropertyDefinition(tr("Height"), NPropertyObject::EString, QString("%1 px").arg(size().height()), true));
+  generalGroup.addChildProperty(NPropertyObject::PropertyDefinition(tr("Depth"), NPropertyObject::EString, imageFormatAsText(), true));
 
   // add groups to list
   list.push_back(generalGroup);
@@ -223,5 +236,62 @@ TextureType ResourceItemTexture::textureTypeFromString(const QString& typeName) 
   }
 
   return textureType;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QSize ResourceItemTexture::size() const
+{
+  // check if size can be determined
+  if (m_size.isNull() && ! m_path.isEmpty() && ! m_name.isEmpty())
+  {
+    QImageReader imageReader(FileSystemUtils::Join(m_path, m_name));
+
+    m_size = imageReader.size();
+  }
+
+  return m_size;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QImage::Format ResourceItemTexture::imageFormat() const
+{
+  // check if format can be determined
+  if ((QImage::Format_Invalid == m_imageFormat) && ! m_path.isEmpty() && ! m_name.isEmpty())
+  {
+    QImageReader imageReader(FileSystemUtils::Join(m_path, m_name));
+
+    m_imageFormat = imageReader.imageFormat();
+  }
+
+  return m_imageFormat;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QString ResourceItemTexture::imageFormatAsText() const
+{
+  QString text;
+
+  switch (imageFormat())
+  {
+    case QImage::Format_Invalid: text = tr("Imvalid"); break;
+    case QImage::Format_Indexed8: text = tr("Indexed 8-bit"); break;
+    case QImage::Format_RGB32: text = tr("32-bit RGB"); break;
+    case QImage::Format_ARGB32: text = tr("32-bit ARGB"); break;
+    case QImage::Format_ARGB32_Premultiplied: text = tr("Premultiplied 32-bit ARGB"); break;
+    case QImage::Format_RGB16: text = tr("16-bit RGB (565)"); break;
+    case QImage::Format_ARGB8565_Premultiplied: text = tr("Premultiplied 24-bit ARGB (8565"); break;
+    case QImage::Format_RGB555: text = tr("15-bit RGB (555"); break;
+
+    default:
+
+      text = tr("Unspecified");
+      break;
+  }
+
+  return text;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::onInvalidate()
+{
+  m_size        = QSize(0, 0);
+  m_imageFormat = QImage::Format_Invalid;
+  m_thumbnail   = QImage();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

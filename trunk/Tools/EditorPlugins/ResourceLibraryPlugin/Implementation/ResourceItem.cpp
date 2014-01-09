@@ -11,6 +11,8 @@ static const QString KResourceItemTag         = "ResourceItem";
 static const QString KTypeAttribute           = "type";
 static const QString KNameAttribute           = "name";
 static const QString KConfigurationAttribute  = "configuration";
+
+static const QString KGeneralGroupName = QObject::tr("Name");
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItem::ResourceItem(const QString& name, const QString& configurationName, ResourceItem* parent) : m_name(name),
                                                                                                           m_parent(parent),
@@ -187,7 +189,7 @@ QList<NPropertyObject::PropertyDefinition> ResourceItem::propertiesDefinition() 
   NPropertyObject::PropertyDefinition generalGroup(tr("General"), NPropertyObject::EGroup);
 
   // add name
-  NPropertyObject::PropertyDefinition generalName(tr("Name"), NPropertyObject::EString, name());
+  NPropertyObject::PropertyDefinition generalName(KGeneralGroupName, NPropertyObject::EString, name());
   generalGroup.addChildProperty(generalName);
 
   // add groups to list
@@ -198,7 +200,7 @@ QList<NPropertyObject::PropertyDefinition> ResourceItem::propertiesDefinition() 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItem::update(const QString& name, const QVariant& value)
 {
-  if (name == tr("Name"))
+  if (KGeneralGroupName == name)
   {
     Q_ASSERT(value.canConvert(QVariant::String));
 

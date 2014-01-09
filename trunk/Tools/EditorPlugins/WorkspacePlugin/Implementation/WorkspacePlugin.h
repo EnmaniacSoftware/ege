@@ -8,6 +8,7 @@
 class MainWindow;
 class Configuration;
 class PropertiesWindow;
+class QAction;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class WORKSPACEPLUGIN_API WorkspacePlugin : public QObject, public IPlugin
 {
@@ -32,6 +33,8 @@ class WORKSPACEPLUGIN_API WorkspacePlugin : public QObject, public IPlugin
     Configuration* m_configuration;
     /*! Properties window. */
     PropertiesWindow* m_propertiesWindow;
+    /*! View menu action. */
+    QAction* m_viewAction;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

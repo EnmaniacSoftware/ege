@@ -125,7 +125,7 @@ void PropertiesWindow::populateFromDefinition(const QList<PropertyDefinition>& p
 QtProperty* PropertiesWindow::createAndPopulatePropertyFromDefinition(const PropertyDefinition& definition) const
 {
   // create property based on definition
-  QtProperty* property = createProperty(definition.type(), definition.name(), definition.value());
+  QtProperty* property = createProperty(definition.type(), definition.name(), definition.value(), definition.isReadOnly());
 
   // create and add all subproperties based on child definitions
   foreach (const PropertyDefinition& childDefinition, definition.children())
@@ -139,7 +139,7 @@ QtProperty* PropertiesWindow::createAndPopulatePropertyFromDefinition(const Prop
   return property;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QtProperty* PropertiesWindow::createProperty(const NPropertyObject::PropertyType& type, const QString& name, const QString& value) const
+QtProperty* PropertiesWindow::createProperty(const NPropertyObject::PropertyType& type, const QString& name, const QString& value, bool readOnly) const
 {
   QtProperty* property = NULL;
 
@@ -186,6 +186,9 @@ QtProperty* PropertiesWindow::createProperty(const NPropertyObject::PropertyType
       Q_ASSERT(false);
       break;
   }
+
+  // set editability
+  property->setEditable( ! readOnly);
 
   return property;
 }

@@ -6,13 +6,15 @@
 #include <ObjectPool.h>
 #include <Projects/ProjectFactory.h>
 #include <QtPlugin>
+#include <QMenu>
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 WorkspacePlugin::WorkspacePlugin(QObject* parent) : QObject(parent),
                                                     m_mainWindow(NULL),
                                                     m_configuration(NULL),
-                                                    m_propertiesWindow(NULL)
+                                                    m_propertiesWindow(NULL),
+                                                    m_viewAction(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -54,6 +56,20 @@ bool WorkspacePlugin::initialize()
       // show main window
       m_mainWindow->show();
     }
+
+    // create menu entries
+    QMenu* menu = m_mainWindow->menu(MainWindow::EView);
+    Q_ASSERT(menu);
+
+    // create actions
+    m_viewAction = new QAction(tr("Property viewer"), menu);
+
+    // setup actions
+    m_viewAction->setShortcut(QKeySequence("Ctrl+Shift+P"));
+    connect(m_viewAction, SIGNAL(triggered()), m_propertiesWindow, SLOT(show()));
+
+    // add actions to menu
+    menu->addAction(m_viewAction);
   }
 
   return result;
@@ -61,6 +77,20 @@ bool WorkspacePlugin::initialize()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void WorkspacePlugin::deinitialize()
 {
+  // delete menu actions
+  QMenu* menu = m_mainWindow->menu(MainWindow::EView);
+  Q_ASSERT(menu);
+
+  if (NULL != m_viewAction)
+  {
+    // remove from menu
+    menu->removeAction(m_viewAction);
+
+    // delete
+    delete m_viewAction;
+    m_viewAction = NULL;
+  }
+
   if (NULL != m_configuration)
   {
     // remove from pool

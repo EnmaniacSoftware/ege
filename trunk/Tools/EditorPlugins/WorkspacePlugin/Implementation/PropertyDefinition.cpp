@@ -3,10 +3,11 @@
 using namespace NPropertyObject;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PropertyDefinition::PropertyDefinition(const QString& name, PropertyType type, const QString& value) : m_name(name),
-                                                                                                       m_value(value),
-                                                                                                       m_type(type),
-                                                                                                       m_parent(NULL)
+PropertyDefinition::PropertyDefinition(const QString& name, PropertyType type, const QString& value, bool readOnly) : m_name(name),
+                                                                                                                      m_value(value),
+                                                                                                                      m_type(type),
+                                                                                                                      m_readOnly(readOnly),
+                                                                                                                      m_parent(NULL)
 {
 
 }
@@ -14,6 +15,7 @@ PropertyDefinition::PropertyDefinition(const QString& name, PropertyType type, c
 PropertyDefinition::PropertyDefinition(const PropertyDefinition& other) : m_name(other.name()),
                                                                           m_value(other.value()),
                                                                           m_type(other.type()),
+                                                                          m_readOnly(other.isReadOnly()),
                                                                           m_parent(other.parent()),
                                                                           m_children(other.children())
 {
@@ -36,6 +38,11 @@ const QString&PropertyDefinition::value() const
 PropertyType PropertyDefinition::type() const
 {
   return m_type;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool PropertyDefinition::isReadOnly() const
+{
+  return m_readOnly;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PropertyDefinition* PropertyDefinition::parent() const

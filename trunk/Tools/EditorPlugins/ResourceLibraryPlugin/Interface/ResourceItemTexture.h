@@ -48,6 +48,11 @@ class ResourceItemTexture : public ResourceItem
     /*! Sets texture type. */
     void setType(TextureType type);
 
+  private slots:
+
+    /*! Slot called when internal (lazy) data should be invalidated. */
+    void onInvalidate();
+
   private:
 
     ResourceItemTexture(const QString& name, const QString& configurationName, ResourceItem* parent);
@@ -72,6 +77,12 @@ class ResourceItemTexture : public ResourceItem
     QString textureTypeName() const;
     /*! Returns texture type from string. */
     TextureType textureTypeFromString(const QString& typeName) const;
+    /*! Returns image size (in pixels). */
+    QSize size() const;
+    /*! Returns image format. */
+    QImage::Format imageFormat() const;
+    /*! Returns image format in string format. */
+    QString imageFormatAsText() const;
 
   private:
 
@@ -81,6 +92,10 @@ class ResourceItemTexture : public ResourceItem
     QString m_path;
     /*! Texture type. */
     TextureType m_type;
+    /*! Size of the image (in pixels). */
+    mutable QSize m_size;
+    /*! Image format. */
+    mutable QImage::Format m_imageFormat;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

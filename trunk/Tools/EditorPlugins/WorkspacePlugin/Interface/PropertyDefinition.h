@@ -27,7 +27,7 @@ class WORKSPACEPLUGIN_API PropertyDefinition
 {
   public:
 
-    PropertyDefinition(const QString& name, PropertyType type, const QString& value = "");
+    PropertyDefinition(const QString& name, PropertyType type, const QString& value = "", bool readOnly = false);
     PropertyDefinition(const PropertyDefinition& other);
    ~PropertyDefinition();
 
@@ -37,6 +37,8 @@ class WORKSPACEPLUGIN_API PropertyDefinition
     const QString& value() const;
     /*! Returns type of property. */
     PropertyType type() const;
+    /*! Returns TRUE if property is read only. */
+    bool isReadOnly() const;
     /*! Returns parent property definition. */
     PropertyDefinition* parent() const;
 
@@ -56,6 +58,8 @@ class WORKSPACEPLUGIN_API PropertyDefinition
     QString m_value;
     /*! Type of property. */
     PropertyType m_type;
+    /*! Read only flag. */
+    bool m_readOnly;
     /*! Parent property.
      *  @note Can be NULL for parent GROUP property.
      */
