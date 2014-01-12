@@ -9,8 +9,11 @@
 #include <Settings.h>
 #include <QDebug>
 
-using namespace NPropertyObject;
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+using NPropertyObject::PropertyDefinition;
+using NPropertyObject::PropertyValueContainer;
+using NPropertyObject::PropertyObject;
+using NPropertyObject::PropertyType;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const int KStackedPageIndexObjectNotAvailable = 0;
 static const int KStackedPageIndexPropertiesView     = 1;
@@ -125,7 +128,7 @@ void PropertiesWindow::populateFromDefinition(const QList<PropertyDefinition>& p
 QtProperty* PropertiesWindow::createAndPopulatePropertyFromDefinition(const PropertyDefinition& definition) const
 {
   // create property based on definition
-  QtProperty* property = createProperty(definition.type(), definition.name(), definition.value(), definition.isReadOnly());
+  QtProperty* property = createProperty(definition.type(), definition.name(), definition.values(), definition.defaultValue(), definition.isReadOnly());
 
   // create and add all subproperties based on child definitions
   foreach (const PropertyDefinition& childDefinition, definition.children())
@@ -139,9 +142,12 @@ QtProperty* PropertiesWindow::createAndPopulatePropertyFromDefinition(const Prop
   return property;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QtProperty* PropertiesWindow::createProperty(const NPropertyObject::PropertyType& type, const QString& name, const QString& value, bool readOnly) const
+QtProperty* PropertiesWindow::createProperty(const PropertyType& type, const QString& name, const PropertyValueContainer& values, int defaultValue,
+                                             bool readOnly) const
 {
   QtProperty* property = NULL;
+
+  QVariantList valuesForCurrentIndex;
 
   // create according to type
   switch (type)
@@ -153,32 +159,84 @@ QtProperty* PropertiesWindow::createProperty(const NPropertyObject::PropertyType
 
     case NPropertyObject::EBool:
 
+      valuesForCurrentIndex = values.values(0);
+      Q_ASSERT(1 == valuesForCurrentIndex.size());
+      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<bool>());
+
       property = m_boolManager->addProperty(name);
-      //m_boolManager->setValue(property);
+      m_boolManager->setValue(property, valuesForCurrentIndex.at(0).toBool());
       break;
 
     case NPropertyObject::EInt:
 
+      valuesForCurrentIndex = values.values(0);
+      Q_ASSERT(1 == valuesForCurrentIndex.size());
+      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<int>());
+
       property = m_intManager->addProperty(name);
-      m_intManager->setValue(property, value.toInt());
+      m_intManager->setValue(property, valuesForCurrentIndex.at(0).toInt());
       break;
 
     case NPropertyObject::ERect:
 
+      valuesForCurrentIndex = values.values(0);
+      Q_ASSERT(1 == valuesForCurrentIndex.size());
+      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<QRect>());
+
       property = m_rectManager->addProperty(name);
-      //m_rectManager->setValue(property, value);
+      m_rectManager->setValue(property, valuesForCurrentIndex.at(0).toRect());
       break;
 
     case NPropertyObject::ESize:
 
+      valuesForCurrentIndex = values.values(0);
+      Q_ASSERT(1 == valuesForCurrentIndex.size());
+      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<QSize>());
+
       property = m_sizeManager->addProperty(name);
-      //m_sizeManager->setValue(property, value);
+      m_sizeManager->setValue(property, valuesForCurrentIndex.at(0).toSize());
       break;
 
     case NPropertyObject::EString:
 
+      valuesForCurrentIndex = values.values(0);
+      Q_ASSERT(1 == valuesForCurrentIndex.size());
+      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<QString>());
+
       property = m_stringManager->addProperty(name);
-      m_stringManager->setValue(property, value);
+      m_stringManager->setValue(property, valuesForCurrentIndex.at(0).toString());
+      break;
+
+    case NPropertyObject::EEnum:
+    {
+      // decompose values into names (strings) ans icons
+      QMap<int, QIcon> enumIcons;
+      QStringList enumNames;
+      for (int i = 0; values.contains(i); ++i)
+      {
+        // get all values for a current index
+        valuesForCurrentIndex = values.values(i);
+
+        // go thru all values and determine acceptable values
+        foreach (const QVariant& value, valuesForCurrentIndex)
+        {
+          // check if value is a string
+          if (value.canConvert<QString>())
+          {
+            enumNames << value.toString();
+          }
+          else if (value.canConvert<QIcon>())
+          {
+            enumIcons[i] = value.value<QIcon>();
+          }
+        }
+      }
+
+      property = m_enumManager->addProperty(name);
+      m_enumManager->setEnumNames(property, enumNames);
+      m_enumManager->setEnumIcons(property, enumIcons);
+      m_enumManager->setValue(property, defaultValue);
+    }
       break;
 
     default:
@@ -197,19 +255,34 @@ void PropertiesWindow::onPropertyChanged(QtProperty* property)
 {
   Q_ASSERT(NULL != m_propertyObject);
 
-  qDebug() << Q_FUNC_INFO << property->propertyName() << property->displayText();
-
+  // retrieve changed value
   QVariant value;
+  if (property->propertyManager() == m_boolManager)
+  {
+    value = m_boolManager->value(property);
+  }
+  else if (property->propertyManager() == m_enumManager)
+  {
+    value = m_enumManager->value(property);
+  }
+  else if (property->propertyManager() == m_intManager)
+  {
+    value = m_intManager->value(property);
+  }
+  else if (property->propertyManager() == m_rectManager)
+  {
+    value = m_rectManager->value(property);
+  }
+  else if (property->propertyManager() == m_sizeManager)
+  {
+    value = m_sizeManager->value(property);
+  }
+  else if (property->propertyManager() == m_stringManager)
+  {
+    value = m_stringManager->value(property);
+  }
 
-  QString val = m_stringManager->value(property);
-  QString vax = property->displayText();
-
-//  if (m_groupManager->hasValue(property))
-//  {
-//    value = m_groupManager->valueText(property);
-//  }
-
-  value = property->displayText();
+  qDebug() << Q_FUNC_INFO << property->propertyName() << value;
 
   // propagate change to object
   m_propertyObject->update(property->propertyName(), value);

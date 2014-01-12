@@ -9,8 +9,17 @@
 #include <QMenu>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+using NPropertyObject::PropertyDefinition;
+using NPropertyObject::PropertyValueContainer;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const QString KPathArrtibute = "path";
 static const QString KTypeArrtibute = "type";
+
+static const QString KPropertyNameMinifyingFiltering  = ResourceItemTexture::tr("Minifying");
+static const QString KPropertyNameMagnifyingFiltering = ResourceItemTexture::tr("Magnifying");
+static const QString KPropertyNameMipMappingFiltering = ResourceItemTexture::tr("Mip Mapping");
+static const QString KPropertyNameAddressingModeS     = ResourceItemTexture::tr("Coordinate S");
+static const QString KPropertyNameAddressingModeT     = ResourceItemTexture::tr("Coordinate T");
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct TextureTypeMap
 {
@@ -21,12 +30,116 @@ struct TextureTypeMap
 static const TextureTypeMap l_textureTypeMappings[] = { { "none", EInvalidTexture },
                                                         { "2D", ETexture2D }
 };
+
+struct TextureFilterTypeMap
+{
+  const QString name;
+  const QString displayName;
+  const TextureFilterTypes type;
+};
+
+static const TextureFilterTypeMap l_textureFilterTypeMappings[] = { { "nearest", ResourceItemTexture::tr("Nearest"), ETextureFilterNearest },
+                                                                    { "bilinear", ResourceItemTexture::tr("Bilinear"), ETextureFilterBilinear }
+};
+
+struct TextureMipMappingFilterTypeMap
+{
+  const QString name;
+  const QString displayName;
+  const TextureMipMappingFilterTypes type;
+};
+
+static const TextureMipMappingFilterTypeMap l_textureMipMappingFilterTypeMappings[] = {
+  { "none", ResourceItemTexture::tr("None"), EMipMappingFilterNone },
+  { "nearest  ", ResourceItemTexture::tr("Nearest"), EMipMappingFilterNearest },
+  { "trilinear", ResourceItemTexture::tr("Trilinear"), EMipMappingFilterTrilinear }
+};
+
+struct TextureAddressingModeTypeMap
+{
+  const QString name;
+  const QString displayName;
+  const TextureAddressModeTypes type;
+};
+
+static const TextureAddressingModeTypeMap l_textureAddressingModeTypeMappings[] = { { "clamp", ResourceItemTexture::tr("Clamp"), EAddressModeClamp},
+                                                                                    { "repeat", ResourceItemTexture::tr("Repeat"), EAddressModeRepeat }
+};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function returning index of minifcation filter of a given type. */
+static int GetMinificationFilterMapIndex(TextureFilterTypes type)
+{
+  int index = -1;
+
+  for (unsigned int i = 0; i < sizeof (l_textureFilterTypeMappings) / sizeof (l_textureFilterTypeMappings[0]); ++i)
+  {
+    const TextureFilterTypeMap& currentFilter = l_textureFilterTypeMappings[i];
+
+    if (currentFilter.type == type)
+    {
+      index = i;
+      break;
+    }
+  }
+
+  return index;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function returning index of magnifcation filter of a given type. */
+static int GetMagnificationFilterMapIndex(TextureFilterTypes type)
+{
+  // NOTE: for the time being it is the same as for minification
+  return GetMinificationFilterMapIndex(type);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function returning index of mip mapping filter of a given type. */
+static int GetMipMappingFilterMapIndex(TextureMipMappingFilterTypes type)
+{
+  int index = -1;
+
+  for (unsigned int i = 0; i < sizeof (l_textureMipMappingFilterTypeMappings) / sizeof (l_textureMipMappingFilterTypeMappings[0]); ++i)
+  {
+    const TextureMipMappingFilterTypeMap& currentFilter = l_textureMipMappingFilterTypeMappings[i];
+
+    if (currentFilter.type == type)
+    {
+      index = i;
+      break;
+    }
+  }
+
+  return index;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function returning index of addressing mode of a given type. */
+static int GetAddressingModeMapIndex(TextureAddressModeTypes type)
+{
+  int index = -1;
+
+  for (unsigned int i = 0; i < sizeof (l_textureAddressingModeTypeMappings) / sizeof (l_textureAddressingModeTypeMappings[0]); ++i)
+  {
+    const TextureAddressingModeTypeMap& currentFilter = l_textureAddressingModeTypeMappings[i];
+
+    if (currentFilter.type == type)
+    {
+      index = i;
+      break;
+    }
+  }
+
+  return index;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemTexture::ResourceItemTexture(const QString& name, const QString& configurationName, ResourceItem* parent)
   : ResourceItem(name, configurationName, parent),
     m_type(EInvalidTexture),
     m_size(QSize(0, 0)),
-    m_imageFormat(QImage::Format_Invalid)
+    m_imageFormat(QImage::Format_Invalid),
+    m_magnificationFilter(ETextureFilterNearest),
+    m_minificationFilter(ETextureFilterNearest),
+    m_mipMappingFilter(EMipMappingFilterNone),
+    m_addressingModeS(EAddressModeRepeat),
+    m_addressingModeT(EAddressModeRepeat)
 {
   connect(this, SIGNAL(changed(const ResourceItem*)), this, SLOT(onInvalidate()));
 }
@@ -170,28 +283,145 @@ bool ResourceItemTexture::setData(const QVariant &value, int role)
   return ResourceItem::setData(value, role);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QList<NPropertyObject::PropertyDefinition> ResourceItemTexture::propertiesDefinition() const
+QList<PropertyDefinition> ResourceItemTexture::propertiesDefinition() const
 {
-  QList<NPropertyObject::PropertyDefinition> list;
+  QList<PropertyDefinition> list;
 
   // create general group
-  NPropertyObject::PropertyDefinition generalGroup(tr("General"), NPropertyObject::EGroup);
+  PropertyValueContainer values;
+  PropertyDefinition generalGroup(tr("General"), NPropertyObject::EGroup, values);
 
   // add width, height and bpp
-  generalGroup.addChildProperty(NPropertyObject::PropertyDefinition(tr("Width"), NPropertyObject::EString, QString("%1 px").arg(size().width()), true));
-  generalGroup.addChildProperty(NPropertyObject::PropertyDefinition(tr("Height"), NPropertyObject::EString, QString("%1 px").arg(size().height()), true));
-  generalGroup.addChildProperty(NPropertyObject::PropertyDefinition(tr("Depth"), NPropertyObject::EString, imageFormatAsText(), true));
+  values.insert(0, QString("%1 px").arg(size().width()));
+  generalGroup.addChildProperty(PropertyDefinition(tr("Width"), NPropertyObject::EString, values, 0, true));
+  values.clear();
+  values.insert(0, QString("%1 px").arg(size().height()));
+  generalGroup.addChildProperty(PropertyDefinition(tr("Height"), NPropertyObject::EString, values, 0, true));
+  values.clear();
+  values.insert(0, imageFormatAsText());
+  generalGroup.addChildProperty(PropertyDefinition(tr("Depth"), NPropertyObject::EString, values, 0, true));
+
+  // create filtering group
+  values.clear();
+  PropertyDefinition filteringGroup(tr("Filtering"), NPropertyObject::EGroup, values);
+
+  addMinificationFilterDefinitions(filteringGroup);
+  addMagnificationFilterDefinitions(filteringGroup);
+
+  // create addressing group
+  values.clear();
+  PropertyDefinition addressingGroup(tr("Addressing"), NPropertyObject::EGroup, values);
+
+  addAddressingModeDefinitions(addressingGroup);
 
   // add groups to list
   list.push_back(generalGroup);
+  list.push_back(filteringGroup);
+  list.push_back(addressingGroup);
 
   return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::addMagnificationFilterDefinitions(NPropertyObject::PropertyDefinition& group) const
+{
+  PropertyValueContainer values;
+
+  // create magnification filter values
+  for (unsigned int i = 0; i < sizeof (l_textureFilterTypeMappings) / sizeof (l_textureFilterTypeMappings[0]); ++i)
+  {
+    const TextureFilterTypeMap& currentFilter = l_textureFilterTypeMappings[i];
+
+    values.insert(i, currentFilter.displayName);
+  }
+
+  // add all into main group
+  group.addChildProperty(PropertyDefinition(KPropertyNameMagnifyingFiltering, NPropertyObject::EEnum, values,
+                                            GetMagnificationFilterMapIndex(m_magnificationFilter)));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::addAddressingModeDefinitions(NPropertyObject::PropertyDefinition& group) const
+{
+  PropertyValueContainer values;
+
+  // create magnification filter values
+  for (unsigned int i = 0; i < sizeof (l_textureAddressingModeTypeMappings) / sizeof (l_textureAddressingModeTypeMappings[0]); ++i)
+  {
+    const TextureAddressingModeTypeMap& currentMode = l_textureAddressingModeTypeMappings[i];
+
+    values.insert(i, currentMode.displayName);
+  }
+
+  // add all into main group
+  group.addChildProperty(PropertyDefinition(KPropertyNameAddressingModeS, NPropertyObject::EEnum, values, GetAddressingModeMapIndex(m_addressingModeS)));
+  group.addChildProperty(PropertyDefinition(KPropertyNameAddressingModeT, NPropertyObject::EEnum, values, GetAddressingModeMapIndex(m_addressingModeT)));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::addMinificationFilterDefinitions(NPropertyObject::PropertyDefinition& group) const
+{
+  PropertyValueContainer values;
+
+  // create minification filter values
+  for (unsigned int i = 0; i < sizeof (l_textureFilterTypeMappings) / sizeof (l_textureFilterTypeMappings[0]); ++i)
+  {
+    const TextureFilterTypeMap& currentFilter = l_textureFilterTypeMappings[i];
+
+    values.insert(i, currentFilter.displayName);
+  }
+
+  // create minification filter group
+  // NOTE: mip mapping filters will be added as sub group of this one
+  PropertyDefinition minificationFilterGroup(KPropertyNameMinifyingFiltering, NPropertyObject::EEnum, values,
+                                             GetMinificationFilterMapIndex(m_minificationFilter));
+
+  // create mipmapping filters values
+  values.clear();
+  for (unsigned int i = 0; i < sizeof (l_textureMipMappingFilterTypeMappings) / sizeof (l_textureMipMappingFilterTypeMappings[0]); ++i)
+  {
+    const TextureMipMappingFilterTypeMap& currentFilter = l_textureMipMappingFilterTypeMappings[i];
+
+    values.insert(i, currentFilter.displayName);
+  }
+
+  // add mip mapping filter values as sub property of minification filter group
+  minificationFilterGroup.addChildProperty(PropertyDefinition(KPropertyNameMipMappingFiltering, NPropertyObject::EEnum, values,
+                                                              GetMipMappingFilterMapIndex(m_mipMappingFilter)));
+
+  // add all into main group
+  group.addChildProperty(minificationFilterGroup);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItemTexture::update(const QString& name, const QVariant& value)
 {
-  // call base class
-  ResourceItem::update(name, value);
+  if (KPropertyNameMinifyingFiltering == name)
+  {
+    Q_ASSERT(value.canConvert<int>());
+    setMinificationFilter(l_textureFilterTypeMappings[value.toInt()].type);
+  }
+  else if (KPropertyNameMagnifyingFiltering == name)
+  {
+    Q_ASSERT(value.canConvert<int>());
+    setMagnificationFilter(l_textureFilterTypeMappings[value.toInt()].type);
+  }
+  else if (KPropertyNameMipMappingFiltering == name)
+  {
+    Q_ASSERT(value.canConvert<int>());
+    setMipMappingFilter(l_textureMipMappingFilterTypeMappings[value.toInt()].type);
+  }
+  else if (KPropertyNameAddressingModeS == name)
+  {
+    Q_ASSERT(value.canConvert<int>());
+    setAddressModeS(l_textureAddressingModeTypeMappings[value.toInt()].type);
+  }
+  else if (KPropertyNameAddressingModeT == name)
+  {
+    Q_ASSERT(value.canConvert<int>());
+    setAddressModeT(l_textureAddressingModeTypeMappings[value.toInt()].type);
+  }
+  else
+  {
+    // call base class
+    ResourceItem::update(name, value);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceItemTexture::textureTypeName() const
@@ -270,14 +500,14 @@ QString ResourceItemTexture::imageFormatAsText() const
 
   switch (imageFormat())
   {
-    case QImage::Format_Invalid: text = tr("Imvalid"); break;
-    case QImage::Format_Indexed8: text = tr("Indexed 8-bit"); break;
-    case QImage::Format_RGB32: text = tr("32-bit RGB"); break;
-    case QImage::Format_ARGB32: text = tr("32-bit ARGB"); break;
-    case QImage::Format_ARGB32_Premultiplied: text = tr("Premultiplied 32-bit ARGB"); break;
-    case QImage::Format_RGB16: text = tr("16-bit RGB (565)"); break;
+    case QImage::Format_Invalid:                text = tr("Imvalid"); break;
+    case QImage::Format_Indexed8:               text = tr("Indexed 8-bit"); break;
+    case QImage::Format_RGB32:                  text = tr("32-bit RGB"); break;
+    case QImage::Format_ARGB32:                 text = tr("32-bit ARGB"); break;
+    case QImage::Format_ARGB32_Premultiplied:   text = tr("Premultiplied 32-bit ARGB"); break;
+    case QImage::Format_RGB16:                  text = tr("16-bit RGB (565)"); break;
     case QImage::Format_ARGB8565_Premultiplied: text = tr("Premultiplied 24-bit ARGB (8565"); break;
-    case QImage::Format_RGB555: text = tr("15-bit RGB (555"); break;
+    case QImage::Format_RGB555:                 text = tr("15-bit RGB (555"); break;
 
     default:
 
@@ -286,6 +516,61 @@ QString ResourceItemTexture::imageFormatAsText() const
   }
 
   return text;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::setMinificationFilter(TextureFilterTypes type)
+{
+  if (type != m_minificationFilter)
+  {
+    m_minificationFilter = type;
+
+    // notify
+    emit changed(this);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::setMagnificationFilter(TextureFilterTypes type)
+{
+  if (type != m_magnificationFilter)
+  {
+    m_magnificationFilter = type;
+
+    // notify
+    emit changed(this);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::setMipMappingFilter(TextureMipMappingFilterTypes type)
+{
+  if (type != m_mipMappingFilter)
+  {
+    m_mipMappingFilter = type;
+
+    // notify
+    emit changed(this);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::setAddressModeS(TextureAddressModeTypes type)
+{
+  if (type != m_addressingModeS)
+  {
+    m_addressingModeS = type;
+
+    // notify
+    emit changed(this);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::setAddressModeT(TextureAddressModeTypes type)
+{
+  if (type != m_addressingModeT)
+  {
+    m_addressingModeT = type;
+
+    // notify
+    emit changed(this);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItemTexture::onInvalidate()

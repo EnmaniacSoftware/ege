@@ -6,6 +6,9 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+using NPropertyObject::PropertyDefinition;
+using NPropertyObject::PropertyValueContainer;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // TAGE - duplicate in ResourceLibraryDataModel :/
 static const QString KResourceItemTag         = "ResourceItem";
 static const QString KTypeAttribute           = "type";
@@ -181,15 +184,17 @@ bool ResourceItem::endSerialize(QXmlStreamWriter& stream) const
   return ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QList<NPropertyObject::PropertyDefinition> ResourceItem::propertiesDefinition() const
+QList<PropertyDefinition> ResourceItem::propertiesDefinition() const
 {
-  QList<NPropertyObject::PropertyDefinition> list;
+  QList<PropertyDefinition> list;
 
   // create general group
-  NPropertyObject::PropertyDefinition generalGroup(tr("General"), NPropertyObject::EGroup);
+  PropertyValueContainer values;
+  PropertyDefinition generalGroup(tr("General"), NPropertyObject::EGroup, values);
 
   // add name
-  NPropertyObject::PropertyDefinition generalName(KGeneralGroupName, NPropertyObject::EString, name());
+  values.insert(0, name());
+  PropertyDefinition generalName(KGeneralGroupName, NPropertyObject::EString, values);
   generalGroup.addChildProperty(generalName);
 
   // add groups to list

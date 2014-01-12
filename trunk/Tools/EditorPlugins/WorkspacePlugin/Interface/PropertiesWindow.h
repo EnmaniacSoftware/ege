@@ -61,13 +61,15 @@ class WORKSPACEPLUGIN_API PropertiesWindow : public QDockWidget
      */
     QtProperty* createAndPopulatePropertyFromDefinition(const NPropertyObject::PropertyDefinition& definition) const;
     /*! Creates property from given data.
-     *  @param  type      Property type to create.
-     *  @param  name      Property name.
-     *  @param  value     Property value.
-     *  @param  readOnly  Read only flag.
+     *  @param  type          Property type to create.
+     *  @param  name          Property name.
+     *  @param  values        Property values.
+     *  @param  defaultValue  Index of default value (ie visible item in enumeration type)
+     *  @param  readOnly      Read only flag.
      *  @return Created property object. NULL if error occured.
      */
-    QtProperty* createProperty(const NPropertyObject::PropertyType& type, const QString& name, const QString& value, bool readOnly) const;
+    QtProperty* createProperty(const NPropertyObject::PropertyType& type, const QString& name, const NPropertyObject::PropertyValueContainer& values,
+                               int defaultValue, bool readOnly) const;
 
   private slots:
 

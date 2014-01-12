@@ -5,6 +5,8 @@
 #include <QMenu>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+using NPropertyObject::PropertyDefinition;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemGroup::ResourceItemGroup(const QString& name, const QString& configurationName, ResourceItem* parent)
   : ResourceItem(name, configurationName, parent)
 {
@@ -73,10 +75,10 @@ QSize ResourceItemGroup::sizeHint() const
   return QSize(200, 20);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QList<NPropertyObject::PropertyDefinition> ResourceItemGroup::propertiesDefinition() const
+QList<PropertyDefinition> ResourceItemGroup::propertiesDefinition() const
 {
   // call base class first
-  QList<NPropertyObject::PropertyDefinition> list = ResourceItem::propertiesDefinition();
+  QList<PropertyDefinition> list = ResourceItem::propertiesDefinition();
 
   return list;
 }

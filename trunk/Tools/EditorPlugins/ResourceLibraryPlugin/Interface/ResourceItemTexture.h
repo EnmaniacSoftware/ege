@@ -9,16 +9,41 @@
 #include "ResourceItem.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Available texture types. */
 enum TextureType
 {
   EInvalidTexture,
   ETexture2D
+};
+
+/*! Available types for texture filters. */
+enum TextureFilterTypes
+{
+  ETextureFilterNearest,
+  ETextureFilterBilinear
+};
+
+/*! Available types for mip mapping (minification) filtering. */
+enum TextureMipMappingFilterTypes
+{
+  EMipMappingFilterNone,
+  EMipMappingFilterNearest,
+  EMipMappingFilterTrilinear
+};
+
+/*! Available texture addressing modes. */
+enum TextureAddressModeTypes
+{
+  EAddressModeClamp,
+  EAddressModeRepeat
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class QMenu;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceItemTexture : public ResourceItem
 {
+  Q_OBJECT
+
   public:
 
    ~ResourceItemTexture();
@@ -71,6 +96,18 @@ class ResourceItemTexture : public ResourceItem
     bool setData(const QVariant &value, int role) override;
     /*! @see ResourceItem::propertiesDefinition. */
     QList<NPropertyObject::PropertyDefinition> propertiesDefinition() const override;
+    /*! Adds minification filters definitions to given group.
+     *  @param  group Definition group to which minification filters are to be added.
+     */
+    void addMinificationFilterDefinitions(NPropertyObject::PropertyDefinition& group) const;
+    /*! Adds magnification filters definitions to given group.
+     *  @param  group Definition group to which magnification filters are to be added.
+     */
+    void addMagnificationFilterDefinitions(NPropertyObject::PropertyDefinition& group) const;
+    /*! Adds texture addressing modes definitions to given group.
+     *  @param  group Definition group to which addressing modes are to be added.
+     */
+    void addAddressingModeDefinitions(NPropertyObject::PropertyDefinition& group) const;
     /*! @see ResourceItem::update. */
     void update(const QString& name, const QVariant& value) override;
     /*! Returns texture type as string. */
@@ -84,6 +121,17 @@ class ResourceItemTexture : public ResourceItem
     /*! Returns image format in string format. */
     QString imageFormatAsText() const;
 
+    /*! Sets minification filter. */
+    void setMinificationFilter(TextureFilterTypes type);
+    /*! Sets magnification filter. */
+    void setMagnificationFilter(TextureFilterTypes type);
+    /*! Sets mip mapping filter. */
+    void setMipMappingFilter(TextureMipMappingFilterTypes type);
+    /*! Sets texture addressing mode for S coordinate. */
+    void setAddressModeS(TextureAddressModeTypes type);
+    /*! Sets texture addressing mode for T coordinate. */
+    void setAddressModeT(TextureAddressModeTypes type);
+
   private:
 
     /*! Thumbnail image. Only valid for specific types. */
@@ -96,6 +144,16 @@ class ResourceItemTexture : public ResourceItem
     mutable QSize m_size;
     /*! Image format. */
     mutable QImage::Format m_imageFormat;
+    /*! Magnification filter. */
+    TextureFilterTypes m_magnificationFilter;
+    /*! Minification filter. */
+    TextureFilterTypes m_minificationFilter;
+    /*! Mip Mapping filter. */
+    TextureMipMappingFilterTypes m_mipMappingFilter;
+    /*! Addressing mode for S coordinate. */
+    TextureAddressModeTypes m_addressingModeS;
+    /*! Addressing mode for T coordinate. */
+    TextureAddressModeTypes m_addressingModeT;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
