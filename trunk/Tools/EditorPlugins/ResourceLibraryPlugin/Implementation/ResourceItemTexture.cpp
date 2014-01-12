@@ -287,8 +287,14 @@ QList<PropertyDefinition> ResourceItemTexture::propertiesDefinition() const
 {
   QList<PropertyDefinition> list;
 
-  // create general group
   PropertyValueContainer values;
+
+  // create location property
+  values.insert(0, path());
+  PropertyDefinition location(PropertyDefinition(tr("Location"), NPropertyObject::EFilePath, values, 0));
+
+  // create general group
+  values.clear();
   PropertyDefinition generalGroup(tr("General"), NPropertyObject::EGroup, values);
 
   // add width, height and bpp
@@ -315,6 +321,7 @@ QList<PropertyDefinition> ResourceItemTexture::propertiesDefinition() const
   addAddressingModeDefinitions(addressingGroup);
 
   // add groups to list
+  list.push_back(location);
   list.push_back(generalGroup);
   list.push_back(filteringGroup);
   list.push_back(addressingGroup);

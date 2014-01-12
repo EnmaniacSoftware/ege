@@ -2,6 +2,7 @@
 #include "ui_PropertiesWindow.h"
 #include "PropertyObject.h"
 #include "FilePathPropertyManager.h"
+#include "FilePathEditFactory.h"
 #include <qttreepropertybrowser.h>
 #include <qtpropertymanager.h>
 #include <qteditorfactory.h>
@@ -39,6 +40,7 @@ PropertiesWindow::PropertiesWindow(QWidget* parent) : QDockWidget(parent),
   QtSpinBoxFactory* spinBoxFactory = new QtSpinBoxFactory(this);
   QtLineEditFactory* lineEditFactory = new QtLineEditFactory(this);
   QtEnumEditorFactory* comboBoxFactory = new QtEnumEditorFactory(this);
+  FilePathEditFactory* filePathFactory = new FilePathEditFactory(this);
 
   // attach factories to managers
   m_ui->properties->setFactoryForManager(m_boolManager, checkBoxFactory);
@@ -47,6 +49,7 @@ PropertiesWindow::PropertiesWindow(QWidget* parent) : QDockWidget(parent),
   m_ui->properties->setFactoryForManager(m_sizeManager->subIntPropertyManager(), spinBoxFactory);
   m_ui->properties->setFactoryForManager(m_rectManager->subIntPropertyManager(), spinBoxFactory);
   m_ui->properties->setFactoryForManager(m_enumManager, comboBoxFactory);
+  m_ui->properties->setFactoryForManager(m_filePathManager, filePathFactory);
 
   // load settings
   loadSettings();
