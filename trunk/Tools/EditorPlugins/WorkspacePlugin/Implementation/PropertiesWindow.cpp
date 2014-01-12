@@ -1,6 +1,7 @@
 #include "PropertiesWindow.h"
 #include "ui_PropertiesWindow.h"
 #include "PropertyObject.h"
+#include "FilePathPropertyManager.h"
 #include <qttreepropertybrowser.h>
 #include <qtpropertymanager.h>
 #include <qteditorfactory.h>
@@ -27,6 +28,7 @@ PropertiesWindow::PropertiesWindow(QWidget* parent) : QDockWidget(parent),
                                                       m_rectManager(new QtRectPropertyManager(this)),
                                                       m_enumManager(new QtEnumPropertyManager(this)),
                                                       m_groupManager(new QtGroupPropertyManager(this)),
+                                                      m_filePathManager(new FilePathPropertyManager(this)),
                                                       m_propertyObject(NULL)
 {
   // setup UI
@@ -70,6 +72,7 @@ void PropertiesWindow::attach(PropertyObject* object)
   m_rectManager->clear();
   m_enumManager->clear();
   m_groupManager->clear();
+  m_filePathManager->clear();
 
   // disconnect
   // NOTE: we dont want notification upon initial creation
@@ -80,6 +83,7 @@ void PropertiesWindow::attach(PropertyObject* object)
   disconnect(m_rectManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
   disconnect(m_enumManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
   disconnect(m_groupManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
+  disconnect(m_filePathManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
 
   // check if anything to be attached
   if (NULL != object)
@@ -96,6 +100,7 @@ void PropertiesWindow::attach(PropertyObject* object)
   connect(m_rectManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
   connect(m_enumManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
   connect(m_groupManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
+  connect(m_filePathManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
 
   // store pointer to object for further use
   m_propertyObject = object;
@@ -239,6 +244,16 @@ QtProperty* PropertiesWindow::createProperty(const PropertyType& type, const QSt
     }
       break;
 
+    case NPropertyObject::EFilePath:
+
+      valuesForCurrentIndex = values.values(0);
+      Q_ASSERT(1 == valuesForCurrentIndex.size());
+      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<QString>());
+
+      property = m_filePathManager->addProperty(name);
+      m_filePathManager->setValue(property, valuesForCurrentIndex.at(0).toString());
+      break;
+
     default:
 
       Q_ASSERT(false);
@@ -280,6 +295,10 @@ void PropertiesWindow::onPropertyChanged(QtProperty* property)
   else if (property->propertyManager() == m_stringManager)
   {
     value = m_stringManager->value(property);
+  }
+  else if (property->propertyManager() == m_filePathManager)
+  {
+    value = m_filePathManager->value(property);
   }
 
   qDebug() << Q_FUNC_INFO << property->propertyName() << value;

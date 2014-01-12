@@ -1,7 +1,10 @@
 #ifndef WORKSPACE_PROPERTIESWINDOW_H
 #define WORKSPACE_PROPERTIESWINDOW_H
 
-/*! Properties window. It is used to display a set of properties for currently selected objects. */
+/*! Properties window. It is used to display a set of properties for currently selected objects.
+ *  It also allows manipulation of the properties according to PropertiesDefinition supplied in order to fill in the view.
+ *  Whenever property is changed via the view, objectChange signal is emitted.
+ */
 
 #include <QDockWidget>
 #include <QList>
@@ -18,6 +21,7 @@ class QtSizePropertyManager;
 class QtRectPropertyManager;
 class QtEnumPropertyManager;
 class QtGroupPropertyManager;
+class FilePathPropertyManager;
 class QtProperty;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class WORKSPACEPLUGIN_API PropertiesWindow : public QDockWidget
@@ -96,6 +100,8 @@ class WORKSPACEPLUGIN_API PropertiesWindow : public QDockWidget
     QtEnumPropertyManager* m_enumManager;
     /*! Property manager for group types. */
     QtGroupPropertyManager* m_groupManager;
+    /*! Property manager for file path types. */
+    FilePathPropertyManager* m_filePathManager;
     /*! Property object being viewed. */
     NPropertyObject::PropertyObject* m_propertyObject;
 };

@@ -6,7 +6,8 @@ HEADERS += Interface/WorkspacePlugin_global.h \
            Implementation/AddConfigurationWindow.h \
     Interface/PropertiesWindow.h \
     Interface/PropertyObject.h \
-    Interface/PropertyDefinition.h
+    Interface/PropertyDefinition.h \
+    Implementation/FilePathPropertyManager.h
 
 SOURCES += Implementation/WorkspacePlugin.cpp \
            Implementation/MainWindow.cpp \
@@ -15,7 +16,8 @@ SOURCES += Implementation/WorkspacePlugin.cpp \
            Implementation/Configuration.cpp \
     Implementation/PropertiesWindow.cpp \
     Implementation/PropertyObject.cpp \
-    Implementation/PropertyDefinition.cpp
+    Implementation/PropertyDefinition.cpp \
+    Implementation/FilePathPropertyManager.cpp
 
 FORMS += Forms/mainwindow.ui \
          Forms/newproject.ui \

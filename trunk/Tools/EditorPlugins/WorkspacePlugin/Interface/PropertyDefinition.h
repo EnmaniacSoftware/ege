@@ -23,7 +23,8 @@ enum PropertyType
   EInt,
   ESize,
   ERect,
-  EEnum
+  EEnum,
+  EFilePath
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Container for multi value propery types.
