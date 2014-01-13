@@ -66,10 +66,10 @@ class ResourceItemTexture : public ResourceItem
      *  @note Generates thumbnail image if required.
      */
     const QImage& thumbnailImage() const;
-    /*! Sets path. */
-    void setPath(const QString& path);
-    /*! Returns path to asset. */
-    const QString& path() const;
+    /*! Sets full path including file name. */
+    void setFullPath(const QString& path);
+    /*! Returns full path to asset (including file name). */
+    const QString& fullPath() const;
     /*! Sets texture type. */
     void setType(TextureType type);
 
@@ -136,8 +136,8 @@ class ResourceItemTexture : public ResourceItem
 
     /*! Thumbnail image. Only valid for specific types. */
     mutable QImage m_thumbnail;
-    /*! Path to asset. */
-    QString m_path;
+    /*! Full path to asset including file name. */
+    QString m_fullPath;
     /*! Texture type. */
     TextureType m_type;
     /*! Size of the image (in pixels). */

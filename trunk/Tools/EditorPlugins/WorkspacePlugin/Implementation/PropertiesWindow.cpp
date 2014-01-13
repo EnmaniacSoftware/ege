@@ -249,12 +249,20 @@ QtProperty* PropertiesWindow::createProperty(const PropertyType& type, const QSt
 
     case NPropertyObject::EFilePath:
 
+      // get values from index 0 (path)
       valuesForCurrentIndex = values.values(0);
       Q_ASSERT(1 == valuesForCurrentIndex.size());
       Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<QString>());
 
       property = m_filePathManager->addProperty(name);
       m_filePathManager->setValue(property, valuesForCurrentIndex.at(0).toString());
+
+      // get values from index 1 (file filter)
+      valuesForCurrentIndex = values.values(1);
+      Q_ASSERT(1 == valuesForCurrentIndex.size());
+      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<QString>());
+
+      m_filePathManager->setFilter(property, valuesForCurrentIndex.at(0).toString());
       break;
 
     default:

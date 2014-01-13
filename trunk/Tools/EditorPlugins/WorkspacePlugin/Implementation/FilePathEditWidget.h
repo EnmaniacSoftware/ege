@@ -1,6 +1,10 @@
 #ifndef WORKSPACE_FILEPATHEDITWIDGET_H
 #define WORKSPACE_FILEPATHEDITWIDGET_H
 
+/*! Editor widget used to edit QtProperty values of type FilePath.
+ *  Instances of this class are created by FilePathEditFactory.
+ */
+
 #include <QWidget>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

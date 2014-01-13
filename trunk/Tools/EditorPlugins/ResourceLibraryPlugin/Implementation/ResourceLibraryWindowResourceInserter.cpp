@@ -66,7 +66,7 @@ void ResourceLibraryWindowResourceInserter::onAddTexture2D()
         newItem->setType(ETexture2D);
 
         // set path
-        newItem->setPath(path);
+        newItem->setFullPath(item);
 
         // add to model
         m_library->insertItem(newItem);

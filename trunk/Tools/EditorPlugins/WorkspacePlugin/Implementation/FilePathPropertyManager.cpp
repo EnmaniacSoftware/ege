@@ -21,6 +21,9 @@ void FilePathPropertyManager::setValue(QtProperty* property, const QString& valu
       data.value = value;
       m_values[property] = data;
 
+      // set tool tip
+      property->setToolTip(value);
+
       // notify
       emit propertyChanged(property);
       emit valueChanged(property, data.value);

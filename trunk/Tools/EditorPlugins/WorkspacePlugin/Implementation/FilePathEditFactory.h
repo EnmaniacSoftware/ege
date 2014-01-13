@@ -1,13 +1,16 @@
 #ifndef WORKSPACE_FILEPATHEDITFACTORY_H
 #define WORSSPACE_FILEPATHEDITFACTORY_H
 
+/*! Factory class responsible for creation of editable widgets for manipulating FilePath types of QtProperties presented within QtPropertyViews.
+ */
+
 #include <QtAbstractEditorFactoryBase>
+#include <QMap>
 #include "FilePathPropertyManager.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class QtProperty;
 class FilePathEditWidget;
-class FilePathEditFactoryPrivate;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class FilePathEditFactory : public QtAbstractEditorFactory<FilePathPropertyManager>
 {
@@ -20,22 +23,15 @@ class FilePathEditFactory : public QtAbstractEditorFactory<FilePathPropertyManag
 
   protected:
 
+    /*! @see QtAbstractEditorFactory::connectPropertyManager. */
     void connectPropertyManager(FilePathPropertyManager* manager);
+    /*! @see QtAbstractEditorFactory::disconnectPropertyManager. */
     void disconnectPropertyManager(FilePathPropertyManager* manager);
+    /*! @see QtAbstractEditorFactory::createEditor. */
     QWidget* createEditor(FilePathPropertyManager* manager, QtProperty* property, QWidget* parent);
 
   private slots:
 
-    /*! Slot called by manager when value (file path) of the property changes.
-     *  @param  property  Property which value changed.
-     *  @param  value     New value of the property (file path).
-     */
-    void onValueChanged(QtProperty* property, const QString& value);
-    /*! Slot called by manager when filter of the property changes.
-     *  @param  property  Property which value changed.
-     *  @param  filter    New filter of the property.
-     */
-    void onFilterChanged(QtProperty* property, const QString& filter);
     /*! Slot called by editor when file path changes. */
     void onFilePathChanged(const QString& path);
     /*! Slot called when editor widget is being destroyed. */
@@ -43,10 +39,10 @@ class FilePathEditFactory : public QtAbstractEditorFactory<FilePathPropertyManag
 
   private:
 
-    /*! Property being edited. Can be NULL. */
-    QtProperty* m_editedProperty;
-    /*! Editor for property being edited. Can be NULL. */
-    FilePathEditWidget* m_editor;
+    /*! Look up for created editor based on property being edited. */
+    QMap<QtProperty*, FilePathEditWidget*> m_propertyToEditor;
+    /*! Look up for property being edited based on editor which edits it. */
+    QMap<FilePathEditWidget*, QtProperty*> m_editorToProperty;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

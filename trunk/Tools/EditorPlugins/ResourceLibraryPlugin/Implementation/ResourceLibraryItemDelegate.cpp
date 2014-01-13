@@ -79,9 +79,9 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
 
   // paint text fields
   rect.translate(KThumbnailSize + KContainerTypeTextOffset, 0);
-  rect.setWidth(qMax(option.fontMetrics.width(item->name()), option.fontMetrics.width(item->path())));
+  rect.setWidth(qMax(option.fontMetrics.width(item->name()), option.fontMetrics.width(item->fullPath())));
   painter->drawText(rect.intersected(option.rect), Qt::AlignTop, item->name());
-  painter->drawText(rect.intersected(option.rect), Qt::AlignBottom, item->path());
+  painter->drawText(rect.intersected(option.rect), Qt::AlignBottom, item->fullPath());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QModelIndex ResourceLibraryItemDelegate::convertModelIndex(QModelIndex index) const

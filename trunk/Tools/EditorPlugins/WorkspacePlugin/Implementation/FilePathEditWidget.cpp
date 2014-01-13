@@ -33,17 +33,17 @@ void FilePathEditWidget::setFilters(const QString& filters)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void FilePathEditWidget::onBrowse()
 {
+  // disable focus proxy
+  setFocusProxy(NULL);
+
   // open file selection dialog
-  QStringList list = QFileDialog::getOpenFileNames(this, m_title, QString(), m_filters);
-  if ( ! list.isEmpty())
+  QString fileName = QFileDialog::getOpenFileName(this, m_title, QString(), m_filters);
+
+  // check if any selection made and it is different
+  if ( ! fileName.isEmpty() && (m_ui->label->text() != fileName))
   {
-    // go thru all items
-    for (int i = 0; i < list.size(); ++i)
-    {
-      QString item = QDir::fromNativeSeparators(list[i]);
-      QString name = item.section("/", -1);
-      QString path = item.section("/", 0, -2);
-    }
+    // notify
+    emit filePathChanged(fileName);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

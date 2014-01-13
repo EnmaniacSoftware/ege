@@ -24,7 +24,7 @@ enum PropertyType
   ESize,
   ERect,
   EEnum,
-  EFilePath
+  EFilePath         /*!< Data in pairs: [index: Path], [index+1: File Filter]. */
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Container for multi value propery types.

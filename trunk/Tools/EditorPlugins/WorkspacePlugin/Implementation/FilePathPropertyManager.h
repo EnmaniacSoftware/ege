@@ -1,6 +1,10 @@
 #ifndef WORKSPACE_FILEPATHPROPERTYMANAGER_H
 #define WORKSPACE_FILEPATHPROPERTYMANAGER_H
 
+/*! Property manager responsible for creation and manipulation of QtProperty objects of FilePath type.
+ *  Together with FilePathEditFactory it allows editing and proper synchronization of managed QtProperty objects.
+ */
+
 #include <QtAbstractPropertyManager>
 #include <QMap>
 
@@ -43,8 +47,11 @@ class FilePathPropertyManager : public QtAbstractPropertyManager
 
   protected:
 
+    /*! @see QtAbstractPropertyManager::valueText. */
     QString valueText(const QtProperty* property) const;
+    /*! @see QtAbstractPropertyManager::initializeProperty. */
     void initializeProperty(QtProperty *property);
+    /*! @see QtAbstractPropertyManager::uninitializeProperty. */
     void uninitializeProperty(QtProperty *property);
 
   private:

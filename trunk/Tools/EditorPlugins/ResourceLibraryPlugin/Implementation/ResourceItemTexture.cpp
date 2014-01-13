@@ -20,6 +20,7 @@ static const QString KPropertyNameMagnifyingFiltering = ResourceItemTexture::tr(
 static const QString KPropertyNameMipMappingFiltering = ResourceItemTexture::tr("Mip Mapping");
 static const QString KPropertyNameAddressingModeS     = ResourceItemTexture::tr("Coordinate S");
 static const QString KPropertyNameAddressingModeT     = ResourceItemTexture::tr("Coordinate T");
+static const QString KPropertyNameLocation            = ResourceItemTexture::tr("Location");
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct TextureTypeMap
 {
@@ -181,10 +182,10 @@ void ResourceItemTexture::ResourceLibraryWindowHook(QMenu& menu, const QString& 
 const QImage& ResourceItemTexture::thumbnailImage() const
 {
   // check if thumbnail is to be generated
-  if (m_thumbnail.isNull() && ! m_path.isEmpty() && ! m_name.isEmpty())
+  if (m_thumbnail.isNull() && ! m_fullPath.isEmpty())
   {
     // generate
-    QImageReader imageReader(FileSystemUtils::Join(m_path, m_name));
+    QImageReader imageReader(m_fullPath);
 
     imageReader.setScaledSize(QSize(32, 32));
     imageReader.read(&m_thumbnail);
@@ -212,7 +213,7 @@ bool ResourceItemTexture::serialize(QXmlStreamWriter& stream) const
   {
     // store data
     stream.writeAttribute(KTypeArrtibute, textureTypeName());
-    stream.writeAttribute(KPathArrtibute, path());
+    stream.writeAttribute(KPathArrtibute, fullPath());
 
     // end serialization
     result = endSerialize(stream);
@@ -224,26 +225,26 @@ bool ResourceItemTexture::serialize(QXmlStreamWriter& stream) const
 bool ResourceItemTexture::unserialize(QXmlStreamReader& stream)
 {
   // retrieve data
-  m_path = stream.attributes().value(KPathArrtibute).toString();
-  m_type = textureTypeFromString(stream.attributes().value(KTypeArrtibute).toString());
+  m_fullPath  = stream.attributes().value(KPathArrtibute).toString();
+  m_type      = textureTypeFromString(stream.attributes().value(KTypeArrtibute).toString());
 
   return ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceItemTexture::setPath(const QString& path)
+void ResourceItemTexture::setFullPath(const QString& path)
 {
-  if (m_path != path)
+  if (m_fullPath != path)
   {
-    m_path = path;
+    m_fullPath = path;
 
     // emit
     emit changed(this);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const QString& ResourceItemTexture::path() const
+const QString& ResourceItemTexture::fullPath() const
 {
-  return m_path;
+  return m_fullPath;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItemTexture::setType(TextureType type)
@@ -261,7 +262,7 @@ QVariant ResourceItemTexture::data(int columnIndex, int role) const
   {
     case ResourceLibraryDataModel::PathRole:
 
-      variant = path();
+      variant = fullPath();
       break;
   }
 
@@ -275,7 +276,7 @@ bool ResourceItemTexture::setData(const QVariant &value, int role)
   {
     case ResourceLibraryDataModel::PathRole:
 
-      setPath(value.toString());
+      setFullPath(value.toString());
       return true;
   }
 
@@ -285,19 +286,19 @@ bool ResourceItemTexture::setData(const QVariant &value, int role)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QList<PropertyDefinition> ResourceItemTexture::propertiesDefinition() const
 {
-  QList<PropertyDefinition> list;
+  // call base class first
+  QList<PropertyDefinition> list = ResourceItem::propertiesDefinition();
 
   PropertyValueContainer values;
 
-  // create location property
-  values.insert(0, path());
-  PropertyDefinition location(PropertyDefinition(tr("Location"), NPropertyObject::EFilePath, values, 0));
-
   // create general group
-  values.clear();
   PropertyDefinition generalGroup(tr("General"), NPropertyObject::EGroup, values);
 
-  // add width, height and bpp
+  // add name, location, width, height and bpp
+  values.insert(0, fullPath());
+  values.insert(1, tr("Images") + QLatin1String(" (*.png *.jpg)"));
+  generalGroup.addChildProperty(PropertyDefinition(KPropertyNameLocation, NPropertyObject::EFilePath, values, 0));
+  values.clear();
   values.insert(0, QString("%1 px").arg(size().width()));
   generalGroup.addChildProperty(PropertyDefinition(tr("Width"), NPropertyObject::EString, values, 0, true));
   values.clear();
@@ -321,7 +322,6 @@ QList<PropertyDefinition> ResourceItemTexture::propertiesDefinition() const
   addAddressingModeDefinitions(addressingGroup);
 
   // add groups to list
-  list.push_back(location);
   list.push_back(generalGroup);
   list.push_back(filteringGroup);
   list.push_back(addressingGroup);
@@ -424,6 +424,11 @@ void ResourceItemTexture::update(const QString& name, const QVariant& value)
     Q_ASSERT(value.canConvert<int>());
     setAddressModeT(l_textureAddressingModeTypeMappings[value.toInt()].type);
   }
+  else if (KPropertyNameLocation == name)
+  {
+    Q_ASSERT(value.canConvert<QString>());
+    setFullPath(value.toString());
+  }
   else
   {
     // call base class
@@ -478,9 +483,9 @@ TextureType ResourceItemTexture::textureTypeFromString(const QString& typeName) 
 QSize ResourceItemTexture::size() const
 {
   // check if size can be determined
-  if (m_size.isNull() && ! m_path.isEmpty() && ! m_name.isEmpty())
+  if (m_size.isNull() && ! m_fullPath.isEmpty())
   {
-    QImageReader imageReader(FileSystemUtils::Join(m_path, m_name));
+    QImageReader imageReader(m_fullPath);
 
     m_size = imageReader.size();
   }
@@ -491,9 +496,9 @@ QSize ResourceItemTexture::size() const
 QImage::Format ResourceItemTexture::imageFormat() const
 {
   // check if format can be determined
-  if ((QImage::Format_Invalid == m_imageFormat) && ! m_path.isEmpty() && ! m_name.isEmpty())
+  if ((QImage::Format_Invalid == m_imageFormat) && ! m_fullPath.isEmpty())
   {
-    QImageReader imageReader(FileSystemUtils::Join(m_path, m_name));
+    QImageReader imageReader(m_fullPath);
 
     m_imageFormat = imageReader.imageFormat();
   }

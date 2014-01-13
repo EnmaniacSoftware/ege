@@ -41,6 +41,12 @@
      <property name="text">
       <string notr="true">...</string>
      </property>
+     <property name="autoExclusive">
+      <bool>false</bool>
+     </property>
+     <property name="popupMode">
+      <enum>QToolButton::DelayedPopup</enum>
+     </property>
      <property name="toolButtonStyle">
       <enum>Qt::ToolButtonTextOnly</enum>
      </property>
