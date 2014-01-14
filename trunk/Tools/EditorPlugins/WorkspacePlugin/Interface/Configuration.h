@@ -36,6 +36,8 @@ class WORKSPACEPLUGIN_API Configuration : public QWidget
     void onAddClicked();
     /*! Slot called when remove button has been clicked. */
     void onRemoveClicked();
+    /*! Slot called when edit button has been clicked. */
+    void onEditClicked();
     /*! Slot called when onfiguration selection changed. */
     void onSelectionChanged();
     /*! Slot called when configuration with given name is to be added. */

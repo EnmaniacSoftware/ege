@@ -18,15 +18,12 @@ Configuration::Configuration(QWidget* parent) : QWidget(parent),
   // setup UI
   m_ui->setupUi(this);
    
-  // setup icons
-  m_ui->add->setIcon(QIcon(":/core/configuration-add"));
-  m_ui->remove->setIcon(QIcon(":/core/configuration-remove"));
-
   onSelectionChanged();
 
   // connect
   connect(m_ui->add, SIGNAL(clicked(bool)), this, SLOT(onAddClicked()));
   connect(m_ui->remove, SIGNAL(clicked(bool)), this, SLOT(onRemoveClicked()));
+  connect(m_ui->edit, SIGNAL(clicked(bool)), this, SLOT(onEditClicked()));
   connect(m_ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSelectionChanged()));
   connect(ObjectPool::Instance(), SIGNAL(objectAdded(QObject*)), this, SLOT(onObjectAdded(QObject*)));
   connect(ObjectPool::Instance(), SIGNAL(objectRemoved(QObject*)), this, SLOT(onObjectRemoved(QObject*)));
@@ -62,6 +59,11 @@ void Configuration::onRemoveClicked()
 
   // update UI
   updateUI();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Configuration::onEditClicked()
+{
+
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Configuration::onSelectionChanged()
