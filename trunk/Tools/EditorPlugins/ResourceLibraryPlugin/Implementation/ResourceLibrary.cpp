@@ -59,7 +59,8 @@ void ResourceLibrary::onLoadData(QXmlStreamReader& stream)
   if (KResourceLibraryTag == stream.name())
   {
     // unserialize model
-    model()->unserialize(stream);
+    bool result = model()->unserialize(stream);
+    Q_ASSERT(result);
 
     // emit
     emit loaded(model()->rowCount());

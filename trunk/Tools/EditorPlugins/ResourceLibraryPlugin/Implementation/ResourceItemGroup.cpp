@@ -64,10 +64,8 @@ bool ResourceItemGroup::serialize(QXmlStreamWriter& stream) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceItemGroup::unserialize(QXmlStreamReader& stream)
 {
-  Q_UNUSED(stream);
-
   // nothing to do
-  return true;
+  return ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QSize ResourceItemGroup::sizeHint() const

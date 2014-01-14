@@ -13,7 +13,7 @@ using NPropertyObject::PropertyDefinition;
 using NPropertyObject::PropertyValueContainer;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const QString KPathArrtibute           = "path";
-static const QString KTypeArrtibute           = "type";
+static const QString KTextureTypeArrtibute    = "texture-type";
 static const QString KMinFilterArrtibute      = "min-filter";
 static const QString KMagFilterArrtibute      = "mag-filter";
 static const QString KMipMapFilterArrtibute   = "mipmap-filter";
@@ -383,7 +383,7 @@ bool ResourceItemTexture::serialize(QXmlStreamWriter& stream) const
   if (beginSerialize(stream))
   {
     // store data
-    stream.writeAttribute(KTypeArrtibute, GetTextureTypeAsText(type()));
+    stream.writeAttribute(KTextureTypeArrtibute, GetTextureTypeAsText(type()));
     stream.writeAttribute(KPathArrtibute, fullPath());
     stream.writeAttribute(KMinFilterArrtibute, GetTextureFilterAsText(minificationFilter()));
     stream.writeAttribute(KMagFilterArrtibute, GetTextureFilterAsText(magnificationFilter()));
@@ -403,7 +403,7 @@ bool ResourceItemTexture::unserialize(QXmlStreamReader& stream)
   // retrieve data
   // NOTE: assigning directory to disallow signaling
   m_fullPath            = stream.attributes().value(KPathArrtibute).toString();
-  m_type                = GetTextureTypeFromText(stream.attributes().value(KTypeArrtibute).toString());
+  m_type                = GetTextureTypeFromText(stream.attributes().value(KTextureTypeArrtibute).toString());
   m_minificationFilter  = GetTextureFilterFromText(stream.attributes().value(KMinFilterArrtibute).toString());
   m_magnificationFilter = GetTextureFilterFromText(stream.attributes().value(KMagFilterArrtibute).toString());
   m_mipMappingFilter    = GetTextureMipMappingFilterFromText(stream.attributes().value(KMipMapFilterArrtibute).toString());

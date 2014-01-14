@@ -220,7 +220,7 @@ bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
   QStack<ResourceItem*> itemStack;
   itemStack.push_back(m_root);
 
-  while ( ! stream.atEnd())
+  while ( ! stream.atEnd() && ! stream.hasError())
   {
     QXmlStreamReader::TokenType token = stream.readNext();
     switch (token)
@@ -266,6 +266,18 @@ bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
         }
         break;
     }
+  }
+
+  // check if error
+  if (stream.hasError())
+  {
+    m_root->removeChildren();
+  }
+  else
+  {
+    // update model
+    beginInsertRows(QModelIndex(), 0, m_root->childCount());
+    endInsertRows();
   }
 
   return ! stream.hasError();

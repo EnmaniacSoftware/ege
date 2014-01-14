@@ -158,6 +158,10 @@ void Configuration::onLoadData(QXmlStreamReader& stream)
   // check if proper element
   if (KConfigurationTag == stream.name())
   {
+    // delete all current configurations
+    removeAll();
+
+    // retrieve data
     const QString name = stream.attributes().value(KNameAttribute).toString();
 
     // add new configuration

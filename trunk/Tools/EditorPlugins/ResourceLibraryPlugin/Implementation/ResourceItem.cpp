@@ -275,21 +275,17 @@ void ResourceItem::removeChildren()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceItem::serialize(QXmlStreamWriter& stream) const
 {
-  Q_UNUSED(stream);
-
   // This method should never be called
   Q_ASSERT(false);
 
-  return true;
+  return ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceItem::unserialize(QXmlStreamReader& stream)
 {
-  Q_UNUSED(stream);
-
   // This method should never be called
   Q_ASSERT(false);
 
-  return true;
+  return ! stream.hasError();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
