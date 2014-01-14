@@ -17,14 +17,14 @@ enum TextureType
 };
 
 /*! Available types for texture filters. */
-enum TextureFilterTypes
+enum TextureFilterType
 {
   ETextureFilterNearest,
   ETextureFilterBilinear
 };
 
 /*! Available types for mip mapping (minification) filtering. */
-enum TextureMipMappingFilterTypes
+enum TextureMipMappingFilterType
 {
   EMipMappingFilterNone,
   EMipMappingFilterNearest,
@@ -32,7 +32,7 @@ enum TextureMipMappingFilterTypes
 };
 
 /*! Available texture addressing modes. */
-enum TextureAddressModeTypes
+enum TextureAddressModeType
 {
   EAddressModeClamp,
   EAddressModeRepeat
@@ -110,10 +110,6 @@ class ResourceItemTexture : public ResourceItem
     void addAddressingModeDefinitions(NPropertyObject::PropertyDefinition& group) const;
     /*! @see ResourceItem::update. */
     void update(const QString& name, const QVariant& value) override;
-    /*! Returns texture type as string. */
-    QString textureTypeName() const;
-    /*! Returns texture type from string. */
-    TextureType textureTypeFromString(const QString& typeName) const;
     /*! Returns image size (in pixels). */
     QSize size() const;
     /*! Returns image format. */
@@ -121,16 +117,28 @@ class ResourceItemTexture : public ResourceItem
     /*! Returns image format in string format. */
     QString imageFormatAsText() const;
 
+    /*! Returns texture type. */
+    TextureType type() const;
     /*! Sets minification filter. */
-    void setMinificationFilter(TextureFilterTypes type);
+    void setMinificationFilter(TextureFilterType type);
+    /*! Returns minification filter. */
+    TextureFilterType minificationFilter() const;
     /*! Sets magnification filter. */
-    void setMagnificationFilter(TextureFilterTypes type);
+    void setMagnificationFilter(TextureFilterType type);
+    /*! Returns magnification filter. */
+    TextureFilterType magnificationFilter() const;
     /*! Sets mip mapping filter. */
-    void setMipMappingFilter(TextureMipMappingFilterTypes type);
+    void setMipMappingFilter(TextureMipMappingFilterType type);
+    /*! Returns mip mapping filter. */
+    TextureMipMappingFilterType mipMappingFilter() const;
     /*! Sets texture addressing mode for S coordinate. */
-    void setAddressModeS(TextureAddressModeTypes type);
+    void setAddressModeS(TextureAddressModeType type);
+    /*! Returns addressing mode for S coordinate. */
+    TextureAddressModeType addressModeS() const;
     /*! Sets texture addressing mode for T coordinate. */
-    void setAddressModeT(TextureAddressModeTypes type);
+    void setAddressModeT(TextureAddressModeType type);
+    /*! Returns addressing mode for T coordinate. */
+    TextureAddressModeType addressModeT() const;
 
   private:
 
@@ -145,15 +153,15 @@ class ResourceItemTexture : public ResourceItem
     /*! Image format. */
     mutable QImage::Format m_imageFormat;
     /*! Magnification filter. */
-    TextureFilterTypes m_magnificationFilter;
+    TextureFilterType m_magnificationFilter;
     /*! Minification filter. */
-    TextureFilterTypes m_minificationFilter;
+    TextureFilterType m_minificationFilter;
     /*! Mip Mapping filter. */
-    TextureMipMappingFilterTypes m_mipMappingFilter;
+    TextureMipMappingFilterType m_mipMappingFilter;
     /*! Addressing mode for S coordinate. */
-    TextureAddressModeTypes m_addressingModeS;
+    TextureAddressModeType m_addressingModeS;
     /*! Addressing mode for T coordinate. */
-    TextureAddressModeTypes m_addressingModeT;
+    TextureAddressModeType m_addressingModeT;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
