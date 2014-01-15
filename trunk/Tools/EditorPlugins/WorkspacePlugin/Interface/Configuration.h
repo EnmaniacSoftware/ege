@@ -24,6 +24,11 @@ class WORKSPACEPLUGIN_API Configuration : public QWidget
      *  @param  name  Name of current configuration.
      */
     void changed(const QString& name);
+    /*! Signal emitted when current configuration name has been changed.
+     *  @param  oldName Old name of current configuration.
+     *  @param  newName New name of current configuration.
+     */
+    void nameChanged(const QString& oldName, const QString& newName);
 
   public:
 
@@ -54,6 +59,10 @@ class WORKSPACEPLUGIN_API Configuration : public QWidget
      *  @param  stream  XML stream where data is to be saved.
      */
     void onLoadData(QXmlStreamReader& stream);
+    /*! Slot called when new name for current configuration changes.
+     *  @param  name  New name.
+     */
+    void onConfigurationNameChanged(const QString& name);
 
   private:
 

@@ -132,7 +132,7 @@ void NewProjectWindow::updateUI()
     const QString currentName = projectName->text();
     const QString validatedName = FileSystemUtils::ValidateFileName(currentName);
 
-    if (currentName == validatedName)
+    if ( ! validatedName.isEmpty() && (currentName == validatedName))
     {
       // enable OK button
       buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);

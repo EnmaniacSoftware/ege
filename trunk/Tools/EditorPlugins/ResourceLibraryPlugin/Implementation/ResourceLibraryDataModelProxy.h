@@ -25,9 +25,14 @@ class ResourceLibraryDataModelProxy : public QSortFilterProxyModel
   private slots:
 
     /*! Slot called when configuration selection has changed.
-        @param  name  New configuration name.
+     *  @param  name  New configuration name.
      */
     void onConfigurationChanged(const QString& name);
+    /*! Slot called when current configuration name has changed.
+     *  @param  oldName Old configuration name.
+     *  @param  newName New configuration name.
+     */
+    void onConfigurationNameChanged(const QString& oldName, const QString& newName);
 
   private:
 

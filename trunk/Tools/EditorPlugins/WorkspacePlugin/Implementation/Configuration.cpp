@@ -1,6 +1,7 @@
 #include "Configuration.h"
 #include "MainWindow.h"
 #include "AddConfigurationWindow.h"
+#include "ChangeConfigurationNameWindow.h"
 #include "ui_configuration.h"
 #include <Projects/Project.h>
 #include <ObjectPool.h>
@@ -63,7 +64,21 @@ void Configuration::onRemoveClicked()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Configuration::onEditClicked()
 {
+  // build up list of disallowed name
+  // NOTE: It is not allowed to change the name into already existing. It is allowed, however to set the same name as current one. Thus, we do not add
+  //       current configuration name into the pool
+  QStringList disallowedNames;
+  for (int i = 0; i < m_ui->comboBox->count(); ++i)
+  {
+    if (m_ui->comboBox->currentIndex() != i)
+    {
+      disallowedNames.push_back(m_ui->comboBox->itemText(i));
+    }
+  }
 
+  ChangeConfigurationNameWindow window(current(), disallowedNames, this);
+  connect(&window, SIGNAL(accepted(const QString&)), this, SLOT(onConfigurationNameChanged(const QString&)));
+  window.exec();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Configuration::onSelectionChanged()
@@ -168,6 +183,21 @@ void Configuration::onLoadData(QXmlStreamReader& stream)
 
     // add new configuration
     onAddConfiguration(name);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Configuration::onConfigurationNameChanged(const QString& name)
+{
+  // check if anything changed
+  if (name != current())
+  {
+    QString oldName = current();
+
+    // update current name
+    m_ui->comboBox->setItemText(m_ui->comboBox->currentIndex(), name);
+
+    // notify
+    emit nameChanged(oldName, name);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -11,6 +11,7 @@ ResourceLibraryDataModelProxy::ResourceLibraryDataModelProxy(QObject* parent) : 
 
   // connect
   connect(configuration, SIGNAL(changed(QString)), this, SLOT(onConfigurationChanged(QString)));
+  connect(configuration, SIGNAL(nameChanged(QString,QString)), this, SLOT(onConfigurationNameChanged(QString,QString)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryDataModelProxy::~ResourceLibraryDataModelProxy()
@@ -27,6 +28,11 @@ void ResourceLibraryDataModelProxy::onConfigurationChanged(const QString& name)
 
   // notify
   emit filterChanged();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceLibraryDataModelProxy::onConfigurationNameChanged(const QString& oldName, const QString& newName)
+{
+
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceLibraryDataModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
