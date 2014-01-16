@@ -233,6 +233,17 @@ const QString&ResourceItem::configurationName() const
   return m_configurationName;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItem::setConfigurationName(const QString& name)
+{
+  if (m_configurationName != name)
+  {
+    m_configurationName = name;
+
+    // notify
+    emit changed(this);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItem::setChild(int index, ResourceItem* item)
 {
   Q_ASSERT(index < m_children.size());

@@ -1,12 +1,13 @@
 #include "ResourceLibraryDataModel.h"
 #include "ResourceItem.h"
 #include "ResourceItemFactory.h"
+#include <Configuration.h>
+#include <ObjectPool.h>
 #include <QFile>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <QStack>
 #include <QDebug>
-#include <ObjectPool.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // TAGE - duplicate in ResourceItem :/
@@ -15,6 +16,11 @@ static const QString KResourceItemTag = "ResourceItem";
 ResourceLibraryDataModel::ResourceLibraryDataModel(QObject* parent) : QAbstractItemModel(parent),
                                                                       m_root(new ResourceItem("root", "", NULL))
 {
+  Configuration* configuration = ObjectPool::Instance()->getObject<Configuration>();
+  Q_ASSERT(NULL != configuration);
+
+  connect(configuration, SIGNAL(nameChanged(QString, QString)), this, SLOT(onConfigurationNameChanged(QString, QString)));
+  connect(configuration, SIGNAL(removed(QString)), this, SLOT(onConfigurationRemoved(QString)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryDataModel::~ResourceLibraryDataModel()
@@ -345,6 +351,30 @@ void ResourceLibraryDataModel::addChildren(ResourceItem* item, QList<ResourceIte
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceLibraryDataModel::removeChildItems(ResourceItem* parent, const QString& name)
+{
+  // go thru all children
+  for (int i = 0; i < parent->childCount(); )
+  {
+    ResourceItem* child = parent->child(i);
+
+    // check if child needs to be removed
+    if (child->configurationName() == name)
+    {
+      // remove child
+      // NOTE: this removes all sub-children as well. All of them belong to same configuration so it is ok.
+      parent->removeChild(child);
+      delete child;
+    }
+    else
+    {
+      // process children
+      removeChildItems(child, name);
+      ++i;
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItem* ResourceLibraryDataModel::root() const
 {
   return m_root;
@@ -353,5 +383,24 @@ ResourceItem* ResourceLibraryDataModel::root() const
 bool ResourceLibraryDataModel::isEmpty() const
 {
   return (0 == m_root->childCount());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceLibraryDataModel::onConfigurationNameChanged(const QString& oldName, const QString& newName)
+{
+  // update model data
+  QList<ResourceItem*> list = allItems();
+  foreach (ResourceItem* item, list)
+  {
+    if (item->configurationName() == oldName)
+    {
+      item->setConfigurationName(newName);
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceLibraryDataModel::onConfigurationRemoved(const QString& name)
+{
+  // update model data
+  removeChildItems(m_root, name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -55,8 +55,14 @@ void Configuration::onRemoveClicked()
     return;
   }
 
+  // store name of current configuration
+  const QString name = current();
+
   // remove
   m_ui->comboBox->removeItem(m_ui->comboBox->currentIndex());
+
+  // notify
+  emit removed(name);
 
   // update UI
   updateUI();

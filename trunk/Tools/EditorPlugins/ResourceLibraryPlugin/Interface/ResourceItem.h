@@ -40,6 +40,10 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public NPropertyObject::PropertyOb
 
     /*! Returns configuration name object belongs to. */
     const QString& configurationName() const;
+    /*! Sets configuration name object belongs to.
+     *  @param  name  Configuration name.
+     */
+    void setConfigurationName(const QString& name);
 
     /*! Sets parent. */
     void setParent(ResourceItem* parent);

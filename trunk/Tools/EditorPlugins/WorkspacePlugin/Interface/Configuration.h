@@ -29,6 +29,10 @@ class WORKSPACEPLUGIN_API Configuration : public QWidget
      *  @param  newName New name of current configuration.
      */
     void nameChanged(const QString& oldName, const QString& newName);
+    /*! Signal emitted when configuration has been deleted.
+     *  @param  name  Name of the deleted configuration.
+     */
+    void removed(const QString& name);
 
   public:
 

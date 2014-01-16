@@ -32,7 +32,12 @@ void ResourceLibraryDataModelProxy::onConfigurationChanged(const QString& name)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryDataModelProxy::onConfigurationNameChanged(const QString& oldName, const QString& newName)
 {
-
+  // check if current filter changed
+  if (m_configName == oldName)
+  {
+    // accept new name
+    onConfigurationChanged(newName);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceLibraryDataModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const

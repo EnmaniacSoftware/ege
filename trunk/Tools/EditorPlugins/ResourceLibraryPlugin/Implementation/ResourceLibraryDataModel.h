@@ -76,6 +76,18 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
      */
     QList<ResourceItem*> items(const QString& typeName) const;
 
+  private slots:
+
+    /*! Slot called when current configuration name has changed.
+     *  @param  oldName Old configuration name.
+     *  @param  newName New configuration name.
+     */
+    void onConfigurationNameChanged(const QString& oldName, const QString& newName);
+    /*! Slot called when configuration has been removed.
+     *  @param  Name  Name of the configuration which has been removed.
+     */
+    void onConfigurationRemoved(const QString& name);
+
   private:
 
     /*! @see QAbstractItemModel::parent. */
@@ -87,7 +99,7 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
     /*! @see QAbstractItemModel::columnCount. */
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
-    /*! Returns resource library item connected for given model index. */
+    /*! Returns resource library item connected to a given model index. */
     ResourceItem* getItem(const QModelIndex& index) const;
     /*! Returns root item. */
     ResourceItem* root() const;
@@ -95,6 +107,11 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
     QList<ResourceItem*> allItems() const;
     /*! Adds children of given resource item to the list. */
     void addChildren(ResourceItem* item, QList<ResourceItem*>& list) const;
+    /*! Recursively removes all children of a given configuration from the parent.
+     *  @param  parent  Parent item from which children are to be removed.
+     *  @param  name    Name of the configuration for which items are to be removed.
+     */
+    void removeChildItems(ResourceItem* parent, const QString& name);
 
   private:
 
