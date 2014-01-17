@@ -353,6 +353,8 @@ void ResourceLibraryDataModel::addChildren(ResourceItem* item, QList<ResourceIte
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryDataModel::removeChildItems(ResourceItem* parent, const QString& name)
 {
+  QModelIndex parentIndex = (m_root == parent) ? QModelIndex() : createIndex(0, 0, parent);
+
   // go thru all children
   for (int i = 0; i < parent->childCount(); )
   {
@@ -363,8 +365,12 @@ void ResourceLibraryDataModel::removeChildItems(ResourceItem* parent, const QStr
     {
       // remove child
       // NOTE: this removes all sub-children as well. All of them belong to same configuration so it is ok.
+      beginRemoveRows(parentIndex, i, i);
+
       parent->removeChild(child);
       delete child;
+
+      endRemoveRows();
     }
     else
     {

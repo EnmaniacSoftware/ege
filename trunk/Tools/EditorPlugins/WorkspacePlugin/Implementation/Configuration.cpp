@@ -10,8 +10,10 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static const QString KConfigurationTag = "Configuration";
-static const QString KNameAttribute    = "name";
+static const QString KConfigurationsTag = "Configurations";
+static const QString KConfigurationTag  = "Configuration";
+static const QString KNameAttribute     = "name";
+static const QString KActiveAttribute   = "active";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Configuration::Configuration(QWidget* parent) : QWidget(parent),
                                                 m_ui(new Ui_Configuration())
@@ -117,6 +119,11 @@ void Configuration::onAddConfiguration(const QString& name)
 
   // update UI
   updateUI();
+
+  // mark project dirty
+  Project* project = ObjectPool::Instance()->getObject<Project>();
+  Q_ASSERT(NULL != project);
+  project->onProjectDataChanged();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Configuration::onObjectAdded(QObject* object)
@@ -126,6 +133,10 @@ void Configuration::onObjectAdded(QObject* object)
   {
     // create default configuration
     createDefault();
+
+    // connect
+    connect(this, SIGNAL(nameChanged(QString, QString)), object, SLOT(onProjectDataChanged()));
+    connect(this, SIGNAL(removed(QString)), object, SLOT(onProjectDataChanged()));
 
     // enable
     setEnabled(true);
@@ -139,6 +150,10 @@ void Configuration::onObjectRemoved(QObject* object)
   {
     // remove all configurations
     removeAll();
+
+    // disconnect
+    disconnect(this, SIGNAL(nameChanged(QString,QString)), object, SLOT(onProjectDataChanged()));
+    disconnect(this, SIGNAL(removed(QString)), object, SLOT(onProjectDataChanged()));
 
     // disable
     setEnabled(false);
@@ -161,34 +176,72 @@ void Configuration::createDefault()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Configuration::onSaveData(QXmlStreamWriter& stream)
 {
+  // write configurations group
+  stream.writeStartElement(KConfigurationsTag);
+
   // go thru all configurations
   const int count = m_ui->comboBox->count();
   for (int i = 0; i < count; ++i)
   {
-    const QString name = m_ui->comboBox->currentText();
+    const QString name = m_ui->comboBox->itemText(i);
 
     stream.writeStartElement(KConfigurationTag);
 
     stream.writeAttribute(KNameAttribute, name);
+    stream.writeAttribute(KActiveAttribute, (name == current()) ? "true" : "false");
 
-    // finalize
     stream.writeEndElement();
   }
+
+  // finalize
+  stream.writeEndElement();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Configuration::onLoadData(QXmlStreamReader& stream)
 {
   // check if proper element
-  if (KConfigurationTag == stream.name())
+  if (KConfigurationsTag == stream.name())
   {
     // delete all current configurations
     removeAll();
 
-    // retrieve data
-    const QString name = stream.attributes().value(KNameAttribute).toString();
+    // read up all configurations
+    while ( ! stream.atEnd() && ! stream.hasError())
+    {
+      QXmlStreamReader::TokenType token = stream.readNext();
+      switch (token)
+      {
+        case QXmlStreamReader::StartElement:
 
-    // add new configuration
-    onAddConfiguration(name);
+          // check if resource item tag
+          if (KConfigurationTag == stream.name())
+          {
+            // get required data
+            const QString name = stream.attributes().value(KNameAttribute).toString();
+            const bool active  = stream.attributes().value(KActiveAttribute).compare("true", Qt::CaseInsensitive);
+
+            // add to pool
+            m_ui->comboBox->addItem(name);
+
+            // check if configuration is active one
+            if (active)
+            {
+              // make active
+              m_ui->comboBox->setCurrentIndex(m_ui->comboBox->count() - 1);
+            }
+          }
+          break;
+
+        case QXmlStreamReader::EndElement:
+
+          if (KConfigurationsTag == stream.name())
+          {
+            // done
+            break;
+          }
+          break;
+      }
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
