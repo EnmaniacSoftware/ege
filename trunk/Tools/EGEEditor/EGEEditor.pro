@@ -12,3 +12,6 @@ INCLUDEPATH	+= Interface
 #plugins.path = Plugins
 
 #INSTALLS += plugins
+
+OTHER_FILES += \
+    TODO.txt
