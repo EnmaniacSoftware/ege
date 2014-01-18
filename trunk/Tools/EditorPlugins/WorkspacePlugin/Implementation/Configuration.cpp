@@ -206,7 +206,8 @@ void Configuration::onLoadData(QXmlStreamReader& stream)
     removeAll();
 
     // read up all configurations
-    while ( ! stream.atEnd() && ! stream.hasError())
+    bool done = false;
+    while ( ! stream.atEnd() && ! stream.hasError() && ! done)
     {
       QXmlStreamReader::TokenType token = stream.readNext();
       switch (token)
@@ -237,7 +238,7 @@ void Configuration::onLoadData(QXmlStreamReader& stream)
           if (KConfigurationsTag == stream.name())
           {
             // done
-            break;
+            done = true;
           }
           break;
       }
