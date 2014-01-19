@@ -32,6 +32,11 @@ QString ResourceItemTextureAtlas::TypeName()
   return "texture-atlas";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QString ResourceItemTextureAtlas::typeName() const
+{
+  return ResourceItemTextureAtlas::TypeName();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItemTextureAtlas::ResourceLibraryWindowHook(QMenu& menu, const QString& selectedType)
 {
   // allow adding only for group resources
@@ -84,5 +89,32 @@ void ResourceItemTextureAtlas::rebuild()
   m_image = QImage(size(), imageFormat());
 
   emit changed(this);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QSize ResourceItemTextureAtlas::size() const
+{
+  return m_size;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTextureAtlas::onInvalidate()
+{
+  m_thumbnail = QImage();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QList<NPropertyObject::PropertyDefinition> ResourceItemTextureAtlas::propertiesDefinition() const
+{
+  // call base class first
+  QList<PropertyDefinition> list = ResourceItemTexture::propertiesDefinition();
+  Q_ASSERT(0 < list.size());
+
+  PropertyDefinition* property = list[0].findChildProperty(ResourceItemTexture::tr("Width"));
+  Q_ASSERT(NULL != property);
+  property->setReadOnlyEnabled(false);
+
+  property = list[0].findChildProperty(ResourceItemTexture::tr("Height"));
+  Q_ASSERT(NULL != property);
+  property->setReadOnlyEnabled(false);
+
+  return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

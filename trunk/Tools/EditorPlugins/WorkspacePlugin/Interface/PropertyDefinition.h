@@ -46,8 +46,11 @@ class WORKSPACEPLUGIN_API PropertyDefinition
     const QString& name() const;
     /*! Returns property values. */
     const PropertyValueContainer& values() const;
+    PropertyValueContainer& values();
     /*! Returns type of property. */
     PropertyType type() const;
+    /*! Enables/disables read only property. */
+    void setReadOnlyEnabled(bool set);
     /*! Returns TRUE if property is read only. */
     bool isReadOnly() const;
     /*! Returns parent property definition. */
@@ -58,6 +61,11 @@ class WORKSPACEPLUGIN_API PropertyDefinition
      *  @return TRUE if successfully added. Otherwise, FALSE.
      */
     bool addChildProperty(const PropertyDefinition& property);
+    /*! Finds child property definition.
+     *  @param  name  Child property name to find.
+     *  @return Pointer to found property. NULL if not found.
+     */
+    PropertyDefinition* findChildProperty(const QString& name);
     /*! Returns list of child properties. */
     const QList<PropertyDefinition>& children() const;
     /*! Returns index of default (visible) value.

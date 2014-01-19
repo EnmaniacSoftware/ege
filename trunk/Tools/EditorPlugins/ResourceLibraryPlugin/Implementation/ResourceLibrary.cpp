@@ -166,6 +166,8 @@ ResourceLibraryDataModelProxy* ResourceLibrary::proxyModel() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibrary::onSelectionChanged(const QItemSelection& selectedItems, const QItemSelection& deselectedItems)
 {
+  Q_UNUSED(deselectedItems);
+
   PropertiesWindow* window = ObjectPool::Instance()->getObject<PropertiesWindow>();
   Q_ASSERT(NULL != window);
 

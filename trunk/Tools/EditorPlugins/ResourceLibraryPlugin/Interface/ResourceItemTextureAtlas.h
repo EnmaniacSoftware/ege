@@ -45,6 +45,14 @@ class ResourceItemTextureAtlas : public ResourceItemTexture
 
     ResourceItemTextureAtlas(const QString& name, const QString& configurationName, ResourceItem* parent);
 
+    /*! @see ResourceItem::typeName. */
+    QString typeName() const override;
+    /*! @see ResourceItemTexture::size. */
+    QSize size() const override;
+    /*! @see ResourceItemTexture::onInvalidate. */
+    void onInvalidate() override;
+    /*! @see ResourceItemTexture::propertiesDefinition. */
+    QList<NPropertyObject::PropertyDefinition> propertiesDefinition() const override;
     /*! Rebuilds atlas image. */
     void rebuild();
 

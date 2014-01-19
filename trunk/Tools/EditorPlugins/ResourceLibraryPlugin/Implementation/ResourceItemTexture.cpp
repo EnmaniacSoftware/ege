@@ -401,7 +401,7 @@ bool ResourceItemTexture::serialize(QXmlStreamWriter& stream) const
 bool ResourceItemTexture::unserialize(QXmlStreamReader& stream)
 {
   // retrieve data
-  // NOTE: assigning directory to disallow signaling
+  // NOTE: assigning directly to disallow signaling
   m_fullPath            = stream.attributes().value(KPathArrtibute).toString();
   m_type                = GetTextureTypeFromText(stream.attributes().value(KTextureTypeArrtibute).toString());
   m_minificationFilter  = GetTextureFilterFromText(stream.attributes().value(KMinFilterArrtibute).toString());

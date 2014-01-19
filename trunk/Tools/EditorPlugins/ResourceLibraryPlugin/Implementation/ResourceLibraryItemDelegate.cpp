@@ -12,9 +12,9 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static const int KIconOffset = 2;
+static const int KIconOffset              = 2;
 static const int KContainerTypeTextOffset = 5;
-static const int KThumbnailSize = 32;
+static const int KThumbnailSize           = 32;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryItemDelegate::ResourceLibraryItemDelegate(QObject* parent) : QStyledItemDelegate(parent),
                                                                             m_view(NULL)
@@ -47,6 +47,10 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
   else if (ResourceItemTexture::TypeName() == item->typeName())
   {
     paint(painter, option, reinterpret_cast<ResourceItemTexture*>(item));
+  }
+  else if (ResourceItemTextureAtlas::TypeName() == item->typeName())
+  {
+    paint(painter, option, reinterpret_cast<ResourceItemTextureAtlas*>(item));
   }
 
   // restore painter state to original

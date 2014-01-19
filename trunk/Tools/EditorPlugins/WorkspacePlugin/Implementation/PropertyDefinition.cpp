@@ -37,9 +37,19 @@ const PropertyValueContainer& PropertyDefinition::values() const
   return m_values;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PropertyValueContainer& PropertyDefinition::values()
+{
+  return m_values;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PropertyType PropertyDefinition::type() const
 {
   return m_type;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void PropertyDefinition::setReadOnlyEnabled(bool set)
+{
+  m_readOnly = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool PropertyDefinition::isReadOnly() const
@@ -78,6 +88,38 @@ bool PropertyDefinition::addChildProperty(const PropertyDefinition& property)
   }
 
   return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PropertyDefinition* PropertyDefinition::findChildProperty(const QString& name)
+{
+  PropertyDefinition* property = NULL;
+
+  // go thru all children
+  for (int i = 0; i < m_children.size(); ++i)
+  {
+    PropertyDefinition* child = &m_children[i];
+
+    // check if found
+    if (child->name() == name)
+    {
+      // found
+      property = child;
+    }
+    else
+    {
+      // investigate children of the child
+      property = child->findChildProperty(name);
+    }
+
+    // check if found
+    if (NULL != property)
+    {
+      // done
+      break;
+    }
+  }
+
+  return property;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const QList<PropertyDefinition>& PropertyDefinition::children() const

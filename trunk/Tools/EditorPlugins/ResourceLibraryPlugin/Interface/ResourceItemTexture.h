@@ -46,7 +46,7 @@ class ResourceItemTexture : public ResourceItem
 
   public:
 
-   ~ResourceItemTexture();
+   virtual ~ResourceItemTexture();
 
   public:
 
@@ -77,10 +77,12 @@ class ResourceItemTexture : public ResourceItem
 
     ResourceItemTexture(const QString& name, const QString& configurationName, ResourceItem* parent);
 
+    /*! @see ResourceItem::propertiesDefinition. */
+    virtual QList<NPropertyObject::PropertyDefinition> propertiesDefinition() const override;
     /*! Returns image format. */
     QImage::Format imageFormat() const;
     /*! Returns image size (in pixels). */
-    QSize size() const;
+    virtual QSize size() const;
 
   protected:
 
@@ -94,7 +96,7 @@ class ResourceItemTexture : public ResourceItem
   private slots:
 
     /*! Slot called when internal (lazy) data should be invalidated. */
-    void onInvalidate();
+    virtual void onInvalidate();
 
   private:
 
@@ -110,8 +112,6 @@ class ResourceItemTexture : public ResourceItem
     QVariant data(int columnIndex, int role) const override;
     /*! @see ResourceItem::setData. */
     bool setData(const QVariant &value, int role) override;
-    /*! @see ResourceItem::propertiesDefinition. */
-    QList<NPropertyObject::PropertyDefinition> propertiesDefinition() const override;
     /*! Adds minification filters definitions to given group.
      *  @param  group Definition group to which minification filters are to be added.
      */
