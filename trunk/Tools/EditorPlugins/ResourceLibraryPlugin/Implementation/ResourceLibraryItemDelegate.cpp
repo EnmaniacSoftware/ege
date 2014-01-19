@@ -2,6 +2,7 @@
 #include "ResourceItem.h"
 #include "ResourceItemGroup.h"
 #include "ResourceItemTexture.h"
+#include "ResourceItemTextureAtlas.h"
 #include "ResourceLibraryDataModel.h"
 #include <QPainter>
 #include <QTreeView>
@@ -84,6 +85,11 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
   painter->drawText(rect.intersected(option.rect), Qt::AlignBottom, item->fullPath());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemTextureAtlas* item) const
+{
+  paint(painter, option, qobject_cast<const ResourceItemTexture*>(item));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QModelIndex ResourceLibraryItemDelegate::convertModelIndex(QModelIndex index) const
 {
   const QAbstractProxyModel* proxyModel = qobject_cast<const QAbstractProxyModel*>(index.model());
@@ -100,6 +106,10 @@ QModelIndex ResourceLibraryItemDelegate::convertModelIndex(QModelIndex index) co
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QWidget* ResourceLibraryItemDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+  Q_UNUSED(parent);
+  Q_UNUSED(option);
+  Q_UNUSED(index);
+
   // no editing at this level is possible
   return NULL;
 }

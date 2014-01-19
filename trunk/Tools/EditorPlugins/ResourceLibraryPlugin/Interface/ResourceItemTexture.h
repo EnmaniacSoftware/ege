@@ -65,7 +65,7 @@ class ResourceItemTexture : public ResourceItem
     /*! Returns thumbnail image.
      *  @note Generates thumbnail image if required.
      */
-    const QImage& thumbnailImage() const;
+    virtual const QImage& thumbnailImage() const;
     /*! Sets full path including file name. */
     void setFullPath(const QString& path);
     /*! Returns full path to asset (including file name). */
@@ -73,14 +73,30 @@ class ResourceItemTexture : public ResourceItem
     /*! Sets texture type. */
     void setType(TextureType type);
 
+  protected:
+
+    ResourceItemTexture(const QString& name, const QString& configurationName, ResourceItem* parent);
+
+    /*! Returns image format. */
+    QImage::Format imageFormat() const;
+    /*! Returns image size (in pixels). */
+    QSize size() const;
+
+  protected:
+
+    /*! Thumbnail image. Only valid for specific types. */
+    mutable QImage m_thumbnail;
+    /*! Image format. */
+    mutable QImage::Format m_imageFormat;
+    /*! Size of the image (in pixels). */
+    mutable QSize m_size;
+
   private slots:
 
     /*! Slot called when internal (lazy) data should be invalidated. */
     void onInvalidate();
 
   private:
-
-    ResourceItemTexture(const QString& name, const QString& configurationName, ResourceItem* parent);
 
     /*! @see ResourceItem::typeName. */
     QString typeName() const override;
@@ -110,10 +126,6 @@ class ResourceItemTexture : public ResourceItem
     void addAddressingModeDefinitions(NPropertyObject::PropertyDefinition& group) const;
     /*! @see ResourceItem::update. */
     void update(const QString& name, const QVariant& value) override;
-    /*! Returns image size (in pixels). */
-    QSize size() const;
-    /*! Returns image format. */
-    QImage::Format imageFormat() const;
     /*! Returns image format in string format. */
     QString imageFormatAsText() const;
 
@@ -142,16 +154,10 @@ class ResourceItemTexture : public ResourceItem
 
   private:
 
-    /*! Thumbnail image. Only valid for specific types. */
-    mutable QImage m_thumbnail;
     /*! Full path to asset including file name. */
     QString m_fullPath;
     /*! Texture type. */
     TextureType m_type;
-    /*! Size of the image (in pixels). */
-    mutable QSize m_size;
-    /*! Image format. */
-    mutable QImage::Format m_imageFormat;
     /*! Magnification filter. */
     TextureFilterType m_magnificationFilter;
     /*! Minification filter. */

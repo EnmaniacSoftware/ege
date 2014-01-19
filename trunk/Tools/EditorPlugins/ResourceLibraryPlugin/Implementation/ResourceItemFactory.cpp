@@ -2,6 +2,7 @@
 #include "ResourceItem.h"
 #include "ResourceItemGroup.h"
 #include "ResourceItemTexture.h"
+#include "ResourceItemTextureAtlas.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct BuiltInResourceItem
@@ -18,6 +19,10 @@ static BuiltInResourceItem l_resourceItemsToRegister[] = {  { ResourceItemGroup:
                                                             { ResourceItemTexture::TypeName,
                                                               ResourceItemTexture::Create,
                                                               ResourceItemTexture::ResourceLibraryWindowHook
+                                                            },
+                                                            { ResourceItemTextureAtlas::TypeName,
+                                                              ResourceItemTextureAtlas::Create,
+                                                              ResourceItemTextureAtlas::ResourceLibraryWindowHook
                                                             }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

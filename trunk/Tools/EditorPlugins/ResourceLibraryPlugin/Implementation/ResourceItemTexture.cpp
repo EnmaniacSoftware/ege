@@ -650,7 +650,7 @@ QString ResourceItemTexture::imageFormatAsText() const
 
   switch (imageFormat())
   {
-    case QImage::Format_Invalid:                text = tr("Imvalid"); break;
+    case QImage::Format_Invalid:                text = tr("Invalid"); break;
     case QImage::Format_Indexed8:               text = tr("Indexed 8-bit"); break;
     case QImage::Format_RGB32:                  text = tr("32-bit RGB"); break;
     case QImage::Format_ARGB32:                 text = tr("32-bit ARGB"); break;

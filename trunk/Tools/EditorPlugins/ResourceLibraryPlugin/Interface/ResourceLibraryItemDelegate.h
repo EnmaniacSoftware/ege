@@ -11,6 +11,7 @@
 class ResourceItem;
 class ResourceItemGroup;
 class ResourceItemTexture;
+class ResourceItemTextureAtlas;
 class QAbstractItemView;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RESOUCELIBRARYPLUGIN_API ResourceLibraryItemDelegate : public QStyledItemDelegate
@@ -36,10 +37,12 @@ class RESOUCELIBRARYPLUGIN_API ResourceLibraryItemDelegate : public QStyledItemD
     ///*! @see QStyledItemDelegate::updateEditorGeometry. */
     //void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
-    /*! Paints container type. */
+    /*! Paints group type resource item. */
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemGroup* item) const;
-    /*! Paints image type. */
+    /*! Paints texture type resource item. */
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemTexture* item) const;
+    /*! Paints texture atlas type resource item. */
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const ResourceItemTextureAtlas* item) const;
 
     /*! Converts given model index into underlying model's index. */
     QModelIndex convertModelIndex(QModelIndex index) const;

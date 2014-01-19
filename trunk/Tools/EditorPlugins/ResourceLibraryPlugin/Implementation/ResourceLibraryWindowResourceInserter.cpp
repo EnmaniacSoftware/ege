@@ -4,6 +4,7 @@
 #include "ResourceItemFactory.h"
 #include "ResourceItemGroup.h"
 #include "ResourceItemTexture.h"
+#include "ResourceItemTextureAtlas.h"
 #include "ResourceLibraryDataModel.h"
 #include <MainWindow.h>
 #include <ObjectPool.h>
@@ -40,8 +41,6 @@ void ResourceLibraryWindowResourceInserter::onAddTexture2D()
   Configuration* configuration = ObjectPool::Instance()->getObject<Configuration>();
   Q_ASSERT(NULL != configuration);
 
-  QModelIndex index = m_window->selectedIndexes().first();
-
   // prepare filters
   QString filters = tr("Images");
   filters += QLatin1String(" (*.png *.jpg)");
@@ -55,7 +54,6 @@ void ResourceLibraryWindowResourceInserter::onAddTexture2D()
     {
       QString item = QDir::fromNativeSeparators(list[i]);
       QString name = item.section("/", -1);
-      QString path = item.section("/", 0, -2);
 
       ResourceItemTexture* newItem = static_cast<ResourceItemTexture*>(m_factory->createItem(ResourceItemTexture::TypeName(), name, configuration->current()));
       Q_ASSERT(NULL != newItem);
@@ -75,20 +73,34 @@ void ResourceLibraryWindowResourceInserter::onAddTexture2D()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceLibraryWindowResourceInserter::onShowTextureProperties()
+void ResourceLibraryWindowResourceInserter::onAddTextureAtlas()
 {
-  MainWindow* mainWindow = ObjectPool::Instance()->getObject<MainWindow>();
-  Q_ASSERT(NULL != mainWindow);
+  Configuration* configuration = ObjectPool::Instance()->getObject<Configuration>();
+  Q_ASSERT(NULL != configuration);
 
-  QModelIndex index = m_window->selectedIndexes().first();
+  // prepare filters
+  QString filters = tr("Images");
+  filters += QLatin1String(" (*.png)");
 
-//  QWidget* widget = new QWidget;
-//  Ui_TexturePropertiesWindow* ui = new Ui_TexturePropertiesWindow();
+  // open file selection dialog
+  QString fileName = QFileDialog::getSaveFileName(m_window, tr("Choose location and name for texture atlas image"), QString(), filters);
+  if ( ! fileName.isEmpty())
+  {
+    QString name = fileName.section("/", -1);
 
-//  ui->setupUi(widget);
+    ResourceItemTextureAtlas* newItem = static_cast<ResourceItemTextureAtlas*>(m_factory->createItem(ResourceItemTextureAtlas::TypeName(), name,
+                                                                                                     configuration->current()));
+    Q_ASSERT(NULL != newItem);
 
-  // show settings window
- // mainWindow->addChildWindow(widget);
+    if (NULL != newItem)
+    {
+      // set path
+      newItem->setFullPath(fileName);
+
+      // add to model
+      m_library->insertItem(newItem);
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceLibraryWindowResourceInserter::generateGroupName() const
