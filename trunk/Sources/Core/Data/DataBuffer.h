@@ -15,7 +15,8 @@ class DataBuffer : public Object, public ISerializable
   public:
 
     DataBuffer();
-    /* Wraps around given data pointer and size. Resulting buffer is not mutable */
+    DataBuffer(const DataBuffer& other);
+    /*! Wraps around given data pointer and size. Resulting buffer is not mutable */
     DataBuffer(void* data, s64 size);
     virtual ~DataBuffer();
 

@@ -19,7 +19,28 @@ DataBuffer::DataBuffer() : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER),
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Wraps around given data pointer and size. Resulting buffer is not mutable */
+DataBuffer::DataBuffer(const DataBuffer& other) : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER),
+                                                  m_size(0), 
+                                                  m_capacity(0), 
+                                                  m_data(NULL), 
+                                                  m_readOffset(0), 
+                                                  m_writeOffset(0), 
+                                                  m_mutable(true),
+                                                  m_byteOrdering(ELittleEndian)
+{
+  // allocate space for data
+  if (EGE_SUCCESS == setSize(other.size()))
+  {
+    // copy data
+    EGE_MEMCPY(m_data, other.m_data, static_cast<size_t>(other.size()));
+
+    // copy rest of data
+    m_readOffset    = other.readOffset();
+    m_writeOffset   = other.writeOffset();
+    m_byteOrdering  = other.byteOrdering();
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DataBuffer::DataBuffer(void* data, s64 size) : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER), 
                                                m_size(size), 
                                                m_capacity(size), 
