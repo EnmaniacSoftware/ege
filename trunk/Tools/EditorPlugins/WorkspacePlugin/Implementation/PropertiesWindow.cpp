@@ -263,6 +263,13 @@ QtProperty* PropertiesWindow::createProperty(const PropertyType& type, const QSt
       Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<QString>());
 
       m_filePathManager->setFilter(property, valuesForCurrentIndex.at(0).toString());
+
+      // get values from index 2 (file must exist)
+      valuesForCurrentIndex = values.values(2);
+      Q_ASSERT(1 == valuesForCurrentIndex.size());
+      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<bool>());
+
+      m_filePathManager->setMustExist(property, valuesForCurrentIndex.at(0).toBool());
       break;
 
     default:

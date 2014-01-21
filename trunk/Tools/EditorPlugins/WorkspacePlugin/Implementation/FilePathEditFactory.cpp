@@ -28,6 +28,7 @@ QWidget* FilePathEditFactory::createEditor(FilePathPropertyManager* manager, QtP
   // setup editor
   editor->setPath(manager->value(property));
   editor->setFilters(manager->filter(property));
+  editor->setMustExist(manager->mustExist(property));
 
   // add to pool
   m_editorToProperty[editor]    = property;

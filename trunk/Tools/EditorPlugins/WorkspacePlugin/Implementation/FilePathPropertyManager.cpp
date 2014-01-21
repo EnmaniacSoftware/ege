@@ -50,6 +50,24 @@ void FilePathPropertyManager::setFilter(QtProperty* property, const QString& val
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void FilePathPropertyManager::setMustExist(QtProperty* property, bool value)
+{
+  // check if property is part of this manager
+  if (m_values.contains(property))
+  {
+    Data data = m_values[property];
+
+    if (data.mustExist != value)
+    {
+      data.mustExist = value;
+      m_values[property] = data;
+
+      // notify
+      emit propertyChanged(property);
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString FilePathPropertyManager::value(const QtProperty* property) const
 {
   QString val;
@@ -69,6 +87,18 @@ QString FilePathPropertyManager::filter(const QtProperty* property) const
   if (m_values.contains(property))
   {
     val = m_values[property].filter;
+  }
+
+  return val;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool FilePathPropertyManager::mustExist(const QtProperty* property) const
+{
+  bool val = true;
+
+  if (m_values.contains(property))
+  {
+    val = m_values[property].mustExist;
   }
 
   return val;

@@ -37,6 +37,12 @@ class FilePathPropertyManager : public QtAbstractPropertyManager
      *  @param  value     Value to be set (file filter).
      */
     void setFilter(QtProperty* property, const QString& value);
+    /*! Sets existance value for a given property.
+     *  @param  property  Property for which value is to be set.
+     *  @param  value     Value to be set (whether file should exist).
+     *  @note This value is for use of editor.
+     */
+    void setMustExist(QtProperty* property, bool value);
 
   public:
 
@@ -44,6 +50,8 @@ class FilePathPropertyManager : public QtAbstractPropertyManager
     QString value(const QtProperty* property) const;
     /*! Returns filter of the given property. */
     QString filter(const QtProperty* property) const;
+    /*! Returns existance flag for a given property. */
+    bool mustExist(const QtProperty* property) const;
 
   protected:
 
@@ -61,6 +69,7 @@ class FilePathPropertyManager : public QtAbstractPropertyManager
     {
       QString value;      /*!< Value of the property aka file path. */
       QString filter;     /*!< (File) Filter of the property. */
+      bool mustExist;     /*!< Existance flag for editor use. */
     };
 
     /*! Owned properties and their accociated data. */

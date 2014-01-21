@@ -473,22 +473,23 @@ QList<PropertyDefinition> ResourceItemTexture::propertiesDefinition() const
 
   PropertyValueContainer values;
 
-  // create general group
-  PropertyDefinition generalGroup(tr("General"), NPropertyObject::EGroup, values);
+  // create info group
+  PropertyDefinition infoGroup(tr("Info"), NPropertyObject::EGroup, values);
 
   // add name, location, width, height and bpp
   values.insert(0, fullPath());
   values.insert(1, tr("Images") + QLatin1String(" (*.png *.jpg)"));
-  generalGroup.addChildProperty(PropertyDefinition(KPropertyNameLocation, NPropertyObject::EFilePath, values, 0));
+  values.insert(2, true);
+  infoGroup.addChildProperty(PropertyDefinition(KPropertyNameLocation, NPropertyObject::EFilePath, values, 0));
   values.clear();
   values.insert(0, QString("%1 px").arg(size().width()));
-  generalGroup.addChildProperty(PropertyDefinition(tr("Width"), NPropertyObject::EString, values, 0, true));
+  infoGroup.addChildProperty(PropertyDefinition(tr("Width"), NPropertyObject::EString, values, 0, true));
   values.clear();
   values.insert(0, QString("%1 px").arg(size().height()));
-  generalGroup.addChildProperty(PropertyDefinition(tr("Height"), NPropertyObject::EString, values, 0, true));
+  infoGroup.addChildProperty(PropertyDefinition(tr("Height"), NPropertyObject::EString, values, 0, true));
   values.clear();
   values.insert(0, imageFormatAsText());
-  generalGroup.addChildProperty(PropertyDefinition(tr("Depth"), NPropertyObject::EString, values, 0, true));
+  infoGroup.addChildProperty(PropertyDefinition(tr("Depth"), NPropertyObject::EString, values, 0, true));
 
   // create filtering group
   values.clear();
@@ -504,7 +505,7 @@ QList<PropertyDefinition> ResourceItemTexture::propertiesDefinition() const
   addAddressingModeDefinitions(addressingGroup);
 
   // add groups to list
-  list.push_back(generalGroup);
+  list.push_back(infoGroup);
   list.push_back(filteringGroup);
   list.push_back(addressingGroup);
 

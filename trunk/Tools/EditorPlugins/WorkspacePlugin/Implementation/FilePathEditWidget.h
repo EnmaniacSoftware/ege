@@ -33,6 +33,8 @@ class FilePathEditWidget : public QWidget
     void setPath(const QString& path);
     /*! Sets file filters. */
     void setFilters(const QString& filters);
+    /*! Set existance flag. */
+    void setMustExist(bool set);
 
   private slots:
 
@@ -47,6 +49,8 @@ class FilePathEditWidget : public QWidget
     QString m_filters;
     /*! Browse window title. */
     QString m_title;
+    /*! Existance flag. */
+    bool m_mustExist;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
