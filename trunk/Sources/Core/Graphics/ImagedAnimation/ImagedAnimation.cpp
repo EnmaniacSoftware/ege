@@ -250,10 +250,14 @@ void ImagedAnimation::addForRendering(IRenderer* renderer, const Matrix4f& trans
       ColorTransform colorTransform(Color::NONE, Color(1.0f, 1.0f, 1.0f, m_alpha));
       childData.renderData->material()->setDiffuseColorTransformation(colorTransform);
 
+ /*     if (name() == "startClassicHealingCharmEffect" && (count == 0))
+      {
+        egeDebug(KImagedAnimationDebugName) << transform.translation().x << childData.baseFrameMatrix.translation().x; 
+      }*/
+
       renderer->addForRendering(childData.renderData, transform * childData.baseFrameMatrix);
 
       ++count;
-      //  EGE_PRINT("%f %f", objectData.baseFrameMatrix.translation().x, objectData.baseFrameMatrix.translation().y);
     }
   }
 }
@@ -351,6 +355,12 @@ void ImagedAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
 
       // apply alignment
       Vector4f translation = childData.baseFrameMatrix.translation();
+
+      //if (name() == "startClassicHealingCharmEffect")
+      //{
+      //  int a = 1;
+      //}
+
       Math::Align(&translation, &m_displaySize, ALIGN_TOP_LEFT, m_baseAlignment);
       childData.baseFrameMatrix.setTranslation(translation.x, translation.y, translation.z);
   
