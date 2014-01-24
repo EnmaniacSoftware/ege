@@ -256,6 +256,7 @@
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffect.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeOut.h" />
+    <ClInclude Include="..\..\Sources\Core\Cache\Interface\CachedObject.h" />
     <ClInclude Include="..\..\Sources\Core\Component\Interface\Component.h" />
     <ClInclude Include="..\..\Sources\Core\Component\Interface\ComponentHost.h" />
     <ClInclude Include="..\..\Sources\Core\Component\Physics\Box2D\PhysicsComponentBox2D_p.h" />
@@ -409,6 +410,7 @@
     <ClInclude Include="..\..\Sources\EGEAtomic.h" />
     <ClInclude Include="..\..\Sources\EGEAudio.h" />
     <ClInclude Include="..\..\Sources\EGEByteOrder.h" />
+    <ClInclude Include="..\..\Sources\EGECachedObject.h" />
     <ClInclude Include="..\..\Sources\EGECipher.h" />
     <ClInclude Include="..\..\Sources\EGECircle.h" />
     <ClInclude Include="..\..\Sources\EGEColorTransform.h" />

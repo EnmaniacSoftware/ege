@@ -277,6 +277,15 @@
     <Filter Include="Core\Resource\Interface">
       <UniqueIdentifier>{fcc5c01a-6698-481a-8ba7-0434c6586360}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Cache">
+      <UniqueIdentifier>{a1cda965-9350-4e3b-a130-2a56bd2e1b11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Cache\Implementation">
+      <UniqueIdentifier>{cb3c8fac-229c-4afc-ab22-023364cb00c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Cache\Interface">
+      <UniqueIdentifier>{97a40e79-9887-4c31-968e-16a684f98bde}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
@@ -1728,6 +1737,10 @@
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\DefaultGroup.h">
       <Filter>Core\Resource\Implementation</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Cache\Interface\CachedObject.h">
+      <Filter>Core\Cache\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGECachedObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">
