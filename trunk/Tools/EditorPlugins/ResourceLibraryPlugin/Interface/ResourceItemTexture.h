@@ -93,6 +93,13 @@ class ResourceItemTexture : public ResourceItem
     /*! Size of the image (in pixels). */
     mutable QSize m_size;
 
+  protected:
+
+    /*! Minimal size of texture dimension (in pixels). */
+    static const int KMinimalSize = 1;
+    /*! Maximal size of texture dimension (in pixels). */
+    static const int KMaximalSize = 4096;
+
   private slots:
 
     /*! Slot called when internal (lazy) data should be invalidated. */

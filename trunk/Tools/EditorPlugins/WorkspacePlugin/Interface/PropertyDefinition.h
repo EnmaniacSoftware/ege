@@ -7,7 +7,6 @@
 
 #include <QList>
 #include <QString>
-#include <QMultiHash>
 #include <QVariant>
 #include "WorkspacePlugin_global.h"
 
@@ -20,19 +19,15 @@ enum PropertyType
   EGroup = 0,
   EString,
   EBool,
-  EInt,
+  EInt,             /*!< Data triplet: [0: int:value], [1: int:minValue], [2: int:maxValue]. */
   ESize,
   ERect,
-  EEnum,
-  EFilePath         /*!< Data in triples: [index: QString:Path], [index+1: QString:FileFilter], [index+2: bool:FileMustExist]. */
+  EEnum,            /*!< Data in pairs: [n: QString:text], [n+1: QIcon:icon]. */
+  EFilePath         /*!< Data triplet: [0: QString:Path], [1: QString:FileFilter], [2: bool:FileMustExist]. */
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Container for multi value propery types.
- *  Key value corresponds to index of value.
- *  Value corresponds to actual value for a given index.
- *  @note It is valid for an index to have mutliple values ie. text and icon.
- */
-typedef QMultiHash<int, QVariant> PropertyValueContainer;
+/*! Container for multi value propery types. */
+typedef QList<QVariant> PropertyValueContainer;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class WORKSPACEPLUGIN_API PropertyDefinition
 {

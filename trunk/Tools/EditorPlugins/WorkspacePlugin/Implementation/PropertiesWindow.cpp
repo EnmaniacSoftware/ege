@@ -155,8 +155,6 @@ QtProperty* PropertiesWindow::createProperty(const PropertyType& type, const QSt
 {
   QtProperty* property = NULL;
 
-  QVariantList valuesForCurrentIndex;
-
   // create according to type
   switch (type)
   {
@@ -167,80 +165,76 @@ QtProperty* PropertiesWindow::createProperty(const PropertyType& type, const QSt
 
     case NPropertyObject::EBool:
 
-      valuesForCurrentIndex = values.values(0);
-      Q_ASSERT(1 == valuesForCurrentIndex.size());
-      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<bool>());
+      Q_ASSERT(1 == values.size());
+      Q_ASSERT(values.at(0).canConvert<bool>());
 
       property = m_boolManager->addProperty(name);
-      m_boolManager->setValue(property, valuesForCurrentIndex.at(0).toBool());
+
+      m_boolManager->setValue(property, values.at(0).toBool());
       break;
 
     case NPropertyObject::EInt:
 
-      valuesForCurrentIndex = values.values(0);
-      Q_ASSERT(1 == valuesForCurrentIndex.size());
-      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<int>());
+      Q_ASSERT(3 == values.size());
+      Q_ASSERT(values.at(0).canConvert<int>());
+      Q_ASSERT(values.at(1).canConvert<int>());
+      Q_ASSERT(values.at(2).canConvert<int>());
 
       property = m_intManager->addProperty(name);
-      m_intManager->setValue(property, valuesForCurrentIndex.at(0).toInt());
+
+      m_intManager->setValue(property, values.at(0).toInt());
+      m_intManager->setMinimum(property, values.at(1).toInt());
+      m_intManager->setMaximum(property, values.at(2).toInt());
       break;
 
     case NPropertyObject::ERect:
 
-      valuesForCurrentIndex = values.values(0);
-      Q_ASSERT(1 == valuesForCurrentIndex.size());
-      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<QRect>());
+      Q_ASSERT(1 == values.size());
+      Q_ASSERT(values.at(0).canConvert<QRect>());
 
       property = m_rectManager->addProperty(name);
-      m_rectManager->setValue(property, valuesForCurrentIndex.at(0).toRect());
+
+      m_rectManager->setValue(property, values.at(0).toRect());
       break;
 
     case NPropertyObject::ESize:
 
-      valuesForCurrentIndex = values.values(0);
-      Q_ASSERT(1 == valuesForCurrentIndex.size());
-      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<QSize>());
+      Q_ASSERT(1 == values.size());
+      Q_ASSERT(values.at(0).canConvert<QSize>());
 
       property = m_sizeManager->addProperty(name);
-      m_sizeManager->setValue(property, valuesForCurrentIndex.at(0).toSize());
+
+      m_sizeManager->setValue(property, values.at(0).toSize());
       break;
 
     case NPropertyObject::EString:
 
-      valuesForCurrentIndex = values.values(0);
-      Q_ASSERT(1 == valuesForCurrentIndex.size());
-      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<QString>());
+      Q_ASSERT(1 == values.size());
+      Q_ASSERT(values.at(0).canConvert<QString>());
 
       property = m_stringManager->addProperty(name);
-      m_stringManager->setValue(property, valuesForCurrentIndex.at(0).toString());
+
+      m_stringManager->setValue(property, values.at(0).toString());
       break;
 
     case NPropertyObject::EEnum:
     {
+      Q_ASSERT(0 == (values.size() & 0x1));
+
       // decompose values into names (strings) ans icons
       QMap<int, QIcon> enumIcons;
       QStringList enumNames;
-      for (int i = 0; values.contains(i); ++i)
+      for (int i = 0; i < values.size(); i += 2)
       {
-        // get all values for a current index
-        valuesForCurrentIndex = values.values(i);
+        Q_ASSERT(values.at(i).canConvert<QString>());
+        Q_ASSERT(values.at(i + 1).canConvert<QIcon>());
 
-        // go thru all values and determine acceptable values
-        foreach (const QVariant& value, valuesForCurrentIndex)
-        {
-          // check if value is a string
-          if (value.canConvert<QString>())
-          {
-            enumNames << value.toString();
-          }
-          else if (value.canConvert<QIcon>())
-          {
-            enumIcons[i] = value.value<QIcon>();
-          }
-        }
+        enumNames << values[i].toString();
+        enumIcons[i / 2] = values[i + 1].value<QIcon>();
       }
 
       property = m_enumManager->addProperty(name);
+
       m_enumManager->setEnumNames(property, enumNames);
       m_enumManager->setEnumIcons(property, enumIcons);
       m_enumManager->setValue(property, defaultValue);
@@ -249,27 +243,16 @@ QtProperty* PropertiesWindow::createProperty(const PropertyType& type, const QSt
 
     case NPropertyObject::EFilePath:
 
-      // get values from index 0 (path)
-      valuesForCurrentIndex = values.values(0);
-      Q_ASSERT(1 == valuesForCurrentIndex.size());
-      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<QString>());
+      Q_ASSERT(3 == values.size());
+      Q_ASSERT(values.at(0).canConvert<QString>());
+      Q_ASSERT(values.at(1).canConvert<QString>());
+      Q_ASSERT(values.at(2).canConvert<bool>());
 
       property = m_filePathManager->addProperty(name);
-      m_filePathManager->setValue(property, valuesForCurrentIndex.at(0).toString());
 
-      // get values from index 1 (file filter)
-      valuesForCurrentIndex = values.values(1);
-      Q_ASSERT(1 == valuesForCurrentIndex.size());
-      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<QString>());
-
-      m_filePathManager->setFilter(property, valuesForCurrentIndex.at(0).toString());
-
-      // get values from index 2 (file must exist)
-      valuesForCurrentIndex = values.values(2);
-      Q_ASSERT(1 == valuesForCurrentIndex.size());
-      Q_ASSERT(valuesForCurrentIndex.at(0).canConvert<bool>());
-
-      m_filePathManager->setMustExist(property, valuesForCurrentIndex.at(0).toBool());
+      m_filePathManager->setValue(property, values.at(0).toString());
+      m_filePathManager->setFilter(property, values.at(1).toString());
+      m_filePathManager->setMustExist(property, values.at(2).toBool());
       break;
 
     default:

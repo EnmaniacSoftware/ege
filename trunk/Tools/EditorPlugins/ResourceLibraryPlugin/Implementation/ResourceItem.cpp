@@ -193,7 +193,7 @@ QList<PropertyDefinition> ResourceItem::propertiesDefinition() const
   PropertyDefinition generalGroup(tr("General"), NPropertyObject::EGroup, values);
 
   // add name
-  values.insert(0, name());
+  values << name();
   PropertyDefinition generalName(KGeneralGroupName, NPropertyObject::EString, values);
   generalGroup.addChildProperty(generalName);
 

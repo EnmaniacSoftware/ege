@@ -107,13 +107,22 @@ QList<NPropertyObject::PropertyDefinition> ResourceItemTextureAtlas::propertiesD
   QList<PropertyDefinition> list = ResourceItemTexture::propertiesDefinition();
   Q_ASSERT(0 < list.size());
 
-  PropertyDefinition* property = list[0].findChildProperty(ResourceItemTexture::tr("Width"));
-  Q_ASSERT(NULL != property);
-  property->setReadOnlyEnabled(false);
+  // update properties of base class
+  for (int i = 0; i < list.size(); ++i)
+  {
+    PropertyDefinition& definition = list[i];
 
-  property = list[0].findChildProperty(ResourceItemTexture::tr("Height"));
-  Q_ASSERT(NULL != property);
-  property->setReadOnlyEnabled(false);
+    if (definition.name() == ResourceItemTexture::tr("Info"))
+    {
+      PropertyDefinition* property = definition.findChildProperty(ResourceItemTexture::tr("Width"));
+      Q_ASSERT(NULL != property);
+      property->setReadOnlyEnabled(false);
+
+      property = definition.findChildProperty(ResourceItemTexture::tr("Height"));
+      Q_ASSERT(NULL != property);
+      property->setReadOnlyEnabled(false);
+    }
+  }
 
   return list;
 }

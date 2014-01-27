@@ -2,6 +2,7 @@
 #include "ResourceLibraryDataModel.h"
 #include "ResourceItemGroup.h"
 #include "ResourceLibraryWindowResourceInserter.h"
+#include <PropertyValueHelper.h>
 #include <FileSystemUtils.h>
 #include <ObjectPool.h>
 #include <QImageReader>
@@ -11,6 +12,7 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 using NPropertyObject::PropertyDefinition;
 using NPropertyObject::PropertyValueContainer;
+using NPropertyObject::PropertyValueHelper;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const QString KPathArrtibute           = "path";
 static const QString KTextureTypeArrtibute    = "texture-type";
@@ -477,18 +479,14 @@ QList<PropertyDefinition> ResourceItemTexture::propertiesDefinition() const
   PropertyDefinition infoGroup(tr("Info"), NPropertyObject::EGroup, values);
 
   // add name, location, width, height and bpp
-  values.insert(0, fullPath());
-  values.insert(1, tr("Images") + QLatin1String(" (*.png *.jpg)"));
-  values.insert(2, true);
+  values = PropertyValueHelper::CreateFilePathValue(fullPath(), tr("Images") + QLatin1String(" (*.png *.jpg)"), true);
   infoGroup.addChildProperty(PropertyDefinition(KPropertyNameLocation, NPropertyObject::EFilePath, values, 0));
+  values = PropertyValueHelper::CreateIntegerValue(size().width(), KMinimalSize, KMaximalSize);
+  infoGroup.addChildProperty(PropertyDefinition(tr("Width"), NPropertyObject::EInt, values, 0, true));
+  values = PropertyValueHelper::CreateIntegerValue(size().height(), KMinimalSize, KMaximalSize);
+  infoGroup.addChildProperty(PropertyDefinition(tr("Height"), NPropertyObject::EInt, values, 0, true));
   values.clear();
-  values.insert(0, QString("%1 px").arg(size().width()));
-  infoGroup.addChildProperty(PropertyDefinition(tr("Width"), NPropertyObject::EString, values, 0, true));
-  values.clear();
-  values.insert(0, QString("%1 px").arg(size().height()));
-  infoGroup.addChildProperty(PropertyDefinition(tr("Height"), NPropertyObject::EString, values, 0, true));
-  values.clear();
-  values.insert(0, imageFormatAsText());
+  values << imageFormatAsText();
   infoGroup.addChildProperty(PropertyDefinition(tr("Depth"), NPropertyObject::EString, values, 0, true));
 
   // create filtering group
@@ -521,7 +519,8 @@ void ResourceItemTexture::addMagnificationFilterDefinitions(NPropertyObject::Pro
   {
     const TextureFilterTypeMap& currentFilter = l_textureFilterTypeMappings[i];
 
-    values.insert(i, currentFilter.displayName);
+    values << currentFilter.displayName;
+    values << QIcon();
   }
 
   // add all into main group
@@ -538,7 +537,8 @@ void ResourceItemTexture::addAddressingModeDefinitions(NPropertyObject::Property
   {
     const TextureAddressingModeTypeMap& currentMode = l_textureAddressingModeTypeMappings[i];
 
-    values.insert(i, currentMode.displayName);
+    values << currentMode.displayName;
+    values << QIcon();
   }
 
   // add all into main group
@@ -555,7 +555,8 @@ void ResourceItemTexture::addMinificationFilterDefinitions(NPropertyObject::Prop
   {
     const TextureFilterTypeMap& currentFilter = l_textureFilterTypeMappings[i];
 
-    values.insert(i, currentFilter.displayName);
+    values << currentFilter.displayName;
+    values << QIcon();
   }
 
   // create minification filter group
@@ -569,7 +570,8 @@ void ResourceItemTexture::addMinificationFilterDefinitions(NPropertyObject::Prop
   {
     const TextureMipMappingFilterTypeMap& currentFilter = l_textureMipMappingFilterTypeMappings[i];
 
-    values.insert(i, currentFilter.displayName);
+    values << currentFilter.displayName;
+    values << QIcon();
   }
 
   // add mip mapping filter values as sub property of minification filter group
