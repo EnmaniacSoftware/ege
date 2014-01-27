@@ -79,6 +79,8 @@ class ResourceItemTexture : public ResourceItem
 
     /*! @see ResourceItem::propertiesDefinition. */
     virtual QList<NPropertyObject::PropertyDefinition> propertiesDefinition() const override;
+    /*! @see ResourceItem::update. */
+    virtual void update(const QString& name, const QVariant& value) override;
     /*! Returns image format. */
     QImage::Format imageFormat() const;
     /*! Returns image size (in pixels). */
@@ -99,6 +101,22 @@ class ResourceItemTexture : public ResourceItem
     static const int KMinimalSize = 1;
     /*! Maximal size of texture dimension (in pixels). */
     static const int KMaximalSize = 4096;
+    /*! Minifying filtering property name. */
+    static const QString KPropertyNameMinifyingFiltering;
+    /*! Magnifying filtering property name. */
+    static const QString KPropertyNameMagnifyingFiltering;
+    /*! Mip maping filtering property name. */
+    static const QString KPropertyNameMipMappingFiltering;
+    /*! Addressing mode S property name. */
+    static const QString KPropertyNameAddressingModeS;
+    /*! Addressing mode T property name. */
+    static const QString KPropertyNameAddressingModeT;
+    /*! Location property name. */
+    static const QString KPropertyNameLocation;
+    /*! Width property name. */
+    static const QString KPropertyNameWidth;
+    /*! Height property name. */
+    static const QString KPropertyNameHeight;
 
   private slots:
 
@@ -131,8 +149,6 @@ class ResourceItemTexture : public ResourceItem
      *  @param  group Definition group to which addressing modes are to be added.
      */
     void addAddressingModeDefinitions(NPropertyObject::PropertyDefinition& group) const;
-    /*! @see ResourceItem::update. */
-    void update(const QString& name, const QVariant& value) override;
     /*! Returns image format in string format. */
     QString imageFormatAsText() const;
 

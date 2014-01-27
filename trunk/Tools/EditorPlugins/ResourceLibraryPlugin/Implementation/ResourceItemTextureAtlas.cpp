@@ -2,6 +2,7 @@
 #include "ResourceLibraryDataModel.h"
 #include "ResourceItemGroup.h"
 #include "ResourceLibraryWindowResourceInserter.h"
+#include <PropertyValueHelper.h>
 #include <ObjectPool.h>
 #include <QDebug>
 #include <QMenu>
@@ -9,6 +10,7 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 using NPropertyObject::PropertyDefinition;
 using NPropertyObject::PropertyValueContainer;
+using NPropertyObject::PropertyValueHelper;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemTextureAtlas::ResourceItemTextureAtlas(const QString& name, const QString& configurationName, ResourceItem* parent)
   : ResourceItemTexture(name, configurationName, parent)
@@ -107,6 +109,8 @@ QList<NPropertyObject::PropertyDefinition> ResourceItemTextureAtlas::propertiesD
   QList<PropertyDefinition> list = ResourceItemTexture::propertiesDefinition();
   Q_ASSERT(0 < list.size());
 
+  PropertyValueContainer values;
+
   // update properties of base class
   for (int i = 0; i < list.size(); ++i)
   {
@@ -114,16 +118,49 @@ QList<NPropertyObject::PropertyDefinition> ResourceItemTextureAtlas::propertiesD
 
     if (definition.name() == ResourceItemTexture::tr("Info"))
     {
-      PropertyDefinition* property = definition.findChildProperty(ResourceItemTexture::tr("Width"));
-      Q_ASSERT(NULL != property);
-      property->setReadOnlyEnabled(false);
+      // replace WIDTH property with non-read only version
+      PropertyDefinition property = definition.findChildProperty(KPropertyNameWidth);
+      Q_ASSERT(property.isValid());
 
-      property = definition.findChildProperty(ResourceItemTexture::tr("Height"));
-      Q_ASSERT(NULL != property);
-      property->setReadOnlyEnabled(false);
+      property = PropertyDefinition(property.name(), property.type(), property.values(), property.defaultValue(), false);
+      definition.replaceChildProperty(property.name(), property);
+
+      // replace HEIGHT property with non-read only version
+      property = definition.findChildProperty(KPropertyNameHeight);
+      Q_ASSERT(property.isValid());
+
+      property = PropertyDefinition(property.name(), property.type(), property.values(), property.defaultValue(), false);
+      definition.replaceChildProperty(property.name(), property);
+
+      // replace LOCATION property with non-must exist version
+      property = definition.findChildProperty(KPropertyNameLocation);
+      Q_ASSERT(property.isValid());
+
+      values = PropertyValueHelper::CreateFilePathValue(fullPath(), tr("Images") + QString(" (*.png)"), false);
+      property = PropertyDefinition(property.name(), property.type(), values, property.defaultValue(), false);
+      definition.replaceChildProperty(property.name(), property);
     }
   }
 
   return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTextureAtlas::update(const QString& name, const QVariant& value)
+{
+  if (KPropertyNameWidth == name)
+  {
+    Q_ASSERT(value.canConvert<int>());
+    setSize(QSize(value.toInt(), size().height()));
+  }
+  else if (KPropertyNameHeight == name)
+  {
+    Q_ASSERT(value.canConvert<int>());
+    setSize(QSize(size().width(), value.toInt()));
+  }
+  else
+  {
+    // call base class
+    ResourceItemTexture::update(name, value);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -16,7 +16,8 @@ namespace NPropertyObject
 /*! Available property types. */
 enum PropertyType
 {
-  EGroup = 0,
+  EInvalid = -1,
+  EGroup,
   EString,
   EBool,
   EInt,             /*!< Data triplet: [0: int:value], [1: int:minValue], [2: int:maxValue]. */
@@ -37,30 +38,35 @@ class WORKSPACEPLUGIN_API PropertyDefinition
     PropertyDefinition(const PropertyDefinition& other);
    ~PropertyDefinition();
 
+    /*! Returns TRUE if property is valid. */
+    bool isValid() const;
+
     /*! Returns property name. */
     const QString& name() const;
     /*! Returns property values. */
     const PropertyValueContainer& values() const;
-    PropertyValueContainer& values();
     /*! Returns type of property. */
     PropertyType type() const;
-    /*! Enables/disables read only property. */
-    void setReadOnlyEnabled(bool set);
     /*! Returns TRUE if property is read only. */
     bool isReadOnly() const;
-    /*! Returns parent property definition. */
-    PropertyDefinition* parent() const;
 
     /*! Adds child property.
      *  @param  property  Property definition to be added to child list.
-     *  @return TRUE if successfully added. Otherwise, FALSE.
+     *  @return TRUE on success.
      */
     bool addChildProperty(const PropertyDefinition& property);
+    /*! Replaces child property.
+     *  @param  propertyName  Name of an existing property to be replaced.
+     *  @param  newProperty   New property.
+     *  @return TRUE on success.
+     */
+    bool replaceChildProperty(const QString& propertyName, const PropertyDefinition& newProperty);
     /*! Finds child property definition.
      *  @param  name  Child property name to find.
      *  @return Pointer to found property. NULL if not found.
+     *  @note Search is recursive.
      */
-    PropertyDefinition* findChildProperty(const QString& name);
+    PropertyDefinition findChildProperty(const QString& name) const;
     /*! Returns list of child properties. */
     const QList<PropertyDefinition>& children() const;
     /*! Returns index of default (visible) value.
@@ -69,6 +75,12 @@ class WORKSPACEPLUGIN_API PropertyDefinition
     int defaultValue() const;
 
   private:
+
+    PropertyDefinition();
+
+  private:
+
+    /*! NOTE: DO NOT keep pointer to parent here. As this object is copied by value all the time, pointer will be made invalid in no time!!!! */
 
     /*! Property name. */
     QString m_name;
@@ -80,10 +92,6 @@ class WORKSPACEPLUGIN_API PropertyDefinition
     bool m_readOnly;
     /*! Default value index. */
     int m_defaultValueIndex;
-    /*! Parent property.
-     *  @note Can be NULL for parent GROUP property.
-     */
-    PropertyDefinition* m_parent;
     /*! Child properties. */
     QList<PropertyDefinition> m_children;
 };

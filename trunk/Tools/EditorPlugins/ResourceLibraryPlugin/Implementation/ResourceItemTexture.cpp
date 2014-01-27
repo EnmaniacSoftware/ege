@@ -22,12 +22,14 @@ static const QString KMipMapFilterArrtibute   = "mipmap-filter";
 static const QString KAddressModeSArrtibute   = "address-mode-s";
 static const QString KAddressModeTArrtibute   = "address-mode-t";
 
-static const QString KPropertyNameMinifyingFiltering  = ResourceItemTexture::tr("Minifying");
-static const QString KPropertyNameMagnifyingFiltering = ResourceItemTexture::tr("Magnifying");
-static const QString KPropertyNameMipMappingFiltering = ResourceItemTexture::tr("Mip Mapping");
-static const QString KPropertyNameAddressingModeS     = ResourceItemTexture::tr("Coordinate S");
-static const QString KPropertyNameAddressingModeT     = ResourceItemTexture::tr("Coordinate T");
-static const QString KPropertyNameLocation            = ResourceItemTexture::tr("Location");
+const QString ResourceItemTexture::KPropertyNameMinifyingFiltering  = ResourceItemTexture::tr("Minifying");
+const QString ResourceItemTexture::KPropertyNameMagnifyingFiltering = ResourceItemTexture::tr("Magnifying");
+const QString ResourceItemTexture::KPropertyNameMipMappingFiltering = ResourceItemTexture::tr("Mip Mapping");
+const QString ResourceItemTexture::KPropertyNameAddressingModeS     = ResourceItemTexture::tr("Coordinate S");
+const QString ResourceItemTexture::KPropertyNameAddressingModeT     = ResourceItemTexture::tr("Coordinate T");
+const QString ResourceItemTexture::KPropertyNameLocation            = ResourceItemTexture::tr("Location");
+const QString ResourceItemTexture::KPropertyNameWidth               = ResourceItemTexture::tr("Width");
+const QString ResourceItemTexture::KPropertyNameHeight              = ResourceItemTexture::tr("Height");
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct TextureTypeMap
 {
@@ -482,9 +484,9 @@ QList<PropertyDefinition> ResourceItemTexture::propertiesDefinition() const
   values = PropertyValueHelper::CreateFilePathValue(fullPath(), tr("Images") + QLatin1String(" (*.png *.jpg)"), true);
   infoGroup.addChildProperty(PropertyDefinition(KPropertyNameLocation, NPropertyObject::EFilePath, values, 0));
   values = PropertyValueHelper::CreateIntegerValue(size().width(), KMinimalSize, KMaximalSize);
-  infoGroup.addChildProperty(PropertyDefinition(tr("Width"), NPropertyObject::EInt, values, 0, true));
+  infoGroup.addChildProperty(PropertyDefinition(KPropertyNameWidth, NPropertyObject::EInt, values, 0, true));
   values = PropertyValueHelper::CreateIntegerValue(size().height(), KMinimalSize, KMaximalSize);
-  infoGroup.addChildProperty(PropertyDefinition(tr("Height"), NPropertyObject::EInt, values, 0, true));
+  infoGroup.addChildProperty(PropertyDefinition(KPropertyNameHeight, NPropertyObject::EInt, values, 0, true));
   values.clear();
   values << imageFormatAsText();
   infoGroup.addChildProperty(PropertyDefinition(tr("Depth"), NPropertyObject::EString, values, 0, true));

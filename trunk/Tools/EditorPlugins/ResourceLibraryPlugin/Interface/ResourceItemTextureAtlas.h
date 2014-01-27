@@ -53,6 +53,8 @@ class ResourceItemTextureAtlas : public ResourceItemTexture
     void onInvalidate() override;
     /*! @see ResourceItemTexture::propertiesDefinition. */
     QList<NPropertyObject::PropertyDefinition> propertiesDefinition() const override;
+    /*! @see ResourceItemTexture::update. */
+    void update(const QString& name, const QVariant& value) override;
     /*! Rebuilds atlas image. */
     void rebuild();
 
