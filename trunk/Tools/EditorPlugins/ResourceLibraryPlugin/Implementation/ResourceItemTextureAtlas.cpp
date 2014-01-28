@@ -12,6 +12,17 @@ using NPropertyObject::PropertyDefinition;
 using NPropertyObject::PropertyValueContainer;
 using NPropertyObject::PropertyValueHelper;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//struct TextureFormatTypeMap
+//{
+//  const QString name;
+//  const QString displayName;
+//  const TextureFilterType type;
+//};
+
+//static const TextureFilterTypeMap l_textureFilterTypeMappings[] = { { "nearest", ResourceItemTexture::tr("Nearest"), ETextureFilterNearest },
+//                                                                    { "bilinear", ResourceItemTexture::tr("Bilinear"), ETextureFilterBilinear }
+//};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemTextureAtlas::ResourceItemTextureAtlas(const QString& name, const QString& configurationName, ResourceItem* parent)
   : ResourceItemTexture(name, configurationName, parent)
 {
@@ -93,6 +104,24 @@ void ResourceItemTextureAtlas::rebuild()
   emit changed(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTextureAtlas::addTextureFormatsDefinitions(NPropertyObject::PropertyDefinition& group) const
+{
+//  PropertyValueContainer values;
+
+//  // create magnification filter values
+//  for (unsigned int i = 0; i < sizeof (l_textureFilterTypeMappings) / sizeof (l_textureFilterTypeMappings[0]); ++i)
+//  {
+//    const TextureFilterTypeMap& currentFilter = l_textureFilterTypeMappings[i];
+
+//    values << currentFilter.displayName;
+//    values << QIcon();
+//  }
+
+//  // add all into main group
+//  group.addChildProperty(PropertyDefinition(KPropertyNameMagnifyingFiltering, NPropertyObject::EEnum, values,
+//                                            GetMagnificationFilterMapIndex(m_magnificationFilter)));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QSize ResourceItemTextureAtlas::size() const
 {
   return m_size;
@@ -111,6 +140,8 @@ QList<NPropertyObject::PropertyDefinition> ResourceItemTextureAtlas::propertiesD
 
   PropertyValueContainer values;
 
+  bool result;
+
   // update properties of base class
   for (int i = 0; i < list.size(); ++i)
   {
@@ -123,22 +154,28 @@ QList<NPropertyObject::PropertyDefinition> ResourceItemTextureAtlas::propertiesD
       Q_ASSERT(property.isValid());
 
       property = PropertyDefinition(property.name(), property.type(), property.values(), property.defaultValue(), false);
-      definition.replaceChildProperty(property.name(), property);
+      result = definition.replaceChildProperty(property.name(), property);
+      Q_ASSERT(result);
 
       // replace HEIGHT property with non-read only version
       property = definition.findChildProperty(KPropertyNameHeight);
       Q_ASSERT(property.isValid());
 
       property = PropertyDefinition(property.name(), property.type(), property.values(), property.defaultValue(), false);
-      definition.replaceChildProperty(property.name(), property);
+      result = definition.replaceChildProperty(property.name(), property);
+      Q_ASSERT(result);
 
-      // replace LOCATION property with non-must exist version
-      property = definition.findChildProperty(KPropertyNameLocation);
-      Q_ASSERT(property.isValid());
+      // replace LOCATION property with EDirectoryPath type
+      values.clear();
+      values << fullPath();
+      property = PropertyDefinition(KPropertyNameLocation, NPropertyObject::EDirectoryPath, values);
+      result = definition.replaceChildProperty(KPropertyNameLocation, property);
+      Q_ASSERT(result);
 
-      values = PropertyValueHelper::CreateFilePathValue(fullPath(), tr("Images") + QString(" (*.png)"), false);
-      property = PropertyDefinition(property.name(), property.type(), values, property.defaultValue(), false);
-      definition.replaceChildProperty(property.name(), property);
+      // replace DEPTH with
+
+      // add texture format
+      addTextureFormatsDefinitions(definition);
     }
   }
 

@@ -117,6 +117,8 @@ class ResourceItemTexture : public ResourceItem
     static const QString KPropertyNameWidth;
     /*! Height property name. */
     static const QString KPropertyNameHeight;
+    /*! Image format property name. */
+    static const QString KPropertyNameImageFormat;
 
   private slots:
 

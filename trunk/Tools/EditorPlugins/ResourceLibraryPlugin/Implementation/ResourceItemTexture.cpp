@@ -30,6 +30,7 @@ const QString ResourceItemTexture::KPropertyNameAddressingModeT     = ResourceIt
 const QString ResourceItemTexture::KPropertyNameLocation            = ResourceItemTexture::tr("Location");
 const QString ResourceItemTexture::KPropertyNameWidth               = ResourceItemTexture::tr("Width");
 const QString ResourceItemTexture::KPropertyNameHeight              = ResourceItemTexture::tr("Height");
+const QString ResourceItemTexture::KPropertyNameImageFormat         = ResourceItemTexture::tr("Format");
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct TextureTypeMap
 {
@@ -489,7 +490,7 @@ QList<PropertyDefinition> ResourceItemTexture::propertiesDefinition() const
   infoGroup.addChildProperty(PropertyDefinition(KPropertyNameHeight, NPropertyObject::EInt, values, 0, true));
   values.clear();
   values << imageFormatAsText();
-  infoGroup.addChildProperty(PropertyDefinition(tr("Depth"), NPropertyObject::EString, values, 0, true));
+  infoGroup.addChildProperty(PropertyDefinition(KPropertyNameImageFormat, NPropertyObject::EString, values, 0, true));
 
   // create filtering group
   values.clear();
@@ -661,8 +662,8 @@ QString ResourceItemTexture::imageFormatAsText() const
     case QImage::Format_ARGB32:                 text = tr("32-bit ARGB"); break;
     case QImage::Format_ARGB32_Premultiplied:   text = tr("Premultiplied 32-bit ARGB"); break;
     case QImage::Format_RGB16:                  text = tr("16-bit RGB (565)"); break;
-    case QImage::Format_ARGB8565_Premultiplied: text = tr("Premultiplied 24-bit ARGB (8565"); break;
-    case QImage::Format_RGB555:                 text = tr("15-bit RGB (555"); break;
+    case QImage::Format_ARGB8565_Premultiplied: text = tr("Premultiplied 24-bit ARGB (8565)"); break;
+    case QImage::Format_RGB555:                 text = tr("15-bit RGB (555)"); break;
 
     default:
 

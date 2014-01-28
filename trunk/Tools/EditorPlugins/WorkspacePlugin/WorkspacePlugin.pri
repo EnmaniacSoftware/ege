@@ -12,7 +12,10 @@ HEADERS +=  Interface/WorkspacePlugin_global.h \
             Implementation/FilePathEditWidget.h \
     Implementation/ChangeConfigurationNameWindow.h \
     Implementation/ConfigurationNameValidator.h \
-    Interface/PropertyValueHelper.h
+    Interface/PropertyValueHelper.h \
+    Implementation/DirectoryPathPropertyManager.h \
+    Implementation/DirectoryPathEditFactory.h \
+    Implementation/DirectoryPathEditWidget.h
 
 SOURCES +=  Implementation/WorkspacePlugin.cpp \
             Implementation/MainWindow.cpp \
@@ -27,7 +30,10 @@ SOURCES +=  Implementation/WorkspacePlugin.cpp \
             Implementation/FilePathEditWidget.cpp \
     Implementation/ChangeConfigurationNameWindow.cpp \
     Implementation/ConfigurationNameValidator.cpp \
-    Implementation/PropertyValueHelper.cpp
+    Implementation/PropertyValueHelper.cpp \
+    Implementation/DirectoryPathPropertyManager.cpp \
+    Implementation/DirectoryPathEditFactory.cpp \
+    Implementation/DirectoryPathEditWidget.cpp
 
 FORMS += Forms/mainwindow.ui \
          Forms/newproject.ui \

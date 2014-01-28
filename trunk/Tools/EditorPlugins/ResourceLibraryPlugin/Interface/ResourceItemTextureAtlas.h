@@ -57,6 +57,10 @@ class ResourceItemTextureAtlas : public ResourceItemTexture
     void update(const QString& name, const QVariant& value) override;
     /*! Rebuilds atlas image. */
     void rebuild();
+    /*! Adds texture format definitions to given group.
+     *  @param  group Definition group to which texture formats are to be added.
+     */
+    void addTextureFormatsDefinitions(NPropertyObject::PropertyDefinition& group) const;
 
   private:
 

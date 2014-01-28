@@ -24,7 +24,8 @@ enum PropertyType
   ESize,
   ERect,
   EEnum,            /*!< Data in pairs: [n: QString:text], [n+1: QIcon:icon]. */
-  EFilePath         /*!< Data triplet: [0: QString:Path], [1: QString:FileFilter], [2: bool:FileMustExist]. */
+  EFilePath,        /*!< Data triplet: [0: QString:Path], [1: QString:FileFilter], [2: bool:FileMustExist]. */
+  EDirectoryPath
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Container for multi value propery types. */

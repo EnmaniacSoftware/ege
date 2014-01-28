@@ -78,24 +78,18 @@ void ResourceLibraryWindowResourceInserter::onAddTextureAtlas()
   Configuration* configuration = ObjectPool::Instance()->getObject<Configuration>();
   Q_ASSERT(NULL != configuration);
 
-  // prepare filters
-  QString filters = tr("Images");
-  filters += QLatin1String(" (*.png)");
-
   // open file selection dialog
-  QString fileName = QFileDialog::getSaveFileName(m_window, tr("Choose location and name for texture atlas image"), QString(), filters);
-  if ( ! fileName.isEmpty())
+  QString directory = QFileDialog::getExistingDirectory(m_window, tr("Choose location for texture atlas image"));
+  if ( ! directory.isEmpty())
   {
-    QString name = fileName.section("/", -1);
-
-    ResourceItemTextureAtlas* newItem = static_cast<ResourceItemTextureAtlas*>(m_factory->createItem(ResourceItemTextureAtlas::TypeName(), name,
+    ResourceItemTextureAtlas* newItem = static_cast<ResourceItemTextureAtlas*>(m_factory->createItem(ResourceItemTextureAtlas::TypeName(), tr("Texture"),
                                                                                                      configuration->current()));
     Q_ASSERT(NULL != newItem);
 
     if (NULL != newItem)
     {
       // set path
-      newItem->setFullPath(fileName);
+      newItem->setFullPath(directory);
 
       // add to model
       m_library->insertItem(newItem);

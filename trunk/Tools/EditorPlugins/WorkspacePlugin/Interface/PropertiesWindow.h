@@ -22,6 +22,7 @@ class QtRectPropertyManager;
 class QtEnumPropertyManager;
 class QtGroupPropertyManager;
 class FilePathPropertyManager;
+class DirectoryPathPropertyManager;
 class QtProperty;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class WORKSPACEPLUGIN_API PropertiesWindow : public QDockWidget
@@ -102,6 +103,8 @@ class WORKSPACEPLUGIN_API PropertiesWindow : public QDockWidget
     QtGroupPropertyManager* m_groupManager;
     /*! Property manager for file path types. */
     FilePathPropertyManager* m_filePathManager;
+    /*! Property manager for directory path types. */
+    DirectoryPathPropertyManager* m_directoryPathManager;
     /*! Property object being viewed. */
     NPropertyObject::PropertyObject* m_propertyObject;
 };

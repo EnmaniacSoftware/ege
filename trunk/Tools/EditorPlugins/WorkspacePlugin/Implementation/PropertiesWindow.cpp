@@ -3,6 +3,8 @@
 #include "PropertyObject.h"
 #include "FilePathPropertyManager.h"
 #include "FilePathEditFactory.h"
+#include "DirectoryPathPropertyManager.h"
+#include "DirectoryPathEditFactory.h"
 #include <qttreepropertybrowser.h>
 #include <qtpropertymanager.h>
 #include <qteditorfactory.h>
@@ -30,17 +32,19 @@ PropertiesWindow::PropertiesWindow(QWidget* parent) : QDockWidget(parent),
                                                       m_enumManager(new QtEnumPropertyManager(this)),
                                                       m_groupManager(new QtGroupPropertyManager(this)),
                                                       m_filePathManager(new FilePathPropertyManager(this)),
+                                                      m_directoryPathManager(new DirectoryPathPropertyManager(this)),
                                                       m_propertyObject(NULL)
 {
   // setup UI
   m_ui->setupUi(this);
 
   // create factories for editing
-  QtCheckBoxFactory* checkBoxFactory = new QtCheckBoxFactory(this);
-  QtSpinBoxFactory* spinBoxFactory = new QtSpinBoxFactory(this);
-  QtLineEditFactory* lineEditFactory = new QtLineEditFactory(this);
-  QtEnumEditorFactory* comboBoxFactory = new QtEnumEditorFactory(this);
-  FilePathEditFactory* filePathFactory = new FilePathEditFactory(this);
+  QtCheckBoxFactory* checkBoxFactory              = new QtCheckBoxFactory(this);
+  QtSpinBoxFactory* spinBoxFactory                = new QtSpinBoxFactory(this);
+  QtLineEditFactory* lineEditFactory              = new QtLineEditFactory(this);
+  QtEnumEditorFactory* comboBoxFactory            = new QtEnumEditorFactory(this);
+  FilePathEditFactory* filePathFactory            = new FilePathEditFactory(this);
+  DirectoryPathEditFactory* directoryPathFactory  = new DirectoryPathEditFactory(this);
 
   // attach factories to managers
   m_ui->properties->setFactoryForManager(m_boolManager, checkBoxFactory);
@@ -50,6 +54,7 @@ PropertiesWindow::PropertiesWindow(QWidget* parent) : QDockWidget(parent),
   m_ui->properties->setFactoryForManager(m_rectManager->subIntPropertyManager(), spinBoxFactory);
   m_ui->properties->setFactoryForManager(m_enumManager, comboBoxFactory);
   m_ui->properties->setFactoryForManager(m_filePathManager, filePathFactory);
+  m_ui->properties->setFactoryForManager(m_directoryPathManager, directoryPathFactory);
 
   // load settings
   loadSettings();
@@ -76,6 +81,7 @@ void PropertiesWindow::attach(PropertyObject* object)
   m_enumManager->clear();
   m_groupManager->clear();
   m_filePathManager->clear();
+  m_directoryPathManager->clear();
 
   // disconnect
   // NOTE: we dont want notification upon initial creation
@@ -87,6 +93,7 @@ void PropertiesWindow::attach(PropertyObject* object)
   disconnect(m_enumManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
   disconnect(m_groupManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
   disconnect(m_filePathManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
+  disconnect(m_directoryPathManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
 
   // check if anything to be attached
   if (NULL != object)
@@ -104,6 +111,7 @@ void PropertiesWindow::attach(PropertyObject* object)
   connect(m_enumManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
   connect(m_groupManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
   connect(m_filePathManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
+  connect(m_directoryPathManager, SIGNAL(propertyChanged(QtProperty*)), this, SLOT(onPropertyChanged(QtProperty*)));
 
   // store pointer to object for further use
   m_propertyObject = object;
@@ -255,6 +263,16 @@ QtProperty* PropertiesWindow::createProperty(const PropertyType& type, const QSt
       m_filePathManager->setMustExist(property, values.at(2).toBool());
       break;
 
+    case NPropertyObject::EDirectoryPath:
+
+      Q_ASSERT(1 == values.size());
+      Q_ASSERT(values.at(0).canConvert<QString>());
+
+      property = m_directoryPathManager->addProperty(name);
+
+      m_directoryPathManager->setValue(property, values.at(0).toString());
+      break;
+
     default:
 
       Q_ASSERT(false);
@@ -300,6 +318,10 @@ void PropertiesWindow::onPropertyChanged(QtProperty* property)
   else if (property->propertyManager() == m_filePathManager)
   {
     value = m_filePathManager->value(property);
+  }
+  else if (property->propertyManager() == m_directoryPathManager)
+  {
+    value = m_directoryPathManager->value(property);
   }
 
   qDebug() << Q_FUNC_INFO << property->propertyName() << value;
