@@ -7,6 +7,7 @@
 
 #include <QImage>
 #include "ResourceItemTexture.h"
+#include "ImageCompressionFormats.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class QMenu;
@@ -57,17 +58,32 @@ class ResourceItemTextureAtlas : public ResourceItemTexture
     void update(const QString& name, const QVariant& value) override;
     /*! @see ResourceItemTexture::addAddressingModeDefinitions. */
     void addAddressingModeDefinitions(NPropertyObject::PropertyDefinition& group) const override;
+    /*! Adds compression format definitions to given group.
+     *  @param  group Definition group to which compression formats are to be added.
+     */
+    void addCompressionFormatDefinitions(NPropertyObject::PropertyDefinition& group) const;
     /*! Rebuilds atlas image. */
     void rebuild();
     /*! Creates texture format definition property.
      *  @return Property definition for texture formats.
      */
     NPropertyObject::PropertyDefinition createTextureFormatsDefinition() const;
+    /*! Sets compression format. */
+    void setCompressionFormat(ImageCompressionFormat format);
+    /*! Returns compression format. */
+    ImageCompressionFormat compressionFormat() const;
+
+  private:
+
+    /*! Compression property name. */
+    static const QString KPropertyNameCompression;
 
   private:
 
     /*! Texture image. */
     QImage m_image;
+    /*! Compression format. */
+    ImageCompressionFormat m_compressionFormat;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

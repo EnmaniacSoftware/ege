@@ -494,7 +494,6 @@ void ResourceItemTexture::addMagnificationFilterDefinitions(NPropertyObject::Pro
 {
   PropertyValueContainer values;
 
-  // create magnification filter values
   for (unsigned int i = 0; i < sizeof (l_textureFilterTypeMappings) / sizeof (l_textureFilterTypeMappings[0]); ++i)
   {
     const TextureFilterTypeMap& currentFilter = l_textureFilterTypeMappings[i];
@@ -515,7 +514,6 @@ void ResourceItemTexture::addAddressingModeDefinitions(NPropertyObject::Property
   int defaultValueIndexS = 0;
   int defaultValueIndexT = 0;
 
-  // create magnification filter values
   TextureAddressingModeInfoList list = SupportedTextureAddressingModes();
   for (int i = 0; i < list.size(); ++i)
   {
@@ -546,7 +544,6 @@ void ResourceItemTexture::addMinificationFilterDefinitions(NPropertyObject::Prop
 {
   PropertyValueContainer values;
 
-  // create minification filter values
   for (unsigned int i = 0; i < sizeof (l_textureFilterTypeMappings) / sizeof (l_textureFilterTypeMappings[0]); ++i)
   {
     const TextureFilterTypeMap& currentFilter = l_textureFilterTypeMappings[i];

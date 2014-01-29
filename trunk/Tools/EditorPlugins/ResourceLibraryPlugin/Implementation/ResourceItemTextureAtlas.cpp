@@ -15,19 +15,11 @@ using NPropertyObject::PropertyDefinition;
 using NPropertyObject::PropertyValueContainer;
 using NPropertyObject::PropertyValueHelper;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//struct TextureFormatTypeMap
-//{
-//  const QString name;
-//  const QString displayName;
-//  const TextureFilterType type;
-//};
-
-//static const TextureFilterTypeMap l_textureFilterTypeMappings[] = { { "nearest", ResourceItemTexture::tr("Nearest"), ETextureFilterNearest },
-//                                                                    { "bilinear", ResourceItemTexture::tr("Bilinear"), ETextureFilterBilinear }
-//};
+const QString ResourceItemTextureAtlas::KPropertyNameCompression = ResourceItemTextureAtlas::tr("Compression");
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemTextureAtlas::ResourceItemTextureAtlas(const QString& name, const QString& configurationName, ResourceItem* parent)
   : ResourceItemTexture(name, configurationName, parent)
+  , m_compressionFormat(EImageCompressionPNG)
 {
   setType(ETexture2D);
   setImageFormat(QImage::Format_ARGB32);
@@ -149,6 +141,22 @@ PropertyDefinition ResourceItemTextureAtlas::createTextureFormatsDefinition() co
   return PropertyDefinition(KPropertyNameImageFormat, NPropertyObject::EEnum, values, defaultValueIndex);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTextureAtlas::setCompressionFormat(ImageCompressionFormat format)
+{
+  if (m_compressionFormat != format)
+  {
+    m_compressionFormat = format;
+
+    // notify
+    emit changed(this);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ImageCompressionFormat ResourceItemTextureAtlas::compressionFormat() const
+{
+  return m_compressionFormat;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QSize ResourceItemTextureAtlas::size() const
 {
   return m_size;
@@ -202,6 +210,9 @@ QList<NPropertyObject::PropertyDefinition> ResourceItemTextureAtlas::propertiesD
       // replace FORMAT property with EEnum type
       result = definition.replaceChildProperty(KPropertyNameImageFormat, createTextureFormatsDefinition());
       Q_ASSERT(result);
+
+      // add COMPRESSION property
+      addCompressionFormatDefinitions(definition);
     }
     else if (KGroupNameFiltering == definition.name())
     {
@@ -230,8 +241,15 @@ void ResourceItemTextureAtlas::update(const QString& name, const QVariant& value
   {
     Q_ASSERT(value.canConvert<int>());
 
-    ImageFormatInfoList supportedImageFormats = SupportedImageFormats();
-    setImageFormat(supportedImageFormats.at(value.toInt()).format);
+    ImageFormatInfoList list = SupportedImageFormats();
+    setImageFormat(list.at(value.toInt()).format);
+  }
+  else if (KPropertyNameCompression == name)
+  {
+    Q_ASSERT(value.canConvert<int>());
+
+    ImageCompressionFormatInfoList list = SupportedImageCompressionFormats();
+    setCompressionFormat(list.at(value.toInt()).format);
   }
   else
   {
@@ -261,5 +279,31 @@ void ResourceItemTextureAtlas::addAddressingModeDefinitions(NPropertyObject::Pro
   // add all into main group
   group.addChildProperty(PropertyDefinition(KPropertyNameAddressingModeS, NPropertyObject::EEnum, values, 0));
   group.addChildProperty(PropertyDefinition(KPropertyNameAddressingModeT, NPropertyObject::EEnum, values, 0));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTextureAtlas::addCompressionFormatDefinitions(NPropertyObject::PropertyDefinition& group) const
+{
+  PropertyValueContainer values;
+
+  int defaultValueIndex = 0;
+
+  ImageCompressionFormatInfoList list = SupportedImageCompressionFormats();
+  for (int i = 0; i < list.size(); ++i)
+  {
+    const ImageCompressionFormatInfo& info = list.at(i);
+
+    // add to values
+    values << info.displayName;
+    values << QIcon();
+
+    // check if current item is default one
+    if (info.format == compressionFormat())
+    {
+      defaultValueIndex = i;
+    }
+  }
+
+  // add all into main group
+  group.addChildProperty(PropertyDefinition(KPropertyNameCompression, NPropertyObject::EEnum, values, defaultValueIndex));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

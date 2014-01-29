@@ -9,15 +9,16 @@
 /*! Image format info structure. */
 struct ImageFormatInfo
 {
-  ImageFormatInfo(QImage::Format imageFormat, const QString& imageDisplayName);
+  ImageFormatInfo(const QString& formatName, const QString& formatDisplayName, QImage::Format imageFormat);
 
-  QImage::Format format;            /*! Format value. */
-  QString        displayName;       /*! Display name. */
+  QImage::Format  format;            /*!< Format value. */
+  QString         displayName;       /*!< Display name. */
+  QString         name;              /*!< Common use name (locale agnostic). */
 };
 
 typedef QList<ImageFormatInfo> ImageFormatInfoList;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Function returning list of supported image types. */
+/*! Function returning list of supported image format . */
 extern ImageFormatInfoList SupportedImageFormats();
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

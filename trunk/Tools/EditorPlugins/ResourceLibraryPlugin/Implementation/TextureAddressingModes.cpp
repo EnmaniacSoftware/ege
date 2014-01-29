@@ -3,9 +3,9 @@
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextureAddressingModeInfo::TextureAddressingModeInfo(const QString& modeName, const QString& modeDisplayName, TextureAddressMode textureAddressMode)
-  : mode(textureAddressMode),
-    displayName(modeDisplayName),
-    name(modeName)
+  : mode(textureAddressMode)
+  , displayName(modeDisplayName)
+  , name(modeName)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

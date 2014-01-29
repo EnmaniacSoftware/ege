@@ -12,7 +12,8 @@ HEADERS = Implementation/ResourceLibraryPlugin.h \
     Implementation/ImageFormats.h \
     Implementation/TextureAddressingModes.h \
     Implementation/ResourceItemTexture.h \
-    Implementation/ResourceItemTextureAtlas.h
+    Implementation/ResourceItemTextureAtlas.h \
+    Implementation/ImageCompressionFormats.h
 
 SOURCES = Implementation/ResourceLibraryPlugin.cpp \
           Implementation/ResourceLibraryWindow.cpp \
@@ -27,7 +28,8 @@ SOURCES = Implementation/ResourceLibraryPlugin.cpp \
           Implementation/ResourceLibraryDataModelProxy.cpp \
           Implementation/ResourceItemTextureAtlas.cpp \
     Implementation/ImageFormats.cpp \
-    Implementation/TextureAddressingModes.cpp
+    Implementation/TextureAddressingModes.cpp \
+    Implementation/ImageCompressionFormats.cpp
 
 FORMS += Forms/ResourceLibraryWindow.ui \
          Forms/TexturePropertiesWindow.ui
