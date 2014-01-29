@@ -80,6 +80,7 @@ void ResourceLibraryItemDelegate::paint(QPainter* painter, const QStyleOptionVie
   // paint thumbnail
   painter->drawImage(rect.intersected(option.rect), item->thumbnailImage());
 
+
   //qDebug() << rect << option.rect << rect.intersected(option.rect);
 
   // paint text fields

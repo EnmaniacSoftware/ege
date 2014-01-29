@@ -2,8 +2,11 @@
 #include "ResourceLibraryDataModel.h"
 #include "ResourceItemGroup.h"
 #include "ResourceLibraryWindowResourceInserter.h"
+#include "ImageFormats.h"
 #include <PropertyValueHelper.h>
 #include <ObjectPool.h>
+#include <QVector>
+#include <QRgb>
 #include <QDebug>
 #include <QMenu>
 
@@ -29,6 +32,10 @@ ResourceItemTextureAtlas::ResourceItemTextureAtlas(const QString& name, const QS
   setType(ETexture2D);
   setImageFormat(QImage::Format_ARGB32);
   setSize(QSize(32, 32));
+
+  // set addressing to CLAMP, REPEAT is not allowed
+  setAddressModeS(EAddressModeClamp);
+  setAddressModeT(EAddressModeClamp);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemTextureAtlas::~ResourceItemTextureAtlas()
@@ -98,28 +105,48 @@ void ResourceItemTextureAtlas::setImageFormat(QImage::Format format)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItemTextureAtlas::rebuild()
 {
+  static const QColor KDefaultColor = Qt::magenta;
+
   // TAGE - ideally do it in another thread
   m_image = QImage(size(), imageFormat());
+
+  // setup color table in case of indexed format
+  if (imageFormat() == QImage::Format_Indexed8)
+  {
+    QVector<QRgb> colorTable;
+    colorTable << KDefaultColor.rgb();
+    m_image.setColorTable(colorTable);
+  }
+
+  // fill in initially
+  m_image.fill(KDefaultColor);
 
   emit changed(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceItemTextureAtlas::addTextureFormatsDefinitions(NPropertyObject::PropertyDefinition& group) const
+PropertyDefinition ResourceItemTextureAtlas::createTextureFormatsDefinition() const
 {
-//  PropertyValueContainer values;
+  PropertyValueContainer values;
 
-//  // create magnification filter values
-//  for (unsigned int i = 0; i < sizeof (l_textureFilterTypeMappings) / sizeof (l_textureFilterTypeMappings[0]); ++i)
-//  {
-//    const TextureFilterTypeMap& currentFilter = l_textureFilterTypeMappings[i];
+  int defaultValueIndex = 0;
 
-//    values << currentFilter.displayName;
-//    values << QIcon();
-//  }
+  // create magnification filter values
+  ImageFormatInfoList supportedImageFormats = SupportedImageFormats();
+  for (int i = 0; i < supportedImageFormats.size(); ++i)
+  {
+    const ImageFormatInfo& info = supportedImageFormats.at(i);
 
-//  // add all into main group
-//  group.addChildProperty(PropertyDefinition(KPropertyNameMagnifyingFiltering, NPropertyObject::EEnum, values,
-//                                            GetMagnificationFilterMapIndex(m_magnificationFilter)));
+    values << info.displayName;
+    values << QIcon();
+
+    // check if this is current setting
+    if (imageFormat() == info.format)
+    {
+      defaultValueIndex = i;
+    }
+  }
+
+  return PropertyDefinition(KPropertyNameImageFormat, NPropertyObject::EEnum, values, defaultValueIndex);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QSize ResourceItemTextureAtlas::size() const
@@ -147,7 +174,7 @@ QList<NPropertyObject::PropertyDefinition> ResourceItemTextureAtlas::propertiesD
   {
     PropertyDefinition& definition = list[i];
 
-    if (definition.name() == ResourceItemTexture::tr("Info"))
+    if (KGroupNameInfo == definition.name())
     {
       // replace WIDTH property with non-read only version
       PropertyDefinition property = definition.findChildProperty(KPropertyNameWidth);
@@ -172,10 +199,15 @@ QList<NPropertyObject::PropertyDefinition> ResourceItemTextureAtlas::propertiesD
       result = definition.replaceChildProperty(KPropertyNameLocation, property);
       Q_ASSERT(result);
 
-      // replace DEPTH with
-
-      // add texture format
-      addTextureFormatsDefinitions(definition);
+      // replace FORMAT property with EEnum type
+      result = definition.replaceChildProperty(KPropertyNameImageFormat, createTextureFormatsDefinition());
+      Q_ASSERT(result);
+    }
+    else if (KGroupNameFiltering == definition.name())
+    {
+      // remove MIPMAPPING texture filtering
+      result = definition.removeChildProperty(KPropertyNameMipMappingFiltering);
+      Q_ASSERT(result);
     }
   }
 
@@ -194,10 +226,40 @@ void ResourceItemTextureAtlas::update(const QString& name, const QVariant& value
     Q_ASSERT(value.canConvert<int>());
     setSize(QSize(size().width(), value.toInt()));
   }
+  else if (KPropertyNameImageFormat == name)
+  {
+    Q_ASSERT(value.canConvert<int>());
+
+    ImageFormatInfoList supportedImageFormats = SupportedImageFormats();
+    setImageFormat(supportedImageFormats.at(value.toInt()).format);
+  }
   else
   {
     // call base class
     ResourceItemTexture::update(name, value);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTextureAtlas::addAddressingModeDefinitions(NPropertyObject::PropertyDefinition& group) const
+{
+  PropertyValueContainer values;
+
+  TextureAddressingModeInfoList list = SupportedTextureAddressingModes();
+  for (int i = 0; i < list.size(); ++i)
+  {
+    const TextureAddressingModeInfo& info = list.at(i);
+
+    // check if CLAMP mode as we dont allow any other for atlases
+    if (info.mode == EAddressModeClamp)
+    {
+      // add to values
+      values << info.displayName;
+      values << QIcon();
+    }
+  }
+
+  // add all into main group
+  group.addChildProperty(PropertyDefinition(KPropertyNameAddressingModeS, NPropertyObject::EEnum, values, 0));
+  group.addChildProperty(PropertyDefinition(KPropertyNameAddressingModeT, NPropertyObject::EEnum, values, 0));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -60,8 +60,15 @@ class WORKSPACEPLUGIN_API PropertyDefinition
      *  @param  propertyName  Name of an existing property to be replaced.
      *  @param  newProperty   New property.
      *  @return TRUE on success.
+     *  @note Search is recursive.
      */
     bool replaceChildProperty(const QString& propertyName, const PropertyDefinition& newProperty);
+    /*! Removes child property.
+     *  @param  propertyName  Name of an existing property to be removed.
+     *  @return TRUE on success.
+     *  @note Search is recursive.
+     */
+    bool removeChildProperty(const QString& propertyName);
     /*! Finds child property definition.
      *  @param  name  Child property name to find.
      *  @return Pointer to found property. NULL if not found.

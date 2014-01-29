@@ -7,6 +7,7 @@
 
 #include <QImage>
 #include "ResourceItem.h"
+#include "TextureAddressingModes.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Available texture types. */
@@ -29,13 +30,6 @@ enum TextureMipMappingFilterType
   EMipMappingFilterNone,
   EMipMappingFilterNearest,
   EMipMappingFilterTrilinear
-};
-
-/*! Available texture addressing modes. */
-enum TextureAddressModeType
-{
-  EAddressModeClamp,
-  EAddressModeRepeat
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class QMenu;
@@ -81,6 +75,11 @@ class ResourceItemTexture : public ResourceItem
     virtual QList<NPropertyObject::PropertyDefinition> propertiesDefinition() const override;
     /*! @see ResourceItem::update. */
     virtual void update(const QString& name, const QVariant& value) override;
+
+    /*! Sets texture addressing mode for S coordinate. */
+    void setAddressModeS(TextureAddressMode type);
+    /*! Sets texture addressing mode for T coordinate. */
+    void setAddressModeT(TextureAddressMode type);
     /*! Returns image format. */
     QImage::Format imageFormat() const;
     /*! Returns image size (in pixels). */
@@ -119,6 +118,12 @@ class ResourceItemTexture : public ResourceItem
     static const QString KPropertyNameHeight;
     /*! Image format property name. */
     static const QString KPropertyNameImageFormat;
+    /*! Info group name. */
+    static const QString KGroupNameInfo;
+    /*! Filtering group name. */
+    static const QString KGroupNameFiltering;
+    /*! Addressing group name. */
+    static const QString KGroupNameAddressing;
 
   private slots:
 
@@ -150,7 +155,7 @@ class ResourceItemTexture : public ResourceItem
     /*! Adds texture addressing modes definitions to given group.
      *  @param  group Definition group to which addressing modes are to be added.
      */
-    void addAddressingModeDefinitions(NPropertyObject::PropertyDefinition& group) const;
+    virtual void addAddressingModeDefinitions(NPropertyObject::PropertyDefinition& group) const;
     /*! Returns image format in string format. */
     QString imageFormatAsText() const;
 
@@ -168,14 +173,10 @@ class ResourceItemTexture : public ResourceItem
     void setMipMappingFilter(TextureMipMappingFilterType type);
     /*! Returns mip mapping filter. */
     TextureMipMappingFilterType mipMappingFilter() const;
-    /*! Sets texture addressing mode for S coordinate. */
-    void setAddressModeS(TextureAddressModeType type);
     /*! Returns addressing mode for S coordinate. */
-    TextureAddressModeType addressModeS() const;
-    /*! Sets texture addressing mode for T coordinate. */
-    void setAddressModeT(TextureAddressModeType type);
+    TextureAddressMode addressModeS() const;
     /*! Returns addressing mode for T coordinate. */
-    TextureAddressModeType addressModeT() const;
+    TextureAddressMode addressModeT() const;
 
   private:
 
@@ -190,9 +191,9 @@ class ResourceItemTexture : public ResourceItem
     /*! Mip Mapping filter. */
     TextureMipMappingFilterType m_mipMappingFilter;
     /*! Addressing mode for S coordinate. */
-    TextureAddressModeType m_addressingModeS;
+    TextureAddressMode m_addressingModeS;
     /*! Addressing mode for T coordinate. */
-    TextureAddressModeType m_addressingModeT;
+    TextureAddressMode m_addressingModeT;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

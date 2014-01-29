@@ -55,12 +55,14 @@ class ResourceItemTextureAtlas : public ResourceItemTexture
     QList<NPropertyObject::PropertyDefinition> propertiesDefinition() const override;
     /*! @see ResourceItemTexture::update. */
     void update(const QString& name, const QVariant& value) override;
+    /*! @see ResourceItemTexture::addAddressingModeDefinitions. */
+    void addAddressingModeDefinitions(NPropertyObject::PropertyDefinition& group) const override;
     /*! Rebuilds atlas image. */
     void rebuild();
-    /*! Adds texture format definitions to given group.
-     *  @param  group Definition group to which texture formats are to be added.
+    /*! Creates texture format definition property.
+     *  @return Property definition for texture formats.
      */
-    void addTextureFormatsDefinitions(NPropertyObject::PropertyDefinition& group) const;
+    NPropertyObject::PropertyDefinition createTextureFormatsDefinition() const;
 
   private:
 

@@ -3,14 +3,16 @@ HEADERS = Implementation/ResourceLibraryPlugin.h \
           Interface/ResourceLibraryItemDelegate.h \
           Interface/ResourceLibraryWindow.h \
           Interface/ResourceItem.h \
-          Interface/ResourceItemTexture.h \
           Interface/ResourceItemFactory.h \
           Interface/ResouceLibraryPlugin_global.h \
           Interface/ResourceLibrary.h \
           Interface/ResourceItemGroup.h \
           Implementation/ResourceLibraryWindowResourceInserter.h \
           Implementation/ResourceLibraryDataModelProxy.h \
-          Interface/ResourceItemTextureAtlas.h
+    Implementation/ImageFormats.h \
+    Implementation/TextureAddressingModes.h \
+    Implementation/ResourceItemTexture.h \
+    Implementation/ResourceItemTextureAtlas.h
 
 SOURCES = Implementation/ResourceLibraryPlugin.cpp \
           Implementation/ResourceLibraryWindow.cpp \
@@ -23,7 +25,9 @@ SOURCES = Implementation/ResourceLibraryPlugin.cpp \
           Implementation/ResourceItemGroup.cpp \
           Implementation/ResourceLibraryWindowResourceInserter.cpp \
           Implementation/ResourceLibraryDataModelProxy.cpp \
-          Implementation/ResourceItemTextureAtlas.cpp
+          Implementation/ResourceItemTextureAtlas.cpp \
+    Implementation/ImageFormats.cpp \
+    Implementation/TextureAddressingModes.cpp
 
 FORMS += Forms/ResourceLibraryWindow.ui \
          Forms/TexturePropertiesWindow.ui

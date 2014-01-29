@@ -100,6 +100,32 @@ bool PropertyDefinition::replaceChildProperty(const QString& propertyName, const
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool PropertyDefinition::removeChildProperty(const QString& propertyName)
+{
+  bool result = false;
+
+  // go thru all children
+  for (int i = 0; i < m_children.size() && ! result; ++i)
+  {
+    // check if property found
+    if (m_children.at(i).name() == propertyName)
+    {
+      // remove
+      m_children.removeAt(i);
+
+      // set result
+      result = true;
+    }
+    else
+    {
+      // try to replace in child properties
+      result = m_children[i].removeChildProperty(propertyName);
+    }
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PropertyDefinition PropertyDefinition::findChildProperty(const QString& name) const
 {
   PropertyDefinition property;
