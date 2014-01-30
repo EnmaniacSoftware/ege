@@ -1,4 +1,4 @@
-#include "Core/Debug/EngineInfo.h"
+#include "Core/Debug/Interface/EngineInfo.h"
 
 EGE_NAMESPACE_BEGIN
 

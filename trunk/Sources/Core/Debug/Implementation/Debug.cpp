@@ -1,16 +1,15 @@
-#include "Core/Debug/Debug.h"
-#include "EGEMap.h"
+#include "Core/Debug/Interface/Debug.h"
 #include <stdarg.h>
 
 EGE_NAMESPACE_BEGIN
-
+  
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static StringList l_enabledName;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Debug::Debug(DebugMsgType type, const String& name) : m_consoleOutput(true),
-                                                      m_spaceSeperated(true),
-                                                      m_type(type),
-                                                      m_enabled(false)
+Debug::Debug(DebugMessageType type, const String& name) : m_consoleOutput(true)
+                                                        , m_spaceSeperated(true)
+                                                        , m_type(type)
+                                                        , m_enabled(false)
 {
   // check if enabled
   if (l_enabledName.contains(name))
@@ -24,8 +23,8 @@ Debug::Debug(DebugMsgType type, const String& name) : m_consoleOutput(true),
       // init depending on type
       switch (m_type)
       {
-        case DMT_WARNING:   *m_buffer << "WARNING: "; break;
-        case DMT_CRITICAL:  *m_buffer << "CRITICAL: "; break;
+        case EWarning:  *m_buffer << "WARNING: "; break;
+        case EError:    *m_buffer << "CRITICAL: "; break;
       
         default:
           break;
@@ -186,7 +185,7 @@ Debug& Debug::operator << (const void* t)
   if (m_enabled)
   {
     // TAGE - proper implementation needed once ISerializable is fxed
-    EGE_ASSERT(4 == sizeof (t));
+    //EGE_ASSERT(4 == sizeof (t));
     *m_buffer << reinterpret_cast<u32>(t);
   }
 

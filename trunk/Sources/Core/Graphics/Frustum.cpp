@@ -163,7 +163,7 @@ bool Frustum::isVisible(const Vector4f& point)
     //if (plane == FRUSTUM_PLANE_FAR && mFarDist == 0)
     //    continue;
 
-    if (Planef::SIDE_NEGATIVE == m_planes[plane].side(point))
+    if (ENegative == m_planes[plane].side(point))
     {
       // ALL corners on negative side therefore out of view
       //if (culledBy)

@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_MATRIX4_H
-#define EGE_CORE_MATRIX4_H
+#ifndef EGE_CORE_MATH_MATRIX4_H
+#define EGE_CORE_MATH_MATRIX4_H
 
 /** Class representing 4x4 matrix, in column major form (col, row). Each column represents a vector. Order of transformation is from right-to-left.
  *
@@ -27,14 +27,18 @@ class TMatrix4
 		TMatrix4(const T column0[4], const T column1[4], const T column2[4], const T column3[4]);
 		TMatrix4(const TMatrix4& matrix);
 
-		TMatrix4&   operator+=(const TMatrix4& matrix);
-	  TMatrix4&   operator-=(const TMatrix4& matrix);
-	  TMatrix4&   operator*=(const TMatrix4& matrix);
-    const T&    operator()(u32 column, u32 row) const;
-    T&          operator()(u32 column, u32 row);
-		T*          operator[](u32 column);
-    const T*    operator[](u32 column) const;
-		TVector4<T> operator *(const TVector4<T>& vector) const;
+  operators:
+
+		TMatrix4&   operator += (const TMatrix4& matrix);
+	  TMatrix4&   operator -= (const TMatrix4& matrix);
+	  TMatrix4&   operator *= (const TMatrix4& matrix);
+    const T&    operator () (u32 column, u32 row) const;
+    T&          operator () (u32 column, u32 row);
+		T*          operator [] (u32 column);
+    const T*    operator [] (u32 column) const;
+		TVector4<T> operator  * (const TVector4<T>& vector) const;
+
+  public:
 
     /*! Multiplies current matrix by given one. */
     TMatrix4<T> multiply(const TMatrix4<T>& matrix) const;
@@ -125,7 +129,7 @@ TMatrix4<T>::TMatrix4(const TMatrix4<T>& matrix)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TMatrix4<T>& TMatrix4<T>::operator+=(const TMatrix4<T>& matrix)
+TMatrix4<T>& TMatrix4<T>::operator+=(const TMatrix4<T>& matrix)
 {
   for (register u32 entry = 0; entry < 16; ++entry)
   {
@@ -136,7 +140,7 @@ inline TMatrix4<T>& TMatrix4<T>::operator+=(const TMatrix4<T>& matrix)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TMatrix4<T>& TMatrix4<T>::operator-=(const TMatrix4<T>& matrix)
+TMatrix4<T>& TMatrix4<T>::operator-=(const TMatrix4<T>& matrix)
 {
   for (register u32 entry = 0; entry < 16; ++entry)
   {
@@ -147,42 +151,42 @@ inline TMatrix4<T>& TMatrix4<T>::operator-=(const TMatrix4<T>& matrix)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TMatrix4<T>& TMatrix4<T>::operator*=(const TMatrix4<T>& matrix)
+TMatrix4<T>& TMatrix4<T>::operator*=(const TMatrix4<T>& matrix)
 {
   *this = multiply(matrix);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline const T& TMatrix4<T>::operator()(u32 column, u32 row) const
+const T& TMatrix4<T>::operator()(u32 column, u32 row) const
 {	
   EGE_ASSERT((4 > column) && (0 <= column) && (4 > row) && (0 <= row));
   return data[column * 4 + row]; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T& TMatrix4<T>::operator()(u32 column, u32 row)
+T& TMatrix4<T>::operator()(u32 column, u32 row)
 {	
   EGE_ASSERT((4 > column) && (0 <= column) && (4 > row) && (0 <= row));
   return data[column * 4 + row]; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T* TMatrix4<T>::operator[](u32 column)
+T* TMatrix4<T>::operator[](u32 column)
 {
   EGE_ASSERT((4 > column) && (0 <= column));
   return &data[column * 4];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline const T* TMatrix4<T>::operator[](u32 column) const
+const T* TMatrix4<T>::operator[](u32 column) const
 {
   EGE_ASSERT((4 > column) && (0 <= column));
   return &data[column * 4];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TVector4<T> TMatrix4<T>::operator *(const TVector4<T>& vector) const
+TVector4<T> TMatrix4<T>::operator *(const TVector4<T>& vector) const
 {
   return TVector4<T>(data[0] * vector.x + data[4] * vector.y + data[8]  * vector.z + data[12] * vector.w, 
                      data[1] * vector.x + data[5] * vector.y + data[9]  * vector.z + data[13] * vector.w,
@@ -191,14 +195,14 @@ inline TVector4<T> TMatrix4<T>::operator *(const TVector4<T>& vector) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline bool TMatrix4<T>::isAffine() const
+bool TMatrix4<T>::isAffine() const
 {
   // NOTE: last row needs to be 0 0 0 1 for matrix to be affine
   return (0 == data[3]) && (0 == data[7]) && (0 == data[11]) && (1 == data[15]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TMatrix4<T> TMatrix4<T>::multiply(const TMatrix4<T>& matrix) const
+TMatrix4<T> TMatrix4<T>::multiply(const TMatrix4<T>& matrix) const
 {
   TMatrix4<T> newMatrix;
 
@@ -230,14 +234,14 @@ inline TMatrix4<T> TMatrix4<T>::multiply(const TMatrix4<T>& matrix) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TMatrix4<T> TMatrix4<T>::transposed() const
+TMatrix4<T> TMatrix4<T>::transposed() const
 {
   return TMatrix4<T>(data[0], data[4], data[8], data[12], data[1], data[5], data[9], data[13], data[2], data[6], data[10], data[14], data[3], data[7], data[11], 
                      data[15]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline void TMatrix4<T>::setScale(T x, T y, T z)
+void TMatrix4<T>::setScale(T x, T y, T z)
 {
   data[0]  = x;
   data[5]  = y;
@@ -245,7 +249,7 @@ inline void TMatrix4<T>::setScale(T x, T y, T z)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline void TMatrix4<T>::setTranslation(T x, T y, T z)
+void TMatrix4<T>::setTranslation(T x, T y, T z)
 {
   data[12] = x;
   data[13] = y;
@@ -253,13 +257,13 @@ inline void TMatrix4<T>::setTranslation(T x, T y, T z)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TVector4<T> TMatrix4<T>::translation() const
+TVector4<T> TMatrix4<T>::translation() const
 {
   return TVector4<T>(data[12], data[13], data[14], data[15]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TMatrix4<T> operator + (const TMatrix4<T>& left, const TMatrix4<T>& right)
+TMatrix4<T> operator + (const TMatrix4<T>& left, const TMatrix4<T>& right)
 {
   TMatrix4<T> out(left);
   out += right;
@@ -268,7 +272,7 @@ inline TMatrix4<T> operator + (const TMatrix4<T>& left, const TMatrix4<T>& right
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TMatrix4<T> operator - (const TMatrix4<T>& left, const TMatrix4<T>& right)
+TMatrix4<T> operator - (const TMatrix4<T>& left, const TMatrix4<T>& right)
 {
   TMatrix4<T> out(left);
   out -= right;
@@ -277,7 +281,7 @@ inline TMatrix4<T> operator - (const TMatrix4<T>& left, const TMatrix4<T>& right
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TMatrix4<T> operator * (const TMatrix4<T>& left, const TMatrix4<T>& right)
+TMatrix4<T> operator * (const TMatrix4<T>& left, const TMatrix4<T>& right)
 {
   return left.multiply(right);
 }
@@ -285,4 +289,4 @@ inline TMatrix4<T> operator * (const TMatrix4<T>& left, const TMatrix4<T>& right
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_MATRIX4_H
+#endif // EGE_CORE_MATH_MATRIX4_H

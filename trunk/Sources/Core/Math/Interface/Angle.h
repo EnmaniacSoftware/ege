@@ -1,11 +1,20 @@
-#ifndef EGE_CORE_ANGLE_H
-#define EGE_CORE_ANGLE_H
+#ifndef EGE_CORE_MATH_ANGLE_H
+#define EGE_CORE_MATH_ANGLE_H
 
 #include "EGETypes.h"
 #include "EGEAngle.h"
 #include "EGEMath.h"
 
 EGE_NAMESPACE_BEGIN
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Available direction values. */
+enum AngleDirection
+{
+  EClockwise,              /*!< Clockwise direction (decreasing angle). */
+  ECounterClockwise,       /*!< Counterclockwise direction (increasing angle). */ 
+  EShortest                /*!< Shortest. Can be clockwise or counterclockwise. */
+};
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Debug;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -17,15 +26,17 @@ class Angle
     Angle(const Angle& angle);
     Angle(float32 radians);
 
-    inline const Angle& operator += (const Angle& other) { m_radians += other.m_radians; return *this; }
-    inline const Angle& operator -= (const Angle& other) { m_radians -= other.m_radians; return *this; }
-    inline const Angle& operator *= (float32 scalar) { m_radians *= scalar; return *this; }
-    inline bool         operator > (const Angle& other) const { return m_radians > other.m_radians; }
-    inline bool         operator < (const Angle& other) const { return m_radians < other.m_radians; }
-    inline bool         operator > (float32 radians) const { return m_radians > radians; }
-    inline bool         operator < (float32 radians) const { return m_radians < radians; }
-    inline Angle        operator - () const { return Angle::FromRadians(-m_radians); }
-    inline void         operator = (float32 radians) { m_radians = radians; }
+  operators:
+
+    const Angle& operator += (const Angle& other);
+    const Angle& operator -= (const Angle& other);
+    const Angle& operator *= (float32 scalar);
+    bool         operator > (const Angle& other) const;
+    bool         operator < (const Angle& other) const;
+    bool         operator > (float32 radians) const;
+    bool         operator < (float32 radians) const;
+    Angle        operator - () const;
+    void         operator = (float32 radians);
 
   public:
 
@@ -53,7 +64,7 @@ class Angle
     /*! Returns normalized angle in [0-2PI) degrees interval. */
     Angle normalized() const;
     /*! Returns angle distance from current angle to given one. */
-    Angle distanceTo(const Angle& angle, EGEAngle::Direction direction);
+    Angle distanceTo(const Angle& angle, AngleDirection direction);
 
   private:
 
@@ -96,4 +107,4 @@ Debug& operator << (Debug& debug, const Angle& obj);
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_ANGLE_H
+#endif // EGE_CORE_MATH_ANGLE_H

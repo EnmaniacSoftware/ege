@@ -1,7 +1,7 @@
 #include "Win32/File/FileWin32_p.h"
 #include "Core/Data/DataBuffer.h"
-#include "Core/Math/Math.h"
-#include <EGEDebug.h>
+#include "EGEMath.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

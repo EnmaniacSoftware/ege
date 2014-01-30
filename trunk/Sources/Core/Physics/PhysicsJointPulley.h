@@ -2,8 +2,8 @@
 #define EGE_CORE_PHYSICSJOINTPULLEY_H
 
 #include "EGE.h"
+#include "EGEVector.h"
 #include "Core/Physics/PhysicsJoint.h"
-#include "Core/Math/Vector4.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -1,8 +1,8 @@
-#ifndef EGE_CORE_AXISALIGNEDBOX_H
-#define EGE_CORE_AXISALIGNEDBOX_H
+#ifndef EGE_CORE_MATH_AXISALIGNEDBOX_H
+#define EGE_CORE_MATH_AXISALIGNEDBOX_H
 
 #include "EGETypes.h"
-#include "Core/Math/Vector4.h"
+#include "Core/Math/Interface/Vector4.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -12,8 +12,8 @@ class AxisAlignedBox
   public:
 
     AxisAlignedBox();
-	  AxisAlignedBox(const AxisAlignedBox& cBox);
-	  AxisAlignedBox(const Vector4f& cMin, const Vector4f& cMax);
+	  AxisAlignedBox(const AxisAlignedBox& other);
+	  AxisAlignedBox(const Vector4f& min, const Vector4f& max);
 	 ~AxisAlignedBox();
 
     /*! Available extends. */
@@ -157,4 +157,4 @@ class AxisAlignedBox
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_AXISALIGNEDBOX_H 
+#endif // EGE_CORE_MATH_AXISALIGNEDBOX_H 

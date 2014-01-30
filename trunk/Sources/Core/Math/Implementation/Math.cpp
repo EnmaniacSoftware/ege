@@ -1,4 +1,4 @@
-#include "Core/Math/Math.h"
+#include "Core/Math/Interface/Math.h"
 #include "EGEMatrix.h"
 #include "EGEVector.h"
 #include "EGEQuaternion.h"

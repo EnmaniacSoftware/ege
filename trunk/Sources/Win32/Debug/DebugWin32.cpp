@@ -1,4 +1,4 @@
-#include "Core/Debug/Debug.h"
+#include "Core/Debug/Interface/Debug.h"
 #include <windows.h>
 
 EGE_NAMESPACE_BEGIN

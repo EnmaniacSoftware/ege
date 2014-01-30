@@ -8,8 +8,8 @@
 #include "EGE.h"
 #include "EGETime.h"
 #include "EGEList.h"
+#include "EGEMatrix.h"
 #include "Core/Data/Node.h"
-#include "Core/Math/Matrix4.h"
 #include "Core/Graphics/Camera.h"
 
 EGE_NAMESPACE_BEGIN

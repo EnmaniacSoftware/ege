@@ -40,7 +40,7 @@ void ResourceItemGroup::ResourceLibraryWindowHook(QMenu& menu, const QString& se
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Qt::ItemFlags ResourceItemGroup::flags() const
 {
-  return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+  return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceItemGroup::typeName() const

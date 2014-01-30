@@ -73,13 +73,11 @@ class NoLogger
 #define EGE_NO_LOG_MACRO while (false) egeLog
 
 #ifdef EGE_FEATURE_DEBUG
-
-inline Logger egeLog() { return Logger(); }
-
+  inline Logger egeLog() { return Logger(); }
 #else // EGE_FEATURE_DEBUG
 
 #undef egeLog
-inline EGE::NoLogger egeLog() { return EGE::NoLogger(); }
+inline NoLogger egeLog() { return NoLogger(); }
 #define egeLog EGE_NO_LOG_MACRO
 
 #endif // EGE_FEATURE_DEBUG

@@ -1,7 +1,7 @@
 #ifndef EGE_CIRCLE_H
 #define EGE_CIRCLE_H
 
-#include "Core/Math/Circle.h"
+#include "Core/Math/Interface/Circle.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

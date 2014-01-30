@@ -8,7 +8,7 @@
 #include "EGEMatrix.h"
 #include "EGERect.h"
 #include "EGEPlane.h"
-#include "Core/Math/Angle.h"
+#include "EGEAngle.h"
 
 EGE_NAMESPACE_BEGIN
 

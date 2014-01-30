@@ -1,4 +1,4 @@
-#include "Core/Debug/Console.h"
+#include "Core/Debug/Interface/Console.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -1,5 +1,5 @@
-#include "Core/Math/Angle.h"
-#include "Core/Math/Math.h"
+#include "Core/Math/Interface/Angle.h"
+#include "Core/Math/Interface/Math.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
@@ -15,6 +15,54 @@ Angle::Angle(const Angle& angle) : m_radians(angle.radians())
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Angle::Angle(float32 radians) : m_radians(radians)
 {
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const Angle& Angle::operator += (const Angle& other)
+{ 
+  m_radians += other.m_radians; 
+  return *this; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const Angle& Angle::operator -= (const Angle& other)
+{ 
+  m_radians -= other.m_radians; 
+  return *this; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const Angle& Angle::operator *= (float32 scalar) 
+{ 
+  m_radians *= scalar; 
+  return *this; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Angle::operator > (const Angle& other) const 
+{ 
+  return m_radians > other.m_radians; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Angle::operator < (const Angle& other) const 
+{ 
+  return m_radians < other.m_radians; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Angle::operator > (float32 radians) const 
+{ 
+  return m_radians > radians; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Angle::operator < (float32 radians) const 
+{ 
+  return m_radians < radians; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Angle Angle::operator - () const 
+{ 
+  return Angle::FromRadians(-m_radians); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Angle::operator = (float32 radians) 
+{ 
+  m_radians = radians; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Angle Angle::FromDegrees(float32 degrees)
@@ -53,7 +101,7 @@ Angle Angle::normalized() const
   return angle;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Angle Angle::distanceTo(const Angle& angle, EGEAngle::Direction direction)
+Angle Angle::distanceTo(const Angle& angle, AngleDirection direction)
 {
   Angle out;
 
@@ -65,8 +113,8 @@ Angle Angle::distanceTo(const Angle& angle, EGEAngle::Direction direction)
   // NOTE: for SHORTEST we just do a lucky guess and post process later
   switch (direction)
   {
-    case EGEAngle::DIRECTION_SHORTEST:
-    case EGEAngle::DIRECTION_CLOCKWISE:
+    case EShortest:
+    case EClockwise:
       
       if (angle1.radians() >= angle2.radians())
       {
@@ -78,7 +126,7 @@ Angle Angle::distanceTo(const Angle& angle, EGEAngle::Direction direction)
       }
       break;
 
-    case EGEAngle::DIRECTION_COUNTERCLOCKWISE:
+    case ECounterClockwise:
       
       if (angle1.radians() >= angle2.radians())
       {
@@ -92,7 +140,7 @@ Angle Angle::distanceTo(const Angle& angle, EGEAngle::Direction direction)
   }
 
   // in case of shortest angle distance...
-  if (EGEAngle::DIRECTION_SHORTEST == direction)
+  if (EShortest == direction)
   {
     // ...check if this is not shortest...
     if (out.m_radians > EGEMath::PI)

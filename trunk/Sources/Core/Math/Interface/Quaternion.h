@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_QUATERNION_H
-#define EGE_CORE_QUATERNION_H
+#ifndef EGE_CORE_MATH_QUATERNION_H
+#define EGE_CORE_MATH_QUATERNION_H
 
 /** Class representing quaternion. Quaternion is defined as following: q = xi + yj + zk + w.
  *  While using unit quaternions for rotations in 3D space the following holds:
@@ -10,10 +10,10 @@
  */
 
 #include "EGETypes.h"
-#include "Core/Math/Math.h"
-#include "Core/Math/Vector3.h"
-#include "Core/Math/Matrix4.h"
-#include "Core/Math/Angle.h"
+#include "Core/Math/Interface/Math.h"
+#include "Core/Math/Interface/Vector3.h"
+#include "Core/Math/Interface/Matrix4.h"
+#include "Core/Math/Interface/Angle.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -25,13 +25,17 @@ class TQuaternion
 
     TQuaternion();
     TQuaternion(T x, T y, T z, T w);
-    TQuaternion(const TQuaternion& quat);
+    TQuaternion(const TQuaternion& other);
     TQuaternion(const TVector3<T>& axis, const Angle& angle);
     TQuaternion(const TMatrix4<T>& matrix);
 
-    bool        operator == (const TQuaternion& quaternion) const;
+  operators:
+
+    bool        operator == (const TQuaternion& other) const;
     TQuaternion operator - () const;
     TVector3<T> operator * (const TVector3<T>& vector) const;
+
+  public:
 
     /*! Creates quaternion from rotation along arbitrary axis. */
     void create(const TVector3<T>& axis, const Angle& angle);
@@ -92,7 +96,7 @@ TQuaternion<T>::TQuaternion(T x, T y, T z, T w) : x(x), y(y), z(z), w(w)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TQuaternion<T>::TQuaternion(const TQuaternion& quat) : x(quat.x), y(quat.y), z(quat.z), w(quat.w)
+TQuaternion<T>::TQuaternion(const TQuaternion& other) : x(other.x), y(other.y), z(other.z), w(other.w)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -144,19 +148,19 @@ TQuaternion<T>::TQuaternion(const TMatrix4<T>& matrix)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline bool TQuaternion<T>::operator == (const TQuaternion<T>& quaternion) const
+bool TQuaternion<T>::operator == (const TQuaternion<T>& other) const
 {
-  return (x == quaternion.x) && (y == quaternion.y) && (z == quaternion.z) && (w == quaternion.w);
+  return (x == other.x) && (y == other.y) && (z == other.z) && (w == other.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TQuaternion<T> TQuaternion<T>::operator - () const
+TQuaternion<T> TQuaternion<T>::operator - () const
 {
   return TQuaternion(-x, -y, -z, -w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TVector3<T> TQuaternion<T>::operator * (const TVector3<T>& vector) const
+TVector3<T> TQuaternion<T>::operator * (const TVector3<T>& vector) const
 {
   // nVidia SDK implementation
   TVector3<T> uv;
@@ -172,7 +176,7 @@ inline TVector3<T> TQuaternion<T>::operator * (const TVector3<T>& vector) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline void TQuaternion<T>::create(const TVector3<T>& axis, const Angle& angle)
+void TQuaternion<T>::create(const TVector3<T>& axis, const Angle& angle)
 {
   // axis is unit length
   // angle = A
@@ -193,7 +197,7 @@ inline void TQuaternion<T>::create(const TVector3<T>& axis, const Angle& angle)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline void TQuaternion<T>::convertTo(TVector3<T>& axis, Angle& angle) const
+void TQuaternion<T>::convertTo(TVector3<T>& axis, Angle& angle) const
 {
   // calculate inverse length of imaginary axes
   T invLength = 1.0f / (x * x + y * y + z * z);
@@ -220,7 +224,7 @@ inline void TQuaternion<T>::convertTo(TVector3<T>& axis, Angle& angle) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline void TQuaternion<T>::convertTo(TMatrix4<T>& matrix) const
+void TQuaternion<T>::convertTo(TMatrix4<T>& matrix) const
 {
   // first column
 	matrix[0][0] = 1.0f - 2.0f * (y * y + z * z); 
@@ -239,52 +243,52 @@ inline void TQuaternion<T>::convertTo(TMatrix4<T>& matrix) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TQuaternion<T> TQuaternion<T>::multiply(const TQuaternion<T>& quat) const
+TQuaternion<T> TQuaternion<T>::multiply(const TQuaternion<T>& quat) const
 {
   return TQuaternion(w * quat.x + x * quat.w + y * quat.z - z * quat.y, w * quat.y + y * quat.w + z * quat.x - x * quat.z,
                      w * quat.z + z * quat.w + x * quat.y - y * quat.x, w * quat.w - x * quat.x - y * quat.y - z * quat.z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline Angle TQuaternion<T>::angle() const 
+Angle TQuaternion<T>::angle() const 
 { 
   return Angle::FromRadians(2.0f * Math::ACos(w)); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TQuaternion<T>::dotProduct(const TQuaternion<T>& quat) const
+T TQuaternion<T>::dotProduct(const TQuaternion<T>& quat) const
 {
   return (x * quat.x) + (y * quat.y) + (z * quat.z) + (w * quat.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline void TQuaternion<T>::normalize()
+void TQuaternion<T>::normalize()
 {
   T factor = 1.0f / length();
   *this = *this * factor;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TQuaternion<T>::length() const
+T TQuaternion<T>::length() const
 {
   return Math::Sqrt((x * x) + (y * y) + (z * z) + (w * w));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TQuaternion<T>::lengthSquared() const
+T TQuaternion<T>::lengthSquared() const
 {
   return (x * x) + (y * y) + (z * z) + (w * w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TQuaternion<T> TQuaternion<T>::conjugated() const
+TQuaternion<T> TQuaternion<T>::conjugated() const
 {
   // NOTE: must be normalized
   return TQuaternion<T>(-x, -y, -z, w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline void TQuaternion<T>::conjugate()
+void TQuaternion<T>::conjugate()
 {
   x = -x;
   y = -y;
@@ -294,25 +298,25 @@ inline void TQuaternion<T>::conjugate()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TQuaternion<T> operator * (const TQuaternion<T>& left, const TQuaternion<T>& right)
+TQuaternion<T> operator * (const TQuaternion<T>& left, const TQuaternion<T>& right)
 {
   return left.multiply(right);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TQuaternion<T> operator * (T scalar, const TQuaternion<T>& right)
+TQuaternion<T> operator * (T scalar, const TQuaternion<T>& right)
 {
   return TQuaternion<T>(right.x * scalar, right.y * scalar, right.z * scalar, right.w * scalar);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TQuaternion<T> operator * (const TQuaternion<T>& left, T scalar)
+TQuaternion<T> operator * (const TQuaternion<T>& left, T scalar)
 {
   return TQuaternion<T>(left.x * scalar, left.y * scalar, left.z * scalar, left.w * scalar);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TQuaternion<T> operator + (const TQuaternion<T>& left, const TQuaternion<T>& right)
+TQuaternion<T> operator + (const TQuaternion<T>& left, const TQuaternion<T>& right)
 {
   return TQuaternion<T>(left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w);
 }
@@ -320,4 +324,4 @@ inline TQuaternion<T> operator + (const TQuaternion<T>& left, const TQuaternion<
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_QUATERNION_H
+#endif // EGE_CORE_MATH_QUATERNION_H

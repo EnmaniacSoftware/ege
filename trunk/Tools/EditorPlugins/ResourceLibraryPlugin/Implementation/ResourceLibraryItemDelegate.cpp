@@ -119,17 +119,17 @@ QWidget* ResourceLibraryItemDelegate::createEditor(QWidget* parent, const QStyle
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//void ResourceLibraryItemDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
-//{
-//  ResourceItem* item = static_cast<ResourceItem*>(convertModelIndex(index).internalPointer());
+void ResourceLibraryItemDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+  ResourceItem* item = static_cast<ResourceItem*>(convertModelIndex(index).internalPointer());
 
-//  // process according to type
-//  if (ResourceItemGroup::TypeName() == item->typeName())
-//  {
-//    editor->move(option.rect.x() + KIconOffset + option.rect.height() + KContainerTypeTextOffset, option.rect.y());
-//    editor->resize(editor->size().width(), option.rect.size().height());
-//  }
-//}
+  // process according to type
+  if (ResourceItemGroup::TypeName() == item->typeName())
+  {
+    editor->move(option.rect.x() + KIconOffset + option.rect.height() + KContainerTypeTextOffset, option.rect.y());
+    editor->resize(editor->size().width(), option.rect.size().height());
+  }
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryItemDelegate::setView(QAbstractItemView* view)
 {

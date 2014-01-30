@@ -79,6 +79,7 @@ inline void ege_noop() {}
 
 #define EGE_UNUSED(x) (void) x;
 
+#define operators public
 #define signals
 #define emit
 #define slots

@@ -1,22 +1,9 @@
 #ifndef EGE_DEBUG_H
 #define EGE_DEBUG_H
 
-#include "Core/Platform.h"
-#include "Core/Debug/Console.h"
+#include "Core/Debug/Interface/Debug.h"
 
 EGE_NAMESPACE_BEGIN
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Available debug message types. */
-enum DebugMsgType
-{
-  DMT_NORMAL,               /*!< Normal debug message. Usually, informative. */
-  DMT_WARNING,              /*!< Warning debug message. Usually, for recoverable issues. */
-  DMT_CRITICAL              /*!< Critical debug message. Usually, for unrecoverable issues. */
-};
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #ifdef EGE_FEATURE_DEBUG
@@ -27,7 +14,7 @@ EGE_NAMESPACE_END
   #define EGE_ASSERT_X(cond, reason) ege_noop()
 #endif // EGE_FEATURE_DEBUG
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#include "Core/Debug/Debug.h"
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
 
 #endif // EGE_DEBUG_H

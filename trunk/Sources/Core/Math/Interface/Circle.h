@@ -1,11 +1,11 @@
-#ifndef EGE_CORE_CIRCLE_H
-#define EGE_CORE_CIRCLE_H
+#ifndef EGE_CORE_MATH_CIRCLE_H
+#define EGE_CORE_MATH_CIRCLE_H
 
 /** Class representing circle.
  */
 
-#include <EGETypes.h>
-#include <EGEVector.h>
+#include "EGETypes.h"
+#include "EGEVector.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -53,13 +53,13 @@ TCircle<T>::TCircle(const TVector2<T>& center, T radius) : x(center.x), y(center
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline bool TCircle<T>::contains(T pointX, T pointY) const
+bool TCircle<T>::contains(T pointX, T pointY) const
 {
   return (pointX >= (x - r)) && (pointX <= (x + r)) && (pointY >= (y - r)) && (pointY <= (y + r));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline bool TCircle<T>::contains(const TVector2<T>& point) const
+bool TCircle<T>::contains(const TVector2<T>& point) const
 {
   return (point.x >= (x - r)) && (point.x <= (x + r)) && (point.y >= (y - r)) && (point.y <= (y + r));
 }
@@ -67,4 +67,4 @@ inline bool TCircle<T>::contains(const TVector2<T>& point) const
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_CIRCLE_H
+#endif // EGE_CORE_MATH_CIRCLE_H

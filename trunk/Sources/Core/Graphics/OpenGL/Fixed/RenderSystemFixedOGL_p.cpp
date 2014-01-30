@@ -16,7 +16,7 @@
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Graphics/TextureImage.h"
-#include "Core/Debug/EngineInfo.h"
+#include "Core/Debug/Interface/EngineInfo.h"
 #include "EGERenderQueues.h"
 #include "EGEOpenGL.h"
 #include "EGETimer.h"

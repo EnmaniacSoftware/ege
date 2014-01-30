@@ -1,8 +1,8 @@
-#include "Core/Debug/Logger.h"
+#include "Core/Debug/Interface/Logger.h"
 #include "EGEFile.h"
 
 EGE_NAMESPACE_BEGIN
-
+  
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger::Logger(const String& logFileName, bool timeStamp) : m_referenceCounter(1), m_spaceSeperated(true), m_timeStampEnabled(timeStamp)
 {

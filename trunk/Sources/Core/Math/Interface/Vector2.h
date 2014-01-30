@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_VECTOR2_H
-#define EGE_CORE_VECTOR2_H
+#ifndef EGE_CORE_MATH_VECTOR2_H
+#define EGE_CORE_MATH_VECTOR2_H
 
 /**
   This class represents 2D vector.
@@ -7,7 +7,7 @@
 
 #include "EGETypes.h"
 #include "EGEDebug.h"
-#include "Core/Math/Math.h"
+#include "Core/Math/Interface/Math.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -19,13 +19,17 @@ class TVector2
 
     TVector2();
     TVector2(T x, T y);
-		TVector2(const TVector2& vector);
+		TVector2(const TVector2& other);
+
+  operators:
 
     void operator      *= (T scalar);
-    bool operator      == (const TVector2& vector) const;
-    bool operator      != (const TVector2& vector) const;
-    TVector2& operator += (const TVector2& vector);
-    TVector2& operator -= (const TVector2& vector);
+    bool operator      == (const TVector2& other) const;
+    bool operator      != (const TVector2& other) const;
+    TVector2& operator += (const TVector2& other);
+    TVector2& operator -= (const TVector2& other);
+
+  public:
 
     /*! Sets vector components. */
     void set(T x, T y);
@@ -90,31 +94,31 @@ TVector2<T>::TVector2(T x, T y) : x(x), y(y)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector2<T>::TVector2(const TVector2<T>& vector) : x(vector.x), y(vector.y)
+TVector2<T>::TVector2(const TVector2<T>& other) : x(other.x), y(other.y)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline void TVector2<T>::set(T x, T y) 
+void TVector2<T>::set(T x, T y) 
 { 
   this->x = x; 
   this->y = y; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TVector2<T>::length() const
+T TVector2<T>::length() const
 {
   return Math::Sqrt((x * x) + (y * y)); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TVector2<T>::lengthSquared() const
+T TVector2<T>::lengthSquared() const
 {
   return (x * x) + (y * y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline void TVector2<T>::normalize()
+void TVector2<T>::normalize()
 {
   T length = this->length();
 
@@ -131,7 +135,7 @@ inline void TVector2<T>::normalize()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TVector2<T> TVector2<T>::normalized() const
+TVector2<T> TVector2<T>::normalized() const
 {
   TVector2<T> out = *this;
   out.normalize();
@@ -140,50 +144,50 @@ inline TVector2<T> TVector2<T>::normalized() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TVector2<T>::dotProduct(const TVector2& vector) const 
+T TVector2<T>::dotProduct(const TVector2& vector) const 
 { 
   return (x * vector.x) + (y * vector.y); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline float32 TVector2<T>::distanceTo(const TVector2& vector) const
+float32 TVector2<T>::distanceTo(const TVector2& vector) const
 {
   return Math::Sqrt((x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TVector2<T>::distanceSquaredTo(const TVector2& vector) const
+T TVector2<T>::distanceSquaredTo(const TVector2& vector) const
 {
   return (x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TVector2<T> TVector2<T>::perpendicular() const
+TVector2<T> TVector2<T>::perpendicular() const
 {
   return TVector2<T>(y, -x);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline bool TVector2<T>::operator == (const TVector2& vector) const
+bool TVector2<T>::operator == (const TVector2& vector) const
 {
   return (x == vector.x) && (y == vector.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline bool TVector2<T>::operator != (const TVector2& vector) const
+bool TVector2<T>::operator != (const TVector2& vector) const
 {
   return (x != vector.x) || (y != vector.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline void TVector2<T>::operator *= (T scalar)
+void TVector2<T>::operator *= (T scalar)
 {
   x *= scalar;
   y *= scalar;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TVector2<T>& TVector2<T>::operator += (const TVector2& vector)
+TVector2<T>& TVector2<T>::operator += (const TVector2& vector)
 {
   x += vector.x;
   y += vector.y;
@@ -192,7 +196,7 @@ inline TVector2<T>& TVector2<T>::operator += (const TVector2& vector)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TVector2<T>& TVector2<T>::operator -= (const TVector2& vector)
+TVector2<T>& TVector2<T>::operator -= (const TVector2& vector)
 {
   x -= vector.x;
   y -= vector.y;
@@ -201,37 +205,37 @@ inline TVector2<T>& TVector2<T>::operator -= (const TVector2& vector)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TVector2<T> operator * (T scalar, const TVector2<T>& right)
+TVector2<T> operator * (T scalar, const TVector2<T>& right)
 {
   return TVector2<T>(right.x * scalar, right.y * scalar);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TVector2<T> operator * (const TVector2<T>& left, T scalar)
+TVector2<T> operator * (const TVector2<T>& left, T scalar)
 {
   return TVector2<T>(left.x * scalar, left.y * scalar);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TVector2<T> operator + (const TVector2<T>& left, const TVector2<T>& right)
+TVector2<T> operator + (const TVector2<T>& left, const TVector2<T>& right)
 {
   return TVector2<T>(left.x + right.x, left.y + right.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TVector2<T> operator - (const TVector2<T>& left, const TVector2<T>& right)
+TVector2<T> operator - (const TVector2<T>& left, const TVector2<T>& right)
 {
   return TVector2<T>(left.x - right.x, left.y - right.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TVector2<T> operator * (const TVector2<T>& left, const TVector2<T>& right)
+TVector2<T> operator * (const TVector2<T>& left, const TVector2<T>& right)
 {
   return TVector2<T>(left.x * right.x, left.y * right.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline Debug operator << (Debug debug, const TVector2<T>& obj)
+Debug operator << (Debug debug, const TVector2<T>& obj)
 {
   debug.nospace() << "Vector2(" << obj.x << ", " << obj.y << ")";
   return debug.space();
@@ -240,4 +244,4 @@ inline Debug operator << (Debug debug, const TVector2<T>& obj)
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_VECTOR2_H
+#endif // EGE_CORE_MATH_VECTOR2_H

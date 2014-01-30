@@ -286,6 +286,18 @@
     <Filter Include="Core\Cache\Interface">
       <UniqueIdentifier>{97a40e79-9887-4c31-968e-16a684f98bde}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Math\Implementation">
+      <UniqueIdentifier>{845d0e42-9ca6-45dc-b49a-f887002ba3ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Math\Interface">
+      <UniqueIdentifier>{df1219b8-668b-4dc6-9bdf-f8ad32a8eab0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Debug\Implementation">
+      <UniqueIdentifier>{c7dc9213-98fb-4794-a636-3bbf72867d5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Debug\Interface">
+      <UniqueIdentifier>{0e98efea-9418-4b2b-8e42-e30627f0d379}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
@@ -323,9 +335,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderWindow.cpp">
       <Filter>Core\Graphics\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Math.cpp">
-      <Filter>Core\Math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Memory\MemoryManager.cpp">
       <Filter>Core\Memory</Filter>
@@ -378,9 +387,6 @@
     <ClCompile Include="..\..\Sources\Core\File\File.cpp">
       <Filter>Core\File</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Debug\Debug.cpp">
-      <Filter>Core\Debug</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp">
       <Filter>Win32\Debug</Filter>
     </ClCompile>
@@ -395,12 +401,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.cpp">
       <Filter>Win32\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Angle.cpp">
-      <Filter>Core\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\AxisAlignedBox.cpp">
-      <Filter>Core\Math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\File\FileWin32_p.cpp">
       <Filter>Win32\File</Filter>
@@ -474,9 +474,6 @@
     <ClCompile Include="..\..\Sources\Core\Overlay\ImageOverlay.cpp">
       <Filter>Core\Overlay</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Debug\Logger.cpp">
-      <Filter>Core\Debug</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Hash.cpp">
       <Filter>Core\Crypto</Filter>
     </ClCompile>
@@ -506,9 +503,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.cpp">
       <Filter>Core\Graphics\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Debug\Console.cpp">
-      <Filter>Core\Debug</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSpritesheet.cpp">
       <Filter>Core\Resource</Filter>
@@ -816,9 +810,6 @@
     <ClCompile Include="..\..\Sources\Core\Tools\CommandLineParser.cpp">
       <Filter>Core\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Debug\EngineInfo.cpp">
-      <Filter>Core\Debug</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\main.cpp">
       <Filter>Win32</Filter>
     </ClCompile>
@@ -921,13 +912,31 @@
     <ClCompile Include="..\..\Sources\Core\XML\Implementation\TinyXml\XmlElementTinyXml_p.cpp">
       <Filter>Core\XML\Implementation\TinyXml</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Implementation\Angle.cpp">
+      <Filter>Core\Math\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Implementation\AxisAlignedBox.cpp">
+      <Filter>Core\Math\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Implementation\Math.cpp">
+      <Filter>Core\Math\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Console.cpp">
+      <Filter>Core\Debug\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Debug.cpp">
+      <Filter>Core\Debug\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Debug\Implementation\EngineInfo.cpp">
+      <Filter>Core\Debug\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Logger.cpp">
+      <Filter>Core\Debug\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h">
       <Filter>Core\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Debug\Debug.h">
-      <Filter>Core\Debug</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Event\Event.h">
       <Filter>Core\Event</Filter>
@@ -970,33 +979,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderWindow.h">
       <Filter>Core\Graphics\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\AxisAlignedBox.h">
-      <Filter>Core\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Math.h">
-      <Filter>Core\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Matrix4.h">
-      <Filter>Core\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Plane.h">
-      <Filter>Core\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Quaternion.h">
-      <Filter>Core\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Rect.h">
-      <Filter>Core\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Vector2.h">
-      <Filter>Core\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Vector3.h">
-      <Filter>Core\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Vector4.h">
-      <Filter>Core\Math</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Memory\Memory.h">
       <Filter>Core\Memory</Filter>
@@ -1102,9 +1084,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.h">
       <Filter>Win32\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Angle.h">
-      <Filter>Core\Math</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Win32\File\FileWin32_p.h">
       <Filter>Win32\File</Filter>
@@ -1217,15 +1196,9 @@
     <ClInclude Include="..\..\Sources\EGEMatrix.h" />
     <ClInclude Include="..\..\Sources\EGEQuaternion.h" />
     <ClInclude Include="..\..\Sources\EGEPlane.h" />
-    <ClInclude Include="..\..\Sources\Core\Math\Complex.h">
-      <Filter>Core\Math</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEComplex.h" />
     <ClInclude Include="..\..\Sources\Core\Overlay\ImageOverlay.h">
       <Filter>Core\Overlay</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Debug\Logger.h">
-      <Filter>Core\Debug</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEVertexBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEHash.h" />
@@ -1259,9 +1232,6 @@
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEOpenGL.h" />
-    <ClInclude Include="..\..\Sources\Core\Debug\Console.h">
-      <Filter>Core\Debug</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpritesheet.h">
       <Filter>Core\Resource</Filter>
     </ClInclude>
@@ -1377,9 +1347,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\UI\Label.h">
       <Filter>Core\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Circle.h">
-      <Filter>Core\Math</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGECircle.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.h">
@@ -1623,9 +1590,6 @@
     <ClInclude Include="..\..\Sources\Core\Tools\CommandLineParser.h">
       <Filter>Core\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Debug\EngineInfo.h">
-      <Filter>Core\Debug</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.h">
       <Filter>Core\Graphics\OpenGL\Fixed</Filter>
     </ClInclude>
@@ -1741,6 +1705,54 @@
       <Filter>Core\Cache\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGECachedObject.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Angle.h">
+      <Filter>Core\Math\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\AxisAlignedBox.h">
+      <Filter>Core\Math\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Circle.h">
+      <Filter>Core\Math\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Complex.h">
+      <Filter>Core\Math\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Math.h">
+      <Filter>Core\Math\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Matrix4.h">
+      <Filter>Core\Math\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Plane.h">
+      <Filter>Core\Math\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Quaternion.h">
+      <Filter>Core\Math\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Rect.h">
+      <Filter>Core\Math\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Vector2.h">
+      <Filter>Core\Math\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Vector3.h">
+      <Filter>Core\Math\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Vector4.h">
+      <Filter>Core\Math\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Debug\Interface\Console.h">
+      <Filter>Core\Debug\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Debug\Interface\Debug.h">
+      <Filter>Core\Debug\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Debug\Interface\EngineInfo.h">
+      <Filter>Core\Debug\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Debug\Interface\Logger.h">
+      <Filter>Core\Debug\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

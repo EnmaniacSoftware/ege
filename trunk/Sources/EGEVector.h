@@ -1,9 +1,9 @@
 #ifndef EGE_VECTOR_H
 #define EGE_VECTOR_H
 
-#include "Core/Math/Vector2.h"
-#include "Core/Math/Vector3.h"
-#include "Core/Math/Vector4.h"
+#include "Core/Math/Interface/Vector2.h"
+#include "Core/Math/Interface/Vector3.h"
+#include "Core/Math/Interface/Vector4.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

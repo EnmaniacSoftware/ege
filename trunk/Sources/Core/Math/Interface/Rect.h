@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_RECT_H
-#define EGE_CORE_RECT_H
+#ifndef EGE_CORE_MATH_RECT_H
+#define EGE_CORE_MATH_RECT_H
 
 /** Rectangle object. Rectangle is defined by two sets of numbers: x-y coordinate of top-left corner and width-height.
  *  Rectangle is EMPTY if width and/or height equals 0.
@@ -20,10 +20,14 @@ class TRect
   
     TRect(T x = 0, T y = 0, T w = 0, T h = 0);
     TRect(const TRect<T>& rect);
+    
+  operators:
 
-    TRect<T>& operator =(const TRect<T>& rect);
-    bool      operator==(const TRect<T>& rect) const;
-    bool      operator!=(const TRect<T>& rect) const;
+    TRect<T>& operator  = (const TRect<T>& other);
+    bool      operator == (const TRect<T>& other) const;
+    bool      operator != (const TRect<T>& other) const;
+
+  public:
 
     /*! Returns TRUE if rectangle is empty (has no dimensions). */
     bool isEmpty() const;
@@ -81,65 +85,65 @@ TRect<T>::TRect(T x, T y, T w, T h ) : x(x), y(y), width(w), height(h)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TRect<T>::TRect(const TRect<T>& rect) : x(rect.x), y(rect.y), width(rect.width), height(rect.height) 
+TRect<T>::TRect(const TRect<T>& other) : x(other.x), y(other.y), width(other.width), height(other.height) 
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TRect<T>& TRect<T>::operator=(const TRect<T>& rect)
+TRect<T>& TRect<T>::operator=(const TRect<T>& other)
 {
-  x      = rect.x;
-  y      = rect.y;
-  width  = rect.width;
-  height = rect.height;
+  x      = other.x;
+  y      = other.y;
+  width  = other.width;
+  height = other.height;
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline bool TRect<T>::operator==(const TRect<T>& rect) const
+bool TRect<T>::operator==(const TRect<T>& other) const
 {
-  return x == rect.x && y == rect.y && width == rect.width && height == rect.height;
+  return (x == other.x) && (y == other.y) && (width == other.width) && (height == other.height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline bool TRect<T>::operator!=(const TRect<T>& rect) const
+bool TRect<T>::operator!=(const TRect<T>& other) const
 {
-  return !(*this == rect);
+  return !(*this == other);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline bool TRect<T>::isEmpty() const
+bool TRect<T>::isEmpty() const
 {
   return (0 == width) || (0 == height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TRect<T>::right() const
+T TRect<T>::right() const
 {
   return x + width - 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TRect<T>::bottom() const
+T TRect<T>::bottom() const
 {
   return y + height - 1;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TRect<T>::left() const
+T TRect<T>::left() const
 {
   return x;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TRect<T>::top() const
+T TRect<T>::top() const
 {
   return y;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline bool TRect<T>::isNull() const
+bool TRect<T>::isNull() const
 {
   return (0 > width) || (0 > height);
 }
@@ -151,13 +155,13 @@ inline bool TRect<T>::contains(T x, T y) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline bool TRect<T>::contains(const TVector2<T>& point) const
+bool TRect<T>::contains(const TVector2<T>& point) const
 {
   return contains(point.x, point.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TRect<T> TRect<T>::intersect(const TRect<T>& rect) const
+TRect<T> TRect<T>::intersect(const TRect<T>& rect) const
 {
   TRect<T> out;
 
@@ -170,7 +174,7 @@ inline TRect<T> TRect<T>::intersect(const TRect<T>& rect) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TRect<T> TRect<T>::unite(const TRect<T>& rect) const
+TRect<T> TRect<T>::unite(const TRect<T>& rect) const
 {
   TRect<T> out;
 
@@ -183,7 +187,7 @@ inline TRect<T> TRect<T>::unite(const TRect<T>& rect) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TRect<T> TRect<T>::combine(const TRect<T>& rect) const
+TRect<T> TRect<T>::combine(const TRect<T>& rect) const
 {
   TRect<T> out;
 
@@ -196,7 +200,7 @@ inline TRect<T> TRect<T>::combine(const TRect<T>& rect) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline bool TRect<T>::contains(const TRect<T>& rect) const
+bool TRect<T>::contains(const TRect<T>& rect) const
 {
   // sanity checks
   if (rect.isNull() || rect.isEmpty() || isNull() || isEmpty())
@@ -214,7 +218,7 @@ inline bool TRect<T>::contains(const TRect<T>& rect) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline Debug operator << (Debug debug, const TRect<T>& obj)
+Debug operator << (Debug debug, const TRect<T>& obj)
 {
   debug.nospace() << "Rect(" << obj.x << "," << obj.y << " - " << obj.width << "," << obj.height << ")";
   return debug.space();
@@ -223,4 +227,4 @@ inline Debug operator << (Debug debug, const TRect<T>& obj)
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_RECT_H
+#endif // EGE_CORE_MATH_RECT_H

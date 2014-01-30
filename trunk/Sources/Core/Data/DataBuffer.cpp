@@ -1,5 +1,5 @@
 #include "Core/Data/DataBuffer.h"
-#include "Core/Math/Math.h"
+#include "Core/Math/Interface/Math.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN

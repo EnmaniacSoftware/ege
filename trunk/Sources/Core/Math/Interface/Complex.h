@@ -1,12 +1,12 @@
-#ifndef EGE_CORE_COMPLEX_H
-#define EGE_CORE_COMPLEX_H
+#ifndef EGE_CORE_MATH_COMPLEX_H
+#define EGE_CORE_MATH_COMPLEX_H
 
 /** Class representing complex number in the following form: x + i*y.
 */
 
 #include "EGETypes.h"
-#include "Core/Math/Math.h"
-#include "Core/Math/Angle.h"
+#include "Core/Math/Interface/Math.h"
+#include "Core/Math/Interface/Angle.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -21,8 +21,12 @@ class TComplex
     TComplex(const Angle& angle);
     TComplex(const TComplex& other);
 
-    TComplex& operator*=(const TComplex& other);
-    TComplex& operator=(const TComplex& other);
+  operators:
+
+    TComplex& operator *= (const TComplex& other);
+    TComplex& operator  = (const TComplex& other);
+
+  public:
 
     /*! Creates number from given angle. */
     void create(const Angle& angle);
@@ -77,7 +81,7 @@ TComplex<T>::TComplex(const TComplex& other) : x(other.x), y(other.y)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TComplex<T>& TComplex<T>::operator*=(const TComplex& other)
+TComplex<T>& TComplex<T>::operator*=(const TComplex& other)
 {
   T newX = x * other.x + y * other.y;
   T newY = y * other.x + x * other.y;
@@ -89,7 +93,7 @@ inline TComplex<T>& TComplex<T>::operator*=(const TComplex& other)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline TComplex<T>& TComplex<T>::operator=(const TComplex& other)
+TComplex<T>& TComplex<T>::operator=(const TComplex& other)
 {
   x = other.x;
   y = other.y;
@@ -98,19 +102,19 @@ inline TComplex<T>& TComplex<T>::operator=(const TComplex& other)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TComplex<T>::length() const
+T TComplex<T>::length() const
 {
   return Math::Sqrt((x * x) + (y * y)); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TComplex<T>::lengthSquared() const
+T TComplex<T>::lengthSquared() const
 {
   return (x * x) + (y * y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline void TComplex<T>::normalize()
+void TComplex<T>::normalize()
 {
   T length = this->length();
 
@@ -127,20 +131,20 @@ inline void TComplex<T>::normalize()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TComplex<T>::dotProduct(const TComplex<T>& other) const
+T TComplex<T>::dotProduct(const TComplex<T>& other) const
 {
   return (x * other.x) + (y * other.y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline void TComplex<T>::create(const Angle& angle)
+void TComplex<T>::create(const Angle& angle)
 {
   x = Math::Cos(angle.radians());
   y = Math::Sin(angle.radians());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline Angle TComplex<T>::angle() const
+Angle TComplex<T>::angle() const
 {
   return Angle(Math::ATan2(y, x));
 }
@@ -148,4 +152,4 @@ inline Angle TComplex<T>::angle() const
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_COMPLEX_H
+#endif // EGE_CORE_MATH_COMPLEX_H

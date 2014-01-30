@@ -1,4 +1,4 @@
-#include "Core/Debug/Debug.h"
+#include "EGEDebug.h"
 #include "Core/File/File.h"
 #include "Core/Data/DataBuffer.h"
 

@@ -1,6 +1,6 @@
 #include "Core/Graphics/Render/RenderPass.h"
 #include "Core/Graphics/TextureImage.h"
-#include "Core/Math/Math.h"
+#include "EGEMath.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -7,9 +7,9 @@
 
 #include "EGE.h"
 #include "EGEComponent.h"
-#include "Core/Math/Quaternion.h"
-#include "Core/Math/Vector4.h"
-#include "Core/Math/Matrix4.h"
+#include "EGEQuaternion.h"
+#include "EGEVector.h"
+#include "EGEMatrix.h"
 #include "Core/Physics/PhysicsJoint.h"
 #include "EGEPhysics.h"
 #include "EGEList.h"

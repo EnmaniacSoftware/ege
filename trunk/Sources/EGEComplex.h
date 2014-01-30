@@ -1,7 +1,7 @@
 #ifndef EGE_COMPLEX_H
 #define EGE_COMPLEX_H
 
-#include "Core/Math/Complex.h"
+#include "Core/Math/Interface/Complex.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
