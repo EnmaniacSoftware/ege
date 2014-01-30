@@ -8,6 +8,7 @@
 /*! Available image compression formats. */
 enum ImageCompressionFormat
 {
+  EImageCompressionInvalid = -1,
   EImageCompressionPNG,
   EImageCompressionPVRTC_4bit,
   EImageCompressionPVRTC_2bit

@@ -15,7 +15,96 @@ using NPropertyObject::PropertyDefinition;
 using NPropertyObject::PropertyValueContainer;
 using NPropertyObject::PropertyValueHelper;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const QString KCompressionFormatArrtibute = "compression";
+static const QString KFormatArrtibute            = "format";
+static const QString KWidthArrtibute             = "width";
+static const QString KHeightArrtibute            = "height";
+
 const QString ResourceItemTextureAtlas::KPropertyNameCompression = ResourceItemTextureAtlas::tr("Compression");
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function converting texture compression format type into string value. */
+static QString GetTextureCompressionFormatAsText(ImageCompressionFormat format)
+{
+  QString value;
+
+  ImageCompressionFormatInfoList list = SupportedImageCompressionFormats();
+  for (int i = 0; i < list.size() && value.isEmpty(); ++i)
+  {
+    const ImageCompressionFormatInfo& info = list.at(i);
+
+    if (info.format == format)
+    {
+      value = info.name;
+    }
+  }
+
+  Q_ASSERT( ! value.isEmpty());
+
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function converting string to texture compression format type value. */
+static ImageCompressionFormat GetTextureCompressionFormatFromText(QString name)
+{
+  ImageCompressionFormat value = EImageCompressionInvalid;
+
+  ImageCompressionFormatInfoList list = SupportedImageCompressionFormats();
+  for (int i = 0; i < list.size() && (EImageCompressionInvalid == value); ++i)
+  {
+    const ImageCompressionFormatInfo& info = list.at(i);
+
+    if (info.name == name)
+    {
+      value = info.format;
+    }
+  }
+
+  Q_ASSERT(EImageCompressionInvalid != value);
+
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function converting texture format type into string value. */
+static QString GetTextureFormatAsText(QImage::Format format)
+{
+  QString value;
+
+  ImageFormatInfoList list = SupportedImageFormats();
+  for (int i = 0; i < list.size() && value.isEmpty(); ++i)
+  {
+    const ImageFormatInfo& info = list.at(i);
+
+    if (info.format == format)
+    {
+      value = info.name;
+    }
+  }
+
+  Q_ASSERT( ! value.isEmpty());
+
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function converting string to texture format type value. */
+static QImage::Format GetTextureFormatFromText(QString name)
+{
+  QImage::Format value = QImage::Format_Invalid;
+
+  ImageFormatInfoList list = SupportedImageFormats();
+  for (int i = 0; i < list.size() && (QImage::Format_Invalid == value); ++i)
+  {
+    const ImageFormatInfo& info = list.at(i);
+
+    if (info.name == name)
+    {
+      value = info.format;
+    }
+  }
+
+  Q_ASSERT(QImage::Format_Invalid != value);
+
+  return value;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemTextureAtlas::ResourceItemTextureAtlas(const QString& name, const QString& configurationName, ResourceItem* parent)
   : ResourceItemTexture(name, configurationName, parent)
@@ -165,6 +254,44 @@ QSize ResourceItemTextureAtlas::size() const
 void ResourceItemTextureAtlas::onInvalidate()
 {
   m_thumbnail = QImage();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ResourceItemTextureAtlas::serialize(QXmlStreamWriter& stream) const
+{
+  bool result = false;
+
+  // begin serialization
+  if (beginSerialize(stream))
+  {
+    // store texture specific data
+    doSerialize(stream);
+
+    // store atlas specific data
+    stream.writeAttribute(KCompressionFormatArrtibute, GetTextureCompressionFormatAsText(compressionFormat()));
+    stream.writeAttribute(KFormatArrtibute, GetTextureFormatAsText(imageFormat()));
+    stream.writeAttribute(KWidthArrtibute, QString("%1").arg(size().width()));
+    stream.writeAttribute(KHeightArrtibute, QString("%1").arg(size().height()));
+
+    // end serialization
+    result = endSerialize(stream);
+  }
+
+  return result && ! stream.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ResourceItemTextureAtlas::unserialize(QXmlStreamReader& stream)
+{
+  // call base class
+  bool result = ResourceItemTexture::unserialize(stream);
+  if (result)
+  {
+    m_compressionFormat = GetTextureCompressionFormatFromText(stream.attributes().value(KCompressionFormatArrtibute).toString());
+    m_imageFormat = GetTextureFormatFromText(stream.attributes().value(KFormatArrtibute).toString());
+    m_size.setWidth(stream.attributes().value(KWidthArrtibute).toInt());
+    m_size.setHeight(stream.attributes().value(KHeightArrtibute).toInt());
+  }
+
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QList<NPropertyObject::PropertyDefinition> ResourceItemTextureAtlas::propertiesDefinition() const

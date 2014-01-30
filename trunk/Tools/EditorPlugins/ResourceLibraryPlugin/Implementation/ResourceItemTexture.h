@@ -84,6 +84,12 @@ class ResourceItemTexture : public ResourceItem
     QImage::Format imageFormat() const;
     /*! Returns image size (in pixels). */
     virtual QSize size() const;
+    /*! @see ResourceItem::serialize. */
+    bool serialize(QXmlStreamWriter& stream) const override;
+    /*! @see ResourceItem::unserialize. */
+    bool unserialize(QXmlStreamReader& stream) override;
+    /*! Serializes data. */
+    void doSerialize(QXmlStreamWriter& stream) const;
 
   protected:
 
@@ -136,10 +142,6 @@ class ResourceItemTexture : public ResourceItem
     QString typeName() const override;
     /*! @see ResourceItem::sizeHint. */
     QSize sizeHint() const override;
-    /*! @see ResourceItem::serialize. */
-    bool serialize(QXmlStreamWriter& stream) const override;
-    /*! @see ResourceItem::unserialize. */
-    bool unserialize(QXmlStreamReader& stream) override;
     /*! @see ResourceItem::data. */
     QVariant data(int columnIndex, int role) const override;
     /*! @see ResourceItem::setData. */

@@ -365,13 +365,7 @@ bool ResourceItemTexture::serialize(QXmlStreamWriter& stream) const
   if (beginSerialize(stream))
   {
     // store data
-    stream.writeAttribute(KTextureTypeArrtibute, GetTextureTypeAsText(type()));
-    stream.writeAttribute(KPathArrtibute, fullPath());
-    stream.writeAttribute(KMinFilterArrtibute, GetTextureFilterAsText(minificationFilter()));
-    stream.writeAttribute(KMagFilterArrtibute, GetTextureFilterAsText(magnificationFilter()));
-    stream.writeAttribute(KMipMapFilterArrtibute, GetTextureMipMappingFilterAsText(mipMappingFilter()));
-    stream.writeAttribute(KAddressModeSArrtibute, GetAddressingModeAsText(addressModeS()));
-    stream.writeAttribute(KAddressModeTArrtibute, GetAddressingModeAsText(addressModeT()));
+    doSerialize(stream);
 
     // end serialization
     result = endSerialize(stream);
@@ -629,6 +623,18 @@ QSize ResourceItemTexture::size() const
   }
 
   return m_size;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::doSerialize(QXmlStreamWriter& stream) const
+{
+  // store data
+  stream.writeAttribute(KTextureTypeArrtibute, GetTextureTypeAsText(type()));
+  stream.writeAttribute(KPathArrtibute, fullPath());
+  stream.writeAttribute(KMinFilterArrtibute, GetTextureFilterAsText(minificationFilter()));
+  stream.writeAttribute(KMagFilterArrtibute, GetTextureFilterAsText(magnificationFilter()));
+  stream.writeAttribute(KMipMapFilterArrtibute, GetTextureMipMappingFilterAsText(mipMappingFilter()));
+  stream.writeAttribute(KAddressModeSArrtibute, GetAddressingModeAsText(addressModeS()));
+  stream.writeAttribute(KAddressModeTArrtibute, GetAddressingModeAsText(addressModeT()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QImage::Format ResourceItemTexture::imageFormat() const

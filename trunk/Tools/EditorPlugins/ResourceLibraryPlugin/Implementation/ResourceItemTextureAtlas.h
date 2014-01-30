@@ -52,6 +52,10 @@ class ResourceItemTextureAtlas : public ResourceItemTexture
     QSize size() const override;
     /*! @see ResourceItemTexture::onInvalidate. */
     void onInvalidate() override;
+    /*! @see ResourceItemTexture::serialize. */
+    bool serialize(QXmlStreamWriter& stream) const override;
+    /*! @see ResourceItemTexture::unserialize. */
+    bool unserialize(QXmlStreamReader& stream) override;
     /*! @see ResourceItemTexture::propertiesDefinition. */
     QList<NPropertyObject::PropertyDefinition> propertiesDefinition() const override;
     /*! @see ResourceItemTexture::update. */
