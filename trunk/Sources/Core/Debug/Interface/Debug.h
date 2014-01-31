@@ -26,13 +26,11 @@ class Debug
 
     Debug(DebugMessageType type, const String& name);
     Debug(const Debug& other);
-    virtual ~Debug();
+   ~Debug();
   
-  public:
+  operators:
 
     Debug& operator << (bool t);
-    Debug& operator << (char t);
-    Debug& operator << (Char t);
     Debug& operator << (s16 t);
     Debug& operator << (u16 t);
     Debug& operator << (s32 t);
@@ -64,6 +62,18 @@ class Debug
      */
     static void EnableNames(const StringList& names);
 
+  protected:
+
+    /*! Returns data buffer. */
+    const PStringBuffer& buffer() const;
+
+  protected:
+
+    /*! Warning message type prefix. */
+    static const char* KWarningPrefix;
+    /*! Error message type prefix. */
+    static const char* KErrorPrefix;
+
   private:
 
     /*! Inserts space into the stream if required. */
@@ -73,8 +83,6 @@ class Debug
 
     /*! Internal buffer. */
     PStringBuffer m_buffer;
-    /*! Flag indicating output should be directed to console. */
-    bool m_consoleOutput;
     /*! Flag indicating if space should be added after each partial print. */
     bool m_spaceSeperated;
     /*! Message type. */

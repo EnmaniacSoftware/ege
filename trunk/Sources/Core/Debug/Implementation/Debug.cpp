@@ -4,10 +4,12 @@
 EGE_NAMESPACE_BEGIN
   
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const char* Debug::KWarningPrefix = "WARNING: ";
+const char* Debug::KErrorPrefix   = "ERROR: ";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static StringList l_enabledName;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Debug::Debug(DebugMessageType type, const String& name) : m_consoleOutput(true)
-                                                        , m_spaceSeperated(true)
+Debug::Debug(DebugMessageType type, const String& name) : m_spaceSeperated(true)
                                                         , m_type(type)
                                                         , m_enabled(false)
 {
@@ -23,8 +25,8 @@ Debug::Debug(DebugMessageType type, const String& name) : m_consoleOutput(true)
       // init depending on type
       switch (m_type)
       {
-        case EWarning:  *m_buffer << "WARNING: "; break;
-        case EError:    *m_buffer << "CRITICAL: "; break;
+        case EWarning:  *m_buffer << KWarningPrefix; break;
+        case EError:    *m_buffer << KErrorPrefix; break;
       
         default:
           break;
@@ -43,8 +45,8 @@ Debug::~Debug()
   // check if last instance
   if ((NULL != m_buffer) && (1 == m_buffer->referenceCount()))
   {
-    // check if printable to console
-    if (m_consoleOutput && m_enabled)
+    // check if printable
+    if (m_enabled)
     {
       Print(m_buffer->string().toAscii());
     }
@@ -55,26 +57,6 @@ Debug::~Debug()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug& Debug::operator << (bool t)
-{ 
-  if (m_enabled)
-  {
-    *m_buffer << t;
-  }
-
-  return maybeSpace();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Debug& Debug::operator << (char t)
-{ 
-  if (m_enabled)
-  {
-    *m_buffer << t;
-  }
-
-  return maybeSpace();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Debug& Debug::operator << (Char t) 
 { 
   if (m_enabled)
   {
@@ -197,7 +179,6 @@ Debug& Debug::operator = (const Debug& other)
   if (this != &other)
   {
     m_buffer          = other.m_buffer;
-    m_consoleOutput   = other.m_consoleOutput;
     m_spaceSeperated  = other.m_spaceSeperated;
     m_type            = other.m_type;
     m_enabled         = other.m_enabled;
@@ -250,6 +231,11 @@ void Debug::EnableNames(const StringList& names)
       l_enabledName.push_back(*it);
     }
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const PStringBuffer& Debug::buffer() const
+{
+  return m_buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
