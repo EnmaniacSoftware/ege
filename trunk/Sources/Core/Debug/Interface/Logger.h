@@ -1,7 +1,11 @@
-#ifndef EGE_CORE_LOGGER_H
-#define EGE_CORE_LOGGER_H
+#ifndef EGE_CORE_DEBUG_LOGGER_H
+#define EGE_CORE_DEBUG_LOGGER_H
+
+/** Class for logging data to file. 
+ */
 
 #include "EGEString.h"
+#include "EGEStringBuffer.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -14,9 +18,9 @@ class Logger
     Logger(const Logger& other);
    ~Logger();
 
+  operators:
+
     Logger& operator << (bool t);
-    Logger& operator << (char t);
-    Logger& operator << (Char t);
     Logger& operator << (s16 t);
     Logger& operator << (u16 t);
     Logger& operator << (s32 t);
@@ -28,11 +32,19 @@ class Logger
     Logger& operator << (const char* t);
     Logger& operator << (const String& t);
     Logger& operator << (const void* t);
+    Logger& operator = (const Logger& other);
+    
+  public:
 
     /*! Enables spaces insertions after each logged message. */
     Logger& space();
     /*! Disables spaces insertions after each logged message. */    
     Logger& nospace();
+
+  protected:
+
+    /*! Returns data buffer. */
+    const PStringBuffer& buffer() const;
 
   private:
 
@@ -46,9 +58,7 @@ class Logger
     /*! File name. */
     String m_fileName;
     /*! Internal buffer. */
-    String m_buffer;
-    /*! Reference counter. */
-    s32 m_referenceCounter;
+    PStringBuffer m_buffer;
     /*! Flag indicating if space should be added after each partial print. */
     bool m_spaceSeperated;
     /*! TRUE if time stamps should be generated. */
@@ -72,17 +82,18 @@ class NoLogger
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define EGE_NO_LOG_MACRO while (false) egeLog
 
-#ifdef EGE_FEATURE_DEBUG
-  inline Logger egeLog() { return Logger(); }
-#else // EGE_FEATURE_DEBUG
+  #ifdef EGE_FEATURE_DEBUG
+    inline Logger egeLog() { return Logger(); }
+  #else // EGE_FEATURE_DEBUG
 
-#undef egeLog
-inline NoLogger egeLog() { return NoLogger(); }
-#define egeLog EGE_NO_LOG_MACRO
+  #undef egeLog
+  inline NoLogger egeLog() { return NoLogger(); }
+
+  #define egeLog EGE_NO_LOG_MACRO
 
 #endif // EGE_FEATURE_DEBUG
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_LOGGER_H
+#endif // EGE_CORE_DEBUG_LOGGER_H

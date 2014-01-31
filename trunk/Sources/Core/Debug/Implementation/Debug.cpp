@@ -166,9 +166,7 @@ Debug& Debug::operator << (const void* t)
 { 
   if (m_enabled)
   {
-    // TAGE - proper implementation needed once ISerializable is fxed
-    //EGE_ASSERT(4 == sizeof (t));
-    *m_buffer << reinterpret_cast<u32>(t);
+    *m_buffer << String::Format("%p", t);
   }
 
   return maybeSpace();

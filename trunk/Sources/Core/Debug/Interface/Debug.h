@@ -1,10 +1,9 @@
-#ifndef EGE_CORE_DEBUG_H
-#define EGE_CORE_DEBUG_H
+#ifndef EGE_CORE_DEBUG_DEBUG_H
+#define EGE_CORE_DEBUG_DEBUG_H
 
 /** This object represents debug root for framework. Most debugging tools and functionalities have root in this class. 
  */
 
-#include "EGE.h"
 #include "EGEStringBuffer.h"
 #include "EGEString.h"
 #include "EGEStringList.h"
@@ -17,7 +16,7 @@ enum DebugMessageType
 {
   ENormal,               /*!< Normal debug message. Usually, informative. */
   EWarning,              /*!< Warning debug message. Usually, for recoverable issues. */
-  EError                 /*!< Errpr debug message. Usually, for unrecoverable issues. */
+  EError                 /*!< Error debug message. Usually, for unrecoverable issues. */
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Debug
@@ -43,6 +42,8 @@ class Debug
     Debug& operator << (const String& t);
     Debug& operator << (const void* t);
     Debug& operator = (const Debug& other);
+
+  public:
 
     /*! Enables spaces insertions after each logged message. */
     Debug& space();
@@ -128,4 +129,4 @@ class NoDebug
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_DEBUG_H
+#endif // EGE_CORE_DEBUG_DEBUG_H
