@@ -14,6 +14,8 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const float32 Math::EPSILON         = std::numeric_limits<float32>::epsilon();
 const float32 Math::EPSILON_SQUARED = std::numeric_limits<float32>::epsilon() * std::numeric_limits<float32>::epsilon();
+const s32     Math::MAX_U32         = std::numeric_limits<u32>::max();
+const s32     Math::MIN_U32         = std::numeric_limits<u32>::min();
 const s32     Math::MAX_S32         = std::numeric_limits<s32>::max();
 const s32     Math::MIN_S32         = std::numeric_limits<s32>::min();
 const s32     Math::MAX_S16         = std::numeric_limits<s16>::max();

@@ -202,6 +202,10 @@ class Math
     static const float32 EPSILON;
     /*! Squared inaccuracy cut-off value. */
     static const float32 EPSILON_SQUARED;
+    /*! Max 32-bit unsigned integer value. */
+    static const s32 MAX_U32;
+    /*! Min 32-bit unsigned integer value. */
+    static const s32 MIN_U32;
     /*! Max 32-bit signed integer value. */
     static const s32 MAX_S32;
     /*! Min 32-bit signed integer value. */
