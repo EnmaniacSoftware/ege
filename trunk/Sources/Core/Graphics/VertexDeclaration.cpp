@@ -97,24 +97,8 @@ u32 VertexDeclaration::vertexSize() const
     // go thru all buffers
     for (VertexElementArray::const_iterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
     {
-      switch (iter->semantic())
-      {
-        case NVertexBuffer::VES_POSITION_XYZ:        m_vertexSize += 3; break;
-        case NVertexBuffer::VES_POSITION_XY:         m_vertexSize += 2; break;
-        case NVertexBuffer::VES_COLOR_RGBA:          m_vertexSize += 4; break;
-        case NVertexBuffer::VES_NORMAL:              m_vertexSize += 3; break;
-        case NVertexBuffer::VES_TEXTURE_UV:          m_vertexSize += 2; break;
-        case NVertexBuffer::VES_TANGENT:             m_vertexSize += 3; break;
-        case NVertexBuffer::VES_POINT_SPRITE_SIZE:   m_vertexSize += 1; break;
-          
-        default:
-          
-          EGE_ASSERT_X(false, "Unknown array type");
-          break;
-      }
+      m_vertexSize += iter->size();
     }
-
-    m_vertexSize *= sizeof(float32);
   }
 
   return m_vertexSize;

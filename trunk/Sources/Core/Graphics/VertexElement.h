@@ -43,6 +43,8 @@ class VertexElement
     u32 offset() const;
     /*! Returns element's index. */
     u32 index() const;
+    /*! Returns size (in bytes). */
+    u32 size() const;
 
   private:
 
