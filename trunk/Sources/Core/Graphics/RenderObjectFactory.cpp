@@ -49,6 +49,48 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PRenderComponent RenderObjectFactory::CreateQuatroQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, 
+                                                         bool flipV, VertexDeclarationSymbol vertexDeclaration, s32 priority, 
+                                                         EGEGraphics::RenderPrimitiveType primitive, NVertexBuffer::UsageType vertexUsage)
+{
+  PRenderComponent component;
+
+  // convert vertex semantics
+  VertexDeclaration declaration = ConvertVertexDeclarationSymbol(vertexDeclaration);
+  if (0 != declaration.vertexSize())
+  {
+    // create object
+    component = CreateQuatroQuadXY(app, name, position, size, origin, flipU, flipV, declaration, priority, primitive, vertexUsage);
+  }
+
+  return component;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PRenderComponent RenderObjectFactory::CreateQuatroQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, 
+                                                         bool flipV, const VertexDeclaration& vertexDeclaration, s32 priority, 
+                                                         EGEGraphics::RenderPrimitiveType primitive, NVertexBuffer::UsageType vertexUsage)
+
+{
+  PRenderComponent object = ege_new RenderComponent(app, name, vertexDeclaration, priority, primitive, vertexUsage);
+  if (NULL != object)
+  {
+    // setup vertex buffer semantics
+    if ( ! object->isValid())
+    {
+      // error!
+      return NULL;
+    }
+
+    if ( ! DoCreateQuatroQuadXY(object, position, size, origin, primitive, flipU, flipV))
+    {
+      // error!
+      return NULL;
+    }
+  }
+
+  return object;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderObjectFactory::DoCreateQuadXY(PRenderComponent& component, Vector4f position, Vector2f size, Alignment origin, 
                                          EGEGraphics::RenderPrimitiveType primitive, bool flipU, bool flipV)
 {
@@ -120,6 +162,207 @@ bool RenderObjectFactory::DoCreateQuadXY(PRenderComponent& component, Vector4f p
       vertexList.push_back(0);
       vertexList.push_back(2);
       vertexList.push_back(3);
+      break;
+
+    default:
+
+      EGE_ASSERT_X(false, "Not supported!");
+      return NULL;
+  }
+
+  // resize vertex buffer
+  if ( ! component->vertexBuffer()->setSize(static_cast<u32>(vertexList.size())))
+  {
+    // error!
+    return false;
+  }
+
+  // lock vertex buffer
+  float32* data = reinterpret_cast<float32*>(component->vertexBuffer()->lock(0, static_cast<u32>(vertexList.size())));
+  if (NULL == data)
+  {
+    // error!
+    return false;
+  }
+
+  // go thru all vertices
+  for (IntArray::const_iterator it = vertexList.begin(); it != vertexList.end(); ++it)
+  {
+    const VertexData& vertex = vertices[*it];
+
+    // go thru all vertex arrays one by one
+    const VertexElementArray& vertexElements = component->vertexBuffer()->vertexDeclaration().vertexElements();
+    for (VertexElementArray::const_iterator it = vertexElements.begin(); it != vertexElements.end(); ++it)
+    {
+      switch (it->semantic())
+      {
+        case NVertexBuffer::VES_POSITION_XYZ:
+
+          *data++ = vertex.pos.x;
+          *data++ = vertex.pos.y;
+          *data++ = vertex.pos.z;
+          break;
+
+        case NVertexBuffer::VES_POSITION_XY:
+
+          *data++ = vertex.pos.x;
+          *data++ = vertex.pos.y;
+          break;
+
+        case NVertexBuffer::VES_TEXTURE_UV:
+
+          *data++ = vertex.uv.x;
+          *data++ = vertex.uv.y;
+          break;
+
+        case NVertexBuffer::VES_COLOR_RGBA:
+
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          *data++ = 1.0f;
+          break;
+
+        default:
+
+          EGE_ASSERT_X(false, "Not supported!");
+          return NULL;
+      }
+    }
+  }
+
+  // unlock vertex buffer
+  component->vertexBuffer()->unlock(data - 1);
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool RenderObjectFactory::DoCreateQuatroQuadXY(PRenderComponent& component, Vector4f position, Vector2f size, Alignment origin, 
+                                               EGEGraphics::RenderPrimitiveType primitive, bool flipU, bool flipV)
+{
+  // apply alignment
+  // NOTE: by default it is TOP-LEFT
+  if (origin & ALIGN_RIGHT)
+  {
+    position.x -= size.x;
+  }
+  else if (origin & ALIGN_HCENTER)
+  {
+    position.x -= size.x / 2.0f;
+  }
+
+  if (origin & ALIGN_BOTTOM)
+  {
+    position.y -= size.y;
+  }
+  else if (origin & ALIGN_VCENTER)
+  {
+    position.y -= size.y / 2.0f;
+  }
+
+  // List of all quad vertices
+  // NOTE: vertices are in the following order:
+  //      (0)    (3)    (5)
+  //       *------*------*
+  //       |\     |\     |
+  //       | \Tri2| \Tri4|
+  //       |  \   |  \   |
+  //       |   \  |   \  |
+  //       |    \ |    \ |
+  //       |Tri1 \|Tri3 \|
+  //       *------*------*
+  //      (1)    (2)    (4)
+  //       |\     |\     |
+  //       | \Tri6| \Tri8|
+  //       |  \   |  \   |
+  //       |   \  |   \  |
+  //       |    \ |    \ |
+  //       |Tri5 \|Tri7 \|
+  //       *------*------*
+  //      (6)    (7)    (8) 
+
+  struct VertexData
+  {
+    Vector3f pos;
+    Vector2f uv;
+  };
+  VertexData vertices[9];
+
+  vertices[0].pos = Vector3f(position.x, position.y, position.z);
+  vertices[0].uv  = Vector2f(flipU ? 1.0f : 0.0f, flipV ? 1.0f : 0.0f);
+  vertices[1].pos = Vector3f(position.x, position.y + size.y * 0.5f, position.z);
+  vertices[1].uv  = Vector2f(flipU ? 1.0f : 0.0f, flipV ? 0.0f : 1.0f);
+  vertices[2].pos = Vector3f(position.x + size.x * 0.5f, position.y + size.y * 0.5f, position.z);
+  vertices[2].uv  = Vector2f(flipU ? 0.0f : 1.0f, flipV ? 0.0f : 1.0f);
+  vertices[3].pos = Vector3f(position.x + size.x * 0.5f, position.y, position.z);
+  vertices[3].uv  = Vector2f(flipU ? 0.0f : 1.0f, flipV ? 1.0f : 0.0f);
+  vertices[4].pos = Vector3f(position.x + size.x, position.y + size.y * 0.5f, position.z);
+  vertices[4].uv  = vertices[1].uv;
+  vertices[5].pos = Vector3f(position.x + size.x, position.y, position.z);
+  vertices[5].uv  = vertices[0].uv;
+  vertices[6].pos = Vector3f(position.x, position.y + size.y, position.z);
+  vertices[6].uv  = vertices[0].uv;
+  vertices[7].pos = Vector3f(position.x + size.x * 0.5f, position.y + size.y, position.z);
+  vertices[7].uv  = vertices[3].uv;
+  vertices[8].pos = Vector3f(position.x + size.x, position.y + size.y, position.z);
+  vertices[8].uv  = vertices[0].uv;
+
+  // determine list of vertices
+  IntArray vertexList;
+  switch (primitive)
+  {
+    case EGEGraphics::RPT_TRIANGLE_STRIPS:
+
+      vertexList.push_back(1);
+      vertexList.push_back(2);
+      vertexList.push_back(0);
+      vertexList.push_back(3);
+      vertexList.push_back(3);  // degenerated
+      vertexList.push_back(2);  // degenerated
+      vertexList.push_back(2);
+      vertexList.push_back(4);
+      vertexList.push_back(3);
+      vertexList.push_back(5);
+      vertexList.push_back(5);  // degenerated
+      vertexList.push_back(6);  // degenerated
+      vertexList.push_back(6);
+      vertexList.push_back(7);
+      vertexList.push_back(1);
+      vertexList.push_back(2);
+      vertexList.push_back(2);  // degenerated
+      vertexList.push_back(7);  // degenerated
+      vertexList.push_back(7);
+      vertexList.push_back(8);
+      vertexList.push_back(2);
+      vertexList.push_back(4);
+      break;
+
+    case EGEGraphics::RPT_TRIANGLES:
+
+      vertexList.push_back(0);
+      vertexList.push_back(1);
+      vertexList.push_back(2);
+      vertexList.push_back(0);
+      vertexList.push_back(2);
+      vertexList.push_back(3);
+      vertexList.push_back(3);
+      vertexList.push_back(2);
+      vertexList.push_back(4);
+      vertexList.push_back(3);
+      vertexList.push_back(4);
+      vertexList.push_back(5);
+      vertexList.push_back(1);
+      vertexList.push_back(6);
+      vertexList.push_back(7);
+      vertexList.push_back(1);
+      vertexList.push_back(7);
+      vertexList.push_back(2);
+      vertexList.push_back(2);
+      vertexList.push_back(7);
+      vertexList.push_back(8);
+      vertexList.push_back(2);
+      vertexList.push_back(8);
+      vertexList.push_back(4);
       break;
 
     default:
