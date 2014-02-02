@@ -58,7 +58,9 @@ class TVector3
     /*! Returns 2D vector consisting of X and Y values of current one. */
     TVector2<T> xy() const;
 
-    /*! Returns vector perpendicular to current one. */
+    /*! Returns vector perpendicular to current one. 
+     *  @note Returned vector is not normalized.
+     */
     TVector3 perpendicular() const;
 
   //  // helper methods
@@ -172,11 +174,11 @@ void TVector3<T>::set(T x, T y, T z)
 template <typename T>
 T TVector3<T>::length() const
 {
-  return Math::Sqrt((x * x) + (y * y) + (z * z)); 
+  return Math::Sqrt(lengthSquared()); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline T TVector3<T>::lengthSquared() const
+T TVector3<T>::lengthSquared() const
 {
   return (x * x) + (y * y) + (z * z);
 }
@@ -235,18 +237,16 @@ T TVector3<T>::distanceSquaredTo(const TVector3& vector) const
 template <typename T>
 TVector3<T> TVector3<T>::perpendicular() const
 {
-  TVector3 perp = crossProduct(TVector3::UNIT_X);
+  TVector3 out = crossProduct(TVector3::UNIT_X);
 
   // check length
-  if (Math::EPSILON_SQUARED > perp.lengthSquared())
+  if (Math::EPSILON_SQUARED > out.lengthSquared())
   {
     // this vector is the Y axis multiplied by a scalar, so we have to use another axis
-    perp = crossProduct(TVector3::UNIT_Y);
+    out = crossProduct(TVector3::UNIT_Y);
   }
 
-  // normalize
-  perp.normalize();
-  return perp;
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

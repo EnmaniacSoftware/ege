@@ -52,7 +52,9 @@ class TVector2
     /*! Returns squared distance between this and given points. */
     T distanceSquaredTo(const TVector2& vector) const;
 
-    /*! Returns vector perpendicular to current one. */
+    /*! Returns vector perpendicular to current one. 
+     *  @note Returned vector is not normalized.
+     */
     TVector2 perpendicular() const;
 
   public:

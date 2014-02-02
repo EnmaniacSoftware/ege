@@ -7,6 +7,9 @@
     <Filter Include="Debug">
       <UniqueIdentifier>{2aed71b4-4fb0-4068-ae59-e6218b919eb9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{29cc5b60-e699-4acb-b2be-f213bd20a3f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\DebugTest.cpp">
@@ -17,6 +20,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\XML\Tests\Unittest\XMLTest.cpp">
       <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector2Test.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector3Test.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector4Test.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

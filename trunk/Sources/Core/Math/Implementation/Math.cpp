@@ -612,6 +612,7 @@ Vector3f Math::RandomDeviant(const Angle* angle, const Vector3f* vector, const V
   {
     // Generate an up vector
     newUp = vector->perpendicular();
+    newUp.normalize();
   }
   else
   {
