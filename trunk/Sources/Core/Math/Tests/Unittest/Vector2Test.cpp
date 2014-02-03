@@ -385,3 +385,20 @@ TEST_F(Vector2Test, Difference)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(Vector2Test, Negation)
+{
+  // perform fixed number of tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    const float32 x = random();
+    const float32 y = random();
+
+    const Vector2f vector(x, y);
+    const Vector2f negativeVector = -vector;
+    
+    // compare
+    EXPECT_FLOAT_EQ(negativeVector.x, -x);
+    EXPECT_FLOAT_EQ(negativeVector.y, -y);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

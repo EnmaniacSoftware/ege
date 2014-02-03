@@ -28,6 +28,7 @@ class TVector2
     bool operator      != (const TVector2& other) const;
     TVector2& operator += (const TVector2& other);
     TVector2& operator -= (const TVector2& other);
+    TVector2  operator  - () const;
 
   public:
 
@@ -204,6 +205,12 @@ TVector2<T>& TVector2<T>::operator -= (const TVector2& vector)
   y -= vector.y;
 
   return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector2<T> TVector2<T>::operator - () const
+{
+  return TVector2<T>(-x, -y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
