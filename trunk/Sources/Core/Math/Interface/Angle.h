@@ -5,6 +5,25 @@
 #include "EGEAngle.h"
 #include "EGEMath.h"
 
+/** Class represents arbitrary angle. The following picture represents angle directions:
+  *
+  *                              90 degrees
+  *                             -----------
+  *                          ---     |     ---
+  *                       ---        |        ---
+  *                     --           |           --
+  *                    -             |             - 
+  *                    -             |             - 
+  *        180 degrees --------------*--------------  0/360 degrees
+  *                    -             |             - 
+  *                    -             |             - 
+  *                     --           |           --
+  *                       ---        |        ---
+  *                          ---     |     ---
+  *                             -----------
+  *                             270 degrees
+  */
+
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

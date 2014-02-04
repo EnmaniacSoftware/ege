@@ -2,7 +2,6 @@
 #include <math.h>
 #include <stdlib.h>
 #include <limits>
-#include <EGEMemory.h>
 #include <EGEVector.h>
 
 /** Tests are focusing TVector2<float32> instantiations. */
@@ -87,12 +86,10 @@ class Vector2Test : public ::testing::Test
 void Vector2Test::SetUpTestCase()
 {
   srand(static_cast<unsigned int>(time(NULL)));
-  EXPECT_TRUE(MemoryManager::Initialize());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Vector2Test::TearDownTestCase()
 {
-  MemoryManager::Deinitialize();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Vector2Test::SetUp()
