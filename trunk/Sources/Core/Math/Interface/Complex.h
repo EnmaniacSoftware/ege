@@ -1,8 +1,11 @@
 #ifndef EGE_CORE_MATH_COMPLEX_H
 #define EGE_CORE_MATH_COMPLEX_H
 
-/** Class representing complex number in the following form: x + i*y.
-*/
+/** Class representing complex number in the following form: x + i*y 
+ *  where:
+ *  x - represents real part value
+ *  y - represents imaginary part value
+ */
 
 #include "EGETypes.h"
 #include "Core/Math/Interface/Math.h"
@@ -54,7 +57,6 @@ class TComplex
 
     static const TComplex<T> ZERO;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 const TComplex<T> TComplex<T>::ZERO = TComplex<T>(0, 0);
@@ -65,7 +67,8 @@ TComplex<T>::TComplex()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TComplex<T>::TComplex(T x, T y) : x(x), y(y)
+TComplex<T>::TComplex(T x, T y) : x(x)
+                                , y(y)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -76,7 +79,8 @@ TComplex<T>::TComplex(const Angle& angle)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TComplex<T>::TComplex(const TComplex& other) : x(other.x), y(other.y)
+TComplex<T>::TComplex(const TComplex& other) : x(other.x)
+                                             , y(other.y)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

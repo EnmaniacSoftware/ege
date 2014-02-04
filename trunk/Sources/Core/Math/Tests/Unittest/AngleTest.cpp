@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include <math.h>
 #include <stdlib.h>
-#include <limits>
 #include <EGEAngle.h>
 
 EGE_NAMESPACE

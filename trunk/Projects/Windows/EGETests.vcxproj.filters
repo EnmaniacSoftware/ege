@@ -33,5 +33,8 @@
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\AngleTest.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\ComplexTest.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
