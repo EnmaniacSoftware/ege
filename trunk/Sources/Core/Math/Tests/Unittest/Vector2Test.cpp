@@ -32,21 +32,21 @@ class Vector2Test : public ::testing::Test
      */
     float32 random(float32 scale = 1.0f) const;
     /*! Normalized given vector data. 
-     *  @param  x     Vector's X value.
-     *  @param  y     Vector's Y value.
+     *  @param  x     Vector X value.
+     *  @param  y     Vector Y value.
      *  @param  outX  Normalized vector's X value.
      *  @param  outY  Normalized vector's Y value.
      */
     void normalize(float32 x, float32 y, float32& outX, float32& outY) const;
     /*! Returns length of the given vector data.
-     *  @param  x     Vector's X value.
-     *  @param  y     Vector's Y value.
+     *  @param  x     Vector X value.
+     *  @param  y     Vector Y value.
      *  @return Length of the vector.
      */ 
     float32 length(float32 x, float32 y) const;
     /*! Returns squared length of the given vector data.
-     *  @param  x     Vector's X value.
-     *  @param  y     Vector's Y value.
+     *  @param  x     Vector X value.
+     *  @param  y     Vector Y value.
      *  @return Squared length of the vector.
      */ 
     float32 lengthSquared(float32 x, float32 y) const;
