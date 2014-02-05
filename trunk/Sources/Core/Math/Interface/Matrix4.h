@@ -32,15 +32,16 @@ class TMatrix4
 		TMatrix4&   operator += (const TMatrix4& matrix);
 	  TMatrix4&   operator -= (const TMatrix4& matrix);
 	  TMatrix4&   operator *= (const TMatrix4& matrix);
-    const T&    operator () (u32 column, u32 row) const;
-    T&          operator () (u32 column, u32 row);
 		T*          operator [] (u32 column);
     const T*    operator [] (u32 column) const;
 		TVector4<T> operator  * (const TVector4<T>& vector) const;
 
   public:
 
-    /*! Multiplies current matrix by given one. */
+    /*! Concatenates current and given matrix. 
+     *  @param  matrix  Matrix to concatenate with.
+     *  @return Resulting matrix.
+     */
     TMatrix4<T> multiply(const TMatrix4<T>& matrix) const;
     /*! Returns transposed matrix. */
     TMatrix4<T> transposed() const;
@@ -52,15 +53,10 @@ class TMatrix4
     void setTranslation(T x, T y, T z);
     /*! Returns translation vector. */
     TVector4<T> translation() const;
-    
-    //  CMatrix4 concatenateAffine( const CMatrix4& cMatrix ) const;                                      // multiplies affine matrices
-
-  //  CMatrix4 getInverse( void ) const;                                                                // gets inversed matrix
-
-  //  void set3x3Matrix( const CMatrix3* pcMatrix );                                                    // sets upper-left 3x3 sub-matrix
 
   public:
 
+    /*! Matrix data. */
     T data[16];
 
   public:
@@ -68,7 +64,6 @@ class TMatrix4
     static const TMatrix4<T> IDENTITY;
     static const TMatrix4<T> ZERO;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 const TMatrix4<T> TMatrix4<T>::IDENTITY = TMatrix4<T>(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
@@ -155,20 +150,6 @@ TMatrix4<T>& TMatrix4<T>::operator*=(const TMatrix4<T>& matrix)
 {
   *this = multiply(matrix);
   return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-const T& TMatrix4<T>::operator()(u32 column, u32 row) const
-{	
-  EGE_ASSERT((4 > column) && (0 <= column) && (4 > row) && (0 <= row));
-  return data[column * 4 + row]; 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-T& TMatrix4<T>::operator()(u32 column, u32 row)
-{	
-  EGE_ASSERT((4 > column) && (0 <= column) && (4 > row) && (0 <= row));
-  return data[column * 4 + row]; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
