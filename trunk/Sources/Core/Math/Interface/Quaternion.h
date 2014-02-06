@@ -78,7 +78,6 @@ class TQuaternion
     static const TQuaternion<T> IDENTITY;
     static const TQuaternion<T> ZERO;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 const TQuaternion<T> TQuaternion<T>::IDENTITY = TQuaternion<T>(0, 0, 0, 1);
@@ -86,17 +85,26 @@ template <typename T>
 const TQuaternion<T> TQuaternion<T>::ZERO     = TQuaternion<T>(0, 0, 0, 0);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TQuaternion<T>::TQuaternion() : x(0), y(0), z(0), w(0)
+TQuaternion<T>::TQuaternion() : x(0)
+                              , y(0)
+                              , z(0)
+                              , w(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TQuaternion<T>::TQuaternion(T x, T y, T z, T w) : x(x), y(y), z(z), w(w)
+TQuaternion<T>::TQuaternion(T x, T y, T z, T w) : x(x)
+                                                , y(y)
+                                                , z(z)
+                                                , w(w)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TQuaternion<T>::TQuaternion(const TQuaternion& other) : x(other.x), y(other.y), z(other.z), w(other.w)
+TQuaternion<T>::TQuaternion(const TQuaternion& other) : x(other.x)
+                                                      , y(other.y)
+                                                      , z(other.z)
+                                                      , w(other.w)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -112,38 +120,50 @@ TQuaternion<T>::TQuaternion(const TMatrix4<T>& matrix)
   // Algorithm in Ken Shoemake's article in 1987 SIGGRAPH course notes
   // article "Quaternion Calculus and Fast Animation".
 
-  float32 fTrace = matrix[0][0]+matrix[1][1]+matrix[2][2];
-  float32 fRoot;
+  float32 trace = matrix[0][0] + matrix[1][1] + matrix[2][2];
+  float32 root;
 
-  if ( fTrace > 0.0 )
+  if (0 < trace)
   {
     // |w| > 1/2, may as well choose w > 1/2
-    fRoot = Math::Sqrt(fTrace + 1.0f);  // 2w
-    w = 0.5f*fRoot;
-    fRoot = 0.5f/fRoot;  // 1/(4w)
-    x = (matrix[2][1]-matrix[1][2])*fRoot;
-    y = (matrix[0][2]-matrix[2][0])*fRoot;
-    z = (matrix[1][0]-matrix[0][1])*fRoot;
+    root = Math::Sqrt(trace + 1.0f);  // 2w
+
+    w = 0.5f * root;
+    root = 0.5f / root;  // 1/(4w)
+    x = (matrix[2][1] - matrix[1][2]) * root;
+    y = (matrix[0][2] - matrix[2][0]) * root;
+    z = (matrix[1][0] - matrix[0][1]) * root;
   }
   else
   {
-    // |w| <= 1/2
-    static size_t s_iNext[3] = { 1, 2, 0 };
-    size_t i = 0;
-    if ( matrix[1][1] > matrix[0][0] )
-        i = 1;
-    if ( matrix[2][2] > matrix[i][i] )
-        i = 2;
-    size_t j = s_iNext[i];
-    size_t k = s_iNext[j];
+    static s32 KIndexing[3] = { 1, 2, 0 };
 
-    fRoot = Math::Sqrt(matrix[i][i]-matrix[j][j]-matrix[k][k] + 1.0f);
+    // |w| <= 1/2
+    s32 i = 0;
+    if (matrix[1][1] > matrix[0][0])
+    {
+      i = 1;
+    }
+
+    if (matrix[2][2] > matrix[i][i])
+    {
+      i = 2;
+    }
+
+    s32 j = KIndexing[i];
+    s32 k = KIndexing[j];
+
+    root = Math::Sqrt(matrix[i][i]- matrix[j][j] - matrix[k][k] + 1.0f);
+
     float32* apkQuat[3] = { &x, &y, &z };
-    *apkQuat[i] = 0.5f*fRoot;
-    fRoot = 0.5f/fRoot;
-    w = (matrix[k][j]-matrix[j][k])*fRoot;
-    *apkQuat[j] = (matrix[j][i]+matrix[i][j])*fRoot;
-    *apkQuat[k] = (matrix[k][i]+matrix[i][k])*fRoot;
+
+    *apkQuat[i] = 0.5f * root;
+    root = 0.5f / root;
+
+    w = (matrix[k][j] - matrix[j][k]) * root;
+    
+    *apkQuat[j] = (matrix[j][i] + matrix[i][j]) * root;
+    *apkQuat[k] = (matrix[k][i] + matrix[i][k]) * root;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -264,8 +284,18 @@ T TQuaternion<T>::dotProduct(const TQuaternion<T>& quat) const
 template <typename T>
 void TQuaternion<T>::normalize()
 {
-  T factor = 1.0f / length();
-  *this = *this * factor;
+  T length = this->length();
+
+  // check if can be done
+  if (Math::EPSILON <= length)
+  {
+    T invLength = static_cast<T>(1.0) / length;
+    
+    x *= invLength;
+    y *= invLength;
+    z *= invLength;
+    w *= invLength;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
