@@ -36,8 +36,6 @@ class TPlane
     void create(const TPlane<T>& plane);
     
     PlaneSide side(const TVector4<T>& point) const;
-    //ESide getSide ( const CAxisAlignedBox* pcBox ) const;                         // gets plane side where given AAB lies
-    //ESide getSide( const CVector3* pcCentre, const CVector3* pcHalfSize ) const;  // gets plane side where given AAB lies (given by center and half size)
     
     T distance(const TVector4<T>& point) const;
 
@@ -99,13 +97,17 @@ template <typename T>
 void TPlane<T>::normalize()
 {
   // get normal magnitude
-  T mag = m_normal.length();
+  T length = m_normal.length();
 
-  // normalize normal
-  m_normal.normalize();
+  // check if can be done
+  if (Math::EPSILON <= length)
+  {
+    // normalize normal
+    m_normal.normalize();
 
-  // normalize displacement
-  m_d /= mag;
+    // normalize displacement
+    m_d /= length;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

@@ -83,6 +83,7 @@
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\AngleTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\ComplexTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Matrix4Test.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\PlaneTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\QuaternionTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector2Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector3Test.cpp" />
