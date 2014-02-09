@@ -65,7 +65,7 @@ class ResourceCurve : public IResource
 
     ResourceCurve(Application* app, ResourceGroup* group);
     /*! Returns curve type. */
-    EGESpline::Type type() const { return m_type; }
+    CubicSplineType type() const { return m_type; }
     
   private:
 
@@ -76,7 +76,7 @@ class ResourceCurve : public IResource
     /*! Name. */
     String m_name;
     /*! Curve type. */
-    EGESpline::Type m_type;
+    CubicSplineType m_type;
     /*! List of curve points. */
     PointDataList m_points;
 };

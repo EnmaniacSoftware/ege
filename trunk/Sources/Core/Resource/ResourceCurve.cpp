@@ -19,23 +19,23 @@ EGE_DEFINE_DELETE_OPERATORS(ResourceCurve)
 #define NODE_POINT "point"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping literal curve type name into numeric value. */
-static EGESpline::Type MapCurveTypeName(const String& name, EGESpline::Type defaultValue)
+static CubicSplineType MapCurveTypeName(const String& name, CubicSplineType defaultValue)
 {
   if ("bezier" == name)
   {
-    return EGESpline::TYPE_BEZIER;
+    return EBezier;
   }
   else if ("bspline" == name)
   {
-    return EGESpline::TYPE_BSPLINE;
+    return EBSpline;
   }
   else if ("cardinal" == name)
   {
-    return EGESpline::TYPE_CARDINAL;
+    return ECardinal;
   }
   else if ("hermite" == name)
   {
-    return EGESpline::TYPE_HERMITE;
+    return EHermite;
   }
 
   return defaultValue;
@@ -69,7 +69,7 @@ EGEResult ResourceCurve::create(const String& path, const PXmlElement& tag)
 
   // get data
   m_name  = tag->attribute("name");
-  m_type  = MapCurveTypeName(tag->attribute("type").toLower(), EGESpline::TYPE_BEZIER);
+  m_type  = MapCurveTypeName(tag->attribute("type").toLower(), EBezier);
 
   // check if obligatory data is wrong
   if (error || m_name.empty())

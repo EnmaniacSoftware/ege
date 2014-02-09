@@ -106,9 +106,6 @@
     <Filter Include="Core\Graphics\Image">
       <UniqueIdentifier>{a355a3fe-25e5-4524-a444-3ab121584f80}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Math\Splines">
-      <UniqueIdentifier>{6322fdc3-2ac2-4128-9da5-a6289c59ce42}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Overlay">
       <UniqueIdentifier>{083fc304-3a3c-4ce0-b212-2f3cb230c477}</UniqueIdentifier>
     </Filter>
@@ -156,9 +153,6 @@
     </Filter>
     <Filter Include="Core\Physics\Null">
       <UniqueIdentifier>{595662c9-fce8-45c5-844d-5b67cd2af04d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Math\Tweeners">
-      <UniqueIdentifier>{bafdcfb4-1648-43bf-9ce1-fa7db79a2489}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core\NativeUI">
       <UniqueIdentifier>{4e9f0d99-bcd1-41c8-8d86-18a5d71ca68a}</UniqueIdentifier>
@@ -297,6 +291,18 @@
     </Filter>
     <Filter Include="Core\Debug\Interface">
       <UniqueIdentifier>{0e98efea-9418-4b2b-8e42-e30627f0d379}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Math\Interface\Splines">
+      <UniqueIdentifier>{a27644d0-4576-4d35-af53-58d91a24c5d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Math\Interface\Tweeners">
+      <UniqueIdentifier>{ec90cd3a-0d2e-4ada-ae26-a0621a02da19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Math\Implementation\Splines">
+      <UniqueIdentifier>{05618428-8f10-498b-b3a0-3bdb08d2f4b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Math\Implementation\Tweeners">
+      <UniqueIdentifier>{9fc12d36-7a6c-416e-b7e9-e1214a013483}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -492,12 +498,6 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceTextureImage.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Splines\CubicSpline.cpp">
-      <Filter>Core\Math\Splines</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Splines\CurveSegment.cpp">
-      <Filter>Core\Math\Splines</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.cpp">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClCompile>
@@ -662,18 +662,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Physics\Null\PhysicsManagerNull_p.cpp">
       <Filter>Core\Physics\Null</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tweeners\LinearTweener.cpp">
-      <Filter>Core\Math\Tweeners</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tweeners\BackTweener.cpp">
-      <Filter>Core\Math\Tweeners</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tweeners\SineTweener.cpp">
-      <Filter>Core\Math\Tweeners</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tweeners\PowerTweener.cpp">
-      <Filter>Core\Math\Tweeners</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\UI\UIScrollablePageView.cpp">
       <Filter>Core\UI</Filter>
@@ -932,6 +920,24 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Logger.cpp">
       <Filter>Core\Debug\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Implementation\Tweeners\BackTweener.cpp">
+      <Filter>Core\Math\Implementation\Tweeners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Implementation\Tweeners\LinearTweener.cpp">
+      <Filter>Core\Math\Implementation\Tweeners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Implementation\Tweeners\PowerTweener.cpp">
+      <Filter>Core\Math\Implementation\Tweeners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Implementation\Tweeners\SineTweener.cpp">
+      <Filter>Core\Math\Implementation\Tweeners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Implementation\Splines\CubicSpline.cpp">
+      <Filter>Core\Math\Implementation\Splines</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Implementation\Splines\CurveSegment.cpp">
+      <Filter>Core\Math\Implementation\Splines</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1218,12 +1224,6 @@
       <Filter>Core\Resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGESpline.h" />
-    <ClInclude Include="..\..\Sources\Core\Math\Splines\CubicSpline.h">
-      <Filter>Core\Math\Splines</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Splines\CurveSegment.h">
-      <Filter>Core\Math\Splines</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEFlags.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.h">
       <Filter>Core\Graphics\OpenGL</Filter>
@@ -1423,21 +1423,6 @@
       <Filter>Core\Physics\Null</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGETweener.h" />
-    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\ITweener.h">
-      <Filter>Core\Math\Tweeners</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\LinearTweener.h">
-      <Filter>Core\Math\Tweeners</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\BackTweener.h">
-      <Filter>Core\Math\Tweeners</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\SineTweener.h">
-      <Filter>Core\Math\Tweeners</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Tweeners\PowerTweener.h">
-      <Filter>Core\Math\Tweeners</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\UI\UIScrollablePageView.h">
       <Filter>Core\UI</Filter>
     </ClInclude>
@@ -1752,6 +1737,27 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Logger.h">
       <Filter>Core\Debug\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Tweeners\ITweener.h">
+      <Filter>Core\Math\Interface\Tweeners</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Tweeners\LinearTweener.h">
+      <Filter>Core\Math\Interface\Tweeners</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Tweeners\PowerTweener.h">
+      <Filter>Core\Math\Interface\Tweeners</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Tweeners\SineTweener.h">
+      <Filter>Core\Math\Interface\Tweeners</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Splines\CubicSpline.h">
+      <Filter>Core\Math\Interface\Splines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Splines\CurveSegment.h">
+      <Filter>Core\Math\Interface\Splines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Tweeners\BackTweener.h">
+      <Filter>Core\Math\Interface\Tweeners</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
