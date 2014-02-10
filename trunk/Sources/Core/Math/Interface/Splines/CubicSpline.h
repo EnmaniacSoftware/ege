@@ -30,8 +30,7 @@ enum CubicSplineType
   ENone,
   EBezier,
   EHermite,
-  ECardinal,
-  EBSpline
+  ECardinal
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class CubicSpline

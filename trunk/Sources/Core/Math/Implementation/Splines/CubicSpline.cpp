@@ -3,25 +3,20 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static Matrix4f BezierMatrix( -1.0f,  3.0f, -3.0f, 1.0f,        // column 0
-                               1.0f,  0.0f,  0.0f, 0.0f,        // column 1
-                               3.0f, -6.0f,  3.0f, 0.0f,        // column 2
-                              -3.0f,  3.0f,  0.0f, 0.0f);       // column 3
+static Matrix4f BezierMatrix(-1.0f,  3.0f, -3.0f, 1.0f,                 // column 0 (start)
+                              1.0f,  0.0f,  0.0f, 0.0f,                 // column 1 (end)
+                              3.0f, -6.0f,  3.0f, 0.0f,                 // column 2 (start tangent)
+                             -3.0f,  3.0f,  0.0f, 0.0f);                // column 3 (end tangent)
 
-static Matrix4f HermiteMatrix( 2.0f, -3.0f, 0.0f, 1.0f,     // column 0
-                              -2.0f,  3.0f, 0.0f, 0.0f,     // column 1
-                               1.0f, -2.0f, 1.0f, 0.0f,     // column 2
-                               1.0f, -1.0f, 0.0f, 0.0f);    // column 3
+static Matrix4f HermiteMatrix( 2.0f, -3.0f, 0.0f, 1.0f,                 // column 0 (start)
+                              -2.0f,  3.0f, 0.0f, 0.0f,                 // column 1 (end)
+                               1.0f, -2.0f, 1.0f, 0.0f,                 // column 2 (start tangent)
+                               1.0f, -1.0f, 0.0f, 0.0f);                // column 3 (end tangent)
 
-static Matrix4f CatMullRomMatrix(-0.5f,  1.0f, -0.5f, 0.0f,     // column 0
-                                  1.5f, -2.5f,  0.0f, 1.0f,     // column 1
-                                 -1.5f,  2.0f,  0.5f, 0.0f,     // column 2
-                                  0.5f, -0.5f,  0.0f, 0.0f);    // column 3
-
-static Matrix4f BSplineMatrix(-1.0f / 6.0f,  0.5f, -0.5f, 1.0f / 6.0f,      // column 0
-                               0.5f,        -1.0f,  0.0f, 4.0f / 6.0f,      // column 1
-                              -0.5f,         0.5f,  0.5f, 1.0f / 6.0f,      // column 2
-                               1.0f / 6.0f,  0.0f,  0.0f, 0.0f);            // column 3
+static Matrix4f CatMullRomMatrix(-0.5f,  1.0f, -0.5f, 0.0f,             // column 0 (start)
+                                  1.5f, -2.5f,  0.0f, 1.0f,             // column 1 (end)
+                                 -1.5f,  2.0f,  0.5f, 0.0f,             // column 2 (start tangent)
+                                  0.5f, -0.5f,  0.0f, 0.0f);            // column 3 (end tangent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 CubicSpline::CubicSpline(CubicSplineType type) : m_type(ENone)
                                                , m_length(0)
@@ -63,7 +58,6 @@ void CubicSpline::setType(CubicSplineType type)
       case EBezier:   m_matrix = BezierMatrix; break;
       case EHermite:  m_matrix = HermiteMatrix; break;
       case ECardinal: m_matrix = CatMullRomMatrix; break;
-      case EBSpline:  m_matrix = BSplineMatrix; break;
         
       default:
         
@@ -210,6 +204,7 @@ void CubicSpline::calculateSegmentLength(CurveSegment& segment)
                     (m_matrix.data[4] * t3 + m_matrix.data[5] * t2 + m_matrix.data[6] * t + m_matrix.data[7]) * segment.end() +
                     (m_matrix.data[8] * t3 + m_matrix.data[9] * t2 + m_matrix.data[10] * t + m_matrix.data[11]) * segment.beginTangent() +
                     (m_matrix.data[12] * t3 + m_matrix.data[13] * t2 + m_matrix.data[14] * t + m_matrix.data[15]) * segment.endTangent();
+
 
     posB -= posA;
     posB.w = 1.0f;
