@@ -1,6 +1,4 @@
-#include <gtest/gtest.h>
-#include <math.h>
-#include <stdlib.h>
+#include "TestFramework/Interface/TestBase.h"
 #include <limits>
 #include <EGEVector.h>
 
@@ -11,26 +9,10 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const int KRepetitionsCount = 20;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Vector4Test : public ::testing::Test
+class Vector4Test : public TestBase
 {
   protected:
 
-    static void SetUpTestCase();
-    static void TearDownTestCase();
-
-  protected:
-
-    virtual void SetUp();
-    virtual void TearDown();
-
-  protected:
-
-    /*! Returns random number. 
-     *  @param  scale Scale of the returned value.
-     *  @return Generated random number.
-     *  @note Returned number is in [-scale,scale] interval.
-     */
-    float32 random(float32 scale = 1.0f) const;
     /*! Normalized given vector data. 
      *  @param  x     Vector X value.
      *  @param  y     Vector Y value.
@@ -70,53 +52,7 @@ class Vector4Test : public ::testing::Test
      *  @return Dot product between two vectors.
      */
     float32 dotProduct(float32 x1, float32 y1, float32 z1, float32 w1, float32 x2, float32 y2, float32 z2, float32 w2) const;
-    /*! Calculates distance between vectors. 
-     *  @param  x1  Vector 1 X value.
-     *  @param  y1  Vector 1 Y value.
-     *  @param  z1  Vector 1 Z value.
-     *  @param  w1  Vector 1 W value.
-     *  @param  x2  Vector 2 X value.
-     *  @param  y2  Vector 2 Y value.
-     *  @param  z2  Vector 2 Z value.
-     *  @param  w2  Vector 2 W value.
-     *  @return Distance between two vectors.
-     */
-    float32 distance(float32 x1, float32 y1, float32 z1, float32 w1, float32 x2, float32 y2, float32 z2, float32 w2) const;
-    /*! Calculates squared distance between vectors. 
-     *  @param  x1  Vector 1 X value.
-     *  @param  y1  Vector 1 Y value.
-     *  @param  z1  Vector 1 Z value.
-     *  @param  w1  Vector 1 W value.
-     *  @param  x2  Vector 2 X value.
-     *  @param  y2  Vector 2 Y value.
-     *  @param  z2  Vector 2 Z value.
-     *  @param  w2  Vector 2 W value.
-     *  @return Squared distance between two vectors.
-     */
-    float32 distanceSquare(float32 x1, float32 y1, float32 z1, float32 w1, float32 x2, float32 y2, float32 z2, float32 w2) const;
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Vector4Test::SetUpTestCase()
-{
-  srand(static_cast<unsigned int>(time(NULL)));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Vector4Test::TearDownTestCase()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Vector4Test::SetUp()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Vector4Test::TearDown()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 Vector4Test::random(float32 scale) const
-{
-  return (rand() / static_cast<float32>(RAND_MAX) - 0.5f) * 2.0f * scale;
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Vector4Test::normalize(float32 x, float32 y, float32 z, float32 w, float32& outX, float32& outY, float32& outZ, float32& outW) const
 {
@@ -154,16 +90,6 @@ float32 Vector4Test::lengthSquared(float32 x, float32 y, float32 z, float w) con
 float32 Vector4Test::dotProduct(float32 x1, float32 y1, float32 z1, float32 w1, float32 x2, float32 y2, float32 z2, float w2) const
 {
   return (x1 * x2) + (y1 * y2) + (z1 * z2) + (w1 * w2); 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 Vector4Test::distance(float32 x1, float32 y1, float32 z1, float32 w1, float32 x2, float32 y2, float32 z2, float32 w2) const
-{
-  return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2) + (w1 - w2) * (w1 - w2));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 Vector4Test::distanceSquare(float32 x1, float32 y1, float32 z1, float32 w1, float32 x2, float32 y2, float32 z2, float32 w2) const
-{
-  return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2) + (w1 - w2) * (w1 - w2);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(Vector4Test, SetValue)

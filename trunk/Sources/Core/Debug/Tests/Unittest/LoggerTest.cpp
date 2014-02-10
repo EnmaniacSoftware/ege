@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "TestFramework/Interface/TestBase.h"
 #include <EGEMemory.h>
 #include <EGELog.h>
 #include <EGEString.h>
@@ -25,7 +25,7 @@ class TestLogger : public Logger
     }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class LoggerTest : public ::testing::Test
+class LoggerTest : public TestBase
 {
   protected:
 

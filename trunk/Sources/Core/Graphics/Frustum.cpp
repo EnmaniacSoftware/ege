@@ -151,7 +151,7 @@ void Frustum::update()
 //}
 //
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Frustum::isVisible(const Vector4f& point)
+bool Frustum::isVisible(const Vector3f& point)
 {
   // make sure all is up to date
   update();
@@ -281,58 +281,58 @@ void Frustum::calculateFrustumPlanes()
   // check if update is necessary
   if (m_planesNeedUpdate)
   {
-    Matrix4f cClipping;
-    Vector4f cNormal;
+    Matrix4f clipping;
+    Vector3f normal;
 
 	  // calculate clipping planes ( P*V )
-    cClipping = m_projectionMatrix.multiply(m_viewMatrix);
+    clipping = m_projectionMatrix.multiply(m_viewMatrix);
 
 	  // calculate RIGHT plane
-    cNormal.x = cClipping.data[3] - cClipping.data[0];
-    cNormal.y = cClipping.data[7] - cClipping.data[4];
-    cNormal.z = cClipping.data[11] - cClipping.data[8];
+    normal.x = clipping.data[3] - clipping.data[0];
+    normal.y = clipping.data[7] - clipping.data[4];
+    normal.z = clipping.data[11] - clipping.data[8];
 
-    m_planes[PLANE_RIGHT].create(cNormal, cClipping.data[1 ] - cClipping.data[12]);
+    m_planes[PLANE_RIGHT].create(normal, clipping.data[1 ] - clipping.data[12]);
 	  m_planes[PLANE_RIGHT].normalize();
 
 	  // calculate LEFT plane
-    cNormal.x = cClipping.data[3] + cClipping.data[0];
-    cNormal.y = cClipping.data[7] + cClipping.data[4];
-    cNormal.z = cClipping.data[11] + cClipping.data[8];
+    normal.x = clipping.data[3] + clipping.data[0];
+    normal.y = clipping.data[7] + clipping.data[4];
+    normal.z = clipping.data[11] + clipping.data[8];
 
-    m_planes[PLANE_LEFT].create(cNormal, cClipping.data[15] + cClipping.data[12]);
+    m_planes[PLANE_LEFT].create(normal, clipping.data[15] + clipping.data[12]);
 	  m_planes[PLANE_LEFT].normalize();
 
 	  // calculate TOP plane
-    cNormal.x = cClipping.data[3] - cClipping.data[1];
-    cNormal.y = cClipping.data[7] - cClipping.data[5];
-    cNormal.z = cClipping.data[11] - cClipping.data[9];
+    normal.x = clipping.data[3] - clipping.data[1];
+    normal.y = clipping.data[7] - clipping.data[5];
+    normal.z = clipping.data[11] - clipping.data[9];
 
-    m_planes[PLANE_TOP].create(cNormal, cClipping.data[15] - cClipping.data[13]);
+    m_planes[PLANE_TOP].create(normal, clipping.data[15] - clipping.data[13]);
 	  m_planes[PLANE_TOP].normalize();
 
     // calculate BOTTOM plane
-    cNormal.x = cClipping.data[3] + cClipping.data[1];
-    cNormal.y = cClipping.data[7] + cClipping.data[5];
-    cNormal.z = cClipping.data[11] + cClipping.data[9];
+    normal.x = clipping.data[3] + clipping.data[1];
+    normal.y = clipping.data[7] + clipping.data[5];
+    normal.z = clipping.data[11] + clipping.data[9];
 
-    m_planes[PLANE_BOTTOM].create(cNormal, cClipping.data[15] + cClipping.data[13]);
+    m_planes[PLANE_BOTTOM].create(normal, clipping.data[15] + clipping.data[13]);
 	  m_planes[PLANE_BOTTOM].normalize();
 
 	  // calculate FAR plane
-    cNormal.x = cClipping.data[3] - cClipping.data[2];
-    cNormal.y = cClipping.data[7] - cClipping.data[6];
-    cNormal.z = cClipping.data[11] - cClipping.data[10];
+    normal.x = clipping.data[3] - clipping.data[2];
+    normal.y = clipping.data[7] - clipping.data[6];
+    normal.z = clipping.data[11] - clipping.data[10];
 
-    m_planes[PLANE_FAR].create(cNormal, cClipping.data[15] - cClipping.data[14]);
+    m_planes[PLANE_FAR].create(normal, clipping.data[15] - clipping.data[14]);
 	  m_planes[PLANE_FAR].normalize();
 
     // calculate NEAR plane
-    cNormal.x = cClipping.data[3] + cClipping.data[2];
-    cNormal.y = cClipping.data[7] + cClipping.data[6];
-    cNormal.z = cClipping.data[11] + cClipping.data[10];
+    normal.x = clipping.data[3] + clipping.data[2];
+    normal.y = clipping.data[7] + clipping.data[6];
+    normal.z = clipping.data[11] + clipping.data[10];
 
-    m_planes[PLANE_NEAR].create(cNormal, cClipping.data[15] + cClipping.data[14]);
+    m_planes[PLANE_NEAR].create(normal, clipping.data[15] + clipping.data[14]);
 	  m_planes[PLANE_NEAR].normalize();
 
     // reset flag

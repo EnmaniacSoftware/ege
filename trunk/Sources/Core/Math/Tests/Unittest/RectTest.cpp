@@ -1,6 +1,4 @@
-#include <gtest/gtest.h>
-#include <math.h>
-#include <stdlib.h>
+#include "TestFramework/Interface/TestBase.h"
 #include <EGERect.h>
 
 /** Tests are focusing TRect<s32> instantiations. 
@@ -14,18 +12,8 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const int KRepetitionsCount = 20;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RectTest : public ::testing::Test
+class RectTest : public TestBase
 {
-  protected:
-
-    static void SetUpTestCase();
-    static void TearDownTestCase();
-
-  protected:
-
-    virtual void SetUp();
-    virtual void TearDown();
-
   protected:
 
     /*! Returns random number. 
@@ -43,23 +31,6 @@ class RectTest : public ::testing::Test
      */
     bool isNull(s32 x, s32 y, s32 width, s32 height) const;
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RectTest::SetUpTestCase()
-{
-  srand(static_cast<unsigned int>(time(NULL)));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RectTest::TearDownTestCase()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RectTest::SetUp()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RectTest::TearDown()
-{
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 RectTest::random(s32 scale) const
 {

@@ -1,6 +1,4 @@
-#include <gtest/gtest.h>
-#include <math.h>
-#include <stdlib.h>
+#include "TestFramework/Interface/TestBase.h"
 #include <EGEPlane.h>
 
 /** Tests are focusing TPlane<float32> instantiations. */
@@ -10,121 +8,71 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const int KRepetitionsCount = 20;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class PlaneTest : public ::testing::Test
+class PlaneTest : public TestBase
 {
   protected:
 
-    static void SetUpTestCase();
-    static void TearDownTestCase();
-
-  protected:
-
-    virtual void SetUp();
-    virtual void TearDown();
-
-  protected:
-
-    /*! Returns random number. 
-     *  @param  scale Scale of the returned value.
-     *  @return Generated random number.
-     *  @note Returned number is in [-scale,scale] interval.
-     */
-    float32 random(float32 scale = 1.0f) const;
     /*! Normalizes given plane data.
      *  @param  x               Plane normal X value.
      *  @param  y               Plane normal Y value.
      *  @param  z               Plane normal Z value.
-     *  @param  w               Plane normal W value.
      *  @param  displacemnt     Plane displacement.
      *  @param  outX            Normalized plane normal X value.
      *  @param  outY            Normalized plane normal Y value.
      *  @param  outZ            Normalized plane normal Z value.
-     *  @param  outW            Normalized plane normal W value.
      *  @param  outDisplacemnt  Normalized plane displacement.
      */
-    void normalize(float32 x, float32 y, float32 z, float32 w, float32 displacement, 
-                   float32& outX, float32& outY, float32& outZ, float32& outW, float32& outDisplacement) const;
+    void normalize(float32 x, float32 y, float32 z, float32 displacement, float32& outX, float32& outY, float32& outZ, float32& outDisplacement) const;
     /*! Returns distance of a given point to plane.
      *  @param  x               Plane normal X value.
      *  @param  y               Plane normal Y value.
      *  @param  z               Plane normal Z value.
-     *  @param  w               Plane normal W value.
      *  @param  displacemnt     Plane displacement.
      *  @param  pointX          Point X value.
      *  @param  pointY          Point Y value.
      *  @param  pointZ          Point Z value.
-     *  @param  pointW          Point W value.
      *  @return Calculated distance.
      */
-    float32 distance(float32 x, float32 y, float32 z, float32 w, float32 displacement, float32 pointX, float32 pointY, float32 pointZ, float32 pointW) const;
+    float32 distance(float32 x, float32 y, float32 z, float32 displacement, float32 pointX, float32 pointY, float32 pointZ) const;
     /*! Returns the side of the plane on which given point exists
      *  @param  x               Plane normal X value.
      *  @param  y               Plane normal Y value.
      *  @param  z               Plane normal Z value.
-     *  @param  w               Plane normal W value.
      *  @param  displacemnt     Plane displacement.
      *  @param  pointX          Point X value.
      *  @param  pointY          Point Y value.
      *  @param  pointZ          Point Z value.
-     *  @param  pointW          Point W value.
      *  @return Side of the plane given point is lying.
      */
-    PlaneSide side(float32 x, float32 y, float32 z, float32 w, float32 displacement, float32 pointX, float32 pointY, float32 pointZ, float32 pointW) const;
+    PlaneSide side(float32 x, float32 y, float32 z, float32 displacement, float32 pointX, float32 pointY, float32 pointZ) const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PlaneTest::SetUpTestCase()
-{
-  srand(static_cast<unsigned int>(time(NULL)));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PlaneTest::TearDownTestCase()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PlaneTest::SetUp()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PlaneTest::TearDown()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 PlaneTest::random(float32 scale) const
-{
-  return (rand() / static_cast<float32>(RAND_MAX) - 0.5f) * 2.0f * scale;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PlaneTest::normalize(float32 x, float32 y, float32 z, float32 w, float32 displacement, 
-                          float32& outX, float32& outY, float32& outZ, float32& outW, float32& outDisplacement) const
+void PlaneTest::normalize(float32 x, float32 y, float32 z, float32 displacement, float32& outX, float32& outY, float32& outZ, float32& outDisplacement) const
 {
   outX            = x;
   outY            = y;
   outZ            = z;
-  outW            = w;
   outDisplacement = displacement;
 
-  float32 length = sqrtf((x * x) + (y * y) + (z * z) + (w * w));
+  float32 length = sqrtf((x * x) + (y * y) + (z * z));
   if (std::numeric_limits<float32>::epsilon() <= length)
   {
     outX /= length;
     outY /= length;
     outZ /= length;
-    outW = 1.0f;
 
     outDisplacement /= length;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 PlaneTest::distance(float32 x, float32 y, float32 z, float32 w, float32 displacement, 
-                            float32 pointX, float32 pointY, float32 pointZ, float32 pointW) const
+float32 PlaneTest::distance(float32 x, float32 y, float32 z, float32 displacement, float32 pointX, float32 pointY, float32 pointZ) const
 {
-   return (x * pointX) + (y * pointY) + (z * pointZ) + (w * pointW) + displacement;
+   return (x * pointX) + (y * pointY) + (z * pointZ) + displacement;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PlaneSide PlaneTest::side(float32 x, float32 y, float32 z, float32 w, float32 displacement, 
-                          float32 pointX, float32 pointY, float32 pointZ, float32 pointW) const
+PlaneSide PlaneTest::side(float32 x, float32 y, float32 z, float32 displacement, float32 pointX, float32 pointY, float32 pointZ) const
 {
-  const float32 pointDistance = distance(x, y, z, w, displacement, pointX, pointY, pointZ, pointW);
+  const float32 pointDistance = distance(x, y, z, displacement, pointX, pointY, pointZ);
 
   if (0 < pointDistance)
   {
@@ -146,16 +94,14 @@ TEST_F(PlaneTest, SetValue)
     const float32 normalX       = random();
     const float32 normalY       = random();
     const float32 normalZ       = random();
-    const float32 normalW       = random();
     const float32 displacement  = random();
 
     // setting via constructors
-    const Planef plane1(Vector4f(normalX, normalY, normalZ, normalW), displacement);
+    const Planef plane1(Vector3f(normalX, normalY, normalZ), displacement);
     
     EXPECT_FLOAT_EQ(plane1.m_normal.x, normalX);
     EXPECT_FLOAT_EQ(plane1.m_normal.y, normalY);
     EXPECT_FLOAT_EQ(plane1.m_normal.z, normalZ);
-    EXPECT_FLOAT_EQ(plane1.m_normal.w, normalW);
     EXPECT_FLOAT_EQ(plane1.m_d, displacement);
 
     const Planef plane2(plane1);
@@ -163,17 +109,15 @@ TEST_F(PlaneTest, SetValue)
     EXPECT_FLOAT_EQ(plane2.m_normal.x, normalX);
     EXPECT_FLOAT_EQ(plane2.m_normal.y, normalY);
     EXPECT_FLOAT_EQ(plane2.m_normal.z, normalZ);
-    EXPECT_FLOAT_EQ(plane2.m_normal.w, normalW);
     EXPECT_FLOAT_EQ(plane2.m_d, displacement);
 
     // setting by setters
     Planef plane3;
-    plane3.create(Vector4f(normalX, normalY, normalZ, normalW), displacement);
+    plane3.create(Vector3f(normalX, normalY, normalZ), displacement);
     
     EXPECT_FLOAT_EQ(plane3.m_normal.x, normalX);
     EXPECT_FLOAT_EQ(plane3.m_normal.y, normalY);
     EXPECT_FLOAT_EQ(plane3.m_normal.z, normalZ);
-    EXPECT_FLOAT_EQ(plane3.m_normal.w, normalW);
     EXPECT_FLOAT_EQ(plane3.m_d, displacement);
 
     Planef plane4;
@@ -182,7 +126,6 @@ TEST_F(PlaneTest, SetValue)
     EXPECT_FLOAT_EQ(plane4.m_normal.x, normalX);
     EXPECT_FLOAT_EQ(plane4.m_normal.y, normalY);
     EXPECT_FLOAT_EQ(plane4.m_normal.z, normalZ);
-    EXPECT_FLOAT_EQ(plane4.m_normal.w, normalW);
     EXPECT_FLOAT_EQ(plane4.m_d, displacement);
 
     // setting via operators
@@ -192,13 +135,11 @@ TEST_F(PlaneTest, SetValue)
     EXPECT_FLOAT_EQ(plane5.m_normal.x, normalX);
     EXPECT_FLOAT_EQ(plane5.m_normal.y, normalY);
     EXPECT_FLOAT_EQ(plane5.m_normal.z, normalZ);
-    EXPECT_FLOAT_EQ(plane5.m_normal.w, normalW);
     EXPECT_FLOAT_EQ(plane5.m_d, displacement);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-// TAGE - once TVector4 is refactored this should be enabled again
-TEST_F(PlaneTest, DISABLED_Normalize)
+TEST_F(PlaneTest, Normalize)
 {
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
@@ -206,31 +147,27 @@ TEST_F(PlaneTest, DISABLED_Normalize)
     const float32 normalX       = random();
     const float32 normalY       = random();
     const float32 normalZ       = random();
-    const float32 normalW       = random();
     const float32 displacement  = random();
 
     float32 outNormalX;
     float32 outNormalY;
     float32 outNormalZ;
-    float32 outNormalW;
     float32 outDisplacement;
 
     // normalize
-    normalize(normalX, normalY, normalZ, normalW, displacement, outNormalX, outNormalY, outNormalZ, outNormalW, outDisplacement);
+    normalize(normalX, normalY, normalZ, displacement, outNormalX, outNormalY, outNormalZ, outDisplacement);
 
-    Planef plane(Vector4f(normalX, normalY, normalZ, normalW), displacement);
+    Planef plane(Vector3f(normalX, normalY, normalZ), displacement);
     plane.normalize();
 
-    EXPECT_FLOAT_EQ(plane.m_normal.x, outNormalX);
-    EXPECT_FLOAT_EQ(plane.m_normal.y, outNormalY);
-    EXPECT_FLOAT_EQ(plane.m_normal.z, outNormalZ);
-    EXPECT_FLOAT_EQ(plane.m_normal.w, outNormalW);
-    EXPECT_FLOAT_EQ(plane.m_d, outDisplacement);
+    EGE_EXPECT_FLOAT_EQ(plane.m_normal.x, outNormalX, 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(plane.m_normal.y, outNormalY, 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(plane.m_normal.z, outNormalZ, 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(plane.m_d, outDisplacement, 0.0001f);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-// TAGE - due to precision loss in Angle::distanceTo method this tests have tendency to fail. Find better way to either do the calculations or test
-TEST_F(PlaneTest, DISABLED_Distance)
+TEST_F(PlaneTest, Distance)
 {
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
@@ -238,20 +175,18 @@ TEST_F(PlaneTest, DISABLED_Distance)
     const float32 normalX       = random();
     const float32 normalY       = random();
     const float32 normalZ       = random();
-    const float32 normalW       = random();
     const float32 displacement  = random();
 
     const float32 pointX  = random();
     const float32 pointY  = random();
     const float32 pointZ  = random();
-    const float32 pointW  = random();
 
     // calculate distance
-    float32 referenceDistance = distance(normalX, normalY, normalZ, normalW, displacement, pointX, pointY, pointZ, pointW);
+    float32 referenceDistance = distance(normalX, normalY, normalZ, displacement, pointX, pointY, pointZ);
 
-    Planef plane(Vector4f(normalX, normalY, normalZ, normalW), displacement);
+    Planef plane(Vector3f(normalX, normalY, normalZ), displacement);
 
-    EXPECT_FLOAT_EQ(referenceDistance, plane.distance(Vector4f(pointX, pointY, pointZ, pointW)));
+    EGE_EXPECT_FLOAT_EQ(referenceDistance, plane.distance(Vector3f(pointX, pointY, pointZ)), 0.0001f);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -263,20 +198,18 @@ TEST_F(PlaneTest, Side)
     const float32 normalX       = random();
     const float32 normalY       = random();
     const float32 normalZ       = random();
-    const float32 normalW       = random();
     const float32 displacement  = random();
 
     const float32 pointX  = random();
     const float32 pointY  = random();
     const float32 pointZ  = random();
-    const float32 pointW  = random();
 
     // calculate point side
-    PlaneSide pointSide = side(normalX, normalY, normalZ, normalW, displacement, pointX, pointY, pointZ, pointW);
+    PlaneSide pointSide = side(normalX, normalY, normalZ, displacement, pointX, pointY, pointZ);
 
-    const Planef plane(Vector4f(normalX, normalY, normalZ, normalW), displacement);
+    const Planef plane(Vector3f(normalX, normalY, normalZ), displacement);
 
-    EXPECT_EQ(pointSide, plane.side(Vector4f(pointX, pointY, pointZ, pointW)));
+    EXPECT_EQ(pointSide, plane.side(Vector3f(pointX, pointY, pointZ)));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -288,11 +221,10 @@ TEST_F(PlaneTest, Equality)
     const float32 normalX       = random();
     const float32 normalY       = random();
     const float32 normalZ       = random();
-    const float32 normalW       = random();
     const float32 displacement  = random();
 
-    const Planef plane1(Vector4f(normalX, normalY, normalZ, normalW), displacement);
-    const Planef plane2(Vector4f(normalX, normalY, normalZ, normalW), displacement);
+    const Planef plane1(Vector3f(normalX, normalY, normalZ), displacement);
+    const Planef plane2(Vector3f(normalX, normalY, normalZ), displacement);
   
     EXPECT_TRUE(plane1 == plane2);
     EXPECT_TRUE(plane2 == plane1);

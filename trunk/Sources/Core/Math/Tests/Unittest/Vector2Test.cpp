@@ -1,6 +1,4 @@
-#include <gtest/gtest.h>
-#include <math.h>
-#include <stdlib.h>
+#include "TestFramework/Interface/TestBase.h"
 #include <limits>
 #include <EGEVector.h>
 
@@ -11,26 +9,10 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const int KRepetitionsCount = 20;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Vector2Test : public ::testing::Test
+class Vector2Test : public TestBase
 {
   protected:
 
-    static void SetUpTestCase();
-    static void TearDownTestCase();
-
-  protected:
-
-    virtual void SetUp();
-    virtual void TearDown();
-
-  protected:
-
-    /*! Returns random number. 
-     *  @param  scale Scale of the returned value.
-     *  @return Generated random number.
-     *  @note Returned number is in [-scale,scale] interval.
-     */
-    float32 random(float32 scale = 1.0f) const;
     /*! Normalized given vector data. 
      *  @param  x     Vector X value.
      *  @param  y     Vector Y value.
@@ -82,28 +64,6 @@ class Vector2Test : public ::testing::Test
      */
     void perpendicular(float32 x, float32 y, float32& outX, float32& outY) const;
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Vector2Test::SetUpTestCase()
-{
-  srand(static_cast<unsigned int>(time(NULL)));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Vector2Test::TearDownTestCase()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Vector2Test::SetUp()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Vector2Test::TearDown()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 Vector2Test::random(float32 scale) const
-{
-  return (rand() / static_cast<float32>(RAND_MAX) - 0.5f) * 2.0f * scale;
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Vector2Test::normalize(float32 x, float32 y, float32& outX, float32& outY) const
 {

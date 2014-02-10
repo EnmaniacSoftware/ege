@@ -1,52 +1,75 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="XML">
-      <UniqueIdentifier>{1c41db20-1d2d-403d-813c-709d581b2266}</UniqueIdentifier>
+    <Filter Include="TestFramework">
+      <UniqueIdentifier>{57b51902-0dbb-4efb-ad50-7b610802560f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Debug">
+    <Filter Include="TestFramework\Interface">
+      <UniqueIdentifier>{5c64cb10-440c-4991-aeb5-f730bc399526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TestFramework\Implemenation">
+      <UniqueIdentifier>{9a7f0421-3ed4-41a1-b1d7-fa52b0633de8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{429162e4-5484-4287-994a-0fe49dab45d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Debug">
       <UniqueIdentifier>{2aed71b4-4fb0-4068-ae59-e6218b919eb9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Math">
+    <Filter Include="Tests\Math">
       <UniqueIdentifier>{29cc5b60-e699-4acb-b2be-f213bd20a3f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\XML">
+      <UniqueIdentifier>{1c41db20-1d2d-403d-813c-709d581b2266}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\DebugTest.cpp">
-      <Filter>Debug</Filter>
+      <Filter>Tests\Debug</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\LoggerTest.cpp">
-      <Filter>Debug</Filter>
+      <Filter>Tests\Debug</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\XML\Tests\Unittest\XMLTest.cpp">
-      <Filter>XML</Filter>
+      <Filter>Tests\XML</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector2Test.cpp">
-      <Filter>Math</Filter>
+      <Filter>Tests\Math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector3Test.cpp">
-      <Filter>Math</Filter>
+      <Filter>Tests\Math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector4Test.cpp">
-      <Filter>Math</Filter>
+      <Filter>Tests\Math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\AngleTest.cpp">
-      <Filter>Math</Filter>
+      <Filter>Tests\Math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\ComplexTest.cpp">
-      <Filter>Math</Filter>
+      <Filter>Tests\Math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Matrix4Test.cpp">
-      <Filter>Math</Filter>
+      <Filter>Tests\Math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\QuaternionTest.cpp">
-      <Filter>Math</Filter>
+      <Filter>Tests\Math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\PlaneTest.cpp">
-      <Filter>Math</Filter>
+      <Filter>Tests\Math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\RectTest.cpp">
-      <Filter>Math</Filter>
+      <Filter>Tests\Math</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\CubicSplineTest.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\TestFramework\Implementation\TestBase.cpp">
+      <Filter>TestFramework\Implemenation</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h">
+      <Filter>TestFramework\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

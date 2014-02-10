@@ -1,6 +1,4 @@
-#include <gtest/gtest.h>
-#include <math.h>
-#include <stdlib.h>
+#include "TestFramework/Interface/TestBase.h"
 #include <EGEMatrix.h>
 
 /** Tests are focusing TMatrix4<float32> instantiations. */
@@ -10,26 +8,10 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const int KRepetitionsCount = 20;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Matrix4Test : public ::testing::Test
+class Matrix4Test : public TestBase
 {
   protected:
 
-    static void SetUpTestCase();
-    static void TearDownTestCase();
-
-  protected:
-
-    virtual void SetUp();
-    virtual void TearDown();
-
-  protected:
-
-    /*! Returns random number. 
-     *  @param  scale Scale of the returned value.
-     *  @return Generated random number.
-     *  @note Returned number is in [-scale,scale] interval.
-     */
-    float32 random(float32 scale = 1.0f) const;
     /*! Generates random matrix data. 
      *  @param  data  Array of data to be randomized.
      */
@@ -70,11 +52,6 @@ class Matrix4Test : public ::testing::Test
      */
     void subtract(const float32 data1[16], const float32 data2[16], float32 dataOut[16]) const;
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Matrix4Test::SetUpTestCase()
-{
-  srand(static_cast<unsigned int>(time(NULL)));
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Matrix4Test::randomData(float32 data[16]) const
 {
@@ -175,23 +152,6 @@ void Matrix4Test::subtract(const float32 data1[16], const float32 data2[16], flo
   {
     dataOut[i] = data1[i] - data2[i];
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Matrix4Test::TearDownTestCase()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Matrix4Test::SetUp()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Matrix4Test::TearDown()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 Matrix4Test::random(float32 scale) const
-{
-  return (rand() / static_cast<float32>(RAND_MAX) - 0.5f) * 2.0f * scale;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(Matrix4Test, SetValue)

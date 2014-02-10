@@ -25,10 +25,6 @@ static CubicSplineType MapCurveTypeName(const String& name, CubicSplineType defa
   {
     return EBezier;
   }
-  else if ("bspline" == name)
-  {
-    return EBSpline;
-  }
   else if ("cardinal" == name)
   {
     return ECardinal;

@@ -53,6 +53,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\gtest-1.7.0\include</AdditionalIncludeDirectories>
+      <FloatingPointModel>Strict</FloatingPointModel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -68,7 +69,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\gtest-1.7.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\..\Sources;..\..\External\gtest-1.7.0\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -82,6 +83,7 @@
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\LoggerTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\AngleTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\ComplexTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\CubicSplineTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Matrix4Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\PlaneTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\QuaternionTest.cpp" />
@@ -90,6 +92,7 @@
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector3Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector4Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\Tests\Unittest\XMLTest.cpp" />
+    <ClCompile Include="..\..\Sources\TestFramework\Implementation\TestBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\External\gtest-1.7.0\msvc\gtest.vcxproj">
@@ -101,6 +104,9 @@
     <ProjectReference Include="EGE.vcxproj">
       <Project>{640bd281-71d7-4cc6-91db-8381773cc8f4}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

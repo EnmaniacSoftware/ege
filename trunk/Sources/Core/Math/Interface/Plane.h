@@ -2,7 +2,7 @@
 #define EGE_CORE_MATH_PLANE_H
 
 #include "EGETypes.h"
-#include "Core/Math/Interface/Vector4.h"
+#include "Core/Math/Interface/Vector3.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -23,7 +23,7 @@ class TPlane
 
     TPlane();
     TPlane(const TPlane& other);
-    TPlane(const TVector4<T>& normal, T d);
+    TPlane(const TVector3<T>& normal, T d);
 
   operators:
 
@@ -32,25 +32,25 @@ class TPlane
 
   public:
 
-    void create(const TVector4<T>& normal, T d);
+    void create(const TVector3<T>& normal, T d);
     void create(const TPlane<T>& plane);
     
-    PlaneSide side(const TVector4<T>& point) const;
+    PlaneSide side(const TVector3<T>& point) const;
     
-    T distance(const TVector4<T>& point) const;
+    T distance(const TVector3<T>& point) const;
 
     void normalize();
 
   public:
 
     /*! Normal vector. */
-    TVector4<T> m_normal;
+    TVector3<T> m_normal;
     /*! Displacement. */
     T m_d;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TPlane<T>::TPlane() : m_normal(TVector4<T>::ZERO)
+TPlane<T>::TPlane() : m_normal(TVector3<T>::ZERO)
                     , m_d(0)
 {
 }
@@ -62,7 +62,7 @@ TPlane<T>::TPlane(const TPlane& other) : m_normal(other.m_normal)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TPlane<T>::TPlane(const TVector4<T>& normal, T d) : m_normal(normal)
+TPlane<T>::TPlane(const TVector3<T>& normal, T d) : m_normal(normal)
                                                   , m_d(d)
 {
 }
@@ -81,7 +81,7 @@ TPlane<T>& TPlane<T>::operator=(const TPlane<T>& other)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TPlane<T>::create(const TVector4<T>& normal, T d)
+void TPlane<T>::create(const TVector3<T>& normal, T d)
 {
   m_normal = normal;
   m_d = d;
@@ -111,13 +111,13 @@ void TPlane<T>::normalize()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-T TPlane<T>::distance(const TVector4<T>& point) const
+T TPlane<T>::distance(const TVector3<T>& point) const
 {
   return m_normal.dotProduct(point) + m_d;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-PlaneSide TPlane<T>::side(const TVector4<T>& point) const
+PlaneSide TPlane<T>::side(const TVector3<T>& point) const
 {
   // get distance from plane
   T curDistance = distance(point);

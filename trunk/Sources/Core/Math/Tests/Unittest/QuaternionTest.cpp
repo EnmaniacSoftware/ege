@@ -1,6 +1,4 @@
-#include <gtest/gtest.h>
-#include <math.h>
-#include <stdlib.h>
+#include "TestFramework/Interface/TestBase.h"
 #include <EGEQuaternion.h>
 
 /** Tests are focusing TQuaternion<float32> instantiations. */
@@ -10,26 +8,10 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const int KRepetitionsCount = 20;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class QuaternionTest : public ::testing::Test
+class QuaternionTest : public TestBase
 {
   protected:
 
-    static void SetUpTestCase();
-    static void TearDownTestCase();
-
-  protected:
-
-    virtual void SetUp();
-    virtual void TearDown();
-
-  protected:
-
-    /*! Returns random number. 
-     *  @param  scale Scale of the returned value.
-     *  @return Generated random number.
-     *  @note Returned number is in [-scale,scale] interval.
-     */
-    float32 random(float32 scale = 1.0f) const;
     /*! Generates random matrix data. 
      *  @param  data  Array of data to be randomized.
      */
@@ -118,28 +100,6 @@ class QuaternionTest : public ::testing::Test
      */
     float32 dotProduct(float32 x1, float32 y1, float32 z1, float32 w1, float32 x2, float32 y2, float32 z2, float32 w2) const;
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void QuaternionTest::SetUpTestCase()
-{
-  srand(static_cast<unsigned int>(time(NULL)));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void QuaternionTest::TearDownTestCase()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void QuaternionTest::SetUp()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void QuaternionTest::TearDown()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 QuaternionTest::random(float32 scale) const
-{
-  return (rand() / static_cast<float32>(RAND_MAX) - 0.5f) * 2.0f * scale;
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void QuaternionTest::randomData(float32 data[16]) const
 {
@@ -378,10 +338,10 @@ TEST_F(QuaternionTest, DISABLED_ConvertToVector)
     Angle angle;
     quaterion1.convertTo(axis, angle);
 
-    EXPECT_FLOAT_EQ(axisX, axis.x);
-    EXPECT_FLOAT_EQ(axisY, axis.y);
-    EXPECT_FLOAT_EQ(axisZ, axis.z);
-    EXPECT_FLOAT_EQ(radians, angle.radians());
+    EGE_EXPECT_FLOAT_EQ(axisX, axis.x, 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(axisY, axis.y, 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(axisZ, axis.z, 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(radians, angle.radians(), 0.0001f);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -404,17 +364,17 @@ TEST_F(QuaternionTest, DISABLED_ConvertToMatrix)
     quaterion2.convertTo(matrixOut);
 
     // NOTE: only test 3x3 rotational matrix
-    EXPECT_FLOAT_EQ(data[0], matrixOut.data[0]);
-    EXPECT_FLOAT_EQ(data[1], matrixOut.data[1]);
-    EXPECT_FLOAT_EQ(data[2], matrixOut.data[2]);
+    EGE_EXPECT_FLOAT_EQ(data[0], matrixOut.data[0], 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(data[1], matrixOut.data[1], 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(data[2], matrixOut.data[2], 0.0001f);
 
-    EXPECT_FLOAT_EQ(data[4], matrixOut.data[4]);
-    EXPECT_FLOAT_EQ(data[5], matrixOut.data[5]);
-    EXPECT_FLOAT_EQ(data[6], matrixOut.data[6]);
+    EGE_EXPECT_FLOAT_EQ(data[4], matrixOut.data[4], 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(data[5], matrixOut.data[5], 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(data[6], matrixOut.data[6], 0.0001f);
 
-    EXPECT_FLOAT_EQ(data[8], matrixOut.data[8]);
-    EXPECT_FLOAT_EQ(data[9], matrixOut.data[9]);
-    EXPECT_FLOAT_EQ(data[10], matrixOut.data[10]);
+    EGE_EXPECT_FLOAT_EQ(data[8], matrixOut.data[8], 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(data[9], matrixOut.data[9], 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(data[10], matrixOut.data[10], 0.0001f);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

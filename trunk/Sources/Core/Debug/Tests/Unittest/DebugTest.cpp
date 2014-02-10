@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "TestFramework/Interface/TestBase.h"
 #include <EGEMemory.h>
 #include <EGEDebug.h>
 #include <EGEString.h>
@@ -41,7 +41,7 @@ class BufferDebug : public Debug
     }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class DebugTest : public ::testing::Test
+class DebugTest : public TestBase
 {
   protected:
 

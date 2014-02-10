@@ -1,6 +1,4 @@
-#include <gtest/gtest.h>
-#include <math.h>
-#include <stdlib.h>
+#include "TestFramework/Interface/TestBase.h"
 #include <EGEComplex.h>
 #include <EGEAngle.h>
 
@@ -11,26 +9,10 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const int KRepetitionsCount = 20;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ComplexTest : public ::testing::Test
+class ComplexTest : public TestBase
 {
   protected:
 
-    static void SetUpTestCase();
-    static void TearDownTestCase();
-
-  protected:
-
-    virtual void SetUp();
-    virtual void TearDown();
-
-  protected:
-
-    /*! Returns random number. 
-     *  @param  scale Scale of the returned value.
-     *  @return Generated random number.
-     *  @note Returned number is in [-scale,scale] interval.
-     */
-    float32 random(float32 scale = 1.0f) const;
     /*! Normalizes given complex value. 
      *  @param  x     Complex number real part value.
      *  @param  y     Complex number imaginary part value.
@@ -59,28 +41,6 @@ class ComplexTest : public ::testing::Test
      */
     float32 dotProduct(float32 x1, float32 y1, float32 x2, float32 y2) const;
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ComplexTest::SetUpTestCase()
-{
-  srand(static_cast<unsigned int>(time(NULL)));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ComplexTest::TearDownTestCase()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ComplexTest::SetUp()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ComplexTest::TearDown()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 ComplexTest::random(float32 scale) const
-{
-  return (rand() / static_cast<float32>(RAND_MAX) - 0.5f) * 2.0f * scale;
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ComplexTest::normalize(float32 x, float32 y, float32& outX, float32& outY) const
 {

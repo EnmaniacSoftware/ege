@@ -1,0 +1,30 @@
+#include "TestFramework/Interface/TestBase.h"
+#include <math.h>
+#include <stdlib.h>
+
+EGE_NAMESPACE
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void TestBase::SetUpTestCase()
+{
+  srand(static_cast<unsigned int>(time(NULL)));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void TestBase::ExpectFloatEqual(float32 expected, float32 actual, float32 epsilon, const char* fileName, s32 lineNo)
+{
+  if (fabs(expected - actual) > epsilon)
+  {
+    std::cout << "Actual  : " << actual << std::endl 
+              << "Expected: " << expected << std::endl 
+              << "epsilon :" << epsilon << std::endl
+              << std::endl;
+
+    ADD_FAILURE_AT(fileName, lineNo);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+float32 TestBase::random(float32 scale) const
+{
+  return (rand() / static_cast<float32>(RAND_MAX) - 0.5f) * 2.0f * scale;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

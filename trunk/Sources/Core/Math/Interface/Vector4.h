@@ -23,11 +23,11 @@ class TVector4
 
   operators:
 
-		TVector4& operator  = (const TVector4& vector);
-		void      operator += (const TVector4& vector);
-		void      operator -= (const TVector4& vector);
-    bool      operator == (const TVector4& vector) const;
-    bool      operator != (const TVector4& vector) const;
+		TVector4& operator  = (const TVector4& other);
+		void      operator += (const TVector4& other);
+		void      operator -= (const TVector4& other);
+    bool      operator == (const TVector4& other) const;
+    bool      operator != (const TVector4& otherother) const;
 
   public:
 
@@ -39,19 +39,6 @@ class TVector4
     /*! Returns vector sequared length. */
     T lengthSquared() const;
  
-    /*! Normalizes the vector. */
-    void normalize();
-    /*! Returns normalized vector. */
- 	  TVector4 normalized() const;
-
-    /*! Returns dot product between current and given vectors. */
-    T dotProduct(const TVector4& vector) const;
-
-    /*! Returns distance between this and given points. */
-    T distanceTo(const TVector4& vector) const;
-    /*! Returns squared distance between this and given points. */
-    T distanceSquaredTo(const TVector4& vector) const;
-
     /*! Returns 2D vector consisting of X and Y values of current one. */
     TVector2<T> xy() const;
     /*! Returns 3D vector consisting of X, Y and Z values of current one. */
@@ -88,59 +75,68 @@ template <typename T>
 const TVector4<T> TVector4<T>::UNIT_W = TVector4<T>(0, 0, 0, 1);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector4<T>::TVector4() : x(0), y(0), z(0), w(1)
+TVector4<T>::TVector4() : x(0)
+                        , y(0)
+                        , z(0)
+                        , w(1)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector4<T>::TVector4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w)
+TVector4<T>::TVector4(T x, T y, T z, T w) : x(x)
+                                          , y(y)
+                                          , z(z)
+                                          , w(w)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector4<T>::TVector4(const TVector4<T>& vector) : x(vector.x), y(vector.y), z(vector.z), w(vector.w)
+TVector4<T>::TVector4(const TVector4<T>& other) : x(other.x)
+                                                , y(other.y)
+                                                , z(other.z)
+                                                , w(other.w)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector4<T>& TVector4<T>::operator = (const TVector4<T>& vector)
+TVector4<T>& TVector4<T>::operator = (const TVector4<T>& other)
 {
-  this->x = vector.x;
-  this->y = vector.y;
-  this->z = vector.z;
-  this->w = vector.w;
+  this->x = other.x;
+  this->y = other.y;
+  this->z = other.z;
+  this->w = other.w;
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TVector4<T>::operator += (const TVector4<T>& vector)
+void TVector4<T>::operator += (const TVector4<T>& other)
 {
-  x += vector.x;
-  y += vector.y;
-  z += vector.z;
-  w += vector.w;
+  x += other.x;
+  y += other.y;
+  z += other.z;
+  w += other.w;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void TVector4<T>::operator -= (const TVector4<T>& vector)
+void TVector4<T>::operator -= (const TVector4<T>& other)
 {
-  x -= vector.x;
-  y -= vector.y;
-  z -= vector.z;
-  w -= vector.w;
+  x -= other.x;
+  y -= other.y;
+  z -= other.z;
+  w -= other.w;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TVector4<T>::operator == (const TVector4& vector) const
+bool TVector4<T>::operator == (const TVector4& other) const
 {
-  return (x == vector.x) && (y == vector.y) && (z == vector.z) && (w == vector.w);
+  return (x == other.x) && (y == other.y) && (z == other.z) && (w == other.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool TVector4<T>::operator != (const TVector4& vector) const
+bool TVector4<T>::operator != (const TVector4& other) const
 {
-  return (x != vector.x) || (y != vector.y) || (z != vector.z) || (w != vector.w);
+  return (x != other.x) || (y != other.y) || (z != other.z) || (w != other.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
@@ -164,52 +160,6 @@ T TVector4<T>::lengthSquared() const
   T invW = static_cast<T>(1.0) / w;
 
   return ((x * x) + (y * y) + (z * z)) * invW * invW;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-void TVector4<T>::normalize()
-{
-  T length = this->length();
-
-  // check if can be done
-  if (Math::EPSILON <= length)
-  {
-    // get inverse of length
-    T invLength = static_cast<T>(1.0) / length;
-
-    // normalize
-	  x *= invLength;
-	  y *= invLength;
-	  z *= invLength;
-    w = 1;
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector4<T> TVector4<T>::normalized() const
-{
-  TVector4<T> out = *this;
-  out.normalize();
-  
-  return out;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-T TVector4<T>::dotProduct(const TVector4& vector) const 
-{ 
-  return (x * vector.x) + (y * vector.y) + (z * vector.z) + (w * vector.w); 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-T TVector4<T>::distanceTo(const TVector4& vector) const
-{
-  return Math::Sqrt((x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y) + (z - vector.z) * (z - vector.z) + (w - vector.w) * (w - vector.w));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-T TVector4<T>::distanceSquaredTo(const TVector4& vector) const
-{
-  return (x - vector.x) * (x - vector.x) + (y - vector.y) * (y - vector.y) + (z - vector.z) * (z - vector.z) + (w - vector.w) * (w - vector.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

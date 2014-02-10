@@ -75,7 +75,7 @@ class Frustum : public Object
 //    bool isVisible( const CAxisAlignedBox& cBox );                                   // returns TRUE if given AABB is visible
 //    bool isVisible( const CSphere& cSphere );                                        // returns TRUE if given sphere is visible
     /*! Returns TRUE if point is within vfrustum. */
-    bool isVisible(const Vector4f& point);
+    bool isVisible(const Vector3f& point);
 
     // projection related methods
     //virtual bool project( const CVector3& cPosition, CVector3& cDeviceCoords );      // projects world coordinates into device coordinates, 

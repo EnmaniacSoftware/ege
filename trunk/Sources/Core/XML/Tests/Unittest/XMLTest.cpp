@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "TestFramework/Interface/TestBase.h"
 #include <EGEMemory.h>
 #include <EGEXml.h>
 #include <EGEDataBuffer.h>
@@ -8,7 +8,7 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class XMLTest : public ::testing::Test
+class XMLTest : public TestBase
 {
   protected:
 

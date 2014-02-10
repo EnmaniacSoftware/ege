@@ -1,6 +1,4 @@
-#include <gtest/gtest.h>
-#include <math.h>
-#include <stdlib.h>
+#include "TestFramework/Interface/TestBase.h"
 #include <EGEAngle.h>
 
 EGE_NAMESPACE
@@ -8,49 +6,9 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const int KRepetitionsCount = 20;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AngleTest : public ::testing::Test
+class AngleTest : public TestBase
 {
-  protected:
-
-    static void SetUpTestCase();
-    static void TearDownTestCase();
-
-  protected:
-
-    virtual void SetUp();
-    virtual void TearDown();
-
-  protected:
-
-    /*! Returns random number. 
-     *  @param  scale Scale of the returned value.
-     *  @return Generated random number.
-     *  @note Returned number is in [-scale,scale] interval.
-     */
-    float32 random(float32 scale = 1.0f) const;
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void AngleTest::SetUpTestCase()
-{
-  srand(static_cast<unsigned int>(time(NULL)));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void AngleTest::TearDownTestCase()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void AngleTest::SetUp()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void AngleTest::TearDown()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 AngleTest::random(float32 scale) const
-{
-  return (rand() / static_cast<float32>(RAND_MAX) - 0.5f) * 2.0f * scale;
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(AngleTest, SetValue)
 {
@@ -103,8 +61,7 @@ TEST_F(AngleTest, Normalize)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-// TAGE - due to precision loss in Angle::distanceTo method this tests have tendency to fail. Find better way to either do the calculations or test
-TEST_F(AngleTest, DISABLED_Distance)
+TEST_F(AngleTest, Distance)
 {
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
@@ -116,10 +73,10 @@ TEST_F(AngleTest, DISABLED_Distance)
     Angle angle2(radians + diff);
     Angle angleDiff(diff);
 
-    EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, EClockwise).radians(), EGEMath::TWO_PI - diff);
-    EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, ECounterClockwise).radians(), diff);
-    EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, EShortest).radians(), 
-                    Math::Min(angle1.distanceTo(angle2, EClockwise).radians(), angle1.distanceTo(angle2, ECounterClockwise).radians()));
+    EGE_EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, EClockwise).radians(), EGEMath::TWO_PI - diff,  0.0001f);
+    EGE_EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, ECounterClockwise).radians(), diff,  0.0001f);
+    EGE_EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, EShortest).radians(), 
+                        Math::Min(angle1.distanceTo(angle2, EClockwise).radians(), angle1.distanceTo(angle2, ECounterClockwise).radians()),  0.0001f);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
