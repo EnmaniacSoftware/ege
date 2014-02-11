@@ -25,11 +25,20 @@ class TestBase : public ::testing::Test
 
   protected:
 
+    TestBase(float32 epsilon = std::numeric_limits<float32>::epsilon());
+
     /*! Returns random number. 
      *  @param  scale Scale of the returned value.
      *  @return Generated random number.
      *  @note Returned number is in [-scale,scale] interval.
      */
     float32 random(float32 scale = 1.0f) const;
+    /*! Returns floating point epsilon value. */
+    float32 epsilon() const;
+
+  private:
+
+    /*! Current epsilon value for floating point comparisons. */
+    float32 m_epsilon;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
