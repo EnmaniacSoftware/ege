@@ -1,4 +1,5 @@
 #include "TestFramework/Interface/TestBase.h"
+#include <EGEMath.h>
 #include <EGESpline.h>
 
 EGE_NAMESPACE
@@ -9,6 +10,8 @@ static const int KRepetitionsCount = 20;
 class CubicSplineTest : public TestBase
 {
   protected:
+
+    CubicSplineTest();
 
     /*! Returns value at given bezier cubic spline.
      *  @param  t       Parameter describing relative position along spline in [0, 1] range.
@@ -38,6 +41,10 @@ class CubicSplineTest : public TestBase
      */
     Vector4f cardinalValue(float32 t, const Vector4f& point1, const Vector4f& point2, const Vector4f& point3, const Vector4f& point4) const;
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+CubicSplineTest::CubicSplineTest() : TestBase(0.000001f)
+{
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Vector4f CubicSplineTest::bezierValue(float32 t, const Vector4f& point1, const Vector4f& point2, const Vector4f& point3, const Vector4f& point4) const
 {
@@ -122,10 +129,10 @@ TEST_F(CubicSplineTest, BezierTest)
       spline.value(out, t);
 
       // compare
-      EGE_EXPECT_FLOAT_EQ(referenceValue.x, out.x, 0.000001f);
-      EGE_EXPECT_FLOAT_EQ(referenceValue.y, out.y, 0.000001f);
-      EGE_EXPECT_FLOAT_EQ(referenceValue.z, out.z, 0.000001f);
-      EGE_EXPECT_FLOAT_EQ(referenceValue.w, out.w, 0.000001f);
+      EGE_EXPECT_FLOAT_EQ(referenceValue.x, out.x, epsilon());
+      EGE_EXPECT_FLOAT_EQ(referenceValue.y, out.y, epsilon());
+      EGE_EXPECT_FLOAT_EQ(referenceValue.z, out.z, epsilon());
+      EGE_EXPECT_FLOAT_EQ(referenceValue.w, out.w, epsilon());
     }
   }
 }
@@ -159,10 +166,10 @@ TEST_F(CubicSplineTest, HermiteTest)
       spline.value(out, t);
 
       // compare
-      EGE_EXPECT_FLOAT_EQ(referenceValue.x, out.x, 0.000001f);
-      EGE_EXPECT_FLOAT_EQ(referenceValue.y, out.y, 0.000001f);
-      EGE_EXPECT_FLOAT_EQ(referenceValue.z, out.z, 0.000001f);
-      EGE_EXPECT_FLOAT_EQ(referenceValue.w, out.w, 0.000001f);
+      EGE_EXPECT_FLOAT_EQ(referenceValue.x, out.x, epsilon());
+      EGE_EXPECT_FLOAT_EQ(referenceValue.y, out.y, epsilon());
+      EGE_EXPECT_FLOAT_EQ(referenceValue.z, out.z, epsilon());
+      EGE_EXPECT_FLOAT_EQ(referenceValue.w, out.w, epsilon());
     }
   }
 }
@@ -196,11 +203,77 @@ TEST_F(CubicSplineTest, CardinalTest)
       spline.value(out, t);
 
       // compare
-      EGE_EXPECT_FLOAT_EQ(referenceValue.x, out.x, 0.000001f);
-      EGE_EXPECT_FLOAT_EQ(referenceValue.y, out.y, 0.000001f);
-      EGE_EXPECT_FLOAT_EQ(referenceValue.z, out.z, 0.000001f);
-      EGE_EXPECT_FLOAT_EQ(referenceValue.w, out.w, 0.000001f);
+      EGE_EXPECT_FLOAT_EQ(referenceValue.x, out.x, epsilon());
+      EGE_EXPECT_FLOAT_EQ(referenceValue.y, out.y, epsilon());
+      EGE_EXPECT_FLOAT_EQ(referenceValue.z, out.z, epsilon());
+      EGE_EXPECT_FLOAT_EQ(referenceValue.w, out.w, epsilon());
     }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(CubicSplineTest, Length)
+{
+  // perform fixed number of tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    const Vector4f point1(random(), random(), random(), 1);
+    const Vector4f point2(random(), random(), random(), 1);
+    const Vector4f point3(random(), random(), random(), 1);
+    const Vector4f point4(random(), random(), random(), 1);
+
+    CubicSpline splineBezier(EBezier);
+    CubicSpline splineHermite(EHermite);
+    CubicSpline splineCardinal(ECardinal);
+  
+    // add control points
+    splineBezier.addPoint(point1, point2);
+    splineBezier.addPoint(point4, point3);
+    splineHermite.addPoint(point1, point2);
+    splineHermite.addPoint(point4, point3);
+    splineCardinal.addPoint(point1, point2);
+    splineCardinal.addPoint(point4, point3);
+
+    float32 lengthBezier = 0;
+    float32 lengthHermite = 0;
+    float32 lengthCardinal = 0;
+
+    // simulate traversal along the curve and calculate length
+    const float32 dt = 0.01f;
+    for (float32 t = 0; t <= 1.0f; t += dt)
+    {
+      t = (1.0f < t) ? 1.0f : t;
+
+      if (1.0f != t)
+      {
+        Vector4f a;
+        Vector4f b;
+
+        // calculate length of next segment...
+
+        // ...for BEZIER spline...
+        a = bezierValue(t, point1, point2, point3, point4);
+        b = bezierValue(Math::Min(t + dt, 1.0f), point1, point2, point3, point4);
+
+        lengthBezier += Vector3f(a.x, a.y, a.z).distanceTo(Vector3f(b.x, b.y, b.z));
+
+        // ...for HERMITE spline...
+        a = hermiteValue(t, point1, point2, point3, point4);
+        b = hermiteValue(Math::Min(t + dt, 1.0f), point1, point2, point3, point4);
+
+        lengthHermite += Vector3f(a.x, a.y, a.z).distanceTo(Vector3f(b.x, b.y, b.z));
+
+        // ...for CARDINAL spline
+        a = cardinalValue(t, point1, point2, point3, point4);
+        b = cardinalValue(Math::Min(t + dt, 1.0f), point1, point2, point3, point4);
+
+        lengthCardinal += Vector3f(a.x, a.y, a.z).distanceTo(Vector3f(b.x, b.y, b.z));
+      }
+    }
+
+    // compare
+    EGE_EXPECT_FLOAT_EQ(lengthBezier, splineBezier.length(), 0.00001f);
+    EGE_EXPECT_FLOAT_EQ(lengthHermite, splineHermite.length(), 0.00001f);
+    EGE_EXPECT_FLOAT_EQ(lengthCardinal, splineCardinal.length(), 0.00001f);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
