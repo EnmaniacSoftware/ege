@@ -66,6 +66,9 @@
     <ClCompile Include="..\..\Sources\TestFramework\Implementation\TestBase.cpp">
       <Filter>TestFramework\Implemenation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\TweenerTest.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h">
