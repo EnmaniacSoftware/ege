@@ -14,11 +14,8 @@ class PowerTweener : public ITweener
 {
   public:
 
-    PowerTweener();
+    PowerTweener(s32 power = 2);
    ~PowerTweener();
-
-    /*! Sets power coefficient. */
-    void setPowerCoefficient(float32 power);
 
     /*! @see ITweener::easeIn. */
     float32 easeIn(float32 time) override;
@@ -30,7 +27,7 @@ class PowerTweener : public ITweener
   private:
 
     /*! Power coefficient. */
-    float32 m_power;
+    s32 m_power;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
