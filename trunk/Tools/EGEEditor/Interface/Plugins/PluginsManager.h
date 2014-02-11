@@ -14,8 +14,10 @@ class PluginsManager : public QObject
     explicit PluginsManager(QObject* parent = NULL);
     ~PluginsManager();
 
-    /*! Sets plugin directories. */
-    void setPluginPaths(const QStringList& paths);
+    /*! Sets plugin directory.
+     *  @param  path  Path where both XML definitions and binaries of plugins are be located.
+     */
+    void setPluginPath(const QString& path);
 
     /*! Loads plugins. */
     bool loadPlugins();
@@ -39,11 +41,13 @@ class PluginsManager : public QObject
     QList<PluginData*> loadQueue() const;
     /*! Processes given plugin resolving its dependencies and updating load queue. */
     bool loadQueue(PluginData* plugin, QList<PluginData*>& queue, QList<PluginsManager::PluginData*>& loopQueue) const;
+    /*! Returns path to plugin directory. */
+    const QString& pluginPath() const;
 
   private:
 
-    /*! Plugin paths. */
-    QStringList m_paths;
+    /*! Plugin path. */
+    QString m_path;
     /*! Map of all plugins [name, plugindata]. */
     QMap<QString, PluginData*> m_plugins;
 };

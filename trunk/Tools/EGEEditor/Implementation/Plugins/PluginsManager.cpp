@@ -17,75 +17,71 @@ PluginsManager::~PluginsManager()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool PluginsManager::loadPlugins()
 {
-  // go thru all plugin paths
-  foreach (const QString& directory, m_paths)
+  // enumarate all files
+  QDir dir(pluginPath());
+  dir.setFilter(QDir::Files | QDir::NoSymLinks);
+  dir.setNameFilters(QStringList() << "*.xml");
+
+  QFileInfoList fileList = dir.entryInfoList();
+  foreach (const QFileInfo& fileInfo, fileList)
   {
-    // enumarate all files
-    QDir dir(directory);
-    dir.setFilter(QDir::Files | QDir::NoSymLinks);
-    dir.setNameFilters(QStringList() << "*.xml");
+    qDebug() << Q_FUNC_INFO << QString("Loading plugin definition: %1...").arg(fileInfo.absoluteFilePath());
 
-    QFileInfoList fileList = dir.entryInfoList();
-    foreach (const QFileInfo& fileInfo, fileList)
+    QFile file(fileInfo.absoluteFilePath());
+    if ( ! file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-      qDebug() << Q_FUNC_INFO << tr("Loading plugin definition: %1...").arg(fileInfo.absoluteFilePath());
-      
-      QFile file(fileInfo.absoluteFilePath());
-      if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-      {
-        // error!
-        qWarning() << Q_FUNC_INFO << "Could not open plugin xml file" << fileInfo.absoluteFilePath();
-        continue;
-      }
-
-      // allocate plugin data
-      PluginData* pluginData = new PluginData;
-      if (NULL == pluginData)
-      {
-        // error!
-        qWarning() << Q_FUNC_INFO << QString("Could not create plugin: %1...").arg(fileInfo.absoluteFilePath());
-        continue;
-      }
-
-      // process input data
-      QXmlStreamReader stream(&file);
-      while (!stream.atEnd())
-      {
-        QXmlStreamReader::TokenType token = stream.readNext();
-        switch (token)
-        {
-          case QXmlStreamReader::StartElement:
-
-            // check if plugin element
-            if ("plugin" == stream.name())
-            {
-              // retrive name
-              pluginData->name = stream.attributes().value("name").toString();
-            }
-            // check if dependency element
-            else if ("dependency" == stream.name())
-            {
-              // retrieve dependency name
-              pluginData->dependencies.append(stream.attributes().value("name").toString());
-            }
-            break;
-        }
-      }
-
-      if (stream.hasError())
-      {
-        // error!
-        qWarning() << Q_FUNC_INFO << QString("Plugin XML read error") <<  fileInfo.absoluteFilePath();
-        delete pluginData;
-        continue;
-      }
-
-      pluginData->instance  = NULL;
-      pluginData->path      = dir.absolutePath();
-
-      // add to pool
-      m_plugins.insert(pluginData->name, pluginData);
+      // error!
+      qWarning() << Q_FUNC_INFO << "Could not open plugin xml file" << fileInfo.absoluteFilePath();
+      continue;
     }
+
+    // allocate plugin data
+    PluginData* pluginData = new PluginData;
+    if (NULL == pluginData)
+    {
+      // error!
+      qWarning() << Q_FUNC_INFO << QString("Could not create plugin: %1...").arg(fileInfo.absoluteFilePath());
+      continue;
+    }
+
+    // process input data
+    QXmlStreamReader stream(&file);
+    while ( ! stream.atEnd())
+    {
+      QXmlStreamReader::TokenType token = stream.readNext();
+      switch (token)
+      {
+        case QXmlStreamReader::StartElement:
+
+          // check if plugin element
+          if (QString::fromLatin1("plugin") == stream.name())
+          {
+            // retrive name
+            pluginData->name = stream.attributes().value(QString::fromLatin1("name")).toString();
+          }
+          // check if dependency element
+          else if (QString::fromLatin1("dependency") == stream.name())
+          {
+            // retrieve dependency name
+            pluginData->dependencies.append(stream.attributes().value(QString::fromLatin1("name")).toString());
+          }
+          break;
+      }
+    }
+
+    if (stream.hasError())
+    {
+      // error!
+      qWarning() << Q_FUNC_INFO << "Plugin XML read error" <<  fileInfo.absoluteFilePath();
+      delete pluginData;
+      continue;
+    }
+
+    pluginData->instance  = NULL;
+    pluginData->path      = dir.absolutePath();
+
+    // add to pool
+    m_plugins.insert(pluginData->name, pluginData);
   }
 
   QList<PluginData*> queue = loadQueue();
@@ -137,9 +133,9 @@ void PluginsManager::unloadPlugins()
   m_plugins.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PluginsManager::setPluginPaths(const QStringList& paths)
+void PluginsManager::setPluginPath(const QString& path)
 {
-  m_paths = paths;
+  m_path = path;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QList<PluginsManager::PluginData*> PluginsManager::loadQueue() const
@@ -180,7 +176,8 @@ bool PluginsManager::loadQueue(PluginData* plugin, QList<PluginsManager::PluginD
   {
     PluginData* depPlugin = m_plugins.value(dep);
     Q_ASSERT(depPlugin);
-    if (!loadQueue(depPlugin, queue, loopQueue))
+
+    if ( ! loadQueue(depPlugin, queue, loopQueue))
     {
       // error!
       return false;
@@ -191,5 +188,10 @@ bool PluginsManager::loadQueue(PluginData* plugin, QList<PluginsManager::PluginD
   queue << plugin;
 
   return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const QString&PluginsManager::pluginPath() const
+{
+  return m_path;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
