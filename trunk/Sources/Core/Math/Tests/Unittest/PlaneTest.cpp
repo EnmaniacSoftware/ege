@@ -12,6 +12,8 @@ class PlaneTest : public TestBase
 {
   protected:
 
+    PlaneTest();
+
     /*! Normalizes given plane data.
      *  @param  x               Plane normal X value.
      *  @param  y               Plane normal Y value.
@@ -46,6 +48,10 @@ class PlaneTest : public TestBase
      */
     PlaneSide side(float32 x, float32 y, float32 z, float32 displacement, float32 pointX, float32 pointY, float32 pointZ) const;
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PlaneTest::PlaneTest() : TestBase(0.0001f)
+{
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PlaneTest::normalize(float32 x, float32 y, float32 z, float32 displacement, float32& outX, float32& outY, float32& outZ, float32& outDisplacement) const
 {
@@ -160,10 +166,10 @@ TEST_F(PlaneTest, Normalize)
     Planef plane(Vector3f(normalX, normalY, normalZ), displacement);
     plane.normalize();
 
-    EGE_EXPECT_FLOAT_EQ(plane.m_normal.x, outNormalX, 0.0001f);
-    EGE_EXPECT_FLOAT_EQ(plane.m_normal.y, outNormalY, 0.0001f);
-    EGE_EXPECT_FLOAT_EQ(plane.m_normal.z, outNormalZ, 0.0001f);
-    EGE_EXPECT_FLOAT_EQ(plane.m_d, outDisplacement, 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(plane.m_normal.x, outNormalX, epsilon());
+    EGE_EXPECT_FLOAT_EQ(plane.m_normal.y, outNormalY, epsilon());
+    EGE_EXPECT_FLOAT_EQ(plane.m_normal.z, outNormalZ, epsilon());
+    EGE_EXPECT_FLOAT_EQ(plane.m_d, outDisplacement, epsilon());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -186,7 +192,7 @@ TEST_F(PlaneTest, Distance)
 
     Planef plane(Vector3f(normalX, normalY, normalZ), displacement);
 
-    EGE_EXPECT_FLOAT_EQ(referenceDistance, plane.distance(Vector3f(pointX, pointY, pointZ)), 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(referenceDistance, plane.distance(Vector3f(pointX, pointY, pointZ)), epsilon());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

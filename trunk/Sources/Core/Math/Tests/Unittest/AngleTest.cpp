@@ -8,7 +8,14 @@ static const int KRepetitionsCount = 20;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AngleTest : public TestBase
 {
+  protected:
+
+    AngleTest();
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+AngleTest::AngleTest() : TestBase(0.0001f)
+{
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(AngleTest, SetValue)
 {
@@ -73,10 +80,10 @@ TEST_F(AngleTest, Distance)
     Angle angle2(radians + diff);
     Angle angleDiff(diff);
 
-    EGE_EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, EClockwise).radians(), EGEMath::TWO_PI - diff,  0.0001f);
-    EGE_EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, ECounterClockwise).radians(), diff,  0.0001f);
+    EGE_EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, EClockwise).radians(), EGEMath::TWO_PI - diff, epsilon());
+    EGE_EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, ECounterClockwise).radians(), diff, epsilon());
     EGE_EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, EShortest).radians(), 
-                        Math::Min(angle1.distanceTo(angle2, EClockwise).radians(), angle1.distanceTo(angle2, ECounterClockwise).radians()),  0.0001f);
+                        Math::Min(angle1.distanceTo(angle2, EClockwise).radians(), angle1.distanceTo(angle2, ECounterClockwise).radians()), epsilon());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

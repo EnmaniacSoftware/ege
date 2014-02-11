@@ -12,6 +12,8 @@ class QuaternionTest : public TestBase
 {
   protected:
 
+    QuaternionTest();
+
     /*! Generates random matrix data. 
      *  @param  data  Array of data to be randomized.
      */
@@ -100,6 +102,10 @@ class QuaternionTest : public TestBase
      */
     float32 dotProduct(float32 x1, float32 y1, float32 z1, float32 w1, float32 x2, float32 y2, float32 z2, float32 w2) const;
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+QuaternionTest::QuaternionTest() : TestBase(0.0001f)
+{
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void QuaternionTest::randomData(float32 data[16]) const
 {
@@ -338,10 +344,10 @@ TEST_F(QuaternionTest, DISABLED_ConvertToVector)
     Angle angle;
     quaterion1.convertTo(axis, angle);
 
-    EGE_EXPECT_FLOAT_EQ(axisX, axis.x, 0.0001f);
-    EGE_EXPECT_FLOAT_EQ(axisY, axis.y, 0.0001f);
-    EGE_EXPECT_FLOAT_EQ(axisZ, axis.z, 0.0001f);
-    EGE_EXPECT_FLOAT_EQ(radians, angle.radians(), 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(axisX, axis.x, epsilon());
+    EGE_EXPECT_FLOAT_EQ(axisY, axis.y, epsilon());
+    EGE_EXPECT_FLOAT_EQ(axisZ, axis.z, epsilon());
+    EGE_EXPECT_FLOAT_EQ(radians, angle.radians(), epsilon());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -364,17 +370,17 @@ TEST_F(QuaternionTest, DISABLED_ConvertToMatrix)
     quaterion2.convertTo(matrixOut);
 
     // NOTE: only test 3x3 rotational matrix
-    EGE_EXPECT_FLOAT_EQ(data[0], matrixOut.data[0], 0.0001f);
-    EGE_EXPECT_FLOAT_EQ(data[1], matrixOut.data[1], 0.0001f);
-    EGE_EXPECT_FLOAT_EQ(data[2], matrixOut.data[2], 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(data[0], matrixOut.data[0], epsilon());
+    EGE_EXPECT_FLOAT_EQ(data[1], matrixOut.data[1], epsilon());
+    EGE_EXPECT_FLOAT_EQ(data[2], matrixOut.data[2], epsilon());
 
-    EGE_EXPECT_FLOAT_EQ(data[4], matrixOut.data[4], 0.0001f);
-    EGE_EXPECT_FLOAT_EQ(data[5], matrixOut.data[5], 0.0001f);
-    EGE_EXPECT_FLOAT_EQ(data[6], matrixOut.data[6], 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(data[4], matrixOut.data[4], epsilon());
+    EGE_EXPECT_FLOAT_EQ(data[5], matrixOut.data[5], epsilon());
+    EGE_EXPECT_FLOAT_EQ(data[6], matrixOut.data[6], epsilon());
 
-    EGE_EXPECT_FLOAT_EQ(data[8], matrixOut.data[8], 0.0001f);
-    EGE_EXPECT_FLOAT_EQ(data[9], matrixOut.data[9], 0.0001f);
-    EGE_EXPECT_FLOAT_EQ(data[10], matrixOut.data[10], 0.0001f);
+    EGE_EXPECT_FLOAT_EQ(data[8], matrixOut.data[8], epsilon());
+    EGE_EXPECT_FLOAT_EQ(data[9], matrixOut.data[9], epsilon());
+    EGE_EXPECT_FLOAT_EQ(data[10], matrixOut.data[10], epsilon());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
