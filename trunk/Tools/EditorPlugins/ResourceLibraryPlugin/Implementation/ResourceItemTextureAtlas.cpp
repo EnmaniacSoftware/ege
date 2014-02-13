@@ -1,5 +1,5 @@
 #include "ResourceItemTextureAtlas.h"
-#include "ResourceLibraryDataModel.h"
+#include "ResourceLibrary.h"
 #include "ResourceItemGroup.h"
 #include "ResourceLibraryWindowResourceInserter.h"
 #include "ImageFormats.h"
@@ -15,10 +15,10 @@ using NPropertyObject::PropertyDefinition;
 using NPropertyObject::PropertyValueContainer;
 using NPropertyObject::PropertyValueHelper;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static const QString KCompressionFormatArrtibute = "compression";
-static const QString KFormatArrtibute            = "format";
-static const QString KWidthArrtibute             = "width";
-static const QString KHeightArrtibute            = "height";
+static const QString KCompressionFormatAttribute = "compression";
+static const QString KFormatAttribute            = "format";
+static const QString KWidthAttribute             = "width";
+static const QString KHeightAttribute            = "height";
 
 const QString ResourceItemTextureAtlas::KPropertyNameCompression = ResourceItemTextureAtlas::tr("Compression");
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -106,10 +106,13 @@ static QImage::Format GetTextureFormatFromText(QString name)
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemTextureAtlas::ResourceItemTextureAtlas(const QString& name, const QString& configurationName, ResourceItem* parent)
-  : ResourceItemTexture(name, configurationName, parent)
+ResourceItemTextureAtlas::ResourceItemTextureAtlas(const QString& name, const QString& configurationName, const QUuid& id, ResourceItem* parent)
+  : ResourceItemTexture(name, configurationName, id, parent)
   , m_compressionFormat(EImageCompressionPNG)
 {
+  ResourceLibrary* library = ObjectPool::Instance()->getObject<ResourceLibrary>();
+  Q_ASSERT(NULL != library);
+
   setType(ETexture2D);
   setImageFormat(QImage::Format_ARGB32);
   setSize(QSize(32, 32));
@@ -117,15 +120,18 @@ ResourceItemTextureAtlas::ResourceItemTextureAtlas(const QString& name, const QS
   // set addressing to CLAMP, REPEAT is not allowed
   setAddressModeS(EAddressModeClamp);
   setAddressModeT(EAddressModeClamp);
+
+  // connect
+  connect(library, SIGNAL(itemRemoved(ResourceItem*)), this, SLOT(onResourceLibraryModelItemRemoved(ResourceItem*)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemTextureAtlas::~ResourceItemTextureAtlas()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItem* ResourceItemTextureAtlas::Create(const QString& name, const QString& configurationName, ResourceItem* parent)
+ResourceItem* ResourceItemTextureAtlas::Create(const QString& name, const QString& configurationName, const QUuid& id, ResourceItem* parent)
 {
-  return new ResourceItemTextureAtlas(name, configurationName, parent);
+  return new ResourceItemTextureAtlas(name, configurationName, id, parent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceItemTextureAtlas::TypeName()
@@ -267,10 +273,10 @@ bool ResourceItemTextureAtlas::serialize(QXmlStreamWriter& stream) const
     doSerialize(stream);
 
     // store atlas specific data
-    stream.writeAttribute(KCompressionFormatArrtibute, GetTextureCompressionFormatAsText(compressionFormat()));
-    stream.writeAttribute(KFormatArrtibute, GetTextureFormatAsText(imageFormat()));
-    stream.writeAttribute(KWidthArrtibute, QString("%1").arg(size().width()));
-    stream.writeAttribute(KHeightArrtibute, QString("%1").arg(size().height()));
+    stream.writeAttribute(KCompressionFormatAttribute, GetTextureCompressionFormatAsText(compressionFormat()));
+    stream.writeAttribute(KFormatAttribute, GetTextureFormatAsText(imageFormat()));
+    stream.writeAttribute(KWidthAttribute, QString("%1").arg(size().width()));
+    stream.writeAttribute(KHeightAttribute, QString("%1").arg(size().height()));
 
     // end serialization
     result = endSerialize(stream);
@@ -285,10 +291,10 @@ bool ResourceItemTextureAtlas::unserialize(QXmlStreamReader& stream)
   bool result = ResourceItemTexture::unserialize(stream);
   if (result)
   {
-    m_compressionFormat = GetTextureCompressionFormatFromText(stream.attributes().value(KCompressionFormatArrtibute).toString());
-    m_imageFormat = GetTextureFormatFromText(stream.attributes().value(KFormatArrtibute).toString());
-    m_size.setWidth(stream.attributes().value(KWidthArrtibute).toInt());
-    m_size.setHeight(stream.attributes().value(KHeightArrtibute).toInt());
+    m_compressionFormat = GetTextureCompressionFormatFromText(stream.attributes().value(KCompressionFormatAttribute).toString());
+    m_imageFormat = GetTextureFormatFromText(stream.attributes().value(KFormatAttribute).toString());
+    m_size.setWidth(stream.attributes().value(KWidthAttribute).toInt());
+    m_size.setHeight(stream.attributes().value(KHeightAttribute).toInt());
   }
 
   return result;
@@ -346,6 +352,12 @@ QList<NPropertyObject::PropertyDefinition> ResourceItemTextureAtlas::propertiesD
       // remove MIPMAPPING texture filtering
       result = definition.removeChildProperty(KPropertyNameMipMappingFiltering);
       Q_ASSERT(result);
+    }
+    // remove ATLASING group
+    else if (KGroupNameAtlasing == definition.name())
+    {
+      list.removeAt(i);
+      --i;
     }
   }
 
@@ -432,5 +444,27 @@ void ResourceItemTextureAtlas::addCompressionFormatDefinitions(NPropertyObject::
 
   // add all into main group
   group.addChildProperty(PropertyDefinition(KPropertyNameCompression, NPropertyObject::EEnum, values, defaultValueIndex));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTextureAtlas::attachObject(const QUuid& id)
+{
+  Q_ASSERT( ! m_textureIds.contains(id));
+  m_textureIds.push_back(id);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTextureAtlas::detachObject(const QUuid& id)
+{
+  Q_ASSERT(m_textureIds.contains(id));
+  m_textureIds.removeOne(id);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTextureAtlas::onResourceLibraryModelItemRemoved(ResourceItem* item)
+{
+  // check if currently set atlas texture
+  if (m_textureIds.contains(item->id()))
+  {
+    // remove it
+    detachObject(item->id());
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

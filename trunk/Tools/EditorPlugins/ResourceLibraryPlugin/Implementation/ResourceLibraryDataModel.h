@@ -11,12 +11,15 @@
 #include <QVariant>
 #include <Serializer.h>
 #include <QList>
+#include <QMap>
+#include <QUuid>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceItem;
 class ResourceItemFactory;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
+class ResourceLibraryDataModel : public QAbstractItemModel
+                               , public ISerializer
 {
   Q_OBJECT
 
@@ -76,6 +79,12 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
      */
     QList<ResourceItem*> items(const QString& typeName) const;
 
+    /*! Returns item with given ID.
+     *  @param  id  ID of the item.
+     *  @return Item with given ID. NULL if not found.
+     */
+    ResourceItem* item(const QUuid& id) const;
+
   private slots:
 
     /*! Slot called when current configuration name has changed.
@@ -115,8 +124,15 @@ class ResourceLibraryDataModel : public QAbstractItemModel, public ISerializer
 
   private:
 
+    /*! Internal data type storing all resource items by ID. */
+    typedef QMap<QUuid, ResourceItem*> UuidResourceItemMap;
+
+  private:
+
     /*! Root item. */
     ResourceItem* m_root;
+    /*! Map of all items sorted by ID. */
+    UuidResourceItemMap m_uuidToItem;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

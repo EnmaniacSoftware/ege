@@ -11,11 +11,11 @@
 #include <QMenu>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResouceLibraryPlugin::ResouceLibraryPlugin(QObject* parent) : QObject(parent),
-                                                              m_window(NULL),
-                                                              m_library(NULL),
-                                                              m_resourceItemFactory(NULL),
-                                                              m_viewAction(NULL)
+ResouceLibraryPlugin::ResouceLibraryPlugin(QObject* parent) : QObject(parent)
+                                                            , m_window(NULL)
+                                                            , m_library(NULL)
+                                                            , m_resourceItemFactory(NULL)
+                                                            , m_viewAction(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

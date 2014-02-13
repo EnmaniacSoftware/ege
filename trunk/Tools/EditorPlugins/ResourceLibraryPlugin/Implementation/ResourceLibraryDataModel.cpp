@@ -14,7 +14,7 @@
 static const QString KResourceItemTag = "ResourceItem";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibraryDataModel::ResourceLibraryDataModel(QObject* parent) : QAbstractItemModel(parent),
-                                                                      m_root(new ResourceItem("root", "", NULL))
+                                                                      m_root(new ResourceItem("root", "", QUuid(), NULL))
 {
   Configuration* configuration = ObjectPool::Instance()->getObject<Configuration>();
   Q_ASSERT(NULL != configuration);
@@ -149,12 +149,18 @@ QList<ResourceItem*> ResourceLibraryDataModel::items(const QString& typeName) co
   return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceItem*ResourceLibraryDataModel::item(const QUuid& id) const
+{
+  return m_uuidToItem.value(id, NULL);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibraryDataModel::clear()
 {
   if ((NULL != m_root) && (0 < m_root->childCount()))
   {
 	  beginRemoveRows(QModelIndex(), 0, m_root->childCount() - 1);
     m_root->removeChildren();
+    m_uuidToItem.clear();
 	  endRemoveRows();
   }
 }
@@ -240,9 +246,10 @@ bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
           const QString type          = stream.attributes().value("type").toString();
           const QString name          = stream.attributes().value("name").toString();
           const QString configuration = stream.attributes().value("configuration").toString();
+          const QUuid   uuid          = QUuid(stream.attributes().value("uuid").toString());
 
           // create given resource item
-          ResourceItem* item = factory->createItem(type, name, configuration, itemStack.top());
+          ResourceItem* item = factory->createItem(type, name, configuration, uuid, itemStack.top());
           Q_ASSERT(NULL != item);
 
           // unserialize item
@@ -278,6 +285,7 @@ bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
   if (stream.hasError())
   {
     m_root->removeChildren();
+    m_uuidToItem.clear();
   }
   else
   {
@@ -296,7 +304,10 @@ void ResourceLibraryDataModel::removeItem(const QModelIndex& index)
   Q_ASSERT((NULL != item) && item->parent());
 
   beginRemoveRows(index, item->row(), item->row());
+
   item->parent()->removeChild(item);
+  m_uuidToItem.remove(item->id());
+
 	endRemoveRows();
 
   // disconnect
@@ -316,7 +327,11 @@ QModelIndex ResourceLibraryDataModel::insertItem(const QModelIndex& index, Resou
 
   // add to the end of the pool of a given index
   beginInsertRows(index, parentItem->childCount(), parentItem->childCount());
+
   parentItem->addChild(item);
+  Q_ASSERT( ! m_uuidToItem.contains(item->id()));
+  m_uuidToItem[item->id()] = item;
+
   endInsertRows();
 
   // notify
@@ -368,6 +383,7 @@ void ResourceLibraryDataModel::removeChildItems(ResourceItem* parent, const QStr
       beginRemoveRows(parentIndex, i, i);
 
       parent->removeChild(child);
+      m_uuidToItem.remove(child->id());
       delete child;
 
       endRemoveRows();

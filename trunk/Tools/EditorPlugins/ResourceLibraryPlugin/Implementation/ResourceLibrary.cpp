@@ -35,6 +35,7 @@ ResourceLibrary::ResourceLibrary(ResourceLibraryWindow* window, QObject* parent)
   connect(m_filterProxy, SIGNAL(filterChanged()), window, SLOT(onModelChanged()));
   connect(window->view()->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
           this, SLOT(onSelectionChanged(QItemSelection, QItemSelection)));
+  connect(m_model, SIGNAL(itemRemoved(ResourceItem*)), this, SIGNAL(itemRemoved(ResourceItem*)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceLibrary::~ResourceLibrary()
@@ -107,7 +108,7 @@ bool ResourceLibrary::isEmpty() const
   return (0 == proxyModel()->rowCount());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-QList<ResourceItem*> ResourceLibrary::items(const QString& typeName) const
+QList<ResourceItem*> ResourceLibrary::items(const QString& typeName, const ResourceItem* parent) const
 {
   Configuration* configuration = ObjectPool::Instance()->getObject<Configuration>();
   Q_ASSERT(NULL != configuration);
@@ -126,6 +127,12 @@ QList<ResourceItem*> ResourceLibrary::items(const QString& typeName) const
       // remove it
       it = list.erase(it);
     }
+    // check if does not belong to parent (if any given)
+    else if ((NULL != parent) && (item->parent() != parent))
+    {
+      // remove it
+      it = list.erase(it);
+    }
     else
     {
       // go on
@@ -134,6 +141,11 @@ QList<ResourceItem*> ResourceLibrary::items(const QString& typeName) const
   }
 
   return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceItem*ResourceLibrary::item(const QUuid& id) const
+{
+  return m_model->item(id);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceLibrary::onObjectAdded(QObject* object)

@@ -7,18 +7,20 @@
 #include <QString>
 #include <QVariant>
 #include <QSize>
+#include <QUuid>
 #include <Serializer.h>
 #include <PropertyObject.h>
 #include "ResouceLibraryPlugin_global.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RESOUCELIBRARYPLUGIN_API ResourceItem : public NPropertyObject::PropertyObject, public ISerializer
+class RESOUCELIBRARYPLUGIN_API ResourceItem : public NPropertyObject::PropertyObject
+                                            , public ISerializer
 {
   Q_OBJECT
 
   public:
 
-    ResourceItem(const QString& name, const QString& configurationName, ResourceItem* parent);
+    ResourceItem(const QString& name, const QString& configurationName, const QUuid& id, ResourceItem* parent);
     virtual ~ResourceItem();
 
   signals:
@@ -95,6 +97,9 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public NPropertyObject::PropertyOb
     /*! @see ISerializer::unserialize. */
     bool unserialize(QXmlStreamReader& stream) override;
 
+    /*! Returns id of the object. */
+    const QUuid& id() const;
+
   protected:
 
     /*! Begins serialization.
@@ -124,6 +129,8 @@ class RESOUCELIBRARYPLUGIN_API ResourceItem : public NPropertyObject::PropertyOb
 
   private:
 
+    /*! Unique ID. */
+    QUuid m_id;
     /*! Parent. */
     ResourceItem* m_parent;
     /*! Configuration name item is bound to. */

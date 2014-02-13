@@ -4,7 +4,9 @@ HEADERS += Interface/CorePlugin_global.h \
            Interface/Settings.h \
            Interface/Projects/Project.h \
            Interface/Projects/ProjectFactory.h \
-           Implementation/CorePlugin.h
+           Implementation/CorePlugin.h \
+    Interface/UuidList.h \
+    Interface/Attachable.h
 
 SOURCES += Implementation/CorePlugin.cpp \
            Implementation/ObjectPool.cpp \

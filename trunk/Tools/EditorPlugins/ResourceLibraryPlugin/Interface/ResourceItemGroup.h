@@ -19,7 +19,7 @@ class ResourceItemGroup : public ResourceItem
   public:
 
     /*! Creates instance of resource item. This method is a registration method for factory. */
-    static ResourceItem* Create(const QString& name, const QString& configurationName, ResourceItem* parent);
+    static ResourceItem* Create(const QString& name, const QString& configurationName, const QUuid& id, ResourceItem* parent);
     /*! Returns item type name. */
     static QString TypeName();
     /*! Hooks into Resource Library Window context menu.
@@ -30,7 +30,7 @@ class ResourceItemGroup : public ResourceItem
 
   private:
 
-    ResourceItemGroup(const QString& name, const QString& configurationName, ResourceItem* parent);
+    ResourceItemGroup(const QString& name, const QString& configurationName, const QUuid& id,  ResourceItem* parent);
 
     /*! @see ResourceItem::flags. */
     Qt::ItemFlags flags() const override;

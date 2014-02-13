@@ -1,8 +1,11 @@
 #include "ResourceItemTexture.h"
+#include "ResourceItemTextureAtlas.h"
 #include "ResourceLibraryDataModel.h"
 #include "ResourceItemGroup.h"
 #include "ResourceLibraryWindowResourceInserter.h"
 #include "ImageFormats.h"
+#include "ResourceLibrary.h"
+#include <Attachable.h>
 #include <PropertyValueHelper.h>
 #include <FileSystemUtils.h>
 #include <ObjectPool.h>
@@ -15,13 +18,14 @@ using NPropertyObject::PropertyDefinition;
 using NPropertyObject::PropertyValueContainer;
 using NPropertyObject::PropertyValueHelper;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static const QString KPathArrtibute           = "path";
-static const QString KTextureTypeArrtibute    = "texture-type";
-static const QString KMinFilterArrtibute      = "min-filter";
-static const QString KMagFilterArrtibute      = "mag-filter";
-static const QString KMipMapFilterArrtibute   = "mipmap-filter";
-static const QString KAddressModeSArrtibute   = "address-mode-s";
-static const QString KAddressModeTArrtibute   = "address-mode-t";
+static const QString KPathAttribute           = "path";
+static const QString KTextureTypeAttribute    = "texture-type";
+static const QString KMinFilterAttribute      = "min-filter";
+static const QString KMagFilterAttribute      = "mag-filter";
+static const QString KMipMapFilterAttribute   = "mipmap-filter";
+static const QString KAddressModeSAttribute   = "address-mode-s";
+static const QString KAddressModeTAttribute   = "address-mode-t";
+static const QString KTextureAtlasAttribute   = "atlas";
 
 const QString ResourceItemTexture::KPropertyNameMinifyingFiltering  = ResourceItemTexture::tr("Minifying");
 const QString ResourceItemTexture::KPropertyNameMagnifyingFiltering = ResourceItemTexture::tr("Magnifying");
@@ -32,10 +36,12 @@ const QString ResourceItemTexture::KPropertyNameLocation            = ResourceIt
 const QString ResourceItemTexture::KPropertyNameWidth               = ResourceItemTexture::tr("Width");
 const QString ResourceItemTexture::KPropertyNameHeight              = ResourceItemTexture::tr("Height");
 const QString ResourceItemTexture::KPropertyNameImageFormat         = ResourceItemTexture::tr("Format");
+const QString ResourceItemTexture::KPropertyNameTextureAtlas        = ResourceItemTexture::tr("Texture Atlas");
 
 const QString ResourceItemTexture::KGroupNameInfo                   = ResourceItemTexture::tr("Info");
 const QString ResourceItemTexture::KGroupNameFiltering              = ResourceItemTexture::tr("Filtering");
 const QString ResourceItemTexture::KGroupNameAddressing             = ResourceItemTexture::tr("Addressing");
+const QString ResourceItemTexture::KGroupNameAtlasing               = ResourceItemTexture::tr("Atlasing");
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct TextureTypeMap
 {
@@ -284,8 +290,8 @@ TextureType GetTextureTypeFromText(QString name)
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemTexture::ResourceItemTexture(const QString& name, const QString& configurationName, ResourceItem* parent)
-  : ResourceItem(name, configurationName, parent),
+ResourceItemTexture::ResourceItemTexture(const QString& name, const QString& configurationName, const QUuid& id, ResourceItem* parent)
+  : ResourceItem(name, configurationName, id, parent),
     m_type(EInvalidTexture),
     m_size(QSize(0, 0)),
     m_imageFormat(QImage::Format_Invalid),
@@ -295,16 +301,20 @@ ResourceItemTexture::ResourceItemTexture(const QString& name, const QString& con
     m_addressingModeS(EAddressModeRepeat),
     m_addressingModeT(EAddressModeRepeat)
 {
+  ResourceLibrary* library = ObjectPool::Instance()->getObject<ResourceLibrary>();
+  Q_ASSERT(NULL != library);
+
   connect(this, SIGNAL(changed(const ResourceItem*)), this, SLOT(onInvalidate()));
+  connect(library, SIGNAL(itemRemoved(ResourceItem*)), this, SLOT(onResourceLibraryModelItemRemoved(ResourceItem*)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceItemTexture::~ResourceItemTexture()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItem* ResourceItemTexture::Create(const QString& name, const QString& configurationName, ResourceItem* parent)
+ResourceItem* ResourceItemTexture::Create(const QString& name, const QString& configurationName, const QUuid& id, ResourceItem* parent)
 {
-  return new ResourceItemTexture(name, configurationName, parent);
+  return new ResourceItemTexture(name, configurationName, id, parent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceItemTexture::TypeName()
@@ -378,13 +388,14 @@ bool ResourceItemTexture::unserialize(QXmlStreamReader& stream)
 {
   // retrieve data
   // NOTE: assigning directly to disallow signaling
-  m_fullPath            = stream.attributes().value(KPathArrtibute).toString();
-  m_type                = GetTextureTypeFromText(stream.attributes().value(KTextureTypeArrtibute).toString());
-  m_minificationFilter  = GetTextureFilterFromText(stream.attributes().value(KMinFilterArrtibute).toString());
-  m_magnificationFilter = GetTextureFilterFromText(stream.attributes().value(KMagFilterArrtibute).toString());
-  m_mipMappingFilter    = GetTextureMipMappingFilterFromText(stream.attributes().value(KMipMapFilterArrtibute).toString());
-  m_addressingModeS     = GetAddressingModeFromText(stream.attributes().value(KAddressModeSArrtibute).toString());
-  m_addressingModeT     = GetAddressingModeFromText(stream.attributes().value(KAddressModeTArrtibute).toString());
+  m_fullPath            = stream.attributes().value(KPathAttribute).toString();
+  m_type                = GetTextureTypeFromText(stream.attributes().value(KTextureTypeAttribute).toString());
+  m_minificationFilter  = GetTextureFilterFromText(stream.attributes().value(KMinFilterAttribute).toString());
+  m_magnificationFilter = GetTextureFilterFromText(stream.attributes().value(KMagFilterAttribute).toString());
+  m_mipMappingFilter    = GetTextureMipMappingFilterFromText(stream.attributes().value(KMipMapFilterAttribute).toString());
+  m_addressingModeS     = GetAddressingModeFromText(stream.attributes().value(KAddressModeSAttribute).toString());
+  m_addressingModeT     = GetAddressingModeFromText(stream.attributes().value(KAddressModeTAttribute).toString());
+  m_textureAtlasId      = QUuid(stream.attributes().value(KTextureAtlasAttribute).toString());
 
   return ! stream.hasError();
 }
@@ -476,10 +487,17 @@ QList<PropertyDefinition> ResourceItemTexture::propertiesDefinition() const
 
   addAddressingModeDefinitions(addressingGroup);
 
+  // create atlasing group
+  values.clear();
+  PropertyDefinition atlasingGroup(KGroupNameAtlasing, NPropertyObject::EGroup, values);
+
+  addAtlasingDefinitions(atlasingGroup);
+
   // add groups to list
   list.push_back(infoGroup);
   list.push_back(filteringGroup);
   list.push_back(addressingGroup);
+  list.push_back(atlasingGroup);
 
   return list;
 }
@@ -532,6 +550,41 @@ void ResourceItemTexture::addAddressingModeDefinitions(NPropertyObject::Property
   // add all into main group
   group.addChildProperty(PropertyDefinition(KPropertyNameAddressingModeS, NPropertyObject::EEnum, values, defaultValueIndexS));
   group.addChildProperty(PropertyDefinition(KPropertyNameAddressingModeT, NPropertyObject::EEnum, values, defaultValueIndexT));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::addAtlasingDefinitions(NPropertyObject::PropertyDefinition& group) const
+{
+  ResourceLibrary* library = ObjectPool::Instance()->getObject<ResourceLibrary>();
+  Q_ASSERT(NULL != library);
+
+  // get all available texture atlas resources which belong to this item group
+  QList<ResourceItem*> atlases = library->items(ResourceItemTextureAtlas::TypeName(), parent());
+
+  PropertyValueContainer values;
+
+  // add 'no atlas' entry
+  values << tr("None");
+  values << QIcon();
+
+  int defaultValueIndex = 0;
+
+  for (int i = 0; i < atlases.size(); ++i)
+  {
+    const ResourceItem* item = atlases.at(i);
+
+    // add to values
+    values << item->name();
+    values << QIcon();
+
+    // check if current item is default one
+    if (textureAtlasId() == item->id())
+    {
+      defaultValueIndex = i;
+    }
+  }
+
+  // add all into main group
+  group.addChildProperty(PropertyDefinition(KPropertyNameTextureAtlas, NPropertyObject::EEnum, values, defaultValueIndex));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceItemTexture::addMinificationFilterDefinitions(NPropertyObject::PropertyDefinition& group) const
@@ -605,6 +658,26 @@ void ResourceItemTexture::update(const QString& name, const QVariant& value)
     Q_ASSERT(value.canConvert<QString>());
     setFullPath(value.toString());
   }
+  else if (KPropertyNameTextureAtlas == name)
+  {
+    Q_ASSERT(value.canConvert<int>());
+
+    ResourceLibrary* library = ObjectPool::Instance()->getObject<ResourceLibrary>();
+    Q_ASSERT(NULL != library);
+
+    // get all available texture atlas resources which belong to this item group
+    QList<ResourceItem*> atlases = library->items(ResourceItemTextureAtlas::TypeName(), parent());
+
+    const int index = value.toInt();
+    if (0 == index)
+    {
+      setTextureAtlasId(QUuid());
+    }
+    else
+    {
+      setTextureAtlasId(atlases.at(index - 1)->id());
+    }
+  }
   else
   {
     // call base class
@@ -628,13 +701,14 @@ QSize ResourceItemTexture::size() const
 void ResourceItemTexture::doSerialize(QXmlStreamWriter& stream) const
 {
   // store data
-  stream.writeAttribute(KTextureTypeArrtibute, GetTextureTypeAsText(type()));
-  stream.writeAttribute(KPathArrtibute, fullPath());
-  stream.writeAttribute(KMinFilterArrtibute, GetTextureFilterAsText(minificationFilter()));
-  stream.writeAttribute(KMagFilterArrtibute, GetTextureFilterAsText(magnificationFilter()));
-  stream.writeAttribute(KMipMapFilterArrtibute, GetTextureMipMappingFilterAsText(mipMappingFilter()));
-  stream.writeAttribute(KAddressModeSArrtibute, GetAddressingModeAsText(addressModeS()));
-  stream.writeAttribute(KAddressModeTArrtibute, GetAddressingModeAsText(addressModeT()));
+  stream.writeAttribute(KTextureTypeAttribute, GetTextureTypeAsText(type()));
+  stream.writeAttribute(KPathAttribute, fullPath());
+  stream.writeAttribute(KMinFilterAttribute, GetTextureFilterAsText(minificationFilter()));
+  stream.writeAttribute(KMagFilterAttribute, GetTextureFilterAsText(magnificationFilter()));
+  stream.writeAttribute(KMipMapFilterAttribute, GetTextureMipMappingFilterAsText(mipMappingFilter()));
+  stream.writeAttribute(KAddressModeSAttribute, GetAddressingModeAsText(addressModeS()));
+  stream.writeAttribute(KAddressModeTAttribute, GetAddressingModeAsText(addressModeT()));
+  stream.writeAttribute(KTextureAtlasAttribute, textureAtlasId().toString());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QImage::Format ResourceItemTexture::imageFormat() const
@@ -749,6 +823,46 @@ TextureAddressMode ResourceItemTexture::addressModeT() const
   return m_addressingModeT;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const QUuid& ResourceItemTexture::textureAtlasId() const
+{
+  return m_textureAtlasId;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::setTextureAtlasId(const QUuid& atlasId)
+{
+  if (atlasId != m_textureAtlasId)
+  {
+    ResourceLibrary* library = ObjectPool::Instance()->getObject<ResourceLibrary>();
+    Q_ASSERT(NULL != library);
+
+    // check if any previous atlas
+    if ( ! m_textureAtlasId.isNull())
+    {
+      // detach self from previous atlas
+      Attachable* atlas = qobject_cast<Attachable*>(library->item(m_textureAtlasId));
+      Q_ASSERT(NULL != atlas);
+
+      atlas->detachObject(id());
+    }
+
+    // set new atlas texture id
+    m_textureAtlasId = atlasId;
+
+    // check if any new atlas
+    if ( ! atlasId.isNull())
+    {
+      // attach self to new atlas
+      Attachable* atlas = qobject_cast<Attachable*>(library->item(atlasId));
+      Q_ASSERT(NULL != atlas);
+
+      atlas->attachObject(id());
+    }
+
+    // notify
+    emit changed(this);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextureType ResourceItemTexture::type() const
 {
   return m_type;
@@ -759,5 +873,15 @@ void ResourceItemTexture::onInvalidate()
   m_size        = QSize(0, 0);
   m_imageFormat = QImage::Format_Invalid;
   m_thumbnail   = QImage();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceItemTexture::onResourceLibraryModelItemRemoved(ResourceItem* item)
+{
+  // check if currently set atlas texture
+  if (item->id() == textureAtlasId())
+  {
+    // reset
+    setTextureAtlasId(QUuid());
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

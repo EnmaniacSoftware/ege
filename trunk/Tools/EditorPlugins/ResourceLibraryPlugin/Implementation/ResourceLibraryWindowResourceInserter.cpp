@@ -29,7 +29,7 @@ void ResourceLibraryWindowResourceInserter::onAddGroup()
   Configuration* configuration = ObjectPool::Instance()->getObject<Configuration>();
   Q_ASSERT(NULL != configuration);
 
-  ResourceItem* newItem = m_factory->createItem(ResourceItemGroup::TypeName(), generateGroupName(), configuration->current());
+  ResourceItem* newItem = m_factory->createItem(ResourceItemGroup::TypeName(), generateGroupName(), configuration->current(), QUuid::createUuid());
   if (NULL != newItem)
   {
     m_library->insertItem(newItem);
@@ -55,7 +55,8 @@ void ResourceLibraryWindowResourceInserter::onAddTexture2D()
       QString item = QDir::fromNativeSeparators(list[i]);
       QString name = item.section("/", -1);
 
-      ResourceItemTexture* newItem = static_cast<ResourceItemTexture*>(m_factory->createItem(ResourceItemTexture::TypeName(), name, configuration->current()));
+      ResourceItemTexture* newItem = static_cast<ResourceItemTexture*>(m_factory->createItem(ResourceItemTexture::TypeName(), name, configuration->current(),
+                                                                                             QUuid::createUuid()));
       Q_ASSERT(NULL != newItem);
 
       if (NULL != newItem)
@@ -83,7 +84,7 @@ void ResourceLibraryWindowResourceInserter::onAddTextureAtlas()
   if ( ! directory.isEmpty())
   {
     ResourceItemTextureAtlas* newItem = static_cast<ResourceItemTextureAtlas*>(m_factory->createItem(ResourceItemTextureAtlas::TypeName(), tr("Texture"),
-                                                                                                     configuration->current()));
+                                                                                                     configuration->current(), QUuid::createUuid()));
     Q_ASSERT(NULL != newItem);
 
     if (NULL != newItem)

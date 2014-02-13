@@ -6,6 +6,9 @@
  */
 
 #include <QImage>
+#include <QString>
+#include <UuidList.h>
+#include <Attachable.h>
 #include "ResourceItemTexture.h"
 #include "ImageCompressionFormats.h"
 
@@ -14,8 +17,10 @@ class QMenu;
 class QImage;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceItemTextureAtlas : public ResourceItemTexture
+                               , public Attachable
 {
   Q_OBJECT
+  Q_INTERFACES(Attachable)
 
   public:
 
@@ -24,7 +29,7 @@ class ResourceItemTextureAtlas : public ResourceItemTexture
   public:
 
     /*! Creates instance of resource item. This method is a registration method for factory. */
-    static ResourceItem* Create(const QString& name, const QString& configurationName, ResourceItem* parent);
+    static ResourceItem* Create(const QString& name, const QString& configurationName, const QUuid& id, ResourceItem* parent);
     /*! Returns item type name. */
     static QString TypeName();
     /*! Hooks into Resource Library Window context menu.
@@ -44,10 +49,14 @@ class ResourceItemTextureAtlas : public ResourceItemTexture
 
   private:
 
-    ResourceItemTextureAtlas(const QString& name, const QString& configurationName, ResourceItem* parent);
+    ResourceItemTextureAtlas(const QString& name, const QString& configurationName, const QUuid& id, ResourceItem* parent);
 
     /*! @see ResourceItem::typeName. */
     QString typeName() const override;
+    /*! @see Attachable::attachObject. */
+    void attachObject(const QUuid& id) override;
+    /*! @see Attachable::detachObject. */
+    void detachObject(const QUuid& id) override;
     /*! @see ResourceItemTexture::size. */
     QSize size() const override;
     /*! @see ResourceItemTexture::onInvalidate. */
@@ -77,6 +86,13 @@ class ResourceItemTextureAtlas : public ResourceItemTexture
     /*! Returns compression format. */
     ImageCompressionFormat compressionFormat() const;
 
+  private slots:
+
+    /*! Slot called when resource item has been removed from model.
+     *  @param  item  Removed item.
+     */
+    void onResourceLibraryModelItemRemoved(ResourceItem* item);
+
   private:
 
     /*! Compression property name. */
@@ -88,6 +104,10 @@ class ResourceItemTextureAtlas : public ResourceItemTexture
     QImage m_image;
     /*! Compression format. */
     ImageCompressionFormat m_compressionFormat;
+    /*! List of texture object IDs which are part of the atlas.
+     *  @note These are textures which are a part of the same group as atlas.
+     */
+    UuidList m_textureIds;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

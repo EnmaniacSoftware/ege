@@ -11,15 +11,18 @@ using NPropertyObject::PropertyValueContainer;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // TAGE - duplicate in ResourceLibraryDataModel :/
 static const QString KResourceItemTag         = "ResourceItem";
+static const QString KUuidAttribute           = "uuid";
 static const QString KTypeAttribute           = "type";
 static const QString KNameAttribute           = "name";
 static const QString KConfigurationAttribute  = "configuration";
 
 static const QString KGeneralGroupName = QObject::tr("Name");
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItem::ResourceItem(const QString& name, const QString& configurationName, ResourceItem* parent) : m_name(name),
-                                                                                                          m_parent(parent),
-                                                                                                          m_configurationName(configurationName)
+ResourceItem::ResourceItem(const QString& name, const QString& configurationName, const QUuid& id, ResourceItem* parent)
+  : m_id(id)
+  , m_name(name)
+  , m_parent(parent)
+  , m_configurationName(configurationName)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -159,6 +162,7 @@ bool ResourceItem::beginSerialize(QXmlStreamWriter& stream) const
 {
   stream.writeStartElement(KResourceItemTag);
   
+  stream.writeAttribute(KUuidAttribute, id().toString());
   stream.writeAttribute(KTypeAttribute, typeName());
   stream.writeAttribute(KNameAttribute, name());
   stream.writeAttribute(KConfigurationAttribute, m_configurationName);
@@ -298,5 +302,10 @@ bool ResourceItem::unserialize(QXmlStreamReader& stream)
   Q_ASSERT(false);
 
   return ! stream.hasError();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const QUuid&ResourceItem::id() const
+{
+  return m_id;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

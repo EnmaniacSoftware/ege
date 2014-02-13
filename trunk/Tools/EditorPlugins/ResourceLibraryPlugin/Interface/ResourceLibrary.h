@@ -30,6 +30,10 @@ class ResourceLibrary : public QObject
      *  @param  count Number of loaded items.
      */
     void loaded(int count);
+    /*! Signal emitted when given item has been removed from model.
+     *  @param  item  Item being removed.
+     */
+    void itemRemoved(ResourceItem* item);
 
   public:
 
@@ -48,10 +52,16 @@ class ResourceLibrary : public QObject
 
     /*! Returns all resource items of a given type.
      *  @param  typeName  Name of the type of objects to return.
+     *  @param  parent    If not NULL, only child resource of this object will be returned.
      *  @return List of pointers to objects of a given type currently present in the model.
      *  @note Only items belonging to current configuration are returned.
      */
-    QList<ResourceItem*> items(const QString& typeName) const;
+    QList<ResourceItem*> items(const QString& typeName, const ResourceItem* parent = NULL) const;
+    /*! Returns item with given ID.
+     *  @param  id  ID of the item.
+     *  @return Item with given ID. NULL if not found.
+     */
+    ResourceItem* item(const QUuid& id) const;
 
   private slots:
 

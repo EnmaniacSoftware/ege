@@ -45,7 +45,7 @@ class ResourceItemTexture : public ResourceItem
   public:
 
     /*! Creates instance of resource item. This method is a registration method for factory. */
-    static ResourceItem* Create(const QString& name, const QString& configurationName, ResourceItem* parent);
+    static ResourceItem* Create(const QString& name, const QString& configurationName, const QUuid& id, ResourceItem* parent);
     /*! Returns item type name. */
     static QString TypeName();
     /*! Hooks into Resource Library Window context menu.
@@ -69,7 +69,7 @@ class ResourceItemTexture : public ResourceItem
 
   protected:
 
-    ResourceItemTexture(const QString& name, const QString& configurationName, ResourceItem* parent);
+    ResourceItemTexture(const QString& name, const QString& configurationName, const QUuid& id, ResourceItem* parent);
 
     /*! @see ResourceItem::propertiesDefinition. */
     virtual QList<NPropertyObject::PropertyDefinition> propertiesDefinition() const override;
@@ -124,17 +124,25 @@ class ResourceItemTexture : public ResourceItem
     static const QString KPropertyNameHeight;
     /*! Image format property name. */
     static const QString KPropertyNameImageFormat;
+    /*! Texture atlas property name. */
+    static const QString KPropertyNameTextureAtlas;
     /*! Info group name. */
     static const QString KGroupNameInfo;
     /*! Filtering group name. */
     static const QString KGroupNameFiltering;
     /*! Addressing group name. */
     static const QString KGroupNameAddressing;
+    /*! Atlasing group name. */
+    static const QString KGroupNameAtlasing;
 
   private slots:
 
     /*! Slot called when internal (lazy) data should be invalidated. */
     virtual void onInvalidate();
+    /*! Slot called when resource item has been removed from model.
+     *  @param  item  Removed item.
+     */
+    void onResourceLibraryModelItemRemoved(ResourceItem* item);
 
   private:
 
@@ -158,6 +166,10 @@ class ResourceItemTexture : public ResourceItem
      *  @param  group Definition group to which addressing modes are to be added.
      */
     virtual void addAddressingModeDefinitions(NPropertyObject::PropertyDefinition& group) const;
+    /*! Adds available texture atlases definitions to given group.
+     *  @param  group Definition group to which available texture atlases are to be added.
+     */
+    void addAtlasingDefinitions(NPropertyObject::PropertyDefinition& group) const;
     /*! Returns image format in string format. */
     QString imageFormatAsText() const;
 
@@ -179,6 +191,13 @@ class ResourceItemTexture : public ResourceItem
     TextureAddressMode addressModeS() const;
     /*! Returns addressing mode for T coordinate. */
     TextureAddressMode addressModeT() const;
+    /*! Returns texture atlas object ID this texture is assigned to. */
+    const QUuid& textureAtlasId() const;
+    /*! Sets texture atlas object ID this texture is assigned to.
+     *  @param  atlasId New atlas ID to set.
+     *  @note If object was already assigned to some texture atlas it will be detached from it. It will be attached to new atlas.
+     */
+    void setTextureAtlasId(const QUuid& atlasId);
 
   private:
 
@@ -196,6 +215,10 @@ class ResourceItemTexture : public ResourceItem
     TextureAddressMode m_addressingModeS;
     /*! Addressing mode for T coordinate. */
     TextureAddressMode m_addressingModeT;
+    /*! ID of an atlas texture object texture is assigned to.
+     *  @note Can be NULL if texture is not assigned to any. If exists, it must be atlas which is a part of the same group as texture.
+     */
+    QUuid m_textureAtlasId;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

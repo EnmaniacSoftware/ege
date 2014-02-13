@@ -7,8 +7,8 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 using NPropertyObject::PropertyDefinition;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItemGroup::ResourceItemGroup(const QString& name, const QString& configurationName, ResourceItem* parent)
-  : ResourceItem(name, configurationName, parent)
+ResourceItemGroup::ResourceItemGroup(const QString& name, const QString& configurationName, const QUuid& id, ResourceItem* parent)
+  : ResourceItem(name, configurationName, id, parent)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -16,9 +16,9 @@ ResourceItemGroup::~ResourceItemGroup()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceItem* ResourceItemGroup::Create(const QString& name, const QString& configurationName, ResourceItem* parent)
+ResourceItem* ResourceItemGroup::Create(const QString& name, const QString& configurationName, const QUuid& id, ResourceItem* parent)
 {
-  return new ResourceItemGroup(name, configurationName, parent);
+  return new ResourceItemGroup(name, configurationName, id, parent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QString ResourceItemGroup::TypeName()
