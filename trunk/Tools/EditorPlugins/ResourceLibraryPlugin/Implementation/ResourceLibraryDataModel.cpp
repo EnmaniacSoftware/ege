@@ -257,6 +257,8 @@ bool ResourceLibraryDataModel::unserialize(QXmlStreamReader& stream)
           {
             // add to parent
             itemStack.top()->addChild(item);
+            Q_ASSERT( ! m_uuidToItem.contains(item->id()));
+            m_uuidToItem[item->id()] = item;
 
             // add this item to local stack
             itemStack.push_back(item);

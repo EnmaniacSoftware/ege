@@ -579,7 +579,7 @@ void ResourceItemTexture::addAtlasingDefinitions(NPropertyObject::PropertyDefini
     // check if current item is default one
     if (textureAtlasId() == item->id())
     {
-      defaultValueIndex = i;
+      defaultValueIndex = i + 1;
     }
   }
 

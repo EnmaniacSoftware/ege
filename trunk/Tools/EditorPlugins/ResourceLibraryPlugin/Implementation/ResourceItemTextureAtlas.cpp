@@ -15,10 +15,12 @@ using NPropertyObject::PropertyDefinition;
 using NPropertyObject::PropertyValueContainer;
 using NPropertyObject::PropertyValueHelper;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const QString KAttachedTag                = "Attached";
 static const QString KCompressionFormatAttribute = "compression";
 static const QString KFormatAttribute            = "format";
 static const QString KWidthAttribute             = "width";
 static const QString KHeightAttribute            = "height";
+static const QString KUuidAttribute              = "uuid";
 
 const QString ResourceItemTextureAtlas::KPropertyNameCompression = ResourceItemTextureAtlas::tr("Compression");
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -278,6 +280,14 @@ bool ResourceItemTextureAtlas::serialize(QXmlStreamWriter& stream) const
     stream.writeAttribute(KWidthAttribute, QString("%1").arg(size().width()));
     stream.writeAttribute(KHeightAttribute, QString("%1").arg(size().height()));
 
+    // store attached object ids
+    for (int i = 0; i < m_textureIds.size(); ++i)
+    {
+      stream.writeStartElement(KAttachedTag);
+      stream.writeAttribute(KUuidAttribute, m_textureIds.at(i).toString());
+      stream.writeEndElement();
+    }
+
     // end serialization
     result = endSerialize(stream);
   }
@@ -295,6 +305,41 @@ bool ResourceItemTextureAtlas::unserialize(QXmlStreamReader& stream)
     m_imageFormat = GetTextureFormatFromText(stream.attributes().value(KFormatAttribute).toString());
     m_size.setWidth(stream.attributes().value(KWidthAttribute).toInt());
     m_size.setHeight(stream.attributes().value(KHeightAttribute).toInt());
+
+    // get any
+    bool done = false;
+    while ( ! stream.atEnd() && ! stream.hasError() && ! done)
+    {
+      QXmlStreamReader::TokenType token = stream.readNext();
+      switch (token)
+      {
+        case QXmlStreamReader::StartElement:
+
+          // check if attached tag
+          if (KAttachedTag == stream.name())
+          {
+            // get resource item required data
+            const QUuid id = QUuid(stream.attributes().value(KUuidAttribute).toString());
+
+            m_textureIds.push_back(id);
+          }
+          break;
+
+        case QXmlStreamReader::EndElement:
+
+          // check if no more info for this
+          // TAGE - need to find some way to either properly encapsulate this tag or make it somewhat accessible for all who need it
+          if ("ResourceItem" == stream.name())
+          {
+            // done
+            done = true;
+          }
+          break;
+
+        default:
+          break;
+      }
+    }
   }
 
   return result;
