@@ -55,9 +55,6 @@ class TVector3
     /*! Returns squared distance between this and given points. */
     T distanceSquaredTo(const TVector3& vector) const;
 
-    /*! Returns 2D vector consisting of X and Y values of current one. */
-    TVector2<T> xy() const;
-
     /*! Returns vector perpendicular to current one. 
      *  @note Returned vector is not normalized.
      */
@@ -247,12 +244,6 @@ TVector3<T> TVector3<T>::perpendicular() const
   }
 
   return out;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector2<T> TVector3<T>::xy() const
-{
-  return TVector2<T>(x, y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
