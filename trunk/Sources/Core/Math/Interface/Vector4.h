@@ -39,8 +39,6 @@ class TVector4
     /*! Returns vector sequared length. */
     T lengthSquared() const;
  
-    /*! Returns 2D vector consisting of X and Y values of current one. */
-    TVector2<T> xy() const;
     /*! Returns 3D vector consisting of X, Y and Z values of current one. */
     TVector3<T> xyz() const;
 
@@ -160,12 +158,6 @@ T TVector4<T>::lengthSquared() const
   T invW = static_cast<T>(1.0) / w;
 
   return ((x * x) + (y * y) + (z * z)) * invW * invW;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector2<T> TVector4<T>::xy() const
-{
-  return TVector2<T>(x, y);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
