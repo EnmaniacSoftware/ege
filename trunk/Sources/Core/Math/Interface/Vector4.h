@@ -1,13 +1,11 @@
 #ifndef EGE_CORE_MATH_VECTOR4_H
 #define EGE_CORE_MATH_VECTOR4_H
 
-/**
-  This class represents 3D vector in homogenous space.
-*/
+/*! This class represents 3D vector in homogenous space.
+ */
 
 #include "EGETypes.h"
 #include "EGEDebug.h"
-#include "Core/Math/Interface/Math.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -27,18 +25,13 @@ class TVector4
 		void      operator += (const TVector4& other);
 		void      operator -= (const TVector4& other);
     bool      operator == (const TVector4& other) const;
-    bool      operator != (const TVector4& otherother) const;
+    bool      operator != (const TVector4& other) const;
 
   public:
 
     /*! Sets vector components. */
     void set(T x, T y, T z, T w);
 
-    /*! Returns vector length. */
-    T length() const;
-    /*! Returns vector sequared length. */
-    T lengthSquared() const;
- 
   public:
 
     T x;
@@ -144,20 +137,6 @@ void TVector4<T>::set(T x, T y, T z, T w)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-T TVector4<T>::length() const
-{
-  return Math::Sqrt(lengthSquared()); 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-T TVector4<T>::lengthSquared() const
-{
-  T invW = static_cast<T>(1.0) / w;
-
-  return ((x * x) + (y * y) + (z * z)) * invW * invW;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
 TVector4<T> operator * (const TVector4<T>& left, T scalar)
 {
   return TVector4<T>(left.x * scalar, left.y * scalar, left.z * scalar, left.w * scalar);
@@ -167,14 +146,6 @@ template <typename T>
 TVector4<T> operator * (T scalar, const TVector4<T>& right)
 {
   return TVector4<T>(right.x * scalar, right.y * scalar, right.z * scalar, right.w * scalar);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector4<T> operator / (const TVector4<T>& left, T scalar)
-{
-  scalar = 1.0f / scalar;
-
-  return TVector4<T>(left.x * scalar, left.y * scalar, left.z * scalar, left.w * scalar);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

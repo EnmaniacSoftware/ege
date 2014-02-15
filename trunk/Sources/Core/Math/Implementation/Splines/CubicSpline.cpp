@@ -207,9 +207,10 @@ void CubicSpline::calculateSegmentLength(CurveSegment& segment)
 
 
     posB -= posA;
-    posB.w = 1.0f;
+    
+    Vector3f diff(posB.x, posB.y, posB.z);
 
-    length += posB.length();
+    length += diff.length();
   }
 
   segment.setLength(length);

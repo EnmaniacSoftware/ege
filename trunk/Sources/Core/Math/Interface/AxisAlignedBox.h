@@ -2,7 +2,7 @@
 #define EGE_CORE_MATH_AXISALIGNEDBOX_H
 
 #include "EGETypes.h"
-#include "Core/Math/Interface/Vector4.h"
+#include "EGEVector.h"
 
 EGE_NAMESPACE_BEGIN
 
