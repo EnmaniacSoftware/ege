@@ -1,6 +1,6 @@
 #include "TestFramework/Interface/TestBase.h"
+#include <EGEVector3.h>
 #include <limits>
-#include <EGEVector.h>
 
 /** Tests are focusing TVector3<float32> instantiations. */
 

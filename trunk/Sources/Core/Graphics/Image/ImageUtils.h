@@ -3,7 +3,7 @@
 
 #include "Core/Graphics/Image/Image.h"
 #include "EGERect.h"
-#include "EGEVector.h"
+#include "EGEVector2.h"
 
 EGE_NAMESPACE_BEGIN
 

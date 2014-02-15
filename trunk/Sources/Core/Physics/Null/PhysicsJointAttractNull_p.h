@@ -4,7 +4,7 @@
 #ifdef EGE_PHYSICS_NULL
 
 #include "EGE.h"
-#include "EGEVector.h"
+#include "EGEVector4.h"
 
 EGE_NAMESPACE_BEGIN
 

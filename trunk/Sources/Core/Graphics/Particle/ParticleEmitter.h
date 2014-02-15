@@ -12,7 +12,7 @@
 #include "EGEList.h"
 #include "EGETime.h"
 #include "EGEColor.h"
-#include "EGEVector.h"
+#include "EGEVector2.h"
 #include "EGEScene.h"
 #include "EGEParticle.h"
 #include "EGESignal.h"

@@ -4,7 +4,7 @@
 #include "Core/Resource/ResourceTextureImage.h"
 #include "EGEXml.h"
 #include "EGEResources.h"
-#include "EGEVector.h"
+#include "EGEVector4.h"
 #include "EGEStringUtils.h"
 #include "EGEDebug.h"
 

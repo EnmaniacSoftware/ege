@@ -1,6 +1,8 @@
 #include "TestFramework/Interface/TestBase.h"
 #include <EGEMath.h>
 #include <EGESpline.h>
+#include <EGEVector3.h>
+#include <EGEVector4.h>
 
 EGE_NAMESPACE
 

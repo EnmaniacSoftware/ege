@@ -1197,7 +1197,6 @@
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointPulleyBox2D_p.h">
       <Filter>Core\Physics\Box2D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\EGEVector.h" />
     <ClInclude Include="..\..\Sources\EGEAngle.h" />
     <ClInclude Include="..\..\Sources\EGEMatrix.h" />
     <ClInclude Include="..\..\Sources\EGEQuaternion.h" />
@@ -1759,6 +1758,9 @@
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Tweeners\BackTweener.h">
       <Filter>Core\Math\Interface\Tweeners</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEVector2.h" />
+    <ClInclude Include="..\..\Sources\EGEVector3.h" />
+    <ClInclude Include="..\..\Sources\EGEVector4.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

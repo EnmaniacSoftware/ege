@@ -1,5 +1,6 @@
 #include "Core/String/StringUtils.h"
 #include "EGEStringArray.h"
+#include "EGEVector3.h"
 #include "EGEDebug.h"
 #include <cerrno>
 

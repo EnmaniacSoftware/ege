@@ -1,6 +1,6 @@
 #include "Core/Math/Interface/Math.h"
 #include "EGEMatrix.h"
-#include "EGEVector.h"
+#include "EGEVector4.h"
 #include "EGEQuaternion.h"
 #include "EGEAngle.h"
 #include "EGEComplex.h"

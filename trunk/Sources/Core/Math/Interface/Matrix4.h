@@ -12,7 +12,7 @@
 
 #include "EGETypes.h"
 #include "EGEDebug.h"
-#include "EGEVector.h"
+#include "EGEVector4.h"
 
 EGE_NAMESPACE_BEGIN
 

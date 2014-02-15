@@ -574,7 +574,9 @@
     <ClInclude Include="..\..\Sources\EGETweener.h" />
     <ClInclude Include="..\..\Sources\EGETypes.h" />
     <ClInclude Include="..\..\Sources\EGEUI.h" />
-    <ClInclude Include="..\..\Sources\EGEVector.h" />
+    <ClInclude Include="..\..\Sources\EGEVector2.h" />
+    <ClInclude Include="..\..\Sources\EGEVector3.h" />
+    <ClInclude Include="..\..\Sources\EGEVector4.h" />
     <ClInclude Include="..\..\Sources\EGEVersion.h" />
     <ClInclude Include="..\..\Sources\EGEVertexBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEWaitCondition.h" />

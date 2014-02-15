@@ -14,7 +14,7 @@
 #include "EGEMatrix.h"
 #include "EGEMap.h"
 #include "EGEGraphics.h"
-#include "EGEVector.h"
+#include "EGEVector2.h"
 #include "EGEAnimation.h"
 
 EGE_NAMESPACE_BEGIN

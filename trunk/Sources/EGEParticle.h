@@ -2,7 +2,8 @@
 #define EGE_PARTICLE_H
 
 #include "Core/Platform.h"
-#include "EGEVector.h"
+#include "EGEVector2.h"
+#include "EGEVector3.h"
 #include "EGEColor.h"
 #include "EGETime.h"
 #include "EGEDynamicArray.h"

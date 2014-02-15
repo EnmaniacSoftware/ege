@@ -4,7 +4,7 @@
 #include "EGE.h"
 #include "EGETime.h"
 #include "EGEDictionary.h"
-#include "EGEVector.h"
+#include "EGEVector4.h"
 #include "Core/Physics/PhysicsJoint.h"
 
 EGE_NAMESPACE_BEGIN

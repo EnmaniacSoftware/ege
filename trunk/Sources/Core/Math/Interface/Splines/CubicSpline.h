@@ -17,7 +17,7 @@
  */
 
 #include "EGEDynamicArray.h"
-#include "EGEVector.h"
+#include "EGEVector4.h"
 #include "EGEMatrix.h"
 #include "Core/Math/Interface/Splines/CurveSegment.h"
 

@@ -7,6 +7,7 @@
 #include "EGETime.h"
 #include "EGEColor.h"
 #include "EGEString.h"
+#include "EGEVector4.h"
 
 EGE_NAMESPACE_BEGIN
 

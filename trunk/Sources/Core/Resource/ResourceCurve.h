@@ -10,7 +10,7 @@
 #include "EGETime.h"
 #include "EGESpline.h"
 #include "EGEList.h"
-#include "EGEVector.h"
+#include "EGEVector3.h"
 #include "Core/Resource/Resource.h"
 
 EGE_NAMESPACE_BEGIN

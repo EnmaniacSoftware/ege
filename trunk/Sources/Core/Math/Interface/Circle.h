@@ -5,7 +5,7 @@
  */
 
 #include "EGETypes.h"
-#include "EGEVector.h"
+#include "EGEVector2.h"
 
 EGE_NAMESPACE_BEGIN
 

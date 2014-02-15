@@ -1,4 +1,6 @@
 #include "Core/Math/Interface/Splines/CubicSpline.h"
+#include "EGEMath.h"
+#include "EGEVector3.h"
 
 EGE_NAMESPACE
 
