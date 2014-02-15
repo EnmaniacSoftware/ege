@@ -22,7 +22,7 @@ TEST_F(AngleTest, SetValue)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 radians = random(EGEMath::TWO_PI);
+    const float32 radians = random(Math::TWO_PI);
     const float32 degrees = random(360.0f);
 
     // setting via constructors
@@ -55,7 +55,7 @@ TEST_F(AngleTest, Normalize)
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
     // random angle in [0-2PI] interval
-    const float32 radians = random(EGEMath::PI) + EGEMath::PI;
+    const float32 radians = random(Math::PI) + Math::PI;
 
     // Normalization to [0-2PI]
     Angle angle(radians);
@@ -73,14 +73,14 @@ TEST_F(AngleTest, Distance)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 radians = random(EGEMath::PI);                             // [-180, +180]
-    const float32 diff    = random(EGEMath::PI * 0.5f) + EGEMath::PI * 0.5f; // [0 - 180]
+    const float32 radians = random(Math::PI);                          // [-180, +180]
+    const float32 diff    = random(Math::PI * 0.5f) + Math::PI * 0.5f; // [0 - 180]
 
     Angle angle1(radians);
     Angle angle2(radians + diff);
     Angle angleDiff(diff);
 
-    EGE_EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, EClockwise).radians(), EGEMath::TWO_PI - diff, epsilon());
+    EGE_EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, EClockwise).radians(), Math::TWO_PI - diff, epsilon());
     EGE_EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, ECounterClockwise).radians(), diff, epsilon());
     EGE_EXPECT_FLOAT_EQ(angle1.distanceTo(angle2, EShortest).radians(), 
                         Math::Min(angle1.distanceTo(angle2, EClockwise).radians(), angle1.distanceTo(angle2, ECounterClockwise).radians()), epsilon());
@@ -92,8 +92,8 @@ TEST_F(AngleTest, LessThan)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 radians = random(EGEMath::PI);                             // [-180, +180]
-    const float32 diff    = random(EGEMath::PI * 0.5f) + EGEMath::PI * 0.5f; // [0 - 180]
+    const float32 radians = random(Math::PI);                          // [-180, +180]
+    const float32 diff    = random(Math::PI * 0.5f) + Math::PI * 0.5f; // [0 - 180]
 
     Angle angle1(radians);
     Angle angle2(radians + diff);
@@ -107,8 +107,8 @@ TEST_F(AngleTest, GreaterThan)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 radians = random(EGEMath::PI);                             // [-180, +180]
-    const float32 diff    = random(EGEMath::PI * 0.5f) + EGEMath::PI * 0.5f; // [0 - 180]
+    const float32 radians = random(Math::PI);                          // [-180, +180]
+    const float32 diff    = random(Math::PI * 0.5f) + Math::PI * 0.5f; // [0 - 180]
 
     Angle angle1(radians);
     Angle angle2(radians + diff);

@@ -91,7 +91,7 @@ float32 Angle::degrees() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Angle::normalize(float32 center)
 {
-  m_radians = m_radians - EGEMath::TWO_PI * Math::Floor((m_radians + EGEMath::PI - center) / EGEMath::TWO_PI);
+  m_radians = m_radians - Math::TWO_PI * Math::Floor((m_radians + Math::PI - center) / Math::TWO_PI);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Angle Angle::normalized() const
@@ -122,7 +122,7 @@ Angle Angle::distanceTo(const Angle& angle, AngleDirection direction)
       }
       else
       {
-        out.m_radians = EGEMath::TWO_PI - (angle2.radians() - angle1.radians());
+        out.m_radians = Math::TWO_PI - (angle2.radians() - angle1.radians());
       }
       break;
 
@@ -130,7 +130,7 @@ Angle Angle::distanceTo(const Angle& angle, AngleDirection direction)
       
       if (angle1.radians() >= angle2.radians())
       {
-        out.m_radians = EGEMath::TWO_PI - (angle1.radians() - angle2.radians());
+        out.m_radians = Math::TWO_PI - (angle1.radians() - angle2.radians());
       }
       else
       {
@@ -143,10 +143,10 @@ Angle Angle::distanceTo(const Angle& angle, AngleDirection direction)
   if (EShortest == direction)
   {
     // ...check if this is not shortest...
-    if (out.m_radians > EGEMath::PI)
+    if (out.m_radians > Math::PI)
     {
       // ...correct it
-      out.m_radians = EGEMath::TWO_PI - out.m_radians;
+      out.m_radians = Math::TWO_PI - out.m_radians;
     }
   }
 

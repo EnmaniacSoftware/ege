@@ -202,6 +202,14 @@ class Math
     static const float32 EPSILON;
     /*! Squared inaccuracy cut-off value. */
     static const float32 EPSILON_SQUARED;
+    /*! PI number. */
+    static const float32 PI;
+    /*! Two times PI number. */
+    static const float32 TWO_PI;
+    /*! PI half number. */
+    static const float32 PI_HALF;
+    /*! Reciprocal of PI number. */
+    static const float32 PI_REP;
     /*! Max 32-bit unsigned integer value. */
     static const s32 MAX_U32;
     /*! Min 32-bit unsigned integer value. */

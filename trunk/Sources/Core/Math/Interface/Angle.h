@@ -79,7 +79,7 @@ class Angle
      *  @note  For normalization resulting in [0..2PI] interval use PI as center point.
      *  @note  Due to numerical inaccuracies intervals are closed on both sides rather than only at one.
      */
-    void normalize(float32 center = EGEMath::PI);
+    void normalize(float32 center = Math::PI);
     /*! Returns normalized angle in [0-2PI) degrees interval. */
     Angle normalized() const;
     /*! Returns angle distance from current angle to given one. */

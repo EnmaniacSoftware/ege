@@ -14,6 +14,10 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const float32 Math::EPSILON         = std::numeric_limits<float32>::epsilon();
 const float32 Math::EPSILON_SQUARED = std::numeric_limits<float32>::epsilon() * std::numeric_limits<float32>::epsilon();
+const float32 Math::PI              = 3.14159265358979323846f;
+const float32 Math::TWO_PI          = 6.28318530717958647692f;
+const float32 Math::PI_HALF         = 1.57079632679489661923f;
+const float32 Math::PI_REP          = 0.31830988618379067153f;
 const s32     Math::MAX_U32         = std::numeric_limits<u32>::max();
 const s32     Math::MIN_U32         = std::numeric_limits<u32>::min();
 const s32     Math::MAX_S32         = std::numeric_limits<s32>::max();
@@ -121,7 +125,7 @@ void Math::GetAngle(Angle* angle, const Vector2f* origin, const Vector2f* point)
   //}
   //else
   //{
-  //  angle->fromRadians(Math::ACos(-(origin->y - point->y) / origin->distanceTo(*point)) + EGEMath::PI);
+  //  angle->fromRadians(Math::ACos(-(origin->y - point->y) / origin->distanceTo(*point)) + Math::PI);
   //}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -431,7 +435,7 @@ float32 Math::ACos(float32 radians)
     return (1.0f > radians) ? acosf(radians) : 0;
   }
 
-  return EGEMath::PI; 
+  return Math::PI; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Math::Align(Vector2f* point, const Vector2f* size, Alignment currentAlignment, Alignment newAlignment)
@@ -621,7 +625,7 @@ Vector3f Math::RandomDeviant(const Angle* angle, const Vector3f* vector, const V
 
   // rotate up vector by random amount around this
   Quaternionf q;
-  q.create(*vector, Angle(EGEMath::TWO_PI * l_random(0.0f, 1.0f)));
+  q.create(*vector, Angle(Math::TWO_PI * l_random(0.0f, 1.0f)));
   newUp = q * newUp;
 
   // finally rotate this by given angle around randomised up
