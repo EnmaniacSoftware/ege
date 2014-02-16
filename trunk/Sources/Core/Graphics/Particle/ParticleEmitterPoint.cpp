@@ -144,17 +144,17 @@ void ParticleEmitterPoint::initializeParticle(s32 index)
 	particleData.sizeDelta = (endSize - particleData.size) * inverseLifeTimeSeconds;
 
 	// calculate start color
-  particleData.color.red    = Math::Bound(m_particleStartColor.red + m_particleStartColorVariance.red * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
-  particleData.color.green  = Math::Bound(m_particleStartColor.green + m_particleStartColorVariance.green * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
-  particleData.color.blue   = Math::Bound(m_particleStartColor.blue + m_particleStartColorVariance.blue * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
-  particleData.color.alpha  = Math::Bound(m_particleStartColor.alpha + m_particleStartColorVariance.alpha * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
+  particleData.color.red    = Math::Clamp(m_particleStartColor.red + m_particleStartColorVariance.red * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
+  particleData.color.green  = Math::Clamp(m_particleStartColor.green + m_particleStartColorVariance.green * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
+  particleData.color.blue   = Math::Clamp(m_particleStartColor.blue + m_particleStartColorVariance.blue * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
+  particleData.color.alpha  = Math::Clamp(m_particleStartColor.alpha + m_particleStartColorVariance.alpha * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
 
   // calculate end color
   Color endColor;
-  endColor.red    = Math::Bound(m_particleEndColor.red + m_particleEndColorVariance.red * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
-  endColor.green  = Math::Bound(m_particleEndColor.green + m_particleEndColorVariance.green * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
-  endColor.blue   = Math::Bound(m_particleEndColor.blue + m_particleEndColorVariance.blue * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
-  endColor.alpha  = Math::Bound(m_particleEndColor.alpha + m_particleEndColorVariance.alpha * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
+  endColor.red    = Math::Clamp(m_particleEndColor.red + m_particleEndColorVariance.red * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
+  endColor.green  = Math::Clamp(m_particleEndColor.green + m_particleEndColorVariance.green * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
+  endColor.blue   = Math::Clamp(m_particleEndColor.blue + m_particleEndColorVariance.blue * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
+  endColor.alpha  = Math::Clamp(m_particleEndColor.alpha + m_particleEndColorVariance.alpha * Math::Random()(-1.0f, 1.0f), 0.0f, 1.0f);
 
   // calculate color change
   particleData.colorDelta.red   = (endColor.red - particleData.color.red) * inverseLifeTimeSeconds;

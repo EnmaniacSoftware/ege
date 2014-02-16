@@ -251,8 +251,8 @@ Vector2f Widget::size() const
   //  {
   //    minFrameSize = m_widgetFrame->minSize();
   //  }
-  //  m_size.x = Math::Bound(contentSize.x, minFrameSize.x, (0.0f == m_maxSize.x) ? hugeSize : m_maxSize.x);
-  //  m_size.y = Math::Bound(contentSize.y, minFrameSize.y, (0.0f == m_maxSize.y) ? hugeSize : m_maxSize.y);
+  //  m_size.x = Math::Clamp(contentSize.x, minFrameSize.x, (0.0f == m_maxSize.x) ? hugeSize : m_maxSize.x);
+  //  m_size.y = Math::Clamp(contentSize.y, minFrameSize.y, (0.0f == m_maxSize.y) ? hugeSize : m_maxSize.y);
 
   //  // go thru all children and reassign layouts
   //  for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)

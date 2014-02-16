@@ -90,7 +90,7 @@ void UIPageIndicator::setCurrentPage(s32 pageIdx)
 {
   if ((pageIdx != m_page) && (0 < pageCount()))
   {
-    m_page = Math::Bound(pageIdx, 0, m_pageCount - 1);
+    m_page = Math::Clamp(pageIdx, 0, m_pageCount - 1);
 
     // invalidate render data
     m_renderDataInvalid = true;
@@ -152,9 +152,8 @@ void UIPageIndicator::addForRendering(IRenderer* renderer, const Matrix4f& trans
   const Vector2f offset = (size() - indicatorSize) * 0.5f;
   for (s32 i = 0; i < static_cast<s32>(m_renderData.size()); ++i)
   {
-    Matrix4f matrix = Matrix4f::IDENTITY;
     Vector4f pos = Vector4f(offset.x + i * (m_indicatorSize + INDICATOR_SPACING), offset.y, 0);
-    Math::CreateMatrix(&matrix, &pos, &Vector4f::ONE, &Quaternionf::IDENTITY);
+    Matrix4f matrix = Math::CreateMatrix(pos, Vector4f::ONE, Quaternionf::IDENTITY);
 
     // update render priority
     m_renderData[i]->setPriority(m_renderPriority);

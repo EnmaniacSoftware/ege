@@ -108,11 +108,10 @@ void UIScrollableView::addForRendering(IRenderer* renderer, const Matrix4f& tran
   Vector4f pos;
 
   // create content objects matrix affected by current scroll offset
-  Matrix4f contentMatrix = Matrix4f::IDENTITY;
   pos = m_physics.position();
   pos.x -= offset().x;
   pos.y -= offset().y;
-  Math::CreateMatrix(&contentMatrix, &pos, &Vector4f::ONE, &Quaternionf::IDENTITY);
+  Matrix4f contentMatrix = Math::CreateMatrix(pos, Vector4f::ONE, Quaternionf::IDENTITY);
   contentMatrix = transform.multiply(contentMatrix);
 
   // cache position

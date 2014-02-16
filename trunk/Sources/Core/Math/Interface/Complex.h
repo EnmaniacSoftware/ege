@@ -85,7 +85,7 @@ TComplex<T>::TComplex(const TComplex& other) : x(other.x)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TComplex<T>& TComplex<T>::operator*=(const TComplex& other)
+TComplex<T>& TComplex<T>::operator *= (const TComplex& other)
 {
   T newX = x * other.x + y * other.y;
   T newY = y * other.x + x * other.y;
@@ -97,7 +97,7 @@ TComplex<T>& TComplex<T>::operator*=(const TComplex& other)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TComplex<T>& TComplex<T>::operator=(const TComplex& other)
+TComplex<T>& TComplex<T>::operator = (const TComplex& other)
 {
   x = other.x;
   y = other.y;

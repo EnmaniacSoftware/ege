@@ -286,7 +286,6 @@ void TextOverlay::addForRendering(IRenderer* renderer, const Matrix4f& transform
       validate();
     }
 
-    Matrix4f matrix = Matrix4f::IDENTITY;
     Vector4f pos = physics()->position();
     Vector4f finalSize(size().x, size().y, 0, 1);
     finalSize.x *= physics()->scale().x;
@@ -294,7 +293,7 @@ void TextOverlay::addForRendering(IRenderer* renderer, const Matrix4f& transform
     Math::Align(&pos, &finalSize, ALIGN_TOP_LEFT, alignment());
 
     finalSize = physics()->scale();
-    Math::CreateMatrix(&matrix, &pos, &finalSize, &Quaternionf::IDENTITY);
+    Matrix4f matrix = Math::CreateMatrix(pos, finalSize, Quaternionf::IDENTITY);
 
     renderer->addForRendering(m_renderData, transform * matrix);
   }

@@ -94,7 +94,7 @@ void Sequencer::setName(const String& name)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 Sequencer::frameId(s32 frameIndex) const
 {
-  s32 index = Math::Bound(frameIndex, 0, static_cast<s32>(m_framesIds.size() - 1));
+  s32 index = Math::Clamp(frameIndex, 0, static_cast<s32>(m_framesIds.size() - 1));
 
   return m_framesIds[index];
 }

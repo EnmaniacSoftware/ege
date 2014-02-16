@@ -125,7 +125,7 @@ Text ResourceText::text(s32 numerous) const
   {
     const TextArray& list = m_translations.at(app()->language());
 
-    index = Math::Bound(index, static_cast<s32>(0), static_cast<s32>(list.size()) - 1);
+    index = Math::Clamp(index, static_cast<s32>(0), static_cast<s32>(list.size()) - 1);
     outText = list[index];
   }
   else

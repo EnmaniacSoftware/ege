@@ -1761,6 +1761,12 @@
     <ClInclude Include="..\..\Sources\EGEVector2.h" />
     <ClInclude Include="..\..\Sources\EGEVector3.h" />
     <ClInclude Include="..\..\Sources\EGEVector4.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Implementation\MatrixTypes.h">
+      <Filter>Core\Math\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Implementation\QuaternionTypes.h">
+      <Filter>Core\Math\Implementation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

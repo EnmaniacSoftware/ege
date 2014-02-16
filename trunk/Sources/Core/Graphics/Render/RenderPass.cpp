@@ -122,7 +122,7 @@ void RenderPass::setSpecularColor(const Color& color)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderPass::setShininess(float32 shininess)
 {
-  m_shininess = Math::Bound(shininess, 0.0f, 1.0f);
+  m_shininess = Math::Clamp(shininess, 0.0f, 1.0f);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderPass::setEmissionColor(const Color& color)

@@ -71,9 +71,9 @@ class Angle
     /*! Returns angle in degrees. */
     float32 degrees() const;
     /*! Sets angle from radians. */
-    void fromRadians(float32 radians) { m_radians = radians; }
+    void fromRadians(float32 radians);
     /*! Returns angle in radians. */
-    float32 radians() const { return m_radians; }
+    float32 radians() const;
     /*! Normalizes angle to 2PI interval around center. 
      *  @param center  Center point around which angle is spread. If set to 0, result interval after normalization will be [-PI..+PI].
      *  @note  For normalization resulting in [0..2PI] interval use PI as center point.

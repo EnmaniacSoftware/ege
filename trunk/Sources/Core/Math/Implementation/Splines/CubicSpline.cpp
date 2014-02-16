@@ -147,7 +147,7 @@ void CubicSpline::value(Vector4f& pos, float32 t) const
   }
 
   // make sure value is valid
-  t = Math::Bound(t, 0.0f, 1.0f);
+  t = Math::Clamp(t, 0.0f, 1.0f);
 
   // convert into [0-length] space
   t *= length();
@@ -238,7 +238,7 @@ const CurveSegment* CubicSpline::segment(float32 t, float32& distanceToSegment) 
   distanceToSegment = 0;
 
   // make sure value is valid
-  t = Math::Bound(t, 0.0f, 1.0f);
+  t = Math::Clamp(t, 0.0f, 1.0f);
 
   // convert into [0-length] space
   t *= length();

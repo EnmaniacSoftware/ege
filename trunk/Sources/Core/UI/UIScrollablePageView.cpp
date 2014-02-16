@@ -83,11 +83,10 @@ void UIScrollablePageView::addForRendering(IRenderer* renderer, const Matrix4f& 
   }
 
   // create content objects matrix affected by current scroll offset
-  Matrix4f contentMatrix = Matrix4f::IDENTITY;
   Vector4f pos = m_physics.position();
   pos.x -= offset().x;
   pos.y -= offset().y;
-  Math::CreateMatrix(&contentMatrix, &pos, &Vector4f::ONE, &Quaternionf::IDENTITY);
+  Matrix4f contentMatrix = Math::CreateMatrix(pos, Vector4f::ONE, Quaternionf::IDENTITY);
   contentMatrix = transform.multiply(contentMatrix);
 
   // determine clip rectangle for entire widget
@@ -332,7 +331,7 @@ void UIScrollablePageView::setPageCount(s32 count)
 void UIScrollablePageView::setPage(s32 page, bool animate)
 {
   // make sure its in range
-  page = Math::Bound(page, 0, m_pageIndicator->pageCount() - 1);
+  page = Math::Clamp(page, 0, m_pageIndicator->pageCount() - 1);
 
   // scroll to page
   Vector2f offset(page * pageSize().x, 0);
@@ -409,7 +408,7 @@ void UIScrollablePageView::endMove()
   }
 
   // make sure its in range
-  page = Math::Bound(page, 0, m_pageIndicator->pageCount() - 1);
+  page = Math::Clamp(page, 0, m_pageIndicator->pageCount() - 1);
 
   // scroll to page
   setOffset(Vector2f(page * pageSize().x, 0), true);

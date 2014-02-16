@@ -286,12 +286,11 @@ PSequencer SpriteAnimation::currentSequencer() const
 void SpriteAnimation::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   // apply alignment
-  Matrix4f matrix       = Matrix4f::IDENTITY;
-  Vector4f translation  = m_physicsData->position();
-  Vector4f scale        = m_physicsData->scale();
+  Vector4f translation = m_physicsData->position();
+  Vector4f scale       = m_physicsData->scale();
 
   Math::Align(&translation, &scale, ALIGN_TOP_LEFT, m_baseAlignment);
-  Math::CreateMatrix(&matrix, &translation, &scale, &Quaternionf::IDENTITY);
+  Matrix4f matrix = Math::CreateMatrix(translation, scale, Quaternionf::IDENTITY);
 
   renderer->addForRendering(m_renderData, transform * matrix);
 }

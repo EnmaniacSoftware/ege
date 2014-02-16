@@ -175,7 +175,7 @@ void UIAbstractScrollbar::setOffset(s32 offset)
   if (m_offset != offset)
   {
     // make sure offset is in range
-    m_offset = Math::Bound(offset, m_rangeStart, m_rangeEnd - m_pageSize);
+    m_offset = Math::Clamp(offset, m_rangeStart, m_rangeEnd - m_pageSize);
 
     // invalidate render data
     m_renderDataInvalid = true;

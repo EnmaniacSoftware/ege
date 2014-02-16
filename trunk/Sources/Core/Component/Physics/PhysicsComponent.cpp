@@ -293,7 +293,7 @@ const Matrix4f& PhysicsComponent::transformationMatrix() const
   if (!m_transformationMatrixValid)
   {
     // update cached matrix
-    Math::CreateMatrix(&m_transformationMatrix, &m_position, &m_scale, &m_orientation);
+    m_transformationMatrix = Math::CreateMatrix(m_position, m_scale, m_orientation);
 
     // reser flag
     m_transformationMatrixValid = true;

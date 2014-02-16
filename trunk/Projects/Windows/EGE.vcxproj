@@ -331,6 +331,8 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexDeclaration.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexElement.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Implementation\MatrixTypes.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Implementation\QuaternionTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Angle.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Interface\AxisAlignedBox.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Circle.h" />

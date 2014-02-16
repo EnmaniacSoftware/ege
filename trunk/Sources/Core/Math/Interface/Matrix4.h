@@ -25,6 +25,7 @@ class TMatrix4
     TMatrix4();
 		TMatrix4(T m00, T m01, T m02, T m03, T m10, T m11, T m12, T m13, T m20, T m21, T m22, T m23, T m30, T m31, T m32, T m33);
 		TMatrix4(const T column0[4], const T column1[4], const T column2[4], const T column3[4]);
+		explicit TMatrix4(const T data[16]);
 		TMatrix4(const TMatrix4& matrix);
 
   operators:
@@ -115,6 +116,12 @@ TMatrix4<T>::TMatrix4(const T column0[4], const T column1[4], const T column2[4]
   data[13] = column3[1];
   data[14] = column3[2];
   data[15] = column3[3];
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TMatrix4<T>::TMatrix4(const T data[16])
+{
+  EGE_MEMCPY(this->data, data, sizeof (data) * 16);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

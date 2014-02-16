@@ -133,7 +133,7 @@ const Matrix4f& Node::worldMatrix() const
     Vector4f position = physics()->position();
     Vector4f scale = physics()->scale();
   
-    Math::CreateMatrix(&m_worldMatrix, &position, &scale, &orientation);
+    m_worldMatrix = Math::CreateMatrix(position, scale, orientation);
   
     if (NULL != parent())
     {

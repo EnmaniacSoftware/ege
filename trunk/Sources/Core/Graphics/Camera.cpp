@@ -61,12 +61,12 @@ const Matrix4f& Camera::viewMatrix()
 
     // convert orientation into rotation matrix
     Quaternionf orientation = physics()->orientation();
-    Math::Convert(&m_viewMatrix, &orientation);
+    Math::Convert(m_viewMatrix, orientation);
 
     // calculate position (translation)
     Vector4f position = physics()->position();
     Matrix4f transposed = m_viewMatrix.transposed();
-    Math::Transform(&position, &transposed);
+    position = Math::Transform(position, transposed);
 
     // store translation in modelview matrix
     m_viewMatrix.data[12] = -position.x;

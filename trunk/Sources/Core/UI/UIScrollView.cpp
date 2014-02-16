@@ -291,8 +291,8 @@ void UIScrollView::endMove()
 
   Vector2f scrollToOffset = m_offset;
 
-  scrollToOffset.x = Math::Bound(m_offset.x, 0.0f, m_maxOffset.x);
-  scrollToOffset.y = Math::Bound(m_offset.y, 0.0f, m_maxOffset.y);
+  scrollToOffset.x = Math::Clamp(m_offset.x, 0.0f, m_maxOffset.x);
+  scrollToOffset.y = Math::Clamp(m_offset.y, 0.0f, m_maxOffset.y);
 
   setOffset(scrollToOffset, true);
 }

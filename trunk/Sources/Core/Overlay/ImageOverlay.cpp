@@ -24,7 +24,6 @@ void ImageOverlay::addForRendering(IRenderer* renderer, const Matrix4f& transfor
 {
   if (visible())
   {
-    Matrix4f matrix = Matrix4f::IDENTITY;
     Vector4f pos = physics()->position();
     Vector4f finalSize = Vector4f(size().x, size().y, 0);
     finalSize.x *= physics()->scale().x;
@@ -33,7 +32,7 @@ void ImageOverlay::addForRendering(IRenderer* renderer, const Matrix4f& transfor
     Math::Align(&pos, &finalSize, ALIGN_TOP_LEFT, alignment());
 
     // NOTE: scale factor is a combined value from size and current scale cause render item is created with Vector::ONE
-    Math::CreateMatrix(&matrix, &pos, &finalSize, &Quaternionf::IDENTITY);
+    Matrix4f matrix = Math::CreateMatrix(pos, finalSize, Quaternionf::IDENTITY);
 
     renderer->addForRendering(m_renderData, transform * matrix);
   }

@@ -145,7 +145,7 @@ void SoundOpenAL::setVolume(float32 volume)
   float32 oldVolume = m_volume;
 
   // clamp to valid range
-  m_volume = Math::Bound(volume, 0.0f, 1.0f);
+  m_volume = Math::Clamp(volume, 0.0f, 1.0f);
 
   // notify
   notifyVolumeChanged(oldVolume);

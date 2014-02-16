@@ -4,20 +4,19 @@
 #include "EGETypes.h"
 #include "EGEAlignment.h"
 #include "EGERandom.h"
+#include "EGEDebug.h"
+#include "Core/Math/Implementation/MatrixTypes.h"
+#include "Core/Math/Implementation/QuaternionTypes.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T> class TMatrix4;
-typedef TMatrix4<float32> Matrix4f;
 template <typename T> class TVector2;
 typedef TVector2<float32> Vector2f;
 template <typename T> class TVector3;
 typedef TVector3<float32> Vector3f;
 template <typename T> class TVector4;
 typedef TVector4<float32> Vector4f;
-template <typename T> class TQuaternion;
-typedef TQuaternion<float32> Quaternionf;
 template <typename T> class TComplex;
 typedef TComplex<float32> Complexf;
 template <typename T> class TRect;
@@ -32,43 +31,133 @@ class Math
     Math();
    ~Math();
 
+    /*! Returns smaller value of the given values.
+     *  @param  value1  Value 1.
+     *  @param  value2  Value 2.
+     *  @return Returns value which is smaller of given two.
+     */
     template <typename T>
-    static T Min(T a, T b) { return (a > b) ? b : a; }
-
+    static const T& Min(const T& value1, const T& value2);
+    /*! Returns greater value of the given values.
+     *  @param  value1  Value 1.
+     *  @param  value2  Value 2.
+     *  @return Returns value which is greater of given two.
+     */
     template <typename T>
-    static T Max(T a, T b) { return (a > b) ? a : b; }
-
+    static const T& Max(const T& value1, const T& value2);
+    /*! Clamps given value to specified interval.
+     *  @param  value Value to be evaluated.
+     *  @param  min   Minimum allowed value.
+     *  @param  max   Maximum allowed value.
+     *  @return Clamped value in [min, max] range.
+     *  @note Min must be less or equal to max. Otherwise, results are unspecified.
+     */
     template <typename T>
-    static T Bound(T value, T min, T max) { return (value > max) ? max : ((value < min) ? min : value); }
+    static const T& Clamp(const T& value, const T& min, const T& max);
+    /*! Returns square root of a given value.
+     *  @param  value Value for which square root is to be calculated.
+     *  @return Calculated square root value.
+     *  @note Value needs to be non-negative.
+     */
     template <typename T>
-    static T MapTo01(T value, T min, T max) { T range = max - min; return (0 != range) ? ((value - min) / range) : 0; }
-
+    static T Sqrt(const T& value);
+    /*! Calculates value raised to a given power.
+     *  @param  value Base value.
+     *  @param  power Power the base value should be raised to.
+     *  @return Returns calculated value.
+     *  @note Power needs to be non-negative. If value is negative, power should be integer. Otherwise, results are unspecified.
+     */
     template <typename T>
-    static float32 Sqrt(T number) { return sqrtf(static_cast<float32>(number)); }
+    static T Pow(const T& value, const T& power);
+    /*! Returns closest smaller integer value to given one.
+     *  @param  value Value for which closest integer is to be found.
+     *  @return Calculated value.
+     */
+    template <typename T>
+    static s32 Floor(const T& value);
+    /*! Returns closest greater integer value to given one.
+     *  @param  value Value for which closest integer is to be found.
+     *  @return Calculated value.
+     */
+    template <typename T>
+    static s32 Ceil(const T& value);
+    /*! Returns absolute value of a given one.
+     *  @param  value Value for which absolute value should be calculated.
+     *  @return Calculated absolute value.
+     */
+    template <typename T>
+    static T Abs(const T& value);
 
-    static float32 Pow(float32 value, float32 power) { return powf(value, power); }
+    /*! Convert radians to degrees.
+     *  @param  radians Radians to be converted.
+     *  @return Calculated value in degrees.
+     */
+    static float32 RadiansToDegrees(float32 radians);
+    /*! Convert degrees to radians.
+     *  @param  degrees Degrees to be converted.
+     *  @return Calculated value in radian.
+     */
+    static float32 DegreesToRadians(float32 degrees);
+    /*! Calculates sine of a given angle.
+     *  @param  radians Angle in radians.
+     *  @return Calculated value.
+     */
+    template <typename T>
+    static T Sin(const T& radians);
+    /*! Calculates cosine of a given angle.
+     *  @param  radians Angle in radians.
+     *  @return Calculated value.
+     */
+    template <typename T>
+    static T Cos(const T& radians);
+    /*! Calculates arccosine of a given value.
+     *  @param  value Value for which calculations should be done in [-1, 1] range.
+     *  @return Calculated angle in range [0, PI].
+     */
+    template <typename T>
+    static T ACos(const T& value);
+    /*! Calculates tangent of a given angle.
+     *  @param  radians Angle in radians
+     *  @return Calculated value.
+     */
+    template <typename T>
+    static T Tan(const T& radians);
+    /*! Calculates cotangent of a given angle.
+     *  @param  radians Angle in radians.
+     *  @return Calculated value.
+     */
+    template <typename T>
+    static T Ctg(const T& radians);
+    /*! Calculates arctangent of a y/x quotient.
+     *  @param  y Nominator of the quotient value.
+     *  @param  x Denominator of the quotient value.
+     *  @return Calculated value.
+     *  @note Values of X and Y MUST NOT be equal to 0 at the same time.
+     */
+    template <typename T>
+    static T ATan2(const T& y, const T& x);
 
-    static s32 Floor(float32 value) { return static_cast<s32>(floorf(value)); }
-    static s32 Ceil(float32 value) { return static_cast<s32>(ceilf(value)); }
+    /*! Converts rotation desctibed by given quaternion to matrix representation. 
+     *  @param  matrix      Matrix alike rotation representation.
+     *  @param  quaternion  Rotation represented by quaternion.
+     */
+    static void Convert(Matrix4f& matrix, const Quaternionf& quaternion);
 
-    static float32 RadiansToDegrees(float32 radians) { return radians * 57.29577951f; }
-    static float32 DegreesToRadians(float32 degrees) { return degrees * 0.017453292f; }
+    /*! Transforms vector by matrix. 
+     *  @param  vector  Vector to be tranformed.
+     *  @param  matrix  Transformation matrix.
+     *  @return Transformed vector.
+     */
+    static Vector4f Transform(const Vector4f& vector, const Matrix4f& matrix);
 
-    static float32 Sin(float32 radians) { return sinf(radians); }
-    static float32 Cos(float32 radians) { return cosf(radians); }
-    static float32 Tan(float32 radians) { return tanf(radians); }
-    static float32 Ctg(float32 radians) { return 1.0f / Tan(radians); }
-    static float32 ATan2(float32 y, float32 x) { return atan2f(y, x); }
-    static s32     Abs(s32 value) { return abs(value); }
-    static float32 Abs(float32 value) { return fabsf(value); }
-    static float32 ACos(float32 radians);
+    /*! Creates matrix from translation, scale vectors and rotation quaternion. 
+     *  @param  translation Translation vector.
+     *  @param  scale       Scale vector.
+     *  @param  orientation Rotation quaternion.
+     *  @return Resulting matrix.
+     */
+    static Matrix4f CreateMatrix(const Vector4f& translation, const Vector4f& scale, const Quaternionf& orientation);
 
-    /*! Converts quaternion to matrix representation. */
-    static void Convert(Matrix4f* matrix, const Quaternionf* quaternion);
-    /*! Transforms (pre-multiples) vector by matrix. */
-    static void Transform(Vector4f* vector, const Matrix4f* matrix);
-    /*! Creates matrix from translation, scale vectors and quaternion. */
-    static void CreateMatrix(Matrix4f* matrix, const Vector4f* translation, const Vector4f* scale, const Quaternionf* orientation);
     /*! Calculates angle between positive X axis and given point around origin. */
     static void GetAngle(Angle* angle, const Vector2f* origin, const Vector2f* point);
     /*! Calculates unit direction vector from given angle. This is relative to positive X axis. */
@@ -227,6 +316,112 @@ class Math
     /*! Min 16-bit unsigned integer value. */
     static const s32 MIN_U16;
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+const T& Math::Min(const T& value1, const T& value2) 
+{ 
+  return (value1 > value2) ? value2 : value1; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+const T& Math::Max(const T& value1, const T& value2) 
+{ 
+  return (value1 > value2) ? value1 : value2; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+const T& Math::Clamp(const T& value, const T& min, const T& max) 
+{ 
+  EGE_ASSERT(min <= max);
+
+  return (value > max) ? max : ((value < min) ? min : value); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T Math::Sqrt(const T& value)
+{
+  EGE_ASSERT(0 <= value);
+
+  return sqrt(value);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T Math::Pow(const T& value, const T& power) 
+{ 
+  EGE_ASSERT(0 <= power);
+  EGE_ASSERT((0 <= value) || ((0 > value) && (power == Math::Floor(power))));
+
+  return pow(value, power); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+s32 Math::Floor(const T& value) 
+{ 
+  return static_cast<s32>(floor(value)); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+s32 Math::Ceil(const T& value) 
+{ 
+  return static_cast<s32>(ceil(value)); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T Math::Abs(const T& value) 
+{ 
+  return abs(value); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T Math::Sin(const T& radians)
+{
+  return sin(radians);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T Math::Cos(const T& radians)
+{
+  return cos(radians);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T Math::Tan(const T& radians)
+{
+  return tan(radians);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T Math::Ctg(const T& radians)
+{
+  const T tangent = tan(radians);
+
+  EGE_ASSERT(0 != tangent);
+
+  return static_cast<T>(1.0) / tangent;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T Math::ATan2(const T& y, const T& x)
+{ 
+  EGE_ASSERT((x != y) || ((x == y) && (0 != x)));
+
+  return atan2(y, x); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T Math::ACos(const T& value)
+{
+  EGE_ASSERT(-1 <= value); 
+  EGE_ASSERT(1 >= value); 
+
+  return acos(value); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector4<T> operator * (const TMatrix4<T>& matrix, const TVector4<T>& vector)
+{
+  return Math::Transform(vector, matrix);
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
