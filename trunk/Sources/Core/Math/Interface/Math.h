@@ -156,14 +156,6 @@ class Math
      */
     static Matrix4f CreateMatrix(const Vector4f& translation, const Vector4f& scale, const Quaternionf& orientation);
 
-    /*! Calculates angle between positive X axis and given vector. 
-     *  @param  direction Direction vector.
-     *  @return Angle between given vector and positive X axis.
-     *  @note Direction vector MUST not be zero.
-     */
-    static Angle GetAngle(const Vector2f& direction);
-
-
     /*! Calculates unit direction vector from given angle. This is relative to positive X axis. */
     static void GetDirection(Vector2f* vector, const Angle* angle);
 

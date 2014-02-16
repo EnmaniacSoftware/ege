@@ -99,16 +99,6 @@ Matrix4f Math::CreateMatrix(const Vector4f& translation, const Vector4f& scale, 
   return matrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Angle Math::GetAngle(const Vector2f& direction)
-{
-  EGE_ASSERT(Vector2f::ZERO != direction);
-
-  // NOTE: arguments are in (Y, X) order.
-  //       we assume X axis grows from LEFT to RIGHT
-  //       we assume Y axis grows from BOTTOM to TOP
-  return Angle::FromRadians(Math::ATan2(direction.y, direction.x));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Math::Slerp(Quaternionf* out, const Quaternionf* from, const Quaternionf* to, float32 time, bool shortestPath)
 {
   EGE_ASSERT(out);

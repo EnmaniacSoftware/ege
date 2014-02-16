@@ -39,11 +39,6 @@ class MathTest : public TestBase
      */
     std::vector<float32> createMatrix(const std::vector<float32>& translation, const std::vector<float32>& scale,  
                                       const std::vector<float32>& orientation) const;
-    /*! Calculates angle (in radians) between vector and positive X axis.
-     *  @param  direction 2D direction vector.
-     *  @return Calculated angle.
-     */
-    float32 angle(const std::vector<float32>& direction) const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MathTest::MathTest() : TestBase(0.0001f)
@@ -124,13 +119,6 @@ std::vector<float32> MathTest::createMatrix(const std::vector<float32>& translat
   std::vector<float32> matrix = MatrixHelper::Multiply(matrixTR, scaleMatrix);
 
   return matrix;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 MathTest::angle(const std::vector<float32>& direction) const
-{
-  EXPECT_EQ(2, direction.size());
-
-  return atan2(direction[1], direction[0]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(MathTest, Min)
@@ -441,23 +429,6 @@ TEST_F(MathTest, CreateMatrix)
                                                Vector4f(scaleData[0], scaleData[1], scaleData[2], scaleData[3]),
                                                Quaternionf(orientationData[0], orientationData[1], orientationData[2], orientationData[3]));
     EXPECT_TRUE(MatrixHelper::AreEqual(matrixData, matrix.data));
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(MathTest, GetAngle)
-{
-  // perform fixed number of tests
-  for (int i = 0; i < KRepetitionsCount; ++i)
-  {
-    std::vector<float32> direction = VectorHelper::RandomVector2Data();
-
-    // make sure not zero vector
-    if ((0 == direction[0]) && (0 == direction[1]))
-    {
-      direction[0] += 0.1f;
-    }
-
-    EXPECT_FLOAT_EQ(angle(direction), Math::GetAngle(Vector2f(direction[0], direction[1])).radians());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
