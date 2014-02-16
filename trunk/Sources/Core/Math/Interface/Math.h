@@ -156,9 +156,6 @@ class Math
      */
     static Matrix4f CreateMatrix(const Vector4f& translation, const Vector4f& scale, const Quaternionf& orientation);
 
-    /*! Calculates unit direction vector from given angle. This is relative to positive X axis. */
-    static void GetDirection(Vector2f* vector, const Angle* angle);
-
     /*! Performs spherical linear interpolation between given quaternions. 
      *  @param  out           Resulting quaternion.
      *  @param  from          First (start) quaternion.

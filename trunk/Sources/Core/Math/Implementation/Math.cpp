@@ -556,15 +556,6 @@ void Math::Align(Rectf* rect, const Rectf* otherRect, Alignment currentAlignment
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Math::GetDirection(Vector2f* vector, const Angle* angle)
-{
-  EGE_ASSERT(vector);
-  EGE_ASSERT(angle);
-
-  vector->x = Math::Cos(angle->radians());
-  vector->y = Math::Sin(angle->radians());
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Vector3f Math::RandomDeviant(const Angle* angle, const Vector3f* vector, const Vector3f* up)
 {
   EGE_ASSERT(angle);
