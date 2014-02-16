@@ -84,6 +84,8 @@
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\AngleTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\ComplexTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\CubicSplineTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MatrixHelper.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\MathTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Matrix4Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\PlaneTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\QuaternionTest.cpp" />
@@ -107,6 +109,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MatrixHelper.h" />
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

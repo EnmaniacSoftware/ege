@@ -1,4 +1,5 @@
 #include "TestFramework/Interface/TestBase.h"
+#include "Core/Math/Tests/Unittest/Helpers/MatrixHelper.h"
 #include <EGEMatrix.h>
 
 /** Tests are focusing TMatrix4<float32> instantiations. */
@@ -12,10 +13,6 @@ class Matrix4Test : public TestBase
 {
   protected:
 
-    /*! Generates random matrix data. 
-     *  @param  data  Array of data to be randomized.
-     */
-    void randomData(float32 data[16]) const;
     /*! Multiplies matrices.
      *  @param  data1   Matrix 1 data.
      *  @param  data2   Matrix 2 data.
@@ -28,12 +25,6 @@ class Matrix4Test : public TestBase
      *  @paeam  vectorOut Resulting vector data.
      */
     void multiplyVector(const float32 matrix[16], const float32 vector[4], float32 vectorOut[4]) const;
-    /*! Compares two matrix data sets. 
-     *  @param  data1 Matrix 1 data.
-     *  @data   data2 Matrix 2 data.
-     *  @return Returns TRUE if both sets are the same.
-     */
-    bool areEqual(const float32 data1[16], const float32 data2[16]) const;
     /*! Calculates matrix tranpose.
      *  @param  data    Matrix data.
      *  @paeam  dataOut Resulting transposed matrix data.
@@ -52,14 +43,6 @@ class Matrix4Test : public TestBase
      */
     void subtract(const float32 data1[16], const float32 data2[16], float32 dataOut[16]) const;
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Matrix4Test::randomData(float32 data[16]) const
-{
-  for (int i = 0; i < 16; ++i)
-  {
-    data[i] = random();
-  }
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Matrix4Test::multiply(const float32 data1[16], const float32 data2[16], float32 dataOut[16]) const
 {
@@ -123,21 +106,6 @@ void Matrix4Test::transpose(const float32 data[16], float32 dataOut[16]) const
   dataOut[15] = data[15];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Matrix4Test::areEqual(const float32 data1[16], const float32 data2[16]) const
-{
-  bool result = true;
-
-  for (int i = 0; i < 16; ++i)
-  {
-    if (std::numeric_limits<float32>::epsilon() < fabs(data1[i] - data2[i]))
-    {
-      result = false;
-    }
-  }
-
-  return result;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Matrix4Test::add(const float32 data1[16], const float32 data2[16], float32 dataOut[16]) const
 {
   for (int i = 0; i < 16; ++i)
@@ -162,7 +130,7 @@ TEST_F(Matrix4Test, SetValue)
     float32 data[16];
 
     // randomize data
-    randomData(data);
+    MatrixHelper::RandomData(data);
 
     // form up 4 columns
     const float32 column1[4] = { data[0],   data[1],  data[2],  data[3] };
@@ -176,8 +144,8 @@ TEST_F(Matrix4Test, SetValue)
     const Matrix4f matrix2(column1, column2, column3, column4);
     const Matrix4f matrix3(matrix1);
 
-    EXPECT_TRUE(areEqual(matrix1.data, matrix2.data));
-    EXPECT_TRUE(areEqual(matrix1.data, matrix3.data));
+    EXPECT_TRUE(MatrixHelper::AreEqual(matrix1.data, matrix2.data));
+    EXPECT_TRUE(MatrixHelper::AreEqual(matrix1.data, matrix3.data));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -191,8 +159,8 @@ TEST_F(Matrix4Test, MultiplyMatrix)
     float32 dataOut[16];
 
     // randomize data
-    randomData(data1);
-    randomData(data2);
+    MatrixHelper::RandomData(data1);
+    MatrixHelper::RandomData(data2);
 
     const Matrix4f matrix1(data1[0], data1[1], data1[2], data1[3], data1[4], data1[5], data1[6], data1[7], data1[8], data1[9], data1[10], data1[11], data1[12], 
                            data1[13], data1[14], data1[15]);
@@ -204,19 +172,19 @@ TEST_F(Matrix4Test, MultiplyMatrix)
 
     // ...by operators...
     Matrix4f matrixOut = matrix1 * matrix2;
-    EXPECT_TRUE(areEqual(dataOut, matrixOut.data));
+    EXPECT_TRUE(MatrixHelper::AreEqual(dataOut, matrixOut.data));
     
     matrixOut = matrix1;
     matrixOut *= matrix2;
-    EXPECT_TRUE(areEqual(dataOut, matrixOut.data));
+    EXPECT_TRUE(MatrixHelper::AreEqual(dataOut, matrixOut.data));
 
     // ...and by method call
     matrixOut = matrix1.multiply(matrix2);
-    EXPECT_TRUE(areEqual(dataOut, matrixOut.data));
+    EXPECT_TRUE(MatrixHelper::AreEqual(dataOut, matrixOut.data));
 
     // product of matrices is not cummutative (AB != BA)
     matrixOut = matrix2 * matrix1;
-    EXPECT_FALSE(areEqual(dataOut, matrixOut.data));
+    EXPECT_FALSE(MatrixHelper::AreEqual(dataOut, matrixOut.data));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -229,7 +197,7 @@ TEST_F(Matrix4Test, Transpose)
     float32 dataOut[16];
 
     // randomize data
-    randomData(data);
+    MatrixHelper::RandomData(data);
 
     const Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
                           data[14], data[15]);
@@ -239,7 +207,7 @@ TEST_F(Matrix4Test, Transpose)
 
     const Matrix4f transposed = matrix.transposed();
 
-    EXPECT_TRUE(areEqual(dataOut, transposed.data));
+    EXPECT_TRUE(MatrixHelper::AreEqual(dataOut, transposed.data));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -251,7 +219,7 @@ TEST_F(Matrix4Test, IsAffine)
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
     // randomize data
-    randomData(data);
+    MatrixHelper::RandomData(data);
 
     // check if generated data is affine
     bool isAffine = (0 == data[3]) && (0 == data[7]) && (0 == data[11]) && (1 == data[15]);
@@ -263,7 +231,7 @@ TEST_F(Matrix4Test, IsAffine)
   }
 
   // randomize data
-  randomData(data);
+  MatrixHelper::RandomData(data);
 
   // make it affine
   data[3]  = 0;
@@ -285,7 +253,7 @@ TEST_F(Matrix4Test, SetScale)
     float32 data[16];
 
     // randomize data
-    randomData(data);
+    MatrixHelper::RandomData(data);
 
     Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
                     data[14], data[15]);
@@ -313,7 +281,7 @@ TEST_F(Matrix4Test, SetTranslation)
     float32 data[16];
 
     // randomize data
-    randomData(data);
+    MatrixHelper::RandomData(data);
 
     Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
                     data[14], data[15]);
@@ -341,7 +309,7 @@ TEST_F(Matrix4Test, Translation)
     float32 data[16];
 
     // randomize data
-    randomData(data);
+    MatrixHelper::RandomData(data);
 
     Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
                     data[14], data[15]);
@@ -365,7 +333,7 @@ TEST_F(Matrix4Test, ¥rrayIndexing)
     float32 data[16];
 
     // randomize data
-    randomData(data);
+    MatrixHelper::RandomData(data);
     
     // verify
     const Matrix4f matrix1(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
@@ -426,8 +394,8 @@ TEST_F(Matrix4Test, Addition)
     float32 dataOut[16];
 
     // randomize data
-    randomData(data1);
-    randomData(data2);
+    MatrixHelper::RandomData(data1);
+    MatrixHelper::RandomData(data2);
 
     Matrix4f matrix1(data1[0], data1[1], data1[2], data1[3], data1[4], data1[5], data1[6], data1[7], data1[8], data1[9], data1[10], data1[11], data1[12], 
                      data1[13], data1[14], data1[15]);
@@ -440,18 +408,18 @@ TEST_F(Matrix4Test, Addition)
     // add M1 and M2
     Matrix4f matrix = matrix1;
     matrix += matrix2;
-    EXPECT_TRUE(areEqual(dataOut, matrix.data));
+    EXPECT_TRUE(MatrixHelper::AreEqual(dataOut, matrix.data));
 
     matrix = matrix1 + matrix2;
-    EXPECT_TRUE(areEqual(dataOut, matrix.data));
+    EXPECT_TRUE(MatrixHelper::AreEqual(dataOut, matrix.data));
 
     // add M2 and M1
     matrix = matrix2;
     matrix += matrix1;
-    EXPECT_TRUE(areEqual(dataOut, matrix.data));
+    EXPECT_TRUE(MatrixHelper::AreEqual(dataOut, matrix.data));
 
     matrix = matrix2 + matrix1;
-    EXPECT_TRUE(areEqual(dataOut, matrix.data));
+    EXPECT_TRUE(MatrixHelper::AreEqual(dataOut, matrix.data));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -465,8 +433,8 @@ TEST_F(Matrix4Test, Difference)
     float32 dataOut[16];
 
     // randomize data
-    randomData(data1);
-    randomData(data2);
+    MatrixHelper::RandomData(data1);
+    MatrixHelper::RandomData(data2);
 
     Matrix4f matrix1(data1[0], data1[1], data1[2], data1[3], data1[4], data1[5], data1[6], data1[7], data1[8], data1[9], data1[10], data1[11], data1[12], 
                      data1[13], data1[14], data1[15]);
@@ -478,10 +446,10 @@ TEST_F(Matrix4Test, Difference)
 
     Matrix4f matrix = matrix1;
     matrix -= matrix2;
-    EXPECT_TRUE(areEqual(dataOut, matrix.data));
+    EXPECT_TRUE(MatrixHelper::AreEqual(dataOut, matrix.data));
 
     matrix = matrix1 - matrix2;
-    EXPECT_TRUE(areEqual(dataOut, matrix.data));
+    EXPECT_TRUE(MatrixHelper::AreEqual(dataOut, matrix.data));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -495,7 +463,7 @@ TEST_F(Matrix4Test, VectorMultiplication)
     float32 vectorOut[4];
 
     // randomize data
-    randomData(data);
+    MatrixHelper::RandomData(data);
     
     vector[0] = random();
     vector[1] = random();

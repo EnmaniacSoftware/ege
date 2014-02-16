@@ -22,6 +22,9 @@
     <Filter Include="Tests\XML">
       <UniqueIdentifier>{1c41db20-1d2d-403d-813c-709d581b2266}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Math\Helpers">
+      <UniqueIdentifier>{516a820a-7e8c-49d0-8fe9-7ddd83f4851f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\DebugTest.cpp">
@@ -69,10 +72,19 @@
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\TweenerTest.cpp">
       <Filter>Tests\Math</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\MathTest.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MatrixHelper.cpp">
+      <Filter>Tests\Math\Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h">
       <Filter>TestFramework\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MatrixHelper.h">
+      <Filter>Tests\Math\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
