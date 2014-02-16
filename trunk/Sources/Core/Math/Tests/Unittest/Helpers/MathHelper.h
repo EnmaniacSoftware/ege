@@ -2,6 +2,7 @@
 #define EGE_CORE_MATH_TESTS_UNITTEST_MATHHELPER_H
 
 #include <EGE.h>
+#include <vector>
 
 EGE_NAMESPACE_BEGIN
 
@@ -11,11 +12,11 @@ class MathHelper
   public:
 
     /*! Multiplies matrix and vector.
-     *  @param  matrix    Matrix data.
-     *  @param  vector    Vector data.
-     *  @paeam  vectorOut Resulting vector data.
+     *  @param  matrix    4x4 matrix data.
+     *  @param  vector    4D vector data.
+     *  @return Resulting vector.
      */
-    static void MultiplyVector(const float32 matrix[16], const float32 vector[4], float32 vectorOut[4]);
+    static std::vector<float32> MultiplyVector(const std::vector<float32>& matrix, const std::vector<float32>& vector);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

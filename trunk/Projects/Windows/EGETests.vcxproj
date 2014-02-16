@@ -84,6 +84,7 @@
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\AngleTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\ComplexTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\CubicSplineTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\GeneratorHelper.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MathHelper.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MatrixHelper.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\QuaternionHelper.cpp" />
@@ -112,6 +113,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\GeneratorHelper.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MathHelper.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MatrixHelper.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\QuaternionHelper.h" />

@@ -1,5 +1,6 @@
 #include "TestFramework/Interface/TestBase.h"
 #include "Core/Math/Tests/Unittest/Helpers/MatrixHelper.h"
+#include "Core/Math/Tests/Unittest/Helpers/VectorHelper.h"
 #include "Core/Math/Tests/Unittest/Helpers/MathHelper.h"
 #include <EGEMatrix.h>
 
@@ -16,25 +17,27 @@ class Matrix4Test : public TestBase
 
     /*! Calculates matrix tranpose.
      *  @param  data    Matrix data.
-     *  @paeam  dataOut Resulting transposed matrix data.
+     *  @return Resulting transposed matrix data.
      */
-    void transpose(const float32 data[16], float32 dataOut[16]) const;
+    std::vector<float32> transpose(const std::vector<float32>& data) const;
     /*! Adds matrices.
      *  @param  data1   Matrix 1 data.
      *  @param  data2   Matrix 2 data.
-     *  @paeam  dataOut Resulting matrix data.
+     *  @return Resulting matrix data.
      */
-    void add(const float32 data1[16], const float32 data2[16], float32 dataOut[16]) const;
+    std::vector<float32> add(const std::vector<float32>& data1, const std::vector<float32>& data2) const;
     /*! Subtructs matrices.
      *  @param  data1   Matrix 1 data.
      *  @param  data2   Matrix 2 data.
-     *  @paeam  dataOut Resulting matrix data.
+     *  @return Resulting matrix data.
      */
-    void subtract(const float32 data1[16], const float32 data2[16], float32 dataOut[16]) const;
+    std::vector<float32> subtract(const std::vector<float32>& data1, const std::vector<float32>& data2) const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Matrix4Test::transpose(const float32 data[16], float32 dataOut[16]) const
+std::vector<float32> Matrix4Test::transpose(const std::vector<float32>& data) const
 {
+  std::vector<float32> dataOut(16, 0);
+
   // 1st column
   dataOut[0] = data[0];
   dataOut[1] = data[4];
@@ -58,22 +61,32 @@ void Matrix4Test::transpose(const float32 data[16], float32 dataOut[16]) const
   dataOut[13] = data[7];
   dataOut[14] = data[11];
   dataOut[15] = data[15];
+
+  return dataOut;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Matrix4Test::add(const float32 data1[16], const float32 data2[16], float32 dataOut[16]) const
+std::vector<float32> Matrix4Test::add(const std::vector<float32>& data1, const std::vector<float32>& data2) const
 {
+  std::vector<float32> dataOut;
+
   for (int i = 0; i < 16; ++i)
   {
-    dataOut[i] = data1[i] + data2[i];
+    dataOut.push_back(data1[i] + data2[i]);
   }
+
+  return dataOut;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Matrix4Test::subtract(const float32 data1[16], const float32 data2[16], float32 dataOut[16]) const
+std::vector<float32> Matrix4Test::subtract(const std::vector<float32>& data1, const std::vector<float32>& data2) const
 {
+  std::vector<float32> dataOut;
+
   for (int i = 0; i < 16; ++i)
   {
-    dataOut[i] = data1[i] - data2[i];
+     dataOut.push_back(data1[i] - data2[i]);
   }
+
+  return dataOut;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(Matrix4Test, SetValue)
@@ -81,10 +94,8 @@ TEST_F(Matrix4Test, SetValue)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    float32 data[16];
-
     // randomize data
-    MatrixHelper::RandomData(data);
+    std::vector<float32> data = MatrixHelper::RandomMatrix4();
 
     // form up 4 columns
     const float32 column1[4] = { data[0],   data[1],  data[2],  data[3] };
@@ -108,13 +119,13 @@ TEST_F(Matrix4Test, MultiplyMatrix)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    float32 data1[16];
-    float32 data2[16];
-    float32 dataOut[16];
+    std::vector<float32> data1;
+    std::vector<float32> data2;
+    std::vector<float32> dataOut;
 
     // randomize data
-    MatrixHelper::RandomData(data1);
-    MatrixHelper::RandomData(data2);
+    data1 = MatrixHelper::RandomMatrix4();
+    data2 = MatrixHelper::RandomMatrix4();
 
     const Matrix4f matrix1(data1[0], data1[1], data1[2], data1[3], data1[4], data1[5], data1[6], data1[7], data1[8], data1[9], data1[10], data1[11], data1[12], 
                            data1[13], data1[14], data1[15]);
@@ -122,7 +133,7 @@ TEST_F(Matrix4Test, MultiplyMatrix)
                            data2[13], data2[14], data2[15]);
 
     // multiply...
-    MatrixHelper::Multiply(dataOut, data1, data2);
+    dataOut = MatrixHelper::Multiply(data1, data2);
 
     // ...by operators...
     Matrix4f matrixOut = matrix1 * matrix2;
@@ -147,17 +158,17 @@ TEST_F(Matrix4Test, Transpose)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    float32 data[16];
-    float32 dataOut[16];
+    std::vector<float32> data;
+    std::vector<float32> dataOut;
 
     // randomize data
-    MatrixHelper::RandomData(data);
+    data = MatrixHelper::RandomMatrix4();
 
     const Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
                           data[14], data[15]);
 
     // transpose
-    transpose(data, dataOut);
+    dataOut = transpose(data);
 
     const Matrix4f transposed = matrix.transposed();
 
@@ -167,13 +178,13 @@ TEST_F(Matrix4Test, Transpose)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(Matrix4Test, IsAffine)
 {
-  float32 data[16];
+  std::vector<float32> data;
 
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
     // randomize data
-    MatrixHelper::RandomData(data);
+    data = MatrixHelper::RandomMatrix4();
 
     // check if generated data is affine
     bool isAffine = (0 == data[3]) && (0 == data[7]) && (0 == data[11]) && (1 == data[15]);
@@ -185,7 +196,7 @@ TEST_F(Matrix4Test, IsAffine)
   }
 
   // randomize data
-  MatrixHelper::RandomData(data);
+  data = MatrixHelper::RandomMatrix4();
 
   // make it affine
   data[3]  = 0;
@@ -204,10 +215,10 @@ TEST_F(Matrix4Test, SetScale)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    float32 data[16];
+    std::vector<float32> data;
 
     // randomize data
-    MatrixHelper::RandomData(data);
+    data = MatrixHelper::RandomMatrix4();
 
     Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
                     data[14], data[15]);
@@ -232,10 +243,10 @@ TEST_F(Matrix4Test, SetTranslation)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    float32 data[16];
+    std::vector<float32> data;
 
     // randomize data
-    MatrixHelper::RandomData(data);
+    data = MatrixHelper::RandomMatrix4();
 
     Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
                     data[14], data[15]);
@@ -260,10 +271,10 @@ TEST_F(Matrix4Test, Translation)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    float32 data[16];
+    std::vector<float32> data;
 
     // randomize data
-    MatrixHelper::RandomData(data);
+    data = MatrixHelper::RandomMatrix4();
 
     Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
                     data[14], data[15]);
@@ -284,10 +295,10 @@ TEST_F(Matrix4Test, ¥rrayIndexing)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    float32 data[16];
+    std::vector<float32> data;
 
     // randomize data
-    MatrixHelper::RandomData(data);
+    data = MatrixHelper::RandomMatrix4();
     
     // verify
     const Matrix4f matrix1(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
@@ -343,13 +354,13 @@ TEST_F(Matrix4Test, Addition)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    float32 data1[16];
-    float32 data2[16];
-    float32 dataOut[16];
+    std::vector<float32> data1;
+    std::vector<float32> data2;
+    std::vector<float32> dataOut;
 
     // randomize data
-    MatrixHelper::RandomData(data1);
-    MatrixHelper::RandomData(data2);
+    data1 = MatrixHelper::RandomMatrix4();
+    data2 = MatrixHelper::RandomMatrix4();
 
     Matrix4f matrix1(data1[0], data1[1], data1[2], data1[3], data1[4], data1[5], data1[6], data1[7], data1[8], data1[9], data1[10], data1[11], data1[12], 
                      data1[13], data1[14], data1[15]);
@@ -357,7 +368,7 @@ TEST_F(Matrix4Test, Addition)
                      data2[13], data2[14], data2[15]);
 
     // add using reference method
-    add(data1, data2, dataOut);
+    dataOut = add(data1, data2);
 
     // add M1 and M2
     Matrix4f matrix = matrix1;
@@ -382,13 +393,13 @@ TEST_F(Matrix4Test, Difference)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    float32 data1[16];
-    float32 data2[16];
-    float32 dataOut[16];
+    std::vector<float32> data1;
+    std::vector<float32> data2;
+    std::vector<float32> dataOut;
 
     // randomize data
-    MatrixHelper::RandomData(data1);
-    MatrixHelper::RandomData(data2);
+    data1 = MatrixHelper::RandomMatrix4();
+    data2 = MatrixHelper::RandomMatrix4();
 
     Matrix4f matrix1(data1[0], data1[1], data1[2], data1[3], data1[4], data1[5], data1[6], data1[7], data1[8], data1[9], data1[10], data1[11], data1[12], 
                      data1[13], data1[14], data1[15]);
@@ -396,7 +407,7 @@ TEST_F(Matrix4Test, Difference)
                      data2[13], data2[14], data2[15]);
 
     // subtract using reference method
-    subtract(data1, data2, dataOut);
+    dataOut = subtract(data1, data2);
 
     Matrix4f matrix = matrix1;
     matrix -= matrix2;
@@ -412,24 +423,20 @@ TEST_F(Matrix4Test, VectorMultiplication)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    float32 data[16];
-    float32 vector[4];
-    float32 vectorOut[4];
+    std::vector<float32> data;
+    std::vector<float32> vector;
+    std::vector<float32> vectorOut;
 
     // randomize data
-    MatrixHelper::RandomData(data);
-    
-    vector[0] = random();
-    vector[1] = random();
-    vector[2] = random();
-    vector[3] = random();
+    data = MatrixHelper::RandomMatrix4();
+    vector = VectorHelper::RandomVector4Data();
 
     Vector4f vec(vector[0], vector[1], vector[2], vector[3]);
     const Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
                           data[14], data[15]);
 
     // multiply 
-    MathHelper::MultiplyVector(data, vector, vectorOut);
+    vectorOut = MathHelper::MultiplyVector(data, vector);
 
     Vector4f vecOut = matrix * vec;
 

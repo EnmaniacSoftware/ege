@@ -2,6 +2,7 @@
 #define EGE_CORE_MATH_TESTS_UNITTEST_VECTORHELPER_H
 
 #include <EGE.h>
+#include <vector>
 
 EGE_NAMESPACE_BEGIN
 
@@ -10,16 +11,20 @@ class VectorHelper
 {
   public:
 
-    /*! Generates random 4D vector data. 
-     *  @param  data  Array of data to be randomized.
+    /*! Generates random 2D vector data. 
+     *  @return Randomized 2D vector.
      */
-    static void RandomData(float32 data[4]);
+    static std::vector<float32> RandomVector2Data();
+    /*! Generates random 4D vector data. 
+     *  @return Randomized 4D vector.
+     */
+    static std::vector<float32> RandomVector4Data();
     /*! Compares two vector data sets. 
      *  @param  data1 Vector 1 data.
      *  @data   data2 Vector 2 data.
      *  @return Returns TRUE if both sets are the same.
      */
-    static bool AreEqual(const float32 data1[4], const float32 data2[4]);
+    static bool AreEqual(const std::vector<float32>& data1, const std::vector<float32>& data2);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

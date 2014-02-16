@@ -1,24 +1,36 @@
-#include "Core/Math/Tests/Unittest/Helpers/QuaternionHelper.h"
 #include "Core/Math/Tests/Unittest/Helpers/GeneratorHelper.h"
-#include <limits>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-std::vector<float32> QuaternionHelper::RandomData()
+std::vector<float32> GeneratorHelper::RandomData(s32 elements)
 {
-  return GeneratorHelper::RandomData(4);
+  std::vector<float32> out;
+
+  for (s32 i = 0; i < elements; ++i)
+  {
+    out.push_back((rand() / static_cast<float32>(RAND_MAX) - 0.5f) * 2.0f);
+  }
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool QuaternionHelper::AreEqual(const std::vector<float32>& data1, const std::vector<float32>& data2)
+bool GeneratorHelper::AreEqual(const std::vector<float32>& data1, const std::vector<float32>& data2)
 {
-  bool result = GeneratorHelper::AreEqual(data1, data2);
+  bool result = true;
 
-  if (result)
+  if (data1.size() != data2.size())
   {
-    if ((4 != data1.size()) || (4 != data2.size()))
+    result = false;
+  }
+  else
+  {
+    for (size_t i = 0; i < data1.size(); ++i)
     {
-      result = false;
+      if (std::numeric_limits<float32>::epsilon() < fabs(data1[i] - data2[i]))
+      {
+        result = false;
+      }
     }
   }
 

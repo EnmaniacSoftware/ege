@@ -1,24 +1,28 @@
 #include "Core/Math/Tests/Unittest/Helpers/VectorHelper.h"
+#include "Core/Math/Tests/Unittest/Helpers/GeneratorHelper.h"
 #include <limits>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void VectorHelper::RandomData(float32 data[4])
+std::vector<float32> VectorHelper::RandomVector2Data()
 {
-  for (int i = 0; i < 4; ++i)
-  {
-    data[i] = (rand() / static_cast<float32>(RAND_MAX) - 0.5f) * 2.0f;
-  }
+  return GeneratorHelper::RandomData(2);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool VectorHelper::AreEqual(const float32 data1[4], const float32 data2[4])
+std::vector<float32> VectorHelper::RandomVector4Data()
 {
-  bool result = true;
+  return GeneratorHelper::RandomData(4);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool VectorHelper::AreEqual(const std::vector<float32>& data1, const std::vector<float32>& data2)
+{
+  bool result = GeneratorHelper::AreEqual(data1, data2);
 
-  for (int i = 0; i < 4; ++i)
+  if (result)
   {
-    if (std::numeric_limits<float32>::epsilon() < fabs(data1[i] - data2[i]))
+    // check if not valid data for 2D or 4D vector
+    if (((2 != data1.size()) && (4 != data1.size())) || ((2 != data2.size()) && (4 != data2.size())))
     {
       result = false;
     }

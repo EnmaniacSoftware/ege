@@ -6,6 +6,8 @@
 #include <EGEMath.h>
 #include <EGEQuaternion.h>
 #include <EGEMatrix.h>
+#include <EGEVector2.h>
+#include <EGEAngle.h>
 
 EGE_NAMESPACE
 
@@ -18,10 +20,6 @@ class MathTest : public TestBase
 
     MathTest();
 
-    /*! Generates random quaternion data. 
-     *  @param  data  Array of data to be randomized.
-     */
-    void randomQuaternion(float32 data[4]) const;
     /*! Clamps given value within specified interval.
      *  @param  value Value to process.
      *  @param  min   Minimum allowed value.
@@ -29,29 +27,27 @@ class MathTest : public TestBase
      */
     float32 clamp(float32 value, float32 min, float32 max) const;
     /*! Converts rotation represented by quaternion into matrix representation.
-     *  @param  data        Matrix data.
      *  @param  quaternion  Quaternion data.
+     *  @return Resulting 4x4 matrix.
      */
-    void convert(float32 matrixData[16], const float32 quaternion[4]) const;
+    std::vector<float32> convert(const std::vector<float32>& quaternion) const;
     /*! Creates matrix from given translation, scale and rotation.
-     *  @param  matrixData  Matrix data.
      *  @param  translation Translation vector.
      *  @param  scale       Scale vector.
      *  @param  orientation Orientation quaternion.
+     *  @return Resulting 4x4 matrix.
      */
-    void createMatrix(float32 matrixData[16], const float32 translation[4], const float32 scale[4], float32 orientation[4]) const;
+    std::vector<float32> createMatrix(const std::vector<float32>& translation, const std::vector<float32>& scale,  
+                                      const std::vector<float32>& orientation) const;
+    /*! Calculates angle (in radians) between vector and positive X axis.
+     *  @param  direction 2D direction vector.
+     *  @return Calculated angle.
+     */
+    float32 angle(const std::vector<float32>& direction) const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MathTest::MathTest() : TestBase(0.0001f)
 {
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void MathTest::randomQuaternion(float32 data[4]) const
-{
-  for (int i = 0; i < 4; ++i)
-  {
-    data[i] = random();
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 float32 MathTest::clamp(float32 value, float32 min, float32 max) const
@@ -70,53 +66,71 @@ float32 MathTest::clamp(float32 value, float32 min, float32 max) const
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void MathTest::convert(float32 matrixData[16], const float32 quaternion[4]) const
+std::vector<float32> MathTest::convert(const std::vector<float32>& quaternion) const
 {
+  std::vector<float32> matrix = MatrixHelper::Identity();
+
   // 1st column
-	matrixData[0] = 1.0f - 2.0f * (quaternion[1] * quaternion[1] + quaternion[2] * quaternion[2]); 
-	matrixData[1] = 2.0f * (quaternion[0] * quaternion[1] - quaternion[2] * quaternion[3]);
-	matrixData[2] = 2.0f * (quaternion[0] * quaternion[2] + quaternion[1] * quaternion[3]);
-	matrixData[3] = 0;
+	matrix[0] = 1.0f - 2.0f * (quaternion[1] * quaternion[1] + quaternion[2] * quaternion[2]); 
+	matrix[1] = 2.0f * (quaternion[0] * quaternion[1] - quaternion[2] * quaternion[3]);
+	matrix[2] = 2.0f * (quaternion[0] * quaternion[2] + quaternion[1] * quaternion[3]);
+	matrix[3] = 0;
 
 	// 2nd column
-	matrixData[4] = 2.0f * (quaternion[0] * quaternion[1] + quaternion[2] * quaternion[3]);  
-	matrixData[5] = 1.0f - 2.0f * (quaternion[0] * quaternion[0] + quaternion[2] * quaternion[2]); 
-	matrixData[6] = 2.0f * (quaternion[2] * quaternion[1] - quaternion[0] * quaternion[3]);  
-	matrixData[7] = 0;
+	matrix[4] = 2.0f * (quaternion[0] * quaternion[1] + quaternion[2] * quaternion[3]);  
+	matrix[5] = 1.0f - 2.0f * (quaternion[0] * quaternion[0] + quaternion[2] * quaternion[2]); 
+	matrix[6] = 2.0f * (quaternion[2] * quaternion[1] - quaternion[0] * quaternion[3]);  
+	matrix[7] = 0;
 
 	// 3rd column
-	matrixData[8]  = 2.0f * (quaternion[0] * quaternion[2] - quaternion[1] * quaternion[3]);
-	matrixData[9]  = 2.0f * (quaternion[1] * quaternion[2] + quaternion[0] * quaternion[3]);
-	matrixData[10] = 1.0f - 2.0f *(quaternion[0] * quaternion[0] + quaternion[1] * quaternion[1]);  
-	matrixData[11] = 0;
+	matrix[8]  = 2.0f * (quaternion[0] * quaternion[2] - quaternion[1] * quaternion[3]);
+	matrix[9]  = 2.0f * (quaternion[1] * quaternion[2] + quaternion[0] * quaternion[3]);
+	matrix[10] = 1.0f - 2.0f *(quaternion[0] * quaternion[0] + quaternion[1] * quaternion[1]);  
+	matrix[11] = 0;
 
 	// 4th column
-	matrixData[12] = 0;
-	matrixData[13] = 0;
-	matrixData[14] = 0;  
-	matrixData[15] = 1;
+	matrix[12] = 0;
+	matrix[13] = 0;
+	matrix[14] = 0;  
+	matrix[15] = 1;
+
+  return matrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void MathTest::createMatrix(float32 matrixData[16], const float32 translation[4], const float32 scale[4], float32 orientation[4]) const
+std::vector<float32> MathTest::createMatrix(const std::vector<float32>& translation, const std::vector<float32>& scale, 
+                                            const std::vector<float32>& orientation) const
 {
   // Ordering: Final = S * R * T
 
   // make translation matrix data
-  const float32 translationMatrixData[16] = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, translation[0], translation[1], translation[2], 1 };
+  std::vector<float32> translationMatrix = MatrixHelper::Identity();
+  translationMatrix[12] = translation[0];
+  translationMatrix[13] = translation[1];
+  translationMatrix[14] = translation[2];
   
   // make scale matrix data
-  const float32 scaleMatrixData[16] = { scale[0], 0, 0, 0, 0, scale[1], 0, 0, 0, 0, scale[2], 0, 0, 0, 0, 1 };
+  std::vector<float32> scaleMatrix = MatrixHelper::Identity();
+  scaleMatrix[0]  = scale[0];
+  scaleMatrix[5]  = scale[1];
+  scaleMatrix[10] = scale[2];
 
   // convert quaternion into rotation matrix
-  float32 rotationMatrixData[16];
-  convert(rotationMatrixData, orientation);
+  std::vector<float32> rotationMatrix = convert(orientation);
 
   // (Pre) multiply translation with rotation
-  float32 matrixTR[16];
-  MatrixHelper::Multiply(matrixTR, translationMatrixData, rotationMatrixData);
+  std::vector<float32> matrixTR = MatrixHelper::Multiply(translationMatrix, rotationMatrix);
 
   // (Pre) multiply combined transltion-and-rotation with scale
-  MatrixHelper::Multiply(matrixData, matrixTR, scaleMatrixData);
+  std::vector<float32> matrix = MatrixHelper::Multiply(matrixTR, scaleMatrix);
+
+  return matrix;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+float32 MathTest::angle(const std::vector<float32>& direction) const
+{
+  EXPECT_EQ(2, direction.size());
+
+  return atan2(direction[1], direction[0]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(MathTest, Min)
@@ -349,14 +363,14 @@ TEST_F(MathTest, ConvertQuaternionToMatrix)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    float32 quaternionData[4];   
-    float32 matrixData[16];   
+    std::vector<float32> quaternionData;   
+    std::vector<float32> matrixData;   
 
     // randomize quaternion
-    randomQuaternion(quaternionData);
+    quaternionData = QuaternionHelper::RandomData();
     
     // calculate reference values
-    convert(matrixData, quaternionData);
+    matrixData = convert(quaternionData);
 
     // calculate actual data
     const Quaternionf quaternion(quaternionData[0], quaternionData[1], quaternionData[2], quaternionData[3]);
@@ -373,26 +387,34 @@ TEST_F(MathTest, TransformVector)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    float32 vectorData[4]; 
-    float32 vectorDataOut[4]; 
-    float32 matrixData[16];   
+    std::vector<float32> vectorData; 
+    std::vector<float32> vectorDataOut; 
+    std::vector<float32> matrixData;   
 
     // randomize vector and matrix
-    VectorHelper::RandomData(vectorData);
-    MatrixHelper::RandomData(matrixData);
+    vectorData = VectorHelper::RandomVector4Data();
+    matrixData = MatrixHelper::RandomMatrix4();
 
     // calculate reference values
-    MathHelper::MultiplyVector(matrixData, vectorData, vectorDataOut);
+    vectorDataOut = MathHelper::MultiplyVector(matrixData, vectorData);
 
     // test methods...
-    Vector4f vector = Math::Transform(Vector4f(vectorData[0], vectorData[1], vectorData[2], vectorData[3]), Matrix4f(matrixData));
-    const float32 vectorOut1[4] = { vector.x, vector.y, vector.z, vector.w };
-    EXPECT_TRUE(VectorHelper::AreEqual(vectorDataOut, vectorOut1));
+    Vector4f vector = Math::Transform(Vector4f(vectorData[0], vectorData[1], vectorData[2], vectorData[3]), Matrix4f(&matrixData[0]));
+    std::vector<float32> vectorOut;
+    vectorOut.push_back(vector.x);
+    vectorOut.push_back(vector.y);
+    vectorOut.push_back(vector.z);
+    vectorOut.push_back(vector.w);
+    EXPECT_TRUE(VectorHelper::AreEqual(vectorDataOut, vectorOut));
 
     // ...and operators
-    vector =  Matrix4f(matrixData) * Vector4f(vectorData[0], vectorData[1], vectorData[2], vectorData[3]);
-    const float32 vectorOut2[4] = { vector.x, vector.y, vector.z, vector.w };
-    EXPECT_TRUE(VectorHelper::AreEqual(vectorDataOut, vectorOut2));
+    vector =  Matrix4f(&matrixData[0]) * Vector4f(vectorData[0], vectorData[1], vectorData[2], vectorData[3]);
+    vectorOut.clear();
+    vectorOut.push_back(vector.x);
+    vectorOut.push_back(vector.y);
+    vectorOut.push_back(vector.z);
+    vectorOut.push_back(vector.w);
+    EXPECT_TRUE(VectorHelper::AreEqual(vectorDataOut, vectorOut));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -401,24 +423,41 @@ TEST_F(MathTest, CreateMatrix)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    float32 translationData[4]; 
-    float32 scaleData[4]; 
-    float32 orientationData[4];   
-    float32 matrixData[16];
+    std::vector<float32> translationData; 
+    std::vector<float32> scaleData; 
+    std::vector<float32> orientationData;   
+    std::vector<float32> matrixData;
 
     // randomize vector and matrix
-    VectorHelper::RandomData(translationData);
-    VectorHelper::RandomData(scaleData);
-    QuaternionHelper::RandomData(orientationData);
+    translationData = VectorHelper::RandomVector4Data();
+    scaleData       = VectorHelper::RandomVector4Data();
+    orientationData = QuaternionHelper::RandomData();
 
     // calculate reference values
-    createMatrix(matrixData, translationData, scaleData, orientationData);
+    matrixData = createMatrix(translationData, scaleData, orientationData);
 
     // calculate actual value
     const Matrix4f matrix = Math::CreateMatrix(Vector4f(translationData[0], translationData[1], translationData[2], translationData[3]),
                                                Vector4f(scaleData[0], scaleData[1], scaleData[2], scaleData[3]),
                                                Quaternionf(orientationData[0], orientationData[1], orientationData[2], orientationData[3]));
     EXPECT_TRUE(MatrixHelper::AreEqual(matrixData, matrix.data));
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(MathTest, GetAngle)
+{
+  // perform fixed number of tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    std::vector<float32> direction = VectorHelper::RandomVector2Data();
+
+    // make sure not zero vector
+    if ((0 == direction[0]) && (0 == direction[1]))
+    {
+      direction[0] += 0.1f;
+    }
+
+    EXPECT_FLOAT_EQ(angle(direction), Math::GetAngle(Vector2f(direction[0], direction[1])).radians());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
