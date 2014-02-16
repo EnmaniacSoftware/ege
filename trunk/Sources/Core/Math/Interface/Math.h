@@ -7,16 +7,14 @@
 #include "EGEDebug.h"
 #include "Core/Math/Implementation/MatrixTypes.h"
 #include "Core/Math/Implementation/QuaternionTypes.h"
+#include "Core/Math/Implementation/Vector2Types.h"
+#include "Core/Math/Implementation/Vector4Types.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T> class TVector2;
-typedef TVector2<float32> Vector2f;
 template <typename T> class TVector3;
 typedef TVector3<float32> Vector3f;
-template <typename T> class TVector4;
-typedef TVector4<float32> Vector4f;
 template <typename T> class TComplex;
 typedef TComplex<float32> Complexf;
 template <typename T> class TRect;
@@ -158,8 +156,14 @@ class Math
      */
     static Matrix4f CreateMatrix(const Vector4f& translation, const Vector4f& scale, const Quaternionf& orientation);
 
-    /*! Calculates angle between positive X axis and given point around origin. */
-    static void GetAngle(Angle* angle, const Vector2f* origin, const Vector2f* point);
+    /*! Calculates angle between positive X axis and given vector. 
+     *  @param  direction Direction vector.
+     *  @return Angle between given vector and positive X axis.
+     *  @note Direction vector MUST not be zero.
+     */
+    static Angle GetAngle(const Vector2f& direction);
+
+
     /*! Calculates unit direction vector from given angle. This is relative to positive X axis. */
     static void GetDirection(Vector2f* vector, const Angle* angle);
 

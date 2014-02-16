@@ -1767,6 +1767,12 @@
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\QuaternionTypes.h">
       <Filter>Core\Math\Implementation</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Implementation\Vector4Types.h">
+      <Filter>Core\Math\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Implementation\Vector2Types.h">
+      <Filter>Core\Math\Implementation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">
