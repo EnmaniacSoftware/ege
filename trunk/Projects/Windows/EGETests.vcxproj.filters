@@ -78,12 +78,30 @@
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MatrixHelper.cpp">
       <Filter>Tests\Math\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\VectorHelper.cpp">
+      <Filter>Tests\Math\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MathHelper.cpp">
+      <Filter>Tests\Math\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\QuaternionHelper.cpp">
+      <Filter>Tests\Math\Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h">
       <Filter>TestFramework\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MatrixHelper.h">
+      <Filter>Tests\Math\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\VectorHelper.h">
+      <Filter>Tests\Math\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MathHelper.h">
+      <Filter>Tests\Math\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\QuaternionHelper.h">
       <Filter>Tests\Math\Helpers</Filter>
     </ClInclude>
   </ItemGroup>

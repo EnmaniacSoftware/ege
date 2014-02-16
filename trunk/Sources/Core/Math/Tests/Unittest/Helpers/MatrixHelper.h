@@ -20,6 +20,12 @@ class MatrixHelper
      *  @return Returns TRUE if both sets are the same.
      */
     static bool AreEqual(const float32 data1[16], const float32 data2[16]);
+    /*! Multiplies matrices.
+     *  @paeam  dataOut Resulting matrix data.
+     *  @param  data1   Matrix 1 data.
+     *  @param  data2   Matrix 2 data.
+     */
+    static void Multiply(float32 dataOut[16], const float32 data1[16], const float32 data2[16]);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
