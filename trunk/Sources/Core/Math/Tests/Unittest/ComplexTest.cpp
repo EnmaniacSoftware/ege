@@ -89,7 +89,7 @@ float32 ComplexTest::dotProduct(float32 x1, float32 y1, float32 x2, float32 y2) 
 void ComplexTest::slerp(float32& outX, float32& outY, float32 x1, float32 y1, float32 x2, float32 y2, float32 parameter) const
 {
   // calculate cosine omega
-  float cosOmega = dotProduct(x1, y1, x2, y2);
+  float32 cosOmega = dotProduct(x1, y1, x2, y2);
 
   // calculate coefficients
   float32 scale0;
@@ -98,8 +98,8 @@ void ComplexTest::slerp(float32& outX, float32& outY, float32 x1, float32 y1, fl
   if (std::numeric_limits<float32>::epsilon() < (1 - cosOmega))
   {
     // standard case
-    float32 omega    = Math::ACos(cosOmega);
-    float32 sinOmega = Math::Sin(omega);
+    float32 omega    = acosf(cosOmega);
+    float32 sinOmega = sinf(omega);
 
     scale0 = sinf((1.0f - parameter) * omega) / sinOmega;
     scale1 = sinf(parameter * omega) / sinOmega;
@@ -230,10 +230,14 @@ TEST_F(ComplexTest, Slerp)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 x1 = random();
-    const float32 y1 = random();
-    const float32 x2 = random();
-    const float32 y2 = random();
+    float32 x1 = random();
+    float32 y1 = random();
+    float32 x2 = random();
+    float32 y2 = random();
+
+    // normalize
+    normalize(x1, y1, x1, y1);
+    normalize(x2, y2, x2, y2);
 
     const Complexf value1(x1, y1);
     const Complexf value2(x2, y2);
