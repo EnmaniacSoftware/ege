@@ -60,11 +60,12 @@ class TVector3
      */
     TVector3 perpendicular() const;
 
-  //  // helper methods
-  //  CQuaternion getRotationTo( const CVector3& cDest,                                         // gets shortest rotation to given vector
-  //                             const CVector3& cFallbackAxis = CVector3::ZERO ) const;
-
-  //  float getAngleBetween( const CVector3& cVector ) const;                                   // returns angle (in radians) between vectors
+    /*! Performs linear interpolation between this and given vectors. 
+     *  @param  to            Vector to which interpolation is to be performed.
+     *  @param  parameter     Scalar in range [0..1] describing relative distance between vectors for which interpolation is to be calculated.
+     *  @return Calculated vector.
+     */
+    TVector3 lerp(const TVector3& to, float32 parameter) const;
 
   public:
 
@@ -244,6 +245,12 @@ TVector3<T> TVector3<T>::perpendicular() const
   }
 
   return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector3<T> TVector3<T>::lerp(const TVector3& to, float32 parameter) const
+{
+  return (1.0f - parameter) * (*this) + parameter * to;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

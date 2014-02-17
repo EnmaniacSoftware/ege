@@ -63,6 +63,16 @@ class Vector2Test : public TestBase
      *  @param  outY  Perpendicular vector Y value.
      */
     void perpendicular(float32 x, float32 y, float32& outX, float32& outY) const;
+    /*! Calculates vector resulting from lerping between other two.
+     *  @param  outX      Resulting vector X value.
+     *  @param  outY      Resulting vector Y value.
+     *  @param  x1        Vector 1 X value.
+     *  @param  y1        Vector 1 Y value.
+     *  @param  x2        Vector 2 X value.
+     *  @param  y2        Vector 2 Y value.
+     *  @param  parameter Scalar in [0-1] range describing relative progress of interpolation.
+     */
+    void lerp(float32& outX, float32& outY, float32 x1, float32 y1, float32 x2, float32 y2, float32 parameter) const;    
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Vector2Test::normalize(float32 x, float32 y, float32& outX, float32& outY) const
@@ -113,6 +123,12 @@ void Vector2Test::perpendicular(float32 x, float32 y, float32& outX, float32& ou
 {
   outX = y;
   outY = -x;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Vector2Test::lerp(float32& outX, float32& outY, float32 x1, float32 y1, float32 x2, float32 y2, float32 parameter) const
+{
+  outX = x1 * (1.0f - parameter) + x2 * parameter;
+  outY = y1 * (1.0f - parameter) + y2 * parameter;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(Vector2Test, SetValue)
@@ -356,6 +372,37 @@ TEST_F(Vector2Test, Negation)
     // compare
     EXPECT_FLOAT_EQ(negativeVector.x, -x);
     EXPECT_FLOAT_EQ(negativeVector.y, -y);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(Vector2Test, Lerp)
+{
+  // perform fixed number of tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    const float32 x1 = random();
+    const float32 y1 = random();
+    const float32 x2 = random();
+    const float32 y2 = random();
+
+    const Vector2f value1(x1, y1);
+    const Vector2f value2(x2, y2);
+
+    // interpolate
+    for (float32 t = 0; t <= 1.0f; t += 0.01f)
+    {
+      float32 out[2];
+
+      // calculate reference value
+      lerp(out[0], out[1], x1, y1, x2, y2, t);
+
+      // calculate actual value
+      const Vector2f vectorOut = value1.lerp(value2, t);
+    
+      // test
+      EGE_EXPECT_FLOAT_EQ(out[0], vectorOut.x, epsilon());
+      EGE_EXPECT_FLOAT_EQ(out[1], vectorOut.y, epsilon());
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

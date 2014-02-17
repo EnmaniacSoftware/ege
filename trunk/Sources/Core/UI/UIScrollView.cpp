@@ -115,7 +115,7 @@ void UIScrollView::update(const Time& time)
 
     // interpolate
     PowerTweener tweener;
-    Math::Lerp(&m_offset, &m_animationStartOffset, &m_animationEndOffset, tweener.easeOut(m_animationTime.seconds() / m_animationDuration.seconds()));
+    m_offset = m_animationStartOffset.lerp(m_animationEndOffset, tweener.easeOut(m_animationTime.seconds() / m_animationDuration.seconds()));
   }
   else
   {

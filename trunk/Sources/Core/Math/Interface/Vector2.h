@@ -58,6 +58,13 @@ class TVector2
      */
     TVector2 perpendicular() const;
 
+    /*! Performs linear interpolation between this and given vectors. 
+     *  @param  to            Vector to which interpolation is to be performed.
+     *  @param  parameter     Scalar in range [0..1] describing relative distance between vectors for which interpolation is to be calculated.
+     *  @return Calculated vector.
+     */
+    TVector2 lerp(const TVector2& to, float32 parameter) const;
+
   public:
 
     T x;
@@ -214,6 +221,12 @@ template <typename T>
 TVector2<T> TVector2<T>::operator - () const
 {
   return TVector2<T>(-x, -y);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector2<T> TVector2<T>::lerp(const TVector2& to, float32 parameter) const
+{
+  return (1.0f - parameter) * (*this) + parameter * to;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

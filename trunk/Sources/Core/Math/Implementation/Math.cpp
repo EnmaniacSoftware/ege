@@ -99,33 +99,6 @@ Matrix4f Math::CreateMatrix(const Vector4f& translation, const Vector4f& scale, 
   return matrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Math::Lerp(Vector2f* out, const Vector2f* from, const Vector2f* to, float32 time)
-{
-  EGE_ASSERT(out);
-  EGE_ASSERT(from);
-  EGE_ASSERT(to);
-
-  *out = (1.0f - time) * (*from) + time * (*to);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Math::Lerp(Vector3f* out, const Vector3f* from, const Vector3f* to, float32 time)
-{
-  EGE_ASSERT(out);
-  EGE_ASSERT(from);
-  EGE_ASSERT(to);
-
-  *out = (1.0f - time) * (*from) + time * (*to);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Math::Lerp(Vector4f* out, const Vector4f* from, const Vector4f* to, float32 time)
-{
-  EGE_ASSERT(out);
-  EGE_ASSERT(from);
-  EGE_ASSERT(to);
-
-  *out = (1.0f - time) * (*from) + time * (*to);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Math::Lerp(Matrix4f* out, const Matrix4f* from, const Matrix4f* to, float32 time)
 {
   EGE_ASSERT(out);

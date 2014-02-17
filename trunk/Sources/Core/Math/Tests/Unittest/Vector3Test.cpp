@@ -87,6 +87,19 @@ class Vector3Test : public TestBase
      *  @param  outZ  Calculated vector Z value.
      */
     void crossProduct(float32 x1, float32 y1, float32 z1, float32 x2, float32 y2, float32 z2, float32& outX, float32& outY, float32& outZ) const;
+    /*! Calculates vector resulting from lerping between other two.
+     *  @param  outX      Resulting vector X value.
+     *  @param  outY      Resulting vector Y value.
+     *  @param  outZ      Resulting vector Z value.
+     *  @param  x1        Vector 1 X value.
+     *  @param  y1        Vector 1 Y value.
+     *  @param  z1        Vector 1 Z value.
+     *  @param  x2        Vector 2 X value.
+     *  @param  y2        Vector 2 Y value.
+     *  @param  z2        Vector 2 Z value.
+     *  @param  parameter Scalar in [0-1] range describing relative progress of interpolation.
+     */
+    void lerp(float32& outX, float32& outY, float32& outZ, float32 x1, float32 y1, float32 z1, float32 x2, float32 y2, float32 z2, float32 parameter) const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Vector3Test::normalize(float32 x, float32 y, float32 z, float32& outX, float32& outY, float32& outZ) const
@@ -152,6 +165,14 @@ void Vector3Test::crossProduct(float32 x1, float32 y1, float32 z1, float32 x2, f
   outX = (y1 * z2) - (z1 * y2);
   outY = (z1 * x2) - (x1 * z2);
   outZ = (x1 * y2) - (y1 * x2);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Vector3Test::lerp(float32& outX, float32& outY, float32& outZ, float32 x1, float32 y1, float32 z1, float32 x2, float32 y2, float32 z2, 
+                       float32 parameter) const
+{
+  outX = x1 * (1.0f - parameter) + x2 * parameter;
+  outY = y1 * (1.0f - parameter) + y2 * parameter;
+  outZ = z1 * (1.0f - parameter) + z2 * parameter;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(Vector3Test, SetValue)
@@ -452,6 +473,40 @@ TEST_F(Vector3Test, Negation)
     EXPECT_FLOAT_EQ(negativeVector.x, -x);
     EXPECT_FLOAT_EQ(negativeVector.y, -y);
     EXPECT_FLOAT_EQ(negativeVector.z, -z);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(Vector3Test, Lerp)
+{
+  // perform fixed number of tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    const float32 x1 = random();
+    const float32 y1 = random();
+    const float32 z1 = random();
+    const float32 x2 = random();
+    const float32 y2 = random();
+    const float32 z2 = random();
+
+    const Vector3f value1(x1, y1, z1);
+    const Vector3f value2(x2, y2, z2);
+
+    // interpolate
+    for (float32 t = 0; t <= 1.0f; t += 0.01f)
+    {
+      float32 out[3];
+
+      // calculate reference value
+      lerp(out[0], out[1], out[2], x1, y1, z1, x2, y2, z2, t);
+
+      // calculate actual value
+      const Vector3f vectorOut = value1.lerp(value2, t);
+    
+      // test
+      EGE_EXPECT_FLOAT_EQ(out[0], vectorOut.x, epsilon());
+      EGE_EXPECT_FLOAT_EQ(out[1], vectorOut.y, epsilon());
+      EGE_EXPECT_FLOAT_EQ(out[2], vectorOut.z, epsilon());
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
