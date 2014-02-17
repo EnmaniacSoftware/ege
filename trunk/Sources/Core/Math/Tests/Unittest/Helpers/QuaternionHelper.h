@@ -12,7 +12,7 @@ class QuaternionHelper
   public:
 
     /*! Generates random quaternion data. 
-     *  @return Randomize quaterniondata.
+     *  @return Randomize quaternion data.
      */
     static std::vector<float32> RandomData();
     /*! Compares two quaternion data sets. 
@@ -21,6 +21,8 @@ class QuaternionHelper
      *  @return Returns TRUE if both sets are the same.
      */
     static bool AreEqual(const std::vector<float32>& data1, const std::vector<float32>& data2);
+    /*! Returns identity quaternion. */
+    static std::vector<float32> Identity();
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

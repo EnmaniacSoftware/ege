@@ -25,3 +25,15 @@ bool QuaternionHelper::AreEqual(const std::vector<float32>& data1, const std::ve
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+std::vector<float32> QuaternionHelper::Identity()
+{
+  std::vector<float32> out;
+  
+  out.push_back(0);
+  out.push_back(0);
+  out.push_back(0);
+  out.push_back(1);
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,4 +1,6 @@
 #include "TestFramework/Interface/TestBase.h"
+#include "Core/Math/Tests/Unittest/Helpers/QuaternionHelper.h"
+#include "Core/Math/Tests/Unittest/Helpers/MatrixHelper.h"
 #include <EGEQuaternion.h>
 
 /** Tests are focusing TQuaternion<float32> instantiations. */
@@ -14,109 +16,67 @@ class QuaternionTest : public TestBase
 
     QuaternionTest();
 
-    /*! Generates random matrix data. 
-     *  @param  data  Array of data to be randomized.
-     */
-    void randomData(float32 data[16]) const;
     /*! Calculates data from given axis and angle around it. 
      *  @param  axisX   Axis X value.
      *  @param  axisY   Axis Y value.
      *  @param  axisZ   Axis Z value.
      *  @param  radians Angle in radians.
-     *  @param  outX    Calculated quaternion X value.
-     *  @param  outY    Calculated quaternion Y value.
-     *  @param  outZ    Calculated quaternion Z value.
-     *  @param  outW    Calculated quaternion W value.
+     *  @return Calculated quaternion.
      */
-    void calculate(float32 axisX, float32 axisY, float32 axisZ, float32 radians, float32& outX, float32& outY, float32& outZ, float32& outW) const;
+    std::vector<float32> calculate(float32 axisX, float32 axisY, float32 axisZ, float32 radians) const;
     /*! Calculates data from given matrix. 
      *  @param  matridData  Matrix data.
-     *  @param  outX    Calculated quaternion X value.
-     *  @param  outY    Calculated quaternion Y value.
-     *  @param  outZ    Calculated quaternion Z value.
-     *  @param  outW    Calculated quaternion W value.
+     *  @return Calculated quaternion.
      */
-    void calculate(const float32 matrixData[16], float32& outX, float32& outY, float32& outZ, float32& outW) const;
+    std::vector<float32> calculate(const std::vector<float32>& matrixData) const;
     /*! Normalizes quaternion data. 
-     *  @param  x     Quaternion X data.
-     *  @param  y     Quaternion Y data.
-     *  @param  z     Quaternion Z data.
-     *  @param  w     Quaternion W data.
-     *  @param  outX  Calculated quaternion X value.
-     *  @param  outY  Calculated quaternion Y value.
-     *  @param  outZ  Calculated quaternion Z value.
-     *  @param  outW  Calculated quaternion W value.
+     *  @param  quaternion  Quaternion to normalize.
+     *  @return Normalized quaternion.
      */
-    void normalize(float32 x, float32 y, float32 z, float32 w, float32& outX, float32& outY, float32& outZ, float32& outW) const;
+    std::vector<float32> normalize(const std::vector<float32>& quaternion) const;
     /*! Returns quaternions length.
-     *  @param  x Quaternion X data.
-     *  @param  y Quaternion Y data.
-     *  @param  z Quaternion Z data.
-     *  @param  w Quaternion W data.
+     *  @param  quaternion  Quaternion.
      */
-    float32 length(float32 x, float32 y, float32 z, float32 w) const;
+    float32 length(const std::vector<float32>& quaternion) const;
     /*! Returns quaternions squered length.
-     *  @param  x Quaternion X data.
-     *  @param  y Quaternion Y data.
-     *  @param  z Quaternion Z data.
-     *  @param  w Quaternion W data.
+     *  @param  quaternion  Quaternion.
      */
-    float32 lengthSquared(float32 x, float32 y, float32 z, float32 w) const;
+    float32 lengthSquared(const std::vector<float32>& quaternion) const;
     /*! Calculates conjugate of a quaternion.
-     *  @param  x     Quaternion X data.
-     *  @param  y     Quaternion Y data.
-     *  @param  z     Quaternion Z data.
-     *  @param  w     Quaternion W data.
-     *  @param  outX  Calculated quaternion X value.
-     *  @param  outY  Calculated quaternion Y value.
-     *  @param  outZ  Calculated quaternion Z value.
-     *  @param  outW  Calculated quaternion W value.
+     *  @param  quaternion  Quaternion.
+     *  @return Calculated quaternion.
      */
-    void conjugate(float32 x, float32 y, float32 z, float32 w, float32& outX, float32& outY, float32& outZ, float32& outW) const;
+    std::vector<float32> conjugate(const std::vector<float32>& quaternion) const;
     /*! Calculates multiplication of two quaternions.
-     *  @param  x1    Quaternion 1 X data.
-     *  @param  y1    Quaternion 1 Y data.
-     *  @param  z1    Quaternion 1 Z data.
-     *  @param  w1    Quaternion 1 W data.
-     *  @param  x2    Quaternion 2 X data.
-     *  @param  y2    Quaternion 2 Y data.
-     *  @param  z2    Quaternion 2 Z data.
-     *  @param  w2    Quaternion 2 W data.
-     *  @param  outX  Calculated quaternion X value.
-     *  @param  outY  Calculated quaternion Y value.
-     *  @param  outZ  Calculated quaternion Z value.
-     *  @param  outW  Calculated quaternion W value.
+     *  @param  quaternion1 Quaternion 1.
+     *  @param  quaternion2 Quaternion 2.
+     *  @return Calculated quaternion.
      */
-    void multiply(float32 x1, float32 y1, float32 z1, float32 w1, float32 x2, float32 y2, float32 z2, float32 w2, 
-                  float32& outX, float32& outY, float32& outZ, float32& outW) const;
+    std::vector<float32> multiply(const std::vector<float32>& quaternion1, const std::vector<float32>& quaternion2) const;
     /*! Calculates dot product of two quaternions.
-     *  @param  x1    Quaternion 1 X data.
-     *  @param  y1    Quaternion 1 Y data.
-     *  @param  z1    Quaternion 1 Z data.
-     *  @param  w1    Quaternion 1 W data.
-     *  @param  x2    Quaternion 2 X data.
-     *  @param  y2    Quaternion 2 Y data.
-     *  @param  z2    Quaternion 2 Z data.
-     *  @param  w2    Quaternion 2 W data.
+     *  @param  quaternion1 Quaternion 1.
+     *  @param  quaternion2 Quaternion 2.
      *  @return Calculated dot product between quaternions.
      */
-    float32 dotProduct(float32 x1, float32 y1, float32 z1, float32 w1, float32 x2, float32 y2, float32 z2, float32 w2) const;
+    float32 dotProduct(const std::vector<float32>& quaternion1, const std::vector<float32>& quaternion2) const;
+    /*! Calculates quaternion resulting from slerping between other two.
+     *  @param  from      Quaternion from which interpolation should be started.
+     *  @param  to        Quaternion to which interpolation is done.
+     *  @param  parameter Scalar in [0-1] range describing relative progress of interpolation.
+     *  @param  shortest  If set interpolation is done via shortest route.
+     *  @return Resulting quaternion.
+     */
+    std::vector<float32> slerp(const std::vector<float32>& from, const std::vector<float32>& to, float32 parameter, bool shortest) const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 QuaternionTest::QuaternionTest() : TestBase(0.0001f)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void QuaternionTest::randomData(float32 data[16]) const
+std::vector<float32> QuaternionTest::calculate(float32 axisX, float32 axisY, float32 axisZ, float32 radians) const
 {
-  for (int i = 0; i < 16; ++i)
-  {
-    data[i] = random();
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void QuaternionTest::calculate(float32 axisX, float32 axisY, float32 axisZ, float32 radians, float32& outX, float32& outY, float32& outZ, float32& outW) const
-{
+  std::vector<float32> out = QuaternionHelper::Identity();
+
   // axis is unit length
   // angle = A
   // The quaternion representing the rotation is
@@ -129,14 +89,18 @@ void QuaternionTest::calculate(float32 axisX, float32 axisY, float32 axisZ, floa
 	float32 sin = sinf(halfAngle);
 		
 	// calculate the x, y and z of the quaternion
-	outX = axisX * sin;
-	outY = axisY * sin;
-	outZ = axisZ * sin;
-	outW = cosf(halfAngle);
+	out[0] = axisX * sin;
+	out[1] = axisY * sin;
+	out[2] = axisZ * sin;
+	out[3] = cosf(halfAngle);
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void QuaternionTest::calculate(const float32 matrixData[16], float32& outX, float32& outY, float32& outZ, float32& outW) const
+std::vector<float32> QuaternionTest::calculate(const std::vector<float32>& matrixData) const
 {
+  std::vector<float32> out = QuaternionHelper::Identity();
+
   // Algorithm in Ken Shoemake's article in 1987 SIGGRAPH course notes
   // article "Quaternion Calculus and Fast Animation".
 
@@ -147,11 +111,11 @@ void QuaternionTest::calculate(const float32 matrixData[16], float32& outX, floa
   {
     // |w| > 1/2, may as well choose w > 1/2
     root = sqrtf(trace + 1.0f);  // 2w
-    outW = 0.5f * root;
+    out[3] = 0.5f * root;
     root = 0.5f / root;  // 1/(4w)
-    outX = (matrixData[9] - matrixData[6]) * root;
-    outY = (matrixData[2] - matrixData[8]) * root;
-    outZ = (matrixData[4] - matrixData[1]) * root;
+    out[0] = (matrixData[9] - matrixData[6]) * root;
+    out[1] = (matrixData[2] - matrixData[8]) * root;
+    out[2] = (matrixData[4] - matrixData[1]) * root;
   }
   else
   {
@@ -172,66 +136,148 @@ void QuaternionTest::calculate(const float32 matrixData[16], float32& outX, floa
     size_t k = s_iNext[j];
 
     root = sqrtf(matrixData[i * 4 + i] - matrixData[j * 4 + j] - matrixData[k * 4 + k] + 1.0f);
-    float32* apkQuat[3] = { &outX, &outY, &outZ };
+    float32* apkQuat[3] = { &out[0], &out[1], &out[2] };
     *apkQuat[i] = 0.5f * root;
     root = 0.5f / root;
-    outW = (matrixData[k * 4 + j] - matrixData[j * 4 + k]) * root;
+    out[3] = (matrixData[k * 4 + j] - matrixData[j * 4 + k]) * root;
     *apkQuat[j] = (matrixData[j * 4 + i] + matrixData[i * 4 + j]) * root;
     *apkQuat[k] = (matrixData[k * 4 + i] + matrixData[i * 4 + k]) * root;
   }
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void QuaternionTest::normalize(float32 x, float32 y, float32 z, float32 w, float32& outX, float32& outY, float32& outZ, float32& outW) const
+std::vector<float32> QuaternionTest::normalize(const std::vector<float32>& quaternion) const
 {
-  outX = x;
-  outY = y;
-  outZ = z;
-  outW = w;
+  std::vector<float32> out = quaternion;
 
   // get length
-  float32 len = length(x, y, z, w);
+  float32 len = length(quaternion);
 
   if (std::numeric_limits<float32>::epsilon() <= len)
   {
     float32 factor = 1.0f / len;
   
-    outX = x * factor;
-    outY = y * factor;
-    outZ = z * factor;
-    outW = w * factor;
+    out[0] = quaternion[0] * factor;
+    out[1] = quaternion[1] * factor;
+    out[2] = quaternion[2] * factor;
+    out[3] = quaternion[3] * factor;
   }
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 QuaternionTest::length(float32 x, float32 y, float32 z, float32 w) const
+float32 QuaternionTest::length(const std::vector<float32>& quaternion) const
 {
-  return sqrtf((x * x) + (y * y) + (z * z) + (w * w));
+  return sqrtf((quaternion[0] * quaternion[0]) + (quaternion[1] * quaternion[1]) + (quaternion[2] * quaternion[2]) + (quaternion[3] * quaternion[3]));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 QuaternionTest::lengthSquared(float32 x, float32 y, float32 z, float32 w) const
+float32 QuaternionTest::lengthSquared(const std::vector<float32>& quaternion) const
 {
-  return (x * x) + (y * y) + (z * z) + (w * w);
+  return (quaternion[0] * quaternion[0]) + (quaternion[1] * quaternion[1]) + (quaternion[2] * quaternion[2]) + (quaternion[3] * quaternion[3]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void QuaternionTest::conjugate(float32 x, float32 y, float32 z, float32 w, float32& outX, float32& outY, float32& outZ, float32& outW) const
+std::vector<float32> QuaternionTest::conjugate(const std::vector<float32>& quaternion) const
 {
-  outX = -x;
-  outY = -y;
-  outZ = -z;
-  outW = w;
+  std::vector<float32> out = QuaternionHelper::Identity();
+
+  out[0] = -quaternion[0];
+  out[1] = -quaternion[1];
+  out[2] = -quaternion[2];
+  out[3] = +quaternion[3];
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void QuaternionTest::multiply(float32 x1, float32 y1, float32 z1, float32 w1, float32 x2, float32 y2, float32 z2, float32 w2, 
-                              float32& outX, float32& outY, float32& outZ, float32& outW) const
+std::vector<float32> QuaternionTest::multiply(const std::vector<float32>& quaternion1, const std::vector<float32>& quaternion2) const
 {
-  outX = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2;
-  outY = w1 * y2 + y1 * w2 + z1 * x2 - x1 * z2;
-  outZ = w1 * z2 + z1 * w2 + x1 * y2 - y1 * x2;
-  outW = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2;
+  std::vector<float32> out = QuaternionHelper::Identity();
+
+  out[0] = quaternion1[3] * quaternion2[0] + quaternion1[0] * quaternion2[3] + quaternion1[1] * quaternion2[2] - quaternion1[2] * quaternion2[1];
+  out[1] = quaternion1[3] * quaternion2[1] + quaternion1[1] * quaternion2[3] + quaternion1[2] * quaternion2[0] - quaternion1[0] * quaternion2[2];
+  out[2] = quaternion1[3] * quaternion2[2] + quaternion1[2] * quaternion2[3] + quaternion1[0] * quaternion2[1] - quaternion1[1] * quaternion2[0];
+  out[3] = quaternion1[3] * quaternion2[3] - quaternion1[0] * quaternion2[0] - quaternion1[1] * quaternion2[1] - quaternion1[2] * quaternion2[2];
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 QuaternionTest::dotProduct(float32 x1, float32 y1, float32 z1, float32 w1, float32 x2, float32 y2, float32 z2, float32 w2) const
+float32 QuaternionTest::dotProduct(const std::vector<float32>& quaternion1, const std::vector<float32>& quaternion2) const
 {
-  return (x1 * x2) + (y1 * y2) + (z1 * z2) + (w1 * w2);
+  return (quaternion1[0] * quaternion2[0]) + (quaternion1[1] * quaternion2[1]) + (quaternion1[2] * quaternion2[2]) + (quaternion1[3] * quaternion2[3]);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+std::vector<float32> QuaternionTest::slerp(const std::vector<float32>& from, const std::vector<float32>& to, float32 parameter, bool shortest) const
+{
+  std::vector<float32> out = QuaternionHelper::RandomData();
+  std::vector<float32> tmp = QuaternionHelper::RandomData();
+
+  //
+  // p     - source quaternion
+  // q     - destination quaternion
+  // t     - time
+  // omega - angle between p and q
+  //
+  //                    p*sin( ( 1-t )*omega )+q*sin( t*omega )
+  // slerp( p, q, t ) = ---------------------------------------
+  //                                 sin( omega )
+  //
+
+  // calculate cosine omega (dot product of 2 quaternions)
+  float32 cosOmega = dotProduct(from, to);
+
+  // adjust the signs
+  if ((0 > cosOmega) && shortest)
+  {
+    cosOmega = -cosOmega;
+
+    // NOTE: q and -q rotates from the same start point and to the same end point but thru opposite direction
+    tmp[0] = -to[0];
+    tmp[1] = -to[1];
+    tmp[2] = -to[2];
+    tmp[3] = -to[3];
+  }
+  else
+  {
+    tmp[0] = to[0];
+    tmp[1] = to[1];
+    tmp[2] = to[2];
+    tmp[3] = to[3];
+  }
+
+  // calculate coefficients
+  if ((1.0f - std::numeric_limits<float32>::epsilon()) > fabsf(cosOmega))
+  {
+    // standard case (slerp)
+    float32 sinOmega = sqrtf(1 - cosOmega * cosOmega);
+    
+    float32 invSinOmega = 1 / sinOmega;
+
+    float32 angle = atan2f(sinOmega, cosOmega);
+
+    float32 coeff0 = sinf((1 - parameter) * angle) * invSinOmega;
+    float32 coeff1 = sinf(parameter * angle) * invSinOmega;
+
+    out[0] = coeff0 * from[0] + coeff1 * tmp[0];
+    out[1] = coeff0 * from[1] + coeff1 * tmp[1];
+    out[2] = coeff0 * from[2] + coeff1 * tmp[2];
+    out[3] = coeff0 * from[3] + coeff1 * tmp[3];
+  }
+  else
+  {
+    // There are two situations:
+    // 1. "from" and "to" are very close (cos ~= +1), so we can do a linear interpolation safely.
+    // 2. "from" and "to" are almost inverse of each other (cos ~= -1), there are an infinite number of possibilities interpolation. 
+    //    Do linear interpolation here as well as no other way to fix it yet.
+    out[0] = (1 - parameter) * from[0] + parameter * tmp[0];
+    out[1] = (1 - parameter) * from[1] + parameter * tmp[1];
+    out[2] = (1 - parameter) * from[2] + parameter * tmp[2];
+    out[3] = (1 - parameter) * from[3] + parameter * tmp[3];
+
+    // taking the complement requires renormalisation
+    out = normalize(out);
+  }
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(QuaternionTest, SetValue)
@@ -239,21 +285,17 @@ TEST_F(QuaternionTest, SetValue)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 x = random();
-    const float32 y = random();
-    const float32 z = random();
-    const float32 w = random();
-
-    float32 out[4];
+    const std::vector<float32> q = QuaternionHelper::RandomData();
+    std::vector<float32> out;
 
     // setting via constructors...
 
     // 1st
-    const Quaternionf quaternion(x, y, z, w);
-    EXPECT_FLOAT_EQ(quaternion.x, x);
-    EXPECT_FLOAT_EQ(quaternion.y, y);
-    EXPECT_FLOAT_EQ(quaternion.z, z);
-    EXPECT_FLOAT_EQ(quaternion.w, w);
+    const Quaternionf quaternion(q[0], q[1], q[2], q[3]);
+    EXPECT_FLOAT_EQ(q[0], quaternion.x);
+    EXPECT_FLOAT_EQ(q[1], quaternion.y);
+    EXPECT_FLOAT_EQ(q[2], quaternion.z);
+    EXPECT_FLOAT_EQ(q[3], quaternion.w);
 
     // 2nd
     const Quaternionf quaternion2(quaternion);
@@ -268,38 +310,36 @@ TEST_F(QuaternionTest, SetValue)
     const float32 axisZ   = random();
     const float32 radians = random();
 
-    calculate(axisX, axisY, axisZ, radians, out[0], out[1], out[2], out[3]);
+    out = calculate(axisX, axisY, axisZ, radians);
     const Quaternionf quaternion3(Vector3f(axisX, axisY, axisZ), Angle(radians));
 
-    EXPECT_FLOAT_EQ(quaternion3.x, out[0]);
-    EXPECT_FLOAT_EQ(quaternion3.y, out[1]);
-    EXPECT_FLOAT_EQ(quaternion3.z, out[2]);
-    EXPECT_FLOAT_EQ(quaternion3.w, out[3]);
+    EXPECT_FLOAT_EQ(out[0], quaternion3.x);
+    EXPECT_FLOAT_EQ(out[1], quaternion3.y);
+    EXPECT_FLOAT_EQ(out[2], quaternion3.z);
+    EXPECT_FLOAT_EQ(out[3], quaternion3.w);
 
     // 4th
-    float32 data[16];
-    randomData(data);
-
+    std::vector<float32> data = MatrixHelper::RandomMatrix4();
     const Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
                           data[14], data[15]);
 
-    calculate(data, out[0], out[1], out[2], out[3]);
+    out = calculate(data);
     Quaternionf quaternion4(matrix);
 
-    EXPECT_FLOAT_EQ(quaternion4.x, out[0]);
-    EXPECT_FLOAT_EQ(quaternion4.y, out[1]);
-    EXPECT_FLOAT_EQ(quaternion4.z, out[2]);
-    EXPECT_FLOAT_EQ(quaternion4.w, out[3]);
+    EXPECT_FLOAT_EQ(out[0], quaternion4.x);
+    EXPECT_FLOAT_EQ(out[1], quaternion4.y);
+    EXPECT_FLOAT_EQ(out[2], quaternion4.z);
+    EXPECT_FLOAT_EQ(out[3], quaternion4.w);
 
     // setting by setters
-    calculate(axisX, axisY, axisZ, radians, out[0], out[1], out[2], out[3]);
+    out = calculate(axisX, axisY, axisZ, radians);
     Quaternionf quaternion5;
     quaternion5.create(Vector3f(axisX, axisY, axisZ), Angle(radians));
 
-    EXPECT_FLOAT_EQ(quaternion5.x, out[0]);
-    EXPECT_FLOAT_EQ(quaternion5.y, out[1]);
-    EXPECT_FLOAT_EQ(quaternion5.z, out[2]);
-    EXPECT_FLOAT_EQ(quaternion5.w, out[3]);
+    EXPECT_FLOAT_EQ(out[0], quaternion5.x);
+    EXPECT_FLOAT_EQ(out[1], quaternion5.y);
+    EXPECT_FLOAT_EQ(out[2], quaternion5.z);
+    EXPECT_FLOAT_EQ(out[3], quaternion5.w);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -308,22 +348,20 @@ TEST_F(QuaternionTest, Normalize)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 x = random();
-    const float32 y = random();
-    const float32 z = random();
-    const float32 w = random();
+    const std::vector<float32> quaternion = QuaternionHelper::RandomData();
 
-    float32 out[4];
+    // calculate reference value
+    const std::vector<float32> out = normalize(quaternion);
 
-    Quaternionf quaternion(x, y, z, w);
-    quaternion.normalize();
+    // calculate actual value
+    Quaternionf quat(quaternion[0], quaternion[1], quaternion[2], quaternion[3]);
+    quat.normalize();
 
-    normalize(x, y, z, w, out[0], out[1], out[2], out[3]);
-
-    EXPECT_FLOAT_EQ(quaternion.x, out[0]);
-    EXPECT_FLOAT_EQ(quaternion.y, out[1]);
-    EXPECT_FLOAT_EQ(quaternion.z, out[2]);
-    EXPECT_FLOAT_EQ(quaternion.w, out[3]);
+    // test
+    EXPECT_FLOAT_EQ(out[0], quat.x);
+    EXPECT_FLOAT_EQ(out[1], quat.y);
+    EXPECT_FLOAT_EQ(out[2], quat.z);
+    EXPECT_FLOAT_EQ(out[3], quat.w);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -358,9 +396,7 @@ TEST_F(QuaternionTest, DISABLED_ConvertToMatrix)
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
     // ...and to Matrix4
-    float32 data[16];
-    randomData(data);
-
+    std::vector<float32> data = MatrixHelper::RandomMatrix4();
     const Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
                           data[14], data[15]);
 
@@ -413,36 +449,33 @@ TEST_F(QuaternionTest, Conjugate)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 x = random();
-    const float32 y = random();
-    const float32 z = random();
-    const float32 w = random();
+    const std::vector<float32> quaternion = QuaternionHelper::RandomData();
 
-    float32 out[4];
+    // calculate reference value
+    const std::vector<float32> out = conjugate(quaternion);
 
-    Quaternionf quaternion1(x, y, z, w);
+    // calculate actual value
+    Quaternionf quaternion1(quaternion[0], quaternion[1], quaternion[2], quaternion[3]);
     Quaternionf quaternion2 = quaternion1.conjugated();
     quaternion1.conjugate();
 
-    conjugate(x, y, z, w, out[0], out[1], out[2], out[3]);
+    EXPECT_FLOAT_EQ(out[0], quaternion1.x);
+    EXPECT_FLOAT_EQ(out[1], quaternion1.y);
+    EXPECT_FLOAT_EQ(out[2], quaternion1.z);
+    EXPECT_FLOAT_EQ(out[3], quaternion1.w);
 
-    EXPECT_FLOAT_EQ(quaternion1.x, out[0]);
-    EXPECT_FLOAT_EQ(quaternion1.y, out[1]);
-    EXPECT_FLOAT_EQ(quaternion1.z, out[2]);
-    EXPECT_FLOAT_EQ(quaternion1.w, out[3]);
-
-    EXPECT_FLOAT_EQ(quaternion2.x, out[0]);
-    EXPECT_FLOAT_EQ(quaternion2.y, out[1]);
-    EXPECT_FLOAT_EQ(quaternion2.z, out[2]);
-    EXPECT_FLOAT_EQ(quaternion2.w, out[3]);
+    EXPECT_FLOAT_EQ(out[0], quaternion2.x);
+    EXPECT_FLOAT_EQ(out[1], quaternion2.y);
+    EXPECT_FLOAT_EQ(out[2], quaternion2.z);
+    EXPECT_FLOAT_EQ(out[3], quaternion2.w);
 
     // conjugate the congugated quaternion
     quaternion1.conjugate();
 
-    EXPECT_FLOAT_EQ(quaternion1.x, x);
-    EXPECT_FLOAT_EQ(quaternion1.y, y);
-    EXPECT_FLOAT_EQ(quaternion1.z, z);
-    EXPECT_FLOAT_EQ(quaternion1.w, w);
+    EXPECT_FLOAT_EQ(quaternion[0], quaternion1.x);
+    EXPECT_FLOAT_EQ(quaternion[1], quaternion1.y);
+    EXPECT_FLOAT_EQ(quaternion[2], quaternion1.z);
+    EXPECT_FLOAT_EQ(quaternion[3], quaternion1.w);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -451,27 +484,24 @@ TEST_F(QuaternionTest, Scaling)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 x     = random();
-    const float32 y     = random();
-    const float32 z     = random();
-    const float32 w     = random();
+    const std::vector<float32> quat = QuaternionHelper::RandomData();
     const float32 scale = random();
 
-    Quaternionf quaternion(x, y, z, w);
+    Quaternionf quaternion(quat[0], quat[1], quat[2], quat[3]);
     quaternion = quaternion * scale;
     
-    EXPECT_FLOAT_EQ(quaternion.x, x * scale);
-    EXPECT_FLOAT_EQ(quaternion.y, y * scale);
-    EXPECT_FLOAT_EQ(quaternion.z, z * scale);
-    EXPECT_FLOAT_EQ(quaternion.w, w * scale);
+    EXPECT_FLOAT_EQ(quat[0] * scale, quaternion.x);
+    EXPECT_FLOAT_EQ(quat[1] * scale, quaternion.y);
+    EXPECT_FLOAT_EQ(quat[2] * scale, quaternion.z);
+    EXPECT_FLOAT_EQ(quat[3] * scale, quaternion.w);
 
-    quaternion = Quaternionf(x, y, z, w);
+    quaternion = Quaternionf(quat[0], quat[1], quat[2], quat[3]);
     quaternion = scale * quaternion;
     
-    EXPECT_FLOAT_EQ(quaternion.x, x * scale);
-    EXPECT_FLOAT_EQ(quaternion.y, y * scale);
-    EXPECT_FLOAT_EQ(quaternion.z, z * scale);
-    EXPECT_FLOAT_EQ(quaternion.w, w * scale);
+    EXPECT_FLOAT_EQ(quat[0] * scale, quaternion.x);
+    EXPECT_FLOAT_EQ(quat[1] * scale, quaternion.y);
+    EXPECT_FLOAT_EQ(quat[2] * scale, quaternion.z);
+    EXPECT_FLOAT_EQ(quat[3] * scale, quaternion.w);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -480,29 +510,23 @@ TEST_F(QuaternionTest, Addition)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 x1 = random();
-    const float32 y1 = random();
-    const float32 z1 = random();
-    const float32 w1 = random();
-    const float32 x2 = random();
-    const float32 y2 = random();
-    const float32 z2 = random();
-    const float32 w2 = random();
+    const std::vector<float32> quat1 = QuaternionHelper::RandomData();
+    const std::vector<float32> quat2 = QuaternionHelper::RandomData();
 
-    const Quaternionf quaternion1(x1, y1, z1, w1);
-    const Quaternionf quaternion2(x2, y2, z2, w2);
+    const Quaternionf quaternion1(quat1[0], quat1[1], quat1[2], quat1[3]);
+    const Quaternionf quaternion2(quat2[0], quat2[1], quat2[2], quat2[3]);
 
     // compare q1 + q2
-    EXPECT_FLOAT_EQ((quaternion1 + quaternion2).x, x1 + x2);
-    EXPECT_FLOAT_EQ((quaternion1 + quaternion2).y, y1 + y2);
-    EXPECT_FLOAT_EQ((quaternion1 + quaternion2).z, z1 + z2);
-    EXPECT_FLOAT_EQ((quaternion1 + quaternion2).w, w1 + w2);
+    EXPECT_FLOAT_EQ(quat1[0] + quat2[0], (quaternion1 + quaternion2).x);
+    EXPECT_FLOAT_EQ(quat1[1] + quat2[1], (quaternion1 + quaternion2).y);
+    EXPECT_FLOAT_EQ(quat1[2] + quat2[2], (quaternion1 + quaternion2).z);
+    EXPECT_FLOAT_EQ(quat1[3] + quat2[3], (quaternion1 + quaternion2).w);
 
     // compare q2 + q1
-    EXPECT_FLOAT_EQ((quaternion2 + quaternion1).x, x2 + x1);
-    EXPECT_FLOAT_EQ((quaternion2 + quaternion1).y, y2 + y1);
-    EXPECT_FLOAT_EQ((quaternion2 + quaternion1).z, z1 + z2);
-    EXPECT_FLOAT_EQ((quaternion2 + quaternion1).w, w1 + w2);
+    EXPECT_FLOAT_EQ(quat2[0] + quat1[0], (quaternion2 + quaternion1).x);
+    EXPECT_FLOAT_EQ(quat2[1] + quat1[1], (quaternion2 + quaternion1).y);
+    EXPECT_FLOAT_EQ(quat2[2] + quat1[2], (quaternion2 + quaternion1).z);
+    EXPECT_FLOAT_EQ(quat2[3] + quat1[3], (quaternion2 + quaternion1).w);
 
     // compare q1 + q2 and q2 + q1
     EXPECT_FLOAT_EQ((quaternion1 + quaternion2).x, (quaternion2 + quaternion1).x);
@@ -517,18 +541,15 @@ TEST_F(QuaternionTest, Negation)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 x     = random();
-    const float32 y     = random();
-    const float32 z     = random();
-    const float32 w     = random();
+    const std::vector<float32> quat = QuaternionHelper::RandomData();
 
-    Quaternionf quaternion(x, y, z, w);
+    Quaternionf quaternion(quat[0], quat[1], quat[2], quat[3]);
     quaternion = -quaternion;
     
-    EXPECT_FLOAT_EQ(quaternion.x, -x);
-    EXPECT_FLOAT_EQ(quaternion.y, -y);
-    EXPECT_FLOAT_EQ(quaternion.z, -z);
-    EXPECT_FLOAT_EQ(quaternion.w, -w);
+    EXPECT_FLOAT_EQ(-quat[0], quaternion.x);
+    EXPECT_FLOAT_EQ(-quat[1], quaternion.y);
+    EXPECT_FLOAT_EQ(-quat[2], quaternion.z);
+    EXPECT_FLOAT_EQ(-quat[3], quaternion.w);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -537,52 +558,43 @@ TEST_F(QuaternionTest, Multiply)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 x1 = random();
-    const float32 y1 = random();
-    const float32 z1 = random();
-    const float32 w1 = random();
-    const float32 x2 = random();
-    const float32 y2 = random();
-    const float32 z2 = random();
-    const float32 w2 = random();
+    const std::vector<float32> quat1 = QuaternionHelper::RandomData();
+    const std::vector<float32> quat2 = QuaternionHelper::RandomData();
 
-    float32 out12[4];
-    float32 out21[4];
+    const Quaternionf quaternion1(quat1[0], quat1[1], quat1[2], quat1[3]);
+    const Quaternionf quaternion2(quat2[0], quat2[1], quat2[2], quat2[3]);
 
-    const Quaternionf quaternion1(x1, y1, z1, w1);
-    const Quaternionf quaternion2(x2, y2, z2, w2);
-    
     // calculate reference results
-    multiply(x1, y1, z1, w1, x2, y2, z2, w2, out12[0], out12[1], out12[2], out12[3]);
-    multiply(x2, y2, z2, w2, x1, y1, z1, w1, out21[0], out21[1], out21[2], out21[3]);
-
+    const std::vector<float32> out12 = multiply(quat1, quat2);
+    const std::vector<float32> out21 = multiply(quat2, quat1);
+    
     // test multiplication by methods...
     Quaternionf quat12 = quaternion1.multiply(quaternion2);
     Quaternionf quat21 = quaternion2.multiply(quaternion1);
 
-    EXPECT_FLOAT_EQ(quat12.x, out12[0]);
-    EXPECT_FLOAT_EQ(quat12.y, out12[1]);
-    EXPECT_FLOAT_EQ(quat12.z, out12[2]);
-    EXPECT_FLOAT_EQ(quat12.w, out12[3]);
+    EXPECT_FLOAT_EQ(out12[0], quat12.x);
+    EXPECT_FLOAT_EQ(out12[1], quat12.y);
+    EXPECT_FLOAT_EQ(out12[2], quat12.z);
+    EXPECT_FLOAT_EQ(out12[3], quat12.w);
 
-    EXPECT_FLOAT_EQ(quat21.x, out21[0]);
-    EXPECT_FLOAT_EQ(quat21.y, out21[1]);
-    EXPECT_FLOAT_EQ(quat21.z, out21[2]);
-    EXPECT_FLOAT_EQ(quat21.w, out21[3]);
+    EXPECT_FLOAT_EQ(out21[0], quat21.x);
+    EXPECT_FLOAT_EQ(out21[1], quat21.y);
+    EXPECT_FLOAT_EQ(out21[2], quat21.z);
+    EXPECT_FLOAT_EQ(out21[3], quat21.w);
 
     // ...and operators
     quat12 = quaternion1 * quaternion2;
     quat21 = quaternion2 * quaternion1;
 
-    EXPECT_FLOAT_EQ(quat12.x, out12[0]);
-    EXPECT_FLOAT_EQ(quat12.y, out12[1]);
-    EXPECT_FLOAT_EQ(quat12.z, out12[2]);
-    EXPECT_FLOAT_EQ(quat12.w, out12[3]);
+    EXPECT_FLOAT_EQ(out12[0], quat12.x);
+    EXPECT_FLOAT_EQ(out12[1], quat12.y);
+    EXPECT_FLOAT_EQ(out12[2], quat12.z);
+    EXPECT_FLOAT_EQ(out12[3], quat12.w);
 
-    EXPECT_FLOAT_EQ(quat21.x, out21[0]);
-    EXPECT_FLOAT_EQ(quat21.y, out21[1]);
-    EXPECT_FLOAT_EQ(quat21.z, out21[2]);
-    EXPECT_FLOAT_EQ(quat21.w, out21[3]);
+    EXPECT_FLOAT_EQ(out21[0], quat21.x);
+    EXPECT_FLOAT_EQ(out21[1], quat21.y);
+    EXPECT_FLOAT_EQ(out21[2], quat21.z);
+    EXPECT_FLOAT_EQ(out21[3], quat21.w);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -591,23 +603,17 @@ TEST_F(QuaternionTest, DotProduct)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 x1 = random();
-    const float32 y1 = random();
-    const float32 z1 = random();
-    const float32 w1 = random();
-    const float32 x2 = random();
-    const float32 y2 = random();
-    const float32 z2 = random();
-    const float32 w2 = random();
+    const std::vector<float32> quat1 = QuaternionHelper::RandomData();
+    const std::vector<float32> quat2 = QuaternionHelper::RandomData();
 
-    const Quaternionf quaternion1(x1, y1, z1, w1);
-    const Quaternionf quaternion2(x2, y2, z2, w2);
+    const Quaternionf quaternion1(quat1[0], quat1[1], quat1[2], quat1[3]);
+    const Quaternionf quaternion2(quat2[0], quat2[1], quat2[2], quat2[3]);
     
     // test q1 * q2
-    EXPECT_FLOAT_EQ(dotProduct(x1, y1, z1, w1, x2, y2, z2, w2), quaternion1.dotProduct(quaternion2));
+    EXPECT_FLOAT_EQ(dotProduct(quat1, quat2), quaternion1.dotProduct(quaternion2));
     
     // test q2 * q1
-    EXPECT_FLOAT_EQ(dotProduct(x2, y2, z2, w2, x1, y1, z1, w1), quaternion2.dotProduct(quaternion1));
+    EXPECT_FLOAT_EQ(dotProduct(quat2, quat1), quaternion2.dotProduct(quaternion1));
     
     // test q1 *q2 == q2 * q1
     EXPECT_FLOAT_EQ(quaternion1.dotProduct(quaternion2), quaternion2.dotProduct(quaternion1));
@@ -619,18 +625,12 @@ TEST_F(QuaternionTest, Equality)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 x1 = random();
-    const float32 y1 = random();
-    const float32 z1 = random();
-    const float32 w1 = random();
-    const float32 x2 = random();
-    const float32 y2 = random();
-    const float32 z2 = random();
-    const float32 w2 = random();
+    const std::vector<float32> quat1 = QuaternionHelper::RandomData();
+    const std::vector<float32> quat2 = QuaternionHelper::RandomData();
 
-    const Quaternionf quaternion1(x1, y1, z1, w1);      //
-    const Quaternionf quaternion2(x1, y1, z1, w1);      // same
-    const Quaternionf quaternion3(x2, y2, z2, w2);
+    const Quaternionf quaternion1(quat1[0], quat1[1], quat1[2], quat1[3]);    // 
+    const Quaternionf quaternion2(quat1[0], quat1[1], quat1[2], quat1[3]);    // same
+    const Quaternionf quaternion3(quat2[0], quat2[1], quat2[2], quat2[3]);
     
     // test q1 == q2
     EXPECT_TRUE(quaternion1 == quaternion2);
@@ -643,6 +643,47 @@ TEST_F(QuaternionTest, Equality)
 
     // test q3 != q1
     EXPECT_FALSE(quaternion3 == quaternion1);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(QuaternionTest, Slerp)
+{
+  // perform fixed number of tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    const std::vector<float32> from = QuaternionHelper::RandomData();
+    const std::vector<float32> to   = QuaternionHelper::RandomData();
+
+    const Quaternionf quaternionFrom(from[0], from[1], from[2], from[3]);
+    const Quaternionf quaternionTo(to[0], to[1], to[2], to[3]);
+
+    // interpolate
+    for (float32 t = 0; t <= 1.0f; t += 0.01f)
+    {
+      // calculate reference value (do not necessairly shortest)
+      std::vector<float32> out = slerp(from, to, t, false);
+
+      // calculate actual value (do not necessairly shortest)
+      Quaternionf quaternionOut = quaternionFrom.slerp(quaternionTo, t, false);
+    
+      // test
+      EGE_EXPECT_FLOAT_EQ(out[0], quaternionOut.x, epsilon());
+      EGE_EXPECT_FLOAT_EQ(out[1], quaternionOut.y, epsilon());
+      EGE_EXPECT_FLOAT_EQ(out[2], quaternionOut.z, epsilon());
+      EGE_EXPECT_FLOAT_EQ(out[3], quaternionOut.w, epsilon());
+    
+      // calculate reference value (shortest)
+      out = slerp(from, to, t, true);
+
+      // calculate actual value (shortest)
+      quaternionOut = quaternionFrom.slerp(quaternionTo, t, true);
+    
+      // test
+      EGE_EXPECT_FLOAT_EQ(out[0], quaternionOut.x, epsilon());
+      EGE_EXPECT_FLOAT_EQ(out[1], quaternionOut.y, epsilon());
+      EGE_EXPECT_FLOAT_EQ(out[2], quaternionOut.z, epsilon());
+      EGE_EXPECT_FLOAT_EQ(out[3], quaternionOut.w, epsilon());
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

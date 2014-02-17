@@ -99,68 +99,6 @@ Matrix4f Math::CreateMatrix(const Vector4f& translation, const Vector4f& scale, 
   return matrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Math::Slerp(Quaternionf* out, const Quaternionf* from, const Quaternionf* to, float32 time, bool shortestPath)
-{
-  EGE_ASSERT(out);
-  EGE_ASSERT(from);
-  EGE_ASSERT(to);
-  
-  Quaternionf tmp;
-
-  //
-  // p     - source quaternion
-  // q     - destination quaternion
-  // t     - time
-  // omega - angle between p and q
-  //
-  //                    p*sin( ( 1-t )*omega )+q*sin( t*omega )
-  // slerp( p, q, t ) = ---------------------------------------
-  //                                 sin( omega )
-  //
-
-  // calculate cosine omega (dot product of 2 quaternions)
-  float32 cosOmega = from->dotProduct(*to);
-
-  // adjust the signs
-  if ((0.0f > cosOmega) && shortestPath)
-  {
-    cosOmega = -cosOmega;
-
-    // NOTE: q and -q rotates from the same start point and to the same end point but thru opposite direction
-    tmp = -(*to);
-  }
-  else
-  {
-    tmp = *to;
-  }
-
-  // calculate coefficients
-  if ((1.0f - Math::EPSILON) > Math::Abs(cosOmega))
-  {
-    // standard case (slerp)
-    float32 sinOmega = Math::Sqrt(1 - cosOmega * cosOmega);
-    float32 invSinOmega = 1.0f / sinOmega;
-
-    float32 angle = Math::ATan2(sinOmega, cosOmega);
-
-    float32 coeff0 = Math::Sin((1.0f - time) * angle) * invSinOmega;
-    float32 coeff1 = Math::Sin(time * angle) * invSinOmega;
-
-    *out = coeff0 * (*from) + coeff1 * tmp;
-  }
-  else
-  {
-    // There are two situations:
-    // 1. "from" and "to" are very close (cos ~= +1), so we can do a linear interpolation safely.
-    // 2. "from" and "to" are almost inverse of each other (cos ~= -1), there are an infinite number of possibilities interpolation. 
-    //    Do linear interpolation here as well as no other way to fix it yet.
-    *out = (1.0f - time) * (*from) + time * tmp;
-
-    // taking the complement requires renormalisation
-    out->normalize();
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Math::Slerp(Complexf* out, const Complexf* from, const Complexf* to, float32 time)
 {
   EGE_ASSERT(out);

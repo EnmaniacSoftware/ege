@@ -66,6 +66,14 @@ class TQuaternion
     /*! Conjugates (inverses) self. */ 
     void conjugate();
 
+    /*! Performs spherical linear interpolation between this and given quaternions. 
+     *  @param  to            Quaternion to which interpolation is to be performed.
+     *  @param  parameter     Scalar in range [0..1] describing relative distance between quaternion for which interpolation is to be calculated.
+     *  @param  shortestPath  TRUE if shortest path (if possible) is to be used for interpolation.
+     *  @return Calculated quaternion
+     */
+    TQuaternion slerp(const TQuaternion& to, float32 parameter, bool shortestPath = false) const;
+
   public:
 
     T x;
@@ -325,6 +333,69 @@ void TQuaternion<T>::conjugate()
   z = -z;
 
   // NOTE: w stays the same
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TQuaternion<T> TQuaternion<T>::slerp(const TQuaternion<T>& to, float32 paramter, bool shortestPath) const
+{
+  TQuaternion<T> out;
+
+  //
+  // p     - source quaternion
+  // q     - destination quaternion
+  // t     - time
+  // omega - angle between p and q
+  //
+  //                    p*sin( ( 1-t )*omega )+q*sin( t*omega )
+  // slerp( p, q, t ) = ---------------------------------------
+  //                                 sin( omega )
+  //
+
+  // calculate cosine omega (dot product of 2 quaternions)
+  T cosOmega = dotProduct(to);
+
+  // adjust the signs
+  TQuaternion<T> tmp;
+  if ((0 > cosOmega) && shortestPath)
+  {
+    cosOmega = -cosOmega;
+
+    // NOTE: q and -q rotates from the same start point and to the same end point but thru opposite direction
+    tmp = -to;
+  }
+  else
+  {
+    tmp = to;
+  }
+
+  // calculate coefficients
+  if ((1.0f - Math::EPSILON) > Math::Abs(cosOmega))
+  {
+    // standard case (slerp)
+    T sinOmega    = Math::Sqrt(1 - cosOmega * cosOmega);
+    EGE_ASSERT(0 != sinOmega);
+    T invSinOmega = 1 / sinOmega;
+
+    T angle = Math::ATan2(sinOmega, cosOmega);
+
+    T coeff0 = Math::Sin((1 - paramter) * angle) * invSinOmega;
+    T coeff1 = Math::Sin(paramter * angle) * invSinOmega;
+
+    out = coeff0 * (*this) + coeff1 * tmp;
+  }
+  else
+  {
+    // There are two situations:
+    // 1. "from" and "to" are very close (cos ~= +1), so we can do a linear interpolation safely.
+    // 2. "from" and "to" are almost inverse of each other (cos ~= -1), there are an infinite number of possibilities interpolation. 
+    //    Do linear interpolation here as well as no other way to fix it yet.
+    out = (1 - paramter) * (*this) + paramter * tmp;
+
+    // taking the complement requires renormalisation
+    out.normalize();
+  }
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

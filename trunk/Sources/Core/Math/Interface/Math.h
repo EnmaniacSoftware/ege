@@ -156,15 +156,6 @@ class Math
      */
     static Matrix4f CreateMatrix(const Vector4f& translation, const Vector4f& scale, const Quaternionf& orientation);
 
-    /*! Performs spherical linear interpolation between given quaternions. 
-     *  @param  out           Resulting quaternion.
-     *  @param  from          First (start) quaternion.
-     *  @param  to            Second (end) quaternion.
-     *  @param  time          Scalar in range [0..1] describing relative distance between quaternion for which interpolation is to be calculated.
-     *  @param  shortestPath  TRUE if shortest path (if possible) is to be used for interpolation.
-     */
-    static void Slerp(Quaternionf* out, const Quaternionf* from, const Quaternionf* to, float32 time, bool shortestPath = false);
-
     /*! Performs spherical linear interpolation between given complex numbers. 
      *  @param  out  Resulting complex number.
      *  @param  from First (start) complex number.
