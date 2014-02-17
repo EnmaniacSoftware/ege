@@ -156,9 +156,6 @@ class Math
      */
     static Matrix4f CreateMatrix(const Vector4f& translation, const Vector4f& scale, const Quaternionf& orientation);
 
-
-    static void Lerp(Matrix4f* out, const Matrix4f* from, const Matrix4f* to, float32 time);
-
     /*! Performs linear interpolation between given scalars. 
      *  @param  from First (start) scalar.
      *  @param  to   Second (end) scalar.
