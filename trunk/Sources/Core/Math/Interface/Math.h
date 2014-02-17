@@ -170,7 +170,7 @@ class Math
      *  @param  to   Second (end) color.
      *  @param  time Scalar in range [0..1] describing relative distance between input colors for which interpolation is to be calculated.
      */
-    static void Lerp(Color* out, const Color* from, const Color* to, float32 time);
+   // static void Lerp(Color* out, const Color* from, const Color* to, float32 time);
 
     /*! Calculates point on the segment lying closest to given point.
      *  @param  out         Calculated point on the segment lying closest to given point.

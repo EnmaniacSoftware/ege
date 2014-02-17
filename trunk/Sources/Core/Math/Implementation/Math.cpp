@@ -104,20 +104,6 @@ float32 Math::Lerp(float32 from, float32 to, float32 time)
   return (1.0f - time) * from + time * to;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Math::Lerp(Color* out, const Color* from, const Color* to, float32 time)
-{
-  EGE_ASSERT(out);
-  EGE_ASSERT(from);
-  EGE_ASSERT(to);
-
-  float32 oneMinusTime = 1.0f - time;
-
-  out->red    = oneMinusTime * from->red + time * to->red;
-  out->green  = oneMinusTime * from->green + time * to->green;
-  out->blue   = oneMinusTime * from->blue + time * to->blue;
-  out->alpha  = oneMinusTime * from->alpha + time * to->alpha;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Math::ClosestSegmentPoint(Vector3f* out, const Vector3f* linePointA, const Vector3f* linePointB, const Vector3f* point)
 {
   EGE_ASSERT(out);
