@@ -156,14 +156,6 @@ class Math
      */
     static Matrix4f CreateMatrix(const Vector4f& translation, const Vector4f& scale, const Quaternionf& orientation);
 
-    /*! Performs spherical linear interpolation between given complex numbers. 
-     *  @param  out  Resulting complex number.
-     *  @param  from First (start) complex number.
-     *  @param  to   Second (end) complex number.
-     *  @param  time Scalar in range [0..1] describing relative distance between numbers for which interpolation is to be calculated.
-     */
-    static void Slerp(Complexf* out, const Complexf* from, const Complexf* to, float32 time);
-
     /*! Performs linear interpolation between given vectors. 
      *  @param  out  Resulting vector.
      *  @param  from First (start) vector.

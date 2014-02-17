@@ -99,58 +99,6 @@ Matrix4f Math::CreateMatrix(const Vector4f& translation, const Vector4f& scale, 
   return matrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Math::Slerp(Complexf* out, const Complexf* from, const Complexf* to, float32 time)
-{
-  EGE_ASSERT(out);
-  EGE_ASSERT(from);
-  EGE_ASSERT(to);
-
-  Complexf tmp;
-
-  float32 fSinOmega;
-  float32 fCosOmega;
-  float32 fOmega;
-  float32 fScale0;
-  float32 fScale1;
-
-  // calculate cosine omega (dot product of 2 quaternions)
-  fCosOmega = from->dotProduct(*to);
-
-  // adjust the signs
- // if ( fCosOmega < 0 )
-  {
-    tmp = *to;
-  }
- // else
-  {
- //   cTemp.m_fReal = cDestination.m_fReal;
- //   cTemp.m_fImaginary = cDestination.m_fImaginary;
-  }
-
-  // calculate coefficients
-  if ( 1.0f-fCosOmega > ( float ) 1e-6 )
-  {
-    // standard case
-    fOmega    = Math::ACos( fCosOmega );
-    fSinOmega = Math::Sin( fOmega );
-
-    fScale0 = Math::Sin( ( 1.0f-time )*fOmega )/fSinOmega;
-    fScale1 = Math::Sin( time*fOmega )/fSinOmega;
-  }
-  else
-  {
-    // source and destination quaternions are very close so we perform linear interpolation
-    fScale0 = 1.0f-time;
-    fScale1 = time;
-  }
-
-	// calculate final values
-	out->x = fScale0*from->x+fScale1*tmp.x;
-	out->y = fScale0*from->y+fScale1*tmp.y;
-
-  out->normalize();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Math::Lerp(Vector2f* out, const Vector2f* from, const Vector2f* to, float32 time)
 {
   EGE_ASSERT(out);

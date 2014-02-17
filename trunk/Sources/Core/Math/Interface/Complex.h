@@ -48,6 +48,12 @@ class TComplex
     /*! Returns angle representation. */
     Angle angle() const;
 
+    /*! Performs spherical linear interpolation between this and given complex numbers. 
+     *  @param  to        Complex number to which interpolation is to be performed.
+     *  @param  parameter Scalar in range [0..1] describing relative distance between numbers for which interpolation is to be calculated.
+     */
+    TComplex<T> slerp(const TComplex<T>& to, float32 parameter) const;
+
   public:
 
     T x;
@@ -151,6 +157,44 @@ template <typename T>
 Angle TComplex<T>::angle() const
 {
   return Angle(Math::ATan2(y, x));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TComplex<T> TComplex<T>::slerp(const TComplex<T>& to, float32 parameter) const
+{
+  TComplex<T> out;
+
+  // calculate cosine omega
+  T cosOmega = dotProduct(to);
+
+  // calculate coefficients
+  T scale0;
+  T scale1;
+
+  if (Math::EPSILON < (1 - cosOmega))
+  {
+    // standard case
+    T omega    = Math::ACos(cosOmega);
+    T sinOmega = Math::Sin(omega);
+
+    scale0 = Math::Sin(( 1.0f - parameter) * omega) / sinOmega;
+    scale1 = Math::Sin(parameter * omega) / sinOmega;
+  }
+  else
+  {
+    // source and destination quaternions are very close so we perform linear interpolation
+    scale0 = 1.0f - parameter;
+    scale1 = parameter;
+  }
+
+	// calculate final values
+	out.x = scale0 * x + scale1 * to.x;
+	out.y = scale0 * y + scale1 * to.y;
+
+  // normalize
+  out.normalize();
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

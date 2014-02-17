@@ -68,7 +68,7 @@ class TQuaternion
 
     /*! Performs spherical linear interpolation between this and given quaternions. 
      *  @param  to            Quaternion to which interpolation is to be performed.
-     *  @param  parameter     Scalar in range [0..1] describing relative distance between quaternion for which interpolation is to be calculated.
+     *  @param  parameter     Scalar in range [0..1] describing relative distance between quaternions for which interpolation is to be calculated.
      *  @param  shortestPath  TRUE if shortest path (if possible) is to be used for interpolation.
      *  @return Calculated quaternion
      */

@@ -40,6 +40,16 @@ class ComplexTest : public TestBase
      *  @return Dot product between graphical representations of a given complex values.
      */
     float32 dotProduct(float32 x1, float32 y1, float32 x2, float32 y2) const;
+    /*! Calculates complex number resulting from slerping between other two.
+     *  @param  outX      Resulting number real part value.
+     *  @param  outY      Resulting number imaginary part value.
+     *  @param  x1        Complex number 1 real part value.
+     *  @param  y1        Complex number 1 imaginary part value.
+     *  @param  x2        Complex number 2 real part value.
+     *  @param  y2        Complex number 2 imaginary part value.
+     *  @param  parameter Scalar in [0-1] range describing relative progress of interpolation.
+     */
+    void slerp(float32& outX, float32& outY, float32 x1, float32 y1, float32 x2, float32 y2, float32 parameter) const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ComplexTest::normalize(float32 x, float32 y, float32& outX, float32& outY) const
@@ -74,6 +84,39 @@ float32 ComplexTest::lengthSquared(float32 x, float32 y) const
 float32 ComplexTest::dotProduct(float32 x1, float32 y1, float32 x2, float32 y2) const
 {
   return (x1 * x2) + (y1 * y2); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ComplexTest::slerp(float32& outX, float32& outY, float32 x1, float32 y1, float32 x2, float32 y2, float32 parameter) const
+{
+  // calculate cosine omega
+  float cosOmega = dotProduct(x1, y1, x2, y2);
+
+  // calculate coefficients
+  float32 scale0;
+  float32 scale1;
+
+  if (std::numeric_limits<float32>::epsilon() < (1 - cosOmega))
+  {
+    // standard case
+    float32 omega    = Math::ACos(cosOmega);
+    float32 sinOmega = Math::Sin(omega);
+
+    scale0 = sinf((1.0f - parameter) * omega) / sinOmega;
+    scale1 = sinf(parameter * omega) / sinOmega;
+  }
+  else
+  {
+    // source and destination quaternions are very close so we perform linear interpolation
+    scale0 = 1.0f - parameter;
+    scale1 = parameter;
+  }
+
+	// calculate final values
+	outX = scale0 * x1 + scale1 * x2;
+	outY = scale0 * y1 + scale1 * y2;
+
+  // normalize
+  normalize(outX, outY, outX, outY);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(ComplexTest, SetValue)
@@ -179,6 +222,37 @@ TEST_F(ComplexTest, ToAngle)
 
     // compare
     EXPECT_FLOAT_EQ(angle.radians(), value.angle().radians());
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(ComplexTest, Slerp)
+{
+  // perform fixed number of tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    const float32 x1 = random();
+    const float32 y1 = random();
+    const float32 x2 = random();
+    const float32 y2 = random();
+
+    const Complexf value1(x1, y1);
+    const Complexf value2(x2, y2);
+
+    // interpolate
+    for (float32 t = 0; t <= 1.0f; t += 0.01f)
+    {
+      float32 out[2];
+
+      // calculate reference value
+      slerp(out[0], out[1], x1, y1, x2, y2, t);
+
+      // calculate actual value
+      Complexf complexOut = value1.slerp(value2, t);
+    
+      // test
+      EGE_EXPECT_FLOAT_EQ(out[0], complexOut.x, epsilon());
+      EGE_EXPECT_FLOAT_EQ(out[1], complexOut.y, epsilon());
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
