@@ -9,6 +9,7 @@
 #include "Core/Math/Implementation/QuaternionTypes.h"
 #include "Core/Math/Implementation/Vector2Types.h"
 #include "Core/Math/Implementation/Vector4Types.h"
+#include "Core/Math/Implementation/Line2Types.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -163,18 +164,6 @@ class Math
      *  @return Resulting scalar.
      */
     static float32 Lerp(float32 from, float32 to, float32 time);
-
-    /*! Calculates point on intersection of two lines.
-     *  @param  out           Calculated point of intersection.
-     *  @param  line1PointA   First point defining line 1.
-     *  @param  line1PointB   Second point defining line 1.
-     *  @param  line2PointA   First point defining line 2.
-     *  @param  line2PointB   Second point defining line 2.
-     *  @note   If return value is FALSE, out value is undefined.
-     *  @return Returns TRUE if point of intersection was found. Otherwise FALSE.
-     */
-    static bool LineLineIntersectPoint(Vector2f* out, const Vector2f* line1PointA, const Vector2f* line1PointB, 
-                                       const Vector2f* line2PointA, const Vector2f* line2PointB);
 
     /*! Aligns anchor point with respect to given virtual size. 
      *  @param point            Virtual object anchor point. This point is realigned.

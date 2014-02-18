@@ -89,6 +89,7 @@
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MatrixHelper.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\QuaternionHelper.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\VectorHelper.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Line2Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\MathTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Matrix4Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\PlaneTest.cpp" />

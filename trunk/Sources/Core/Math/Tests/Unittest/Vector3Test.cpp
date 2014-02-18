@@ -2,7 +2,7 @@
 #include <EGEVector3.h>
 #include <limits>
 
-/** Tests are focusing TVector3<float32> instantiations. */
+/** Tests are focusing on TVector3<float32> instantiations. */
 
 EGE_NAMESPACE
 

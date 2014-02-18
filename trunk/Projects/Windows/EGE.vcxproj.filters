@@ -1773,6 +1773,13 @@
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\Vector2Types.h">
       <Filter>Core\Math\Implementation</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Line2.h">
+      <Filter>Core\Math\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGELine2.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Implementation\Line2Types.h">
+      <Filter>Core\Math\Implementation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

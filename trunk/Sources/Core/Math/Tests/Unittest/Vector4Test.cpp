@@ -1,7 +1,7 @@
 #include "TestFramework/Interface/TestBase.h"
 #include <EGEVector4.h>
 
-/** Tests are focusing TVector4<float32> instantiations. */
+/** Tests are focusing on TVector4<float32> instantiations. */
 
 EGE_NAMESPACE
 

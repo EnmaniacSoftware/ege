@@ -331,6 +331,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexDeclaration.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexElement.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Implementation\Line2Types.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\MatrixTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\QuaternionTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\Vector2Types.h" />
@@ -339,6 +340,7 @@
     <ClInclude Include="..\..\Sources\Core\Math\Interface\AxisAlignedBox.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Circle.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Complex.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Line2.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Math.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Matrix4.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Plane.h" />
@@ -439,6 +441,7 @@
     <ClInclude Include="..\..\Sources\EGEHash.h" />
     <ClInclude Include="..\..\Sources\EGEImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\EGEIndexBuffer.h" />
+    <ClInclude Include="..\..\Sources\EGELine2.h" />
     <ClInclude Include="..\..\Sources\EGELog.h" />
     <ClInclude Include="..\..\Sources\EGEMaterial.h" />
     <ClInclude Include="..\..\Sources\EGEMatrix.h" />

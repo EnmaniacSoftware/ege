@@ -90,6 +90,9 @@
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\GeneratorHelper.cpp">
       <Filter>Tests\Math\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Line2Test.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h">
