@@ -72,7 +72,20 @@ class Vector2Test : public TestBase
      *  @param  y2        Vector 2 Y value.
      *  @param  parameter Scalar in [0-1] range describing relative progress of interpolation.
      */
-    void lerp(float32& outX, float32& outY, float32 x1, float32 y1, float32 x2, float32 y2, float32 parameter) const;    
+    void lerp(float32& outX, float32& outY, float32 x1, float32 y1, float32 x2, float32 y2, float32 parameter) const;
+    /*! Calculates projection point resulting from projection of a given point onto given line segment.
+     *  @param  outX          Resulting point X value.
+     *  @param  outY          Resulting point Y value.
+     *  @param  lineSegment1X First line segment point X value.
+     *  @param  lineSegment1Y First line segment point Y value.
+     *  @param  lineSegment2X Second line segment point X value.
+     *  @param  lineSegment2Y Second line segment point Y value.
+     *  @param  pointX        Projected point X value.
+     *  @param  pointY        Projected point Y value.
+     *  @note Projected point always lies within the given segment.
+     */
+    void project(float32& outX, float32& outY, float32 lineSegment1X, float32 lineSegment1Y, float32 lineSegment2X, float32 lineSegment2Y, 
+                 float32 pointX, float32 pointY) const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Vector2Test::normalize(float32 x, float32 y, float32& outX, float32& outY) const
@@ -129,6 +142,45 @@ void Vector2Test::lerp(float32& outX, float32& outY, float32 x1, float32 y1, flo
 {
   outX = x1 * (1.0f - parameter) + x2 * parameter;
   outY = y1 * (1.0f - parameter) + y2 * parameter;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Vector2Test::project(float32& outX, float32& outY, float32 lineSegment1X, float32 lineSegment1Y, float32 lineSegment2X, float32 lineSegment2Y, 
+                          float32 pointX, float32 pointY) const
+{
+  // calculate vector describing distance between given segment points
+  float32 lineSegment[2];
+  lineSegment[0] = lineSegment2X - lineSegment1X;
+  lineSegment[1] = lineSegment2Y - lineSegment1Y;
+
+  // calculate length of the line segment
+  float32 segmentLength = length(lineSegment[0], lineSegment[1]);
+
+  // normalize line segment
+  normalize(lineSegment[0], lineSegment[1], lineSegment[0], lineSegment[1]);
+
+  // calculate vector describing distance between begnining of line segment and current point
+  float32 pointSegment[2];
+  pointSegment[0] = pointX - lineSegment1X;
+  pointSegment[1] = pointY - lineSegment1Y;
+
+  // calculate projection of vector containing our point on given line segment
+  float32 projectedLength = dotProduct(lineSegment[0], lineSegment[1], pointSegment[0], pointSegment[1]);
+
+  if (0 > projectedLength)
+  {
+    outX = lineSegment1X;
+    outY = lineSegment1Y;
+  }
+  else if (projectedLength >= segmentLength)
+  {
+    outX = lineSegment2X;
+    outY = lineSegment2Y;
+  }
+  else
+  {
+    outX = lineSegment1X + lineSegment[0] * projectedLength;
+    outY = lineSegment1Y + lineSegment[1] * projectedLength;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(Vector2Test, SetValue)
@@ -403,6 +455,35 @@ TEST_F(Vector2Test, Lerp)
       EGE_EXPECT_FLOAT_EQ(out[0], vectorOut.x, epsilon());
       EGE_EXPECT_FLOAT_EQ(out[1], vectorOut.y, epsilon());
     }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(Vector2Test, Project)
+{
+  // perform fixed number of tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    const float32 segmentX1 = random();
+    const float32 segmentY1 = random();
+    const float32 segmentX2 = random();
+    const float32 segmentY2 = random();
+    const float32 pointX    = random();
+    const float32 pointY    = random();
+
+    const Vector2f segment1(segmentX1, segmentY1);
+    const Vector2f segment2(segmentX2, segmentY2);
+    const Vector2f point(pointX, pointY);
+
+    // calculate reference value
+    float32 out[2];
+    project(out[0], out[1], segmentX1, segmentY1, segmentX2, segmentY2, pointX, pointY);
+
+    // calculate actual value
+    const Vector2f outPoint = point.project(segment1, segment2);
+    
+    // test
+    EGE_EXPECT_FLOAT_EQ(out[0], outPoint.x, epsilon());
+    EGE_EXPECT_FLOAT_EQ(out[1], outPoint.y, epsilon());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

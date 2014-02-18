@@ -164,16 +164,6 @@ class Math
      */
     static float32 Lerp(float32 from, float32 to, float32 time);
 
-    /*! Calculates point on the segment lying closest to given point.
-     *  @param  out         Calculated point on the segment lying closest to given point.
-     *  @param  linePointA  First point defining line segment.
-     *  @param  linePointB  Second point defining line segment.
-     *  @param  point       Point for which minimum distance between it and line is to be found.
-     *  @note Resulting point always lies on the line segment defined by linePointA and linePointB.
-     */
-    static void ClosestSegmentPoint(Vector3f* out, const Vector3f* linePointA, const Vector3f* linePointB, const Vector3f* point);
-    static void ClosestSegmentPoint(Vector2f* out, const Vector2f* linePointA, const Vector2f* linePointB, const Vector2f* point);
-
     /*! Calculates point on intersection of two lines.
      *  @param  out           Calculated point of intersection.
      *  @param  line1PointA   First point defining line 1.

@@ -100,6 +100,23 @@ class Vector3Test : public TestBase
      *  @param  parameter Scalar in [0-1] range describing relative progress of interpolation.
      */
     void lerp(float32& outX, float32& outY, float32& outZ, float32 x1, float32 y1, float32 z1, float32 x2, float32 y2, float32 z2, float32 parameter) const;
+    /*! Calculates projection point resulting from projection of a given point onto given line segment.
+     *  @param  outX          Resulting point X value.
+     *  @param  outY          Resulting point Y value.
+     *  @param  outZ          Resulting point Z value.
+     *  @param  lineSegment1X First line segment point X value.
+     *  @param  lineSegment1Y First line segment point Y value.
+     *  @param  lineSegment1Z First line segment point Z value.
+     *  @param  lineSegment2X Second line segment point X value.
+     *  @param  lineSegment2Y Second line segment point Y value.
+     *  @param  lineSegment2Z Second line segment point Z value.
+     *  @param  pointX        Projected point X value.
+     *  @param  pointY        Projected point Y value.
+     *  @param  pointZ        Projected point Z value.
+     *  @note Projected point always lies within the given segment.
+     */
+    void project(float32& outX, float32& outY, float32& outZ, float32 lineSegment1X, float32 lineSegment1Y, float32 lineSegment1Z, 
+                 float32 lineSegment2X, float32 lineSegment2Y, float32 lineSegment2Z, float32 pointX, float32 pointY, float32 pointZ) const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Vector3Test::normalize(float32 x, float32 y, float32 z, float32& outX, float32& outY, float32& outZ) const
@@ -173,6 +190,50 @@ void Vector3Test::lerp(float32& outX, float32& outY, float32& outZ, float32 x1, 
   outX = x1 * (1.0f - parameter) + x2 * parameter;
   outY = y1 * (1.0f - parameter) + y2 * parameter;
   outZ = z1 * (1.0f - parameter) + z2 * parameter;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Vector3Test::project(float32& outX, float32& outY, float32& outZ, float32 lineSegment1X, float32 lineSegment1Y, float32 lineSegment1Z, 
+                          float32 lineSegment2X, float32 lineSegment2Y, float32 lineSegment2Z, float32 pointX, float32 pointY, float32 pointZ) const
+{
+  // calculate vector describing distance between given segment points
+  float32 lineSegment[3];
+  lineSegment[0] = lineSegment2X - lineSegment1X;
+  lineSegment[1] = lineSegment2Y - lineSegment1Y;
+  lineSegment[2] = lineSegment2Z - lineSegment1Z;
+
+  // calculate length of the line segment
+  float32 segmentLength = length(lineSegment[0], lineSegment[1], lineSegment[2]);
+
+  // normalize line segment
+  normalize(lineSegment[0], lineSegment[1], lineSegment[2], lineSegment[0], lineSegment[1], lineSegment[2]);
+
+  // calculate vector describing distance between begnining of line segment and current point
+  float32 pointSegment[3];
+  pointSegment[0] = pointX - lineSegment1X;
+  pointSegment[1] = pointY - lineSegment1Y;
+  pointSegment[2] = pointZ - lineSegment1Z;
+
+  // calculate projection of vector containing our point on given line segment
+  float32 projectedLength = dotProduct(lineSegment[0], lineSegment[1], lineSegment[2], pointSegment[0], pointSegment[1], pointSegment[2]);
+
+  if (0 > projectedLength)
+  {
+    outX = lineSegment1X;
+    outY = lineSegment1Y;
+    outZ = lineSegment1Z;
+  }
+  else if (projectedLength >= segmentLength)
+  {
+    outX = lineSegment2X;
+    outY = lineSegment2Y;
+    outZ = lineSegment2Z;
+  }
+  else
+  {
+    outX = lineSegment1X + lineSegment[0] * projectedLength;
+    outY = lineSegment1Y + lineSegment[1] * projectedLength;
+    outZ = lineSegment1Z + lineSegment[2] * projectedLength;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(Vector3Test, SetValue)
@@ -507,6 +568,39 @@ TEST_F(Vector3Test, Lerp)
       EGE_EXPECT_FLOAT_EQ(out[1], vectorOut.y, epsilon());
       EGE_EXPECT_FLOAT_EQ(out[2], vectorOut.z, epsilon());
     }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(Vector3Test, Project)
+{
+  // perform fixed number of tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    const float32 segmentX1 = random();
+    const float32 segmentY1 = random();
+    const float32 segmentZ1 = random();
+    const float32 segmentX2 = random();
+    const float32 segmentY2 = random();
+    const float32 segmentZ2 = random();
+    const float32 pointX    = random();
+    const float32 pointY    = random();
+    const float32 pointZ    = random();
+
+    const Vector3f segment1(segmentX1, segmentY1, segmentZ1);
+    const Vector3f segment2(segmentX2, segmentY2, segmentZ2);
+    const Vector3f point(pointX, pointY, pointZ);
+
+    // calculate reference value
+    float32 out[3];
+    project(out[0], out[1], out[2], segmentX1, segmentY1, segmentZ1, segmentX2, segmentY2, segmentZ2, pointX, pointY, pointZ);
+
+    // calculate actual value
+    const Vector3f outPoint = point.project(segment1, segment2);
+    
+    // test
+    EGE_EXPECT_FLOAT_EQ(out[0], outPoint.x, epsilon());
+    EGE_EXPECT_FLOAT_EQ(out[1], outPoint.y, epsilon());
+    EGE_EXPECT_FLOAT_EQ(out[2], outPoint.z, epsilon());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

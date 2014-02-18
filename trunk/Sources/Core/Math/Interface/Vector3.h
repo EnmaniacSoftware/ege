@@ -67,6 +67,14 @@ class TVector3
      */
     TVector3 lerp(const TVector3& to, float32 parameter) const;
 
+    /*! Calculates result of projecting self on the given segment.
+     *  @param  segmentPoint1 First point defining line segment.
+     *  @param  segmentPoint2 Second point defining line segment.
+     *  @return Calculated point.
+     *  @note Resulting point always lies on the line segment defined by segmentPoint1 and segmentPoint2.
+     */
+    TVector3 project(const TVector3& segmentPoint1, const TVector3& segmentPoint2) const;
+
   public:
 
 		T x;
@@ -251,6 +259,44 @@ template <typename T>
 TVector3<T> TVector3<T>::lerp(const TVector3& to, float32 parameter) const
 {
   return (1.0f - parameter) * (*this) + parameter * to;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector3<T> TVector3<T>::project(const TVector3& segmentPoint1, const TVector3& segmentPoint2) const
+{
+  TVector3 out;
+
+  // calculate vector describing distance between given segment points
+  TVector3 lineSegment = segmentPoint2 - segmentPoint1;
+
+  // calculate length of the line segment
+  T segmentLength = lineSegment.length();
+
+  // normalize line segment
+  // NOTE: by doing so, dot-product of any vector and normalized vector will result on projection of this vector onto normalized one.
+  //       Such projection is a scalar describing the length of projected vector and will range from [-X,+X] where X is the length of not normalized vector.
+  lineSegment.normalize();
+
+  // calculate vector describing distance between begnining of line segment and current point
+  const TVector3 pointSegment = (*this) - segmentPoint1;
+
+  // calculate projection of vector containing our point on given line segment
+  T projectedLength = lineSegment.dotProduct(pointSegment);
+
+  if (0 > projectedLength)
+  {
+    out = segmentPoint1;
+  }
+  else if (projectedLength >= segmentLength)
+  {
+    out = segmentPoint2;
+  }
+  else
+  {
+    out = segmentPoint1 + lineSegment * projectedLength;
+  }
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

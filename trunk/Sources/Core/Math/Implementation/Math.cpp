@@ -104,68 +104,6 @@ float32 Math::Lerp(float32 from, float32 to, float32 time)
   return (1.0f - time) * from + time * to;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Math::ClosestSegmentPoint(Vector3f* out, const Vector3f* linePointA, const Vector3f* linePointB, const Vector3f* point)
-{
-  EGE_ASSERT(out);
-  EGE_ASSERT(linePointA);
-  EGE_ASSERT(linePointB);
-  EGE_ASSERT(point);
-
-  Vector3f lineDir = (*linePointB) - (*linePointA);
-
-  float32 lineLength = lineDir.length();
-
-  lineDir.normalize();
-
-  Vector3f dist = (*point) - (*linePointA);
-
-  float32 t = lineDir.dotProduct(dist);
-
-  if (0 > t)
-  {
-    *out = *linePointA;
-  }
-  else if (t >= lineLength)
-  {
-    *out = *linePointB;
-  }
-  else
-  {
-    *out = *linePointA + lineDir * t;
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Math::ClosestSegmentPoint(Vector2f* out, const Vector2f* linePointA, const Vector2f* linePointB, const Vector2f* point)
-{
-  EGE_ASSERT(out);
-  EGE_ASSERT(linePointA);
-  EGE_ASSERT(linePointB);
-  EGE_ASSERT(point);
-
-  Vector2f lineDir = (*linePointB) - (*linePointA);
-
-  float32 lineLength = lineDir.length();
-
-  lineDir.normalize();
-
-  Vector2f dist = (*point) - (*linePointA);
-
-  float32 t = lineDir.dotProduct(dist);
-
-  if (0 > t)
-  {
-    *out = *linePointA;
-  }
-  else if (t >= lineLength)
-  {
-    *out = *linePointB;
-  }
-  else
-  {
-    *out = *linePointA + lineDir * t;
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Math::LineLineIntersectPoint(Vector2f* out, const Vector2f* line1PointA, const Vector2f* line1PointB, const Vector2f* line2PointA, 
                                   const Vector2f* line2PointB)
 {
