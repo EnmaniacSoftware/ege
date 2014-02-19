@@ -24,15 +24,13 @@ void ImageOverlay::addForRendering(IRenderer* renderer, const Matrix4f& transfor
 {
   if (visible())
   {
-    Vector4f pos = physics()->position();
-    Vector4f finalSize = Vector4f(size().x, size().y, 0);
-    finalSize.x *= physics()->scale().x;
-    finalSize.y *= physics()->scale().y;
+    Vector2f pos(physics()->position().x, physics()->position().y);
+    Vector2f finalSize(size().x * physics()->scale().x, size().y * physics()->scale().y);
 
-    Math::Align(&pos, &finalSize, ALIGN_TOP_LEFT, alignment());
+    pos = Math::Align(pos, finalSize, ALIGN_TOP_LEFT, alignment());
 
     // NOTE: scale factor is a combined value from size and current scale cause render item is created with Vector::ONE
-    Matrix4f matrix = Math::CreateMatrix(pos, finalSize, Quaternionf::IDENTITY);
+    Matrix4f matrix = Math::CreateMatrix(Vector4f(pos.x, pos.y, physics()->position().z), Vector4f(finalSize.x, finalSize.y, 0), Quaternionf::IDENTITY);
 
     renderer->addForRendering(m_renderData, transform * matrix);
   }

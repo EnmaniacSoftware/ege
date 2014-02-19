@@ -334,6 +334,7 @@
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\Line2Types.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\MatrixTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\QuaternionTypes.h" />
+    <ClInclude Include="..\..\Sources\Core\Math\Implementation\RectTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\Vector2Types.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\Vector4Types.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Angle.h" />

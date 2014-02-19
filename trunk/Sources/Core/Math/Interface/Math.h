@@ -10,6 +10,7 @@
 #include "Core/Math/Implementation/Vector2Types.h"
 #include "Core/Math/Implementation/Vector4Types.h"
 #include "Core/Math/Implementation/Line2Types.h"
+#include "Core/Math/Implementation/RectTypes.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -18,8 +19,6 @@ template <typename T> class TVector3;
 typedef TVector3<float32> Vector3f;
 template <typename T> class TComplex;
 typedef TComplex<float32> Complexf;
-template <typename T> class TRect;
-typedef TRect<float32> Rectf;
 class Angle;
 class Color;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -140,14 +139,16 @@ class Math
      *  @param  matrix      Matrix alike rotation representation.
      *  @param  quaternion  Rotation represented by quaternion.
      */
-    static void Convert(Matrix4f& matrix, const Quaternionf& quaternion);
+    template <typename T>
+    static void Convert(TMatrix4<T>& matrix, const TQuaternion<T>& quaternion);
 
     /*! Transforms vector by matrix. 
      *  @param  vector  Vector to be tranformed.
      *  @param  matrix  Transformation matrix.
      *  @return Transformed vector.
      */
-    static Vector4f Transform(const Vector4f& vector, const Matrix4f& matrix);
+    template <typename T>
+    static TVector4<T> Transform(const TVector4<T>& vector, const TMatrix4<T>& matrix);
 
     /*! Creates matrix from translation, scale vectors and rotation quaternion. 
      *  @param  translation Translation vector.
@@ -155,7 +156,8 @@ class Math
      *  @param  orientation Rotation quaternion.
      *  @return Resulting matrix.
      */
-    static Matrix4f CreateMatrix(const Vector4f& translation, const Vector4f& scale, const Quaternionf& orientation);
+    template <typename T>
+    static TMatrix4<T> CreateMatrix(const TVector4<T>& translation, const TVector4<T>& scale, const TQuaternion<T>& orientation);
 
     /*! Performs linear interpolation between given scalars. 
      *  @param  from First (start) scalar.
@@ -163,42 +165,31 @@ class Math
      *  @param  time Scalar in range [0..1] describing relative distance between input scalar for which interpolation is to be calculated.
      *  @return Resulting scalar.
      */
-    static float32 Lerp(float32 from, float32 to, float32 time);
+    template <typename T>
+    static T Lerp(const T& from, const T& to, float32 time);
 
-    /*! Aligns anchor point with respect to given virtual size. 
-     *  @param point            Virtual object anchor point. This point is realigned.
-     *  @param size             Virtual obeject size.
-     *  @param currentAlignment Current point alignment within given area.
-     *  @param newAlignment     New point alignment within given area.
+    /*! Aligns anchor point with respect to given 'virtual frame' size. 
+     *  @param point            Point to which 'virtual frame' is attached.
+     *  @param frameSize        'Virtual frame' size.
+     *  @param pointAlignment   Alignment of the point with respect to 'virtual frame'.
+     *  @param newAlignment     Alignment for which position of the point is being calculated.
+     *  @return Returns realigned point.
+     *  @note This method defines 'virtual frame' relative to a given point and its aligment within the 'frame' i.e. TOP_LEFT alignment of the point
+     *        indicates the that Top-Left corner of the frame lies at point position. Next, method calculates position of another point in such a way
+     *        that if the same 'frame' (size and alignment) is applied to it, original point alignment with respect to new 'frame' becomes new alignment.
      */
-    static void Align(Vector2f* point, const Vector2f* size, Alignment currentAlignment, Alignment newAlignment);
-    /*! Aligns rectangle. 
-     *  @param rect             Rectangle to align.
-     *  @param currentAlignment Current rectangle alignment.
-     *  @param newAlignment     New rectangle alignment.
-     */
-    static void Align(Rectf* rect, Alignment currentAlignment, Alignment newAlignment);
-    /*! Aligns anchor point with respect to given virtual size. 
-     *  @param point            Virtual object anchor point. This point is realigned.
-     *  @param size             Virtual obeject size.
-     *  @param currentAlignment Current point alignment within given area.
-     *  @param newAlignment     New point alignment within given area.
-     */
-    static void Align(Vector4f* point, const Vector2f* size, Alignment currentAlignment, Alignment newAlignment);
-    /*! Aligns anchor point with respect to given virtual size. 
-     *  @param point            Virtual object anchor point. This point is realigned.
-     *  @param size             Virtual obeject size.
-     *  @param currentAlignment Current point alignment within given area.
-     *  @param newAlignment     New point alignment within given area.
-     */
-    static void Align(Vector4f* point, const Vector4f* size, Alignment currentAlignment, Alignment newAlignment);
+    template <typename T>
+    static TVector2<T> Align(const TVector2<T>& point, const TVector2<T>& frameSize, Alignment pointAlignment, Alignment newAlignment);
     /*! Aligns rectangle with respect to another rectangle. 
      *  @param rect             Rectangle to align.
      *  @param otherRect        Another rectangle with respect to which first rectangle is to be aligned.
      *  @param currentAlignment Current rectangle alignment.
      *  @param newAlignment     New rectangle alignment.
+     *  @return Returns realigned rectangle.
      */
-    static void Align(Rectf* rect, const Rectf* otherRect, Alignment currentAlignment, Alignment newAlignment);
+    template <typename T>
+    static TRect<T> Align(const TRect<T>& rect, const TRect<T>& otherRect, Alignment currentAlignment, Alignment newAlignment);
+    
     /*! Generates a new random vector which deviates from given vector by a given angle in a random direction.
      *  @param  angle   The angle at which to deviate.
      *  @param  vector  Vector from which deviation should be generated.
@@ -351,6 +342,235 @@ T Math::ACos(const T& value)
   EGE_ASSERT(1 >= value); 
 
   return acos(value); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+void Math::Convert(TMatrix4<T>& matrix, const TQuaternion<T>& quaternion)
+{
+  // 1st column
+	matrix.data[0] = 1 - 2 * (quaternion.y * quaternion.y + quaternion.z * quaternion.z); 
+	matrix.data[1] = 2 * (quaternion.x * quaternion.y - quaternion.z * quaternion.w);
+	matrix.data[2] = 2 * (quaternion.x * quaternion.z + quaternion.y * quaternion.w);
+	matrix.data[3] = 0;
+
+	// 2nd column
+	matrix.data[4] = 2 * (quaternion.x * quaternion.y + quaternion.z * quaternion.w);  
+	matrix.data[5] = 1 - 2 * (quaternion.x * quaternion.x + quaternion.z * quaternion.z); 
+	matrix.data[6] = 2 * (quaternion.z * quaternion.y - quaternion.x * quaternion.w);  
+	matrix.data[7] = 0;
+
+	// 3rd column
+	matrix.data[8]  = 2 * (quaternion.x * quaternion.z - quaternion.y * quaternion.w);
+	matrix.data[9]  = 2 * (quaternion.y * quaternion.z + quaternion.x * quaternion.w);
+	matrix.data[10] = 1 - 2 *(quaternion.x * quaternion.x + quaternion.y * quaternion.y);  
+	matrix.data[11] = 0;
+
+	// 4th column
+	matrix.data[12] = 0;
+	matrix.data[13] = 0;
+	matrix.data[14] = 0;  
+	matrix.data[15] = 1;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector4<T> Math::Transform(const TVector4<T>& vector, const TMatrix4<T>& matrix)
+{
+  TVector4<T> result;
+
+  result.x = matrix.data[0] * vector.x + matrix.data[4] * vector.y + matrix.data[8]  * vector.z + matrix.data[12] * vector.w;
+  result.y = matrix.data[1] * vector.x + matrix.data[5] * vector.y + matrix.data[9]  * vector.z + matrix.data[13] * vector.w;
+  result.z = matrix.data[2] * vector.x + matrix.data[6] * vector.y + matrix.data[10] * vector.z + matrix.data[14] * vector.w;
+  result.w = matrix.data[3] * vector.x + matrix.data[7] * vector.y + matrix.data[11] * vector.z + matrix.data[15] * vector.w;
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TMatrix4<T> Math::CreateMatrix(const TVector4<T>& translation, const TVector4<T>& scale, const TQuaternion<T>& orientation)
+{
+  // Ordering:
+  //    1. Scale
+  //    2. Rotate
+  //    3. Translate
+
+  const TMatrix4<T> scaleMatrix(scale.x, 0, 0, 0, 0, scale.y, 0, 0, 0, 0, scale.z, 0, 0, 0, 0, scale.w);
+
+  // convert quaternion into rotation matrix
+  TMatrix4<T> rotationMatrix;
+  Math::Convert(rotationMatrix, orientation);
+
+  // combine 1. and 2.
+  TMatrix4<T> matrix = rotationMatrix.multiply(scaleMatrix);
+
+  // apply 3.
+  matrix.setTranslation(translation.x, translation.y, translation.z);
+  matrix.data[15] = 1;
+
+  return matrix;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T Math::Lerp(const T& from, const T& to, float32 time)
+{
+  return (1 - time) * from + time * to;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector2<T> Math::Align(const TVector2<T>& point, const TVector2<T>& frameSize, Alignment pointAlignment, Alignment newAlignment)
+{
+  EGE_ASSERT(0 <= frameSize.x);
+  EGE_ASSERT(0 <= frameSize.y);
+
+  TVector2<T> out = point;
+
+  // NOTE: Idea here is, that if we apply original alignment to a newly calculated point, original point gains the required aligment relative to new point and 
+  //       'virtual frame' applied to it.
+  //
+  // Example:
+  //
+  // Original point P(x,y) with alignment LEFT_CENTER relative to 'virtual frame':
+  //
+  //       *---------*
+  //       |         |
+  //       @ P(x,y)  |
+  //       |         |
+  //       *---------*
+  //
+  // It is requsted to re-align it to TOP_RIGHT. This means to find the point P' (and 'frame') with original alignment such as the original point will have 
+  // requested alignment relative to 'new frame'.
+  //
+  //      
+  //            *---------*
+  //            |         |
+  //   +--------@ P       |      P has orignal aligment relative to 'original frame'
+  //   |        |         |      P' has original alignment relative to 'new frame'
+  //   @ p'     *---------*      P has new alignment relative to 'new frame'
+  //   |        |
+  //   +--------+
+  //
+
+  // recalculate horizontal position of new point depending on requirements
+
+  if (pointAlignment & ALIGN_LEFT)
+  {
+    if (newAlignment & ALIGN_HCENTER)
+    {
+      out.x -= frameSize.x * 0.5f;
+    }
+    else if (newAlignment & ALIGN_RIGHT)
+    {
+      out.x -= frameSize.x;
+    }
+  }
+  else if (pointAlignment & ALIGN_HCENTER)
+  {
+    if (newAlignment & ALIGN_LEFT)
+    {
+      out.x += frameSize.x * 0.5f;
+    }
+    else if (newAlignment & ALIGN_RIGHT)
+    {
+      out.x -= frameSize.x * 0.5f;
+    }
+  }
+  else if (pointAlignment & ALIGN_RIGHT)
+  {
+    if (newAlignment & ALIGN_LEFT)
+    {
+      out.x += frameSize.x;
+    }
+    else if (newAlignment & ALIGN_HCENTER)
+    {
+      out.x += frameSize.x * 0.5f;
+    }
+  }
+
+  // recalculate vertical position of new point depending on requirements
+
+  if (pointAlignment & ALIGN_TOP)
+  {
+    if (newAlignment & ALIGN_VCENTER)
+    {
+      out.y -= frameSize.y * 0.5f;
+    }
+    else if (newAlignment & ALIGN_BOTTOM)
+    {
+      out.y -= frameSize.y;
+    }
+  }
+  else if (pointAlignment & ALIGN_VCENTER)
+  {
+    if (newAlignment & ALIGN_TOP)
+    {
+      out.y += frameSize.y * 0.5f;
+    }
+    else if (newAlignment & ALIGN_BOTTOM)
+    {
+      out.y -= frameSize.y * 0.5f;
+    }
+  }
+  else if (pointAlignment & ALIGN_BOTTOM)
+  {
+    if (newAlignment & ALIGN_TOP)
+    {
+      out.y += frameSize.y;
+    }
+    else if (newAlignment & ALIGN_VCENTER)
+    {
+      out.y += frameSize.y * 0.5f;
+    }
+  }
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TRect<T> Math::Align(const TRect<T>& rect, const TRect<T>& otherRect, Alignment currentAlignment, Alignment newAlignment)
+{
+  EGE_ASSERT( ! rect.isNull());
+  EGE_ASSERT( ! otherRect.isNull());
+
+  TRect<T> out = rect;
+
+  // align back to TOP-LEFT
+  if (currentAlignment & ALIGN_RIGHT)
+  {
+    out.x -= (otherRect.width - rect.width);
+  }
+  else if (currentAlignment & ALIGN_HCENTER)
+  {
+    out.x -= (otherRect.width - rect.width) * 0.5f;
+  }
+
+  if (currentAlignment & ALIGN_BOTTOM)
+  {
+    out.y -= (otherRect.height - rect.height);
+  }
+  else if (currentAlignment & ALIGN_VCENTER)
+  {
+    out.y -= (otherRect.height - rect.height) * 0.5f;
+  }
+
+  // do new alignment
+  if (newAlignment & ALIGN_RIGHT)
+  {
+    out.x += (otherRect.width - rect.width);
+  }
+  else if (newAlignment & ALIGN_HCENTER)
+  {
+    out.x += (otherRect.width - rect.width) * 0.5f;
+  }
+
+  if (newAlignment & ALIGN_BOTTOM)
+  {
+    out.y += (otherRect.height - rect.height);
+  }
+  else if (newAlignment & ALIGN_VCENTER)
+  {
+    out.y += (otherRect.height - rect.height) * 0.5f;
+  }
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

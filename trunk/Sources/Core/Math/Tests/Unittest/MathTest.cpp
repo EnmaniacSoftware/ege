@@ -8,6 +8,8 @@
 #include <EGEMatrix.h>
 #include <EGEVector2.h>
 #include <EGEAngle.h>
+#include <EGEAlignment.h>
+#include <EGERect.h>
 
 EGE_NAMESPACE
 
@@ -39,6 +41,25 @@ class MathTest : public TestBase
      */
     std::vector<float32> createMatrix(const std::vector<float32>& translation, const std::vector<float32>& scale,  
                                       const std::vector<float32>& orientation) const;
+    /*! Aligns given point with specified alignment around 'virtual frame' of a given size to new alignment.
+      * @param  point     Point to be realigned.
+      * @param  frameSize Size of the 'virtual frame' point is attached to.
+      * @param  pointAlignment  Current alignment of the point with respect to 'virtual frame'.
+      * @param  newAlignment    New aligment.
+      * @return Calculated point.
+      */
+    std::vector<float32> alignPoint(const std::vector<float32>& point, const std::vector<float32>& frameSize, Alignment pointAlignment, 
+                                    Alignment newAlignment) const;
+
+    /*! Aligns rectangle with respect to another rectangle. 
+     *  @param rect             Rectangle to align.
+     *  @param otherRect        Another rectangle with respect to which first rectangle is to be aligned.
+     *  @param currentAlignment Current rectangle alignment.
+     *  @param newAlignment     New rectangle alignment.
+     *  @return Returns realigned rectangle.
+     */
+    std::vector<float32> alignRect(const std::vector<float32>& rect, const std::vector<float32>& otherRect, Alignment currentAlignment, 
+                                   Alignment newAlignment) const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 MathTest::MathTest() : TestBase(0.0001f)
@@ -119,6 +140,140 @@ std::vector<float32> MathTest::createMatrix(const std::vector<float32>& translat
   std::vector<float32> matrix = MatrixHelper::Multiply(matrixTR, scaleMatrix);
 
   return matrix;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+std::vector<float32> MathTest::alignPoint(const std::vector<float32>& point, const std::vector<float32>& frameSize, Alignment pointAlignment, 
+                                          Alignment newAlignment) const
+{
+  EXPECT_GT(frameSize[0], 0);
+  EXPECT_GT(frameSize[1], 0);
+
+  std::vector<float32> out = point;
+
+  // recalculate horizontal position of new point depending on requirements
+
+  if (pointAlignment & ALIGN_LEFT)
+  {
+    if (newAlignment & ALIGN_HCENTER)
+    {
+      out[0] -= frameSize[0] * 0.5f;
+    }
+    else if (newAlignment & ALIGN_RIGHT)
+    {
+      out[0] -= frameSize[0];
+    }
+  }
+  else if (pointAlignment & ALIGN_HCENTER)
+  {
+    if (newAlignment & ALIGN_LEFT)
+    {
+      out[0] += frameSize[0] * 0.5f;
+    }
+    else if (newAlignment & ALIGN_RIGHT)
+    {
+      out[0] -= frameSize[0] * 0.5f;
+    }
+  }
+  else if (pointAlignment & ALIGN_RIGHT)
+  {
+    if (newAlignment & ALIGN_LEFT)
+    {
+      out[0] += frameSize[0];
+    }
+    else if (newAlignment & ALIGN_HCENTER)
+    {
+      out[0] += frameSize[0] * 0.5f;
+    }
+  }
+
+  // recalculate vertical position of new point depending on requirements
+
+  if (pointAlignment & ALIGN_TOP)
+  {
+    if (newAlignment & ALIGN_VCENTER)
+    {
+      out[1] -= frameSize[1] * 0.5f;
+    }
+    else if (newAlignment & ALIGN_BOTTOM)
+    {
+      out[1] -= frameSize[1];
+    }
+  }
+  else if (pointAlignment & ALIGN_VCENTER)
+  {
+    if (newAlignment & ALIGN_TOP)
+    {
+      out[1] += frameSize[1] * 0.5f;
+    }
+    else if (newAlignment & ALIGN_BOTTOM)
+    {
+      out[1] -= frameSize[1] * 0.5f;
+    }
+  }
+  else if (pointAlignment & ALIGN_BOTTOM)
+  {
+    if (newAlignment & ALIGN_TOP)
+    {
+      out[1] += frameSize[1];
+    }
+    else if (newAlignment & ALIGN_VCENTER)
+    {
+      out[1] += frameSize[1] * 0.5f;
+    }
+  }
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+std::vector<float32> MathTest::alignRect(const std::vector<float32>& rect, const std::vector<float32>& otherRect, Alignment currentAlignment, 
+                                         Alignment newAlignment) const
+{
+  EXPECT_GE(rect[2], 0);
+  EXPECT_GE(rect[3], 0);
+  EXPECT_GE(otherRect[2], 0);
+  EXPECT_GE(otherRect[3], 0);
+
+  std::vector<float32> out = rect;
+
+  // align back to TOP-LEFT
+  if (currentAlignment & ALIGN_RIGHT)
+  {
+    out[0] -= (otherRect[2] - rect[2]);
+  }
+  else if (currentAlignment & ALIGN_HCENTER)
+  {
+    out[0] -= (otherRect[2] - rect[2]) * 0.5f;
+  }
+
+  if (currentAlignment & ALIGN_BOTTOM)
+  {
+    out[1] -= (otherRect[3] - rect[3]);
+  }
+  else if (currentAlignment & ALIGN_VCENTER)
+  {
+    out[1] -= (otherRect[3] - rect[3]) * 0.5f;
+  }
+
+  // do new alignment
+  if (newAlignment & ALIGN_RIGHT)
+  {
+    out[0] += (otherRect[2] - rect[2]);
+  }
+  else if (newAlignment & ALIGN_HCENTER)
+  {
+    out[0] += (otherRect[2] - rect[2]) * 0.5f;
+  }
+
+  if (newAlignment & ALIGN_BOTTOM)
+  {
+    out[1] += (otherRect[3] - rect[3]);
+  }
+  else if (newAlignment & ALIGN_VCENTER)
+  {
+    out[1] += (otherRect[3] - rect[3]) * 0.5f;
+  }
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(MathTest, Min)
@@ -429,6 +584,94 @@ TEST_F(MathTest, CreateMatrix)
                                                Vector4f(scaleData[0], scaleData[1], scaleData[2], scaleData[3]),
                                                Quaternionf(orientationData[0], orientationData[1], orientationData[2], orientationData[3]));
     EXPECT_TRUE(MatrixHelper::AreEqual(matrixData, matrix.data));
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(MathTest, AlignPoint)
+{
+  // perform fixed number of random tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    std::vector<Alignment> verticalAlignments;
+    verticalAlignments.push_back(ALIGN_TOP);
+    verticalAlignments.push_back(ALIGN_VCENTER);
+    verticalAlignments.push_back(ALIGN_BOTTOM);
+
+    std::vector<Alignment> horizontalAlignments;
+    horizontalAlignments.push_back(ALIGN_LEFT);
+    horizontalAlignments.push_back(ALIGN_HCENTER);
+    horizontalAlignments.push_back(ALIGN_RIGHT);
+
+    const std::vector<float32> point = VectorHelper::RandomVector2Data(); 
+    std::vector<float32> frameSize;
+    frameSize.push_back(random() + 2.0f); 
+    frameSize.push_back(random() + 2.0f); 
+
+    const Alignment pointAlignment = verticalAlignments[rand() % (verticalAlignments.size() - 1)] | 
+                                     horizontalAlignments[rand() % (horizontalAlignments.size() - 1)];
+    const Alignment newAlignment   = verticalAlignments[rand() % (verticalAlignments.size() - 1)] | 
+                                     horizontalAlignments[rand() % (horizontalAlignments.size() - 1)];
+  
+    // calculate reference value
+    std::vector<float32> out = alignPoint(point, frameSize, pointAlignment, newAlignment);
+
+    // calculate actual value
+    const Vector2f point2(point[0], point[1]);
+    const Vector2f frameSize2(frameSize[0], frameSize[1]);
+    const Vector2f out2 = Math::Align(point2, frameSize2, pointAlignment, newAlignment);
+
+    // test
+    EXPECT_FLOAT_EQ(out[0], out2.x);
+    EXPECT_FLOAT_EQ(out[1], out2.y);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(MathTest, AlignRectangle)
+{
+  // perform fixed number of random tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    std::vector<Alignment> verticalAlignments;
+    verticalAlignments.push_back(ALIGN_TOP);
+    verticalAlignments.push_back(ALIGN_VCENTER);
+    verticalAlignments.push_back(ALIGN_BOTTOM);
+
+    std::vector<Alignment> horizontalAlignments;
+    horizontalAlignments.push_back(ALIGN_LEFT);
+    horizontalAlignments.push_back(ALIGN_HCENTER);
+    horizontalAlignments.push_back(ALIGN_RIGHT);
+
+    std::vector<float32> rect1;
+    rect1.push_back(random());
+    rect1.push_back(random());
+    rect1.push_back(randomPositive());
+    rect1.push_back(randomPositive());
+
+    std::vector<float32> rect2;
+    rect2.push_back(random());
+    rect2.push_back(random());
+    rect2.push_back(randomPositive());
+    rect2.push_back(randomPositive());
+
+    const Alignment pointAlignment = verticalAlignments[rand() % (verticalAlignments.size() - 1)] | 
+                                     horizontalAlignments[rand() % (horizontalAlignments.size() - 1)];
+    const Alignment newAlignment   = verticalAlignments[rand() % (verticalAlignments.size() - 1)] | 
+                                     horizontalAlignments[rand() % (horizontalAlignments.size() - 1)];
+  
+    // calculate reference value
+    std::vector<float32> out = alignRect(rect1, rect2, pointAlignment, newAlignment);
+
+    // calculate actual value
+    const Rectf rectangle1(rect1[0], rect1[1], rect1[2], rect1[3]);
+    const Rectf rectangle2(rect2[0], rect2[1], rect2[2], rect2[3]);
+
+    const Rectf out2 = Math::Align(rectangle1, rectangle2, pointAlignment, newAlignment);
+
+    // test
+    EXPECT_FLOAT_EQ(out[0], out2.x);
+    EXPECT_FLOAT_EQ(out[1], out2.y);
+    EXPECT_FLOAT_EQ(out[2], out2.width);
+    EXPECT_FLOAT_EQ(out[3], out2.height);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

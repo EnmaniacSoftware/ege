@@ -16,7 +16,7 @@ void TestBase::ExpectFloatEqual(float32 expected, float32 actual, float32 epsilo
   {
     std::cout << "Actual  : " << actual << std::endl 
               << "Expected: " << expected << std::endl 
-              << "epsilon :" << epsilon << std::endl
+              << "epsilon : " << epsilon << std::endl
               << std::endl;
 
     ADD_FAILURE_AT(fileName, lineNo);
@@ -30,6 +30,17 @@ TestBase::TestBase(float32 epsilon) : m_epsilon(epsilon)
 float32 TestBase::random(float32 scale) const
 {
   return (rand() / static_cast<float32>(RAND_MAX) - 0.5f) * 2.0f * scale;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+float32 TestBase::randomPositive(float32 scale) const
+{
+  float32 value = (rand() / static_cast<float32>(RAND_MAX)) * scale;
+  if (0 == value)
+  {
+    value = 0.0001f;
+  }
+
+  return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 float32 TestBase::epsilon() const

@@ -354,15 +354,15 @@ void ImagedAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
       childData.renderData->material()->setDiffuseColor(action.color);
 
       // apply alignment
-      Vector4f translation = childData.baseFrameMatrix.translation();
+      Vector2f translation = Vector2f(childData.baseFrameMatrix.translation().x, childData.baseFrameMatrix.translation().y);
 
       //if (name() == "startClassicHealingCharmEffect")
       //{
       //  int a = 1;
       //}
 
-      Math::Align(&translation, &m_displaySize, ALIGN_TOP_LEFT, m_baseAlignment);
-      childData.baseFrameMatrix.setTranslation(translation.x, translation.y, translation.z);
+      translation = Math::Align(translation, m_displaySize, ALIGN_TOP_LEFT, m_baseAlignment);
+      childData.baseFrameMatrix.setTranslation(translation.x, translation.y, childData.baseFrameMatrix.translation().z);
   
       // set clipping rect
      // objectData.renderData->setClipRect(Rectf(translation.x, translation.y, m_displaySize.x, m_displaySize.y));

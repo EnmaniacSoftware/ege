@@ -1,6 +1,8 @@
 #ifndef EGE_CORE_MATH_QUATERNIONTYPES_H
 #define EGE_CORE_MATH_QUATERNIONTYPES_H
 
+#include <EGE.h>
+
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

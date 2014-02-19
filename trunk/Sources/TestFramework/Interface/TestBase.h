@@ -33,6 +33,13 @@ class TestBase : public ::testing::Test
      *  @note Returned number is in [-scale,scale] interval.
      */
     float32 random(float32 scale = 1.0f) const;
+    /*! Returns random positive number. 
+     *  @param  scale Scale of the returned value.
+     *  @return Generated random number.
+     *  @note Returned number is in [0.0001f,scale] interval.
+     */
+    float32 randomPositive(float32 scale = 1.0f) const;
+
     /*! Returns floating point epsilon value. */
     float32 epsilon() const;
 

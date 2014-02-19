@@ -88,9 +88,8 @@ void Widget::addForRendering(IRenderer* renderer, const Matrix4f& transform)
     }
 
     // apply alignment
-    Vector4f pos  = m_physics.position();
-    Vector2f size = this->size();
-    Math::Align(&pos, &size, ALIGN_TOP_LEFT, alignment());
+    Vector2f pos(m_physics.position().x, m_physics.position().y);
+    pos = Math::Align(pos, size(), ALIGN_TOP_LEFT, alignment());
 
     // update translation
     Matrix4f matrix = m_physics.transformationMatrix();

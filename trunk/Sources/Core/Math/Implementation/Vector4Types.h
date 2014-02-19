@@ -1,6 +1,8 @@
 #ifndef EGE_CORE_MATH_VECTOR4TYPES_H
 #define EGE_CORE_MATH_VECTOR4TYPES_H
 
+#include <EGE.h>
+
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
