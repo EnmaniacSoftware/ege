@@ -110,7 +110,7 @@ void ParticleEmitterPoint::initializeParticle(s32 index)
 	// calculate direction
 	Angle angle = m_emissionAngle + m_emissionAngleVariance.radians() * Math::Random()(-1.0f, 1.0f);
   angle *= 0.5f;
-  particleData.velocity = Math::RandomDeviant(&angle, &m_emissionDirection);
+  particleData.velocity = Math::RandomDeviant(angle, m_emissionDirection);
   particleData.velocity.x *= m_emissionDirectionMask.x;
   particleData.velocity.y *= m_emissionDirectionMask.y;
   particleData.velocity.z *= m_emissionDirectionMask.z;

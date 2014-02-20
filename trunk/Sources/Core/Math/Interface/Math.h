@@ -8,6 +8,7 @@
 #include "Core/Math/Implementation/MatrixTypes.h"
 #include "Core/Math/Implementation/QuaternionTypes.h"
 #include "Core/Math/Implementation/Vector2Types.h"
+#include "Core/Math/Implementation/Vector3Types.h"
 #include "Core/Math/Implementation/Vector4Types.h"
 #include "Core/Math/Implementation/Line2Types.h"
 #include "Core/Math/Implementation/RectTypes.h"
@@ -15,8 +16,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T> class TVector3;
-typedef TVector3<float32> Vector3f;
 template <typename T> class TComplex;
 typedef TComplex<float32> Complexf;
 class Angle;
@@ -192,17 +191,23 @@ class Math
     
     /*! Generates a new random vector which deviates from given vector by a given angle in a random direction.
      *  @param  angle   The angle at which to deviate.
-     *  @param  vector  Vector from which deviation should be generated.
-     *  @param  up      Any vector perpendicular to this one. If not given the function will derive one. 
+     *  @param  vector  Normalized vector from which deviation should be generated.
+     *  @param  up      Any normalized vector perpendicular to this one. If not given the function will derive one.
      *  @returns  A random vector which deviates from this vector by angle. This vector will not be normalized.
+     *  @note New vector deviates from original one in [-angle,+angle] range.
      */
-    static Vector3f RandomDeviant(const Angle* angle, const Vector3f* vector, const Vector3f* up = NULL);
+    template <typename T>
+    static TVector3<T> RandomDeviant(const Angle& angle, const TVector3<T>& vector, const TVector3<T>* up = NULL); // TAGE - VS 2010 seems to crash when optimizing this method while up vector
+                                                                                                                   //        is changed to reference...so keeping it as a pointer type
     /*! Generates a new random vector which deviates from given vector by a given angle in a random direction.
      *  @param  angle   The angle at which to deviate.
-     *  @param  vector  Vector from which deviation should be generated.
+     *  @param  vector  Normalized vector from which deviation should be generated.
      *  @returns  A random vector which deviates from this vector by angle. This vector will not be normalized.
+     *  @note New vector deviates from original one in [-angle,+angle] range.
      */
-    static Vector2f RandomDeviant(const Angle* angle, const Vector2f* vector);
+    template <typename T>
+    static TVector2<T> RandomDeviant(const Angle& angle, const TVector2<T>& vector);
+    
     /*! Calculates greatest common divisor. */
     static s32 GreatestCommonDivisor(s32 a, s32 b);
 
@@ -571,6 +576,46 @@ TRect<T> Math::Align(const TRect<T>& rect, const TRect<T>& otherRect, Alignment 
   }
 
   return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector3<T> Math::RandomDeviant(const Angle& angle, const TVector3<T>& vector, const TVector3<T>* up)
+{
+  EGE_ASSERT(Math::EPSILON > (1 - vector.lengthSquared()));
+  EGE_ASSERT((NULL == up) || ((NULL != up ) && (Math::EPSILON > (1 - up->lengthSquared()))));
+
+  TVector3<T> newUp;
+
+  if (NULL == up)
+  {
+    // generate an up vector
+    newUp = vector.perpendicular();
+    newUp.normalize();
+  }
+  else
+  {
+    newUp = *up;
+  }
+
+  // rotate up vector by random amount around this
+  TQuaternion<T> q;
+  q.create(vector, Angle(Math::TWO_PI * Random()(-1.0f, 1.0f)));
+  newUp = q * newUp;
+
+  // finally rotate this by given angle around randomised up
+  q.create(newUp, angle);
+  return q * vector;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector2<T> Math::RandomDeviant(const Angle& angle, const TVector2<T>& vector)
+{
+  const float32 randomization = Random()(-1.0f, 1.0f);
+
+  float32 cos = Math::Cos(angle.radians() * randomization);
+  float32 sin = Math::Sin(angle.radians() * randomization);
+
+  return TVector2<T>(vector.x * cos - vector.y * sin, vector.x * sin + vector.y * cos);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

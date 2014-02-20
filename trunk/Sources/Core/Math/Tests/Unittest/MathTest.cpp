@@ -675,3 +675,138 @@ TEST_F(MathTest, AlignRectangle)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(MathTest, RandomDeviant2D)
+{
+  float32 angle;
+  Vector2f vec;
+
+  // fixed test for some obvious cases
+
+  // +-125deg
+  vec = Math::RandomDeviant(Angle::FromDegrees(125), Vector2f(0, 1));
+  angle = Math::ACos(vec.normalized().dotProduct(Vector2f(0, 1)));
+  EXPECT_LE(Math::RadiansToDegrees(Math::Abs(angle)), 125);
+
+  vec = Math::RandomDeviant(Angle::FromDegrees(-125), Vector2f(1, 0));
+  angle = Math::ACos(vec.normalized().dotProduct(Vector2f(1, 0)));
+  EXPECT_LE(Math::RadiansToDegrees(Math::Abs(angle)), 125);
+
+  // +-90deg
+  vec = Math::RandomDeviant(Angle::FromDegrees(90), Vector2f(0, 1));
+  angle = Math::ACos(vec.normalized().dotProduct(Vector2f(0, 1)));
+  EXPECT_LE(Math::RadiansToDegrees(Math::Abs(angle)), 90);
+
+  vec = Math::RandomDeviant(Angle::FromDegrees(-90), Vector2f(1, 0));
+  angle = Math::ACos(vec.normalized().dotProduct(Vector2f(1, 0)));
+  EXPECT_LE(Math::RadiansToDegrees(Math::Abs(angle)), 90);
+
+  // +-45deg
+  vec = Math::RandomDeviant(Angle::FromDegrees(-45), Vector2f(0, 1));
+  angle = Math::ACos(vec.normalized().dotProduct(Vector2f(0, 1)));
+  EXPECT_LE(Math::RadiansToDegrees(Math::Abs(angle)), 45);
+
+  vec = Math::RandomDeviant(Angle::FromDegrees(-45), Vector2f(1, 0));
+  angle = Math::ACos(vec.normalized().dotProduct(Vector2f(1, 0)));
+  EXPECT_LE(Math::RadiansToDegrees(Math::Abs(angle)), 45);
+
+  // +-0deg
+  vec = Math::RandomDeviant(Angle::FromDegrees(0), Vector2f(0, 1));
+  angle = Math::ACos(vec.normalized().dotProduct(Vector2f(0, 1)));
+  EXPECT_LE(Math::RadiansToDegrees(Math::Abs(angle)), 0);
+
+  vec = Math::RandomDeviant(Angle::FromDegrees(0), Vector2f(1, 0));
+  angle = Math::ACos(vec.normalized().dotProduct(Vector2f(1, 0)));
+  EXPECT_LE(Math::RadiansToDegrees(Math::Abs(angle)), 0);
+
+  // perform fixed number of random tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    const Angle angle(Math::DegreesToRadians(random(90.0f)));
+    const Vector2f vector(random(), random());
+
+    // calculate
+    const Vector2f out = Math::RandomDeviant(angle, vector);
+
+    // test
+    const float32 radians = Math::ACos(out.normalized().dotProduct(vector.normalized()));
+    EXPECT_LE(Math::RadiansToDegrees(radians), Math::Abs(angle.degrees()));
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(MathTest, RandomDeviant3DNoUp)
+{
+  float32 angle;
+  Vector3f vec;
+
+  // +-0deg
+  vec = Math::RandomDeviant(Angle::FromDegrees(0), Vector3f(0, 1, 0));
+  angle = Math::ACos(vec.normalized().dotProduct(Vector3f(0, 1, 0)));
+  EXPECT_LE(Math::RadiansToDegrees(Math::Abs(angle)), 0);
+
+  vec = Math::RandomDeviant(Angle::FromDegrees(0), Vector3f(1, 0, 0));
+  angle = Math::ACos(vec.normalized().dotProduct(Vector3f(1, 0, 0)));
+  EXPECT_LE(Math::RadiansToDegrees(Math::Abs(angle)), 0);
+
+  vec = Math::RandomDeviant(Angle::FromDegrees(0), Vector3f(0, 0, 1));
+  angle = Math::ACos(vec.normalized().dotProduct(Vector3f(0, 0, 1)));
+  EXPECT_LE(Math::RadiansToDegrees(Math::Abs(angle)), 0);
+
+  // perform fixed number of random tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    const Angle angle(Math::DegreesToRadians(random(90.0f)));
+    Vector3f vector(random(), random(), random());
+    vector.normalize();
+
+    // calculate
+    const Vector3f out = Math::RandomDeviant(angle, vector);
+
+    // test
+    const float32 radians = Math::ACos(out.normalized().dotProduct(vector.normalized()));
+
+    // NOTE: do comparison as integers as comparing floating point numbers is tricky here ie no EXPECT_FLOAT_LE etc. so it is possible expected value is just
+    //       a bit greater than the other ie 37.9830 and 37.98302...
+    EXPECT_LE(static_cast<int>(Math::RadiansToDegrees(radians)), static_cast<int>(Math::Abs(angle.degrees())));
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(MathTest, RandomDeviant3D)
+{
+  float32 angle;
+  Vector3f vec;
+
+  // +-0deg
+  vec = Math::RandomDeviant(Angle::FromDegrees(0), Vector3f(0, 1, 0), &Vector3f::UNIT_X);
+  angle = Math::ACos(vec.normalized().dotProduct(Vector3f(0, 1, 0)));
+  EXPECT_LE(Math::RadiansToDegrees(Math::Abs(angle)), 0);
+
+  vec = Math::RandomDeviant(Angle::FromDegrees(0), Vector3f(1, 0, 0) , &Vector3f::UNIT_Y);
+  angle = Math::ACos(vec.normalized().dotProduct(Vector3f(1, 0, 0)));
+  EXPECT_LE(Math::RadiansToDegrees(Math::Abs(angle)), 0);
+
+  vec = Math::RandomDeviant(Angle::FromDegrees(0), Vector3f(0, 0, 1), &Vector3f::UNIT_Z);
+  angle = Math::ACos(vec.normalized().dotProduct(Vector3f(0, 0, 1)));
+  EXPECT_LE(Math::RadiansToDegrees(Math::Abs(angle)), 0);
+
+  // perform fixed number of random tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    const Angle angle(Math::DegreesToRadians(random(90.0f)));
+    Vector3f vector(random(), random(), random());
+    vector.normalize();
+    
+    // generate up vector
+    const Vector3f up = vector.perpendicular().normalized();
+
+    // calculate
+    const Vector3f out = Math::RandomDeviant(angle, vector, &up);
+
+    // test
+    const float32 radians = Math::ACos(out.normalized().dotProduct(vector.normalized()));
+
+    // NOTE: do comparison as integers as comparing floating point numbers is tricky here ie no EXPECT_FLOAT_LE etc. so it is possible expected value is just
+    //       a bit greater than the other ie 37.9830 and 37.98302...
+    EXPECT_LE(static_cast<int>(Math::RadiansToDegrees(radians)), static_cast<int>(Math::Abs(angle.degrees())));
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
