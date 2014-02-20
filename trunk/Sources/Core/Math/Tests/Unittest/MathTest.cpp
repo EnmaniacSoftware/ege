@@ -810,3 +810,14 @@ TEST_F(MathTest, RandomDeviant3D)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(MathTest, ZeroRoundOff)
+{
+  EXPECT_EQ(0, Math::ZeroRoundOff(0.0f));
+  EXPECT_EQ(1, Math::ZeroRoundOff(1.0f));
+  EXPECT_EQ(-1, Math::ZeroRoundOff(-1.0f));
+  EXPECT_NE(0, Math::ZeroRoundOff(Math::EPSILON));
+  EXPECT_NE(0, Math::ZeroRoundOff(-Math::EPSILON));
+  EXPECT_EQ(0, Math::ZeroRoundOff(Math::EPSILON * 0.9f));
+  EXPECT_EQ(0, Math::ZeroRoundOff(-Math::EPSILON * 0.9f));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

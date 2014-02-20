@@ -208,10 +208,10 @@ class Math
     template <typename T>
     static TVector2<T> RandomDeviant(const Angle& angle, const TVector2<T>& vector);
     
-    /*! Calculates greatest common divisor. */
-    static s32 GreatestCommonDivisor(s32 a, s32 b);
-
-    /*! Rounds to zero given value if less than default epsilon. */
+    /*! Rounds to zero given value if less than default epsilon. 
+     *  @param  value Value to be zeroed if close enough to zero.
+     *  @return Returned value. Can be either zero or given value.
+     */
     static float32 ZeroRoundOff(float32 value);
 
     /*! Returns random generator. */
