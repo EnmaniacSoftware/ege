@@ -1,5 +1,6 @@
 #include "TestFramework/Interface/TestBase.h"
 #include <EGEAngle.h>
+#include <EGEMath.h>
 
 EGE_NAMESPACE
 
@@ -59,7 +60,7 @@ TEST_F(AngleTest, Normalize)
 
     // Normalization to [0-2PI]
     Angle angle(radians);
-    angle.normalize();
+    angle.normalize(Math::PI);
 
     Angle normalized = angle.normalized();
 

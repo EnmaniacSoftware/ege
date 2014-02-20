@@ -4,6 +4,7 @@
 #include "EGETypes.h"
 #include "EGEAlignment.h"
 #include "EGERandom.h"
+#include "EGEAngle.h"
 #include "EGEDebug.h"
 #include "Core/Math/Implementation/MatrixTypes.h"
 #include "Core/Math/Implementation/QuaternionTypes.h"
@@ -15,11 +16,6 @@
 
 EGE_NAMESPACE_BEGIN
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T> class TComplex;
-typedef TComplex<float32> Complexf;
-class Angle;
-class Color;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Math
 {

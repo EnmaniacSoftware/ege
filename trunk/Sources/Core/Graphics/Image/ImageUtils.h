@@ -4,6 +4,7 @@
 #include "Core/Graphics/Image/Image.h"
 #include "EGERect.h"
 #include "EGEVector2.h"
+#include "EGEColor.h"
 
 EGE_NAMESPACE_BEGIN
 

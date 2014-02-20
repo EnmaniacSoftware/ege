@@ -97,7 +97,7 @@ void Angle::normalize(float32 center)
 Angle Angle::normalized() const
 {
   Angle angle = *this;
-  angle.normalize();
+  angle.normalize(Math::PI);
   return angle;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

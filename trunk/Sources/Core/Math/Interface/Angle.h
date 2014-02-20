@@ -2,8 +2,6 @@
 #define EGE_CORE_MATH_ANGLE_H
 
 #include "EGETypes.h"
-#include "EGEAngle.h"
-#include "EGEMath.h"
 
 /** Class represents arbitrary angle. The following picture represents angle directions:
   *
@@ -74,12 +72,12 @@ class Angle
     void fromRadians(float32 radians);
     /*! Returns angle in radians. */
     float32 radians() const;
-    /*! Normalizes angle to 2PI interval around center. 
+    /*! Normalizes angle to [-PI..+PI] interval. 
      *  @param center  Center point around which angle is spread. If set to 0, result interval after normalization will be [-PI..+PI].
      *  @note  For normalization resulting in [0..2PI] interval use PI as center point.
      *  @note  Due to numerical inaccuracies intervals are closed on both sides rather than only at one.
      */
-    void normalize(float32 center = Math::PI);
+    void normalize(float32 center = 0.0f);
     /*! Returns normalized angle in [0-2PI) degrees interval. */
     Angle normalized() const;
     /*! Returns angle distance from current angle to given one. */
