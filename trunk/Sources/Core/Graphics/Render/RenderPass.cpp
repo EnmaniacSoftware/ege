@@ -192,7 +192,10 @@ bool RenderPass::operator == (const RenderPass& other) const
       // NOTE: assuptions:
       //       - textures can be compared by pointer
       //       - texture images has same environment modes
-      if ((m_textures[i]->texture() != other.m_textures[i]->texture()) || (m_textures[i]->environmentMode() != other.m_textures[i]->environmentMode()))
+      //       - textues has the same rotation
+      if ((m_textures[i]->texture() != other.m_textures[i]->texture()) || 
+          (m_textures[i]->environmentMode() != other.m_textures[i]->environmentMode()) ||
+          (m_textures[i]->rotationAngle() != other.m_textures[i]->rotationAngle()))
       {
         // different
         result = false;

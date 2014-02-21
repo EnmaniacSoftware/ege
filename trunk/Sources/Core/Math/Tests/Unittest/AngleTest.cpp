@@ -185,3 +185,22 @@ TEST_F(AngleTest, Negation)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(AngleTest, Equality)
+{
+  // same (both normalized)
+  EXPECT_TRUE(Angle(Math::PI) == Angle(Math::PI));
+  EXPECT_FALSE(Angle(Math::PI) != Angle(Math::PI));
+
+  // same (one not normalized)
+  EXPECT_TRUE(Angle(Math::PI) == Angle(Math::PI + Math::TWO_PI));
+  EXPECT_FALSE(Angle(Math::PI) != Angle(Math::PI + Math::TWO_PI));
+  EXPECT_TRUE(Angle(Math::PI) == Angle(Math::PI - Math::TWO_PI));
+  EXPECT_FALSE(Angle(Math::PI) != Angle(Math::PI - Math::TWO_PI));
+
+  // different
+  EXPECT_TRUE(Angle(Math::PI) != Angle(Math::PI + 0.001f));
+  EXPECT_FALSE(Angle(Math::PI) == Angle(Math::PI + 0.001f));
+  EXPECT_TRUE(Angle(Math::PI) != Angle(Math::PI - 0.001f));
+  EXPECT_FALSE(Angle(Math::PI) == Angle(Math::PI - 0.001f));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

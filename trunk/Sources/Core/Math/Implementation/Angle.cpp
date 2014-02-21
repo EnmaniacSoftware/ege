@@ -65,6 +65,19 @@ void Angle::operator = (float32 radians)
   m_radians = radians; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Angle::operator == (const Angle& other) const
+{
+  const Angle normalized1 = normalized();
+  const Angle normalized2 = other.normalized();
+
+  return (0 == Math::ZeroRoundOff((normalized1 - normalized2).radians()));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Angle::operator != (const Angle& other) const
+{
+  return ! operator == (other);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Angle Angle::FromDegrees(float32 degrees)
 {
   Angle angle;

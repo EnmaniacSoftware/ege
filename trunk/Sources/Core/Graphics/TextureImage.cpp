@@ -7,8 +7,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(TextureImage)
 EGE_DEFINE_DELETE_OPERATORS(TextureImage)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureImage::TextureImage(Application* app) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE), 
-                                               m_envMode(EGETexture::EM_MODULATE)
+TextureImage::TextureImage(Application* app) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE)
+                                             , m_envMode(EGETexture::EM_MODULATE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -17,18 +17,19 @@ TextureImage::TextureImage(const TextureImage& textureImage) : Object(textureIma
   *this = textureImage; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureImage::TextureImage(const PTexture2D& texture, Rectf rect) : Object(texture->app(), EGE_OBJECT_UID_TEXTURE_IMAGE), 
-                                                                    m_texture(texture),
-                                                                    m_name(texture->name()),
-                                                                    m_rect(rect),
-                                                                    m_envMode(EGETexture::EM_MODULATE)
+TextureImage::TextureImage(const PTexture2D& texture, Rectf rect) : Object(texture->app(), EGE_OBJECT_UID_TEXTURE_IMAGE)
+                                                                  , m_texture(texture)
+                                                                  , m_name(texture->name())
+                                                                  , m_rect(rect)
+                                                                  , m_envMode(EGETexture::EM_MODULATE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureImage::TextureImage(const TextureImage& texture, const Rectf& rect) : Object(texture.app(), EGE_OBJECT_UID_TEXTURE_IMAGE), 
-                                                                             m_name(texture.name()), 
-                                                                             m_texture(texture.m_texture), 
-                                                                             m_envMode(texture.m_envMode)
+TextureImage::TextureImage(const TextureImage& texture, const Rectf& rect) : Object(texture.app(), EGE_OBJECT_UID_TEXTURE_IMAGE)
+                                                                           , m_name(texture.name())
+                                                                           , m_texture(texture.m_texture)
+                                                                           , m_envMode(texture.m_envMode)
+                                                                           , m_rotationAngle(texture.m_rotationAngle)
 {
   // NOTE: rect is in local space of this object, combine these for final local space coords
   m_rect = texture.m_rect.combine(rect);
@@ -144,11 +145,7 @@ TextureImage& TextureImage::operator = (const TextureImage& other)
 {
   if (this != &other)
   {
-    m_name          = other.m_name;
-    m_texture       = other.m_texture;
-    m_rect          = other.m_rect;
-    m_envMode       = other.m_envMode;
-    m_rotationAngle = m_rotationAngle;
+    copy(&other);
   }
 
   return *this;

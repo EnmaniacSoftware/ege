@@ -52,6 +52,8 @@ class Angle
     bool         operator < (const Angle& other) const;
     bool         operator > (float32 radians) const;
     bool         operator < (float32 radians) const;
+    bool         operator == (const Angle& other) const;
+    bool         operator != (const Angle& other) const;
     Angle        operator - () const;
     void         operator = (float32 radians);
 
