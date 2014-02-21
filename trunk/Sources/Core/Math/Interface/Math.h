@@ -620,6 +620,22 @@ TVector4<T> operator * (const TMatrix4<T>& matrix, const TVector4<T>& vector)
   return Math::Transform(vector, matrix);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TVector3<T> operator * (const TQuaternion<T>& quaternion, const TVector3<T>& vector)
+{
+  // nVidia SDK implementation
+  TVector3<T> uv;
+  TVector3<T> uuv;
+  TVector3<T> qvec(quaternion.x, quaternion.y, quaternion.z);
+
+  uv  = qvec.crossProduct(vector);
+  uuv = qvec.crossProduct(uv);
+  uv  *= (2 * quaternion.w);
+  uuv *= 2;
+
+  return vector + uv + uuv;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 

@@ -33,7 +33,6 @@ class TQuaternion
 
     bool        operator == (const TQuaternion& other) const;
     TQuaternion operator - () const;
-    TVector3<T> operator * (const TVector3<T>& vector) const;
 
   public:
 
@@ -185,22 +184,6 @@ template <typename T>
 TQuaternion<T> TQuaternion<T>::operator - () const
 {
   return TQuaternion(-x, -y, -z, -w);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector3<T> TQuaternion<T>::operator * (const TVector3<T>& vector) const
-{
-  // nVidia SDK implementation
-  TVector3<T> uv;
-  TVector3<T> uuv;
-  TVector3<T> qvec(x, y, z);
-
-  uv  = qvec.crossProduct(vector);
-  uuv = qvec.crossProduct(uv);
-  uv *= (2.0f * w);
-  uuv *= 2.0f;
-
-  return vector + uv + uuv;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
