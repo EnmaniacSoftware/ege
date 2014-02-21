@@ -134,7 +134,7 @@ void Widget::pointerEvent(PPointerData data)
 {
   const Matrix4f& globalMatrix = globalTransformationMatrix();
 
-  Vector4f pos = globalMatrix.translation();
+  Vector2f pos(globalMatrix.translationX(), globalMatrix.translationY());
 
   Rectf rect(pos.x, pos.y, size().x, size().y);
 

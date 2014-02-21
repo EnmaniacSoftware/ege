@@ -3,6 +3,8 @@
 #include "Core/Math/Tests/Unittest/Helpers/VectorHelper.h"
 #include "Core/Math/Tests/Unittest/Helpers/MathHelper.h"
 #include <EGEMatrix.h>
+#include <EGEVector4.h>
+#include <EGEMath.h>
 
 /** Tests are focusing TMatrix4<float32> instantiations. */
 
@@ -271,22 +273,16 @@ TEST_F(Matrix4Test, Translation)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    std::vector<float32> data;
-
     // randomize data
-    data = MatrixHelper::RandomMatrix4();
+    const std::vector<float32> data = MatrixHelper::RandomMatrix4();
 
-    Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
-                    data[14], data[15]);
+    const Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
+                          data[14], data[15]);
     
-    // get current translation values
-    const Vector4f translation = matrix.translation();
-
-    // verify
-    EXPECT_FLOAT_EQ(translation.x, matrix.data[12]);
-    EXPECT_FLOAT_EQ(translation.y, matrix.data[13]);
-    EXPECT_FLOAT_EQ(translation.z, matrix.data[14]);
-    EXPECT_FLOAT_EQ(translation.w, matrix.data[15]);
+    // test
+    EXPECT_FLOAT_EQ(matrix.data[12], matrix.translationX());
+    EXPECT_FLOAT_EQ(matrix.data[13], matrix.translationY());
+    EXPECT_FLOAT_EQ(matrix.data[14], matrix.translationZ());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

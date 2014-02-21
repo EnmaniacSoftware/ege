@@ -230,7 +230,7 @@ void UIScrollView::pointerEvent(PPointerData data)
 {
   // check if inside widget
   const Matrix4f& globalMatrix = globalTransformationMatrix();
-  Rectf rect(globalMatrix.translation().x, globalMatrix.translation().y, size().x, size().y);
+  Rectf rect(globalMatrix.translationX(), globalMatrix.translationY(), size().x, size().y);
 
   bool inside = rect.contains(static_cast<float32>(data->x()), static_cast<float32>(data->y()));
   if (!inside)

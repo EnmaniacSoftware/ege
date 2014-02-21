@@ -90,7 +90,9 @@ void UIScrollablePageView::addForRendering(IRenderer* renderer, const Matrix4f& 
   contentMatrix = transform.multiply(contentMatrix);
 
   // determine clip rectangle for entire widget
-  pos = transform.multiply(m_physics.transformationMatrix()).translation();
+  Matrix4f combined = transform.multiply(m_physics.transformationMatrix());
+
+  pos = Vector4f(combined.translationX(), combined.translationY(), combined.translationZ());
   Rectf clipRect(pos.x, pos.y, size().x, size().y);
 
   // render objects
@@ -102,7 +104,7 @@ void UIScrollablePageView::addForRendering(IRenderer* renderer, const Matrix4f& 
 
     // apply page offset to content matrix
     Matrix4f matrix = contentMatrix;
-    matrix.setTranslation(matrix.translation().x + i * pageSize().x, matrix.translation().y, matrix.translation().z);
+    matrix.setTranslation(matrix.translationX() + i * pageSize().x, matrix.translationY(), matrix.translationZ());
 
     for (ObjectsList::const_iterator it = list.begin(); it != list.end(); ++it)
     {

@@ -115,7 +115,8 @@ void UIScrollableView::addForRendering(IRenderer* renderer, const Matrix4f& tran
   contentMatrix = transform.multiply(contentMatrix);
 
   // cache position
-  pos = transform.multiply(m_physics.transformationMatrix()).translation();
+  Matrix4f combined = transform.multiply(m_physics.transformationMatrix());
+  pos = Vector4f(combined.translationX(), combined.translationY(), combined.translationZ());
 
   // render all objects
   for (ObjectsList::iterator it = m_objects.begin(); it != m_objects.end(); ++it)

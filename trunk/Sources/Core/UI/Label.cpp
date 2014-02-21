@@ -63,7 +63,7 @@ void Label::addForRendering(IRenderer* renderer, const Matrix4f& transform)
     textRect = Math::Align(textRect, labelRect, ALIGN_TOP_LEFT, m_textOverlay->textAlignment());
 
     Matrix4f matrix = physics().transformationMatrix();
-    Vector4f pos = matrix.translation();
+    Vector2f pos(matrix.translationX(), matrix.translationY());
     pos.x += textRect.x;
     pos.y += textRect.y;
     matrix.setTranslation(pos.x, pos.y, 0);

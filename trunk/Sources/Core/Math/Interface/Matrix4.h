@@ -12,7 +12,6 @@
 
 #include "EGETypes.h"
 #include "EGEDebug.h"
-#include "EGEVector4.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -23,9 +22,9 @@ class TMatrix4
 	public:
 
     TMatrix4();
+		explicit TMatrix4(const T data[16]);
 		TMatrix4(T m00, T m01, T m02, T m03, T m10, T m11, T m12, T m13, T m20, T m21, T m22, T m23, T m30, T m31, T m32, T m33);
 		TMatrix4(const T column0[4], const T column1[4], const T column2[4], const T column3[4]);
-		explicit TMatrix4(const T data[16]);
 		TMatrix4(const TMatrix4& matrix);
 
   operators:
@@ -35,7 +34,6 @@ class TMatrix4
 	  TMatrix4&   operator *= (const TMatrix4& matrix);
 		T*          operator [] (u32 column);
     const T*    operator [] (u32 column) const;
-		TVector4<T> operator  * (const TVector4<T>& vector) const;
 
   public:
 
@@ -52,8 +50,12 @@ class TMatrix4
     void setScale(T x, T y, T z);
     /*! Sets translation part of the matrix. */
     void setTranslation(T x, T y, T z);
-    /*! Returns translation vector. */
-    TVector4<T> translation() const;
+    /*! Returns translation along X axis component value. */
+    T translationX() const;
+    /*! Returns translation along Y axis component value. */
+    T translationY() const;
+    /*! Returns translation along Z axis component value. */
+    T translationZ() const;
 
   public:
 
@@ -131,7 +133,7 @@ TMatrix4<T>::TMatrix4(const TMatrix4<T>& matrix)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TMatrix4<T>& TMatrix4<T>::operator+=(const TMatrix4<T>& matrix)
+TMatrix4<T>& TMatrix4<T>::operator += (const TMatrix4<T>& matrix)
 {
   for (register u32 entry = 0; entry < 16; ++entry)
   {
@@ -142,7 +144,7 @@ TMatrix4<T>& TMatrix4<T>::operator+=(const TMatrix4<T>& matrix)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TMatrix4<T>& TMatrix4<T>::operator-=(const TMatrix4<T>& matrix)
+TMatrix4<T>& TMatrix4<T>::operator -= (const TMatrix4<T>& matrix)
 {
   for (register u32 entry = 0; entry < 16; ++entry)
   {
@@ -153,33 +155,24 @@ TMatrix4<T>& TMatrix4<T>::operator-=(const TMatrix4<T>& matrix)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TMatrix4<T>& TMatrix4<T>::operator*=(const TMatrix4<T>& matrix)
+TMatrix4<T>& TMatrix4<T>::operator *= (const TMatrix4<T>& matrix)
 {
   *this = multiply(matrix);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-T* TMatrix4<T>::operator[](u32 column)
+T* TMatrix4<T>::operator [] (u32 column)
 {
   EGE_ASSERT((4 > column) && (0 <= column));
   return &data[column * 4];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-const T* TMatrix4<T>::operator[](u32 column) const
+const T* TMatrix4<T>::operator [] (u32 column) const
 {
   EGE_ASSERT((4 > column) && (0 <= column));
   return &data[column * 4];
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TVector4<T> TMatrix4<T>::operator *(const TVector4<T>& vector) const
-{
-  return TVector4<T>(data[0] * vector.x + data[4] * vector.y + data[8]  * vector.z + data[12] * vector.w, 
-                     data[1] * vector.x + data[5] * vector.y + data[9]  * vector.z + data[13] * vector.w,
-                     data[2] * vector.x + data[6] * vector.y + data[10] * vector.z + data[14] * vector.w,
-                     data[3] * vector.x + data[7] * vector.y + data[11] * vector.z + data[15] * vector.w);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
@@ -245,9 +238,21 @@ void TMatrix4<T>::setTranslation(T x, T y, T z)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TVector4<T> TMatrix4<T>::translation() const
+T TMatrix4<T>::translationX() const
 {
-  return TVector4<T>(data[12], data[13], data[14], data[15]);
+  return data[12];
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T TMatrix4<T>::translationY() const
+{
+  return data[13];
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T TMatrix4<T>::translationZ() const
+{
+  return data[14];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

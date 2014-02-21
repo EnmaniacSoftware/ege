@@ -7,6 +7,7 @@
 #include <EGEQuaternion.h>
 #include <EGEMatrix.h>
 #include <EGEVector2.h>
+#include <EGEVector4.h>
 #include <EGEAngle.h>
 #include <EGEAlignment.h>
 #include <EGERect.h>
