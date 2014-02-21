@@ -39,6 +39,10 @@ class TestBase : public ::testing::Test
      *  @note Returned number is in [0.0001f,scale] interval.
      */
     float32 randomPositive(float32 scale = 1.0f) const;
+    /*! Returns random rangle between [0-2PI]. 
+     *  @return Generated random angle.
+     */
+    float32 randomAngle() const;
 
     /*! Returns floating point epsilon value. */
     float32 epsilon() const;

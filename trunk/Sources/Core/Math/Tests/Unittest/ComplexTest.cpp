@@ -1,6 +1,5 @@
 #include "TestFramework/Interface/TestBase.h"
 #include <EGEComplex.h>
-#include <EGEAngle.h>
 
 /** Tests are focusing TComplex<float32> instantiations. */
 
@@ -124,9 +123,9 @@ TEST_F(ComplexTest, SetValue)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const float32 x = random();
-    const float32 y = random();
-    const Angle angle = random();
+    const float32 x       = random();
+    const float32 y       = random();
+    const float32 radians = randomAngle();
 
     // setting via constructors
     const Complexf complex1(x, y);
@@ -137,13 +136,9 @@ TEST_F(ComplexTest, SetValue)
     EXPECT_FLOAT_EQ(complex1.x, complex2.x);
     EXPECT_FLOAT_EQ(complex1.y, complex2.y);
 
-    // setting by setters
-    const Complexf complex3(angle);
-    Complexf complex4;
-    complex4.create(angle);
-
-    EXPECT_FLOAT_EQ(complex3.x, complex4.x);
-    EXPECT_FLOAT_EQ(complex3.y, complex4.y);
+    const Complexf complex3(radians);
+    EXPECT_FLOAT_EQ(cosf(radians), complex3.x);
+    EXPECT_FLOAT_EQ(sinf(radians), complex3.y);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -208,20 +203,6 @@ TEST_F(ComplexTest, DotProduct)
 
     // compare dot products of v1 * v2 and v2 * v1
     EXPECT_FLOAT_EQ(value2.dotProduct(value1), value1.dotProduct(value2));
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(ComplexTest, ToAngle)
-{
-  // perform fixed number of tests
-  for (int i = 0; i < KRepetitionsCount; ++i)
-  {
-    const Angle angle(random());
-     
-    const Complexf value(angle);
-
-    // compare
-    EXPECT_FLOAT_EQ(angle.radians(), value.angle().radians());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

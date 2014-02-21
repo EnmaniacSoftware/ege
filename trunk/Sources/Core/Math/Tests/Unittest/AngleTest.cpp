@@ -56,7 +56,7 @@ TEST_F(AngleTest, Normalize)
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
     // random angle in [0-2PI] interval
-    const float32 radians = random(Math::PI) + Math::PI;
+    const float32 radians = randomAngle();
 
     // Normalization to [0-2PI]
     Angle angle(radians);

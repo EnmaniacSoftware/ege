@@ -9,7 +9,6 @@
 
 #include "EGETypes.h"
 #include "Core/Math/Interface/Math.h"
-#include "Core/Math/Interface/Angle.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -21,7 +20,7 @@ class TComplex
 
     TComplex();
     TComplex(T x, T y);
-    TComplex(const Angle& angle);
+    TComplex(const T& radians);
     TComplex(const TComplex& other);
 
   operators:
@@ -30,9 +29,6 @@ class TComplex
     TComplex& operator  = (const TComplex& other);
 
   public:
-
-    /*! Creates number from given angle. */
-    void create(const Angle& angle);
 
     /*! Returns length. */
     T length() const;
@@ -44,9 +40,6 @@ class TComplex
 
     /*! Returns dot product between current and given number. */
     T dotProduct(const TComplex& other) const;
-
-    /*! Returns angle representation. */
-    Angle angle() const;
 
     /*! Performs spherical linear interpolation between this and given complex numbers. 
      *  @param  to        Complex number to which interpolation is to be performed.
@@ -79,9 +72,10 @@ TComplex<T>::TComplex(T x, T y) : x(x)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TComplex<T>::TComplex(const Angle& angle)
+TComplex<T>::TComplex(const T& radians)
 {
-  create(angle);
+  x = Math::Cos(radians);
+  y = Math::Sin(radians);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
@@ -145,19 +139,12 @@ T TComplex<T>::dotProduct(const TComplex<T>& other) const
 {
   return (x * other.x) + (y * other.y);
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-void TComplex<T>::create(const Angle& angle)
-{
-  x = Math::Cos(angle.radians());
-  y = Math::Sin(angle.radians());
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-Angle TComplex<T>::angle() const
-{
-  return Angle(Math::ATan2(y, x));
-}
+////--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//template <typename T>
+//Angle TComplex<T>::angle() const
+//{
+//  return Angle(Math::ATan2(y, x));
+//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 TComplex<T> TComplex<T>::slerp(const TComplex<T>& to, float32 parameter) const
