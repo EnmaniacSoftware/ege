@@ -24,11 +24,6 @@ class QuaternionTest : public TestBase
      *  @return Calculated quaternion.
      */
     std::vector<float32> calculate(float32 axisX, float32 axisY, float32 axisZ, float32 radians) const;
-    /*! Calculates data from given matrix. 
-     *  @param  matridData  Matrix data.
-     *  @return Calculated quaternion.
-     */
-    std::vector<float32> calculate(const std::vector<float32>& matrixData) const;
     /*! Normalizes quaternion data. 
      *  @param  quaternion  Quaternion to normalize.
      *  @return Normalized quaternion.
@@ -93,56 +88,6 @@ std::vector<float32> QuaternionTest::calculate(float32 axisX, float32 axisY, flo
 	out[1] = axisY * sin;
 	out[2] = axisZ * sin;
 	out[3] = cosf(halfAngle);
-
-  return out;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-std::vector<float32> QuaternionTest::calculate(const std::vector<float32>& matrixData) const
-{
-  std::vector<float32> out = QuaternionHelper::Identity();
-
-  // Algorithm in Ken Shoemake's article in 1987 SIGGRAPH course notes
-  // article "Quaternion Calculus and Fast Animation".
-
-  float32 trace = matrixData[0] + matrixData[5] + matrixData[10];
-  float32 root;
-
-  if (0 < trace)
-  {
-    // |w| > 1/2, may as well choose w > 1/2
-    root = sqrtf(trace + 1.0f);  // 2w
-    out[3] = 0.5f * root;
-    root = 0.5f / root;  // 1/(4w)
-    out[0] = (matrixData[9] - matrixData[6]) * root;
-    out[1] = (matrixData[2] - matrixData[8]) * root;
-    out[2] = (matrixData[4] - matrixData[1]) * root;
-  }
-  else
-  {
-    // |w| <= 1/2
-    static size_t s_iNext[3] = { 1, 2, 0 };
-
-    size_t i = 0;
-    if (matrixData[5] > matrixData[0])
-    {
-      i = 1;
-    }
-    if (matrixData[10] > matrixData[i * 4 + i])
-    {
-      i = 2;
-    }
-    
-    size_t j = s_iNext[i];
-    size_t k = s_iNext[j];
-
-    root = sqrtf(matrixData[i * 4 + i] - matrixData[j * 4 + j] - matrixData[k * 4 + k] + 1.0f);
-    float32* apkQuat[3] = { &out[0], &out[1], &out[2] };
-    *apkQuat[i] = 0.5f * root;
-    root = 0.5f / root;
-    out[3] = (matrixData[k * 4 + j] - matrixData[j * 4 + k]) * root;
-    *apkQuat[j] = (matrixData[j * 4 + i] + matrixData[i * 4 + j]) * root;
-    *apkQuat[k] = (matrixData[k * 4 + i] + matrixData[i * 4 + k]) * root;
-  }
 
   return out;
 }
@@ -318,19 +263,6 @@ TEST_F(QuaternionTest, SetValue)
     EXPECT_FLOAT_EQ(out[2], quaternion3.z);
     EXPECT_FLOAT_EQ(out[3], quaternion3.w);
 
-    // 4th
-    std::vector<float32> data = MatrixHelper::RandomMatrix4();
-    const Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
-                          data[14], data[15]);
-
-    out = calculate(data);
-    Quaternionf quaternion4(matrix);
-
-    EXPECT_FLOAT_EQ(out[0], quaternion4.x);
-    EXPECT_FLOAT_EQ(out[1], quaternion4.y);
-    EXPECT_FLOAT_EQ(out[2], quaternion4.z);
-    EXPECT_FLOAT_EQ(out[3], quaternion4.w);
-
     // setting by setters
     out = calculate(axisX, axisY, axisZ, radians);
     Quaternionf quaternion5;
@@ -386,37 +318,6 @@ TEST_F(QuaternionTest, DISABLED_ConvertToVector)
     EGE_EXPECT_FLOAT_EQ(axisY, axis.y, epsilon());
     EGE_EXPECT_FLOAT_EQ(axisZ, axis.z, epsilon());
     EGE_EXPECT_FLOAT_EQ(radians, angle.radians(), epsilon());
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-// TAGE - investigate why it does not work
-TEST_F(QuaternionTest, DISABLED_ConvertToMatrix)
-{
-  // perform fixed number of tests
-  for (int i = 0; i < KRepetitionsCount; ++i)
-  {
-    // ...and to Matrix4
-    std::vector<float32> data = MatrixHelper::RandomMatrix4();
-    const Matrix4f matrix(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], 
-                          data[14], data[15]);
-
-    const Quaternionf quaterion2(matrix);
-
-    Matrix4f matrixOut;
-    quaterion2.convertTo(matrixOut);
-
-    // NOTE: only test 3x3 rotational matrix
-    EGE_EXPECT_FLOAT_EQ(data[0], matrixOut.data[0], epsilon());
-    EGE_EXPECT_FLOAT_EQ(data[1], matrixOut.data[1], epsilon());
-    EGE_EXPECT_FLOAT_EQ(data[2], matrixOut.data[2], epsilon());
-
-    EGE_EXPECT_FLOAT_EQ(data[4], matrixOut.data[4], epsilon());
-    EGE_EXPECT_FLOAT_EQ(data[5], matrixOut.data[5], epsilon());
-    EGE_EXPECT_FLOAT_EQ(data[6], matrixOut.data[6], epsilon());
-
-    EGE_EXPECT_FLOAT_EQ(data[8], matrixOut.data[8], epsilon());
-    EGE_EXPECT_FLOAT_EQ(data[9], matrixOut.data[9], epsilon());
-    EGE_EXPECT_FLOAT_EQ(data[10], matrixOut.data[10], epsilon());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

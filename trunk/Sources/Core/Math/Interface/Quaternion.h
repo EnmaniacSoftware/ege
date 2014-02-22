@@ -12,7 +12,6 @@
 #include "EGETypes.h"
 #include "Core/Math/Interface/Math.h"
 #include "Core/Math/Interface/Vector3.h"
-#include "Core/Math/Interface/Matrix4.h"
 #include "Core/Math/Interface/Angle.h"
 
 EGE_NAMESPACE_BEGIN
@@ -27,7 +26,6 @@ class TQuaternion
     TQuaternion(T x, T y, T z, T w);
     TQuaternion(const TQuaternion& other);
     TQuaternion(const TVector3<T>& axis, const Angle& angle);
-    TQuaternion(const TMatrix4<T>& matrix);
 
   operators:
 
@@ -41,8 +39,6 @@ class TQuaternion
 
     /*! Converts into rotation axis and angle. */
     void convertTo(TVector3<T>& axis, Angle& angle) const;
-    /*! Converts into rotation matrix. */
-    void convertTo(TMatrix4<T>& matrix) const;
 
     /*! Returns length. */
     T length() const;
@@ -122,59 +118,6 @@ TQuaternion<T>::TQuaternion(const TVector3<T>& axis, const Angle& angle)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TQuaternion<T>::TQuaternion(const TMatrix4<T>& matrix)
-{
-  // Algorithm in Ken Shoemake's article in 1987 SIGGRAPH course notes
-  // article "Quaternion Calculus and Fast Animation".
-
-  float32 trace = matrix[0][0] + matrix[1][1] + matrix[2][2];
-  float32 root;
-
-  if (0 < trace)
-  {
-    // |w| > 1/2, may as well choose w > 1/2
-    root = Math::Sqrt(trace + 1.0f);  // 2w
-
-    w = 0.5f * root;
-    root = 0.5f / root;  // 1/(4w)
-    x = (matrix[2][1] - matrix[1][2]) * root;
-    y = (matrix[0][2] - matrix[2][0]) * root;
-    z = (matrix[1][0] - matrix[0][1]) * root;
-  }
-  else
-  {
-    static s32 KIndexing[3] = { 1, 2, 0 };
-
-    // |w| <= 1/2
-    s32 i = 0;
-    if (matrix[1][1] > matrix[0][0])
-    {
-      i = 1;
-    }
-
-    if (matrix[2][2] > matrix[i][i])
-    {
-      i = 2;
-    }
-
-    s32 j = KIndexing[i];
-    s32 k = KIndexing[j];
-
-    root = Math::Sqrt(matrix[i][i]- matrix[j][j] - matrix[k][k] + 1.0f);
-
-    float32* apkQuat[3] = { &x, &y, &z };
-
-    *apkQuat[i] = 0.5f * root;
-    root = 0.5f / root;
-
-    w = (matrix[k][j] - matrix[j][k]) * root;
-    
-    *apkQuat[j] = (matrix[j][i] + matrix[i][j]) * root;
-    *apkQuat[k] = (matrix[k][i] + matrix[i][k]) * root;
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
 bool TQuaternion<T>::operator == (const TQuaternion<T>& other) const
 {
   return (x == other.x) && (y == other.y) && (z == other.z) && (w == other.w);
@@ -232,25 +175,6 @@ void TQuaternion<T>::convertTo(TVector3<T>& axis, Angle& angle) const
 
     angle.fromRadians(0);
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-void TQuaternion<T>::convertTo(TMatrix4<T>& matrix) const
-{
-  // first column
-	matrix[0][0] = 1.0f - 2.0f * (y * y + z * z); 
-	matrix[0][1] = 2.0f * (x * y - z * w);
-	matrix[0][2] = 2.0f * (x * z + y * w);
-
-	// second column
-	matrix[1][0] = 2.0f * (x * y + z * w);  
-	matrix[1][1] = 1.0f - 2.0f * (x * x + z * z); 
-	matrix[1][2] = 2.0f * (z * y - x * w);  
-
-	// third column
-	matrix[2][0] = 2.0f * (x * z - y * w);
-	matrix[2][1] = 2.0f * (y * z + x * w);
-	matrix[2][2] = 1.0f - 2.0f * (x * x + y * y);  
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

@@ -42,6 +42,11 @@ class MathTest : public TestBase
      */
     std::vector<float32> createMatrix(const std::vector<float32>& translation, const std::vector<float32>& scale,  
                                       const std::vector<float32>& orientation) const;
+    /*! Creates quaternion from given rotation matix.
+     *  @param  matrix  Rotation 4x4 matrix.
+     *  @return Resulting quaternion.
+     */
+    std::vector<float32> createQuaternion(const std::vector<float32>& matrix) const;
     /*! Aligns given point with specified alignment around 'virtual frame' of a given size to new alignment.
       * @param  point     Point to be realigned.
       * @param  frameSize Size of the 'virtual frame' point is attached to.
@@ -141,6 +146,61 @@ std::vector<float32> MathTest::createMatrix(const std::vector<float32>& translat
   std::vector<float32> matrix = MatrixHelper::Multiply(matrixTR, scaleMatrix);
 
   return matrix;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+std::vector<float32> MathTest::createQuaternion(const std::vector<float32>& matrix) const
+{
+  std::vector<float32> out = QuaternionHelper::Identity();
+
+  float32 trace = matrix[0] + matrix[5] + matrix[10];
+  float32 root;
+
+  if (0 < trace)
+  {
+    // |w| > 1/2, may as well choose w > 1/2
+    root = sqrtf(trace + 1);  // 2w
+
+    out[3] = 0.5f * root;
+    
+    root = 0.5f / root;  // 1/(4w)
+    
+    out[0] = (matrix[9] - matrix[6]) * root;
+    out[1] = (matrix[2] - matrix[8]) * root;
+    out[2] = (matrix[4] - matrix[1]) * root;
+  }
+  else
+  {
+    static s32 KIndexing[3] = { 1, 2, 0 };
+
+    // |w| <= 1/2
+    s32 i = 0;
+    if (matrix[5] > matrix[0])
+    {
+      i = 1;
+    }
+
+    if (matrix[10] > matrix[i * 4 + i])
+    {
+      i = 2;
+    }
+
+    s32 j = KIndexing[i];
+    s32 k = KIndexing[j];
+
+    root = Math::Sqrt(matrix[i * 4 + i]- matrix[j * 4 +  j] - matrix[k * 4 + k] + 1);
+
+    float32* apkQuat[3] = { &out[0], &out[1], &out[2] };
+
+    *apkQuat[i] = 0.5f * root;
+    root = 0.5f / root;
+
+    out[3] = (matrix[k * 4 + j] - matrix[j * 4 + k]) * root;
+    
+    *apkQuat[j] = (matrix[j * 4 + i] + matrix[i * 4 + j]) * root;
+    *apkQuat[k] = (matrix[k * 4 + i] + matrix[i * 4 + k]) * root;
+  }
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 std::vector<float32> MathTest::alignPoint(const std::vector<float32>& point, const std::vector<float32>& frameSize, Alignment pointAlignment, 
@@ -585,6 +645,29 @@ TEST_F(MathTest, CreateMatrix)
                                                Vector4f(scaleData[0], scaleData[1], scaleData[2], scaleData[3]),
                                                Quaternionf(orientationData[0], orientationData[1], orientationData[2], orientationData[3]));
     EXPECT_TRUE(MatrixHelper::AreEqual(matrixData, matrix.data));
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(MathTest, CreateQuaternion)
+{
+  // perform fixed number of tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    const std::vector<float32> matrixData = MatrixHelper::RandomMatrix4();
+
+    // calculate reference value
+    const std::vector<float32> quaternionData = createQuaternion(matrixData);
+
+    // calculte actual value
+    const Matrix4f matrix(matrixData[0], matrixData[1], matrixData[2], matrixData[3], matrixData[4], matrixData[5], matrixData[6], matrixData[7], matrixData[8], 
+                          matrixData[9], matrixData[10], matrixData[11], matrixData[12], matrixData[13], matrixData[14], matrixData[15]);
+
+    const Quaternionf quaternion = Math::CreateQuaternion(matrix);
+
+    EXPECT_FLOAT_EQ(quaternionData[0], quaternion.x);
+    EXPECT_FLOAT_EQ(quaternionData[1], quaternion.y);
+    EXPECT_FLOAT_EQ(quaternionData[2], quaternion.z);
+    EXPECT_FLOAT_EQ(quaternionData[3], quaternion.w);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

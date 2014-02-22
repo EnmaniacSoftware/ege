@@ -144,6 +144,13 @@ class Math
      */
     template <typename T>
     static TVector4<T> Transform(const TVector4<T>& vector, const TMatrix4<T>& matrix);
+    /*! Transforms vector by quaternion. 
+     *  @param  vector      Vector to be tranformed.
+     *  @param  quaternion  Transformation quaternion.
+     *  @return Transformed (rotated) vector.
+     */
+    template <typename T>
+    static TVector3<T> Transform(const TVector3<T>& vector, const TQuaternion<T>& quaternion);
 
     /*! Creates matrix from translation, scale vectors and rotation quaternion. 
      *  @param  translation Translation vector.
@@ -153,6 +160,12 @@ class Math
      */
     template <typename T>
     static TMatrix4<T> CreateMatrix(const TVector4<T>& translation, const TVector4<T>& scale, const TQuaternion<T>& orientation);
+    /*! Creates quaternion from given rotation matrix. 
+     *  @param  matrix  Rotation matrix.
+     *  @return Resulting quaternion.
+     */
+    template <typename T>
+    static TQuaternion<T> CreateQuaternion(const TMatrix4<T>& matrix);
 
     /*! Performs linear interpolation between given scalars. 
      *  @param  from First (start) scalar.
@@ -387,6 +400,22 @@ TVector4<T> Math::Transform(const TVector4<T>& vector, const TMatrix4<T>& matrix
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
+TVector3<T> Math::Transform(const TVector3<T>& vector, const TQuaternion<T>& quaternion)
+{
+  // nVidia SDK implementation
+  TVector3<T> uv;
+  TVector3<T> uuv;
+  TVector3<T> qvec(quaternion.x, quaternion.y, quaternion.z);
+
+  uv  = qvec.crossProduct(vector);
+  uuv = qvec.crossProduct(uv);
+  uv  *= (2 * quaternion.w);
+  uuv *= 2;
+
+  return vector + uv + uuv;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
 TMatrix4<T> Math::CreateMatrix(const TVector4<T>& translation, const TVector4<T>& scale, const TQuaternion<T>& orientation)
 {
   // Ordering:
@@ -408,6 +437,65 @@ TMatrix4<T> Math::CreateMatrix(const TVector4<T>& translation, const TVector4<T>
   matrix.data[15] = 1;
 
   return matrix;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TQuaternion<T> Math::CreateQuaternion(const TMatrix4<T>& matrix)
+{
+  TQuaternion<T> out;
+
+  // Algorithm in Ken Shoemake's article in 1987 SIGGRAPH course notes
+  // article "Quaternion Calculus and Fast Animation".
+
+  T trace = matrix[0][0] + matrix[1][1] + matrix[2][2];
+  T root;
+
+  if (0 < trace)
+  {
+    // |w| > 1/2, may as well choose w > 1/2
+    root = Math::Sqrt(trace + 1);  // 2w
+
+    out.w = static_cast<T>(0.5) * root;
+    
+    root = static_cast<T>(0.5) / root;  // 1/(4w)
+    
+    out.x = (matrix[2][1] - matrix[1][2]) * root;
+    out.y = (matrix[0][2] - matrix[2][0]) * root;
+    out.z = (matrix[1][0] - matrix[0][1]) * root;
+  }
+  else
+  {
+    static s32 KIndexing[3] = { 1, 2, 0 };
+
+    // |w| <= 1/2
+    s32 i = 0;
+    if (matrix[1][1] > matrix[0][0])
+    {
+      i = 1;
+    }
+
+    if (matrix[2][2] > matrix[i][i])
+    {
+      i = 2;
+    }
+
+    s32 j = KIndexing[i];
+    s32 k = KIndexing[j];
+
+    root = Math::Sqrt(matrix[i][i]- matrix[j][j] - matrix[k][k] + 1);
+
+    T* apkQuat[3] = { &out.x, &out.y, &out.z };
+
+    *apkQuat[i] = static_cast<T>(0.5) * root;
+    root = static_cast<T>(0.5) / root;
+
+    out.w = (matrix[k][j] - matrix[j][k]) * root;
+    
+    *apkQuat[j] = (matrix[j][i] + matrix[i][j]) * root;
+    *apkQuat[k] = (matrix[k][i] + matrix[i][k]) * root;
+  }
+
+  return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
@@ -623,17 +711,7 @@ TVector4<T> operator * (const TMatrix4<T>& matrix, const TVector4<T>& vector)
 template <typename T>
 TVector3<T> operator * (const TQuaternion<T>& quaternion, const TVector3<T>& vector)
 {
-  // nVidia SDK implementation
-  TVector3<T> uv;
-  TVector3<T> uuv;
-  TVector3<T> qvec(quaternion.x, quaternion.y, quaternion.z);
-
-  uv  = qvec.crossProduct(vector);
-  uuv = qvec.crossProduct(uv);
-  uv  *= (2 * quaternion.w);
-  uuv *= 2;
-
-  return vector + uv + uuv;
+  return Math::Transform(vector, quaternion);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
