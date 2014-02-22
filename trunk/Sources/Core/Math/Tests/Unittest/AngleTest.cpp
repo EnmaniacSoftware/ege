@@ -99,7 +99,7 @@ TEST_F(AngleTest, LessThan)
     Angle angle1(radians);
     Angle angle2(radians + diff);
 
-    EXPECT_TRUE(angle1 < angle2);
+    EXPECT_TRUE(angle1 < angle2) << angle1.radians() << angle2.radians();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ TEST_F(AngleTest, GreaterThan)
     Angle angle1(radians);
     Angle angle2(radians + diff);
 
-    EXPECT_TRUE(angle2 > angle1);
+    EXPECT_TRUE(angle2 > angle1) << angle1.radians() << angle2.radians();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

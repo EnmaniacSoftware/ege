@@ -15,6 +15,10 @@ class VectorHelper
      *  @return Randomized 2D vector.
      */
     static std::vector<float32> RandomVector2Data();
+    /*! Generates random 3D vector data. 
+     *  @return Randomized 3D vector.
+     */
+    static std::vector<float32> RandomVector3Data();
     /*! Generates random 4D vector data. 
      *  @return Randomized 4D vector.
      */

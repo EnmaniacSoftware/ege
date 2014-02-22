@@ -10,6 +10,11 @@ std::vector<float32> VectorHelper::RandomVector2Data()
   return GeneratorHelper::RandomData(2);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+std::vector<float32> VectorHelper::RandomVector3Data()
+{
+  return GeneratorHelper::RandomData(3);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 std::vector<float32> VectorHelper::RandomVector4Data()
 {
   return GeneratorHelper::RandomData(4);

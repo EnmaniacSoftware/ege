@@ -381,8 +381,7 @@ bool ParticleEmitter::addForRendering(IRenderer* renderer, const Matrix4f& trans
           }
           else
           {
-            Quaternionf quat;
-            quat.create(look, particleData.spin);
+            const Quaternionf quat = Math::CreateQuaternion(look, particleData.spin);
           
             // take rotation into account
             point0 = particleData.position + quat * ((-right - up) * halfSize);

@@ -136,6 +136,13 @@ class Math
      */
     template <typename T>
     static void Convert(TMatrix4<T>& matrix, const TQuaternion<T>& quaternion);
+    /*! Converts quaternion to rotation axis and angle. 
+     *  @param  axis        Rotation axis.
+     *  @param  angle       Rotation angle around axis.
+     *  @param  quaternion  Quaternion being converted.
+     */
+    template <typename T>
+    static void Convert(TVector3<T>& axis, Angle& angle, const TQuaternion<T>& quaternion);
 
     /*! Transforms vector by matrix. 
      *  @param  vector  Vector to be tranformed.
@@ -166,6 +173,14 @@ class Math
      */
     template <typename T>
     static TQuaternion<T> CreateQuaternion(const TMatrix4<T>& matrix);
+    /*! Creates quaternion from given axis and angle. 
+     *  @param  axis  Rotation axis.
+     *  @param  angle Rotation around axis.
+     *  @return Resulting quaternion.
+     *  @note Axis needs to be normalized.
+     */
+    template <typename T>
+    static TQuaternion<T> CreateQuaternion(const TVector3<T>& axis, const Angle& angle);
 
     /*! Performs linear interpolation between given scalars. 
      *  @param  from First (start) scalar.
@@ -387,6 +402,33 @@ void Math::Convert(TMatrix4<T>& matrix, const TQuaternion<T>& quaternion)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
+void Math::Convert(TVector3<T>& axis, Angle& angle, const TQuaternion<T>& quaternion)
+{
+  // calculate inverse length of imaginary axes
+  const T invLength = 1 / (quaternion.x * quaternion.x + quaternion.y * quaternion.y + quaternion.z * quaternion.z);
+
+  // check if length is greater than error thershold
+  if (Math::EPSILON < invLength)
+  {
+    // calculate axes
+    axis.x = quaternion.x * invLength;
+    axis.y = quaternion.y * invLength;
+    axis.z = quaternion.z * invLength;
+
+    angle.fromRadians(2 * Math::ACos(quaternion.w));
+  }
+  else
+  {
+    // length is 0 or errorous
+    axis.x = 0;
+    axis.y = 0;
+    axis.z = 0;
+
+    angle.fromRadians(0);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
 TVector4<T> Math::Transform(const TVector4<T>& vector, const TMatrix4<T>& matrix)
 {
   TVector4<T> result;
@@ -494,6 +536,31 @@ TQuaternion<T> Math::CreateQuaternion(const TMatrix4<T>& matrix)
     *apkQuat[j] = (matrix[j][i] + matrix[i][j]) * root;
     *apkQuat[k] = (matrix[k][i] + matrix[i][k]) * root;
   }
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+TQuaternion<T> Math::CreateQuaternion(const TVector3<T>& axis, const Angle& angle)
+{
+  EGE_ASSERT(Math::EPSILON > (1 - axis.lengthSquared()));
+
+  TQuaternion<T> out;
+
+  // The quaternion representing the rotation is
+  //   q = cos(A / 2) + sin(A / 2) * (x * i + y * j + z * k)
+
+  // get half angle
+  T halfAngle = angle.radians() * static_cast<T>(0.5);
+
+  // calculate the sin(halfAngle) once for optimization
+	T sin = Math::Sin(halfAngle);
+		
+	// calculate the x, y and z of the quaternion
+	out.x = axis.x * sin;
+	out.y = axis.y * sin;
+	out.z = axis.z * sin;
+	out.w = Math::Cos(halfAngle);
 
   return out;
 }
@@ -682,12 +749,11 @@ TVector3<T> Math::RandomDeviant(const Angle& angle, const TVector3<T>& vector, c
   }
 
   // rotate up vector by random amount around this
-  TQuaternion<T> q;
-  q.create(vector, Angle(Math::TWO_PI * Random()(-1.0f, 1.0f)));
+  TQuaternion<T> q = CreateQuaternion(vector, Angle(Math::TWO_PI * Random()(-1.0f, 1.0f)));
   newUp = q * newUp;
 
   // finally rotate this by given angle around randomised up
-  q.create(newUp, angle);
+  q = CreateQuaternion(newUp, angle);
   return q * vector;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

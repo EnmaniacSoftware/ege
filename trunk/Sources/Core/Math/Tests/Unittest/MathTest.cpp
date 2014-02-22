@@ -7,6 +7,7 @@
 #include <EGEQuaternion.h>
 #include <EGEMatrix.h>
 #include <EGEVector2.h>
+#include <EGEVector3.h>
 #include <EGEVector4.h>
 #include <EGEAngle.h>
 #include <EGEAlignment.h>
@@ -33,7 +34,14 @@ class MathTest : public TestBase
      *  @param  quaternion  Quaternion data.
      *  @return Resulting 4x4 matrix.
      */
-    std::vector<float32> convert(const std::vector<float32>& quaternion) const;
+    std::vector<float32> convertQuaternion(const std::vector<float32>& quaternion) const;
+    /*! Converts rotation represented by quaternion into axis and angle representatin.
+     *  @param  axis        Rotation axis (Vector3).
+     *  @param  angle       Rotation angle around axis (in radians).
+     *  @param  quaternion  Quaternion data.
+     *  @return Resulting 4x4 matrix.
+     */
+    void convertQuaternion(std::vector<float32>& axis, float32& angle, const std::vector<float32>& quaternion) const;
     /*! Creates matrix from given translation, scale and rotation.
      *  @param  translation Translation vector.
      *  @param  scale       Scale vector.
@@ -88,7 +96,7 @@ float32 MathTest::clamp(float32 value, float32 min, float32 max) const
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-std::vector<float32> MathTest::convert(const std::vector<float32>& quaternion) const
+std::vector<float32> MathTest::convertQuaternion(const std::vector<float32>& quaternion) const
 {
   std::vector<float32> matrix = MatrixHelper::Identity();
 
@@ -119,6 +127,32 @@ std::vector<float32> MathTest::convert(const std::vector<float32>& quaternion) c
   return matrix;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void MathTest::convertQuaternion(std::vector<float32>& axis, float32& angle, const std::vector<float32>& quaternion) const
+{
+  // calculate inverse length of imaginary axes
+  const float32 invLength = 1.0f / (quaternion[0] * quaternion[0] + quaternion[1] * quaternion[1] + quaternion[2] * quaternion[2]);
+
+  // check if length is greater than error thershold
+  if (std::numeric_limits<float32>::epsilon() < invLength)
+  {
+    // calculate axes
+    axis[0] = quaternion[0] * invLength;
+    axis[1] = quaternion[1] * invLength;
+    axis[2] = quaternion[2] * invLength;
+
+    angle = 2 * acosf(quaternion[3]);
+  }
+  else
+  {
+    // length is 0 or errorous
+    axis[0] = 0;
+    axis[1] = 0;
+    axis[2] = 0;
+
+    angle = 0;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 std::vector<float32> MathTest::createMatrix(const std::vector<float32>& translation, const std::vector<float32>& scale, 
                                             const std::vector<float32>& orientation) const
 {
@@ -137,7 +171,7 @@ std::vector<float32> MathTest::createMatrix(const std::vector<float32>& translat
   scaleMatrix[10] = scale[2];
 
   // convert quaternion into rotation matrix
-  std::vector<float32> rotationMatrix = convert(orientation);
+  std::vector<float32> rotationMatrix = convertQuaternion(orientation);
 
   // (Pre) multiply translation with rotation
   std::vector<float32> matrixTR = MatrixHelper::Multiply(translationMatrix, rotationMatrix);
@@ -574,7 +608,7 @@ TEST_F(MathTest, ConvertQuaternionToMatrix)
     quaternionData = QuaternionHelper::RandomData();
     
     // calculate reference values
-    matrixData = convert(quaternionData);
+    matrixData = convertQuaternion(quaternionData);
 
     // calculate actual data
     const Quaternionf quaternion(quaternionData[0], quaternionData[1], quaternionData[2], quaternionData[3]);
@@ -583,6 +617,33 @@ TEST_F(MathTest, ConvertQuaternionToMatrix)
 
     // compare
     EXPECT_TRUE(MatrixHelper::AreEqual(matrixData, matrix.data));
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(MathTest, ConvertQuaternionToAxisAndAngle)
+{
+  // perform fixed number of tests
+  for (int i = 0; i < KRepetitionsCount; ++i)
+  {
+    const std::vector<float32> quaternionData = QuaternionHelper::RandomData();
+    std::vector<float32> axisData = VectorHelper::RandomVector3Data();   
+    float32 angle;
+
+    // calculate reference values
+    convertQuaternion(axisData, angle, quaternionData);
+
+    // calculate actual data
+    const Quaternionf quaternion(quaternionData[0], quaternionData[1], quaternionData[2], quaternionData[3]);
+
+    Vector3f axis;
+    Angle axisAngle;
+    Math::Convert(axis, axisAngle, quaternion);
+
+    // compare
+    EXPECT_FLOAT_EQ(axisData[0], axis.x);
+    EXPECT_FLOAT_EQ(axisData[1], axis.y);
+    EXPECT_FLOAT_EQ(axisData[2], axis.z);
+    EXPECT_FLOAT_EQ(axisAngle.radians(), angle);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

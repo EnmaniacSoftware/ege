@@ -248,30 +248,6 @@ TEST_F(QuaternionTest, SetValue)
     EXPECT_FLOAT_EQ(quaternion2.y, quaternion.y);
     EXPECT_FLOAT_EQ(quaternion2.z, quaternion.z);
     EXPECT_FLOAT_EQ(quaternion2.w, quaternion.w);
-
-    // 3rd
-    const float32 axisX   = random();
-    const float32 axisY   = random();
-    const float32 axisZ   = random();
-    const float32 radians = random();
-
-    out = calculate(axisX, axisY, axisZ, radians);
-    const Quaternionf quaternion3(Vector3f(axisX, axisY, axisZ), Angle(radians));
-
-    EXPECT_FLOAT_EQ(out[0], quaternion3.x);
-    EXPECT_FLOAT_EQ(out[1], quaternion3.y);
-    EXPECT_FLOAT_EQ(out[2], quaternion3.z);
-    EXPECT_FLOAT_EQ(out[3], quaternion3.w);
-
-    // setting by setters
-    out = calculate(axisX, axisY, axisZ, radians);
-    Quaternionf quaternion5;
-    quaternion5.create(Vector3f(axisX, axisY, axisZ), Angle(radians));
-
-    EXPECT_FLOAT_EQ(out[0], quaternion5.x);
-    EXPECT_FLOAT_EQ(out[1], quaternion5.y);
-    EXPECT_FLOAT_EQ(out[2], quaternion5.z);
-    EXPECT_FLOAT_EQ(out[3], quaternion5.w);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -298,30 +274,6 @@ TEST_F(QuaternionTest, Normalize)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // TAGE - due to precision loss in Angle::distanceTo method this tests have tendency to fail. Find better way to either do the calculations or test
-TEST_F(QuaternionTest, DISABLED_ConvertToVector)
-{
-  // perform fixed number of tests
-  for (int i = 0; i < KRepetitionsCount; ++i)
-  {
-    const float32 axisX   = random();
-    const float32 axisY   = random();
-    const float32 axisZ   = random();
-    const float32 radians = random();
-
-    const Quaternionf quaterion1(Vector3f(axisX, axisY, axisZ), Angle(radians));
-    
-    Vector3f axis;
-    Angle angle;
-    quaterion1.convertTo(axis, angle);
-
-    EGE_EXPECT_FLOAT_EQ(axisX, axis.x, epsilon());
-    EGE_EXPECT_FLOAT_EQ(axisY, axis.y, epsilon());
-    EGE_EXPECT_FLOAT_EQ(axisZ, axis.z, epsilon());
-    EGE_EXPECT_FLOAT_EQ(radians, angle.radians(), epsilon());
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-// TAGE - due to precision loss in Angle::distanceTo method this tests have tendency to fail. Find better way to either do the calculations or test
 TEST_F(QuaternionTest, DISABLED_Angle)
 {
   // perform fixed number of tests
@@ -338,10 +290,10 @@ TEST_F(QuaternionTest, DISABLED_Angle)
     //axisY /= len;
     //axisY /= len;
  
-    const Quaternionf quaterion(Vector3f(axisX, axisY, axisZ), Angle(radians));
-    
-    // TAGE - it seems the angle is sometimes negated, inestigate why this can happen
-    EXPECT_FLOAT_EQ(fabs(radians), fabs(quaterion.angle().radians()));
+    //const Quaternionf quaterion(Vector3f(axisX, axisY, axisZ), Angle(radians));
+    //
+    //// TAGE - it seems the angle is sometimes negated, inestigate why this can happen
+    //EXPECT_FLOAT_EQ(fabs(radians), fabs(quaterion.angle().radians()));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
