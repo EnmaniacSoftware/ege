@@ -11,7 +11,6 @@
 
 #include "EGETypes.h"
 #include "Core/Math/Interface/Math.h"
-#include "Core/Math/Interface/Angle.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -40,8 +39,8 @@ class TQuaternion
     /*! Normalizes quaternion. */
     void normalize();
 
-    /*! Returns quaternion angle representation. */
-    Angle angle() const;
+    /*! Returns quaternion angle in radians. */
+    float32 radians() const;
 
     /*! Multiplies current quaternion by given one. */
 		TQuaternion multiply(const TQuaternion& quat) const;
@@ -123,9 +122,9 @@ TQuaternion<T> TQuaternion<T>::multiply(const TQuaternion<T>& quat) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-Angle TQuaternion<T>::angle() const 
+float32 TQuaternion<T>::radians() const 
 { 
-  return Angle::FromRadians(2.0f * Math::ACos(w)); 
+  return 2.0f * static_cast<float32>(Math::ACos(w)); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

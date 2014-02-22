@@ -1,5 +1,6 @@
 #include "Core/Math/Tests/Unittest/Helpers/VectorHelper.h"
 #include "Core/Math/Tests/Unittest/Helpers/GeneratorHelper.h"
+#include <math.h>
 #include <limits>
 
 EGE_NAMESPACE
@@ -10,9 +11,24 @@ std::vector<float32> VectorHelper::RandomVector2Data()
   return GeneratorHelper::RandomData(2);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-std::vector<float32> VectorHelper::RandomVector3Data()
+std::vector<float32> VectorHelper::RandomVector3Data(bool normalized)
 {
-  return GeneratorHelper::RandomData(3);
+  std::vector<float32> data = GeneratorHelper::RandomData(3);
+  
+  if (normalized)
+  {
+    const float32 length = sqrtf((data[0] * data[0]) + (data[1] * data[1]) + (data[2] * data[2]));
+
+    if (std::numeric_limits<float32>::epsilon() <= length)
+    {
+      // normalize
+	    data[0] /= length;
+	    data[1] /= length;
+      data[2] /= length;
+    }
+  }
+
+  return data;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 std::vector<float32> VectorHelper::RandomVector4Data()

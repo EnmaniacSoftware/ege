@@ -1,7 +1,9 @@
 #include "TestFramework/Interface/TestBase.h"
 #include "Core/Math/Tests/Unittest/Helpers/QuaternionHelper.h"
 #include "Core/Math/Tests/Unittest/Helpers/MatrixHelper.h"
+#include "Core/Math/Tests/Unittest/Helpers/VectorHelper.h"
 #include <EGEQuaternion.h>
+#include <EGEVector3.h>
 
 /** Tests are focusing TQuaternion<float32> instantiations. */
 
@@ -273,27 +275,19 @@ TEST_F(QuaternionTest, Normalize)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-// TAGE - due to precision loss in Angle::distanceTo method this tests have tendency to fail. Find better way to either do the calculations or test
-TEST_F(QuaternionTest, DISABLED_Angle)
+TEST_F(QuaternionTest, Radians)
 {
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    // test convertion to Vector3...
-    const float32 axisX   = random();
-    const float32 axisY   = random();
-    const float32 axisZ   = random();
+    const std::vector<float32> axisData = VectorHelper::RandomVector3Data(true);
     const float32 radians = random();
 
-    //float32 len = sqrtf(axisX * axisX + axisY * axisY + axisZ * axisZ);
-    //axisX /= len;
-    //axisY /= len;
-    //axisY /= len;
- 
-    //const Quaternionf quaterion(Vector3f(axisX, axisY, axisZ), Angle(radians));
-    //
-    //// TAGE - it seems the angle is sometimes negated, inestigate why this can happen
-    //EXPECT_FLOAT_EQ(fabs(radians), fabs(quaterion.angle().radians()));
+    // create actual value
+    const Quaternionf quaterion = Math::CreateQuaternion(Vector3f(axisData[0], axisData[1], axisData[2]), Angle(radians));
+   
+    // NOTE: it is possible returned angle to have opposite sign as Cosine returns the same values for + and -
+    EGE_EXPECT_FLOAT_EQ(fabsf(radians), fabsf(quaterion.radians()), epsilon());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

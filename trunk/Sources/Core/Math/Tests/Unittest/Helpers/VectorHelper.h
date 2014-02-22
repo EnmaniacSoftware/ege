@@ -16,9 +16,10 @@ class VectorHelper
      */
     static std::vector<float32> RandomVector2Data();
     /*! Generates random 3D vector data. 
+     *  @param  normalizes  If TRUE data is normalized.
      *  @return Randomized 3D vector.
      */
-    static std::vector<float32> RandomVector3Data();
+    static std::vector<float32> RandomVector3Data(bool normalized = false);
     /*! Generates random 4D vector data. 
      *  @return Randomized 4D vector.
      */
