@@ -1786,6 +1786,9 @@
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\Vector3Types.h">
       <Filter>Core\Math\Implementation</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Implementation\PlaneTypes.h">
+      <Filter>Core\Math\Implementation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

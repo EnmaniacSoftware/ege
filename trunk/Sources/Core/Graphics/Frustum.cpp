@@ -292,7 +292,7 @@ void Frustum::calculateFrustumPlanes()
     normal.y = clipping.data[7] - clipping.data[4];
     normal.z = clipping.data[11] - clipping.data[8];
 
-    m_planes[PLANE_RIGHT].create(normal, clipping.data[1 ] - clipping.data[12]);
+    m_planes[PLANE_RIGHT] = Planef(normal, clipping.data[1 ] - clipping.data[12]);
 	  m_planes[PLANE_RIGHT].normalize();
 
 	  // calculate LEFT plane
@@ -300,7 +300,7 @@ void Frustum::calculateFrustumPlanes()
     normal.y = clipping.data[7] + clipping.data[4];
     normal.z = clipping.data[11] + clipping.data[8];
 
-    m_planes[PLANE_LEFT].create(normal, clipping.data[15] + clipping.data[12]);
+    m_planes[PLANE_LEFT] = Planef(normal, clipping.data[15] + clipping.data[12]);
 	  m_planes[PLANE_LEFT].normalize();
 
 	  // calculate TOP plane
@@ -308,7 +308,7 @@ void Frustum::calculateFrustumPlanes()
     normal.y = clipping.data[7] - clipping.data[5];
     normal.z = clipping.data[11] - clipping.data[9];
 
-    m_planes[PLANE_TOP].create(normal, clipping.data[15] - clipping.data[13]);
+    m_planes[PLANE_TOP] = Planef(normal, clipping.data[15] - clipping.data[13]);
 	  m_planes[PLANE_TOP].normalize();
 
     // calculate BOTTOM plane
@@ -316,7 +316,7 @@ void Frustum::calculateFrustumPlanes()
     normal.y = clipping.data[7] + clipping.data[5];
     normal.z = clipping.data[11] + clipping.data[9];
 
-    m_planes[PLANE_BOTTOM].create(normal, clipping.data[15] + clipping.data[13]);
+    m_planes[PLANE_BOTTOM] = Planef(normal, clipping.data[15] + clipping.data[13]);
 	  m_planes[PLANE_BOTTOM].normalize();
 
 	  // calculate FAR plane
@@ -324,7 +324,7 @@ void Frustum::calculateFrustumPlanes()
     normal.y = clipping.data[7] - clipping.data[6];
     normal.z = clipping.data[11] - clipping.data[10];
 
-    m_planes[PLANE_FAR].create(normal, clipping.data[15] - clipping.data[14]);
+    m_planes[PLANE_FAR] = Planef(normal, clipping.data[15] - clipping.data[14]);
 	  m_planes[PLANE_FAR].normalize();
 
     // calculate NEAR plane
@@ -332,7 +332,7 @@ void Frustum::calculateFrustumPlanes()
     normal.y = clipping.data[7] + clipping.data[6];
     normal.z = clipping.data[11] + clipping.data[10];
 
-    m_planes[PLANE_NEAR].create(normal, clipping.data[15] + clipping.data[14]);
+    m_planes[PLANE_NEAR] = Planef(normal, clipping.data[15] + clipping.data[14]);
 	  m_planes[PLANE_NEAR].normalize();
 
     // reset flag

@@ -105,43 +105,26 @@ TEST_F(PlaneTest, SetValue)
     // setting via constructors
     const Planef plane1(Vector3f(normalX, normalY, normalZ), displacement);
     
-    EXPECT_FLOAT_EQ(plane1.m_normal.x, normalX);
-    EXPECT_FLOAT_EQ(plane1.m_normal.y, normalY);
-    EXPECT_FLOAT_EQ(plane1.m_normal.z, normalZ);
-    EXPECT_FLOAT_EQ(plane1.m_d, displacement);
+    EXPECT_FLOAT_EQ(plane1.normal.x, normalX);
+    EXPECT_FLOAT_EQ(plane1.normal.y, normalY);
+    EXPECT_FLOAT_EQ(plane1.normal.z, normalZ);
+    EXPECT_FLOAT_EQ(plane1.displacement, displacement);
 
     const Planef plane2(plane1);
     
-    EXPECT_FLOAT_EQ(plane2.m_normal.x, normalX);
-    EXPECT_FLOAT_EQ(plane2.m_normal.y, normalY);
-    EXPECT_FLOAT_EQ(plane2.m_normal.z, normalZ);
-    EXPECT_FLOAT_EQ(plane2.m_d, displacement);
-
-    // setting by setters
-    Planef plane3;
-    plane3.create(Vector3f(normalX, normalY, normalZ), displacement);
-    
-    EXPECT_FLOAT_EQ(plane3.m_normal.x, normalX);
-    EXPECT_FLOAT_EQ(plane3.m_normal.y, normalY);
-    EXPECT_FLOAT_EQ(plane3.m_normal.z, normalZ);
-    EXPECT_FLOAT_EQ(plane3.m_d, displacement);
-
-    Planef plane4;
-    plane4.create(plane3);
-
-    EXPECT_FLOAT_EQ(plane4.m_normal.x, normalX);
-    EXPECT_FLOAT_EQ(plane4.m_normal.y, normalY);
-    EXPECT_FLOAT_EQ(plane4.m_normal.z, normalZ);
-    EXPECT_FLOAT_EQ(plane4.m_d, displacement);
+    EXPECT_FLOAT_EQ(plane2.normal.x, normalX);
+    EXPECT_FLOAT_EQ(plane2.normal.y, normalY);
+    EXPECT_FLOAT_EQ(plane2.normal.z, normalZ);
+    EXPECT_FLOAT_EQ(plane2.displacement, displacement);
 
     // setting via operators
-    Planef plane5;
-    plane5 = plane4;
+    Planef plane3;
+    plane3 = plane2;
 
-    EXPECT_FLOAT_EQ(plane5.m_normal.x, normalX);
-    EXPECT_FLOAT_EQ(plane5.m_normal.y, normalY);
-    EXPECT_FLOAT_EQ(plane5.m_normal.z, normalZ);
-    EXPECT_FLOAT_EQ(plane5.m_d, displacement);
+    EXPECT_FLOAT_EQ(plane3.normal.x, normalX);
+    EXPECT_FLOAT_EQ(plane3.normal.y, normalY);
+    EXPECT_FLOAT_EQ(plane3.normal.z, normalZ);
+    EXPECT_FLOAT_EQ(plane3.displacement, displacement);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -166,10 +149,10 @@ TEST_F(PlaneTest, Normalize)
     Planef plane(Vector3f(normalX, normalY, normalZ), displacement);
     plane.normalize();
 
-    EGE_EXPECT_FLOAT_EQ(plane.m_normal.x, outNormalX, epsilon());
-    EGE_EXPECT_FLOAT_EQ(plane.m_normal.y, outNormalY, epsilon());
-    EGE_EXPECT_FLOAT_EQ(plane.m_normal.z, outNormalZ, epsilon());
-    EGE_EXPECT_FLOAT_EQ(plane.m_d, outDisplacement, epsilon());
+    EGE_EXPECT_FLOAT_EQ(plane.normal.x, outNormalX, epsilon());
+    EGE_EXPECT_FLOAT_EQ(plane.normal.y, outNormalY, epsilon());
+    EGE_EXPECT_FLOAT_EQ(plane.normal.z, outNormalZ, epsilon());
+    EGE_EXPECT_FLOAT_EQ(plane.displacement, outDisplacement, epsilon());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
