@@ -19,7 +19,7 @@
 #include "EGEDynamicArray.h"
 #include "EGEVector4.h"
 #include "EGEMatrix.h"
-#include "Core/Math/Interface/Splines/CurveSegment.h"
+#include "Core/Math/Interface/Splines/Spline.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -33,7 +33,7 @@ enum CubicSplineType
   ECardinal
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class CubicSpline
+class CubicSpline : public Spline
 {
   public:
 
@@ -50,32 +50,19 @@ class CubicSpline
     CubicSplineType type() const;
     /*! Sets spline type. */
     void setType(CubicSplineType type);
-    /*! Adds point to spline.
-     *  @param point   Point to be added.
-     *  @param tangent Tangent vector for added point.
-     *  @return Retrurns curve segment point belogns to.
-     */
-    CurveSegment& addPoint(const Vector4f& point, const Vector4f& tangent);
-    /*! Calculates value on spline at given position
-     *  @param pos Calculated position on spline at given position.
-     *  @param t   Parametrized distance on a spline at which calculations are done. Typicially in [0-1] interval.
-     */
-    void value(Vector4f& pos, float32 t) const;
-    /*! Returns segment of the spline at given position
-     *  @param t                 Parametrized distance on a spline at which calculations are done. Typicially in [0-1] interval.
-     *  @param distanceToSegment Distance to returned segment (sum of distances of all previous segments).
-     *  @note    Parameter t is clamped to [0-1] interval.
-     *  @return  Curve segment at given position.
-     */
-    const CurveSegment* segment(float32 t, float32& distanceToSegment) const;
 
-    /*! Returns spline length. */
-    float32 length() const;
+    /*! @see Spline::addPoints. 
+     *  @note Points should be given in quadruples: [begin, tangent-1, tangent-2, end]
+     */
+    bool addPoints(const List<Vector3f>& points) override;
+    /*! @see Spline::value. */
+    Vector3f value(float32 parameter) const override;
 
   private:
 
     /*! Calculates segement length. */
     void calculateSegmentLength(CurveSegment& segment);
+    const CurveSegment* segment(float32 t, float32& distanceToSegment) const;
 
   private slots:
 
@@ -84,18 +71,10 @@ class CubicSpline
 
   private:
 
-    typedef DynamicArray<CurveSegment> SegmentArray;
-
-  private:
-
     /*! Spline type. */
     CubicSplineType m_type;
-    /*! List of all spline segments. */
-    SegmentArray m_segments;
     /*! Matrix of basis functions for currently selected spline type. */
     Matrix4f m_matrix;
-    /*! Spline length. */
-    float32 m_length;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

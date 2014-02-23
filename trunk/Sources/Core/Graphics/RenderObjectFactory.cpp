@@ -438,7 +438,7 @@ bool RenderObjectFactory::DoCreateQuatroQuadXY(PRenderComponent& component, Vect
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Application* app, const String& name, Vector4f offset,
+PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Application* app, const String& name, Vector3f offset,
                                              VertexDeclarationSymbol vertexDeclaration, s32 priority)
 {
   PRenderComponent component;
@@ -454,7 +454,7 @@ PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Applicat
   return component;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Application* app, const String& name, Vector4f offset, 
+PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Application* app, const String& name, Vector3f offset, 
                                              const VertexDeclaration& vertexDeclaration, s32 priority)
 {
   s32 vertexCount = 25;
@@ -471,11 +471,11 @@ PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Applicat
         return NULL;
       }
 
-      Vector4f pos;
+      Vector3f pos;
 
 	    for (s32 i = 0; i < vertexCount; ++i)
 	    {
-        spline->value(pos, i / (1.0f * vertexCount));
+        pos = spline->value(i / (1.0f * vertexCount));
         pos += offset;
 
         *data++ = pos.x;
@@ -486,7 +486,7 @@ PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Applicat
         *data++ = 1.0f;
         *data++ = 1.0f;
 
-        spline->value(pos, (i + 1) / (1.0f * vertexCount));
+        pos = spline->value((i + 1) / (1.0f * vertexCount));
         pos += offset;
 
         *data++ = pos.x;

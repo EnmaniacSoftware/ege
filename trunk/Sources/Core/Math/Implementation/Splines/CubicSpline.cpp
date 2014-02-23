@@ -20,8 +20,8 @@ static Matrix4f CatMullRomMatrix(-0.5f,  1.0f, -0.5f, 0.0f,             // colum
                                  -1.5f,  2.0f,  0.5f, 0.0f,             // column 2 (start tangent)
                                   0.5f, -0.5f,  0.0f, 0.0f);            // column 3 (end tangent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CubicSpline::CubicSpline(CubicSplineType type) : m_type(ENone)
-                                               , m_length(0)
+CubicSpline::CubicSpline(CubicSplineType type) : Spline()
+                                               , m_type(ENone)
 {
   setType(type);
 }
@@ -71,112 +71,94 @@ void CubicSpline::setType(CubicSplineType type)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CurveSegment& CubicSpline::addPoint(const Vector4f& point, const Vector4f& tangent)
+bool CubicSpline::addPoints(const List<Vector3f>& points)
 {
-  // check if first segment
-  if (m_segments.empty())
+  EGE_ASSERT(0 == (points.size() % 4));
+
+  bool result = false;
+
+  // check if multiple of 4 points
+  if (0 == (points.size() % 4))
   {
-    // create new segment
-    CurveSegment segment;
-
-    segment.setBegin(point);
-    segment.setBeginTangent(tangent);
-
-    // add it into pool
-    m_segments.push_back(segment);
-  }
-  else
-  {
-    // get last segment
-    CurveSegment& segment = m_segments.back();
-
-    // check if end point is not defined yet
-    if (Vector4f::ZERO == segment.end())
+    // process all points
+    for (List<Vector3f>::const_iterator it = points.begin(); it != points.end(); )
     {
-      // define end point
-      segment.setEndTangent(tangent);
-      segment.setEnd(point);
+      CurveSegment segment;
 
-      ege_connect(&segment, pointChanged, this, CubicSpline::segmentPointChanged);
+      segment.setBegin(Vector4f(it->x, it->y, it->z));
+      ++it;
+      segment.setBeginTangent(Vector4f(it->x, it->y, it->z));
+      ++it;
+      segment.setEndTangent(Vector4f(it->x, it->y, it->z));
+      ++it;
+      segment.setEnd(Vector4f(it->x, it->y, it->z));
+      ++it;
+
+      //ege_connect(&segment, pointChanged, this, CubicSpline::segmentPointChanged);
       
       // force length recalulation
       calculateSegmentLength(segment);
 
       // update total length
       m_length += segment.length();
-      return segment;
+
+      // add it into pool
+      m_segments.push_back(segment);
     }
 
-    // new segmnet is necessary
-    CurveSegment newSegment;
-
-    // new segment starts where last ends
-    newSegment.setBegin(segment.end());
-    newSegment.setBeginTangent(segment.endTangent());
-
-    // and ends with given point
-    newSegment.setEndTangent(tangent);
-    newSegment.setEnd(point);
-
-    ege_connect(&newSegment, pointChanged, this, CubicSpline::segmentPointChanged);
-
-    // force length recalulation
-    calculateSegmentLength(newSegment);
-
-    // update total length
-    m_length += newSegment.length();
-
-    // add it into pool
-    m_segments.push_back(newSegment);
+    // done
+    result = true;
   }
 
-  return m_segments.back();
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void CubicSpline::value(Vector4f& pos, float32 t) const
+Vector3f CubicSpline::value(float32 parameter) const
 {
   const CurveSegment* segment = NULL;
 
   // get segment and distance to it
   float32 distanceToSegment = 0;
-  segment = this->segment(t, distanceToSegment);
+  segment = this->segment(parameter, distanceToSegment);
   if (NULL == segment)
   {
     // do nothing
-    return;
+    return Vector3f::ZERO;
   }
 
   // make sure value is valid
-  t = Math::Clamp(t, 0.0f, 1.0f);
+  parameter = Math::Clamp(parameter, 0.0f, 1.0f);
 
   // convert into [0-length] space
-  t *= length();
+  parameter *= length();
 
   // convert into segment [0-1] interval
   if (0 < segment->length())
   {
-    t = (t - distanceToSegment) / segment->length();
+    parameter = (parameter - distanceToSegment) / segment->length();
   }
   else
   {
-    t = 0;
+    parameter = 0;
   }
 
   // precalculations  
-  float32 t2 = t * t;
-  float32 t3 = t2 * t;
+  const float32 t2 = parameter * parameter;
+  const float32 t3 = t2 * parameter;
 
   //float h1 = m_matrix.data[0] * t3 + m_matrix.data[1] * t2 + m_matrix.data[2] * t + m_matrix.data[3];
   //float h2 = m_matrix.data[4] * t3 + m_matrix.data[5] * t2 + m_matrix.data[6] * t + m_matrix.data[7];
   //float h3 = m_matrix.data[8] * t3 + m_matrix.data[9] * t2 + m_matrix.data[10] * t + m_matrix.data[11];
   //float h4 = m_matrix.data[12] * t3 + m_matrix.data[13] * t2 + m_matrix.data[14] * t + m_matrix.data[15];
 
-  pos = (m_matrix.data[0] * t3 + m_matrix.data[1] * t2 + m_matrix.data[2] * t + m_matrix.data[3]) * segment->begin() +
-        (m_matrix.data[4] * t3 + m_matrix.data[5] * t2 + m_matrix.data[6] * t + m_matrix.data[7]) * segment->end() +
-        (m_matrix.data[8] * t3 + m_matrix.data[9] * t2 + m_matrix.data[10] * t + m_matrix.data[11]) * segment->beginTangent() +
-        (m_matrix.data[12] * t3 + m_matrix.data[13] * t2 + m_matrix.data[14] * t + m_matrix.data[15]) * segment->endTangent();
+  Vector4f pos = (m_matrix.data[0] * t3 + m_matrix.data[1] * t2 + m_matrix.data[2] * parameter + m_matrix.data[3]) * segment->begin() +
+        (m_matrix.data[4] * t3 + m_matrix.data[5] * t2 + m_matrix.data[6] * parameter + m_matrix.data[7]) * segment->end() +
+        (m_matrix.data[8] * t3 + m_matrix.data[9] * t2 + m_matrix.data[10] * parameter + m_matrix.data[11]) * segment->beginTangent() +
+        (m_matrix.data[12] * t3 + m_matrix.data[13] * t2 + m_matrix.data[14] * parameter + m_matrix.data[15]) * segment->endTangent();
 
   pos.w = 1;
+
+  return Vector3f(pos.x, pos.y, pos.z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void CubicSpline::calculateSegmentLength(CurveSegment& segment)
@@ -267,10 +249,5 @@ const CurveSegment* CubicSpline::segment(float32 t, float32& distanceToSegment) 
   }
 
   return segment;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 CubicSpline::length() const 
-{ 
-  return m_length; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

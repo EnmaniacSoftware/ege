@@ -141,22 +141,53 @@ void ResourceCurve::unload()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 CubicSpline ResourceCurve::createInstance() const
 {
-  CubicSpline spline(type());
+  List<Vector3f> points;
 
   // add points
   for (PointDataList::const_iterator it = m_points.begin(); it != m_points.end(); ++it)
   {
     const PointData& point = *it;
 
-    Vector4f pos(point.position.x, point.position.y, point.position.z);
-    Vector4f tangent(point.tangent.x, point.tangent.y, point.tangent.z);
+    const Vector3f pos(point.position.x, point.position.y, point.position.z);
+    const Vector3f tangent(point.tangent.x, point.tangent.y, point.tangent.z);
 
-    CurveSegment& segment = spline.addPoint(pos, tangent);
-    if (point.beginTangentOverride)
+    // check if not points defined yet
+    if (points.empty())
     {
-      Vector4f beginTangent(point.beginTangent.x, point.beginTangent.y, point.beginTangent.z);
-      segment.setBeginTangent(beginTangent);
+      // add begin and tangent-1
+      points.push_back(pos);
+      points.push_back(tangent);
     }
+    // check if begining of the first segment defined only
+    else if (2 == points.size())
+    {
+      // add tangent-2 and end point
+      points.push_back(tangent);
+      points.push_back(pos);
+    }
+    else
+    {
+      // last two points of previous segment and two new points defines next segment
+      // NOTE: if tangent-1 is given use it instead of copying tangent-2 from previous segment data
+      List<Vector3f>::const_iterator it = points.end();
+      it--;
+
+      const Vector3f endPoint      = *it;
+      const Vector3f tangent2Point = (point.beginTangentOverride) ? point.beginTangent : *(--it);
+
+      points.push_back(endPoint);
+      points.push_back(tangent2Point);
+      points.push_back(tangent);
+      points.push_back(pos);
+    }
+  }
+
+  // create spline object
+  CubicSpline spline(type());
+  if ( ! spline.addPoints(points))
+  {
+    // error!
+    EGE_ASSERT_X(false, "Could not create spline!");
   }
 
   return spline;

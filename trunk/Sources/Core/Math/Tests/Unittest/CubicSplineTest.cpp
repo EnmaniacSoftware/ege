@@ -2,7 +2,6 @@
 #include <EGEMath.h>
 #include <EGESpline.h>
 #include <EGEVector3.h>
-#include <EGEVector4.h>
 
 EGE_NAMESPACE
 
@@ -23,7 +22,7 @@ class CubicSplineTest : public TestBase
      *  @param  point4  End point.
      *  @return Position on the curve.
      */
-    Vector4f bezierValue(float32 t, const Vector4f& point1, const Vector4f& point2, const Vector4f& point3, const Vector4f& point4) const;
+    Vector3f bezierValue(float32 t, const Vector3f& point1, const Vector3f& point2, const Vector3f& point3, const Vector3f& point4) const;
     /*! Returns value at given hermite cubic spline.
      *  @param  t       Parameter describing relative position along spline in [0, 1] range.
      *  @param  point1  Curve start point.
@@ -32,7 +31,7 @@ class CubicSplineTest : public TestBase
      *  @param  point4  End point.
      *  @return Position on the curve.
      */
-    Vector4f hermiteValue(float32 t, const Vector4f& point1, const Vector4f& point2, const Vector4f& point3, const Vector4f& point4) const;
+    Vector3f hermiteValue(float32 t, const Vector3f& point1, const Vector3f& point2, const Vector3f& point3, const Vector3f& point4) const;
     /*! Returns value at given cardinal (CatMullRom) cubic spline.
      *  @param  t       Parameter describing relative position along spline in [0, 1] range.
      *  @param  point1  Curve start point.
@@ -41,14 +40,14 @@ class CubicSplineTest : public TestBase
      *  @param  point4  End point.
      *  @return Position on the curve.
      */
-    Vector4f cardinalValue(float32 t, const Vector4f& point1, const Vector4f& point2, const Vector4f& point3, const Vector4f& point4) const;
+    Vector3f cardinalValue(float32 t, const Vector3f& point1, const Vector3f& point2, const Vector3f& point3, const Vector3f& point4) const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 CubicSplineTest::CubicSplineTest() : TestBase(0.000001f)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Vector4f CubicSplineTest::bezierValue(float32 t, const Vector4f& point1, const Vector4f& point2, const Vector4f& point3, const Vector4f& point4) const
+Vector3f CubicSplineTest::bezierValue(float32 t, const Vector3f& point1, const Vector3f& point2, const Vector3f& point3, const Vector3f& point4) const
 {
   const float32 tt  = t * t;
   const float32 ttt = tt * t;
@@ -65,10 +64,10 @@ Vector4f CubicSplineTest::bezierValue(float32 t, const Vector4f& point1, const V
   const float32 y = a * point1.y + b * point2.y + c * point3.y + d * point4.y;
   const float32 z = a * point1.z + b * point2.z + c * point3.z + d * point4.z;
 
-  return Vector4f(x, y, z, 1);
+  return Vector3f(x, y, z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Vector4f CubicSplineTest::hermiteValue(float32 t, const Vector4f& point1, const Vector4f& point2, const Vector4f& point3, const Vector4f& point4) const
+Vector3f CubicSplineTest::hermiteValue(float32 t, const Vector3f& point1, const Vector3f& point2, const Vector3f& point3, const Vector3f& point4) const
 {
   const float32 tt  = t * t;
   const float32 ttt = tt * t;
@@ -82,10 +81,10 @@ Vector4f CubicSplineTest::hermiteValue(float32 t, const Vector4f& point1, const 
   const float32 y = a * point1.y + b * point2.y + c * point3.y + d * point4.y;
   const float32 z = a * point1.z + b * point2.z + c * point3.z + d * point4.z;
 
-  return Vector4f(x, y, z, 1);
+  return Vector3f(x, y, z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Vector4f CubicSplineTest::cardinalValue(float32 t, const Vector4f& point1, const Vector4f& point2, const Vector4f& point3, const Vector4f& point4) const
+Vector3f CubicSplineTest::cardinalValue(float32 t, const Vector3f& point1, const Vector3f& point2, const Vector3f& point3, const Vector3f& point4) const
 {
   const float32 tt  = t * t;
   const float32 ttt = tt * t;
@@ -99,7 +98,7 @@ Vector4f CubicSplineTest::cardinalValue(float32 t, const Vector4f& point1, const
   const float32 y = a * point1.y + b * point2.y + c * point3.y + d * point4.y;
   const float32 z = a * point1.z + b * point2.z + c * point3.z + d * point4.z;
 
-	return Vector4f(x, y, z, 1);
+	return Vector3f(x, y, z);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(CubicSplineTest, BezierTest)
@@ -107,16 +106,17 @@ TEST_F(CubicSplineTest, BezierTest)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const Vector4f point1(random(), random(), random(), 1);
-    const Vector4f point2(random(), random(), random(), 1);
-    const Vector4f point3(random(), random(), random(), 1);
-    const Vector4f point4(random(), random(), random(), 1);
+    const Vector3f point1(random(), random(), random());
+    const Vector3f point2(random(), random(), random());
+    const Vector3f point3(random(), random(), random());
+    const Vector3f point4(random(), random(), random());
 
+    const List<Vector3f> points = List<Vector3f>() << point1 << point2 << point3 << point4;
+    
     CubicSpline spline(EBezier);
   
     // add control points
-    spline.addPoint(point1, point2);
-    spline.addPoint(point4, point3);
+    spline.addPoints(points);
 
     // simulate traversal along the curve
     for (float32 t = 0; t <= 1.0f; t += 0.1f)
@@ -124,17 +124,15 @@ TEST_F(CubicSplineTest, BezierTest)
       t = (1.0f < t) ? 1.0f : t;
 
       // calculate reference value
-      Vector4f referenceValue = bezierValue(t, point1, point2, point3, point4);
+      Vector3f referenceValue = bezierValue(t, point1, point2, point3, point4);
 
       // get value
-      Vector4f out;
-      spline.value(out, t);
+      const Vector3f out = spline.value(t);
 
       // compare
       EGE_EXPECT_FLOAT_EQ(referenceValue.x, out.x, epsilon());
       EGE_EXPECT_FLOAT_EQ(referenceValue.y, out.y, epsilon());
       EGE_EXPECT_FLOAT_EQ(referenceValue.z, out.z, epsilon());
-      EGE_EXPECT_FLOAT_EQ(referenceValue.w, out.w, epsilon());
     }
   }
 }
@@ -144,16 +142,17 @@ TEST_F(CubicSplineTest, HermiteTest)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const Vector4f point1(random(), random(), random(), 1);
-    const Vector4f point2(random(), random(), random(), 1);
-    const Vector4f point3(random(), random(), random(), 1);
-    const Vector4f point4(random(), random(), random(), 1);
+    const Vector3f point1(random(), random(), random());
+    const Vector3f point2(random(), random(), random());
+    const Vector3f point3(random(), random(), random());
+    const Vector3f point4(random(), random(), random());
+
+    const List<Vector3f> points = List<Vector3f>() << point1 << point2 << point3 << point4;
 
     CubicSpline spline(EHermite);
   
     // add control points
-    spline.addPoint(point1, point2);
-    spline.addPoint(point4, point3);
+    spline.addPoints(points);
 
     // simulate traversal along the curve
     for (float32 t = 0; t <= 1.0f; t += 0.1f)
@@ -161,17 +160,15 @@ TEST_F(CubicSplineTest, HermiteTest)
       t = (1.0f < t) ? 1.0f : t;
 
       // calculate reference value
-      Vector4f referenceValue = hermiteValue(t, point1, point2, point3, point4);
+      Vector3f referenceValue = hermiteValue(t, point1, point2, point3, point4);
 
       // get value
-      Vector4f out;
-      spline.value(out, t);
+      Vector3f out = spline.value(t);
 
       // compare
       EGE_EXPECT_FLOAT_EQ(referenceValue.x, out.x, epsilon());
       EGE_EXPECT_FLOAT_EQ(referenceValue.y, out.y, epsilon());
       EGE_EXPECT_FLOAT_EQ(referenceValue.z, out.z, epsilon());
-      EGE_EXPECT_FLOAT_EQ(referenceValue.w, out.w, epsilon());
     }
   }
 }
@@ -181,16 +178,17 @@ TEST_F(CubicSplineTest, CardinalTest)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const Vector4f point1(random(), random(), random(), 1);
-    const Vector4f point2(random(), random(), random(), 1);
-    const Vector4f point3(random(), random(), random(), 1);
-    const Vector4f point4(random(), random(), random(), 1);
+    const Vector3f point1(random(), random(), random());
+    const Vector3f point2(random(), random(), random());
+    const Vector3f point3(random(), random(), random());
+    const Vector3f point4(random(), random(), random());
+
+    const List<Vector3f> points = List<Vector3f>() << point1 << point2 << point3 << point4;
 
     CubicSpline spline(ECardinal);
   
     // add control points
-    spline.addPoint(point1, point2);
-    spline.addPoint(point4, point3);
+    spline.addPoints(points);
 
     // simulate traversal along the curve
     for (float32 t = 0; t <= 1.0f; t += 0.1f)
@@ -198,17 +196,15 @@ TEST_F(CubicSplineTest, CardinalTest)
       t = (1.0f < t) ? 1.0f : t;
 
       // calculate reference value
-      Vector4f referenceValue = cardinalValue(t, point1, point2, point3, point4);
+      Vector3f referenceValue = cardinalValue(t, point1, point2, point3, point4);
 
       // get value
-      Vector4f out;
-      spline.value(out, t);
+      Vector3f out = spline.value(t);
 
       // compare
       EGE_EXPECT_FLOAT_EQ(referenceValue.x, out.x, epsilon());
       EGE_EXPECT_FLOAT_EQ(referenceValue.y, out.y, epsilon());
       EGE_EXPECT_FLOAT_EQ(referenceValue.z, out.z, epsilon());
-      EGE_EXPECT_FLOAT_EQ(referenceValue.w, out.w, epsilon());
     }
   }
 }
@@ -218,22 +214,21 @@ TEST_F(CubicSplineTest, Length)
   // perform fixed number of tests
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    const Vector4f point1(random(), random(), random(), 1);
-    const Vector4f point2(random(), random(), random(), 1);
-    const Vector4f point3(random(), random(), random(), 1);
-    const Vector4f point4(random(), random(), random(), 1);
+    const Vector3f point1(random(), random(), random());
+    const Vector3f point2(random(), random(), random());
+    const Vector3f point3(random(), random(), random());
+    const Vector3f point4(random(), random(), random());
+
+    const List<Vector3f> points = List<Vector3f>() << point1 << point2 << point3 << point4;
 
     CubicSpline splineBezier(EBezier);
     CubicSpline splineHermite(EHermite);
     CubicSpline splineCardinal(ECardinal);
   
     // add control points
-    splineBezier.addPoint(point1, point2);
-    splineBezier.addPoint(point4, point3);
-    splineHermite.addPoint(point1, point2);
-    splineHermite.addPoint(point4, point3);
-    splineCardinal.addPoint(point1, point2);
-    splineCardinal.addPoint(point4, point3);
+    splineBezier.addPoints(points);
+    splineHermite.addPoints(points);
+    splineCardinal.addPoints(points);
 
     float32 lengthBezier = 0;
     float32 lengthHermite = 0;
@@ -247,8 +242,8 @@ TEST_F(CubicSplineTest, Length)
 
       if (1.0f != t)
       {
-        Vector4f a;
-        Vector4f b;
+        Vector3f a;
+        Vector3f b;
 
         // calculate length of next segment...
 

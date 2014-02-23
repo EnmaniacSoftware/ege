@@ -939,6 +939,9 @@
     <ClCompile Include="..\..\Sources\Core\Math\Implementation\Splines\CurveSegment.cpp">
       <Filter>Core\Math\Implementation\Splines</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Implementation\Splines\Spline.cpp">
+      <Filter>Core\Math\Implementation\Splines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h">
@@ -1788,6 +1791,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\PlaneTypes.h">
       <Filter>Core\Math\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Math\Interface\Splines\Spline.h">
+      <Filter>Core\Math\Interface\Splines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

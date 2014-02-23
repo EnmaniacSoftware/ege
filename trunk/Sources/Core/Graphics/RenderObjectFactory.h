@@ -88,9 +88,9 @@ class RenderObjectFactory
      *  @param priority           Render priority.
      *  @return Returns render component. NULL if failed.
      */
-    static PRenderComponent Create(const CubicSpline* spline, Application* app, const String& name, Vector4f offset, VertexDeclarationSymbol vertexDeclaration, 
+    static PRenderComponent Create(const CubicSpline* spline, Application* app, const String& name, Vector3f offset, VertexDeclarationSymbol vertexDeclaration, 
                                    s32 priority);
-    static PRenderComponent Create(const CubicSpline* spline, Application* app, const String& name, Vector4f offset, 
+    static PRenderComponent Create(const CubicSpline* spline, Application* app, const String& name, Vector3f offset, 
                                    const VertexDeclaration& vertexDeclaration, s32 priority);
 
   private:
