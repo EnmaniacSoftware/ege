@@ -936,9 +936,6 @@
     <ClCompile Include="..\..\Sources\Core\Math\Implementation\Splines\CubicSpline.cpp">
       <Filter>Core\Math\Implementation\Splines</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Implementation\Splines\CurveSegment.cpp">
-      <Filter>Core\Math\Implementation\Splines</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Math\Implementation\Splines\Spline.cpp">
       <Filter>Core\Math\Implementation\Splines</Filter>
     </ClCompile>
@@ -1753,9 +1750,6 @@
       <Filter>Core\Math\Interface\Tweeners</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Splines\CubicSpline.h">
-      <Filter>Core\Math\Interface\Splines</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Math\Interface\Splines\CurveSegment.h">
       <Filter>Core\Math\Interface\Splines</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Tweeners\BackTweener.h">

@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_LIST_H
 #define EGE_CORE_LIST_H
 
-#include "Core/Platform.h"
+#include "EGETypes.h"
 #include <list>
 #include <algorithm>
 

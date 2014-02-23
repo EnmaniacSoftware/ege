@@ -15,10 +15,15 @@ class CachedObject
   public:
 
     CachedObject();
-    CachedObject(T& data);
     CachedObject(const CachedObject<T>& other);
+    explicit CachedObject(T& data);
 
+  operators:
+  
     const CachedObject& operator = (const T& data);
+    operator T() const;
+
+  public:
 
     /*! Returns TRUE if data is valid. */
     bool isValid() const;
@@ -60,6 +65,12 @@ const CachedObject<T>& CachedObject<T>::operator = (const T& data)
   m_valid = true;
 
   return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+CachedObject<T>::operator T() const
+{
+  return m_data;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

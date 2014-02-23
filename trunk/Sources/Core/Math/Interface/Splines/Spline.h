@@ -5,10 +5,9 @@
  *  i.e. spline paths.
  */
 
-#include "EGEVector3.h"
 #include "EGEList.h"
-#include "EGEDynamicArray.h"
-#include "Core/Math/Interface/Splines/CurveSegment.h"
+#include "EGEVector3.h"
+#include "EGECachedObject.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -27,24 +26,18 @@ class Spline
      *  @return TRUE on success. Otherwise FALSE.
      */
     virtual bool addPoints(const List<Vector3f>& points) = 0;
-    /*! Calculates value on spline at given position
+    /*! Calculates value on spline at given position.
      *  @param parameter  Parametrized distance on a spline at which calculations are done. Typicially in [0-1] interval.
      *  @return Calculated position on spline at given position.
      */
     virtual Vector3f value(float32 parameter) const = 0;
     /*! Returns spline length. */
-    float32 length() const;
+    virtual float32 length() const = 0;
 
   protected:
 
-    typedef DynamicArray<CurveSegment> SegmentArray;
-
-  protected:
-
-    /*! List of all spline segments. */
-    SegmentArray m_segments;
     /*! Spline length. */
-    float32 m_length;
+    mutable CachedFloat32 m_length;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

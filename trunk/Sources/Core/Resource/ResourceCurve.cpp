@@ -167,16 +167,15 @@ CubicSpline ResourceCurve::createInstance() const
     }
     else
     {
-      // last two points of previous segment and two new points defines next segment
-      // NOTE: if tangent-1 is given use it instead of copying tangent-2 from previous segment data
+      // last segment control point 2 and two new points defines next segment
+      // NOTE: if control point is given use it instead of copying last segment control point 2
       List<Vector3f>::const_iterator it = points.end();
       it--;
 
-      const Vector3f endPoint      = *it;
-      const Vector3f tangent2Point = (point.beginTangentOverride) ? point.beginTangent : *(--it);
+      const Vector3f endPoint = *it;
+      const Vector3f control1 = (point.beginTangentOverride) ? point.beginTangent : *(--it);
 
-      points.push_back(endPoint);
-      points.push_back(tangent2Point);
+      points.push_back(control1);
       points.push_back(tangent);
       points.push_back(pos);
     }

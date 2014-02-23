@@ -134,7 +134,6 @@
     <ClCompile Include="..\..\Sources\Core\Math\Implementation\AxisAlignedBox.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Implementation\Math.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Implementation\Splines\CubicSpline.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Math\Implementation\Splines\CurveSegment.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Implementation\Splines\Spline.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Implementation\Tweeners\BackTweener.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Implementation\Tweeners\LinearTweener.cpp" />
@@ -351,7 +350,6 @@
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Quaternion.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Rect.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Splines\CubicSpline.h" />
-    <ClInclude Include="..\..\Sources\Core\Math\Interface\Splines\CurveSegment.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Splines\Spline.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Tweeners\BackTweener.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Interface\Tweeners\ITweener.h" />

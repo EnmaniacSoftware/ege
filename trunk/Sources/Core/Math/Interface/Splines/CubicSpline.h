@@ -17,7 +17,7 @@
  */
 
 #include "EGEDynamicArray.h"
-#include "EGEVector4.h"
+#include "EGEVector3.h"
 #include "EGEMatrix.h"
 #include "Core/Math/Interface/Splines/Spline.h"
 
@@ -57,17 +57,36 @@ class CubicSpline : public Spline
     bool addPoints(const List<Vector3f>& points) override;
     /*! @see Spline::value. */
     Vector3f value(float32 parameter) const override;
+    /*! @see Spline::length. */
+    float32 length() const override;
 
   private:
 
-    /*! Calculates segement length. */
-    void calculateSegmentLength(CurveSegment& segment);
-    const CurveSegment* segment(float32 t, float32& distanceToSegment) const;
+    /*! Segment data struct. */
+    struct SegmentData
+    {
+      Vector3f begin;                 /*!< Segment start point. */
+      Vector3f control1;              /*!< Segment first control point. */
+      Vector3f control2;              /*!< Segment second control point. */
+      Vector3f end;                   /*!< Segment end point. */
 
-  private slots:
+      mutable CachedFloat32 length;   /*! Segment length. */
+    };
 
-    /*! Called when one of the segments point has been changed. */
-    void segmentPointChanged(CurveSegment& segment);
+    typedef DynamicArray<SegmentData> SegmentArray;
+
+  private:
+
+    /*! Updates segment length. 
+     *  @param  segment Segment for which length is to be updated (recalculated).
+     */
+    void calculateSegmentLength(const SegmentData& segment) const;
+    /*! Calculates value within a segment at given position.
+     *  @param parameter  Parametrized distance on a segment at which calculations are done. Typicially in [0-1] interval.
+     *  @param segment    Segment on which data is being calculated.
+     *  @return Calculated position on segment at given position.
+     */
+    Vector3f value(float32 parameter, const SegmentData& segment) const;
 
   private:
 
@@ -75,6 +94,8 @@ class CubicSpline : public Spline
     CubicSplineType m_type;
     /*! Matrix of basis functions for currently selected spline type. */
     Matrix4f m_matrix;
+    /*! List of all spline segments. */
+    SegmentArray m_segments;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -21,7 +21,7 @@ class DynamicArray : public std::vector<T>
     /*! Removes object at given index. */
     void removeAt(s32 index);
     /*! Returns last element. If list is empty, default value is returned. */
-    const T last(const T& defaultValue) const;
+    const T last(const T& defaultValue = T()) const;
     /*! Returns TRUE if given object is present. */
     bool contains(const T object) const;
     /*! Copies all data from given list. */
