@@ -1,4 +1,4 @@
-#include "Core/Crypto/Hash.h"
+#include "Core/Crypto/Interface/Hash.h"
 
 EGE_NAMESPACE_BEGIN
 

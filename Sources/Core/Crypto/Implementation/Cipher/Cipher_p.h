@@ -3,9 +3,8 @@
 
 /** Private implementation interface for ciphers. */
 
-#include "EGECipher.h"
 #include "EGEDataBuffer.h"
-#include "Core/Crypto/Cipher/CipherKey.h"
+#include "Core/Crypto/Interface/Cipher/CipherKey.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -16,7 +15,7 @@ class CipherPrivate
 {
   public:
 
-    CipherPrivate(Cipher* base, EGECipher::Direction direction, const PCipherKey& key);
+    CipherPrivate(Cipher* base, const PCipherKey& key);
     virtual ~CipherPrivate();
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(Cipher)
@@ -38,8 +37,6 @@ class CipherPrivate
     PCipherKey m_key; 
     /*! Result buffer. */
     PDataBuffer m_result;
-    /*! Cipher direction. */
-    EGECipher::Direction m_direction;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

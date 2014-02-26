@@ -9,11 +9,17 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Available algorithms. */
+enum CryptographicHashAlgorithm
+{
+  EMD5 = 0
+};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class CryptographicHash
 {
   public:
 
-    CryptographicHash(EGECryptographicHash::Algorithm algorithm);
+    CryptographicHash(CryptographicHashAlgorithm algorithm);
    ~CryptographicHash();
 
     /*! Returns TRUE if object is valid. */

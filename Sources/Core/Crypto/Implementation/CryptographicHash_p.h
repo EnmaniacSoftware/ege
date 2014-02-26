@@ -3,8 +3,8 @@
 
 /** Private implementation for cryptographic hash generators. */
 
-#include "Core/Crypto/CryptographicHash.h"
-#include "Core/Crypto/md5/md5.h"
+#include "Core/Crypto/Interface/CryptographicHash.h"
+#include "Core/Crypto/Implementation/md5/md5.h"
 #include "EGEDataBuffer.h"
 
 EGE_NAMESPACE_BEGIN
@@ -14,7 +14,7 @@ class CryptographicHashPrivate
 {
   public:
 
-    CryptographicHashPrivate(EGECryptographicHash::Algorithm algorithm);
+    CryptographicHashPrivate(CryptographicHashAlgorithm algorithm);
    ~CryptographicHashPrivate();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -34,7 +34,7 @@ class CryptographicHashPrivate
   private:
 
     /*! Algorithm to use. */
-    EGECryptographicHash::Algorithm m_algorithm;
+    CryptographicHashAlgorithm m_algorithm;
     /*! MD5 context. */
     MD5_CTX m_md5Context;
 };

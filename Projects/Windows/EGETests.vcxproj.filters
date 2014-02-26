@@ -25,6 +25,9 @@
     <Filter Include="Tests\Math\Helpers">
       <UniqueIdentifier>{516a820a-7e8c-49d0-8fe9-7ddd83f4851f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Crypto">
+      <UniqueIdentifier>{0ca719bd-7554-4a64-8ade-fd0b26279ef5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\DebugTest.cpp">
@@ -92,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Line2Test.cpp">
       <Filter>Tests\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CipherXORTest.cpp">
+      <Filter>Tests\Crypto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

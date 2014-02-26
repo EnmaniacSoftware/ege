@@ -4,7 +4,7 @@
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Component/Interface/Component.h"
 #include "Core/Graphics/Render/Interface/RenderComponent.h"
-#include "Core/Crypto/Hash.h"
+#include "EGEHash.h"
 #include "EGEVertexBuffer.h"
 #include "EGEDebug.h"
 

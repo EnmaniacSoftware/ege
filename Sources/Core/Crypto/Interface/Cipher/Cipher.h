@@ -4,19 +4,31 @@
 /** Class providing the way to encrypt/decrypt data. */
 
 #include "EGEDataBuffer.h"
-#include "EGECipher.h"
-#include "Core/Crypto/Cipher/CipherKey.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Available encryption algorithms. */
+enum CipherAlgorithm
+{
+  EXOR = 0
+};
+
+/*! Available ciphering directions. */
+enum CipherDirection
+{
+  EEncrypt = 0,
+  EDecrypt
+};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGE_DECLARE_SMART_CLASS(CipherKey, PCipherKey)
 EGE_DECLARE_SMART_CLASS(Cipher, PCipher)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Cipher : public Object
 {
   public:
 
-    Cipher(EGECipher::Algorithm algorithm, EGECipher::Direction direction, const PCipherKey& key);
+    Cipher(CipherAlgorithm algorithm, CipherDirection direction, const PCipherKey& key);
    ~Cipher();
 
     EGE_DECLARE_NEW_OPERATORS

@@ -1,4 +1,4 @@
-#include "Core/Crypto/Cipher/XOR/CipherXOR_p.h"
+#include "Core/Crypto/Implementation/Cipher/XOR/CipherXOR_p.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -6,8 +6,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(CipherXORPrivate)
 EGE_DEFINE_DELETE_OPERATORS(CipherXORPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CipherXORPrivate::CipherXORPrivate(Cipher* base, EGECipher::Direction direction, const PCipherKey& key) : CipherPrivate(base, direction, key),
-                                                                                                          m_keyIndex(0)
+CipherXORPrivate::CipherXORPrivate(Cipher* base, const PCipherKey& key) : CipherPrivate(base, key),
+                                                                          m_keyIndex(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

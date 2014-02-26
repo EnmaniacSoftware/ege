@@ -1,12 +1,11 @@
-#include "Core/Crypto/Cipher/Cipher.h"
-#include "Core/Crypto/Cipher/XOR/CipherXOR_p.h"
+#include "Core/Crypto/Interface/Cipher/Cipher.h"
+#include "Core/Crypto/Implementation/Cipher/XOR/CipherXOR_p.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CipherPrivate::CipherPrivate(Cipher* base, EGECipher::Direction direction, const PCipherKey& key) : m_d(base),
-                                                                                                    m_key(key),
-                                                                                                    m_direction(direction)
+CipherPrivate::CipherPrivate(Cipher* base, const PCipherKey& key) : m_d(base),
+                                                                    m_key(key)
 {
   m_result = ege_new DataBuffer();
 }

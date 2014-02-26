@@ -1,5 +1,5 @@
-#include "Core/Crypto/Cipher/Cipher.h"
-#include "Core/Crypto/Cipher/XOR/CipherXOR_p.h"
+#include "Core/Crypto/Interface/Cipher/Cipher.h"
+#include "Core/Crypto/Implementation/Cipher/XOR/CipherXOR_p.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -7,14 +7,14 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Cipher)
 EGE_DEFINE_DELETE_OPERATORS(Cipher)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Cipher::Cipher(EGECipher::Algorithm algorithm, EGECipher::Direction direction, const PCipherKey& key) : Object(NULL),
-                                                                                                        m_p(NULL)
+Cipher::Cipher(CipherAlgorithm algorithm, CipherDirection direction, const PCipherKey& key) : Object(NULL),
+                                                                                              m_p(NULL)
 {
   switch (algorithm)
   {
-    case EGECipher::ALGORITHM_XOR:
+    case EXOR:
 
-      m_p = ege_new CipherXORPrivate(this, direction, key);
+      m_p = ege_new CipherXORPrivate(this, key);
       break;
   }
 }

@@ -65,7 +65,7 @@ String Device::GetUniqueId()
   DataBuffer defaultKeyData(l_defaultCipherKeyData, sizeof (l_defaultCipherKeyData));
   CipherKey key(defaultKeyData);
 
-  Cipher cipher(EGECipher::ALGORITHM_XOR, EGECipher::DIRECTION_DECRYPT, key);
+  Cipher cipher(EXOR, EDecrypt, key);
 
   // decrypt registry path
   DataBuffer subKeyData(reinterpret_cast<void*>(l_encryptedRegistrySubKeyValue), sizeof (l_encryptedRegistrySubKeyValue));

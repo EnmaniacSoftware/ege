@@ -1,4 +1,4 @@
-#include "Core/Crypto/CryptographicHash_p.h"
+#include "Core/Crypto/Implementation/CryptographicHash_p.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -6,11 +6,11 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(CryptographicHashPrivate)
 EGE_DEFINE_DELETE_OPERATORS(CryptographicHashPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CryptographicHashPrivate::CryptographicHashPrivate(EGECryptographicHash::Algorithm algorithm) : m_algorithm(algorithm)
+CryptographicHashPrivate::CryptographicHashPrivate(CryptographicHashAlgorithm algorithm) : m_algorithm(algorithm)
 {
   switch (m_algorithm)
   {
-    case EGECryptographicHash::ALGORITHM_MD5:
+    case EMD5:
 
       MD5_Init(&m_md5Context);
       break;
@@ -25,7 +25,7 @@ EGEResult CryptographicHashPrivate::addData(const char* data, s32 length)
 {
   switch (m_algorithm)
   {
-    case EGECryptographicHash::ALGORITHM_MD5:
+    case EMD5:
 
       MD5_Update(&m_md5Context, const_cast<void*>(reinterpret_cast<const void*>(data)), static_cast<unsigned long>(length));
       return EGE_SUCCESS;
@@ -38,7 +38,7 @@ EGEResult CryptographicHashPrivate::addData(const PDataBuffer& data)
 {
   switch (m_algorithm)
   {
-    case EGECryptographicHash::ALGORITHM_MD5:
+    case EMD5:
 
       MD5_Update(&m_md5Context, data->data(), static_cast<unsigned long>(data->size()));
       return EGE_SUCCESS;
@@ -51,7 +51,7 @@ void CryptographicHashPrivate::reset()
 {
   switch (m_algorithm)
   {
-    case EGECryptographicHash::ALGORITHM_MD5:
+    case EMD5:
 
       MD5_Init(&m_md5Context);
       break;
@@ -64,7 +64,7 @@ PDataBuffer CryptographicHashPrivate::result()
 
   switch (m_algorithm)
   {
-    case EGECryptographicHash::ALGORITHM_MD5:
+    case EMD5:
 
       if (EGE_SUCCESS == buffer->setSize(16))
       {

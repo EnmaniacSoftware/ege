@@ -3,7 +3,7 @@
 
 /** Private implementation for XOR cipher. */
 
-#include "Core/Crypto/Cipher/Cipher_p.h"
+#include "Core/Crypto/Implementation/Cipher/Cipher_p.h"
 #include "EGEDataBuffer.h"
 
 EGE_NAMESPACE_BEGIN
@@ -15,7 +15,7 @@ class CipherXORPrivate : public CipherPrivate
 {
   public:
 
-    CipherXORPrivate(Cipher* base, EGECipher::Direction direction, const PCipherKey& key);
+    CipherXORPrivate(Cipher* base, const PCipherKey& key);
     virtual ~CipherXORPrivate();
 
     EGE_DECLARE_NEW_OPERATORS

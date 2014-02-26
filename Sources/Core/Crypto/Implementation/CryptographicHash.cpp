@@ -1,10 +1,10 @@
-#include "Core/Crypto/CryptographicHash.h"
-#include "Core/Crypto/CryptographicHash_p.h"
+#include "Core/Crypto/Interface/CryptographicHash.h"
+#include "Core/Crypto/Implementation/CryptographicHash_p.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CryptographicHash::CryptographicHash(EGECryptographicHash::Algorithm algorithm) : m_p(NULL)
+CryptographicHash::CryptographicHash(CryptographicHashAlgorithm algorithm) : m_p(NULL)
 {
   // create private implementation
   m_p = ege_new CryptographicHashPrivate(algorithm);
