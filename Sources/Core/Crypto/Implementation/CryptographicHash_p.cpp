@@ -1,4 +1,5 @@
 #include "Core/Crypto/Implementation/CryptographicHash_p.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -11,6 +12,9 @@ CryptographicHashPrivate::CryptographicHashPrivate(CryptographicHashAlgorithm al
   switch (m_algorithm)
   {
     case EMD5:
+
+      // set to proper size
+      m_result.setSize(MD5_DIGEST_LENGTH);
 
       MD5_Init(&m_md5Context);
       break;
@@ -60,20 +64,17 @@ void CryptographicHashPrivate::reset()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PDataBuffer CryptographicHashPrivate::result()
 {
-  PDataBuffer buffer;
-
   switch (m_algorithm)
   {
     case EMD5:
 
-      if (EGE_SUCCESS == buffer->setSize(16))
-      {
-        MD5_Final(reinterpret_cast<unsigned char*>(buffer->data(0)), &m_md5Context);
-      }
+      EGE_ASSERT(MD5_DIGEST_LENGTH == m_result.size());
+
+      MD5_Final(reinterpret_cast<unsigned char*>(m_result.data(0)), &m_md5Context);
       break;
   }
 
-  return buffer;
+  return m_result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

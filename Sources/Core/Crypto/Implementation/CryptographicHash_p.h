@@ -4,8 +4,8 @@
 /** Private implementation for cryptographic hash generators. */
 
 #include "Core/Crypto/Interface/CryptographicHash.h"
-#include "Core/Crypto/Implementation/md5/md5.h"
 #include "EGEDataBuffer.h"
+#include <openssl/md5.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -37,6 +37,8 @@ class CryptographicHashPrivate
     CryptographicHashAlgorithm m_algorithm;
     /*! MD5 context. */
     MD5_CTX m_md5Context;
+    /*! Result buffer. */
+    DataBuffer m_result;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

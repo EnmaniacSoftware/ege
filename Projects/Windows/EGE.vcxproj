@@ -56,7 +56,6 @@
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\CryptographicHash.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\CryptographicHash_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Hash.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\md5\md5.c" />
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Node.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Console.cpp" />
@@ -265,7 +264,6 @@
     <ClInclude Include="..\..\Sources\Core\Crypto\Implementation\Cipher\Cipher_p.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Implementation\Cipher\XOR\CipherXOR_p.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Implementation\CryptographicHash_p.h" />
-    <ClInclude Include="..\..\Sources\Core\Crypto\Implementation\md5\md5.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\Cipher.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherKey.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\CryptographicHash.h" />
@@ -720,7 +718,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>EGE_RENDERING_OPENGL_3;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_OPENGL_DEBUG;EGE_FEATURE_ENGINE_INFO;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;EGE_SOCIAL_SERVICES_NULL;EGE_PURCHASE_SERVICES_NULL;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include;..\..\External\OpenSSL 1.0.1f\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>
       <BrowseInformation>true</BrowseInformation>
@@ -733,8 +731,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>..\..\External\OpenAL 1.13;..\..\External\pthreads 2.8.0\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;openal32.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\External\OpenAL 1.13;..\..\External\pthreads 2.8.0\lib;..\..\External\OpenSSL 1.0.1f\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;openal32.lib;pthreadVC2.lib;libeay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug - OGL FPL MT|Win32'">
@@ -744,7 +742,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>EGE_RENDERING_OPENGL_FIXED;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_OPENGL_DEBUG;EGE_FEATURE_ENGINE_INFO;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;EGE_SOCIAL_SERVICES_NULL;EGE_PURCHASE_SERVICES_NULL;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include;..\..\External\OpenSSL 1.0.1f\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>
       <BrowseInformation>true</BrowseInformation>
@@ -757,8 +755,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>..\..\External\OpenAL 1.13;..\..\External\pthreads 2.8.0\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;openal32.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\External\OpenAL 1.13;..\..\External\pthreads 2.8.0\lib;..\..\External\OpenSSL 1.0.1f\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;openal32.lib;pthreadVC2.lib;libeay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug - OGL FPL ST|Win32'">
@@ -768,7 +766,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>EGE_RENDERING_OPENGL_FIXED;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_SINGLE_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_OPENGL_DEBUG;EGE_FEATURE_ENGINE_INFO;EGE_XML_TINYXML;EGE_AUDIO_NULL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include;..\..\External\OpenSSL 1.0.1f\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>
       <BrowseInformation>true</BrowseInformation>
@@ -781,8 +779,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>..\..\External\OpenAL 1.13;..\..\External\pthreads 2.8.0\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;openal32.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\External\OpenAL 1.13;..\..\External\pthreads 2.8.0\lib;..\..\External\OpenSSL 1.0.1f\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;openal32.lib;pthreadVC2.lib;libeay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release - GL3x MT|Win32'">
@@ -795,7 +793,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>EGE_RENDERING_OPENGL_3;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_XML_TINYXML;EGE_RANDOM_STDC;EGE_AUDIO_OPENAL;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include;..\..\External\OpenSSL 1.0.1f\include</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -806,8 +804,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;openal32.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\External\OpenAL 1.13;..\..\External\pthreads 2.8.0\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;openal32.lib;pthreadVC2.lib;libeay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\External\OpenAL 1.13;..\..\External\pthreads 2.8.0\lib;..\..\External\OpenSSL 1.0.1f\lib</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release - OGL FPL MT|Win32'">
@@ -820,7 +818,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>EGE_RENDERING_OPENGL_FIXED;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_XML_TINYXML;EGE_RANDOM_STDC;EGE_AUDIO_OPENAL;EGE_THREAD_PTHREAD;EGE_SOCIAL_SERVICES_NULL;EGE_PURCHASE_SERVICES_NULL;TIXML_USE_STL;WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include;..\..\External\OpenSSL 1.0.1f\include</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -831,8 +829,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;openal32.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\External\OpenAL 1.13;..\..\External\pthreads 2.8.0\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;openal32.lib;pthreadVC2.lib;libeay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\External\OpenAL 1.13;..\..\External\pthreads 2.8.0\lib;..\..\External\OpenSSL 1.0.1f\lib</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug - GL2x MT|Win32'">

@@ -301,9 +301,6 @@
     <Filter Include="Core\Crypto\Interface">
       <UniqueIdentifier>{ed169b3f-a3ad-434d-9d4f-6e15e291f036}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Crypto\Implementation\md5">
-      <UniqueIdentifier>{6068a3f0-f6d7-4613-b067-26b8041c4756}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Crypto\Implementation\Cipher">
       <UniqueIdentifier>{8a16cc41-8313-491d-a515-ed10229ea0f4}</UniqueIdentifier>
     </Filter>
@@ -932,9 +929,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\CryptographicHash_p.cpp">
       <Filter>Core\Crypto\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\md5\md5.c">
-      <Filter>Core\Crypto\Implementation\md5</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\Cipher.cpp">
       <Filter>Core\Crypto\Implementation\Cipher</Filter>
@@ -1782,9 +1776,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Crypto\Implementation\CryptographicHash_p.h">
       <Filter>Core\Crypto\Implementation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Crypto\Implementation\md5\md5.h">
-      <Filter>Core\Crypto\Implementation\md5</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Crypto\Implementation\Cipher\Cipher_p.h">
       <Filter>Core\Crypto\Implementation\Cipher</Filter>
