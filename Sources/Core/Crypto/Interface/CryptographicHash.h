@@ -1,44 +1,36 @@
-#ifndef EGE_CORE_CRYPTOGRAPHICHASH_H
-#define EGE_CORE_CRYPTOGRAPHICHASH_H
+#ifndef EGE_CORE_CRYPTO_CRYPTOGRAPHICHASH_H
+#define EGE_CORE_CRYPTO_CRYPTOGRAPHICHASH_H
 
-/** Class providing the way to generate cryptographic hashes. */
+/** Base class for objects providing the way to generate cryptographic hashes. */
 
 #include "EGEDataBuffer.h"
-#include "EGEHash.h"
 
 EGE_NAMESPACE_BEGIN
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Available algorithms. */
-enum CryptographicHashAlgorithm
-{
-  EMD5 = 0
-};
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class CryptographicHash
 {
   public:
 
-    CryptographicHash(CryptographicHashAlgorithm algorithm);
-   ~CryptographicHash();
+    CryptographicHash();
+    virtual ~CryptographicHash();
 
-    /*! Returns TRUE if object is valid. */
-    bool isValid() const;
     /*! Adds data from raw buffer to cryptographic hash. */
-    EGEResult addData(const char* data, s32 length);
+    virtual EGEResult addData(const char* data, s32 length) = 0;
     /*! Adds data from buffer to cryptographic hash. */
     EGEResult addData(const PDataBuffer& data);
     /*! Resets object. */
-    void reset();
+    virtual void reset();
     /*! Return data buffer with result. */
-    PDataBuffer result();
+    virtual PDataBuffer result();
 
-  private:
+  protected:
 
-    EGE_DECLARE_PRIVATE_IMPLEMENTATION(CryptographicHash)
+    /*! Result buffer. */
+    DataBuffer m_result;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_CRYPTOGRAPHICHASH_H
+#endif // EGE_CORE_CRYPTO_CRYPTOGRAPHICHASH_H

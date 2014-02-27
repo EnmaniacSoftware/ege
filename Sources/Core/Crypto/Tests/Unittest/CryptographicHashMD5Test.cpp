@@ -37,10 +37,7 @@ void CryptographicHashMD5Test::TearDownTestCase()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(CryptographicHashMD5Test, HashFromDataBuffer)
 {
-  CryptographicHash md5(EMD5);
-
-  // check validity
-  EXPECT_TRUE(md5.isValid());
+  CryptographicHashMD5 md5;
 
   // add data into hasher
   DataBuffer data(KPlainText, strlen(KPlainText));
@@ -67,12 +64,41 @@ TEST_F(CryptographicHashMD5Test, HashFromDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(CryptographicHashMD5Test, HashFromString)
 {
-  CryptographicHash md5(EMD5);
-
-  // check validity
-  EXPECT_TRUE(md5.isValid());
+  CryptographicHashMD5 md5;
 
   // add data into hasher
+  EXPECT_EQ(EGE_SUCCESS, md5.addData(KPlainText, static_cast<s32>(strlen(KPlainText))));
+
+  // get actual result
+  PDataBuffer actualResult = md5.result();
+
+  // compare
+  EXPECT_EQ(strlen(KPlainTextMD5) / 2, actualResult->size());
+  for (s64 i = 0; i < actualResult->size(); ++i)
+  {
+    // retrieve expected value
+    int value = 0;
+    EXPECT_EQ(1, sscanf(KPlainTextMD5 + i * 2, "%2x", &value));
+
+    // retrieve actual value
+    int actualValue = *reinterpret_cast<unsigned char*>(actualResult->data(i));
+
+    // test
+    EXPECT_EQ(value, actualValue);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(CryptographicHashMD5Test, Reset)
+{
+  CryptographicHashMD5 md5;
+
+  // add data into hasher
+  EXPECT_EQ(EGE_SUCCESS, md5.addData(KPlainText, static_cast<s32>(strlen(KPlainText))));
+
+  // reset hasher
+  md5.reset();
+
+  // add data into hasher again
   EXPECT_EQ(EGE_SUCCESS, md5.addData(KPlainText, static_cast<s32>(strlen(KPlainText))));
 
   // get actual result

@@ -1,64 +1,29 @@
 #include "Core/Crypto/Interface/CryptographicHash.h"
-#include "Core/Crypto/Implementation/CryptographicHash_p.h"
+#include "EGEDebug.h"
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CryptographicHash::CryptographicHash(CryptographicHashAlgorithm algorithm) : m_p(NULL)
+CryptographicHash::CryptographicHash()
 {
-  // create private implementation
-  m_p = ege_new CryptographicHashPrivate(algorithm);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 CryptographicHash::~CryptographicHash()
 {
-  EGE_DELETE(m_p)
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool CryptographicHash::isValid() const
-{
-  return (NULL != m_p);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult CryptographicHash::addData(const char* data, s32 length)
-{
-  if (isValid())
-  {
-    return p_func()->addData(data, length);
-  }
-
-  return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult CryptographicHash::addData(const PDataBuffer& data)
 {
-  if (isValid())
-  {
-    return p_func()->addData(data);
-  }
-
-  return EGE_ERROR;
+  return addData(reinterpret_cast<const char*>(data->data(data->readOffset())), static_cast<s32>(data->size() - data->readOffset()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void CryptographicHash::reset()
 {
-  if (isValid())
-  {
-    p_func()->reset();
-  }
+  m_result.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PDataBuffer CryptographicHash::result()
 {
-  PDataBuffer buffer;
-
-  if (isValid())
-  {
-    buffer = p_func()->result();
-  }
-
-  return buffer;
+  return m_result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END
