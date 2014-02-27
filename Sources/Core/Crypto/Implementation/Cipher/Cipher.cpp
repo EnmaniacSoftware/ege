@@ -1,73 +1,30 @@
 #include "Core/Crypto/Interface/Cipher/Cipher.h"
-#include "Core/Crypto/Implementation/Cipher/XOR/CipherXOR_p.h"
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(Cipher)
-EGE_DEFINE_DELETE_OPERATORS(Cipher)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Cipher::Cipher(CipherAlgorithm algorithm, CipherDirection direction, const PCipherKey& key) : Object(NULL),
-                                                                                              m_p(NULL)
+Cipher::Cipher(CipherDirection direction, const PCipherKey& key) : Object(NULL)
+                                                                 , m_key(key)
+                                                                 , m_direction(direction)
 {
-  switch (algorithm)
-  {
-    case EXOR:
-
-      m_p = ege_new CipherXORPrivate(this, key);
-      break;
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Cipher::~Cipher()
 {
-  EGE_DELETE(m_p)
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Cipher::isValid() const
-{
-  return (NULL != m_p) && m_p->isValid();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Cipher::addData(const char* data, s32 length)
-{
-  if (isValid())
-  {
-    return p_func()->addData(data, length);
-  }
-
-  return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult Cipher::addData(const PDataBuffer& data)
 {
-  if (isValid())
-  {
-    return p_func()->addData(data);
-  }
-
-  return EGE_ERROR;
+  return addData(reinterpret_cast<const char*>(data->data(data->readOffset())), static_cast<s32>(data->size() - data->readOffset()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Cipher::reset()
 {
-  if (isValid())
-  {
-    p_func()->reset();
-  }
+  m_result.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PDataBuffer Cipher::result()
 {
-  PDataBuffer buffer;
-
-  if (isValid())
-  {
-    buffer = p_func()->result();
-  }
-
-  return buffer;
+  return m_result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END

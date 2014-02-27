@@ -51,8 +51,7 @@
     <ClCompile Include="..\..\Sources\Core\Component\Physics\PhysicsComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\Cipher.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\CipherKey.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\Cipher_p.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\XOR\CipherXOR_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\CipherXOR.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\CryptographicHash.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\CryptographicHash_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Hash.cpp" />
@@ -261,11 +260,10 @@
     <ClInclude Include="..\..\Sources\Core\Component\Physics\Box2D\PhysicsComponentBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Component\Physics\Null\PhysicsComponentNull_p.h" />
     <ClInclude Include="..\..\Sources\Core\Component\Physics\PhysicsComponent.h" />
-    <ClInclude Include="..\..\Sources\Core\Crypto\Implementation\Cipher\Cipher_p.h" />
-    <ClInclude Include="..\..\Sources\Core\Crypto\Implementation\Cipher\XOR\CipherXOR_p.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Implementation\CryptographicHash_p.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\Cipher.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherKey.h" />
+    <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherXOR.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\CryptographicHash.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Hash.h" />
     <ClInclude Include="..\..\Sources\Core\Data\Serializable.h" />

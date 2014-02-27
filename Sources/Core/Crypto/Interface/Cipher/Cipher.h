@@ -1,19 +1,14 @@
 #ifndef EGE_CORE_CRYPTO_CIPHER_CIPHER_H
 #define EGE_CORE_CRYPTO_CIPHER_CIPHER_H
 
-/** Class providing the way to encrypt/decrypt data. */
+/** Base class for objects capable of encrypting/decrypting data. */
 
 #include "EGEDataBuffer.h"
+#include "Core/Crypto/Interface/Cipher/CipherKey.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Available encryption algorithms. */
-enum CipherAlgorithm
-{
-  EXOR = 0
-};
-
 /*! Available ciphering directions. */
 enum CipherDirection
 {
@@ -21,33 +16,32 @@ enum CipherDirection
   EDecrypt
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(CipherKey, PCipherKey)
 EGE_DECLARE_SMART_CLASS(Cipher, PCipher)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Cipher : public Object
 {
   public:
 
-    Cipher(CipherAlgorithm algorithm, CipherDirection direction, const PCipherKey& key);
-   ~Cipher();
+    Cipher(CipherDirection direction, const PCipherKey& key);
+    virtual ~Cipher();
 
-    EGE_DECLARE_NEW_OPERATORS
-    EGE_DECLARE_DELETE_OPERATORS
-
-    /*! Returns TRUE if object is valid. */
-    bool isValid() const;
     /*! Adds data from raw buffer for ciphring. */
-    EGEResult addData(const char* data, s32 length);
+    virtual EGEResult addData(const char* data, s32 length) = 0;
     /*! Adds data from buffer for ciphring. */
     EGEResult addData(const PDataBuffer& data);
     /*! Resets object. */
-    void reset();
+    virtual void reset();
     /*! Return data buffer with result. */
     PDataBuffer result();
 
-  private:
+  protected:
 
-    EGE_DECLARE_PRIVATE_IMPLEMENTATION(Cipher)
+    /*! Cipher key. */
+    PCipherKey m_key;
+    /*! Direction. */
+    CipherDirection m_direction;
+    /*! Result buffer. */
+    DataBuffer m_result;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

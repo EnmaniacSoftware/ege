@@ -304,9 +304,6 @@
     <Filter Include="Core\Crypto\Implementation\Cipher">
       <UniqueIdentifier>{8a16cc41-8313-491d-a515-ed10229ea0f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Crypto\Implementation\Cipher\XOR">
-      <UniqueIdentifier>{b90d5ca5-443b-4fb5-acd5-2ca1b8fa94b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Crypto\Interface\Cipher">
       <UniqueIdentifier>{a2fa8305-250f-4e72-872a-99bd387bc61f}</UniqueIdentifier>
     </Filter>
@@ -933,14 +930,11 @@
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\Cipher.cpp">
       <Filter>Core\Crypto\Implementation\Cipher</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\Cipher_p.cpp">
-      <Filter>Core\Crypto\Implementation\Cipher</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\CipherKey.cpp">
       <Filter>Core\Crypto\Implementation\Cipher</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\XOR\CipherXOR_p.cpp">
-      <Filter>Core\Crypto\Implementation\Cipher\XOR</Filter>
+    <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\CipherXOR.cpp">
+      <Filter>Core\Crypto\Implementation\Cipher</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1777,16 +1771,13 @@
     <ClInclude Include="..\..\Sources\Core\Crypto\Implementation\CryptographicHash_p.h">
       <Filter>Core\Crypto\Implementation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Crypto\Implementation\Cipher\Cipher_p.h">
-      <Filter>Core\Crypto\Implementation\Cipher</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Crypto\Implementation\Cipher\XOR\CipherXOR_p.h">
-      <Filter>Core\Crypto\Implementation\Cipher\XOR</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\Cipher.h">
       <Filter>Core\Crypto\Interface\Cipher</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherKey.h">
+      <Filter>Core\Crypto\Interface\Cipher</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherXOR.h">
       <Filter>Core\Crypto\Interface\Cipher</Filter>
     </ClInclude>
   </ItemGroup>
