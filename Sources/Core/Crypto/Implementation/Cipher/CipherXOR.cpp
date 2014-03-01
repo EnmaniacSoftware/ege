@@ -31,7 +31,7 @@ EGEResult CipherXOR::addData(const char* data, s32 length)
     while (0 < length)
     {
       // encrypt/decrypt
-      *outData = *data ^ m_key->value(m_keyIndex);
+      *outData = *data ^ m_key->data()[m_keyIndex];
 
       // next
       ++outData;

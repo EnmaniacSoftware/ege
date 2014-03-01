@@ -4,7 +4,6 @@
 /** Class providing the way to encrypt/decrypt data using Advanced Encryption Standard specification. */
 
 #include "Core/Crypto/Interface/Cipher/Cipher.h"
-#include <openssl/aes.h>
 
 EGE_NAMESPACE_BEGIN
 
@@ -33,10 +32,12 @@ class CipherAES : public Cipher
     /*! @see Cipher::reset. */
     void reset() override;
 
-  private:
+  protected:
 
-    /*! Initialization vector. */
-    u8 m_initializationVector[AES_BLOCK_SIZE];
+    /*! Initialization vector. 
+     *  @note This should be the size of AES_BLOCK_SIZE.
+     */
+    u8 m_initializationVector[16];
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

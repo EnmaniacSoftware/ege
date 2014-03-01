@@ -936,6 +936,9 @@
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\CryptographicHash.cpp">
       <Filter>Core\Crypto\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\CipherAES.cpp">
+      <Filter>Core\Crypto\Implementation\Cipher</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h">
@@ -1779,6 +1782,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\CryptographicHashMD5.h">
       <Filter>Core\Crypto\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherAES.h">
+      <Filter>Core\Crypto\Interface\Cipher</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

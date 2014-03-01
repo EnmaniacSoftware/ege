@@ -79,6 +79,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CipherAESTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CipherXORTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CryptographicHashMD5Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\HashTest.cpp" />

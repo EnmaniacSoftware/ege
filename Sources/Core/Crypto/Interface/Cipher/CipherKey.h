@@ -23,8 +23,8 @@ class CipherKey : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Returns key value at given index. */
-    u8 value(s32 index) const;
+    /*! Returns pointer to key data buffer. */
+    u8* data() const;
     /*! Returns length of the key (in bytes). */
     s64 length() const;
 
@@ -33,18 +33,6 @@ class CipherKey : public Object
     /*! Key data. */
     DataBuffer m_key;
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline u8 CipherKey::value(s32 index) const
-{
-  EGE_ASSERT(index < m_key.size());
-
-  return *reinterpret_cast<u8*>(m_key.data(static_cast<s64>(index)));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline s64 CipherKey::length() const
-{
-  return m_key.size();
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

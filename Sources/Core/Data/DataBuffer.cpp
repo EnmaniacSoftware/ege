@@ -41,14 +41,14 @@ DataBuffer::DataBuffer(const DataBuffer& other) : Object(NULL, EGE_OBJECT_UID_DA
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer::DataBuffer(void* data, s64 size) : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER), 
-                                               m_size(size), 
-                                               m_capacity(size), 
-                                               m_data(data), 
-                                               m_readOffset(0), 
-                                               m_writeOffset(0), 
-                                               m_mutable(false),
-                                               m_byteOrdering(ELittleEndian)
+DataBuffer::DataBuffer(const void* data, s64 size) : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER), 
+                                                     m_size(size), 
+                                                     m_capacity(size), 
+                                                     m_data(const_cast<void*>(data)), 
+                                                     m_readOffset(0), 
+                                                     m_writeOffset(0), 
+                                                     m_mutable(false),
+                                                     m_byteOrdering(ELittleEndian)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

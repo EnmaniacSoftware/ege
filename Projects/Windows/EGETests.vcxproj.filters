@@ -105,6 +105,9 @@
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CryptographicHashMD5Test.cpp">
       <Filter>Tests\Crypto</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CipherAESTest.cpp">
+      <Filter>Tests\Crypto</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h">

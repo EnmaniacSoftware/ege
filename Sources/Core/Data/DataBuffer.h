@@ -17,7 +17,7 @@ class DataBuffer : public Object, public ISerializable
     DataBuffer();
     DataBuffer(const DataBuffer& other);
     /*! Wraps around given data pointer and size. Resulting buffer is not mutable */
-    DataBuffer(void* data, s64 size);
+    DataBuffer(const void* data, s64 size);
     virtual ~DataBuffer();
 
     EGE_DECLARE_NEW_OPERATORS
