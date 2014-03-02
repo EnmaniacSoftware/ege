@@ -34,10 +34,15 @@ class CipherAES : public Cipher
 
   protected:
 
-    /*! Initialization vector. 
+    /*! Current initialization vector. This changes each time encryption/decryption happens.
      *  @note This should be the size of AES_BLOCK_SIZE.
      */
     u8 m_initializationVector[16];
+
+  private:
+
+    /*! Resets initialization vectors. */
+    void resetInitializationVectors();
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

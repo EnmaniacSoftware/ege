@@ -874,7 +874,7 @@ TEST_F(MathTest, RandomDeviant2D)
 
     // test
     const float32 radians = Math::ACos(out.normalized().dotProduct(vector.normalized()));
-    EXPECT_LE(Math::RadiansToDegrees(radians), Math::Abs(angle.degrees()));
+    EXPECT_LE(Math::Floor((Math::RadiansToDegrees(radians))), Math::Floor(Math::Abs(angle.degrees())));
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
