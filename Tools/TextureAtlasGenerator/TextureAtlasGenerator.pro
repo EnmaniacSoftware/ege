@@ -1,6 +1,9 @@
+TEMPLATE = app
 
-CONFIG += qt
-QT += xml
+QT += xml core widgets
+QT -= gui
+
+CONFIG += console
 
 SOURCES = main.cpp \
           TextureAtlasGenerator.cpp \

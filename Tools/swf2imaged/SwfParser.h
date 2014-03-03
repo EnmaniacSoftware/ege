@@ -1,7 +1,7 @@
 #ifndef SWFPARSER_H
 #define SWFPARSER_H
 
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <QString>
 #include <QMap>
 #include <QList>

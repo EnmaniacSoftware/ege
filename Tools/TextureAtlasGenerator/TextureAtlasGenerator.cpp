@@ -23,7 +23,7 @@ static TextureFormatData l_textureFormatData[] = {  { "rgba", ".png", TextureAtl
                                                     { "4bpp_pvrtc", ".pvr", TextureAtlasGenerator::TF_PVRTC_4BPP },
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define VERSION 1.01f
+#define VERSION 1.02f
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function for sorting object from greatest area to smallest. */
 static bool SortGreaterArea(AtlasGroupEntry* left, AtlasGroupEntry* right)
@@ -143,7 +143,7 @@ void TextureAtlasGenerator::printHeader() const
 {
   QString version;
   version.setNum(VERSION, 'f', 2);
-  QByteArray versionData = version.toAscii();
+  QByteArray versionData = version.toLatin1();
 
   qDebug() << "";
   qDebug() << "Texture Atlas Generator, version" << versionData.data();

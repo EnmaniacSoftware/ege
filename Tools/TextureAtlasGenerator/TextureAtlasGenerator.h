@@ -1,7 +1,7 @@
 #ifndef TEXTURE_ATLAS_GENERATOR_H
 #define TEXTURE_ATLAS_GENERATOR_H
 
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <QString>
 #include <QList>
 #include <QImage>

@@ -1,5 +1,9 @@
-CONFIG += qt
-QT += xml
+TEMPLATE = app
+
+QT += xml core widgets
+QT -= gui
+
+CONFIG += console
 
 unix {
 DEFINES += override=

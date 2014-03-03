@@ -8,7 +8,7 @@
 #include <QDebug>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define VERSION 0.21
+#define VERSION 0.22
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SwfParser::SwfParser(int argc, char *argv[]) : QApplication(argc, argv),
                                                m_resourceManager(NULL)
@@ -96,10 +96,10 @@ void SwfParser::printHeader() const
 {
   QString version;
   version.setNum(VERSION, 'f', 2);
-  QByteArray versionData = version.toAscii();
+  QByteArray versionData = version.toLatin1();
 
   qDebug() << "";
-  qDebug() << "SWF To Imaged Animation converter, version" << version.toAscii();
+  qDebug() << "SWF To Imaged Animation converter, version" << version.toLatin1();
   qDebug() << "Albert Banaszkiewicz, Little Bee Studios Ltd., 2011-2012";
   qDebug() << "";
 }
