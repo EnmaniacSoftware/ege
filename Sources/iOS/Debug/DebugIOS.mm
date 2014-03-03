@@ -1,4 +1,4 @@
-#include "Core/Debug/Debug.h"
+#include "EGEDebug.h"
 #import <Foundation/Foundation.h>
 #include <assert.h>
 

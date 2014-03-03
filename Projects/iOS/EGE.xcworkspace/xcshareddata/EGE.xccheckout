@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F6A75B0F-C899-4EAC-9499-727AB7758180</string>
+	<key>IDESourceControlProjectName</key>
+	<string>EGE</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>10355436-DF64-4AC3-A2C6-82B7EAFEEC18</key>
+		<string>https://bitbucket.org/littlebeestudios/ege.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Projects/iOS/EGE.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>10355436-DF64-4AC3-A2C6-82B7EAFEEC18</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://bitbucket.org/littlebeestudios/ege.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>10355436-DF64-4AC3-A2C6-82B7EAFEEC18</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>10355436-DF64-4AC3-A2C6-82B7EAFEEC18</string>
+			<key>IDESourceControlWCCName</key>
+			<string>EGE</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_MATH_VECTOR2TYPES_H
 #define EGE_CORE_MATH_VECTOR2TYPES_H
 
-#include <EGE.h>
+#include "EGE.h"
 
 EGE_NAMESPACE_BEGIN
 

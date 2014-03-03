@@ -1,5 +1,5 @@
 #include "iOS/File/FileIOS_p.h"
-#include "Core/Math/Math.h"
+#include "EGEMath.h"
 #include "EGEDebug.h"
 #import <Foundation/NSFileHandle.h>
 #import <Foundation/NSFileManager.h>
