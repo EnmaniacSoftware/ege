@@ -410,10 +410,10 @@ EGEResult Application::run()
   if (0 == m_lastUpdateTime.microseconds())
   {
     m_lastUpdateTime.fromMicroseconds(Timer::GetMicroseconds());
-  }
 
-  // set state
-  m_state = STATE_RUNNING;
+    // set state
+    m_state = STATE_RUNNING;
+  }
 
   return p_func()->run();
 }

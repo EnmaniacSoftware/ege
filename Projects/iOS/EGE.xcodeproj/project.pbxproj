@@ -225,12 +225,53 @@
 		4514723B18C5236200AAC617 /* StringUtilsIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514721D18C5236200AAC617 /* StringUtilsIOS.cpp */; };
 		4514723C18C5236200AAC617 /* AtomicIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514721F18C5236200AAC617 /* AtomicIOS.cpp */; };
 		4514723D18C5236200AAC617 /* TimerIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514722218C5236200AAC617 /* TimerIOS_p.mm */; };
-		454427F616F28A6F00E1A5DB /* libjpeglib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 454427F216F28A6F00E1A5DB /* libjpeglib.a */; };
-		454427F716F28A6F00E1A5DB /* libpnglib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 454427F316F28A6F00E1A5DB /* libpnglib.a */; };
-		454427F816F28A6F00E1A5DB /* libtinyxml.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 454427F416F28A6F00E1A5DB /* libtinyxml.a */; };
-		454427F916F28A6F00E1A5DB /* libzlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 454427F516F28A6F00E1A5DB /* libzlib.a */; };
+		4558971618C548FC002C4C8B /* libsqlite3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558970818C54679002C4C8B /* libsqlite3.a */; };
+		4558971B18C548FC002C4C8B /* libjpeglib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558971718C548FC002C4C8B /* libjpeglib.a */; };
+		4558971C18C548FC002C4C8B /* libpnglib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558971818C548FC002C4C8B /* libpnglib.a */; };
+		4558971D18C548FC002C4C8B /* libtinyxml.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558971918C548FC002C4C8B /* libtinyxml.a */; };
+		4558971E18C548FC002C4C8B /* libzlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558971A18C548FC002C4C8B /* libzlib.a */; };
 		45877DA916F09F5B00B4252B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45877DA816F09F5B00B4252B /* Foundation.framework */; };
+		45FB05DC18C69499005F4062 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DA18C69499005F4062 /* libcrypto.a */; };
+		45FB05DD18C69499005F4062 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DB18C69499005F4062 /* libssl.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		45340C9818C65AB200ECC3B8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4558970918C54686002C4C8B /* pnglib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4536385216F111E900B4D72F;
+			remoteInfo = pnglib;
+		};
+		45340C9E18C65AB200ECC3B8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4558971518C54855002C4C8B /* jpeglib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4587810A16F1075F00B4252B;
+			remoteInfo = jpeglib;
+		};
+		45340CA318C65AB200ECC3B8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4558971418C5484F002C4C8B /* tinyxml.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 458780D116F0C09A00B4252B;
+			remoteInfo = tinyxml;
+		};
+		45340CA818C65AB200ECC3B8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4558971318C54848002C4C8B /* zlib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4536389016F1131200B4D72F;
+			remoteInfo = zlib;
+		};
+		4558970718C54679002C4C8B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4558970318C54679002C4C8B /* sqlite3.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 451B7DA118C544CA00CB9E71;
+			remoteInfo = sqlite3;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		45877DA316F09F5B00B4252B /* CopyFiles */ = {
@@ -817,12 +858,19 @@
 		4514722118C5236200AAC617 /* TimerIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerIOS_p.h; sourceTree = "<group>"; };
 		4514722218C5236200AAC617 /* TimerIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimerIOS_p.mm; sourceTree = "<group>"; };
 		4514722318C5236200AAC617 /* TypesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypesIOS.h; sourceTree = "<group>"; };
-		454427F216F28A6F00E1A5DB /* libjpeglib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeglib.a; path = "../../../External/JpegLib/build/Release-iphoneos/libjpeglib.a"; sourceTree = "<group>"; };
-		454427F316F28A6F00E1A5DB /* libpnglib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpnglib.a; path = "../../../External/PNGLib/build/Release-iphoneos/libpnglib.a"; sourceTree = "<group>"; };
-		454427F416F28A6F00E1A5DB /* libtinyxml.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtinyxml.a; path = "../../../External/tinyxml 2.6.1/build/Release-iphoneos/libtinyxml.a"; sourceTree = "<group>"; };
-		454427F516F28A6F00E1A5DB /* libzlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzlib.a; path = "../../../External/Zlib/build/Release-iphoneos/libzlib.a"; sourceTree = "<group>"; };
+		4558970318C54679002C4C8B /* sqlite3.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = sqlite3.xcodeproj; path = "/Users/enmaniac/Projects/C++/EGE/External/JpegLib/../Sqlite 3.8.3.1/sqlite3.xcodeproj"; sourceTree = "<absolute>"; };
+		4558970918C54686002C4C8B /* pnglib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = pnglib.xcodeproj; path = ../../External/PNGLib/pnglib.xcodeproj; sourceTree = "<group>"; };
+		4558971318C54848002C4C8B /* zlib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zlib.xcodeproj; path = ../../External/Zlib/zlib.xcodeproj; sourceTree = "<group>"; };
+		4558971418C5484F002C4C8B /* tinyxml.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tinyxml.xcodeproj; path = "../../External/tinyxml 2.6.1/tinyxml.xcodeproj"; sourceTree = "<group>"; };
+		4558971518C54855002C4C8B /* jpeglib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = jpeglib.xcodeproj; path = ../../External/JpegLib/jpeglib.xcodeproj; sourceTree = "<group>"; };
+		4558971718C548FC002C4C8B /* libjpeglib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeglib.a; path = "../../External/JpegLib/build/Release-iphoneos/libjpeglib.a"; sourceTree = "<group>"; };
+		4558971818C548FC002C4C8B /* libpnglib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpnglib.a; path = "../../External/PNGLib/build/Release-iphoneos/libpnglib.a"; sourceTree = "<group>"; };
+		4558971918C548FC002C4C8B /* libtinyxml.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtinyxml.a; path = "../../External/tinyxml 2.6.1/build/Release-iphoneos/libtinyxml.a"; sourceTree = "<group>"; };
+		4558971A18C548FC002C4C8B /* libzlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzlib.a; path = "../../External/Zlib/build/Release-iphoneos/libzlib.a"; sourceTree = "<group>"; };
 		45877DA516F09F5B00B4252B /* libEGE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEGE.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		45877DA816F09F5B00B4252B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		45FB05DA18C69499005F4062 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libcrypto.a"; sourceTree = "<group>"; };
+		45FB05DB18C69499005F4062 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libssl.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -830,10 +878,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				454427F616F28A6F00E1A5DB /* libjpeglib.a in Frameworks */,
-				454427F716F28A6F00E1A5DB /* libpnglib.a in Frameworks */,
-				454427F816F28A6F00E1A5DB /* libtinyxml.a in Frameworks */,
-				454427F916F28A6F00E1A5DB /* libzlib.a in Frameworks */,
+				45FB05DC18C69499005F4062 /* libcrypto.a in Frameworks */,
+				45FB05DD18C69499005F4062 /* libssl.a in Frameworks */,
+				4558971B18C548FC002C4C8B /* libjpeglib.a in Frameworks */,
+				4558971C18C548FC002C4C8B /* libpnglib.a in Frameworks */,
+				4558971D18C548FC002C4C8B /* libtinyxml.a in Frameworks */,
+				4558971E18C548FC002C4C8B /* libzlib.a in Frameworks */,
+				4558971618C548FC002C4C8B /* libsqlite3.a in Frameworks */,
 				45877DA916F09F5B00B4252B /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2230,14 +2281,61 @@
 			path = Timer;
 			sourceTree = "<group>";
 		};
+		45340C9518C65AB200ECC3B8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				45340C9918C65AB200ECC3B8 /* libpnglib.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		45340C9B18C65AB200ECC3B8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				45340C9F18C65AB200ECC3B8 /* libjpeglib.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		45340CA018C65AB200ECC3B8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				45340CA418C65AB200ECC3B8 /* libtinyxml.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		45340CA518C65AB200ECC3B8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				45340CA918C65AB200ECC3B8 /* libzlib.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4558970418C54679002C4C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4558970818C54679002C4C8B /* libsqlite3.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		45877D9C16F09F5B00B4252B = {
 			isa = PBXGroup;
 			children = (
+				45FB05DA18C69499005F4062 /* libcrypto.a */,
+				45FB05DB18C69499005F4062 /* libssl.a */,
+				4558971718C548FC002C4C8B /* libjpeglib.a */,
+				4558971818C548FC002C4C8B /* libpnglib.a */,
+				4558971918C548FC002C4C8B /* libtinyxml.a */,
+				4558971A18C548FC002C4C8B /* libzlib.a */,
+				4558971518C54855002C4C8B /* jpeglib.xcodeproj */,
+				4558970918C54686002C4C8B /* pnglib.xcodeproj */,
+				4558970318C54679002C4C8B /* sqlite3.xcodeproj */,
+				4558971418C5484F002C4C8B /* tinyxml.xcodeproj */,
+				4558971318C54848002C4C8B /* zlib.xcodeproj */,
 				45146E7118C522A000AAC617 /* EGE */,
-				454427F216F28A6F00E1A5DB /* libjpeglib.a */,
-				454427F316F28A6F00E1A5DB /* libpnglib.a */,
-				454427F416F28A6F00E1A5DB /* libtinyxml.a */,
-				454427F516F28A6F00E1A5DB /* libzlib.a */,
 				45877DA716F09F5B00B4252B /* Frameworks */,
 				45877DA616F09F5B00B4252B /* Products */,
 			);
@@ -2298,12 +2396,72 @@
 			mainGroup = 45877D9C16F09F5B00B4252B;
 			productRefGroup = 45877DA616F09F5B00B4252B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 45340C9B18C65AB200ECC3B8 /* Products */;
+					ProjectRef = 4558971518C54855002C4C8B /* jpeglib.xcodeproj */;
+				},
+				{
+					ProductGroup = 45340C9518C65AB200ECC3B8 /* Products */;
+					ProjectRef = 4558970918C54686002C4C8B /* pnglib.xcodeproj */;
+				},
+				{
+					ProductGroup = 4558970418C54679002C4C8B /* Products */;
+					ProjectRef = 4558970318C54679002C4C8B /* sqlite3.xcodeproj */;
+				},
+				{
+					ProductGroup = 45340CA018C65AB200ECC3B8 /* Products */;
+					ProjectRef = 4558971418C5484F002C4C8B /* tinyxml.xcodeproj */;
+				},
+				{
+					ProductGroup = 45340CA518C65AB200ECC3B8 /* Products */;
+					ProjectRef = 4558971318C54848002C4C8B /* zlib.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				45877DA416F09F5B00B4252B /* EGE OGL FPL MT */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		45340C9918C65AB200ECC3B8 /* libpnglib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libpnglib.a;
+			remoteRef = 45340C9818C65AB200ECC3B8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		45340C9F18C65AB200ECC3B8 /* libjpeglib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libjpeglib.a;
+			remoteRef = 45340C9E18C65AB200ECC3B8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		45340CA418C65AB200ECC3B8 /* libtinyxml.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtinyxml.a;
+			remoteRef = 45340CA318C65AB200ECC3B8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		45340CA918C65AB200ECC3B8 /* libzlib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libzlib.a;
+			remoteRef = 45340CA818C65AB200ECC3B8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4558970818C54679002C4C8B /* libsqlite3.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libsqlite3.a;
+			remoteRef = 4558970718C54679002C4C8B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		45877DA116F09F5B00B4252B /* Sources */ = {
@@ -2620,7 +2778,10 @@
 					"\"../../External/ZLib\"",
 					"\"../../External/OpenSSL 1.0.1f/include\"",
 				);
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../External/OpenSSL 1.0.1f/lib/iOS\"",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = EGE;
 				SKIP_INSTALL = YES;
@@ -2659,7 +2820,10 @@
 					"\"../../External/ZLib\"",
 					"\"../../External/OpenSSL 1.0.1f/include\"",
 				);
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../External/OpenSSL 1.0.1f/lib/iOS\"",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = EGE;
 				SKIP_INSTALL = YES;
