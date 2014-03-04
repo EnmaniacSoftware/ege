@@ -86,17 +86,17 @@ inline void ege_noop() {}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // OS includes
 #if EGE_PLATFORM_WIN32
-#include <math.h>
+#include <cmath>
 #include <assert.h>
 #endif // EGE_PLATFORM_WIN32
 
 #if EGE_PLATFORM_AIRPLAY
-#include <math.h>
+#include <cmath>
 #include <assert.h>
 #endif // EGE_PLATFORM_AIRPLAY
 
 #if EGE_PLATFORM_IOS
-#include <math.h>
+#include <cmath>
 #endif // EGE_PLATFORM_IOS
 
 // Compiler specific

@@ -325,7 +325,7 @@ s32 Math::Ceil(const T& value)
 template <typename T>
 T Math::Abs(const T& value) 
 { 
-  return abs(value); 
+  return std::abs(value);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
