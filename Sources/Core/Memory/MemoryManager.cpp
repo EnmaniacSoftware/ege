@@ -181,6 +181,9 @@ void MemoryManager::removeAlloc(void* data)
 {
   MutexLocker lock(l_mutex);
 
+  // TAGE - for debugging iOS related crashes
+  const u32 ref = l_mutex->referenceCount();
+  
   // locate allocation
   AllocationMap::iterator it = m_allocations.find(data);
 
