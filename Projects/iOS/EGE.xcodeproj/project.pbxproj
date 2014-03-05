@@ -230,6 +230,8 @@
 		4558971C18C548FC002C4C8B /* libpnglib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558971818C548FC002C4C8B /* libpnglib.a */; };
 		4558971D18C548FC002C4C8B /* libtinyxml.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558971918C548FC002C4C8B /* libtinyxml.a */; };
 		4558971E18C548FC002C4C8B /* libzlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558971A18C548FC002C4C8B /* libzlib.a */; };
+		457A67BA18C7DAFC0004D38F /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B218C7DAFC0004D38F /* Database.cpp */; };
+		457A67BB18C7DAFC0004D38F /* DatabaseSqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B318C7DAFC0004D38F /* DatabaseSqlite.cpp */; };
 		45877DA916F09F5B00B4252B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45877DA816F09F5B00B4252B /* Foundation.framework */; };
 		45FB05DC18C69499005F4062 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DA18C69499005F4062 /* libcrypto.a */; };
 		45FB05DD18C69499005F4062 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DB18C69499005F4062 /* libssl.a */; };
@@ -867,6 +869,11 @@
 		4558971818C548FC002C4C8B /* libpnglib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpnglib.a; path = "../../External/PNGLib/build/Release-iphoneos/libpnglib.a"; sourceTree = "<group>"; };
 		4558971918C548FC002C4C8B /* libtinyxml.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtinyxml.a; path = "../../External/tinyxml 2.6.1/build/Release-iphoneos/libtinyxml.a"; sourceTree = "<group>"; };
 		4558971A18C548FC002C4C8B /* libzlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzlib.a; path = "../../External/Zlib/build/Release-iphoneos/libzlib.a"; sourceTree = "<group>"; };
+		457A67B218C7DAFC0004D38F /* Database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Database.cpp; sourceTree = "<group>"; };
+		457A67B318C7DAFC0004D38F /* DatabaseSqlite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DatabaseSqlite.cpp; sourceTree = "<group>"; };
+		457A67B518C7DAFC0004D38F /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
+		457A67B618C7DAFC0004D38F /* DatabaseSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseSqlite.h; sourceTree = "<group>"; };
+		457A67C218C7DB220004D38F /* EGEDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEDatabase.h; path = ../../Sources/EGEDatabase.h; sourceTree = "<group>"; };
 		45877DA516F09F5B00B4252B /* libEGE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEGE.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		45877DA816F09F5B00B4252B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		45FB05DA18C69499005F4062 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libcrypto.a"; sourceTree = "<group>"; };
@@ -895,7 +902,6 @@
 		45146E7118C522A000AAC617 /* EGE */ = {
 			isa = PBXGroup;
 			children = (
-				451471E418C5236200AAC617 /* iOS */,
 				45146ED118C5231800AAC617 /* Core */,
 				45146E7418C522EA00AAC617 /* EGE.h */,
 				45146E7518C522EA00AAC617 /* EGEAlignment.h */,
@@ -913,6 +919,7 @@
 				45146E8118C522EA00AAC617 /* EGECommandLine.h */,
 				45146E8218C522EA00AAC617 /* EGEComplex.h */,
 				45146E8318C522EA00AAC617 /* EGEComponent.h */,
+				457A67C218C7DB220004D38F /* EGEDatabase.h */,
 				45146E8418C522EA00AAC617 /* EGEDataBuffer.h */,
 				45146E8518C522EA00AAC617 /* EGEDebug.h */,
 				45146E8618C522EA00AAC617 /* EGEDevice.h */,
@@ -987,6 +994,7 @@
 				45146ECD18C522EA00AAC617 /* EGEVertexBuffer.h */,
 				45146ECE18C522EA00AAC617 /* EGEWaitCondition.h */,
 				45146ECF18C522EA00AAC617 /* EGEXml.h */,
+				451471E418C5236200AAC617 /* iOS */,
 			);
 			name = EGE;
 			sourceTree = "<group>";
@@ -1010,6 +1018,7 @@
 				45146F0E18C5231800AAC617 /* Containers */,
 				45146F1618C5231800AAC617 /* Crypto */,
 				45146F2F18C5231800AAC617 /* Data */,
+				457A67B018C7DAFC0004D38F /* Database */,
 				45146F3518C5231800AAC617 /* Debug */,
 				45146F4418C5231800AAC617 /* Device */,
 				45146F4718C5231800AAC617 /* Directory */,
@@ -2321,6 +2330,33 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		457A67B018C7DAFC0004D38F /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				457A67B118C7DAFC0004D38F /* Implementation */,
+				457A67B418C7DAFC0004D38F /* Interface */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		457A67B118C7DAFC0004D38F /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				457A67B218C7DAFC0004D38F /* Database.cpp */,
+				457A67B318C7DAFC0004D38F /* DatabaseSqlite.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		457A67B418C7DAFC0004D38F /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				457A67B518C7DAFC0004D38F /* Database.h */,
+				457A67B618C7DAFC0004D38F /* DatabaseSqlite.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
 		45877D9C16F09F5B00B4252B = {
 			isa = PBXGroup;
 			children = (
@@ -2686,6 +2722,8 @@
 				4514723B18C5236200AAC617 /* StringUtilsIOS.cpp in Sources */,
 				4514723C18C5236200AAC617 /* AtomicIOS.cpp in Sources */,
 				4514723D18C5236200AAC617 /* TimerIOS_p.mm in Sources */,
+				457A67BA18C7DAFC0004D38F /* Database.cpp in Sources */,
+				457A67BB18C7DAFC0004D38F /* DatabaseSqlite.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2777,6 +2815,7 @@
 					"\"../../External/PNGLib\"",
 					"\"../../External/ZLib\"",
 					"\"../../External/OpenSSL 1.0.1f/include\"",
+					"\"../../External/Sqlite 3.8.3.1\"",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2819,6 +2858,7 @@
 					"\"../../External/PNGLib\"",
 					"\"../../External/ZLib\"",
 					"\"../../External/OpenSSL 1.0.1f/include\"",
+					"\"../../External/Sqlite 3.8.3.1\"",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
