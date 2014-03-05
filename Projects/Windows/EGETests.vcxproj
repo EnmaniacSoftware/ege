@@ -83,6 +83,7 @@
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CipherXORTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CryptographicHashMD5Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\HashTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Database\Tests\Unittest\DatabaseSqliteTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\DebugTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\LoggerTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\AngleTest.cpp" />

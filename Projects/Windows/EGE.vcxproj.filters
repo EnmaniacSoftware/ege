@@ -307,6 +307,15 @@
     <Filter Include="Core\Crypto\Interface\Cipher">
       <UniqueIdentifier>{a2fa8305-250f-4e72-872a-99bd387bc61f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Database">
+      <UniqueIdentifier>{95b8818a-5b5f-4236-a221-b639032ad978}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Database\Interface">
+      <UniqueIdentifier>{45f50f84-8163-4b05-a50a-ed876044a355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Database\Implementation">
+      <UniqueIdentifier>{748eac72-216e-4b82-9ee8-b083d8a9e9a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
@@ -938,6 +947,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\CipherAES.cpp">
       <Filter>Core\Crypto\Implementation\Cipher</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Database\Implementation\DatabaseSqlite.cpp">
+      <Filter>Core\Database\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Database\Implementation\Database.cpp">
+      <Filter>Core\Database\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1785,6 +1800,13 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherAES.h">
       <Filter>Core\Crypto\Interface\Cipher</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Database\Interface\Database.h">
+      <Filter>Core\Database\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEDatabase.h" />
+    <ClInclude Include="..\..\Sources\Core\Database\Interface\DatabaseSqlite.h">
+      <Filter>Core\Database\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
