@@ -1,4 +1,5 @@
 #include "Core/Xml/Interface/XmlAttribute.h"
+#include "EGEDebug.h"
 
 #if EGE_XML_TINYXML
   #include "Core/XML/Implementation/TinyXml/XMLAttributeTinyXML_p.h"

@@ -9,10 +9,13 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define EGE_DELETE(ptr) if (ptr) { delete ptr; ptr = NULL; }
 #define EGE_DELETE_ARR(ptr) if (ptr) { delete [] ptr; ptr = NULL; }
 
 #ifdef EGE_FEATURE_MEMORY_DEBUG
+
+  // NOTE: Extra check is made to verify, delete operator is not used on PObject type.
+  #define EGE_DELETE(ptr) { EGE_ASSERT_X(NULL == strstr(typeid(ptr).name(), "SmartPointer<"), "Delete operator used on SmartPointer type!!!!"); \
+                            delete ptr; ptr = NULL; }
 
   #define EGE_REALLOC(data, size) MemoryManager::Realloc(data, size, __FILE__, __LINE__)
   #define EGE_MALLOC(size) MemoryManager::Malloc(size, __FILE__, __LINE__)
@@ -57,6 +60,8 @@ EGE_NAMESPACE_BEGIN
   #define ege_new new (__FILE__, __LINE__)
 
 #else
+
+  #define EGE_DELETE(ptr) { delete ptr; ptr = NULL; }
 
   #define EGE_REALLOC(data, size) MemoryManager::DoRealloc(data, size)
   #define EGE_MALLOC(size) MemoryManager::DoMalloc(size)

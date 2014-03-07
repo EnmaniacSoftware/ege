@@ -1,4 +1,5 @@
 #include "Core/Services/DeviceServices.h"
+#include "EGEDebug.h"
 
 #ifdef EGE_PLATFORM_WIN32
   #include "Win32/Services/DeviceServicesWin32_p.h"

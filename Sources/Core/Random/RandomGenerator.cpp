@@ -1,4 +1,5 @@
 #include "Core/Random/RandomGenerator.h"
+#include "EGEDebug.h"
 
 #if EGE_RANDOM_STDC
   #include "Core/Random/StdC/RandomGeneratorStdC_p.h"

@@ -1,4 +1,5 @@
 #include "Core/NativeUI/MessageBox.h"
+#include "EGEDebug.h"
 
 #ifdef EGE_PLATFORM_WIN32
   #include "Win32/NativeUI/MessageBoxWin32_p.h"
