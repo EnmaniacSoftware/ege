@@ -29,15 +29,16 @@ class DatabaseSqlite : public Database
     EGEResult open(const String& path, bool readOnly, bool create) override;
     /*! @see Database::close. */
     EGEResult close() override;
-
-  protected:
-
     /*! @see Database::beginTransaction. */
     EGEResult beginTransaction() override;
     /*! @see Database::endTransaction. */
     EGEResult endTransaction() override;
     /*! @see Database::abortTransaction. */
     EGEResult abortTransaction() override;
+    /*! @see Database::execute. */
+    EGEResult execute(const SqlQuery& query) override;
+     /*! @see Database::result. */
+    const PSqlResult result() const override;
 
   private:
 
@@ -45,6 +46,8 @@ class DatabaseSqlite : public Database
     ::sqlite3* m_handle;
     /*! In transaction flag. */
     bool m_inTransaction;
+    /*! Result object. */
+    PSqlResult m_result;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -954,6 +954,15 @@
     <ClCompile Include="..\..\Sources\Core\Database\Implementation\Database.cpp">
       <Filter>Core\Database\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Database\Implementation\SqlQuery.cpp">
+      <Filter>Core\Database\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Database\Implementation\SqlResult.cpp">
+      <Filter>Core\Database\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Database\Implementation\SqlResultSqlite.cpp">
+      <Filter>Core\Database\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h">
@@ -1807,6 +1816,15 @@
     <ClInclude Include="..\..\Sources\EGEDatabase.h" />
     <ClInclude Include="..\..\Sources\Core\Database\Interface\DatabaseSqlite.h">
       <Filter>Core\Database\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Database\Interface\SqlQuery.h">
+      <Filter>Core\Database\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Database\Interface\SqlResult.h">
+      <Filter>Core\Database\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Database\Implementation\SqlResultSqlite.h">
+      <Filter>Core\Database\Implementation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

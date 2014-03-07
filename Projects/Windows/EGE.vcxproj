@@ -58,6 +58,9 @@
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Hash.cpp" />
     <ClCompile Include="..\..\Sources\Core\Database\Implementation\Database.cpp" />
     <ClCompile Include="..\..\Sources\Core\Database\Implementation\DatabaseSqlite.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Database\Implementation\SqlResultSqlite.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Database\Implementation\SqlQuery.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Database\Implementation\SqlResult.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Node.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Console.cpp" />
@@ -270,8 +273,11 @@
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\CryptographicHash.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\CryptographicHashMD5.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Hash.h" />
+    <ClInclude Include="..\..\Sources\Core\Database\Implementation\SqlResultSqlite.h" />
     <ClInclude Include="..\..\Sources\Core\Database\Interface\Database.h" />
     <ClInclude Include="..\..\Sources\Core\Database\Interface\DatabaseSqlite.h" />
+    <ClInclude Include="..\..\Sources\Core\Database\Interface\SqlQuery.h" />
+    <ClInclude Include="..\..\Sources\Core\Database\Interface\SqlResult.h" />
     <ClInclude Include="..\..\Sources\Core\Data\Serializable.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Debug.h" />
