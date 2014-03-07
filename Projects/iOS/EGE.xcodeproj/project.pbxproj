@@ -233,6 +233,9 @@
 		457A67BA18C7DAFC0004D38F /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B218C7DAFC0004D38F /* Database.cpp */; };
 		457A67BB18C7DAFC0004D38F /* DatabaseSqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B318C7DAFC0004D38F /* DatabaseSqlite.cpp */; };
 		45877DA916F09F5B00B4252B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45877DA816F09F5B00B4252B /* Foundation.framework */; };
+		45BDD9A918CA6FD7004B33E3 /* SqlQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A618CA6FD7004B33E3 /* SqlQuery.cpp */; };
+		45BDD9AA18CA6FD7004B33E3 /* SqlResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A718CA6FD7004B33E3 /* SqlResult.cpp */; };
+		45BDD9AB18CA6FD7004B33E3 /* SqlResultSqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A818CA6FD7004B33E3 /* SqlResultSqlite.cpp */; };
 		45FB05DC18C69499005F4062 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DA18C69499005F4062 /* libcrypto.a */; };
 		45FB05DD18C69499005F4062 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DB18C69499005F4062 /* libssl.a */; };
 /* End PBXBuildFile section */
@@ -876,6 +879,12 @@
 		457A67C218C7DB220004D38F /* EGEDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEDatabase.h; path = ../../Sources/EGEDatabase.h; sourceTree = "<group>"; };
 		45877DA516F09F5B00B4252B /* libEGE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEGE.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		45877DA816F09F5B00B4252B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		45BDD99E18CA6FBA004B33E3 /* SqlQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlQuery.h; sourceTree = "<group>"; };
+		45BDD99F18CA6FBA004B33E3 /* SqlResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlResult.h; sourceTree = "<group>"; };
+		45BDD9A518CA6FD7004B33E3 /* SqlResultSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlResultSqlite.h; sourceTree = "<group>"; };
+		45BDD9A618CA6FD7004B33E3 /* SqlQuery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqlQuery.cpp; sourceTree = "<group>"; };
+		45BDD9A718CA6FD7004B33E3 /* SqlResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqlResult.cpp; sourceTree = "<group>"; };
+		45BDD9A818CA6FD7004B33E3 /* SqlResultSqlite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqlResultSqlite.cpp; sourceTree = "<group>"; };
 		45FB05DA18C69499005F4062 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libcrypto.a"; sourceTree = "<group>"; };
 		45FB05DB18C69499005F4062 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libssl.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -2342,6 +2351,10 @@
 		457A67B118C7DAFC0004D38F /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				45BDD9A518CA6FD7004B33E3 /* SqlResultSqlite.h */,
+				45BDD9A618CA6FD7004B33E3 /* SqlQuery.cpp */,
+				45BDD9A718CA6FD7004B33E3 /* SqlResult.cpp */,
+				45BDD9A818CA6FD7004B33E3 /* SqlResultSqlite.cpp */,
 				457A67B218C7DAFC0004D38F /* Database.cpp */,
 				457A67B318C7DAFC0004D38F /* DatabaseSqlite.cpp */,
 			);
@@ -2351,6 +2364,8 @@
 		457A67B418C7DAFC0004D38F /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				45BDD99E18CA6FBA004B33E3 /* SqlQuery.h */,
+				45BDD99F18CA6FBA004B33E3 /* SqlResult.h */,
 				457A67B518C7DAFC0004D38F /* Database.h */,
 				457A67B618C7DAFC0004D38F /* DatabaseSqlite.h */,
 			);
@@ -2724,6 +2739,9 @@
 				4514723D18C5236200AAC617 /* TimerIOS_p.mm in Sources */,
 				457A67BA18C7DAFC0004D38F /* Database.cpp in Sources */,
 				457A67BB18C7DAFC0004D38F /* DatabaseSqlite.cpp in Sources */,
+				45BDD9A918CA6FD7004B33E3 /* SqlQuery.cpp in Sources */,
+				45BDD9AA18CA6FD7004B33E3 /* SqlResult.cpp in Sources */,
+				45BDD9AB18CA6FD7004B33E3 /* SqlResultSqlite.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
