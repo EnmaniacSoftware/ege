@@ -1,6 +1,8 @@
 #ifndef EGE_DATABASE_H
 #define EGE_DATABASE_H
 
+#include "Core/Database/Interface/SqlQuery.h"
+#include "Core/Database/Interface/SqlResult.h"
 #include "Core/Database/Interface/Database.h"
 #include "Core/Database/Interface/DatabaseSqlite.h"
 

@@ -1,11 +1,13 @@
 #ifndef EGE_CORE_DATABASE_DATABASE_H
 #define EGE_CORE_DATABASE_DATABASE_H
 
-#include "EGE.h"
-#include "EGEString.h"
-
 /** This is base class for all kinds of transactional database backends.
   */
+
+#include "EGE.h"
+#include "EGEString.h"
+#include "Core/Database/Interface/SqlQuery.h"
+#include "Core/Database/Interface/SqlResult.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -33,9 +35,6 @@ class Database : public Object
      *  @return EGE_SUCCESS if database was successfully closed (and was previously opened). Closing of unopened database is an error.
      */
     virtual EGEResult close() = 0;
-
-  protected:
-     
     /*! Starts transaction.
      *  @return EGE_SUCCESS on success. Otherwise, another error code. 
      */
@@ -48,6 +47,16 @@ class Database : public Object
      *  @return EGE_SUCCESS on success. Otherwise, another error code. 
      */
     virtual EGEResult abortTransaction() = 0;
+    /*! Executes given statement.
+     *  @param  query Statement to execute.
+     *  @return EGE_SUCCESS on success. Otherwise, another error code.
+     *  @note Statement is executed as a part of current transaction.
+     */
+    virtual EGEResult execute(const SqlQuery& query) = 0;
+    /*! Returns pointer to result object.
+     *  @return Object containing result of last database operation. Can be NULL.
+     */
+    virtual const PSqlResult result() const = 0;
 
   private:
 
