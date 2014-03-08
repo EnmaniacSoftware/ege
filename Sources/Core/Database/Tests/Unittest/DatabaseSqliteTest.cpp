@@ -118,7 +118,7 @@ TEST_F(DatabaseSqliteTest, SelectManualTransaction)
   EXPECT_EQ(EGE_SUCCESS, database.close());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(DatabaseSqliteTest, Result)
+TEST_F(DatabaseSqliteTest, ResultByIndex)
 {
   DatabaseSqlite database;
 
@@ -174,6 +174,68 @@ TEST_F(DatabaseSqliteTest, Result)
   EXPECT_TRUE(NULL == value);
 
   value = result->value(3, 1);
+  EXPECT_TRUE(NULL == value);
+
+  // close database
+  EXPECT_EQ(EGE_SUCCESS, database.close());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(DatabaseSqliteTest, ResultByName)
+{
+  DatabaseSqlite database;
+
+  // open database
+  EXPECT_EQ(EGE_SUCCESS, database.open(KValidDatabasePath, true, false));
+
+  // execute query
+  const SqlQuery query("SELECT * FROM Dictionary");
+  EXPECT_EQ(EGE_SUCCESS, database.execute(query));
+
+  // retrieve result object
+  PSqlResult result = database.result();
+  EXPECT_TRUE(NULL != result);
+
+  // check data
+  EXPECT_EQ(3, result->rowCount());
+
+  // row 1...
+  PObject value = result->value(0, "key");
+  EXPECT_TRUE(NULL != value);
+  EXPECT_EQ(EGE_OBJECT_UID_STRING_BUFFER, value->uid());
+  EXPECT_STREQ("Key-1", ege_cast<StringBuffer*>(value)->string().toAscii());
+
+  value = result->value(0, "value");
+  EXPECT_TRUE(NULL != value);
+  EXPECT_EQ(EGE_OBJECT_UID_STRING_BUFFER, value->uid());
+  EXPECT_STREQ("This is key-1 value", ege_cast<StringBuffer*>(value)->string().toAscii());
+
+  // row 2...
+  value = result->value(1, "key");
+  EXPECT_TRUE(NULL != value);
+  EXPECT_EQ(EGE_OBJECT_UID_STRING_BUFFER, value->uid());
+  EXPECT_STREQ("Key-2", ege_cast<StringBuffer*>(value)->string().toAscii());
+
+  value = result->value(1, "value");
+  EXPECT_TRUE(NULL != value);
+  EXPECT_EQ(EGE_OBJECT_UID_STRING_BUFFER, value->uid());
+  EXPECT_STREQ("This is key-2 value", ege_cast<StringBuffer*>(value)->string().toAscii());
+
+  // row 3...
+  value = result->value(2, "key");
+  EXPECT_TRUE(NULL != value);
+  EXPECT_EQ(EGE_OBJECT_UID_STRING_BUFFER, value->uid());
+  EXPECT_STREQ("Key-3", ege_cast<StringBuffer*>(value)->string().toAscii());
+
+  value = result->value(2, "value");
+  EXPECT_TRUE(NULL != value);
+  EXPECT_EQ(EGE_OBJECT_UID_STRING_BUFFER, value->uid());
+  EXPECT_STREQ("This is key-3 value", ege_cast<StringBuffer*>(value)->string().toAscii());
+
+  // row 4...
+  value = result->value(3, "key");
+  EXPECT_TRUE(NULL == value);
+
+  value = result->value(3, "value");
   EXPECT_TRUE(NULL == value);
 
   // close database
