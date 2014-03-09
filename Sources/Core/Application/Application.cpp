@@ -13,12 +13,14 @@
 #include "Core/Event/Event.h"
 #include "Core/Input/Pointer.h"
 #include "Core/Screen/ScreenManager.h"
-#include "Core/Services/DeviceServices.h"
 #include "Core/Audio/AudioManager.h"
 #include "Core/Audio/Null/AudioManagerNull.h"
 #include "Core/Graphics/Image/ImageLoader.h"
 #include "Core/Debug/Interface/EngineInfo.h"
 #include "EGEDebug.h"
+#include "EGEDeviceServices.h"
+#include "EGEPurchaseServices.h"
+#include "EGESocialServices.h"
 #include "EGETimer.h"
 #include "EGEDirectory.h"
 #include "EGEResources.h"
@@ -32,7 +34,7 @@
 #elif EGE_PLATFORM_IOS
   #include "iOS/Application/ApplicationIOS_p.h"
   #include "iOS/Audio/OpenAL/AudioManagerOpenALIOS.h"
-#endif
+#endif // EGE_PLATFORM_WIN32
 
 EGE_NAMESPACE_BEGIN
 
@@ -52,6 +54,8 @@ Application::Application() : IEventListener(),
                              m_audioManager(NULL),
                              m_debug(NULL), 
                              m_deviceServices(NULL),
+                             m_purchaseServices(NULL),
+                             m_socialServices(NULL),
                              m_imageLoader(NULL),
                              m_landscapeMode(false),
                              m_language("en"),
@@ -77,6 +81,8 @@ Application::~Application()
   EGE_DELETE(m_physicsManager);
   EGE_DELETE(m_audioManager);
   EGE_DELETE(m_deviceServices);
+  EGE_DELETE(m_purchaseServices);
+  EGE_DELETE(m_socialServices);
   EGE_DELETE(m_eventManager);
 
   EGE_DELETE(m_p);
@@ -121,17 +127,27 @@ EGEResult Application::construct(const Dictionary& params)
   }
 
   // create device services
-  m_deviceServices = ege_new DeviceServices();
+  m_deviceServices = ege_new PLATFORM_CLASSNAME(DeviceServices)();
   if (NULL == m_deviceServices)
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
   }
 
-  if (EGE_SUCCESS != (result = m_deviceServices->construct()))
+  // create purchase services
+  m_purchaseServices = ege_new PLATFORM_CLASSNAME(PurchaseServices)(this);
+  if (NULL == m_purchaseServices)
   {
     // error!
-    return result;
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  // create social services
+  m_socialServices = ege_new PLATFORM_CLASSNAME(SocialServices)(this);
+  if (NULL == m_socialServices)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
   }
 
   // create event manager

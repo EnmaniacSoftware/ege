@@ -23,6 +23,8 @@ class Debug;
 class DeviceServices;
 class ImageLoader;
 class IAudioManager;
+class SocialServices;
+class PurchaseServices;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Application : public IEventListener
 {
@@ -106,6 +108,10 @@ class Application : public IEventListener
     Debug* debug() const;
     /*! Returns device services object. */
     DeviceServices* deviceServices() const;
+    /*! Returns purchase services object. */
+    PurchaseServices* purchaseServices() const;
+    /*! Returns social services object. */
+    SocialServices* socialServices() const;
     /*! Returns image loader object. */
     ImageLoader* imageLoader() const;
 
@@ -174,6 +180,10 @@ class Application : public IEventListener
     Debug* m_debug;
     /*! Device services object. */
     DeviceServices* m_deviceServices;
+    /*! Purchase services object. */
+    PurchaseServices* m_purchaseServices;
+    /*! Social services object. */
+    SocialServices* m_socialServices;
     /*! Landscape mode flag. */
     bool m_landscapeMode;
     /*! Current language identifier. */
@@ -253,6 +263,16 @@ inline Debug* Application::debug() const
 inline DeviceServices* Application::deviceServices() const 
 { 
   return m_deviceServices; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline PurchaseServices* Application::purchaseServices() const
+{
+  return m_purchaseServices;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline SocialServices* Application::socialServices() const
+{
+  return m_socialServices;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline ImageLoader* Application::imageLoader() const 

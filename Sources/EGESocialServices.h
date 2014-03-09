@@ -1,28 +1,15 @@
 #ifndef EGE_SOCIALSERVICES_H
 #define EGE_SOCIALSERVICES_H
 
-#include "EGEString.h"
-#include "EGEList.h"
+#include "Core/Platform.h"
+#include "Core/Services/Interface/SocialServices.h"
 
-EGE_NAMESPACE_BEGIN
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-struct AchievementData
-{
-  String name;                /*!< Achievement identifier. */
-  s32 percentageComplete;     /*!< Percentage complete. */
-};
-
-typedef List<AchievementData> AchievementDataList;
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-extern const char* KSocialServicesDebugName;
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#include "Core/Services/SocialServices.h"
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#ifdef EGE_PLATFORM_WIN32
+  #include "Win32/Services/Interface/SocialServicesWin32.h"
+#elif EGE_PLATFORM_IOS
+  #include "iOS/Services/Interface/SocialServicesIOS.h"
+#else
+  #error "Implement!"
+#endif // EGE_PLATFORM_WIN32
 
 #endif // EGE_SOCIALSERVICES_H

@@ -194,11 +194,11 @@
     <ClCompile Include="..\..\Sources\Core\Screen\Screen.cpp" />
     <ClCompile Include="..\..\Sources\Core\Screen\ScreenManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Sequencer\Sequencer.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Services\DeviceServices.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Services\PurchaseServices.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Services\PurchaseServicesNull_p.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Services\SocialServices.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Services\SocialServicesNull_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Services\Implementation\DeviceServices.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Services\Implementation\PurchaseServices.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Services\Implementation\PurchaseServicesNull.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Services\Implementation\SocialServices.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Services\Implementation\SocialServicesNull.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\String.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Stl\Text.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\StringBuffer.cpp" />
@@ -241,7 +241,9 @@
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\main.cpp" />
     <ClCompile Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.cpp" />
-    <ClCompile Include="..\..\Sources\Win32\Services\DeviceServicesWin32_p.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Services\Implementation\DeviceServicesWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Services\Implementation\PurchaseServicesWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Services\Implementation\SocialServicesWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp" />
     <ClInclude Include="..\..\Sources\Core\Animation\IAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodec.h" />
@@ -395,11 +397,11 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceWidget.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\SingleThread\ResourceManagerST_p.h" />
     <ClInclude Include="..\..\Sources\Core\Sequencer\Sequencer.h" />
-    <ClInclude Include="..\..\Sources\Core\Services\DeviceServices.h" />
-    <ClInclude Include="..\..\Sources\Core\Services\PurchaseServices.h" />
-    <ClInclude Include="..\..\Sources\Core\Services\PurchaseServicesNull_p.h" />
-    <ClInclude Include="..\..\Sources\Core\Services\SocialServices.h" />
-    <ClInclude Include="..\..\Sources\Core\Services\SocialServicesNull_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Services\Interface\DeviceServices.h" />
+    <ClInclude Include="..\..\Sources\Core\Services\Interface\PurchaseServices.h" />
+    <ClInclude Include="..\..\Sources\Core\Services\Interface\PurchaseServicesNull.h" />
+    <ClInclude Include="..\..\Sources\Core\Services\Interface\SocialServices.h" />
+    <ClInclude Include="..\..\Sources\Core\Services\Interface\SocialServicesNull.h" />
     <ClInclude Include="..\..\Sources\Core\String\StringBuffer.h" />
     <ClInclude Include="..\..\Sources\Core\String\StringUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\Mutex.h" />
@@ -607,7 +609,9 @@
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.h" />
     <ClInclude Include="..\..\Sources\Win32\Input\PointerWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.h" />
-    <ClInclude Include="..\..\Sources\Win32\Services\DeviceServicesWin32_p.h" />
+    <ClInclude Include="..\..\Sources\Win32\Services\Interface\DeviceServicesWin32.h" />
+    <ClInclude Include="..\..\Sources\Win32\Services\Interface\PurchaseServicesWin32.h" />
+    <ClInclude Include="..\..\Sources\Win32\Services\Interface\SocialServicesWin32.h" />
     <ClInclude Include="..\..\Sources\Win32\Timer\TimerWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\TypesWin32.h" />
   </ItemGroup>
@@ -736,7 +740,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_3;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_OPENGL_DEBUG;EGE_FEATURE_ENGINE_INFO;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;EGE_SOCIAL_SERVICES_NULL;EGE_PURCHASE_SERVICES_NULL;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_3;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_OPENGL_DEBUG;EGE_FEATURE_ENGINE_INFO;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include;..\..\External\OpenSSL 1.0.1f\include;..\..\External\Sqlite 3.8.3.1</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>
@@ -760,7 +764,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_FIXED;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_OPENGL_DEBUG;EGE_FEATURE_ENGINE_INFO;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;EGE_SOCIAL_SERVICES_NULL;EGE_PURCHASE_SERVICES_NULL;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_FIXED;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_OPENGL_DEBUG;EGE_FEATURE_ENGINE_INFO;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include;..\..\External\OpenSSL 1.0.1f\include;..\..\External\Sqlite 3.8.3.1</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>
@@ -835,7 +839,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_FIXED;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_XML_TINYXML;EGE_RANDOM_STDC;EGE_AUDIO_OPENAL;EGE_THREAD_PTHREAD;EGE_SOCIAL_SERVICES_NULL;EGE_PURCHASE_SERVICES_NULL;TIXML_USE_STL;WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_FIXED;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_XML_TINYXML;EGE_RANDOM_STDC;EGE_AUDIO_OPENAL;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include;..\..\External\OpenSSL 1.0.1f\include;..\..\External\Sqlite 3.8.3.1</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>

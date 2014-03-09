@@ -45,19 +45,21 @@ inline void ege_noop() {}
 // EGE_STRING_STL
 
 #if WIN32
-#define EGE_PLATFORM_WIN32 1
+  #define EGE_PLATFORM_WIN32 1
+  #define PLATFORM_CLASSNAME(classname) classname##Win32
 #endif // WIN32
 
 #if AIRPLAY_BUILD
-#define EGE_PLATFORM_AIRPLAY 1
+  #define EGE_PLATFORM_AIRPLAY 1
 #endif // AIRPLAY_BUILD
 
 #ifdef __APPLE__
-#include "TargetConditionals.h"
+  #include "TargetConditionals.h"
 
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-#define EGE_PLATFORM_IOS 1
-#endif // TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+  #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+    #define EGE_PLATFORM_IOS 1
+    #define PLATFORM_CLASSNAME(classname) classname##IOS
+  #endif // TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 #endif // __APPLE__
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

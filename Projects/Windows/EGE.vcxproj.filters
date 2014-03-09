@@ -316,6 +316,18 @@
     <Filter Include="Core\Database\Implementation">
       <UniqueIdentifier>{748eac72-216e-4b82-9ee8-b083d8a9e9a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Services\Implementation">
+      <UniqueIdentifier>{64907123-0f9b-4555-b402-a3d7cd4f0c3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Services\Interface">
+      <UniqueIdentifier>{7ed25c65-44f0-4ef8-9863-3d9a97719279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Services\Implementation">
+      <UniqueIdentifier>{b7fee79d-fe3f-4e7e-a1da-0329dbc51726}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Services\Interface">
+      <UniqueIdentifier>{acd36933-60f0-4853-8f7f-2913c194aef9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
@@ -729,24 +741,6 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderSystem.cpp">
       <Filter>Core\Graphics\Render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\Services\DeviceServicesWin32_p.cpp">
-      <Filter>Win32\Services</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Services\DeviceServices.cpp">
-      <Filter>Core\Services</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Services\PurchaseServices.cpp">
-      <Filter>Core\Services</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Services\PurchaseServicesNull_p.cpp">
-      <Filter>Core\Services</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Services\SocialServices.cpp">
-      <Filter>Core\Services</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Services\SocialServicesNull_p.cpp">
-      <Filter>Core\Services</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Color\Color.cpp">
       <Filter>Core\Graphics\Color</Filter>
     </ClCompile>
@@ -962,6 +956,30 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Database\Implementation\SqlResultSqlite.cpp">
       <Filter>Core\Database\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\Implementation\DeviceServices.cpp">
+      <Filter>Core\Services\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Services\Implementation\DeviceServicesWin32.cpp">
+      <Filter>Win32\Services\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\Implementation\PurchaseServices.cpp">
+      <Filter>Core\Services\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\Implementation\PurchaseServicesNull.cpp">
+      <Filter>Core\Services\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Services\Implementation\PurchaseServicesWin32.cpp">
+      <Filter>Win32\Services\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\Implementation\SocialServices.cpp">
+      <Filter>Core\Services\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\Implementation\SocialServicesNull.cpp">
+      <Filter>Core\Services\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Services\Implementation\SocialServicesWin32.cpp">
+      <Filter>Win32\Services\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1506,24 +1524,6 @@
       <Filter>Core\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGERenderSystem.h" />
-    <ClInclude Include="..\..\Sources\Win32\Services\DeviceServicesWin32_p.h">
-      <Filter>Win32\Services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Services\DeviceServices.h">
-      <Filter>Core\Services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Services\PurchaseServices.h">
-      <Filter>Core\Services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Services\PurchaseServicesNull_p.h">
-      <Filter>Core\Services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Services\SocialServices.h">
-      <Filter>Core\Services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Services\SocialServicesNull_p.h">
-      <Filter>Core\Services</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEDeviceServices.h" />
     <ClInclude Include="..\..\Sources\EGEPurchaseServices.h" />
     <ClInclude Include="..\..\Sources\EGESocialServices.h" />
@@ -1825,6 +1825,30 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Database\Implementation\SqlResultSqlite.h">
       <Filter>Core\Database\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Services\Interface\DeviceServices.h">
+      <Filter>Core\Services\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Services\Interface\PurchaseServices.h">
+      <Filter>Core\Services\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Services\Interface\PurchaseServicesNull.h">
+      <Filter>Core\Services\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\Services\Interface\DeviceServicesWin32.h">
+      <Filter>Win32\Services\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\Services\Interface\PurchaseServicesWin32.h">
+      <Filter>Win32\Services\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Services\Interface\SocialServices.h">
+      <Filter>Core\Services\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Services\Interface\SocialServicesNull.h">
+      <Filter>Core\Services\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\Services\Interface\SocialServicesWin32.h">
+      <Filter>Win32\Services\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
