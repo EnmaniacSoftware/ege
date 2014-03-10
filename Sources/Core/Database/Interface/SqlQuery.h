@@ -19,6 +19,7 @@ class SqlQuery
 
   public:
 
+    /*! Returns current query string. */
     const String& value() const;
 
   private:
