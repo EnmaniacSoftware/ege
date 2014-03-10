@@ -1,5 +1,6 @@
 #include "Core/Database/Implementation/SqlResultSqlite.h"
 #include "Core/ComplexTypes.h"
+#include "EGEDataBuffer.h"
 
 EGE_NAMESPACE
 
@@ -120,6 +121,35 @@ EGEResult SqlResultSqlite::addValue(s32 index, float32 value)
   {
     // add it to pool
     m_rows[index].push_back(valueObject);
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult SqlResultSqlite::addValue(s32 index, const void* buffer, s32 size)
+{
+  EGEResult result = EGE_SUCCESS;
+
+  // create value
+  PDataBuffer valueObject = ege_new DataBuffer(size);
+  if (NULL == valueObject)
+  {
+    // error!
+    result = EGE_ERROR_NO_MEMORY;
+  }
+  else
+  {
+    // write data to buffer
+    if (size != valueObject->write(buffer, size))
+    {
+      // error!
+      result = EGE_ERROR;
+    }
+    else
+    {
+      // add it to pool
+      m_rows[index].push_back(valueObject);
+    }
   }
 
   return result;

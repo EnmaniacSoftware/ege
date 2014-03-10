@@ -60,6 +60,13 @@ class SqlResultSqlite : public SqlResult
      *  @return EGE_SUCCESS on success.
      */
     EGEResult addValue(s32 index, float32 value);
+    /*! Adds data blob value for a given row. 
+     *  @param  index   Row index for which value is being added.
+     *  @param  buffer  Buffer containing data to add to the pool of values already assigned for the row.
+     *  @param  size    Size of a data in a buffer (in bytes).
+     *  @return EGE_SUCCESS on success.
+     */
+    EGEResult addValue(s32 index, const void* buffer, s32 size);
 
   private:
 

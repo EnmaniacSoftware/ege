@@ -401,3 +401,44 @@ TEST_F(DatabaseSqliteTest, Transaction)
   EXPECT_EQ(EGE_SUCCESS, database.close());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(DatabaseSqliteTest, Blob)
+{
+  DatabaseSqlite database;
+
+  PSqlResult result;
+
+  // open database
+  EXPECT_EQ(EGE_SUCCESS, database.open(KValidGeneratedDatabasePath, false, true));
+
+  // add table
+  EXPECT_EQ(EGE_SUCCESS, database.execute(SqlQuery("CREATE TABLE MyTable (Key BLOB);")));
+
+  // generate blob data
+  char blobData[128];
+  for (s32 i = 0; i < sizeof (blobData); ++i)
+  {
+    blobData[i] = static_cast<char>(rand() % 0xff);
+  }
+
+  // store blob data
+  SqlQuery query = "INSERT INTO MyTable VALUES (?);";
+  DataBuffer data(reinterpret_cast<const void*>(blobData), sizeof (blobData));
+  EXPECT_TRUE(query.addBindValue(data));
+  EXPECT_EQ(EGE_SUCCESS, database.execute(query));
+
+  // check data
+  EXPECT_EQ(EGE_SUCCESS, database.execute(SqlQuery("SELECT * FROM MyTable")));
+  result = database.result();
+  EXPECT_TRUE(NULL != result);
+  EXPECT_EQ(1, result->rowCount());
+
+  // retrieve data
+  PObject value = result->value(0, 0);
+  EXPECT_EQ(EGE_OBJECT_UID_DATA_BUFFER, value->uid());
+  EXPECT_EQ(sizeof (blobData), ege_pcast<PDataBuffer>(value)->size());
+  EXPECT_EQ(0, memcmp(blobData, ege_pcast<PDataBuffer>(value)->data(), sizeof (blobData)));
+
+  // close database
+  EXPECT_EQ(EGE_SUCCESS, database.close());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

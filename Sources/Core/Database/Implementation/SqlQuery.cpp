@@ -1,4 +1,6 @@
 #include "Core/Database/Interface/SqlQuery.h"
+#include "Core/ComplexTypes.h"
+#include "EGEStringBuffer.h"
 
 EGE_NAMESPACE
 
@@ -14,5 +16,41 @@ SqlQuery::~SqlQuery()
 const String& SqlQuery::value() const
 {
   return m_query;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool SqlQuery::addBindValue(const String& value)
+{
+  PStringBuffer buffer = ege_new StringBuffer();
+  if (NULL != buffer)
+  {
+    *buffer << value;
+
+    m_boundValues << buffer;
+  }
+
+  return (NULL != buffer);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool SqlQuery::addBindValue(PDataBuffer value)
+{
+  m_boundValues << value;
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool SqlQuery::addBindValue(s32 value)
+{
+  PInteger valueObject = ege_new Integer(value);
+  if (NULL != valueObject)
+  {
+    m_boundValues << valueObject;
+  }
+
+  return (NULL != valueObject);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const List<PObject>& SqlQuery::values() const
+{
+  return m_boundValues;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

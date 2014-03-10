@@ -1,5 +1,6 @@
 #include "Core/Database/Interface/DatabaseSqlite.h"
 #include "Core/Database/Implementation/SqlResultSqlite.h"
+#include "Core/ComplexTypes.h"
 #include "EGEDebug.h"
 #include <sqlite3.h>
 
@@ -236,10 +237,45 @@ EGEResult DatabaseSqlite::execute(const SqlQuery& query)
 
     if (EGE_SUCCESS == result)
     {
-      s32 row = 0;
+      // bind values
+      const List<PObject>& objects = query.values();
+      s32 i = 1;
+      for (List<PObject>::const_iterator it = objects.begin(); (it != objects.end()) && (EGE_SUCCESS == result); ++it, ++i)
+      {
+        const PObject object = *it;
+
+        // process accroding to object type
+        switch (object->uid())
+        {
+          case EGE_OBJECT_UID_STRING_BUFFER:
+
+            sqlResult = ::sqlite3_bind_text(statementObject, i, ege_pcast<PStringBuffer>(object)->string().toAscii(), 
+                                            ege_pcast<PStringBuffer>(object)->string().length(), NULL);
+            break;
+
+          case EGE_OBJECT_UID_DATA_BUFFER:
+
+            sqlResult = ::sqlite3_bind_blob(statementObject, i, ege_pcast<PDataBuffer>(object)->data(ege_pcast<PDataBuffer>(object)->readOffset()), 
+                                            static_cast<int>(ege_pcast<PDataBuffer>(object)->size() - ege_pcast<PDataBuffer>(object)->readOffset()), NULL);
+            break;
+
+          case EGE_OBJECT_UID_INT:
+
+            sqlResult = ::sqlite3_bind_int(statementObject, i, ege_pcast<PInteger>(object)->value());
+            break;
+
+          default:
+
+            // error!
+            egeWarning(KDatabaseSqliteDebugName) << "Unsupported bind value of type:" << object->uid();
+            result = EGE_ERROR_NOT_SUPPORTED;
+            break;
+        }
+      }
 
       // process statement object
-      do
+      s32 row = 0;
+      while ((SQLITE_DONE != sqlResult) && (EGE_SUCCESS == result))
       {
         // perform process step
         sqlResult = ::sqlite3_step(statementObject);
@@ -267,17 +303,23 @@ EGEResult DatabaseSqlite::execute(const SqlQuery& query)
                 {
                   case SQLITE_INTEGER:
 
-                    result = ege_cast<SqlResultSqlite*>(resultObject)->addValue(row, sqlite3_column_int(statementObject, i));
+                    result = ege_cast<SqlResultSqlite*>(resultObject)->addValue(row, ::sqlite3_column_int(statementObject, i));
                     break;
 
                   case SQLITE_FLOAT:
 
-                    result = ege_cast<SqlResultSqlite*>(resultObject)->addValue(row, static_cast<float32>(sqlite3_column_double(statementObject, i)));
+                    result = ege_cast<SqlResultSqlite*>(resultObject)->addValue(row, static_cast<float32>(::sqlite3_column_double(statementObject, i)));
                     break;
 
                   case SQLITE_TEXT:
 
-                    result = ege_cast<SqlResultSqlite*>(resultObject)->addValue(row, reinterpret_cast<const char*>(sqlite3_column_text(statementObject, i)));
+                    result = ege_cast<SqlResultSqlite*>(resultObject)->addValue(row, reinterpret_cast<const char*>(::sqlite3_column_text(statementObject, i)));
+                    break;
+
+                  case SQLITE_BLOB:
+
+                    result = ege_cast<SqlResultSqlite*>(resultObject)->addValue(row, ::sqlite3_column_blob(statementObject, i), 
+                                                                                ::sqlite3_column_bytes(statementObject,i));
                     break;
 
                   default:
@@ -307,8 +349,7 @@ EGEResult DatabaseSqlite::execute(const SqlQuery& query)
 
         // update row index
         ++row;
-
-      } while ((SQLITE_DONE != sqlResult) && (EGE_SUCCESS == result));
+      }
     }
 
     // finalize statement
