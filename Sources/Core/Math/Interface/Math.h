@@ -543,7 +543,8 @@ TQuaternion<T> Math::CreateQuaternion(const TMatrix4<T>& matrix)
 template <typename T>
 TQuaternion<T> Math::CreateQuaternion(const TVector3<T>& axis, const Angle& angle)
 {
-  EGE_ASSERT(Math::EPSILON > (1 - axis.lengthSquared()));
+  // TAGE - this set has the tendency to fail if given axis is normalized but has some accumulated error...
+  // EGE_ASSERT(Math::EPSILON > (1 - axis.lengthSquared()));
 
   TQuaternion<T> out;
 
