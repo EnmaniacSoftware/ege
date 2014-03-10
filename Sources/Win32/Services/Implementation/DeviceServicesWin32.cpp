@@ -1,11 +1,36 @@
 #include "Win32/Services/Interface/DeviceServicesWin32.h"
+#include "EGEFile.h"
+#include "EGEDebug.h"
 #include <windows.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+extern const char* KDeviceServicesDebugName;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KConfidentialDBName                    = "confidential.sqlite";
+static const char* KConfidentialDBStoreTableName          = "Store";
+static const char* KConfidentialDBStoreTableColumnName    = "Name";
+static const char* KConfidentialDBStoreTableColumnStrings = "Strings";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DeviceServicesWin32::DeviceServicesWin32() : DeviceServices()
 {
+  // open database
+  if (EGE_SUCCESS != m_database.open(KConfidentialDBName, false, ! File::Exists(KConfidentialDBName)))
+  {
+    // error!
+    egeWarning(KDeviceServicesDebugName) << "Could not open databse:" << KConfidentialDBName;
+  }
+  else
+  {
+    const SqlQuery quary = String("CREATE TABLE IF NOT EXISTS %1 (%2 TEXT PRIMARY KEY NOT NULL, %3 VARCHAR(255));").arg(KConfidentialDBStoreTableName).
+                           arg(KConfidentialDBStoreTableColumnName).arg(KConfidentialDBStoreTableColumnStrings);
+    if (EGE_SUCCESS != m_database.execute(quary))
+    {
+      // error!
+      egeWarning(KDeviceServicesDebugName) << "Could not create table in database:" << KConfidentialDBName;
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DeviceServicesWin32::~DeviceServicesWin32()
@@ -15,5 +40,74 @@ DeviceServicesWin32::~DeviceServicesWin32()
 bool DeviceServicesWin32::openUrl(const String& url)
 {
   return (32 < reinterpret_cast<int>(ShellExecuteA(NULL, "open", url.toAscii(), NULL, NULL, SW_SHOWNORMAL)));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult DeviceServicesWin32::storeConfidentialValue(const String& name, const String& value)
+{
+  EGEResult result = EGE_SUCCESS;
+
+  // begin transaction
+  result = m_database.beginTransaction();
+  if (EGE_SUCCESS == result)
+  {
+    // remove existing entry if present already
+    const SqlQuery deleteQuery = String("DELETE FROM %1 WHERE %2 = '%3'").arg(KConfidentialDBStoreTableName).arg(KConfidentialDBStoreTableColumnName).arg(name);
+    result = m_database.execute(deleteQuery);
+    if (EGE_SUCCESS == result)
+    {
+      // add new entry
+      const SqlQuery query = String("INSERT INTO %1 (%2, %3) VALUES ('%4', '%5')").arg(KConfidentialDBStoreTableName).arg(KConfidentialDBStoreTableColumnName).
+                             arg(KConfidentialDBStoreTableColumnStrings).arg(name).arg(value);
+      result = m_database.execute(query);
+    }
+
+    if (EGE_SUCCESS != result)
+    {
+      // abort transaction
+      m_database.abortTransaction();
+    }
+    else
+    {
+      // end transaction
+      m_database.endTransaction();
+    }
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult DeviceServicesWin32::retrieveConfidentialValue(const String& name, String& value)
+{
+  EGEResult result = EGE_SUCCESS;
+
+  const SqlQuery query = String("SELECT %1 FROM %2 WHERE %3='%4';").arg(KConfidentialDBStoreTableColumnStrings).arg(KConfidentialDBStoreTableName)
+                         .arg(KConfidentialDBStoreTableColumnName).arg(name);
+  result = m_database.execute(query);
+  if (EGE_SUCCESS == result)
+  {
+    // retrieve result
+    PSqlResult sqlResult = m_database.result();
+    if (NULL == sqlResult)
+    {
+      // error!
+      result = EGE_ERROR;
+    }
+    else
+    {
+      // get output object
+      PObject valueObject = sqlResult->value(0, KConfidentialDBStoreTableColumnStrings);
+      EGE_ASSERT(NULL != valueObject);
+      EGE_ASSERT(EGE_OBJECT_UID_STRING_BUFFER == valueObject->uid());
+
+      // convert to string buffer
+      PStringBuffer stringBuffer = ege_pcast<PStringBuffer>(valueObject);
+      EGE_ASSERT(NULL != stringBuffer);
+
+      // store value
+      value = stringBuffer->string();
+    }
+  }
+
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

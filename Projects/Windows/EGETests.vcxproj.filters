@@ -31,6 +31,9 @@
     <Filter Include="Tests\Database">
       <UniqueIdentifier>{38e0a172-d1ad-4e89-983c-5ccf324d32c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Services">
+      <UniqueIdentifier>{8c9b99cc-3fed-4d51-bdc3-130f1e7e55a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\DebugTest.cpp">
@@ -113,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Database\Tests\Unittest\DatabaseSqliteTest.cpp">
       <Filter>Tests\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\Tests\Unittest\DeviceServicesTest.cpp">
+      <Filter>Tests\Services</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

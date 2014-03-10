@@ -1088,9 +1088,6 @@
     <ClInclude Include="..\..\Sources\Core\Platform.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Win32\TypesWin32.h">
-      <Filter>Win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGE.h" />
     <ClInclude Include="..\..\Sources\EGEApplication.h" />
     <ClInclude Include="..\..\Sources\EGEDataBuffer.h" />
@@ -1850,6 +1847,7 @@
     <ClInclude Include="..\..\Sources\Win32\Services\Interface\SocialServicesWin32.h">
       <Filter>Win32\Services\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\TypesWin32.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

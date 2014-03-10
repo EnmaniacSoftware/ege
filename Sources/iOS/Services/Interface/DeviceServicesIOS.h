@@ -20,6 +20,10 @@ class DeviceServicesIOS : public DeviceServices
 
     /*! @see DeviceServices::openUrl. */
     bool openUrl(const String& url) override;
+    /*! @see DeviceServices::retrieveConfidentialValue. */
+    EGEResult storeConfidentialValue(const String& name, const String& value) override;
+    /*! @see DeviceServices::retrieveConfidentialValue. */
+    EGEResult retrieveConfidentialValue(const String& name, String& value) override;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

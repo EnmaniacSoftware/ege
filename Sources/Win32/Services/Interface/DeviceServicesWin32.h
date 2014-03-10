@@ -6,6 +6,7 @@
 
 #include "EGE.h"
 #include "EGEString.h"
+#include "EGEDatabase.h"
 #include "Core/Services/Interface/DeviceServices.h"
 
 EGE_NAMESPACE_BEGIN
@@ -20,6 +21,15 @@ class DeviceServicesWin32 : public DeviceServices
 
     /*! @see DeviceServices::openUrl. */
     bool openUrl(const String& url) override;
+    /*! @see DeviceServices::retrieveConfidentialValue. */
+    EGEResult storeConfidentialValue(const String& name, const String& value) override;
+    /*! @see DeviceServices::retrieveConfidentialValue. */
+    EGEResult retrieveConfidentialValue(const String& name, String& value) override;
+
+  private:
+
+    /*! Confidential database. */
+    DatabaseSqlite m_database;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
