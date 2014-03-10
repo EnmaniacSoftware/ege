@@ -1,4 +1,5 @@
 #include "iOS/Services/Interface/DeviceServicesIOS.h"
+#include "EGEDebug.h"
 #import <UIKit/UIKit.h>
 
 EGE_NAMESPACE
@@ -46,7 +47,7 @@ EGEResult DeviceServicesIOS::retrieveConfidentialValue(const String& name, Strin
 
   // retrieve
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  NSString* nsValue = [defaults stringForKey: nsName])
+  NSString* nsValue = [defaults stringForKey: nsName];
   EGE_ASSERT(nil != nsValue);
     
   if (nil != nsValue)
