@@ -26,56 +26,51 @@ bool DeviceServicesIOS::openUrl(const String& url)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult DeviceServicesIOS::storeConfidentialValue(const String& name, const String& value)
 {
+  EGEResult result = EGE_ERROR;
+  
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  EGE_ASSERT(nil != defaults);
+
   // convert name and value
   NSString* nsName  = [NSString stringWithCString: (KConfidentialValuesPrefix + name).c_str() encoding: NSASCIIStringEncoding];
   NSString* nsValue = [NSString stringWithCString: value.c_str() encoding: NSASCIIStringEncoding];
 
+  EGE_ASSERT(nil != nsName);
+  EGE_ASSERT(nil != nsValue);
+  
   // store
-  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-
-  [defaults setObject: nsValue forKey: nsName];
-
-  return EGE_SUCCESS;
+  if ((nil != nsName) && (nil != nsValue))
+  {
+    [defaults setObject: nsValue forKey: nsName];
+  
+    result = EGE_SUCCESS;
+  }
+  
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult DeviceServicesIOS::storeConfidentialValue(const String& name, const PDataBuffer value)
 {
-  EGEResult result = EGE_SUCCESS;
+  EGEResult result = EGE_ERROR;
 
-  // begin transaction
-  /*result = m_database.beginTransaction();
-  if (EGE_SUCCESS == result)
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  EGE_ASSERT(nil != defaults);
+  
+  // convert name and value
+  NSString* nsName = [NSString stringWithCString: (KConfidentialValuesPrefix + name).c_str() encoding: NSASCIIStringEncoding];
+  NSData* nsValue  = [NSData dataWithBytesNoCopy:value->data(value->readOffset()) length: value->size() - value->readOffset() freeWhenDone: NO];
+  
+  EGE_ASSERT(nil != nsName);
+  EGE_ASSERT(nil != nsValue);
+  
+  // store
+  if ((nil != nsName) && (nil != nsValue))
   {
-    // remove existing entry if present already
-    SqlQuery deleteQuery = String("DELETE FROM %1 WHERE %2 = ?").arg(KConfidentialDBStoreTableName)
-                                                                .arg(KConfidentialDBStoreTableColumnName);
-    deleteQuery.addBindValue(name);
-
-    result = m_database.execute(deleteQuery);
-    if (EGE_SUCCESS == result)
-    {
-      // add new entry
-      SqlQuery query = String("INSERT INTO %1 (%2, %3) VALUES (?, ?)").arg(KConfidentialDBStoreTableName)
-                                                                      .arg(KConfidentialDBStoreTableColumnName)
-                                                                      .arg(KConfidentialDBStoreTableColumnBlobs);
-      query.addBindValue(name);
-      query.addBindValue(value);
-
-      result = m_database.execute(query);
-    }
-
-    if (EGE_SUCCESS != result)
-    {
-      // abort transaction
-      m_database.abortTransaction();
-    }
-    else
-    {
-      // end transaction
-      m_database.endTransaction();
-    }
-  }*/
-
+    [defaults setObject: nsValue forKey: nsName];
+  
+    result = EGE_SUCCESS;
+  }
+  
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -83,21 +78,27 @@ EGEResult DeviceServicesIOS::retrieveConfidentialValue(const String& name, Strin
 {
   EGEResult result = EGE_ERROR_NOT_FOUND;
 
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  EGE_ASSERT(nil != defaults);
+  
   // convert name
   NSString* nsName = [NSString stringWithCString: (KConfidentialValuesPrefix + name).c_str() encoding: NSASCIIStringEncoding];
-
-  // retrieve
-  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  NSString* nsValue = [defaults stringForKey: nsName];
-  EGE_ASSERT(nil != nsValue);
-    
-  if (nil != nsValue)
-  {
-    // convert to EGE format
-    value = [nsValue cStringUsingEncoding: NSASCIIStringEncoding];
+  EGE_ASSERT(nil != nsName);
   
-    // success
-    result = EGE_SUCCESS;
+  // retrieve
+  if (nil != nsName)
+  {
+    NSString* nsValue = [defaults stringForKey: nsName];
+    EGE_ASSERT(nil != nsValue);
+    
+    if (nil != nsValue)
+    {
+      // convert to EGE format
+      value = [nsValue cStringUsingEncoding: NSASCIIStringEncoding];
+  
+      // success
+      result = EGE_SUCCESS;
+    }
   }
   
   return result;
@@ -105,44 +106,34 @@ EGEResult DeviceServicesIOS::retrieveConfidentialValue(const String& name, Strin
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult DeviceServicesIOS::retrieveConfidentialValue(const String& name, PDataBuffer& value)
 {
-  EGEResult result = EGE_SUCCESS;
-  /*
-  SqlQuery query = String("SELECT %1 FROM %2 WHERE %3=?;").arg(KConfidentialDBStoreTableColumnStrings)
-                                                          .arg(KConfidentialDBStoreTableName)
-                                                          .arg(KConfidentialDBStoreTableColumnName);
-  query.addBindValue(name);
+  EGEResult result = EGE_ERROR_NOT_FOUND;
   
-  result = m_database.execute(query);
-  if (EGE_SUCCESS == result)
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  EGE_ASSERT(nil != defaults);
+  
+  // convert name
+  NSString* nsName = [NSString stringWithCString: (KConfidentialValuesPrefix + name).c_str() encoding: NSASCIIStringEncoding];
+  EGE_ASSERT(nil != nsName);
+  
+  // retrieve
+  if (nil != nsName)
   {
-    // retrieve result
-    PSqlResult sqlResult = m_database.result();
-    if (NULL == sqlResult)
+    NSData* nsValue = [defaults objectForKey: nsName];
+    EGE_ASSERT(nil != nsValue);
+    
+    if (nil != nsValue)
     {
-      // error!
-      result = EGE_ERROR;
-    }
-    else
-    {
-      // check if any data returned
-      if (0 == sqlResult->rowCount())
+      result = EGE_SUCCESS;
+      
+      // convert to EGE format
+      if ([nsValue length] != value->write([nsValue bytes], [nsValue length]))
       {
-        // no data
-        result = EGE_ERROR_NOT_FOUND;
-      }
-      else
-      {
-        // get output object
-        PObject blobObject = sqlResult->value(0, KConfidentialDBStoreTableColumnBlobs);
-        EGE_ASSERT(NULL != blobObject);
-        EGE_ASSERT(EGE_OBJECT_UID_DATA_BUFFER == blobObject->uid());
-
-        // store value
-        value = ege_pcast<PDataBuffer>(blobObject);
+        // error!
+        result = EGE_ERROR;
       }
     }
-  }*/
-
+  }
+  
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
