@@ -55,6 +55,9 @@ class SocialServices
   
   public:
 
+    /*! Returns pointer to application object. */
+    Application* app() const;
+  
     /*! Starts authentication. */
     virtual EGEResult startAuthentication() = 0;
     /*! Loads achievements. */
@@ -67,11 +70,6 @@ class SocialServices
     virtual EGEResult showScores(const String& scoreTable) = 0;
     /*! Returns TRUE if services are authenticated and ready to be used. */
     virtual bool isAuthenticated() const = 0;
-
-  protected:
-
-    /*! Returns pointer to application object. */
-    Application* app() const;
 
   private:
 

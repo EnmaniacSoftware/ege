@@ -8,7 +8,7 @@
 
 #include "EGE.h"
 #include "EGEString.h"
-#include "iOS/Services/PurchaseServicesAppStoreIOS_p.h"
+#include "iOS/Services/Interface/PurchaseServicesIOS.h"
 #import <StoreKit/StoreKit.h>
 #import <Foundation/NSSet.h>
 
@@ -16,7 +16,7 @@
 @interface AppStoreTransactionObserver : NSObject <SKPaymentTransactionObserver, SKProductsRequestDelegate>
 {
   /*! Pointer to associated sound object .*/
-  EGE::PurchaseServicesPrivate* m_object;
+  EGE::PurchaseServicesIOS* m_object;
   /*! Set of known purchaseable items (SKProducts). */
   NSMutableSet* m_purchasableItems;
 }
@@ -27,7 +27,7 @@
  *  @param  object  Object with which initialize object.
  *  @return Created object.
  */
-- (id) initWithObject: (EGE::PurchaseServicesPrivate*) object;
+- (id) initWithObject: (EGE::PurchaseServicesIOS*) object;
 
 /*! Tells an observer that one or more transactions have been updated.
  *  @param  queue         The payment queue that updated the transactions.

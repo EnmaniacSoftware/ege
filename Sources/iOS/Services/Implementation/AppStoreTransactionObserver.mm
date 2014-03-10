@@ -1,16 +1,19 @@
-#include "Core/Services/PurchaseServices.h"
-#import "iOS/Services/AppStoreTransactionObserver.h"
+#import "iOS/Services/Implementation/AppStoreTransactionObserver.h"
 #include "EGEPurchaseServices.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+extern const char* KPurchaseServicesDebugName;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @implementation AppStoreTransactionObserver
 
 @synthesize m_purchasableItems;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-- (id) initWithObject: (PurchaseServicesPrivate*) object
+- (id) initWithObject: (PurchaseServicesIOS*) object
 {
   self = [super init];
   if (self)
@@ -92,13 +95,13 @@ EGE_NAMESPACE
 - (void) paymentQueueRestoreCompletedTransactionsFinished: (SKPaymentQueue*) queue
 {
   // emit
-  emit m_object->d_func()->restored(EGE_SUCCESS);
+  emit m_object->restored(EGE_SUCCESS);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) paymentQueue:(SKPaymentQueue*) queue restoreCompletedTransactionsFailedWithError: (NSError*) error
 {
   // emit
-  emit m_object->d_func()->restored(EGE_ERROR);
+  emit m_object->restored(EGE_ERROR);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (SKProduct*) findProduct: (NSString*) name

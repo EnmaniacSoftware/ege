@@ -158,11 +158,6 @@
 		451471B718C5231900AAC617 /* Screen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514709818C5231900AAC617 /* Screen.cpp */; };
 		451471B818C5231900AAC617 /* ScreenManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514709A18C5231900AAC617 /* ScreenManager.cpp */; };
 		451471B918C5231900AAC617 /* Sequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514709D18C5231900AAC617 /* Sequencer.cpp */; };
-		451471BA18C5231900AAC617 /* DeviceServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470A018C5231900AAC617 /* DeviceServices.cpp */; };
-		451471BB18C5231900AAC617 /* PurchaseServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470A218C5231900AAC617 /* PurchaseServices.cpp */; };
-		451471BC18C5231900AAC617 /* PurchaseServicesNull_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470A418C5231900AAC617 /* PurchaseServicesNull_p.cpp */; };
-		451471BD18C5231900AAC617 /* SocialServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470A618C5231900AAC617 /* SocialServices.cpp */; };
-		451471BE18C5231900AAC617 /* SocialServicesNull_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470A818C5231900AAC617 /* SocialServicesNull_p.cpp */; };
 		451471BF18C5231900AAC617 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470B018C5231900AAC617 /* String.cpp */; };
 		451471C018C5231900AAC617 /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470B218C5231900AAC617 /* Text.cpp */; };
 		451471C118C5231900AAC617 /* StringBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470B418C5231900AAC617 /* StringBuffer.cpp */; };
@@ -217,11 +212,6 @@
 		4514723318C5236200AAC617 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514720B18C5236200AAC617 /* main.mm */; };
 		4514723418C5236200AAC617 /* MemoryIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514720D18C5236200AAC617 /* MemoryIOS.cpp */; };
 		4514723518C5236200AAC617 /* MessageBoxIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514721018C5236200AAC617 /* MessageBoxIOS_p.mm */; };
-		4514723618C5236200AAC617 /* AppStoreTransactionObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514721318C5236200AAC617 /* AppStoreTransactionObserver.mm */; };
-		4514723718C5236200AAC617 /* DeviceServicesIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514721518C5236200AAC617 /* DeviceServicesIOS_p.mm */; };
-		4514723818C5236200AAC617 /* GameCenterDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514721718C5236200AAC617 /* GameCenterDelegate.mm */; };
-		4514723918C5236200AAC617 /* PurchaseServicesAppStoreIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514721918C5236200AAC617 /* PurchaseServicesAppStoreIOS_p.mm */; };
-		4514723A18C5236200AAC617 /* SocialServicesGameCenterIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514721B18C5236200AAC617 /* SocialServicesGameCenterIOS_p.mm */; };
 		4514723B18C5236200AAC617 /* StringUtilsIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514721D18C5236200AAC617 /* StringUtilsIOS.cpp */; };
 		4514723C18C5236200AAC617 /* AtomicIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514721F18C5236200AAC617 /* AtomicIOS.cpp */; };
 		4514723D18C5236200AAC617 /* TimerIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514722218C5236200AAC617 /* TimerIOS_p.mm */; };
@@ -236,6 +226,16 @@
 		45BDD9A918CA6FD7004B33E3 /* SqlQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A618CA6FD7004B33E3 /* SqlQuery.cpp */; };
 		45BDD9AA18CA6FD7004B33E3 /* SqlResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A718CA6FD7004B33E3 /* SqlResult.cpp */; };
 		45BDD9AB18CA6FD7004B33E3 /* SqlResultSqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A818CA6FD7004B33E3 /* SqlResultSqlite.cpp */; };
+		45C3AD2E18CDF4380009ABA3 /* DeviceServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD2318CDF4380009ABA3 /* DeviceServices.cpp */; };
+		45C3AD2F18CDF4380009ABA3 /* PurchaseServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD2418CDF4380009ABA3 /* PurchaseServices.cpp */; };
+		45C3AD3018CDF4380009ABA3 /* PurchaseServicesNull.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD2518CDF4380009ABA3 /* PurchaseServicesNull.cpp */; };
+		45C3AD3118CDF4380009ABA3 /* SocialServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD2618CDF4380009ABA3 /* SocialServices.cpp */; };
+		45C3AD3218CDF4380009ABA3 /* SocialServicesNull.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD2718CDF4380009ABA3 /* SocialServicesNull.cpp */; };
+		45C3AD3F18CDF4520009ABA3 /* AppStoreTransactionObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3518CDF4520009ABA3 /* AppStoreTransactionObserver.mm */; };
+		45C3AD4018CDF4520009ABA3 /* DeviceServicesIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3618CDF4520009ABA3 /* DeviceServicesIOS.mm */; };
+		45C3AD4118CDF4520009ABA3 /* GameCenterDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3818CDF4520009ABA3 /* GameCenterDelegate.mm */; };
+		45C3AD4218CDF4520009ABA3 /* PurchaseServicesIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3918CDF4520009ABA3 /* PurchaseServicesIOS.mm */; };
+		45C3AD4318CDF4520009ABA3 /* SocialServicesIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3A18CDF4520009ABA3 /* SocialServicesIOS.mm */; };
 		45FB05DC18C69499005F4062 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DA18C69499005F4062 /* libcrypto.a */; };
 		45FB05DD18C69499005F4062 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DB18C69499005F4062 /* libssl.a */; };
 /* End PBXBuildFile section */
@@ -732,16 +732,6 @@
 		4514709B18C5231900AAC617 /* ScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenManager.h; sourceTree = "<group>"; };
 		4514709D18C5231900AAC617 /* Sequencer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sequencer.cpp; sourceTree = "<group>"; };
 		4514709E18C5231900AAC617 /* Sequencer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sequencer.h; sourceTree = "<group>"; };
-		451470A018C5231900AAC617 /* DeviceServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DeviceServices.cpp; sourceTree = "<group>"; };
-		451470A118C5231900AAC617 /* DeviceServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceServices.h; sourceTree = "<group>"; };
-		451470A218C5231900AAC617 /* PurchaseServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PurchaseServices.cpp; sourceTree = "<group>"; };
-		451470A318C5231900AAC617 /* PurchaseServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseServices.h; sourceTree = "<group>"; };
-		451470A418C5231900AAC617 /* PurchaseServicesNull_p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PurchaseServicesNull_p.cpp; sourceTree = "<group>"; };
-		451470A518C5231900AAC617 /* PurchaseServicesNull_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseServicesNull_p.h; sourceTree = "<group>"; };
-		451470A618C5231900AAC617 /* SocialServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocialServices.cpp; sourceTree = "<group>"; };
-		451470A718C5231900AAC617 /* SocialServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServices.h; sourceTree = "<group>"; };
-		451470A818C5231900AAC617 /* SocialServicesNull_p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocialServicesNull_p.cpp; sourceTree = "<group>"; };
-		451470A918C5231900AAC617 /* SocialServicesNull_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServicesNull_p.h; sourceTree = "<group>"; };
 		451470AB18C5231900AAC617 /* Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Delegate.h; sourceTree = "<group>"; };
 		451470AC18C5231900AAC617 /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		451470AD18C5231900AAC617 /* Signal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Signal.h; sourceTree = "<group>"; };
@@ -848,16 +838,6 @@
 		4514720D18C5236200AAC617 /* MemoryIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryIOS.cpp; sourceTree = "<group>"; };
 		4514720F18C5236200AAC617 /* MessageBoxIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoxIOS_p.h; sourceTree = "<group>"; };
 		4514721018C5236200AAC617 /* MessageBoxIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MessageBoxIOS_p.mm; sourceTree = "<group>"; };
-		4514721218C5236200AAC617 /* AppStoreTransactionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppStoreTransactionObserver.h; sourceTree = "<group>"; };
-		4514721318C5236200AAC617 /* AppStoreTransactionObserver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppStoreTransactionObserver.mm; sourceTree = "<group>"; };
-		4514721418C5236200AAC617 /* DeviceServicesIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceServicesIOS_p.h; sourceTree = "<group>"; };
-		4514721518C5236200AAC617 /* DeviceServicesIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DeviceServicesIOS_p.mm; sourceTree = "<group>"; };
-		4514721618C5236200AAC617 /* GameCenterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterDelegate.h; sourceTree = "<group>"; };
-		4514721718C5236200AAC617 /* GameCenterDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameCenterDelegate.mm; sourceTree = "<group>"; };
-		4514721818C5236200AAC617 /* PurchaseServicesAppStoreIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseServicesAppStoreIOS_p.h; sourceTree = "<group>"; };
-		4514721918C5236200AAC617 /* PurchaseServicesAppStoreIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PurchaseServicesAppStoreIOS_p.mm; sourceTree = "<group>"; };
-		4514721A18C5236200AAC617 /* SocialServicesGameCenterIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServicesGameCenterIOS_p.h; sourceTree = "<group>"; };
-		4514721B18C5236200AAC617 /* SocialServicesGameCenterIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SocialServicesGameCenterIOS_p.mm; sourceTree = "<group>"; };
 		4514721D18C5236200AAC617 /* StringUtilsIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtilsIOS.cpp; sourceTree = "<group>"; };
 		4514721F18C5236200AAC617 /* AtomicIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AtomicIOS.cpp; sourceTree = "<group>"; };
 		4514722118C5236200AAC617 /* TimerIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerIOS_p.h; sourceTree = "<group>"; };
@@ -885,6 +865,26 @@
 		45BDD9A618CA6FD7004B33E3 /* SqlQuery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqlQuery.cpp; sourceTree = "<group>"; };
 		45BDD9A718CA6FD7004B33E3 /* SqlResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqlResult.cpp; sourceTree = "<group>"; };
 		45BDD9A818CA6FD7004B33E3 /* SqlResultSqlite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqlResultSqlite.cpp; sourceTree = "<group>"; };
+		45C3AD2318CDF4380009ABA3 /* DeviceServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DeviceServices.cpp; sourceTree = "<group>"; };
+		45C3AD2418CDF4380009ABA3 /* PurchaseServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PurchaseServices.cpp; sourceTree = "<group>"; };
+		45C3AD2518CDF4380009ABA3 /* PurchaseServicesNull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PurchaseServicesNull.cpp; sourceTree = "<group>"; };
+		45C3AD2618CDF4380009ABA3 /* SocialServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocialServices.cpp; sourceTree = "<group>"; };
+		45C3AD2718CDF4380009ABA3 /* SocialServicesNull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocialServicesNull.cpp; sourceTree = "<group>"; };
+		45C3AD2918CDF4380009ABA3 /* DeviceServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceServices.h; sourceTree = "<group>"; };
+		45C3AD2A18CDF4380009ABA3 /* PurchaseServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseServices.h; sourceTree = "<group>"; };
+		45C3AD2B18CDF4380009ABA3 /* PurchaseServicesNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseServicesNull.h; sourceTree = "<group>"; };
+		45C3AD2C18CDF4380009ABA3 /* SocialServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServices.h; sourceTree = "<group>"; };
+		45C3AD2D18CDF4380009ABA3 /* SocialServicesNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServicesNull.h; sourceTree = "<group>"; };
+		45C3AD3418CDF4520009ABA3 /* AppStoreTransactionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppStoreTransactionObserver.h; sourceTree = "<group>"; };
+		45C3AD3518CDF4520009ABA3 /* AppStoreTransactionObserver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppStoreTransactionObserver.mm; sourceTree = "<group>"; };
+		45C3AD3618CDF4520009ABA3 /* DeviceServicesIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DeviceServicesIOS.mm; sourceTree = "<group>"; };
+		45C3AD3718CDF4520009ABA3 /* GameCenterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterDelegate.h; sourceTree = "<group>"; };
+		45C3AD3818CDF4520009ABA3 /* GameCenterDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameCenterDelegate.mm; sourceTree = "<group>"; };
+		45C3AD3918CDF4520009ABA3 /* PurchaseServicesIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PurchaseServicesIOS.mm; sourceTree = "<group>"; };
+		45C3AD3A18CDF4520009ABA3 /* SocialServicesIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SocialServicesIOS.mm; sourceTree = "<group>"; };
+		45C3AD3C18CDF4520009ABA3 /* DeviceServicesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceServicesIOS.h; sourceTree = "<group>"; };
+		45C3AD3D18CDF4520009ABA3 /* PurchaseServicesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseServicesIOS.h; sourceTree = "<group>"; };
+		45C3AD3E18CDF4520009ABA3 /* SocialServicesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServicesIOS.h; sourceTree = "<group>"; };
 		45FB05DA18C69499005F4062 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libcrypto.a"; sourceTree = "<group>"; };
 		45FB05DB18C69499005F4062 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libssl.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1908,16 +1908,8 @@
 		4514709F18C5231900AAC617 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				451470A018C5231900AAC617 /* DeviceServices.cpp */,
-				451470A118C5231900AAC617 /* DeviceServices.h */,
-				451470A218C5231900AAC617 /* PurchaseServices.cpp */,
-				451470A318C5231900AAC617 /* PurchaseServices.h */,
-				451470A418C5231900AAC617 /* PurchaseServicesNull_p.cpp */,
-				451470A518C5231900AAC617 /* PurchaseServicesNull_p.h */,
-				451470A618C5231900AAC617 /* SocialServices.cpp */,
-				451470A718C5231900AAC617 /* SocialServices.h */,
-				451470A818C5231900AAC617 /* SocialServicesNull_p.cpp */,
-				451470A918C5231900AAC617 /* SocialServicesNull_p.h */,
+				45C3AD2218CDF4380009ABA3 /* Implementation */,
+				45C3AD2818CDF4380009ABA3 /* Interface */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -2260,16 +2252,8 @@
 		4514721118C5236200AAC617 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				4514721218C5236200AAC617 /* AppStoreTransactionObserver.h */,
-				4514721318C5236200AAC617 /* AppStoreTransactionObserver.mm */,
-				4514721418C5236200AAC617 /* DeviceServicesIOS_p.h */,
-				4514721518C5236200AAC617 /* DeviceServicesIOS_p.mm */,
-				4514721618C5236200AAC617 /* GameCenterDelegate.h */,
-				4514721718C5236200AAC617 /* GameCenterDelegate.mm */,
-				4514721818C5236200AAC617 /* PurchaseServicesAppStoreIOS_p.h */,
-				4514721918C5236200AAC617 /* PurchaseServicesAppStoreIOS_p.mm */,
-				4514721A18C5236200AAC617 /* SocialServicesGameCenterIOS_p.h */,
-				4514721B18C5236200AAC617 /* SocialServicesGameCenterIOS_p.mm */,
+				45C3AD3318CDF4520009ABA3 /* Implementation */,
+				45C3AD3B18CDF4520009ABA3 /* Interface */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -2406,6 +2390,54 @@
 				45877DA816F09F5B00B4252B /* Foundation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		45C3AD2218CDF4380009ABA3 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				45C3AD2318CDF4380009ABA3 /* DeviceServices.cpp */,
+				45C3AD2418CDF4380009ABA3 /* PurchaseServices.cpp */,
+				45C3AD2518CDF4380009ABA3 /* PurchaseServicesNull.cpp */,
+				45C3AD2618CDF4380009ABA3 /* SocialServices.cpp */,
+				45C3AD2718CDF4380009ABA3 /* SocialServicesNull.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		45C3AD2818CDF4380009ABA3 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				45C3AD2918CDF4380009ABA3 /* DeviceServices.h */,
+				45C3AD2A18CDF4380009ABA3 /* PurchaseServices.h */,
+				45C3AD2B18CDF4380009ABA3 /* PurchaseServicesNull.h */,
+				45C3AD2C18CDF4380009ABA3 /* SocialServices.h */,
+				45C3AD2D18CDF4380009ABA3 /* SocialServicesNull.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		45C3AD3318CDF4520009ABA3 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				45C3AD3418CDF4520009ABA3 /* AppStoreTransactionObserver.h */,
+				45C3AD3518CDF4520009ABA3 /* AppStoreTransactionObserver.mm */,
+				45C3AD3618CDF4520009ABA3 /* DeviceServicesIOS.mm */,
+				45C3AD3718CDF4520009ABA3 /* GameCenterDelegate.h */,
+				45C3AD3818CDF4520009ABA3 /* GameCenterDelegate.mm */,
+				45C3AD3918CDF4520009ABA3 /* PurchaseServicesIOS.mm */,
+				45C3AD3A18CDF4520009ABA3 /* SocialServicesIOS.mm */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		45C3AD3B18CDF4520009ABA3 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				45C3AD3C18CDF4520009ABA3 /* DeviceServicesIOS.h */,
+				45C3AD3D18CDF4520009ABA3 /* PurchaseServicesIOS.h */,
+				45C3AD3E18CDF4520009ABA3 /* SocialServicesIOS.h */,
+			);
+			path = Interface;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2670,11 +2702,6 @@
 				451471B718C5231900AAC617 /* Screen.cpp in Sources */,
 				451471B818C5231900AAC617 /* ScreenManager.cpp in Sources */,
 				451471B918C5231900AAC617 /* Sequencer.cpp in Sources */,
-				451471BA18C5231900AAC617 /* DeviceServices.cpp in Sources */,
-				451471BB18C5231900AAC617 /* PurchaseServices.cpp in Sources */,
-				451471BC18C5231900AAC617 /* PurchaseServicesNull_p.cpp in Sources */,
-				451471BD18C5231900AAC617 /* SocialServices.cpp in Sources */,
-				451471BE18C5231900AAC617 /* SocialServicesNull_p.cpp in Sources */,
 				451471BF18C5231900AAC617 /* String.cpp in Sources */,
 				451471C018C5231900AAC617 /* Text.cpp in Sources */,
 				451471C118C5231900AAC617 /* StringBuffer.cpp in Sources */,
@@ -2729,11 +2756,6 @@
 				4514723318C5236200AAC617 /* main.mm in Sources */,
 				4514723418C5236200AAC617 /* MemoryIOS.cpp in Sources */,
 				4514723518C5236200AAC617 /* MessageBoxIOS_p.mm in Sources */,
-				4514723618C5236200AAC617 /* AppStoreTransactionObserver.mm in Sources */,
-				4514723718C5236200AAC617 /* DeviceServicesIOS_p.mm in Sources */,
-				4514723818C5236200AAC617 /* GameCenterDelegate.mm in Sources */,
-				4514723918C5236200AAC617 /* PurchaseServicesAppStoreIOS_p.mm in Sources */,
-				4514723A18C5236200AAC617 /* SocialServicesGameCenterIOS_p.mm in Sources */,
 				4514723B18C5236200AAC617 /* StringUtilsIOS.cpp in Sources */,
 				4514723C18C5236200AAC617 /* AtomicIOS.cpp in Sources */,
 				4514723D18C5236200AAC617 /* TimerIOS_p.mm in Sources */,
@@ -2742,6 +2764,16 @@
 				45BDD9A918CA6FD7004B33E3 /* SqlQuery.cpp in Sources */,
 				45BDD9AA18CA6FD7004B33E3 /* SqlResult.cpp in Sources */,
 				45BDD9AB18CA6FD7004B33E3 /* SqlResultSqlite.cpp in Sources */,
+				45C3AD2E18CDF4380009ABA3 /* DeviceServices.cpp in Sources */,
+				45C3AD2F18CDF4380009ABA3 /* PurchaseServices.cpp in Sources */,
+				45C3AD3018CDF4380009ABA3 /* PurchaseServicesNull.cpp in Sources */,
+				45C3AD3118CDF4380009ABA3 /* SocialServices.cpp in Sources */,
+				45C3AD3218CDF4380009ABA3 /* SocialServicesNull.cpp in Sources */,
+				45C3AD3F18CDF4520009ABA3 /* AppStoreTransactionObserver.mm in Sources */,
+				45C3AD4018CDF4520009ABA3 /* DeviceServicesIOS.mm in Sources */,
+				45C3AD4118CDF4520009ABA3 /* GameCenterDelegate.mm in Sources */,
+				45C3AD4218CDF4520009ABA3 /* PurchaseServicesIOS.mm in Sources */,
+				45C3AD4318CDF4520009ABA3 /* SocialServicesIOS.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2822,8 +2854,6 @@
 					EGE_CONTAINERS_STL,
 					EGE_STRING_STL,
 					EGE_FEATURE_OPENGL_DEBUG,
-					EGE_SOCIAL_SERVICES_GAMECENTER,
-					EGE_PURCHASE_SERVICES_APPSTORE,
 					TIXML_USE_STL,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
@@ -2864,8 +2894,6 @@
 					EGE_XML_TINYXML,
 					EGE_CONTAINERS_STL,
 					EGE_STRING_STL,
-					EGE_SOCIAL_SERVICES_GAMECENTER,
-					EGE_PURCHASE_SERVICES_APPSTORE,
 					EGE_FEATURE_DEBUG,
 					TIXML_USE_STL,
 				);

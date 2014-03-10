@@ -29,12 +29,12 @@ PurchaseServicesIOS::~PurchaseServicesIOS()
   m_observer = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool PurchaseServicesPrivate::isAvailable() const
+bool PurchaseServicesIOS::isAvailable() const
 {
   return (YES == [SKPaymentQueue canMakePayments]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult PurchaseServicesPrivate::purchase(const String& product)
+EGEResult PurchaseServicesIOS::purchase(const String& product)
 {
   EGEResult result = EGE_ERROR;
   
@@ -58,7 +58,7 @@ EGEResult PurchaseServicesPrivate::purchase(const String& product)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult PurchaseServicesPrivate::restoreAll()
+EGEResult PurchaseServicesIOS::restoreAll()
 {
   EGEResult result = EGE_ERROR;
   
@@ -74,7 +74,7 @@ EGEResult PurchaseServicesPrivate::restoreAll()
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PurchaseServicesPrivate::processNextPurchase()
+void PurchaseServicesIOS::processNextPurchase()
 {
   const String product = m_pendingPurchases.front();
   
@@ -99,7 +99,7 @@ void PurchaseServicesPrivate::processNextPurchase()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PurchaseServicesPrivate::onProductPurchased(EGEResult result, const String& productName)
+void PurchaseServicesIOS::onProductPurchased(EGEResult result, const String& productName)
 {
   EGE_ASSERT(m_pendingPurchases.front() == productName);
   
@@ -116,7 +116,7 @@ void PurchaseServicesPrivate::onProductPurchased(EGEResult result, const String&
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PurchaseServicesPrivate::onProductRestored(EGEResult result, const String& productName)
+void PurchaseServicesIOS::onProductRestored(EGEResult result, const String& productName)
 {
   // emit
   emit purchased(result, productName);
