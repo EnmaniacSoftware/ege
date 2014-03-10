@@ -13,13 +13,16 @@ class Integer : public Object
 {
   public:
 
-    Integer(s32 value) : Object(NULL, EGE_OBJECT_UID_INT), m_value(value) {}
+    Integer(const Integer& other);
+    explicit Integer(s32 value);
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  public:
+
     /*! Returns value. */
-    s32 value() const { return m_value; }
+    s32 value() const;
     
   private:
 
@@ -31,13 +34,16 @@ class Float : public Object
 {
   public:
 
-    Float(float32 value) : Object(NULL, EGE_OBJECT_UID_FLOAT), m_value(value) {}
+    Float(const Float& other);
+    explicit Float(float32 value);
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  public:
+
     /*! Returns value. */
-    float32 value() const { return m_value; }
+    float32 value() const;
 
   private:
 

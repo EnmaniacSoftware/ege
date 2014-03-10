@@ -16,6 +16,7 @@ class DataBuffer : public Object, public ISerializable
 
     DataBuffer();
     DataBuffer(const DataBuffer& other);
+    explicit DataBuffer(s64 size);
     /*! Wraps around given data pointer and size. Resulting buffer is not mutable */
     DataBuffer(const void* data, s64 size);
     virtual ~DataBuffer();

@@ -5,6 +5,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const char* KDataBufferDebugName = "EGEDataBuffer";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(DataBuffer)
 EGE_DEFINE_DELETE_OPERATORS(DataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -38,6 +40,22 @@ DataBuffer::DataBuffer(const DataBuffer& other) : Object(NULL, EGE_OBJECT_UID_DA
     m_readOffset    = other.readOffset();
     m_writeOffset   = other.writeOffset();
     m_byteOrdering  = other.byteOrdering();
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+DataBuffer::DataBuffer(s64 size) : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER)
+                                 , m_size(0)
+                                 , m_capacity(0)
+                                 , m_data(NULL)
+                                 , m_readOffset(0)
+                                 , m_writeOffset(0)
+                                 , m_mutable(true)
+                                 , m_byteOrdering(ELittleEndian)
+{
+  if (EGE_SUCCESS != setSize(size))
+  {
+    // error!
+    egeWarning(KDataBufferDebugName) << "Could not set data buffer size to:" << size;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -116,7 +134,7 @@ s64 DataBuffer::write(const void* data, s64 size)
   EGE_ASSERT(0 <= size && data);
 
   // check if there is NO enough capacity for new data
-  if (size + writeOffset() >= capacity())
+  if (size + writeOffset() > capacity())
   {
     // more space is required
     if (EGE_SUCCESS != setCapacity(size + writeOffset() + 1))

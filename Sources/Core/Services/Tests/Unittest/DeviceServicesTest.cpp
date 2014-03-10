@@ -97,3 +97,12 @@ TEST_F(DeviceServicesTest, OverwriteConfidentialValue)
   EXPECT_STREQ(KNewStringValue, stringValue.toAscii());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(DeviceServicesTest, RetrieveAESEnryptionKey)
+{
+  // store string value
+  PDataBuffer value = m_services->aesEnctyptionKey();
+
+  ASSERT_TRUE(NULL != value);
+  EXPECT_EQ(16LL, value->size());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
