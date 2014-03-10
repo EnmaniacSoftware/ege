@@ -1,4 +1,5 @@
 #include "iOS/Services/Interface/DeviceServicesIOS.h"
+#import <UIKit/UIKit.h>
 
 EGE_NAMESPACE
 
@@ -13,6 +14,10 @@ DeviceServicesIOS::~DeviceServicesIOS()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool DeviceServicesIOS::openUrl(const String& url)
 {
-  return false;//S3E_RESULT_SUCCESS == s3eOSExecExecute(url.toAscii(), S3E_FALSE);
+  // convert URL
+  NSString* nsUrl = [NSString stringWithCString: url.c_str() encoding: NSASCIIStringEncoding];
+  
+  // try to open it
+  return (YES == [[UIApplication sharedApplication] openURL: [NSURL URLWithString: nsUrl]]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
