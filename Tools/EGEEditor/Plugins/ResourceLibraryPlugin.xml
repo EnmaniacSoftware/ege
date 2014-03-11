@@ -1,4 +1,0 @@
-<plugin name="ResourceLibraryPlugin">
-  <dependency name="CorePlugin" />
-  <dependency name="WorkspacePlugin" />
-</plugin>

@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/core">
-        <file alias="configuration-add">icons/add.png</file>
-        <file alias="configuration-remove">icons/cancel.png</file>
-        <file alias="configuration-edit">icons/note_edit.png</file>
-    </qresource>
-</RCC>

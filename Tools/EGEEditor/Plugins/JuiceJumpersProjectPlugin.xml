@@ -1,5 +1,0 @@
-<plugin name="JuiceJumpersProjectPlugin">
-  <dependency name="CorePlugin" />
-  <dependency name="WorkspacePlugin" />
-  <dependency name="ResourceLibraryPlugin" />
-</plugin>

@@ -1,1 +1,0 @@
-rcc -binary res/resources.qrc -o res/resources.rcc
