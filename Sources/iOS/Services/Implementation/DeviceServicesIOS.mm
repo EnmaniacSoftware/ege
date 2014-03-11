@@ -119,8 +119,6 @@ EGEResult DeviceServicesIOS::retrieveConfidentialValue(const String& name, PData
   if (nil != nsName)
   {
     NSData* nsValue = [defaults objectForKey: nsName];
-    EGE_ASSERT(nil != nsValue);
-    
     if (nil != nsValue)
     {
       result = EGE_SUCCESS;

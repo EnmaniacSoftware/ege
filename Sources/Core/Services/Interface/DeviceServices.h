@@ -33,7 +33,7 @@ class DeviceServices
     /*! Retrieves value from secured area. 
      *  @param  name  Name of the value.
      *  @param  value Placeholder for retrieved value.
-     *  @return EGE_SUCCESS on success. Otherwise, one of the available errors.
+     *  @return EGE_SUCCESS on success, EGE_ERROR_NOT_FOUND if value with given name has not been found. Otherwise, one of the available errors.
      */
     virtual EGEResult retrieveConfidentialValue(const String& name, String& value) = 0;
     virtual EGEResult retrieveConfidentialValue(const String& name, PDataBuffer& value) = 0;
