@@ -344,11 +344,11 @@ TEST_F(DatabaseSqliteTest, InsertInteger)
   EXPECT_EQ(EGE_SUCCESS, database.execute(SqlQuery("CREATE TABLE MyTable (Key INTEGER);")));
 
   // generate blob data
-  const s32 value = rand();
+  const s32 integerValue = rand();
 
   // store integer data
   SqlQuery query = "INSERT INTO MyTable VALUES (?);";
-  EXPECT_TRUE(query.addBindValue(value));
+  EXPECT_TRUE(query.addBindValue(integerValue));
   EXPECT_EQ(EGE_SUCCESS, database.execute(query));
 
   // check data
@@ -359,8 +359,8 @@ TEST_F(DatabaseSqliteTest, InsertInteger)
 
   // retrieve data
   PObject value = result->value(0, 0);
-  EXPECT_EQ(EGE_OBJECT_UID_INTEGER, value->uid());
-  EXPECT_EQ(value, ege_pcast<PInteger>(value)->value());
+  EXPECT_EQ(EGE_OBJECT_UID_INT, value->uid());
+  EXPECT_EQ(integerValue, ege_pcast<PInteger>(value)->value());
 
   // close database
   EXPECT_EQ(EGE_SUCCESS, database.close());
