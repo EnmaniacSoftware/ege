@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZLib", "..\..\External\Zlib
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Box2D", "..\..\External\Box2D 2.1.2\Box2D\Build\Box2D\Box2D.vcxproj", "{90B6C2E4-0188-4552-AD48-15C26CE84838}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sqlite3", "..\..\External\Sqlite 3.8.3.1\Sqlite3.vcxproj", "{2F0A47B4-EFFE-4754-8316-F60A1AF2D13A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,8 +23,8 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Debug|Win32.ActiveCfg = Release - OGL FPL MT|Win32
-		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Debug|Win32.Build.0 = Release - OGL FPL MT|Win32
+		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Debug|Win32.ActiveCfg = Debug - OGL FPL MT|Win32
+		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Debug|Win32.Build.0 = Debug - OGL FPL MT|Win32
 		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Debug|x64.ActiveCfg = Debug - GL3x MT|Win32
 		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Release|Win32.ActiveCfg = Release - GL3x MT|Win32
 		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Release|Win32.Build.0 = Release - GL3x MT|Win32
@@ -59,6 +61,12 @@ Global
 		{90B6C2E4-0188-4552-AD48-15C26CE84838}.Release|Win32.Build.0 = Release|Win32
 		{90B6C2E4-0188-4552-AD48-15C26CE84838}.Release|x64.ActiveCfg = Release|x64
 		{90B6C2E4-0188-4552-AD48-15C26CE84838}.Release|x64.Build.0 = Release|x64
+		{2F0A47B4-EFFE-4754-8316-F60A1AF2D13A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2F0A47B4-EFFE-4754-8316-F60A1AF2D13A}.Debug|Win32.Build.0 = Debug|Win32
+		{2F0A47B4-EFFE-4754-8316-F60A1AF2D13A}.Debug|x64.ActiveCfg = Debug|Win32
+		{2F0A47B4-EFFE-4754-8316-F60A1AF2D13A}.Release|Win32.ActiveCfg = Release|Win32
+		{2F0A47B4-EFFE-4754-8316-F60A1AF2D13A}.Release|Win32.Build.0 = Release|Win32
+		{2F0A47B4-EFFE-4754-8316-F60A1AF2D13A}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
