@@ -166,8 +166,8 @@ EGEResult RenderWindowOGLWin32::construct(const Dictionary& params)
   int attributes[] = 
   {  
     WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
-    WGL_CONTEXT_MINOR_VERSION_ARB, 2,
-    WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+    WGL_CONTEXT_MINOR_VERSION_ARB, 0,
+    //WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
     0  
   };  
 #endif // EGE_RENDERING_OPENGL_FIXED
@@ -535,12 +535,15 @@ void RenderWindowOGLWin32::detectCapabilities()
   StringArray extensionArray;
 
   // get list of all extensions
+#if EGE_RENDERING_OPENGL_FIXED
   String extensionString(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
   if ( ! extensionString.empty())
   {
     extensionArray = extensionString.split(" ");
   }
-  else
+#endif // EGE_RENDERING_OPENGL_FIXED
+  
+  if (extensionArray.empty())
   {
     // determine if glGetStringi is available
     glGetStringi = reinterpret_cast<PFNGLGETSTRINGIPROC>(wglGetProcAddress("glGetStringi"));
@@ -742,6 +745,9 @@ void RenderWindowOGLWin32::detectCapabilities()
 
   // 32bit indexing is supported by default
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT, true);
+
+  // at least one check at the end
+  OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderWindowOGLWin32::isAutoRotated() const

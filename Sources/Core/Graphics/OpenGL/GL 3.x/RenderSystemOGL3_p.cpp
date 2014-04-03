@@ -18,7 +18,7 @@
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/Render/RenderWindow.h"
 #include "Core/Graphics/TextureImage.h"
-#include "Core/Debug/EngineInfo.h"
+#include "Core/Debug/Interface/EngineInfo.h"
 #include "EGERenderQueues.h"
 #include "EGEOpenGL.h"
 #include "EGETimer.h"
@@ -31,6 +31,12 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(RenderSystemPrivate)
 EGE_DEFINE_DELETE_OPERATORS(RenderSystemPrivate)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+static const String KUniformModelViewPerspectiveName = "u_mvpMatrix";
+static const String KAttributeVertexName  = "a_vertex";
+static const String KAttributeNormalName  = "a_normal";
+static const String KAttributeColorName   = "a_color";
+static const String KAttributeTextureName = "a_texture%1";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps primitive type to OpenGL compilant one. */
 static GLenum MapPrimitiveType(EGEGraphics::RenderPrimitiveType type)
@@ -219,10 +225,10 @@ void RenderSystemPrivate::flush()
   {
     // apply rotation
     // NOTE: actual OGLES rotation should be opposite
-    Quaternionf rotation(Vector3f(0, 0, 1), -d_func()->m_renderTarget->orientationRotation());
+    Quaternionf rotation = Math::CreateQuaternion(Vector3f(0, 0, 1), -d_func()->m_renderTarget->orientationRotation());
 
     Matrix4f matrix;
-    Math::Convert(&matrix, &rotation);
+    Math::Convert(matrix, rotation);
 
     m_projectionMatrix *= matrix;
   }
@@ -786,6 +792,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
     const PRenderPass renderPass = material->pass(pass);
 
     ProgramOGL* programOGL = ege_cast<ProgramOGL*>(renderPass->program());
+    // TAGE - should we allow to progress without program ???
 
     // get first vao from the list and shrink the list
     PVertexArrayObject vao = vaos.first(NULL);
@@ -804,15 +811,16 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
       programOGL->bind();
 
       // set model-view matrix
-      glUniformMatrix4fv(programOGL->uniformLocation("u_mvpMatrix"), 1, GL_FALSE, 
+      glUniformMatrix4fv(programOGL->uniformLocation(KUniformModelViewPerspectiveName), 1, GL_FALSE, 
                          d_func()->m_viewMatrix.multiply(modelMatrix).multiply(m_projectionMatrix).data);
       OGL_CHECK();
     }
 
     // apply vertex arrays
+    List<u32> appliedVertexIndices;
     if (NULL == vao)
     {
-      applyVertexArrays(vertexBuffer->vertexDeclaration(), vertexBuffer->offset());
+      appliedVertexIndices = applyVertexArrays(programOGL, vertexBuffer->vertexDeclaration(), vertexBuffer->offset());
     }
     else
     {
@@ -845,7 +853,14 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
       ENGINE_INFO(drawArraysCalls++);
     }
 
-    if (NULL != vao)
+    if (NULL == vao)
+    {
+      for (List<u32>::const_iterator it = appliedVertexIndices.begin(); it != appliedVertexIndices.end(); ++it)
+      {
+        glDisableVertexAttribArray(*it);
+      }
+    }
+    else
     {
       // unbind vao
       vao->unbind();
@@ -942,45 +957,72 @@ void RenderSystemPrivate::setClientStateEnabled(u32 state, bool set)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::applyVertexArrays(const VertexDeclaration& vertexDeclaration, void* vertexData)
+List<u32> RenderSystemPrivate::applyVertexArrays(const ProgramOGL* program, const VertexDeclaration& vertexDeclaration, void* vertexData)
 {
-  bool vertexPointerInUse = false;
-  bool normalPointerInUse = false;
-  bool colorPointerInUse  = false;
+  EGE_ASSERT(NULL != program);
+
+  GLuint location;
+
+  List<u32> enabledIndices;
 
   // go thru all arrays
+  u32 index = 0;
   const VertexElementArray& vertexElements = vertexDeclaration.vertexElements();
-  for (VertexElementArray::const_iterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
+  for (VertexElementArray::const_iterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement, ++index)
   {
     // set according to buffer type
     switch (itElement->semantic())
     {
       case NVertexBuffer::VES_POSITION_XYZ:
 
-        glVertexPointer(3, GL_FLOAT, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
+        location = program->attributeLocation(KAttributeVertexName);
+        EGE_ASSERT(0 <= location);
+
+        glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
         OGL_CHECK();
-        vertexPointerInUse = true;
+        glEnableVertexAttribArray(location);
+        OGL_CHECK();
+
+        enabledIndices << location;
         break;
 
       case NVertexBuffer::VES_POSITION_XY:
 
-        glVertexPointer(2, GL_FLOAT, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
+        location = program->attributeLocation(KAttributeVertexName);
+        EGE_ASSERT(0 <= location);
+
+        glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
         OGL_CHECK();
-        vertexPointerInUse = true;
+        glEnableVertexAttribArray(location);
+        OGL_CHECK();
+
+        enabledIndices << location;
         break;
 
       case NVertexBuffer::VES_NORMAL:
 
-        glNormalPointer(GL_FLOAT, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
+        location = program->attributeLocation(KAttributeNormalName);
+        EGE_ASSERT(0 <= location);
+
+        glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
         OGL_CHECK();
-        normalPointerInUse = true;
+        glEnableVertexAttribArray(location);
+        OGL_CHECK();
+
+        enabledIndices << location;
         break;
 
       case NVertexBuffer::VES_COLOR_RGBA:
 
-        glColorPointer(4, GL_FLOAT, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
+        location = program->attributeLocation(KAttributeColorName);
+        EGE_ASSERT(0 <= location);
+
+        glVertexAttribPointer(location, 4, GL_FLOAT, GL_FALSE, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
         OGL_CHECK();
-        colorPointerInUse = true;
+        glEnableVertexAttribArray(location);
+        OGL_CHECK();
+
+        enabledIndices << location;
         break;
 
       case NVertexBuffer::VES_TEXTURE_UV:
@@ -1006,10 +1048,7 @@ void RenderSystemPrivate::applyVertexArrays(const VertexDeclaration& vertexDecla
     }
   }
 
-  // enable/disable vertex pointers
-  setClientStateEnabled(GL_VERTEX_ARRAY, vertexPointerInUse);
-  setClientStateEnabled(GL_NORMAL_ARRAY, normalPointerInUse);
-  setClientStateEnabled(GL_COLOR_ARRAY, colorPointerInUse);
+  return enabledIndices;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderSystemPrivate::registerComponent(PRenderComponent& component, NVertexBuffer::UsageType vertexUsage, const VertexDeclaration& vertexDeclaration, 
@@ -1057,7 +1096,7 @@ void RenderSystemPrivate::setupVAO(PVertexArrayObject& vertexArrayObject, const 
     {
       case NVertexBuffer::VES_POSITION_XYZ:
 
-        location = programOGL->attributeLocation("a_position");
+        location = programOGL->attributeLocation(KAttributeVertexName);
         EGE_ASSERT(0 <= location);
 
         glEnableVertexAttribArray(location);
@@ -1068,7 +1107,7 @@ void RenderSystemPrivate::setupVAO(PVertexArrayObject& vertexArrayObject, const 
 
       case NVertexBuffer::VES_POSITION_XY:
 
-        location = programOGL->attributeLocation("a_position");
+        location = programOGL->attributeLocation(KAttributeVertexName);
         EGE_ASSERT(0 <= location);
 
         glEnableVertexAttribArray(location);
@@ -1079,7 +1118,7 @@ void RenderSystemPrivate::setupVAO(PVertexArrayObject& vertexArrayObject, const 
 
       case NVertexBuffer::VES_NORMAL:
 
-        location = programOGL->attributeLocation("a_normal");
+        location = programOGL->attributeLocation(KAttributeNormalName);
         EGE_ASSERT(0 <= location);
 
         glEnableVertexAttribArray(location);
@@ -1090,7 +1129,7 @@ void RenderSystemPrivate::setupVAO(PVertexArrayObject& vertexArrayObject, const 
 
       case NVertexBuffer::VES_COLOR_RGBA:
 
-        location = programOGL->attributeLocation("a_color");
+        location = programOGL->attributeLocation(KAttributeColorName);
         EGE_ASSERT(0 <= location);
 
         glEnableVertexAttribArray(location);
@@ -1101,7 +1140,7 @@ void RenderSystemPrivate::setupVAO(PVertexArrayObject& vertexArrayObject, const 
 
       case NVertexBuffer::VES_TEXTURE_UV:
 
-        location = programOGL->attributeLocation(String::Format("a_texture%1", textureCoordIndex));
+        location = programOGL->attributeLocation(KAttributeTextureName.arg(textureCoordIndex));
         EGE_ASSERT(0 <= location);
 
         glEnableVertexAttribArray(location);
@@ -1127,7 +1166,8 @@ void RenderSystemPrivate::createAndSetupVAOs(PRenderComponent component)
   List<PComponent> vaos = component->components(EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT);
 
   // check if VAO is supported and can be used ie VBO is supported
-  if (vaos.empty() && Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECT) && 
+  if (vaos.empty() && 
+      Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECT) && 
       Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
   {
     for (u32 pass = 0; (pass < material->passCount()) && result; ++pass)

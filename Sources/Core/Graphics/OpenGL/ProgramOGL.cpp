@@ -15,7 +15,6 @@ ProgramOGL::ProgramOGL(Application* app, const String& name, IHardwareResourcePr
                                                                                                     m_id(0),
                                                                                                     m_linked(false)
 {
-  egeDebug(KOpenGLDebugName) << glCreateProgram;
   m_id = glCreateProgram();
   OGL_CHECK();
 }

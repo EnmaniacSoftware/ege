@@ -14,6 +14,7 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderSystem;
+class ProgramOGL;
 
 EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
 EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
@@ -80,9 +81,10 @@ class RenderSystemPrivate : public IComponentRenderer
     /*! Applies vertex arrays. 
      *  @param  vertexDeclaration  Vertex buffer which arrays should be applied.
      *  @param  vertexData
+     *  @returns List of all vertex attribute indices which were enabled.
      *  @note All arrays are processed except texture ones. These needs to be processed on per render pass basis.
      */
-    void applyVertexArrays(const VertexDeclaration& vertexDeclaration, void* vertexData);
+    List<u32> applyVertexArrays(const ProgramOGL* program, const VertexDeclaration& vertexDeclaration, void* vertexData);
 
     /*! Creates empty 2D texture. 
      *  @param  name  Texture name.
