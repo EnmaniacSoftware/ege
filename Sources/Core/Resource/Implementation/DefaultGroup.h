@@ -160,7 +160,7 @@ const String KDefaultResourceGroup =
   "    </texture>"
   ""
   "    <material name='debug-font' src-blend='one' dst-blend='one'>"
-  "      <texture name='debug-font' />"
+  "      <texture-ref name='debug-font' />"
   "    </material>"
   ""
   "    <font name='debug-font' material='debug-font' height='16'>"
