@@ -126,7 +126,7 @@ class RenderSystemPrivate : public IComponentRenderer
     bool m_blendEnabled;
     /*! Scissor test enabled flag. */
     bool m_scissorTestEnabled;
-    /*! */
+    /*! Number of active texture units in use (counted from zero). */
     u32 m_activeTextureUnitsCount;
     /*! Projection matrix. */
     Matrix4f m_projectionMatrix;

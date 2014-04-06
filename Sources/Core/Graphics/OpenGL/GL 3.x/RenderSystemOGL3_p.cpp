@@ -341,17 +341,6 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
         //int a = 1;
       }
     }
-
-    // check if points are be rendered
-    if (EGEGraphics::RPT_POINTS == component->primitiveType())
-    {
-      // check if point sprites are supported
-      if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
-      {
-        glEnable(GL_POINT_SPRITE);
-        glTexEnvf(GL_POINT_SPRITE, GL_COORD_REPLACE, GL_TRUE);
-      }
-    }
   }
   
   // disable rest texture units
