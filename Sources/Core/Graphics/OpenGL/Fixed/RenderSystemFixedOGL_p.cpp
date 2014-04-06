@@ -291,7 +291,7 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
     EGE_ASSERT(EGE_OBJECT_UID_TEXTURE_2D != textureImage->uid());
 
     // set texture coord array index to be used by current texture unit
-    m_textureUnitStates[i].m_textureCoordIndex = Math::Min(i, textureCoordsCount - 1);
+    m_textureUnitStates[i].m_textureCoordIndex = textureImage->textureCoordIndex();
 
     // check if 2D texture
     //if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
@@ -360,11 +360,6 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
       //}
       //else
       glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MapPrimitiveType(textureImage->environmentMode()));
-
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(tex2d->m_minFilter));
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(tex2d->m_magFilter));
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(tex2d->m_addressingModeS));
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(tex2d->m_addressingModeT));
 
       setMatrixMode(GL_TEXTURE);
       glLoadIdentity();
@@ -702,6 +697,13 @@ PTexture2D RenderSystemPrivate::createEmptyTexture(const String& name)
   bindTexture(GL_TEXTURE_2D, texture->p_func()->id());
 
   // set texture parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(d_func()->m_textureMinFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(d_func()->m_textureMagFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(d_func()->m_textureAddressingModeS));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(d_func()->m_textureAddressingModeT));
+
+  // set texture parameters
+  // NOTE: mostly for debugging purposes
   texture->m_minFilter        = d_func()->m_textureMinFilter;
   texture->m_magFilter        = d_func()->m_textureMagFilter;
   texture->m_addressingModeS  = d_func()->m_textureAddressingModeS;

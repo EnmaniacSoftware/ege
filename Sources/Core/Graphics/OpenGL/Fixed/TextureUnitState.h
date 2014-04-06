@@ -12,7 +12,7 @@ EGE_NAMESPACE_BEGIN
 struct TextureUnitState
 {
   /*! Texture coord sets within vertex buffer semantic unit uses. */
-  u32 m_textureCoordIndex;
+  s32 m_textureCoordIndex;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

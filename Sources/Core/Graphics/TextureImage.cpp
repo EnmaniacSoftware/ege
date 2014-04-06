@@ -9,6 +9,7 @@ EGE_DEFINE_DELETE_OPERATORS(TextureImage)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextureImage::TextureImage(Application* app) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE)
                                              , m_envMode(EGETexture::EM_MODULATE)
+                                             , m_textureCoordsIndex(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -22,6 +23,7 @@ TextureImage::TextureImage(const PTexture2D& texture, Rectf rect) : Object(textu
                                                                   , m_name(texture->name())
                                                                   , m_rect(rect)
                                                                   , m_envMode(EGETexture::EM_MODULATE)
+                                                                  , m_textureCoordsIndex(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -30,6 +32,7 @@ TextureImage::TextureImage(const TextureImage& texture, const Rectf& rect) : Obj
                                                                            , m_texture(texture.m_texture)
                                                                            , m_envMode(texture.m_envMode)
                                                                            , m_rotationAngle(texture.m_rotationAngle)
+                                                                           , m_textureCoordsIndex(texture.m_textureCoordsIndex)
 {
   // NOTE: rect is in local space of this object, combine these for final local space coords
   m_rect = texture.m_rect.combine(rect);
@@ -88,11 +91,12 @@ void TextureImage::copy(const TextureImage* other)
 {
   EGE_ASSERT(other);
 
-  m_name          = other->name();
-  m_rect          = other->m_rect;
-  m_texture       = other->m_texture;
-  m_envMode       = other->m_envMode;
-  m_rotationAngle = other->m_rotationAngle;
+  m_name                = other->name();
+  m_rect                = other->m_rect;
+  m_texture             = other->m_texture;
+  m_envMode             = other->m_envMode;
+  m_rotationAngle       = other->m_rotationAngle;
+  m_textureCoordsIndex  = other->m_textureCoordsIndex;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 TextureImage::width() const
@@ -139,6 +143,17 @@ void TextureImage::setRotationAngle(const Angle& angle)
 const Angle& TextureImage::rotationAngle() const 
 { 
   return m_rotationAngle; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+s32 TextureImage::textureCoordIndex() const
+{
+  return m_textureCoordsIndex;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void TextureImage::setTextureCoordIndex(s32 index)
+{
+  EGE_ASSERT(0 <= index);
+  m_textureCoordsIndex = index;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextureImage& TextureImage::operator = (const TextureImage& other)

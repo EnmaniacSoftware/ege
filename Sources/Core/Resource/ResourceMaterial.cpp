@@ -13,10 +13,18 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KResourceMaterialDebugName = "EGEResourceMaterial";
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define NODE_TEXTURE      "texture"
-#define NODE_PASS         "pass"
-#define NODE_PROGRAM_REF  "program-ref"
+
+static const String KNodeTexture     = "texture";
+static const String KNodeTextureRef  = "texture-ref";
+static const String KNodePass        = "pass";
+static const String KNodeProgramRef  = "program-ref";
+
+static const String KAttributeTextureName           = "name";
+static const String KAttributeTextureRect           = "rect";
+static const String KAttributeTextureEnvMode        = "env-mode";
+static const String KAttributeTextureManual         = "manual";
+static const String KAttributeTextureRotation       = "rotation";
+static const String KAttributeTextureTexCoordsIndex = "tex-coord";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping texture environment mode name into value. */
 EGETexture::EnvironmentMode MapTextureEnvironmentMode(const String& name, EGETexture::EnvironmentMode defaultValue)
@@ -163,20 +171,25 @@ EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
   while (child->isValid())
   {
     // check child
-    if (NODE_TEXTURE == child->name())
+    if (KNodeTexture == child->name())
+    {
+      EGE_ASSERT(false);
+      result = EGE_ERROR;
+    }
+    else if (KNodeTextureRef == child->name())
     {
       // textures without pass add to default one
-      result = addTexture(child, defaultPass);
+      result = addTextureReference(child, defaultPass);
       
       // mark to indicate default pass is in use
       defaultPassInUse = true;
     }
-    else if (NODE_PASS == child->name())
+    else if (KNodePass == child->name())
     {
       // add defined pass
       result = addPass(child);
     }
-    else if (NODE_PROGRAM_REF == child->name())
+    else if (KNodeProgramRef == child->name())
     {
       // add program reference (shaders without pass add to default one)
       result = addProgramReference(child, defaultPass);
@@ -335,7 +348,7 @@ void ResourceMaterial::unload()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceMaterial::addTexture(const PXmlElement& tag, PassData& pass)
+EGEResult ResourceMaterial::addTextureReference(const PXmlElement& tag, PassData& pass)
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -344,11 +357,12 @@ EGEResult ResourceMaterial::addTexture(const PXmlElement& tag, PassData& pass)
   bool error = false;
 
   // get data
-  textureData.name          = tag->attribute("name");
-  textureData.rect          = StringUtils::ToRectf(tag->attribute("rect", "0 0 1 1"), &error);
-  textureData.envMode       = MapTextureEnvironmentMode(tag->attribute("env-mode", "modulate"), EGETexture::EM_MODULATE);
-  textureData.manual        = tag->attribute("manual", "false").toBool(&error);
-  textureData.rotationAngle = StringUtils::ToAngle(tag->attribute("rotation", "0"), &error);
+  textureData.name              = tag->attribute(KAttributeTextureName);
+  textureData.rect              = StringUtils::ToRectf(tag->attribute(KAttributeTextureRect, "0 0 1 1"), &error);
+  textureData.envMode           = MapTextureEnvironmentMode(tag->attribute(KAttributeTextureEnvMode, "modulate"), EGETexture::EM_MODULATE);
+  textureData.manual            = tag->attribute(KAttributeTextureManual, "false").toBool(&error);
+  textureData.rotationAngle     = StringUtils::ToAngle(tag->attribute(KAttributeTextureRotation, "0"), &error);
+  textureData.textureCoordIndex = tag->attribute(KAttributeTextureTexCoordsIndex, static_cast<s32>(pass.m_textureImageData.size()));
 
   // check if obligatory data is wrong
   if (error || textureData.name.empty())
@@ -396,11 +410,16 @@ EGEResult ResourceMaterial::addPass(const PXmlElement& tag)
   while (child->isValid())
   {
     // check child
-    if (NODE_TEXTURE == child->name())
+    if (KNodeTexture == child->name())
     {
-      result = addTexture(child, pass);
+      EGE_ASSERT(false);
+      result = EGE_ERROR;
     }
-    else if (NODE_PROGRAM_REF == child->name())
+    else if (KNodeTextureRef == child->name())
+    {
+      result = addTextureReference(child, pass);
+    }
+    else if (KNodeProgramRef == child->name())
     {
       result = addProgramReference(child, pass);
     }
@@ -656,6 +675,7 @@ EGEResult ResourceMaterial::loadDependencies()
       // set texture data
       textureImageData.textureImage->setEnvironmentMode(textureImageData.envMode);
       textureImageData.textureImage->setRotationAngle(textureImageData.rotationAngle);
+      textureImageData.textureImage->setTextureCoordIndex(textureImageData.textureCoordIndex);
     }
 
     // try to load program for current pass (if any)

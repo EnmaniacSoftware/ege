@@ -65,6 +65,13 @@ class TextureImage : public Object
     /*! Returns height (in texels). */
     s32 height() const;
 
+    /*! Returns texture coordinate index to be used for this object. */
+    s32 textureCoordIndex() const;
+    /*! Sets texture coordinates index to be used for this object.
+     *  @param  index Index (0-based) of texture coordinates array to use for this texture object.
+     */
+    void setTextureCoordIndex(s32 index);
+
   private:
 
     TextureImage& operator = (const TextureImage& other);
@@ -81,6 +88,8 @@ class TextureImage : public Object
     EGETexture::EnvironmentMode m_envMode;
     /*! Rotation angle. */
     Angle m_rotationAngle;
+    /*! Texture coords index. */
+    s32 m_textureCoordsIndex;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -40,6 +40,7 @@ class ResourceMaterial : public IResource
         EGETexture::EnvironmentMode envMode;        /*!< Texture environment mode. */
         bool manual;                                /*!< Manual flag. */
         Angle rotationAngle;                        /*!< Texture rotation angle. */
+        s32 textureCoordIndex;                      /*!< Texture coord index to use. */
         PTextureImage textureImage;                 /*!< Loaded texture image. It is loaded and initialized with data above. */
     };
         
@@ -112,8 +113,8 @@ class ResourceMaterial : public IResource
   private:
 
     ResourceMaterial(Application* app, ResourceGroup* group);
-    /*! Adds texture dependancy to given pass. */
-    EGEResult addTexture(const PXmlElement& tag, PassData& pass);
+    /*! Adds texture reference dependancy to given pass. */
+    EGEResult addTextureReference(const PXmlElement& tag, PassData& pass);
     /*! Adds pass. */
     EGEResult addPass(const PXmlElement& tag);
     /*! Adds program reference. */
