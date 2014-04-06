@@ -33,10 +33,12 @@ EGE_DEFINE_NEW_OPERATORS(RenderSystemPrivate)
 EGE_DEFINE_DELETE_OPERATORS(RenderSystemPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const String KUniformModelViewPerspectiveName = "u_mvpMatrix";
-static const String KAttributeVertexName  = "a_vertex";
-static const String KAttributeNormalName  = "a_normal";
-static const String KAttributeColorName   = "a_color";
-static const String KAttributeTextureName = "a_texture%1";
+static const String KUniformTexture2DXName           = "u_texture2D%1";
+
+static const String KAttributeVertexName        = "a_vertex";
+static const String KAttributeNormalName        = "a_normal";
+static const String KAttributeColorName         = "a_color";
+static const String KAttributeTextureCoordXName = "a_texCoord%1";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps primitive type to OpenGL compilant one. */
 static GLenum MapPrimitiveType(EGEGraphics::RenderPrimitiveType type)
@@ -792,7 +794,7 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
     const PRenderPass renderPass = material->pass(pass);
 
     ProgramOGL* programOGL = ege_cast<ProgramOGL*>(renderPass->program());
-    // TAGE - should we allow to progress without program ???
+    EGE_ASSERT(NULL != programOGL);
 
     // get first vao from the list and shrink the list
     PVertexArrayObject vao = vaos.first(NULL);
@@ -961,15 +963,17 @@ List<u32> RenderSystemPrivate::applyVertexArrays(const ProgramOGL* program, cons
 {
   EGE_ASSERT(NULL != program);
 
-  GLuint location;
-
   List<u32> enabledIndices;
 
+  // next texture coordinate index
+  s32 textureCoordIndex = 0;
+
   // go thru all arrays
-  u32 index = 0;
   const VertexElementArray& vertexElements = vertexDeclaration.vertexElements();
-  for (VertexElementArray::const_iterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement, ++index)
+  for (VertexElementArray::const_iterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
   {
+    GLint location;
+
     // set according to buffer type
     switch (itElement->semantic())
     {
@@ -1027,20 +1031,26 @@ List<u32> RenderSystemPrivate::applyVertexArrays(const ProgramOGL* program, cons
 
       case NVertexBuffer::VES_TEXTURE_UV:
 
-        for (u32 i = 0; i < m_activeTextureUnitsCount; ++i)
-        {
-          // set only texture units which are to use current texture coords array
-          //if (m_textureUnitStates[i].m_textureCoordIndex == itElement->index())
-          //{
-          //  activateClientTextureUnit(i);
+        location = program->attributeLocation(KAttributeTextureCoordXName.arg(textureCoordIndex));
+        EGE_ASSERT(0 <= location);
 
-          //  glTexCoordPointer(2, GL_FLOAT, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
-          //  OGL_CHECK();
+        glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, vertexDeclaration.vertexSize(), static_cast<s8*>(vertexData) + itElement->offset());
+        OGL_CHECK();
+        glEnableVertexAttribArray(location);  
+        OGL_CHECK();
 
-          //  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-          //  OGL_CHECK();
-          //}
-        }
+        enabledIndices << location;
+
+        // set texture sampler
+        location = program->uniformLocation(KUniformTexture2DXName.arg(textureCoordIndex));
+        EGE_ASSERT(0 <= location);
+
+        glUniform1i(location, textureCoordIndex);
+        OGL_CHECK();
+
+        // set new texture coord index
+        // TAGE - this is not always true, investigate and fix
+        ++textureCoordIndex;
         break;
 
       default:
@@ -1084,13 +1094,15 @@ void RenderSystemPrivate::setupVAO(PVertexArrayObject& vertexArrayObject, const 
   // bind VBO
   vertexBuffer->bind();
 
-  GLuint location;
+  // next texture coordinate index
+  s32 textureCoordIndex = 0;
 
   // go thru all arrays
-  s32 textureCoordIndex = 0;
   const VertexElementArray& vertexElements = vertexBuffer->vertexDeclaration().vertexElements();
   for (VertexElementArray::const_iterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
   {
+    GLint location;
+
     // set according to buffer type
     switch (itElement->semantic())
     {
@@ -1140,7 +1152,7 @@ void RenderSystemPrivate::setupVAO(PVertexArrayObject& vertexArrayObject, const 
 
       case NVertexBuffer::VES_TEXTURE_UV:
 
-        location = programOGL->attributeLocation(KAttributeTextureName.arg(textureCoordIndex));
+        location = programOGL->attributeLocation(KAttributeTextureCoordXName.arg(textureCoordIndex++));
         EGE_ASSERT(0 <= location);
 
         glEnableVertexAttribArray(location);

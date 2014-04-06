@@ -137,6 +137,7 @@ bool ProgramOGL::buildUniformsList()
     GLint location = 0;
     location = glGetUniformLocation(m_id, name);
     OGL_CHECK();
+    EGE_ASSERT_X(-1 != location, "Failed to retrieve uniform");
 
     // add to pool
     m_uniforms.insert(name, location);
@@ -166,9 +167,10 @@ bool ProgramOGL::buildAttributesList()
     OGL_CHECK();
 
     // retrieve location
-    GLuint location = 0;
+    GLint location = 0;
     location = glGetAttribLocation(m_id, name);
     OGL_CHECK();
+    EGE_ASSERT_X(-1 != location, "Failed to retrieve attribute");
 
     // add to pool
     m_attributes.insert(name, location);
@@ -214,12 +216,12 @@ void ProgramOGL::unbind()
   OGL_CHECK();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-GLuint ProgramOGL::uniformLocation(const String& name) const
+GLint ProgramOGL::uniformLocation(const String& name) const
 {
   return m_uniforms.value(name, -1);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-GLuint ProgramOGL::attributeLocation(const String& name) const
+GLint ProgramOGL::attributeLocation(const String& name) const
 {
   return m_attributes.value(name, -1);
 }

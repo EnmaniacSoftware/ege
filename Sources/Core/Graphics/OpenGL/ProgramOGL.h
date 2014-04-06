@@ -41,12 +41,12 @@ class ProgramOGL : public Program
      *  @param  name  Name of the uniform.
      *  @return Location index (0-based) of a given uniform within the program. Negative, if could not be found.
      */
-    GLuint uniformLocation(const String& name) const;
+    GLint uniformLocation(const String& name) const;
     /*! Returns location infex of a given attribute. 
      *  @param  name  Name of the attribute.
      *  @return Location index (0-based) of a given attribute within the program. Negative, if could not be found.
      */
-    GLuint attributeLocation(const String& name) const;
+    GLint attributeLocation(const String& name) const;
 
   private:
 
@@ -64,9 +64,9 @@ class ProgramOGL : public Program
     /*! Flag indicating if program has been linked. */
     bool m_linked;
     /*! Map of uniforms and locations within program. */
-    Map<String, GLuint> m_uniforms;
+    Map<String, GLint> m_uniforms;
     /*! Map of attributes and locations within program. */
-    Map<String, GLuint> m_attributes;
+    Map<String, GLint> m_attributes;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
