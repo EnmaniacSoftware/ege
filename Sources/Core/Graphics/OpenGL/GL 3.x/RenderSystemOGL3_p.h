@@ -62,14 +62,10 @@ class RenderSystemPrivate : public IComponentRenderer
     void setBlendEnabled(bool set);
     /*! Enables/disables scissor testing. */
     void setScissorTestEnabled(bool set);
-    /*! Enables/disables given client state. */
-    void setClientStateEnabled(u32 state, bool set);
     /*! Sends all geometry through the geometry pipeline to hardware. */
     void flush();
     /*! Activates given texture unit for server side. */
     void activateTextureUnit(u32 unit);
-    /*! Activates given texture unit for client side. */
-    void activateClientTextureUnit(u32 unit);
     /*! Binds texture to target. */
     void bindTexture(GLenum target, GLuint textureId);
     /*! Applies general parameters. 
@@ -126,16 +122,12 @@ class RenderSystemPrivate : public IComponentRenderer
 
     /*! Server side, currenty active texture unit. */
     u32 m_activeTextureUnit;
-    /*! Client side, currenty active texture unit. */
-    u32 m_activeClientTextureUnit;
     /*! Blend enabled flag. */
     bool m_blendEnabled;
     /*! Scissor test enabled flag. */
     bool m_scissorTestEnabled;
     /*! */
     u32 m_activeTextureUnitsCount;
-    /*! Active client states. */
-    DynamicArray<u32> m_activeClientStates;
     /*! Projection matrix. */
     Matrix4f m_projectionMatrix;
 };

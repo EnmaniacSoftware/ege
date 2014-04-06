@@ -368,6 +368,16 @@ String String::arg(s32 value) const
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+String String::arg(u32 value) const
+{
+  ArgEscapeData argEscapes = findArgEscapes();
+
+  String out;
+  replaceArgEscapes(out, String::Format("%u", value), argEscapes);
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String String::arg(float32 value) const
 {
   ArgEscapeData argEscapes = findArgEscapes();

@@ -34,6 +34,7 @@ EGE_DEFINE_DELETE_OPERATORS(RenderSystemPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const String KUniformModelViewPerspectiveName = "u_mvpMatrix";
 static const String KUniformTexture2DXName           = "u_texture2D%1";
+static const String KUniformTextureMatrixXName       = "u_texMatrix%1";
 
 static const String KAttributeVertexName        = "a_vertex";
 static const String KAttributeNormalName        = "a_normal";
@@ -168,7 +169,6 @@ static GLint MapTextureAddressingMode(EGETexture::AddressingMode mode)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderSystemPrivate::RenderSystemPrivate(RenderSystem* base) : m_d(base), 
                                                                m_activeTextureUnit(0),
-                                                               m_activeClientTextureUnit(0),
                                                                m_activeTextureUnitsCount(0)
 {
   m_blendEnabled = (GL_TRUE == glIsEnabled(GL_BLEND));
@@ -261,13 +261,13 @@ void RenderSystemPrivate::flush()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, const PMaterial& material, const RenderPass& pass)
 {
+  ProgramOGL* program = ege_cast<ProgramOGL*>(pass.program());
+  EGE_ASSERT(NULL != program);
+
   // TAGE - port
   //Color color = pass.diffuseColorTransformation().transform(pass.diffuseColor());
   //glColor4f(color.red, color.green, color.blue, color.alpha);
   //OGL_CHECK();
-
-  // get nimber of available texture array elements
-  u32 textureCoordsCount = component->vertexBuffer()->vertexDeclaration().elementCount(NVertexBuffer::VES_TEXTURE_UV);
 
   // go thru all textures
   for (u32 i = 0; i < pass.textureCount(); ++i)
@@ -275,28 +275,6 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
     PTextureImage textureImage = pass.texture(i);
 
     EGE_ASSERT(EGE_OBJECT_UID_TEXTURE_2D != textureImage->uid());
-
-    // set texture coord array index to be used by current texture unit
-    //m_textureUnitStates[i].m_textureCoordIndex = Math::Min(i, textureCoordsCount - 1);
-
-    // check if 2D texture
-    //if (EGE_OBJECT_UID_TEXTURE_2D == texture->uid())
-    //{
-    //  Texture2D* tex2d = (Texture2D*) texture;
-
-    //  activateTextureUnit(i);
-    //  bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
-
-    //  glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(tex2d->m_minFilter));
-	   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(tex2d->m_magFilter));
-	   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(tex2d->m_addressingModeS));
-	   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(tex2d->m_addressingModeT));
-
-    //  setMatrixMode(GL_TEXTURE);
-    //  glLoadIdentity();
-    //}
 
     // check if texture image
     if (EGE_OBJECT_UID_TEXTURE_IMAGE == textureImage->uid())
@@ -311,62 +289,57 @@ void RenderSystemPrivate::applyPassParams(const PRenderComponent& component, con
         bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
       }
 
-      //if (texImg->environmentMode() == EGETexture::EM_DECAL)
-      //{
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_MODULATE);   //Interpolate RGB with RGB
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_PREVIOUS);
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_TEXTURE);
-      //     //GL_CONSTANT refers to the call we make with glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor)
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_RGB, GL_CONSTANT);
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_RGB, GL_CONSTANT );
-      //     //------------------------
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_INTERPOLATE);   //Interpolate ALPHA with ALPHA
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_PREVIOUS);
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_TEXTURE);
-      //     //GL_CONSTANT refers to the call we make with glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor)
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_ALPHA, GL_CONSTANT);
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, GL_SRC_ALPHA);
-      //     glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_ALPHA, GL_SRC_ALPHA);
-
-      //     static float a = 0.0f;
-      //     a += 0.01f;
-      //     if (a > 1)
-      //     {
-      //       a = 0;
-      //     }
-
-      //    float mycolor[4];
-      //     mycolor[0]=mycolor[1]=mycolor[2]=0.0;    //RGB doesn't matter since we are not using it
-      //     mycolor[3]=0.5;                         //Set the blend factor with this
-      //     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mycolor);
-      //}
-      //else
       glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MapPrimitiveType(textureImage->environmentMode()));
 
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(tex2d->m_minFilter));
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(tex2d->m_magFilter));
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(tex2d->m_addressingModeS));
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(tex2d->m_addressingModeT));
+      // assign appropriate texture sampler to texture unit
+      GLint location = program->uniformLocation(KUniformTexture2DXName.arg(i));
+      EGE_ASSERT(0 <= location);
 
-      // TAGE - port
-      //setMatrixMode(GL_TEXTURE);
-      //glLoadIdentity();
+      glUniform1i(location, i);
+      OGL_CHECK();
 
-      //float32 degrees = textureImage->rotationAngle().degrees();
+      // supply texture matrix if needed
+      location = program->uniformLocation(KUniformTextureMatrixXName.arg(i));
+      EGE_ASSERT((0 <= location) || (0 > location) && (0 == textureImage->rotationAngle().degrees()) || (0 > location) && (Rectf::UNIT != textureImage->rect()));
 
-      //if (0.0f != degrees)
-      //{
-      //  glTranslatef(textureImage->rect().x + textureImage->rect().width * 0.5f, textureImage->rect().y + textureImage->rect().height * 0.5f, 0.0f);
-      //  glRotatef(degrees, 0.0f, 0.0f, 1.0f);
-      //  glTranslatef(-(textureImage->rect().x + textureImage->rect().width * 0.5f), -(textureImage->rect().y + textureImage->rect().height * 0.5f), 0.0f);
-      //}
+      if (0 <= location)
+      {
+        Matrix4f matrix = Matrix4f::IDENTITY;
 
-      //glTranslatef(textureImage->rect().x, textureImage->rect().y, 0.0f);
-      //glScalef(textureImage->rect().width, textureImage->rect().height, 1.0f);
+        // check if any rotation
+        if (0.0f != textureImage->rotationAngle().degrees())
+        {
+          matrix.setTranslation(0.5f, 0.5f, 0);
+          Math::Convert(matrix, Math::CreateQuaternion(Vector3f(0, 0, 1), textureImage->rotationAngle()));
+          matrix *= Matrix4f(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -0.5f, -0.5f, 0, 1);
+        }
+
+        // apply texture position and scaling
+        matrix *= Matrix4f(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, textureImage->rect().x, textureImage->rect().y, 0, 1);
+        matrix *= Matrix4f(textureImage->rect().width, 0, 0, 0, 0, textureImage->rect().height, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+
+        // supply to shader
+        glUniformMatrix4fv(location, 1, GL_FALSE, matrix.data);
+        OGL_CHECK();
+
+        // TAGE - TESTING
+        //glMatrixMode(GL_TEXTURE);
+        //glLoadIdentity();
+
+        //float32 degrees = textureImage->rotationAngle().degrees();
+
+        //if (0.0f != degrees)
+        //{
+        //  glTranslatef(textureImage->rect().x + textureImage->rect().width * 0.5f, textureImage->rect().y + textureImage->rect().height * 0.5f, 0.0f);
+        //  glRotatef(degrees, 0.0f, 0.0f, 1.0f);
+        //  glTranslatef(-(textureImage->rect().x + textureImage->rect().width * 0.5f), -(textureImage->rect().y + textureImage->rect().height * 0.5f), 0.0f);
+        //}
+
+        //float32 mat[16];
+        //glGetFloatv(GL_TEXTURE_MATRIX, mat);
+
+        //int a = 1;
+      }
     }
 
     // check if points are be rendered
@@ -403,20 +376,6 @@ void RenderSystemPrivate::activateTextureUnit(u32 unit)
         m_activeTextureUnit = unit;
       }
     }
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::activateClientTextureUnit(u32 unit)
-{
-  if (unit != m_activeClientTextureUnit)
-  {
-    if (glClientActiveTexture)
-    {
-      glClientActiveTexture(GL_TEXTURE0 + unit);
-      OGL_CHECK();
-    }
-    
-    m_activeClientTextureUnit = unit;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -685,6 +644,13 @@ PTexture2D RenderSystemPrivate::createEmptyTexture(const String& name)
   bindTexture(GL_TEXTURE_2D, texture->p_func()->id());
 
   // set texture parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, MapTextureFilter(d_func()->m_textureMinFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, MapTextureFilter(d_func()->m_textureMagFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, MapTextureAddressingMode(d_func()->m_textureAddressingModeS));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, MapTextureAddressingMode(d_func()->m_textureAddressingModeT));
+
+  // store parameters
+  // NOTE: mostly for debugging purposes
   texture->m_minFilter        = d_func()->m_textureMinFilter;
   texture->m_magFilter        = d_func()->m_textureMagFilter;
   texture->m_addressingModeS  = d_func()->m_textureAddressingModeS;
@@ -793,8 +759,8 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
   {
     const PRenderPass renderPass = material->pass(pass);
 
-    ProgramOGL* programOGL = ege_cast<ProgramOGL*>(renderPass->program());
-    EGE_ASSERT(NULL != programOGL);
+    ProgramOGL* program = ege_cast<ProgramOGL*>(renderPass->program());
+    EGE_ASSERT(NULL != program);
 
     // get first vao from the list and shrink the list
     PVertexArrayObject vao = vaos.first(NULL);
@@ -803,26 +769,22 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
       vaos.pop_front();
     }
 
+    // bind
+    program->bind();
+
+    // set model-view matrix
+    glUniformMatrix4fv(program->uniformLocation(KUniformModelViewPerspectiveName), 1, GL_FALSE, 
+                        d_func()->m_viewMatrix.multiply(modelMatrix).multiply(m_projectionMatrix).data);
+    OGL_CHECK();
+
     // apply pass related params
     applyPassParams(component, material, *renderPass);
-
-    // setup program if any
-    if (NULL != programOGL)
-    {
-      // bind
-      programOGL->bind();
-
-      // set model-view matrix
-      glUniformMatrix4fv(programOGL->uniformLocation(KUniformModelViewPerspectiveName), 1, GL_FALSE, 
-                         d_func()->m_viewMatrix.multiply(modelMatrix).multiply(m_projectionMatrix).data);
-      OGL_CHECK();
-    }
 
     // apply vertex arrays
     List<u32> appliedVertexIndices;
     if (NULL == vao)
     {
-      appliedVertexIndices = applyVertexArrays(programOGL, vertexBuffer->vertexDeclaration(), vertexBuffer->offset());
+      appliedVertexIndices = applyVertexArrays(program, vertexBuffer->vertexDeclaration(), vertexBuffer->offset());
     }
     else
     {
@@ -869,34 +831,16 @@ void RenderSystemPrivate::renderComponent(const PRenderComponent& component, con
     }
 
     // unbind program
-    if (NULL != renderPass->program())
-    {
-      renderPass->program()->unbind();
-    }
+    program->unbind();
 
     // clean up
-    //for (s32 i = static_cast<s32>(m_textureUnitStates.size()) - 1; i >= 0; --i)
-    //{
-    //  // disable texturing on server side
-    //  activateTextureUnit(i);
-    //  glDisable(GL_TEXTURE_2D);
-    //  OGL_CHECK();
-
-    //  // disable texturing data on client side
-    //  activateClientTextureUnit(i);
-    //  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    //  OGL_CHECK();
-
-    //  // disable point sprites
-    //  if (EGEGraphics::RPT_POINTS == component->primitiveType())
-    //  {
-    //    if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
-    //    {
-    //      glDisable(GL_POINT_SPRITE);
-    //      OGL_CHECK();
-    //    }
-    //  }
-    //}
+    for (s32 i = m_activeTextureUnitsCount - 1; 0 <= i; --i)
+    {
+      // disable texturing on server side
+      activateTextureUnit(i);
+      glDisable(GL_TEXTURE_2D);
+      OGL_CHECK();
+    }
   }
 
   if (vaos.empty())
@@ -939,24 +883,6 @@ void RenderSystemPrivate::setScissorTestEnabled(bool set)
     
     m_scissorTestEnabled = set;
   }  
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemPrivate::setClientStateEnabled(u32 state, bool set)
-{
-  bool isSet = m_activeClientStates.contains(state);
-
-  if (set && ! isSet)
-  {
-    glEnableClientState(static_cast<GLenum>(state));
-    OGL_CHECK();
-    m_activeClientStates.push_back(state);
-  }
-  else if ( ! set && isSet)
-  {
-    glDisableClientState(static_cast<GLenum>(state));
-    OGL_CHECK();
-    m_activeClientStates.remove(state);
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 List<u32> RenderSystemPrivate::applyVertexArrays(const ProgramOGL* program, const VertexDeclaration& vertexDeclaration, void* vertexData)
@@ -1040,17 +966,6 @@ List<u32> RenderSystemPrivate::applyVertexArrays(const ProgramOGL* program, cons
         OGL_CHECK();
 
         enabledIndices << location;
-
-        // set texture sampler
-        location = program->uniformLocation(KUniformTexture2DXName.arg(textureCoordIndex));
-        EGE_ASSERT(0 <= location);
-
-        glUniform1i(location, textureCoordIndex);
-        OGL_CHECK();
-
-        // set new texture coord index
-        // TAGE - this is not always true, investigate and fix
-        ++textureCoordIndex;
         break;
 
       default:

@@ -120,6 +120,8 @@ bool ProgramOGL::buildUniformsList()
   glGetProgramiv(m_id, GL_ACTIVE_UNIFORMS, &total); 
   OGL_CHECK();
 
+  egeDebug(KOpenGLDebugName) << "[" << name() << "] - Number of uniforms:" << total;
+
   for (GLint i = 0; i < total; ++i)  
   {
     GLsizei nameLength = -1;
@@ -139,6 +141,8 @@ bool ProgramOGL::buildUniformsList()
     OGL_CHECK();
     EGE_ASSERT_X(-1 != location, "Failed to retrieve uniform");
 
+    egeDebug(KOpenGLDebugName) << "[" << this->name() << "] - Uniform:" << name << "@" << location;
+
     // add to pool
     m_uniforms.insert(name, location);
   }
@@ -152,6 +156,8 @@ bool ProgramOGL::buildAttributesList()
   GLint total = 0;
   glGetProgramiv(m_id, GL_ACTIVE_ATTRIBUTES, &total); 
   OGL_CHECK();
+
+  egeDebug(KOpenGLDebugName) << "[" << name() << "] - Number of attributes:" << total;
 
   for (GLint i = 0; i < total; ++i)  
   {
@@ -171,6 +177,8 @@ bool ProgramOGL::buildAttributesList()
     location = glGetAttribLocation(m_id, name);
     OGL_CHECK();
     EGE_ASSERT_X(-1 != location, "Failed to retrieve attribute");
+
+    egeDebug(KOpenGLDebugName) << "[" << this->name() << "] - Attribute:" << name << "@" << location;
 
     // add to pool
     m_attributes.insert(name, location);

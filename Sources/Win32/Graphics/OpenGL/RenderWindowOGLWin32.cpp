@@ -683,12 +683,14 @@ void RenderWindowOGLWin32::detectCapabilities()
     glShaderSource         = reinterpret_cast<PFNGLGETSHADERSOURCEPROC>(wglGetProcAddress("glShaderSource"));
     glCompileShader        = reinterpret_cast<PFNGLCOMPILESHADERPROC>(wglGetProcAddress("glCompileShader"));
     glGetShaderiv          = reinterpret_cast<PFNGLGETSHADERIVPROC>(wglGetProcAddress("glGetShaderiv"));
+    glGetShaderInfoLog     = reinterpret_cast<PFNGLGETSHADERINFOLOGPROC>(wglGetProcAddress("glGetShaderInfoLog"));
     glCreateProgram        = reinterpret_cast<PFNGLCREATEPROGRAMPROC>(wglGetProcAddress("glCreateProgram"));
     glDeleteProgram        = reinterpret_cast<PFNGLDELETEPROGRAMPROC>(wglGetProcAddress("glDeleteProgram"));
     glLinkProgram          = reinterpret_cast<PFNGLLINKPROGRAMARBPROC>(wglGetProcAddress("glLinkProgram"));
     glValidateProgram      = reinterpret_cast<PFNGLVALIDATEPROGRAMARBPROC>(wglGetProcAddress("glValidateProgram"));
     glUseProgram           = reinterpret_cast<PFNGLUSEPROGRAMPROC>(wglGetProcAddress("glUseProgram"));
     glGetProgramiv         = reinterpret_cast<PFNGLGETPROGRAMIVPROC>(wglGetProcAddress("glGetProgramiv"));
+    glGetProgramInfoLog    = reinterpret_cast<PFNGLGETPROGRAMINFOLOGPROC>(wglGetProcAddress("glGetProgramInfoLog"));
     glGetUniformLocation   = reinterpret_cast<PFNGLGETUNIFORMLOCATIONPROC>(wglGetProcAddress("glGetUniformLocation"));
     glGetActiveUniform     = reinterpret_cast<PFNGLGETACTIVEUNIFORMPROC>(wglGetProcAddress("glGetActiveUniform"));
     glUniform1f            = reinterpret_cast<PFNGLUNIFORM1FARBPROC>(wglGetProcAddress("glUniform1f"));
