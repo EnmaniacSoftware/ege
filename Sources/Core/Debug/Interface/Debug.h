@@ -96,18 +96,18 @@ class NoDebug
 {
   public:
 
-    inline NoDebug() {}
-    inline NoDebug(const Debug&) {}
-    inline ~NoDebug() {}
+    NoDebug() {}
+    NoDebug(const Debug&) {}
+   ~NoDebug() {}
 
-    inline NoDebug& space() { return *this; }
-    inline NoDebug& nospace() { return *this; }
+    NoDebug& space() { return *this; }
+    NoDebug& nospace() { return *this; }
 
     template<typename T>
-    inline NoDebug& operator << (const T&) { return *this; }
+    NoDebug& operator << (const T&) { return *this; }
 }; 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#ifdef EGE_FEATURE_DEBUG
+#if EGE_FEATURE_DEBUG
 
   inline Debug egeDebug(const String& name) { return Debug(ENormal, name); }
   inline Debug egeWarning(const String& name) { return Debug(EWarning, name); }
@@ -115,14 +115,13 @@ class NoDebug
 
 #else
 
-  #define EGE_NO_DEBUG_MACRO while (false) egeDebug
-  #undef egeDebug
+  #define EGE_NO_DEBUG_MACRO while (false) egeNoDebug
 
-  NoDebug egeDebug(const String& name) { return NoDebug(); }
-  NoDebug egeWarning(const String& name) { return NoDebug(); }
-  NoDebug egeCritical(const String& name) { return NoDebug(); }
+  inline NoDebug egeNoDebug(const String& name) { return NoDebug(); }
 
   #define egeDebug EGE_NO_DEBUG_MACRO
+  #define egeWarning EGE_NO_DEBUG_MACRO
+  #define egeCritical EGE_NO_DEBUG_MACRO
 
 #endif // EGE_FEATURE_DEBUG
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
