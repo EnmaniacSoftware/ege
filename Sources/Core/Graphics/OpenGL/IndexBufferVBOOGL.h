@@ -50,6 +50,9 @@ class IndexBufferVBO : public IndexBuffer
     /*! @see IndexBuffer::offset. */
     void* offset() const override;
 
+    /*! Returns OpenGL identifier. */
+    GLuint id() const;
+
   private:
 
     /*! Reallocates internal buffer to accomodate given number of vertices. */

@@ -19,8 +19,10 @@ class IHardwareResourceProvider;
 class Texture2D : public Object
 {
   /* For accessing private data. */
-  friend class RenderSystemPrivate;
-  
+  friend class RenderSystemOGL;
+  friend class RenderSystemFixedOGL;
+  friend class RenderSystemProgrammableOGL;
+
   public:
 
     virtual ~Texture2D();
@@ -47,7 +49,9 @@ class Texture2D : public Object
      */
     EGEResult create(const PImage& image);
     /*! Returns render target. */
-    PRenderTarget renderTarget() const { return m_target; }
+    PRenderTarget renderTarget() const;
+    /*! Sets render target. */
+    void setRenderTarget(PRenderTarget& target);
     /*! Returns width. */
     s32 width() const { return m_width; }
     /*! Returns height. */

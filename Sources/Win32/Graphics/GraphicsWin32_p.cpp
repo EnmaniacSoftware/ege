@@ -1,12 +1,11 @@
 #include "Core/Graphics/Graphics.h"
+#include "Core/Graphics/OpenGL/Implementation/Fixed/RenderSystemFixedOGL.h"
+#include "Core/Graphics/OpenGL/Implementation/Programmable/RenderSystemProgrammableOGL.h"
 #include "Win32/Graphics/GraphicsWin32_p.h"
+#include "Win32/Graphics/OpenGL/RenderWindowOGLWin32.h"
 #include "EGEDevice.h"
 
-#if EGE_RENDERING_OPENGL_FIXED || EGE_RENDERING_OPENGL_3
-#include "Win32/Graphics/OpenGL/RenderWindowOGLWin32.h"
-#endif // EGE_RENDERING_OPENGL_FIXED || EGE_RENDERING_OPENGL_3
-
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(GraphicsPrivate)
@@ -38,11 +37,27 @@ EGEResult GraphicsPrivate::construct()
     return result;
   }
 
+  // create render system
+#if EGE_RENDERING_OPENGL_FIXED 
+  d_func()->m_renderSystem = ege_new RenderSystemFixedOGL(d_func()->app());
+#else
+  d_func()->m_renderSystem = ege_new RenderSystemProgrammableOGL(d_func()->app());
+#endif // EGE_RENDERING_OPENGL_FIXED
+  if (NULL == d_func()->m_renderSystem)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+
+  if (EGE_SUCCESS != (result = d_func()->m_renderSystem->construct()))
+  {
+    // error!
+    return result;
+  }
+
   // add to render targets pool
   d_func()->registerRenderTarget(renderWindow);
 
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END

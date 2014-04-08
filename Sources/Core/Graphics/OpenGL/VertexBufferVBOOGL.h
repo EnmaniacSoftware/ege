@@ -16,8 +16,6 @@ EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class VertexBufferVBO : public VertexBuffer
 {
-  friend class RenderSystemPrivate;
-
   public:
 
     VertexBufferVBO(Application* app, const String& name, const VertexDeclaration& vertexDeclaration, NVertexBuffer::UsageType usage);
@@ -49,6 +47,9 @@ class VertexBufferVBO : public VertexBuffer
 
     /*! @see VertexBuffer::offset. */
     void* offset() const override;
+
+    /*! Returns OpenGL identifier. */
+    GLuint id() const;
 
   private:
 

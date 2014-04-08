@@ -11,7 +11,7 @@ EGE_NAMESPACE_BEGIN
 class Texture2DPrivate
 {
   /* For accessing private data. */
-  friend class RenderSystemPrivate;
+  friend class RenderSystemOGL;
 
   public:
 

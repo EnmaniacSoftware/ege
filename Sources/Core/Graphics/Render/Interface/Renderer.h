@@ -20,12 +20,25 @@ class IRenderer
     IRenderer() {}
     virtual ~IRenderer() {}
 
-    /*! Adds given data for rendering. */
+    /*! Adds given data for rendering. 
+     *  @param  component   Render component which is to be added for rendering.
+     *  @param  worldMatrix Model view to world transformation matrix.
+     */
     virtual bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY) = 0;
-    /*! Adds given render queue for rendering. */
+    /*! Adds given render queue for rendering. 
+     *  @param  queue Render queue which is to be added for rendering.
+     */
     virtual bool addForRendering(const PRenderQueue& queue) = 0;
+    /*! Sets view matrix. 
+     *  @param  matrix  View matrix.
+     */
+    virtual void setViewMatrix(const Matrix4f& matrix) = 0;
     /*! Returns view matrix. */
     virtual const Matrix4f& viewMatrix() const = 0;
+    /*! Sets projection matrix. 
+     *  @param  matrix  Project matrix.
+     */
+    virtual void setProjectionMatrix(const Matrix4f& matrix) = 0;
     /*! Returns number of batches rendered last frame. */
     virtual u32 batchCount() const = 0;
     /*! Returns number of vertices rendered last frame. */

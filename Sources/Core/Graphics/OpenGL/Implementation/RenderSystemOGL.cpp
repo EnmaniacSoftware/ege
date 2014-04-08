@@ -1,0 +1,613 @@
+#include "Core/Graphics/OpenGL/Implementation/RenderSystemOGL.h"
+#include "Core/Graphics/OpenGL/Implementation/VertexArrayObject.h"
+#include "Core/Graphics/OpenGL/ShaderOGL.h"
+#include "Core/Graphics/OpenGL/ProgramOGL.h"
+#include "Core/Graphics/OpenGL/IndexBufferVAOGL.h"
+#include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
+#include "Core/Graphics/OpenGL/VertexBufferVAOGL.h"
+#include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
+#include "Core/Graphics/OpenGL/RenderTextureCopyOGL.h"
+#include "Core/Graphics/OpenGL/RenderTextureFBOOGL.h"
+#include "Core/Graphics/OpenGL/Texture2DOGL.h"
+#include "EGEApplication.h"
+#include "EGEGraphics.h"
+#include "EGETimer.h"
+#include "EGERenderQueues.h"
+#include "EGEDevice.h"
+#include "EGEDebug.h"
+
+EGE_NAMESPACE
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+RenderSystemOGL::RenderSystemOGL(Application* app) : RenderSystem(app)
+                                                   , m_activeTextureUnit(0)
+                                                   , m_activeTextureUnitsCount(0)
+{
+  m_blendEnabled = (GL_TRUE == glIsEnabled(GL_BLEND));
+  OGL_CHECK()
+  
+  m_scissorTestEnabled = (GL_TRUE == glIsEnabled(GL_SCISSOR_TEST));
+  OGL_CHECK()
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+RenderSystemOGL::~RenderSystemOGL()
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemOGL::clearViewport(const PViewport& viewport)
+{
+  // determine which buffers to clear
+  GLbitfield bits = 0;
+
+  if (viewport->clearBufferTypes() & Viewport::BUFFER_TYPE_COLOR)
+  {
+    const Color& clearColor = viewport->clearColor();
+    glClearColor(clearColor.red, clearColor.green, clearColor.blue, clearColor.alpha);
+
+    bits |= GL_COLOR_BUFFER_BIT;
+  }
+
+  if (viewport->clearBufferTypes() & Viewport::BUFFER_TYPE_DEPTH)
+  {
+    bits |= GL_DEPTH_BUFFER_BIT;
+  }
+
+  // check if anything to clear
+  if (0 != bits)
+  {
+    // do clear
+    glClear(bits);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemOGL::setViewport(const PViewport& viewport)
+{
+  // call base class
+  RenderSystem::setViewport(viewport);
+
+  // NOTE: auto-rotation does not affect viewports. They always works in portrait mode.
+
+  Rectf actualRect = viewport->physicalRect();
+
+  // NOTE: arguments of viewport should be in physical window-coordinate space ie not affected by zoom
+  glViewport(static_cast<GLint>(actualRect.x), static_cast<GLint>(actualRect.y),
+             static_cast<GLsizei>(actualRect.width), static_cast<GLsizei>(actualRect.height));
+  OGL_CHECK()
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemOGL::flush()
+{
+  // go thru all render queues
+  for (Map<s32, List<PRenderQueue> >::const_iterator itQueue = m_renderQueues.begin(); itQueue != m_renderQueues.end(); ++itQueue)
+  {
+    const List<PRenderQueue>& queueList = itQueue->second;
+
+    if (5 < queueList.size())
+    {
+      egeWarning(KOpenGLDebugName) << "Possible batch optimization. Hash:" << itQueue->first;
+    }
+
+    // render queue list
+    for (List<PRenderQueue>::const_iterator it = queueList.begin(); it != queueList.end(); ++it)
+    {
+      PRenderQueue queue = *it;
+
+      // render queue
+      queue->render(*this);
+
+      // clear queue
+      queue->clear();
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemOGL::activateTextureUnit(u32 unit)
+{
+  if (unit != m_activeTextureUnit)
+  {
+    EGE_ASSERT_X(Device::TextureUnitsCount() > unit, "Activating texture unit outside of available range!");
+
+    // check if unit available
+    if (unit < Device::TextureUnitsCount())
+    {
+      // check if multitexture available
+      if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
+      {
+        glActiveTexture(GL_TEXTURE0 + unit);
+        OGL_CHECK();
+
+        m_activeTextureUnit = unit;
+      }
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemOGL::bindTexture(GLenum target, GLuint textureId)
+{
+  // enable target first
+  glEnable(target);
+  OGL_CHECK()
+
+  // map texture target into texture binding query value
+  GLenum textureBinding;
+  switch (target)
+  {
+    case GL_TEXTURE_1D: textureBinding = GL_TEXTURE_BINDING_1D; break;
+    case GL_TEXTURE_2D: textureBinding = GL_TEXTURE_BINDING_2D; break;
+
+    default:
+
+      EGE_ASSERT_X(false, "Incorrect texture binding!");
+      return;
+  }
+
+  // query texture Id bound to given target
+  GLint boundTextureId;
+	glGetIntegerv(textureBinding, &boundTextureId);
+  OGL_CHECK()
+
+  // check if different texture bound currently
+  if (static_cast<GLuint>(boundTextureId) != textureId)
+  {
+    // bind new texture to target
+    glBindTexture(target, textureId);
+    OGL_CHECK()
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PVertexBuffer RenderSystemOGL::createVertexBuffer(const String& name, const VertexDeclaration& vertexDeclaration, NVertexBuffer::UsageType usage) const
+{
+  PVertexBuffer buffer;
+
+  // check if VBO is available
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
+  {
+    VertexBufferVBO* vertexBuffer = ege_new VertexBufferVBO(app(), name, vertexDeclaration, usage);
+    if ((NULL == vertexBuffer) || (0 == vertexBuffer->id()))
+    {
+      // error!
+      EGE_DELETE(vertexBuffer);
+    }
+
+    buffer = vertexBuffer;
+  }
+  else
+  {
+    buffer = ege_new VertexBufferVA(app(), name, vertexDeclaration);
+  }
+
+  return buffer;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PIndexBuffer RenderSystemOGL::createIndexBuffer(const String& name, EGEIndexBuffer::UsageType usage) const
+{
+  PIndexBuffer buffer;
+
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
+  {
+    IndexBufferVBO* indexBuffer = ege_new IndexBufferVBO(app(), name, usage);
+    if ((NULL == indexBuffer) || (0 == indexBuffer->id()))
+    {
+      // error!
+      EGE_DELETE(indexBuffer);
+    }
+
+    buffer = indexBuffer;
+  }
+  else
+  {
+    buffer = ege_new IndexBufferVA(app(), name);
+  }
+
+  return buffer;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PTexture2D RenderSystemOGL::createTexture2D(const String& name, const PImage& image)
+{
+  s64 startTime = Timer::GetMicroseconds();
+
+  // create empty texture
+  PTexture2D texture = createEmptyTexture(name);
+  if ((NULL == texture) || ! texture->isValid())
+  {
+    // error!
+    return NULL;
+  }
+
+  // create it
+  if (EGE_SUCCESS != texture->create(image))
+  {
+    // error!
+    return NULL;
+  }
+
+  bindTexture(GL_TEXTURE_2D, 0);
+
+  s64 endTime = Timer::GetMicroseconds();
+  egeDebug(KOpenGLDebugName) << "Texture" << name << "uploaded:" << endTime - startTime << "microseconds";
+
+  return texture;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PTexture2D RenderSystemOGL::createTexture2D(const String& name, const PDataBuffer& data)
+{
+  // create empty texture
+  PTexture2D texture = createEmptyTexture(name);
+  if ((NULL == texture) || ! texture->isValid())
+  {
+    // error!
+    return NULL;
+  }
+
+  // upload data
+  if (EGE_SUCCESS != texture->create(data))
+  {
+    // error!
+    return NULL;
+  }
+
+  bindTexture(GL_TEXTURE_2D, 0);
+
+  return texture;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PTexture2D RenderSystemOGL::createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format)
+{
+  // create empty image from which empty texture is to be created
+  PImage image = ImageUtils::CreateImage(width, height, format, false, 0, NULL);
+  if (NULL == image)
+  {
+    // error!
+    return NULL;
+  }
+
+  // create empty texture
+  PTexture2D texture = createEmptyTexture(name);
+  if ((NULL == texture) || ! texture->isValid())
+  {
+    // error!
+    return NULL;
+  }
+
+  // create texture from image
+  if (EGE_SUCCESS != texture->create(image))
+  {
+    // error!
+    return NULL;
+  }
+
+  bindTexture(GL_TEXTURE_2D, 0);
+
+  Dictionary params;
+  params[EGE_RENDER_TARGET_PARAM_NAME]    = name;
+  params[EGE_RENDER_TARGET_PARAM_WIDTH]   = String::FromNumber(width);
+  params[EGE_RENDER_TARGET_PARAM_HEIGHT]  = String::FromNumber(height);
+
+  // check if FBO is supported
+  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_FBO))
+  {
+    texture->m_target = ege_new RenderTextureFBOOGL(app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, texture->p_func()->id());
+  }
+  else
+  {
+    texture->m_target = ege_new RenderTextureCopyOGL(app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, texture->p_func()->id());
+  }
+
+  // check if could not be allocated
+  if (NULL == texture->renderTarget())
+  {
+    // error!
+    return NULL;
+  }
+
+  egeWarning(KOpenGLDebugName) << "Creating render target done" << texture->renderTarget();
+
+  // add into render targets
+  app()->graphics()->registerRenderTarget(texture->renderTarget());
+
+  return texture;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemOGL::destroyTexture2D(PTexture2D texture)
+{
+  if (0 != texture->p_func()->id())
+  {
+    egeDebug(KOpenGLDebugName) << "Destroying texture" << texture->p_func()->id() << texture->name();
+  
+    glDeleteTextures(1, &texture->p_func()->m_id);
+    OGL_CHECK();
+    texture->p_func()->m_id = 0;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PTexture2D RenderSystemOGL::createEmptyTexture(const String& name)
+{
+  PTexture2D texture = ege_new Texture2D(app(), name, this);
+  if ((NULL == texture) || (NULL == texture->p_func()))
+  {
+    // error!
+    return NULL;
+  }
+
+  // generate OGL texture
+  glGenTextures(1, &texture->p_func()->m_id);
+  OGL_CHECK();
+
+  // setup 1 byte alignment
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+  // bind it
+  activateTextureUnit(0);
+  bindTexture(GL_TEXTURE_2D, texture->p_func()->id());
+
+  // set texture parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapTextureFilter(m_textureMinFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapTextureFilter(m_textureMagFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mapTextureAddressingMode(m_textureAddressingModeS));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mapTextureAddressingMode(m_textureAddressingModeT));
+
+  // set texture parameters
+  // NOTE: mostly for debugging purposes
+  texture->m_minFilter        = m_textureMinFilter;
+  texture->m_magFilter        = m_textureMagFilter;
+  texture->m_addressingModeS  = m_textureAddressingModeS;
+  texture->m_addressingModeT  = m_textureAddressingModeT;
+
+  return texture;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemOGL::setBlendEnabled(bool set)
+{
+  if (set != m_blendEnabled)
+  {
+    if (set)
+    {
+      glEnable(GL_BLEND);
+    }
+    else
+    {
+      glDisable(GL_BLEND);
+    }
+
+    m_blendEnabled = set;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemOGL::setScissorTestEnabled(bool set)
+{
+  if (set != m_scissorTestEnabled)
+  {
+    if (set)
+    {
+      glEnable(GL_SCISSOR_TEST);
+    }
+    else
+    {
+      glDisable(GL_SCISSOR_TEST);
+    }
+    
+    m_scissorTestEnabled = set;
+  }  
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool RenderSystemOGL::registerComponent(PRenderComponent& component, NVertexBuffer::UsageType vertexUsage, const VertexDeclaration& vertexDeclaration, 
+                                        EGEIndexBuffer::UsageType indexUsage)
+{
+  bool result = false;
+
+  // add index buffer component
+  if (EGE_SUCCESS == component->addComponent(createIndexBuffer(component->name() + "-ib", indexUsage)))
+  {
+    // add vertex buffer component
+    if (EGE_SUCCESS == component->addComponent(createVertexBuffer(component->name() + "-vb", vertexDeclaration, vertexUsage)))
+    {
+      // done
+      result = true;
+    }
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+GLint RenderSystemOGL::mapTextureFilter(EGETexture::Filter filter) const
+{
+  GLint result = GL_NEAREST;
+
+  switch (filter)
+  {
+    case EGETexture::BILINEAR:          result = GL_NEAREST; break;
+    case EGETexture::TRILINEAR:         result = GL_LINEAR; break;
+    case EGETexture::MIPMAP_BILINEAR:   result = GL_LINEAR_MIPMAP_NEAREST; break;
+    case EGETexture::MIPMAP_TRILINEAR:  result = GL_LINEAR_MIPMAP_LINEAR; break;
+
+    default:
+      break;
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+GLint RenderSystemOGL::mapTextureAddressingMode(EGETexture::AddressingMode mode) const
+{
+  GLint result = GL_REPEAT;
+
+  switch (mode)
+  {
+    case EGETexture::AM_CLAMP:  result = GL_CLAMP_TO_EDGE; break;
+    case EGETexture::AM_REPEAT: result = GL_REPEAT; break;
+
+    default:
+      break;
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+GLenum RenderSystemOGL::mapBlendFactor(EGEGraphics::BlendFactor factor) const
+{
+  GLenum result = GL_ONE;
+
+  switch (factor)
+  {
+    case EGEGraphics::BF_ZERO:                result = GL_ZERO; break;
+    case EGEGraphics::BF_ONE:                 result = GL_ONE; break;
+    case EGEGraphics::BF_SRC_COLOR:           result = GL_SRC_COLOR; break;
+    case EGEGraphics::BF_DST_COLOR:           result = GL_DST_COLOR; break;
+    case EGEGraphics::BF_ONE_MINUS_SRC_COLOR: result = GL_ONE_MINUS_SRC_COLOR; break;
+    case EGEGraphics::BF_ONE_MINUS_DST_COLOR: result = GL_ONE_MINUS_DST_COLOR; break;
+    case EGEGraphics::BF_SRC_ALPHA:           result = GL_SRC_ALPHA; break;
+    case EGEGraphics::BF_DST_ALPHA:           result = GL_DST_ALPHA; break;
+    case EGEGraphics::BF_ONE_MINUS_SRC_ALPHA: result = GL_ONE_MINUS_SRC_ALPHA; break;
+    case EGEGraphics::BF_ONE_MINUS_DST_ALPHA: result = GL_ONE_MINUS_DST_ALPHA; break;
+
+    default:
+      break;
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+GLenum RenderSystemOGL::mapPrimitiveType(EGEGraphics::RenderPrimitiveType type) const
+{
+  GLenum result = GL_TRIANGLES;
+
+  switch (type)
+  {
+    case EGEGraphics::RPT_TRIANGLES:        result = GL_TRIANGLES; break;
+    case EGEGraphics::RPT_TRIANGLE_STRIPS:  result = GL_TRIANGLE_STRIP; break;
+    case EGEGraphics::RPT_TRIANGLE_FAN:     result = GL_TRIANGLE_FAN; break;
+    case EGEGraphics::RPT_LINES:            result = GL_LINES; break;
+    case EGEGraphics::RPT_LINE_LOOP:        result = GL_LINE_LOOP; break;
+    case EGEGraphics::RPT_POINTS:           result = GL_POINTS; break;
+
+    default:
+      break;
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+GLenum RenderSystemOGL::mapIndexSize(EGEIndexBuffer::IndexSize size) const
+{
+  GLenum result = GL_UNSIGNED_INT;
+
+  switch (size)
+  {
+    case EGEIndexBuffer::IS_8BIT:   result = GL_UNSIGNED_BYTE; break;
+    case EGEIndexBuffer::IS_16BIT:  result = GL_UNSIGNED_SHORT; break;
+    case EGEIndexBuffer::IS_32BIT:  
+      
+      EGE_ASSERT(Device::HasRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT));
+
+      result = GL_UNSIGNED_INT; 
+      break;
+
+    default:
+      break;
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemOGL::applyGeneralParams()
+{
+  const PRenderComponent& component = activeRenderComponent();
+  
+  PRenderTarget renderTarget = currentRenderTarget();
+  EGE_ASSERT(NULL != renderTarget);
+
+  // apply scissor test
+  if (component->clipRect().isNull())
+  {
+    setScissorTestEnabled(false);
+  }
+  else
+  {
+    setScissorTestEnabled(true);
+
+    Rectf clipRect = component->clipRect();
+    
+    // check if conversion from "upper-left" corner to "lower-left" for current orientation is necessary
+    if ( ! renderTarget->requiresTextureFlipping())
+    {
+      // convert "upper-left" corner to "lower-left"
+      clipRect.y = renderTarget->height() - clipRect.height - clipRect.y;
+    }
+
+    // check if not auto-rotated
+    if ( ! renderTarget->isAutoRotated())
+    {
+      // apply opposite rotation to rectangle to convert it into native (non-transformed) coordinate
+      clipRect = applyRotation(clipRect, renderTarget->orientationRotation());
+    }
+
+    // apply zoom
+    // NOTE: this is necessary as logical content may be ie bigger than physical window and because glScissor works in physical window-coordinate space
+    float32 zoom = renderTarget->zoom();
+
+    clipRect.x      *= zoom;
+    clipRect.y      *= zoom;
+    clipRect.width  *= zoom;
+    clipRect.height *= zoom;
+
+    glScissor(static_cast<GLint>(clipRect.x), static_cast<GLint>(clipRect.y), static_cast<GLsizei>(clipRect.width), static_cast<GLsizei>(clipRect.height));
+  }
+
+  // check if points are to be rendered
+  if (EGEGraphics::RPT_POINTS == component->primitiveType())
+  {
+    // set point size
+    glPointSize(component->pointSize());
+  }
+  // check if lines are to be rendered
+  else if ((EGEGraphics::RPT_LINES == component->primitiveType()) || (EGEGraphics::RPT_LINES == component->primitiveType()))
+  {
+    glLineWidth(component->lineWidth());
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemOGL::createAndSetupVAOs()
+{
+  const PRenderComponent& component = activeRenderComponent();
+
+  bool result = true;
+
+  PMaterial material    = component->material();
+  List<PComponent> vaos = component->components(EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT);
+
+  // check if VAO is supported and can be used (ie VBO is supported)
+  if (vaos.empty() && 
+      Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECT) && 
+      Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
+  {
+    for (u32 pass = 0; (pass < material->passCount()) && result; ++pass)
+    {
+      // create vao
+      PVertexArrayObject vao = new VertexArrayObject(app(), component->name() + String::Format("-vao-%1", pass));
+      if ((NULL == vao) || (EGE_SUCCESS != component->addComponent(vao)))
+      {
+        // error!
+        result = false;
+      }
+      else
+      {
+        // add to local pool
+        vaos.push_back(vao);
+
+        // set it up
+        setupVAO(vao, component->vertexBuffer(), component->indexBuffer(), material->pass(pass));
+      }
+    }
+  }
+
+  // check if failed
+  if ( ! result)
+  {
+    // remove all VAOs
+    for (List<PComponent> ::const_iterator it = vaos.begin(); it != vaos.end(); ++it)
+    {
+      component->removeComponent(*it);
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

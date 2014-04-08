@@ -16,13 +16,7 @@
 #include "EGEOpenGL.h"
 #include "EGEDevice.h"
 
-#if EGE_RENDERING_OPENGL_FIXED
-  #include "Core/Graphics/OpenGL/Fixed/RenderSystemFixedOGL_p.h"
-#else
-  #include "Core/Graphics/OpenGL/GL 3.x/RenderSystemOGL3_p.h"
-#endif // EGE_RENDERING_OPENGL_FIXED
-
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KRenderSystemDebugName = "EGERenderSystem";
@@ -42,36 +36,23 @@ u32 CalculateRenderQueueHash(u32 priority, EGEGraphics::RenderPrimitiveType prim
 EGE_DEFINE_NEW_OPERATORS(RenderSystem)
 EGE_DEFINE_DELETE_OPERATORS(RenderSystem)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderSystem::RenderSystem(Application* app) : Object(app),
-                                               IRenderer(),
-                                               IHardwareResourceProvider(),
-                                               m_p(NULL),
-                                               m_state(STATE_NONE),
-                                               m_textureMinFilter(EGETexture::BILINEAR),
-                                               m_textureMagFilter(EGETexture::BILINEAR),
-                                               m_textureAddressingModeS(EGETexture::AM_CLAMP),
-                                               m_textureAddressingModeT(EGETexture::AM_CLAMP),
-                                               m_nextRequestID(1)
+RenderSystem::RenderSystem(Application* app) : Object(app)
+                                             , m_state(STATE_NONE)
+                                             , m_textureMinFilter(EGETexture::BILINEAR)
+                                             , m_textureMagFilter(EGETexture::BILINEAR)
+                                             , m_textureAddressingModeS(EGETexture::AM_CLAMP)
+                                             , m_textureAddressingModeT(EGETexture::AM_CLAMP)
+                                             , m_nextRequestID(1)
 {
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderSystem::~RenderSystem()
 {
-  EGE_DELETE(m_p);
-
   app()->eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult RenderSystem::construct()
 {
-  // create private implementation
-  m_p = ege_new RenderSystemPrivate(this);
-  if (NULL == m_p)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
   // create access mutex
   m_requestsMutex = ege_new Mutex(app());
   if (NULL == m_requestsMutex)
@@ -190,22 +171,8 @@ void RenderSystem::update()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystem::flush()
-{
-  EGE_ASSERT(NULL != m_p);
-  p_func()->flush();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystem::clearViewport(const PViewport& viewport)
-{
-  EGE_ASSERT(NULL != m_p);
-  p_func()->clearViewport(viewport);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystem::setViewport(const PViewport& viewport)
 {
-  EGE_ASSERT(NULL != m_p);
-
   // change render target
   if (m_renderTarget != viewport->renderTarget())
   {
@@ -220,8 +187,6 @@ void RenderSystem::setViewport(const PViewport& viewport)
     // bind new target
     m_renderTarget->bind();
   }
-
-  p_func()->setViewport(viewport);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderSystem::addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix)
@@ -370,8 +335,10 @@ bool RenderSystem::addForRendering(const PRenderQueue& queue)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystem::setProjectionMatrix(const Matrix4f& matrix)
 {
+  // store value
   m_projectionMatrix = matrix;
 
+  // check if Y axis flipping is required
   if (m_renderTarget->requiresTextureFlipping())
   {
     // invert transfrormed Y
@@ -384,7 +351,13 @@ void RenderSystem::setProjectionMatrix(const Matrix4f& matrix)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystem::setViewMatrix(const Matrix4f& matrix)
 {
+  // set value
   m_viewMatrix = matrix;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const Matrix4f& RenderSystem::viewMatrix() const 
+{ 
+  return m_viewMatrix; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystem::resetStats()
@@ -443,16 +416,6 @@ Rectf RenderSystem::applyRotation(const Rectf& rect, const Angle& angle) const
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PTexture2D RenderSystem::createTexture2D(const String& name, const PImage& image)
-{
-  return p_func()->createTexture2D(name, image);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PTexture2D RenderSystem::createTexture2D(const String& name, const PDataBuffer& data)
-{
-  return p_func()->createTexture2D(name, data);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 RenderSystem::requestCreateTexture2D(const String& name, const PImage& image)
 {
   // create request
@@ -473,16 +436,6 @@ u32 RenderSystem::requestCreateTexture2D(const String& name, const PImage& image
   return request.id;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PTexture2D RenderSystem::createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format)
-{
-  return p_func()->createRenderTexture(name, width, height, format);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystem::destroyTexture2D(PTexture2D texture)
-{
-  p_func()->destroyTexture2D(texture);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 RenderSystem::requestDestroyTexture2D(PTexture2D texture)
 {
   // create request
@@ -498,11 +451,6 @@ u32 RenderSystem::requestDestroyTexture2D(PTexture2D texture)
   egeDebug(KRenderSystemDebugName) << "Requested texture destroy:" << texture->name();
 
   return request.id;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PShader RenderSystem::createShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data)
-{
-  return p_func()->createShader(type, name, data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 RenderSystem::requestCreateShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data)
@@ -535,11 +483,6 @@ u32 RenderSystem::requestDestroyShader(PShader shader)
   m_requests.push_back(request);
 
   return request.id;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PProgram RenderSystem::createProgram(const String& name, const List<PShader>& shaders)
-{
-  return p_func()->createProgram(name, shaders);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 RenderSystem::requestCreateProgram(const String& name, const List<PShader>& shaders)
@@ -628,514 +571,13 @@ void RenderSystem::onEventRecieved(PEvent event)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool RenderSystem::registerComponent(PRenderComponent& component, NVertexBuffer::UsageType vertexUsage, const VertexDeclaration& vertexDeclaration, 
-                                     EGEIndexBuffer::UsageType indexUsage)
+void RenderSystem::setActiveRenderComponent(const PRenderComponent& component)
 {
-  return p_func()->registerComponent(component, vertexUsage, vertexDeclaration, indexUsage);
+  m_renderComponent = component;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//// Constructors
-//
-//CRenderSystem::CRenderSystem( void ) : m_pcActiveViewport( NULL ), m_pcActiveRenderTarget( NULL ), 
-//                                       m_pcSceneManager( NULL ), m_pcRTTManager( NULL )
-//{
-//  memset( m_uiBindedTextureIDs, 0, sizeof( m_uiBindedTextureIDs ) );
-//}
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//// Destructors
-//
-//CRenderSystem::~CRenderSystem( void )
-//{
-//  DELETE_PTR( m_pcRTTManager );
-//
-//  CE3D::GetSingletonPtr()->getLog()->logEventN( true, "Destroying CRenderSystem" );
-//}
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//// PUBLICS
-//
-//CRenderSystem* CRenderSystem::New( void )
-//{
-//  CE3D::GetSingletonPtr()->getLog()->logEventN( true, "CRenderSystem::New" );
-//
-//  CRenderSystem* pcObject;
-//
-//  // allocate object
-//  // TAGE - need to be able to choose RTTManager!!!
-//  if ( ( pcObject = new CRenderSystem ) == NULL || ( pcObject->m_pcRTTManager = CRTTManagerCopy::New() ) == NULL )
-//  {
-//    // error!
-//    DELETE_PTR( pcObject );
-//    return NULL;
-//  }
-//
-//  return pcObject;
-//}
-//
-//void CRenderSystem::render( const CRenderOperation& cRenderOp )
-//{
-//  // get material
-//  PMaterialResource cMaterial = cRenderOp.getMaterial();
-//
-//  assert( cMaterial.isNull() == false && "No material assigned!!!" );
-//
-//  u32 uiValue = ( cRenderOp.isIndexBufferInUse() == true ) ? cRenderOp.getIndexBuffer()->getIndexCount() : 
-//                                                             cRenderOp.getVertexBuffer()->getVertexCount();
-//
-//  // update stats
-//  m_uiBatchCount += cMaterial->getPassCount();
-//  
-//  switch( cRenderOp.getType() )
-//  {
-//    case CRenderOperation::TRIANGLE_LIST:  m_uiTriangleCount += uiValue/3; break;
-//    case CRenderOperation::TRIANGLE_STRIP: m_uiTriangleCount += uiValue-2; break;
-//  }
-//
-//  // go thru all passes
-//  for ( u32 uiPassNo = 0; uiPassNo < cMaterial->getPassCount(); ++uiPassNo )
-//  {
-//    CRenderPass* pcPass = cMaterial->getPass( uiPassNo );
-//    CShader* pcShader   = NULL;
-//
-//    s32 iTexturesEnabled = 0;
-//
-//    // apply pass parameters
-//    applyPassSettings( pcPass );
-//
-//    // check if shader present
-//    if ( ( pcShader = pcPass->getShader() ) != NULL )
-//    {
-//      // bind shader
-//      pcShader->bind();
-//
-//      // update parameters
-//      pcShader->updateParameters( m_pcSceneManager->getAutoUniformsDataSource() );
-//    }
-//
-//    // bind textures
-//    for ( u32 i = 0; i < MAX_TEXTURE_UNITS; ++i )
-//    {
-//      CTexture* pcTexture;
-//
-//      // check if any texture present
-//      if ( ( pcTexture = pcPass->getTexture( i ) ) != NULL )
-//      {
-//        // bind it
-//        bindTexture( pcTexture, i );
-//        iTexturesEnabled++;
-//      }
-//    }
-//
-//    // get buffers semantics
-//    VertexBuffer::BufferSemanticVector vsBuffersSemantics = cRenderOp.getVertexBuffer()->getBufferSemantics();
-//
-//    // lock vertex data
-//    void* pVertexData = cRenderOp.getVertexBuffer()->lock( 0, cRenderOp.getVertexBuffer()->getVertexCountInUse() );
-//
-//    // reset vertex color
-//    glColor3f( 1, 1, 1 );
-//
-//    // go thru all buffers
-//    for ( VertexBuffer::BufferSemanticVector::iterator iter = vsBuffersSemantics.begin(); 
-//          iter != vsBuffersSemantics.end(); ++iter )
-//    {
-//      // set according to buffer type
-//      switch( iter->eType )
-//      {
-//        case VertexBuffer::POSITION:
-//
-//          glVertexPointer( 3, GL_FLOAT, cRenderOp.getVertexBuffer()->getVertexSize(), 
-//                           static_cast<char*>( pVertexData )+iter->uiOffset );
-//          glEnableClientState( GL_VERTEX_ARRAY );
-//          break;
-//
-//        case VertexBuffer::NORMAL:
-//
-//          glNormalPointer( GL_FLOAT, cRenderOp.getVertexBuffer()->getVertexSize(), 
-//                           static_cast<char*>( pVertexData )+iter->uiOffset );
-//          glEnableClientState( GL_NORMAL_ARRAY );
-//          break;
-//
-//        case VertexBuffer::COLOR:
-//
-//          glColorPointer( 4, GL_FLOAT, cRenderOp.getVertexBuffer()->getVertexSize(), 
-//                          static_cast<char*>( pVertexData )+iter->uiOffset );
-//          glEnableClientState( GL_COLOR_ARRAY );
-//          break;
-//    
-//        case VertexBuffer::TEXTURE_COORD:
-//
-//          // TAGE - we assume that each texture unit uses THE SAME texture coords!
-//          for ( s32 i = 0; i < iTexturesEnabled; i++ )
-//          {
-//            glClientActiveTexture( GL_TEXTURE0+i );
-//            glTexCoordPointer( 2, GL_FLOAT, cRenderOp.getVertexBuffer()->getVertexSize(), 
-//                               static_cast<char*>( pVertexData )+iter->uiOffset );
-//            glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-//          }
-//          break;
-//
-//        case VertexBuffer::TANGENT:
-//
-//          // TANGENT is binded to GL_TEXTURE6
-//          glClientActiveTexture( GL_TEXTURE6 );
-//          glTexCoordPointer( 3, GL_FLOAT, cRenderOp.getVertexBuffer()->getVertexSize(), 
-//                             static_cast<char*>( pVertexData )+iter->uiOffset );
-//          glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-//          break;
-//      }
-//    }
-//
-//    // check if INDICIES are to be used
-//    if ( cRenderOp.isIndexBufferInUse() == true )
-//    {
-//      // lock INDEX buffer
-//      void* pIndexData = cRenderOp.getIndexBuffer()->lock( 0, cRenderOp.getIndexBuffer()->getIndexCountInUse() );
-//
-//      // render only if there is anything to render
-//      if ( cRenderOp.getIndexBuffer()->getIndexCountInUse() != 0 )
-//      {
-//        glDrawElements( cRenderOp.getType(), cRenderOp.getIndexBuffer()->getIndexCountInUse(), 
-//                        cRenderOp.getIndexBuffer()->getIndexSizeType(), pIndexData );
-//      }
-//
-//      // unlock INDEX buffer
-//      cRenderOp.getIndexBuffer()->unlock();
-//    }
-//    else
-//    {
-//      // render only if there is anything to render
-//      if ( cRenderOp.getVertexBuffer()->getVertexCountInUse() != 0 )
-//      {
-//        glDrawArrays( cRenderOp.getType(), 0, cRenderOp.getVertexBuffer()->getVertexCountInUse() );
-//      }
-//    }
-//
-//    // unlock vertex buffer
-//    cRenderOp.getVertexBuffer()->unlock();
-//
-//    // disable client states
-//    glDisableClientState( GL_VERTEX_ARRAY );
-//    glDisableClientState( GL_NORMAL_ARRAY );
-//    glDisableClientState( GL_COLOR_ARRAY );
-//
-//    for ( u32 i = 0; i < MAX_TEXTURE_UNITS+1; i++ )
-//    {
-//      glClientActiveTexture( GL_TEXTURE0+i );
-//      glDisableClientState( GL_TEXTURE_COORD_ARRAY );
-//    }
-//
-//    // disable TANGENT coords
-//    glClientActiveTexture( GL_TEXTURE6 );
-//    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
-//
-//    // unbind textures
-//    for ( u32 i = 0; i < MAX_TEXTURE_UNITS; ++i )
-//    {
-//      CTexture* pcTexture;
-//
-//      // check if any texture present
-//      if ( ( pcTexture = pcPass->getTexture( i ) ) != NULL )
-//      {
-//        // bind it
-//        unbindTexture( pcTexture, i );
-//      }
-//    }
-//
-//    // unbind shader if any
-//    if ( pcShader != NULL )
-//    {
-//      pcShader->unbind();
-//    }
-//
-//    // active first texture unit only (disable multitexturing)
-//    glClientActiveTexture( GL_TEXTURE0 );
-//    glActiveTexture( GL_TEXTURE0 );
-//  }
-//}
-//
-//void CRenderSystem::setViewport( Viewport* pcViewport )
-//{
-//  // check if different viewport is to be set
-//  if ( m_pcActiveViewport != pcViewport )
-//  {
-//    // store viewport pointer
-//    m_pcActiveViewport = pcViewport;
-//
-//    // set new render target
-//    setRenderTarget( pcViewport->getRenderTarget() );
-//
-//    // get actual viewport dimensions
-//    const CRect& cActualRect = m_pcActiveViewport->getActualRect();
-//
-//    s32 iX      = static_cast<s32>( cActualRect.x );
-//    s32 iY      = static_cast<s32>( cActualRect.y );
-//    s32 iWidth  = static_cast<s32>( cActualRect.width );
-//    s32 iHeight = static_cast<s32>( cActualRect.height );
-//
-//    // set viewport dimensions
-//    glViewport( iX, iY, iWidth, iHeight );
-//
-//    // configure the viewport clipping
-//    glScissor( iX, iY, iWidth, iHeight );
-//  }
-//}
-//void CRenderSystem::clearViewport( void )
-//{
-//  assert( m_pcActiveViewport != NULL );
-//
-//  GLbitfield clearFlag = 0;
-//
-//  // get viewport background color
-//  CColor cBackground = m_pcActiveViewport->getBackgroundColor();
-//
-//  // set clear color
-//  glClearColor( cBackground.m_fRed, cBackground.m_fGreen, cBackground.m_fBlue, cBackground.m_fAlpha );
-//
-//  if ( m_pcActiveViewport->getClearBuffers() & Viewport::COLOR )
-//  {
-//    clearFlag |= GL_COLOR_BUFFER_BIT;
-//  }
-//
-//  if ( m_pcActiveViewport->getClearBuffers() & Viewport::DEPTH )
-//  {
-//    clearFlag |= GL_DEPTH_BUFFER_BIT;
-//  }
-//
-//  // we need to temporarily enable scissor test cause clearing relyies on it
-//  bool bScissorTestEnabled = glIsEnabled( GL_SCISSOR_TEST ) == GL_TRUE;
-//
-//  // check if scissor test disabled
-//  if ( bScissorTestEnabled == false )
-//  {
-//    // enable it
-//    glEnable( GL_SCISSOR_TEST );
-//  }
-//
-//  // get viewport and scissor rectagles
-//  s32 iViewportBox[ 4 ];
-//  s32 iScissorBox[ 4 ];
-//
-//  glGetIntegerv( GL_VIEWPORT, iViewportBox );
-//  glGetIntegerv( GL_SCISSOR_BOX, iScissorBox );
-//
-//  // determine whether boxes are different
-//  bool bAreBoxesDifferent = iViewportBox[ 0 ] != iScissorBox[ 0 ] || iViewportBox[ 1 ] != iScissorBox[ 1 ] ||
-//                            iViewportBox[ 2 ] != iScissorBox[ 2 ] || iViewportBox[ 3 ] != iScissorBox[ 3 ];
-//
-//  // check if boxes are different
-//  if ( bAreBoxesDifferent )
-//  {
-//    // setup scissor box so it matches viewport
-//    glScissor( iViewportBox[ 0 ], iViewportBox[ 1 ], iViewportBox[ 2 ], iViewportBox[ 3 ] );
-//  }
-//
-//  // clear buffers
-//  glClear( clearFlag );
-//
-//  // check if boxes are different
-//  if ( bAreBoxesDifferent )
-//  {
-//    // restore old scissor box settings
-//    glScissor( iScissorBox[ 0 ], iScissorBox[ 1 ], iScissorBox[ 2 ], iScissorBox[ 3 ] );
-//  }
-//
-//  // restore old scissor test settings
-//  if ( bScissorTestEnabled == false )
-//  {
-//    // disable scissor test
-//    glDisable( GL_SCISSOR_TEST );
-//  }
-//}
-//
-//void CRenderSystem::applyRenderableSettings( const CRenderable* pcRenderable )
-//{
-//  // setup blending
-//  setBlending( pcRenderable->getSourceBlendMode(), pcRenderable->getDestinationBlendMode() );
-//
-//  // setup scissor box
-//  setScissor( pcRenderable->getScissorBox() );
-//}
-//
-//void CRenderSystem::setProjectionMatrix( const CMatrix4& cMatrix )
-//{
-//  glMatrixMode( GL_PROJECTION );
-//  glLoadMatrixf( cMatrix.m_fData_ );
-//  glMatrixMode( GL_MODELVIEW );
-//
-//  m_projectionMatrix = cMatrix;
-//}
-//
-//void CRenderSystem::setViewMatrix( const CMatrix4& cMatrix )
-//{
-//  glMatrixMode( GL_MODELVIEW );
-//  glLoadMatrixf( cMatrix.m_fData_ );
-//
-//  m_viewMatrix = cMatrix;
-//}
-//
-//void CRenderSystem::setWorldMatrix( const CMatrix4& cMatrix )
-//{
-//  // create world-view matrix (modelview)
-//  CMatrix4 cCombined( m_viewMatrix.concatenate( cMatrix ) );
-//
-//  glMatrixMode( GL_MODELVIEW );
-//  glLoadMatrixf( cCombined.m_fData_ );
-//
-//  m_cWorldMatrix = cMatrix;
-//}
-//
-//void CRenderSystem::resetStats( void )
-//{
-//  m_uiBatchCount    = 0;
-//  m_uiTriangleCount = 0;
-//}
-//
-//void CRenderSystem::setSceneManager( const SceneManager* pcSceneManager )
-//{
-//  m_pcSceneManager = pcSceneManager;
-//}
-//
-//CRenderTexture* CRenderSystem::createRenderTexture( const string& strName, u32 uiWidth, u32 uiHeight, 
-//                                                    CResource::EType eType, CTexture::EFormat eFormat )
-//{
-//  CRenderTexture* pcRenderTexture;
-//
-//  // create object
-//  if ( ( pcRenderTexture = CRenderTexture::New( strName, uiWidth, uiHeight, eType, eFormat ) ) == NULL )
-//  {
-//    // error!
-//    return NULL;
-//  }
-//
-//  // attach to render targets pool
-//  CE3D::GetSingletonPtr()->attachRenderTarget( pcRenderTexture );
-//
-//  return pcRenderTexture;
-//}
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//// PRIVATES
-//
-//void CRenderSystem::setRenderTarget( RenderTarget* pcRenderTarget )
-//{
-//  // unbind last render target if any
-//  if ( m_pcActiveRenderTarget != NULL )
-//  {
-//    m_pcRTTManager->unbind( m_pcActiveRenderTarget );
-//  }
-//
-//  // set new render target
-//  m_pcActiveRenderTarget = pcRenderTarget;
-//
-//  // bind new render target
-//  m_pcRTTManager->bind( pcRenderTarget );
-//}
-//
-//void CRenderSystem::bindTexture( CTexture* pcTexture, u32 uiTextureUnit )
-//{
-//  assert( uiTextureUnit < MAX_TEXTURE_UNITS );
-//
-//  bool bActiveOnly = true;
-//
-//  // check if NOT binded yet
-//  if ( pcTexture->getID() != m_uiBindedTextureIDs[ uiTextureUnit ] )
-//  {
-//    // we need to bind texture
-//    bActiveOnly = false;
-//
-//    // store ID
-//    m_uiBindedTextureIDs[ uiTextureUnit ] = pcTexture->getID();
-//  }
-//
-//  // active texture (and bind if required)
-//  pcTexture->bind( uiTextureUnit, bActiveOnly );
-//}
-//
-//void CRenderSystem::unbindTexture( CTexture* pcTexture, u32 uiTextureUnit )
-//{
-//  assert( uiTextureUnit < MAX_TEXTURE_UNITS );
-//
-//  pcTexture->unbind( uiTextureUnit );
-//}
-//
-//void CRenderSystem::setPolygonMode( Camera::EPolygonMode eMode )
-//{
-//  GLenum eOGLMode;
-//
-//  switch( eMode )
-//  {
-//    case Camera::POINTS:    eOGLMode = GL_POINT; break;
-//    case Camera::WIREFRAME: eOGLMode = GL_LINE; break;
-//    case Camera::SOLID:     
-//    default:
-//      
-//      eOGLMode = GL_FILL; 
-//      break;
-//  }
-//
-//  glPolygonMode( GL_FRONT_AND_BACK, eOGLMode );
-//}
-//
-//void CRenderSystem::applyPassSettings( CRenderPass* pcPass )
-//{
-//  assert( pcPass != NULL );
-//
-//  if ( pcPass->isDepthWriteEnabled() == true ) 
-//  {
-//    glEnable( GL_DEPTH_TEST );
-//  }
-//  else
-//  {
-//    glDisable( GL_DEPTH_TEST );
-//  }
-//
-//  if ( pcPass->isLightingEnabled() == true ) 
-//  {
-//    glEnable( GL_LIGHTING );
-//  }
-//  else
-//  {
-//    glDisable( GL_LIGHTING );
-//  }
-//}
-//
-//void CRenderSystem::setScissor( const CRect& cRect ) const
-//{
-//  // check if scissor rect defined
-//  if ( cRect.isEmpty() == false )
-//  {
-//    glEnable( GL_SCISSOR_TEST );
-//
-//    // setup scissor box so it matches viewport
-//    glScissor( static_cast<s32>( cRect.x ), static_cast<s32>( cRect.y ), 
-//               static_cast<s32>( cRect.width ), static_cast<s32>( cRect.height ) );
-//  }
-//  else
-//  {
-//    glDisable( GL_SCISSOR_TEST );
-//  }
-//}
-//
-//void CRenderSystem::setBlending( CRenderable::BlendFactor eSrc, CRenderable::BlendFactor eDst ) const
-//{
-//  // check if blending can be disabled
-//  if ( eSrc == CRenderable::BLEND_ONE && eDst == CRenderable::BLEND_ZERO )
-//  {
-//    glDisable( GL_BLEND );
-//  }
-//  else
-//  {
-//    // enable blending
-//    glEnable( GL_BLEND );
-//
-//    // setup blend mode
-//    glBlendFunc( eSrc, eDst );
-//  }
-//}
-
-EGE_NAMESPACE_END
+const PRenderComponent& RenderSystem::activeRenderComponent() const
+{
+  return m_renderComponent;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

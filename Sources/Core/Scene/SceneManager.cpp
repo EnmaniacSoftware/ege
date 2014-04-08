@@ -65,10 +65,11 @@ EGEResult SceneManager::construct()
 void SceneManager::render(PCamera camera, PViewport viewport)
 {
   RenderSystem* renderSystem = app()->graphics()->renderSystem();
+  IRenderer* renderer = app()->graphics()->renderer();
 
   renderSystem->setViewport(viewport);
-  renderSystem->setProjectionMatrix(camera->projectionMatrix());
-  renderSystem->setViewMatrix(camera->viewMatrix());
+  renderer->setProjectionMatrix(camera->projectionMatrix());
+  renderer->setViewMatrix(camera->viewMatrix());
 
   //m_pcRenderSystem->setPolygonMode( pcCamera->getPolygonMode() );
   //m_pcRenderSystem->setSceneManager( this );
@@ -115,8 +116,8 @@ void SceneManager::render(PCamera camera, PViewport viewport)
 
   renderSystem->flush();
 
-  viewport->setVertexCount(renderSystem->vertexCount());
-  viewport->setBatchCount(renderSystem->batchCount());
+  viewport->setVertexCount(renderer->vertexCount());
+  viewport->setBatchCount(renderer->batchCount());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void SceneManager::update(const Time& time)

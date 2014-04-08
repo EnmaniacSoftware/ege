@@ -22,7 +22,7 @@
 #define KOpenGLDebugName "EGEOpenGL"
 
 #ifdef EGE_FEATURE_OPENGL_DEBUG
-  #define OGL_CHECK() { GLenum result; if (GL_NO_ERROR != (result = glGetError())) { egeCritical(KOpenGLDebugName) << "OpenGL error" << result << __FILE__ << __LINE__; } }
+  #define OGL_CHECK() { GLenum result = glGetError(); if (GL_NO_ERROR != result) { egeCritical(KOpenGLDebugName) << "OpenGL error" << result << __FILE__ << __LINE__; } }
   #define OGL_CHECK_RESULT(result) if (GL_NO_ERROR != (result = glGetError())) { egeCritical(KOpenGLDebugName) << "OpenGL error" << __FILE__ << __LINE__; }
 #else
   #define OGL_CHECK() ege_noop();

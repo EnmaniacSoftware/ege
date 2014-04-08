@@ -187,12 +187,6 @@
     <Filter Include="Core\Graphics\Color">
       <UniqueIdentifier>{18ffb765-04a0-4287-8c08-79146b5d8d50}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Graphics\OpenGL\GL 3.x">
-      <UniqueIdentifier>{cd293347-a2a3-4e54-a2bd-ff17f13cf292}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Graphics\OpenGL\Fixed">
-      <UniqueIdentifier>{2736de3a-5cff-4e6f-ab45-abde106a81a7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Win32\Threading">
       <UniqueIdentifier>{686887ab-fec0-47ff-bcba-08ebe23e27c7}</UniqueIdentifier>
     </Filter>
@@ -327,6 +321,12 @@
     </Filter>
     <Filter Include="Win32\Services\Interface">
       <UniqueIdentifier>{acd36933-60f0-4853-8f7f-2913c194aef9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\OpenGL\Implementation\Fixed">
+      <UniqueIdentifier>{dc67dbd3-fcbc-4d84-a945-f3385679a61b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\OpenGL\Implementation\Programmable">
+      <UniqueIdentifier>{556a8f30-7c6a-41e1-bd70-3c9da5a7ef5b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -750,9 +750,6 @@
     <ClCompile Include="..\..\Sources\Core\String\StringUtils.cpp">
       <Filter>Core\String</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.cpp">
-      <Filter>Core\Graphics\OpenGL\GL 3.x</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Shader.cpp">
       <Filter>Core\Graphics</Filter>
     </ClCompile>
@@ -782,9 +779,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\main.cpp">
       <Filter>Win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.cpp">
-      <Filter>Core\Graphics\OpenGL\Fixed</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.cpp">
       <Filter>Win32\Graphics\OpenGL</Filter>
@@ -980,6 +974,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Services\Implementation\SocialServicesWin32.cpp">
       <Filter>Win32\Services\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Implementation\Fixed\RenderSystemFixedOGL.cpp">
+      <Filter>Core\Graphics\OpenGL\Implementation\Fixed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Implementation\RenderSystemOGL.cpp">
+      <Filter>Core\Graphics\OpenGL\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\Implementation\Programmable\RenderSystemProgrammableOGL.cpp">
+      <Filter>Core\Graphics\OpenGL\Implementation\Programmable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1538,9 +1541,6 @@
     <ClInclude Include="..\..\Sources\EGEText.h" />
     <ClInclude Include="..\..\Sources\EGEColorTransform.h" />
     <ClInclude Include="..\..\Sources\EGECipher.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\GL 3.x\RenderSystemOGL3_p.h">
-      <Filter>Core\Graphics\OpenGL\GL 3.x</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEShader.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Shader.h">
       <Filter>Core\Graphics</Filter>
@@ -1570,9 +1570,6 @@
     <ClInclude Include="..\..\Sources\EGECommandLine.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\CommandLineParser.h">
       <Filter>Core\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\RenderSystemFixedOGL_p.h">
-      <Filter>Core\Graphics\OpenGL\Fixed</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.h">
       <Filter>Win32\Graphics\OpenGL</Filter>
@@ -1627,9 +1624,6 @@
     <ClInclude Include="..\..\Sources\EGERenderQueues.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\RenderQueue.h">
       <Filter>Core\Graphics\Render\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Fixed\TextureUnitState.h">
-      <Filter>Core\Graphics\OpenGL\Fixed</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEComponent.h" />
     <ClInclude Include="..\..\Sources\Core\Component\Interface\Component.h">
@@ -1848,6 +1842,18 @@
       <Filter>Win32\Services\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Win32\TypesWin32.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Implementation\Fixed\RenderSystemFixedOGL.h">
+      <Filter>Core\Graphics\OpenGL\Implementation\Fixed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Implementation\Fixed\TextureUnitState.h">
+      <Filter>Core\Graphics\OpenGL\Implementation\Fixed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Implementation\RenderSystemOGL.h">
+      <Filter>Core\Graphics\OpenGL\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Implementation\Programmable\RenderSystemProgrammableOGL.h">
+      <Filter>Core\Graphics\OpenGL\Implementation\Programmable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

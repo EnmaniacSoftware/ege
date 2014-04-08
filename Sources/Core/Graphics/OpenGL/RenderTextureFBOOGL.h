@@ -15,6 +15,7 @@ class RenderTextureFBOOGL : public RenderTarget
  
   public:
 
+    RenderTextureFBOOGL(Application* app, const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId);
     virtual ~RenderTextureFBOOGL();
 
   private:
@@ -38,11 +39,6 @@ class RenderTextureFBOOGL : public RenderTarget
     GLenum textureTarget() const { return m_textureTarget; }
     /*! Returns texture face where data should be rendered to. */
     GLenum faceTarget() const { return m_faceTarget; }
-
-  protected:
-
-    /*! Constructing only via RenderSystem. */
-    RenderTextureFBOOGL(Application* app, const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId);
 
   private:
 
