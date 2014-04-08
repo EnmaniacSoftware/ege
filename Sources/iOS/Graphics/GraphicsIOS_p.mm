@@ -1,9 +1,8 @@
 #include "Core/Graphics/Graphics.h"
+#include "Core/Graphics/OpenGL/Implementation/Fixed/RenderSystemFixedOGL.h"
+#include "Core/Graphics/OpenGL/Implementation/Programmable/RenderSystemProgrammableOGL.h"	
 #include "iOS/Graphics/GraphicsIOS_p.h"
-
-#if EGE_RENDERING_OPENGL_FIXED
- #include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
-#endif // EGE_RENDERING_OPENGLES_1
+#include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -37,6 +36,24 @@ EGEResult GraphicsPrivate::construct()
     return result;
   }
 
+  // create render system
+#if EGE_RENDERING_OPENGL_FIXED
+  d_func()->m_renderSystem = ege_new RenderSystemFixedOGL(d_func()->app());
+#else
+  d_func()->m_renderSystem = ege_new RenderSystemProgrammableOGL(d_func()->app());
+#endif // EGE_RENDERING_OPENGL_FIXED
+  if (NULL == d_func()->m_renderSystem)
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
+  }
+  
+  if (EGE_SUCCESS != (result = d_func()->m_renderSystem->construct()))
+  {
+    // error!
+    return result;
+  }
+  
   // add to render targets pool
   d_func()->registerRenderTarget(renderWindow);
 

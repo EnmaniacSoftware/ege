@@ -95,9 +95,6 @@ void RenderSystemFixedOGL::applyPassParams(const PRenderPass& pass)
   Color color = pass->diffuseColorTransformation().transform(pass->diffuseColor());
   glColor4f(color.red, color.green, color.blue, color.alpha);
 
-  // get nimber of available texture array elements
-  u32 textureCoordsCount = component->vertexBuffer()->vertexDeclaration().elementCount(NVertexBuffer::VES_TEXTURE_UV);
-
   // go thru all textures
   for (u32 i = 0; i < pass->textureCount(); ++i)
   {

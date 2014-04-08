@@ -54,15 +54,10 @@ void RenderSystemProgrammableOGL::flush()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemProgrammableOGL::applyPassParams(const PRenderPass& pass)
 {
-  const PRenderComponent& component = activeRenderComponent();
-
-  ProgramOGL* program = ege_cast<ProgramOGL*>(pass->program());
-  EGE_ASSERT(NULL != program);
-
   // TAGE - port
   //Color color = pass.diffuseColorTransformation().transform(pass.diffuseColor());
   //glColor4f(color.red, color.green, color.blue, color.alpha);
-  //OGL_CHECK();
+  //OGL_CHECK()
 
   // go thru all textures
   for (u32 i = 0; i < pass->textureCount(); ++i)
@@ -84,14 +79,14 @@ void RenderSystemProgrammableOGL::applyPassParams(const PRenderPass& pass)
       }
 
       // assign appropriate texture sampler to texture unit
-      GLint location = program->uniformLocation(KUniformTexture2DXName.arg(i));
+      GLint location = m_activeProgram->uniformLocation(KUniformTexture2DXName.arg(i));
       EGE_ASSERT(0 <= location);
 
       glUniform1i(location, i);
-      OGL_CHECK();
+      OGL_CHECK()
 
       // supply texture matrix if needed
-      location = program->uniformLocation(KUniformTextureMatrixXName.arg(i));
+      location = m_activeProgram->uniformLocation(KUniformTextureMatrixXName.arg(i));
       EGE_ASSERT((0 <= location) || (0 > location) && (0 == textureImage->rotationAngle().degrees()) || (0 > location) && (Rectf::UNIT != textureImage->rect()));
 
       if (0 <= location)
@@ -112,7 +107,7 @@ void RenderSystemProgrammableOGL::applyPassParams(const PRenderPass& pass)
 
         // supply to shader
         glUniformMatrix4fv(location, 1, GL_FALSE, matrix.data);
-        OGL_CHECK();
+        OGL_CHECK()
 
         // TAGE - TESTING
         //glMatrixMode(GL_TEXTURE);
