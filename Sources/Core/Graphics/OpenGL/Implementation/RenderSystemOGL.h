@@ -63,10 +63,11 @@ class RenderSystemOGL : public RenderSystem
      */
     void createAndSetupVAOs();
     /*! Maps texture filter into OpenGL equivalent. 
-     *  @param  filter  Framework's texture filter value.
+     *  @param  filter      Framework's texture filter value.
+     *  @param  mipmapping  Set if filter is to be considered in mip-mapping context.
      *  @return OpenGL equivalent value.
      */
-    GLint mapTextureFilter(TextureFilter filter) const;
+    GLint mapTextureFilter(TextureFilter filter, bool mipmapping) const;
     /*! Maps texture addressing mode into OpenGL equivalent. 
      *  @param  mode  Framework's texture addressing mode value.
      *  @return OpenGL equivalent value.

@@ -16,17 +16,16 @@ EGE_NAMESPACE_BEGIN
 /*! Available texture filters. */
 enum TextureFilter
 {
-  BILINEAR = 0,                       /*< for MIN and MAG. */
-  TRILINEAR,                          /*< for MIN and MAG. */
-  MIPMAP_BILINEAR,                    /*< for MIN only. */
-  MIPMAP_TRILINEAR,                   /*< for MIN only. */
+  TF_NEAREST = 0,       /*< for MIN and MAG. Can be used for MipMapping. */
+  TF_BILINEAR,          /*< for MIN and MAG. Can be used for MipMapping. */
+  TF_TRILINEAR,         /*< for MIN and MipMapping only. */
 };
   
 /*! Available texture addressing modes. */
 enum TextureAddressingMode
 {
-  AM_CLAMP  = 0,                      /*< Texture clapms at values over 1.0. */
-  AM_REPEAT                           /*< Texture repeats at values over 1.0. */
+  AM_CLAMP  = 0,        /*< Texture clapms at values over 1.0. */
+  AM_REPEAT             /*< Texture repeats at values over 1.0. */
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)

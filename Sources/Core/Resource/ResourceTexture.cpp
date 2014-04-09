@@ -24,18 +24,18 @@ static TextureFilter MapFilterName(const String& name, TextureFilter defaultValu
 {
   if ("trilinear" == name)
   {
-    return TRILINEAR;
+    return TF_TRILINEAR;
   }
-  else if ("mipmap-bilinear" == name)
+  else if ("bilinear" == name)
   {
-    return MIPMAP_BILINEAR;
+    return TF_BILINEAR;
   }
-  else if ("mipmap-trilinear" == name)
+  else if ("none" == name)
   {
-    return MIPMAP_TRILINEAR;
+    return TF_NEAREST;
   }
 
-  return defaultValue;//EGETexture::BILINEAR;
+  return defaultValue;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping literal texture addressing mode name into numeric value. */
@@ -54,8 +54,8 @@ static TextureAddressingMode MapTextureAddressingName(const String& name, Textur
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceTexture::ResourceTexture(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_TEXTURE),
-                                                                           m_minFilter(BILINEAR),
-                                                                           m_magFilter(BILINEAR),
+                                                                           m_minFilter(TF_NEAREST),
+                                                                           m_magFilter(TF_NEAREST),
                                                                            m_addressingModeS(AM_REPEAT),
                                                                            m_addressingModeT(AM_REPEAT),
                                                                            m_resourceRequestId(0)
@@ -116,8 +116,8 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   m_path            = tag->attribute("path");
   m_dataType        = tag->attribute("data");
   m_type            = tag->attribute("type").toLower();
-  m_minFilter       = MapFilterName(tag->attribute("min-filter").toLower(), BILINEAR);
-  m_magFilter       = MapFilterName(tag->attribute("mag-filter").toLower(), BILINEAR);
+  m_minFilter       = MapFilterName(tag->attribute("min-filter").toLower(), TF_NEAREST);
+  m_magFilter       = MapFilterName(tag->attribute("mag-filter").toLower(), TF_NEAREST);
   m_addressingModeS = MapTextureAddressingName(tag->attribute("mode-s").toLower(), AM_REPEAT);
   m_addressingModeT = MapTextureAddressingName(tag->attribute("mode-t").toLower(), AM_REPEAT);
   m_rotation        = StringUtils::ToAngle(tag->attribute("rotation", "0"), &error);

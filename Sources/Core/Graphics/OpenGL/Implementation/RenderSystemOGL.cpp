@@ -330,10 +330,10 @@ PTexture2D RenderSystemOGL::createEmptyTexture(const String& name)
     bindTexture(GL_TEXTURE_2D, texture->id());
 
     // set texture parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapTextureFilter(m_textureMinFilter));
-	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapTextureFilter(m_textureMagFilter));
-	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mapTextureAddressingMode(m_textureAddressingModeS));
-	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mapTextureAddressingMode(m_textureAddressingModeT));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapTextureFilter(m_textureMinFilter, false));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapTextureFilter(m_textureMagFilter, false));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mapTextureAddressingMode(m_textureAddressingModeS));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mapTextureAddressingMode(m_textureAddressingModeT));
   }
 
   return texture;
@@ -392,16 +392,15 @@ bool RenderSystemOGL::registerComponent(PRenderComponent& component, NVertexBuff
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-GLint RenderSystemOGL::mapTextureFilter(TextureFilter filter) const
+GLint RenderSystemOGL::mapTextureFilter(TextureFilter filter, bool mipmapping) const
 {
   GLint result = GL_NEAREST;
 
   switch (filter)
   {
-    case BILINEAR:          result = GL_NEAREST; break;
-    case TRILINEAR:         result = GL_LINEAR; break;
-    case MIPMAP_BILINEAR:   result = GL_LINEAR_MIPMAP_NEAREST; break;
-    case MIPMAP_TRILINEAR:  result = GL_LINEAR_MIPMAP_LINEAR; break;
+    case TF_NEAREST:    result = mipmapping ? GL_NEAREST_MIPMAP_NEAREST: GL_NEAREST; break;
+    case TF_BILINEAR:   result = mipmapping ? GL_NEAREST_MIPMAP_LINEAR : GL_LINEAR; break;
+    case TF_TRILINEAR:  result = GL_LINEAR_MIPMAP_LINEAR; break;
 
     default:
       break;
