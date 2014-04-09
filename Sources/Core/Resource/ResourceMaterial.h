@@ -37,7 +37,7 @@ class ResourceMaterial : public IResource
     {
         String name;                                /*!< Texture name. */
         Rectf rect;                                 /*!< Texture rectangle (in normalized local coords). */
-        EGETexture::EnvironmentMode envMode;        /*!< Texture environment mode. */
+        TextureEnvironmentMode envMode;        /*!< Texture environment mode. */
         bool manual;                                /*!< Manual flag. */
         Angle rotationAngle;                        /*!< Texture rotation angle. */
         s32 textureCoordIndex;                      /*!< Texture coord index to use. */

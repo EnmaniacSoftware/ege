@@ -78,19 +78,19 @@ class RenderSystem : public Object
     /*! Sets texture minifying function filter. 
      *  @param  filter  Texture minifying filter to set.
      */
-    void setTextureMinFilter(EGETexture::Filter filter);
+    void setTextureMinFilter(TextureFilter filter);
     /*! Sets texture magnification function filter. 
      *  @param  filter  Texture magnification filter to set.
      */
-    void setTextureMagFilter(EGETexture::Filter filter);
+    void setTextureMagFilter(TextureFilter filter);
     /*! Sets texture addressing mode for S texture coordinate. 
      *  @param  mode  Texture addressing mode for S coordinate.
      */
-    void setTextureAddressingModeS(EGETexture::AddressingMode mode);
+    void setTextureAddressingModeS(TextureAddressingMode mode);
     /*! Sets texture addressing mode for T texture coordinate. 
      *  @param  mode  Texture addressing mode for T coordinate.
      */
-    void setTextureAddressingModeT(EGETexture::AddressingMode mode);
+    void setTextureAddressingModeT(TextureAddressingMode mode);
 
   protected:
 
@@ -135,13 +135,13 @@ class RenderSystem : public Object
     /*! Map of list of rendering queues sorted by hash value. */
     RenderQueueMap m_renderQueues;            
     /*! Texture minifying function filter. */
-    EGETexture::Filter m_textureMinFilter;
+    TextureFilter m_textureMinFilter;
     /*! Texture magnification function filter. */
-    EGETexture::Filter m_textureMagFilter;
+    TextureFilter m_textureMagFilter;
     /*! Texture addressing mode for S texture coordinate. */
-    EGETexture::AddressingMode m_textureAddressingModeS;
+    TextureAddressingMode m_textureAddressingModeS;
     /*! Texture addressing mode for T texture coordinate. */
-    EGETexture::AddressingMode m_textureAddressingModeT;
+    TextureAddressingMode m_textureAddressingModeT;
 
   private:
 
@@ -165,10 +165,10 @@ class RenderSystem : public Object
 
       ObjectList objects;                                 /*!< List of object associated with request. May be NULL. */
 
-      EGETexture::Filter textureMinFilter;                /*!< Texture minifying function filter. */
-      EGETexture::Filter textureMagFilter;                /*!< Texture magnification function filter. */
-      EGETexture::AddressingMode textureAddressingModeS;  /*!< Texture addressing mode for S texture coordinate. */
-      EGETexture::AddressingMode textureAddressingModeT;  /*!< Texture addressing mode for T texture coordinate. */
+      TextureFilter textureMinFilter;                /*!< Texture minifying function filter. */
+      TextureFilter textureMagFilter;                /*!< Texture magnification function filter. */
+      TextureAddressingMode textureAddressingModeS;  /*!< Texture addressing mode for S texture coordinate. */
+      TextureAddressingMode textureAddressingModeT;  /*!< Texture addressing mode for T texture coordinate. */
       EGEGraphics::ShaderType shaderType;                 /*!< Shader type. */
     };
 

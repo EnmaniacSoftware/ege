@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_TEXTURE2D_PRIVATE_H
-#define EGE_CORE_TEXTURE2D_PRIVATE_H
+#ifndef EGE_CORE_GRAPHICS_OPENGL_TEXTURE2DOGL_H
+#define EGE_CORE_GRAPHICS_OPENGL_TEXTURE2DOGL_H
 
 #include "EGE.h"
 #include "EGETexture.h"
@@ -8,33 +8,23 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Texture2DPrivate
+class Texture2DOGL : public Texture2D
 {
-  /* For accessing private data. */
-  friend class RenderSystemOGL;
-
   public:
 
-    Texture2DPrivate(Texture2D* base);
-   ~Texture2DPrivate();
+    Texture2DOGL(Application* app, const String& name, IHardwareResourceProvider* provider);
+   ~Texture2DOGL();
 
-    EGE_DECLARE_NEW_OPERATORS
-    EGE_DECLARE_DELETE_OPERATORS
-
-    /*! @see Texture2D::isValid. */
-    bool isValid() const;
     /*! @see Texture2D::create. */
-    EGEResult create(const String& path);
+    EGEResult create(const String& path) override;
     /*! @see Texture2D::create. */
-    EGEResult create(const PDataBuffer& buffer);
+    EGEResult create(const PDataBuffer& buffer) override;
     /*! @see Texture2D::create. */
-    EGEResult create(const PImage& image);
+    EGEResult create(const PImage& image) override;
     /*! Returns texture ID. */
-    GLuint id() const { return m_id; }
+    GLuint id() const;
 
   private:
-
-    EGE_DECLARE_PUBLIC_IMPLEMENTATION(Texture2D);
 
     /*! Texture ID. */
     GLuint m_id;
@@ -47,4 +37,4 @@ class Texture2DPrivate
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_TEXTURE2D_PRIVATE_H
+#endif // EGE_CORE_GRAPHICS_OPENGL_TEXTURE2DOGL_H

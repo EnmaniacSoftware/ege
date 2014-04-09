@@ -48,9 +48,9 @@ class TextureImage : public Object
     const Rectf& rect() const;
 
     /*! Sets environment mode. */
-    void setEnvironmentMode(EGETexture::EnvironmentMode mode);
+    void setEnvironmentMode(TextureEnvironmentMode mode);
     /*! Returns environment mode. */
-    EGETexture::EnvironmentMode environmentMode() const;
+    TextureEnvironmentMode environmentMode() const;
 
     /*! Sets rotation angle. */
     void setRotationAngle(const Angle& angle);
@@ -85,7 +85,7 @@ class TextureImage : public Object
     /*! Rectangular are of the texture this object refers to (in normalized local space). */
     Rectf m_rect;
     /*! Environment mode. */
-    EGETexture::EnvironmentMode m_envMode;
+    TextureEnvironmentMode m_envMode;
     /*! Rotation angle. */
     Angle m_rotationAngle;
     /*! Texture coords index. */

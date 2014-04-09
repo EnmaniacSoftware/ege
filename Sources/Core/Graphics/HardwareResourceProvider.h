@@ -80,10 +80,6 @@ class IHardwareResourceProvider
      *  @return Returns created texture. NULL if error occured.
      */
     virtual PTexture2D createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format) = 0;
-    /*! Destroys 2D texture. 
-     *  @param  texture Texture to destroy.
-     */
-    virtual void destroyTexture2D(PTexture2D texture) = 0;
     /*! Requests deletion of 2D texture. 
      *  @param  texture Texture to destroy.
      *  @return Returns ID of the request for further delivery check.

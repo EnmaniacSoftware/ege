@@ -2,14 +2,9 @@
 #include "Core/Application/Application.h"
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Render/RenderSystem.h"
-#include "Core/Graphics/HardwareResourceProvider.h"
 #include "EGEDebug.h"
 
-#if EGE_RENDERING_OPENGL_3 || EGE_RENDERING_OPENGL_FIXED
-#include "Core/Graphics/OpenGL/Texture2DOGL.h"
-#endif // EGE_RENDERING_OPENGL_3 || EGE_RENDERING_OPENGL_FIXED
-
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(Texture2D)
@@ -20,61 +15,18 @@ Texture2D::Texture2D(Application* app, const String& name, IHardwareResourceProv
                                                                                                   m_width(0), 
                                                                                                   m_height(0), 
                                                                                                   m_format(PF_UNKNOWN),
-                                                                                                  m_provider(provider),
-                                                                                                  m_minFilter(EGETexture::BILINEAR),
-                                                                                                  m_magFilter(EGETexture::BILINEAR),
-                                                                                                  m_addressingModeS(EGETexture::AM_CLAMP),
-                                                                                                  m_addressingModeT(EGETexture::AM_CLAMP)
+                                                                                                  m_provider(provider)
 {
-  m_p = ege_new Texture2DPrivate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Texture2D::~Texture2D()
 {
-  EGE_DELETE(m_p);
-
   // remove render target
-  if (m_target)
+  if (NULL != m_target)
   {
     app()->graphics()->removeRenderTarget(m_target->name());
+    m_target = NULL;
   }
-
-  m_target = NULL;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Texture2D::isValid() const
-{
-  return (NULL != m_p) && m_p->isValid();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Texture2D::create(const String& path)
-{
-  if (isValid())
-  {
-    return p_func()->create(path);
-  }
-
-  return EGE_ERROR;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Texture2D::create(const PDataBuffer& buffer)
-{
-  if (isValid())
-  {
-    return p_func()->create(buffer);
-  }
-
-  return EGE_ERROR;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Texture2D::create(const PImage& image)
-{
-  if (isValid())
-  {
-    return p_func()->create(image);
-  }
-
-  return EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PRenderTarget Texture2D::renderTarget() const 
@@ -87,5 +39,23 @@ void Texture2D::setRenderTarget(PRenderTarget& target)
   m_target = target;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END
+s32 Texture2D::width() const 
+{ 
+  return m_width; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+s32 Texture2D::height() const 
+{ 
+  return m_height; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PixelFormat Texture2D::format() const 
+{ 
+  return m_format; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const String& Texture2D::name() const 
+{ 
+  return m_name; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

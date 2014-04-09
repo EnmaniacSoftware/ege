@@ -14,6 +14,8 @@
 #elif EGE_PLATFORM_IOS
   #if EGE_RENDERING_OPENGL_FIXED
     #import <OpenGLES/ES1/gl.h>
+  #else
+    #import <OpenGLES/ES2/gl.h>
   #endif // EGE_RENDERING_OPENGL_FIXED
   #include "iOS/Graphics/OpenGL/ExtensionsOGLIOS.h"
 #endif

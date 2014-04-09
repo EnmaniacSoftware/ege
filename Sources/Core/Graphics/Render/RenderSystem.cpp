@@ -38,10 +38,10 @@ EGE_DEFINE_DELETE_OPERATORS(RenderSystem)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderSystem::RenderSystem(Application* app) : Object(app)
                                              , m_state(STATE_NONE)
-                                             , m_textureMinFilter(EGETexture::BILINEAR)
-                                             , m_textureMagFilter(EGETexture::BILINEAR)
-                                             , m_textureAddressingModeS(EGETexture::AM_CLAMP)
-                                             , m_textureAddressingModeT(EGETexture::AM_CLAMP)
+                                             , m_textureMinFilter(BILINEAR)
+                                             , m_textureMagFilter(BILINEAR)
+                                             , m_textureAddressingModeS(AM_CLAMP)
+                                             , m_textureAddressingModeT(AM_CLAMP)
                                              , m_nextRequestID(1)
 {
 }
@@ -104,18 +104,12 @@ void RenderSystem::update()
 
         // signal
         emit requestComplete(request.id, texture);
-
-        // check if no one interested so far
-        if (1 == texture.object()->referenceCount())
-        {
-          // delete it
-          destroyTexture2D(texture);
-        }
       }
       else if (REQUEST_DESTROY_TEXTURE_2D == request.type)
       {
-        PTexture2D texture = request.objects.front();
-        destroyTexture2D(texture);
+        // NOTE: if the last remaining instance, underlying object will be destroyed here
+        //       This is safe as this function is called from main thread
+        request.objects.clear();
 
         // signal
         emit requestComplete(request.id, NULL);
@@ -520,22 +514,22 @@ u32 RenderSystem::requestDestroyProgram(PProgram program)
   return request.id;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystem::setTextureMinFilter(EGETexture::Filter filter)
+void RenderSystem::setTextureMinFilter(TextureFilter filter)
 {
   m_textureMinFilter = filter;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystem::setTextureMagFilter(EGETexture::Filter filter)
+void RenderSystem::setTextureMagFilter(TextureFilter filter)
 {
   m_textureMagFilter = filter;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystem::setTextureAddressingModeS(EGETexture::AddressingMode mode)
+void RenderSystem::setTextureAddressingModeS(TextureAddressingMode mode)
 {
   m_textureAddressingModeS = mode;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystem::setTextureAddressingModeT(EGETexture::AddressingMode mode)
+void RenderSystem::setTextureAddressingModeT(TextureAddressingMode mode)
 {
   m_textureAddressingModeT = mode;
 }

@@ -208,7 +208,7 @@ PTexture2D RenderSystemOGL::createTexture2D(const String& name, const PImage& im
 
   // create empty texture
   PTexture2D texture = createEmptyTexture(name);
-  if ((NULL == texture) || ! texture->isValid())
+  if (NULL == texture)
   {
     // error!
     return NULL;
@@ -233,7 +233,7 @@ PTexture2D RenderSystemOGL::createTexture2D(const String& name, const PDataBuffe
 {
   // create empty texture
   PTexture2D texture = createEmptyTexture(name);
-  if ((NULL == texture) || ! texture->isValid())
+  if (NULL == texture)
   {
     // error!
     return NULL;
@@ -263,7 +263,7 @@ PTexture2D RenderSystemOGL::createRenderTexture(const String& name, s32 width, s
 
   // create empty texture
   PTexture2D texture = createEmptyTexture(name);
-  if ((NULL == texture) || ! texture->isValid())
+  if (NULL == texture)
   {
     // error!
     return NULL;
@@ -276,6 +276,9 @@ PTexture2D RenderSystemOGL::createRenderTexture(const String& name, s32 width, s
     return NULL;
   }
 
+  Texture2DOGL* textureOGL = ege_cast<Texture2DOGL*>(texture);
+
+  // detach any texture
   bindTexture(GL_TEXTURE_2D, 0);
 
   Dictionary params;
@@ -284,74 +287,54 @@ PTexture2D RenderSystemOGL::createRenderTexture(const String& name, s32 width, s
   params[EGE_RENDER_TARGET_PARAM_HEIGHT]  = String::FromNumber(height);
 
   // check if FBO is supported
+  PRenderTarget target;
   if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_FBO))
   {
-    texture->m_target = ege_new RenderTextureFBOOGL(app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, texture->p_func()->id());
+    target = ege_new RenderTextureFBOOGL(app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, textureOGL->id());
   }
   else
   {
-    texture->m_target = ege_new RenderTextureCopyOGL(app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, texture->p_func()->id());
+    target = ege_new RenderTextureCopyOGL(app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, textureOGL->id());
   }
 
   // check if could not be allocated
-  if (NULL == texture->renderTarget())
+  if (NULL == target)
   {
     // error!
     return NULL;
   }
 
-  egeWarning(KOpenGLDebugName) << "Creating render target done" << texture->renderTarget();
+  // set render target
+  texture->setRenderTarget(target);
 
   // add into render targets
   app()->graphics()->registerRenderTarget(texture->renderTarget());
 
+  egeWarning(KOpenGLDebugName) << "Creating render target done" << texture;
+
   return texture;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemOGL::destroyTexture2D(PTexture2D texture)
-{
-  if (0 != texture->p_func()->id())
-  {
-    egeDebug(KOpenGLDebugName) << "Destroying texture" << texture->p_func()->id() << texture->name();
-  
-    glDeleteTextures(1, &texture->p_func()->m_id);
-    OGL_CHECK();
-    texture->p_func()->m_id = 0;
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PTexture2D RenderSystemOGL::createEmptyTexture(const String& name)
 {
-  PTexture2D texture = ege_new Texture2D(app(), name, this);
-  if ((NULL == texture) || (NULL == texture->p_func()))
+  Texture2DOGL* texture = ege_new Texture2DOGL(app(), name, this);
+  if (NULL != texture)
   {
-    // error!
-    return NULL;
+    EGE_ASSERT(0 <= texture->id());
+
+    // setup 1 byte alignment
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+    // bind it
+    activateTextureUnit(0);
+    bindTexture(GL_TEXTURE_2D, texture->id());
+
+    // set texture parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapTextureFilter(m_textureMinFilter));
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapTextureFilter(m_textureMagFilter));
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mapTextureAddressingMode(m_textureAddressingModeS));
+	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mapTextureAddressingMode(m_textureAddressingModeT));
   }
-
-  // generate OGL texture
-  glGenTextures(1, &texture->p_func()->m_id);
-  OGL_CHECK();
-
-  // setup 1 byte alignment
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-  // bind it
-  activateTextureUnit(0);
-  bindTexture(GL_TEXTURE_2D, texture->p_func()->id());
-
-  // set texture parameters
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapTextureFilter(m_textureMinFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapTextureFilter(m_textureMagFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mapTextureAddressingMode(m_textureAddressingModeS));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mapTextureAddressingMode(m_textureAddressingModeT));
-
-  // set texture parameters
-  // NOTE: mostly for debugging purposes
-  texture->m_minFilter        = m_textureMinFilter;
-  texture->m_magFilter        = m_textureMagFilter;
-  texture->m_addressingModeS  = m_textureAddressingModeS;
-  texture->m_addressingModeT  = m_textureAddressingModeT;
 
   return texture;
 }
@@ -409,16 +392,16 @@ bool RenderSystemOGL::registerComponent(PRenderComponent& component, NVertexBuff
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-GLint RenderSystemOGL::mapTextureFilter(EGETexture::Filter filter) const
+GLint RenderSystemOGL::mapTextureFilter(TextureFilter filter) const
 {
   GLint result = GL_NEAREST;
 
   switch (filter)
   {
-    case EGETexture::BILINEAR:          result = GL_NEAREST; break;
-    case EGETexture::TRILINEAR:         result = GL_LINEAR; break;
-    case EGETexture::MIPMAP_BILINEAR:   result = GL_LINEAR_MIPMAP_NEAREST; break;
-    case EGETexture::MIPMAP_TRILINEAR:  result = GL_LINEAR_MIPMAP_LINEAR; break;
+    case BILINEAR:          result = GL_NEAREST; break;
+    case TRILINEAR:         result = GL_LINEAR; break;
+    case MIPMAP_BILINEAR:   result = GL_LINEAR_MIPMAP_NEAREST; break;
+    case MIPMAP_TRILINEAR:  result = GL_LINEAR_MIPMAP_LINEAR; break;
 
     default:
       break;
@@ -427,14 +410,14 @@ GLint RenderSystemOGL::mapTextureFilter(EGETexture::Filter filter) const
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-GLint RenderSystemOGL::mapTextureAddressingMode(EGETexture::AddressingMode mode) const
+GLint RenderSystemOGL::mapTextureAddressingMode(TextureAddressingMode mode) const
 {
   GLint result = GL_REPEAT;
 
   switch (mode)
   {
-    case EGETexture::AM_CLAMP:  result = GL_CLAMP_TO_EDGE; break;
-    case EGETexture::AM_REPEAT: result = GL_REPEAT; break;
+    case AM_CLAMP:  result = GL_CLAMP_TO_EDGE; break;
+    case AM_REPEAT: result = GL_REPEAT; break;
 
     default:
       break;

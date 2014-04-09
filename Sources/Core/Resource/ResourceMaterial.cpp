@@ -27,31 +27,31 @@ static const String KAttributeTextureRotation       = "rotation";
 static const String KAttributeTextureTexCoordsIndex = "tex-coord";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function mapping texture environment mode name into value. */
-EGETexture::EnvironmentMode MapTextureEnvironmentMode(const String& name, EGETexture::EnvironmentMode defaultValue)
+TextureEnvironmentMode MapTextureEnvironmentMode(const String& name, TextureEnvironmentMode defaultValue)
 {
   if ("replace" == name)
   {
-    return EGETexture::EM_REPLACE;
+    return EM_REPLACE;
   }
   else if ("modulate" == name)
   {
-    return EGETexture::EM_MODULATE;
+    return EM_MODULATE;
   }
   else if ("decal" == name)
   {
-    return EGETexture::EM_DECAL;
+    return EM_DECAL;
   }
   else if ("blend" == name)
   {
-    return EGETexture::EM_BLEND;
+    return EM_BLEND;
   }
   else if ("add" == name)
   {
-    return EGETexture::EM_ADD;
+    return EM_ADD;
   }
   else if ("combine" == name)
   {
-    return EGETexture::EM_COMBINE;
+    return EM_COMBINE;
   }
 
   return defaultValue;
@@ -359,7 +359,7 @@ EGEResult ResourceMaterial::addTextureReference(const PXmlElement& tag, PassData
   // get data
   textureData.name              = tag->attribute(KAttributeTextureName);
   textureData.rect              = StringUtils::ToRectf(tag->attribute(KAttributeTextureRect, "0 0 1 1"), &error);
-  textureData.envMode           = MapTextureEnvironmentMode(tag->attribute(KAttributeTextureEnvMode, "modulate"), EGETexture::EM_MODULATE);
+  textureData.envMode           = MapTextureEnvironmentMode(tag->attribute(KAttributeTextureEnvMode, "modulate"), EM_MODULATE);
   textureData.manual            = tag->attribute(KAttributeTextureManual, "false").toBool(&error);
   textureData.rotationAngle     = StringUtils::ToAngle(tag->attribute(KAttributeTextureRotation, "0"), &error);
   textureData.textureCoordIndex = tag->attribute(KAttributeTextureTexCoordsIndex, static_cast<s32>(pass.m_textureImageData.size()));

@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_TEXTURE2D_H
-#define EGE_CORE_TEXTURE2D_H
+#ifndef EGE_CORE_GRAPHICS_TEXTURE2D_H
+#define EGE_CORE_GRAPHICS_TEXTURE2D_H
 
 /** Base object representing 2D texture.
 */
@@ -13,16 +13,27 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Available texture filters. */
+enum TextureFilter
+{
+  BILINEAR = 0,                       /*< for MIN and MAG. */
+  TRILINEAR,                          /*< for MIN and MAG. */
+  MIPMAP_BILINEAR,                    /*< for MIN only. */
+  MIPMAP_TRILINEAR,                   /*< for MIN only. */
+};
+  
+/*! Available texture addressing modes. */
+enum TextureAddressingMode
+{
+  AM_CLAMP  = 0,                      /*< Texture clapms at values over 1.0. */
+  AM_REPEAT                           /*< Texture repeats at values over 1.0. */
+};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
 class IHardwareResourceProvider;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Texture2D : public Object
 {
-  /* For accessing private data. */
-  friend class RenderSystemOGL;
-  friend class RenderSystemFixedOGL;
-  friend class RenderSystemProgrammableOGL;
-
   public:
 
     virtual ~Texture2D();
@@ -32,41 +43,41 @@ class Texture2D : public Object
 
   public:
 
-    /*! Returns TRUE if object is valid. */
-    bool isValid() const;
-    /*! Returns name. */
-    const String& name() const { return m_name; }
     /*! Creates texture from given file. 
+     *  @param  path  Path to file containing data for texture.
      *  @note Calling thread must be able to issue underlying 3D API commands.
      */
-    EGEResult create(const String& path);
-    /*! Creates texture from given buffer. 
+    virtual EGEResult create(const String& path) = 0;
+    /*! Creates texture from given buffer.
+     *  @param  buffer  Buffer containing texture data.
      *  @note Calling thread must be able to issue underlying 3D API commands.
      */
-    EGEResult create(const PDataBuffer& buffer);
+    virtual EGEResult create(const PDataBuffer& buffer) = 0;
     /*! Creates texture from given image. 
+     *  @param  image Image from which texture is to be created.
      *  @note Calling thread must be able to issue underlying 3D API commands.
      */
-    EGEResult create(const PImage& image);
+    virtual EGEResult create(const PImage& image) = 0;
+
+    /*! Returns name. */
+    const String& name() const;
     /*! Returns render target. */
     PRenderTarget renderTarget() const;
     /*! Sets render target. */
     void setRenderTarget(PRenderTarget& target);
     /*! Returns width. */
-    s32 width() const { return m_width; }
+    s32 width() const;
     /*! Returns height. */
-    s32 height() const { return m_height; }
+    s32 height() const;
     /*! Returns pixel format. */
-    PixelFormat format() const { return m_format; }
+    PixelFormat format() const;
 
   protected:
 
     /*! Constructing only via RenderSystem. */
     Texture2D(Application* app, const String& name, IHardwareResourceProvider* provider);
 
-  private:
-
-    EGE_DECLARE_PRIVATE_IMPLEMENTATION(Texture2D);
+  protected:
 
     /*! Texture name. */
     String m_name; 
@@ -80,17 +91,9 @@ class Texture2D : public Object
     PixelFormat m_format;
     /*! Texture provider used to create texture. */
     IHardwareResourceProvider* m_provider;
-    /*! Texture minifying function filter. */
-    EGETexture::Filter m_minFilter;
-    /*! Texture magnification function filter. */
-    EGETexture::Filter m_magFilter;
-    /*! Texture addressing mode for S texture coordinate. */
-    EGETexture::AddressingMode m_addressingModeS;
-    /*! Texture addressing mode for T texture coordinate. */
-    EGETexture::AddressingMode m_addressingModeT;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_TEXTURE2D_H
+#endif // EGE_CORE_GRAPHICS_TEXTURE2D_H

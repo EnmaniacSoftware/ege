@@ -1,51 +1,32 @@
-#include "EGEOpenGL.h"
-#include "Core/Graphics/Image/Image.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
+#include "Core/Graphics/Image/Image.h"
 #include "EGEDevice.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(Texture2DPrivate)
-EGE_DEFINE_DELETE_OPERATORS(Texture2DPrivate)
-
-        /** Returns the closest power-of-two number greater or equal to value.
-            @note 0 and 1 are powers of two, so 
-                firstPO2From(0)==0 and firstPO2From(1)==1.
-        */
-        //static u32 firstPO2From(u32 n)
-        //{
-        //    --n;            
-        //    n |= n >> 16;
-        //    n |= n >> 8;
-        //    n |= n >> 4;
-        //    n |= n >> 2;
-        //    n |= n >> 1;
-        //    ++n;
-        //    return n;
-        //}
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Texture2DPrivate::Texture2DPrivate(Texture2D* base) : m_d(base), 
-                                                      m_id(0), 
-                                                      m_internalFormat(0),
-                                                      m_typeFormat(0)
+Texture2DOGL::Texture2DOGL(Application* app, const String& name, IHardwareResourceProvider* provider) : Texture2D(app, name, provider) 
+                                                                                                      , m_id(0)
+                                                                                                      , m_internalFormat(0)
+                                                                                                      , m_typeFormat(0)
 {
+  glGenTextures(1, &m_id);
+  OGL_CHECK()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Texture2DPrivate::~Texture2DPrivate()
+Texture2DOGL::~Texture2DOGL()
 {
-  // NOTE: at this point texture should be deallocated
-  EGE_ASSERT(0 == m_id);
+  if (0 != m_id)
+  {
+    glDeleteTextures(1, &m_id);
+    OGL_CHECK()
+   
+    m_id = 0;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Texture2DPrivate::isValid() const
-{
-  return (0 != m_id);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Texture2DPrivate::create(const String& path)
+EGEResult Texture2DOGL::create(const String& path)
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -67,7 +48,7 @@ EGEResult Texture2DPrivate::create(const String& path)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Texture2DPrivate::create(const PDataBuffer& buffer)
+EGEResult Texture2DOGL::create(const PDataBuffer& buffer)
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -89,14 +70,14 @@ EGEResult Texture2DPrivate::create(const PDataBuffer& buffer)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Texture2DPrivate::create(const PImage& image)
+EGEResult Texture2DOGL::create(const PImage& image)
 {
   egeDebug(KOpenGLDebugName) << "Creating texture" << image->width() << image->height() << image->format();
 
   // set texture data
-  d_func()->m_width  = image->width();
-  d_func()->m_height = image->height();
-  d_func()->m_format = image->format();
+  m_width  = image->width();
+  m_height = image->height();
+  m_format = image->format();
 
 //	glBindTexture(GL_TEXTURE_2D, m_id);
 
@@ -110,7 +91,7 @@ EGEResult Texture2DPrivate::create(const PImage& image)
   GLenum imageFormat    = 0;
   GLenum type           = GL_UNSIGNED_BYTE;
 
-  switch (d_func()->format())
+  switch (format())
   {
     case PF_RGBA_8888:        imageFormat = GL_RGBA;  internalFormat = GL_RGBA; type = GL_UNSIGNED_BYTE; break;
     case PF_RGB_888:          imageFormat = GL_RGB;   internalFormat = GL_RGB;  type = GL_UNSIGNED_BYTE; break;
@@ -219,12 +200,14 @@ EGEResult Texture2DPrivate::create(const PImage& image)
     // create compressed texture
 		glCompressedTexImage2D(GL_TEXTURE_2D, 0, internalFormat, image->width(), image->height(), 0, static_cast<GLsizei>(image->data()->size()), 
                            image->data()->data());
+    OGL_CHECK()
   }
   else
   {
     // create texture
     // NOTE: for compatibility with OpenGLES 'internalFormat' MUST be the same as 'imageFormat'
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, d_func()->width(), d_func()->height(), 0, imageFormat, type, image->data() ? image->data()->data() : NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width(), height(), 0, imageFormat, type, image->data() ? image->data()->data() : NULL);
+    OGL_CHECK()
   }
 
   // store data
@@ -233,11 +216,11 @@ EGEResult Texture2DPrivate::create(const PImage& image)
 
   egeDebug(KOpenGLDebugName) << "Creating texture done" << m_id;
 
-  // check for error
-  OGL_CHECK();
-
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END
+GLuint Texture2DOGL::id() const 
+{ 
+  return m_id; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

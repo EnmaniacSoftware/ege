@@ -465,7 +465,7 @@ void ResourceManager::destroyDefaultResources()
       if (RESOURCE_NAME_TEXTURE == resource->typeName())
       {
         PResourceTexture textureResource = resource;
-        app()->graphics()->hardwareResourceProvider()->destroyTexture2D(textureResource->texture());
+//        app()->graphics()->hardwareResourceProvider()->destroyTexture2D(textureResource->texture());
       }
     }
 

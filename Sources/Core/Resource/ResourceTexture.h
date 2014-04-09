@@ -53,13 +53,13 @@ class ResourceTexture : public IResource
     /*! Gets texture type. */
     const String& type() const { return m_type; }
     /*! Gets minifying function. */
-    EGETexture::Filter minFilter() const { return m_minFilter; }
+    TextureFilter minFilter() const { return m_minFilter; }
     /*! Gets magnification function. */
-    EGETexture::Filter magFilter() const { return m_magFilter; }
+    TextureFilter magFilter() const { return m_magFilter; }
     /*! Gets texture addressing mode for S coordinate. */
-    EGETexture::AddressingMode adressingModeS() const { return m_addressingModeS; }
+    TextureAddressingMode adressingModeS() const { return m_addressingModeS; }
     /*! Gets texture addressing mode for T coordinate. */
-    EGETexture::AddressingMode adressingModeT() const { return m_addressingModeT; }
+    TextureAddressingMode adressingModeT() const { return m_addressingModeT; }
     /*! Creates and loads texture data from XML text. */
     EGEResult loadTextureData(const PXmlElement& tag);
 
@@ -81,13 +81,13 @@ class ResourceTexture : public IResource
      */
     PDataBuffer m_data;
     /*! Texture minifying function. */
-    EGETexture::Filter m_minFilter;
+    TextureFilter m_minFilter;
     /*! Texture magnification function. */
-    EGETexture::Filter m_magFilter;
+    TextureFilter m_magFilter;
     /*! Texture addressing mode for S coordinate. */
-    EGETexture::AddressingMode m_addressingModeS;
+    TextureAddressingMode m_addressingModeS;
     /*! Texture addressing mode for T coordinate. */
-    EGETexture::AddressingMode m_addressingModeT;
+    TextureAddressingMode m_addressingModeT;
     /*! Texture object created from resource. NULL if not created yet. */
     PObject m_texture;
     /*! Rotation angle. */

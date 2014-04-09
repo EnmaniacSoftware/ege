@@ -44,8 +44,6 @@ class RenderSystemOGL : public RenderSystem
     PTexture2D createTexture2D(const String& name, const PDataBuffer& data) override;
     /*! @see IHardwareResourceProvider::createRenderTexture. */
     PTexture2D createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format) override;
-    /*! @see IHardwareResourceProvider::destroyTexture2D. */
-    void destroyTexture2D(PTexture2D texture) override;
 
     /*! Enables/disables blending. */
     void setBlendEnabled(bool set);
@@ -68,12 +66,12 @@ class RenderSystemOGL : public RenderSystem
      *  @param  filter  Framework's texture filter value.
      *  @return OpenGL equivalent value.
      */
-    GLint mapTextureFilter(EGETexture::Filter filter) const;
+    GLint mapTextureFilter(TextureFilter filter) const;
     /*! Maps texture addressing mode into OpenGL equivalent. 
      *  @param  mode  Framework's texture addressing mode value.
      *  @return OpenGL equivalent value.
      */
-    GLint mapTextureAddressingMode(EGETexture::AddressingMode mode) const;
+    GLint mapTextureAddressingMode(TextureAddressingMode mode) const;
     /*! Maps blending factor mode to OpenGL equivalent.
      *  @param  factor  Framework's blending factor value.
      *  @return OpenGL equivalent value;

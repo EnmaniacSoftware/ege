@@ -8,18 +8,18 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps texture environment to OpenGL compilant one. */
-static GLint MapEnvironmentMode(EGETexture::EnvironmentMode mode)
+static GLint MapEnvironmentMode(TextureEnvironmentMode mode)
 {
   GLint result = GL_MODULATE;
 
   switch (mode)
   {
-    case EGETexture::EM_ADD:      result = GL_ADD; break;
-    case EGETexture::EM_BLEND:    result = GL_BLEND; break;
+    case EM_ADD:      result = GL_ADD; break;
+    case EM_BLEND:    result = GL_BLEND; break;
     //case EGETexture::EM_COMBINE:  result = GL_COMBINE; break;
-    case EGETexture::EM_DECAL:    result = GL_DECAL; break;
-    case EGETexture::EM_MODULATE: result = GL_MODULATE; break;
-    case EGETexture::EM_REPLACE:  result = GL_REPLACE; break;
+    case EM_DECAL:    result = GL_DECAL; break;
+    case EM_MODULATE: result = GL_MODULATE; break;
+    case EM_REPLACE:  result = GL_REPLACE; break;
 
     default:
       break;
@@ -107,14 +107,14 @@ void RenderSystemFixedOGL::applyPassParams(const PRenderPass& pass)
     // check if texture image
     if (EGE_OBJECT_UID_TEXTURE_IMAGE == textureImage->uid())
     {
-      PTexture2D tex2d = textureImage->texture();
+      Texture2DOGL* tex2d = ege_cast<Texture2DOGL*>(textureImage->texture());
 
       activateTextureUnit(i);
 
       // NOTE: it is possible texure object might be not present ie when it is manual and hasnt been set yet
       if (NULL != tex2d)
       {
-        bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
+        bindTexture(GL_TEXTURE_2D, tex2d->id());
       }
 
       glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MapEnvironmentMode(textureImage->environmentMode()));

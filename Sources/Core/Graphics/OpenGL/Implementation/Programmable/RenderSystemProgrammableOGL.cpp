@@ -68,14 +68,14 @@ void RenderSystemProgrammableOGL::applyPassParams(const PRenderPass& pass)
     // check if texture image
     if (EGE_OBJECT_UID_TEXTURE_IMAGE == textureImage->uid())
     {
-      PTexture2D tex2d = textureImage->texture();
+      Texture2DOGL* tex2d = ege_cast<Texture2DOGL*>(textureImage->texture());
 
       activateTextureUnit(i);
 
       // NOTE: it is possible texure object might be not present ie when it is manual and hasnt been set yet
       if (NULL != tex2d)
       {
-        bindTexture(GL_TEXTURE_2D, tex2d->p_func()->id());
+        bindTexture(GL_TEXTURE_2D, tex2d->id());
       }
 
       // assign appropriate texture sampler to texture unit

@@ -8,7 +8,7 @@ EGE_DEFINE_NEW_OPERATORS(TextureImage)
 EGE_DEFINE_DELETE_OPERATORS(TextureImage)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TextureImage::TextureImage(Application* app) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE)
-                                             , m_envMode(EGETexture::EM_MODULATE)
+                                             , m_envMode(EM_MODULATE)
                                              , m_textureCoordsIndex(0)
 {
 }
@@ -22,7 +22,7 @@ TextureImage::TextureImage(const PTexture2D& texture, Rectf rect) : Object(textu
                                                                   , m_texture(texture)
                                                                   , m_name(texture->name())
                                                                   , m_rect(rect)
-                                                                  , m_envMode(EGETexture::EM_MODULATE)
+                                                                  , m_envMode(EM_MODULATE)
                                                                   , m_textureCoordsIndex(0)
 {
 }
@@ -47,12 +47,12 @@ bool TextureImage::isValid() const
   return (NULL != m_texture) && ! m_rect.isEmpty() && ! m_rect.isNull();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void TextureImage::setEnvironmentMode(EGETexture::EnvironmentMode mode)
+void TextureImage::setEnvironmentMode(TextureEnvironmentMode mode)
 {
   m_envMode = mode;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGETexture::EnvironmentMode TextureImage::environmentMode() const 
+TextureEnvironmentMode TextureImage::environmentMode() const 
 { 
   return m_envMode; 
 }
