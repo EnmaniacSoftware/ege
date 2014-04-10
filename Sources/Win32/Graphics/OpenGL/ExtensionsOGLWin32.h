@@ -40,12 +40,14 @@ typedef void (GL_APIENTRYP PFNGLDELETEFRAMEBUFFERSPROC) (GLsizei n, const GLuint
 typedef void (GL_APIENTRYP PFNGLBINDFRAMEBUFFERPROC) (GLenum target, GLuint framebuffer);
 typedef GLenum (GL_APIENTRYP PFNGLCHECKFRAMEBUFFERSTATUSPROC) (GLenum target);
 typedef void (GL_APIENTRYP PFNGLFRAMEBUFFERTEXTURE2DPROC) (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+typedef void (GL_APIENTRYP PFNGLGENERATEMIPMAPPROC) (GLenum target);
 
 extern PFNGLGENFRAMEBUFFERSPROC glGenFramebuffers;
 extern PFNGLDELETEFRAMEBUFFERSPROC glDeleteFramebuffers;
 extern PFNGLBINDFRAMEBUFFERPROC glBindFramebuffer;
 extern PFNGLCHECKFRAMEBUFFERSTATUSPROC glCheckFramebufferStatus;
 extern PFNGLFRAMEBUFFERTEXTURE2DPROC glFramebufferTexture2D;
+extern PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
 
 // vertex buffer object
 typedef void (GL_APIENTRYP PFNGLGENBUFFERSPROC) (GLsizei n, GLuint *buffers);
@@ -208,6 +210,10 @@ extern PFNGLISVERTEXARRAYARBPROC glIsVertexArray;
 #define GL_COMPRESSED_RGBA_S3TC_DXT1  0x83F1
 #define GL_COMPRESSED_RGBA_S3TC_DXT3  0x83F2
 #define GL_COMPRESSED_RGBA_S3TC_DXT5  0x83F3
+
+// GL_SGIS_generate_mipmap
+#define GL_GENERATE_MIPMAP      0x8191
+#define GL_GENERATE_MIPMAP_HINT 0x8192
 
 // OpenGL 1.2
 #define GL_UNSIGNED_SHORT_4_4_4_4 0x8033

@@ -330,10 +330,14 @@ PTexture2D RenderSystemOGL::createEmptyTexture(const String& name)
     bindTexture(GL_TEXTURE_2D, texture->id());
 
     // set texture parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapTextureFilter(m_textureMinFilter, false));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mapTextureFilter(m_textureMinFilter, m_textureMipMapping));
+    OGL_CHECK()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mapTextureFilter(m_textureMagFilter, false));
+    OGL_CHECK()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, mapTextureAddressingMode(m_textureAddressingModeS));
+    OGL_CHECK()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, mapTextureAddressingMode(m_textureAddressingModeT));
+    OGL_CHECK()
   }
 
   return texture;

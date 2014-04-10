@@ -2,8 +2,8 @@
 #define EGE_CORE_GRAPHICS_OPENGL_TEXTURE2DOGL_H
 
 #include "EGE.h"
-#include "EGETexture.h"
 #include "EGEOpenGL.h"
+#include "Core/Graphics/Texture2D.h"
 
 EGE_NAMESPACE_BEGIN
 

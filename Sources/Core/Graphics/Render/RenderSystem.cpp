@@ -42,6 +42,7 @@ RenderSystem::RenderSystem(Application* app) : Object(app)
                                              , m_textureMagFilter(TF_NEAREST)
                                              , m_textureAddressingModeS(AM_CLAMP)
                                              , m_textureAddressingModeT(AM_CLAMP)
+                                             , m_textureMipMapping(false)
                                              , m_nextRequestID(1)
 {
 }
@@ -97,6 +98,7 @@ void RenderSystem::update()
         setTextureMagFilter(request.textureMagFilter);
         setTextureAddressingModeS(request.textureAddressingModeS);
         setTextureAddressingModeT(request.textureAddressingModeT);
+        setTextureMipMapping(request.textureMipMapping);
 
         // create texture
         PImage image = request.objects.front();
@@ -421,6 +423,7 @@ u32 RenderSystem::requestCreateTexture2D(const String& name, const PImage& image
   request.textureMagFilter        = m_textureMagFilter;
   request.textureAddressingModeS  = m_textureAddressingModeS;
   request.textureAddressingModeT  = m_textureAddressingModeT;
+  request.textureMipMapping       = m_textureMipMapping;
   request.objects << image;
 
   // queue it
@@ -532,6 +535,11 @@ void RenderSystem::setTextureAddressingModeS(TextureAddressingMode mode)
 void RenderSystem::setTextureAddressingModeT(TextureAddressingMode mode)
 {
   m_textureAddressingModeT = mode;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystem::setTextureMipMapping(bool set)
+{
+  m_textureMipMapping = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 RenderSystem::batchCount() const 

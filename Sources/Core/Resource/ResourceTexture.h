@@ -43,7 +43,7 @@ class ResourceTexture : public IResource
     void unload() override;
 
     /*! Gets instance of texture object defined by resource. */
-    PObject texture() const { return m_texture; }
+    PObject texture() const;
 
   private:
 
@@ -51,17 +51,19 @@ class ResourceTexture : public IResource
     /*! Creates 2D texture. */
     EGEResult create2D();
     /*! Gets texture type. */
-    const String& type() const { return m_type; }
+    const String& type() const;
     /*! Gets minifying function. */
-    TextureFilter minFilter() const { return m_minFilter; }
+    TextureFilter minFilter() const;
     /*! Gets magnification function. */
-    TextureFilter magFilter() const { return m_magFilter; }
+    TextureFilter magFilter() const;
     /*! Gets texture addressing mode for S coordinate. */
-    TextureAddressingMode adressingModeS() const { return m_addressingModeS; }
+    TextureAddressingMode adressingModeS() const;
     /*! Gets texture addressing mode for T coordinate. */
-    TextureAddressingMode adressingModeT() const { return m_addressingModeT; }
+    TextureAddressingMode adressingModeT() const;
     /*! Creates and loads texture data from XML text. */
     EGEResult loadTextureData(const PXmlElement& tag);
+    /*! Returns mip-mapping flag. */
+    bool mipmap() const;
 
   private slots:
 
@@ -94,6 +96,8 @@ class ResourceTexture : public IResource
     Angle m_rotation;
     /*! Resource request id. */
     u32 m_resourceRequestId;
+    /*! Mipmap flag. */
+    bool m_mipmap;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

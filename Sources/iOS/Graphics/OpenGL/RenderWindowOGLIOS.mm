@@ -405,6 +405,13 @@ void RenderWindowOGLIOS::detectCapabilities()
 #if GL_OES_element_index_uint
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT, true);
 #endif // GL_OES_element_index_uint
+
+  // auto mipmapping support
+  glGenerateMipmap = ::glGenerateMipmap;
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MIPMAPPING, true);
+
+  // at least one check at the end
+  OGL_CHECK()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderWindowOGLIOS::onEventRecieved(PEvent event)

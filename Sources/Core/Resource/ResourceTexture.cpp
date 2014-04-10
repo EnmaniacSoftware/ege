@@ -11,7 +11,7 @@
 #include "EGEDirectory.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KResourceTextureDebugName = "EGEResourceTexture";
@@ -53,12 +53,13 @@ static TextureAddressingMode MapTextureAddressingName(const String& name, Textur
   return defaultValue; //EGETexture::AM_REPEAT;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceTexture::ResourceTexture(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_TEXTURE),
-                                                                           m_minFilter(TF_NEAREST),
-                                                                           m_magFilter(TF_NEAREST),
-                                                                           m_addressingModeS(AM_REPEAT),
-                                                                           m_addressingModeT(AM_REPEAT),
-                                                                           m_resourceRequestId(0)
+ResourceTexture::ResourceTexture(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_TEXTURE)
+                                                                         , m_minFilter(TF_NEAREST)
+                                                                         , m_magFilter(TF_NEAREST)
+                                                                         , m_addressingModeS(AM_REPEAT)
+                                                                         , m_addressingModeT(AM_REPEAT)
+                                                                         , m_resourceRequestId(0)
+                                                                         , m_mipmap(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -121,6 +122,7 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
   m_addressingModeS = MapTextureAddressingName(tag->attribute("mode-s").toLower(), AM_REPEAT);
   m_addressingModeT = MapTextureAddressingName(tag->attribute("mode-t").toLower(), AM_REPEAT);
   m_rotation        = StringUtils::ToAngle(tag->attribute("rotation", "0"), &error);
+  m_mipmap          = tag->attribute("mipmap", "false").toBool(&error);
 
   // check if any embedded data type
   if ( ! m_dataType.empty())
@@ -140,6 +142,9 @@ EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
     egeWarning(KResourceTextureDebugName) << "Failed for name:" << m_name;
     return EGE_ERROR_BAD_PARAM;
   }
+
+  EGE_ASSERT_X(m_mipmap || ( ! m_mipmap && (TF_TRILINEAR != m_minFilter)), "Trilinear filtering can be used with mipmaps only!");
+  EGE_ASSERT_X(TF_TRILINEAR != m_magFilter, "Trilinear filtering can be used with minification filtering only!");
 
   // compose absolute path
   m_path = Directory::Join(path, m_path);
@@ -197,6 +202,7 @@ EGEResult ResourceTexture::create2D()
   app()->graphics()->renderSystem()->setTextureMagFilter(magFilter());
   app()->graphics()->renderSystem()->setTextureAddressingModeS(adressingModeS());
   app()->graphics()->renderSystem()->setTextureAddressingModeT(adressingModeT());
+  app()->graphics()->renderSystem()->setTextureMipMapping(mipmap());
 
   // request texture
   m_resourceRequestId = app()->graphics()->hardwareResourceProvider()->requestCreateTexture2D(name(), image);
@@ -318,5 +324,38 @@ EGEResult ResourceTexture::loadTextureData(const PXmlElement& tag)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END
+const String& ResourceTexture::type() const 
+{ 
+  return m_type; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TextureFilter ResourceTexture::minFilter() const 
+{ 
+  return m_minFilter; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TextureFilter ResourceTexture::magFilter() const 
+{ 
+  return m_magFilter; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TextureAddressingMode ResourceTexture::adressingModeS() const 
+{ 
+  return m_addressingModeS; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TextureAddressingMode ResourceTexture::adressingModeT() const 
+{ 
+  return m_addressingModeT; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ResourceTexture::mipmap() const
+{
+  return m_mipmap; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PObject ResourceTexture::texture() const 
+{ 
+  return m_texture; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

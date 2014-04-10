@@ -596,19 +596,17 @@ void RenderWindowOGLWin32::detectCapabilities()
     glGenFramebuffers         = reinterpret_cast<PFNGLGENFRAMEBUFFERSPROC>(wglGetProcAddress("glGenFramebuffersEXT"));
     glCheckFramebufferStatus  = reinterpret_cast<PFNGLCHECKFRAMEBUFFERSTATUSPROC>(wglGetProcAddress("glCheckFramebufferStatusEXT"));
     glFramebufferTexture2D    = reinterpret_cast<PFNGLFRAMEBUFFERTEXTURE2DPROC>(wglGetProcAddress("glFramebufferTexture2DEXT"));
+    glGenerateMipmap          = reinterpret_cast<PFNGLGENERATEMIPMAPPROC>(wglGetProcAddress("glGenerateMipmapEXT"));
 
     if ((NULL != glBindFramebuffer) && (NULL != glDeleteFramebuffers) && (NULL != glGenFramebuffers) && (NULL != glCheckFramebufferStatus) && 
-        (NULL != glFramebufferTexture2D))
+        (NULL != glFramebufferTexture2D) && (NULL != glGenerateMipmap))
     {
       Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
     }
   }
 
   // check if combine texture environment mode is supported
-  if (extensionArray.contains("GL_ARB_texture_env_combine"))
-  {
-    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_COMBINE_TEXTURE_ENV, true);
-  }
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_COMBINE_TEXTURE_ENV, extensionArray.contains("GL_ARB_texture_env_combine"));
 
   // check if vertex buffer object is supported
   // NOTE: this implies that VBO mapping extension is present too
@@ -663,15 +661,8 @@ void RenderWindowOGLWin32::detectCapabilities()
   glCompressedTexImage2D = reinterpret_cast<PFNGLCOMPRESSEDTEXIMAGE2DPROC>(wglGetProcAddress("glCompressedTexImage2D"));
 
   // check for texture compressions support
-  if (extensionArray.contains("GL_IMG_texture_compression_pvrtc"))
-  {
-    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC, true);
-  }
-
-  if (extensionArray.contains("GL_EXT_texture_compression_s3tc"))
-  {
-    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_S3TC, true);
-  }
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC, extensionArray.contains("GL_IMG_texture_compression_pvrtc"));
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_S3TC, extensionArray.contains("GL_EXT_texture_compression_s3tc"));
 
   // check shader objects support
   if (extensionArray.contains("GL_ARB_shader_objects"))
@@ -723,10 +714,7 @@ void RenderWindowOGLWin32::detectCapabilities()
   }
 
   // check fragment shader support
-  if (extensionArray.contains("GL_ARB_fragment_shader"))
-  {
-    Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FRAGMENT_SHADER, true);
-  }
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FRAGMENT_SHADER, extensionArray.contains("GL_ARB_fragment_shader"));
   
   // check vertex array objects support
   if (extensionArray.contains("GL_ARB_vertex_array_object"))
@@ -748,8 +736,11 @@ void RenderWindowOGLWin32::detectCapabilities()
   // 32bit indexing is supported by default
   Device::SetRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT, true);
 
+  // auto mipmapping support
+  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MIPMAPPING, extensionArray.contains("GL_SGIS_generate_mipmap"));
+
   // at least one check at the end
-  OGL_CHECK();
+  OGL_CHECK()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderWindowOGLWin32::isAutoRotated() const

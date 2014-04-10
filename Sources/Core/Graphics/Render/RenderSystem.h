@@ -91,6 +91,10 @@ class RenderSystem : public Object
      *  @param  mode  Texture addressing mode for T coordinate.
      */
     void setTextureAddressingModeT(TextureAddressingMode mode);
+    /*! Enables/disables texture mipmapping for newly created textures. 
+     *  @param  set If set, enables mipmapping.
+     */
+    void setTextureMipMapping(bool set);
 
   protected:
 
@@ -142,6 +146,8 @@ class RenderSystem : public Object
     TextureAddressingMode m_textureAddressingModeS;
     /*! Texture addressing mode for T texture coordinate. */
     TextureAddressingMode m_textureAddressingModeT;
+    /*! Texture mip mapping flag. */
+    bool m_textureMipMapping;
 
   private:
 
@@ -165,10 +171,12 @@ class RenderSystem : public Object
 
       ObjectList objects;                                 /*!< List of object associated with request. May be NULL. */
 
-      TextureFilter textureMinFilter;                /*!< Texture minifying function filter. */
-      TextureFilter textureMagFilter;                /*!< Texture magnification function filter. */
-      TextureAddressingMode textureAddressingModeS;  /*!< Texture addressing mode for S texture coordinate. */
-      TextureAddressingMode textureAddressingModeT;  /*!< Texture addressing mode for T texture coordinate. */
+      TextureFilter textureMinFilter;                     /*!< Texture minifying function filter. */
+      TextureFilter textureMagFilter;                     /*!< Texture magnification function filter. */
+      TextureAddressingMode textureAddressingModeS;       /*!< Texture addressing mode for S texture coordinate. */
+      TextureAddressingMode textureAddressingModeT;       /*!< Texture addressing mode for T texture coordinate. */
+      bool textureMipMapping;                             /*!< Texture mip mapping flag. */
+
       EGEGraphics::ShaderType shaderType;                 /*!< Shader type. */
     };
 

@@ -92,7 +92,7 @@ class RenderSystemOGL : public RenderSystem
      *  @param  name  Texture name.
      *  @return Returns created texture. NULL if failed.
      */
-    PTexture2D createEmptyTexture(const String& name);
+    virtual PTexture2D createEmptyTexture(const String& name);
     /*! Creates appripriate vertex buffer object. 
      *  @param  name              Name of the vertex buffer component.
      *  @param  vertexDeclaration Vertex semantics declaration.
