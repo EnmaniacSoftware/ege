@@ -328,6 +328,12 @@
     <Filter Include="Core\Graphics\OpenGL\Implementation\Programmable">
       <UniqueIdentifier>{556a8f30-7c6a-41e1-bd70-3c9da5a7ef5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Win32\Timer\Implementation">
+      <UniqueIdentifier>{2d7ff17f-8e0f-44d2-82d5-3235c1e0237f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Timer\Interface">
+      <UniqueIdentifier>{c51cd860-3d61-4b33-b419-d74ce2054f4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
@@ -419,12 +425,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp">
       <Filter>Win32\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Timer\Timer.cpp">
-      <Filter>Core\Timer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\Timer\TimerWin32_p.cpp">
-      <Filter>Win32\Timer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Graphics.cpp">
       <Filter>Core\Graphics</Filter>
@@ -984,6 +984,9 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderSystemStatistics.cpp">
       <Filter>Core\Graphics\Render\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Timer\Implementation\TimerWin32.cpp">
+      <Filter>Win32\Timer\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h">
@@ -1120,12 +1123,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\File\File.h">
       <Filter>Core\File</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Timer\Timer.h">
-      <Filter>Core\Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Win32\Timer\TimerWin32_p.h">
-      <Filter>Win32\Timer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Graphics.h">
       <Filter>Core\Graphics</Filter>
@@ -1853,6 +1850,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderSystemStatistics.h">
       <Filter>Core\Graphics\Render\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Timer\Interface\Timer.h">
+      <Filter>Core\Timer\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

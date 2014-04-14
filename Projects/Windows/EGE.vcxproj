@@ -206,7 +206,6 @@
     <ClCompile Include="..\..\Sources\Core\Threading\WaitCondition.cpp" />
     <ClCompile Include="..\..\Sources\Core\Timer\Time.cpp" />
     <ClCompile Include="..\..\Sources\Core\Timer\TimeLine.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Timer\Timer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Tools\ByteOrder.cpp" />
     <ClCompile Include="..\..\Sources\Core\Tools\CommandLineParser.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\Dialog.cpp" />
@@ -239,6 +238,7 @@
     <ClCompile Include="..\..\Sources\Win32\Services\Implementation\PurchaseServicesWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Services\Implementation\SocialServicesWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Timer\Implementation\TimerWin32.cpp" />
     <ClInclude Include="..\..\Sources\Core\Animation\IAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodec.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecMp3.h" />
@@ -396,6 +396,7 @@
     <ClInclude Include="..\..\Sources\Core\Threading\PThread\WaitCondition_p.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\Thread.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\WaitCondition.h" />
+    <ClInclude Include="..\..\Sources\Core\Timer\Interface\Timer.h" />
     <ClInclude Include="..\..\Sources\Core\Timer\TimeLine.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\ByteOrder.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\CommandLineParser.h" />
@@ -464,7 +465,6 @@
     <ClCompile Include="..\..\Sources\Win32\Input\PointerWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Memory\MemoryWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Threading\AtomicWin32.cpp" />
-    <ClCompile Include="..\..\Sources\Win32\Timer\TimerWin32_p.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Application\Application.h" />
@@ -534,7 +534,6 @@
     <ClInclude Include="..\..\Sources\Core\String\Stl\String.h" />
     <ClInclude Include="..\..\Sources\Core\String\Stl\Text.h" />
     <ClInclude Include="..\..\Sources\Core\Timer\Time.h" />
-    <ClInclude Include="..\..\Sources\Core\Timer\Timer.h" />
     <ClInclude Include="..\..\Sources\EGE.h" />
     <ClInclude Include="..\..\Sources\EGEApplication.h" />
     <ClInclude Include="..\..\Sources\EGEColor.h" />
@@ -597,7 +596,6 @@
     <ClInclude Include="..\..\Sources\Win32\Services\Interface\DeviceServicesWin32.h" />
     <ClInclude Include="..\..\Sources\Win32\Services\Interface\PurchaseServicesWin32.h" />
     <ClInclude Include="..\..\Sources\Win32\Services\Interface\SocialServicesWin32.h" />
-    <ClInclude Include="..\..\Sources\Win32\Timer\TimerWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\TypesWin32.h" />
   </ItemGroup>
   <ItemGroup>

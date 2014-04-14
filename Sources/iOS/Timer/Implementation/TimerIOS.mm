@@ -1,16 +1,16 @@
-#include "Core/Timer/Timer.h"
-#include "iOS/Timer/TimerIOS_p.h"
+#include "Core/Timer/Interface/Timer.h"
 #include "EGEMath.h"
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static bool l_initialized = false;
-static double l_nanoToMicro = 0;
-static double l_nanoToMili = 0;
+static bool l_Initialized = false;
+
+static double l_NanoToMicro = 0;
+static double l_NanoToMili  = 0;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function initializing high performance counter. */
-void Initialize()
+static void Initialize()
 {
   // get the time base
   mach_timebase_info_data_t info;
@@ -18,41 +18,35 @@ void Initialize()
   
   // calculate conversion factors
   // NOTE: info.numer / info.denom convert mach_absolute_time() value to nanoseconds (10e9)
-  l_nanoToMicro = info.numer / (1000.0 * info.denom);
-  l_nanoToMili  = l_nanoToMicro / 1000.0;
+  l_NanoToMicro = info.numer / (1000.0 * info.denom);
+  l_NanoToMili  = l_NanoToMicro / 1000.0;
 
   // set flag
-  l_initialized = true;
+  l_Initialized = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void TimerPrivate::Reset()
+s64 Timer::GetMiliseconds()
 {
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 TimerPrivate::GetMiliseconds()
-{
-  if ( ! l_initialized)
+  if ( ! l_Initialized)
   {
     Initialize();
   }
   
-  return static_cast<s64>(mach_absolute_time() * l_nanoToMili);
+  return static_cast<s64>(mach_absolute_time() * l_NanoToMili);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 TimerPrivate::GetMicroseconds()
+s64 Timer::GetMicroseconds()
 { 
-  if ( ! l_initialized)
+  if ( ! l_Initialized)
   {
     Initialize();
   }
 
-  return static_cast<s64>(mach_absolute_time() * l_nanoToMicro);
+  return static_cast<s64>(mach_absolute_time() * l_NanoToMicro);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool TimerPrivate::IsHighResolution()
+bool Timer::IsHighResolution()
 {
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END
